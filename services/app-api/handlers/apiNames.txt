@@ -1,0 +1,11 @@
+-- we need a way to initialize the measures for a coreset when it is created
+POST /coreset/{state}/{year}/{coreSet}/seed -- check if data already exists (DO NOT OVERWRITE)
+
+-- measures
+GET /coreset/{state}/{year}/{coreSet}/measures - gets all measures tied to state and year
+GET /coreset/{state}/{year}/{coreSet}/measures/metadata - get measures metadata (id,status,name,abbrev) with specific id
+GET /coreset/{state}/{year}/{coreSet}/measures/{measure} - get specific measure (returns all data for that meausre)
+POST /coreset/{state}/{year}/{coreSet}/measures/{measure} - creates measure with specific measure id
+PUT /coreset/{state}/{year}/{coreSet}/measures/{measure} - edit specific measure information
+
+DELETE /coreset/{state}/{year}/{coreSet}/measures/{measure} - delete specific measure

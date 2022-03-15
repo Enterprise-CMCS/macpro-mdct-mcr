@@ -1,0 +1,16 @@
+{
+  "baseUrl": "http://localhost:3000/",
+  "experimentalStudio": true,
+  "redirectionLimit": 20,
+  "retries": 2,
+  "watchForFileChanges": true,
+  "testFiles": ["**/*.feature", "**/*.spec.js"],
+  "fixturesFolder": "fixtures",
+  "pluginsFile": "plugins/index.js",
+  "screenshotsFolder": "screenshots",
+  "videosFolder": "videos",
+  "downloadsFolder": "downloads",
+  "supportFile": "support/index.js",
+  "defaultCommandTimeout": 15000,
+  "types": ["cypress", "cypress-axe"]
+}

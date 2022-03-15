@@ -1,0 +1,14 @@
+{
+  "name": "ui",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper"
+  }
+}

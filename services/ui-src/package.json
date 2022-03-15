@@ -1,0 +1,137 @@
+{
+  "name": "ui-src",
+  "description": "",
+  "version": "1.0.0",
+  "dependencies": {
+    "@chakra-ui/react": "^1.7.0",
+    "@cmsgov/design-system": "^2.9.0",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@hookform/resolvers": "^2.8.4",
+    "aws-amplify": "^4.3.4",
+    "bootstrap": "^5.1.3",
+    "date-fns": "^2.26.0",
+    "date-fns-tz": "^1.2.2",
+    "framer-motion": "^4",
+    "object-path": "^0.11.8",
+    "react": "^17.0.1",
+    "react-bootstrap": "^2.0.1",
+    "react-dom": "^17.0.1",
+    "react-dropzone": "^11.4.2",
+    "react-hook-form": "^7.20.5",
+    "react-icons": "^4.3.1",
+    "react-query": "^3.34.5",
+    "react-router-dom": "6.0.2",
+    "react-scripts": "^5.0.0",
+    "sass": "^1.37.5",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "coverage": "jest --coverage",
+    "test": "jest --setupFiles dotenv/config",
+    "watchTest": "jest --setupFiles dotenv/config --watch",
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../"
+        }
+      ],
+      "text",
+      "text-summary"
+    ],
+    "collectCoverageFrom": [
+      "src/components/**/*.{ts,tsx}",
+      "src/views/**/*.{ts,tsx}",
+      "!src/components/CoreQuestions/index.tsx",
+      "!src/components/ScrollToTop/index.tsx",
+      "!src/components/CoreQuestionWrapper/index.tsx",
+      "!src/components/index.tsx",
+      "!src/components/LocalLogins/index.tsx",
+      "!src/components/LocalLogins/mockUsers.ts",
+      "!src/components/Inputs/index.tsx",
+      "!src/components/Table/types.ts",
+      "!src/components/Layouts/index.tsx",
+      "!src/views/NewAmendment/index.tsx",
+      "!src/views/Amendments/index.tsx",
+      "!src/views/DemoComponents/index.tsx",
+      "!src/views/Profile/index.tsx",
+      "!src/views/Login/index.tsx",
+      "!src/views/AddChildCoreSet/index.tsx",
+      "!src/views/AddHHCoreSet/index.tsx",
+      "!src/views/AdminHome/index.tsx",
+      "!src/views/StateHome/actions.ts",
+      "!src/components/Table/_coreSetData.ts",
+      "!src/components/Table/_measureData.ts",
+      "!src/views/DemoMeasure/**/*.{ts,tsx}",
+      "!src/views/ApiTester/index.tsx",
+      "!src/components/Upload/index.tsx",
+      "!src/views/Qualifiers/**/*.{ts,tsx}",
+      "!src/measures/**/*.{ts,tsx}"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "verbose": true,
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupJest.ts"
+    ],
+    "globals": {
+      "_env_": {}
+    },
+    "testEnvironment": "jest-environment-jsdom"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@aws-sdk/types": "^3.38.0",
+    "@babel/core": "^7.13.16",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-typescript": "^7.16.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^12.1.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.6",
+    "@types/object-path": "^0.11.1",
+    "@types/react": "^17.0.33",
+    "@types/react-bootstrap": "^0.32.28",
+    "@types/react-dom": "^17.0.10",
+    "@types/react-router-dom": "^5.3.2",
+    "@types/uuid": "^8.3.3",
+    "babel": "^6.23.0",
+    "babel-jest": "^26.6.3",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.4.1",
+    "serverless-cloudfront-invalidate": "^1.5.0",
+    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper",
+    "serverless-s3-sync": "^1.14.4",
+    "typescript": "^4.4.4"
+  }
+}

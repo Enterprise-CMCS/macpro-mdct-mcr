@@ -1,0 +1,61 @@
+service: database
+
+frameworkVersion: "2"
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-stack-termination-protection
+  - serverless-s3-bucket-helper
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  serverlessTerminationProtection:
+    stages:
+      - master
+      - val
+      - prod
+  measureTableName: ${self:custom.stage}-measures
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+
+resources:
+  Resources:
+    MeasureTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.measureTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: compoundKey
+            AttributeType: S
+          - AttributeName: coreSet
+            AttributeType: S
+        KeySchema:
+          - AttributeName: compoundKey
+            KeyType: HASH
+          - AttributeName: coreSet
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+  Outputs:
+    MeasureTableName:
+      Value: !Ref MeasureTable
+    MeasureTableArn:
+      Value: !GetAtt MeasureTable.Arn
+    MeasureTableStreamArn:
+      Value: !GetAtt MeasureTable.StreamArn
+    Region:
+      Value: !Sub ${AWS::Region}

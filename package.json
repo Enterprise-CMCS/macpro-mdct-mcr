@@ -1,0 +1,63 @@
+{
+  "name": "macpro-quickstart-serverless",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "cd tests/cypress && npm test && cd -",
+    "test:ci": "cd tests/cypress && yarn run test:ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CMSgov/macpro-quickstart-serverless.git"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/CMSgov/macpro-quickstart-serverless/issues"
+  },
+  "homepage": "https://github.com/CMSgov/macpro-quickstart-serverless#readme",
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/flat": "^5.0.2",
+    "@types/node": "^14.14.6",
+    "@types/yargs": "^15.0.10",
+    "@typescript-eslint/eslint-plugin": "^2.x",
+    "@typescript-eslint/parser": "^2.x",
+    "aws-sdk": "^2.923.0",
+    "cypress": "^8.4.0",
+    "cypress-cucumber-preprocessor": "^4.2.0",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-tests": "file:tests/cypress",
+    "cypress-xpath": "^1.6.2",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.x",
+    "eslint-plugin-jsx-a11y": "^6.x",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^2.x",
+    "prettier": "^2.4.1",
+    "serverless": "^2.43.1",
+    "serverless-bundle": "^5.0.1",
+    "serverless-dotenv-plugin": "^3.0.0",
+    "serverless-iam-helper": "./plugins/serverless-iam-helper",
+    "serverless-idempotency-helper": "./plugins/serverless-idempotency-helper",
+    "serverless-offline": "^6.8.0",
+    "serverless-online": "CMSgov/serverless-online",
+    "serverless-plugin-scripts": "^1.0.2",
+    "serverless-plugin-warmup": "^5.3.1",
+    "serverless-s3-bucket-helper": "./plugins/serverless-s3-bucket-helper",
+    "serverless-stack-termination-protection": "^1.0.4",
+    "typescript": "^4.0.5",
+    "yargs": "^16.1.1"
+  },
+  "dependencies": {},
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  }
+}

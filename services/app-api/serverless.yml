@@ -1,0 +1,167 @@
+# Refer to the README.md file in within this service directory to configure all ssm parameters required for this service.
+service: app-api
+
+frameworkVersion: "2"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dotenv-plugin
+  - serverless-plugin-warmup
+  - serverless-associate-waf
+  - serverless-offline
+  - serverless-stack-termination-protection
+  - serverless-idempotency-helper
+  - serverless-iam-helper
+  - serverless-s3-bucket-helper
+
+custom:
+  serverlessPluginTypescript:
+    tsConfigFileLocation: "./tsconfig.json"
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  serverlessTerminationProtection:
+    stages:
+      - master
+      - val
+      - prod
+  measureTableName: ${env:measureTableName, cf:database-${self:custom.stage}.MeasureTableName}
+  measureTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.MeasureTableArn}
+  webAclName: ${self:service}-${self:custom.stage}-webacl
+  associateWaf:
+    name: ${self:custom.webAclName}
+    version: V2
+  warmup:
+    default:
+      enabled: true
+      prewarm: true
+      events:
+        - schedule: rate(${ssm:/configuration/${self:custom.stage}/warmup/schedule~true, ssm:/configuration/default/warmup/schedule~true, "60 minutes"})
+      concurrency: ${ssm:/configuration/${self:custom.stage}/warmup/concurrency~true, ssm:/configuration/default/warmup/concurrency~true, 5}
+  authValue:
+    master: aws_iam
+    val: aws_iam
+    prod: aws_iam
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  logs:
+    restApi: true
+  iam:
+    role:
+      path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
+      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "*"
+  environment:
+    measureTableName: ${self:custom.measureTableName}
+    uploadS3BucketName: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName, ""}
+    stage: ${opt:stage, self:provider.stage}
+
+functions:
+  listMeasures:
+    handler: handlers/measures/get.listMeasures
+    events:
+      - http:
+          path: coreset/{state}/{year}/{coreSet}/measures/list
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  getMeasure:
+    handler: handlers/measures/get.getMeasure
+    events:
+      - http:
+          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/get
+          method: get
+          cors: true
+          authorizer: ""
+  createMeasure:
+    handler: handlers/measures/create.createMeasure
+    events:
+      - http:
+          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/create
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  editMeasure:
+    handler: handlers/measures/update.editMeasure
+    events:
+      - http:
+          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/edit
+          method: put
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  deleteMeasure:
+    handler: handlers/measures/delete.deleteMeasure
+    events:
+      - http:
+          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/delete
+          method: delete
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId: !Ref ApiGatewayRestApi
+    GatewayResponseDefault5XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId: !Ref ApiGatewayRestApi
+    ApiGwWebAcl:
+      Type: AWS::WAFv2::WebACL
+      Properties:
+        Name: ${self:custom.webAclName}
+        DefaultAction:
+          Block: {}
+        Rules:
+          - Action:
+              Allow: {}
+            Name: ${self:custom.webAclName}-allow-usa-plus-territories
+            Priority: 0
+            Statement:
+              GeoMatchStatement:
+                CountryCodes:
+                  - GU # Guam
+                  - PR # Puerto Rico
+                  - US # USA
+                  - UM # US Minor Outlying Islands
+                  - VI # US Virgin Islands
+                  - MP # Northern Mariana Islands
+            VisibilityConfig:
+              SampledRequestsEnabled: true
+              CloudWatchMetricsEnabled: true
+              MetricName: WafWebAcl
+        Scope: REGIONAL
+        VisibilityConfig:
+          CloudWatchMetricsEnabled: true
+          SampledRequestsEnabled: true
+          MetricName: ${self:custom.stage}-webacl
+  Outputs:
+    ApiGatewayRestApiName:
+      Value: !Ref ApiGatewayRestApi
+    ApiGatewayRestApiUrl:
+      Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
+    Region:
+      Value: !Sub ${AWS::Region}

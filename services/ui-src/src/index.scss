@@ -1,0 +1,29 @@
+$image-path: "~@cmsgov/design-system/dist/images";
+@import "@cmsgov/design-system/dist/scss/index";
+
+html,
+body,
+#root {
+  height: 100%;
+  font-size: 16px; // sets the value of 1rem
+}
+
+#app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+#main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+li::marker {
+  font-weight: bold;
+}
+
+a:focus {
+  box-shadow: none;
+}
