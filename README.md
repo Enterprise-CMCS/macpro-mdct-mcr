@@ -1,4 +1,4 @@
-# cms-mdct-carts
+# mdct-mcr
 
 A serverless form submission application built and deployed to AWS with the Serverless Application Framework.
 
