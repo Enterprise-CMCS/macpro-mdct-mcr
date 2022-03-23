@@ -1,7 +1,4 @@
-import {
-  useGetMeasures,
-  useCreateMeasure
-} from "hooks/api";
+import { useGetMeasures, useCreateMeasure } from "hooks/api";
 
 export const defaultMockValues = {
   useDeleteMeasuresValues: { mutate: jest.fn() },
@@ -70,7 +67,7 @@ export const defaultMockValues = {
     refetch: jest.fn(),
     isError: false,
     error: undefined,
-  }
+  },
 };
 
 export const useApiMock = ({

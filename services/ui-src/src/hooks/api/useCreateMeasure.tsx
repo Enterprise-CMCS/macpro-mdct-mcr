@@ -8,8 +8,8 @@ interface CreateMeasure<DataType = any> {
   measure?: string;
   status: MeasureStatus;
   reporting?: string | undefined;
-  state: string,
-  year: string,
+  state: string;
+  year: string;
 }
 
 const createNewMeasure = ({
@@ -35,7 +35,7 @@ const createNewMeasure = ({
 };
 
 export const useCreateMeasure = () => {
-{
+  {
     return useMutation((data: CreateMeasure) =>
       createNewMeasure({
         measure: data.measure,

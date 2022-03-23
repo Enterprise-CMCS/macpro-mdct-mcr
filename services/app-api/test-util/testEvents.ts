@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import {CoreSetAbbr, Measure, MeasureStatus } from "../types";
+import { CoreSetAbbr, Measure, MeasureStatus } from "../types";
 
 export const testEvent: APIGatewayProxyEvent = {
   body: "{}",
