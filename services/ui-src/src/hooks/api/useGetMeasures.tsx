@@ -16,13 +16,16 @@ const getMeasures = async ({ state, year, coreSet }: GetMeasures) => {
   });
 };
 
-export const useGetMeasures = (state: string, year: string, coreSetId: CoreSetAbbr) => {
-
+export const useGetMeasures = (
+  state: string,
+  year: string,
+  coreSetId: CoreSetAbbr
+) => {
   return useQuery(["coreSets", state, year], () =>
     getMeasures({
       state: state,
       year: year,
-      coreSet: coreSetId
+      coreSet: coreSetId,
     })
   );
 };
