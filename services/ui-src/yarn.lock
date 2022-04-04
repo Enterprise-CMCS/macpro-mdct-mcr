@@ -11934,10 +11934,6 @@ serverless-cloudfront-invalidate@^1.5.0:
     proxy-agent "^4.0.1"
     randomstring "^1.1.5"
 
-"serverless-s3-bucket-helper@https://github.com/cmsgov/serverless-s3-bucket-helper":
-  version "1.0.0"
-  resolved "https://github.com/cmsgov/serverless-s3-bucket-helper#f0f6d6a1ffe54e292f0afc93777764bce16a4037"
-
 serverless-s3-sync@^1.14.4:
   version "1.17.3"
   resolved "https://registry.yarnpkg.com/serverless-s3-sync/-/serverless-s3-sync-1.17.3.tgz#cf7913dde5f38c215c21dbf7466370974003cf7a"

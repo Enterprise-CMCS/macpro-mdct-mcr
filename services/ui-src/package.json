@@ -130,7 +130,6 @@
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.4.1",
     "serverless-cloudfront-invalidate": "^1.5.0",
-    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper",
     "serverless-s3-sync": "^1.14.4",
     "typescript": "^4.4.4"
   }
