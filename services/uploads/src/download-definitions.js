@@ -16,7 +16,7 @@ const utils = require("./utils");
  * @param event Event fired to invoke the new update function.
  * @param context
  */
-async function lambdaHandleEvent(event, context) {
+async function lambdaHandleEvent(_event, _context) {
   utils.generateSystemMessage(`AV definition update start time: ${new Date()}`);
 
   await utils.cleanupFolder("/tmp/");
