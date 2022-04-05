@@ -9,12 +9,17 @@ interface DeleteMeasure {
   measure: string;
 }
 
-const deleteMeasure = async ({ state, year, coreSet, measure }: DeleteMeasure) => {
+const deleteMeasure = async ({
+  state,
+  year,
+  coreSet,
+  measure,
+}: DeleteMeasure) => {
   return await Api.deleteMeasure({
     state,
     year,
     coreSet,
-    measure
+    measure,
   });
 };
 

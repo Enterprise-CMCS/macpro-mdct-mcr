@@ -65,10 +65,4 @@ async function deleteMeasure(inputObj: any) {
   );
 }
 
-export {
-  listMeasures,
-  getMeasure,
-  createMeasure,
-  editMeasure,
-  deleteMeasure,
-};
+export { listMeasures, getMeasure, createMeasure, editMeasure, deleteMeasure };

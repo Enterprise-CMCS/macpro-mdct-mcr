@@ -10,14 +10,13 @@
   "author": "",
   "license": "CC0-1.0",
   "devDependencies": {
-    "serverless-s3-local": "^0.6.7",
     "@types/aws-lambda": "^8.10.88",
     "@types/flat": "^5.0.2",
     "@types/json2csv": "^5.0.3",
     "aws-lambda": "^1.0.7",
     "serverless-associate-waf": "^1.2.1",
     "serverless-plugin-typescript": "^2.1.0",
-    "serverless-s3-bucket-helper": "https://github.com/cmsgov/serverless-s3-bucket-helper",
+    "serverless-s3-local": "^0.6.7",
     "typescript": "^4.5.4"
   },
   "dependencies": {

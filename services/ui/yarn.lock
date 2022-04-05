@@ -2,6 +2,3 @@
 # yarn lockfile v1
 
 
-"serverless-s3-bucket-helper@https://github.com/cmsgov/serverless-s3-bucket-helper":
-  version "1.0.0"
-  resolved "https://github.com/cmsgov/serverless-s3-bucket-helper#f0f6d6a1ffe54e292f0afc93777764bce16a4037"

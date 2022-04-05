@@ -12,8 +12,8 @@ export function Home() {
   const year = "2021";
   const state = "AL";
   const mutation = useCreateMeasure();
-  let {data} = useGetMeasures(state, year, coreSet);
-  const deleteMeasureMutation = useDeleteMeasure()
+  let { data } = useGetMeasures(state, year, coreSet);
+  const deleteMeasureMutation = useDeleteMeasure();
 
   if (
     userRole === UserRoles.HELP ||
@@ -26,34 +26,37 @@ export function Home() {
 
   const addMeasure = () => {
     const measure = {
-          coreSet: coreSet,
-          status: MeasureStatus.INCOMPLETE,
-          measure: "AIF-HH",
-          state: state,
-          year: year,
-          data: {
-            userState,
-            userRole,
-            description: "test description",
-          },
-        };
+      coreSet: coreSet,
+      status: MeasureStatus.INCOMPLETE,
+      measure: "AIF-HH",
+      state: state,
+      year: year,
+      data: {
+        userState,
+        userRole,
+        description: "test description",
+      },
+    };
     mutation.mutate(measure, {
       onSuccess: () => {
-        window.location.reload()
+        window.location.reload();
       },
       onError: (e) => {
-        console.log(e)
-      }
-    })
-  }
+        console.log(e);
+      },
+    });
+  };
 
   const deleteMeasure = (measure: string) => {
-    deleteMeasureMutation.mutate({state, year, coreSet, measure}, {
-      onSuccess: () => {
-        window.location.reload()
+    deleteMeasureMutation.mutate(
+      { state, year, coreSet, measure },
+      {
+        onSuccess: () => {
+          window.location.reload();
+        },
       }
-    })
-  }
+    );
+  };
 
   if (!userState) {
     return (
@@ -68,15 +71,24 @@ export function Home() {
         <CUI.Button onClick={() => addMeasure()}>Create Measure</CUI.Button>
       </div>
       <h2>Measures:</h2>
-      {data &&
+      {data && (
         <div>
           {data.Items.map((item: any): any => (
             <div key={item.compoundKey}>
-              <p>State: {item.state}, Year: {item.year}, Measure, {item.measure}</p>
-              <CUI.Button onClick={() => {deleteMeasure(item.measure)}}>Delete Measure</CUI.Button>
-            </div>))}
+              <p>
+                State: {item.state}, Year: {item.year}, Measure, {item.measure}
+              </p>
+              <CUI.Button
+                onClick={() => {
+                  deleteMeasure(item.measure);
+                }}
+              >
+                Delete Measure
+              </CUI.Button>
+            </div>
+          ))}
         </div>
-      }
+      )}
     </section>
   );
 }
