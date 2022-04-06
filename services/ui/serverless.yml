@@ -72,9 +72,9 @@ resources:
           IndexDocument: index.html
           ErrorDocument: index.html
         BucketEncryption:
-            ServerSideEncryptionConfiguration:
-              - ServerSideEncryptionByDefault:
-                  SSEAlgorithm: AES256
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
       DeletionPolicy: Delete
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
@@ -247,9 +247,9 @@ resources:
       Properties:
         BucketName: !Sub ${AWS::AccountId}-${self:service}-${self:custom.stage}-waflogs
         BucketEncryption:
-            ServerSideEncryptionConfiguration:
-              - ServerSideEncryptionByDefault:
-                  SSEAlgorithm: AES256
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
     WaflogsUploadBucketPolicy:
       Type: "AWS::S3::BucketPolicy"
       Properties:
