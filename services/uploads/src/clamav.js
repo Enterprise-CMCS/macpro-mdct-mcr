@@ -22,7 +22,7 @@ async function listBucketFiles(bucketName) {
     return keys;
   } catch (err) {
     utils.generateSystemMessage(`Error listing files`);
-    console.log(err);
+    console.log(err); // eslint-disable-line no-console
     throw err;
   }
 }
@@ -39,18 +39,14 @@ function updateAVDefinitonsWithFreshclam() {
     );
 
     utils.generateSystemMessage("Update message");
-    console.log(executionResult.toString());
-
-    console.log("Downloaded:", fs.readdirSync(constants.FRESHCLAM_WORK_DIR));
 
     if (executionResult.stderr) {
       utils.generateSystemMessage("stderr");
-      console.log(executionResult.stderr.toString());
     }
 
     return true;
   } catch (err) {
-    console.log(err);
+    console.log(err); // eslint-disable-line no-console
     return false;
   }
 }
@@ -96,7 +92,7 @@ async function downloadAVDefinitions() {
           utils.generateSystemMessage(
             `Error downloading definition file ${filenameToDownload}`
           );
-          console.log(err);
+          console.log(err); // eslint-disable-line no-console
           reject();
         });
 
@@ -111,8 +107,10 @@ async function downloadAVDefinitions() {
  * Uploads the AV definitions to the S3 bucket.
  */
 async function uploadAVDefinitions() {
-  // delete all the definitions currently in the bucket.
-  // first list them.
+  /*
+   * delete all the definitions currently in the bucket.
+   * first list them.
+   */
   utils.generateSystemMessage("Uploading Definitions");
   const s3AllFullKeys = await listBucketFiles(constants.CLAMAV_BUCKET_NAME);
 
@@ -138,7 +136,7 @@ async function uploadAVDefinitions() {
       utils.generateSystemMessage(
         `Error deleting current definition files: ${s3DefinitionFileFullKeys}`
       );
-      console.log(err);
+      console.log(err); // eslint-disable-line no-console
       throw err;
     }
   }
@@ -160,12 +158,12 @@ async function uploadAVDefinitions() {
         ),
       };
 
-      S3.putObject(options, function (err, data) {
+      S3.putObject(options, function (err, _data) {
         if (err) {
           utils.generateSystemMessage(
             `--- Error uploading ${filenameToUpload} ---`
           );
-          console.log(err);
+          console.log(err); // eslint-disable-line no-console
           reject();
           return;
         }
@@ -193,12 +191,11 @@ async function uploadAVDefinitions() {
  */
 function scanLocalFile(pathToFile) {
   try {
-    let avResult = execSync(
+    execSync(
       `${constants.PATH_TO_CLAMAV} -v -a --stdout -d /tmp/ ${pathToFile}`
     );
 
     utils.generateSystemMessage("SUCCESSFUL SCAN, FILE CLEAN");
-    console.log(avResult.toString());
 
     return constants.STATUS_CLEAN_FILE;
   } catch (err) {
@@ -208,7 +205,7 @@ function scanLocalFile(pathToFile) {
       return constants.STATUS_INFECTED_FILE;
     } else {
       utils.generateSystemMessage("-- SCAN FAILED --");
-      console.log(err);
+      console.log(err); // eslint-disable-line no-console
       return constants.STATUS_ERROR_PROCESSING_FILE;
     }
   }

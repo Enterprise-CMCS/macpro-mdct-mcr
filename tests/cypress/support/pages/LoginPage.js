@@ -25,24 +25,14 @@ export class LoginPage {
     cy.xpath(loginWithCognitoButtn).click();
   }
 
-  enterEmailwithCognitoLogin() {
-    cy.xpath(emailForCognito).type("stateuser2@test.com");
-  }
-
-  enterPasswordwithCognitoLogin() {
-    cy.xpath(passwordForCognito).type("p@55W0rd!");
-  }
-
-  clickLoginWithCognitoButtn() {
-    cy.xpath(loginWithCognitoButtn).click();
-  }
-
   enterPassword() {
     cy.get(passwordInput).type("Passw0rd@");
   }
 
-  //old credentials
-  //State_QMR  Passw0rd!
+  /*
+   * old credentials
+   * State_QMR  Passw0rd!
+   */
 
   clickAgreeTermAndConditions() {
     //cy.wait(2000);

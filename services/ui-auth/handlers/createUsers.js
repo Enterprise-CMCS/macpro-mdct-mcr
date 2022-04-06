@@ -2,12 +2,8 @@ import * as cognitolib from "../libs/cognito-lib";
 const userPoolId = process.env.userPoolId;
 const users = require("../libs/users.json");
 
-async function myHandler(event, context, callback) {
-  console.log("USER POOL ID: ");
-  console.log(userPoolId);
-
+async function myHandler(_event, _context, _callback) {
   for (var i = 0; i < users.length; i++) {
-    console.log(users[i]);
     var poolData = {
       UserPoolId: userPoolId,
       Username: users[i].username,
