@@ -6,6 +6,7 @@
   "watchForFileChanges": true,
   "testFiles": ["**/*.feature", "**/*.spec.js"],
   "fixturesFolder": "fixtures",
+  "integrationFolder": "tests",
   "pluginsFile": "plugins/index.js",
   "screenshotsFolder": "screenshots",
   "videosFolder": "videos",
