@@ -5,11 +5,11 @@ import LoginPage from "../../../support/pages/LoginPage";
 const homePage = new Homepage();
 const loginPage = new LoginPage();
 
-Given("user visits QMR home page", () => {
+Given("user visits homepage", () => {
   homePage.launch();
 });
 
-When("user enter email and password for Cognito login", () => {
+When("user enters Cognito email and password for login", () => {
   loginPage.enterEmailwithCognitoLogin();
   loginPage.enterPasswordwithCognitoLogin();
 });
