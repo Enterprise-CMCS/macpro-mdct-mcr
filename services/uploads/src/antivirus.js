@@ -17,9 +17,6 @@ const constants = require("./constants");
  * @return {int} Length of S3 object in bytes.
  */
 async function sizeOf(key, bucket) {
-  console.log("key: " + key);
-  console.log("bucket: " + bucket);
-
   let res = await s3.headObject({ Key: key, Bucket: bucket }).promise();
   return res.ContentLength;
 }
@@ -63,14 +60,14 @@ function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
         resolve();
       })
       .on("error", function (err) {
-        console.log(err);
+        console.log(err); // eslint-disable-line no-console
         reject();
       })
       .pipe(writeStream);
   });
 }
 
-async function lambdaHandleEvent(event, context) {
+async function lambdaHandleEvent(event, _context) {
   utils.generateSystemMessage("Start Antivirus Lambda function");
 
   let s3ObjectKey = utils.extractKeyFromS3Event(event);
@@ -82,8 +79,10 @@ async function lambdaHandleEvent(event, context) {
 
   let virusScanStatus;
 
-  //You need to verify that you are not getting too large a file
-  //currently lambdas max out at 500MB storage.
+  /*
+   * You need to verify that you are not getting too large a file
+   * currently lambdas max out at 500MB storage.
+   */
   if (await isS3FileTooBig(s3ObjectKey, s3ObjectBucket)) {
     virusScanStatus = constants.STATUS_SKIPPED_FILE;
     utils.generateSystemMessage(
@@ -113,9 +112,9 @@ async function lambdaHandleEvent(event, context) {
     await s3.putObjectTagging(taggingParams).promise();
     utils.generateSystemMessage("Tagging successful");
   } catch (err) {
-    console.log(err);
+    console.log(err); // eslint-disable-line no-console
   } finally {
-    return virusScanStatus;
+    return virusScanStatus; // eslint-disable-line no-unsafe-finally
   }
 }
 
@@ -139,9 +138,9 @@ async function scanS3Object(s3ObjectKey, s3ObjectBucket) {
     await s3.putObjectTagging(taggingParams).promise();
     utils.generateSystemMessage("Tagging successful");
   } catch (err) {
-    console.log(err);
+    console.log(err); // eslint-disable-line no-console
   } finally {
-    return virusScanStatus;
+    return virusScanStatus; // eslint-disable-line no-unsafe-finally
   }
 }
 

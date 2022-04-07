@@ -1,0 +1,32 @@
+env:
+  browser: true
+  es6: true
+  node: true
+  jest/globals: true
+  cypress/globals: true
+parser: '@typescript-eslint/parser'
+plugins:
+  - '@typescript-eslint'
+  - 'jest'
+  - 'cypress'
+parserOptions:
+  ecmaVersion: 6
+  sourceType: module
+  ecmaFeatures:
+    modules: true
+extends:
+  - 'eslint:recommended'
+
+rules:
+  no-const-assign: error
+  no-duplicate-imports: error
+  no-unreachable: error
+  no-unused-vars: 
+    - error
+    - argsIgnorePattern: "^_"
+  no-console: error
+  no-empty: error
+  no-extra-semi: error
+  multiline-comment-style:
+    - error
+    - starred-block
