@@ -28,7 +28,6 @@ const uploadFileToS3 = async (filePath, scanResult) => {
         if (data) {
           resolve(data);
         }
-        console.log(`File (${data.Key}) uploaded to: ${data.Location}`);
       }
     );
   });
@@ -52,13 +51,11 @@ const scanAll = async (TableName) => {
     const results = await scan(params);
     ExclusiveStartKey = results.LastEvaluatedKey;
     dataList = [...results.Items, ...dataList];
-    console.log(results);
   }
   return dataList;
 };
 
 const syncDynamoToS3 = handler(async (_event, _context) => {
-  console.log("Syncing Dynamo to Uploads");
   const measureScanResults = await scanAll(process.env.measureTableName);
   const coreSetScanResults = await scanAll(process.env.coreSetTableName);
   const measureResults = measureScanResults ? measureScanResults : [];
@@ -70,7 +67,6 @@ const syncDynamoToS3 = handler(async (_event, _context) => {
     `coreSetData/JSONmeasures/${Date.now()}.json`,
     JSON.stringify(measureResults)
   );
-  console.log("Uploaded measures file to s3");
 
   const coreSetCsv = await csvToS3(coreSetResults);
   await uploadFileToS3(`coreSetData/CSVcoreSet/${Date.now()}.csv`, coreSetCsv);
@@ -78,7 +74,6 @@ const syncDynamoToS3 = handler(async (_event, _context) => {
     `coreSetData/JSONcoreSet/${Date.now()}.json`,
     JSON.stringify(coreSetResults)
   );
-  console.log("Uploaded coreSet file to s3");
 });
 module.exports = {
   syncDynamoToS3: syncDynamoToS3,

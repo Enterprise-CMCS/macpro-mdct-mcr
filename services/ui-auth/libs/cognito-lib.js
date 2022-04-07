@@ -5,15 +5,14 @@ const COGNITO_CLIENT = new aws.CognitoIdentityServiceProvider({
 });
 
 export async function createUser(params) {
-  await new Promise((resolve, reject) => {
-    COGNITO_CLIENT.adminCreateUser(params, function (err, data) {
+  await new Promise((resolve, _reject) => {
+    COGNITO_CLIENT.adminCreateUser(params, function (err, _data) {
       var response;
       if (err) {
-        console.log("FAILED ", err, err.stack); // an error occurred
+        console.log("FAILED ", err, err.stack); // eslint-disable-line no-console
         response = { statusCode: 500, body: { message: "FAILED", error: err } };
         resolve(response); //if user already exists, we still continue and ignore
       } else {
-        console.log("SUCCESS", data); // successful response
         response = { statusCode: 200, body: { message: "SUCCESS" } };
         resolve(response);
       }
@@ -23,16 +22,15 @@ export async function createUser(params) {
 
 export async function setPassword(params) {
   await new Promise((resolve, reject) => {
-    COGNITO_CLIENT.adminSetUserPassword(params, function (err, data) {
+    COGNITO_CLIENT.adminSetUserPassword(params, function (err, _data) {
       if (err) {
-        console.log("FAILED to update password", err, err.stack); // an error occurred
+        console.log("FAILED to update password", err, err.stack); // eslint-disable-line no-console
         var response = {
           statusCode: 500,
           body: { message: "FAILED", error: err },
         };
         reject(response);
       } else {
-        console.log("SUCCESS", data);
         resolve();
       }
     });
@@ -41,16 +39,15 @@ export async function setPassword(params) {
 
 export async function updateUserAttributes(params) {
   await new Promise((resolve, reject) => {
-    COGNITO_CLIENT.adminUpdateUserAttributes(params, function (err, data) {
+    COGNITO_CLIENT.adminUpdateUserAttributes(params, function (err, _data) {
       if (err) {
-        console.log("FAILED to update user attributes", err, err.stack); // an error occurred
+        console.log("FAILED to update user attributes", err, err.stack); // eslint-disable-line no-console
         var response = {
           statusCode: 500,
           body: { message: "FAILED", error: err },
         };
         reject(response);
       } else {
-        console.log("SUCCESS", data);
         resolve();
       }
     });
