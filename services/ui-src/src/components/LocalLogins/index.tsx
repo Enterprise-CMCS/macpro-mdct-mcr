@@ -14,7 +14,7 @@ const LocalLogin = () => {
       await Auth.signIn(fields.email, fields.password);
       navigate(`/`);
     } catch (error) {
-      console.log("Error while logging in.", error);
+      console.log("Error while logging in.", error); // eslint-disable-line no-console
     }
   }
 
