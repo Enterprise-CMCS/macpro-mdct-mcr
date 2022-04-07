@@ -101,6 +101,10 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: !Sub ${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
         CorsConfiguration: # Set the CORS policy
           CorsRules:
             - AllowedOrigins:
@@ -146,6 +150,16 @@ resources:
               Resource: !Sub ${ClamDefsBucket.Arn}/*
               Principal:
                 AWS: !GetAtt IamRoleLambdaExecution.Arn
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${ClamDefsBucket}/*
+                - !Sub arn:aws:s3:::${ClamDefsBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
     AttachmentsBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -153,48 +167,9 @@ resources:
         PolicyDocument:
           Statement:
             - Action:
-                - "s3:GetBucketLocation"
-                - "s3:ListBucket"
-              Effect: "Allow"
-              Resource: !Sub ${AttachmentsBucket.Arn}
-              Principal:
-                AWS: ${ssm:/configuration/mpriamrole~true}
-            - Action:
-                - "s3:GetObject"
-              Effect: "Allow"
-              Resource: !Sub ${AttachmentsBucket.Arn}/*
-              Principal:
-                AWS: ${ssm:/configuration/mpriamrole~true}
-            - Action:
-                - "s3:GetBucketLocation"
-                - "s3:ListBucket"
-              Effect: "Allow"
-              Resource: !Sub ${AttachmentsBucket.Arn}
-              Principal:
-                AWS: ${ssm:/configuration/mprdeviam~true}
-            - Action:
-                - "s3:GetObject"
-              Effect: "Allow"
-              Resource: !Sub ${AttachmentsBucket.Arn}/*
-              Principal:
-                AWS: ${ssm:/configuration/mprdeviam~true}
-            - Action:
-                - "s3:PutObject"
-              Effect: "Allow"
-              Resource: !Sub ${AttachmentsBucket.Arn}/*
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Action:
-                - "s3:GetBucketLocation"
-                - "s3:ListBucket"
-              Effect: "Allow"
-              Resource: !Sub ${AttachmentsBucket.Arn}
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Action:
                 - "s3:GetObject"
               Effect: "Deny"
-              Resource: !Sub ${AttachmentsBucket.Arn}/protected/*
+              Resource: !Sub ${AttachmentsBucket.Arn}/*
               Principal: "*"
               Condition:
                 StringNotEquals:
@@ -226,6 +201,16 @@ resources:
                 - !Sub ${AttachmentsBucket.Arn}/*.xls
                 - !Sub ${AttachmentsBucket.Arn}/*.xlsx
                 - !Sub ${AttachmentsBucket.Arn}/*.json
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${AttachmentsBucket}/*
+                - !Sub arn:aws:s3:::${AttachmentsBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
     LambdaInvokePermission:
       Type: AWS::Lambda::Permission
       Properties:

@@ -71,6 +71,10 @@ resources:
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
       DeletionPolicy: Delete
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
@@ -83,6 +87,16 @@ resources:
               Resource: !Sub arn:aws:s3:::${S3Bucket}/*
               Principal:
                 CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${S3Bucket}/*
+                - !Sub arn:aws:s3:::${S3Bucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
         Bucket: !Ref S3Bucket
     LoggingBucket:
       Type: "AWS::S3::Bucket"
@@ -109,6 +123,16 @@ resources:
               Resource: !Sub arn:aws:s3:::${LoggingBucket}/*
               Principal:
                 AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${LoggingBucket}/*
+                - !Sub arn:aws:s3:::${LoggingBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
         Bucket: !Ref LoggingBucket
     CloudFrontWebAcl:
       Type: AWS::WAFv2::WebACL
@@ -222,6 +246,27 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: !Sub ${AWS::AccountId}-${self:service}-${self:custom.stage}-waflogs
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
+    WaflogsUploadBucketPolicy:
+      Type: "AWS::S3::BucketPolicy"
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${WaflogsUploadBucket}/*
+                - !Sub arn:aws:s3:::${WaflogsUploadBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
+        Bucket: !Ref WaflogsUploadBucket
     Firehose:
       Type: AWS::KinesisFirehose::DeliveryStream
       Properties:
