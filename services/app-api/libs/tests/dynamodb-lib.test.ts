@@ -9,15 +9,15 @@ jest.mock("aws-sdk", () => ({
   __esModule: true,
   default: {
     DynamoDB: {
-      DocumentClient: jest.fn().mockImplementation((config) => {
+      DocumentClient: jest.fn().mockImplementation((_config) => {
         return {
-          get: (x: any) => ({ promise: mockPromiseCall }),
-          put: (x: any) => ({ promise: mockPromiseCall }),
-          post: (x: any) => ({ promise: mockPromiseCall }),
-          query: (x: any) => ({ promise: mockPromiseCall }),
-          scan: (x: any) => ({ promise: mockPromiseCall }),
-          update: (x: any) => ({ promise: mockPromiseCall }),
-          delete: (x: any) => ({ promise: mockPromiseCall }),
+          get: (_x: any) => ({ promise: mockPromiseCall }),
+          put: (_x: any) => ({ promise: mockPromiseCall }),
+          post: (_x: any) => ({ promise: mockPromiseCall }),
+          query: (_x: any) => ({ promise: mockPromiseCall }),
+          scan: (_x: any) => ({ promise: mockPromiseCall }),
+          update: (_x: any) => ({ promise: mockPromiseCall }),
+          delete: (_x: any) => ({ promise: mockPromiseCall }),
         };
       }),
     },

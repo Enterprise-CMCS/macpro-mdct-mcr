@@ -3,8 +3,7 @@ import dynamoDb from "../../libs/dynamodb-lib";
 import { convertToDynamoExpression } from "../dynamoUtils/convertToDynamoExpressionVars";
 import { createCompoundKey } from "../dynamoUtils/createCompoundKey";
 
-// eslint-disable-next-line no-unused-vars
-export const listMeasures = handler(async (event, context) => {
+export const listMeasures = handler(async (event, _context) => {
   const state = event.pathParameters?.state;
   const year = event.pathParameters?.year as string;
   const coreSet = event.pathParameters?.coreSet;
@@ -20,8 +19,7 @@ export const listMeasures = handler(async (event, context) => {
   return queryValue;
 });
 
-// eslint-disable-next-line no-unused-vars
-export const getMeasure = handler(async (event, context) => {
+export const getMeasure = handler(async (event, _context) => {
   const dynamoKey = createCompoundKey(event);
   const params = {
     TableName: process.env.measureTableName!,

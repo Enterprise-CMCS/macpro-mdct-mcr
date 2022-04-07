@@ -21,7 +21,11 @@ rules:
   no-const-assign: error
   no-duplicate-imports: error
   no-unreachable: error
-  no-unused-vars: 
+  # no-unused-vars: 
+  #   - error
+  #   - argsIgnorePattern: "^_"
+  no-unused-vars: off
+  '@typescript-eslint/no-unused-vars': 
     - error
     - argsIgnorePattern: "^_"
   no-console: error
