@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 interface Measure {
   [year: number]: MeasureMetaData[];
 }

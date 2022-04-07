@@ -1,4 +1,4 @@
-export function Logo(): JSX.Element {
+export function Logo() {
   return (
     <div data-testid="qmr-logo">
       <img

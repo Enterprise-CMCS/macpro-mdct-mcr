@@ -17,9 +17,11 @@ export interface UserContextInterface {
 
 export const UserContext = createContext<UserContextInterface>({
   logout: async () => {
+    // eslint-disable-next-line no-console
     console.log("User Context failed to initialize logout functionality");
   },
   loginWithIDM: () => {
+    // eslint-disable-next-line no-console
     console.log("User Context failed to initialize IDM login functionality.");
   },
   isStateUser: false,

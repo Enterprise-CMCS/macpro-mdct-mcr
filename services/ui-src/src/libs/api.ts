@@ -10,6 +10,7 @@ async function requestOptions(): Promise<any> {
     };
     return options;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log({ e });
   }
 }
