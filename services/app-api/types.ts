@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 export interface Measure {
   compoundKey: string;
   coreSet: CoreSetAbbr;

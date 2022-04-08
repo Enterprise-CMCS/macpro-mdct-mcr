@@ -1,6 +1,6 @@
 # Adapted from https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
-name: Dependabot auto-merge 
-on: 
+name: Dependabot auto-merge
+on:
   pull_request:
   workflow_dispatch:
 
@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
-      - name: Dependabotbot Gather Metadata 
-        id: metadata 
+      - name: Dependabotbot Gather Metadata
+        id: metadata
         uses: dependabot/fetch-metadata@v1.3.0
       - name: Approve a PR
         run: gh pr review --approve "$PR_URL"

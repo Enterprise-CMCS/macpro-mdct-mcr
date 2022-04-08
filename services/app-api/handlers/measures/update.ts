@@ -4,7 +4,7 @@ import { convertToDynamoExpression } from "../dynamoUtils/convertToDynamoExpress
 import { createCompoundKey } from "../dynamoUtils/createCompoundKey";
 import { getUserNameFromJwt } from "../../libs/authorization";
 
-export const editMeasure = handler(async (event, context) => {
+export const editMeasure = handler(async (event, _context) => {
   const { data, status, reporting = null } = JSON.parse(event!.body!);
 
   const dynamoKey = createCompoundKey(event);
