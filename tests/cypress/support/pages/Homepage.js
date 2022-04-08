@@ -1,60 +1,40 @@
-const logoAtTopLeft = 'img[alt="QMR Logo"]';
-const loginButton = "a#loginButton";
-const apsSubmissionAppTxt = "//div[@class='Home']//h1[.='APS Submission App']";
-const sentence = '(//div[@class="footer-fed-gov-text"])[1]';
+const appLogo = "//img[@alt='QMR Logo']";
+const headerAppLogo = 'img[alt="QMR Logo"]';
+const headerLoginButton = "a#loginButton";
+const footerAddress = '(//div[@class="footer-wrapper"]/div)[2]';
+const footerEmail = ".footer-email";
+const footerHhsLogo = "img[alt='Department of Health and Human Services logo']";
+const footerMdctLogo = "//img[@alt='Mdct logo']";
+const footerMedicaidLogo = "//img[@alt='Medicaid.gov logo']";
 const medicaidLogo = "img[alt='Medicaid.gov logo']";
-const emailBottomLeft = ".footer-email";
-const federalLogo = "img[alt='Department of Health and Human Services logo']";
-const addressBottomRight = '(//div[@class="footer-wrapper"]/div)[2]';
-const coreSetMeasuresReportingTitle =
-  "//h2[contains(text(),'FFY 2021 Core Set Measures Reporting')]";
-const adultCoreSetMeasures = "//a[ contains(@href, 'ACS') ]";
-//oy2-15212 qmr mdct logo
-const qualityMeasureReportingLogo = "//img[@alt='QMR Logo']";
-const mdctLogo = "//img[@alt='Mdct logo']";
-const medicaidLogoBottom = "//img[@alt='Medicaid.gov logo']";
+const footerSentence = '(//div[@class="footer-fed-gov-text"])[1]';
 
 export class Homepage {
   launch() {
     cy.visit("/");
   }
 
-  verifyQMRMDCTMedicaidLogoAtHomePage() {
-    cy.xpath(qualityMeasureReportingLogo).should("be.visible");
-    cy.xpath(mdctLogo).should("be.visible");
-    cy.xpath(medicaidLogoBottom).should("be.visible");
-  }
-
-  verifyTheTitleCoreSetMeasureReporting() {
-    cy.xpath(coreSetMeasuresReportingTitle).should("be.visible");
-  }
-
-  clickAdultCoreSetMeasures() {
-    cy.wait(3000);
-    cy.scrollTo("top");
-    cy.xpath(adultCoreSetMeasures).click({ force: true });
-    //cy.xpath(adultCoreSetMeasures).click();
+  verifyLogos() {
+    cy.xpath(appLogo).should("be.visible");
+    cy.xpath(footerMdctLogo).should("be.visible");
+    cy.xpath(footerMedicaidLogo).should("be.visible");
   }
 
   validateCoreSetReportingIcon() {
     //cy.wait(3000);
-    cy.get(logoAtTopLeft).should("be.visible");
-  }
-
-  validatePageBanner() {
-    cy.xpath(apsSubmissionAppTxt).should("be.visible");
+    cy.get(headerAppLogo).should("be.visible");
   }
 
   validateLoginButton() {
-    cy.get(loginButton).should("be.visible");
+    cy.get(headerLoginButton).should("be.visible");
   }
 
   clickLoginButton() {
-    cy.get(loginButton).click();
+    cy.get(headerLoginButton).click();
   }
 
   validateSupportSenence() {
-    cy.xpath(sentence).should("be.visible");
+    cy.xpath(footerSentence).should("be.visible");
   }
 
   validateMedicaidLogo() {
@@ -62,15 +42,15 @@ export class Homepage {
   }
 
   validateEmail() {
-    cy.get(emailBottomLeft).contains("MDCT_Help@cms.hhs.gov");
+    cy.get(footerEmail).contains("MDCT_Help@cms.hhs.gov");
   }
 
   validateFederalLogo() {
-    cy.get(federalLogo).should("be.visible");
+    cy.get(footerHhsLogo).should("be.visible");
   }
 
   validateAddress() {
-    cy.xpath(addressBottomRight).contains(
+    cy.xpath(footerAddress).contains(
       "7500 Security Boulevard Baltimore, MD 21244"
     );
   }

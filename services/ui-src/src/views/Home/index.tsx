@@ -71,7 +71,7 @@ export function Home() {
         <CUI.Button onClick={() => addMeasure()}>Create Measure</CUI.Button>
       </div>
       <h2>Measures:</h2>
-      {data && (
+      {data?.Items && (
         <div>
           {data.Items.map((item: any): any => (
             <div key={item.compoundKey}>
