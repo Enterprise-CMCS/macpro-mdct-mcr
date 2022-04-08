@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@cypress-audit/lighthouse": "^1.2.0",
     "@cypress-audit/pa11y": "^1.2.0",
     "axe-core": "^4.4.1",
     "concurrently": "^6.2.1",

@@ -1,5 +1,6 @@
 import "cypress-file-upload";
 import "@cypress-audit/pa11y/commands";
+import "@cypress-audit/lighthouse/commands";
 
 before(() => {
   cy.visit("/", { timeout: 60000 * 5 });
@@ -65,5 +66,10 @@ Cypress.Commands.add("checkA11yOfPage", () => {
   cy.pa11y({
     threshold: 10,
     standard: "WCAG2AA",
+  });
+
+  // check accessibility using lighthouse
+  cy.lighthouse({
+    accessibility: 90,
   });
 });
