@@ -19,7 +19,8 @@
     "cypress-xpath": "^1.6.2"
   },
   "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true
+    "nonGlobalStepDefinitions": true,
+    "stepDefinitions": "tests"
   },
   "dependencies": {
     "cypress-tags": "^0.3.0"

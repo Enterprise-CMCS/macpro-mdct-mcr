@@ -1,10 +1,9 @@
 import { Navigate } from "react-router-dom";
-import { UserRoles } from "types";
+import { UserRoles, MeasureStatus, CoreSetAbbr } from "types";
 import * as CUI from "@chakra-ui/react";
 import "./index.module.scss";
 import { useUser } from "hooks/authHooks";
 import { useCreateMeasure, useGetMeasures, useDeleteMeasure } from "hooks/api";
-import { MeasureStatus, CoreSetAbbr } from "types";
 
 export function Home() {
   const { userRole, userState } = useUser();
@@ -42,6 +41,7 @@ export function Home() {
         window.location.reload();
       },
       onError: (e) => {
+        // eslint-disable-next-line no-console
         console.log(e);
       },
     });
@@ -71,7 +71,7 @@ export function Home() {
         <CUI.Button onClick={() => addMeasure()}>Create Measure</CUI.Button>
       </div>
       <h2>Measures:</h2>
-      {data && (
+      {data?.Items && (
         <div>
           {data.Items.map((item: any): any => (
             <div key={item.compoundKey}>
