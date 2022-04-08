@@ -27,8 +27,8 @@ export function init(event: APIGatewayProxyEvent, _context: any) {
 }
 
 export function flush(e: Error) {
-  logs.forEach(({ date, string }) => console.debug(date, string));
-  console.error(e);
+  logs.forEach(({ date, string }) => console.debug(date, string)); // eslint-disable-line no-console
+  console.error(e); // eslint-disable-line no-console
 }
 
 export function clearLogs() {

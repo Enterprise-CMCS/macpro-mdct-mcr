@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { FormProvider, useForm } from "react-hook-form";
 
 interface WrapperProps {
-  children: JSX.Element;
+  children: JSX.Element; // eslint-disable-line no-undef
 }
 
 interface AdditionalOptions {

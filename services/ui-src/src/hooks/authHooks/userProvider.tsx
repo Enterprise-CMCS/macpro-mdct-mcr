@@ -41,7 +41,7 @@ export const UserProvider = ({ children }: Props) => {
       setUser(null);
       await Auth.signOut();
     } catch (error) {
-      console.log("error signing out: ", error);
+      console.log("error signing out: ", error); // eslint-disable-line no-console
     }
     navigate("/");
   }, [navigate]);
