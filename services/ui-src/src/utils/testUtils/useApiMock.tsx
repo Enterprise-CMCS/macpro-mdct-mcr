@@ -45,7 +45,7 @@ export const defaultMockValues = {
   },
   useUpdateMeasureValues: {
     useMutation: () => {
-      mutate: () => {};
+      mutate: () => {}; // eslint-disable-line no-unused-labels
     },
   },
   useCreateMeasureValues: {

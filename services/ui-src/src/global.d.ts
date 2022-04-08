@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { RegisterOptions } from "react-hook-form";
 interface ControllerRules {
   rules?: Omit<

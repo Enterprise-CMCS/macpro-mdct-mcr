@@ -1,7 +1,9 @@
-// const listOfVars = {
-//   state: "MO",
-//   year: "2021",
-// };
+/*
+ * const listOfVars = {
+ *   state: "MO",
+ *   year: "2021",
+ * };
+ */
 type ExpressionType = "list" | "post";
 
 export const convertToDynamoExpression = (
