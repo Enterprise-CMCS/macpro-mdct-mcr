@@ -16,7 +16,7 @@ export class Homepage {
 
   verifyLogos() {
     cy.xpath(appLogo).should("be.visible");
-    cy.xpath(footerMDCTLogo).should("be.visible");
+    cy.xpath(footerMdctLogo).should("be.visible");
     cy.xpath(footerMedicaidLogo).should("be.visible");
   }
 
