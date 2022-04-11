@@ -16,6 +16,7 @@ plugins:
   - serverless-idempotency-helper
   - serverless-iam-helper
   - serverless-s3-bucket-helper
+  - serverless-api-client-certificate
 
 custom:
   serverlessPluginTypescript:
@@ -33,6 +34,9 @@ custom:
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
+  serverlessApiClientCertificate:
+    rotateCerts: true
+    daysLeft: 30
   warmup:
     default:
       enabled: true
@@ -48,6 +52,8 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
+  tracing:
+    apiGateway: true
   logs:
     restApi: true
   iam:

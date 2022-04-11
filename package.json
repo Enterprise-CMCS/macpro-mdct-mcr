@@ -45,6 +45,7 @@
     "eslint-plugin-react-hooks": "^2.x",
     "prettier": "^2.4.1",
     "serverless": "^2.43.1",
+    "serverless-api-client-certificate": "^1.0.2",
     "serverless-bundle": "^5.0.1",
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-iam-helper": "github:cmsgov/serverless-iam-helper",
