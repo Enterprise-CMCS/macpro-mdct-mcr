@@ -42,11 +42,19 @@ Local dev is built around the Serverless plugin [`serverless-offline`](https://g
 
 When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
-### Running the App
+### Running the app locally
 
 - Populate .env files in the root directory and in the `ui-src` directory.
 - Run all the services locally with the command `./dev local`
 - Troubleshooting: See the Requirements section if the command asks for any prerequisites you don't have installed.
+
+## Running the database locally
+
+In order to run dynamodb locally you will need to have java installed on your system. If not currently installed, [download the latest version](https://java.com/en/download/).
+
+If you want to a visual view of your dynamodb after the application is up and running you can install [the dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
+
+To run the dynamodb gui, open a new terminal window and run: `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin`
 
 ## Deployments
 
@@ -75,9 +83,16 @@ yarn test
 # live reload all tests
 yarn test --watch
 ```
+
 ### Integration Testing
 
 We use Cypress for integration tests. See additional info [here in the Cypress readme](./tests/cypress/README.md)
+
+### Accessibility Testing
+
+We use [axe] and [pa11y] for primary accessibility testing, but also have the ability to use [lighthouse] and [HTML Code Sniffer].
+
+
 
 ### Formatting
 

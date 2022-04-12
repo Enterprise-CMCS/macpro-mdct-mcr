@@ -14,7 +14,6 @@
   "devDependencies": {
     "@cypress-audit/lighthouse": "^1.2.0",
     "@cypress-audit/pa11y": "^1.2.0",
-    "axe-core": "^4.4.1",
     "concurrently": "^6.2.1",
     "cypress": "^9.4.1",
     "cypress-axe": "^0.14.0",
