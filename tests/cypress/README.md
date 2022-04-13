@@ -20,3 +20,9 @@
 ## Cypress CLI
 
 The [cypress cli](https://docs.cypress.io/guides/guides/command-line) comes with a number of options/flags/behaviors built into it, which allow it to target browsers, configure parallelization, and so on.
+
+## Create New Branches and PRs for Tests
+
+When writing Cypress tests for an existing branch, create a new branch and write the tests there. For example, if the branch that needs tests is called `branch1`, create a new branch called `branch1-test`.
+
+When the tests have been written, create a new PR for `branch1-test` and set its base to `branch1`. Submit this PR for review.

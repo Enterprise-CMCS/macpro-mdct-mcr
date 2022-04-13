@@ -1,7 +1,10 @@
+import "cypress-file-upload";
+import "@cypress-audit/pa11y/commands";
+import "@cypress-audit/lighthouse/commands";
+
 before(() => {
   cy.visit("/", { timeout: 60000 * 5 });
 });
-import "cypress-file-upload";
 
 const emailForCognito = "//input[@name='email']";
 const passwordForCognito = "//input[@name='password']";
@@ -40,6 +43,8 @@ function terminalLog(violations) {
 // axe api documentation: https://www.deque.com/axe/core-documentation/api-documentation/
 Cypress.Commands.add("checkA11yOfPage", () => {
   cy.wait(3000);
+
+  // check accessibility using axe-core
   cy.injectAxe();
   cy.checkA11y(
     null,
@@ -56,4 +61,15 @@ Cypress.Commands.add("checkA11yOfPage", () => {
      */
     true // does not fail tests for ally violations
   );
+
+  // check accessibility using pa11y
+  cy.pa11y({
+    threshold: 10,
+    standard: "WCAG2AA",
+  });
+
+  // check accessibility using lighthouse
+  cy.lighthouse({
+    accessibility: 90,
+  });
 });
