@@ -46,4 +46,4 @@ export S3_ATTACHMENTS_BUCKET_REGION=$s3_attachments_bucket_region
 export S3_ATTACHMENTS_BUCKET_NAME=$s3_attachements_bucket_name
 # This is set to false, as using this script points your local react server to Amazon
 export LOCAL_LOGIN=false
-./env.sh
+./configure-env.sh
