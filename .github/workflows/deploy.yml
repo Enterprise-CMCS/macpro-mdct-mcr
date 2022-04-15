@@ -78,40 +78,13 @@ jobs:
     needs: deploy
     if: ${{ github.ref != 'refs/heads/prod' }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers:
-          [
-            oy2_10017_Child_Measure_Qualifier_CH.spec.js,
-            oy2-9954_PQI01AD.spec.js,
-            oy2-9959_PQI15_AD.spec.js,
-            cpaAD.spec.feature,
-            fuaAD.spec.feature,
-            fuaADoy2_8940.spec.feature,
-            fuaADoy2_15377.spec.feature,
-            lbwCH.spec.feature,
-            lrcdCH.spec.feature,
-            nciddsAD.spec.feature,
-            oy2_7763_FAQ_Page_State_View.spec.js,
-            oy2_8977_MSC_AD.spec.js,
-            oy2_9907_OUD_AD.spec.feature,
-            oy2_10018_Adult_Measure_Qualifer_AD.spec.feature,
-            oy2_14767_Allow_files_to_be_uploaded_to_s3.spec.feature,
-            oy2_15013_Update_user_auth_handling_in_ui.spec.feature,
-            oy2_15211_Reporting_in_FY21_Tag_for_Alt_Data_Sources.spec.js,
-            oy2_15212_qmr_mdct_logo.spec.feature,
-            oy2_15504_Measure_validation_Error_Creation_Updates.spec.feature,
-            pdentCH.spec.feature,
-            oy2_8976_Measure_14_CCW_AD.spec.js,
-            oy2_16039_Data_source_Rate_to_auto_calculate_in_OPM.spec.js,
-            oy2_16342_Add_Validation_to_Rate_when_user_selects_multiple_Data_Sources.spec.js,
-            oy2_16411_Restructuring_Data_Source_Text_boxes.spec.js,
-            oy2_16228_Date_Range_Adjustment.spec.js,
-            oy2_16265_Validation_text_appear_in_CHAD.spec.js,
-            oy2_16341_NDR_validation_updates.spec.js,
-            oy2_15890_Adding_link_to_Combined_Rates_component.spec.js,
-          ]
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     containers:
+    #       [
+    #         oy2_10017_Child_Measure_Qualifier_CH.spec.js,
+    #       ]
     steps:
       - name: set branch_name
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
@@ -185,47 +158,12 @@ jobs:
     needs: deploy
     if: ${{ github.ref != 'refs/heads/prod' }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [
-            commonPages,
-            fuadPage,
-            ietadPage,
-            #ammadPage,
-            # amradPage,
-            # bcsadPage,
-            # cbpadPage,
-            ccpadPage,
-            # ccsadPage,
-            # ccwadPage,
-            # cdfadPage,
-            # chladPage,
-            # cobadPage,
-            cpaadPage,
-            # fuhadPage,
-            fumadPage,
-            # fvaadPage,
-            # hpcadPage,
-            # hpcmiadPage,
-            # hvladPage,
-            # mscadPage,
-            # nciddsPage,
-            # ohdadPage,
-            oudadPage,
-            # pc01adPage,
-            # pcradPage,
-            # ppcadPage,
-            pqi01adPage,
-            pqi05adPage,
-            # pqi08Page,
-            # pqi15adPage,
-            # ssaPage,
-            # ssdadPage,
-            faqPage,
-            #childCoreSetMeasuresPage,
-            adultCoreSetMeasuresQuestionsPage,
-          ]
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     containers: [
+    #         commonPages,
+    #       ]
     steps:
       - name: set branch_name
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
