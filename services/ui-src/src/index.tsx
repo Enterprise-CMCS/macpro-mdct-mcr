@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom";
 import "./styles/index.scss";
-import App from "App";
-import * as serviceWorker from "serviceWorker";
+import App from "components/wrappers/App";
+import * as serviceWorker from "utils/serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Amplify } from "aws-amplify";
-import { QueryProvider } from "query";
+import QueryProvider from "components/wrappers/QueryProvider";
 import { ReactQueryDevtools } from "react-query/devtools";
 import config from "config";
 import { ChakraProvider } from "@chakra-ui/react";

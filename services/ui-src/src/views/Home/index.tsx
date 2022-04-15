@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { UserRoles, MeasureStatus, CoreSetAbbr } from "types";
+import { UserRoles, MeasureStatus, CoreSetAbbr } from "libs/types";
 import * as CUI from "@chakra-ui/react";
 import "./index.module.scss";
 import { useUser } from "hooks/authHooks";
