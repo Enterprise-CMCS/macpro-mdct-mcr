@@ -4,7 +4,7 @@
 ### How to test
 <!-- Step-by-step instructions on how to test -->
 
-### Dependencies
+### Changed Dependencies
 <!-- Any changed dependencies, e.g. requires an install/update/migration, etc. -->
 
 ## Code author checklist
