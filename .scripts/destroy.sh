@@ -2,7 +2,7 @@
 set -e
 
 if [[ $1 == "" ]] ; then
-    echo 'ERROR:  You must pass a stage to destroy.  Ex. sh destroy.sh my-stage-name'
+    echo 'ERROR:  You must pass a stage to destroy.  Ex. sh .scripts/destroy.sh my-stage-name'
     exit 1
 fi
 stage=$1

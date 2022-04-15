@@ -67,7 +67,7 @@ This application is built and deployed via GitHub Actions.
 - Packages up to date (`brew install yarn`)
 
 ### Deployment Script
-`sh deploy.sh`
+`sh .scripts/deploy.sh`
 
 ## Testing
 

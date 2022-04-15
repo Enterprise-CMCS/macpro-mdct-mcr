@@ -22,11 +22,11 @@ jobs:
   #         fi
   #     - uses: actions/checkout@v2
   #     - name: Validate branch name
-  #       run: ./.github/branchNameValidation.sh $STAGE_PREFIX$branch_name
+  #       run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
   #     - name: set branch specific variable names
-  #       run: ./.github/build_vars.sh set_names
+  #       run: ./.github/build-vars.sh set_names
   #     - name: set variable values
-  #       run: ./.github/build_vars.sh set_values
+  #       run: ./.github/build-vars.sh set_values
   #       env:
   #         AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
   #         AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
@@ -52,7 +52,7 @@ jobs:
   #       run: |
   #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
   #     - name: run unit tests
-  #       run: ./test-unit.sh
+  #       run: ./.scripts/test-unit.sh
   #     - name: publish test coverage to code climate
   #       if: env.CODE_CLIMATE_ID != ''
   #       uses: paambaati/codeclimate-action@v2.7.5
@@ -71,7 +71,7 @@ jobs:
   #       run: |
   #         # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
   #         # This can optionally be set as an GitHub Actions Secret
-  #         ./deploy.sh $STAGE_PREFIX$branch_name
+  #         ./.scripts/deploy.sh $STAGE_PREFIX$branch_name
 
   cypress-test:
     name: Cypress Tests
@@ -90,9 +90,9 @@ jobs:
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
       - uses: actions/checkout@v1
       - name: set branch specific variable names
-        run: ./.github/build_vars.sh set_names
+        run: ./.github/build-vars.sh set_names
       - name: set variable values
-        run: ./.github/build_vars.sh set_values
+        run: ./.github/build-vars.sh set_values
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
@@ -169,9 +169,9 @@ jobs:
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
       - uses: actions/checkout@v1
       - name: set branch specific variable names
-        run: ./.github/build_vars.sh set_names
+        run: ./.github/build-vars.sh set_names
       - name: set variable values
-        run: ./.github/build_vars.sh set_values
+        run: ./.github/build-vars.sh set_values
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
