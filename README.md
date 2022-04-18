@@ -63,7 +63,7 @@ This application is built and deployed via GitHub Actions.
 - Packages up to date (`brew install yarn`)
 
 ### Deployment Script
-`sh .scripts/deploy.sh`
+`sh scripts/deploy.sh`
 
 ## Architecture
 
