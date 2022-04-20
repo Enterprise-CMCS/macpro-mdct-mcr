@@ -62,4 +62,11 @@ export const theme = extendTheme({
       muted: "#bac5cf",
     },
   },
+  components: {
+    Button: {
+      baseStyle: {
+        transition: "all 0.3s ease",
+      },
+    },
+  },
 });

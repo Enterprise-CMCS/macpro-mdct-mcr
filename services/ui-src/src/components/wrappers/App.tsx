@@ -1,10 +1,10 @@
 // utils
 import { useUser } from "hooks/authHooks";
 // components
-import { Header, LocalLogins } from "components";
-import AppRoutes from "./AppRoutes";
+import { Container, Stack } from "@chakra-ui/react";
+import { AppRoutes, Header, LoginCognito, LoginIDM } from "components";
 
-const App = () => {
+export const App = () => {
   const { logout, user, showLocalLogins, loginWithIDM } = useUser();
   return (
     <div id="app-wrapper">
@@ -14,9 +14,14 @@ const App = () => {
           <AppRoutes />
         </>
       )}
-      {!user && showLocalLogins && <LocalLogins loginWithIDM={loginWithIDM} />}
+      {!user && showLocalLogins && (
+        <Container maxW="sm" h="full" my="auto">
+          <Stack spacing={8}>
+            <LoginIDM loginWithIDM={loginWithIDM} />
+            <LoginCognito />
+          </Stack>
+        </Container>
+      )}
     </div>
   );
 };
-
-export default App;

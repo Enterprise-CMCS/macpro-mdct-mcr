@@ -1,15 +1,17 @@
 import ReactDOM from "react-dom";
-import "./styles/index.scss";
-import App from "components/wrappers/App";
-import * as serviceWorker from "utils/serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Amplify } from "aws-amplify";
-import QueryProvider from "components/wrappers/QueryProvider";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { Amplify } from "aws-amplify";
 import config from "config";
+// utils
+import * as serviceWorker from "utils/serviceWorker";
+import { UserProvider, ApiProvider } from "hooks/authHooks";
+// components
+import { App, QueryProvider } from "components";
+// styles
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "styles/theme";
-import { UserProvider, ApiProvider } from "hooks/authHooks";
+import "./styles/index.scss";
 
 Amplify.configure({
   Storage: {
