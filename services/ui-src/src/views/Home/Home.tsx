@@ -4,28 +4,21 @@ import { UserRoles, MeasureStatus, CoreSetAbbr } from "libs/types";
 import { useUser } from "hooks/authHooks";
 import { useCreateMeasure, useGetMeasures, useDeleteMeasure } from "hooks/api";
 // components
-import { Box, Button } from "@chakra-ui/react";
-// styling
-import "./index.module.scss";
+import { Box, Button, Text } from "@chakra-ui/react";
+
+// TODO: remove temporary variables
+const year = "2021";
+const state = "AL";
+const coreSet = CoreSetAbbr.ACS;
 
 export function Home() {
   const { userRole, userState } = useUser();
-  const coreSet = CoreSetAbbr.ACS;
-  const year = "2021";
-  const state = "AL";
   const mutation = useCreateMeasure();
   let { data } = useGetMeasures(state, year, coreSet);
   const deleteMeasureMutation = useDeleteMeasure();
+  const isAdminUser = userRole && userRole !== UserRoles.STATE;
 
-  if (
-    userRole === UserRoles.HELP ||
-    userRole === UserRoles.ADMIN ||
-    userRole === UserRoles.BO ||
-    userRole === UserRoles.BOR
-  ) {
-    return <Navigate to={`/admin`} />;
-  }
-
+  // TODO: remove temporary function
   const addMeasure = () => {
     const measure = {
       coreSet: coreSet,
@@ -49,6 +42,7 @@ export function Home() {
     });
   };
 
+  // TODO: remove temporary function
   const deleteMeasure = (measure: string) => {
     deleteMeasureMutation.mutate(
       { state, year, coreSet, measure },
@@ -60,36 +54,40 @@ export function Home() {
     );
   };
 
-  if (!userState) {
-    return (
-      <Box data-testid="Home-Container">
-        You are not authorized to view this page
-      </Box>
-    );
+  if (isAdminUser) {
+    return <Navigate to={`/admin`} />;
   }
+
   return (
     <section>
-      <div>
-        <Button onClick={() => addMeasure()}>Create Measure</Button>
-      </div>
-      <h2>Measures:</h2>
-      {data?.Items && (
-        <div>
-          {data.Items.map((item: any): any => (
-            <div key={item.compoundKey}>
-              <p>
-                State: {item.state}, Year: {item.year}, Measure, {item.measure}
-              </p>
-              <Button
-                onClick={() => {
-                  deleteMeasure(item.measure);
-                }}
-              >
-                Delete Measure
-              </Button>
-            </div>
-          ))}
-        </div>
+      {userState ? (
+        <>
+          <Button onClick={() => addMeasure()}>Create Measure</Button>
+          <h2>Measures:</h2>
+          {data?.Items &&
+            data.Items.map((item: any): any => (
+              <div key={item.compoundKey}>
+                <Text>
+                  State: {item.state}
+                  <br />
+                  Year: {item.year}
+                  <br />
+                  Measure: {item.measure}
+                </Text>
+                <Button
+                  onClick={() => {
+                    deleteMeasure(item.measure);
+                  }}
+                >
+                  Delete Measure
+                </Button>
+              </div>
+            ))}
+        </>
+      ) : (
+        <Box data-testid="home-view">
+          <Text>You are not authorized to view this page</Text>
+        </Box>
       )}
     </section>
   );

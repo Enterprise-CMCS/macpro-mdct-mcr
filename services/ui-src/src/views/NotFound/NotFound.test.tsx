@@ -1,10 +1,10 @@
-import { NotFound } from "./index";
 import { render } from "@testing-library/react";
+// views
+import { NotFound } from "./NotFound";
 
-describe("Test NotFound.tsx", () => {
-  test("Check that the NotFound renders", () => {
+describe("Test Not Found 404 view", () => {
+  test("Check that 404 page renders", () => {
     const { getByTestId } = render(<NotFound />);
-
     expect(getByTestId("not-found")).toBeVisible();
   });
 });

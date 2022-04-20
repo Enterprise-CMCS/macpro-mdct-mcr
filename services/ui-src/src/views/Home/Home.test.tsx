@@ -1,12 +1,14 @@
-import { Home } from "./index";
 import { render, screen } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "react-query";
+// utils
 import { RouterWrappedComp } from "utils/testing";
 import { useApiMock } from "utils/testUtils/useApiMock";
-import { QueryClient, QueryClientProvider } from "react-query";
+// views
+import { Home } from "./Home";
 
 const queryClient = new QueryClient();
 
-describe("Test Home.tsx", () => {
+describe("Test Home view", () => {
   beforeEach(() => {
     useApiMock({});
     render(
@@ -19,7 +21,6 @@ describe("Test Home.tsx", () => {
   });
 
   test("Check that the Home renders", () => {
-    const homeContainer = screen.getByTestId("Home-Container");
-    expect(homeContainer).toBeVisible();
+    expect(screen.getByTestId("home-view")).toBeVisible();
   });
 });
