@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import * as Views from "views";
+import { Home, NotFound } from "../../views";
 
 export const AppRoutes = () => (
   <main id="main-wrapper">
     <Routes>
-      <Route path="/" element={<Views.Home />} />
-      <Route path="*" element={<Views.NotFound />} />
+      <Route path="/" element={<Home />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   </main>
 );

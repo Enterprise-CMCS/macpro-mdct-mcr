@@ -11,7 +11,7 @@ const year = "2021";
 const state = "AL";
 const coreSet = CoreSetAbbr.ACS;
 
-export function Home() {
+export default () => {
   const { userRole, userState } = useUser();
   const mutation = useCreateMeasure();
   let { data } = useGetMeasures(state, year, coreSet);
@@ -91,4 +91,4 @@ export function Home() {
       )}
     </section>
   );
-}
+};

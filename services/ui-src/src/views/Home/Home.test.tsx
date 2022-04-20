@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { RouterWrappedComp } from "utils/testing";
 import { useApiMock } from "utils/testUtils/useApiMock";
 // views
-import { Home } from "./Home";
+import Home from "./Home";
 
 const queryClient = new QueryClient();
 
