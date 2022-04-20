@@ -1,8 +1,10 @@
+import { Link as RouterLink } from "react-router-dom";
+// components
+import { Box, Button, Container, Flex, Spacer } from "@chakra-ui/react";
 import { UsaBanner } from "@cmsgov/design-system";
 import { Logo } from "components";
-import { Link } from "react-router-dom";
+// assets
 import { FaQuestionCircle } from "react-icons/fa";
-import * as CUI from "@chakra-ui/react";
 
 interface Props {
   handleLogout: () => void;
@@ -10,28 +12,27 @@ interface Props {
 
 export function Header({ handleLogout }: Props) {
   return (
-    <CUI.Box data-testid="header" zIndex={3}>
+    <Box data-testid="header" zIndex={3}>
       <UsaBanner />
-      {/* using hex color here for branded color */}
-      <CUI.Box bg="#0071bc">
-        <CUI.Container maxW="7xl">
-          <CUI.Flex py="4" alignItems="center">
-            <Link to="/">
+      <Box bg="palette.main">
+        <Container maxW="7xl">
+          <Flex py="4" alignItems="center">
+            <RouterLink to="/">
               <Logo />
-            </Link>
-            <CUI.Spacer flex={6} />
-            <CUI.Button onClick={handleLogout} variant="link" color="white">
+            </RouterLink>
+            <Spacer flex={6} />
+            <Button variant="link" color="palette.white" onClick={handleLogout}>
               Logout
-            </CUI.Button>
-            <Link to="/faq">
+            </Button>
+            <RouterLink to="/faq">
               <FaQuestionCircle
-                color="white"
+                color="palette.white"
                 style={{ fontSize: "1.4rem", margin: ".5rem" }}
               />
-            </Link>
-          </CUI.Flex>
-        </CUI.Container>
-      </CUI.Box>
-    </CUI.Box>
+            </RouterLink>
+          </Flex>
+        </Container>
+      </Box>
+    </Box>
   );
 }

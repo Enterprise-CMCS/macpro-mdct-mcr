@@ -1,9 +1,12 @@
 import { Navigate } from "react-router-dom";
+// utils
 import { UserRoles, MeasureStatus, CoreSetAbbr } from "libs/types";
-import * as CUI from "@chakra-ui/react";
-import "./index.module.scss";
 import { useUser } from "hooks/authHooks";
 import { useCreateMeasure, useGetMeasures, useDeleteMeasure } from "hooks/api";
+// components
+import { Box, Button } from "@chakra-ui/react";
+// styling
+import "./index.module.scss";
 
 export function Home() {
   const { userRole, userState } = useUser();
@@ -41,8 +44,7 @@ export function Home() {
         window.location.reload();
       },
       onError: (e) => {
-        // eslint-disable-next-line no-console
-        console.log(e);
+        console.log(e); // eslint-disable-line no-console
       },
     });
   };
@@ -60,15 +62,15 @@ export function Home() {
 
   if (!userState) {
     return (
-      <CUI.Box data-testid="Home-Container">
+      <Box data-testid="Home-Container">
         You are not authorized to view this page
-      </CUI.Box>
+      </Box>
     );
   }
   return (
     <section>
       <div>
-        <CUI.Button onClick={() => addMeasure()}>Create Measure</CUI.Button>
+        <Button onClick={() => addMeasure()}>Create Measure</Button>
       </div>
       <h2>Measures:</h2>
       {data?.Items && (
@@ -78,13 +80,13 @@ export function Home() {
               <p>
                 State: {item.state}, Year: {item.year}, Measure, {item.measure}
               </p>
-              <CUI.Button
+              <Button
                 onClick={() => {
                   deleteMeasure(item.measure);
                 }}
               >
                 Delete Measure
-              </CUI.Button>
+              </Button>
             </div>
           ))}
         </div>

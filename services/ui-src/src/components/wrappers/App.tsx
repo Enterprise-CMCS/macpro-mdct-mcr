@@ -1,16 +1,16 @@
-import AppRoutes from "./AppRoutes";
-import * as QMR from "components";
-import { LocalLogins } from "components";
+// utils
 import { useUser } from "hooks/authHooks";
+// components
+import { Header, LocalLogins } from "components";
+import AppRoutes from "./AppRoutes";
 
 const App = () => {
   const { logout, user, showLocalLogins, loginWithIDM } = useUser();
-
   return (
     <div id="app-wrapper">
       {user && (
         <>
-          <QMR.Header handleLogout={logout} />
+          <Header handleLogout={logout} />
           <AppRoutes />
         </>
       )}
