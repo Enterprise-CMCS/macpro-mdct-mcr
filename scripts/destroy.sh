@@ -2,7 +2,11 @@
 set -e
 
 if [[ $1 == "" ]] ; then
+<<<<<<<< HEAD:.scripts/destroy.sh
     echo 'ERROR:  You must pass a stage to destroy.  Ex. sh .scripts/destroy.sh my-stage-name'
+========
+    echo 'ERROR:  You must pass a stage to destroy.  Ex. sh scripts/destroy.sh my-stage-name'
+>>>>>>>> main:scripts/destroy.sh
     exit 1
 fi
 stage=$1

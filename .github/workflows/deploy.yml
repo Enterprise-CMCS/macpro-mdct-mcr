@@ -52,7 +52,11 @@ jobs:
   #       run: |
   #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
   #     - name: run unit tests
+<<<<<<< HEAD
   #       run: ./.scripts/test-unit.sh
+=======
+  #       run: ./scripts/test-unit.sh
+>>>>>>> main
   #     - name: publish test coverage to code climate
   #       if: env.CODE_CLIMATE_ID != ''
   #       uses: paambaati/codeclimate-action@v2.7.5
@@ -71,7 +75,7 @@ jobs:
   #       run: |
   #         # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
   #         # This can optionally be set as an GitHub Actions Secret
-  #         ./.scripts/deploy.sh $STAGE_PREFIX$branch_name
+  #         ./scripts/deploy.sh $STAGE_PREFIX$branch_name
 
   cypress-test:
     name: Cypress Tests

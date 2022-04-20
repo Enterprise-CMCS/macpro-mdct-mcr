@@ -54,7 +54,7 @@ jobs:
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
           # This can optionally be set as an GitHub Actions Secret
-          ./.scripts/deploy-support.sh $STAGE_PREFIX$branch_name
+          ./scripts/deploy-support.sh $STAGE_PREFIX$branch_name
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         if: env.SLACK_WEBHOOK_URL != '' && contains(fromJson('["master", "val", "prod"]'), env.branch_name) && failure ()
