@@ -1,3 +1,4 @@
+// necessary to render the UsaBanner correctly
 $image-path: "~@cmsgov/design-system/dist/images";
 @import "@cmsgov/design-system/dist/scss/index";
 
@@ -5,7 +6,7 @@ html,
 body,
 #root {
   height: 100%;
-  font-size: 16px; // sets the value of 1rem
+  font-size: 100%; // defaults to 16px
 }
 
 #app-wrapper {
