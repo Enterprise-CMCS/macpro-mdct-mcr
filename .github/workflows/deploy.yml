@@ -22,11 +22,11 @@ jobs:
   #         fi
   #     - uses: actions/checkout@v2
   #     - name: Validate branch name
-  #       run: ./.github/branchNameValidation.sh $STAGE_PREFIX$branch_name
+  #       run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
   #     - name: set branch specific variable names
-  #       run: ./.github/build_vars.sh set_names
+  #       run: ./.github/build-vars.sh set_names
   #     - name: set variable values
-  #       run: ./.github/build_vars.sh set_values
+  #       run: ./.github/build-vars.sh set_values
   #       env:
   #         AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
   #         AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
@@ -52,7 +52,7 @@ jobs:
   #       run: |
   #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
   #     - name: run unit tests
-  #       run: ./test-unit.sh
+  #       run: ./scripts/test-unit.sh
   #     - name: publish test coverage to code climate
   #       if: env.CODE_CLIMATE_ID != ''
   #       uses: paambaati/codeclimate-action@v2.7.5
@@ -71,55 +71,28 @@ jobs:
   #       run: |
   #         # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
   #         # This can optionally be set as an GitHub Actions Secret
-  #         ./deploy.sh $STAGE_PREFIX$branch_name
+  #         ./scripts/deploy.sh $STAGE_PREFIX$branch_name
 
   cypress-test:
     name: Cypress Tests
     needs: deploy
     if: ${{ github.ref != 'refs/heads/prod' }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers:
-          [
-            oy2_10017_Child_Measure_Qualifier_CH.spec.js,
-            oy2-9954_PQI01AD.spec.js,
-            oy2-9959_PQI15_AD.spec.js,
-            cpaAD.spec.feature,
-            fuaAD.spec.feature,
-            fuaADoy2_8940.spec.feature,
-            fuaADoy2_15377.spec.feature,
-            lbwCH.spec.feature,
-            lrcdCH.spec.feature,
-            nciddsAD.spec.feature,
-            oy2_7763_FAQ_Page_State_View.spec.js,
-            oy2_8977_MSC_AD.spec.js,
-            oy2_9907_OUD_AD.spec.feature,
-            oy2_10018_Adult_Measure_Qualifer_AD.spec.feature,
-            oy2_14767_Allow_files_to_be_uploaded_to_s3.spec.feature,
-            oy2_15013_Update_user_auth_handling_in_ui.spec.feature,
-            oy2_15211_Reporting_in_FY21_Tag_for_Alt_Data_Sources.spec.js,
-            oy2_15212_qmr_mdct_logo.spec.feature,
-            oy2_15504_Measure_validation_Error_Creation_Updates.spec.feature,
-            pdentCH.spec.feature,
-            oy2_8976_Measure_14_CCW_AD.spec.js,
-            oy2_16039_Data_source_Rate_to_auto_calculate_in_OPM.spec.js,
-            oy2_16342_Add_Validation_to_Rate_when_user_selects_multiple_Data_Sources.spec.js,
-            oy2_16411_Restructuring_Data_Source_Text_boxes.spec.js,
-            oy2_16228_Date_Range_Adjustment.spec.js,
-            oy2_16265_Validation_text_appear_in_CHAD.spec.js,
-            oy2_16341_NDR_validation_updates.spec.js,
-            oy2_15890_Adding_link_to_Combined_Rates_component.spec.js,
-          ]
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     containers:
+    #       [
+    #         oy2_10017_Child_Measure_Qualifier_CH.spec.js,
+    #       ]
     steps:
       - name: set branch_name
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
       - uses: actions/checkout@v1
       - name: set branch specific variable names
-        run: ./.github/build_vars.sh set_names
+        run: ./.github/build-vars.sh set_names
       - name: set variable values
-        run: ./.github/build_vars.sh set_values
+        run: ./.github/build-vars.sh set_values
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
@@ -185,55 +158,20 @@ jobs:
     needs: deploy
     if: ${{ github.ref != 'refs/heads/prod' }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [
-            commonPages,
-            fuadPage,
-            ietadPage,
-            #ammadPage,
-            # amradPage,
-            # bcsadPage,
-            # cbpadPage,
-            ccpadPage,
-            # ccsadPage,
-            # ccwadPage,
-            # cdfadPage,
-            # chladPage,
-            # cobadPage,
-            cpaadPage,
-            # fuhadPage,
-            fumadPage,
-            # fvaadPage,
-            # hpcadPage,
-            # hpcmiadPage,
-            # hvladPage,
-            # mscadPage,
-            # nciddsPage,
-            # ohdadPage,
-            oudadPage,
-            # pc01adPage,
-            # pcradPage,
-            # ppcadPage,
-            pqi01adPage,
-            pqi05adPage,
-            # pqi08Page,
-            # pqi15adPage,
-            # ssaPage,
-            # ssdadPage,
-            faqPage,
-            #childCoreSetMeasuresPage,
-            adultCoreSetMeasuresQuestionsPage,
-          ]
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     containers: [
+    #         commonPages,
+    #       ]
     steps:
       - name: set branch_name
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
       - uses: actions/checkout@v1
       - name: set branch specific variable names
-        run: ./.github/build_vars.sh set_names
+        run: ./.github/build-vars.sh set_names
       - name: set variable values
-        run: ./.github/build_vars.sh set_values
+        run: ./.github/build-vars.sh set_values
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}

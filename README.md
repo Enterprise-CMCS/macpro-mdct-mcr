@@ -6,10 +6,6 @@ A serverless form submission application built and deployed to AWS with the Serv
 
 Our product is promoted through branches. Master is merged to val to affect a master release, and val is merged to production to affect a production release. Please use the buttons below to promote/release code to higher environments.<br />
 
-## Architecture
-
-![Architecture Diagram](./.images/architecture.svg?raw=true)
-
 ## Requirements
 
 ### Node
@@ -67,7 +63,11 @@ This application is built and deployed via GitHub Actions.
 - Packages up to date (`brew install yarn`)
 
 ### Deployment Script
-`sh deploy.sh`
+`sh scripts/deploy.sh`
+
+## Architecture
+
+![Architecture Diagram](./.images/architecture.svg?raw=true)
 
 ## Testing
 

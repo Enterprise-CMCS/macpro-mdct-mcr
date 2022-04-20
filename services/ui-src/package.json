@@ -2,6 +2,16 @@
   "name": "ui-src",
   "description": "",
   "version": "1.0.0",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "coverage": "jest --coverage",
+    "test": "jest --setupFiles dotenv/config",
+    "watchTest": "jest --setupFiles dotenv/config --watch",
+    "a11y": "pa11y --runner axe --runner htmlcs",
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
+  },
   "dependencies": {
     "@chakra-ui/react": "^1.7.0",
     "@cmsgov/design-system": "^2.9.0",
@@ -25,85 +35,6 @@
     "react-scripts": "^5.0.0",
     "sass": "^1.37.5",
     "uuid": "^8.3.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "coverage": "jest --coverage",
-    "test": "jest --setupFiles dotenv/config",
-    "watchTest": "jest --setupFiles dotenv/config --watch",
-    "a11y": "pa11y --runner axe --runner htmlcs",
-    "eject": "react-scripts eject",
-    "postinstall": "patch-package"
-  },
-  "jest": {
-    "coverageReporters": [
-      "json",
-      [
-        "lcov",
-        {
-          "projectRoot": "../../"
-        }
-      ],
-      "text",
-      "text-summary"
-    ],
-    "collectCoverageFrom": [
-      "src/components/**/*.{ts,tsx}",
-      "src/views/**/*.{ts,tsx}",
-      "!src/components/CoreQuestions/index.tsx",
-      "!src/components/ScrollToTop/index.tsx",
-      "!src/components/CoreQuestionWrapper/index.tsx",
-      "!src/components/index.tsx",
-      "!src/components/LocalLogins/index.tsx",
-      "!src/components/LocalLogins/mockUsers.ts",
-      "!src/components/Inputs/index.tsx",
-      "!src/components/Table/types.ts",
-      "!src/components/Layouts/index.tsx",
-      "!src/views/NewAmendment/index.tsx",
-      "!src/views/Amendments/index.tsx",
-      "!src/views/DemoComponents/index.tsx",
-      "!src/views/Profile/index.tsx",
-      "!src/views/Login/index.tsx",
-      "!src/views/AddChildCoreSet/index.tsx",
-      "!src/views/AddHHCoreSet/index.tsx",
-      "!src/views/AdminHome/index.tsx",
-      "!src/views/StateHome/actions.ts",
-      "!src/components/Table/_coreSetData.ts",
-      "!src/components/Table/_measureData.ts",
-      "!src/views/DemoMeasure/**/*.{ts,tsx}",
-      "!src/views/ApiTester/index.tsx",
-      "!src/components/Upload/index.tsx",
-      "!src/views/Qualifiers/**/*.{ts,tsx}",
-      "!src/measures/**/*.{ts,tsx}"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ],
-    "verbose": true,
-    "moduleNameMapper": {
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
-    },
-    "setupFilesAfterEnv": [
-      "<rootDir>/setupJest.ts"
-    ],
-    "globals": {
-      "_env_": {}
-    },
-    "testEnvironment": "jest-environment-jsdom"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.38.0",
@@ -134,5 +65,52 @@
     "serverless-cloudfront-invalidate": "^1.5.0",
     "serverless-s3-sync": "^1.14.4",
     "typescript": "^4.6.3"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../"
+        }
+      ],
+      "text",
+      "text-summary"
+    ],
+    "collectCoverageFrom": [
+      "src/components/**/*.{ts,tsx}",
+      "src/hooks/**/*.{ts,tsx}",
+      "src/utils/**/*.{ts,tsx}",
+      "src/views/**/*.{ts,tsx}"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "verbose": true,
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/tests/assetMock.ts"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setupJest.ts"
+    ],
+    "globals": {
+      "_env_": {}
+    },
+    "testEnvironment": "jest-environment-jsdom"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
