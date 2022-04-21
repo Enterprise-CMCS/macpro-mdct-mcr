@@ -45,3 +45,8 @@ export enum AutoCompletedMeasures {
   "PDENT-CH" = "PDENT-CH",
   "NCIDDS-AD" = "NCIDDS-AD",
 }
+
+export default interface ITerritoryList {
+  label: string;
+  value: string;
+}

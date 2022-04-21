@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
 // utils
-import { UserRoles, MeasureStatus, CoreSetAbbr } from "libs/types";
-import { useUser } from "hooks/authHooks";
-import { useCreateMeasure, useGetMeasures, useDeleteMeasure } from "hooks/api";
+import { UserRoles, MeasureStatus, CoreSetAbbr } from "utils/types/types";
+import { useUser } from "utils/auth";
+import { useCreateMeasure, useGetMeasures, useDeleteMeasure } from "utils/api";
 // components
 import { Box, Button, Text } from "@chakra-ui/react";
 

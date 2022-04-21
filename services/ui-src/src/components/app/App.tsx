@@ -1,7 +1,7 @@
 // utils
-import { useUser } from "hooks/authHooks";
+import { useUser } from "utils/auth";
 // components
-import { Container, Stack } from "@chakra-ui/react";
+import { Container, Divider, Stack } from "@chakra-ui/react";
 import { AppRoutes, Header, LoginCognito, LoginIDM } from "components";
 
 export const App = () => {
@@ -18,6 +18,7 @@ export const App = () => {
         <Container maxW="sm" h="full" my="auto">
           <Stack spacing={8}>
             <LoginIDM loginWithIDM={loginWithIDM} />
+            <Divider />
             <LoginCognito />
           </Stack>
         </Container>

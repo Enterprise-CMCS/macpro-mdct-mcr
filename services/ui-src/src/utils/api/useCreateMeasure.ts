@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
-import { createMeasure } from "libs/api";
-import { CoreSetAbbr, Params, MeasureStatus } from "libs/types";
+import { createMeasure } from "utils/api/requestMethods";
+import { CoreSetAbbr, Params, MeasureStatus } from "utils/types/types";
 
 interface CreateMeasure<DataType = any> {
   coreSet?: CoreSetAbbr;

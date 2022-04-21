@@ -1,9 +1,23 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
-// utils
-import { useFormFields } from "../../libs/hooksLib";
 // components
-import { Button, Divider, Heading, Input, Stack } from "@chakra-ui/react";
+import { Button, Heading, Input, Stack } from "@chakra-ui/react";
+
+const useFormFields = (initialState: any) => {
+  const [fields, setValues] = useState(initialState);
+  return [
+    fields,
+    function (event: Event) {
+      setValues({
+        ...fields,
+        [(event.target as HTMLTextAreaElement).id]: (
+          event.target as HTMLTextAreaElement
+        ).value,
+      });
+    },
+  ];
+};
 
 export const LoginCognito = () => {
   const navigate = useNavigate();
@@ -23,7 +37,6 @@ export const LoginCognito = () => {
 
   return (
     <Stack>
-      <Divider />
       <Heading mb="2" size="md" alignSelf="center">
         Login with Cognito
       </Heading>

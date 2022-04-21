@@ -1,7 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
 // components
 import { Box, Button, Container, Flex, Spacer } from "@chakra-ui/react";
-import { UsaBanner } from "@cmsgov/design-system";
+import UsaBanner from "@cmsgov/design-system/dist/components/UsaBanner/UsaBanner";
 // assets
 import { FaQuestionCircle } from "react-icons/fa";
 import appLogo from "../../assets/logo_qmr.png";
@@ -28,7 +28,7 @@ export const Header = ({ handleLogout }: Props) => (
           <Button variant="link" color="palette.white" onClick={handleLogout}>
             Logout
           </Button>
-          <RouterLink to="/faq">
+          <RouterLink to="/faq" title="link to help page">
             <FaQuestionCircle
               color="palette.white"
               style={{ fontSize: "1.4rem", margin: ".5rem" }}

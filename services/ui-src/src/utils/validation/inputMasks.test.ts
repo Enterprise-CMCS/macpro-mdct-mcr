@@ -6,7 +6,7 @@ import {
   allPositiveIntegers,
   integersWithMaxDecimalPlaces,
   positiveNumbersWithMaxDecimalPlaces,
-} from ".";
+} from "./inputMasks";
 
 describe("Testing new regex defaults", () => {
   test("Testing allIntegers regex", () => {

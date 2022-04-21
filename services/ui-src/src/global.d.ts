@@ -7,5 +7,3 @@ interface ControllerRules {
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
   >;
 }
-
-declare module "*.scss";

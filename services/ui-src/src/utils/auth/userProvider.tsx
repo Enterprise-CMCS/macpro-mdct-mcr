@@ -4,7 +4,7 @@ import { Auth } from "aws-amplify";
 import config from "config";
 
 import { UserContext, UserContextInterface } from "./userContext";
-import { UserRoles } from "libs/types";
+import { UserRoles } from "utils/types/types";
 
 interface Props {
   children?: ReactNode;

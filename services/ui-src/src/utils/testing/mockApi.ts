@@ -1,4 +1,4 @@
-import { useGetMeasures, useCreateMeasure } from "hooks/api";
+import { useGetMeasures, useCreateMeasure } from "utils/api";
 
 export const defaultMockValues = {
   useDeleteMeasuresValues: { mutate: jest.fn() },

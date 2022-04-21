@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
-import * as Api from "libs/api";
-import { CoreSetAbbr } from "libs/types";
+import * as Api from "utils/api/requestMethods";
+import { CoreSetAbbr } from "utils/types/types";
 
 interface DeleteMeasure {
   state: string;

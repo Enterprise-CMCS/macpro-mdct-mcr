@@ -1,15 +1,16 @@
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 // utils
-import { RouterWrappedComp } from "utils/testing";
+import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { Header } from "components";
 
 describe("Test Header", () => {
   beforeEach(() => {
     render(
-      <RouterWrappedComp>
+      <RouterWrappedComponent>
         <Header handleLogout={() => {}} />
-      </RouterWrappedComp>
+      </RouterWrappedComponent>
     );
   });
 
@@ -19,5 +20,17 @@ describe("Test Header", () => {
 
   test("Logo is visible", () => {
     expect(screen.getByTestId("app-logo")).toBeVisible();
+  });
+});
+
+describe("Test Header accessibility", () => {
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(
+      <RouterWrappedComponent>
+        <Header handleLogout={() => {}} />
+      </RouterWrappedComponent>
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

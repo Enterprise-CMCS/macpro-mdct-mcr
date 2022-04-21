@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
-import { listMeasures } from "libs/api";
-import { CoreSetAbbr } from "libs/types";
+import { listMeasures } from "utils/api/requestMethods";
+import { CoreSetAbbr } from "utils/types/types";
 
 interface GetMeasures {
   state: string;

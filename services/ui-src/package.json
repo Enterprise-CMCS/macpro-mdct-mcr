@@ -2,6 +2,7 @@
   "name": "ui-src",
   "description": "",
   "version": "1.0.0",
+  "license": "CC0-1.0",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -80,7 +81,6 @@
     ],
     "collectCoverageFrom": [
       "src/components/**/*.{ts,tsx}",
-      "src/hooks/**/*.{ts,tsx}",
       "src/utils/**/*.{ts,tsx}",
       "src/views/**/*.{ts,tsx}"
     ],
@@ -91,10 +91,10 @@
     "verbose": true,
     "moduleNameMapper": {
       "^.+\\.(css|less|scss)$": "identity-obj-proxy",
-      "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/tests/assetMock.ts"
+      "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts"
     },
     "setupFilesAfterEnv": [
-      "<rootDir>/tests/setupJest.ts"
+      "<rootDir>/src/utils/testing/setupJest.tsx"
     ],
     "globals": {
       "_env_": {}

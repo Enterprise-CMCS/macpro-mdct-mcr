@@ -236,8 +236,3 @@ export const territoryList = [
     value: "WY",
   },
 ];
-
-export default interface ITerritoryList {
-  label: string;
-  value: string;
-}
