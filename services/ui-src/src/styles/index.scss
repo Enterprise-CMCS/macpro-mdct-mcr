@@ -21,6 +21,15 @@ body,
   flex-direction: column;
 }
 
+.ds-c-usa-banner {
+  display: flex;
+  justify-content: center;
+}
+
+.ds-c-usa-banner__header {
+  max-width: 1280px;
+}
+
 li::marker {
   font-weight: bold;
 }
