@@ -5,13 +5,15 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { Header } from "components";
 
+const headerComponent = (
+  <RouterWrappedComponent>
+    <Header handleLogout={() => {}} />
+  </RouterWrappedComponent>
+);
+
 describe("Test Header", () => {
   beforeEach(() => {
-    render(
-      <RouterWrappedComponent>
-        <Header handleLogout={() => {}} />
-      </RouterWrappedComponent>
-    );
+    render(headerComponent);
   });
 
   test("Header is visible", () => {
@@ -25,11 +27,7 @@ describe("Test Header", () => {
 
 describe("Test Header accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(
-      <RouterWrappedComponent>
-        <Header handleLogout={() => {}} />
-      </RouterWrappedComponent>
-    );
+    const { container } = render(headerComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
