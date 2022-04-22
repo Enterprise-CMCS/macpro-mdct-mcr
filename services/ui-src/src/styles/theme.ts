@@ -57,13 +57,17 @@ export const theme = extendTheme({
       error_darker: "#b31e22",
       error_darkest: "#981b1e",
       // other
-      focus: "#ffde11",
-      focus_border: "#8f7c00",
+      focus: "#bd13b8",
       muted: "#bac5cf",
     },
   },
   components: {
     Button: {
+      baseStyle: {
+        transition: "all 0.3s ease",
+      },
+    },
+    Text: {
       baseStyle: {
         transition: "all 0.3s ease",
       },
