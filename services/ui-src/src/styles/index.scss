@@ -30,6 +30,7 @@ li::marker {
 .ds-c-usa-banner {
   display: flex;
   justify-content: center;
+  background-color: var(--chakra-colors-palette-gray_lightest);
 }
 
 .ds-c-usa-banner__header {
