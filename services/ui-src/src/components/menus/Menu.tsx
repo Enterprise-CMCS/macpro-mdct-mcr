@@ -2,7 +2,7 @@
 import {
   Box,
   Button,
-  Menu,
+  Menu as MenuRoot,
   MenuButton,
   MenuItem,
   MenuList,
@@ -11,8 +11,8 @@ import { MenuOption, RouterLink } from "../index";
 // assets
 import { BsChevronDown } from "react-icons/bs";
 
-export default ({ handleLogout }: Props) => (
-  <Menu offset={[8, 32]}>
+export const Menu = ({ handleLogout }: Props) => (
+  <MenuRoot offset={[8, 32]}>
     <Box role="group">
       <MenuButton as={Button} rightIcon={<BsChevronDown />} sx={sx.menuButton}>
         <MenuOption icon="personFill" text="User" />
@@ -28,7 +28,7 @@ export default ({ handleLogout }: Props) => (
         <MenuOption icon="boxArrowRight" text="Log Out" />
       </MenuItem>
     </MenuList>
-  </Menu>
+  </MenuRoot>
 );
 
 interface Props {

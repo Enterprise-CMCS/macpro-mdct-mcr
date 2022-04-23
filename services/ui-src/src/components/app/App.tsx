@@ -11,7 +11,10 @@ export const App = () => {
       {user && (
         <>
           <Header handleLogout={logout} />
-          <AppRoutes />
+          <Container sx={{ maxW: "7xl" }}>
+            <AppRoutes />
+          </Container>
+          {/* <Footer></Footer> */}
         </>
       )}
       {!user && showLocalLogins && (

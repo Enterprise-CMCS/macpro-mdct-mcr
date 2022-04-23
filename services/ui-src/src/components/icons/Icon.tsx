@@ -1,7 +1,7 @@
 // utils
 import { IconType } from "../../utils/types/types";
 // components
-import { Icon } from "@chakra-ui/react";
+import { Icon as ChakraIcon } from "@chakra-ui/react";
 // assets
 import {
   BsBoxArrowRight,
@@ -17,8 +17,8 @@ const iconMap: { [char: string]: IconType } = {
   questionCircleFill: BsQuestionCircleFill,
 };
 
-export default ({ icon }: Props) => {
-  return <Icon as={iconMap[icon]} sx={sx.icon} />;
+export const Icon = ({ icon }: Props) => {
+  return <ChakraIcon as={iconMap[icon]} sx={sx.icon} />;
 };
 
 interface Props {
