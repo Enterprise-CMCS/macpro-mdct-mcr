@@ -8,17 +8,18 @@ import { useApiMock } from "utils/testing/mockApi";
 import Home from "./Home";
 
 const queryClient = new QueryClient();
+const homeView = (
+  <QueryClientProvider client={queryClient}>
+    <RouterWrappedComponent>
+      <Home />
+    </RouterWrappedComponent>
+  </QueryClientProvider>
+);
 
 describe("Test Home view", () => {
   beforeEach(() => {
     useApiMock({});
-    render(
-      <QueryClientProvider client={queryClient}>
-        <RouterWrappedComponent>
-          <Home />
-        </RouterWrappedComponent>
-      </QueryClientProvider>
-    );
+    render(homeView);
   });
 
   test("Check that Home view renders", () => {
@@ -28,13 +29,7 @@ describe("Test Home view", () => {
 
 describe("Test Home view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(
-      <QueryClientProvider client={queryClient}>
-        <RouterWrappedComponent>
-          <Home />
-        </RouterWrappedComponent>
-      </QueryClientProvider>
-    );
+    const { container } = render(homeView);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
