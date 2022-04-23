@@ -7,20 +7,20 @@ import appLogo from "../../assets/logo_qmr.png";
 
 export const Header = ({ handleLogout }: Props) => (
   <Box zIndex="sticky" data-testid="header-banner-container">
-    <UsaBanner />
+    <UsaBanner tabindex={0} />
     <Box sx={{ bg: "palette.main_darkest" }}>
       <Container sx={{ maxW: "7xl" }}>
         <Flex align="center" justify="space-between" paddingY="4">
-          <RouterLink to="/" alt="link to home page">
+          <RouterLink to="/" alt="link to home page" tabindex={0}>
             <Image
               src={appLogo}
               alt="MCR logo"
-              sx={{ maxWidth: "100px" }}
+              sx={{ maxWidth: "100px", padding: ".25rem" }}
               data-testid="app-logo"
             />
           </RouterLink>
           <Flex align="center">
-            <RouterLink to="/faq" alt="link to help page">
+            <RouterLink to="/faq" alt="link to help page" tabindex={0}>
               <MenuOption
                 icon="questionCircleFill"
                 text="Get Help"

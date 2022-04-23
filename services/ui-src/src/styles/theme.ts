@@ -2,6 +2,9 @@
 import { extendTheme } from "@chakra-ui/react";
 
 export const theme = extendTheme({
+  defaultProps: {
+    focusBorderColor: "red",
+  },
   fonts: {
     heading: "Open Sans",
     body: "Open Sans",
@@ -57,7 +60,8 @@ export const theme = extendTheme({
       error_darker: "#b31e22",
       error_darkest: "#981b1e",
       // other
-      focus: "#bd13b8",
+      focus_light: "#ffffff",
+      focus_dark: "#bd13b8",
       muted: "#bac5cf",
     },
   },

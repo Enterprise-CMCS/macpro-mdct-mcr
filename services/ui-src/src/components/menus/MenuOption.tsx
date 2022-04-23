@@ -4,7 +4,11 @@ import { Icon } from "../index";
 
 export const MenuOption = ({ text, icon, hasGroupRole }: Props) => {
   return (
-    <Flex align="center" role={hasGroupRole ? "group" : undefined}>
+    <Flex
+      align="center"
+      role={hasGroupRole ? "group" : undefined}
+      sx={sx.menuOption}
+    >
       <Icon icon={icon} />
       <Text sx={sx.text}>{text}</Text>
     </Flex>
@@ -18,6 +22,9 @@ interface Props {
 }
 
 const sx = {
+  menuOption: {
+    paddingRight: ".5rem",
+  },
   text: {
     fontWeight: "bold",
     color: "palette.white",

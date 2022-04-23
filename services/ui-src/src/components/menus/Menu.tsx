@@ -5,7 +5,7 @@ import { MenuOption, RouterLink } from "../index";
 import { BsChevronDown } from "react-icons/bs";
 
 export default ({ handleLogout }: Props) => (
-  <Menu offset={[8, 38]}>
+  <Menu offset={[8, 32]}>
     <MenuButton
       as={Button}
       role="group"
@@ -16,11 +16,11 @@ export default ({ handleLogout }: Props) => (
     </MenuButton>
     <MenuList sx={sx.menuList}>
       <MenuItem sx={sx.menuItem}>
-        <RouterLink to="/acct" alt="link to account page">
+        <RouterLink to="/acct" alt="link to account page" tabindex={0}>
           <MenuOption icon="personFill" text="Manage Account" />
         </RouterLink>
       </MenuItem>
-      <MenuItem onClick={handleLogout} sx={sx.menuItem}>
+      <MenuItem onClick={handleLogout} sx={sx.menuItem} tabindex={0}>
         <MenuOption icon="boxArrowRight" text="Log Out" />
       </MenuItem>
     </MenuList>
@@ -33,15 +33,18 @@ interface Props {
 
 const sx = {
   menuButton: {
-    height: "1.5rem",
     padding: 0,
-    marginLeft: ".75rem",
+    paddingRight: ".5rem",
+    marginLeft: ".5rem",
     borderRadius: 0,
     background: "none",
     color: "palette.white",
     fontWeight: "bold",
     _hover: { color: "palette.alt_light" },
     _active: { background: "none" },
+    "& .chakra-button__icon": {
+      marginInlineStart: "0rem",
+    },
   },
   menuList: {
     padding: "0",

@@ -25,9 +25,7 @@ li::marker {
   font-weight: bold;
 }
 
-a:focus {
-  box-shadow: none;
-}
+// USA BANNER STYLES
 
 .ds-c-usa-banner {
   display: flex;
@@ -37,4 +35,21 @@ a:focus {
 .ds-c-usa-banner__header {
   width: 100%;
   max-width: 1280px;
+}
+
+// TAB NAVIGATION STYLES
+
+*:focus {
+  box-shadow: none !important;
+}
+*:active {
+  box-shadow: none !important;
+}
+
+*:focus-visible {
+  box-shadow: 0 0 4px 6px var(--chakra-colors-palette-focus_dark) !important;
+  // Add support for Windows High Contrast Mode (WHCM)
+  // The transparent color only shows when WHCM is triggered
+  outline: 3px solid transparent;
+  outline-offset: 3px;
 }
