@@ -1,5 +1,5 @@
-const appLogo = "//img[@alt='QMR Logo']";
-const headerAppLogo = 'img[alt="QMR Logo"]';
+const appLogo = "//img[@alt='MCR logo']";
+const headerAppLogo = 'img[alt="MCR logo"]';
 const headerLoginButton = "a#loginButton";
 const footerAddress = '(//div[@class="footer-wrapper"]/div)[2]';
 const footerEmail = ".footer-email";

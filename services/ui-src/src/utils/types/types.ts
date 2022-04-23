@@ -1,3 +1,5 @@
+export type { IconType } from "react-icons";
+
 export enum CoreSetAbbr {
   ACS = "ACS",
   CCS = "CCS",
@@ -46,7 +48,7 @@ export enum AutoCompletedMeasures {
   "NCIDDS-AD" = "NCIDDS-AD",
 }
 
-export default interface ITerritoryList {
+export interface ITerritoryList {
   label: string;
   value: string;
 }
