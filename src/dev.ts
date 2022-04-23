@@ -71,7 +71,7 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
   );
   await runner.run_command_and_output(
     "ui conf",
-    ["./env.sh", "local"],
+    ["./scripts/configure-env.sh", "local"],
     "services/ui-src"
   );
 

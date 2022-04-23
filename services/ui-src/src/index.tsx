@@ -1,15 +1,17 @@
 import ReactDOM from "react-dom";
-import "index.scss";
-import App from "App";
-import * as serviceWorker from "serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Amplify } from "aws-amplify";
-import { QueryProvider } from "query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { Amplify } from "aws-amplify";
 import config from "config";
+// utils
+import { ApiProvider, QueryProvider } from "utils/api";
+import { UserProvider } from "utils/auth";
+// components
+import { App } from "components";
+// styles
 import { ChakraProvider } from "@chakra-ui/react";
-import { theme } from "theme";
-import { UserProvider, ApiProvider } from "hooks/authHooks";
+import { theme } from "styles/theme";
+import "./styles/index.scss";
 
 Amplify.configure({
   Storage: {
@@ -34,10 +36,3 @@ ReactDOM.render(
   </Router>,
   document.getElementById("root")
 );
-
-/*
- * If you want your app to work offline and load faster, you can change
- * unregister() to register() below. Note this comes with some pitfalls.
- * Learn more about service workers: https://bit.ly/CRA-PWA
- */
-serviceWorker.unregister();

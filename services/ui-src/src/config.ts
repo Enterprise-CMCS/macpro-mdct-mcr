@@ -1,6 +1,6 @@
 //  @ts-nocheck
 
-const configToExport = {
+const config = {
   BRANCH_NAME: window._env_.BRANCH_NAME,
   MAX_ATTACHMENT_SIZE: 5000000,
   LOCAL_LOGIN: window._env_.LOCAL_LOGIN,
@@ -26,4 +26,4 @@ const configToExport = {
   currentReportingYear: "2021",
 };
 
-export default configToExport;
+export default config;
