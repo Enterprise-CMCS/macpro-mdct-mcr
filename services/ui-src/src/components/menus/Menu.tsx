@@ -1,19 +1,23 @@
 // components
-import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
 import { MenuOption, RouterLink } from "../index";
 // assets
 import { BsChevronDown } from "react-icons/bs";
 
 export default ({ handleLogout }: Props) => (
   <Menu offset={[8, 32]}>
-    <MenuButton
-      as={Button}
-      // role="group"
-      rightIcon={<BsChevronDown />}
-      sx={sx.menuButton}
-    >
-      <MenuOption icon="personFill" text="User" role="group" />
-    </MenuButton>
+    <Box role="group">
+      <MenuButton as={Button} rightIcon={<BsChevronDown />} sx={sx.menuButton}>
+        <MenuOption icon="personFill" text="User" />
+      </MenuButton>
+    </Box>
     <MenuList sx={sx.menuList}>
       <MenuItem sx={sx.menuItem}>
         <RouterLink to="/acct" alt="link to account page" tabindex={0}>
