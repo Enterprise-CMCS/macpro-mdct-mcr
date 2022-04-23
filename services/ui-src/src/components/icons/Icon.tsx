@@ -30,6 +30,7 @@ const sx = {
     margin: ".5rem",
     fontSize: "1.4rem",
     color: "palette.white",
+    transition: "all 0.3s ease",
     _groupHover: { color: "palette.alt_light" },
   },
 };
