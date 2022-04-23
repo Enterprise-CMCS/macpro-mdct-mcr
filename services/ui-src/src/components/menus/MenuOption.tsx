@@ -2,13 +2,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { Icon } from "../index";
 
-export const MenuOption = ({ text, icon, hasGroupRole }: Props) => {
+export const MenuOption = ({ text, icon, role }: Props) => {
   return (
-    <Flex
-      align="center"
-      role={hasGroupRole ? "group" : undefined}
-      sx={sx.menuOption}
-    >
+    <Flex align="center" role={role} sx={sx.menuOption}>
       <Icon icon={icon} />
       <Text sx={sx.text}>{text}</Text>
     </Flex>
@@ -18,7 +14,7 @@ export const MenuOption = ({ text, icon, hasGroupRole }: Props) => {
 interface Props {
   text: string;
   icon: string;
-  hasGroupRole?: boolean;
+  role?: string;
 }
 
 const sx = {

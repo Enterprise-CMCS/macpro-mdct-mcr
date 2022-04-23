@@ -17,7 +17,7 @@ describe("Test Header", () => {
   });
 
   test("Header is visible", () => {
-    expect(screen.getByText("Logout")).toBeVisible();
+    expect(screen.getByTestId("header-banner-container")).toBeVisible();
   });
 
   test("Logo is visible", () => {

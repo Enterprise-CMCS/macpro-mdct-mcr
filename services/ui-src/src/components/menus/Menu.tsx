@@ -8,11 +8,11 @@ export default ({ handleLogout }: Props) => (
   <Menu offset={[8, 32]}>
     <MenuButton
       as={Button}
-      role="group"
+      // role="group"
       rightIcon={<BsChevronDown />}
       sx={sx.menuButton}
     >
-      <MenuOption icon="personFill" text="User" />
+      <MenuOption icon="personFill" text="User" role="group" />
     </MenuButton>
     <MenuList sx={sx.menuList}>
       <MenuItem sx={sx.menuItem}>
@@ -20,7 +20,7 @@ export default ({ handleLogout }: Props) => (
           <MenuOption icon="personFill" text="Manage Account" />
         </RouterLink>
       </MenuItem>
-      <MenuItem onClick={handleLogout} sx={sx.menuItem} tabindex={0}>
+      <MenuItem onClick={handleLogout} sx={sx.menuItem} tabIndex={0}>
         <MenuOption icon="boxArrowRight" text="Log Out" />
       </MenuItem>
     </MenuList>
