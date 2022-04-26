@@ -26,7 +26,7 @@ export const Header = ({ handleLogout }: Props) => {
                   icon="questionCircleFill"
                   text="Get Help"
                   role="group"
-                  hideTextOnMobile
+                  mobileStylez
                 />
               </RouterLink>
               <Menu handleLogout={handleLogout} />

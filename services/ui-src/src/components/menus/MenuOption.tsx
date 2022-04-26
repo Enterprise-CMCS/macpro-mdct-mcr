@@ -4,13 +4,16 @@ import { Icon } from "../index";
 // utils
 import { useBreakpoint } from "../../utils/useBreakpoint";
 
-export const MenuOption = ({ text, icon, role, hideTextOnMobile }: Props) => {
+export const MenuOption = ({ text, icon, role, mobileStylez }: Props) => {
   const { isMobile } = useBreakpoint();
-
   return (
     <Flex align="center" role={role} sx={sx.menuOption}>
       <Icon icon={icon} />
-      {!(isMobile && hideTextOnMobile) && <Text sx={sx.text}>{text}</Text>}
+      <Text
+        sx={{ ...sx.text, ...(isMobile && mobileStylez ? sx.atMobile : {}) }}
+      >
+        {text}
+      </Text>
     </Flex>
   );
 };
@@ -19,7 +22,7 @@ interface Props {
   text: string;
   icon: string;
   role?: string;
-  hideTextOnMobile?: boolean;
+  mobileStylez?: boolean;
 }
 
 const sx = {
@@ -30,5 +33,8 @@ const sx = {
     fontWeight: "bold",
     color: "palette.white",
     _groupHover: { color: "palette.alt_light" },
+  },
+  atMobile: {
+    display: "none",
   },
 };
