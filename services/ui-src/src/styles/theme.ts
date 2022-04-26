@@ -6,11 +6,14 @@ export const theme = extendTheme({
     heading: "Open Sans",
     body: "Open Sans",
   },
+
   breakpoints: {
-    sm: "30em", // 480px
-    md: "48em", // 768px
-    lg: "64em", // 1024px
-    xl: "90em", // 1440px
+    // read this: https://bit.ly/3xSWnDt
+    base: "0em", // mobile (<=30em|480px)
+    sm: "30em", // tablet (>30em|480px and <=55em|880px)
+    md: "55em", // desktop, small (>55em|880px and <=75em|1200px)
+    lg: "75em", // desktop, large (>75em|1200px and <=100em|1600px)
+    xl: "100em", // desktop, ultrawide (>100em|1600px)
   },
   colors: {
     palette: {

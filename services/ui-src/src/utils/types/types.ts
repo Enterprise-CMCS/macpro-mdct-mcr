@@ -52,3 +52,7 @@ export interface ITerritoryList {
   label: string;
   value: string;
 }
+
+export interface StyleObject {
+  [key: string]: string | number;
+}

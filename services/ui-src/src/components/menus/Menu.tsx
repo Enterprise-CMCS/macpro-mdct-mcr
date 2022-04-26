@@ -54,6 +54,7 @@ const sx = {
     padding: "0",
     border: "none",
     background: "palette.main_darkest",
+    boxShadow: "0px 5px 16px rgba(0, 0, 0, 0.14)",
   },
   menuItem: {
     borderRadius: ".375rem",
