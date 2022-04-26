@@ -54,5 +54,5 @@ export interface ITerritoryList {
 }
 
 export interface StyleObject {
-  [key: string]: string | number;
+  [key: string]: any;
 }

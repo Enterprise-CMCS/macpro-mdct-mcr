@@ -76,5 +76,10 @@ export const theme = extendTheme({
         transition: "all 0.3s ease",
       },
     },
+    Link: {
+      baseStyle: {
+        transition: "all 0.3s ease",
+      },
+    },
   },
 });

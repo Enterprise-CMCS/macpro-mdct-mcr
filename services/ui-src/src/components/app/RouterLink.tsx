@@ -1,11 +1,14 @@
 import { ReactChild } from "react";
 import { Link } from "react-router-dom";
+// utils
+import { StyleObject } from "../../utils/types/types";
 
 export const RouterLink = ({
   to,
   alt,
   tabindex,
   underline,
+  styleOverride,
   children,
 }: Props) => {
   return (
@@ -13,7 +16,10 @@ export const RouterLink = ({
       to={to}
       title={alt}
       tabIndex={tabindex}
-      style={underline ? {} : { textDecoration: "none" }}
+      style={{
+        ...styleOverride,
+        ...(underline ? {} : { textDecoration: "none" }),
+      }}
     >
       {children}
     </Link>
@@ -25,5 +31,6 @@ interface Props {
   alt: string;
   tabindex?: number;
   underline?: boolean;
+  styleOverride?: StyleObject;
   children?: ReactChild | ReactChild[];
 }

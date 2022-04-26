@@ -2,7 +2,7 @@
 import { useUser } from "utils/auth";
 // components
 import { Container, Divider, Stack } from "@chakra-ui/react";
-import { AppRoutes, Header, LoginCognito, LoginIDM } from "components";
+import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
 
 export const App = () => {
   const { logout, user, showLocalLogins, loginWithIDM } = useUser();
@@ -14,7 +14,7 @@ export const App = () => {
           <Container sx={{ maxW: "7xl" }}>
             <AppRoutes />
           </Container>
-          {/* <Footer></Footer> */}
+          <Footer />
         </>
       )}
       {!user && showLocalLogins && (

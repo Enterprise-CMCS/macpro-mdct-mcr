@@ -25,6 +25,18 @@ li::marker {
   font-weight: bold;
 }
 
+a {
+  text-decoration: none !important;
+  color: var(--chakra-colors-palette-white);
+  &:hover {
+    color: var(--chakra-colors-palette-gray_light) !important;
+  }
+  &:visited {
+    color: inherit;
+  }
+  transition: all 0.3s ease !important;
+}
+
 // USA BANNER STYLES
 
 .ds-c-usa-banner {

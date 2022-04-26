@@ -1,5 +1,6 @@
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
+export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { Icon } from "./icons/Icon";
 export { Layout } from "./layout/Layout";
