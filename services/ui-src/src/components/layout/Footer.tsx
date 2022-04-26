@@ -1,25 +1,63 @@
+/* eslint-disable multiline-comment-style */
 // components
-import { Box, Container, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { RouterLink } from "../index";
-// eslint-disable-next-line multiline-comment-style
 // utils
-// import { useBreakpoint } from "../../utils/useBreakpoint";
+import { useBreakpoint } from "../../utils/useBreakpoint";
 // assets
-// import hhsLogo from "../../assets/logo_hhs.png";
-// import medicaidLogo from "../../assets/logo_medicaid.png";
+import hhsLogo from "../../assets/logo_hhs.svg";
+import medicaidLogo from "../../assets/logo_medicaid.svg";
 
 export const Footer = () => {
-  // const { isMobile } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   return (
     <Box sx={sx.root} data-testid="footer-container">
       <Box sx={sx.footerTop}>
-        <Flex>
-          <Container sx={{ maxW: "7xl" }}></Container>
-        </Flex>
+        <Container sx={{ maxW: "7xl" }}>
+          <Flex
+            justify="space-between"
+            align="center"
+            sx={{
+              flexDirection: `${isMobile ? "column" : "row"}`,
+              minH: "7rem",
+            }}
+          >
+            <Flex>
+              {isMobile && (
+                <Image
+                  src={hhsLogo}
+                  alt="HHS logo"
+                  sx={{ marginRight: "1.25rem" }}
+                  data-testid="hhs-logo"
+                />
+              )}
+              <Image
+                src={medicaidLogo}
+                alt="Medicaid logo"
+                data-testid="medicaid-logo"
+              />
+            </Flex>
+            <Flex>
+              {!isMobile && (
+                <Image
+                  src={hhsLogo}
+                  alt="HHS logo"
+                  sx={{ marginRight: "1.25rem" }}
+                  data-testid="hhs-logo"
+                />
+              )}
+              <Text sx={{ maxW: "24rem" }}>
+                A federal government website managed and paid for by the U.S.
+                Centers for Medicare and Medicaid Services and part of the
+                MACPro suite.
+              </Text>
+            </Flex>
+          </Flex>
+        </Container>
       </Box>
       <Box sx={sx.footerBottom}>
         <Container sx={{ maxW: "7xl" }}>
-          <Flex justify="space-between" align="center" sx={{ height: "3rem" }}>
+          <Flex justify="space-between" align="center" sx={{ minH: "3rem" }}>
             <Text>
               <RouterLink
                 to="/faq"

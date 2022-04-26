@@ -15,7 +15,7 @@ export const useBreakpoint = () => {
     `(max-width: ${pxBreaks.sm}px)`, // mobile (<=30em|480px)
     `(min-width: ${pxBreaks.sm + 1}px) and (max-width: ${pxBreaks.md}px)`, // tablet (>30em|480px and <=55em|880px)
     `(min-width: ${pxBreaks.md + 1}px)`, // desktop (>55em|880px)
-    `(min-width: ${pxBreaks.xl + 1}px)`, // ultrawide (>=100em|1600px)
+    `(min-width: ${pxBreaks.xl + 1}px)`, // ultrawide (>100em|1600px)
   ]);
 
   return { isMobile, isTablet, isDesktop, isUltrawide };
