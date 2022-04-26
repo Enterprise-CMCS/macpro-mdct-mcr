@@ -4,8 +4,11 @@ import { Box, Container, Flex, Image } from "@chakra-ui/react";
 import { Menu, MenuOption, RouterLink } from "../index";
 // assets
 import appLogo from "../../assets/logo_qmr.png";
+// utils
+import { useBreakpoint } from "../../utils/useBreakpoint";
 
 export const Header = ({ handleLogout }: Props) => {
+  const { isMobile } = useBreakpoint();
   return (
     <Box zIndex="sticky" data-testid="header-banner-container">
       <UsaBanner tabindex={0} />
@@ -26,7 +29,7 @@ export const Header = ({ handleLogout }: Props) => {
                   icon="questionCircleFill"
                   text="Get Help"
                   role="group"
-                  mobileStylez
+                  hideText={isMobile}
                 />
               </RouterLink>
               <Menu handleLogout={handleLogout} />
