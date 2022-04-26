@@ -2,13 +2,15 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { Icon } from "../index";
 // utils
-import { StyleObject } from "../../utils/types/types";
+import { useBreakpoint } from "../../utils/useBreakpoint";
 
-export const MenuOption = ({ text, icon, role, mobileStyles }: Props) => {
+export const MenuOption = ({ text, icon, role, hideTextOnMobile }: Props) => {
+  const { isMobile } = useBreakpoint();
+
   return (
     <Flex align="center" role={role} sx={sx.menuOption}>
       <Icon icon={icon} />
-      <Text sx={{ ...sx.text, ...mobileStyles }}>{text}</Text>
+      {!(isMobile && hideTextOnMobile) && <Text sx={sx.text}>{text}</Text>}
     </Flex>
   );
 };
@@ -17,7 +19,7 @@ interface Props {
   text: string;
   icon: string;
   role?: string;
-  mobileStyles?: StyleObject | null;
+  hideTextOnMobile?: boolean;
 }
 
 const sx = {

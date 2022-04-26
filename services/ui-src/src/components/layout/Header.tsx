@@ -2,13 +2,10 @@
 import UsaBanner from "@cmsgov/design-system/dist/components/UsaBanner/UsaBanner";
 import { Box, Container, Flex, Image } from "@chakra-ui/react";
 import { Menu, MenuOption, RouterLink } from "../index";
-// utils
-import { useBreakpoint } from "../../utils/useBreakpoint";
 // assets
 import appLogo from "../../assets/logo_qmr.png";
 
 export const Header = ({ handleLogout }: Props) => {
-  const { isMobile } = useBreakpoint();
   return (
     <Box zIndex="sticky" data-testid="header-banner-container">
       <UsaBanner tabindex={0} />
@@ -29,7 +26,7 @@ export const Header = ({ handleLogout }: Props) => {
                   icon="questionCircleFill"
                   text="Get Help"
                   role="group"
-                  mobileStyles={isMobile ? { d: "none" } : undefined}
+                  hideTextOnMobile
                 />
               </RouterLink>
               <Menu handleLogout={handleLogout} />
