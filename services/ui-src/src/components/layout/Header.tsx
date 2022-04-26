@@ -2,10 +2,10 @@
 import UsaBanner from "@cmsgov/design-system/dist/components/UsaBanner/UsaBanner";
 import { Box, Container, Flex, Image } from "@chakra-ui/react";
 import { Menu, MenuOption, RouterLink } from "../index";
-// assets
-import appLogo from "../../assets/logo_qmr.png";
 // utils
 import { useBreakpoint } from "../../utils/useBreakpoint";
+// assets
+import appLogo from "../../assets/logo_qmr.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();

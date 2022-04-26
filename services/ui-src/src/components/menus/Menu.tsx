@@ -8,28 +8,37 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { MenuOption, RouterLink } from "../index";
+// utils
+import { useBreakpoint } from "../../utils/useBreakpoint";
 // assets
 import { BsChevronDown } from "react-icons/bs";
 
-export const Menu = ({ handleLogout }: Props) => (
-  <MenuRoot offset={[8, 32]}>
-    <Box role="group">
-      <MenuButton as={Button} rightIcon={<BsChevronDown />} sx={sx.menuButton}>
-        <MenuOption icon="personFill" text="User" />
-      </MenuButton>
-    </Box>
-    <MenuList sx={sx.menuList}>
-      <MenuItem sx={sx.menuItem}>
-        <RouterLink to="/acct" alt="link to account page" tabindex={0}>
-          <MenuOption icon="personFill" text="Manage Account" />
-        </RouterLink>
-      </MenuItem>
-      <MenuItem onClick={handleLogout} sx={sx.menuItem} tabIndex={0}>
-        <MenuOption icon="boxArrowRight" text="Log Out" />
-      </MenuItem>
-    </MenuList>
-  </MenuRoot>
-);
+export const Menu = ({ handleLogout }: Props) => {
+  const { isMobile } = useBreakpoint();
+  return (
+    <MenuRoot offset={[8, 32]}>
+      <Box role="group">
+        <MenuButton
+          as={Button}
+          rightIcon={<BsChevronDown />}
+          sx={sx.menuButton}
+        >
+          <MenuOption icon="personCircle" text="Profile" hideText={isMobile} />
+        </MenuButton>
+      </Box>
+      <MenuList sx={sx.menuList}>
+        <MenuItem sx={sx.menuItem}>
+          <RouterLink to="/acct" alt="link to account page" tabindex={0}>
+            <MenuOption icon="personFill" text="Manage Account" />
+          </RouterLink>
+        </MenuItem>
+        <MenuItem onClick={handleLogout} sx={sx.menuItem} tabIndex={0}>
+          <MenuOption icon="boxArrowRight" text="Log Out" />
+        </MenuItem>
+      </MenuList>
+    </MenuRoot>
+  );
+};
 
 interface Props {
   handleLogout: () => void;
