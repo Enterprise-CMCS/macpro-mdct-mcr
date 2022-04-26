@@ -1,4 +1,3 @@
-/* eslint-disable multiline-comment-style */
 // components
 import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { RouterLink } from "../index";
@@ -11,7 +10,7 @@ import medicaidLogo from "../../assets/logo_medicaid.svg";
 export const Footer = () => {
   const { isMobile } = useBreakpoint();
   return (
-    <Box sx={sx.root} data-testid="footer-container">
+    <Box data-testid="footer-container">
       <Box sx={sx.footerTop}>
         <Container sx={{ maxW: "7xl" }}>
           <Flex
@@ -22,7 +21,10 @@ export const Footer = () => {
               minH: "7rem",
             }}
           >
-            <Flex>
+            <Flex
+              sx={sx.medicaidLogoHolder}
+              className={isMobile ? "mobile" : ""}
+            >
               {isMobile && (
                 <Image
                   src={hhsLogo}
@@ -46,7 +48,7 @@ export const Footer = () => {
                   data-testid="hhs-logo"
                 />
               )}
-              <Text sx={{ maxW: "24rem" }}>
+              <Text sx={sx.footerText} className={isMobile ? "mobile" : ""}>
                 A federal government website managed and paid for by the U.S.
                 Centers for Medicare and Medicaid Services and part of the
                 MACPro suite.
@@ -86,13 +88,19 @@ export const Footer = () => {
 };
 
 const sx = {
-  root: {
-    border: "1px solid red",
-    minHeight: 100,
-  },
   footerTop: {
     bg: "palette.gray_lightest",
-    height: "7rem",
+  },
+  medicaidLogoHolder: {
+    "&.mobile": {
+      marginTop: "2rem",
+    },
+  },
+  footerText: {
+    maxW: "24rem",
+    "&.mobile": {
+      marginY: "1rem",
+    },
   },
   footerBottom: {
     bg: "palette.main_darkest",
