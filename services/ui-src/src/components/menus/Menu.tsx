@@ -22,6 +22,7 @@ export const Menu = ({ handleLogout }: Props) => {
           as={Button}
           rightIcon={<BsChevronDown />}
           sx={sx.menuButton}
+          className={isMobile ? "mobile" : ""}
         >
           <MenuOption icon="personCircle" text="Profile" hideText={isMobile} />
         </MenuButton>
@@ -57,6 +58,9 @@ const sx = {
     _active: { background: "none" },
     "& .chakra-button__icon": {
       marginInlineStart: "0rem",
+    },
+    "&.mobile": {
+      marginLeft: 0,
     },
   },
   menuList: {
