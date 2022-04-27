@@ -20,3 +20,15 @@ export const useBreakpoint = () => {
 
   return { isMobile, isTablet, isDesktop, isUltrawide };
 };
+
+export const makeMediaQueryClasses = () => {
+  const { isMobile, isTablet, isDesktop, isUltrawide } = useBreakpoint();
+
+  const mobileClass = isMobile ? "mobile" : ""; // mobile (<=35em|560px)
+  const tabletClass = isTablet ? "tablet" : ""; // tablet (>35em|560px and <=55em|880px)
+  const desktopClass = isDesktop ? "desktop" : ""; // desktop (>55em|880px)
+  const ultrawideClass = isUltrawide ? "ultrawide" : ""; // ultrawide (>100em|1600px)
+
+  const combinedClassString = `${mobileClass} ${tabletClass} ${desktopClass} ${ultrawideClass}`;
+  return combinedClassString;
+};

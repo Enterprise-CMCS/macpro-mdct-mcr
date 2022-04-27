@@ -2,23 +2,23 @@
 import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { RouterLink } from "../index";
 // utils
-import { useBreakpoint } from "../../utils/useBreakpoint";
+import {
+  makeMediaQueryClasses,
+  useBreakpoint,
+} from "../../utils/useBreakpoint";
 // assets
 import hhsLogo from "../../assets/logo_hhs.svg";
 import medicaidLogo from "../../assets/logo_medicaid.svg";
 
 export const Footer = () => {
   const { isMobile, isDesktop } = useBreakpoint();
-
+  const mqClasses = makeMediaQueryClasses();
   return (
     <Box sx={sx.root} data-testid="footer-container">
       <Box sx={sx.footerTop}>
         <Container sx={sx.footerTopContainer}>
-          <Flex sx={sx.footerTopFlex} className={isMobile ? "mobile" : ""}>
-            <Flex
-              sx={sx.footerTopLogoFlex}
-              className={isMobile ? "mobile" : ""}
-            >
+          <Flex sx={sx.footerTopFlex} className={mqClasses}>
+            <Flex sx={sx.footerTopLogoFlex} className={mqClasses}>
               {isMobile && (
                 <Image
                   src={hhsLogo}
@@ -43,7 +43,7 @@ export const Footer = () => {
                   data-testid="hhs-logo"
                 />
               )}
-              <Text sx={sx.footerText} className={isMobile ? "mobile" : ""}>
+              <Text sx={sx.footerText} className={mqClasses}>
                 A federal government website managed and paid for by the U.S.
                 Centers for Medicare and Medicaid Services and part of the
                 MACPro suite.
@@ -54,13 +54,10 @@ export const Footer = () => {
       </Box>
       <Box sx={sx.footerBottom}>
         <Container sx={sx.footerBottomContainer}>
-          <Flex sx={sx.footerBottomFlex} className={isMobile ? "mobile" : ""}>
-            <Flex
-              sx={sx.footerBottomLinkFlex}
-              className={!isDesktop ? "mobiletablet" : ""}
-            >
+          <Flex sx={sx.footerBottomFlex} className={mqClasses}>
+            <Flex sx={sx.footerBottomLinkFlex} className={mqClasses}>
               <RouterLink to="/faq" alt="link to help page">
-                <Text sx={sx.link} className={!isDesktop ? "mobiletablet" : ""}>
+                <Text sx={sx.link} className={mqClasses}>
                   Contact Us
                 </Text>
               </RouterLink>
@@ -69,12 +66,12 @@ export const Footer = () => {
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
               >
-                <Text sx={sx.link} className={!isDesktop ? "mobiletablet" : ""}>
+                <Text sx={sx.link} className={mqClasses}>
                   Accessibility Statement
                 </Text>
               </Link>
             </Flex>
-            <Text sx={sx.address} className={!isDesktop ? "mobiletablet" : ""}>
+            <Text sx={sx.address} className={mqClasses}>
               7500 Security Boulevard Baltimore, MD 21244
             </Text>
           </Flex>
