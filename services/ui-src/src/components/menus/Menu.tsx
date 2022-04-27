@@ -56,6 +56,10 @@ const sx = {
     fontWeight: "bold",
     _hover: { color: "palette.alt_light" },
     _active: { background: "none" },
+    _focus: {
+      boxShadow: "none",
+      outline: "0px solid transparent !important",
+    },
     "& .chakra-button__icon": {
       marginInlineStart: "0rem",
     },

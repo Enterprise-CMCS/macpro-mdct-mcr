@@ -53,10 +53,10 @@ a {
 // TAB NAVIGATION STYLES
 
 *:focus {
-  box-shadow: none !important;
+  outline: none !important;
 }
 *:active {
-  box-shadow: none !important;
+  outline: none !important;
 }
 
 *:focus-visible {
