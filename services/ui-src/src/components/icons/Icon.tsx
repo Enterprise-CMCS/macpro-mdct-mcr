@@ -5,14 +5,18 @@ import { Icon as ChakraIcon } from "@chakra-ui/react";
 // assets
 import {
   BsBoxArrowRight,
+  BsArrowRightSquare,
   BsChevronDown,
+  BsPencilSquare,
   BsPersonCircle,
   BsQuestionCircleFill,
 } from "react-icons/bs";
 
 const iconMap: { [char: string]: IconType } = {
+  arrowRightSquare: BsArrowRightSquare,
   boxArrowRight: BsBoxArrowRight,
   chevronDown: BsChevronDown,
+  pencilSquare: BsPencilSquare,
   personCircle: BsPersonCircle,
   questionCircleFill: BsQuestionCircleFill,
 };
