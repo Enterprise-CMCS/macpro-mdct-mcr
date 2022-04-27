@@ -141,7 +141,7 @@ const sx = {
     },
   },
   footerBottomLinkFlex: {
-    "&.mobiletablet": {
+    "&.mobile, &.tablet": {
       flexDirection: "column",
     },
   },
@@ -153,7 +153,7 @@ const sx = {
     _hover: {
       color: "palette.gray_light",
     },
-    "&.mobiletablet": {
+    "&.mobile, &.tablet": {
       margin: "0.25rem 0",
     },
   },
@@ -163,7 +163,7 @@ const sx = {
   },
   address: {
     fontWeight: "bold",
-    "&.mobiletablet": {
+    "&.mobile, &.tablet": {
       margin: "0.25rem 0",
     },
   },
