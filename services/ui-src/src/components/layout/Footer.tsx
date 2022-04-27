@@ -8,36 +8,38 @@ import hhsLogo from "../../assets/logo_hhs.svg";
 import medicaidLogo from "../../assets/logo_medicaid.svg";
 
 export const Footer = () => {
-  const { isMobile } = useBreakpoint();
+  const { isMobile, isDesktop } = useBreakpoint();
+
   return (
     <Box sx={sx.root} data-testid="footer-container">
       <Box sx={sx.footerTop}>
-        <Container sx={{ maxW: "7xl" }}>
+        <Container sx={sx.footerTopContainer}>
           <Flex sx={sx.footerTopFlex} className={isMobile ? "mobile" : ""}>
             <Flex
-              sx={sx.footerTopLogoContainer}
+              sx={sx.footerTopLogoFlex}
               className={isMobile ? "mobile" : ""}
             >
               {isMobile && (
                 <Image
                   src={hhsLogo}
                   alt="HHS logo"
-                  sx={{ marginRight: "1.25rem" }}
+                  sx={sx.hhsLogo}
                   data-testid="hhs-logo"
                 />
               )}
               <Image
                 src={medicaidLogo}
                 alt="Medicaid logo"
+                sx={sx.medicaidLogo}
                 data-testid="medicaid-logo"
               />
             </Flex>
-            <Flex align="center">
+            <Flex sx={sx.footerTopTextFlex}>
               {!isMobile && (
                 <Image
                   src={hhsLogo}
                   alt="HHS logo"
-                  sx={{ marginRight: "1.25rem" }}
+                  sx={sx.hhsLogo}
                   data-testid="hhs-logo"
                 />
               )}
@@ -51,25 +53,28 @@ export const Footer = () => {
         </Container>
       </Box>
       <Box sx={sx.footerBottom}>
-        <Container sx={{ maxW: "7xl" }}>
+        <Container sx={sx.footerBottomContainer}>
           <Flex sx={sx.footerBottomFlex} className={isMobile ? "mobile" : ""}>
-            <Flex flexDirection={isMobile ? "column" : "row"}>
+            <Flex
+              sx={sx.footerBottomLinkFlex}
+              className={!isDesktop ? "mobiletablet" : ""}
+            >
               <RouterLink to="/faq" alt="link to help page">
-                <Text sx={sx.link} className={isMobile ? "mobile" : ""}>
+                <Text sx={sx.link} className={!isDesktop ? "mobiletablet" : ""}>
                   Contact Us
                 </Text>
               </RouterLink>
-              {!isMobile && <Text sx={sx.divider}>|</Text>}
+              {isDesktop && <Text sx={sx.divider}>|</Text>}
               <Link
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
               >
-                <Text sx={sx.link} className={isMobile ? "mobile" : ""}>
+                <Text sx={sx.link} className={!isDesktop ? "mobiletablet" : ""}>
                   Accessibility Statement
                 </Text>
               </Link>
             </Flex>
-            <Text sx={sx.address} className={isMobile ? "mobile" : ""}>
+            <Text sx={sx.address} className={!isDesktop ? "mobiletablet" : ""}>
               7500 Security Boulevard Baltimore, MD 21244
             </Text>
           </Flex>
@@ -86,19 +91,33 @@ const sx = {
   footerTop: {
     bg: "palette.gray_lightest",
   },
+  footerTopContainer: {
+    maxW: "7xl",
+  },
   footerTopFlex: {
     minH: "7rem",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingY: "1rem",
     "&.mobile": {
       flexDirection: "column",
     },
   },
-  footerTopLogoContainer: {
+  footerTopLogoFlex: {
+    paddingRight: "1rem",
     "&.mobile": {
       marginTop: "2rem",
-      maxWidth: "300px",
+      minWidth: "200px",
     },
+  },
+  footerTopTextFlex: {
+    alignItems: "center",
+  },
+  medicaidLogo: {
+    minWidth: "150px",
+  },
+  hhsLogo: {
+    marginRight: "1.25rem",
   },
   footerText: {
     maxW: "24rem",
@@ -112,12 +131,20 @@ const sx = {
     color: "palette.white",
     fontSize: 14,
   },
+  footerBottomContainer: {
+    maxW: "7xl",
+  },
   footerBottomFlex: {
     paddingY: "1rem",
     justifyContent: "space-between",
     alignItems: "center",
     "&.mobile": {
       alignItems: "normal",
+      flexDirection: "column",
+    },
+  },
+  footerBottomLinkFlex: {
+    "&.mobiletablet": {
       flexDirection: "column",
     },
   },
@@ -129,7 +156,7 @@ const sx = {
     _hover: {
       color: "palette.gray_light",
     },
-    "&.mobile": {
+    "&.mobiletablet": {
       margin: "0.25rem 0",
     },
   },
@@ -139,7 +166,7 @@ const sx = {
   },
   address: {
     fontWeight: "bold",
-    "&.mobile": {
+    "&.mobiletablet": {
       margin: "0.25rem 0",
     },
   },

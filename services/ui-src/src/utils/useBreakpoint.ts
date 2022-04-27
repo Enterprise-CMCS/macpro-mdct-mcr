@@ -12,8 +12,8 @@ export const useBreakpoint = () => {
   });
 
   const [isMobile, isTablet, isDesktop, isUltrawide] = useMediaQuery([
-    `(max-width: ${pxBreaks.sm}px)`, // mobile (<=30em|480px)
-    `(min-width: ${pxBreaks.sm + 1}px) and (max-width: ${pxBreaks.md}px)`, // tablet (>30em|480px and <=55em|880px)
+    `(max-width: ${pxBreaks.sm}px)`, // mobile (<=35em|560px)
+    `(min-width: ${pxBreaks.sm + 1}px) and (max-width: ${pxBreaks.md}px)`, // tablet (>35em|560px and <=55em|880px)
     `(min-width: ${pxBreaks.md + 1}px)`, // desktop (>55em|880px)
     `(min-width: ${pxBreaks.xl + 1}px)`, // ultrawide (>100em|1600px)
   ]);
