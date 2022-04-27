@@ -3,7 +3,7 @@ import { useMediaQuery, useTheme } from "@chakra-ui/react";
 export const useBreakpoint = () => {
   // get breakpoints from theme
   const { breakpoints } = useTheme();
-  const keys: string[] = Object.keys(breakpoints);
+  const keys: string[] = Object.keys(breakpoints || {});
 
   // convert breakpoints from em to px
   let pxBreaks: { [key: string]: number } = {};
