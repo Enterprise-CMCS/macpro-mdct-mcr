@@ -4,7 +4,7 @@ describe("Baseline integration test (includes state user login)", () => {
     cy.login();
   });
 
-  it("Check homepage a11y", () => {
-    cy.checkA11yOfPage();
+  it("Check homepage accessibility", () => {
+    cy.checkCurrentPageAccessibility();
   });
 });

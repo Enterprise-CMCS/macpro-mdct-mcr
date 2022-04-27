@@ -12,7 +12,7 @@ export const Header = ({ handleLogout }: Props) => {
   return (
     <Box sx={sx.root} data-testid="header-banner-container">
       <UsaBanner tabindex={0} />
-      <Flex sx={sx.headerBar}>
+      <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
             <RouterLink to="/" alt="link to home page" tabindex={0}>

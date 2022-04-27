@@ -60,6 +60,9 @@ export default () => {
 
   return (
     <section>
+      <Text as="h1" my="1rem">
+        Managed Care Reporting
+      </Text>
       <Text as="h2" my="1rem">
         Manage Measures
       </Text>

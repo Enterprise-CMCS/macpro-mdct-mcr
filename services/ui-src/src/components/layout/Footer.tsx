@@ -14,7 +14,7 @@ export const Footer = () => {
   const { isMobile, isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   return (
-    <Box sx={sx.root} data-testid="footer-container">
+    <Box sx={sx.root} role="contentinfo" data-testid="footer-container">
       <Box sx={sx.footerTop}>
         <Container sx={sx.footerTopContainer}>
           <Flex sx={sx.footerTopFlex} className={mqClasses}>
