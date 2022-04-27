@@ -10,7 +10,7 @@ import medicaidLogo from "../../assets/logo_medicaid.svg";
 export const Footer = () => {
   const { isMobile } = useBreakpoint();
   return (
-    <Box data-testid="footer-container">
+    <Box sx={sx.root} data-testid="footer-container">
       <Box sx={sx.footerTop}>
         <Container sx={{ maxW: "7xl" }}>
           <Flex
@@ -21,10 +21,7 @@ export const Footer = () => {
               minH: "7rem",
             }}
           >
-            <Flex
-              sx={sx.medicaidLogoHolder}
-              className={isMobile ? "mobile" : ""}
-            >
+            <Flex sx={sx.topLogoContainer} className={isMobile ? "mobile" : ""}>
               {isMobile && (
                 <Image
                   src={hhsLogo}
@@ -88,12 +85,16 @@ export const Footer = () => {
 };
 
 const sx = {
+  root: {
+    flexShrink: "0",
+  },
   footerTop: {
     bg: "palette.gray_lightest",
   },
-  medicaidLogoHolder: {
+  topLogoContainer: {
     "&.mobile": {
       marginTop: "2rem",
+      maxWidth: "300px",
     },
   },
   footerText: {
@@ -107,9 +108,6 @@ const sx = {
     color: "palette.white",
     fontSize: 14,
   },
-  address: {
-    fontWeight: "bold",
-  },
   link: {
     margin: "0.5rem",
     "&:visited": {
@@ -118,5 +116,8 @@ const sx = {
     "&:hover": {
       color: "palette.gray_light",
     },
+  },
+  address: {
+    fontWeight: "bold",
   },
 };
