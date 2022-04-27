@@ -57,7 +57,7 @@ export const Footer = () => {
           <Flex sx={sx.footerBottomFlex} className={mqClasses}>
             <Flex sx={sx.footerBottomLinkFlex} className={mqClasses}>
               <RouterLink to="/faq" alt="link to help page">
-                <Text sx={sx.link} className={mqClasses}>
+                <Text sx={sx.link} className={mqClasses} data-testid="faq-link">
                   Contact Us
                 </Text>
               </RouterLink>
@@ -66,7 +66,11 @@ export const Footer = () => {
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
               >
-                <Text sx={sx.link} className={mqClasses}>
+                <Text
+                  sx={sx.link}
+                  className={mqClasses}
+                  data-testid="accessibility-statement-link"
+                >
                   Accessibility Statement
                 </Text>
               </Link>

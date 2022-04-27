@@ -30,6 +30,7 @@ export const Header = ({ handleLogout }: Props) => {
                   text="Get Help"
                   role="group"
                   hideText={isMobile}
+                  dataTestId="faq-button"
                 />
               </RouterLink>
               <Menu handleLogout={handleLogout} />

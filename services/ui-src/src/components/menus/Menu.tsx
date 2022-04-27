@@ -27,6 +27,7 @@ export const Menu = ({ handleLogout }: Props) => {
           rightIcon={<BsChevronDown />}
           sx={sx.menuButton}
           className={mqClasses}
+          data-testid="menu-button"
         >
           <MenuOption icon="personCircle" text="Profile" hideText={isMobile} />
         </MenuButton>

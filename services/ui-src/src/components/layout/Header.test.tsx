@@ -23,6 +23,14 @@ describe("Test Header", () => {
   test("Logo is visible", () => {
     expect(screen.getByTestId("app-logo")).toBeVisible();
   });
+
+  test("FAQ button is visible", () => {
+    expect(screen.getByTestId("faq-button")).toBeVisible();
+  });
+
+  test("Menu button is visible", () => {
+    expect(screen.getByTestId("menu-button")).toBeVisible();
+  });
 });
 
 describe("Test Header accessibility", () => {
