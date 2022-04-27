@@ -1,7 +1,7 @@
 import { ReactChild } from "react";
 import { Link } from "react-router-dom";
 // utils
-import { useBreakpoint } from "utils/useBreakpoint";
+import { makeMediaQueryClasses } from "utils/useBreakpoint";
 import { StyleObject } from "../../utils/types/types";
 
 export const RouterLink = ({
@@ -11,7 +11,7 @@ export const RouterLink = ({
   underline,
   children,
 }: Props) => {
-  const { isMobile } = useBreakpoint();
+  const mqClasses = makeMediaQueryClasses();
   return (
     <Link
       to={to}
@@ -20,7 +20,7 @@ export const RouterLink = ({
       style={{
         ...(underline ? {} : { textDecoration: "none" }),
       }}
-      className={isMobile ? "mobile" : ""}
+      className={mqClasses}
     >
       {children}
     </Link>

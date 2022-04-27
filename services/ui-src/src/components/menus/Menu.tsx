@@ -9,12 +9,16 @@ import {
 } from "@chakra-ui/react";
 import { MenuOption, RouterLink } from "../index";
 // utils
-import { useBreakpoint } from "../../utils/useBreakpoint";
+import {
+  makeMediaQueryClasses,
+  useBreakpoint,
+} from "../../utils/useBreakpoint";
 // assets
 import { BsChevronDown } from "react-icons/bs";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
+  const mqClasses = makeMediaQueryClasses();
   return (
     <MenuRoot offset={[8, 32]}>
       <Box role="group">
@@ -22,7 +26,7 @@ export const Menu = ({ handleLogout }: Props) => {
           as={Button}
           rightIcon={<BsChevronDown />}
           sx={sx.menuButton}
-          className={isMobile ? "mobile" : ""}
+          className={mqClasses}
         >
           <MenuOption icon="personCircle" text="Profile" hideText={isMobile} />
         </MenuButton>

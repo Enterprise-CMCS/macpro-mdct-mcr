@@ -10,7 +10,7 @@ import appLogo from "../../assets/logo_qmr.png";
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   return (
-    <Box zIndex="sticky" data-testid="header-banner-container">
+    <Box sx={sx.root} data-testid="header-banner-container">
       <UsaBanner tabindex={0} />
       <Box sx={sx.headerBar}>
         <Container sx={sx.headerContainer}>
@@ -46,6 +46,11 @@ interface Props {
 }
 
 const sx = {
+  root: {
+    position: "sticky",
+    top: 0,
+    zIndex: "sticky",
+  },
   headerBar: {
     bg: "palette.main_darkest",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
