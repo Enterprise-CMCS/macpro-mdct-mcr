@@ -9,16 +9,16 @@ export const App = () => {
   return (
     <div id="app-wrapper">
       {user && (
-        <Flex flexDirection="column" sx={{ minHeight: "100vh" }}>
+        <Flex sx={sx.appLayout}>
           <Header handleLogout={logout} />
-          <Container sx={{ maxW: "7xl", flex: "1 0 auto" }}>
+          <Container sx={sx.appContainer}>
             <AppRoutes />
           </Container>
           <Footer />
         </Flex>
       )}
       {!user && showLocalLogins && (
-        <Container maxW="sm" h="full" my="auto">
+        <Container sx={sx.loginContainer}>
           <Stack spacing={8}>
             <LoginIDM loginWithIDM={loginWithIDM} />
             <Divider />
@@ -28,4 +28,20 @@ export const App = () => {
       )}
     </div>
   );
+};
+
+const sx = {
+  appLayout: {
+    flexDirection: "column",
+    minHeight: "100vh",
+  },
+  appContainer: {
+    maxW: "7xl",
+    flex: "1 0 auto",
+  },
+  loginContainer: {
+    maxWidth: "sm",
+    height: "full",
+    marginY: "auto",
+  },
 };

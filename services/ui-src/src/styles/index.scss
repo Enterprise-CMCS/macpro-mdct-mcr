@@ -52,11 +52,12 @@ a {
 
 // TAB NAVIGATION STYLES
 
-*:focus {
+*:focus, *:active {
   outline: none !important;
 }
-*:active {
-  outline: none !important;
+
+a:focus, p:active {
+  box-shadow: none;
 }
 
 *:focus-visible {

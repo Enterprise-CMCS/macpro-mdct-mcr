@@ -13,15 +13,11 @@ export const Footer = () => {
     <Box sx={sx.root} data-testid="footer-container">
       <Box sx={sx.footerTop}>
         <Container sx={{ maxW: "7xl" }}>
-          <Flex
-            justify="space-between"
-            align="center"
-            sx={{
-              flexDirection: `${isMobile ? "column" : "row"}`,
-              minH: "7rem",
-            }}
-          >
-            <Flex sx={sx.topLogoContainer} className={isMobile ? "mobile" : ""}>
+          <Flex sx={sx.footerTopFlex} className={isMobile ? "mobile" : ""}>
+            <Flex
+              sx={sx.footerTopLogoContainer}
+              className={isMobile ? "mobile" : ""}
+            >
               {isMobile && (
                 <Image
                   src={hhsLogo}
@@ -36,7 +32,7 @@ export const Footer = () => {
                 data-testid="medicaid-logo"
               />
             </Flex>
-            <Flex>
+            <Flex align="center">
               {!isMobile && (
                 <Image
                   src={hhsLogo}
@@ -56,25 +52,24 @@ export const Footer = () => {
       </Box>
       <Box sx={sx.footerBottom}>
         <Container sx={{ maxW: "7xl" }}>
-          <Flex justify="space-between" align="center" sx={{ minH: "3rem" }}>
-            <Text>
-              <RouterLink
-                to="/faq"
-                alt="link to help page"
-                styleOverride={sx.link}
-              >
-                Contact Us
+          <Flex sx={sx.footerBottomFlex} className={isMobile ? "mobile" : ""}>
+            <Flex flexDirection={isMobile ? "column" : "row"}>
+              <RouterLink to="/faq" alt="link to help page">
+                <Text sx={sx.link} className={isMobile ? "mobile" : ""}>
+                  Contact Us
+                </Text>
               </RouterLink>
-              |
+              {!isMobile && <Text sx={sx.divider}>|</Text>}
               <Link
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
-                sx={sx.link}
               >
-                Accessibility Statement
+                <Text sx={sx.link} className={isMobile ? "mobile" : ""}>
+                  Accessibility Statement
+                </Text>
               </Link>
-            </Text>
-            <Text sx={sx.address}>
+            </Flex>
+            <Text sx={sx.address} className={isMobile ? "mobile" : ""}>
               7500 Security Boulevard Baltimore, MD 21244
             </Text>
           </Flex>
@@ -91,7 +86,15 @@ const sx = {
   footerTop: {
     bg: "palette.gray_lightest",
   },
-  topLogoContainer: {
+  footerTopFlex: {
+    minH: "7rem",
+    justifyContent: "space-between",
+    alignItems: "center",
+    "&.mobile": {
+      flexDirection: "column",
+    },
+  },
+  footerTopLogoContainer: {
     "&.mobile": {
       marginTop: "2rem",
       maxWidth: "300px",
@@ -99,6 +102,7 @@ const sx = {
   },
   footerText: {
     maxW: "24rem",
+    fontSize: "14px",
     "&.mobile": {
       marginY: "1rem",
     },
@@ -108,16 +112,35 @@ const sx = {
     color: "palette.white",
     fontSize: 14,
   },
+  footerBottomFlex: {
+    paddingY: "1rem",
+    justifyContent: "space-between",
+    alignItems: "center",
+    "&.mobile": {
+      alignItems: "normal",
+      flexDirection: "column",
+    },
+  },
   link: {
     margin: "0.5rem",
-    "&:visited": {
+    _visited: {
       color: "palette.white",
     },
-    "&:hover": {
+    _hover: {
       color: "palette.gray_light",
     },
+    "&.mobile": {
+      margin: "0.25rem 0",
+    },
+  },
+  divider: {
+    margin: "0.5rem",
+    cursor: "default",
   },
   address: {
     fontWeight: "bold",
+    "&.mobile": {
+      margin: "0.25rem 0",
+    },
   },
 };

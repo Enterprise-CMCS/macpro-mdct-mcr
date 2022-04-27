@@ -60,11 +60,11 @@ const sx = {
       boxShadow: "none",
       outline: "0px solid transparent !important",
     },
-    "& .chakra-button__icon": {
-      marginInlineStart: "0rem",
-    },
     "&.mobile": {
       marginLeft: 0,
+    },
+    "& .chakra-button__icon": {
+      marginInlineStart: "0rem",
     },
   },
   menuList: {

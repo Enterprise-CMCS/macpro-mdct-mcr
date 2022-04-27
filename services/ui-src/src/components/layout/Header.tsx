@@ -14,7 +14,7 @@ export const Header = ({ handleLogout }: Props) => {
       <UsaBanner tabindex={0} />
       <Box sx={sx.headerBar}>
         <Container sx={sx.headerContainer}>
-          <Flex align="center" justify="space-between" paddingY="4">
+          <Flex sx={sx.headerFlex}>
             <RouterLink to="/" alt="link to home page" tabindex={0}>
               <Image
                 src={appLogo}
@@ -23,7 +23,7 @@ export const Header = ({ handleLogout }: Props) => {
                 data-testid="app-logo"
               />
             </RouterLink>
-            <Flex align="center">
+            <Flex sx={sx.menuFlex}>
               <RouterLink to="/faq" alt="link to help page" tabindex={0}>
                 <MenuOption
                   icon="questionCircleFill"
@@ -52,6 +52,14 @@ const sx = {
   },
   headerContainer: {
     maxW: "7xl",
+  },
+  headerFlex: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingY: "4",
+  },
+  menuFlex: {
+    alignItems: "center",
   },
   appLogo: {
     maxWidth: "100px",
