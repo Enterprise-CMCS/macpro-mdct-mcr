@@ -20,7 +20,7 @@ export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   return (
-    <MenuRoot offset={[8, 32]}>
+    <MenuRoot offset={[8, 20]}>
       <Box role="group">
         <MenuButton
           as={Button}

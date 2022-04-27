@@ -87,6 +87,7 @@ const sx = {
   },
   footerTop: {
     bg: "palette.gray_lightest",
+    minHeight: "7rem",
   },
   footerTopContainer: {
     maxW: "7xl",
@@ -124,6 +125,7 @@ const sx = {
     },
   },
   footerBottom: {
+    minHeight: "3rem",
     bg: "palette.main_darkest",
     color: "palette.white",
     fontSize: 14,
@@ -132,7 +134,7 @@ const sx = {
     maxW: "7xl",
   },
   footerBottomFlex: {
-    paddingY: "1rem",
+    paddingY: ".5rem",
     justifyContent: "space-between",
     alignItems: "center",
     "&.mobile": {
@@ -143,6 +145,9 @@ const sx = {
   footerBottomLinkFlex: {
     "&.mobile, &.tablet": {
       flexDirection: "column",
+    },
+    "a:first-of-type > p": {
+      marginLeft: 0,
     },
   },
   link: {

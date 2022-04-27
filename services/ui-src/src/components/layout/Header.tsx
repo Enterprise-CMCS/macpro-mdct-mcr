@@ -12,7 +12,7 @@ export const Header = ({ handleLogout }: Props) => {
   return (
     <Box sx={sx.root} data-testid="header-banner-container">
       <UsaBanner tabindex={0} />
-      <Box sx={sx.headerBar}>
+      <Flex sx={sx.headerBar}>
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
             <RouterLink to="/" alt="link to home page" tabindex={0}>
@@ -36,7 +36,7 @@ export const Header = ({ handleLogout }: Props) => {
             </Flex>
           </Flex>
         </Container>
-      </Box>
+      </Flex>
     </Box>
   );
 };
@@ -52,6 +52,8 @@ const sx = {
     zIndex: "sticky",
   },
   headerBar: {
+    height: "4rem",
+    alignItems: "center",
     bg: "palette.main_darkest",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
@@ -61,7 +63,6 @@ const sx = {
   headerFlex: {
     justifyContent: "space-between",
     alignItems: "center",
-    paddingY: "4",
   },
   menuFlex: {
     alignItems: "center",
