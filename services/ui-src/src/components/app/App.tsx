@@ -2,14 +2,7 @@
 import { useUser } from "utils/auth";
 // components
 import { Container, Divider, Flex, Stack } from "@chakra-ui/react";
-import {
-  AppRoutes,
-  Footer,
-  Header,
-  // Layout,
-  LoginCognito,
-  LoginIDM,
-} from "components";
+import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
 
 export const App = () => {
   const { logout, user, showLocalLogins, loginWithIDM } = useUser();
