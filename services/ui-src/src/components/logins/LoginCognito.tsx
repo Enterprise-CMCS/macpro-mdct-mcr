@@ -68,7 +68,7 @@ export const LoginCognito = () => {
           handleLogin();
         }}
         isFullWidth
-        data-cy="login-with-cognito-button"
+        data-testid="cognito-login-button"
       >
         Login with Cognito
       </Button>

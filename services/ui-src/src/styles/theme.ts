@@ -6,11 +6,14 @@ export const theme = extendTheme({
     heading: "Open Sans",
     body: "Open Sans",
   },
+
   breakpoints: {
-    sm: "30em", // 480px
-    md: "48em", // 768px
-    lg: "64em", // 1024px
-    xl: "90em", // 1440px
+    // read this: https://bit.ly/3xSWnDt
+    base: "0em", // mobile (<=35em|560px)
+    sm: "35em", // tablet (>35em|560px and <=55em|880px)
+    md: "55em", // desktop, small (>55em|880px and <=75em|1200px)
+    lg: "75em", // desktop, large (>75em|1200px and <=100em|1600px)
+    xl: "100em", // desktop, ultrawide (>100em|1600px)
   },
   colors: {
     palette: {
@@ -57,13 +60,23 @@ export const theme = extendTheme({
       error_darker: "#b31e22",
       error_darkest: "#981b1e",
       // other
-      focus: "#ffde11",
-      focus_border: "#8f7c00",
+      focus_light: "#ffffff",
+      focus_dark: "#bd13b8",
       muted: "#bac5cf",
     },
   },
   components: {
     Button: {
+      baseStyle: {
+        transition: "all 0.3s ease",
+      },
+    },
+    Text: {
+      baseStyle: {
+        transition: "all 0.3s ease",
+      },
+    },
+    Link: {
       baseStyle: {
         transition: "all 0.3s ease",
       },

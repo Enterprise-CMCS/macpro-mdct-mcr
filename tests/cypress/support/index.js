@@ -3,11 +3,8 @@
  * Read more here: https://on.cypress.io/configuration
  */
 
-{
-  require("cypress-xpath");
-}
-
-import "./commands";
-
-// Cypress plugin for axe testing
+import "cypress-xpath";
 import "cypress-axe";
+
+import "./accessibility";
+import "./authentication";

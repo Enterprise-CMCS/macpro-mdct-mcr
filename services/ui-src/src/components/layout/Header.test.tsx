@@ -17,11 +17,19 @@ describe("Test Header", () => {
   });
 
   test("Header is visible", () => {
-    expect(screen.getByText("Logout")).toBeVisible();
+    expect(screen.getByTestId("header-banner-container")).toBeVisible();
   });
 
   test("Logo is visible", () => {
     expect(screen.getByTestId("app-logo")).toBeVisible();
+  });
+
+  test("FAQ button is visible", () => {
+    expect(screen.getByTestId("faq-button")).toBeVisible();
+  });
+
+  test("Menu button is visible", () => {
+    expect(screen.getByTestId("menu-button")).toBeVisible();
   });
 });
 

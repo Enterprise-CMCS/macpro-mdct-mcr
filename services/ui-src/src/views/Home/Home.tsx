@@ -60,14 +60,21 @@ export default () => {
 
   return (
     <section>
+      <Text as="h1" my="1rem" fontSize="3xl">
+        MCR: Managed Care Reporting
+      </Text>
+      <Text as="h2" my="1rem" fontSize="xl">
+        Manage Measures
+      </Text>
       {userState ? (
-        <>
-          <Button onClick={() => addMeasure()}>Create Measure</Button>
-          <h2>Measures:</h2>
+        <Box mt="1rem">
+          <Button sx={sx.button} onClick={addMeasure}>
+            Create Measure
+          </Button>
           {data?.Items &&
             data.Items.map((item: any): any => (
-              <div key={item.compoundKey}>
-                <Text>
+              <Box m="1rem" key={item.compoundKey}>
+                <Text my="1rem">
                   State: {item.state}
                   <br />
                   Year: {item.year}
@@ -75,15 +82,16 @@ export default () => {
                   Measure: {item.measure}
                 </Text>
                 <Button
+                  sx={sx.button}
                   onClick={() => {
                     deleteMeasure(item.measure);
                   }}
                 >
                   Delete Measure
                 </Button>
-              </div>
+              </Box>
             ))}
-        </>
+        </Box>
       ) : (
         <Box data-testid="home-view">
           <Text>You are not authorized to view this page</Text>
@@ -91,4 +99,12 @@ export default () => {
       )}
     </section>
   );
+};
+
+const sx = {
+  button: {
+    color: "palette.white",
+    background: "palette.main_darkest",
+    _hover: { background: "palette.main_darker" },
+  },
 };

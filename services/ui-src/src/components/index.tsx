@@ -1,7 +1,10 @@
-import { App } from "./app/App";
-import { AppRoutes } from "./app/AppRoutes";
-import { Header } from "./layout/Header";
-import { LoginCognito } from "./logins/LoginCognito";
-import { LoginIDM } from "./logins/LoginIDM";
-
-export { App, AppRoutes, Header, LoginCognito, LoginIDM };
+export { App } from "./app/App";
+export { AppRoutes } from "./app/AppRoutes";
+export { Footer } from "./layout/Footer";
+export { Header } from "./layout/Header";
+export { Icon } from "./icons/Icon";
+export { LoginCognito } from "./logins/LoginCognito";
+export { LoginIDM } from "./logins/LoginIDM";
+export { Menu } from "./menus/Menu";
+export { MenuOption } from "./menus/MenuOption";
+export { RouterLink } from "./app/RouterLink";
