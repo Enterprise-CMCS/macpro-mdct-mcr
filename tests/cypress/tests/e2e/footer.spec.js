@@ -14,7 +14,7 @@ describe("Footer integration tests", () => {
     cy.location("pathname").should("match", /faq/);
   });
 
-  it.only("Footer accessibility statement link navigates to the right external URL", () => {
+  it("Footer accessibility statement link navigates to the right external URL", () => {
     cy.get(accessibilityStatementLink)
       .invoke("attr", "href")
       .should(

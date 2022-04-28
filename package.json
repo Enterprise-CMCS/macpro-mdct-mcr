@@ -52,7 +52,7 @@
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-iam-helper": "github:cmsgov/serverless-iam-helper",
     "serverless-idempotency-helper": "github:cmsgov/serverless-idempotency-helper",
-    "serverless-offline": "^6.8.0",
+    "serverless-offline": "7.1.0",
     "serverless-online": "CMSgov/serverless-online",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-plugin-warmup": "^5.3.1",
