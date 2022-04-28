@@ -19,7 +19,7 @@ async function run_db_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "db",
-    ["serverless", "--stage", "local", "dynamodb", "start", "--migrate"],
+    ["serverless", "dynamodb", "start", "--stage", "local", "--migrate"],
     "services/database"
   );
 }
@@ -35,14 +35,14 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     "api",
     [
       "serverless",
+      "offline",
+      "start",
       "--stage",
       "local",
       "--region",
       "us-east-1",
-      "offline",
       "--httpPort",
       "3030",
-      "start",
     ],
     "services/app-api"
   );
@@ -57,7 +57,7 @@ async function run_s3_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "s3",
-    ["serverless", "--stage", "local", "s3", "start"],
+    ["serverless", "s3", "start", "--stage", "local"],
     "services/uploads"
   );
 }
