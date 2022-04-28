@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 import { Amplify } from "aws-amplify";
 import config from "config";
 // utils
@@ -29,7 +29,7 @@ ReactDOM.render(
           <ChakraProvider theme={theme}>
             <App />
           </ChakraProvider>
-          <ReactQueryDevtools />
+          {/* <ReactQueryDevtools /> */}
         </QueryProvider>
       </ApiProvider>
     </UserProvider>

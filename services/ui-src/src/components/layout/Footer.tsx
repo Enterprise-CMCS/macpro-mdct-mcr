@@ -65,12 +65,9 @@ export const Footer = () => {
               <Link
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
+                data-testid="accessibility-statement-link"
               >
-                <Text
-                  sx={sx.link}
-                  className={mqClasses}
-                  data-testid="accessibility-statement-link"
-                >
+                <Text sx={sx.link} className={mqClasses}>
                   Accessibility Statement
                 </Text>
               </Link>
