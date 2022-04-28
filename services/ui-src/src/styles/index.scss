@@ -58,6 +58,8 @@ a {
 
 a:focus, p:active {
   box-shadow: none;
+  background-color: inherit;
+
 }
 
 *:focus-visible {

@@ -60,10 +60,10 @@ export default () => {
 
   return (
     <section>
-      <Text as="h1" my="1rem">
-        Managed Care Reporting
+      <Text as="h1" my="1rem" fontSize="3xl">
+        MCR: Managed Care Reporting
       </Text>
-      <Text as="h2" my="1rem">
+      <Text as="h2" my="1rem" fontSize="xl">
         Manage Measures
       </Text>
       {userState ? (
