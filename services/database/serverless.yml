@@ -12,9 +12,9 @@ custom:
   region: ${opt:region, self:provider.region}
   serverlessTerminationProtection:
     stages:
-      - master
+      - main
       - val
-      - prod
+      - production
   measureTableName: ${self:custom.stage}-measures
   dynamodb:
     stages:

@@ -7,136 +7,119 @@ on:
       - "dependabot/**"
       - "!skipci*"
 
-jobs:
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
-  #   steps:
-  #     - name: set branch_name
-  #       run: |
-  #         if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then # Dependabot builds very long branch names.  This is a switch to make it shorter.
-  #           echo "branch_name=`echo ${GITHUB_REF#refs/heads/} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
-  #         else
-  #           echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-  #         fi
-  #     - uses: actions/checkout@v2
-  #     - name: Validate branch name
-  #       run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
-  #     - name: set branch specific variable names
-  #       run: ./.github/build-vars.sh set_names
-  #     - name: set variable values
-  #       run: ./.github/build-vars.sh set_values
-  #       env:
-  #         AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
-  #         AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
-  #         AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
-  #         STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
-  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-  #         CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-  #     - name: lock this branch to prevent concurrent builds
-  #       run: ./.github/github-lock.sh $branch_name
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     - name: read .nvmrc
-  #       id: node_version
-  #       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: "**/node_modules"
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-  #     - name: set path
-  #       run: |
-  #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-  #     - name: run unit tests
-  #       run: ./scripts/test-unit.sh
-  #     - name: publish test coverage to code climate
-  #       if: env.CODE_CLIMATE_ID != ''
-  #       uses: paambaati/codeclimate-action@v2.7.5
-  #       env:
-  #         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-  #       with:
-  #         coverageLocations: |
-  #           ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-  #     - name: Store unit test reults
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: unit_test_results
-  #         path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
-  #     - name: deploy
-  #       run: |
-  #         # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
-  #         # This can optionally be set as an GitHub Actions Secret
-  #         ./scripts/deploy.sh $STAGE_PREFIX$branch_name
+permissions:
+  id-token: write
+  contents: read
+  actions: read
 
-  cypress-test:
-    name: Cypress Tests
-    needs: deploy
-    if: ${{ github.ref != 'refs/heads/prod' }}
+jobs:
+  deploy:
     runs-on: ubuntu-latest
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     containers:
-    #       [
-    #         oy2_10017_Child_Measure_Qualifier_CH.spec.js,
-    #       ]
+    env:
+      SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
     steps:
       - name: set branch_name
-        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-      - uses: actions/checkout@v1
+        run: |
+          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then # Dependabot builds very long branch names.  This is a switch to make it shorter.
+            echo "branch_name=`echo ${GITHUB_REF#refs/heads/} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
+          else
+            echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          fi
+      - uses: actions/checkout@v2
+      - name: Validate branch name
+        run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
       - name: set branch specific variable names
         run: ./.github/build-vars.sh set_names
       - name: set variable values
         run: ./.github/build-vars.sh set_values
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
-          INFRASTRUCTURE_TYPE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_INFRASTRUCTURE_TYPE] || secrets.INFRASTRUCTURE_TYPE || 'development' }}
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
-          COGNITO_TEST_USERS_PASSWORD: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_COGNITO_TEST_USERS_PASSWORD] || secrets.COGNITO_TEST_USERS_PASSWORD }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: lock this branch to prevent concurrent builds
+        run: ./.github/github-lock.sh $branch_name
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: read .nvmrc
+        id: node_version
+        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
       - uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
-      - name: Combine yarn.lock files to single file
-        run: find services -maxdepth 3 -name yarn.lock | xargs cat yarn.lock > combined-yarn.txt
-      - name: cache service dependencies
-        uses: actions/cache@v2
+          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+      - uses: actions/cache@v2
         with:
           path: |
-            services/app-api/node_modules
-            services/uploads/node_modules
-            services/ui/node_modules
-            services/ui-auth/node_modules
-            services/ui-src/node_modules
-            node_modules
-          key: ${{ runner.os }}-${{ hashFiles('combined-yarn.txt') }}
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: Endpoint
+      - name: run unit tests
+        run: ./scripts/test-unit.sh
+      - name: publish test coverage to code climate
+        if: env.CODE_CLIMATE_ID != ''
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Store unit test reults
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_results
+          path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
+      - name: deploy
         run: |
-          pushd services
-          export APPLICATION_ENDPOINT=`./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name`
-          echo "APPLICATION_ENDPOINT=$APPLICATION_ENDPOINT" >> $GITHUB_ENV
-          echo "Application endpoint: $APPLICATION_ENDPOINT"
-          popd
+          # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
+          # This can optionally be set as an GitHub Actions Secret
+          ./scripts/deploy.sh $STAGE_PREFIX$branch_name
+      - id: endpoint
+        run: echo ::set-output name=application_endpoint::$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
+        working-directory: services
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: env.SLACK_WEBHOOK_URL != '' && contains(fromJson('["main", "val", "production"]'), env.branch_name) && failure ()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: Destroy Alerts
+          SLACK_ICON_EMOJI: ":bell:"
+          SLACK_COLOR: ${{job.status}}
+          SLACK_FOOTER: ""
+          MSG_MINIMAL: actions url,commit,ref
+    outputs:
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
+  e2e-test:
+    name: Cypress E2E Tests
+    needs: deploy
+    if: ${{ github.ref != 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
       - name: Run Cypress Tests
-        uses: cypress-io/github-action@v2.11.7
+        uses: cypress-io/github-action@v3.0.3
         with:
           working-directory: tests/cypress
-          spec: tests/${{ matrix.containers }}
+          spec: tests/e2e/*.spec.js
           browser: chrome
           headless: true
-          config: baseUrl=${{ env.APPLICATION_ENDPOINT }}
+          config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
+          wait-on: ${{ needs.deploy.outputs.application_endpoint }}
+          env: true
+        env:
+          CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
+          CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
+          CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
+          CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
       - name: Upload screenshots
         uses: actions/upload-artifact@v2
         if: failure()
@@ -144,77 +127,31 @@ jobs:
           name: cypress-screenshots
           path: tests/cypress/screenshots/
 
-      - name: Slack Notification
-        if: env.SLACK_WEBHOOK_URL != '' && contains(fromJson('["master", "val", "prod"]'), env.branch_name) && failure ()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,ref # selectable (default: repo,message)
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
   a11y-tests:
     name: A11y Tests
     needs: deploy
-    if: ${{ github.ref != 'refs/heads/prod' }}
+    if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     containers: [
-    #         commonPages,
-    #       ]
     steps:
-      - name: set branch_name
-        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
       - uses: actions/checkout@v1
-      - name: set branch specific variable names
-        run: ./.github/build-vars.sh set_names
-      - name: set variable values
-        run: ./.github/build-vars.sh set_values
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
-          INFRASTRUCTURE_TYPE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_INFRASTRUCTURE_TYPE] || secrets.INFRASTRUCTURE_TYPE || 'development' }}
-          STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
-          COGNITO_TEST_USERS_PASSWORD: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_COGNITO_TEST_USERS_PASSWORD] || secrets.COGNITO_TEST_USERS_PASSWORD }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "12.x"
-      - name: Combine yarn.lock files to single file
-        run: find services -maxdepth 3 -name yarn.lock | xargs cat yarn.lock > combined-yarn.txt
-      - name: cache service dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            services/app-api/node_modules
-            services/uploads/node_modules
-            services/ui/node_modules
-            services/ui-auth/node_modules
-            services/ui-src/node_modules
-            node_modules
-          key: ${{ runner.os }}-${{ hashFiles('combined-yarn.txt') }}
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: set path
-        run: |
-          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: Endpoint
-        run: |
-          pushd services
-          export APPLICATION_ENDPOINT=`./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name`
-          echo "APPLICATION_ENDPOINT=$APPLICATION_ENDPOINT" >> $GITHUB_ENV
-          echo "Application endpoint: $APPLICATION_ENDPOINT"
-          popd
       - name: Check Project A11y
-        uses: cypress-io/github-action@v2.11.7
+        uses: cypress-io/github-action@v3.0.3
         with:
           working-directory: tests/cypress
-          spec: tests/a11y/${{ matrix.containers }}.spec.js
+          spec: tests/accessibility/*.spec.js
           browser: chrome
           headless: true
-          config: baseUrl=${{ env.APPLICATION_ENDPOINT }}
+          config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
+          wait-on: ${{ needs.deploy.outputs.application_endpoint }}
+          env: true
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
+          CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
+          CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
+          CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/cypress/screenshots/

@@ -4,7 +4,12 @@ on:
   push:
     branches:
       # # List of all branches which should control underlying infrastructure.
-      - master
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
 
 jobs:
   deploy:
@@ -27,12 +32,16 @@ jobs:
       - name: set variable values
         run: ./.github/build-vars.sh set_values
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_ACCESS_KEY_ID] || secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_SECRET_ACCESS_KEY] || secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: lock this branch to prevent concurrent builds
         run: ./.github/github-lock.sh $branch_name
         env:
@@ -57,7 +66,7 @@ jobs:
           ./scripts/deploy-support.sh $STAGE_PREFIX$branch_name
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
-        if: env.SLACK_WEBHOOK_URL != '' && contains(fromJson('["master", "val", "prod"]'), env.branch_name) && failure ()
+        if: env.SLACK_WEBHOOK_URL != '' && contains(fromJson('["main", "val", "production"]'), env.branch_name) && failure ()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: GitHub Actions Alerts

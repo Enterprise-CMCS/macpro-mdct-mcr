@@ -6,12 +6,12 @@ const cognitoPasswordInputField = "//input[@name='password']";
 
 // credentials
 const stateUser = {
-  email: "stateuser1@test.com",
-  password: "p@55W0rd!", //pragma: allowlist secret
+  email: Cypress.env("STATE_USER_EMAIL"),
+  password: Cypress.env("STATE_USER_PASSWORD"),
 };
 const adminUser = {
-  email: "adminuser@test.com",
-  password: "p@55W0rd!", // pragma: allowlist secret
+  email: Cypress.env("ADMIN_USER_EMAIL"),
+  password: Cypress.env("ADMIN_USER_PASSWORD"),
 };
 
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
@@ -27,11 +27,9 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
     switch (userType) {
       case "adminUser":
         credentials = adminUser;
-        console.log("admin uc", credentials);
         break;
       case "stateUser":
         credentials = stateUser;
-        console.log("state uc", credentials);
         break;
       default:
         throw new Error("Provided userType not recognized.");
