@@ -1,7 +1,7 @@
 // utils
 import { useUser } from "utils/auth";
 // components
-import { Container, Divider, Flex, Stack } from "@chakra-ui/react";
+import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
 
 export const App = () => {
@@ -18,13 +18,20 @@ export const App = () => {
         </Flex>
       )}
       {!user && showLocalLogins && (
-        <Container sx={sx.loginContainer}>
-          <Stack spacing={8}>
-            <LoginIDM loginWithIDM={loginWithIDM} />
-            <Divider />
-            <LoginCognito />
-          </Stack>
-        </Container>
+        <main>
+          <Container sx={sx.appContainer}>
+            <Heading as="h1" size="xl" sx={{ my: "6rem" }}>
+              Managed Care Reporting
+            </Heading>
+          </Container>
+          <Container sx={sx.loginContainer}>
+            <Stack spacing={8}>
+              <LoginIDM loginWithIDM={loginWithIDM} />
+              <Divider />
+              <LoginCognito />
+            </Stack>
+          </Container>
+        </main>
       )}
     </div>
   );
@@ -38,6 +45,7 @@ const sx = {
   appContainer: {
     maxW: "7xl",
     flex: "1 0 auto",
+    textAlign: "center",
   },
   loginContainer: {
     maxWidth: "sm",

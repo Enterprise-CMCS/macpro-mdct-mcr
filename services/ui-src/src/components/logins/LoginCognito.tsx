@@ -40,30 +40,34 @@ export const LoginCognito = () => {
       <Heading mb="2" size="md" alignSelf="center">
         Login with Cognito
       </Heading>
-      <Heading mb="2" size="sm">
-        Email
-      </Heading>
-      <Input
-        id="email"
-        name="email"
-        type="email"
-        value={fields.email}
-        onChange={handleFieldChange}
-        className="field"
-      />
-      <Heading mb="2" size="sm">
-        Password
-      </Heading>
-      <Input
-        id="password"
-        name="password"
-        type="password"
-        value={fields.password}
-        onChange={handleFieldChange}
-        className="field"
-      />
+      <label>
+        <Heading mb="2" size="sm">
+          Email
+        </Heading>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          value={fields.email}
+          onChange={handleFieldChange}
+          className="field"
+        />
+      </label>
+      <label>
+        <Heading mb="2" size="sm">
+          Password
+        </Heading>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          value={fields.password}
+          onChange={handleFieldChange}
+          className="field"
+        />
+      </label>
       <Button
-        colorScheme="teal"
+        colorScheme="colorSchemes.main"
         onClick={() => {
           handleLogin();
         }}
