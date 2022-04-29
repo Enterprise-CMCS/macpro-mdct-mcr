@@ -1,97 +1,146 @@
+/* eslint-disable */
 import { Navigate } from "react-router-dom";
-// utils
-import { UserRoles, MeasureStatus, CoreSetAbbr } from "utils/types/types";
-import { useUser } from "utils/auth";
-import { useCreateMeasure, useGetMeasures, useDeleteMeasure } from "utils/api";
 // components
-import { Box, Button, Text } from "@chakra-ui/react";
-
-// TODO: remove temporary variables
-const year = "2021";
-const state = "AL";
-const coreSet = CoreSetAbbr.ACS;
+import {
+  Box,
+  Button,
+  Flex,
+  Icon as ChakraIcon,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { DueDateTable, Icon } from "../../components/index";
+// utils
+import { UserRoles } from "utils/types/types";
+import { useUser } from "utils/auth";
+import { useBreakpoint } from "../../utils/useBreakpoint";
+// assets
+import { BsFileEarmarkSpreadsheetFill } from "react-icons/bs";
 
 export default () => {
+  const { isTablet, isDesktop } = useBreakpoint();
   const { userRole, userState } = useUser();
-  const mutation = useCreateMeasure();
-  let { data } = useGetMeasures(state, year, coreSet);
-  const deleteMeasureMutation = useDeleteMeasure();
   const isAdminUser = userRole && userRole !== UserRoles.STATE;
-
-  // TODO: remove temporary function
-  const addMeasure = () => {
-    const measure = {
-      coreSet: coreSet,
-      status: MeasureStatus.INCOMPLETE,
-      measure: "AIF-HH",
-      state: state,
-      year: year,
-      data: {
-        userState,
-        userRole,
-        description: "test description",
-      },
-    };
-    mutation.mutate(measure, {
-      onSuccess: () => {
-        window.location.reload();
-      },
-      onError: (e) => {
-        console.log(e); // eslint-disable-line no-console
-      },
-    });
-  };
-
-  // TODO: remove temporary function
-  const deleteMeasure = (measure: string) => {
-    deleteMeasureMutation.mutate(
-      { state, year, coreSet, measure },
-      {
-        onSuccess: () => {
-          window.location.reload();
-        },
-      }
-    );
-  };
 
   if (isAdminUser) {
     return <Navigate to={`/admin`} />;
   }
 
+  const getTemplateSize = (templateName: string) => {
+    // fetch file size from local or s3 for display
+    console.log("Searching S3 for %s template: ", templateName); // eslint-disable-line
+    return "1.2MB";
+  };
+
   return (
     <section>
-      <Text as="h1" my="1rem" fontSize="3xl">
-        MCR: Managed Care Reporting
-      </Text>
-      <Text as="h2" my="1rem" fontSize="xl">
-        Manage Measures
-      </Text>
       {userState ? (
-        <Box mt="1rem">
-          <Button sx={sx.button} onClick={addMeasure}>
-            Create Measure
-          </Button>
-          {data?.Items &&
-            data.Items.map((item: any): any => (
-              <Box m="1rem" key={item.compoundKey}>
-                <Text my="1rem">
-                  State: {item.state}
-                  <br />
-                  Year: {item.year}
-                  <br />
-                  Measure: {item.measure}
-                </Text>
-                <Button
-                  sx={sx.button}
-                  onClick={() => {
-                    deleteMeasure(item.measure);
-                  }}
+        <Flex sx={sx.root} data-testid="home-view" justifyContent={"center"}>
+          <Stack
+            textAlign="left"
+            py={6}
+            color={"palette.gray"}
+            justify="center"
+            width="46rem"
+            boxShadow="0px 3px 9px rgba(0, 0, 0, 0.2)"
+            direction="row"
+            // sx={sx.downloadCardStack}
+          >
+            {isDesktop && (
+              <Flex sx={sx.spreadsheetIconFlex} justify="center" width="9.5rem">
+                <ChakraIcon
+                  as={BsFileEarmarkSpreadsheetFill}
+                  sx={sx.spreadsheetIcon}
+                  boxSize="5.5rem"
+                />
+              </Flex>
+            )}
+            <Flex sx={sx.cardContentFlex} flexDirection="column" gap="0.5rem">
+              <Text
+                sx={sx.templateNameText}
+                fontSize={"lg"}
+                fontWeight={"bold"}
+                color={"palette.gray_darkest"}
+                rounded={"full"}
+              >
+                Managed Care Program Annual Report (MCPAR)
+              </Text>
+              {!isDesktop && (
+                <Text
+                  fontSize={"md"}
+                  fontWeight={"normal"}
+                  color={"palette.gray_darkest"}
                 >
-                  Delete Measure
-                </Button>
-              </Box>
-            ))}
-        </Box>
+                  Due date: Varies, see below
+                </Text>
+              )}
+              <Text
+                sx={sx.templateDescriptionText}
+                fontSize={"md"}
+                fontWeight={"normal"}
+                color={"palette.gray_darkest"}
+                width="33.5rem"
+              >
+                The MCPAR online form will be available on this website in
+                October 2022.{" "}
+                {isDesktop
+                  ? "Note: Every state must submit one report per program."
+                  : ""}
+              </Text>
+              <Button
+                sx={sx.templateDownloadButton}
+                leftIcon={<Icon icon="downloadArrow" />}
+                borderRadius="0.25rem"
+                color={"palette.white"}
+                bg={"palette.main"}
+                width="18.5rem"
+                fontWeight={"bold"}
+                _hover={{ bg: "palette.main_darker" }}
+              >
+                Download Excel Template {getTemplateSize("MCPAR")}
+              </Button>
+              {isTablet && (
+                <Flex flexDirection={"column"}>
+                  <Text
+                    sx={sx.templateNameText}
+                    fontSize={"lg"}
+                    fontWeight={"bold"}
+                    color={"palette.gray_darkest"}
+                    rounded={"full"}
+                  >
+                    MCPAR Due Dates
+                  </Text>
+                  <Text
+                    sx={sx.templateDescriptionText}
+                    fontSize={"md"}
+                    fontWeight={"normal"}
+                    color={"palette.gray_darkest"}
+                    width="33.5rem"
+                  >
+                    Due dates vary based on contract year of the managed care
+                    program and contract period for the first report.
+                  </Text>
+                </Flex>
+              )}
+              {isDesktop && (
+                <Text
+                  //no sx because this will become an accordion
+                  fontSize={"md"}
+                  fontWeight={"normal"}
+                  color={"palette.gray_darkest"}
+                  width="33.5rem"
+                  marginTop="3rem"
+                  bg={"palette.gray_lightest"}
+                  h="3.5rem"
+                  paddingLeft="1.5rem"
+                >
+                  One day I'll be an accordion +
+                </Text>
+              )}
+              {!isDesktop && <DueDateTable templateName={"MCPAR"} />}
+            </Flex>
+          </Stack>
+        </Flex>
       ) : (
         <Box data-testid="home-view">
           <Text>You are not authorized to view this page</Text>
@@ -102,9 +151,53 @@ export default () => {
 };
 
 const sx = {
-  button: {
-    color: "palette.white",
-    background: "palette.main_darkest",
-    _hover: { background: "palette.main_darker" },
+  root: {
+    flexShrink: "0",
+  },
+  downloadCardStack: {
+    // textAlign: "left",
+    // py: 6,
+    // color: "palette.gray",
+    // align: "left",
+    // width: "46rem",
+    // boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
+    // direction: "row",
+  },
+  spreadsheetIconFlex: {
+    // justify: "center",
+    // width: "9.5rem",
+  },
+  spreadsheetIcon: {
+    // boxSize: "5.5rem",
+  },
+  cardContentFlex: {
+    // flexDirection: "column",
+    // gap: "0.5rem",
+  },
+  templateNameText: {
+    // fontSize: "lg",
+    // fontWeight: "bold",
+    // color: "palette.gray_darkest",
+    // rounded: "full",
+  },
+  templateFileStack: {
+    // direction: "row",
+    // align: "center",
+  },
+  templateDescriptionText: {
+    // fontSize: "md",
+    // fontWeight: "normal",
+    // color: "palette.gray_darkest",
+    // width: "33.5rem",
+  },
+  templateDownloadButton: {
+    // borderRadius: "0.25rem",
+    // color: "palette.white",
+    // bg: "palette.main",
+    // width: "18.5rem",
+    // fontWeight: "bold",
+    // _hover: {
+    //   bg: "palette.main_darker",
+    // },
   },
 };
