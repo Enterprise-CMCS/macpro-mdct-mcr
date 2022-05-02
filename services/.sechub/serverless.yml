@@ -18,9 +18,9 @@ custom:
   region: ${opt:region, self:provider.region}
   serverlessTerminationProtection:
     stages:
-      - master
+      - main
       - val
-      - prod
+      - production
   githubAccessToken: ${ssm:/configuration/${self:custom.stage}/sechub/githubAccessToken~true, ssm:/configuration/default/sechub/githubAccessToken~true}
   githubRepository: ${ssm:/configuration/${self:custom.stage}/sechub/githubRepository~true, ssm:/configuration/default/sechub/githubRepository~true, env:GITHUB_REPOSITORY}
   githubRepositoryProjects: ${ssm:/configuration/${self:custom.stage}/sechub/githubRepositoryProjects~true, ssm:/configuration/default/sechub/githubRepositoryProjects~true, ""}
