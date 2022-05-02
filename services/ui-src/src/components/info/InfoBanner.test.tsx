@@ -3,27 +3,27 @@ import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
-import { DueDateTable } from "components";
+import { InfoBanner } from "components";
 
-const dueDateTableComponent = (
+const infoAlert = (
   <RouterWrappedComponent>
-    <DueDateTable templateName="MCPAR" />
+    <InfoBanner />
   </RouterWrappedComponent>
 );
 
-describe("Test Due Date Table Item", () => {
+describe("Test Info Banner Item", () => {
   beforeEach(() => {
-    render(dueDateTableComponent);
+    render(infoAlert);
   });
 
-  test("Table is visible", () => {
-    expect(screen.getByTestId("due-date-table")).toBeVisible();
+  test("Info Banner is visible", () => {
+    expect(screen.getByTestId("info-alert")).toBeVisible();
   });
 });
 
-describe("Test Table accessibility", () => {
+describe("Test Info Banner accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dueDateTableComponent);
+    const { container } = render(infoAlert);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

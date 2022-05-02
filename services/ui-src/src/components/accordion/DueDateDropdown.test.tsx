@@ -7,7 +7,7 @@ import { DueDateDropdown } from "components";
 
 /*
  * From Chakra UI Accordion test file
- * https://github.com/chakra-ui/chakra-ui/blob/main/packages/accordion/tests/accordion.test.tsx
+ * https://bit.ly/3MFtwXq
  */
 jest.mock("@chakra-ui/transition", () => ({
   ...jest.requireActual("@chakra-ui/transition"),
@@ -32,7 +32,7 @@ describe("Test Due Date Accordion Item", () => {
   });
 });
 
-describe("Test Header accessibility", () => {
+describe("Test Accordion accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(accordionComponent);
     const results = await axe(container);
