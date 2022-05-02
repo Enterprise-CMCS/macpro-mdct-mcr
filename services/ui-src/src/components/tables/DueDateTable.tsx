@@ -10,108 +10,102 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
+// assets
+import MCPARDueDatesData from "./data/MCPARDueDates.json";
+
 /* eslint-disable */
 
-// const rowMap: { [templateName: string]: Object } = {
-//   MCPAR: {
-//     header: {
-//       columnOneTitle: "Contract Year",
-//       columnTwoTitle: "Contract Period",
-//       columnThreeTitle: "Due Date",
-//     },
-//   },
-//   boxArrowRight: {},
-//   chevronDown: {},
-// };
+const rowMap: { [templateName: string]: any } = {
+  MCPAR: MCPARDueDatesData,
+  MLR: {},
+  ASR: {},
+};
 
 export const DueDateTable = ({ templateName }: Props) => {
-  console.log(
-    "There's probably a good way to map this to json somehow",
-    templateName
-  );
+  const tableValues = rowMap[templateName];
   return (
     <TableContainer>
       <Table variant="striped" size="sm">
         <Thead>
           <Tr>
             <Th color="black" fontWeight={"semibold"} fontSize={"sm"}>
-              Contract Year
+              {tableValues.header.columnOneTitle}
             </Th>
             <Th color="black" fontWeight={"semibold"} fontSize={"sm"}>
-              Contract Period
+              {tableValues.header.columnTwoTitle}
             </Th>
             <Th color="black" fontWeight={"semibold"} fontSize={"sm"}>
-              Due Date
+              {tableValues.header.columnThreeTitle}
             </Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
             <Td color="black" fontWeight={"normal"}>
-              Jul to Jun
+              {tableValues.bodyRowOne.columnOneValue}
             </Td>
             <Td color="black" fontWeight={"normal"}>
-              7/2/21 to 6/30/22
+              {tableValues.bodyRowOne.columnTwoValue}
             </Td>
             <Td color="black" fontWeight={"semibold"}>
-              Dec 27, 2022
+              {tableValues.bodyRowOne.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
             <Td color="black" fontWeight={"normal"}>
-              Sep to Aug
+              {tableValues.bodyRowTwo.columnOneValue}
             </Td>
             <Td color="black" fontWeight={"normal"}>
-              9/1/21 to 8/21/22
+              {tableValues.bodyRowTwo.columnTwoValue}
             </Td>
             <Td color="black" fontWeight={"semibold"}>
-              Feb 27, 2023
+              {tableValues.bodyRowTwo.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
             <Td color="black" fontWeight={"normal"}>
-              Oct to Sep
+              {tableValues.bodyRowThree.columnOneValue}
             </Td>
             <Td color="black" fontWeight={"normal"}>
-              10/1/21 to 9/30/22
+              {tableValues.bodyRowThree.columnTwoValue}
             </Td>
             <Td color="black" fontWeight={"semibold"}>
-              Mar 29, 2023
+              {tableValues.bodyRowThree.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
             <Td color="black" fontWeight={"normal"}>
-              Jan to Dec
+              {tableValues.bodyRowFour.columnOneValue}
             </Td>
             <Td color="black" fontWeight={"normal"}>
-              1/1/22 to 12/31/22
+              {tableValues.bodyRowFour.columnTwoValue}
             </Td>
             <Td color="black" fontWeight={"semibold"}>
-              Jun 29, 2023
+              {tableValues.bodyRowFour.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
             <Td color="black" fontWeight={"normal"}>
-              Feb to Jan
+              {tableValues.bodyRowFive.columnOneValue}
             </Td>
             <Td color="black" fontWeight={"normal"}>
-              2/1/22 to 1/31/23
+              {tableValues.bodyRowFive.columnTwoValue}
             </Td>
             <Td color="black" fontWeight={"semibold"}>
-              Jul 30, 2023
+              {tableValues.bodyRowFive.columnThreeValue}
             </Td>
           </Tr>
         </Tbody>
         <Tfoot>
           <Tr>
             <Td color="black" fontWeight={"normal"}>
-              Apr to Mar
+              {tableValues.bodyRowSix.columnOneValue}
             </Td>
             <Td color="black" fontWeight={"normal"}>
-              4/1/22 to 3/31/23
+              {tableValues.bodyRowSix.columnTwoValue}
             </Td>
             <Td color="black" fontWeight={"semibold"}>
-              Sep 27, 2023
+              {tableValues.bodyRowSix.columnThreeValue}
             </Td>
           </Tr>
         </Tfoot>
