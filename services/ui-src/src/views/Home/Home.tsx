@@ -41,12 +41,18 @@ export default () => {
       {userState ? (
         <Box sx={sx.root} data-testid="home-view">
           <Flex sx={sx.infoFlex}>
-            <Alert sx={sx.info} status="info" variant="left-accent">
-              <AlertIcon />
+            <Alert
+              sx={sx.info}
+              status="info"
+              variant="left-accent"
+              bg={"palette.alt_lightest"}
+              flexWrap="wrap"
+            >
+              <AlertIcon color={"palette.gray_darkest"} />
               <AlertTitle>
                 Welcome to the new Managed Care Reporting tool!
               </AlertTitle>
-              <AlertDescription>
+              <AlertDescription marginLeft="2rem">
                 Each state must submit one report per program.
               </AlertDescription>
             </Alert>
@@ -138,6 +144,7 @@ export default () => {
                       fontWeight={"bold"}
                       color={"palette.gray_darkest"}
                       rounded={"full"}
+                      marginTop="3rem"
                     >
                       MCPAR Due Dates
                     </Text>
@@ -147,6 +154,7 @@ export default () => {
                       fontWeight={"normal"}
                       color={"palette.gray_darkest"}
                       width="33.5rem"
+                      marginBottom="1rem"
                     >
                       Due dates vary based on contract year of the managed care
                       program and contract period for the first report.
@@ -192,6 +200,8 @@ const sx = {
   },
   info: {
     height: "5.25rem",
+    borderInlineStartColor: "palette.alt",
+    borderInlineStartWidth: "0.5rem",
   },
   mainContentFlex: {
     alignItems: "center",

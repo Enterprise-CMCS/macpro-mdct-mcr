@@ -4,7 +4,6 @@ import {
   TableContainer,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -95,8 +94,6 @@ export const DueDateTable = ({ templateName }: Props) => {
               {tableValues.bodyRowFive.columnThreeValue}
             </Td>
           </Tr>
-        </Tbody>
-        <Tfoot>
           <Tr>
             <Td color="black" fontWeight={"normal"}>
               {tableValues.bodyRowSix.columnOneValue}
@@ -108,7 +105,7 @@ export const DueDateTable = ({ templateName }: Props) => {
               {tableValues.bodyRowSix.columnThreeValue}
             </Td>
           </Tr>
-        </Tfoot>
+        </Tbody>
       </Table>
     </TableContainer>
   );
