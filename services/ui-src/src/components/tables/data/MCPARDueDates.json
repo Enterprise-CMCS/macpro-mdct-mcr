@@ -1,0 +1,37 @@
+{
+  "header": {
+    "columnOneTitle": "Contract Year",
+    "columnTwoTitle": "Contract Period",
+    "columnThreeTitle": "Due Date"
+  },
+  "bodyRowOne": {
+    "columnOneValue": "Jul to Jun",
+    "columnTwoValue": "7/2/21 to 6/30/22",
+    "columnThreeValue": "Dec 27, 2022"
+  },
+  "bodyRowTwo": {
+    "columnOneValue": "Sep to Aug",
+    "columnTwoValue": "9/1/21 to 8/21/22",
+    "columnThreeValue": "Feb 27, 2023"
+  },
+  "bodyRowThree": {
+    "columnOneValue": "Oct to Sep",
+    "columnTwoValue": "10/1/21 to 9/30/22",
+    "columnThreeValue": "Mar 29, 2023"
+  },
+  "bodyRowFour": {
+    "columnOneValue": "Jan to Dec",
+    "columnTwoValue": "1/1/22 to 12/31/22",
+    "columnThreeValue": "Jun 29, 2023"
+  },
+  "bodyRowFive": {
+    "columnOneValue": "Feb to Jan",
+    "columnTwoValue": "2/1/22 to 1/31/23",
+    "columnThreeValue": "Jul 30, 2023"
+  },
+  "bodyRowSix": {
+    "columnOneValue": "Apr to Mar",
+    "columnTwoValue": "4/1/22 to 3/31/23",
+    "columnThreeValue": "Sep 27, 2023"
+  }
+}

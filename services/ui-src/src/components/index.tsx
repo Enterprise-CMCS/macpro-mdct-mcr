@@ -9,3 +9,4 @@ export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { RouterLink } from "./app/RouterLink";
 export { DueDateTable } from "./tables/DueDateTable";
+export { DueDateDropdown } from "./accordion/DueDateDropdown";

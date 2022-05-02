@@ -13,7 +13,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { DueDateTable, Icon } from "../../components/index";
+import { DueDateDropdown, DueDateTable, Icon } from "../../components/index";
 // utils
 import { UserRoles } from "utils/types/types";
 import { useUser } from "utils/auth";
@@ -161,22 +161,11 @@ export default () => {
                     </Text>
                   </Flex>
                 )}
-                {isDesktop && (
-                  <Text
-                    //no sx because this will become an accordion
-                    fontSize={"md"}
-                    fontWeight={"normal"}
-                    color={"palette.gray_darkest"}
-                    width="33.5rem"
-                    marginTop="3rem"
-                    bg={"palette.gray_lightest"}
-                    h="3.5rem"
-                    paddingLeft="1.5rem"
-                  >
-                    One day I'll be an accordion +
-                  </Text>
+                {isDesktop ? (
+                  <DueDateDropdown templateName={"MCPAR"}></DueDateDropdown>
+                ) : (
+                  <DueDateTable templateName={"MCPAR"} />
                 )}
-                {!isDesktop && <DueDateTable templateName={"MCPAR"} />}
               </Flex>
             </Stack>
           </Flex>
