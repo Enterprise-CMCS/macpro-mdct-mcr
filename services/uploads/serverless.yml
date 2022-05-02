@@ -41,7 +41,7 @@ custom:
     stages:
       - main
       - val
-      - prod
+      - production
   scripts:
     hooks:
       # This script is run locally when running 'serverless deploy'
