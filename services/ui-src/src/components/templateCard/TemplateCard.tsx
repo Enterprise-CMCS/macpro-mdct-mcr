@@ -27,7 +27,7 @@ export const TemplateCard = ({ templateName }: Props) => {
 
   const getTemplateSize = (templateName: string) => {
     // fetch file size from local or s3 for display
-    console.log("Searching S3 for %s template: ", templateName); // eslint-disable-line
+    console.log("Searching S3 for %s template size", templateName); // eslint-disable-line
     return "1.2MB";
   };
   return (
@@ -36,10 +36,11 @@ export const TemplateCard = ({ templateName }: Props) => {
       py={6}
       color={"palette.gray"}
       justify="center"
-      width="46rem"
+      maxW="46rem"
       boxShadow="0px 3px 9px rgba(0, 0, 0, 0.2)"
       direction="row"
       data-testid="template-download-card"
+      flex="1"
       // sx={sx.downloadCardStack}
     >
       {isDesktop && (
