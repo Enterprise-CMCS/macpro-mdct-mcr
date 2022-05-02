@@ -23,7 +23,7 @@ const rowMap: { [templateName: string]: any } = {
 export const DueDateTable = ({ templateName }: Props) => {
   const tableValues = rowMap[templateName];
   return (
-    <TableContainer>
+    <TableContainer data-testid="due-date-table">
       <Table variant="striped" size="sm">
         <Thead>
           <Tr>

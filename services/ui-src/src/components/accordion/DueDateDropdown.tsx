@@ -14,7 +14,12 @@ import { FiMinus } from "react-icons/fi";
 
 export const DueDateDropdown = ({ templateName }: Props) => {
   return (
-    <Accordion allowToggle={true} width="33.5rem" marginTop="3rem">
+    <Accordion
+      allowToggle={true}
+      width="33.5rem"
+      marginTop="3rem"
+      data-testid="due-date-accordion"
+    >
       <AccordionItem>
         {({ isExpanded }) => (
           <>
