@@ -50,9 +50,6 @@ Root `.env`
 ```
 SKIP_PREFLIGHT_CHECK=true
 LOCAL_LOGIN=true
-MEASURE_TABLE_NAME=local-measures
-MEASURE_TABLE_ARN=local_nonsense_if_unset_we_search_CF_for
-measureTableName=local-measures
 DYNAMODB_URL=http://localhost:8000
 API_URL=http://localhost:3030/local
 S3_LOCAL_ENDPOINT=http://localhost:4569
@@ -67,16 +64,15 @@ LOCAL_LOGIN=true
 API_REGION=us-east-1
 API_URL=http://localhost:3030
 COGNITO_REGION=us-east-1
-COGNITO_IDENTITY_POOL_ID=us-east-1:61c849d8-f95c-45af-8131-15b75c525034
-COGNITO_USER_POOL_ID=us-east-1_7U4ihGYZP
-COGNITO_USER_POOL_CLIENT_ID=46fh6sftchq768ab0v65cpq0cf
-COGNITO_USER_POOL_CLIENT_DOMAIN=master-login-46fh6sftchq768ab0v65cpq0cf.auth.us-east-1.amazoncognito.com
+COGNITO_IDENTITY_POOL_ID=us-east-1:446712541566
+COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
+COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
+COGNITO_USER_POOL_CLIENT_DOMAIN=main-login-4n2andd7qumjgdojec3cbqsemu.auth.us-east-1.amazoncognito.com
 COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
 COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
 S3_ATTACHMENTS_BUCKET_REGION=us-east-1
-S3_ATTACHMENTS_BUCKET_NAME=uploads-master-attachments-024259748323
+S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
 S3_LOCAL_ENDPOINT=http://localhost:4569
-BRANCH_NAME=placeholder
 ```
 
 ## Running the database locally
