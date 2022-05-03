@@ -5,12 +5,8 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Icon as ChakraIcon,
 } from "@chakra-ui/react";
-import { DueDateTable } from "../index";
-// assets
-import { BsPlus } from "react-icons/bs";
-import { FiMinus } from "react-icons/fi";
+import { DueDateTable, Icon } from "../index";
 
 export const DueDateDropdown = ({ templateName }: Props) => {
   return (
@@ -28,9 +24,9 @@ export const DueDateDropdown = ({ templateName }: Props) => {
                   When is the {templateName} due?
                 </Box>
                 {isExpanded ? (
-                  <ChakraIcon as={FiMinus} boxSize="1.5rem" />
+                  <Icon icon="minus" boxSize="1.5rem"></Icon>
                 ) : (
-                  <ChakraIcon as={BsPlus} boxSize="2rem" />
+                  <Icon icon="plus" boxSize="2rem"></Icon>
                 )}
               </AccordionButton>
             </h2>

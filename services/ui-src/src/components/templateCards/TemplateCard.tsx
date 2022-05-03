@@ -1,21 +1,12 @@
 // components
-import {
-  Box,
-  Button,
-  Flex,
-  Icon as ChakraIcon,
-  Image,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { DueDateDropdown } from "../index";
+import { Box, Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import { DueDateDropdown, Icon } from "../index";
 // utils
 import {
   makeMediaQueryClasses,
   useBreakpoint,
 } from "../../utils/useBreakpoint";
 // assets
-import { HiDownload } from "react-icons/hi";
 import MCPARCardText from "./data/MCPARCardText.json";
 import SpreadsheetIcon from "../../assets/icon_spreadsheet.png";
 
@@ -59,7 +50,7 @@ export const TemplateCard = ({ templateName }: Props) => {
         </Text>
         <Button
           sx={sx.templateDownloadButton}
-          leftIcon={<ChakraIcon as={HiDownload} boxSize="1.5rem" />}
+          leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem"></Icon>}
           rightIcon={
             <Text sx={sx.fileSizeText} as="sub">
               {getTemplateSize("MCPAR")}

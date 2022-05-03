@@ -16,7 +16,12 @@ export const MenuOption = ({
       sx={!hideText ? { paddingRight: ".5rem" } : {}}
       data-testid={dataTestId}
     >
-      <Icon icon={icon} />
+      <Icon
+        icon={icon}
+        margin=".5rem"
+        fontSize="1.4rem"
+        color="palette.white"
+      />
       {!hideText && <Text sx={sx.text}>{text}</Text>}
     </Flex>
   );
