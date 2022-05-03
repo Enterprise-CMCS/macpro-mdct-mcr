@@ -15,24 +15,17 @@ import { FiMinus } from "react-icons/fi";
 export const DueDateDropdown = ({ templateName }: Props) => {
   return (
     <Accordion
+      sx={sx.accordion}
       allowToggle={true}
-      width="33.5rem"
-      marginTop="3rem"
       data-testid="due-date-accordion"
     >
       <AccordionItem>
         {({ isExpanded }) => (
           <>
             <h2>
-              <AccordionButton bg={"palette.gray_lightest"} height="3.5rem">
-                <Box
-                  flex="1"
-                  textAlign="left"
-                  fontSize={"md"}
-                  fontWeight={"normal"}
-                  color={"palette.gray_darkest"}
-                >
-                  When is the MCPAR due?
+              <AccordionButton sx={sx.accordionButton}>
+                <Box flex="1" sx={sx.accordionText}>
+                  When is the {templateName} due?
                 </Box>
                 {isExpanded ? (
                   <ChakraIcon as={FiMinus} boxSize="1.5rem" />
@@ -54,3 +47,16 @@ export const DueDateDropdown = ({ templateName }: Props) => {
 interface Props {
   templateName: string;
 }
+
+const sx = {
+  accordion: {
+    marginTop: "2rem",
+  },
+  accordionButton: {
+    bg: "palette.gray_lightest",
+    height: "3.5rem",
+  },
+  accordionText: {
+    textAlign: "left",
+  },
+};

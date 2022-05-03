@@ -3,21 +3,27 @@ import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
-import { InfoBanner } from "components";
+import { Banner } from "components";
 
 const infoAlert = (
   <RouterWrappedComponent>
-    <InfoBanner />
+    <Banner
+      // status="info"
+      bgColor="palette.alt_lightest"
+      accentColor="palette.alt"
+      title="Test banner!"
+      description="This is for testing."
+    />
   </RouterWrappedComponent>
 );
 
-describe("Test Info Banner Item", () => {
+describe("Test Banner Item", () => {
   beforeEach(() => {
     render(infoAlert);
   });
 
-  test("Info Banner is visible", () => {
-    expect(screen.getByTestId("info-alert")).toBeVisible();
+  test("Banner is visible", () => {
+    expect(screen.getByTestId("banner")).toBeVisible();
   });
 });
 

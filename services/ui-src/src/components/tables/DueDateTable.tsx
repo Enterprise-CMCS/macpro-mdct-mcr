@@ -27,81 +27,51 @@ export const DueDateTable = ({ templateName }: Props) => {
       <Table variant="striped" size="sm">
         <Thead>
           <Tr>
-            <Th color="black" fontWeight={"semibold"} fontSize={"sm"}>
-              {tableValues.header.columnOneTitle}
-            </Th>
-            <Th color="black" fontWeight={"semibold"} fontSize={"sm"}>
-              {tableValues.header.columnTwoTitle}
-            </Th>
-            <Th color="black" fontWeight={"semibold"} fontSize={"sm"}>
-              {tableValues.header.columnThreeTitle}
-            </Th>
+            <Th sx={sx.tableHeader}>{tableValues.header.columnOneTitle}</Th>
+            <Th sx={sx.tableHeader}>{tableValues.header.columnTwoTitle}</Th>
+            <Th sx={sx.tableHeader}>{tableValues.header.columnThreeTitle}</Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowOne.columnOneValue}
-            </Td>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowOne.columnTwoValue}
-            </Td>
-            <Td color="black" fontWeight={"semibold"}>
+            <Td sx={sx.tableData}>{tableValues.bodyRowOne.columnOneValue}</Td>
+            <Td sx={sx.tableData}>{tableValues.bodyRowOne.columnTwoValue}</Td>
+            <Td sx={sx.tableDataDueDate}>
               {tableValues.bodyRowOne.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowTwo.columnOneValue}
-            </Td>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowTwo.columnTwoValue}
-            </Td>
-            <Td color="black" fontWeight={"semibold"}>
+            <Td sx={sx.tableData}>{tableValues.bodyRowTwo.columnOneValue}</Td>
+            <Td sx={sx.tableData}>{tableValues.bodyRowTwo.columnTwoValue}</Td>
+            <Td sx={sx.tableDataDueDate}>
               {tableValues.bodyRowTwo.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowThree.columnOneValue}
-            </Td>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowThree.columnTwoValue}
-            </Td>
-            <Td color="black" fontWeight={"semibold"}>
+            <Td sx={sx.tableData}>{tableValues.bodyRowThree.columnOneValue}</Td>
+            <Td sx={sx.tableData}>{tableValues.bodyRowThree.columnTwoValue}</Td>
+            <Td sx={sx.tableDataDueDate}>
               {tableValues.bodyRowThree.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowFour.columnOneValue}
-            </Td>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowFour.columnTwoValue}
-            </Td>
-            <Td color="black" fontWeight={"semibold"}>
+            <Td sx={sx.tableData}>{tableValues.bodyRowFour.columnOneValue}</Td>
+            <Td sx={sx.tableData}>{tableValues.bodyRowFour.columnTwoValue}</Td>
+            <Td sx={sx.tableDataDueDate}>
               {tableValues.bodyRowFour.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowFive.columnOneValue}
-            </Td>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowFive.columnTwoValue}
-            </Td>
-            <Td color="black" fontWeight={"semibold"}>
+            <Td sx={sx.tableData}>{tableValues.bodyRowFive.columnOneValue}</Td>
+            <Td sx={sx.tableData}>{tableValues.bodyRowFive.columnTwoValue}</Td>
+            <Td sx={sx.tableDataDueDate}>
               {tableValues.bodyRowFive.columnThreeValue}
             </Td>
           </Tr>
           <Tr>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowSix.columnOneValue}
-            </Td>
-            <Td color="black" fontWeight={"normal"}>
-              {tableValues.bodyRowSix.columnTwoValue}
-            </Td>
-            <Td color="black" fontWeight={"semibold"}>
+            <Td sx={sx.tableData}>{tableValues.bodyRowSix.columnOneValue}</Td>
+            <Td sx={sx.tableData}>{tableValues.bodyRowSix.columnTwoValue}</Td>
+            <Td sx={sx.tableDataDueDate}>
               {tableValues.bodyRowSix.columnThreeValue}
             </Td>
           </Tr>
@@ -114,3 +84,19 @@ export const DueDateTable = ({ templateName }: Props) => {
 interface Props {
   templateName: string;
 }
+
+const sx = {
+  tableHeader: {
+    color: "black",
+    fontWeight: "semibold",
+    fontSize: "sm",
+  },
+  tableData: {
+    color: "black",
+    fontWeight: "normal",
+  },
+  tableDataDueDate: {
+    color: "black",
+    fontWeight: "semibold",
+  },
+};

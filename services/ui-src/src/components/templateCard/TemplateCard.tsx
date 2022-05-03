@@ -1,19 +1,23 @@
-/* eslint-disable */
 // components
 import {
+  Box,
   Button,
   Flex,
   Icon as ChakraIcon,
+  Image,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { DueDateDropdown, DueDateTable } from "../../components/index";
+import { DueDateDropdown } from "../../components/index";
 // utils
-import { useBreakpoint } from "../../utils/useBreakpoint";
+import {
+  makeMediaQueryClasses,
+  useBreakpoint,
+} from "../../utils/useBreakpoint";
 // assets
-import { BsFileEarmarkSpreadsheetFill } from "react-icons/bs";
 import { HiDownload } from "react-icons/hi";
 import MCPARCardText from "./data/MCPARCardText.json";
+import SpreadsheetIcon from "../../assets/icon_spreadsheet.png";
 
 const templateTextMap: { [templateName: string]: any } = {
   MCPAR: MCPARCardText,
@@ -23,75 +27,41 @@ const templateTextMap: { [templateName: string]: any } = {
 
 export const TemplateCard = ({ templateName }: Props) => {
   const { isTablet, isDesktop } = useBreakpoint();
+  const mqClasses = makeMediaQueryClasses();
   const cardTextValues = templateTextMap[templateName];
 
   const getTemplateSize = (templateName: string) => {
-    // fetch file size from local or s3 for display
+    // TODO fetch file size from local or s3 for display
     console.log("Searching S3 for %s template size", templateName); // eslint-disable-line
     return "1.2MB";
   };
   return (
     <Stack
-      textAlign="left"
-      py={6}
-      color={"palette.gray"}
-      justify="center"
-      maxW="46rem"
-      boxShadow="0px 3px 9px rgba(0, 0, 0, 0.2)"
-      direction="row"
+      sx={sx.root}
+      className={mqClasses}
       data-testid="template-download-card"
-      flex="1"
-      // sx={sx.downloadCardStack}
     >
       {isDesktop && (
-        <Flex sx={sx.spreadsheetIconFlex} justify="center" width="9.5rem">
-          <ChakraIcon
-            as={BsFileEarmarkSpreadsheetFill}
+        <Box sx={sx.spreadsheetIconBox}>
+          <Image
+            src={SpreadsheetIcon}
+            alt="Spreadsheet icon"
             sx={sx.spreadsheetIcon}
-            boxSize="5.5rem"
           />
-        </Flex>
+        </Box>
       )}
-      <Flex sx={sx.cardContentFlex} flexDirection="column" gap="0.5rem">
-        <Text
-          sx={sx.templateNameText}
-          fontSize={"lg"}
-          fontWeight={"bold"}
-          color={"palette.gray_darkest"}
-          rounded={"full"}
-        >
-          {cardTextValues.title}
-        </Text>
-        {!isDesktop && (
-          <Text
-            fontSize={"md"}
-            fontWeight={"normal"}
-            color={"palette.gray_darkest"}
-          >
-            {cardTextValues.dueDateText}
-          </Text>
-        )}
-        <Text
-          sx={sx.templateDescriptionText}
-          fontSize={"md"}
-          fontWeight={"normal"}
-          color={"palette.gray_darkest"}
-          width="33.5rem"
-        >
+      <Flex sx={sx.cardContentFlex}>
+        <Text sx={sx.templateNameText}>{cardTextValues.title}</Text>
+        {!isDesktop && <Text>{cardTextValues.dueDateText}</Text>}
+        <Text>
           {cardTextValues.templateDescriptionText}
           {isDesktop ? cardTextValues.additionalDescriptionText : ""}
         </Text>
         <Button
           sx={sx.templateDownloadButton}
           leftIcon={<ChakraIcon as={HiDownload} boxSize="1.5rem" />}
-          borderRadius="0.25rem"
-          color={"palette.white"}
-          bg={"palette.main"}
-          width="18.5rem"
-          fontWeight={"bold"}
-          _hover={{ bg: "palette.main_darker" }}
           rightIcon={
-            <Text as="sub" fontSize="0.75rem" fontWeight={"semibold"}>
+            <Text sx={sx.fileSizeText} as="sub">
               {getTemplateSize("MCPAR")}
             </Text>
           }
@@ -99,34 +69,14 @@ export const TemplateCard = ({ templateName }: Props) => {
           {cardTextValues.downloadText}
         </Button>
         {isTablet && (
-          <Flex flexDirection={"column"}>
-            <Text
-              sx={sx.templateNameText}
-              fontSize={"lg"}
-              fontWeight={"bold"}
-              color={"palette.gray_darkest"}
-              rounded={"full"}
-              marginTop="3rem"
-            >
-              {templateName} Due Dates
-            </Text>
-            <Text
-              sx={sx.templateDescriptionText}
-              fontSize={"md"}
-              fontWeight={"normal"}
-              color={"palette.gray_darkest"}
-              width="33.5rem"
-              marginBottom="1rem"
-            >
+          <Flex sx={sx.tabletAdditionalTextFlex}>
+            <Text sx={sx.tabletDueDateText}>{templateName} Due Dates</Text>
+            <Text sx={sx.tabletDescriptionText}>
               {cardTextValues.tableDescriptionText}
             </Text>
           </Flex>
         )}
-        {isDesktop ? (
-          <DueDateDropdown templateName={templateName}></DueDateDropdown>
-        ) : (
-          <DueDateTable templateName={templateName} />
-        )}
+        <DueDateDropdown templateName={templateName}></DueDateDropdown>
       </Flex>
     </Stack>
   );
@@ -137,50 +87,53 @@ interface Props {
 }
 
 const sx = {
-  downloadCardStack: {
-    // textAlign: "left",
-    // py: 6,
-    // color: "palette.gray",
-    // align: "left",
-    // width: "46rem",
-    // boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
-    // direction: "row",
+  root: {
+    textAlign: "left",
+    padding: "2rem",
+    boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
+    flexDirection: "row",
   },
-  spreadsheetIconFlex: {
-    // justify: "center",
-    // width: "9.5rem",
+  spreadsheetIconBox: {
+    width: "9.5rem",
   },
   spreadsheetIcon: {
-    // boxSize: "5.5rem",
+    boxSize: "5.5rem",
   },
   cardContentFlex: {
-    // flexDirection: "column",
-    // gap: "0.5rem",
+    flexDirection: "column",
+    gap: "0.5rem",
+    color: "palette.gray_darkest",
   },
   templateNameText: {
-    // fontSize: "lg",
-    // fontWeight: "bold",
-    // color: "palette.gray_darkest",
-    // rounded: "full",
+    fontSize: "lg",
+    fontWeight: "bold",
+    color: "palette.gray_darkest",
   },
-  templateFileStack: {
-    // direction: "row",
-    // align: "center",
+  tabletDueDateText: {
+    fontSize: "lg",
+    fontWeight: "bold",
+    color: "palette.gray_darkest",
+    marginTop: "1rem",
   },
-  templateDescriptionText: {
-    // fontSize: "md",
-    // fontWeight: "normal",
-    // color: "palette.gray_darkest",
-    // width: "33.5rem",
+  tabletDescriptionText: {
+    fontSize: "md",
+    fontWeight: "normal",
+    color: "palette.gray_darkest",
   },
   templateDownloadButton: {
-    // borderRadius: "0.25rem",
-    // color: "palette.white",
-    // bg: "palette.main",
-    // width: "18.5rem",
-    // fontWeight: "bold",
-    // _hover: {
-    //   bg: "palette.main_darker",
-    // },
+    borderRadius: "0.25rem",
+    color: "palette.white",
+    background: "palette.main",
+    maxW: "18.5rem",
+    fontWeight: "bold",
+    _hover: {
+      background: "palette.main_darker",
+    },
+  },
+  fileSizeText: {
+    fontWeight: "semibold",
+  },
+  tabletAdditionalTextFlex: {
+    flexDirection: "column",
   },
 };
