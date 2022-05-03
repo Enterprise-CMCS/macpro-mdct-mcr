@@ -16,6 +16,19 @@ export const theme = extendTheme({
     xl: "100em", // desktop, ultrawide (>100em|1600px)
   },
   colors: {
+    colorSchemes: {
+      main: {
+        100: "#ffffff",
+        200: "#e1f3f8",
+        300: "#9bdaf1",
+        400: "#0071bc",
+        500: "#0071bc",
+        600: "#205493",
+        700: "#205493",
+        800: "#112e51",
+        900: "#112e51",
+      },
+    },
     palette: {
       // primary
       main: "#0071bc",
