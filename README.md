@@ -4,7 +4,7 @@ A serverless form submission application built and deployed to AWS with the Serv
 
 ## Release
 
-Our product is promoted through branches. Master is merged to val to affect a master release, and val is merged to production to affect a production release. Please use the buttons below to promote/release code to higher environments.<br />
+Our product is promoted through branches. Main is merged to val to affect a main release, and val is merged to production to affect a production release. Please use the buttons below to promote/release code to higher environments.<br />
 
 ## Requirements
 
@@ -40,9 +40,40 @@ When run locally, auth bypasses Cognito. The frontend mimics login in local stor
 
 ### Running the app locally
 
-- Populate .env files in the root directory and in the `ui-src` directory.
+- Populate .env files in the root directory and in the `ui-src` directory. See Environment Configuration below for up-to-date files.
 - Run all the services locally with the command `./dev local`
 - Troubleshooting: See the Requirements section if the command asks for any prerequisites you don't have installed.
+
+#### Environment Configuration
+
+Root `.env`
+```
+SKIP_PREFLIGHT_CHECK=true
+LOCAL_LOGIN=true
+DYNAMODB_URL=http://localhost:8000
+API_URL=http://localhost:3030/local
+S3_LOCAL_ENDPOINT=http://localhost:4569
+S3_ATTACHMENTS_BUCKET_NAME=local-uploads
+URL=http://localhost/3000
+DISABLE_ESLINT_PLUGIN=true
+```
+
+/services/ui-src `.env`
+```
+LOCAL_LOGIN=true
+API_REGION=us-east-1
+API_URL=http://localhost:3030
+COGNITO_REGION=us-east-1
+COGNITO_IDENTITY_POOL_ID=us-east-1:76708bb0-a458-4ea7-b90e-995ff5da5ab6
+COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
+COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
+COGNITO_USER_POOL_CLIENT_DOMAIN=main-login-4n2andd7qumjgdojec3cbqsemu.auth.us-east-1.amazoncognito.com
+COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
+COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
+S3_ATTACHMENTS_BUCKET_REGION=us-east-1
+S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
+S3_LOCAL_ENDPOINT=http://localhost:4569
+```
 
 ## Running the database locally
 
