@@ -1,0 +1,4 @@
+rules:
+  no-console: off
+  multiline-comment-style: off
+  '@typescript-eslint/no-unused-vars': off

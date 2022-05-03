@@ -17,6 +17,8 @@
     "concurrently": "^6.2.1",
     "cypress": "^9.4.1",
     "cypress-axe": "^0.14.0",
+    "cypress-cucumber-preprocessor": "^4.2.0",
+    "cypress-file-upload": "^5.0.8",
     "cypress-xpath": "^1.6.2"
   },
   "cypress-cucumber-preprocessor": {

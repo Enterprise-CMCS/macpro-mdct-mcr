@@ -4,7 +4,7 @@ A serverless form submission application built and deployed to AWS with the Serv
 
 ## Release
 
-Our product is promoted through branches. Master is merged to val to affect a master release, and val is merged to production to affect a production release. Please use the buttons below to promote/release code to higher environments.<br />
+Our product is promoted through branches. Main is merged to val to affect a main release, and val is merged to production to affect a production release. Please use the buttons below to promote/release code to higher environments.<br />
 
 ## Requirements
 
