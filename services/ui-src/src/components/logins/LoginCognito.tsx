@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 // components
-import { Button, Heading, Input, Stack } from "@chakra-ui/react";
+import { Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -37,13 +37,11 @@ export const LoginCognito = () => {
 
   return (
     <Stack>
-      <Heading mb="2" size="md" alignSelf="center">
+      <Heading size="md" alignSelf="center">
         Login with Cognito
       </Heading>
       <label>
-        <Heading mb="2" size="sm">
-          Email
-        </Heading>
+        <Text mb="2">Email</Text>
         <Input
           id="email"
           name="email"
@@ -54,9 +52,7 @@ export const LoginCognito = () => {
         />
       </label>
       <label>
-        <Heading mb="2" size="sm">
-          Password
-        </Heading>
+        <Text mb="2">Password</Text>
         <Input
           id="password"
           name="password"

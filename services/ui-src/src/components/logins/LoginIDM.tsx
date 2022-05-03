@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const LoginIDM = ({ loginWithIDM }: Props) => (
-  <Box textAlign="center" mb="6">
+  <Box textAlign="center">
     <Heading mb="2" size="md" alignSelf="center">
       Login with IDM
     </Heading>
