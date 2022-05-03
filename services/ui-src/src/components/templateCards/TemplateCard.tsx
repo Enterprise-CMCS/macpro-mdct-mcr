@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { DueDateDropdown } from "../../components/index";
+import { DueDateDropdown } from "../index";
 // utils
 import {
   makeMediaQueryClasses,

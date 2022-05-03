@@ -21,6 +21,13 @@ export enum MeasureStatus {
   INCOMPLETE = "incomplete",
 }
 
+export enum bannerTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
 export interface Params {
   state?: string;
   year?: string;

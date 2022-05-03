@@ -4,11 +4,12 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { Banner } from "components";
+import { bannerTypes } from "utils/types/types";
 
 const infoAlert = (
   <RouterWrappedComponent>
     <Banner
-      // status="info"
+      status={bannerTypes.INFO}
       bgColor="palette.alt_lightest"
       accentColor="palette.alt"
       title="Test banner!"

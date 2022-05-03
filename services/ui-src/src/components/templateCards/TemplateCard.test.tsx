@@ -5,6 +5,17 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { TemplateCard } from "components";
 
+/*
+ * From Chakra UI Accordion test file
+ * https://bit.ly/3MFtwXq
+ */
+jest.mock("@chakra-ui/transition", () => ({
+  ...jest.requireActual("@chakra-ui/transition"),
+  Collapse: jest.fn(({ in: inProp, children }: any) => (
+    <div hidden={!inProp}>{children}</div>
+  )),
+}));
+
 const templateCardComponent = (
   <RouterWrappedComponent>
     <TemplateCard templateName="MCPAR" />
