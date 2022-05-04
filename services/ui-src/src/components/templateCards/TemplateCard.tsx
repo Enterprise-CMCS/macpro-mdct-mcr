@@ -73,6 +73,7 @@ const sx = {
   },
   spreadsheetIcon: {
     boxSize: "5.5rem",
+    marginRight: "2rem",
   },
   cardContentFlex: {
     flexDirection: "column",
