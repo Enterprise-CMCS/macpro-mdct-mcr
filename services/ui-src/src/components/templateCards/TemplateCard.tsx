@@ -67,6 +67,7 @@ const sx = {
     padding: "2rem",
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     flexDirection: "row",
+    marginBottom: "2rem",
   },
   spreadsheetIcon: {
     boxSize: "5.5rem",
