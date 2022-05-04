@@ -1,24 +1,22 @@
 // components
-import { Box, Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
 import { DueDateDropdown, Icon } from "../index";
 // utils
-import {
-  makeMediaQueryClasses,
-  useBreakpoint,
-} from "../../utils/useBreakpoint";
+import { useBreakpoint } from "../../utils/useBreakpoint";
 // assets
 import MCPARCardText from "./data/MCPARCardText.json";
+import MLRCardText from "./data/MLRCardText.json";
+import NAAARCardText from "./data/NAAARCardText.json";
 import SpreadsheetIcon from "../../assets/icon_spreadsheet.png";
 
 const templateTextMap: { [templateName: string]: any } = {
   MCPAR: MCPARCardText,
-  MLR: {},
-  ASR: {},
+  MLR: MLRCardText,
+  NAAAR: NAAARCardText,
 };
 
 export const TemplateCard = ({ templateName }: Props) => {
-  const { isTablet, isDesktop } = useBreakpoint();
-  const mqClasses = makeMediaQueryClasses();
+  const { isDesktop } = useBreakpoint();
   const cardTextValues = templateTextMap[templateName];
 
   const getTemplateSize = (templateName: string) => {
@@ -27,19 +25,13 @@ export const TemplateCard = ({ templateName }: Props) => {
     return "1.2MB";
   };
   return (
-    <Stack
-      sx={sx.root}
-      className={mqClasses}
-      data-testid="template-download-card"
-    >
+    <Stack sx={sx.root} data-testid="template-download-card">
       {isDesktop && (
-        <Box sx={sx.spreadsheetIconBox}>
-          <Image
-            src={SpreadsheetIcon}
-            alt="Spreadsheet icon"
-            sx={sx.spreadsheetIcon}
-          />
-        </Box>
+        <Image
+          src={SpreadsheetIcon}
+          alt="Spreadsheet icon"
+          sx={sx.spreadsheetIcon}
+        />
       )}
       <Flex sx={sx.cardContentFlex}>
         <Text sx={sx.templateNameText}>{cardTextValues.title}</Text>
@@ -53,20 +45,12 @@ export const TemplateCard = ({ templateName }: Props) => {
           leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem"></Icon>}
           rightIcon={
             <Text sx={sx.fileSizeText} as="sub">
-              {getTemplateSize("MCPAR")}
+              {getTemplateSize(templateName)}
             </Text>
           }
         >
           {cardTextValues.downloadText}
         </Button>
-        {isTablet && (
-          <Flex sx={sx.tabletAdditionalTextFlex}>
-            <Text sx={sx.tabletDueDateText}>{templateName} Due Dates</Text>
-            <Text sx={sx.tabletDescriptionText}>
-              {cardTextValues.tableDescriptionText}
-            </Text>
-          </Flex>
-        )}
         <DueDateDropdown templateName={templateName}></DueDateDropdown>
       </Flex>
     </Stack>
@@ -84,9 +68,6 @@ const sx = {
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     flexDirection: "row",
   },
-  spreadsheetIconBox: {
-    width: "9.5rem",
-  },
   spreadsheetIcon: {
     boxSize: "5.5rem",
   },
@@ -98,17 +79,6 @@ const sx = {
   templateNameText: {
     fontSize: "lg",
     fontWeight: "bold",
-    color: "palette.gray_darkest",
-  },
-  tabletDueDateText: {
-    fontSize: "lg",
-    fontWeight: "bold",
-    color: "palette.gray_darkest",
-    marginTop: "1rem",
-  },
-  tabletDescriptionText: {
-    fontSize: "md",
-    fontWeight: "normal",
     color: "palette.gray_darkest",
   },
   templateDownloadButton: {
@@ -123,8 +93,5 @@ const sx = {
   },
   fileSizeText: {
     fontWeight: "semibold",
-  },
-  tabletAdditionalTextFlex: {
-    flexDirection: "column",
   },
 };

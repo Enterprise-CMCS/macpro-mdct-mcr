@@ -8,16 +8,11 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-
 // assets
 import MCPARDueDatesData from "./data/MCPARDueDates.json";
 
-/* eslint-disable */
-
 const rowMap: { [templateName: string]: any } = {
   MCPAR: MCPARDueDatesData,
-  MLR: {},
-  ASR: {},
 };
 
 export const DueDateTable = ({ templateName }: Props) => {

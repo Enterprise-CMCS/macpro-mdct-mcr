@@ -21,7 +21,7 @@ export enum MeasureStatus {
   INCOMPLETE = "incomplete",
 }
 
-export enum bannerTypes {
+export enum BannerTypes {
   ERROR = "error",
   INFO = "info",
   SUCCESS = "success",

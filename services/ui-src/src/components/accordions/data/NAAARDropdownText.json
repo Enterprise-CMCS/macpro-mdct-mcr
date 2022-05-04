@@ -1,0 +1,8 @@
+{
+  "accordionText": "When is my NAAAR due?",
+  "hasTable": false,
+  "hasList": true,
+  "accordionDescriptionText": "Submit your NAAAR when (1) your state enters contract with a new managed care plan or (2) there are any significant changes to a Managed Care Organization (MCO), Prepaid Inpatient Health Plan (PIHP) or Prepaid Ambulatory Health Plan (PAHP) operation such as: ",
+  "accordionDescriptionTextBulletOne": "Enrollment of a new population",
+  "accordionDescriptionTextBulletTwo": "Changes to services, benefits, geographic service area, composition of provider network or payments to its provider network"
+}

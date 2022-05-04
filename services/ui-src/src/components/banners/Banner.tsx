@@ -7,7 +7,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-import { bannerTypes } from "utils/types/types";
+import { BannerTypes } from "utils/types/types";
 
 // Make alert banner and pass in status and color, text,
 export const Banner = ({
@@ -37,11 +37,11 @@ export const Banner = ({
 
 // todo figure out how to pass status which is an enum from Chakra
 interface Props {
-  status: bannerTypes;
-  bgColor: string;
-  accentColor: string;
+  status: BannerTypes;
   title: string;
   description: string;
+  bgColor?: string;
+  accentColor?: string;
 }
 
 const sx = {

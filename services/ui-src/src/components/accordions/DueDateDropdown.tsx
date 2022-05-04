@@ -5,23 +5,34 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Flex,
+  ListItem,
+  Text,
+  UnorderedList,
 } from "@chakra-ui/react";
 import { DueDateTable, Icon } from "../index";
+// assets
+import MCPARDropdownText from "./data/MCPARDropdownText.json";
+import MLRDropdownText from "./data/MLRDropdownText.json";
+import NAAARDropDownText from "./data/NAAARDropdownText.json";
+
+const templateTextMap: { [templateName: string]: any } = {
+  MCPAR: MCPARDropdownText,
+  MLR: MLRDropdownText,
+  NAAAR: NAAARDropDownText,
+};
 
 export const DueDateDropdown = ({ templateName }: Props) => {
+  const dropDownTextValues = templateTextMap[templateName];
   return (
-    <Accordion
-      sx={sx.accordion}
-      allowToggle={true}
-      data-testid="due-date-accordion"
-    >
+    <Accordion sx={sx.root} allowToggle={true} data-testid="due-date-accordion">
       <AccordionItem>
         {({ isExpanded }) => (
           <>
             <h2>
               <AccordionButton sx={sx.accordionButton}>
                 <Box flex="1" sx={sx.accordionText}>
-                  When is the {templateName} due?
+                  {dropDownTextValues.accordionText}
                 </Box>
                 {isExpanded ? (
                   <Icon icon="minus" boxSize="1.5rem"></Icon>
@@ -31,7 +42,31 @@ export const DueDateDropdown = ({ templateName }: Props) => {
               </AccordionButton>
             </h2>
             <AccordionPanel>
-              <DueDateTable templateName={templateName} />
+              <Flex sx={sx.accordionAdditionalTextFlex}>
+                <Text sx={sx.accordionDueDateText}>
+                  {templateName} Due Dates
+                </Text>
+                <Text sx={sx.accordionDescriptionText}>
+                  {dropDownTextValues.accordionDescriptionText}
+                </Text>
+                {dropDownTextValues.hasTable ? (
+                  <DueDateTable templateName={templateName} />
+                ) : (
+                  ""
+                )}
+                {dropDownTextValues.hasList ? (
+                  <UnorderedList>
+                    <ListItem>
+                      {dropDownTextValues.accordionDescriptionTextBulletOne}
+                    </ListItem>
+                    <ListItem>
+                      {dropDownTextValues.accordionDescriptionTextBulletTwo}
+                    </ListItem>
+                  </UnorderedList>
+                ) : (
+                  ""
+                )}
+              </Flex>
             </AccordionPanel>
           </>
         )}
@@ -45,7 +80,7 @@ interface Props {
 }
 
 const sx = {
-  accordion: {
+  root: {
     marginTop: "2rem",
   },
   accordionButton: {
@@ -54,5 +89,20 @@ const sx = {
   },
   accordionText: {
     textAlign: "left",
+  },
+  accordionAdditionalTextFlex: {
+    flexDirection: "column",
+  },
+  accordionDueDateText: {
+    fontSize: "lg",
+    fontWeight: "bold",
+    color: "palette.gray_darkest",
+    marginTop: "1rem",
+  },
+  accordionDescriptionText: {
+    fontSize: "md",
+    fontWeight: "normal",
+    color: "palette.gray_darkest",
+    marginBottom: "1rem",
   },
 };

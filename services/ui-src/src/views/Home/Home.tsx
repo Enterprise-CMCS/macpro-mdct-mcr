@@ -1,12 +1,10 @@
-/* eslint-disable */
 import { Navigate } from "react-router-dom";
 // components
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Banner, TemplateCard } from "../../components/index";
 // utils
-import { UserRoles } from "utils/types/types";
+import { BannerTypes, UserRoles } from "utils/types/types";
 import { useUser } from "utils/auth";
-import { bannerTypes } from "utils/types/types";
 
 export default () => {
   const { userRole, userState } = useUser();
@@ -21,7 +19,7 @@ export default () => {
       {userState ? (
         <Box sx={sx.root} data-testid="home-view">
           <Banner
-            status={bannerTypes.INFO}
+            status={BannerTypes.INFO}
             bgColor="palette.alt_lightest"
             accentColor="palette.alt"
             title="Welcome to the new Managed Care Reporting tool!"
@@ -40,6 +38,8 @@ export default () => {
               </Box>
             </Box>
             <TemplateCard templateName="MCPAR"></TemplateCard>
+            <TemplateCard templateName="MLR"></TemplateCard>
+            <TemplateCard templateName="NAAAR"></TemplateCard>
           </Flex>
         </Box>
       ) : (
