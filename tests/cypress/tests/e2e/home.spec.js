@@ -10,7 +10,7 @@ beforeEach(() => {
 
 describe("Home page integration tests", () => {
   it("Accordion opens accordion", () => {
-    cy.get(dueDateAccordion).click({ multiple: true });
+    cy.get(dueDateAccordion).first().click();
     cy.get(dueDateTable).should("be.visible");
   });
 

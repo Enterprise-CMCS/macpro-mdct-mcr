@@ -29,7 +29,7 @@ export const DueDateDropdown = ({ templateName }: Props) => {
       <AccordionItem>
         {({ isExpanded }) => (
           <>
-            <h2>
+            <div>
               <AccordionButton sx={sx.accordionButton}>
                 <Box flex="1" sx={sx.accordionText}>
                   {dropDownTextValues.accordionText}
@@ -40,7 +40,7 @@ export const DueDateDropdown = ({ templateName }: Props) => {
                   <Icon icon="plus" boxSize="2rem"></Icon>
                 )}
               </AccordionButton>
-            </h2>
+            </div>
             <AccordionPanel>
               <Flex sx={sx.accordionAdditionalTextFlex}>
                 <Text sx={sx.accordionDueDateText}>
