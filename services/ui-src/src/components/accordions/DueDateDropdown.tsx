@@ -92,6 +92,7 @@ const sx = {
   },
   accordionAdditionalTextFlex: {
     flexDirection: "column",
+    borderStyle: "none",
   },
   accordionDueDateText: {
     fontSize: "lg",

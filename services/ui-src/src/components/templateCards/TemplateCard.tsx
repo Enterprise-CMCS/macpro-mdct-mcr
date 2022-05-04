@@ -29,11 +29,6 @@ export const TemplateCard = ({ templateName }: Props) => {
   const { isDesktop } = useBreakpoint();
   const cardTextValues = templateTextMap[templateName];
 
-  const getTemplateSize = (templateName: string) => {
-    // TODO fetch file size from local or s3 for display
-    console.log("Searching S3 for %s template size", templateName); // eslint-disable-line
-    return "1.2MB";
-  };
   return (
     <Stack sx={sx.root} data-testid="template-download-card">
       {isDesktop && (
@@ -53,11 +48,6 @@ export const TemplateCard = ({ templateName }: Props) => {
         <Button
           sx={sx.templateDownloadButton}
           leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem"></Icon>}
-          rightIcon={
-            <Text sx={sx.fileSizeText} as="sub">
-              {getTemplateSize(templateName)}
-            </Text>
-          }
           onClick={downloadTemplate}
           data-testid="template-download-button"
         >
@@ -98,13 +88,11 @@ const sx = {
     borderRadius: "0.25rem",
     color: "palette.white",
     background: "palette.main",
-    maxW: "18.5rem",
+    maxW: "17.5rem",
     fontWeight: "bold",
+    justifyContent: "left",
     _hover: {
       background: "palette.main_darker",
     },
-  },
-  fileSizeText: {
-    fontWeight: "semibold",
   },
 };
