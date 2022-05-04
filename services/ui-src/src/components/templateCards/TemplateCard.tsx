@@ -8,11 +8,21 @@ import MCPARCardText from "./data/MCPARCardText.json";
 import MLRCardText from "./data/MLRCardText.json";
 import NAAARCardText from "./data/NAAARCardText.json";
 import SpreadsheetIcon from "../../assets/icon_spreadsheet.png";
+import MCPARSpreadsheet from "./templates/MCPARDummy.xls";
 
 const templateTextMap: { [templateName: string]: any } = {
   MCPAR: MCPARCardText,
   MLR: MLRCardText,
   NAAAR: NAAARCardText,
+};
+
+const downloadTemplate = () => {
+  const link = document.createElement("a");
+  link.setAttribute("target", "_blank");
+  link.setAttribute("href", MCPARSpreadsheet);
+  link.setAttribute("download", `Dummy.xls`);
+  link.click();
+  link.remove();
 };
 
 export const TemplateCard = ({ templateName }: Props) => {
@@ -48,6 +58,8 @@ export const TemplateCard = ({ templateName }: Props) => {
               {getTemplateSize(templateName)}
             </Text>
           }
+          onClick={downloadTemplate}
+          data-testid="template-download-button"
         >
           {cardTextValues.downloadText}
         </Button>

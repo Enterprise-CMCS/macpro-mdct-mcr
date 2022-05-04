@@ -25,3 +25,9 @@ module.exports = (on, config) => {
     lighthouse: lighthouse(),
   });
 };
+
+const { isFileExist } = require("cy-verify-downloads");
+
+module.exports = (on, config) => {
+  on("task", { isFileExist });
+};
