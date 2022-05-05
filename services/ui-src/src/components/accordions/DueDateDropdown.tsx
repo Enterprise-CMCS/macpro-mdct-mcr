@@ -11,6 +11,8 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import { DueDateTable, Icon } from "../index";
+// utils
+import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // assets
 import MCPARDropdownText from "./data/MCPARDropdownText.json";
 import MLRDropdownText from "./data/MLRDropdownText.json";
@@ -24,9 +26,10 @@ const templateTextMap: { [templateName: string]: any } = {
 
 export const DueDateDropdown = ({ templateName }: Props) => {
   const dropDownTextValues = templateTextMap[templateName];
+  const mqClasses = makeMediaQueryClasses();
   return (
     <Accordion sx={sx.root} allowToggle={true} data-testid="due-date-accordion">
-      <AccordionItem>
+      <AccordionItem sx={sx.accordionItem}>
         {({ isExpanded }) => (
           <>
             <div>
@@ -41,7 +44,7 @@ export const DueDateDropdown = ({ templateName }: Props) => {
                 )}
               </AccordionButton>
             </div>
-            <AccordionPanel>
+            <AccordionPanel sx={sx.accordionPanel} className={mqClasses}>
               <Flex sx={sx.accordionAdditionalTextFlex}>
                 <Text sx={sx.accordionDueDateText}>
                   {templateName} Due Dates
@@ -83,12 +86,21 @@ const sx = {
   root: {
     marginTop: "2rem",
   },
+  accordionItem: {
+    borderStyle: "none",
+  },
   accordionButton: {
     bg: "palette.gray_lightest",
     height: "3.5rem",
   },
   accordionText: {
     textAlign: "left",
+  },
+  accordionPanel: {
+    "&.mobile": {
+      paddingLeft: "0",
+      paddingRight: "0",
+    },
   },
   accordionAdditionalTextFlex: {
     flexDirection: "column",

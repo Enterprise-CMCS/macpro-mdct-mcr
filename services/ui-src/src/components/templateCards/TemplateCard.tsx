@@ -2,7 +2,10 @@
 import { Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
 import { DueDateDropdown, Icon } from "../index";
 // utils
-import { useBreakpoint } from "../../utils/useBreakpoint";
+import {
+  makeMediaQueryClasses,
+  useBreakpoint,
+} from "../../utils/useBreakpoint";
 // assets
 import MCPARCardText from "./data/MCPARCardText.json";
 import MLRCardText from "./data/MLRCardText.json";
@@ -27,10 +30,15 @@ const downloadTemplate = () => {
 
 export const TemplateCard = ({ templateName }: Props) => {
   const { isDesktop } = useBreakpoint();
+  const mqClasses = makeMediaQueryClasses();
   const cardTextValues = templateTextMap[templateName];
 
   return (
-    <Stack sx={sx.root} data-testid="template-download-card">
+    <Stack
+      sx={sx.root}
+      className={mqClasses}
+      data-testid="template-download-card"
+    >
       {isDesktop && (
         <Image
           src={SpreadsheetIcon}
@@ -70,6 +78,10 @@ const sx = {
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     flexDirection: "row",
     marginBottom: "2rem",
+    width: "100%",
+    "&.mobile": {
+      padding: "1rem",
+    },
   },
   spreadsheetIcon: {
     boxSize: "5.5rem",

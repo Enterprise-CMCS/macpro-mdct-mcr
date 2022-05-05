@@ -118,6 +118,7 @@ const sx = {
     color: "black",
     fontWeight: "normal",
     padding: "0.75rem 0.5rem",
+    borderStyle: "none",
     "&.mobile": {
       fontSize: "xs",
     },
@@ -126,6 +127,7 @@ const sx = {
     color: "black",
     fontWeight: "semibold",
     padding: "0.75rem 0.5rem",
+    borderStyle: "none",
     "&.mobile": {
       fontSize: "xs",
     },
