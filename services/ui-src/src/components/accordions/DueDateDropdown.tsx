@@ -13,20 +13,11 @@ import {
 import { DueDateTable, Icon } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-// assets
-import MCPARDropdownText from "./data/MCPARDropdownText.json";
-import MLRDropdownText from "./data/MLRDropdownText.json";
-import NAAARDropDownText from "./data/NAAARDropdownText.json";
+import { JsonObject } from "utils/types/types";
 
-const templateTextMap: { [templateName: string]: any } = {
-  MCPAR: MCPARDropdownText,
-  MLR: MLRDropdownText,
-  NAAAR: NAAARDropDownText,
-};
-
-export const DueDateDropdown = ({ templateName }: Props) => {
-  const dropDownTextValues = templateTextMap[templateName];
+export const DueDateDropdown = ({ verbiage }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+
   return (
     <Accordion sx={sx.root} allowToggle={true} data-testid="due-date-accordion">
       <AccordionItem sx={sx.accordionItem}>
@@ -34,8 +25,8 @@ export const DueDateDropdown = ({ templateName }: Props) => {
           <>
             <div>
               <AccordionButton sx={sx.accordionButton}>
-                <Box flex="1" sx={sx.accordionText}>
-                  {dropDownTextValues.accordionText}
+                <Box flex="1" sx={sx.accordionButtonLabel}>
+                  {verbiage.buttonLabel}
                 </Box>
                 {isExpanded ? (
                   <Icon icon="minus" boxSize="1.5rem"></Icon>
@@ -45,29 +36,16 @@ export const DueDateDropdown = ({ templateName }: Props) => {
               </AccordionButton>
             </div>
             <AccordionPanel sx={sx.accordionPanel} className={mqClasses}>
-              <Flex sx={sx.accordionAdditionalTextFlex}>
-                <Text sx={sx.accordionDueDateText}>
-                  {templateName} Due Dates
-                </Text>
-                <Text sx={sx.accordionDescriptionText}>
-                  {dropDownTextValues.accordionDescriptionText}
-                </Text>
-                {dropDownTextValues.hasTable ? (
-                  <DueDateTable templateName={templateName} />
-                ) : (
-                  ""
-                )}
-                {dropDownTextValues.hasList ? (
+              <Flex sx={sx.accordionPanelFlex}>
+                <Text sx={sx.accordionBodyTitle}>{verbiage.bodyTitle}</Text>
+                <Text sx={sx.accordionBodyText}>{verbiage.bodyText}</Text>
+                {verbiage.table && <DueDateTable verbiage={verbiage.table} />}
+                {verbiage.list && (
                   <UnorderedList>
-                    <ListItem>
-                      {dropDownTextValues.accordionDescriptionTextBulletOne}
-                    </ListItem>
-                    <ListItem>
-                      {dropDownTextValues.accordionDescriptionTextBulletTwo}
-                    </ListItem>
+                    {verbiage.list.map((item: string, index: number) => (
+                      <ListItem key={index}>{item}</ListItem>
+                    ))}
                   </UnorderedList>
-                ) : (
-                  ""
                 )}
               </Flex>
             </AccordionPanel>
@@ -79,7 +57,7 @@ export const DueDateDropdown = ({ templateName }: Props) => {
 };
 
 interface Props {
-  templateName: string;
+  verbiage: JsonObject;
 }
 
 const sx = {
@@ -93,7 +71,7 @@ const sx = {
     bg: "palette.gray_lightest",
     height: "3.5rem",
   },
-  accordionText: {
+  accordionButtonLabel: {
     textAlign: "left",
   },
   accordionPanel: {
@@ -102,16 +80,16 @@ const sx = {
       paddingRight: "0",
     },
   },
-  accordionAdditionalTextFlex: {
+  accordionPanelFlex: {
     flexDirection: "column",
   },
-  accordionDueDateText: {
+  accordionBodyTitle: {
     fontSize: "lg",
     fontWeight: "bold",
     color: "palette.gray_darkest",
     marginTop: "1rem",
   },
-  accordionDescriptionText: {
+  accordionBodyText: {
     fontSize: "md",
     fontWeight: "normal",
     color: "palette.gray_darkest",

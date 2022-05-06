@@ -6,18 +6,10 @@ import {
   makeMediaQueryClasses,
   useBreakpoint,
 } from "../../utils/useBreakpoint";
+import { JsonObject } from "utils/types/types";
 // assets
-import MCPARCardText from "./data/MCPARCardText.json";
-import MLRCardText from "./data/MLRCardText.json";
-import NAAARCardText from "./data/NAAARCardText.json";
 import SpreadsheetIcon from "../../assets/icon_spreadsheet.png";
 import MCPARSpreadsheet from "./templates/MCPARDummy.xls";
-
-const templateTextMap: { [templateName: string]: any } = {
-  MCPAR: MCPARCardText,
-  MLR: MLRCardText,
-  NAAAR: NAAARCardText,
-};
 
 const downloadTemplate = () => {
   const link = document.createElement("a");
@@ -28,10 +20,9 @@ const downloadTemplate = () => {
   link.remove();
 };
 
-export const TemplateCard = ({ templateName }: Props) => {
+export const TemplateCard = ({ verbiage }: Props) => {
   const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
-  const cardTextValues = templateTextMap[templateName];
 
   return (
     <Stack
@@ -47,28 +38,26 @@ export const TemplateCard = ({ templateName }: Props) => {
         />
       )}
       <Flex sx={sx.cardContentFlex}>
-        <Text sx={sx.templateNameText}>{cardTextValues.title}</Text>
-        {!isDesktop && <Text>{cardTextValues.dueDateText}</Text>}
-        <Text>
-          {cardTextValues.templateDescriptionText}
-          {isDesktop ? cardTextValues.additionalDescriptionText : ""}
-        </Text>
+        <Text sx={sx.cardTitleText}>{verbiage.title}</Text>
+        {!isDesktop && <Text>{verbiage.dueDate}</Text>}
+        <Text>{verbiage.body}</Text>
+        {isDesktop && verbiage.note && <Text>{verbiage.note}</Text>}
         <Button
           sx={sx.templateDownloadButton}
           leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem"></Icon>}
           onClick={downloadTemplate}
           data-testid="template-download-button"
         >
-          {cardTextValues.downloadText}
+          Download Excel Template
         </Button>
-        <DueDateDropdown templateName={templateName}></DueDateDropdown>
+        <DueDateDropdown verbiage={verbiage.accordion}></DueDateDropdown>
       </Flex>
     </Stack>
   );
 };
 
 interface Props {
-  templateName: string;
+  verbiage: JsonObject;
 }
 
 const sx = {
@@ -92,7 +81,7 @@ const sx = {
     gap: "0.5rem",
     color: "palette.gray_darkest",
   },
-  templateNameText: {
+  cardTitleText: {
     fontSize: "lg",
     fontWeight: "bold",
     color: "palette.gray_darkest",

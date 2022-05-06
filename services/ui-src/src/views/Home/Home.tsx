@@ -5,6 +5,8 @@ import { Banner, TemplateCard } from "../../components/index";
 // utils
 import { BannerTypes, UserRoles } from "utils/types/types";
 import { useUser } from "utils/auth";
+// data
+import templateCardsVerbiage from "../../data/templateCards.json";
 
 export default () => {
   const { userRole, userState } = useUser();
@@ -37,9 +39,9 @@ export default () => {
                 through this website beginning October 2022.
               </Box>
             </Box>
-            <TemplateCard templateName="MCPAR"></TemplateCard>
-            <TemplateCard templateName="MLR"></TemplateCard>
-            <TemplateCard templateName="NAAAR"></TemplateCard>
+            <TemplateCard verbiage={templateCardsVerbiage.MCPAR}></TemplateCard>
+            <TemplateCard verbiage={templateCardsVerbiage.MLR}></TemplateCard>
+            <TemplateCard verbiage={templateCardsVerbiage.NAAAR}></TemplateCard>
           </Flex>
         </Box>
       ) : (

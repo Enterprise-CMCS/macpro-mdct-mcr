@@ -2,8 +2,10 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-//components
+// components
 import { DueDateDropdown } from "components";
+// data
+import templateCardsVerbiage from "../../data/templateCards.json";
 
 /*
  * From Chakra UI Accordion test file
@@ -16,13 +18,14 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
+const verbiage = templateCardsVerbiage.MCPAR.accordion;
 const accordionComponent = (
   <RouterWrappedComponent>
-    <DueDateDropdown templateName="MCPAR" />
+    <DueDateDropdown verbiage={verbiage} />
   </RouterWrappedComponent>
 );
 
-describe("Test Due Date Accordion Item", () => {
+describe("Test DueDateDropdown", () => {
   beforeEach(() => {
     render(accordionComponent);
   });
@@ -32,7 +35,7 @@ describe("Test Due Date Accordion Item", () => {
   });
 });
 
-describe("Test Accordion accessibility", () => {
+describe("Test DueDateDropdown accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(accordionComponent);
     const results = await axe(container);

@@ -63,3 +63,7 @@ export interface ITerritoryList {
 export interface StyleObject {
   [key: string]: any;
 }
+
+export interface JsonObject {
+  [key: string]: any;
+}

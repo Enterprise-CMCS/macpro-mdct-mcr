@@ -4,10 +4,13 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { DueDateTable } from "components";
+// data
+import templateCardsVerbiage from "../../data/templateCards.json";
 
+const verbiage = templateCardsVerbiage.MCPAR.accordion.table;
 const dueDateTableComponent = (
   <RouterWrappedComponent>
-    <DueDateTable templateName="MCPAR" />
+    <DueDateTable verbiage={verbiage} />
   </RouterWrappedComponent>
 );
 

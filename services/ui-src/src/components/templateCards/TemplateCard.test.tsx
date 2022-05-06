@@ -4,6 +4,8 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { TemplateCard } from "components";
+// data
+import templateCardsVerbiage from "../../data/templateCards.json";
 
 /*
  * From Chakra UI Accordion test file
@@ -16,23 +18,24 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
+const verbiage = templateCardsVerbiage.MCPAR;
 const templateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard templateName="MCPAR" />
+    <TemplateCard verbiage={verbiage} />
   </RouterWrappedComponent>
 );
 
-describe("Test Template Download Card Item", () => {
+describe("Test TemplateCard", () => {
   beforeEach(() => {
     render(templateCardComponent);
   });
 
-  test("Template Download Card is visible", () => {
+  test("TemplateCard is visible", () => {
     expect(screen.getByTestId("template-download-card")).toBeVisible();
   });
 });
 
-describe("Test Template Download Card accessibility", () => {
+describe("Test TemplateCard accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(templateCardComponent);
     const results = await axe(container);
