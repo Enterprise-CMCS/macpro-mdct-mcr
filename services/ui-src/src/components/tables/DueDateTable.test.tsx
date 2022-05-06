@@ -14,17 +14,17 @@ const dueDateTableComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test Due Date Table Item", () => {
+describe("Test DueDateTable", () => {
   beforeEach(() => {
     render(dueDateTableComponent);
   });
 
-  test("Table is visible", () => {
+  test("DueDateTable is visible", () => {
     expect(screen.getByTestId("due-date-table")).toBeVisible();
   });
 });
 
-describe("Test Table accessibility", () => {
+describe("Test DueDateTable accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(dueDateTableComponent);
     const results = await axe(container);

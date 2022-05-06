@@ -10,8 +10,8 @@ export const DueDateTable = ({ verbiage }: Props) => {
   return (
     <Table variant="striped" size="sm" data-testid="due-date-table">
       <Thead>
-        {/* Table Header Row */}
         <Tr>
+          {/* Table Header Row */}
           {verbiage.header.map((headerCell: string, index: number) => (
             <Th key={index} sx={sx.tableHeader} className={mqClasses}>
               {headerCell}
