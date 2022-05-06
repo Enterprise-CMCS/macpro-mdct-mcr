@@ -1,6 +1,6 @@
 // element selectors
-const dueDateAccordion = '[data-testid="due-date-accordion"]';
-const dueDateTable = '[data-testid="due-date-table"]';
+const templateCardAccordion = '[data-testid="template-card-accordion"]';
+const stripedTable = '[data-testid="striped-table"]';
 const templateDownloadButton = '[data-testid="template-download-button"]';
 
 beforeEach(() => {
@@ -8,10 +8,10 @@ beforeEach(() => {
   cy.authenticate("stateUser");
 });
 
-describe("Home page integration tests", () => {
-  it("Accordion opens accordion", () => {
-    cy.get(dueDateAccordion).first().click();
-    cy.get(dueDateTable).should("be.visible");
+describe("Homepage integration tests", () => {
+  it("Clicking accordion expander opens accordion", () => {
+    cy.get(templateCardAccordion).first().click();
+    cy.get(stripedTable).should("be.visible");
   });
 
   it("Clicking button downloads template", () => {

@@ -1,8 +1,6 @@
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
 export { Banner } from "./banners/Banner";
-export { DueDateTable } from "./tables/DueDateTable";
-export { DueDateDropdown } from "./accordions/DueDateDropdown";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { Icon } from "./icons/Icon";
@@ -11,4 +9,6 @@ export { LoginIDM } from "./logins/LoginIDM";
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { RouterLink } from "./app/RouterLink";
+export { Table } from "./tables/Table";
 export { TemplateCard } from "./templateCards/TemplateCard";
+export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";

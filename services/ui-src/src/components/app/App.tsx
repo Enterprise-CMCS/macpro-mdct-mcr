@@ -39,8 +39,8 @@ export const App = () => {
 
 const sx = {
   appLayout: {
-    flexDirection: "column",
     minHeight: "100vh",
+    flexDirection: "column",
   },
   appContainer: {
     maxW: "7xl",

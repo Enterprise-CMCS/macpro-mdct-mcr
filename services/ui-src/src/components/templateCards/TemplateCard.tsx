@@ -1,6 +1,6 @@
 // components
 import { Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
-import { DueDateDropdown, Icon } from "../index";
+import { Icon, TemplateCardAccordion } from "../index";
 // utils
 import {
   makeMediaQueryClasses,
@@ -50,7 +50,7 @@ export const TemplateCard = ({ verbiage }: Props) => {
         >
           Download Excel Template
         </Button>
-        <DueDateDropdown verbiage={verbiage.accordion}></DueDateDropdown>
+        <TemplateCardAccordion verbiage={verbiage.accordion} />
       </Flex>
     </Stack>
   );
@@ -62,21 +62,22 @@ interface Props {
 
 const sx = {
   root: {
-    textAlign: "left",
-    padding: "2rem",
-    boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
+    width: "100%",
     flexDirection: "row",
     marginBottom: "2rem",
-    width: "100%",
+    padding: "2rem",
+    boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
+    textAlign: "left",
     "&.mobile": {
       padding: "1rem",
     },
   },
   spreadsheetIcon: {
-    boxSize: "5.5rem",
     marginRight: "2rem",
+    boxSize: "5.5rem",
   },
   cardContentFlex: {
+    width: "100%",
     flexDirection: "column",
     gap: "0.5rem",
     color: "palette.gray_darkest",
@@ -87,12 +88,12 @@ const sx = {
     color: "palette.gray_darkest",
   },
   templateDownloadButton: {
-    borderRadius: "0.25rem",
-    color: "palette.white",
-    background: "palette.main",
     maxW: "17.5rem",
-    fontWeight: "bold",
     justifyContent: "left",
+    borderRadius: "0.25rem",
+    background: "palette.main",
+    fontWeight: "bold",
+    color: "palette.white",
     _hover: {
       background: "palette.main_darker",
     },

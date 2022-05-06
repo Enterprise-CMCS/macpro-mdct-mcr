@@ -67,3 +67,8 @@ export interface StyleObject {
 export interface JsonObject {
   [key: string]: any;
 }
+
+export interface TableContentShape {
+  headRow: string[];
+  bodyRows: string[][];
+}

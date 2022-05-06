@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { BannerTypes } from "utils/types/types";
 //components
 import { Banner } from "components";
-import { BannerTypes } from "utils/types/types";
 
 const infoAlert = (
   <RouterWrappedComponent>

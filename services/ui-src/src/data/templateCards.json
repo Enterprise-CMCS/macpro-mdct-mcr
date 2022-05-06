@@ -9,8 +9,8 @@
       "bodyTitle": "MCPAR Due Dates",
       "bodyText": "Due dates vary based on contract year of the managed care program and contract period for the first report.",
       "table": {
-        "header": ["Contract Year", "Contract Period", "Due Date"],
-        "rows": [
+        "headRow": ["Contract Year", "Contract Period", "Due Date"],
+        "bodyRows": [
           ["Jul to Jun", "7/2/21 to 6/30/22", "Dec 27, 2022"],
           ["Sep to Aug", "9/1/21 to 8/21/22", "Feb 27, 2023"],
           ["Oct to Sep", "10/1/21 to 9/30/22", "Mar 29, 2023"],

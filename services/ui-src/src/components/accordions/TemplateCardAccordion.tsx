@@ -10,16 +10,20 @@ import {
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
-import { DueDateTable, Icon } from "../index";
+import { Icon, Table } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { JsonObject } from "utils/types/types";
 
-export const DueDateDropdown = ({ verbiage }: Props) => {
+export const TemplateCardAccordion = ({ verbiage }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   return (
-    <Accordion sx={sx.root} allowToggle={true} data-testid="due-date-accordion">
+    <Accordion
+      sx={sx.root}
+      allowToggle={true}
+      data-testid="template-card-accordion"
+    >
       <AccordionItem sx={sx.accordionItem}>
         {({ isExpanded }) => (
           <>
@@ -39,7 +43,14 @@ export const DueDateDropdown = ({ verbiage }: Props) => {
               <Flex sx={sx.accordionPanelFlex}>
                 <Text sx={sx.accordionBodyTitle}>{verbiage.bodyTitle}</Text>
                 <Text sx={sx.accordionBodyText}>{verbiage.bodyText}</Text>
-                {verbiage.table && <DueDateTable verbiage={verbiage.table} />}
+                {verbiage.table && (
+                  <Table
+                    content={verbiage.table}
+                    variant="striped"
+                    lastCellsBold
+                    dataTestId="template-card-accordion-table"
+                  />
+                )}
                 {verbiage.list && (
                   <UnorderedList>
                     {verbiage.list.map((item: string, index: number) => (
@@ -68,8 +79,8 @@ const sx = {
     borderStyle: "none",
   },
   accordionButton: {
-    bg: "palette.gray_lightest",
     height: "3.5rem",
+    bg: "palette.gray_lightest",
   },
   accordionButtonLabel: {
     textAlign: "left",
@@ -84,15 +95,15 @@ const sx = {
     flexDirection: "column",
   },
   accordionBodyTitle: {
+    marginTop: "1rem",
     fontSize: "lg",
     fontWeight: "bold",
     color: "palette.gray_darkest",
-    marginTop: "1rem",
   },
   accordionBodyText: {
+    marginBottom: "1rem",
     fontSize: "md",
     fontWeight: "normal",
     color: "palette.gray_darkest",
-    marginBottom: "1rem",
   },
 };
