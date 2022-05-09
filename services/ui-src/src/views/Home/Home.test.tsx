@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { useApiMock } from "utils/testing/mockApi";
 // views
-import Home from "./Home";
+import { Home } from "../index";
 
 const queryClient = new QueryClient();
 const homeView = (

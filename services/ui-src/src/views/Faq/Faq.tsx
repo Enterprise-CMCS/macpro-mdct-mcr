@@ -1,31 +1,20 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, TemplateCard } from "../../components/index";
-// utils
-import { BannerTypes } from "utils/types/types";
+import { TemplateCard } from "../../components/index";
 // data
 import templateCardsVerbiage from "../../data/templateCards.json";
 
-export const Home = () => (
+export const Faq = () => (
   <section>
-    <Box sx={sx.root} data-testid="home-view">
-      <Banner
-        status={BannerTypes.INFO}
-        bgColor="palette.alt_lightest"
-        accentColor="palette.alt"
-        title="Welcome to the new Managed Care Reporting tool!"
-        description="Each state must submit one report per program."
-      />
+    <Box sx={sx.root} data-testid="faq-view">
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.leadTextBox}>
           <Heading as="h1" sx={sx.headerText}>
-            Your fiscal year 2022 templates
+            How can we help you?
           </Heading>
           <Text as="body">
-            Download these templates to begin gathering administrative data for
-            your Medicaid managed care program. Submit your completed report to
-            the Centers for Medicare and Medicaid Services (CMS) through this
-            website beginning October 2022.
+            Question or feedback? Please email us and we will respond as soon as
+            possible. You can also review our frequently asked questions below.
           </Text>
         </Box>
         <TemplateCard verbiage={templateCardsVerbiage.MCPAR}></TemplateCard>

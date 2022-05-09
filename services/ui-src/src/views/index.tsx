@@ -1,4 +1,3 @@
-import Home from "./Home/Home";
-import NotFound from "./NotFound/NotFound";
-
-export { Home, NotFound };
+export { Faq } from "./Faq/Faq";
+export { Home } from "./Home/Home";
+export { NotFound } from "./NotFound/NotFound";
