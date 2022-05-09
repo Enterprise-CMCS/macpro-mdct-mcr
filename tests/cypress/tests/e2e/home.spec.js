@@ -1,6 +1,7 @@
 // element selectors
 const templateCardAccordion = '[data-testid="template-card-accordion"]';
-const stripedTable = '[data-testid="striped-table"]';
+const templateCardAccordionTable =
+  '[data-testid="template-card-accordion-table"]';
 const templateDownloadButton = '[data-testid="template-download-button"]';
 
 beforeEach(() => {
@@ -11,7 +12,7 @@ beforeEach(() => {
 describe("Homepage integration tests", () => {
   it("Clicking accordion expander opens accordion", () => {
     cy.get(templateCardAccordion).first().click();
-    cy.get(stripedTable).should("be.visible");
+    cy.get(templateCardAccordionTable).should("be.visible");
   });
 
   it("Clicking button downloads template", () => {

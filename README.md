@@ -123,7 +123,7 @@ We use Cypress for integration tests. See additional info [here in the Cypress r
 
 We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa11y) for primary accessibility testing.
 
-Unit tests can use [jest-axe](), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
+Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
 Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe), [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html) and [cypress-audit/lighthouse](https://mfrachet.github.io/cypress-audit/guides/lighthouse/installation.html).
 

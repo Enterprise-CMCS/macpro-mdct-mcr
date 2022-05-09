@@ -13,9 +13,9 @@ describe("Login integration tests", () => {
     cy.location("pathname").should("match", /\//);
   });
 
-  it("Admin user authentication works; routes to /admin", () => {
+  it("Admin user authentication works; routes to /", () => {
     cy.authenticate("adminUser");
-    cy.location("pathname").should("match", /admin/);
+    cy.location("pathname").should("match", /\//);
   });
 });
 
