@@ -60,6 +60,7 @@ const sx = {
     fontSize: "sm",
     fontWeight: "semibold",
     textTransform: "none",
+    letterSpacing: "normal",
     color: "black",
     "&.mobile": {
       fontSize: "xs",

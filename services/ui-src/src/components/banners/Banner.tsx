@@ -25,7 +25,7 @@ export const Banner = ({
       borderInlineStartColor={accentColor}
       data-testid="banner"
     >
-      <AlertIcon color={"palette.gray_darkest"} />
+      <AlertIcon sx={sx.alertIcon} />
       <Flex flexDirection="column">
         <AlertTitle>{title}</AlertTitle>
         <AlertDescription>{description}</AlertDescription>
@@ -48,5 +48,9 @@ const sx = {
     borderInlineStartWidth: "0.5rem",
     marginTop: "1.25rem",
     marginBottom: "2.5rem",
+  },
+  alertIcon: {
+    color: "palette.gray_darkest",
+    marginBottom: "1.75rem",
   },
 };

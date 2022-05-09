@@ -41,7 +41,6 @@ export const TemplateCardAccordion = ({ verbiage }: Props) => {
             </div>
             <AccordionPanel sx={sx.accordionPanel} className={mqClasses}>
               <Flex sx={sx.accordionPanelFlex}>
-                <Text sx={sx.accordionBodyTitle}>{verbiage.bodyTitle}</Text>
                 <Text sx={sx.accordionBodyText}>{verbiage.bodyText}</Text>
                 {verbiage.table && (
                   <Table
@@ -94,13 +93,8 @@ const sx = {
   accordionPanelFlex: {
     flexDirection: "column",
   },
-  accordionBodyTitle: {
-    marginTop: "1rem",
-    fontSize: "lg",
-    fontWeight: "bold",
-    color: "palette.gray_darkest",
-  },
   accordionBodyText: {
+    marginTop: "1rem",
     marginBottom: "1rem",
     fontSize: "md",
     fontWeight: "normal",

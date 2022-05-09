@@ -44,7 +44,7 @@ export const TemplateCard = ({ verbiage }: Props) => {
         {isDesktop && verbiage.note && <Text>{verbiage.note}</Text>}
         <Button
           sx={sx.templateDownloadButton}
-          leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem"></Icon>}
+          leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem" />}
           onClick={downloadTemplate}
           data-testid="template-download-button"
         >
@@ -73,27 +73,32 @@ const sx = {
     },
   },
   spreadsheetIcon: {
+    marginTop: "0.675rem",
     marginRight: "2rem",
     boxSize: "5.5rem",
   },
   cardContentFlex: {
     width: "100%",
     flexDirection: "column",
-    gap: "0.5rem",
     color: "palette.gray_darkest",
   },
   cardTitleText: {
+    marginBottom: "0.5rem",
     fontSize: "lg",
     fontWeight: "bold",
     color: "palette.gray_darkest",
   },
   templateDownloadButton: {
-    maxW: "17.5rem",
-    justifyContent: "left",
+    maxW: "16.5rem",
+    marginTop: "1rem",
     borderRadius: "0.25rem",
     background: "palette.main",
     fontWeight: "bold",
     color: "palette.white",
+    justifyContent: "start",
+    span: {
+      margin: "0rem",
+    },
     _hover: {
       background: "palette.main_darker",
     },
