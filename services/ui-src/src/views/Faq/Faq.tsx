@@ -1,8 +1,8 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { TemplateCard } from "../../components/index";
+import { FaqCard } from "../../components/index";
 // data
-import templateCardsVerbiage from "../../data/templateCards.json";
+import faqCardsVerbiage from "../../data/faqCards.json";
 
 export const Faq = () => (
   <section>
@@ -17,20 +17,15 @@ export const Faq = () => (
             possible. You can also review our frequently asked questions below.
           </Text>
         </Box>
-        <TemplateCard
-          verbiage={templateCardsVerbiage.MCPAR}
-          cardprops={{ marginBottom: "2rem" }}
-          data-testid="mcpar-template-card"
+        <FaqCard
+          verbiage={faqCardsVerbiage.helpdesk}
+          icon="settings"
+          cardprops={{ ...sx.card, "data-testid": "helpdesk-faq-card" }}
         />
-        <TemplateCard
-          verbiage={templateCardsVerbiage.MLR}
-          cardprops={{ marginBottom: "2rem" }}
-          data-testid="mlr-template-card"
-        />
-        <TemplateCard
-          verbiage={templateCardsVerbiage.NAAAR}
-          cardprops={{ marginBottom: "2rem" }}
-          data-testid="naaar-template-card"
+        <FaqCard
+          verbiage={faqCardsVerbiage.template}
+          icon="spreadsheet"
+          cardprops={{ ...sx.card, "data-testid": "template-faq-card" }}
         />
       </Flex>
     </Box>
@@ -54,5 +49,8 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
+  },
+  card: {
+    marginBottom: "1.5rem",
   },
 };

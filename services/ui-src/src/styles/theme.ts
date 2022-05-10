@@ -84,14 +84,24 @@ export const theme = extendTheme({
         transition: "all 0.3s ease",
       },
     },
-    Text: {
+    Heading: {
       baseStyle: {
-        transition: "all 0.3s ease",
+        color: "palette.gray_darkest",
       },
     },
     Link: {
       baseStyle: {
+        color: "palette.main",
         transition: "all 0.3s ease",
+        _hover: {
+          color: "var(--chakra-colors-palette-main_darker)",
+        },
+      },
+    },
+    Text: {
+      baseStyle: {
+        transition: "all 0.3s ease",
+        color: "palette.gray_darkest",
       },
     },
   },

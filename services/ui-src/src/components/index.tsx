@@ -2,6 +2,7 @@ export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
 export { Banner } from "./banners/Banner";
 export { Card } from "./cards/Card";
+export { FaqCard } from "./cards/FaqCard";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { Icon } from "./icons/Icon";

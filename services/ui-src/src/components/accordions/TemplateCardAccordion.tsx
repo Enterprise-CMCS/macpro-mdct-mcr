@@ -98,6 +98,5 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "md",
     fontWeight: "normal",
-    color: "palette.gray_darkest",
   },
 };

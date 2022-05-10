@@ -128,7 +128,6 @@ const sx = {
   footerBottom: {
     minHeight: "3rem",
     bg: "palette.main_darkest",
-    color: "palette.white",
     fontSize: 14,
   },
   footerBottomContainer: {
@@ -153,6 +152,7 @@ const sx = {
   },
   link: {
     margin: "0.5rem",
+    color: "palette.white",
     _visited: {
       color: "palette.white",
     },
@@ -164,11 +164,13 @@ const sx = {
     },
   },
   divider: {
+    color: "palette.white",
+
     margin: "0.5rem",
     cursor: "default",
   },
   address: {
-    fontWeight: "bold",
+    color: "palette.white",
     "&.mobile, &.tablet": {
       margin: "0.25rem 0",
     },

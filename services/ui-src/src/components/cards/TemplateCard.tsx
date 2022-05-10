@@ -23,6 +23,7 @@ const downloadTemplate = () => {
 export const TemplateCard = ({ verbiage, cardprops, ...props }: Props) => {
   const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
+
   return (
     <Card {...cardprops}>
       <Flex sx={sx.root} className={mqClasses} {...props}>
@@ -61,8 +62,6 @@ interface Props {
 const sx = {
   root: {
     flexDirection: "row",
-    marginBottom: "2rem",
-    textAlign: "left",
   },
   spreadsheetIcon: {
     marginTop: "0.675rem",
@@ -72,22 +71,20 @@ const sx = {
   cardContentFlex: {
     width: "100%",
     flexDirection: "column",
-    color: "palette.gray_darkest",
   },
   cardTitleText: {
     marginBottom: "0.5rem",
     fontSize: "lg",
     fontWeight: "bold",
-    color: "palette.gray_darkest",
   },
   templateDownloadButton: {
     maxW: "16.5rem",
+    justifyContent: "start",
     marginTop: "1rem",
     borderRadius: "0.25rem",
     background: "palette.main",
     fontWeight: "bold",
     color: "palette.white",
-    justifyContent: "start",
     span: {
       margin: "0rem",
     },

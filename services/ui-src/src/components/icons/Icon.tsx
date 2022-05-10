@@ -16,7 +16,7 @@ import {
 import { FiMinus } from "react-icons/fi";
 import { HiDownload } from "react-icons/hi";
 
-const iconMap: { [char: string]: IconType } = {
+const iconMap: { [key: string]: IconType } = {
   arrowRightSquare: BsArrowRightSquare,
   boxArrowRight: BsBoxArrowRight,
   chevronDown: BsChevronDown,

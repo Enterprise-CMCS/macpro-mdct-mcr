@@ -28,9 +28,18 @@ export const Home = () => (
             website beginning October 2022.
           </Text>
         </Box>
-        <TemplateCard verbiage={templateCardsVerbiage.MCPAR}></TemplateCard>
-        <TemplateCard verbiage={templateCardsVerbiage.MLR}></TemplateCard>
-        <TemplateCard verbiage={templateCardsVerbiage.NAAAR}></TemplateCard>
+        <TemplateCard
+          verbiage={templateCardsVerbiage.MCPAR}
+          cardprops={{ ...sx.card, "data-testid": "mcpar-template-card" }}
+        />
+        <TemplateCard
+          verbiage={templateCardsVerbiage.MLR}
+          cardprops={{ ...sx.card, "data-testid": "mlr-template-card" }}
+        />
+        <TemplateCard
+          verbiage={templateCardsVerbiage.NAAAR}
+          cardprops={{ ...sx.card, "data-testid": "naar-template-card" }}
+        />
       </Flex>
     </Box>
   </section>
@@ -53,5 +62,8 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
+  },
+  card: {
+    marginBottom: "2rem",
   },
 };
