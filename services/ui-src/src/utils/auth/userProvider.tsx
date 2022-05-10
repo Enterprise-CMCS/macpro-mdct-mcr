@@ -31,7 +31,7 @@ const authenticateWithIDM = () => {
 export const UserProvider = ({ children }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isProduction = window.location.origin.includes("mdctqmr.cms.gov");
+  const isProduction = window.location.origin.includes("mdctmcr.cms.gov");
 
   const [user, setUser] = useState<any>(null);
   const [showLocalLogins, setShowLocalLogins] = useState(false);
@@ -66,7 +66,7 @@ export const UserProvider = ({ children }: Props) => {
       | undefined
   )
     ?.split(",")
-    .find((r) => r.includes("mdctqmr"));
+    .find((r) => r.includes("mdctmcr"));
 
   const isStateUser = userRole === UserRoles.STATE;
 
