@@ -12,7 +12,7 @@ export const Faq = () => (
           <Heading as="h1" sx={sx.headerText}>
             How can we help you?
           </Heading>
-          <Text as="body">
+          <Text>
             Question or feedback? Please email us and we will respond as soon as
             possible. You can also review our frequently asked questions below.
           </Text>

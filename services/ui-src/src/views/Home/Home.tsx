@@ -21,7 +21,7 @@ export const Home = () => (
           <Heading as="h1" sx={sx.headerText}>
             Your fiscal year 2022 templates
           </Heading>
-          <Text as="body">
+          <Text>
             Download these templates to begin gathering administrative data for
             your Medicaid managed care program. Submit your completed report to
             the Centers for Medicare and Medicaid Services (CMS) through this
