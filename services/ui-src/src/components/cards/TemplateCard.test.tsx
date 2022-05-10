@@ -21,7 +21,7 @@ jest.mock("@chakra-ui/transition", () => ({
 const verbiage = templateCardsVerbiage.MCPAR;
 const templateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard verbiage={verbiage} />
+    <TemplateCard verbiage={verbiage} data-testid="template-download-card" />
   </RouterWrappedComponent>
 );
 

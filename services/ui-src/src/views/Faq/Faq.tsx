@@ -17,9 +17,21 @@ export const Faq = () => (
             possible. You can also review our frequently asked questions below.
           </Text>
         </Box>
-        <TemplateCard verbiage={templateCardsVerbiage.MCPAR}></TemplateCard>
-        <TemplateCard verbiage={templateCardsVerbiage.MLR}></TemplateCard>
-        <TemplateCard verbiage={templateCardsVerbiage.NAAAR}></TemplateCard>
+        <TemplateCard
+          verbiage={templateCardsVerbiage.MCPAR}
+          cardprops={{ marginBottom: "2rem" }}
+          data-testid="mcpar-template-card"
+        />
+        <TemplateCard
+          verbiage={templateCardsVerbiage.MLR}
+          cardprops={{ marginBottom: "2rem" }}
+          data-testid="mlr-template-card"
+        />
+        <TemplateCard
+          verbiage={templateCardsVerbiage.NAAAR}
+          cardprops={{ marginBottom: "2rem" }}
+          data-testid="naaar-template-card"
+        />
       </Flex>
     </Box>
   </section>
@@ -32,13 +44,14 @@ const sx = {
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",
-    margin: "0 auto",
+    margin: "2.5rem auto 0",
     maxWidth: "46rem",
   },
   leadTextBox: {
     marginBottom: "2.25rem",
   },
   headerText: {
+    marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
   },

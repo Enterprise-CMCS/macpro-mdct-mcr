@@ -7,8 +7,8 @@ import {
   useBreakpoint,
 } from "../../utils/useBreakpoint";
 // assets
-import hhsLogo from "../../assets/logo_hhs.svg";
-import medicaidLogo from "../../assets/logo_medicaid.svg";
+import hhsLogo from "../../assets/images/logo_hhs.svg";
+import medicaidLogo from "../../assets/images/logo_medicaid.svg";
 
 export const Footer = () => {
   const { isMobile, isDesktop } = useBreakpoint();

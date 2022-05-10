@@ -43,13 +43,14 @@ const sx = {
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",
-    margin: "0 auto",
+    margin: "2.5rem auto 0",
     maxWidth: "46rem",
   },
   leadTextBox: {
     marginBottom: "2.25rem",
   },
   headerText: {
+    marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
   },
