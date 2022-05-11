@@ -22,7 +22,9 @@ const iconMap: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-const createEmailLink = (emailData: { [key: string]: string }): string => {
+export const createEmailLink = (emailData: {
+  [key: string]: string;
+}): string => {
   const { address, subject, body } = emailData;
   return `mailto:${address}?${encodeURIComponent(subject)}&${encodeURIComponent(
     body
