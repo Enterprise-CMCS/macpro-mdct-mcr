@@ -24,13 +24,13 @@ export const Header = ({ handleLogout }: Props) => {
               />
             </RouterLink>
             <Flex sx={sx.menuFlex}>
-              <RouterLink to="/faq" alt="link to help page" tabindex={0}>
+              <RouterLink to="/help" alt="link to help page" tabindex={0}>
                 <MenuOption
                   icon="questionCircleFill"
                   text="Get Help"
                   role="group"
                   hideText={isMobile}
-                  dataTestId="faq-button"
+                  dataTestId="help-button"
                 />
               </RouterLink>
               <Menu handleLogout={handleLogout} />

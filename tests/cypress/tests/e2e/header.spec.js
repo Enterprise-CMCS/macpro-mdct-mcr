@@ -1,5 +1,5 @@
 // element selectors
-const faqButton = '[data-testid="faq-button"]';
+const helpButton = '[data-testid="help-button"]';
 const appLogo = '[data-testid="app-logo"]';
 const menuButton = '[data-testid="menu-button"]';
 const menuList = '[data-testid="menu-list"]';
@@ -13,13 +13,13 @@ beforeEach(() => {
 });
 
 describe("Header integration tests", () => {
-  it("Header FAQ button navigates to /faq", () => {
-    cy.get(faqButton).click();
-    cy.location("pathname").should("match", /faq/);
+  it("Header help button navigates to /help", () => {
+    cy.get(helpButton).click();
+    cy.location("pathname").should("match", /help/);
   });
 
   it("Header app logo navigates to /", () => {
-    cy.get(faqButton).click();
+    cy.get(helpButton).click();
     cy.get(appLogo).click();
     cy.location("pathname").should("match", /\//);
   });

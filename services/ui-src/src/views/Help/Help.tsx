@@ -2,11 +2,11 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { EmailCard, FaqAccordion } from "../../components/index";
 // data
-import data from "../../data/faq-view.json";
+import data from "../../data/help-view.json";
 
-export const Faq = () => (
+export const Help = () => (
   <section>
-    <Box sx={sx.root} data-testid="faq-view">
+    <Box sx={sx.root} data-testid="help-view">
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.leadTextBox}>
           <Heading as="h1" sx={sx.headerText}>
@@ -14,16 +14,16 @@ export const Faq = () => (
           </Heading>
           <Text>{data.intro.body}</Text>
         </Box>
-        <Box sx={sx.faqCardBox}>
+        <Box sx={sx.emailCardBox}>
           <EmailCard
             verbiage={data.cards.helpdesk}
             icon="settings"
-            cardprops={{ ...sx.card, "data-testid": "helpdesk-faq-card" }}
+            cardprops={{ ...sx.card, "data-testid": "helpdesk-email-card" }}
           />
           <EmailCard
             verbiage={data.cards.template}
             icon="spreadsheet"
-            cardprops={{ ...sx.card, "data-testid": "template-faq-card" }}
+            cardprops={{ ...sx.card, "data-testid": "template-email-card" }}
           />
         </Box>
         <Box sx={sx.faqAccordionBox}>
@@ -52,7 +52,7 @@ const sx = {
     fontSize: "2rem",
     fontWeight: "normal",
   },
-  faqCardBox: {
+  emailCardBox: {
     width: "100%",
     marginBottom: "3rem",
   },

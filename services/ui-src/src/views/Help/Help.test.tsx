@@ -4,28 +4,28 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { useApiMock } from "utils/testing/mockApi";
 // views
-import { Faq } from "../index";
+import { Help } from "../index";
 
-const faqView = (
+const helpView = (
   <RouterWrappedComponent>
-    <Faq />
+    <Help />
   </RouterWrappedComponent>
 );
 
-describe("Test Faq view", () => {
+describe("Test /help view", () => {
   beforeEach(() => {
     useApiMock({});
-    render(faqView);
+    render(helpView);
   });
 
-  test("Check that Faq view renders", () => {
-    expect(screen.getByTestId("faq-view")).toBeVisible();
+  test("Check that /help view renders", () => {
+    expect(screen.getByTestId("help-view")).toBeVisible();
   });
 });
 
-describe("Test Faq view accessibility", () => {
+describe("Test /help view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(faqView);
+    const { container } = render(helpView);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

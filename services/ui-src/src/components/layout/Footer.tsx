@@ -56,8 +56,12 @@ export const Footer = () => {
         <Container sx={sx.footerBottomContainer}>
           <Flex sx={sx.footerBottomFlex} className={mqClasses}>
             <Flex sx={sx.footerBottomLinkFlex} className={mqClasses}>
-              <RouterLink to="/faq" alt="link to help page">
-                <Text sx={sx.link} className={mqClasses} data-testid="faq-link">
+              <RouterLink to="/help" alt="link to help page">
+                <Text
+                  sx={sx.link}
+                  className={mqClasses}
+                  data-testid="help-link"
+                >
                   Contact Us
                 </Text>
               </RouterLink>

@@ -5,7 +5,7 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { FaqAccordion } from "../index";
 // data
-import data from "../../data/faq-view.json";
+import data from "../../data/help-view.json";
 
 /*
  * From Chakra UI Accordion test file

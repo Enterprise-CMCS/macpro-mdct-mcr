@@ -4,13 +4,13 @@ import { axe } from "jest-axe";
 import { EmailCard } from "components";
 import { createEmailLink } from "./EmailCard";
 // data
-import data from "../../data/faq-view.json";
+import data from "../../data/help-view.json";
 
 const emailCardComponent = (
   <EmailCard
     verbiage={data.cards.helpdesk}
     icon="settings"
-    cardprops={{ "data-testid": "faq-card" }}
+    cardprops={{ "data-testid": "email-card" }}
   />
 );
 
@@ -20,7 +20,7 @@ describe("Test EmailCard", () => {
   });
 
   test("EmailCard is visible", () => {
-    expect(screen.getByTestId("faq-card")).toBeVisible();
+    expect(screen.getByTestId("email-card")).toBeVisible();
   });
 
   test("Email links are created correctly", () => {
@@ -33,7 +33,7 @@ describe("Test EmailCard", () => {
     expect(createEmailLink(mockEmailData)).toEqual(expectedEmailLink);
   });
 
-  test.only("Email links are visible", () => {
+  test("Email links are visible", () => {
     expect(screen.getByTestId("get-help-link")).toBeVisible();
   });
 });
