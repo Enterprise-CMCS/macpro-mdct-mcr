@@ -9,11 +9,11 @@ export enum CoreSetAbbr {
 }
 
 export enum UserRoles {
-  ADMIN = "mdctqmr-approver",
-  STATE = "mdctqmr-state-user",
-  HELP = "mdctqmr-help-desk",
-  BO = "mdctqmr-bo-user",
-  BOR = "mdctqmr-bor",
+  ADMIN = "mdctmcr-approver",
+  STATE = "mdctmcr-state-user",
+  HELP = "mdctmcr-help-desk",
+  STATE_REPRESENTATIVE = "mdctmcr-state-rep",
+  BOR = "mdctmcr-bor",
 }
 
 export enum MeasureStatus {
