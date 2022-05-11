@@ -50,6 +50,7 @@ const sx = {
     marginBottom: "2.25rem",
   },
   headerText: {
+    marginBottom: "0.5rem",
     fontSize: "2rem",
     fontWeight: "normal",
   },
