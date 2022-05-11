@@ -4,7 +4,7 @@ import { Card } from "../index";
 // utils
 import {
   makeMediaQueryClasses,
-  // useBreakpoint,
+  useBreakpoint,
 } from "../../utils/useBreakpoint";
 import { JsonObject } from "utils/types/types";
 // assets
@@ -22,31 +22,31 @@ const iconMap: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-const createEmailDestination = (emailData: {
-  [key: string]: string;
-}): string => {
+const createEmailLink = (emailData: { [key: string]: string }): string => {
   const { address, subject, body } = emailData;
-  return `${address}?${encodeURIComponent(subject)}&${encodeURIComponent(
+  return `mailto:${address}?${encodeURIComponent(subject)}&${encodeURIComponent(
     body
   )}`;
 };
 
 export const FaqCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
-  // const { isDesktop } = useBreakpoint();
+  const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
 
   return (
     <Card {...cardprops}>
-      <Flex sx={sx.root} className={mqClasses} {...props}>
-        <Image src={iconMap[icon].image} alt={iconMap[icon].alt} sx={sx.icon} />
+      <Flex sx={sx.root} {...props} className={mqClasses}>
+        <Image
+          src={iconMap[icon].image}
+          alt={iconMap[icon].alt}
+          sx={sx.icon}
+          className={mqClasses}
+        />
         <Flex sx={sx.cardContentFlex}>
           <Text sx={sx.bodyText}>{verbiage.body}</Text>
           <Text sx={sx.emailText}>
-            Email{" "}
-            <Link
-              href={`mailto:${createEmailDestination(verbiage.email)}`}
-              target="_blank"
-            >
+            Email {!isDesktop && <br />}
+            <Link href={createEmailLink(verbiage.email)} target="_blank">
               {verbiage.email.address}
             </Link>
           </Text>
@@ -65,12 +65,19 @@ interface Props {
 const sx = {
   root: {
     flexDirection: "row",
-    marginBottom: "2rem",
     textAlign: "left",
+    "&.mobile": {
+      flexDirection: "column",
+    },
   },
   icon: {
     marginRight: "2rem",
     boxSize: "5.5rem",
+    "&.mobile": {
+      alignSelf: "center",
+      marginRight: "0",
+      marginBottom: "1rem",
+    },
   },
   cardContentFlex: {
     width: "100%",

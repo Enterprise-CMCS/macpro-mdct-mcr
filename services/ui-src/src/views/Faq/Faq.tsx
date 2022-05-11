@@ -1,8 +1,8 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { FaqCard } from "../../components/index";
+import { FaqCard, FaqAccordion } from "../../components/index";
 // data
-import faqCardsVerbiage from "../../data/faqCards.json";
+import data from "./data.json";
 
 export const Faq = () => (
   <section>
@@ -10,23 +10,25 @@ export const Faq = () => (
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.leadTextBox}>
           <Heading as="h1" sx={sx.headerText}>
-            How can we help you?
+            {data.intro.header}
           </Heading>
-          <Text>
-            Question or feedback? Please email us and we will respond as soon as
-            possible. You can also review our frequently asked questions below.
-          </Text>
+          <Text>{data.intro.body}</Text>
         </Box>
-        <FaqCard
-          verbiage={faqCardsVerbiage.helpdesk}
-          icon="settings"
-          cardprops={{ ...sx.card, "data-testid": "helpdesk-faq-card" }}
-        />
-        <FaqCard
-          verbiage={faqCardsVerbiage.template}
-          icon="spreadsheet"
-          cardprops={{ ...sx.card, "data-testid": "template-faq-card" }}
-        />
+        <Box sx={sx.faqCardBox}>
+          <FaqCard
+            verbiage={data.cards.helpdesk}
+            icon="settings"
+            cardprops={{ ...sx.card, "data-testid": "helpdesk-faq-card" }}
+          />
+          <FaqCard
+            verbiage={data.cards.template}
+            icon="spreadsheet"
+            cardprops={{ ...sx.card, "data-testid": "template-faq-card" }}
+          />
+        </Box>
+        <Box sx={sx.faqAccordionBox}>
+          <FaqAccordion accordionItems={data.accordionItems} />
+        </Box>
       </Flex>
     </Box>
   </section>
@@ -50,7 +52,15 @@ const sx = {
     fontSize: "2rem",
     fontWeight: "normal",
   },
+  faqCardBox: {
+    width: "100%",
+    marginBottom: "3rem",
+  },
   card: {
     marginBottom: "1.5rem",
+  },
+  faqAccordionBox: {
+    width: "100%",
+    marginBottom: "2rem",
   },
 };

@@ -79,6 +79,11 @@ export const theme = extendTheme({
     },
   },
   components: {
+    Accordion: {
+      baseStyle: {
+        borderStyle: "none",
+      },
+    },
     Button: {
       baseStyle: {
         transition: "all 0.3s ease",
