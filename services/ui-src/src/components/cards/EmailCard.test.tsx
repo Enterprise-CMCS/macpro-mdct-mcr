@@ -1,25 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
-import { FaqCard } from "components";
-import { createEmailLink } from "./FaqCard";
+import { EmailCard } from "components";
+import { createEmailLink } from "./EmailCard";
 // data
 import data from "../../data/faq-view.json";
 
-const faqCardComponent = (
-  <FaqCard
+const emailCardComponent = (
+  <EmailCard
     verbiage={data.cards.helpdesk}
     icon="settings"
     cardprops={{ "data-testid": "faq-card" }}
   />
 );
 
-describe("Test FaqCard", () => {
+describe("Test EmailCard", () => {
   beforeEach(() => {
-    render(faqCardComponent);
+    render(emailCardComponent);
   });
 
-  test("FaqCard is visible", () => {
+  test("EmailCard is visible", () => {
     expect(screen.getByTestId("faq-card")).toBeVisible();
   });
 
@@ -38,9 +38,9 @@ describe("Test FaqCard", () => {
   });
 });
 
-describe("Test FaqCard accessibility", () => {
+describe("Test EmailCard accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(faqCardComponent);
+    const { container } = render(emailCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

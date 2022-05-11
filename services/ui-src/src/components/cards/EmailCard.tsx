@@ -31,12 +31,12 @@ export const createEmailLink = (emailData: {
   )}`;
 };
 
-export const FaqCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
+export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
   const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
 
   return (
-    <Card {...cardprops}>
+    <Card {...cardprops} {...{ paddingBottom: "1.5rem" }}>
       <Flex sx={sx.root} {...props} className={mqClasses}>
         <Image
           src={iconMap[icon].image}
@@ -78,7 +78,7 @@ const sx = {
   },
   icon: {
     marginRight: "2rem",
-    boxSize: "5.5rem",
+    boxSize: "78px",
     "&.mobile": {
       alignSelf: "center",
       marginRight: "0",

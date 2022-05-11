@@ -16,6 +16,7 @@ export const theme = extendTheme({
   },
   sizes: {
     appMax: "75rem",
+    contentColumnSmall: "46rem",
   },
   colors: {
     colorSchemes: {

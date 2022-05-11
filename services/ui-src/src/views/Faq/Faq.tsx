@@ -1,6 +1,6 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { FaqCard, FaqAccordion } from "../../components/index";
+import { EmailCard, FaqAccordion } from "../../components/index";
 // data
 import data from "../../data/faq-view.json";
 
@@ -15,12 +15,12 @@ export const Faq = () => (
           <Text>{data.intro.body}</Text>
         </Box>
         <Box sx={sx.faqCardBox}>
-          <FaqCard
+          <EmailCard
             verbiage={data.cards.helpdesk}
             icon="settings"
             cardprops={{ ...sx.card, "data-testid": "helpdesk-faq-card" }}
           />
-          <FaqCard
+          <EmailCard
             verbiage={data.cards.template}
             icon="spreadsheet"
             cardprops={{ ...sx.card, "data-testid": "template-faq-card" }}
@@ -41,8 +41,8 @@ const sx = {
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",
-    margin: "2.5rem auto 0",
-    maxWidth: "46rem",
+    margin: "5.5rem auto 0",
+    maxWidth: "contentColumnSmall",
   },
   leadTextBox: {
     marginBottom: "2.25rem",

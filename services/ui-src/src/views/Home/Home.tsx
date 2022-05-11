@@ -47,8 +47,8 @@ const sx = {
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",
-    margin: "2.5rem auto 0",
-    maxWidth: "46rem",
+    margin: "3.5rem auto 0",
+    maxWidth: "contentColumnSmall",
   },
   introTextBox: {
     marginBottom: "2.25rem",
