@@ -8,17 +8,6 @@ import { AccordionItem } from "../index";
 // data
 import data from "../../data/home-view.json";
 
-/*
- * From Chakra UI Accordion test file
- * https://bit.ly/3MFtwXq
- */
-jest.mock("@chakra-ui/transition", () => ({
-  ...jest.requireActual("@chakra-ui/transition"),
-  Collapse: jest.fn(({ in: inProp, children }: any) => (
-    <div hidden={!inProp}>{children}</div>
-  )),
-}));
-
 const accordionItemComponent = (
   <RouterWrappedComponent>
     <Accordion>
