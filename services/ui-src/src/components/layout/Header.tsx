@@ -5,7 +5,7 @@ import { Menu, MenuOption, RouterLink } from "../index";
 // utils
 import { useBreakpoint } from "../../utils/useBreakpoint";
 // assets
-import appLogo from "../../assets/logo_qmr.png";
+import appLogo from "../../assets/logo_mcr_draft.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -69,7 +69,6 @@ const sx = {
     alignItems: "center",
   },
   appLogo: {
-    maxWidth: "100px",
-    padding: ".25rem",
+    maxWidth: "200px",
   },
 };

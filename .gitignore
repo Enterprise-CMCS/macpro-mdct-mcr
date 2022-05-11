@@ -13,5 +13,6 @@ tests_output
 *.log
 tests/cypress/videos
 tests/cypress/screenshots
+tests/cypress/downloads
 tests/cypress/package-lock.json
 package-lock.json

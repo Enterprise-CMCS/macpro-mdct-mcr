@@ -1,110 +1,57 @@
-import { Navigate } from "react-router-dom";
-// utils
-import { UserRoles, MeasureStatus, CoreSetAbbr } from "utils/types/types";
-import { useUser } from "utils/auth";
-import { useCreateMeasure, useGetMeasures, useDeleteMeasure } from "utils/api";
 // components
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Banner, TemplateCard } from "../../components/index";
+// utils
+import { BannerTypes } from "utils/types/types";
+// data
+import templateCardsVerbiage from "../../data/templateCards.json";
 
-// TODO: remove temporary variables
-const year = "2021";
-const state = "AL";
-const coreSet = CoreSetAbbr.ACS;
-
-export default () => {
-  const { userRole, userState } = useUser();
-  const mutation = useCreateMeasure();
-  let { data } = useGetMeasures(state, year, coreSet);
-  const deleteMeasureMutation = useDeleteMeasure();
-  const isAdminUser = userRole && userRole !== UserRoles.STATE;
-
-  // TODO: remove temporary function
-  const addMeasure = () => {
-    const measure = {
-      coreSet: coreSet,
-      status: MeasureStatus.INCOMPLETE,
-      measure: "AIF-HH",
-      state: state,
-      year: year,
-      data: {
-        userState,
-        userRole,
-        description: "test description",
-      },
-    };
-    mutation.mutate(measure, {
-      onSuccess: () => {
-        window.location.reload();
-      },
-      onError: (e) => {
-        console.log(e); // eslint-disable-line no-console
-      },
-    });
-  };
-
-  // TODO: remove temporary function
-  const deleteMeasure = (measure: string) => {
-    deleteMeasureMutation.mutate(
-      { state, year, coreSet, measure },
-      {
-        onSuccess: () => {
-          window.location.reload();
-        },
-      }
-    );
-  };
-
-  if (isAdminUser) {
-    return <Navigate to={`/admin`} />;
-  }
-
-  return (
-    <section>
-      <Text as="h1" my="1rem" fontSize="3xl">
-        MCR: Managed Care Reporting
-      </Text>
-      <Text as="h2" my="1rem" fontSize="xl">
-        Manage Measures
-      </Text>
-      {userState ? (
-        <Box mt="1rem">
-          <Button sx={sx.button} onClick={addMeasure}>
-            Create Measure
-          </Button>
-          {data?.Items &&
-            data.Items.map((item: any): any => (
-              <Box m="1rem" key={item.compoundKey}>
-                <Text my="1rem">
-                  State: {item.state}
-                  <br />
-                  Year: {item.year}
-                  <br />
-                  Measure: {item.measure}
-                </Text>
-                <Button
-                  sx={sx.button}
-                  onClick={() => {
-                    deleteMeasure(item.measure);
-                  }}
-                >
-                  Delete Measure
-                </Button>
-              </Box>
-            ))}
+export default () => (
+  <section>
+    <Box sx={sx.root} data-testid="home-view">
+      <Banner
+        status={BannerTypes.INFO}
+        bgColor="palette.alt_lightest"
+        accentColor="palette.alt"
+        title="Welcome to the new Managed Care Reporting tool!"
+        description="Each state must submit one report per program."
+      />
+      <Flex sx={sx.mainContentFlex}>
+        <Box sx={sx.leadTextBox}>
+          <Heading as="h1" sx={sx.headerText}>
+            Your fiscal year 2022 templates
+          </Heading>
+          <Text>
+            Download these templates to begin gathering administrative data for
+            your Medicaid managed care program. Submit your completed report to
+            the Centers for Medicare and Medicaid Services (CMS) through this
+            website beginning October 2022.
+          </Text>
         </Box>
-      ) : (
-        <Box data-testid="home-view">
-          <Text>You are not authorized to view this page</Text>
-        </Box>
-      )}
-    </section>
-  );
-};
+        <TemplateCard verbiage={templateCardsVerbiage.MCPAR}></TemplateCard>
+        <TemplateCard verbiage={templateCardsVerbiage.MLR}></TemplateCard>
+        <TemplateCard verbiage={templateCardsVerbiage.NAAAR}></TemplateCard>
+      </Flex>
+    </Box>
+  </section>
+);
 
 const sx = {
-  button: {
-    color: "palette.white",
-    background: "palette.main_darkest",
-    _hover: { background: "palette.main_darker" },
+  root: {
+    flexShrink: "0",
+  },
+  mainContentFlex: {
+    flexDirection: "column",
+    alignItems: "center",
+    margin: "0 auto",
+    maxWidth: "46rem",
+  },
+  leadTextBox: {
+    marginBottom: "2.25rem",
+  },
+  headerText: {
+    marginBottom: "0.5rem",
+    fontSize: "2rem",
+    fontWeight: "normal",
   },
 };

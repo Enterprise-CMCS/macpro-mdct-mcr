@@ -21,6 +21,13 @@ export enum MeasureStatus {
   INCOMPLETE = "incomplete",
 }
 
+export enum BannerTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
 export interface Params {
   state?: string;
   year?: string;
@@ -55,4 +62,13 @@ export interface ITerritoryList {
 
 export interface StyleObject {
   [key: string]: any;
+}
+
+export interface JsonObject {
+  [key: string]: any;
+}
+
+export interface TableContentShape {
+  headRow: string[];
+  bodyRows: string[][];
 }

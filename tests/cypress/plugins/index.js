@@ -1,6 +1,7 @@
 const cucumber = require("cypress-cucumber-preprocessor").default;
 const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
 const { lighthouse } = require("@cypress-audit/lighthouse");
+const { isFileExist } = require("cy-verify-downloads");
 
 module.exports = (on, config) => {
   on("file:preprocessor", cucumber());
@@ -24,4 +25,6 @@ module.exports = (on, config) => {
     pa11y: pa11y(),
     lighthouse: lighthouse(),
   });
+
+  on("task", { isFileExist });
 };
