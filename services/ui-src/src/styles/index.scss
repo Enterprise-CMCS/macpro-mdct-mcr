@@ -2,6 +2,14 @@
 $image-path: "~@cmsgov/design-system/dist/images";
 @import "@cmsgov/design-system/dist/scss/index";
 
+@mixin tabbed-focus {
+  box-shadow: 0 0 4px 6px var(--chakra-colors-palette-focus_dark) !important;
+  // Add support for Windows High Contrast Mode (WHCM)
+  // The transparent color only shows when WHCM is triggered
+  outline: 3px solid transparent;
+  outline-offset: 3px;
+}
+
 html,
 body,
 #root {
@@ -50,22 +58,34 @@ a {
   max-width: var(--chakra-sizes-appMax);
 }
 
-// TAB NAVIGATION STYLES
+// ACCESSIBILITY & TAB NAVIGATION STYLES
 
-*:focus, *:active {
-  outline: none !important;
+* {
+  &:active,
+  &:focus {
+    outline: none !important;
+  }
+  &:focus-visible {
+    @include tabbed-focus;
+  }
 }
 
-a:focus, p:active {
+a:focus,
+p:active {
   box-shadow: none;
   background-color: inherit;
-
 }
 
-*:focus-visible {
-  box-shadow: 0 0 4px 6px var(--chakra-colors-palette-focus_dark) !important;
-  // Add support for Windows High Contrast Mode (WHCM)
-  // The transparent color only shows when WHCM is triggered
-  outline: 3px solid transparent;
-  outline-offset: 3px;
+* .chakra-accordion__button {
+  &:hover {
+    p {
+      background-color: initial;
+    }
+  }
+  &:focus {
+    box-shadow: none !important;
+  }
+  &:focus-visible {
+    @include tabbed-focus;
+  }
 }
