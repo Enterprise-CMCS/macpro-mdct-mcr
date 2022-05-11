@@ -17,7 +17,11 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
     <AccordionItemRoot sx={sx.root} {...props}>
       {({ isExpanded }) => (
         <>
-          <AccordionButton sx={sx.accordionButton}>
+          <AccordionButton
+            sx={sx.accordionButton}
+            aria-label={label}
+            title="accordion-button"
+          >
             <Text flex="1">{label}</Text>
             <Icon
               icon={isExpanded ? "minus" : "plus"}

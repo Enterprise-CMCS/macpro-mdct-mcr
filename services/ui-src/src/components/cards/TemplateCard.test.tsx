@@ -5,7 +5,7 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { TemplateCard } from "components";
 // data
-import templateCardsVerbiage from "../../data/templateCards.json";
+import data from "../../data/home-view.json";
 
 /*
  * From Chakra UI Accordion test file
@@ -18,10 +18,12 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
-const verbiage = templateCardsVerbiage.MCPAR;
 const templateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard verbiage={verbiage} data-testid="template-download-card" />
+    <TemplateCard
+      verbiage={data.cards.MCPAR}
+      data-testid="template-download-card"
+    />
   </RouterWrappedComponent>
 );
 

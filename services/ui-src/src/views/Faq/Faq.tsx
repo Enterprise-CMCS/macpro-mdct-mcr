@@ -2,7 +2,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { FaqCard, FaqAccordion } from "../../components/index";
 // data
-import data from "./data.json";
+import data from "../../data/faq-view.json";
 
 export const Faq = () => (
   <section>
@@ -61,6 +61,6 @@ const sx = {
   },
   faqAccordionBox: {
     width: "100%",
-    marginBottom: "2rem",
+    marginBottom: "8rem",
   },
 };

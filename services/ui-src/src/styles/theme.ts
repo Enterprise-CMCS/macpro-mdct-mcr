@@ -6,7 +6,6 @@ export const theme = extendTheme({
     heading: "Open Sans",
     body: "Open Sans",
   },
-
   breakpoints: {
     // read this: https://bit.ly/3xSWnDt
     base: "0em", // mobile (<=35em|560px)
@@ -14,6 +13,9 @@ export const theme = extendTheme({
     md: "55em", // desktop, small (>55em|880px and <=75em|1200px)
     lg: "75em", // desktop, large (>75em|1200px and <=100em|1600px)
     xl: "100em", // desktop, ultrawide (>100em|1600px)
+  },
+  sizes: {
+    appMax: "75rem",
   },
   colors: {
     colorSchemes: {

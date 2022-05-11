@@ -91,7 +91,7 @@ const sx = {
     minHeight: "7rem",
   },
   footerTopContainer: {
-    maxW: "7xl",
+    maxW: "appMax",
   },
   footerTopFlex: {
     minH: "7rem",
@@ -131,7 +131,7 @@ const sx = {
     fontSize: 14,
   },
   footerBottomContainer: {
-    maxW: "7xl",
+    maxW: "appMax",
   },
   footerBottomFlex: {
     paddingY: ".5rem",

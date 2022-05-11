@@ -43,7 +43,7 @@ const sx = {
     flexDirection: "column",
   },
   appContainer: {
-    maxW: "7xl",
+    maxW: "appMax",
     flex: "1 0 auto",
   },
   loginContainer: {
