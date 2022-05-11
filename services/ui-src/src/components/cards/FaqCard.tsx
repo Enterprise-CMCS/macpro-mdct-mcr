@@ -48,7 +48,11 @@ export const FaqCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
           <Text sx={sx.bodyText}>{verbiage.body}</Text>
           <Text sx={sx.emailText}>
             Email {!isDesktop && <br />}
-            <Link href={createEmailLink(verbiage.email)} target="_blank">
+            <Link
+              href={createEmailLink(verbiage.email)}
+              target="_blank"
+              data-testid="get-help-link"
+            >
               {verbiage.email.address}
             </Link>
           </Text>

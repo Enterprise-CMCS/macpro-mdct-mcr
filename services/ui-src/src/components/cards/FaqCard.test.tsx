@@ -32,6 +32,10 @@ describe("Test FaqCard", () => {
     const expectedEmailLink = "mailto:test@test.com?the%20subject&the%20body";
     expect(createEmailLink(mockEmailData)).toEqual(expectedEmailLink);
   });
+
+  test.only("Email links are visible", () => {
+    expect(screen.getByTestId("get-help-link")).toBeVisible();
+  });
 });
 
 describe("Test FaqCard accessibility", () => {
