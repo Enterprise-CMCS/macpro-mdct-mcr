@@ -36,7 +36,7 @@ export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   return (
-    <Card {...cardprops} {...{ paddingBottom: "1.5rem" }}>
+    <Card {...cardprops} paddingBottom="1.5rem !important">
       <Flex sx={sx.root} {...props} className={mqClasses}>
         <Image
           src={iconMap[icon].image}
@@ -88,6 +88,7 @@ const sx = {
   cardContentFlex: {
     width: "100%",
     flexDirection: "column",
+    justifyContent: "center",
   },
   bodyText: {
     marginBottom: "1rem",

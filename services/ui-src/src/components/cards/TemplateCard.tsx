@@ -64,7 +64,6 @@ const sx = {
     flexDirection: "row",
   },
   spreadsheetIcon: {
-    marginTop: "0.675rem",
     marginRight: "2rem",
     boxSize: "5.5rem",
   },
@@ -86,7 +85,8 @@ const sx = {
     fontWeight: "bold",
     color: "palette.white",
     span: {
-      margin: "0rem",
+      marginLeft: "-0.25rem",
+      marginRight: "0.25rem",
     },
     _hover: {
       background: "palette.main_darker",

@@ -9,7 +9,11 @@ export const FaqAccordion = ({ accordionItems }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   return (
-    <Accordion allowToggle={true} data-testid="faq-accordion">
+    <Accordion
+      allowToggle={true}
+      allowMultiple={true}
+      data-testid="faq-accordion"
+    >
       {accordionItems.map((item: JsonObject, index: number) => (
         <AccordionItem key={index} label={item.question} sx={sx.item}>
           <Box sx={sx.answerBox} className={mqClasses}>

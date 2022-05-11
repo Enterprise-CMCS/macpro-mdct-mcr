@@ -1,12 +1,18 @@
 import { ReactChild } from "react";
 // components
 import { Box } from "@chakra-ui/react";
+// utils
+import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 
-export const Card = ({ children, ...props }: Props) => (
-  <Box {...props} sx={sx.root}>
-    {children}
-  </Box>
-);
+export const Card = ({ children, ...props }: Props) => {
+  const mqClasses = makeMediaQueryClasses();
+
+  return (
+    <Box {...props} sx={sx.root} className={mqClasses}>
+      {children}
+    </Box>
+  );
+};
 
 interface Props {
   children?: ReactChild | ReactChild[];
