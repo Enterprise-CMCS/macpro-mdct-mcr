@@ -6,7 +6,7 @@ describe("Baseline accessibility check", () => {
     cy.visit("/");
     cy.authenticate("stateUser");
   });
-  it("/get-help has no basic accessibility issues", () => {
+  it("/help has no basic accessibility issues", () => {
     cy.get(helpButton).click();
     cy.checkCurrentPageAccessibility();
   });

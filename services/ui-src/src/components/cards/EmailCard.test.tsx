@@ -34,7 +34,7 @@ describe("Test EmailCard", () => {
   });
 
   test("Email links are visible", () => {
-    expect(screen.getByTestId("get-help-link")).toBeVisible();
+    expect(screen.getByTestId("email-link")).toBeVisible();
   });
 });
 

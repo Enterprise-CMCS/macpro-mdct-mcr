@@ -51,7 +51,7 @@ export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
             <Link
               href={createEmailLink(verbiage.email)}
               target="_blank"
-              data-testid="get-help-link"
+              data-testid="email-link"
             >
               {verbiage.email.address}
             </Link>
