@@ -5,7 +5,7 @@ import { Menu, MenuOption, RouterLink } from "../index";
 // utils
 import { useBreakpoint } from "../../utils/useBreakpoint";
 // assets
-import appLogo from "../../assets/logo_mcr_draft.png";
+import appLogo from "../../assets/images/logo_mcr_draft.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -24,13 +24,13 @@ export const Header = ({ handleLogout }: Props) => {
               />
             </RouterLink>
             <Flex sx={sx.menuFlex}>
-              <RouterLink to="/faq" alt="link to help page" tabindex={0}>
+              <RouterLink to="/help" alt="link to help page" tabindex={0}>
                 <MenuOption
                   icon="questionCircleFill"
                   text="Get Help"
                   role="group"
                   hideText={isMobile}
-                  dataTestId="faq-button"
+                  dataTestId="help-button"
                 />
               </RouterLink>
               <Menu handleLogout={handleLogout} />
@@ -59,7 +59,7 @@ const sx = {
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   headerContainer: {
-    maxW: "7xl",
+    maxW: "appMax",
   },
   headerFlex: {
     justifyContent: "space-between",

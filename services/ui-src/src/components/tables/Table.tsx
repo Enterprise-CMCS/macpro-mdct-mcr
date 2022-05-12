@@ -9,11 +9,16 @@ export const Table = ({
   variant,
   lastCellsBold,
   dataTestId,
+  ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-
   return (
-    <TableRoot variant={variant} size="sm" data-testid={dataTestId || "table"}>
+    <TableRoot
+      variant={variant}
+      size="sm"
+      data-testid={dataTestId || "table"}
+      {...props}
+    >
       <Thead>
         <Tr>
           {/* Head Row */}
@@ -52,6 +57,7 @@ interface Props {
   variant?: string;
   lastCellsBold?: boolean;
   dataTestId?: string;
+  [key: string]: any;
 }
 
 const sx = {

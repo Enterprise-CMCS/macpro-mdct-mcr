@@ -5,9 +5,9 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { Table } from "components";
 // data
-import templateCardsVerbiage from "../../data/templateCards.json";
+import data from "../../data/home-view.json";
 
-const tableContent = templateCardsVerbiage.MCPAR.accordion.table;
+const tableContent = data.cards.MCPAR.accordion.table;
 const tableComponent = (
   <RouterWrappedComponent>
     <Table

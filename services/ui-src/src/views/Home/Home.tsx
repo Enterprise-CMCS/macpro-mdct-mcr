@@ -4,9 +4,9 @@ import { Banner, TemplateCard } from "../../components/index";
 // utils
 import { BannerTypes } from "utils/types/types";
 // data
-import templateCardsVerbiage from "../../data/templateCards.json";
+import data from "../../data/home-view.json";
 
-export default () => (
+export const Home = () => (
   <section>
     <Box sx={sx.root} data-testid="home-view">
       <Banner
@@ -17,20 +17,24 @@ export default () => (
         description="Each state must submit one report per program."
       />
       <Flex sx={sx.mainContentFlex}>
-        <Box sx={sx.leadTextBox}>
+        <Box sx={sx.introTextBox}>
           <Heading as="h1" sx={sx.headerText}>
-            Your fiscal year 2022 templates
+            {data.intro.header}
           </Heading>
-          <Text>
-            Download these templates to begin gathering administrative data for
-            your Medicaid managed care program. Submit your completed report to
-            the Centers for Medicare and Medicaid Services (CMS) through this
-            website beginning October 2022.
-          </Text>
+          <Text>{data.intro.body}</Text>
         </Box>
-        <TemplateCard verbiage={templateCardsVerbiage.MCPAR}></TemplateCard>
-        <TemplateCard verbiage={templateCardsVerbiage.MLR}></TemplateCard>
-        <TemplateCard verbiage={templateCardsVerbiage.NAAAR}></TemplateCard>
+        <TemplateCard
+          verbiage={data.cards.MCPAR}
+          cardprops={{ ...sx.card, "data-testid": "mcpar-template-card" }}
+        />
+        <TemplateCard
+          verbiage={data.cards.MLR}
+          cardprops={{ ...sx.card, "data-testid": "mlr-template-card" }}
+        />
+        <TemplateCard
+          verbiage={data.cards.NAAAR}
+          cardprops={{ ...sx.card, "data-testid": "naar-template-card" }}
+        />
       </Flex>
     </Box>
   </section>
@@ -43,15 +47,18 @@ const sx = {
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",
-    margin: "0 auto",
-    maxWidth: "46rem",
+    margin: "3.5rem auto 0",
+    maxWidth: "contentColumnSmall",
   },
-  leadTextBox: {
+  introTextBox: {
     marginBottom: "2.25rem",
   },
   headerText: {
-    marginBottom: "0.5rem",
+    marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
+  },
+  card: {
+    marginBottom: "2rem",
   },
 };

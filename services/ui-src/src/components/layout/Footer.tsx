@@ -7,8 +7,8 @@ import {
   useBreakpoint,
 } from "../../utils/useBreakpoint";
 // assets
-import hhsLogo from "../../assets/logo_hhs.svg";
-import medicaidLogo from "../../assets/logo_medicaid.svg";
+import hhsLogo from "../../assets/images/logo_hhs.svg";
+import medicaidLogo from "../../assets/images/logo_medicaid.svg";
 
 export const Footer = () => {
   const { isMobile, isDesktop } = useBreakpoint();
@@ -56,8 +56,12 @@ export const Footer = () => {
         <Container sx={sx.footerBottomContainer}>
           <Flex sx={sx.footerBottomFlex} className={mqClasses}>
             <Flex sx={sx.footerBottomLinkFlex} className={mqClasses}>
-              <RouterLink to="/faq" alt="link to help page">
-                <Text sx={sx.link} className={mqClasses} data-testid="faq-link">
+              <RouterLink to="/help" alt="link to help page">
+                <Text
+                  sx={sx.link}
+                  className={mqClasses}
+                  data-testid="help-link"
+                >
                   Contact Us
                 </Text>
               </RouterLink>
@@ -91,7 +95,7 @@ const sx = {
     minHeight: "7rem",
   },
   footerTopContainer: {
-    maxW: "7xl",
+    maxW: "appMax",
   },
   footerTopFlex: {
     minH: "7rem",
@@ -128,11 +132,10 @@ const sx = {
   footerBottom: {
     minHeight: "3rem",
     bg: "palette.main_darkest",
-    color: "palette.white",
     fontSize: 14,
   },
   footerBottomContainer: {
-    maxW: "7xl",
+    maxW: "appMax",
   },
   footerBottomFlex: {
     paddingY: ".5rem",
@@ -153,6 +156,7 @@ const sx = {
   },
   link: {
     margin: "0.5rem",
+    color: "palette.white",
     _visited: {
       color: "palette.white",
     },
@@ -164,11 +168,13 @@ const sx = {
     },
   },
   divider: {
+    color: "palette.white",
+
     margin: "0.5rem",
     cursor: "default",
   },
   address: {
-    fontWeight: "bold",
+    color: "palette.white",
     "&.mobile, &.tablet": {
       margin: "0.25rem 0",
     },

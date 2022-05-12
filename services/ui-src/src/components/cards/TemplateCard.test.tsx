@@ -1,28 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { TemplateCard } from "components";
 // data
-import templateCardsVerbiage from "../../data/templateCards.json";
+import data from "../../data/home-view.json";
 
-/*
- * From Chakra UI Accordion test file
- * https://bit.ly/3MFtwXq
- */
-jest.mock("@chakra-ui/transition", () => ({
-  ...jest.requireActual("@chakra-ui/transition"),
-  Collapse: jest.fn(({ in: inProp, children }: any) => (
-    <div hidden={!inProp}>{children}</div>
-  )),
-}));
-
-const verbiage = templateCardsVerbiage.MCPAR;
 const templateCardComponent = (
-  <RouterWrappedComponent>
-    <TemplateCard verbiage={verbiage} />
-  </RouterWrappedComponent>
+  <TemplateCard
+    verbiage={data.cards.MCPAR}
+    data-testid="template-download-card"
+  />
 );
 
 describe("Test TemplateCard", () => {
