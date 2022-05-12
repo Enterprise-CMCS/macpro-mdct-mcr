@@ -125,7 +125,7 @@ We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa
 
 Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
-Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe) and  [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html).
+Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe) and [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html).
 
 ### Formatting
 
