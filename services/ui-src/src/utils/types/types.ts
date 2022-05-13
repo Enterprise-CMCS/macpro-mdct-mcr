@@ -28,6 +28,14 @@ export enum BannerTypes {
   WARNING = "warning",
 }
 
+export interface BannerShape {
+  type: BannerTypes;
+  title: string;
+  body: string;
+  startDate: number;
+  endDate: number;
+}
+
 export interface Params {
   state?: string;
   year?: string;

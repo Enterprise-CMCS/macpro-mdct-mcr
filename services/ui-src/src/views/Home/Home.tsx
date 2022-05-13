@@ -51,6 +51,7 @@ const sx = {
     maxWidth: "contentColumnSmall",
   },
   introTextBox: {
+    width: "100%",
     marginBottom: "2.25rem",
   },
   headerText: {
