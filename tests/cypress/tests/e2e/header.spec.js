@@ -31,10 +31,10 @@ describe("Header integration tests", () => {
     cy.get(menuOptionLogOut).should("be.visible");
   });
 
-  it("Header menu option 'Manage Account' navigates to /acct", () => {
+  it("Header menu option 'Manage Account' navigates to /profile", () => {
     cy.get(menuButton).click();
     cy.get(menuOptionManageAccount).click();
-    cy.location("pathname").should("match", /acct/);
+    cy.location("pathname").should("match", /profile/);
   });
 
   it("Header menu option 'Log Out' logs user out", () => {
