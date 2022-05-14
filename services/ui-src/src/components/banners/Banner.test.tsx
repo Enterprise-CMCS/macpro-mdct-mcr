@@ -13,7 +13,7 @@ const infoAlert = (
       bgColor="palette.alt_lightest"
       accentColor="palette.alt"
       title="Test banner!"
-      description="This is for testing."
+      body="This is for testing."
     />
   </RouterWrappedComponent>
 );

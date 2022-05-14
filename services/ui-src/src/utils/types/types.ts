@@ -29,7 +29,6 @@ export enum BannerTypes {
 }
 
 export interface BannerShape {
-  type: BannerTypes;
   title: string;
   body: string;
   startDate: number;
