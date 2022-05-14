@@ -10,7 +10,13 @@ export const TextField = ({ label, placeholder, ...props }: Props) => {
     <Box sx={sx.root} className={mqClasses}>
       <FormControl>
         <FormLabel>{label}</FormLabel>
-        <Input {...props} isRequired placeholder={placeholder} />
+        <Input
+          sx={sx.input}
+          size="md"
+          {...props}
+          isRequired
+          placeholder={placeholder}
+        />
       </FormControl>
     </Box>
   );
@@ -23,7 +29,10 @@ interface Props {
 }
 
 const sx = {
-  root: {
-    width: "100%",
+  root: {},
+  input: {
+    paddingLeft: "0.5rem",
+    paddingRight: "0.5rem",
+    border: "1px solid red",
   },
 };

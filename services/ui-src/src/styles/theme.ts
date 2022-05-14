@@ -19,19 +19,6 @@ export const theme = extendTheme({
     contentColumnSmall: "46rem",
   },
   colors: {
-    colorSchemes: {
-      main: {
-        100: "#ffffff",
-        200: "#e1f3f8",
-        300: "#9bdaf1",
-        400: "#0071bc",
-        500: "#0071bc",
-        600: "#205493",
-        700: "#205493",
-        800: "#112e51",
-        900: "#112e51",
-      },
-    },
     palette: {
       // primary
       main: "#0071bc",
@@ -79,6 +66,30 @@ export const theme = extendTheme({
       focus_light: "#ffffff",
       focus_dark: "#bd13b8",
       muted: "#bac5cf",
+    },
+    colorSchemes: {
+      main: {
+        100: "#ffffff",
+        200: "#e1f3f8",
+        300: "#9bdaf1",
+        400: "#0071bc",
+        500: "#0071bc",
+        600: "#205493",
+        700: "#205493",
+        800: "#112e51",
+        900: "#112e51",
+      },
+      error: {
+        100: "#f9dede",
+        200: "#f5adb9",
+        300: "#e59393",
+        400: "#e31c3d",
+        500: "#cd2026",
+        600: "#b31e22",
+        700: "#b31e22",
+        800: "#981b1e",
+        900: "#981b1e",
+      },
     },
   },
   components: {
