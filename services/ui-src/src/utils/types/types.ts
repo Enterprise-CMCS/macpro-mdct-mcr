@@ -15,11 +15,14 @@ export enum BannerTypes {
   WARNING = "warning",
 }
 
-export interface BannerData<DataType = any> {
-  compoundKey: string;
+export interface BannerData {
+  key: string;
   createdAt: number;
   lastAltered: number;
-  data: DataType;
+  lastAlteredBy?: string;
+  type: string;
+  title: string;
+  description: string;
 }
 
 export interface ITerritoryList {

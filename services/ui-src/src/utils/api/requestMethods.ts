@@ -17,30 +17,30 @@ async function requestOptions(): Promise<any> {
 async function listBanners(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.get("banner", `banners/list`, opts);
+  return API.get("banner", `banners`, opts);
 }
 
 async function getBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.get("banner", `banners/${inputObj.banner}/get`, opts);
+  return API.get("banner", `banners/${inputObj.key}`, opts);
 }
 
 async function createBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.post("banner", `banners/${inputObj.banner}/create`, opts);
+  return API.post("banner", `banners/${inputObj.key}`, opts);
 }
 async function editBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.put("banner", `banners/${inputObj.banner}/edit`, opts);
+  return API.put("banner", `banners/${inputObj.key}`, opts);
 }
 
 async function deleteBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.del("banner", `banners/${inputObj.banner}/delete`, opts);
+  return API.del("banner", `banners/${inputObj.key}`, opts);
 }
 
 export { listBanners, getBanner, createBanner, editBanner, deleteBanner };

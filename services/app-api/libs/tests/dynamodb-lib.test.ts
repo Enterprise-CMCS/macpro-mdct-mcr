@@ -26,11 +26,11 @@ jest.mock("aws-sdk", () => ({
 describe("Test DynamoDB Interaction API Build Structure", () => {
   test("API structure should be callable", () => {
     const testKeyTable = {
-      Key: { compoundKey: "testKey" },
+      Key: { key: "testKey" },
       TableName: "testTable",
     };
     const testItem = {
-      compoundKey: "dynamoKey",
+      key: "dynamoKey",
       createdAt: Date.now(),
       lastAltered: Date.now(),
       lastAlteredBy: `event.headers["cognito-identity-id"]`,

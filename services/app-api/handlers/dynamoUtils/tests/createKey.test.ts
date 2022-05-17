@@ -1,9 +1,9 @@
-import { createCompoundKey } from "../createCompoundKey";
+import { createKey } from "../createKey";
 import { testEvent } from "../../../test-util/testEvents";
 
 describe("Testing CreateCompundKey", () => {
   test("Successful key creation without passed banner", () => {
-    const key = createCompoundKey({
+    const key = createKey({
       ...testEvent,
     });
     // TODO: CHANGE
@@ -11,7 +11,7 @@ describe("Testing CreateCompundKey", () => {
   });
 
   test("Successful key creation with passed banner", () => {
-    const key = createCompoundKey({
+    const key = createKey({
       ...testEvent,
     });
     // TODO: CHANGE

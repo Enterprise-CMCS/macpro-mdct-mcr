@@ -1,13 +1,13 @@
 import handler from "../../libs/handler-lib";
 import dynamoDb from "../../libs/dynamodb-lib";
-import { createCompoundKey } from "../dynamoUtils/createCompoundKey";
+import { createKey } from "../dynamoUtils/createKey";
 
 export const deleteBanner = handler(async (event, _context) => {
-  const dynamoKey = createCompoundKey(event);
+  const dynamoKey = createKey(event);
   const params = {
     TableName: process.env.bannerTableName!,
     Key: {
-      compoundKey: dynamoKey,
+      key: dynamoKey,
     },
   };
 

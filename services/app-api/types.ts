@@ -1,35 +1,35 @@
-/* eslint-disable no-unused-vars */
-
-export interface Banner {
-  compoundKey: string;
+export interface BannerData {
+  key: string;
   createdAt: number;
   lastAltered: number;
   lastAlteredBy?: string;
-  banner: string;
+  type: string;
+  title: string;
+  description: string;
 }
 
 export interface DynamoBannerList {
-  Items?: Banner[];
+  Items?: BannerData[];
   Count?: number;
   ScannedCount?: number;
 }
 
 export interface DynamoCreate {
   TableName: string;
-  Item: Banner;
+  Item: BannerData;
 }
 
 export interface DynamoDelete {
   TableName: string;
   Key: {
-    compoundKey: string;
+    key: string;
   };
 }
 
 export interface DynamoUpdate {
   TableName: string;
   Key: {
-    compoundKey: string;
+    key: string;
   };
   UpdateExpression?: string;
   ExpressionAttributeNames: { [key: string]: string };
@@ -46,7 +46,7 @@ export interface DynamoScan {
 export interface DynamoFetch {
   TableName: string;
   Key: {
-    compoundKey: string;
+    key: string;
   };
 }
 

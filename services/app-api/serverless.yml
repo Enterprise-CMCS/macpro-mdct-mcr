@@ -81,7 +81,7 @@ functions:
     handler: handlers/banners/get.listBanners
     events:
       - http:
-          path: banners/list
+          path: banners
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -89,7 +89,7 @@ functions:
     handler: handlers/banners/get.getBanner
     events:
       - http:
-          path: banners/{banner}/get
+          path: banners/{banner}
           method: get
           cors: true
           authorizer: ""
@@ -97,7 +97,7 @@ functions:
     handler: handlers/banners/create.createBanner
     events:
       - http:
-          path: banners/{banner}/create
+          path: banners/{banner}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -105,7 +105,7 @@ functions:
     handler: handlers/banners/update.editBanner
     events:
       - http:
-          path: banners/{banner}/edit
+          path: banners/{banner}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -113,7 +113,7 @@ functions:
     handler: handlers/banners/delete.deleteBanner
     events:
       - http:
-          path: banners/{banner}/delete
+          path: banners/{banner}
           method: delete
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
