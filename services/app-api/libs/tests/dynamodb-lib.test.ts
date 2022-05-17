@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import dynamoLib, { createDbClient } from "../dynamodb-lib";
-import { CoreSetAbbr, MeasureStatus } from "../../types";
 import AWS from "aws-sdk";
 
 const mockPromiseCall = jest.fn();
@@ -27,20 +26,14 @@ jest.mock("aws-sdk", () => ({
 describe("Test DynamoDB Interaction API Build Structure", () => {
   test("API structure should be callable", () => {
     const testKeyTable = {
-      Key: { compoundKey: "testKey", coreSet: CoreSetAbbr.ACS },
+      Key: { compoundKey: "testKey" },
       TableName: "testTable",
     };
     const testItem = {
       compoundKey: "dynamoKey",
-      state: "FL",
-      year: 2019,
-      coreSet: CoreSetAbbr.ACS,
-      measure: "event!.pathParameters!.measure!",
       createdAt: Date.now(),
       lastAltered: Date.now(),
       lastAlteredBy: `event.headers["cognito-identity-id"]`,
-      status: MeasureStatus.COMPLETE,
-      description: "",
       data: {},
     };
     dynamoLib.query(true);

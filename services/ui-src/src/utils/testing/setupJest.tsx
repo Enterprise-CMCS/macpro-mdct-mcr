@@ -9,7 +9,6 @@ global.React = React;
  * Mocks window.matchMedia
  * https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
  */
-
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
@@ -23,24 +22,6 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: jest.fn(),
   })),
 });
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: () => ({
-    year: "2021",
-    state: "OH",
-    coreSetId: "ACS",
-    measureId: "AIF-HH",
-  }),
-}));
-
-jest.mock("utils/api", () => ({
-  useGetMeasure: jest.fn(),
-  useGetMeasures: jest.fn(),
-  useCreateMeasure: jest.fn(),
-  useUpdateMeasure: jest.fn(),
-  useDeleteMeasure: jest.fn(),
-}));
 
 /*
  * From Chakra UI Accordion test file

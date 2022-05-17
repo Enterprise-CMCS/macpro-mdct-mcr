@@ -3,15 +3,13 @@ import dynamoDb from "../../libs/dynamodb-lib";
 import { convertToDynamoExpression } from "../dynamoUtils/convertToDynamoExpressionVars";
 import { createCompoundKey } from "../dynamoUtils/createCompoundKey";
 
-export const listMeasures = handler(async (event, _context) => {
-  const state = event.pathParameters?.state;
-  const year = event.pathParameters?.year as string;
-  const coreSet = event.pathParameters?.coreSet;
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const listBanners = handler(async (event, _context) => {
   const params = {
-    TableName: process.env.measureTableName!,
+    TableName: process.env.bannerTableName!,
     ...convertToDynamoExpression(
-      { state: state, year: parseInt(year), coreSet: coreSet },
+      // TODO: CHANGE
+      {},
       "list"
     ),
   };
@@ -19,13 +17,12 @@ export const listMeasures = handler(async (event, _context) => {
   return queryValue;
 });
 
-export const getMeasure = handler(async (event, _context) => {
+export const getBanner = handler(async (event, _context) => {
   const dynamoKey = createCompoundKey(event);
   const params = {
-    TableName: process.env.measureTableName!,
+    TableName: process.env.bannerTableName!,
     Key: {
       compoundKey: dynamoKey,
-      coreSet: event.pathParameters!.coreSet!,
     },
   };
   const queryValue = await dynamoDb.get(params);

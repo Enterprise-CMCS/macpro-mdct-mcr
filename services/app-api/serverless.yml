@@ -28,8 +28,8 @@ custom:
       - main
       - val
       - production
-  measureTableName: ${env:measureTableName, cf:database-${self:custom.stage}.MeasureTableName}
-  measureTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.MeasureTableArn}
+  bannerTableName: ${env:bannerTableName, cf:database-${self:custom.stage}.BannerTableName}
+  bannerTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.BannerTableArn}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
     name: ${self:custom.webAclName}
@@ -72,48 +72,48 @@ provider:
             - dynamodb:DeleteItem
           Resource: "*"
   environment:
-    measureTableName: ${self:custom.measureTableName}
+    bannerTableName: ${self:custom.bannerTableName}
     uploadS3BucketName: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName, ""}
     stage: ${opt:stage, self:provider.stage}
 
 functions:
-  listMeasures:
-    handler: handlers/measures/get.listMeasures
+  listBanners:
+    handler: handlers/banners/get.listBanners
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/list
+          path: banners/list
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  getMeasure:
-    handler: handlers/measures/get.getMeasure
+  getBanner:
+    handler: handlers/banners/get.getBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/get
+          path: banners/{banner}/get
           method: get
           cors: true
           authorizer: ""
-  createMeasure:
-    handler: handlers/measures/create.createMeasure
+  createBanner:
+    handler: handlers/banners/create.createBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/create
+          path: banners/{banner}/create
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  editMeasure:
-    handler: handlers/measures/update.editMeasure
+  editBanner:
+    handler: handlers/banners/update.editBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/edit
+          path: banners/{banner}/edit
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  deleteMeasure:
-    handler: handlers/measures/delete.deleteMeasure
+  deleteBanner:
+    handler: handlers/banners/delete.deleteBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/delete
+          path: banners/{banner}/delete
           method: delete
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}

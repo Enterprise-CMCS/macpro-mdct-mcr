@@ -15,7 +15,7 @@ custom:
       - main
       - val
       - production
-  measureTableName: ${self:custom.stage}-measures
+  bannerTableName: ${self:custom.stage}-banners
   dynamodb:
     stages:
       - local
@@ -31,10 +31,10 @@ provider:
 
 resources:
   Resources:
-    MeasureTable:
+    BannerTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.measureTableName}
+        TableName: ${self:custom.bannerTableName}
         PointInTimeRecoverySpecification:
           PointInTimeRecoveryEnabled: true
         StreamSpecification:
@@ -42,20 +42,16 @@ resources:
         AttributeDefinitions:
           - AttributeName: compoundKey
             AttributeType: S
-          - AttributeName: coreSet
-            AttributeType: S
         KeySchema:
           - AttributeName: compoundKey
             KeyType: HASH
-          - AttributeName: coreSet
-            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
-    MeasureTableName:
-      Value: !Ref MeasureTable
-    MeasureTableArn:
-      Value: !GetAtt MeasureTable.Arn
-    MeasureTableStreamArn:
-      Value: !GetAtt MeasureTable.StreamArn
+    BannerTableName:
+      Value: !Ref BannerTable
+    BannerTableArn:
+      Value: !GetAtt BannerTable.Arn
+    BannerTableStreamArn:
+      Value: !GetAtt BannerTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}

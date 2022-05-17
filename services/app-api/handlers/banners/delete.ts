@@ -2,13 +2,12 @@ import handler from "../../libs/handler-lib";
 import dynamoDb from "../../libs/dynamodb-lib";
 import { createCompoundKey } from "../dynamoUtils/createCompoundKey";
 
-export const deleteMeasure = handler(async (event, _context) => {
+export const deleteBanner = handler(async (event, _context) => {
   const dynamoKey = createCompoundKey(event);
   const params = {
-    TableName: process.env.measureTableName!,
+    TableName: process.env.bannerTableName!,
     Key: {
       compoundKey: dynamoKey,
-      coreSet: event!.pathParameters!.coreSet!,
     },
   };
 

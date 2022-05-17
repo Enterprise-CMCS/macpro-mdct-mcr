@@ -1,34 +1,28 @@
 /* eslint-disable no-unused-vars */
 
-export interface Measure {
+export interface Banner {
   compoundKey: string;
-  coreSet: CoreSetAbbr;
   createdAt: number;
-  description: string;
   lastAltered: number;
   lastAlteredBy?: string;
-  measure: string;
-  state: string;
-  status: MeasureStatus;
-  year: number;
+  banner: string;
 }
 
-export interface DynamoMeasureList {
-  Items?: Measure[];
+export interface DynamoBannerList {
+  Items?: Banner[];
   Count?: number;
   ScannedCount?: number;
 }
 
 export interface DynamoCreate {
   TableName: string;
-  Item: Measure;
+  Item: Banner;
 }
 
 export interface DynamoDelete {
   TableName: string;
   Key: {
     compoundKey: string;
-    coreSet: string;
   };
 }
 
@@ -36,7 +30,6 @@ export interface DynamoUpdate {
   TableName: string;
   Key: {
     compoundKey: string;
-    coreSet: string;
   };
   UpdateExpression?: string;
   ExpressionAttributeNames: { [key: string]: string };
@@ -54,21 +47,7 @@ export interface DynamoFetch {
   TableName: string;
   Key: {
     compoundKey: string;
-    coreSet: string;
   };
-}
-
-export const enum CoreSetAbbr {
-  ACS = "ACS", // adult
-  CCS = "CCS", // child combined
-  CCSM = "CCSM", // child medicaid
-  CCSC = "CCSC", // child chip
-  HHCS = "HHCS", // helth homes
-}
-
-export const enum MeasureStatus {
-  COMPLETE = "complete",
-  INCOMPLETE = "incomplete",
 }
 
 export const enum UserRoles {

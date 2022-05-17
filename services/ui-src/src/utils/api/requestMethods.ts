@@ -14,55 +14,33 @@ async function requestOptions(): Promise<any> {
   }
 }
 
-async function listMeasures(inputObj: any) {
+async function listBanners(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.get(
-    "coreSet",
-    `/coreset/${inputObj.state}/${inputObj.year}/${inputObj.coreSet}/measures/list`,
-    opts
-  );
+  return API.get("banner", `banners/list`, opts);
 }
 
-async function getMeasure(inputObj: any) {
+async function getBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.get(
-    "coreSet",
-    `/coreset/${inputObj.state}/${inputObj.year}/${inputObj.coreSet}/measures/${inputObj.measure}/get`,
-    opts
-  );
+  return API.get("banner", `banners/${inputObj.banner}/get`, opts);
 }
 
-async function createMeasure(inputObj: any) {
+async function createBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-
-  return API.post(
-    "coreSet",
-    `/coreset/${inputObj.state}/${inputObj.year}/${inputObj.coreSet}/measures/${inputObj.measure}/create`,
-    opts
-  );
+  return API.post("banner", `banners/${inputObj.banner}/create`, opts);
 }
-async function editMeasure(inputObj: any) {
+async function editBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-
-  return API.put(
-    "coreSet",
-    `/coreset/${inputObj.state}/${inputObj.year}/${inputObj.coreSet}/measures/${inputObj.measure}/edit`,
-    opts
-  );
+  return API.put("banner", `banners/${inputObj.banner}/edit`, opts);
 }
 
-async function deleteMeasure(inputObj: any) {
+async function deleteBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.del(
-    "coreSet",
-    `/coreset/${inputObj.state}/${inputObj.year}/${inputObj.coreSet}/measures/${inputObj.measure}/delete`,
-    opts
-  );
+  return API.del("banner", `banners/${inputObj.banner}/delete`, opts);
 }
 
-export { listMeasures, getMeasure, createMeasure, editMeasure, deleteMeasure };
+export { listBanners, getBanner, createBanner, editBanner, deleteBanner };
