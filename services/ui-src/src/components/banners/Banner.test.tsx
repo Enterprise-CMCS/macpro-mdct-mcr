@@ -6,7 +6,7 @@ import { BannerTypes } from "utils/types/types";
 //components
 import { Banner } from "components";
 
-const infoAlert = (
+const bannerComponent = (
   <RouterWrappedComponent>
     <Banner
       status={BannerTypes.INFO}
@@ -20,7 +20,7 @@ const infoAlert = (
 
 describe("Test Banner Item", () => {
   beforeEach(() => {
-    render(infoAlert);
+    render(bannerComponent);
   });
 
   test("Banner is visible", () => {
@@ -30,7 +30,7 @@ describe("Test Banner Item", () => {
 
 describe("Test Info Banner accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(infoAlert);
+    const { container } = render(bannerComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
