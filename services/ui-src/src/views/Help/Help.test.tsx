@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { useApiMock } from "utils/testing/mockApi";
 // views
 import { Help } from "../index";
 
@@ -14,7 +13,6 @@ const helpView = (
 
 describe("Test /help view", () => {
   beforeEach(() => {
-    useApiMock({});
     render(helpView);
   });
 

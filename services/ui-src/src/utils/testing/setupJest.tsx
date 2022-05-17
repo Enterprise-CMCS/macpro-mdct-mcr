@@ -16,31 +16,11 @@ Object.defineProperty(window, "matchMedia", {
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // Deprecated
-    removeListener: jest.fn(), // Deprecated
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
 });
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: () => ({
-    year: "2021",
-    state: "OH",
-    coreSetId: "ACS",
-    measureId: "AIF-HH",
-  }),
-}));
-
-jest.mock("utils/api", () => ({
-  useGetMeasure: jest.fn(),
-  useGetMeasures: jest.fn(),
-  useCreateMeasure: jest.fn(),
-  useUpdateMeasure: jest.fn(),
-  useDeleteMeasure: jest.fn(),
-}));
 
 /*
  * From Chakra UI Accordion test file
