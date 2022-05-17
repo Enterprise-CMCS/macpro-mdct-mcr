@@ -16,7 +16,7 @@ export const Profile = () => {
   const { email, given_name, family_name, userRole, state } = userDetails();
   return (
     <Flex sx={sx.root} data-testid="profile">
-      <Heading as="h1" size="xl">
+      <Heading as="h1" size="xl" sx={sx.heading}>
         Account Info
       </Heading>
       <Flex sx={sx.variantRow}>
@@ -45,7 +45,9 @@ export const Profile = () => {
       )}
       {userRole?.includes("approver") && (
         <RouterLink to="/admin" alt="link to banner edit page" tabindex={0}>
-          <Button data-testid="banner-editor-button">Banner editor</Button>
+          <Button sx={sx.bannerEditButton} data-testid="banner-editor-button">
+            Banner editor
+          </Button>
         </RouterLink>
       )}
     </Flex>
@@ -59,10 +61,22 @@ const sx = {
     height: "100%",
     flexDirection: "column",
   },
+  heading: {
+    marginBottom: "2rem",
+  },
   fieldName: {
     minWidth: "8rem",
+    fontWeight: "semibold",
   },
   variantRow: {
     background: "palette.gray_lightest",
+  },
+  bannerEditButton: {
+    marginTop: "2rem",
+    background: "palette.main",
+    color: "palette.white",
+    _hover: {
+      background: "palette.main_darker",
+    },
   },
 };
