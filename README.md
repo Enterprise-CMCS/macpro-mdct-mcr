@@ -51,11 +51,12 @@ Root `.env`
 SKIP_PREFLIGHT_CHECK=true
 LOCAL_LOGIN=true
 DYNAMODB_URL=http://localhost:8000
-API_URL=http://localhost:3030/local
+API_URL=http://localhost:3030/
 S3_LOCAL_ENDPOINT=http://localhost:4569
 S3_ATTACHMENTS_BUCKET_NAME=local-uploads
 URL=http://localhost/3000
 DISABLE_ESLINT_PLUGIN=true
+bannerTableName=local-banners
 ```
 
 /services/ui-src `.env`

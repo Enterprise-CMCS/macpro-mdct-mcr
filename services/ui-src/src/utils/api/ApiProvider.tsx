@@ -13,7 +13,7 @@ export const ApiProvider = ({ children }: Props) => {
     API.configure({
       endpoints: [
         {
-          name: "banner",
+          name: "banners",
           endpoint: config.apiGateway.URL,
           region: config.apiGateway.REGION,
         },

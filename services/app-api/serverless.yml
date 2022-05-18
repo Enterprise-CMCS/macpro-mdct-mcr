@@ -19,6 +19,8 @@ plugins:
   - serverless-api-client-certificate
 
 custom:
+  serverless-offline:
+    noPrependStageInUrl: true
   serverlessPluginTypescript:
     tsConfigFileLocation: "./tsconfig.json"
   stage: ${opt:stage, self:provider.stage}

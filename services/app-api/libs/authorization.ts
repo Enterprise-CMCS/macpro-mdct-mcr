@@ -1,5 +1,7 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import jwt_decode from "jwt-decode";
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserRoles, RequestMethods } from "../types";
 
 interface DecodedToken {
@@ -10,29 +12,22 @@ interface DecodedToken {
   identities?: [{ userId?: string }];
 }
 
+// TODO: COMPLETELY CHANGE EVERYTHING ABOUT THIS
 export const isAuthorized = (event: APIGatewayProxyEvent) => {
   if (!event.headers["x-api-key"]) return false;
 
-  // get state and method from the event
-  const requestState = event.pathParameters?.state;
-  const requestMethod = event.httpMethod as RequestMethods;
+  /*
+   * TODO: check user_role against lambda context user data
+   * to confirm the user is an admin_user, since /banners
+   * is the only endpoint right now
+   *
+   * returning true for the purposes of this commit, but will change later
+   */
 
-  // decode the idToken
-  const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
-
-  // get the role / state from the decoded token
-  const userRole = decoded["custom:cms_roles"];
-  const userState = decoded["custom:cms_state"];
-
-  // if user is a state user - check they are requesting a resource from their state
-  if (userState && requestState && userRole === UserRoles.STATE) {
-    return userState.toLowerCase() === requestState.toLowerCase();
-  }
-
-  // if user is an admin - they can only GET resources
-  return requestMethod === RequestMethods.GET;
+  return true;
 };
 
+// TODO: NEED TO CHANGE THIS TO NOT USE JWT_DECODE (SAME AS ABOVE)
 export const getUserNameFromJwt = (event: APIGatewayProxyEvent) => {
   let userName = "branchUser";
   if (!event?.headers || !event.headers?.["x-api-key"]) return userName;
