@@ -97,7 +97,7 @@ functions:
     handler: handlers/banners/create.createBanner
     events:
       - http:
-          path: banners/{banner}
+          path: banners
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}

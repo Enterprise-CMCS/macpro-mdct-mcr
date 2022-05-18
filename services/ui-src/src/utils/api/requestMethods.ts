@@ -29,7 +29,7 @@ async function getBanner(inputObj: any) {
 async function createBanner(inputObj: any) {
   const opts = await requestOptions();
   opts.body = inputObj.body;
-  return API.post("banner", `banners/${inputObj.key}`, opts);
+  return API.post("banner", `banners`, opts);
 }
 async function editBanner(inputObj: any) {
   const opts = await requestOptions();
