@@ -45,7 +45,11 @@ export const Profile = () => {
       )}
       {userRole?.includes("approver") && (
         <RouterLink to="/admin" alt="link to banner edit page" tabindex={0}>
-          <Button sx={sx.bannerEditButton} data-testid="banner-editor-button">
+          <Button
+            sx={sx.bannerEditButton}
+            colorScheme="colorSchemes.main"
+            data-testid="banner-editor-button"
+          >
             Banner editor
           </Button>
         </RouterLink>
@@ -73,10 +77,5 @@ const sx = {
   },
   bannerEditButton: {
     marginTop: "2rem",
-    background: "palette.main",
-    color: "palette.white",
-    _hover: {
-      background: "palette.main_darker",
-    },
   },
 };
