@@ -11,7 +11,12 @@ export const LoginIDM = ({ loginWithIDM }: Props) => (
       Login with IDM
     </Heading>
     <Divider />
-    <Button colorScheme="colorSchemes.main" onClick={loginWithIDM} isFullWidth>
+    <Button
+      colorScheme="colorSchemes.main"
+      onClick={loginWithIDM}
+      isFullWidth
+      data-testid="idm-login-button"
+    >
       Login with IDM
     </Button>
   </Box>

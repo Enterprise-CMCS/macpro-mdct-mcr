@@ -3,12 +3,32 @@ import { axe } from "jest-axe";
 // views
 import { Profile } from "../index";
 
+const mockStateUser = {
+  user: {
+    attributes: {
+      "custom:cms_roles": "mdctmcr-state-user",
+      "custom:cms_state": "MA",
+      email: "stateuser1@test.com",
+      family_name: "States",
+      given_name: "Sammy",
+    },
+  },
+  userRole: "mdctmcr-state-user",
+};
+
+jest.mock("utils/auth", () => ({
+  useUser: jest.fn(() => {
+    return mockStateUser;
+  }),
+}));
+
 const profileView = <Profile />;
 
 describe("Test Profile", () => {
   test("Check that Profile page renders", () => {
     const { getByTestId } = render(profileView);
     expect(getByTestId("profile")).toBeVisible();
+    expect(getByTestId("statetestid")).toBeVisible();
   });
 });
 

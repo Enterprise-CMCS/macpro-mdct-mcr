@@ -11,7 +11,7 @@ export const App = () => {
       {user && (
         <Flex sx={sx.appLayout}>
           <Header handleLogout={logout} />
-          <Container sx={sx.appContainer}>
+          <Container sx={sx.appContainer} data-testid="app-container">
             <AppRoutes />
           </Container>
           <Footer />
