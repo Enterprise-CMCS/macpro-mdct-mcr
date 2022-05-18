@@ -1,10 +1,17 @@
 // components
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, TemplateCard } from "../../components/index";
 // utils
 import { BannerTypes } from "utils/types/types";
 // data
 import data from "../../data/home-view.json";
+import { createBanner } from "utils/api/requestMethods";
+
+const newBanner = {
+  type: "info",
+  title: "test-title",
+  description: "test-description",
+};
 
 export const Home = () => (
   <section>
@@ -16,6 +23,15 @@ export const Home = () => (
         title="Welcome to the new Managed Care Reporting tool!"
         description="Each state must submit one report per program."
       />
+      <Button
+        onClick={async () => {
+          await createBanner({
+            body: newBanner,
+          });
+        }}
+      >
+        Create banner
+      </Button>
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.introTextBox}>
           <Heading as="h1" sx={sx.headerText}>

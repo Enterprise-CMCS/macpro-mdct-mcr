@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
 import {
-  Banner,
+  BannerData,
   DynamoCreate,
   DynamoDelete,
   DynamoUpdate,
@@ -29,13 +29,13 @@ export function createDbClient() {
 const client = createDbClient();
 
 export default {
-  get: async <Result = Banner>(params: DynamoFetch) => {
+  get: async <Result = BannerData>(params: DynamoFetch) => {
     const result = await client.get(params).promise();
     return { ...result, Item: result?.Item as Result | undefined };
   },
   put: (params: DynamoCreate) => client.put(params).promise(),
   post: (params: DynamoCreate) => client.put(params).promise(),
-  scan: async <Result = Banner>(params: DynamoScan) => {
+  scan: async <Result = BannerData>(params: DynamoScan) => {
     const result = await client.scan(params).promise();
     return { ...result, Items: result?.Items as Result[] | undefined };
   },
