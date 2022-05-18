@@ -2,28 +2,28 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-// views
-import { Help } from "../index";
+//components
+import { LoginIDM } from "components";
 
-const helpView = (
+const loginIDMComponent = (
   <RouterWrappedComponent>
-    <Help />
+    <LoginIDM loginWithIDM={() => {}} />
   </RouterWrappedComponent>
 );
 
-describe("Test /help view", () => {
+describe("Test LoginIDM", () => {
   beforeEach(() => {
-    render(helpView);
+    render(loginIDMComponent);
   });
 
-  test("Check that /help view renders", () => {
-    expect(screen.getByTestId("help-view")).toBeVisible();
+  test("LoginIDM is visible", () => {
+    expect(screen.getByTestId("idm-login-button")).toBeVisible();
   });
 });
 
-describe("Test /help view accessibility", () => {
+describe("Test LoginIDM accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(helpView);
+    const { container } = render(loginIDMComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

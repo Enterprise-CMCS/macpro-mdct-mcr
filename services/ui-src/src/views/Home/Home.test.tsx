@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { useApiMock } from "utils/testing/mockApi";
 // views
 import { Home } from "../index";
 
@@ -18,7 +17,6 @@ const homeView = (
 
 describe("Test Home view", () => {
   beforeEach(() => {
-    useApiMock({});
     render(homeView);
   });
 

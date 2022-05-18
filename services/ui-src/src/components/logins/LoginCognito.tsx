@@ -49,6 +49,7 @@ export const LoginCognito = () => {
           value={fields.email}
           onChange={handleFieldChange}
           className="field"
+          data-testid="email-input-field"
         />
       </label>
       <label>
@@ -60,6 +61,7 @@ export const LoginCognito = () => {
           value={fields.password}
           onChange={handleFieldChange}
           className="field"
+          data-testid="password-input-field"
         />
       </label>
       <Button
