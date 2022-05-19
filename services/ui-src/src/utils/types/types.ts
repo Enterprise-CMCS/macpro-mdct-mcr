@@ -15,6 +15,13 @@ export enum BannerTypes {
   WARNING = "warning",
 }
 
+export interface BannerShape {
+  title: string;
+  body: string;
+  startDate: number;
+  endDate: number;
+}
+
 export interface ITerritoryList {
   label: string;
   value: string;

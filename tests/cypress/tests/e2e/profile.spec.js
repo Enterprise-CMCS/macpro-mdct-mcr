@@ -1,7 +1,7 @@
 // element selectors
 const menuButton = '[data-testid="menu-button"]';
 const menuOptionManageAccount = '[data-testid="menu-option-manage-account"]';
-const bannerEditButton = '[data-testid="banner-editor-button"]';
+const adminButton = '[data-testid="admin-button"]';
 
 beforeEach(() => {
   cy.visit("/");
@@ -13,7 +13,7 @@ describe("Profile integration tests", () => {
     cy.get(menuButton).click();
     cy.get(menuOptionManageAccount).click();
     cy.location("pathname").should("match", /profile/);
-    cy.get(bannerEditButton).click();
+    cy.get(adminButton).click();
     cy.location("pathname").should("match", /admin/);
   });
 });
