@@ -12,6 +12,8 @@ export { Banner } from "./banners/Banner";
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
+// fields
+export { TextField } from "./fields/TextField";
 // icons
 export { Icon } from "./icons/Icon";
 // layout

@@ -82,7 +82,8 @@
     "collectCoverageFrom": [
       "src/components/**/*.{ts,tsx}",
       "src/utils/**/*.{ts,tsx}",
-      "src/views/**/*.{ts,tsx}"
+      "src/views/**/*.{ts,tsx}",
+      "!src/utils/constants/*"
     ],
     "moduleDirectories": [
       "node_modules",

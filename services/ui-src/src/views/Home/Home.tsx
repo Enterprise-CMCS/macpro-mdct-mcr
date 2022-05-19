@@ -21,7 +21,7 @@ export const Home = () => (
         bgColor="palette.alt_lightest"
         accentColor="palette.alt"
         title="Welcome to the new Managed Care Reporting tool!"
-        description="Each state must submit one report per program."
+        body="Each state must submit one report per program."
       />
       <Button
         onClick={async () => {
@@ -74,6 +74,7 @@ const sx = {
     maxWidth: "contentColumnSmall",
   },
   introTextBox: {
+    width: "100%",
     marginBottom: "2.25rem",
   },
   headerText: {

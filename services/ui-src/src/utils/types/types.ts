@@ -24,6 +24,12 @@ export interface BannerData {
   title: string;
   description: string;
 }
+export interface BannerShape {
+  title: string;
+  body: string;
+  startDate: number;
+  endDate: number;
+}
 
 export interface ITerritoryList {
   label: string;
