@@ -9481,9 +9481,9 @@ serverless-plugin-warmup@^5.3.1:
   resolved "https://registry.yarnpkg.com/serverless-plugin-warmup/-/serverless-plugin-warmup-5.3.1.tgz#cc8ca43452c5468a79a7b5447c84267035fa8d1e"
   integrity sha512-+nY6VCTLf/VjwkwAudtCXE/neaYSKy+9NmnYTSL0y8ZGfKB6u9Hrh9J2vqYEcam6eQFnCAEsch9iTs/dbU2vGg==
 
-"serverless-s3-bucket-helper@github:bodnarbm/serverless-s3-bucket-helper#access-logging":
+"serverless-s3-bucket-helper@github:cmsgov/serverless-s3-bucket-helper#master":
   version "1.0.0"
-  resolved "https://codeload.github.com/bodnarbm/serverless-s3-bucket-helper/tar.gz/e7e3d2a00c9bf86c71da54a9eef043c9ebd62aad"
+  resolved "https://codeload.github.com/cmsgov/serverless-s3-bucket-helper/tar.gz/f654af78fae84fbecafd956bd6e857dc7e79bbcc"
 
 serverless-s3-sync@2.0.0:
   version "2.0.0"
