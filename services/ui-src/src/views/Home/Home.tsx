@@ -5,7 +5,7 @@ import { Banner, TemplateCard } from "../../components/index";
 import { BannerTypes } from "utils/types/types";
 // data
 import data from "../../data/home-view.json";
-import { createBanner } from "utils/api/requestMethods";
+import { createBanner, getBanner } from "utils/api/requestMethods";
 
 const newBanner = {
   type: "info",
@@ -31,6 +31,13 @@ export const Home = () => (
         }}
       >
         Create banner
+      </Button>
+      <Button
+        onClick={async () => {
+          await getBanner({});
+        }}
+      >
+        Get banner
       </Button>
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.introTextBox}>

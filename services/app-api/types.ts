@@ -43,7 +43,7 @@ export interface DynamoScan {
   ExpressionAttributeValues: { [key: string]: any };
 }
 
-export interface DynamoFetch {
+export interface DynamoGet {
   TableName: string;
   Key: {
     key: string;

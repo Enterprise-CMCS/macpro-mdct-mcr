@@ -5,7 +5,7 @@ import {
   DynamoCreate,
   DynamoDelete,
   DynamoUpdate,
-  DynamoFetch,
+  DynamoGet,
   DynamoScan,
 } from "../types";
 
@@ -29,19 +29,16 @@ export function createDbClient() {
 const client = createDbClient();
 
 export default {
-  get: async <Result = BannerData>(params: DynamoFetch) => {
+  get: async <Result = BannerData>(params: DynamoGet) => {
     const result = await client.get(params).promise();
     return { ...result, Item: result?.Item as Result | undefined };
   },
-  put: (params: DynamoCreate) => client.put(params).promise(),
-  post: (params: DynamoCreate) => client.put(params).promise(),
+  query: (params: any) => client.query(params).promise(),
   scan: async <Result = BannerData>(params: DynamoScan) => {
     const result = await client.scan(params).promise();
     return { ...result, Items: result?.Items as Result[] | undefined };
   },
+  put: (params: DynamoCreate) => client.put(params).promise(),
   update: (params: DynamoUpdate) => client.update(params).promise(),
   delete: (params: DynamoDelete) => client.delete(params).promise(),
-
-  // unused
-  query: (params: any) => client.query(params).promise(),
 };
