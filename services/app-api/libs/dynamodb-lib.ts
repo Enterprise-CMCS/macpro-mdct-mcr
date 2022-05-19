@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import { Credentials, DynamoDB } from "aws-sdk";
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
 import {
   BannerData,
@@ -10,20 +10,23 @@ import {
 } from "../types";
 
 export function createDbClient() {
-  const dynamoConfig: AWS.DynamoDB.DocumentClient.DocumentClientOptions &
+  const dynamoConfig: DynamoDB.DocumentClient.DocumentClientOptions &
     ServiceConfigurationOptions &
-    AWS.DynamoDB.ClientApiVersions = {};
+    DynamoDB.ClientApiVersions = {};
 
   const endpoint = process.env.DYNAMODB_URL;
   if (endpoint) {
     dynamoConfig.endpoint = endpoint;
-    dynamoConfig.accessKeyId = "LOCAL_FAKE_KEY"; // pragma: allowlist secret
-    dynamoConfig.secretAccessKey = "LOCAL_FAKE_SECRET"; // pragma: allowlist secret
+    dynamoConfig.credentials = new Credentials({
+      accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
+      secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+      sessionToken: "LOCAL_FAKE_SESSION", // pragma: allowlist secret
+    });
   } else {
     dynamoConfig["region"] = "us-east-1";
   }
 
-  return new AWS.DynamoDB.DocumentClient(dynamoConfig);
+  return new DynamoDB.DocumentClient(dynamoConfig);
 }
 
 const client = createDbClient();
