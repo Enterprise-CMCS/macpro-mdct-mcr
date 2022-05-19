@@ -58,6 +58,3 @@ export const checkBannerActiveDates = (
   const currentTime = new Date().valueOf();
   return currentTime >= startDate && currentTime <= endDate;
 };
-
-// TODO: fetch banner data from db
-export const fetchBannerData = async () => {};

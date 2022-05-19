@@ -14,6 +14,8 @@ import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // data
 import data from "../../data/admin-view.json";
 
+import { listBanners } from "utils/api/requestMethods";
+
 export const Admin = () => {
   const mqClasses = makeMediaQueryClasses();
   const [bannerData, setBannerData] = useState<BannerShape | null>(null);
@@ -42,12 +44,13 @@ export const Admin = () => {
     <section>
       <Box sx={sx.root} data-testid="admin-view">
         <Flex sx={sx.mainContentFlex}>
-          {/* TODO: remove */}
-          <Flex mb="1rem">
-            <Button m="1rem">TEMP: Fetch banner data from db</Button>
-            <Button m="1rem">TEMP: Post new banner data to db</Button>
-          </Flex>
-
+          <Button
+            onClick={async () => {
+              await listBanners({});
+            }}
+          >
+            List banner
+          </Button>
           <Box sx={sx.introTextBox}>
             <Heading as="h1" sx={sx.headerText}>
               {data.intro.header}

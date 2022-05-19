@@ -1,15 +1,14 @@
 import handler from "../../libs/handler-lib";
 import dynamoDb from "../../libs/dynamodb-lib";
 import { convertToDynamoExpression } from "../dynamoUtils/convertToDynamoExpressionVars";
-import { createKey } from "../dynamoUtils/createKey";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const listBanners = handler(async (event, _context) => {
   const params = {
-    TableName: process.env.bannerTableName!,
+    TableName: process.env.BANNER_TABLE_NAME!,
     ...convertToDynamoExpression(
       // TODO: CHANGE
-      {},
+      { key: process.env.BANNER_ID! },
       "list"
     ),
   };
@@ -17,12 +16,11 @@ export const listBanners = handler(async (event, _context) => {
   return queryValue;
 });
 
-export const getBanner = handler(async (event, _context) => {
-  const dynamoKey = createKey(event);
+export const getBanner = handler(async (_event, _context) => {
   const params = {
-    TableName: process.env.bannerTableName!,
+    TableName: process.env.BANNER_TABLE_NAME!,
     Key: {
-      key: dynamoKey,
+      key: process.env.BANNER_ID!,
     },
   };
   const queryValue = await dynamoDb.get(params);

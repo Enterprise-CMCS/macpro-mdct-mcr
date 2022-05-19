@@ -1,14 +1,12 @@
 import handler from "../../libs/handler-lib";
 import dynamoDb from "../../libs/dynamodb-lib";
-import { createKey } from "../dynamoUtils/createKey";
 
 export const createBanner = handler(async (event, _context) => {
   const body = JSON.parse(event!.body!);
-  const dynamoKey = createKey(event);
   const params = {
-    TableName: process.env.bannerTableName!,
+    TableName: process.env.BANNER_TABLE_NAME!,
     Item: {
-      key: dynamoKey,
+      key: process.env.BANNER_ID!,
       createdAt: Date.now(),
       lastAltered: Date.now(),
       lastAlteredBy: event.headers["cognito-identity-id"],
