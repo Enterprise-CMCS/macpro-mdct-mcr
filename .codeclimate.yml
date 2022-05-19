@@ -18,7 +18,7 @@ checks:
   similar-code:
     enabled: false
   identical-code:
-    enabled: false
+    enabled: true
 exclude_patterns:
   - "**/node_modules/"
   - ".github/"
@@ -36,7 +36,8 @@ exclude_patterns:
   - "services/ui-src/src/utils/testing/**"
   - "services/ui-src/src/utils/types/types.ts"
   - "tests/"
-  - "**/index.tsx"
+  - "**/*index.tsx"
+  - "**/*index.ts"
   - "**/*.test.tsx"
   - "**/*.scss"
   - "**/*.sh"
