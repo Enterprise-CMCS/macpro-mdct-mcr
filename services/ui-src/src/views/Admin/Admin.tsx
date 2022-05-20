@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 // components
-import { Box, Button, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import { Banner, TextField } from "../../components/index";
+import { TextField, DateField } from "@cmsgov/design-system";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Banner } from "../../components/index";
 // utils
 import {
   checkBannerActiveDates,
@@ -14,21 +15,29 @@ import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // data
 import data from "../../data/admin-view.json";
 
-import { listBanners } from "utils/api/requestMethods";
+import {
+  getBanner,
+  deleteBanner,
+  writeBanner,
+} from "utils/api/requestMethods/banner";
 
 export const Admin = () => {
   const mqClasses = makeMediaQueryClasses();
+  const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
   const [bannerData, setBannerData] = useState<BannerShape | null>(null);
   const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
 
+  const mockBannerData = {
+    key: ADMIN_BANNER_ID,
+    title: "test title",
+    description: "test body",
+    link: "test link",
+    startDate: makeStartDate({ year: 2022, month: 1, day: 1 }),
+    endDate: makeEndDate({ year: 2022, month: 12, day: 31 }),
+  };
+
+  // TODO: fetch current banner data from db
   useEffect(() => {
-    // TODO: fetch current banner data from db
-    const mockBannerData: BannerShape = {
-      title: "Current banner title",
-      body: "Current banner body",
-      startDate: makeStartDate({ year: 2022, month: 1, day: 1 }), // 1656648000000
-      endDate: makeEndDate({ year: 2022, month: 12, day: 31 }), // 1672549199000
-    };
     setBannerData(mockBannerData);
   }, []);
 
@@ -46,10 +55,24 @@ export const Admin = () => {
         <Flex sx={sx.mainContentFlex}>
           <Button
             onClick={async () => {
-              await listBanners({});
+              await writeBanner(mockBannerData);
             }}
           >
-            List banner
+            Write banner
+          </Button>
+          <Button
+            onClick={async () => {
+              await getBanner(ADMIN_BANNER_ID);
+            }}
+          >
+            Get banner
+          </Button>
+          <Button
+            onClick={async () => {
+              await deleteBanner(ADMIN_BANNER_ID);
+            }}
+          >
+            Delete banner
           </Button>
           <Box sx={sx.introTextBox}>
             <Heading as="h1" sx={sx.headerText}>
@@ -60,8 +83,8 @@ export const Admin = () => {
           <Box sx={sx.currentBannerBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
             {bannerData ? (
-              <Stack>
-                <Stack sx={sx.currentBannerInfo}>
+              <Box>
+                <Flex sx={sx.currentBannerInfo}>
                   <Text sx={sx.currentBannerStatus}>
                     Status:{" "}
                     <span className={isBannerActive ? "active" : "inactive"}>
@@ -74,13 +97,13 @@ export const Admin = () => {
                   <Text sx={sx.currentBannerDate}>
                     End Date: <span>{formatDate(bannerData.endDate)}</span>
                   </Text>
-                </Stack>
+                </Flex>
                 <Banner
                   status={BannerTypes.INFO}
                   bgColor="palette.alt_lightest"
                   accentColor="palette.alt"
                   title={bannerData.title}
-                  body={bannerData.body}
+                  body={bannerData.description}
                 />
                 <Button
                   sx={sx.deleteBannerButton}
@@ -88,33 +111,27 @@ export const Admin = () => {
                 >
                   Delete Current Banner
                 </Button>
-              </Stack>
+              </Box>
             ) : (
               <Text>There is no current banner</Text>
             )}
           </Box>
 
-          <Stack sx={sx.previewBannerBox}>
+          <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-            <TextField label="Header text" placeholder="New banner title" />
-            <TextField label="Body text" placeholder="New banner body" />
+            <TextField
+              label="Header text"
+              defaultValue="New banner title"
+              name="banner-title-text"
+            />
+            <TextField
+              label="Body text"
+              defaultValue="New banner body"
+              name="banner-body-text"
+            />
             <Flex sx={sx.dateFieldContainer} className={mqClasses}>
-              <Stack mt="0.5rem">
-                <Text>Start date</Text>
-                <Flex>
-                  <TextField sx={sx.dateField} label="Month" />
-                  <TextField sx={sx.dateField} label="Day" />
-                  <TextField sx={sx.dateField} label="Year" />
-                </Flex>
-              </Stack>
-              <Stack mt="0.5rem">
-                <Text>End date</Text>
-                <Flex>
-                  <TextField sx={sx.dateField} label="Month" />
-                  <TextField sx={sx.dateField} label="Day" />
-                  <TextField sx={sx.dateField} label="Year" />
-                </Flex>
-              </Stack>
+              <DateField label="Start date" hint={null} />
+              <DateField label="End date" hint={null} />
             </Flex>
             <Banner
               status={BannerTypes.INFO}
@@ -123,10 +140,16 @@ export const Admin = () => {
               title="New banner title"
               body="New banner description"
             />
-            <Button sx={sx.replaceBannerButton} colorScheme="colorSchemes.main">
+            {/* <Button
+              sx={sx.replaceBannerButton}
+              colorScheme="colorSchemes.main"
+              onClick={async () => {
+                await writeBanner("");
+              }}
+            >
               Replace Current Banner
-            </Button>
-          </Stack>
+            </Button> */}
+          </Flex>
         </Flex>
       </Box>
     </section>
@@ -156,6 +179,7 @@ const sx = {
     marginBottom: "2.25rem",
   },
   currentBannerInfo: {
+    flexDirection: "column",
     marginBottom: "0.5rem !important",
   },
   currentBannerStatus: {
@@ -180,12 +204,18 @@ const sx = {
   },
   previewBannerBox: {
     width: "100%",
+    flexDirection: "column",
     marginBottom: "2.25rem",
   },
   dateFieldContainer: {
-    marginBottom: "0.5rem !important",
+    ".ds-c-fieldset:first-of-type": {
+      marginRight: "3rem",
+    },
     "&.tablet, &.mobile": {
       flexDirection: "column",
+      ".ds-c-fieldset:first-of-type": {
+        marginRight: "0",
+      },
     },
   },
   headerText: {

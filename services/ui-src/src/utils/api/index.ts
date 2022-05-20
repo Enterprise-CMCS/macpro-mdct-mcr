@@ -1,3 +1,3 @@
-export * from "./ApiProvider";
-export * from "./QueryProvider";
-export * from "./requestMethods";
+export * from "./providers/ApiProvider";
+export * from "./providers/QueryProvider";
+export * from "./requestMethods/banner";

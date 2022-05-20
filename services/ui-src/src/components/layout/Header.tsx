@@ -1,5 +1,5 @@
 // components
-import UsaBanner from "@cmsgov/design-system/dist/components/UsaBanner/UsaBanner";
+import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image } from "@chakra-ui/react";
 import { Menu, MenuOption, RouterLink } from "../index";
 // utils
@@ -11,7 +11,7 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   return (
     <Box sx={sx.root} data-testid="header-banner-container">
-      <UsaBanner tabindex={0} />
+      <UsaBanner />
       <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>

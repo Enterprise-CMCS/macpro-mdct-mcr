@@ -4,31 +4,8 @@ export enum UserRoles {
   ADMIN = "mdctmcr-approver",
   STATE = "mdctmcr-state-user",
   HELP = "mdctmcr-help-desk",
-  STATE_REPRESENTATIVE = "mdctmcr-state-rep",
+  STATE_REP = "mdctmcr-state-rep",
   BOR = "mdctmcr-bor",
-}
-
-export enum BannerTypes {
-  ERROR = "error",
-  INFO = "info",
-  SUCCESS = "success",
-  WARNING = "warning",
-}
-
-export interface BannerData {
-  key: string;
-  createdAt: number;
-  lastAltered: number;
-  lastAlteredBy?: string;
-  type: string;
-  title: string;
-  description: string;
-}
-export interface BannerShape {
-  title: string;
-  body: string;
-  startDate: number;
-  endDate: number;
 }
 
 export interface ITerritoryList {
@@ -47,4 +24,22 @@ export interface JsonObject {
 export interface TableContentShape {
   headRow: string[];
   bodyRows: string[][];
+}
+
+// BANNER
+
+export interface BannerShape {
+  key: string;
+  title: string;
+  description: string;
+  link: string;
+  startDate: number;
+  endDate: number;
+}
+
+export enum BannerTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
 }

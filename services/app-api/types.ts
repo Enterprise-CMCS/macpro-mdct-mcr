@@ -1,22 +1,15 @@
-export interface BannerData {
-  key: string;
-  createdAt: number;
-  lastAltered: number;
-  lastAlteredBy?: string;
-  type: string;
-  title: string;
-  description: string;
-}
+// GLOBAL
 
-export interface DynamoBannerList {
-  Items?: BannerData[];
-  Count?: number;
-  ScannedCount?: number;
+export const enum RequestMethods {
+  POST = "POST",
+  GET = "GET",
+  PUT = "PUT",
+  DELETE = "DELETE",
 }
 
 export interface DynamoCreate {
   TableName: string;
-  Item: BannerData;
+  Item: { [key: string]: any };
 }
 
 export interface DynamoDelete {
@@ -50,17 +43,26 @@ export interface DynamoGet {
   };
 }
 
+// USERS
+
 export const enum UserRoles {
   ADMIN = "mdctmcr-approver",
   STATE = "mdctmcr-state-user",
   HELP = "mdctmcr-help-desk",
-  STATE_REPRESENTATIVE = "mdctmcr-state-rep",
+  STATE_REP = "mdctmcr-state-rep",
   BOR = "mdctmcr-bor",
 }
 
-export const enum RequestMethods {
-  POST = "POST",
-  GET = "GET",
-  PUT = "PUT",
-  DELETE = "DELETE",
+// BANNERS
+
+export interface BannerData {
+  key: string;
+  createdAt: number;
+  lastAltered: number;
+  lastAlteredBy?: string;
+  title: string;
+  description: string;
+  link: string;
+  startDate: number;
+  endDate: number;
 }

@@ -79,46 +79,42 @@ provider:
     stage: ${opt:stage, self:provider.stage}
 
 functions:
-  listBanners:
-    handler: handlers/banners/get.listBanners
-    events:
-      - http:
-          path: banners
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   getBanner:
     handler: handlers/banners/get.getBanner
     events:
       - http:
-          path: banners/{banner}
+          path: banners/{bannerId}
           method: get
           cors: true
-          authorizer: ""
-  createBanner:
-    handler: handlers/banners/create.createBanner
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                bannerId: true
+  writeBanner:
+    handler: handlers/banners/write.writeBanner
     events:
       - http:
-          path: banners
+          path: banners/{bannerId}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  editBanner:
-    handler: handlers/banners/update.editBanner
-    events:
-      - http:
-          path: banners/{banner}
-          method: put
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                bannerId: true
   deleteBanner:
     handler: handlers/banners/delete.deleteBanner
     events:
       - http:
-          path: banners/{banner}
+          path: banners/{bannerId}
           method: delete
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                bannerId: true
 resources:
   Resources:
     GatewayResponseDefault4XX:
