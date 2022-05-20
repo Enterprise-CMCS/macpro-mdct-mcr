@@ -10,22 +10,8 @@ interface Props {
   children?: ReactNode;
 }
 
-const authenticateWithIDM = () => {
-  const authConfig = Auth.configure();
-  if (authConfig?.oauth) {
-    const oAuthOpts = authConfig.oauth;
-    const domain = oAuthOpts.domain;
-    const responseType = oAuthOpts.responseType;
-    let redirectSignIn;
-
-    if ("redirectSignOut" in oAuthOpts) {
-      redirectSignIn = oAuthOpts.redirectSignOut;
-    }
-
-    const clientId = authConfig.userPoolWebClientId;
-    const url = `https://${domain}/oauth2/authorize?identity_provider=Okta&redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
-    window.location.assign(url);
-  }
+const authenticateWithIDM = async () => {
+  await Auth.federatedSignIn({ customProvider: "Okta" });
 };
 
 export const UserProvider = ({ children }: Props) => {
@@ -85,7 +71,7 @@ export const UserProvider = ({ children }: Props) => {
         domain: config.cognito.APP_CLIENT_DOMAIN,
         redirectSignIn: config.cognito.REDIRECT_SIGNIN,
         redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
-        scope: ["email", "openid"],
+        scope: ["email", "openid", "profile", "aws.cognito.signin.user.admin"],
         responseType: "token",
       },
     });
