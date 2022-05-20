@@ -3,14 +3,11 @@ service: ui-src
 frameworkVersion: "2"
 
 plugins:
-  - serverless-dotenv-plugin
   - serverless-plugin-scripts
   - serverless-s3-sync
   - serverless-stack-termination-protection
   - serverless-s3-bucket-helper
   - serverless-cloudfront-invalidate
-
-useDotenv: true
 
 provider:
   name: aws
