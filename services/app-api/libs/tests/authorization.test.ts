@@ -43,12 +43,6 @@ describe("Authorization Lib Function", () => {
       event.pathParameters = null;
       expect(isAuthorized(event)).toBeTruthy();
     });
-
-    test("authorization should fail from missing requestState and non-GET call", () => {
-      event.pathParameters = null;
-      event.httpMethod = "POST";
-      expect(isAuthorized(event)).toBeFalsy();
-    });
   });
 
   describe("Non-State User Tests", () => {
@@ -66,11 +60,6 @@ describe("Authorization Lib Function", () => {
 
     test("authorization should pass", () => {
       expect(isAuthorized(event)).toBeTruthy();
-    });
-
-    test("authorization should fail from unauthorized http method", () => {
-      event.httpMethod = "POST";
-      expect(isAuthorized(event)).toBeFalsy();
     });
   });
 });

@@ -5,7 +5,7 @@ export const deleteBanner = handler(async (event, _context) => {
   const params = {
     TableName: process.env.BANNER_TABLE_NAME!,
     Key: {
-      key: event?.pathParameters?.bannerId,
+      key: event?.pathParameters?.bannerId!,
     },
   };
 

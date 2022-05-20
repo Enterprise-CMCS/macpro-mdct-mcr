@@ -6,7 +6,7 @@ export const writeBanner = handler(async (event, _context) => {
   const params = {
     TableName: process.env.BANNER_TABLE_NAME!,
     Item: {
-      key: event?.pathParameters?.bannerId,
+      key: event?.pathParameters?.bannerId!,
       createdAt: Date.now(),
       lastAltered: Date.now(),
       lastAlteredBy: event.headers["cognito-identity-id"],

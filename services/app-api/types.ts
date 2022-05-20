@@ -1,13 +1,13 @@
 // GLOBAL
 
-export const enum RequestMethods {
-  POST = "POST",
-  GET = "GET",
-  PUT = "PUT",
-  DELETE = "DELETE",
+export interface DynamoGet {
+  TableName: string;
+  Key: {
+    key: string;
+  };
 }
 
-export interface DynamoCreate {
+export interface DynamoWrite {
   TableName: string;
   Item: { [key: string]: any };
 }
@@ -36,13 +36,6 @@ export interface DynamoScan {
   ExpressionAttributeValues: { [key: string]: any };
 }
 
-export interface DynamoGet {
-  TableName: string;
-  Key: {
-    key: string;
-  };
-}
-
 // USERS
 
 export const enum UserRoles {
@@ -51,18 +44,4 @@ export const enum UserRoles {
   HELP = "mdctmcr-help-desk",
   STATE_REP = "mdctmcr-state-rep",
   BOR = "mdctmcr-bor",
-}
-
-// BANNERS
-
-export interface BannerData {
-  key: string;
-  createdAt: number;
-  lastAltered: number;
-  lastAlteredBy?: string;
-  title: string;
-  description: string;
-  link: string;
-  startDate: number;
-  endDate: number;
 }

@@ -12,7 +12,6 @@ jest.mock("aws-sdk", () => ({
         return {
           get: (_x: any) => ({ promise: mockPromiseCall }),
           put: (_x: any) => ({ promise: mockPromiseCall }),
-          post: (_x: any) => ({ promise: mockPromiseCall }),
           query: (_x: any) => ({ promise: mockPromiseCall }),
           scan: (_x: any) => ({ promise: mockPromiseCall }),
           update: (_x: any) => ({ promise: mockPromiseCall }),
@@ -50,12 +49,8 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
       ExpressionAttributeNames: {},
       ExpressionAttributeValues: {},
     });
-    dynamoLib.post({
-      TableName: "",
-      Item: testItem,
-    });
 
-    expect(mockPromiseCall).toHaveBeenCalledTimes(7);
+    expect(mockPromiseCall).toHaveBeenCalledTimes(6);
   });
 
   describe("Checking Environment Variable Changes", () => {

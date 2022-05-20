@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import jwt_decode from "jwt-decode";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UserRoles, RequestMethods } from "../types";
+import { UserRoles } from "../types";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;

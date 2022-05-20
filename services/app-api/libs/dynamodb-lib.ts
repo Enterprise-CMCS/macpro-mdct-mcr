@@ -1,8 +1,7 @@
 import { Credentials, DynamoDB } from "aws-sdk";
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
 import {
-  BannerData,
-  DynamoCreate,
+  DynamoWrite,
   DynamoDelete,
   DynamoUpdate,
   DynamoGet,
@@ -29,19 +28,17 @@ export function createDbClient() {
   return new DynamoDB.DocumentClient(dynamoConfig);
 }
 
-const client = createDbClient();
-
 export default {
-  get: async <Result = BannerData>(params: DynamoGet) => {
-    const result = await client.get(params).promise();
+  get: async <Result>(params: DynamoGet) => {
+    const result = await createDbClient().get(params).promise();
     return { ...result, Item: result?.Item as Result | undefined };
   },
-  query: (params: any) => client.query(params).promise(),
-  scan: async <Result = BannerData>(params: DynamoScan) => {
-    const result = await client.scan(params).promise();
+  query: (params: any) => createDbClient().query(params).promise(),
+  scan: async <Result>(params: DynamoScan) => {
+    const result = await createDbClient().scan(params).promise();
     return { ...result, Items: result?.Items as Result[] | undefined };
   },
-  put: (params: DynamoCreate) => client.put(params).promise(),
-  update: (params: DynamoUpdate) => client.update(params).promise(),
-  delete: (params: DynamoDelete) => client.delete(params).promise(),
+  put: (params: DynamoWrite) => createDbClient().put(params).promise(),
+  update: (params: DynamoUpdate) => createDbClient().update(params).promise(),
+  delete: (params: DynamoDelete) => createDbClient().delete(params).promise(),
 };
