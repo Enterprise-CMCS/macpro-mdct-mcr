@@ -44,11 +44,11 @@ export const Profile = () => {
         </Flex>
       )}
       {userRole?.includes("approver") && (
-        <RouterLink to="/admin" alt="link to banner edit page" tabindex={0}>
+        <RouterLink to="/admin" alt="link to admin page" tabindex={0}>
           <Button
-            sx={sx.bannerEditButton}
+            sx={sx.adminButton}
             colorScheme="colorSchemes.main"
-            data-testid="banner-editor-button"
+            data-testid="admin-button"
           >
             Banner editor
           </Button>
@@ -75,7 +75,7 @@ const sx = {
   variantRow: {
     background: "palette.gray_lightest",
   },
-  bannerEditButton: {
+  adminButton: {
     marginTop: "2rem",
   },
 };
