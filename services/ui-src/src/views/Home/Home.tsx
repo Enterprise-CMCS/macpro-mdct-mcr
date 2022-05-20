@@ -14,7 +14,7 @@ export const Home = () => (
         bgColor="palette.alt_lightest"
         accentColor="palette.alt"
         title="Welcome to the new Managed Care Reporting tool!"
-        body="Each state must submit one report per program."
+        description="Each state must submit one report per program."
       />
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.introTextBox}>

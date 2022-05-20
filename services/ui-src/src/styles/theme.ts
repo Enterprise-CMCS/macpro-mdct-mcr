@@ -2,6 +2,18 @@
 import { extendTheme } from "@chakra-ui/react";
 
 export const theme = extendTheme({
+  sizes: {
+    appMax: "75rem",
+    contentColumnSmall: "46rem",
+  },
+  breakpoints: {
+    // read this: https://bit.ly/3xSWnDt
+    base: "0em", // mobile (<=35em|560px)
+    sm: "35em", // tablet (>35em|560px and <=55em|880px)
+    md: "55em", // desktop, small (>55em|880px and <=75em|1200px)
+    lg: "75em", // desktop, large (>75em|1200px and <=100em|1600px)
+    xl: "100em", // desktop, ultrawide (>100em|1600px)
+  },
   fonts: {
     heading: "Open Sans",
     body: "Open Sans",
@@ -26,19 +38,6 @@ export const theme = extendTheme({
     heading: 1.3,
     base: 1.5,
     lead: 1.7,
-  },
-  breakpoints: {
-    // read this: https://bit.ly/3xSWnDt
-    base: "0em", // mobile (<=35em|560px)
-    sm: "35em", // tablet (>35em|560px and <=55em|880px)
-    md: "55em", // desktop, small (>55em|880px and <=75em|1200px)
-    lg: "75em", // desktop, large (>75em|1200px and <=100em|1600px)
-    xl: "100em", // desktop, ultrawide (>100em|1600px)
-  },
-
-  sizes: {
-    appMax: "75rem",
-    contentColumnSmall: "46rem",
   },
   colors: {
     palette: {

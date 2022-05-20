@@ -1,38 +1,33 @@
 // components
-import { Box, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+import { Box } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+import { StyleObject } from "utils/types/types";
 
-export const TextField = ({ label, placeholder, ...props }: Props) => {
+export const TextField = ({ label, name, sxOverrides, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-
   return (
-    <Box sx={sx.root} className={mqClasses}>
-      <FormControl>
-        <FormLabel>{label}</FormLabel>
-        <Input
-          sx={sx.input}
-          size="md"
-          {...props}
-          isRequired
-          placeholder={placeholder}
-        />
-      </FormControl>
+    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+      <CmsdsTextField
+        className="co-c-root"
+        label={label}
+        name={name}
+        {...props}
+      />
     </Box>
   );
 };
 
 interface Props {
   label: string;
-  placeholder?: string;
+  name: string;
+  sxOverrides?: StyleObject;
   [key: string]: any;
 }
 
 const sx = {
-  root: {},
-  input: {
-    paddingLeft: "0.5rem",
-    paddingRight: "0.5rem",
-    border: "1px solid red",
+  ".ds-c-field": {
+    maxWidth: "40rem",
   },
 };

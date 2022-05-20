@@ -14,7 +14,7 @@ export const Banner = ({
   bgColor,
   accentColor,
   title,
-  body,
+  description,
 }: Props) => {
   return (
     <Alert
@@ -29,7 +29,7 @@ export const Banner = ({
         <AlertIcon sx={sx.alertIcon} />
         <Flex sx={sx.alertContent}>
           <AlertTitle>{title}</AlertTitle>
-          <AlertDescription>{body}</AlertDescription>
+          <AlertDescription>{description}</AlertDescription>
         </Flex>
       </Flex>
     </Alert>
@@ -39,7 +39,7 @@ export const Banner = ({
 interface Props {
   status: BannerTypes;
   title: string;
-  body: string;
+  description: string;
   bgColor?: string;
   accentColor?: string;
 }

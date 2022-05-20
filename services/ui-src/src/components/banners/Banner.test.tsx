@@ -13,7 +13,7 @@ const bannerComponent = (
       bgColor="palette.alt_lightest"
       accentColor="palette.alt"
       title="Test banner!"
-      body="This is for testing."
+      description="This is for testing."
     />
   </RouterWrappedComponent>
 );

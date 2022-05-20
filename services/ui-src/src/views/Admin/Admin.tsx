@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 // components
-import { TextField, DateField } from "@cmsgov/design-system";
+import { DateField } from "@cmsgov/design-system";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner } from "../../components/index";
+import { Banner, TextField } from "../../components/index";
 // utils
 import {
   checkBannerActiveDates,
@@ -103,11 +103,14 @@ export const Admin = () => {
                   bgColor="palette.alt_lightest"
                   accentColor="palette.alt"
                   title={bannerData.title}
-                  body={bannerData.description}
+                  description={bannerData.description}
                 />
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
+                  onClick={async () => {
+                    await deleteBanner(ADMIN_BANNER_ID);
+                  }}
                 >
                   Delete Current Banner
                 </Button>
@@ -121,13 +124,24 @@ export const Admin = () => {
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
             <TextField
               label="Header text"
-              defaultValue="New banner title"
+              placeholder="New banner title"
               name="banner-title-text"
+              sxOverrides={sx.textFieldOverrides}
+              fieldClassName="passedfieldclass"
+              errorMessage="Example error message"
+              requirementLabel="uhh... this is required, so..."
             />
             <TextField
-              label="Body text"
-              defaultValue="New banner body"
-              name="banner-body-text"
+              label="Description text"
+              placeholder="New banner description"
+              multiline
+              rows={3}
+              name="banner-description-text"
+            />
+            <TextField
+              label="Link (optional)"
+              name="banner-link"
+              requirementLabel="Optional"
             />
             <Flex sx={sx.dateFieldContainer} className={mqClasses}>
               <DateField label="Start date" hint={null} />
@@ -138,17 +152,17 @@ export const Admin = () => {
               bgColor="palette.alt_lightest"
               accentColor="palette.alt"
               title="New banner title"
-              body="New banner description"
+              description="New banner description"
             />
-            {/* <Button
+            <Button
               sx={sx.replaceBannerButton}
               colorScheme="colorSchemes.main"
               onClick={async () => {
-                await writeBanner("");
+                await writeBanner(mockBannerData);
               }}
             >
               Replace Current Banner
-            </Button> */}
+            </Button>
           </Flex>
         </Flex>
       </Box>
@@ -157,6 +171,31 @@ export const Admin = () => {
 };
 
 const sx = {
+  textFieldOverrides: {
+    border: "1px solid black",
+    ".co-c-root": {
+      backgroundColor: "pink",
+    },
+    ".ds-c-label": {
+      backgroundColor: "red",
+    },
+    ".ds-c-inline-error": {
+      border: "1px solid black",
+      backgroundColor: "orange",
+    },
+    ".ds-c-field__error-message": {
+      color: "green",
+    },
+    ".ds-c-field": {
+      backgroundColor: "yellow",
+    },
+    ".passedfieldclass": {
+      border: "3px solid blue",
+    },
+    ".ds-c-field__hint": {
+      color: "purple",
+    },
+  },
   root: {
     flexShrink: "0",
   },
