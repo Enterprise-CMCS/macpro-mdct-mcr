@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 // components
-import { DateField } from "@cmsgov/design-system";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, TextField } from "../../components/index";
+import { Banner, DateField, TextField } from "../../components/index";
 // utils
 import {
   checkBannerActiveDates,
@@ -126,10 +125,7 @@ export const Admin = () => {
               label="Header text"
               placeholder="New banner title"
               name="banner-title-text"
-              sxOverrides={sx.textFieldOverrides}
               fieldClassName="passedfieldclass"
-              errorMessage="Example error message"
-              requirementLabel="uhh... this is required, so..."
             />
             <TextField
               label="Description text"
@@ -171,31 +167,6 @@ export const Admin = () => {
 };
 
 const sx = {
-  textFieldOverrides: {
-    border: "1px solid black",
-    ".co-c-root": {
-      backgroundColor: "pink",
-    },
-    ".ds-c-label": {
-      backgroundColor: "red",
-    },
-    ".ds-c-inline-error": {
-      border: "1px solid black",
-      backgroundColor: "orange",
-    },
-    ".ds-c-field__error-message": {
-      color: "green",
-    },
-    ".ds-c-field": {
-      backgroundColor: "yellow",
-    },
-    ".passedfieldclass": {
-      border: "3px solid blue",
-    },
-    ".ds-c-field__hint": {
-      color: "purple",
-    },
-  },
   root: {
     flexShrink: "0",
   },
