@@ -1,8 +1,6 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, TemplateCard } from "../../components/index";
-// utils
-import { BannerTypes } from "utils/types/types";
 // data
 import data from "../../data/home-view.json";
 
@@ -10,7 +8,6 @@ export const Home = () => (
   <section>
     <Box sx={sx.root} data-testid="home-view">
       <Banner
-        status={BannerTypes.INFO}
         title="Welcome to the new Managed Care Reporting tool!"
         description="Each state must submit one report per program."
       />

@@ -9,7 +9,7 @@ import {
   makeStartDate,
   makeEndDate,
 } from "utils/banner/banner";
-import { BannerShape, BannerTypes } from "utils/types/types";
+import { BannerShape } from "utils/types/types";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // data
 import data from "../../data/admin-view.json";
@@ -98,7 +98,6 @@ export const Admin = () => {
                   </Text>
                 </Flex>
                 <Banner
-                  status={BannerTypes.INFO}
                   title={bannerData.title}
                   description={bannerData.description}
                 />
@@ -142,7 +141,6 @@ export const Admin = () => {
               <DateField label="End date" hint={null} />
             </Flex>
             <Banner
-              status={BannerTypes.INFO}
               title="New banner title"
               description="New banner description"
             />
