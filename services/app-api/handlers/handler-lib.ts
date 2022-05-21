@@ -1,7 +1,11 @@
-import * as debug from "./debug-lib";
+import * as debug from "../utils/debugging/debug-lib";
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { isAuthorized } from "./authorization";
-import { failure, success, buildResponse } from "./response-lib";
+import { isAuthorized } from "../utils/auth/authorization";
+import {
+  failure,
+  success,
+  buildResponse,
+} from "../utils/responses/response-lib";
 
 type LambdaFunction = (
   event: APIGatewayProxyEvent, // eslint-disable-line no-unused-vars

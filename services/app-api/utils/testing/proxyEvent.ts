@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 
-export const testEvent: APIGatewayProxyEvent = {
+export const proxyEvent: APIGatewayProxyEvent = {
   body: "{}",
   headers: {},
   httpMethod: "GET",

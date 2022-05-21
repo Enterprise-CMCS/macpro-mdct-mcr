@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import dynamoLib, { createDbClient } from "../dynamodb-lib";
+import dynamoLib, { createDbClient } from "./dynamodb-lib";
 import AWS from "aws-sdk";
 
 const mockPromiseCall = jest.fn();

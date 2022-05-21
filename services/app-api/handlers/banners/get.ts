@@ -1,5 +1,5 @@
-import handler from "../../libs/handler-lib";
-import dynamoDb from "../../libs/dynamodb-lib";
+import handler from "../handler-lib";
+import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 
 export const getBanner = handler(async (event, _context) => {
   const params = {

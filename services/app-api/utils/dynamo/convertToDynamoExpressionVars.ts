@@ -1,8 +1,6 @@
-type ExpressionType = "list" | "post";
-
 export const convertToDynamoExpression = (
   listOfVars: { [key: string]: any },
-  expressionType: ExpressionType
+  expressionType: "list" | "post"
 ) => {
   let expressionAttributeNames: any = {};
   let expressionAttributeValues: any = {};
