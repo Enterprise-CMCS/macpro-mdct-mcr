@@ -32,12 +32,12 @@ export interface BannerShape {
   key: string;
   title: string;
   description: string;
-  link: string;
+  link?: string;
   startDate: number;
   endDate: number;
 }
 
-export enum BannerTypes {
+export enum AlertTypes {
   ERROR = "error",
   INFO = "info",
   SUCCESS = "success",

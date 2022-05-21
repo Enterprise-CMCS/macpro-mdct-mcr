@@ -1,91 +1,12 @@
 // components
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  Flex,
-  Link,
-  Text,
-} from "@chakra-ui/react";
-// utils
-import { BannerTypes } from "utils/types/types";
+import { Alert } from "../index";
 
-export const Banner = ({
-  status = BannerTypes.INFO,
-  title,
-  description,
-  link,
-  showIcon = true,
-  ...props
-}: Props) => {
-  return (
-    <Alert
-      status={status}
-      variant="left-accent"
-      sx={sx.root}
-      className={status}
-      data-testid="banner"
-      {...props}
-    >
-      <Flex>
-        {showIcon && <AlertIcon sx={sx.icon} />}
-        <Box sx={sx.contentBox}>
-          <AlertTitle>{title}</AlertTitle>
-          <AlertDescription>
-            <Text>{description}</Text>
-            {link && (
-              <Text>
-                <Link href="https://chakra-ui.com" isExternal variant="inline">
-                  {link}
-                </Link>
-              </Text>
-            )}
-          </AlertDescription>
-        </Box>
-      </Flex>
-    </Alert>
-  );
+export const Banner = ({ ...props }: Props) => {
+  return <Alert {...props} />;
 };
 
 interface Props {
-  status?: BannerTypes;
   title: string;
   description: string;
-  link?: string;
-  showIcon?: boolean;
   [key: string]: any;
 }
-
-const sx = {
-  root: {
-    minHeight: "5.25rem",
-    borderInlineStartWidth: "0.5rem",
-    marginTop: "1.25rem",
-    "&.info": {
-      backgroundColor: "palette.alt_lightest",
-      borderInlineStartColor: "palette.alt",
-    },
-    "&.success": {
-      bgColor: "palette.success_lightest",
-      borderInlineStartColor: "palette.success",
-    },
-    "&.warning": {
-      bgColor: "palette.warn_lightest",
-      borderInlineStartColor: "palette.warn",
-    },
-    "&.error": {
-      bgColor: "palette.error_lightest",
-      borderInlineStartColor: "palette.error",
-    },
-  },
-  icon: {
-    position: "absolute",
-    color: "palette.gray_darkest",
-    marginBottom: "1.75rem",
-  },
-  contentBox: {
-    marginLeft: "2rem",
-  },
-};

@@ -13,10 +13,10 @@ import { BannerShape } from "utils/types/types";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // data
 import data from "../../data/admin-view.json";
-
+// api
 import {
-  getBanner,
   deleteBanner,
+  getBanner,
   writeBanner,
 } from "utils/api/requestMethods/banner";
 
@@ -26,53 +26,44 @@ export const Admin = () => {
   const [bannerData, setBannerData] = useState<BannerShape | null>(null);
   const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
 
-  const mockBannerData = {
+  const temporaryBanner: BannerShape = {
     key: ADMIN_BANNER_ID,
-    title: "test title",
-    description: "test body",
-    link: "test link",
+    title: "Welcome to the new Managed Care Reporting tool!",
+    description: "Each state must submit one report per program.",
     startDate: makeStartDate({ year: 2022, month: 1, day: 1 }),
     endDate: makeEndDate({ year: 2022, month: 12, day: 31 }),
   };
 
-  // TODO: fetch current banner data from db
   useEffect(() => {
-    setBannerData(mockBannerData);
+    // TODO: temporary -- remove before phase1 deployment
+    writeBanner(temporaryBanner);
+
+    const fetchBannerData = async () => {
+      const currentBanner = await getBanner(ADMIN_BANNER_ID);
+      setBannerData(currentBanner.Item);
+    };
+    fetchBannerData();
   }, []);
 
   useEffect(() => {
     if (bannerData) {
       setIsBannerActive(
-        checkBannerActiveDates(bannerData.startDate, bannerData.endDate)
+        checkBannerActiveDates(bannerData?.startDate, bannerData?.endDate)
       );
     }
   }, [bannerData]);
 
   return (
     <section>
+      <Button
+        onClick={async () => {
+          await getBanner(ADMIN_BANNER_ID);
+        }}
+      >
+        Get it Banner
+      </Button>
       <Box sx={sx.root} data-testid="admin-view">
         <Flex sx={sx.mainContentFlex}>
-          <Button
-            onClick={async () => {
-              await writeBanner(mockBannerData);
-            }}
-          >
-            Write banner
-          </Button>
-          <Button
-            onClick={async () => {
-              await getBanner(ADMIN_BANNER_ID);
-            }}
-          >
-            Get banner
-          </Button>
-          <Button
-            onClick={async () => {
-              await deleteBanner(ADMIN_BANNER_ID);
-            }}
-          >
-            Delete banner
-          </Button>
           <Box sx={sx.introTextBox}>
             <Heading as="h1" sx={sx.headerText}>
               {data.intro.header}
@@ -82,21 +73,19 @@ export const Admin = () => {
           <Box sx={sx.currentBannerBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
             {bannerData ? (
-              <Box>
-                <Flex sx={sx.currentBannerInfo}>
-                  <Text sx={sx.currentBannerStatus}>
-                    Status:{" "}
-                    <span className={isBannerActive ? "active" : "inactive"}>
-                      {isBannerActive ? "Active" : "Inactive"}
-                    </span>
-                  </Text>
-                  <Text sx={sx.currentBannerDate}>
-                    Start Date: <span>{formatDate(bannerData.startDate)}</span>
-                  </Text>
-                  <Text sx={sx.currentBannerDate}>
-                    End Date: <span>{formatDate(bannerData.endDate)}</span>
-                  </Text>
-                </Flex>
+              <Flex sx={sx.currentBannerInfo}>
+                <Text sx={sx.currentBannerStatus}>
+                  Status:{" "}
+                  <span className={isBannerActive ? "active" : "inactive"}>
+                    {isBannerActive ? "Active" : "Inactive"}
+                  </span>
+                </Text>
+                <Text sx={sx.currentBannerDate}>
+                  Start Date: <span>{formatDate(bannerData.startDate)}</span>
+                </Text>
+                <Text sx={sx.currentBannerDate}>
+                  End Date: <span>{formatDate(bannerData.endDate)}</span>
+                </Text>
                 <Banner
                   title={bannerData.title}
                   description={bannerData.description}
@@ -110,12 +99,11 @@ export const Admin = () => {
                 >
                   Delete Current Banner
                 </Button>
-              </Box>
+              </Flex>
             ) : (
               <Text>There is no current banner</Text>
             )}
           </Box>
-
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
             <TextField
@@ -148,7 +136,7 @@ export const Admin = () => {
               sx={sx.replaceBannerButton}
               colorScheme="colorSchemes.main"
               onClick={async () => {
-                await writeBanner(mockBannerData);
+                await writeBanner(temporaryBanner);
               }}
             >
               Replace Current Banner
