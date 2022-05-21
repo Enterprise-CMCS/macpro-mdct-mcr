@@ -4,6 +4,7 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  Box,
   Flex,
   Link,
   Text,
@@ -12,49 +13,49 @@ import {
 import { BannerTypes } from "utils/types/types";
 
 export const Banner = ({
-  status,
-  bgColor,
-  accentColor,
+  status = BannerTypes.INFO,
   title,
   description,
   link,
+  showIcon = true,
+  ...props
 }: Props) => {
   return (
     <Alert
-      sx={sx.root}
       status={status}
       variant="left-accent"
-      bg={bgColor}
-      borderInlineStartColor={accentColor}
+      sx={sx.root}
+      className={status}
       data-testid="banner"
+      {...props}
     >
       <Flex>
-        <AlertIcon sx={sx.icon} />
-        <Flex sx={sx.contentFlex}>
+        {showIcon && <AlertIcon sx={sx.icon} />}
+        <Box sx={sx.contentBox}>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>
             <Text>{description}</Text>
             {link && (
-              <Text sx={sx.descriptionLink}>
+              <Text>
                 <Link href="https://chakra-ui.com" isExternal variant="inline">
                   {link}
                 </Link>
               </Text>
             )}
           </AlertDescription>
-        </Flex>
+        </Box>
       </Flex>
     </Alert>
   );
 };
 
 interface Props {
-  status: BannerTypes;
+  status?: BannerTypes;
   title: string;
   description: string;
   link?: string;
-  bgColor?: string;
-  accentColor?: string;
+  showIcon?: boolean;
+  [key: string]: any;
 }
 
 const sx = {
@@ -62,17 +63,29 @@ const sx = {
     minHeight: "5.25rem",
     borderInlineStartWidth: "0.5rem",
     marginTop: "1.25rem",
+    "&.info": {
+      backgroundColor: "palette.alt_lightest",
+      borderInlineStartColor: "palette.alt",
+    },
+    "&.success": {
+      bgColor: "palette.success_lightest",
+      borderInlineStartColor: "palette.success",
+    },
+    "&.warning": {
+      bgColor: "palette.warn_lightest",
+      borderInlineStartColor: "palette.warn",
+    },
+    "&.error": {
+      bgColor: "palette.error_lightest",
+      borderInlineStartColor: "palette.error",
+    },
   },
   icon: {
     position: "absolute",
     color: "palette.gray_darkest",
     marginBottom: "1.75rem",
   },
-  contentFlex: {
-    flexDirection: "column",
+  contentBox: {
     marginLeft: "2rem",
-  },
-  descriptionLink: {
-    // color: "palette.main",
   },
 };

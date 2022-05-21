@@ -10,8 +10,6 @@ const bannerComponent = (
   <RouterWrappedComponent>
     <Banner
       status={BannerTypes.INFO}
-      bgColor="palette.alt_lightest"
-      accentColor="palette.alt"
       title="Test banner!"
       description="This is for testing."
     />

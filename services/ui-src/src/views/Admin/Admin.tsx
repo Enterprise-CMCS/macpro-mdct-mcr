@@ -99,8 +99,6 @@ export const Admin = () => {
                 </Flex>
                 <Banner
                   status={BannerTypes.INFO}
-                  bgColor="palette.alt_lightest"
-                  accentColor="palette.alt"
                   title={bannerData.title}
                   description={bannerData.description}
                 />
@@ -145,8 +143,6 @@ export const Admin = () => {
             </Flex>
             <Banner
               status={BannerTypes.INFO}
-              bgColor="palette.alt_lightest"
-              accentColor="palette.alt"
               title="New banner title"
               description="New banner description"
             />

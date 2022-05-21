@@ -5,7 +5,6 @@ export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
 // app
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
-export { RouterLink } from "./app/RouterLink";
 // banners
 export { Banner } from "./banners/Banner";
 // cards

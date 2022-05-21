@@ -11,8 +11,6 @@ export const Home = () => (
     <Box sx={sx.root} data-testid="home-view">
       <Banner
         status={BannerTypes.INFO}
-        bgColor="palette.alt_lightest"
-        accentColor="palette.alt"
         title="Welcome to the new Managed Care Reporting tool!"
         description="Each state must submit one report per program."
       />
