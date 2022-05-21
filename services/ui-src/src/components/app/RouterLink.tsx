@@ -1,5 +1,5 @@
 import { ReactChild } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLinkRoot } from "react-router-dom";
 // utils
 import { makeMediaQueryClasses } from "utils/useBreakpoint";
 import { StyleObject } from "../../utils/types/types";
@@ -10,10 +10,11 @@ export const RouterLink = ({
   tabindex,
   underline,
   children,
+  ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
-    <Link
+    <RouterLinkRoot
       to={to}
       title={alt}
       tabIndex={tabindex}
@@ -21,9 +22,10 @@ export const RouterLink = ({
         ...(underline ? {} : { textDecoration: "none" }),
       }}
       className={mqClasses}
+      {...props}
     >
       {children}
-    </Link>
+    </RouterLinkRoot>
   );
 };
 
@@ -34,4 +36,5 @@ interface Props {
   underline?: boolean;
   styleOverride?: StyleObject;
   children?: ReactChild | ReactChild[];
+  [key: string]: any;
 }

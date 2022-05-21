@@ -164,11 +164,43 @@ export const theme = extendTheme({
     },
     Link: {
       baseStyle: {
-        color: "palette.main",
         transition: "all 0.3s ease",
-        _hover: {
-          color: "var(--chakra-colors-palette-main_darker)",
+      },
+      variants: {
+        default: {
+          color: "palette.main",
+          transition: "all 0.3s ease",
+          _visited: {
+            color: "palette.main",
+          },
+          ":hover, :visited:hover": {
+            color: "palette.main_darker",
+          },
         },
+        inline: {
+          color: "palette.main_darker",
+          paddingBottom: "2px",
+          borderBottom: "2px solid",
+          _visited: {
+            color: "palette.main_darker",
+          },
+          ":hover, :visited:hover": {
+            color: "palette.main",
+          },
+        },
+        inverse: {
+          color: "palette.white",
+          _visited: {
+            color: "palette.white",
+          },
+          ":hover, :visited:hover": {
+            color: "palette.gray_light",
+          },
+        },
+        button: {},
+      },
+      defaultProps: {
+        variant: "default",
       },
     },
     Text: {

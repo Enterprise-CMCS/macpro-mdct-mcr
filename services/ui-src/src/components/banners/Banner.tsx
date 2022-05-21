@@ -5,6 +5,8 @@ import {
   AlertIcon,
   AlertTitle,
   Flex,
+  Link,
+  Text,
 } from "@chakra-ui/react";
 // utils
 import { BannerTypes } from "utils/types/types";
@@ -15,6 +17,7 @@ export const Banner = ({
   accentColor,
   title,
   description,
+  link,
 }: Props) => {
   return (
     <Alert
@@ -26,10 +29,19 @@ export const Banner = ({
       data-testid="banner"
     >
       <Flex>
-        <AlertIcon sx={sx.alertIcon} />
-        <Flex sx={sx.alertContent}>
+        <AlertIcon sx={sx.icon} />
+        <Flex sx={sx.contentFlex}>
           <AlertTitle>{title}</AlertTitle>
-          <AlertDescription>{description}</AlertDescription>
+          <AlertDescription>
+            <Text>{description}</Text>
+            {link && (
+              <Text sx={sx.descriptionLink}>
+                <Link href="https://chakra-ui.com" isExternal variant="inline">
+                  {link}
+                </Link>
+              </Text>
+            )}
+          </AlertDescription>
         </Flex>
       </Flex>
     </Alert>
@@ -40,6 +52,7 @@ interface Props {
   status: BannerTypes;
   title: string;
   description: string;
+  link?: string;
   bgColor?: string;
   accentColor?: string;
 }
@@ -50,13 +63,16 @@ const sx = {
     borderInlineStartWidth: "0.5rem",
     marginTop: "1.25rem",
   },
-  alertIcon: {
+  icon: {
     position: "absolute",
     color: "palette.gray_darkest",
     marginBottom: "1.75rem",
   },
-  alertContent: {
+  contentFlex: {
     flexDirection: "column",
     marginLeft: "2rem",
+  },
+  descriptionLink: {
+    // color: "palette.main",
   },
 };
