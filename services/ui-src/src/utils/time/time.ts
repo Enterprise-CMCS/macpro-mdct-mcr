@@ -1,5 +1,4 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-// import { getBanner } from "../api/requestMethods/banner";
 
 type DateShape = { year: number; month: number; day: number };
 type TimeShape = { hour: number; minute: number; second: number };
