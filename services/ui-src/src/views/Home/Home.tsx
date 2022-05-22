@@ -6,35 +6,41 @@ import data from "../../data/home-view.json";
 // utils
 import { AdminBannerShape } from "utils/types/types";
 
-export const Home = ({ adminBanner }: Props) => (
-  <section>
-    <Box sx={sx.root} data-testid="home-view">
-      <Collapse in={!!adminBanner.key}>
-        <Banner bannerData={adminBanner} />
-      </Collapse>
-      <Flex sx={sx.mainContentFlex}>
-        <Box sx={sx.introTextBox}>
-          <Heading as="h1" sx={sx.headerText}>
-            {data.intro.header}
-          </Heading>
-          <Text>{data.intro.body}</Text>
-        </Box>
-        <TemplateCard
-          verbiage={data.cards.MCPAR}
-          cardprops={{ ...sx.card, "data-testid": "mcpar-template-card" }}
-        />
-        <TemplateCard
-          verbiage={data.cards.MLR}
-          cardprops={{ ...sx.card, "data-testid": "mlr-template-card" }}
-        />
-        <TemplateCard
-          verbiage={data.cards.NAAAR}
-          cardprops={{ ...sx.card, "data-testid": "naar-template-card" }}
-        />
-      </Flex>
-    </Box>
-  </section>
-);
+export const Home = ({ adminBanner }: Props) => {
+  const showBanner = !!adminBanner.key && adminBanner.isActive;
+  return (
+    <section>
+      <Box sx={sx.root} data-testid="home-view">
+        <Collapse in={showBanner}>
+          <Banner bannerData={adminBanner} />
+        </Collapse>
+        <Flex
+          sx={sx.mainContentFlex}
+          className={showBanner ? "with-banner" : ""}
+        >
+          <Box sx={sx.introTextBox}>
+            <Heading as="h1" sx={sx.headerText}>
+              {data.intro.header}
+            </Heading>
+            <Text>{data.intro.body}</Text>
+          </Box>
+          <TemplateCard
+            verbiage={data.cards.MCPAR}
+            cardprops={{ ...sx.card, "data-testid": "mcpar-template-card" }}
+          />
+          <TemplateCard
+            verbiage={data.cards.MLR}
+            cardprops={{ ...sx.card, "data-testid": "mlr-template-card" }}
+          />
+          <TemplateCard
+            verbiage={data.cards.NAAAR}
+            cardprops={{ ...sx.card, "data-testid": "naar-template-card" }}
+          />
+        </Flex>
+      </Box>
+    </section>
+  );
+};
 
 interface Props {
   adminBanner: AdminBannerShape;
@@ -47,8 +53,11 @@ const sx = {
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",
-    margin: "3.5rem auto 0",
+    margin: "5.5rem auto 0",
     maxWidth: "contentColumnSmall",
+    "&.with-banner": {
+      marginTop: "3.5rem",
+    },
   },
   introTextBox: {
     width: "100%",
