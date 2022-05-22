@@ -1,16 +1,13 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, TemplateCard } from "../../components/index";
+import { AdminBanner, TemplateCard } from "../../components/index";
 // data
 import data from "../../data/home-view.json";
 
 export const Home = () => (
   <section>
     <Box sx={sx.root} data-testid="home-view">
-      <Banner
-        title="Welcome to the new Managed Care Reporting tool!"
-        description="Each state must submit one report per program."
-      />
+      <AdminBanner />
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.introTextBox}>
           <Heading as="h1" sx={sx.headerText}>

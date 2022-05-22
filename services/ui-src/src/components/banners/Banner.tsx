@@ -1,9 +1,7 @@
 // components
 import { Alert } from "../index";
 
-export const Banner = ({ ...props }: Props) => {
-  return <Alert {...props} />;
-};
+export const Banner = ({ ...props }: Props) => <Alert {...props} />;
 
 interface Props {
   title: string;

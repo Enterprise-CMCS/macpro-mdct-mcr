@@ -35,6 +35,7 @@ export interface BannerShape {
   link?: string;
   startDate: number;
   endDate: number;
+  isActive?: boolean;
 }
 
 export enum AlertTypes {

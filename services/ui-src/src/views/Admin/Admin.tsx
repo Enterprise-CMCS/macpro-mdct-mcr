@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // components
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, DateField, TextField } from "../../components/index";
-// utils
+import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import {
-  checkBannerActiveDates,
-  formatDate,
-  makeStartDate,
-  makeEndDate,
-} from "utils/banner/banner";
+  AdminBanner,
+  Banner,
+  DateField,
+  TextField,
+} from "../../components/index";
+// utils
+import { formatDate, makeStartDate, makeEndDate } from "utils/banner/banner";
 import { BannerShape } from "utils/types/types";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // data
@@ -20,38 +20,25 @@ import {
   writeBanner,
 } from "utils/api/requestMethods/banner";
 
+const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
+
+const fakeNewBanner: BannerShape = {
+  key: ADMIN_BANNER_ID,
+  title: "this is the second banner",
+  description: "yep the second one",
+  startDate: makeStartDate({ year: 2022, month: 1, day: 1 }),
+  endDate: makeEndDate({ year: 2022, month: 12, day: 31 }),
+};
+
 export const Admin = () => {
   const mqClasses = makeMediaQueryClasses();
-  const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
   const [bannerData, setBannerData] = useState<BannerShape | null>(null);
-  const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
 
-  const temporaryBanner: BannerShape = {
-    key: ADMIN_BANNER_ID,
-    title: "Welcome to the new Managed Care Reporting tool!",
-    description: "Each state must submit one report per program.",
-    startDate: makeStartDate({ year: 2022, month: 1, day: 1 }),
-    endDate: makeEndDate({ year: 2022, month: 12, day: 31 }),
-  };
-
-  useEffect(() => {
-    // TODO: temporary -- remove before phase1 deployment
-    writeBanner(temporaryBanner);
-
-    const fetchBannerData = async () => {
-      const currentBanner = await getBanner(ADMIN_BANNER_ID);
-      setBannerData(currentBanner.Item);
-    };
-    fetchBannerData();
-  }, []);
-
-  useEffect(() => {
-    if (bannerData) {
-      setIsBannerActive(
-        checkBannerActiveDates(bannerData?.startDate, bannerData?.endDate)
-      );
+  const handleBannerLoaded = (data: BannerShape) => {
+    if (data) {
+      setBannerData(data);
     }
-  }, [bannerData]);
+  };
 
   return (
     <section>
@@ -70,26 +57,29 @@ export const Admin = () => {
             </Heading>
             <Text>{data.intro.body}</Text>
           </Box>
-          <Box sx={sx.currentBannerBox}>
+          <Box sx={sx.currentBannerSectionBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
-            {bannerData ? (
-              <Flex sx={sx.currentBannerInfo}>
-                <Text sx={sx.currentBannerStatus}>
-                  Status:{" "}
-                  <span className={isBannerActive ? "active" : "inactive"}>
-                    {isBannerActive ? "Active" : "Inactive"}
-                  </span>
-                </Text>
-                <Text sx={sx.currentBannerDate}>
-                  Start Date: <span>{formatDate(bannerData.startDate)}</span>
-                </Text>
-                <Text sx={sx.currentBannerDate}>
-                  End Date: <span>{formatDate(bannerData.endDate)}</span>
-                </Text>
-                <Banner
-                  title={bannerData.title}
-                  description={bannerData.description}
-                />
+            <Collapse in={!!bannerData}>
+              {bannerData && (
+                <Flex sx={sx.currentBannerInfo}>
+                  <Text sx={sx.currentBannerStatus}>
+                    Status:{" "}
+                    <span
+                      className={bannerData.isActive ? "active" : "inactive"}
+                    >
+                      {bannerData.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </Text>
+                  <Text sx={sx.currentBannerDate}>
+                    Start Date: <span>{formatDate(bannerData.startDate)}</span>
+                  </Text>
+                  <Text sx={sx.currentBannerDate}>
+                    End Date: <span>{formatDate(bannerData.endDate)}</span>
+                  </Text>
+                </Flex>
+              )}
+              <Flex sx={sx.currentBannerFlex}>
+                <AdminBanner onBannerLoaded={handleBannerLoaded} />
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
@@ -100,9 +90,8 @@ export const Admin = () => {
                   Delete Current Banner
                 </Button>
               </Flex>
-            ) : (
-              <Text>There is no current banner</Text>
-            )}
+            </Collapse>
+            {!bannerData && <Text>There is no current banner</Text>}
           </Box>
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
@@ -136,7 +125,7 @@ export const Admin = () => {
               sx={sx.replaceBannerButton}
               colorScheme="colorSchemes.main"
               onClick={async () => {
-                await writeBanner(temporaryBanner);
+                await writeBanner(fakeNewBanner);
               }}
             >
               Replace Current Banner
@@ -166,13 +155,16 @@ const sx = {
     fontSize: "1.5rem",
     fontWeight: "bold",
   },
-  currentBannerBox: {
+  currentBannerSectionBox: {
     width: "100%",
     marginBottom: "2.25rem",
   },
   currentBannerInfo: {
     flexDirection: "column",
     marginBottom: "0.5rem !important",
+  },
+  currentBannerFlex: {
+    flexDirection: "column",
   },
   currentBannerStatus: {
     span: {
