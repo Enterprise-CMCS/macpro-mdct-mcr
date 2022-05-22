@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // utils
-import { makeStartDate, makeEndDate } from "utils/time/time";
+import { convertDateEtToUtc } from "utils/time/time";
 import { AdminBannerData } from "utils/types/types";
 // api
 import {
@@ -10,12 +10,17 @@ import {
 } from "utils/api/requestMethods/banner";
 
 const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
+const midnight = { hour: 0, minute: 0, second: 0 };
+const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
 const temporaryBanner: AdminBannerData = {
   key: ADMIN_BANNER_ID,
   title: "Welcome to the new Managed Care Reporting tool!",
   description: "Each state must submit one report per program.",
-  startDate: makeStartDate({ year: 2022, month: 1, day: 1 }),
-  endDate: makeEndDate({ year: 2022, month: 12, day: 31 }),
+  startDate: convertDateEtToUtc({ year: 2022, month: 1, day: 1 }, midnight),
+  endDate: convertDateEtToUtc(
+    { year: 2022, month: 12, day: 31 },
+    oneSecondToMidnight
+  ),
 };
 
 const checkBannerActivityStatus = (

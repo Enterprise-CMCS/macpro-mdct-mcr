@@ -1,44 +1,33 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 // import { getBanner } from "../api/requestMethods/banner";
 
-interface DateShape {
-  year: number;
-  month: number;
-  day: number;
-}
+type DateShape = { year: number; month: number; day: number };
+type TimeShape = { hour: number; minute: number; second: number };
 
 /*
- * Uses zonedTimeToUtc to calculate the specififed
- * UTC datetime and returns as 'ms since Unix epoch'
+ * Converts passed ET datetime to UTC
+ * returns -> UTC datetime in format 'ms since Unix epoch'
  */
-export const makeStartDate = (startDate: DateShape): number => {
-  const { year, month, day } = startDate;
-  const utcDatetime = zonedTimeToUtc(
-    new Date(year, month - 1, day, 0, 0, 0),
-    "America/New_York"
-  );
-  return utcDatetime.getTime();
-};
+export const convertDateEtToUtc = (
+  etDate: DateShape,
+  etTime: TimeShape
+): number => {
+  const { year, month, day } = etDate;
+  const { hour, minute, second } = etTime;
 
-/*
- * Uses zonedTimeToUtc to calculate the specififed
- * UTC datetime and returns as 'ms since Unix epoch'
- */
-export const makeEndDate = (endDate: DateShape): number => {
-  const { year, month, day } = endDate;
   // month - 1 because Date object months are zero-indexed
   const utcDatetime = zonedTimeToUtc(
-    new Date(year, month - 1, day, 23, 59, 59),
+    new Date(year, month - 1, day, hour, minute, second),
     "America/New_York"
   );
   return utcDatetime.getTime();
 };
 
 /*
- * Converts specified time from 'ms since Unix epoch'
- * to Eastern Time and returns as date string
+ * Converts passed UTC datetime to ET date
+ * returns -> ET date in format mm/dd/yyyy
  */
-export const formatDate = (date: number): string => {
+export const formatDateUtcToEt = (date: number): string => {
   const easternDatetime = utcToZonedTime(new Date(date), "America/New_York");
   const month = new Date(easternDatetime).getMonth();
   const day = new Date(easternDatetime).getDate();

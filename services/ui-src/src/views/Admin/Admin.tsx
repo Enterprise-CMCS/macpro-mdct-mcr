@@ -2,7 +2,7 @@
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, DateField, TextField } from "../../components/index";
 // utils
-import { formatDate, makeStartDate, makeEndDate } from "utils/time/time";
+import { convertDateEtToUtc, formatDateUtcToEt } from "utils/time/time";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
 // data
@@ -10,13 +10,18 @@ import data from "../../data/admin-view.json";
 
 // TODO: remove after form fields are wired up
 const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
+const midnight = { hour: 0, minute: 0, second: 0 };
+const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
 const fakeNewBanner: AdminBannerData = {
   key: ADMIN_BANNER_ID,
   title: "this is the second banner",
   description: "yep the second one",
   link: "with a link!",
-  startDate: makeStartDate({ year: 2022, month: 1, day: 1 }),
-  endDate: makeEndDate({ year: 2022, month: 12, day: 31 }),
+  startDate: convertDateEtToUtc({ year: 2022, month: 1, day: 1 }, midnight),
+  endDate: convertDateEtToUtc(
+    { year: 2022, month: 12, day: 31 },
+    oneSecondToMidnight
+  ),
 };
 
 export const Admin = ({ adminBanner }: Props) => {
@@ -45,10 +50,12 @@ export const Admin = ({ adminBanner }: Props) => {
                     </span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    Start Date: <span>{formatDate(adminBanner.startDate)}</span>
+                    Start Date:{" "}
+                    <span>{formatDateUtcToEt(adminBanner.startDate)}</span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    End Date: <span>{formatDate(adminBanner.endDate)}</span>
+                    End Date:{" "}
+                    <span>{formatDateUtcToEt(adminBanner.endDate)}</span>
                   </Text>
                 </Flex>
               )}
