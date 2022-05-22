@@ -1,31 +1,53 @@
+import { useState } from "react";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, DateField, TextField } from "../../components/index";
 // utils
-import { convertDateEtToUtc, formatDateUtcToEt } from "utils/time/time";
+import {
+  // convertDateEtToUtc,
+  formatDateUtcToEt,
+} from "utils/time/time";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { AdminBannerData, AdminBannerShape } from "utils/types/types";
+import {
+  // AdminBannerData,
+  AdminBannerShape,
+  InputChangeEvent,
+} from "utils/types/types";
 // data
 import data from "../../data/admin-view.json";
 
+/*
+ * const dateMaker = convertDateEtToUtc(
+ *   { year: 2022, month: 1, day: 1 },
+ *   midnight
+ * );
+ */
+
 // TODO: remove after form fields are wired up
 const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
-const midnight = { hour: 0, minute: 0, second: 0 };
-const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
-const fakeNewBanner: AdminBannerData = {
-  key: ADMIN_BANNER_ID,
-  title: "this is the second banner",
-  description: "yep the second one",
-  link: "with a link!",
-  startDate: convertDateEtToUtc({ year: 2022, month: 1, day: 1 }, midnight),
-  endDate: convertDateEtToUtc(
-    { year: 2022, month: 12, day: 31 },
-    oneSecondToMidnight
-  ),
-};
+/*
+ * const midnight = { hour: 0, minute: 0, second: 0 };
+ * const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
+ */
 
 export const Admin = ({ adminBanner }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [newBannerData, setNewBannerData] = useState({
+    key: ADMIN_BANNER_ID,
+    title: "New banner title",
+    description: "New banner description",
+    startDate: 0,
+    endDate: 0,
+  });
+
+  const handleInputChange = (e: InputChangeEvent) => {
+    const { id, value } = e.target;
+    setNewBannerData({
+      ...newBannerData,
+      [id]: value,
+    });
+  };
+
   return (
     <section>
       <Box sx={sx.root} data-testid="admin-view">
@@ -75,37 +97,38 @@ export const Admin = ({ adminBanner }: Props) => {
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
             <TextField
-              label="Header text"
+              id="title"
+              label="Title text"
               placeholder="New banner title"
               name="banner-title-text"
               fieldClassName="passedfieldclass"
+              onChange={handleInputChange}
             />
             <TextField
+              id="description"
               label="Description text"
               placeholder="New banner description"
+              name="banner-description-text"
               multiline
               rows={3}
-              name="banner-description-text"
+              onChange={handleInputChange}
             />
             <TextField
+              id="link"
               label="Link (optional)"
               name="banner-link"
               requirementLabel="Optional"
+              onChange={handleInputChange}
             />
             <Flex sx={sx.dateFieldContainer} className={mqClasses}>
               <DateField label="Start date" hint={null} />
               <DateField label="End date" hint={null} />
             </Flex>
-            <Banner
-              bannerData={{
-                title: "New banner title",
-                description: "New banner description",
-              }}
-            />
+            <Banner bannerData={newBannerData} />
             <Button
               sx={sx.replaceBannerButton}
               colorScheme="colorSchemes.main"
-              onClick={() => adminBanner.writeAdminBanner(fakeNewBanner)}
+              onClick={() => adminBanner.writeAdminBanner(newBannerData)}
             >
               Replace Current Banner
             </Button>

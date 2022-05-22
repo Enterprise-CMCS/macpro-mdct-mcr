@@ -1,3 +1,5 @@
+import React from "react";
+
 export type { IconType } from "react-icons";
 
 export enum UserRoles {
@@ -25,6 +27,8 @@ export interface TableContentShape {
   headRow: string[];
   bodyRows: string[][];
 }
+
+export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
 // BANNER
 

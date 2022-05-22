@@ -9,7 +9,7 @@ export const DateField = ({ label, sxOverrides, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
-      <CmsdsDateField className="co-c-root" label={label} {...props} />
+      <CmsdsDateField label={label} {...props} />
     </Box>
   );
 };

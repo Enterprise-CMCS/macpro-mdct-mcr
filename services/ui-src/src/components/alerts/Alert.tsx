@@ -59,6 +59,7 @@ interface Props {
 
 const sx = {
   root: {
+    alignItems: "start",
     minHeight: "5.25rem",
     borderInlineStartWidth: "0.5rem",
     marginTop: "1.25rem",

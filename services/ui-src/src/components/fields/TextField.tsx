@@ -9,12 +9,7 @@ export const TextField = ({ label, name, sxOverrides, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
-      <CmsdsTextField
-        className="co-c-root"
-        label={label}
-        name={name}
-        {...props}
-      />
+      <CmsdsTextField label={label} name={name} {...props} />
     </Box>
   );
 };
