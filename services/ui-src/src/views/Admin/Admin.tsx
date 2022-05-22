@@ -40,15 +40,20 @@ export const Admin = () => {
     }
   };
 
+  const deleteCurrentBanner = async () => {
+    await deleteBanner(ADMIN_BANNER_ID);
+    setBannerData(null);
+  };
+
+  const replaceCurrentBanner = async () => {
+    await writeBanner(fakeNewBanner);
+    getBanner(ADMIN_BANNER_ID);
+    // TODO: replace with something better -- i'm tired
+    window.location.reload();
+  };
+
   return (
     <section>
-      <Button
-        onClick={async () => {
-          await getBanner(ADMIN_BANNER_ID);
-        }}
-      >
-        Get it Banner
-      </Button>
       <Box sx={sx.root} data-testid="admin-view">
         <Flex sx={sx.mainContentFlex}>
           <Box sx={sx.introTextBox}>
@@ -83,9 +88,7 @@ export const Admin = () => {
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
-                  onClick={async () => {
-                    await deleteBanner(ADMIN_BANNER_ID);
-                  }}
+                  onClick={deleteCurrentBanner}
                 >
                   Delete Current Banner
                 </Button>
@@ -124,9 +127,7 @@ export const Admin = () => {
             <Button
               sx={sx.replaceBannerButton}
               colorScheme="colorSchemes.main"
-              onClick={async () => {
-                await writeBanner(fakeNewBanner);
-              }}
+              onClick={replaceCurrentBanner}
             >
               Replace Current Banner
             </Button>
