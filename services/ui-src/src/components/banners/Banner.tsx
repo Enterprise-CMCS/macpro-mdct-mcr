@@ -1,10 +1,13 @@
 // components
 import { Alert } from "../index";
+import { BannerData } from "utils/types/types";
 
-export const Banner = ({ ...props }: Props) => <Alert {...props} />;
+export const Banner = ({ bannerData }: Props) => {
+  const { title, description, link } = bannerData;
+  return <Alert title={title} description={description} link={link} />;
+};
 
 interface Props {
-  title: string;
-  description: string;
+  bannerData: BannerData;
   [key: string]: any;
 }

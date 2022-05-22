@@ -1,8 +1,6 @@
 import { API } from "aws-amplify";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { BannerShape } from "../../types/types";
-// utils
-import { checkBannerActiveDates } from "../../banner/banner";
+import { AdminBannerData } from "../../types/types";
 
 async function getBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
@@ -11,21 +9,11 @@ async function getBanner(bannerKey: string) {
   };
 
   const response = await API.get("banners", `banners/${bannerKey}`, request);
-  if (response.Item) {
-    try {
-      response.Item.isActive = checkBannerActiveDates(
-        response.Item?.startDate,
-        response.Item?.endDate
-      );
-    } catch (error) {
-      console.log("Error parsing banner active state.", error); // eslint-disable-line no-console
-    }
-  }
   // console.log("done: getBanner", response);
   return response;
 }
 
-async function writeBanner(bannerData: BannerShape) {
+async function writeBanner(bannerData: AdminBannerData) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },

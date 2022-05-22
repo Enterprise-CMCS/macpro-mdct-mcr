@@ -47,15 +47,3 @@ export const formatDate = (date: number): string => {
   // month + 1 because Date object months are zero-indexed
   return `${month + 1}/${day}/${year}`;
 };
-
-/*
- * Accepts a start datetime and end datetime and
- * checks if current datetime is within range
- */
-export const checkBannerActiveDates = (
-  startDate: number,
-  endDate: number
-): boolean => {
-  const currentTime = new Date().valueOf();
-  return currentTime >= startDate && currentTime <= endDate;
-};

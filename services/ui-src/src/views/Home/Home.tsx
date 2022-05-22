@@ -1,13 +1,17 @@
 // components
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { AdminBanner, TemplateCard } from "../../components/index";
+import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
+import { Banner, TemplateCard } from "../../components/index";
 // data
 import data from "../../data/home-view.json";
+// utils
+import { AdminBannerShape } from "utils/types/types";
 
-export const Home = () => (
+export const Home = ({ adminBanner }: Props) => (
   <section>
     <Box sx={sx.root} data-testid="home-view">
-      <AdminBanner />
+      <Collapse in={!!adminBanner.key}>
+        <Banner bannerData={adminBanner} />
+      </Collapse>
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.introTextBox}>
           <Heading as="h1" sx={sx.headerText}>
@@ -31,6 +35,10 @@ export const Home = () => (
     </Box>
   </section>
 );
+
+interface Props {
+  adminBanner: AdminBannerShape;
+}
 
 const sx = {
   root: {

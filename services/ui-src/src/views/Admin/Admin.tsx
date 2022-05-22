@@ -1,57 +1,26 @@
-import { useState } from "react";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import {
-  AdminBanner,
-  Banner,
-  DateField,
-  TextField,
-} from "../../components/index";
+import { Banner, DateField, TextField } from "../../components/index";
 // utils
-import { formatDate, makeStartDate, makeEndDate } from "utils/banner/banner";
-import { BannerShape } from "utils/types/types";
+import { formatDate, makeStartDate, makeEndDate } from "utils/time/time";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+import { AdminBannerData, AdminBannerShape } from "utils/types/types";
 // data
 import data from "../../data/admin-view.json";
-// api
-import {
-  deleteBanner,
-  getBanner,
-  writeBanner,
-} from "utils/api/requestMethods/banner";
 
+// TODO: remove after form fields are wired up
 const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
-
-const fakeNewBanner: BannerShape = {
+const fakeNewBanner: AdminBannerData = {
   key: ADMIN_BANNER_ID,
   title: "this is the second banner",
   description: "yep the second one",
+  link: "with a link!",
   startDate: makeStartDate({ year: 2022, month: 1, day: 1 }),
   endDate: makeEndDate({ year: 2022, month: 12, day: 31 }),
 };
 
-export const Admin = () => {
+export const Admin = ({ adminBanner }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [bannerData, setBannerData] = useState<BannerShape | null>(null);
-
-  const handleBannerLoaded = (data: BannerShape) => {
-    if (data) {
-      setBannerData(data);
-    }
-  };
-
-  const deleteCurrentBanner = async () => {
-    await deleteBanner(ADMIN_BANNER_ID);
-    setBannerData(null);
-  };
-
-  const replaceCurrentBanner = async () => {
-    await writeBanner(fakeNewBanner);
-    getBanner(ADMIN_BANNER_ID);
-    // TODO: replace with something better -- i'm tired
-    window.location.reload();
-  };
-
   return (
     <section>
       <Box sx={sx.root} data-testid="admin-view">
@@ -64,37 +33,37 @@ export const Admin = () => {
           </Box>
           <Box sx={sx.currentBannerSectionBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
-            <Collapse in={!!bannerData}>
-              {bannerData && (
+            <Collapse in={!!adminBanner.key}>
+              {adminBanner.key && (
                 <Flex sx={sx.currentBannerInfo}>
                   <Text sx={sx.currentBannerStatus}>
                     Status:{" "}
                     <span
-                      className={bannerData.isActive ? "active" : "inactive"}
+                      className={adminBanner.isActive ? "active" : "inactive"}
                     >
-                      {bannerData.isActive ? "Active" : "Inactive"}
+                      {adminBanner.isActive ? "Active" : "Inactive"}
                     </span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    Start Date: <span>{formatDate(bannerData.startDate)}</span>
+                    Start Date: <span>{formatDate(adminBanner.startDate)}</span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    End Date: <span>{formatDate(bannerData.endDate)}</span>
+                    End Date: <span>{formatDate(adminBanner.endDate)}</span>
                   </Text>
                 </Flex>
               )}
               <Flex sx={sx.currentBannerFlex}>
-                <AdminBanner onBannerLoaded={handleBannerLoaded} />
+                <Banner bannerData={adminBanner} />
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
-                  onClick={deleteCurrentBanner}
+                  onClick={() => adminBanner.deleteAdminBanner()}
                 >
                   Delete Current Banner
                 </Button>
               </Flex>
             </Collapse>
-            {!bannerData && <Text>There is no current banner</Text>}
+            {!adminBanner.key && <Text>There is no current banner</Text>}
           </Box>
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
@@ -121,13 +90,15 @@ export const Admin = () => {
               <DateField label="End date" hint={null} />
             </Flex>
             <Banner
-              title="New banner title"
-              description="New banner description"
+              bannerData={{
+                title: "New banner title",
+                description: "New banner description",
+              }}
             />
             <Button
               sx={sx.replaceBannerButton}
               colorScheme="colorSchemes.main"
-              onClick={replaceCurrentBanner}
+              onClick={() => adminBanner.writeAdminBanner(fakeNewBanner)}
             >
               Replace Current Banner
             </Button>
@@ -137,6 +108,10 @@ export const Admin = () => {
     </section>
   );
 };
+
+interface Props {
+  adminBanner: AdminBannerShape;
+}
 
 const sx = {
   root: {

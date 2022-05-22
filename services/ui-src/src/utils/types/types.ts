@@ -28,15 +28,26 @@ export interface TableContentShape {
 
 // BANNER
 
-export interface BannerShape {
-  key: string;
+export interface BannerData {
   title: string;
   description: string;
   link?: string;
+}
+
+export interface AdminBannerData extends BannerData {
+  key: string;
   startDate: number;
   endDate: number;
   isActive?: boolean;
 }
+
+export interface AdminBannerMethods {
+  fetchAdminBanner: Function;
+  writeAdminBanner: Function;
+  deleteAdminBanner: Function;
+}
+
+export interface AdminBannerShape extends AdminBannerData, AdminBannerMethods {}
 
 export enum AlertTypes {
   ERROR = "error",
