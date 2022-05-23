@@ -1,4 +1,5 @@
 import {
+  useEffect,
   // useEffect,
   useState,
 } from "react";
@@ -78,6 +79,17 @@ export const Admin = ({ adminBanner }: Props) => {
     endDate: 0,
   });
 
+  // at least this will silence the linter
+  useEffect(() => {
+    setNewBannerData({
+      key: process.env.REACT_APP_BANNER_ID!,
+      title: "New banner title",
+      description: "New banner description",
+      startDate: 0,
+      endDate: 0,
+    });
+  }, []);
+
   /*
    * const handleInputChange = (e: InputChangeEvent) => {
    *   const { id, value } = e.target;
@@ -137,11 +149,7 @@ export const Admin = ({ adminBanner }: Props) => {
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <TitleInput
-                control={control}
-                name="title"
-                onChange={() => setNewBannerData}
-              />
+              <TitleInput control={control} name="title" />
               {/* <TextField
                 name="title"
                 id="title"
