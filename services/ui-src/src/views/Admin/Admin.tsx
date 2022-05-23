@@ -1,17 +1,29 @@
-import { useState } from "react";
+import {
+  // useEffect,
+  useState,
+} from "react";
+import {
+  useForm,
+  useController,
+  // UseControllerProps
+} from "react-hook-form";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, DateField, TextField } from "../../components/index";
+import {
+  Banner,
+  // DateField,
+  TextField,
+} from "../../components/index";
 // utils
 import {
   // convertDateEtToUtc,
   formatDateUtcToEt,
 } from "utils/time/time";
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+// import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import {
   // AdminBannerData,
   AdminBannerShape,
-  InputChangeEvent,
+  // InputChangeEvent,
 } from "utils/types/types";
 // data
 import data from "../../data/admin-view.json";
@@ -23,30 +35,58 @@ import data from "../../data/admin-view.json";
  * );
  */
 
-// TODO: remove after form fields are wired up
-const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
 /*
  * const midnight = { hour: 0, minute: 0, second: 0 };
  * const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
  */
 
+type FormValues = {
+  title: string;
+};
+
+const TitleInput = (props: any) => {
+  const { field, fieldState } = useController(props);
+  return (
+    <TextField
+      {...field}
+      name={props.name}
+      id="title"
+      label="Title text"
+      placeholder="New banner title"
+      fieldState={fieldState}
+      // onChange={() => changeHandler()}
+    />
+  );
+};
+
 export const Admin = ({ adminBanner }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
+  // const mqClasses = makeMediaQueryClasses();
+
+  const { handleSubmit, control } = useForm<FormValues>({
+    defaultValues: {
+      title: "",
+    },
+    mode: "onChange",
+  });
+  const onSubmit = (data: FormValues) => data;
+
   const [newBannerData, setNewBannerData] = useState({
-    key: ADMIN_BANNER_ID,
+    key: process.env.REACT_APP_BANNER_ID!,
     title: "New banner title",
     description: "New banner description",
     startDate: 0,
     endDate: 0,
   });
 
-  const handleInputChange = (e: InputChangeEvent) => {
-    const { id, value } = e.target;
-    setNewBannerData({
-      ...newBannerData,
-      [id]: value,
-    });
-  };
+  /*
+   * const handleInputChange = (e: InputChangeEvent) => {
+   *   const { id, value } = e.target;
+   *   setNewBannerData({
+   *     ...newBannerData,
+   *     [id]: value,
+   *   });
+   * };
+   */
 
   return (
     <section>
@@ -96,42 +136,49 @@ export const Admin = ({ adminBanner }: Props) => {
           </Box>
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-            <TextField
-              id="title"
-              label="Title text"
-              placeholder="New banner title"
-              name="banner-title-text"
-              fieldClassName="passedfieldclass"
-              onChange={handleInputChange}
-            />
-            <TextField
-              id="description"
-              label="Description text"
-              placeholder="New banner description"
-              name="banner-description-text"
-              multiline
-              rows={3}
-              onChange={handleInputChange}
-            />
-            <TextField
-              id="link"
-              label="Link (optional)"
-              name="banner-link"
-              requirementLabel="Optional"
-              onChange={handleInputChange}
-            />
-            <Flex sx={sx.dateFieldContainer} className={mqClasses}>
-              <DateField label="Start date" hint={null} />
-              <DateField label="End date" hint={null} />
-            </Flex>
-            <Banner bannerData={newBannerData} />
-            <Button
-              sx={sx.replaceBannerButton}
-              colorScheme="colorSchemes.main"
-              onClick={() => adminBanner.writeAdminBanner(newBannerData)}
-            >
-              Replace Current Banner
-            </Button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <TitleInput
+                control={control}
+                name="title"
+                onChange={() => setNewBannerData}
+              />
+              {/* <TextField
+                name="title"
+                id="title"
+                label="Title text"
+                placeholder="New banner title"
+                onChange={handleInputChange}
+              /> */}
+              {/* <TextField
+                id="description"
+                label="Description text"
+                placeholder="New banner description"
+                name="banner-description-text"
+                multiline
+                rows={3}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="link"
+                label="Link (optional)"
+                name="banner-link"
+                requirementLabel="Optional"
+                onChange={handleInputChange}
+              />
+              <Flex sx={sx.dateFieldContainer} className={mqClasses}>
+                <DateField label="Start date" hint={null} />
+                <DateField label="End date" hint={null} />
+              </Flex> */}
+              <Banner bannerData={newBannerData} />
+              <Button
+                type="submit"
+                sx={sx.replaceBannerButton}
+                colorScheme="colorSchemes.main"
+                onClick={() => adminBanner.writeAdminBanner(newBannerData)}
+              >
+                Replace Current Banner
+              </Button>
+            </form>
           </Flex>
         </Flex>
       </Box>
