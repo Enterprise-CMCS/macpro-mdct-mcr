@@ -49,7 +49,7 @@ export const Profile = () => {
           colorScheme="colorSchemes.main"
           data-testid="admin-button"
           sx={sx.adminButton}
-          onClick={() => navigate("/help")}
+          onClick={() => navigate("/admin")}
         >
           Banner editor
         </Button>
