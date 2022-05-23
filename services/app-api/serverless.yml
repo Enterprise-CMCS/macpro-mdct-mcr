@@ -7,6 +7,7 @@ package:
   individually: true
 
 plugins:
+  - serverless-plugin-scripts
   - serverless-plugin-typescript
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
@@ -50,6 +51,14 @@ custom:
     main: aws_iam
     val: aws_iam
     production: aws_iam
+  cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId, env:COGNITO_USER_POOL_ID}
+  cognito_user_pool_client_id: ${cf:ui-auth-${self:custom.stage}.UserPoolClientId, env:COGNITO_USER_POOL_CLIENT_ID}
+  scripts:
+    commands:
+      configureEnv: |
+        set -e
+        export COGNITO_USER_POOL_ID=${self:custom.cognito_user_pool_id}
+        export COGNITO_USER_POOL_CLIENT_ID=${self:custom.cognito_user_pool_client_id}
 provider:
   name: aws
   runtime: nodejs12.x

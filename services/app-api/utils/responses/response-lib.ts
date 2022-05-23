@@ -1,8 +1,4 @@
-export function success(body: any) {
-  return buildResponse(200, body);
-}
-
-export function failure(body: any) {
+export function internalServerError(body: any) {
   return buildResponse(500, body);
 }
 
@@ -13,6 +9,6 @@ export function buildResponse(statusCode: number, body: any) {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     },
-    body: JSON.stringify(body),
+    body: body,
   };
 }

@@ -16,7 +16,7 @@ jest.mock("../utils/auth/authorization.ts", () => ({
 
 describe("Test Lambda Handler Lib", () => {
   test("Test successful authorized lambda workflow", async () => {
-    const testFunc = jest.fn().mockReturnValue({ test: "test" });
+    const testFunc = jest.fn().mockReturnValue({ status: 200, body: "test" });
     const handler = handlerLib(testFunc);
 
     (isAuthorized as jest.Mock).mockReturnValue(true);
@@ -35,9 +35,9 @@ describe("Test Lambda Handler Lib", () => {
     const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(
-      "User is not authorized to access this resource."
-    );
+    expect(res.body).toStrictEqual({
+      error: "User is not authorized to access this resource.",
+    });
   });
 
   test("Test Errored lambda workflow", async () => {
@@ -52,7 +52,7 @@ describe("Test Lambda Handler Lib", () => {
 
     expect(flush).toHaveBeenCalledWith(err);
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain("Test Error");
+    expect(res.body).toStrictEqual({ error: "Test Error" });
     expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
   });
 });

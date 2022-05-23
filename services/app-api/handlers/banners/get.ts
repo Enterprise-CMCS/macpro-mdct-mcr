@@ -1,5 +1,6 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { StatusCodes } from "../../utils/types/types";
 
 export const getBanner = handler(async (event, _context) => {
   const params = {
@@ -8,6 +9,6 @@ export const getBanner = handler(async (event, _context) => {
       key: event?.pathParameters?.bannerId!,
     },
   };
-  const queryValue = await dynamoDb.get(params);
-  return queryValue;
+  const queryResponse = await dynamoDb.get(params);
+  return { status: StatusCodes.SUCCESS, body: queryResponse };
 });

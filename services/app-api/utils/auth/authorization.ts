@@ -1,48 +1,52 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import jwt_decode from "jwt-decode";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserRoles } from "../types/types";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
-  "custom:cms_state"?: string;
-  given_name?: string;
-  family_name?: string;
-  identities?: [{ userId?: string }];
 }
 
-// TODO: COMPLETELY CHANGE EVERYTHING ABOUT THIS
-export const isAuthorized = (event: APIGatewayProxyEvent) => {
-  if (!event.headers["x-api-key"]) return false;
+export const isAuthorized = async (event: APIGatewayProxyEvent) => {
+  // Verifier that expects valid access tokens:
+  const verifier = CognitoJwtVerifier.create({
+    userPoolId: process.env.COGNITO_USER_POOL_ID!,
+    tokenUse: "id",
+    clientId: process.env.COGNITO_USER_POOL_CLIENT_ID!,
+  });
 
-  /*
-   * TODO: check user_role against lambda context user data
-   * to confirm the user is an admin_user, since /banners
-   * is the only endpoint right now
-   *
-   * returning true for the purposes of this commit, but will change later
-   */
+  let payload;
 
-  return true;
+  if (event.headers["x-api-key"]) {
+    try {
+      payload = await verifier.verify(event.headers["x-api-key"]);
+    } catch {
+      console.log("Token not valid!"); // eslint-disable-line
+    }
+  }
+
+  return !!payload;
 };
 
-// TODO: NEED TO CHANGE THIS TO NOT USE JWT_DECODE (SAME AS ABOVE)
-export const getUserNameFromJwt = (event: APIGatewayProxyEvent) => {
-  let userName = "branchUser";
-  if (!event?.headers || !event.headers?.["x-api-key"]) return userName;
+export const hasPermissions = (
+  event: APIGatewayProxyEvent,
+  allowedRoles: UserRoles[]
+) => {
+  let isAllowed = false;
+  // decode the idToken
+  if (event.headers["x-api-key"]) {
+    const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
+    const idmUserRoles = decoded["custom:cms_roles"];
+    const mcrUserRole = idmUserRoles
+      ?.split(",")
+      .find((role) => role.includes("mdctmcr")) as UserRoles;
 
-  const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
-
-  if (decoded["given_name"] && decoded["family_name"]) {
-    userName = `${decoded["given_name"]} ${decoded["family_name"]}`;
-    return userName;
+    if (allowedRoles.includes(mcrUserRole)) {
+      isAllowed = true;
+    }
   }
 
-  if (decoded.identities && decoded.identities[0]?.userId) {
-    userName = decoded?.identities[0].userId;
-    return userName;
-  }
-
-  return userName;
+  return isAllowed;
 };

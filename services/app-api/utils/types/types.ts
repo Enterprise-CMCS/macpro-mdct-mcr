@@ -36,6 +36,18 @@ export interface DynamoScan {
   ExpressionAttributeValues: { [key: string]: any };
 }
 
+export const enum RequestMethods {
+  POST = "POST",
+  GET = "GET",
+  PUT = "PUT",
+  DELETE = "DELETE",
+}
+
+export const enum StatusCodes {
+  SUCCESS = 200,
+  UNAUTHORIZED = 403,
+}
+
 // USERS
 
 export const enum UserRoles {
