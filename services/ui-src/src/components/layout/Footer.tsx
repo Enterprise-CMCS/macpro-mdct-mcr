@@ -1,6 +1,6 @@
+import { Link as RouterLink } from "react-router-dom";
 // components
 import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
-import { RouterLink } from "../index";
 // utils
 import {
   makeMediaQueryClasses,
@@ -59,7 +59,6 @@ export const Footer = () => {
               <Link
                 as={RouterLink}
                 to="/help"
-                alt="link to help page"
                 variant="inverse"
                 sx={sx.link}
                 className={mqClasses}

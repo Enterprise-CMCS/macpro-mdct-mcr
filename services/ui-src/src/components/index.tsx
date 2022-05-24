@@ -2,11 +2,13 @@
 export { AccordionItem } from "./accordions/AccordionItem";
 export { FaqAccordion } from "./accordions/FaqAccordion";
 export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
+// alerts
+export { Alert } from "./alerts/Alert";
 // app
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
-export { RouterLink } from "./app/RouterLink";
 // banners
+export { AdminBanner } from "./banners/AdminBanner";
 export { Banner } from "./banners/Banner";
 // cards
 export { Card } from "./cards/Card";

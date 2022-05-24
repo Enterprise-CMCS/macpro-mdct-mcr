@@ -1,22 +1,31 @@
 import { API } from "aws-amplify";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { BannerShape } from "../../types/types";
+import { AdminBannerData } from "../../types/types";
 
 async function getBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
   };
-  return API.get("banners", `banners/${bannerKey}`, request);
+
+  const response = await API.get("banners", `banners/${bannerKey}`, request);
+  // console.log("done: getBanner", response);
+  return response;
 }
 
-async function writeBanner(bannerData: BannerShape) {
+async function writeBanner(bannerData: AdminBannerData) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
     body: bannerData,
   };
-  return API.post("banners", `banners/${bannerData.key}`, request);
+  const response = await API.post(
+    "banners",
+    `banners/${bannerData.key}`,
+    request
+  );
+  // console.log("done: writeBanner", response.Item);
+  return response;
 }
 
 async function deleteBanner(bannerKey: string) {
@@ -24,7 +33,9 @@ async function deleteBanner(bannerKey: string) {
   const request = {
     headers: { ...requestHeaders },
   };
-  return API.del("banners", `banners/${bannerKey}`, request);
+  const response = await API.del("banners", `banners/${bannerKey}`, request);
+  // console.log("done: deleteBanner", response);
+  return response;
 }
 
 export { getBanner, writeBanner, deleteBanner };
