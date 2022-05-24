@@ -15,7 +15,7 @@ export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // fields
-export { DateField } from "./fields/DataField";
+export { DateField } from "./fields/DateField";
 export { TextField } from "./fields/TextField";
 // icons
 export { Icon } from "./icons/Icon";

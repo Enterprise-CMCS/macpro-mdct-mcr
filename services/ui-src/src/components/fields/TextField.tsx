@@ -12,21 +12,18 @@ export const TextField = ({
   placeholder,
   customErrorMessage,
   sxOverrides,
-  onChangeCallback,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
-  const hasError = errors?.[name]?.message;
+
+  const { ...form }: any = useFormContext();
+  const hasError = form.formState.errors?.[name]?.message;
   const errorMessage = hasError ? customErrorMessage || hasError : "";
 
   return (
     <Controller
       name={name}
-      control={control}
+      control={form.control}
       render={({ field: { onChange, name } }) => {
         return (
           <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
@@ -37,7 +34,7 @@ export const TextField = ({
               placeholder={placeholder}
               onChange={(value: any) => {
                 onChange(value);
-                onChangeCallback?.(value);
+                form.onInputChange?.(value);
               }}
               errorMessage={errorMessage}
               {...props}
@@ -54,7 +51,6 @@ interface Props {
   label: string;
   placeholder?: string;
   customErrorMessage?: string;
-  onChangeCallback?: Function;
   sxOverrides?: StyleObject;
   [key: string]: any;
 }

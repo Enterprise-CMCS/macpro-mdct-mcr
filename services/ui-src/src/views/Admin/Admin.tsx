@@ -2,11 +2,7 @@ import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import {
-  Banner,
-  // DateField,
-  TextField,
-} from "../../components/index";
+import { Banner, DateField, TextField } from "../../components/index";
 // utils
 import {
   // convertDateEtToUtc,
@@ -14,7 +10,7 @@ import {
 } from "utils/time/time";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-// import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import {
   // AdminBannerData,
   AdminBannerShape,
@@ -39,16 +35,20 @@ interface FormInput {
   title: string;
   description: string;
   link: string;
+  startDate: number;
+  endDate: number;
 }
 
 const schema = yup.object().shape({
   title: yup.string().required(),
   description: yup.string().required(),
   link: yup.string().url(),
+  startDate: yup.number().required(),
+  // endDate: yup.number().required(),
 });
 
 export const Admin = ({ adminBanner }: Props) => {
-  // const mqClasses = makeMediaQueryClasses();
+  const mqClasses = makeMediaQueryClasses();
 
   const [newBannerData, setNewBannerData] = useState({
     key: process.env.REACT_APP_BANNER_ID!,
@@ -59,6 +59,7 @@ export const Admin = ({ adminBanner }: Props) => {
   });
 
   const handleInputChange = (e: InputChangeEvent) => {
+    console.log("changing top level"); // eslint-disable-line no-console
     const { id, value } = e.target;
     setNewBannerData({
       ...newBannerData,
@@ -70,7 +71,12 @@ export const Admin = ({ adminBanner }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormInput> = () => {
+  const onError = (errors: any) => {
+    console.log(errors); // eslint-disable-line no-console
+  };
+
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    console.log("formdata", data); // eslint-disable-line no-console
     adminBanner.writeAdminBanner(newBannerData);
   };
 
@@ -122,33 +128,34 @@ export const Admin = ({ adminBanner }: Props) => {
           </Box>
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-            <FormProvider {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormProvider {...{ ...form, onInputChange: handleInputChange }}>
+              <form onSubmit={form.handleSubmit(onSubmit, onError)}>
                 <TextField
                   name="title"
                   label="Title text"
                   placeholder="New banner title"
-                  onChangeCallback={handleInputChange}
                 />
-                {/* TODO: Separate to "TextFieldMulti" or something */}
                 <TextField
                   name="description"
                   label="Description text"
                   placeholder="New banner description"
                   multiline
                   rows={3}
-                  onChangeCallback={handleInputChange}
                 />
                 <TextField
                   name="link"
-                  label="Link (optional)"
+                  label="Link"
                   requirementLabel="Optional"
-                  onChangeCallback={handleInputChange}
                 />
-                {/* <Flex sx={sx.dateFieldContainer} className={mqClasses}>
-                  <DateField label="Start date" hint={null} />
-                  <DateField label="End date" hint={null} />
-                </Flex> */}
+                <Flex sx={sx.dateFieldContainer} className={mqClasses}>
+                  <DateField
+                    name="startDate"
+                    label="Start date"
+                    hint={null}
+                    {...form}
+                  />
+                  {/* <DateField name="endDate" label="End date" hint={null} /> */}
+                </Flex>
                 <Banner bannerData={newBannerData} />
                 <Button
                   type="submit"
