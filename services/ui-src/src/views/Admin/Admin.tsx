@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, DateField, TextField } from "../../components/index";
@@ -52,7 +52,7 @@ export const Admin = ({ adminBanner }: Props) => {
     });
   };
 
-  const { control, handleSubmit } = useForm<FormInput>();
+  const form = useForm<FormInput>();
 
   const onSubmit: SubmitHandler<FormInput> = (data) => {
     // eslint-disable-next-line no-console
@@ -107,25 +107,15 @@ export const Admin = ({ adminBanner }: Props) => {
           </Box>
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name="title"
-                control={control}
-                defaultValue=""
-                render={({ field: { onChange, name } }) => (
-                  <TextField
-                    name={name}
-                    id="title"
-                    label="Title text"
-                    placeholder="New banner title"
-                    onChange={(value: any) => {
-                      onChange(value);
-                      handleInputChange(value);
-                    }}
-                  />
-                )}
-              />
-              <TextField
+            <FormProvider {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <TextField
+                  name="title"
+                  label="Title text"
+                  placeholder="New banner title"
+                  onChangeCallback={handleInputChange}
+                />
+                {/* <TextField
                 id="description"
                 label="Description text"
                 placeholder="New banner description"
@@ -140,21 +130,22 @@ export const Admin = ({ adminBanner }: Props) => {
                 name="banner-link"
                 requirementLabel="Optional"
                 onChange={handleInputChange}
-              />
-              <Flex sx={sx.dateFieldContainer} className={mqClasses}>
-                <DateField label="Start date" hint={null} />
-                <DateField label="End date" hint={null} />
-              </Flex>
-              <Banner bannerData={newBannerData} />
-              <Button
-                type="submit"
-                sx={sx.replaceBannerButton}
-                colorScheme="colorSchemes.main"
-                onClick={() => adminBanner.writeAdminBanner(newBannerData)}
-              >
-                Replace Current Banner
-              </Button>
-            </form>
+              /> */}
+                <Flex sx={sx.dateFieldContainer} className={mqClasses}>
+                  <DateField label="Start date" hint={null} />
+                  <DateField label="End date" hint={null} />
+                </Flex>
+                <Banner bannerData={newBannerData} />
+                <Button
+                  type="submit"
+                  sx={sx.replaceBannerButton}
+                  colorScheme="colorSchemes.main"
+                  onClick={() => adminBanner.writeAdminBanner(newBannerData)}
+                >
+                  Replace Current Banner
+                </Button>
+              </form>
+            </FormProvider>
           </Flex>
         </Flex>
       </Box>
