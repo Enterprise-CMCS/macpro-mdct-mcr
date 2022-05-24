@@ -6,10 +6,10 @@ stage=${1:-dev}
 
 services=(
   'database'
+  'uploads'
   'ui'
   'ui-auth'
   'app-api'
-  'uploads'
   'ui-src'
 )
 

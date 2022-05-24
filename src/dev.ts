@@ -31,11 +31,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     ["yarn", "install"],
     "services/app-api"
   );
-  await runner.run_command_and_output(
-    "api",
-    ["serverless", "configureEnv"],
-    "services/app-api"
-  );
   runner.run_command_and_output(
     "api",
     [

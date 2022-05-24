@@ -7,7 +7,6 @@ package:
   individually: true
 
 plugins:
-  - serverless-plugin-scripts
   - serverless-plugin-typescript
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
@@ -53,12 +52,6 @@ custom:
     production: aws_iam
   cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId, env:COGNITO_USER_POOL_ID}
   cognito_user_pool_client_id: ${cf:ui-auth-${self:custom.stage}.UserPoolClientId, env:COGNITO_USER_POOL_CLIENT_ID}
-  scripts:
-    commands:
-      configureEnv: |
-        set -e
-        export COGNITO_USER_POOL_ID=${self:custom.cognito_user_pool_id}
-        export COGNITO_USER_POOL_CLIENT_ID=${self:custom.cognito_user_pool_client_id}
 provider:
   name: aws
   runtime: nodejs12.x
@@ -84,8 +77,8 @@ provider:
           Resource: "*"
   environment:
     bannerTableName: ${self:custom.bannerTableName}
-    uploadS3BucketName: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName, ""}
-    stage: ${opt:stage, self:provider.stage}
+    cognitoUserPoolId: ${self:custom.cognito_user_pool_id}
+    cognitoUserPoolClientId: ${self:custom.cognito_user_pool_client_id}
 
 functions:
   getBanner:
