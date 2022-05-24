@@ -12,6 +12,8 @@ import {
   // convertDateEtToUtc,
   formatDateUtcToEt,
 } from "utils/time/time";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 // import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import {
   // AdminBannerData,
@@ -35,7 +37,15 @@ import data from "../../data/admin-view.json";
 
 interface FormInput {
   title: string;
+  description: string;
+  link: string;
 }
+
+const schema = yup.object().shape({
+  title: yup.string().required(),
+  description: yup.string().required(),
+  link: yup.string().url(),
+});
 
 export const Admin = ({ adminBanner }: Props) => {
   // const mqClasses = makeMediaQueryClasses();
@@ -57,12 +67,11 @@ export const Admin = ({ adminBanner }: Props) => {
   };
 
   const form = useForm<FormInput>({
-    mode: "onSubmit",
+    resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
+  const onSubmit: SubmitHandler<FormInput> = () => {
+    adminBanner.writeAdminBanner(newBannerData);
   };
 
   return (
@@ -145,7 +154,6 @@ export const Admin = ({ adminBanner }: Props) => {
                   type="submit"
                   sx={sx.replaceBannerButton}
                   colorScheme="colorSchemes.main"
-                  onClick={() => adminBanner.writeAdminBanner(newBannerData)}
                 >
                   Replace Current Banner
                 </Button>

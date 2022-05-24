@@ -36,7 +36,7 @@ export const Alert = ({
             <Text>{description}</Text>
             {link && (
               <Text>
-                <Link href="https://chakra-ui.com" isExternal variant="inline">
+                <Link href={link} isExternal variant="inline">
                   {link}
                 </Link>
               </Text>
