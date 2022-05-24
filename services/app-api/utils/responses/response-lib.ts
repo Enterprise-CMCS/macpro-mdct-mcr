@@ -9,6 +9,6 @@ export function buildResponse(statusCode: number, body: any) {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     },
-    body: body,
+    body: JSON.stringify(body),
   };
 }

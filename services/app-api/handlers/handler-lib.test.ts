@@ -35,9 +35,11 @@ describe("Test Lambda Handler Lib", () => {
     const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toStrictEqual({
-      error: "User is not authorized to access this resource.",
-    });
+    expect(res.body).toStrictEqual(
+      JSON.stringify({
+        error: "User is not authorized to access this resource.",
+      })
+    );
   });
 
   test("Test Errored lambda workflow", async () => {
@@ -52,7 +54,7 @@ describe("Test Lambda Handler Lib", () => {
 
     expect(flush).toHaveBeenCalledWith(err);
     expect(res.statusCode).toBe(500);
-    expect(res.body).toStrictEqual({ error: "Test Error" });
+    expect(res.body).toStrictEqual(JSON.stringify({ error: "Test Error" }));
     expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
   });
 });
