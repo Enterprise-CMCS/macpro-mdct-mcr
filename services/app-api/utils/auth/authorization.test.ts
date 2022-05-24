@@ -14,6 +14,10 @@ jest.mock("aws-jwt-verify", () => ({
 }));
 
 describe("Test authorization with api key", () => {
+  beforeEach(() => {
+    process.env["COGNITO_USER_POOL_ID"] = "fakeId";
+    process.env["COGNITO_USER_POOL_CLIENT_ID"] = "fakeClientId";
+  });
   test("is not authorized when no api key is passed", async () => {
     const authStatus = await isAuthorized(proxyEvent);
     expect(authStatus).toBeFalsy();

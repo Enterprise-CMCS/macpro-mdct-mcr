@@ -1,3 +1,4 @@
+import { SSM } from "aws-sdk";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
@@ -9,12 +10,45 @@ interface DecodedToken {
   "custom:cms_roles": UserRoles;
 }
 
+const loadCognitoValues = async () => {
+  if (
+    process.env.COGNITO_USER_POOL_ID &&
+    process.env.COGNITO_USER_POOL_CLIENT_ID
+  ) {
+    return {
+      userPoolId: process.env.COGNITO_USER_POOL_ID,
+      userPoolClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
+    };
+  } else {
+    const ssm = new SSM();
+    const userPoolIdParams = {
+      Name: "${process.env.STAGE!}/ui-auth/cognito_user_pool_id",
+    };
+    const userPoolClientIdParams = {
+      Name: "${process.env.STAGE!}/ui-auth/cognito_user_pool_client_id",
+    };
+    const userPoolId = await ssm.getParameter(userPoolIdParams).promise();
+    const userPoolClientId = await ssm
+      .getParameter(userPoolClientIdParams)
+      .promise();
+    if (userPoolId.Parameter?.Value && userPoolClientId.Parameter?.Value) {
+      return {
+        userPoolId: userPoolId.Parameter.Value,
+        userPoolClientId: userPoolClientId.Parameter.Value,
+      };
+    } else {
+      throw new Error("cannot load cognito values");
+    }
+  }
+};
+
 export const isAuthorized = async (event: APIGatewayProxyEvent) => {
+  const cognitoValues = await loadCognitoValues();
   // Verifier that expects valid access tokens:
   const verifier = CognitoJwtVerifier.create({
-    userPoolId: process.env.COGNITO_USER_POOL_ID!,
+    userPoolId: cognitoValues.userPoolId,
     tokenUse: "id",
-    clientId: process.env.COGNITO_USER_POOL_CLIENT_ID!,
+    clientId: cognitoValues.userPoolClientId,
   });
 
   let payload;

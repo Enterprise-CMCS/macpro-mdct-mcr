@@ -31,7 +31,6 @@ custom:
       - val
       - production
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
-  bannerTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.BannerTableArn}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
     name: ${self:custom.webAclName}
@@ -50,8 +49,6 @@ custom:
     main: aws_iam
     val: aws_iam
     production: aws_iam
-  cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId, env:COGNITO_USER_POOL_ID}
-  cognito_user_pool_client_id: ${cf:ui-auth-${self:custom.stage}.UserPoolClientId, env:COGNITO_USER_POOL_CLIENT_ID}
 provider:
   name: aws
   runtime: nodejs12.x
@@ -77,8 +74,7 @@ provider:
           Resource: "*"
   environment:
     bannerTableName: ${self:custom.bannerTableName}
-    cognitoUserPoolId: ${self:custom.cognito_user_pool_id}
-    cognitoUserPoolClientId: ${self:custom.cognito_user_pool_client_id}
+    stage: ${self:custom.stage}
 
 functions:
   getBanner:
