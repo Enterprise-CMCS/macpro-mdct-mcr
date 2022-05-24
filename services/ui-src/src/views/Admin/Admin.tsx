@@ -2,13 +2,17 @@ import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, DateField, TextField } from "../../components/index";
+import {
+  Banner,
+  // DateField,
+  TextField,
+} from "../../components/index";
 // utils
 import {
   // convertDateEtToUtc,
   formatDateUtcToEt,
 } from "utils/time/time";
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+// import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import {
   // AdminBannerData,
   AdminBannerShape,
@@ -34,7 +38,7 @@ interface FormInput {
 }
 
 export const Admin = ({ adminBanner }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
+  // const mqClasses = makeMediaQueryClasses();
 
   const [newBannerData, setNewBannerData] = useState({
     key: process.env.REACT_APP_BANNER_ID!,
@@ -52,7 +56,9 @@ export const Admin = ({ adminBanner }: Props) => {
     });
   };
 
-  const form = useForm<FormInput>();
+  const form = useForm<FormInput>({
+    mode: "onSubmit",
+  });
 
   const onSubmit: SubmitHandler<FormInput> = (data) => {
     // eslint-disable-next-line no-console
@@ -115,26 +121,25 @@ export const Admin = ({ adminBanner }: Props) => {
                   placeholder="New banner title"
                   onChangeCallback={handleInputChange}
                 />
-                {/* <TextField
-                id="description"
-                label="Description text"
-                placeholder="New banner description"
-                name="banner-description-text"
-                multiline
-                rows={3}
-                onChange={handleInputChange}
-              />
-              <TextField
-                id="link"
-                label="Link (optional)"
-                name="banner-link"
-                requirementLabel="Optional"
-                onChange={handleInputChange}
-              /> */}
-                <Flex sx={sx.dateFieldContainer} className={mqClasses}>
+                {/* TODO: Separate to "TextFieldMulti" or something */}
+                <TextField
+                  name="description"
+                  label="Description text"
+                  placeholder="New banner description"
+                  multiline
+                  rows={3}
+                  onChangeCallback={handleInputChange}
+                />
+                <TextField
+                  name="link"
+                  label="Link (optional)"
+                  requirementLabel="Optional"
+                  onChangeCallback={handleInputChange}
+                />
+                {/* <Flex sx={sx.dateFieldContainer} className={mqClasses}>
                   <DateField label="Start date" hint={null} />
                   <DateField label="End date" hint={null} />
-                </Flex>
+                </Flex> */}
                 <Banner bannerData={newBannerData} />
                 <Button
                   type="submit"
