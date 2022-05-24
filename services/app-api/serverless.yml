@@ -31,7 +31,7 @@ custom:
       - main
       - val
       - production
-  bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.bannerTableName}
+  bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   bannerTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.BannerTableArn}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
