@@ -1,30 +1,18 @@
-import {
-  useEffect,
-  // useEffect,
-  useState,
-} from "react";
-import {
-  useForm,
-  useController,
-  // UseControllerProps
-} from "react-hook-form";
+import { useState } from "react";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import {
-  Banner,
-  // DateField,
-  TextField,
-} from "../../components/index";
+import { Banner, DateField, TextField } from "../../components/index";
 // utils
 import {
   // convertDateEtToUtc,
   formatDateUtcToEt,
 } from "utils/time/time";
-// import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import {
   // AdminBannerData,
   AdminBannerShape,
-  // InputChangeEvent,
+  InputChangeEvent,
 } from "utils/types/types";
 // data
 import data from "../../data/admin-view.json";
@@ -41,35 +29,12 @@ import data from "../../data/admin-view.json";
  * const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
  */
 
-type FormValues = {
+interface FormInput {
   title: string;
-};
-
-const TitleInput = (props: any) => {
-  const { field, fieldState } = useController(props);
-  return (
-    <TextField
-      {...field}
-      name={props.name}
-      id="title"
-      label="Title text"
-      placeholder="New banner title"
-      fieldState={fieldState}
-      // onChange={() => changeHandler()}
-    />
-  );
-};
+}
 
 export const Admin = ({ adminBanner }: Props) => {
-  // const mqClasses = makeMediaQueryClasses();
-
-  const { handleSubmit, control } = useForm<FormValues>({
-    defaultValues: {
-      title: "",
-    },
-    mode: "onChange",
-  });
-  const onSubmit = (data: FormValues) => data;
+  const mqClasses = makeMediaQueryClasses();
 
   const [newBannerData, setNewBannerData] = useState({
     key: process.env.REACT_APP_BANNER_ID!,
@@ -79,26 +44,20 @@ export const Admin = ({ adminBanner }: Props) => {
     endDate: 0,
   });
 
-  // at least this will silence the linter
-  useEffect(() => {
+  const handleInputChange = (e: InputChangeEvent) => {
+    const { id, value } = e.target;
     setNewBannerData({
-      key: process.env.REACT_APP_BANNER_ID!,
-      title: "New banner title",
-      description: "New banner description",
-      startDate: 0,
-      endDate: 0,
+      ...newBannerData,
+      [id]: value,
     });
-  }, []);
+  };
 
-  /*
-   * const handleInputChange = (e: InputChangeEvent) => {
-   *   const { id, value } = e.target;
-   *   setNewBannerData({
-   *     ...newBannerData,
-   *     [id]: value,
-   *   });
-   * };
-   */
+  const { control, handleSubmit } = useForm<FormInput>();
+
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    // eslint-disable-next-line no-console
+    console.log(data);
+  };
 
   return (
     <section>
@@ -149,15 +108,24 @@ export const Admin = ({ adminBanner }: Props) => {
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <TitleInput control={control} name="title" />
-              {/* <TextField
+              <Controller
                 name="title"
-                id="title"
-                label="Title text"
-                placeholder="New banner title"
-                onChange={handleInputChange}
-              /> */}
-              {/* <TextField
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange, name } }) => (
+                  <TextField
+                    name={name}
+                    id="title"
+                    label="Title text"
+                    placeholder="New banner title"
+                    onChange={(value: any) => {
+                      onChange(value);
+                      handleInputChange(value);
+                    }}
+                  />
+                )}
+              />
+              <TextField
                 id="description"
                 label="Description text"
                 placeholder="New banner description"
@@ -176,7 +144,7 @@ export const Admin = ({ adminBanner }: Props) => {
               <Flex sx={sx.dateFieldContainer} className={mqClasses}>
                 <DateField label="Start date" hint={null} />
                 <DateField label="End date" hint={null} />
-              </Flex> */}
+              </Flex>
               <Banner bannerData={newBannerData} />
               <Button
                 type="submit"

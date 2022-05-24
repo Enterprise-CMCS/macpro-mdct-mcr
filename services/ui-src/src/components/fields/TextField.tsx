@@ -7,9 +7,10 @@ import { StyleObject } from "utils/types/types";
 
 export const TextField = ({ label, name, sxOverrides, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+
   return (
     <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
-      <CmsdsTextField label={label} name={name} {...props} />
+      <CmsdsTextField name={name} label={label} {...props} />
     </Box>
   );
 };
