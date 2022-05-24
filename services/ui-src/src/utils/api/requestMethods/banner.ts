@@ -9,7 +9,6 @@ async function getBanner(bannerKey: string) {
   };
 
   const response = await API.get("banners", `banners/${bannerKey}`, request);
-  // console.log("done: getBanner", response);
   return response;
 }
 
@@ -24,7 +23,6 @@ async function writeBanner(bannerData: AdminBannerData) {
     `banners/${bannerData.key}`,
     request
   );
-  // console.log("done: writeBanner", response.Item);
   return response;
 }
 
@@ -34,7 +32,6 @@ async function deleteBanner(bannerKey: string) {
     headers: { ...requestHeaders },
   };
   const response = await API.del("banners", `banners/${bannerKey}`, request);
-  // console.log("done: deleteBanner", response);
   return response;
 }
 
