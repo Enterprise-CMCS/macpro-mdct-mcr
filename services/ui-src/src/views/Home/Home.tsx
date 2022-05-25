@@ -1,21 +1,13 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, TemplateCard } from "../../components/index";
-// utils
-import { BannerTypes } from "utils/types/types";
 // data
 import data from "../../data/home-view.json";
 
 export const Home = () => (
   <section>
     <Box sx={sx.root} data-testid="home-view">
-      <Banner
-        status={BannerTypes.INFO}
-        bgColor="palette.alt_lightest"
-        accentColor="palette.alt"
-        title="Welcome to the new Managed Care Reporting tool!"
-        body="Each state must submit one report per program."
-      />
+      <Banner bannerData={{ title: "tbd", description: "tbd" }} />
       <Flex sx={sx.mainContentFlex}>
         <Box sx={sx.introTextBox}>
           <Heading as="h1" sx={sx.headerText}>

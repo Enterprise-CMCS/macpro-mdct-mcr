@@ -3,38 +3,35 @@ import { useState, useEffect } from "react";
 import { Box, Button, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { Banner, TextField } from "../../components/index";
 // utils
-import {
-  checkBannerActiveDates,
-  formatDate,
-  makeStartDate,
-  makeEndDate,
-} from "utils/banner/banner";
-import { BannerShape, BannerTypes } from "utils/types/types";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // data
 import data from "../../data/admin-view.json";
 
 export const Admin = () => {
   const mqClasses = makeMediaQueryClasses();
-  const [bannerData, setBannerData] = useState<BannerShape | null>(null);
-  const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
+  const [bannerData, setBannerData] = useState<any | null>(null);
+  // const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
+
+  const isBannerActive = false;
 
   useEffect(() => {
     // TODO: fetch current banner data from db
-    const mockBannerData: BannerShape = {
+    const mockBannerData: any = {
       title: "Current banner title",
       body: "Current banner body",
-      startDate: makeStartDate({ year: 2022, month: 1, day: 1 }), // 1656648000000
-      endDate: makeEndDate({ year: 2022, month: 12, day: 31 }), // 1672549199000
+      // startDate: makeStartDate({ year: 2022, month: 1, day: 1 }), // 1656648000000
+
+      // endDate: makeEndDate({ year: 2022, month: 12, day: 31 }), // 1672549199000
     };
     setBannerData(mockBannerData);
   }, []);
 
   useEffect(() => {
     if (bannerData) {
-      setIsBannerActive(
-        checkBannerActiveDates(bannerData.startDate, bannerData.endDate)
-      );
+      /*
+       * setIsBannerActive();
+       * checkBannerActiveDates(bannerData.startDate, bannerData.endDate)
+       */
     }
   }, [bannerData]);
 
@@ -66,19 +63,13 @@ export const Admin = () => {
                     </span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    Start Date: <span>{formatDate(bannerData.startDate)}</span>
+                    {/* Start Date: <span>{formatDate(bannerData.startDate)}</span> */}
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    End Date: <span>{formatDate(bannerData.endDate)}</span>
+                    {/* End Date: <span>{formatDate(bannerData.endDate)}</span> */}
                   </Text>
                 </Stack>
-                <Banner
-                  status={BannerTypes.INFO}
-                  bgColor="palette.alt_lightest"
-                  accentColor="palette.alt"
-                  title={bannerData.title}
-                  body={bannerData.body}
-                />
+                <Banner bannerData={{ title: "tbd", description: "tbd" }} />
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
@@ -113,13 +104,7 @@ export const Admin = () => {
                 </Flex>
               </Stack>
             </Flex>
-            <Banner
-              status={BannerTypes.INFO}
-              bgColor="palette.alt_lightest"
-              accentColor="palette.alt"
-              title="New banner title"
-              body="New banner description"
-            />
+            <Banner bannerData={{ title: "tbd", description: "tbd" }} />
             <Button sx={sx.replaceBannerButton} colorScheme="colorSchemes.main">
               Replace Current Banner
             </Button>

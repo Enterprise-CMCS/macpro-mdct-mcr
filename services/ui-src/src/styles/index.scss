@@ -76,6 +76,15 @@ p:active {
   background-color: inherit;
 }
 
+a, button {
+  &:focus {
+    box-shadow: none !important;
+  }
+  &:focus-visible {
+    @include tabbed-focus;
+  }
+}
+
 * .chakra-accordion__button {
   &:hover {
     p {
