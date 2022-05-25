@@ -34,11 +34,21 @@ const loadCognitoValues = async () => {
     console.log(
       "check string interpolation ${process.env.STAGE!}/ui-auth/cognito_user_pool_id"
     );
+    const stage = process.env.STAGE!;
+    const userPoolIdParamName = stage + "/ui-auth/cognito_user_pool_id";
+    const userPoolClientIdParamName =
+      stage + "/ui-auth/cognito_user_pool_client_id";
+    // eslint-disable-next-line
+    console.log(
+      "cognito param names:",
+      userPoolIdParamName,
+      userPoolClientIdParamName
+    );
     const userPoolIdParams = {
-      Name: "${process.env.STAGE!}/ui-auth/cognito_user_pool_id",
+      Name: userPoolIdParamName,
     };
     const userPoolClientIdParams = {
-      Name: "${process.env.STAGE!}/ui-auth/cognito_user_pool_client_id",
+      Name: userPoolClientIdParamName,
     };
     const userPoolId = await ssm.getParameter(userPoolIdParams).promise();
     const userPoolClientId = await ssm
@@ -50,8 +60,11 @@ const loadCognitoValues = async () => {
       "values: ",
       userPoolId.Parameter?.Value,
       userPoolClientId.Parameter?.Value
-    ); // eslint-disable-line
+    );
     if (userPoolId.Parameter?.Value && userPoolClientId.Parameter?.Value) {
+      process.env["COGNITO_USER_POOL_ID"] = userPoolId.Parameter?.Value;
+      process.env["COGNITO_USER_POOL_CLIENT_ID"] =
+        userPoolClientId.Parameter?.Value;
       return {
         userPoolId: userPoolId.Parameter.Value,
         userPoolClientId: userPoolClientId.Parameter.Value,

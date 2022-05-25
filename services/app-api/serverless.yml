@@ -70,6 +70,10 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "*"
+        - Effect: "Allow"
+          Action:
+            - ssm:GetParameter
+          Resource: "*"
   environment:
     bannerTableName: ${self:custom.bannerTableName}
     stage: ${self:custom.stage}
