@@ -81,6 +81,7 @@ provider:
     uploadS3BucketName: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName, ""}
     stage: ${opt:stage, self:provider.stage}
 
+<<<<<<< HEAD
 functions:
   getMeasure:
     handler: handlers/measures/get.getMeasure
@@ -91,6 +92,8 @@ functions:
           cors: true
           authorizer: ""
 
+=======
+>>>>>>> 9aa8e52 (remove functions)
 resources:
   Resources:
     GatewayResponseDefault4XX:
