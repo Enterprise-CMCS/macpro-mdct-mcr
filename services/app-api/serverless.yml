@@ -18,6 +18,11 @@ plugins:
   - serverless-api-client-certificate
   - serverless-offline
 
+s3BucketHelper:
+  loggingConfiguration:
+    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
+    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
+
 custom:
   serverlessPluginTypescript:
     tsConfigFileLocation: "./tsconfig.json"
