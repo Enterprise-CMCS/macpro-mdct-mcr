@@ -1,21 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, DateField, TextField } from "../../components/index";
 // utils
-import {
-  // convertDateEtToUtc,
-  formatDateUtcToEt,
-} from "utils/time/time";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { formatDateUtcToEt } from "utils/time/time";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import {
-  // AdminBannerData,
-  AdminBannerShape,
-  InputChangeEvent,
-} from "utils/types/types";
+import { AdminBannerShape, InputChangeEvent } from "utils/types/types";
 // data
 import data from "../../data/admin-view.json";
 
@@ -34,17 +27,20 @@ interface FormInput {
 }
 
 const schema = yup.object().shape({
-  title: yup.string().required(),
-  description: yup.string().required(),
-  link: yup.string().url(),
-  startDate: yup.number().required(),
-  startDateYear: yup.number().required(),
+  title: yup.string().required("Title text is required"),
+  description: yup.string().required("Description text is required"),
+  link: yup.string().url("URL must be valid"),
+  startDate: yup.number().required("Valid start date is required"),
+  startDateYear: yup.number().required().min(2022),
   startDateMonth: yup.number().required().max(12),
-  startDateDay: yup.number().required(),
-  endDate: yup.number().required(),
-  endDateYear: yup.number().required(),
-  endDateMonth: yup.number().required(),
-  endDateDay: yup.number().required(),
+  startDateDay: yup.number().required().max(31),
+  endDate: yup
+    .number()
+    .required("Valid end date is required")
+    .min(yup.ref("startDate"), "End date cannot be before start date"),
+  endDateYear: yup.number().required().min(2022),
+  endDateMonth: yup.number().required().max(12),
+  endDateDay: yup.number().required().max(31),
 });
 
 export const Admin = ({ adminBanner }: Props) => {
@@ -59,38 +55,22 @@ export const Admin = ({ adminBanner }: Props) => {
   });
 
   const handleInputChange = (e: InputChangeEvent) => {
-    console.log("HIC called", e); // eslint-disable-line no-console
-
-    // const { id, value } = e.target;
-    const id: any = e.target.id;
-    const value = e.target.value;
-
+    const { id, value }: any = e.target;
     setNewBannerData({
       ...newBannerData,
       [id]: value,
     });
-
     form.setValue(id, value);
   };
 
   const form = useForm<FormInput>({
+    mode: "onChange",
     resolver: yupResolver(schema),
   });
 
-  const onError = (errors: any) => {
-    console.log("ERRORS", errors); // eslint-disable-line no-console
-  };
-
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
-    console.log("formdata", data); // eslint-disable-line no-console
+  const onSubmit: SubmitHandler<FormInput> = () => {
     adminBanner.writeAdminBanner(newBannerData);
   };
-
-  useEffect(() => {
-    // console.log("formData", newBannerData); // eslint-disable-line no-console
-  }, [newBannerData]);
-
-  console.log("FORM!!!!", form.getValues()); // eslint-disable-line no-console
 
   return (
     <section>
@@ -141,7 +121,7 @@ export const Admin = ({ adminBanner }: Props) => {
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
             <FormProvider {...{ ...form, onInputChange: handleInputChange }}>
-              <form onSubmit={form.handleSubmit(onSubmit, onError)}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
                 <TextField
                   name="title"
                   label="Title text"
@@ -163,15 +143,13 @@ export const Admin = ({ adminBanner }: Props) => {
                   <DateField
                     name="startDate"
                     label="Start date"
-                    hint="Starting 12:00:00am"
-                    customErrorMessage="Must be a valid date in format mm/dd/yyyy"
+                    hint="mm/dd/yyyy (12:00:00am)"
                     {...form}
                   />
                   <DateField
                     name="endDate"
                     label="End date"
-                    hint="Until 11:59:59pm"
-                    customErrorMessage="Must be a valid date in format mm/dd/yyyy"
+                    hint="mm/dd/yyyy (11:59:59pm)"
                     {...form}
                   />
                 </Flex>

@@ -24,24 +24,22 @@ export const TextField = ({
     <Controller
       name={name}
       control={form.control}
-      render={({ field: { onChange, name } }) => {
-        return (
-          <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
-            <CmsdsTextField
-              name={name}
-              id={name}
-              label={label}
-              placeholder={placeholder}
-              onChange={(value: any) => {
-                onChange(value);
-                form.onInputChange?.(value);
-              }}
-              errorMessage={errorMessage}
-              {...props}
-            />
-          </Box>
-        );
-      }}
+      render={({ field: { onChange, name } }) => (
+        <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+          <CmsdsTextField
+            name={name}
+            id={name}
+            label={label}
+            placeholder={placeholder}
+            onChange={(value: any) => {
+              onChange(value);
+              form.onInputChange?.(value);
+            }}
+            errorMessage={errorMessage}
+            {...props}
+          />
+        </Box>
+      )}
     />
   );
 };
