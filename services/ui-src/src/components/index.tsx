@@ -17,6 +17,8 @@ export { TemplateCard } from "./cards/TemplateCard";
 // fields
 export { DateField } from "./fields/DateField";
 export { TextField } from "./fields/TextField";
+// forms
+export { Form } from "./forms/Form";
 // icons
 export { Icon } from "./icons/Icon";
 // layout
