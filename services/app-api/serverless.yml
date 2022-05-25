@@ -83,10 +83,6 @@ provider:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     STAGE: ${self:custom.stage}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7dac79d (add back for sls)
 functions:
   getBanner:
     handler: handlers/banners/get.getBanner
@@ -125,11 +121,6 @@ functions:
             paths:
               bannerId: true
 
-<<<<<<< HEAD
-=======
->>>>>>> 9aa8e52 (remove functions)
-=======
->>>>>>> 7dac79d (add back for sls)
 resources:
   Resources:
     GatewayResponseDefault4XX:
