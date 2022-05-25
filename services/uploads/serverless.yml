@@ -38,10 +38,6 @@ provider:
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  coreSetTableName: ${env:coreSetTableName, cf:database-${self:custom.stage}.CoreSetTableName}
-  coreSetTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.CoreSetTableArn}
-  measureTableName: ${env:measureTableName, cf:database-${self:custom.stage}.MeasureTableName}
-  measureTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.MeasureTableArn}
   serverlessTerminationProtection:
     stages:
       - main
@@ -73,8 +69,6 @@ functions:
     events:
       - schedule: cron(30 * * * ? *)
     environment:
-      coreSetTableName: ${self:custom.coreSetTableName}
-      measureTableName: ${self:custom.measureTableName}
       uploadS3BucketName: !Ref AttachmentsBucket
   avScan:
     handler: src/antivirus.lambdaHandleEvent
