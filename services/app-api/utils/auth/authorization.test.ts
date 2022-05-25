@@ -1,6 +1,33 @@
 import { proxyEvent } from "../testing/proxyEvent";
-import { isAuthorized } from "./authorization";
+import { hasPermissions, isAuthorized } from "./authorization";
 import { UserRoles } from "../types/types";
+
+jest.mock("aws-jwt-verify", () => ({
+  __esModule: true,
+  CognitoJwtVerifier: {
+    create: jest.fn().mockImplementation(() => ({
+      verify: jest.fn().mockImplementation(() => {
+        return true;
+      }),
+    })),
+  },
+}));
+
+describe("Test authorization with api key", () => {
+  beforeEach(() => {
+    process.env["COGNITO_USER_POOL_ID"] = "fakeId";
+    process.env["COGNITO_USER_POOL_CLIENT_ID"] = "fakeClientId";
+  });
+  test("is not authorized when no api key is passed", async () => {
+    const authStatus = await isAuthorized(proxyEvent);
+    expect(authStatus).toBeFalsy();
+  });
+  test("is authorized when api key is passed", async () => {
+    proxyEvent.headers = { "x-api-key": "test" };
+    const authStatus = await isAuthorized(proxyEvent);
+    expect(authStatus).toBeTruthy();
+  });
+});
 
 const mockedDecode = jest.fn();
 
@@ -11,66 +38,23 @@ jest.mock("jwt-decode", () => ({
   },
 }));
 
-describe("Authorization Lib Function", () => {
-  describe("State User Tests", () => {
-    const event = { ...proxyEvent };
-
-    beforeEach(() => {
-      event.httpMethod = "GET";
-      event.headers = { "x-api-key": "test" };
-      event.pathParameters = { state: "AL" };
-      mockedDecode.mockReturnValue({
-        "custom:cms_roles": UserRoles.STATE,
-        "custom:cms_state": "AL",
-      });
-    });
-
-    test("authorizaiton should fail from missing jwt key", () => {
-      event.headers = {};
-      expect(isAuthorized(event)).toBeFalsy();
-    });
-
-    test("authorization should pass", () => {
-      expect(isAuthorized(event)).toBeTruthy();
-    });
-
-    test("authorization should fail from mismatched states", () => {
-      event.pathParameters = { state: "FL" };
-      expect(isAuthorized(event)).toBeFalsy();
-    });
-
-    test("authorization should pass for GET, but skip if check from missing requestState", () => {
-      event.pathParameters = null;
-      expect(isAuthorized(event)).toBeTruthy();
-    });
-
-    test("authorization should fail from missing requestState and non-GET call", () => {
-      event.pathParameters = null;
-      event.httpMethod = "POST";
-      expect(isAuthorized(event)).toBeFalsy();
+describe("Check user has permissions", () => {
+  const event = { ...proxyEvent };
+  beforeEach(() => {
+    event.headers = { "x-api-key": "test" };
+    mockedDecode.mockReturnValue({
+      "custom:cms_roles": UserRoles.ADMIN,
     });
   });
 
-  describe("Non-State User Tests", () => {
-    const event = { ...proxyEvent };
-
-    beforeEach(() => {
-      event.httpMethod = "GET";
-      event.headers = { "x-api-key": "test" };
-      event.pathParameters = { state: "AL" };
-      mockedDecode.mockReturnValue({
-        "custom:cms_roles": UserRoles.ADMIN,
-        "custom:cms_state": "AL",
-      });
-    });
-
-    test("authorization should pass", () => {
-      expect(isAuthorized(event)).toBeTruthy();
-    });
-
-    test("authorization should fail from unauthorized http method", () => {
-      event.httpMethod = "POST";
-      expect(isAuthorized(event)).toBeFalsy();
-    });
+  test("has permissions should pass when the asked for role is the given role", () => {
+    expect(hasPermissions(event, [UserRoles.ADMIN])).toBeTruthy();
+  });
+  test("has permissions should fail when the asked for role is the given role", () => {
+    expect(hasPermissions(event, [UserRoles.STATE])).toBeFalsy();
+  });
+  test("has permissions should fail when the api token is missing", () => {
+    event.headers = {};
+    expect(hasPermissions(event, [UserRoles.ADMIN])).toBeFalsy();
   });
 });

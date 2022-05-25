@@ -1,5 +1,4 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { CoreSetAbbr, Measure, MeasureStatus } from "../types/types";
 
 export const proxyEvent: APIGatewayProxyEvent = {
   body: "{}",
@@ -59,17 +58,4 @@ export const proxyEvent: APIGatewayProxyEvent = {
       },
     },
   },
-};
-
-export const testMeasure: Measure = {
-  compoundKey: "",
-  coreSet: CoreSetAbbr.ACS,
-  createdAt: 0,
-  description: "",
-  lastAltered: 0,
-  measure: "",
-  state: "",
-  status: MeasureStatus.INCOMPLETE,
-  year: 2019,
-  lastAlteredBy: "",
 };

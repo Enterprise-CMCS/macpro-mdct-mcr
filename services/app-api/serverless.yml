@@ -11,12 +11,12 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
   - serverless-associate-waf
-  - serverless-offline
   - serverless-stack-termination-protection
   - serverless-idempotency-helper
   - serverless-iam-helper
   - serverless-s3-bucket-helper
   - serverless-api-client-certificate
+  - serverless-offline
 
 s3BucketHelper:
   loggingConfiguration:
@@ -33,8 +33,7 @@ custom:
       - main
       - val
       - production
-  measureTableName: ${env:measureTableName, cf:database-${self:custom.stage}.MeasureTableName}
-  measureTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.MeasureTableArn}
+  bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
     name: ${self:custom.webAclName}
@@ -76,21 +75,51 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "*"
+        - Effect: "Allow"
+          Action:
+            - ssm:GetParameter
+          Resource: "*"
   environment:
-    measureTableName: ${self:custom.measureTableName}
-    uploadS3BucketName: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName, ""}
-    stage: ${opt:stage, self:provider.stage}
+    BANNER_TABLE_NAME: ${self:custom.bannerTableName}
+    STAGE: ${self:custom.stage}
 
 functions:
-  getMeasure:
-    handler: handlers/measures/get.getMeasure
+  getBanner:
+    handler: handlers/banners/get.getBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/get
+          path: banners/{bannerId}
           method: get
           cors: true
-          authorizer: ""
-
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                bannerId: true
+  writeBanner:
+    handler: handlers/banners/write.writeBanner
+    events:
+      - http:
+          path: banners/{bannerId}
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                bannerId: true
+  deleteBanner:
+    handler: handlers/banners/delete.deleteBanner
+    events:
+      - http:
+          path: banners/{bannerId}
+          method: delete
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                bannerId: true
 resources:
   Resources:
     GatewayResponseDefault4XX:

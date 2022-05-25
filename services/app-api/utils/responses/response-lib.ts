@@ -1,8 +1,4 @@
-export function success(body: any) {
-  return buildResponse(200, body);
-}
-
-export function failure(body: any) {
+export function internalServerError(body: any) {
   return buildResponse(500, body);
 }
 
