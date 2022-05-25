@@ -6,7 +6,7 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../../utils/testing/proxyEvent";
 import { convertToDynamoExpression } from "../../../utils/dynamo/convertToDynamoExpressionVars";
 
-jest.mock("../../../libs/dynamodb-lib", () => ({
+jest.mock("../../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
   default: {
     get: jest.fn().mockReturnValue("single measure"),
@@ -14,12 +14,12 @@ jest.mock("../../../libs/dynamodb-lib", () => ({
   },
 }));
 
-jest.mock("../../../libs/authorization", () => ({
+jest.mock("../../../utils/auth/authorization", () => ({
   __esModule: true,
   isAuthorized: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../../libs/debug-lib", () => ({
+jest.mock("../../../utils/debugging/debug-lib", () => ({
   __esModule: true,
   init: jest.fn(),
   flush: jest.fn(),
@@ -30,7 +30,7 @@ jest.mock("../../dynamoUtils/createCompoundKey", () => ({
   createCompoundKey: jest.fn().mockReturnValue("FL2020ACSFUA-AD"),
 }));
 
-jest.mock("../../dynamoUtils/convertToDynamoExpressionVars", () => ({
+jest.mock("../../../utils/dynamo/convertToDynamoExpressionVars", () => ({
   __esModule: true,
   convertToDynamoExpression: jest.fn().mockReturnValue({ testValue: "test" }),
 }));
