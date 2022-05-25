@@ -1,6 +1,6 @@
-import handler from "../../libs/handler-lib";
-import dynamoDb from "../../libs/dynamodb-lib";
-import { convertToDynamoExpression } from "../dynamoUtils/convertToDynamoExpressionVars";
+import handler from "../handler-lib";
+import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { convertToDynamoExpression } from "../../utils/dynamo/convertToDynamoExpressionVars";
 import { createCompoundKey } from "../dynamoUtils/createCompoundKey";
 
 export const listMeasures = handler(async (event, _context) => {
