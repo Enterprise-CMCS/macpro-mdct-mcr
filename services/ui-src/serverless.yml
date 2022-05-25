@@ -9,6 +9,11 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-cloudfront-invalidate
 
+s3BucketHelper:
+  loggingConfiguration:
+    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
+    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
+
 provider:
   name: aws
   runtime: nodejs12.x
