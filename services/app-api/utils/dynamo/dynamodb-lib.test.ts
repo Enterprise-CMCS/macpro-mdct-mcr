@@ -1,46 +1,41 @@
-/* eslint-disable no-unused-vars */
 import dynamoLib, { createDbClient } from "./dynamodb-lib";
-import { CoreSetAbbr, MeasureStatus } from "../types/types";
-import AWS from "aws-sdk";
+import { DynamoDB } from "aws-sdk";
 
 const mockPromiseCall = jest.fn();
 
 jest.mock("aws-sdk", () => ({
   __esModule: true,
-  default: {
-    DynamoDB: {
-      DocumentClient: jest.fn().mockImplementation((_config) => {
-        return {
-          get: (_x: any) => ({ promise: mockPromiseCall }),
-          put: (_x: any) => ({ promise: mockPromiseCall }),
-          post: (_x: any) => ({ promise: mockPromiseCall }),
-          query: (_x: any) => ({ promise: mockPromiseCall }),
-          scan: (_x: any) => ({ promise: mockPromiseCall }),
-          update: (_x: any) => ({ promise: mockPromiseCall }),
-          delete: (_x: any) => ({ promise: mockPromiseCall }),
-        };
-      }),
-    },
+  DynamoDB: {
+    DocumentClient: jest.fn().mockImplementation((_config) => {
+      return {
+        get: (_x: any) => ({ promise: mockPromiseCall }),
+        put: (_x: any) => ({ promise: mockPromiseCall }),
+        query: (_x: any) => ({ promise: mockPromiseCall }),
+        scan: (_x: any) => ({ promise: mockPromiseCall }),
+        update: (_x: any) => ({ promise: mockPromiseCall }),
+        delete: (_x: any) => ({ promise: mockPromiseCall }),
+      };
+    }),
   },
+  Credentials: jest.fn().mockImplementation(() => {
+    return {
+      accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
+      secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+    };
+  }),
 }));
 
 describe("Test DynamoDB Interaction API Build Structure", () => {
   test("API structure should be callable", () => {
     const testKeyTable = {
-      Key: { compoundKey: "testKey", coreSet: CoreSetAbbr.ACS },
+      Key: { key: "testKey" },
       TableName: "testTable",
     };
     const testItem = {
-      compoundKey: "dynamoKey",
-      state: "FL",
-      year: 2019,
-      coreSet: CoreSetAbbr.ACS,
-      measure: "event!.pathParameters!.measure!",
+      key: "dynamoKey",
       createdAt: Date.now(),
       lastAltered: Date.now(),
       lastAlteredBy: `event.headers["cognito-identity-id"]`,
-      status: MeasureStatus.COMPLETE,
-      description: "",
       data: {},
     };
     dynamoLib.query(true);
@@ -57,34 +52,32 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
       ExpressionAttributeNames: {},
       ExpressionAttributeValues: {},
     });
-    dynamoLib.post({
-      TableName: "",
-      Item: testItem,
-    });
 
-    expect(mockPromiseCall).toHaveBeenCalledTimes(7);
+    expect(mockPromiseCall).toHaveBeenCalledTimes(6);
   });
 
   describe("Checking Environment Variable Changes", () => {
-    test("Check if statement with DYNAMADB_URL undefined", () => {
+    test("Check if statement with DYNAMODB_URL undefined", () => {
       process.env = { ...process.env, DYNAMODB_URL: undefined };
       jest.resetModules();
 
       createDbClient();
-      expect(AWS.DynamoDB.DocumentClient).toHaveBeenCalledWith({
+      expect(DynamoDB.DocumentClient).toHaveBeenCalledWith({
         region: "us-east-1",
       });
     });
 
-    test("Check if statement with DYNAMADB_URL set", () => {
+    test("Check if statement with DYNAMODB_URL set", () => {
       process.env = { ...process.env, DYNAMODB_URL: "endpoint" };
       jest.resetModules();
 
       createDbClient();
-      expect(AWS.DynamoDB.DocumentClient).toHaveBeenCalledWith({
+      expect(DynamoDB.DocumentClient).toHaveBeenCalledWith({
         endpoint: "endpoint",
-        accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
-        secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+        credentials: {
+          accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
+          secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+        },
       });
     });
   });
