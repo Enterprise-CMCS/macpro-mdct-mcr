@@ -1,5 +1,7 @@
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
+// utils
+import { RouterWrappedComponent } from "utils/testing/setupJest";
 // views
 import { Profile } from "../index";
 
@@ -22,7 +24,11 @@ jest.mock("utils/auth", () => ({
   }),
 }));
 
-const profileView = <Profile />;
+const profileView = (
+  <RouterWrappedComponent>
+    <Profile />
+  </RouterWrappedComponent>
+);
 
 describe("Test Profile", () => {
   test("Check that Profile page renders", () => {
