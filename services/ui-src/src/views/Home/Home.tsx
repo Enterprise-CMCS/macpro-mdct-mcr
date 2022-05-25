@@ -3,7 +3,6 @@ import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import { Banner, TemplateCard } from "../../components/index";
 // data
 import data from "../../data/home-view.json";
-
 // utils
 import { AdminBannerShape } from "utils/types/types";
 

@@ -73,7 +73,6 @@ export const Admin = ({ adminBanner }: Props) => {
             </Collapse>
             {!adminBanner.key && <Text>There is no current banner</Text>}
           </Box>
-
           <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
             <TextField
