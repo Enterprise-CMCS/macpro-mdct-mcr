@@ -57,7 +57,7 @@ Root `.env`
 SKIP_PREFLIGHT_CHECK=true
 LOCAL_LOGIN=true
 DYNAMODB_URL=http://localhost:8000
-API_URL=http://localhost:3030/
+API_URL=http://localhost:3030/local
 S3_LOCAL_ENDPOINT=http://localhost:4569
 S3_ATTACHMENTS_BUCKET_NAME=local-uploads
 URL=http://localhost/3000
