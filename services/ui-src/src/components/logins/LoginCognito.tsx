@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 // components
 import { Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
-import { errorHandler } from "utils/errors/errors";
+import { errorHandler } from "utils/errors/errorHandler";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);

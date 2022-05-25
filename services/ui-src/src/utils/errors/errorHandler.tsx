@@ -1,4 +1,4 @@
-export const errorHandler = (error: Error | any) => {
+export const errorHandler = (error: Error | any): void => {
   let message = error.toString();
 
   if (!(error instanceof Error) && error.message) {

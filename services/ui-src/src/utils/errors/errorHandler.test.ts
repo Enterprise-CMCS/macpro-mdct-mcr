@@ -1,4 +1,4 @@
-import { errorHandler } from "./errors";
+import { errorHandler } from "./errorHandler";
 
 describe("Test errorlib.ts", () => {
   test("Expect error to alert user", () => {

@@ -5,7 +5,7 @@ import config from "config";
 
 import { UserContext, UserContextInterface } from "./userContext";
 import { UserRoles } from "utils/types/types";
-import { errorHandler } from "utils/errors/errors";
+import { errorHandler } from "utils/errors/errorHandler";
 
 interface Props {
   children?: ReactNode;
