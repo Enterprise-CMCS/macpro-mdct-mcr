@@ -7,7 +7,6 @@ export { Alert } from "./alerts/Alert";
 // app
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
-export { RouterLink } from "./app/RouterLink";
 // banners
 export { Banner } from "./banners/Banner";
 // cards

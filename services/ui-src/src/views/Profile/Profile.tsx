@@ -1,6 +1,6 @@
+import { useNavigate } from "react-router-dom";
 // components
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { RouterLink } from "../../components/index";
 //utils
 import { useUser } from "utils/auth";
 
@@ -14,6 +14,7 @@ const userDetails = () => {
 
 export const Profile = () => {
   const { email, given_name, family_name, userRole, state } = userDetails();
+  const navigate = useNavigate();
   return (
     <Flex sx={sx.root} data-testid="profile">
       <Heading as="h1" size="xl" sx={sx.heading}>
@@ -43,17 +44,14 @@ export const Profile = () => {
           <Text>{state}</Text>
         </Flex>
       )}
-      {userRole?.includes("approver") && (
-        <RouterLink to="/admin" alt="link to admin page" tabindex={0}>
-          <Button
-            sx={sx.adminButton}
-            colorScheme="colorSchemes.main"
-            data-testid="admin-button"
-          >
-            Banner editor
-          </Button>
-        </RouterLink>
-      )}
+      <Button
+        colorScheme="colorSchemes.main"
+        data-testid="admin-button"
+        sx={sx.adminButton}
+        onClick={() => navigate("/admin")}
+      >
+        Banner editor
+      </Button>
     </Flex>
   );
 };
@@ -77,5 +75,6 @@ const sx = {
   },
   adminButton: {
     marginTop: "2rem",
+    maxWidth: "10rem",
   },
 };

@@ -1,13 +1,15 @@
+import { Link as RouterLink } from "react-router-dom";
 // components
 import {
   Box,
   Button,
+  Link,
   Menu as MenuRoot,
   MenuButton,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { Icon, MenuOption, RouterLink } from "../index";
+import { Icon, MenuOption } from "../index";
 // utils
 import {
   makeMediaQueryClasses,
@@ -32,9 +34,9 @@ export const Menu = ({ handleLogout }: Props) => {
       </Box>
       <MenuList sx={sx.menuList} data-testid="menu-list">
         <MenuItem sx={sx.menuItem} data-testid="menu-option-manage-account">
-          <RouterLink to="/profile" alt="link to account page" tabindex={0}>
+          <Link as={RouterLink} to="/profile">
             <MenuOption icon="pencilSquare" text="Manage Account" />
-          </RouterLink>
+          </Link>
         </MenuItem>
         <MenuItem
           onClick={handleLogout}

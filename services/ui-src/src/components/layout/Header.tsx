@@ -1,7 +1,8 @@
+import { Link as RouterLink } from "react-router-dom";
 // components
-import UsaBanner from "@cmsgov/design-system/dist/components/UsaBanner/UsaBanner";
-import { Box, Container, Flex, Image } from "@chakra-ui/react";
-import { Menu, MenuOption, RouterLink } from "../index";
+import { UsaBanner } from "@cmsgov/design-system";
+import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
+import { Menu, MenuOption } from "../index";
 // utils
 import { useBreakpoint } from "../../utils/useBreakpoint";
 // assets
@@ -11,20 +12,20 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   return (
     <Box sx={sx.root} data-testid="header-banner-container">
-      <UsaBanner tabindex={0} />
+      <UsaBanner />
       <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
-            <RouterLink to="/" alt="link to home page" tabindex={0}>
+            <Link as={RouterLink} to="/">
               <Image
                 src={appLogo}
                 alt="MCR logo"
                 sx={sx.appLogo}
                 data-testid="app-logo"
               />
-            </RouterLink>
+            </Link>
             <Flex sx={sx.menuFlex}>
-              <RouterLink to="/help" alt="link to help page" tabindex={0}>
+              <Link as={RouterLink} to="/help">
                 <MenuOption
                   icon="questionCircleFill"
                   text="Get Help"
@@ -32,7 +33,7 @@ export const Header = ({ handleLogout }: Props) => {
                   hideText={isMobile}
                   dataTestId="help-button"
                 />
-              </RouterLink>
+              </Link>
               <Menu handleLogout={handleLogout} />
             </Flex>
           </Flex>
