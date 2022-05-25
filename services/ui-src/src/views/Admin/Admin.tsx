@@ -5,11 +5,12 @@ import { Banner, DateField, TextField } from "../../components/index";
 import { convertDateEtToUtc, formatDateUtcToEt } from "utils/time/time";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
+import { bannerId } from "../../utils/constants/constants";
 // data
 import data from "../../data/admin-view.json";
 
 // TODO: remove after form fields are wired up
-const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
+const ADMIN_BANNER_ID = bannerId;
 const midnight = { hour: 0, minute: 0, second: 0 };
 const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
 const fakeNewBanner: AdminBannerData = {

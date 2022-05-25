@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 // utils
 import { convertDateEtToUtc } from "utils/time/time";
 import { AdminBannerData } from "utils/types/types";
+import { bannerId } from "../../utils/constants/constants";
 // api
 import {
   deleteBanner,
@@ -9,7 +10,7 @@ import {
   writeBanner,
 } from "utils/api/requestMethods/banner";
 
-const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
+const ADMIN_BANNER_ID = bannerId;
 const midnight = { hour: 0, minute: 0, second: 0 };
 const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
 const temporaryBanner: AdminBannerData = {
