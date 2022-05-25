@@ -59,3 +59,22 @@ export enum AlertTypes {
   SUCCESS = "success",
   WARNING = "warning",
 }
+
+// TIME
+
+export interface DateShape {
+  year: number;
+  month: number;
+  day: number;
+}
+
+export interface TimeShape {
+  hour: number;
+  minute: number;
+  second: number;
+}
+
+export interface TimeMap {
+  startDate: TimeShape;
+  endDate: TimeShape;
+}

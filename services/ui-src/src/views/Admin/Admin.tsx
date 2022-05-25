@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
@@ -18,18 +18,6 @@ import {
 } from "utils/types/types";
 // data
 import data from "../../data/admin-view.json";
-
-/*
- * const dateMaker = convertDateEtToUtc(
- *   { year: 2022, month: 1, day: 1 },
- *   midnight
- * );
- */
-
-/*
- * const midnight = { hour: 0, minute: 0, second: 0 };
- * const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
- */
 
 interface FormInput {
   title: string;
@@ -79,6 +67,10 @@ export const Admin = ({ adminBanner }: Props) => {
     console.log("formdata", data); // eslint-disable-line no-console
     adminBanner.writeAdminBanner(newBannerData);
   };
+
+  useEffect(() => {
+    console.log("formData", newBannerData); // eslint-disable-line no-console
+  }, [newBannerData]);
 
   return (
     <section>
@@ -154,7 +146,12 @@ export const Admin = ({ adminBanner }: Props) => {
                     hint={null}
                     {...form}
                   />
-                  {/* <DateField name="endDate" label="End date" hint={null} /> */}
+                  <DateField
+                    name="endDate"
+                    label="End date"
+                    hint={null}
+                    {...form}
+                  />
                 </Flex>
                 <Banner bannerData={newBannerData} />
                 <Button
