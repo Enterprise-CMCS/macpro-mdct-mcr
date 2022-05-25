@@ -21,15 +21,26 @@ export const DateField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
+  const parentName = name;
+  const dayFieldName = `${parentName}Day`;
+  const monthFieldName = `${parentName}Month`;
+  const yearFieldName = `${parentName}Year`;
+
   const [fieldData, setFieldData] = useState({
-    day: 0,
-    month: 0,
-    year: 0,
+    [`${parentName}Day`]: 0,
+    [`${parentName}Month`]: 0,
+    [`${parentName}Year`]: 0,
   });
 
   const handleDateFieldChange = async (e: InputChangeEvent) => {
-    console.log("changing date level"); // eslint-disable-line no-console
     const { name, value } = e.target;
+
+    const childEvent = {
+      target: { id: name, value: parseInt(value) },
+    };
+    console.log("on update child event", childEvent); // eslint-disable-line no-console
+    form.onInputChange(childEvent);
+
     await setFieldData({
       ...fieldData,
       [name]: parseInt(value),
@@ -42,18 +53,30 @@ export const DateField = ({
   };
 
   useEffect(() => {
-    const { year, month, day } = fieldData;
-    const date = { year: year, month: month, day: day };
+    const date = {
+      year: fieldData[yearFieldName],
+      month: fieldData[monthFieldName],
+      day: fieldData[dayFieldName],
+    };
+    console.log("use effect date", date); // eslint-disable-line no-console
+
     const time = eventTimeMap[name as keyof TimeMap];
-    const event = {
+    const parentEvent = {
       target: { id: name, value: convertDateEtToUtc(date, time) },
     };
-    form.onInputChange(event);
+    console.log("use effect parentEvent", parentEvent); // eslint-disable-line no-console
+    form.onInputChange(parentEvent);
   }, [fieldData]);
 
   const { ...form }: any = useFormContext();
-  const hasError = form.formState.errors?.[name]?.message;
-  const errorMessage = hasError ? customErrorMessage || hasError : "";
+  const parentHasError = form.formState.errors?.[name]?.message;
+  const parentErrorMessage = parentHasError
+    ? customErrorMessage || parentHasError
+    : "";
+  const childErrorMessage = (childFieldName: string): string => {
+    return form.formState.errors?.[childFieldName]?.message;
+  };
+
   return (
     <Controller
       name={name}
@@ -67,13 +90,16 @@ export const DateField = ({
                 onChange(value);
                 handleDateFieldChange?.(value);
               }}
-              errorMessage={errorMessage}
-              dayName="day"
-              monthName="month"
-              yearName="year"
-              dayFieldRef={() => props.register("day")}
-              monthFieldRef={() => props.register("month")}
-              yearFieldRef={() => props.register("year")}
+              errorMessage={parentErrorMessage}
+              dayName={dayFieldName}
+              monthName={monthFieldName}
+              yearName={yearFieldName}
+              dayFieldRef={() => props.register(dayFieldName)}
+              monthFieldRef={() => props.register(monthFieldName)}
+              yearFieldRef={() => props.register(yearFieldName)}
+              dayInvalid={!!childErrorMessage(dayFieldName)}
+              monthInvalid={!!childErrorMessage(monthFieldName)}
+              yearInvalid={!!childErrorMessage(yearFieldName)}
               {...props}
             />
           </Box>

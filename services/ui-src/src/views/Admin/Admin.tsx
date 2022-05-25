@@ -24,6 +24,12 @@ interface FormInput {
   description: string;
   link: string;
   startDate: number;
+  startDateDay: number;
+  startDateMonth: number;
+  startDateYear: number;
+  endDateDay: number;
+  endDateMonth: number;
+  endDateYear: number;
   endDate: number;
 }
 
@@ -32,7 +38,13 @@ const schema = yup.object().shape({
   description: yup.string().required(),
   link: yup.string().url(),
   startDate: yup.number().required(),
-  // endDate: yup.number().required(),
+  startDateYear: yup.number().required(),
+  startDateMonth: yup.number().required(),
+  startDateDay: yup.number().required(),
+  endDate: yup.number().required(),
+  endDateYear: yup.number().required(),
+  endDateMonth: yup.number().required(),
+  endDateDay: yup.number().required(),
 });
 
 export const Admin = ({ adminBanner }: Props) => {
@@ -47,7 +59,6 @@ export const Admin = ({ adminBanner }: Props) => {
   });
 
   const handleInputChange = (e: InputChangeEvent) => {
-    console.log("changing top level"); // eslint-disable-line no-console
     const { id, value } = e.target;
     setNewBannerData({
       ...newBannerData,
@@ -60,7 +71,7 @@ export const Admin = ({ adminBanner }: Props) => {
   });
 
   const onError = (errors: any) => {
-    console.log(errors); // eslint-disable-line no-console
+    console.log("ERRORS", errors); // eslint-disable-line no-console
   };
 
   const onSubmit: SubmitHandler<FormInput> = (data) => {
@@ -69,8 +80,10 @@ export const Admin = ({ adminBanner }: Props) => {
   };
 
   useEffect(() => {
-    console.log("formData", newBannerData); // eslint-disable-line no-console
+    // console.log("formData", newBannerData); // eslint-disable-line no-console
   }, [newBannerData]);
+
+  // console.log("FORM", form);
 
   return (
     <section>
@@ -143,13 +156,15 @@ export const Admin = ({ adminBanner }: Props) => {
                   <DateField
                     name="startDate"
                     label="Start date"
-                    hint={null}
+                    hint="Starting 12:00:00am"
+                    customErrorMessage="Must be a valid date in format mm/dd/yyyy"
                     {...form}
                   />
                   <DateField
                     name="endDate"
                     label="End date"
-                    hint={null}
+                    hint="Until 11:59:59pm"
+                    customErrorMessage="Must be a valid date in format mm/dd/yyyy"
                     {...form}
                   />
                 </Flex>
