@@ -75,7 +75,7 @@ provider:
             - ssm:GetParameter
           Resource: "*"
   environment:
-    bannerTableName: ${self:custom.bannerTableName}
+    BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     STAGE: ${self:custom.stage}
 
 functions:

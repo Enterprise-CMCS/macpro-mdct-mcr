@@ -27,22 +27,27 @@ const loadCognitoValues = async () => {
       userPoolClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
     };
   } else {
-    console.log("trying ssm"); // eslint-disable-line
     const ssm = new SSM();
-    console.log("ssm inited", ssm); // eslint-disable-line
-    // eslint-disable-next-line
-    console.log(
-      "check string interpolation ${process.env.STAGE!}/ui-auth/cognito_user_pool_id"
-    );
     const stage = process.env.STAGE!;
-    const userPoolIdParamName = stage + "/ui-auth/cognito_user_pool_id";
+    const userPoolIdParamName = "/" + stage + "/ui-auth/cognito_user_pool_id";
     const userPoolClientIdParamName =
-      stage + "/ui-auth/cognito_user_pool_client_id";
+      "/" + stage + "/ui-auth/cognito_user_pool_client_id";
     // eslint-disable-next-line
     console.log(
       "cognito param names:",
       userPoolIdParamName,
       userPoolClientIdParamName
+    );
+    // eslint-disable-next-line
+    console.log(
+      "trim and standard match values",
+      userPoolIdParamName,
+      userPoolIdParamName.trim()
+    );
+    // eslint-disable-next-line
+    console.log(
+      "trim and standard match bool",
+      userPoolIdParamName === userPoolIdParamName.trim()
     );
     const userPoolIdParams = {
       Name: userPoolIdParamName,
@@ -77,7 +82,6 @@ const loadCognitoValues = async () => {
 };
 
 export const isAuthorized = async (event: APIGatewayProxyEvent) => {
-  console.log("running isAuthorized with event:", event); // eslint-disable-line
   const cognitoValues = await loadCognitoValues();
   console.log("got cognito values", cognitoValues); // eslint-disable-line
   // Verifier that expects valid access tokens:
