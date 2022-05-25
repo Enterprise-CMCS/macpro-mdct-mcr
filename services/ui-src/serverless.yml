@@ -9,6 +9,11 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-cloudfront-invalidate
 
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
@@ -19,8 +24,8 @@ custom:
       - production
   api_region: ${cf:app-api-${self:custom.stage}.Region}
   api_url: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiUrl}
-  bannerTableName: ${cf:database-${self:custom.stage}.BannerTableName, env:BANNER_TABLE_NAME}
   cognito_region: ${cf:ui-auth-${self:custom.stage}.Region}
+  bannerId: ${"admin-banner-id"}
   cognito_identity_pool_id: ${cf:ui-auth-${self:custom.stage}.IdentityPoolId}
   cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId}
   cognito_user_pool_client_id: ${cf:ui-auth-${self:custom.stage}.UserPoolClientId}
@@ -46,6 +51,7 @@ custom:
         SKIP_PREFLIGHT_CHECK=true yarn run build
         export API_REGION=${self:custom.api_region}
         export API_URL=${self:custom.api_url}
+        export REACT_APP_BANNER_ID=${self:custom.bannerId}
         export COGNITO_REGION=${self:custom.cognito_region}
         export COGNITO_IDENTITY_POOL_ID=${self:custom.cognito_identity_pool_id}
         export COGNITO_USER_POOL_ID=${self:custom.cognito_user_pool_id}
@@ -58,10 +64,3 @@ custom:
         export LOCAL_LOGIN=false
         ./scripts/configure-env.sh
         cp public/env-config.js build/env-config.js
-
-provider:
-  name: aws
-  runtime: nodejs12.x
-  region: us-east-1
-  environment:
-    reactAppBannerId: ${self:custom.bannerTableName}
