@@ -1,15 +1,15 @@
-import handlerLib from "../handler-lib";
-import { testEvent } from "../../test-util/testEvents";
-import { isAuthorized } from "../authorization";
-import { flush } from "../debug-lib";
+import handlerLib from "./handler-lib";
+import { proxyEvent } from "../utils/testing/proxyEvent";
+import { isAuthorized } from "../utils/auth/authorization";
+import { flush } from "../utils/debugging/debug-lib";
 
-jest.mock("../debug-lib", () => ({
+jest.mock("../utils/debugging/debug-lib", () => ({
   __esModule: true,
   init: jest.fn(),
   flush: jest.fn(),
 }));
 
-jest.mock("../authorization", () => ({
+jest.mock("../utils/auth/authorization", () => ({
   __esModule: true,
   isAuthorized: jest.fn(),
 }));
@@ -20,11 +20,11 @@ describe("Test Lambda Handler Lib", () => {
     const handler = handlerLib(testFunc);
 
     (isAuthorized as jest.Mock).mockReturnValue(true);
-    const res = await handler(testEvent, null);
+    const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain("test");
-    expect(testFunc).toHaveBeenCalledWith(testEvent, null);
+    expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
   });
 
   test("Test unsuccessful authorization lambda workflow", async () => {
@@ -32,7 +32,7 @@ describe("Test Lambda Handler Lib", () => {
     const handler = handlerLib(testFunc);
 
     (isAuthorized as jest.Mock).mockReturnValue(false);
-    const res = await handler(testEvent, null);
+    const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(
@@ -48,11 +48,11 @@ describe("Test Lambda Handler Lib", () => {
     const handler = handlerLib(testFunc);
 
     (isAuthorized as jest.Mock).mockReturnValue(true);
-    const res = await handler(testEvent, null);
+    const res = await handler(proxyEvent, null);
 
     expect(flush).toHaveBeenCalledWith(err);
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain("Test Error");
-    expect(testFunc).toHaveBeenCalledWith(testEvent, null);
+    expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
   });
 });

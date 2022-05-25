@@ -1,2 +1,2 @@
-export * from "./ApiProvider";
-export * from "./QueryProvider";
+export * from "./providers/ApiProvider";
+export * from "./providers/QueryProvider";

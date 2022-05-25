@@ -7,7 +7,7 @@ import {
   DynamoUpdate,
   DynamoFetch,
   DynamoScan,
-} from "../types";
+} from "../types/types";
 
 export function createDbClient() {
   const dynamoConfig: AWS.DynamoDB.DocumentClient.DocumentClientOptions &

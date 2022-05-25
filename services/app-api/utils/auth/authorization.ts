@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import jwt_decode from "jwt-decode";
-import { UserRoles, RequestMethods } from "../types";
+import { UserRoles, RequestMethods } from "../types/types";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;

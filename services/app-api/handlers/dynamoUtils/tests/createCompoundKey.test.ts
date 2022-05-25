@@ -1,10 +1,10 @@
 import { createCompoundKey } from "../createCompoundKey";
-import { testEvent } from "../../../test-util/testEvents";
+import { proxyEvent } from "../../../utils/testing/proxyEvent";
 
 describe("Testing CreateCompundKey", () => {
   test("If no path parameters throw an error", () => {
     try {
-      createCompoundKey({ ...testEvent, pathParameters: null });
+      createCompoundKey({ ...proxyEvent, pathParameters: null });
     } catch (error) {
       expect(error).toBeDefined();
     }
@@ -12,7 +12,7 @@ describe("Testing CreateCompundKey", () => {
 
   test("If no year, state, or coreset throw an error", () => {
     try {
-      createCompoundKey({ ...testEvent, pathParameters: {} });
+      createCompoundKey({ ...proxyEvent, pathParameters: {} });
     } catch (error) {
       expect(error).toBeDefined();
     }
@@ -20,7 +20,7 @@ describe("Testing CreateCompundKey", () => {
 
   test("Successful key creation without passed measure", () => {
     const key = createCompoundKey({
-      ...testEvent,
+      ...proxyEvent,
       pathParameters: { year: "2022", state: "FL", coreSet: "ACS" },
     });
     expect(key).toEqual("FL2022ACS");
@@ -28,7 +28,7 @@ describe("Testing CreateCompundKey", () => {
 
   test("Successful key creation with passed measure", () => {
     const key = createCompoundKey({
-      ...testEvent,
+      ...proxyEvent,
       pathParameters: {
         year: "2022",
         state: "FL",

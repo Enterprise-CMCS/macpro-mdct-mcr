@@ -1,5 +1,5 @@
-import { testEvent } from "../../test-util/testEvents";
-import debug, { clearLogs, flush, init } from "../debug-lib";
+import { proxyEvent } from "../testing/proxyEvent";
+import debug, { clearLogs, flush, init } from "./debug-lib";
 
 jest.mock("aws-sdk", () => ({
   __esModule: true,
@@ -25,14 +25,14 @@ describe("Debug Library Functions", () => {
 
   describe("Init Function", () => {
     test("logs should have a length of one", () => {
-      const logs = init({ ...testEvent }, null);
+      const logs = init({ ...proxyEvent }, null);
 
       expect(logs.length).toBe(1);
       expect(logs[0].string.length).toBeGreaterThan(0);
     });
 
     test("logs should be overridden on init", () => {
-      const event = { ...testEvent };
+      const event = { ...proxyEvent };
 
       debug(event);
       debug(event);
@@ -57,7 +57,7 @@ describe("Debug Library Functions", () => {
     });
 
     test("flush should call debug for every log and error once", () => {
-      const event = { ...testEvent };
+      const event = { ...proxyEvent };
       const error = new Error("test error");
 
       debug(event);
@@ -81,7 +81,7 @@ describe("Debug Library Functions", () => {
     });
 
     test("logs should have event structured object", () => {
-      const event = { ...testEvent };
+      const event = { ...proxyEvent };
       debug(event);
       debug(event);
       debug(event);

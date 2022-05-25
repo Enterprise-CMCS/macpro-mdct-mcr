@@ -1,6 +1,6 @@
-import { testEvent } from "../../test-util/testEvents";
-import { isAuthorized } from "../authorization";
-import { UserRoles } from "../../types";
+import { proxyEvent } from "../testing/proxyEvent";
+import { isAuthorized } from "./authorization";
+import { UserRoles } from "../types/types";
 
 const mockedDecode = jest.fn();
 
@@ -13,7 +13,7 @@ jest.mock("jwt-decode", () => ({
 
 describe("Authorization Lib Function", () => {
   describe("State User Tests", () => {
-    const event = { ...testEvent };
+    const event = { ...proxyEvent };
 
     beforeEach(() => {
       event.httpMethod = "GET";
@@ -52,7 +52,7 @@ describe("Authorization Lib Function", () => {
   });
 
   describe("Non-State User Tests", () => {
-    const event = { ...testEvent };
+    const event = { ...proxyEvent };
 
     beforeEach(() => {
       event.httpMethod = "GET";

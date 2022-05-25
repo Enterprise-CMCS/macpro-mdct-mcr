@@ -1,4 +1,4 @@
-import { convertToDynamoExpression } from "../convertToDynamoExpressionVars";
+import { convertToDynamoExpression } from "./convertToDynamoExpressionVars";
 
 describe("Test Convert To Dynamo Expression", () => {
   test('Test "post" object expression with one attribute key', () => {
