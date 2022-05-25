@@ -82,14 +82,6 @@ provider:
     stage: ${opt:stage, self:provider.stage}
 
 functions:
-  listMeasures:
-    handler: handlers/measures/get.listMeasures
-    events:
-      - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/list
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   getMeasure:
     handler: handlers/measures/get.getMeasure
     events:
@@ -98,30 +90,7 @@ functions:
           method: get
           cors: true
           authorizer: ""
-  createMeasure:
-    handler: handlers/measures/create.createMeasure
-    events:
-      - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/create
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  editMeasure:
-    handler: handlers/measures/update.editMeasure
-    events:
-      - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/edit
-          method: put
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  deleteMeasure:
-    handler: handlers/measures/delete.deleteMeasure
-    events:
-      - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/delete
-          method: delete
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+
 resources:
   Resources:
     GatewayResponseDefault4XX:
