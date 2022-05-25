@@ -12,6 +12,11 @@ import {
   oneSecondToMidnight,
 } from "utils/time/time";
 
+const eventTimeMap: TimeMap = {
+  startDate: midnight,
+  endDate: oneSecondToMidnight,
+};
+
 export const DateField = ({
   name,
   label,
@@ -21,35 +26,35 @@ export const DateField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
+  const [fieldData, setFieldData] = useState({
+    [`${name}Day`]: 0,
+    [`${name}Month`]: 0,
+    [`${name}Year`]: 0,
+  });
+
   const parentName = name;
   const dayFieldName = `${parentName}Day`;
   const monthFieldName = `${parentName}Month`;
   const yearFieldName = `${parentName}Year`;
 
-  const [fieldData, setFieldData] = useState({
-    [`${parentName}Day`]: 0,
-    [`${parentName}Month`]: 0,
-    [`${parentName}Year`]: 0,
-  });
-
+  // FIRES ON ANY CHILD FIELD CHANGE
   const handleDateFieldChange = async (e: InputChangeEvent) => {
     const { name, value } = e.target;
 
+    console.log("handleDatefieldChange", name, value); // eslint-disable-line no-console
+
+    // CHILD EVENT
     const childEvent = {
       target: { id: name, value: parseInt(value) },
     };
     console.log("on update child event", childEvent); // eslint-disable-line no-console
     form.onInputChange(childEvent);
 
+    // sets local field data state
     await setFieldData({
       ...fieldData,
       [name]: parseInt(value),
     });
-  };
-
-  const eventTimeMap: TimeMap = {
-    startDate: midnight,
-    endDate: oneSecondToMidnight,
   };
 
   useEffect(() => {

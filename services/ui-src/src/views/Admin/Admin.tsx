@@ -39,7 +39,7 @@ const schema = yup.object().shape({
   link: yup.string().url(),
   startDate: yup.number().required(),
   startDateYear: yup.number().required(),
-  startDateMonth: yup.number().required(),
+  startDateMonth: yup.number().required().max(12),
   startDateDay: yup.number().required(),
   endDate: yup.number().required(),
   endDateYear: yup.number().required(),
@@ -59,11 +59,18 @@ export const Admin = ({ adminBanner }: Props) => {
   });
 
   const handleInputChange = (e: InputChangeEvent) => {
-    const { id, value } = e.target;
+    console.log("HIC called", e); // eslint-disable-line no-console
+
+    // const { id, value } = e.target;
+    const id: any = e.target.id;
+    const value = e.target.value;
+
     setNewBannerData({
       ...newBannerData,
       [id]: value,
     });
+
+    form.setValue(id, value);
   };
 
   const form = useForm<FormInput>({
@@ -83,7 +90,7 @@ export const Admin = ({ adminBanner }: Props) => {
     // console.log("formData", newBannerData); // eslint-disable-line no-console
   }, [newBannerData]);
 
-  // console.log("FORM", form);
+  console.log("FORM!!!!", form.getValues()); // eslint-disable-line no-console
 
   return (
     <section>
