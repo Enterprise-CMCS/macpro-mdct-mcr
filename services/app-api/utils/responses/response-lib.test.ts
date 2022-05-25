@@ -1,4 +1,4 @@
-import { success, failure, buildResponse } from "../response-lib";
+import { success, failure, buildResponse } from "./response-lib";
 
 describe("Test the response-lib", () => {
   test("Success should give a 200 status", () => {

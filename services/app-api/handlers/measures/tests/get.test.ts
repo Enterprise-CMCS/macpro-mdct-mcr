@@ -1,10 +1,10 @@
 import { getMeasure, listMeasures } from "../get";
 
-import dbLib from "../../../libs/dynamodb-lib";
+import dbLib from "../../../utils/dynamo/dynamodb-lib";
 
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { testEvent } from "../../../test-util/testEvents";
-import { convertToDynamoExpression } from "../../dynamoUtils/convertToDynamoExpressionVars";
+import { proxyEvent } from "../../../utils/testing/proxyEvent";
+import { convertToDynamoExpression } from "../../../utils/dynamo/convertToDynamoExpressionVars";
 
 jest.mock("../../../libs/dynamodb-lib", () => ({
   __esModule: true,
@@ -38,7 +38,7 @@ jest.mock("../../dynamoUtils/convertToDynamoExpressionVars", () => ({
 describe("Test Get Measure Handlers", () => {
   test("Test Fetching a Measure", async () => {
     const event: APIGatewayProxyEvent = {
-      ...testEvent,
+      ...proxyEvent,
       body: `{"data": {}, "description": "sample desc"}`,
       headers: { "cognito-identity-id": "test" },
       pathParameters: { coreSet: "ACS" },
@@ -60,7 +60,7 @@ describe("Test Get Measure Handlers", () => {
 
   test("Test Successfully Fetching a List of Measures", async () => {
     const event: APIGatewayProxyEvent = {
-      ...testEvent,
+      ...proxyEvent,
       body: `{"data": {}, "description": "sample desc"}`,
       headers: { "cognito-identity-id": "test" },
       pathParameters: { coreSet: "ACS", state: "FL", year: "2020" },
@@ -81,7 +81,7 @@ describe("Test Get Measure Handlers", () => {
 
   test("Test Fetching a List of Measures with no Path Parameters", async () => {
     const event: APIGatewayProxyEvent = {
-      ...testEvent,
+      ...proxyEvent,
       body: `{"data": {}, "description": "sample desc"}`,
       headers: { "cognito-identity-id": "test" },
       pathParameters: null,

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import dynamoLib, { createDbClient } from "../dynamodb-lib";
-import { CoreSetAbbr, MeasureStatus } from "../../types";
+import dynamoLib, { createDbClient } from "./dynamodb-lib";
+import { CoreSetAbbr, MeasureStatus } from "../types/types";
 import AWS from "aws-sdk";
 
 const mockPromiseCall = jest.fn();
