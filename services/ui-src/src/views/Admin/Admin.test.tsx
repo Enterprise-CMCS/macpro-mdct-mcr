@@ -5,9 +5,20 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 // views
 import { Admin } from "../index";
 
+const mockBannerData = {
+  key: "",
+  title: "",
+  description: "",
+  startDate: 0,
+  endDate: 0,
+  fetchAdminBanner: () => {},
+  writeAdminBanner: () => {},
+  deleteAdminBanner: () => {},
+};
+
 const adminView = (
   <RouterWrappedComponent>
-    <Admin />
+    <Admin adminBanner={mockBannerData} />
   </RouterWrappedComponent>
 );
 
