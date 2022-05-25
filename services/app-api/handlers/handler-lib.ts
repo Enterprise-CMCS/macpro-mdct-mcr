@@ -23,11 +23,11 @@ export default function handler(lambda: LambdaFunction) {
         // Run the Lambda
         const { status, body } = await lambda(event, context);
         return buildResponse(status, body);
-      } catch (e: any) {
+      } catch (error: any) {
         // Print debug messages
-        debug.flush(e);
+        debug.flush(error);
 
-        const body = { error: e.message };
+        const body = { error: error.message };
         return internalServerError(body);
       }
     } else {
