@@ -82,6 +82,9 @@ provider:
     stage: ${opt:stage, self:provider.stage}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7dac79d (add back for sls)
 functions:
   getMeasure:
     handler: handlers/measures/get.getMeasure
@@ -92,8 +95,11 @@ functions:
           cors: true
           authorizer: ""
 
+<<<<<<< HEAD
 =======
 >>>>>>> 9aa8e52 (remove functions)
+=======
+>>>>>>> 7dac79d (add back for sls)
 resources:
   Resources:
     GatewayResponseDefault4XX:
