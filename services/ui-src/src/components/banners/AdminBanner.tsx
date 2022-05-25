@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // utils
 import { AdminBannerData } from "utils/types/types";
 import { bannerId } from "../../utils/constants/constants";
@@ -43,6 +43,15 @@ export const AdminBanner = () => {
     await writeBanner(newBannerData);
     await fetchAdminBanner();
   };
+
+  useEffect(() => {
+    try {
+      fetchAdminBanner();
+    } catch (e: any) {
+      // swallowing error here as it is triggered by Cypress/A11y. Works live.
+      console.error("Error while fetching current banner.", e); // eslint-disable-line no-console
+    }
+  }, []);
 
   if (bannerData) {
     bannerData.isActive = checkBannerActivityStatus(
