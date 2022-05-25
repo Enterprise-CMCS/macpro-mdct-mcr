@@ -18,7 +18,7 @@ export { TemplateCard } from "./cards/TemplateCard";
 export { DateField } from "./fields/DateField";
 export { TextField } from "./fields/TextField";
 // forms
-export { Form } from "./forms/Form";
+export { AdminBannerForm } from "./forms/AdminBannerForm";
 // icons
 export { Icon } from "./icons/Icon";
 // layout

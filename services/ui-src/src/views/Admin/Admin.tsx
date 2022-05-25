@@ -1,6 +1,6 @@
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, Form } from "../../components/index";
+import { Banner, AdminBannerForm } from "../../components/index";
 // utils
 import { formatDateUtcToEt } from "utils/time/time";
 import { AdminBannerShape } from "utils/types/types";
@@ -55,7 +55,7 @@ export const Admin = ({ adminBanner }: Props) => (
         </Box>
         <Flex sx={sx.newBannerBox}>
           <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-          <Form writeAdminBanner={adminBanner.writeAdminBanner} />
+          <AdminBannerForm writeAdminBanner={adminBanner.writeAdminBanner} />
         </Flex>
       </Flex>
     </Box>

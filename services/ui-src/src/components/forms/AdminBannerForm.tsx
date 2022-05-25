@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // components
 import { Button, Flex } from "@chakra-ui/react";
-import { Banner, DateField, TextField } from "../../components/index";
+import { Banner, DateField, TextField } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { InputChangeEvent } from "utils/types/types";
@@ -26,7 +26,7 @@ const formSchema = yup.object().shape({
   endDateDay: yup.number().required().max(31),
 });
 
-export const Form = ({ writeAdminBanner }: Props) => {
+export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   const [newBannerData, setNewBannerData] = useState({
