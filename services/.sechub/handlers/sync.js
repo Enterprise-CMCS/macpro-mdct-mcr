@@ -59,6 +59,16 @@ async function getAllActiveFindings() {
                 Value: "ACTIVE",
               },
             ],
+            WorkflowStatus: [
+              {
+                Comparison: "EQUALS",
+                Value: "NEW",
+              },
+              {
+                Comparison: "EQUALS",
+                Value: "NOTIFIED",
+              },
+            ],
             SeverityLabel: severityLabels,
           },
           MaxResults: 100,
@@ -99,18 +109,31 @@ __This issue was generated from Security Hub data and is managed through automat
 Please do not edit the title or body of this issue, or remove the security-hub tag.  All other edits/comments are welcome.
 Finding Id: ${finding.Id}
 **************************************************************
+
+
 ## Type of Issue:
+
 - [x] Security Hub Finding
+
 ## Title:
+
 ${finding.Title}
+
 ## Id:
+
 ${finding.Id}
 (You may use this ID to lookup this finding's details in Security Hub)
+
 ## Description
+
 ${finding.Description}
+
 ## Remediation
+
 ${finding.ProductFields.RecommendationUrl}
+
 ## AC:
+
 - The security hub finding is resolved or suppressed, indicated by a Workflow Status of Resolved or Suppressed.
     `,
   };
@@ -209,6 +232,20 @@ async function createOrUpdateIssuesBasedOnFindings(findings, issues) {
   }
 }
 
+async function getAllCardsForColumn(columnId) {
+  let cards = [];
+  for await (const response of octokit.paginate.iterator(
+    octokit.rest.projects.listCards,
+    {
+      ...octokitRepoParams,
+      column_id: columnId,
+    }
+  )) {
+    cards.push(...response.data);
+  }
+  return cards;
+}
+
 async function assignIssuesToProject(issues, projectId, defaultColumnName) {
   console.log(
     `******** Project ${projectId}:  Ensuring all GitHub Issues are attached to the Project ********`
@@ -234,11 +271,7 @@ async function assignIssuesToProject(issues, projectId, defaultColumnName) {
   // Iterate over the Project's columns, and put all cards into a single array.
   var projectCards = [];
   for (let i = 0; i < targetColumnIds.length; i++) {
-    let cards = (
-      await octokit.rest.projects.listCards({
-        column_id: targetColumnIds[i],
-      })
-    ).data;
+    let cards = await getAllCardsForColumn(targetColumnIds[i]);
     projectCards.push(...cards);
   }
 
