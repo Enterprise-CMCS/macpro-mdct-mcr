@@ -7,7 +7,8 @@ import { Button, Flex } from "@chakra-ui/react";
 import { Banner, DateField, TextField } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent } from "utils/types/types";
+import { InputChangeEvent } from "../../utils/types/types";
+import { bannerId } from "utils/constants/constants";
 
 const formSchema = yup.object().shape({
   title: yup.string().required("Title text is required"),
@@ -30,7 +31,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   const [newBannerData, setNewBannerData] = useState({
-    key: process.env.REACT_APP_BANNER_ID!,
+    key: bannerId,
     title: "New banner title",
     description: "New banner description",
     startDate: 0,

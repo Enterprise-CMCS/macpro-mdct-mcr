@@ -72,7 +72,7 @@ COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
 ```
 LOCAL_LOGIN=true
 API_REGION=us-east-1
-API_URL=http://localhost:3030/local
+API_URL=http://localhost:3030
 COGNITO_REGION=us-east-1
 COGNITO_IDENTITY_POOL_ID=us-east-1:76708bb0-a458-4ea7-b90e-995ff5da5ab6
 COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
