@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 // utils
-import { convertDateEtToUtc } from "utils/time/time";
 import { AdminBannerData } from "utils/types/types";
+import { bannerId } from "../../utils/constants/constants";
 // api
 import {
   deleteBanner,
@@ -9,19 +9,7 @@ import {
   writeBanner,
 } from "utils/api/requestMethods/banner";
 
-const ADMIN_BANNER_ID = process.env.REACT_APP_BANNER_ID!;
-const midnight = { hour: 0, minute: 0, second: 0 };
-const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
-const temporaryBanner: AdminBannerData = {
-  key: ADMIN_BANNER_ID,
-  title: "Welcome to the new Managed Care Reporting tool!",
-  description: "Each state must submit one report per program.",
-  startDate: convertDateEtToUtc({ year: 2022, month: 1, day: 1 }, midnight),
-  endDate: convertDateEtToUtc(
-    { year: 2022, month: 12, day: 31 },
-    oneSecondToMidnight
-  ),
-};
+const ADMIN_BANNER_ID = bannerId;
 
 const checkBannerActivityStatus = (
   startDate: number,
@@ -57,9 +45,12 @@ export const AdminBanner = () => {
   };
 
   useEffect(() => {
-    // TODO: remove temporary write before phase1 deployment
-    writeBanner(temporaryBanner);
-    fetchAdminBanner();
+    try {
+      fetchAdminBanner();
+    } catch (error: any) {
+      // swallowing error here as it is triggered by Cypress/A11y. Works live.
+      console.error("Error while fetching current banner.", error); // eslint-disable-line no-console
+    }
   }, []);
 
   if (bannerData) {

@@ -63,6 +63,8 @@ S3_ATTACHMENTS_BUCKET_NAME=local-uploads
 URL=http://localhost/3000
 BANNER_TABLE_NAME=local-banners
 DISABLE_ESLINT_PLUGIN=true
+COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
+COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
 ```
 
 /services/ui-src `.env`

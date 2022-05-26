@@ -3,20 +3,20 @@ import { proxyEvent } from "../utils/testing/proxyEvent";
 import { isAuthorized } from "../utils/auth/authorization";
 import { flush } from "../utils/debugging/debug-lib";
 
-jest.mock("../utils/debugging/debug-lib.ts", () => ({
+jest.mock("../utils/debugging/debug-lib", () => ({
   __esModule: true,
   init: jest.fn(),
   flush: jest.fn(),
 }));
 
-jest.mock("../utils/auth/authorization.ts", () => ({
+jest.mock("../utils/auth/authorization", () => ({
   __esModule: true,
   isAuthorized: jest.fn(),
 }));
 
 describe("Test Lambda Handler Lib", () => {
   test("Test successful authorized lambda workflow", async () => {
-    const testFunc = jest.fn().mockReturnValue({ test: "test" });
+    const testFunc = jest.fn().mockReturnValue({ status: 200, body: "test" });
     const handler = handlerLib(testFunc);
 
     (isAuthorized as jest.Mock).mockReturnValue(true);
@@ -35,8 +35,10 @@ describe("Test Lambda Handler Lib", () => {
     const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(
-      "User is not authorized to access this resource."
+    expect(res.body).toStrictEqual(
+      JSON.stringify({
+        error: "User is not authorized to access this resource.",
+      })
     );
   });
 
@@ -52,7 +54,7 @@ describe("Test Lambda Handler Lib", () => {
 
     expect(flush).toHaveBeenCalledWith(err);
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain("Test Error");
+    expect(res.body).toStrictEqual(JSON.stringify({ error: "Test Error" }));
     expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
   });
 });

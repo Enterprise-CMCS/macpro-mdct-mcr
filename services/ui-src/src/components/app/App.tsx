@@ -2,7 +2,14 @@
 import { useUser } from "utils/auth";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
-import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
+import {
+  AdminBanner,
+  AppRoutes,
+  Footer,
+  Header,
+  LoginCognito,
+  LoginIDM,
+} from "components";
 
 export const App = () => {
   const { logout, user, showLocalLogins, loginWithIDM } = useUser();
@@ -12,7 +19,7 @@ export const App = () => {
         <Flex sx={sx.appLayout}>
           <Header handleLogout={logout} />
           <Container sx={sx.appContainer} data-testid="app-container">
-            <AppRoutes />
+            <AppRoutes adminBanner={AdminBanner()} />
           </Container>
           <Footer />
         </Flex>

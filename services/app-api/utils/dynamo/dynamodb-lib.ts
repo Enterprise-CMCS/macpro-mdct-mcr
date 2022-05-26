@@ -19,7 +19,6 @@ export function createDbClient() {
     dynamoConfig.credentials = new Credentials({
       accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
       secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
-      sessionToken: "LOCAL_FAKE_SESSION", // pragma: allowlist secret
     });
   } else {
     dynamoConfig["region"] = "us-east-1";
