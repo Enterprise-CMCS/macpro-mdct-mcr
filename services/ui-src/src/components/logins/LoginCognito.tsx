@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 // components
 import { Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import { errorHandler } from "utils/errors/errorHandler";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -31,7 +32,7 @@ export const LoginCognito = () => {
       await Auth.signIn(fields.email, fields.password);
       navigate(`/`);
     } catch (error) {
-      console.log("Error while logging in.", error); // eslint-disable-line no-console
+      errorHandler(error);
     }
   };
 

@@ -5,6 +5,7 @@ import config from "config";
 
 import { UserContext, UserContextInterface } from "./userContext";
 import { UserRoles } from "utils/types/types";
+import { errorHandler } from "utils/errors/errorHandler";
 
 interface Props {
   children?: ReactNode;
@@ -27,7 +28,7 @@ export const UserProvider = ({ children }: Props) => {
       setUser(null);
       await Auth.signOut();
     } catch (error) {
-      console.log("error signing out: ", error); // eslint-disable-line no-console
+      errorHandler(error);
     }
     navigate("/");
   }, [navigate]);
@@ -36,7 +37,7 @@ export const UserProvider = ({ children }: Props) => {
     try {
       const authenticatedUser = await Auth.currentAuthenticatedUser();
       setUser(authenticatedUser);
-    } catch (e) {
+    } catch (error) {
       if (isProduction) {
         authenticateWithIDM();
       } else {
