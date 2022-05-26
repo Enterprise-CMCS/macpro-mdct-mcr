@@ -85,6 +85,8 @@ resources:
           - email
         AutoVerifiedAttributes:
           - email
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: true
         EmailConfiguration:
           Fn::If:
             - CreateEmailConfiguration
