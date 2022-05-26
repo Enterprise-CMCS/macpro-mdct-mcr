@@ -47,9 +47,9 @@ export const AdminBanner = () => {
   useEffect(() => {
     try {
       fetchAdminBanner();
-    } catch (e: any) {
+    } catch (error: any) {
       // swallowing error here as it is triggered by Cypress/A11y. Works live.
-      console.error("Error while fetching current banner.", e); // eslint-disable-line no-console
+      console.error("Error while fetching current banner.", error); // eslint-disable-line no-console
     }
   }, []);
 
