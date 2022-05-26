@@ -5,6 +5,20 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { App } from "components";
 
+jest.mock("../banners/AdminBanner", () => ({
+  AdminBanner: jest.fn(() => ({
+    key: "",
+    title: "",
+    description: "",
+    link: "",
+    startDate: 0,
+    endDate: 0,
+    fetchAdminBanner: () => {},
+    writeAdminBanner: () => {},
+    deleteAdminBanner: () => {},
+  })),
+}));
+
 const appComponent = (
   <RouterWrappedComponent>
     <App />

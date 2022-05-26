@@ -36,7 +36,7 @@ export const Alert = ({
             <Text>{description}</Text>
             {link && (
               <Text>
-                <Link href="https://chakra-ui.com" isExternal variant="inline">
+                <Link href={link} isExternal variant="inline">
                   {link}
                 </Link>
               </Text>
@@ -59,6 +59,7 @@ interface Props {
 
 const sx = {
   root: {
+    alignItems: "start",
     minHeight: "5.25rem",
     borderInlineStartWidth: "0.5rem",
     marginTop: "1.25rem",

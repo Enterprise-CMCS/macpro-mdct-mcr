@@ -1,3 +1,5 @@
+import React from "react";
+
 export type { IconType } from "react-icons";
 
 export enum UserRoles {
@@ -26,7 +28,10 @@ export interface TableContentShape {
   bodyRows: string[][];
 }
 
+export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
+
 // BANNER
+
 export interface BannerData {
   title: string;
   description: string;
@@ -53,4 +58,23 @@ export enum AlertTypes {
   INFO = "info",
   SUCCESS = "success",
   WARNING = "warning",
+}
+
+// TIME
+
+export interface DateShape {
+  year: number;
+  month: number;
+  day: number;
+}
+
+export interface TimeShape {
+  hour: number;
+  minute: number;
+  second: number;
+}
+
+export interface TimeMap {
+  startDate: TimeShape;
+  endDate: TimeShape;
 }
