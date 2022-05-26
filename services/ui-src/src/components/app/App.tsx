@@ -12,14 +12,14 @@ import {
 } from "components";
 
 export const App = () => {
-  const { logout, user, showLocalLogins, loginWithIDM } = useUser();
+  const { logout, user, userRole, showLocalLogins, loginWithIDM } = useUser();
   return (
     <div id="app-wrapper">
       {user && (
         <Flex sx={sx.appLayout}>
           <Header handleLogout={logout} />
           <Container sx={sx.appContainer} data-testid="app-container">
-            <AppRoutes adminBanner={AdminBanner()} />
+            <AppRoutes adminBanner={AdminBanner()} userRole={userRole} />
           </Container>
           <Footer />
         </Flex>

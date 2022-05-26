@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 //utils
 import { useUser } from "utils/auth";
+import { UserRoles } from "utils/types/types";
 
 const userDetails = () => {
   const userInfo = useUser();
@@ -45,14 +46,16 @@ export const Profile = () => {
             <Text>{state}</Text>
           </Flex>
         )}
-        <Button
-          colorScheme="colorSchemes.main"
-          data-testid="admin-button"
-          sx={sx.adminButton}
-          onClick={() => navigate("/admin")}
-        >
-          Banner editor
-        </Button>
+        {userRole === UserRoles.ADMIN && (
+          <Button
+            colorScheme="colorSchemes.main"
+            data-testid="admin-button"
+            sx={sx.adminButton}
+            onClick={() => navigate("/admin")}
+          >
+            Banner editor
+          </Button>
+        )}
       </Flex>
     </>
   );
