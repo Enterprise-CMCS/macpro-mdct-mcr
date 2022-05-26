@@ -1,6 +1,6 @@
 import { errorHandler } from "./errorHandler";
 
-describe("Test errorlib.ts", () => {
+describe("Test errorHandler", () => {
   test("Expect error to alert user", () => {
     jest.spyOn(window, "alert").mockImplementation(() => {});
 
