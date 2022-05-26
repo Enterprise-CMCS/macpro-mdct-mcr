@@ -57,7 +57,7 @@ Root `.env`
 SKIP_PREFLIGHT_CHECK=true
 LOCAL_LOGIN=true
 DYNAMODB_URL=http://localhost:8000
-API_URL=http://localhost:3030/
+API_URL=http://localhost:3030/local
 S3_LOCAL_ENDPOINT=http://localhost:4569
 S3_ATTACHMENTS_BUCKET_NAME=local-uploads
 URL=http://localhost/3000
@@ -72,7 +72,7 @@ COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
 ```
 LOCAL_LOGIN=true
 API_REGION=us-east-1
-API_URL=http://localhost:3030
+API_URL=http://localhost:3030/local
 COGNITO_REGION=us-east-1
 COGNITO_IDENTITY_POOL_ID=us-east-1:76708bb0-a458-4ea7-b90e-995ff5da5ab6
 COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
@@ -83,7 +83,6 @@ COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
 S3_ATTACHMENTS_BUCKET_REGION=us-east-1
 S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
 S3_LOCAL_ENDPOINT=http://localhost:4569
-REACT_APP_BANNER_ID=admin-banner-id
 ```
 
 ## Running the database locally

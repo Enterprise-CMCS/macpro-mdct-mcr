@@ -8,7 +8,7 @@ async function getBanner(bannerKey: string) {
     headers: { ...requestHeaders },
   };
 
-  const response = await API.get("banners", `banners/${bannerKey}`, request);
+  const response = await API.get("banners", `/banners/${bannerKey}`, request);
   return response;
 }
 
@@ -20,7 +20,7 @@ async function writeBanner(bannerData: AdminBannerData) {
   };
   const response = await API.post(
     "banners",
-    `banners/${bannerData.key}`,
+    `/banners/${bannerData.key}`,
     request
   );
   return response;
@@ -31,7 +31,7 @@ async function deleteBanner(bannerKey: string) {
   const request = {
     headers: { ...requestHeaders },
   };
-  const response = await API.del("banners", `banners/${bannerKey}`, request);
+  const response = await API.del("banners", `/banners/${bannerKey}`, request);
   return response;
 }
 
