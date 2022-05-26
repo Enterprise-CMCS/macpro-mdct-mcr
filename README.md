@@ -9,6 +9,7 @@ Our product is promoted through branches. Main is merged to val to affect a main
 ## Requirements
 
 ### Node
+
 We enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 - Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
@@ -16,15 +17,19 @@ We enforce using a specific version of node, specified in the file `.nvmrc`. Thi
 - Install specified version of node: `nvm install`, then `nvm use`
 
 ### Serverless
+
 Install [Serverless](https://www.serverless.com/framework/docs/providers/aws/guide/installation/): `npm install -g serverless`
 
 ### Yarn
+
 - Install [yarn](https://classic.yarnpkg.com/en/docs/install/): `brew install yarn`
 
 ### AWS
+
 - You'll need an AWS account with appropriate IAM permissions (admin recommended) to deploy this app (see deployments).
 
 ### Pre-Commit
+
 We use pre-commit to run checks on code before it gets committed.
 
 - Install pre-commit on your machine with either: `pip install pre-commit` or `brew install pre-commit`
@@ -40,9 +45,45 @@ When run locally, auth bypasses Cognito. The frontend mimics login in local stor
 
 ### Running the app locally
 
-- Populate .env files in the root directory and in the `ui-src` directory.
+- Populate .env files in the root directory and in the `ui-src` directory. See Environment Configuration below for up-to-date files.
 - Run all the services locally with the command `./dev local`
 - Troubleshooting: See the Requirements section if the command asks for any prerequisites you don't have installed.
+
+#### Environment Configuration
+
+Root `.env`
+
+```
+SKIP_PREFLIGHT_CHECK=true
+LOCAL_LOGIN=true
+DYNAMODB_URL=http://localhost:8000
+API_URL=http://localhost:3030/local
+S3_LOCAL_ENDPOINT=http://localhost:4569
+S3_ATTACHMENTS_BUCKET_NAME=local-uploads
+URL=http://localhost/3000
+BANNER_TABLE_NAME=local-banners
+DISABLE_ESLINT_PLUGIN=true
+COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
+COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
+```
+
+/services/ui-src `.env`
+
+```
+LOCAL_LOGIN=true
+API_REGION=us-east-1
+API_URL=http://localhost:3030
+COGNITO_REGION=us-east-1
+COGNITO_IDENTITY_POOL_ID=us-east-1:76708bb0-a458-4ea7-b90e-995ff5da5ab6
+COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
+COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
+COGNITO_USER_POOL_CLIENT_DOMAIN=main-login-4n2andd7qumjgdojec3cbqsemu.auth.us-east-1.amazoncognito.com
+COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
+COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
+S3_ATTACHMENTS_BUCKET_REGION=us-east-1
+S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
+S3_LOCAL_ENDPOINT=http://localhost:4569
+```
 
 ## Running the database locally
 
@@ -63,6 +104,7 @@ This application is built and deployed via GitHub Actions.
 - Packages up to date (`brew install yarn`)
 
 ### Deployment Script
+
 `sh scripts/deploy.sh`
 
 ## Architecture
@@ -92,9 +134,9 @@ We use Cypress for integration tests. See additional info [here in the Cypress r
 
 We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa11y) for primary accessibility testing.
 
-Unit tests can use [jest-axe](), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
+Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
-Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe), [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html) and [cypress-audit/lighthouse](https://mfrachet.github.io/cypress-audit/guides/lighthouse/installation.html).
+Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe) and [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html).
 
 ### Formatting
 
@@ -135,3 +177,10 @@ in the public domain within the United States.
 Additionally, we waive copyright and related rights in the
 work worldwide through the CC0 1.0 Universal public domain dedication.
 ```
+
+## Status
+
+<!-- Adding this at the end until we refactor the README -->
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/CMSgov/mdct-mcr/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/maintainability)](https://codeclimate.com/github/CMSgov/mdct-mcr/maintainability)

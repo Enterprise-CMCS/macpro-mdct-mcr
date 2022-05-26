@@ -6,12 +6,17 @@ interface Props {
 }
 
 export const LoginIDM = ({ loginWithIDM }: Props) => (
-  <Box textAlign="center" mb="6">
+  <Box textAlign="center">
     <Heading mb="2" size="md" alignSelf="center">
       Login with IDM
     </Heading>
     <Divider />
-    <Button colorScheme="teal" onClick={loginWithIDM} isFullWidth>
+    <Button
+      colorScheme="colorSchemes.main"
+      onClick={loginWithIDM}
+      isFullWidth
+      data-testid="idm-login-button"
+    >
       Login with IDM
     </Button>
   </Box>

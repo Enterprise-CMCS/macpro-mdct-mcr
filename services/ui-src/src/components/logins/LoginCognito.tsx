@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 // components
-import { Button, Heading, Input, Stack } from "@chakra-ui/react";
+import { Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import { errorHandler } from "utils/errors/errorHandler";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -31,39 +32,41 @@ export const LoginCognito = () => {
       await Auth.signIn(fields.email, fields.password);
       navigate(`/`);
     } catch (error) {
-      console.log("Error while logging in.", error); // eslint-disable-line no-console
+      errorHandler(error);
     }
   };
 
   return (
     <Stack>
-      <Heading mb="2" size="md" alignSelf="center">
+      <Heading size="md" alignSelf="center">
         Login with Cognito
       </Heading>
-      <Heading mb="2" size="sm">
-        Email
-      </Heading>
-      <Input
-        id="email"
-        name="email"
-        type="email"
-        value={fields.email}
-        onChange={handleFieldChange}
-        className="field"
-      />
-      <Heading mb="2" size="sm">
-        Password
-      </Heading>
-      <Input
-        id="password"
-        name="password"
-        type="password"
-        value={fields.password}
-        onChange={handleFieldChange}
-        className="field"
-      />
+      <label>
+        <Text mb="2">Email</Text>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          value={fields.email}
+          onChange={handleFieldChange}
+          className="field"
+          data-testid="email-input-field"
+        />
+      </label>
+      <label>
+        <Text mb="2">Password</Text>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          value={fields.password}
+          onChange={handleFieldChange}
+          className="field"
+          data-testid="password-input-field"
+        />
+      </label>
       <Button
-        colorScheme="teal"
+        colorScheme="colorSchemes.main"
         onClick={() => {
           handleLogin();
         }}

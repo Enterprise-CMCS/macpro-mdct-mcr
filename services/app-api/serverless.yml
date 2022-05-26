@@ -11,12 +11,17 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
   - serverless-associate-waf
-  - serverless-offline
   - serverless-stack-termination-protection
   - serverless-idempotency-helper
   - serverless-iam-helper
   - serverless-s3-bucket-helper
   - serverless-api-client-certificate
+  - serverless-offline
+
+s3BucketHelper:
+  loggingConfiguration:
+    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
+    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
 
 custom:
   serverlessPluginTypescript:
@@ -28,8 +33,7 @@ custom:
       - main
       - val
       - production
-  measureTableName: ${env:measureTableName, cf:database-${self:custom.stage}.MeasureTableName}
-  measureTableArn: ${env:DYNAMO_TABLE_ARN, cf:database-${self:custom.stage}.MeasureTableArn}
+  bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
     name: ${self:custom.webAclName}
@@ -50,7 +54,7 @@ custom:
     production: aws_iam
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: us-east-1
   tracing:
     apiGateway: true
@@ -71,52 +75,51 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "*"
+        - Effect: "Allow"
+          Action:
+            - ssm:GetParameter
+          Resource: "*"
   environment:
-    measureTableName: ${self:custom.measureTableName}
-    uploadS3BucketName: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName, ""}
-    stage: ${opt:stage, self:provider.stage}
+    BANNER_TABLE_NAME: ${self:custom.bannerTableName}
+    STAGE: ${self:custom.stage}
 
 functions:
-  listMeasures:
-    handler: handlers/measures/get.listMeasures
+  getBanner:
+    handler: handlers/banners/get.getBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/list
+          path: banners/{bannerId}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  getMeasure:
-    handler: handlers/measures/get.getMeasure
+          request:
+            parameters:
+              paths:
+                bannerId: true
+  writeBanner:
+    handler: handlers/banners/write.writeBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/get
-          method: get
-          cors: true
-          authorizer: ""
-  createMeasure:
-    handler: handlers/measures/create.createMeasure
-    events:
-      - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/create
+          path: banners/{bannerId}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  editMeasure:
-    handler: handlers/measures/update.editMeasure
+          request:
+            parameters:
+              paths:
+                bannerId: true
+  deleteBanner:
+    handler: handlers/banners/delete.deleteBanner
     events:
       - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/edit
-          method: put
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  deleteMeasure:
-    handler: handlers/measures/delete.deleteMeasure
-    events:
-      - http:
-          path: coreset/{state}/{year}/{coreSet}/measures/{measure}/delete
+          path: banners/{bannerId}
           method: delete
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                bannerId: true
 resources:
   Resources:
     GatewayResponseDefault4XX:

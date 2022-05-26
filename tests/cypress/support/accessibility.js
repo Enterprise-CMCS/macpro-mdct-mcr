@@ -1,6 +1,5 @@
 import "cypress-file-upload";
 import "@cypress-audit/pa11y/commands";
-import "@cypress-audit/lighthouse/commands";
 
 // ***** ACCESSIBILITY COMMANDS *****
 
@@ -27,11 +26,6 @@ Cypress.Commands.add("checkCurrentPageAccessibility", () => {
   cy.pa11y({
     threshold: 10,
     standard: "WCAG2AA",
-  });
-
-  // check accessibility using lighthouse
-  cy.lighthouse({
-    accessibility: 90,
   });
 });
 

@@ -7,7 +7,7 @@ async function myHandler(_event, _context, _callback) {
     var poolData = {
       UserPoolId: userPoolId,
       Username: users[i].username,
-      DesiredDeliveryMediums: ["EMAIL"],
+      MessageAction: "SUPPRESS",
       UserAttributes: users[i].attributes,
     };
     var passwordData = {

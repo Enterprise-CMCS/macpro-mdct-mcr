@@ -1,5 +1,5 @@
 // element selectors
-const faqLink = '[data-testid="faq-link"]';
+const helpLink = '[data-testid="help-link"]';
 const accessibilityStatementLink =
   '[data-testid="accessibility-statement-link"]';
 
@@ -9,9 +9,9 @@ beforeEach(() => {
 });
 
 describe("Footer integration tests", () => {
-  it("Footer FAQ link navigates to /faq", () => {
-    cy.get(faqLink).click();
-    cy.location("pathname").should("match", /faq/);
+  it("Footer help link navigates to /help", () => {
+    cy.get(helpLink).click();
+    cy.location("pathname").should("match", /help/);
   });
 
   it("Footer accessibility statement link navigates to the right external URL", () => {

@@ -3,7 +3,7 @@ describe("Baseline accessibility check", () => {
     cy.visit("/");
     cy.authenticate("stateUser");
   });
-  it("Check homepage for basic accessibility issues", () => {
+  it("Homepage has no basic accessibility issues", () => {
     cy.checkCurrentPageAccessibility();
   });
 });

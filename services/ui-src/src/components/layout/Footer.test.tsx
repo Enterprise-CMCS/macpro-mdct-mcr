@@ -20,8 +20,8 @@ describe("Test Footer", () => {
     expect(screen.getByTestId("footer-container")).toBeVisible();
   });
 
-  test("FAQ link is visible", () => {
-    expect(screen.getByTestId("faq-link")).toBeVisible();
+  test("Help link is visible", () => {
+    expect(screen.getByTestId("help-link")).toBeVisible();
   });
 
   test("Accessibility statement link is visible", () => {
