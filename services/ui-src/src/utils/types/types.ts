@@ -27,6 +27,7 @@ export interface TableContentShape {
 }
 
 // BANNER
+
 export interface BannerData {
   title: string;
   description: string;

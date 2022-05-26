@@ -1,119 +1,125 @@
-import { useState, useEffect } from "react";
 // components
-import { Box, Button, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import { Banner, TextField } from "../../components/index";
+import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
+import { Banner, DateField, TextField } from "../../components/index";
 // utils
+import { convertDateEtToUtc, formatDateUtcToEt } from "utils/time/time";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+import { AdminBannerData, AdminBannerShape } from "utils/types/types";
+import { bannerId } from "../../utils/constants/constants";
 // data
 import data from "../../data/admin-view.json";
 
-export const Admin = () => {
+// TODO: remove after form fields are wired up
+const ADMIN_BANNER_ID = bannerId;
+const midnight = { hour: 0, minute: 0, second: 0 };
+const oneSecondToMidnight = { hour: 23, minute: 59, second: 59 };
+const fakeNewBanner: AdminBannerData = {
+  key: ADMIN_BANNER_ID,
+  title: "this is the second banner",
+  description: "yep the second one",
+  link: "with a link!",
+  startDate: convertDateEtToUtc({ year: 2022, month: 1, day: 1 }, midnight),
+  endDate: convertDateEtToUtc(
+    { year: 2022, month: 12, day: 31 },
+    oneSecondToMidnight
+  ),
+};
+
+export const Admin = ({ adminBanner }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [bannerData, setBannerData] = useState<any | null>(null);
-  // const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
-
-  const isBannerActive = false;
-
-  useEffect(() => {
-    // TODO: fetch current banner data from db
-    const mockBannerData: any = {
-      title: "Current banner title",
-      body: "Current banner body",
-      // startDate: makeStartDate({ year: 2022, month: 1, day: 1 }), // 1656648000000
-
-      // endDate: makeEndDate({ year: 2022, month: 12, day: 31 }), // 1672549199000
-    };
-    setBannerData(mockBannerData);
-  }, []);
-
-  useEffect(() => {
-    if (bannerData) {
-      /*
-       * setIsBannerActive();
-       * checkBannerActiveDates(bannerData.startDate, bannerData.endDate)
-       */
-    }
-  }, [bannerData]);
-
   return (
     <section>
       <Box sx={sx.root} data-testid="admin-view">
         <Flex sx={sx.mainContentFlex}>
-          {/* TODO: remove */}
-          <Flex mb="1rem">
-            <Button m="1rem">TEMP: Fetch banner data from db</Button>
-            <Button m="1rem">TEMP: Post new banner data to db</Button>
-          </Flex>
-
           <Box sx={sx.introTextBox}>
             <Heading as="h1" sx={sx.headerText}>
               {data.intro.header}
             </Heading>
             <Text>{data.intro.body}</Text>
           </Box>
-          <Box sx={sx.currentBannerBox}>
+          <Box sx={sx.currentBannerSectionBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
-            {bannerData ? (
-              <Stack>
-                <Stack sx={sx.currentBannerInfo}>
+            <Collapse in={!!adminBanner.key}>
+              {adminBanner.key && (
+                <Flex sx={sx.currentBannerInfo}>
                   <Text sx={sx.currentBannerStatus}>
                     Status:{" "}
-                    <span className={isBannerActive ? "active" : "inactive"}>
-                      {isBannerActive ? "Active" : "Inactive"}
+                    <span
+                      className={adminBanner.isActive ? "active" : "inactive"}
+                    >
+                      {adminBanner.isActive ? "Active" : "Inactive"}
                     </span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    {/* Start Date: <span>{formatDate(bannerData.startDate)}</span> */}
+                    Start Date:{" "}
+                    <span>{formatDateUtcToEt(adminBanner.startDate)}</span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
-                    {/* End Date: <span>{formatDate(bannerData.endDate)}</span> */}
+                    End Date:{" "}
+                    <span>{formatDateUtcToEt(adminBanner.endDate)}</span>
                   </Text>
-                </Stack>
-                <Banner bannerData={{ title: "tbd", description: "tbd" }} />
+                </Flex>
+              )}
+              <Flex sx={sx.currentBannerFlex}>
+                <Banner bannerData={adminBanner} />
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
+                  onClick={() => adminBanner.deleteAdminBanner()}
                 >
                   Delete Current Banner
                 </Button>
-              </Stack>
-            ) : (
-              <Text>There is no current banner</Text>
-            )}
+              </Flex>
+            </Collapse>
+            {!adminBanner.key && <Text>There is no current banner</Text>}
           </Box>
-
-          <Stack sx={sx.previewBannerBox}>
+          <Flex sx={sx.previewBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-            <TextField label="Header text" placeholder="New banner title" />
-            <TextField label="Body text" placeholder="New banner body" />
+            <TextField
+              label="Header text"
+              placeholder="New banner title"
+              name="banner-title-text"
+              fieldClassName="passedfieldclass"
+            />
+            <TextField
+              label="Description text"
+              placeholder="New banner description"
+              multiline
+              rows={3}
+              name="banner-description-text"
+            />
+            <TextField
+              label="Link (optional)"
+              name="banner-link"
+              requirementLabel="Optional"
+            />
             <Flex sx={sx.dateFieldContainer} className={mqClasses}>
-              <Stack mt="0.5rem">
-                <Text>Start date</Text>
-                <Flex>
-                  <TextField sx={sx.dateField} label="Month" />
-                  <TextField sx={sx.dateField} label="Day" />
-                  <TextField sx={sx.dateField} label="Year" />
-                </Flex>
-              </Stack>
-              <Stack mt="0.5rem">
-                <Text>End date</Text>
-                <Flex>
-                  <TextField sx={sx.dateField} label="Month" />
-                  <TextField sx={sx.dateField} label="Day" />
-                  <TextField sx={sx.dateField} label="Year" />
-                </Flex>
-              </Stack>
+              <DateField label="Start date" hint={null} />
+              <DateField label="End date" hint={null} />
             </Flex>
-            <Banner bannerData={{ title: "tbd", description: "tbd" }} />
-            <Button sx={sx.replaceBannerButton} colorScheme="colorSchemes.main">
+            <Banner
+              bannerData={{
+                title: "New banner title",
+                description: "New banner description",
+              }}
+            />
+            <Button
+              sx={sx.replaceBannerButton}
+              colorScheme="colorSchemes.main"
+              onClick={() => adminBanner.writeAdminBanner(fakeNewBanner)}
+            >
               Replace Current Banner
             </Button>
-          </Stack>
+          </Flex>
         </Flex>
       </Box>
     </section>
   );
 };
+
+interface Props {
+  adminBanner: AdminBannerShape;
+}
 
 const sx = {
   root: {
@@ -133,12 +139,16 @@ const sx = {
     fontSize: "1.5rem",
     fontWeight: "bold",
   },
-  currentBannerBox: {
+  currentBannerSectionBox: {
     width: "100%",
     marginBottom: "2.25rem",
   },
   currentBannerInfo: {
+    flexDirection: "column",
     marginBottom: "0.5rem !important",
+  },
+  currentBannerFlex: {
+    flexDirection: "column",
   },
   currentBannerStatus: {
     span: {
@@ -162,12 +172,18 @@ const sx = {
   },
   previewBannerBox: {
     width: "100%",
+    flexDirection: "column",
     marginBottom: "2.25rem",
   },
   dateFieldContainer: {
-    marginBottom: "0.5rem !important",
+    ".ds-c-fieldset:first-of-type": {
+      marginRight: "3rem",
+    },
     "&.tablet, &.mobile": {
       flexDirection: "column",
+      ".ds-c-fieldset:first-of-type": {
+        marginRight: "0",
+      },
     },
   },
   headerText: {
