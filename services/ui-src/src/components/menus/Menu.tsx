@@ -18,7 +18,7 @@ import {
 } from "../../utils/useBreakpoint";
 
 export const Menu = ({ handleLogout }: Props) => {
-  const { given_name } = useUser().user.attributes;
+  const firstName = useUser().user?.attributes?.given_name;
   const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   return (
@@ -33,7 +33,7 @@ export const Menu = ({ handleLogout }: Props) => {
         >
           <MenuOption
             icon="personCircle"
-            text={given_name}
+            text={firstName ? firstName : "Profile"}
             hideText={isMobile}
           />
         </MenuButton>
