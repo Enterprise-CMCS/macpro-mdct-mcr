@@ -79,6 +79,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
         name="title"
         label="Title text"
         placeholder="New banner title"
+        data-testid="new-banner-title-field"
       />
       <TextField
         name="description"
