@@ -1,9 +1,23 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { App } from "components";
+
+jest.mock("../banners/AdminBanner", () => ({
+  AdminBanner: jest.fn(() => ({
+    key: "",
+    title: "",
+    description: "",
+    link: "",
+    startDate: 0,
+    endDate: 0,
+    fetchAdminBanner: () => {},
+    writeAdminBanner: () => {},
+    deleteAdminBanner: () => {},
+  })),
+}));
 
 const appComponent = (
   <RouterWrappedComponent>
@@ -22,27 +36,12 @@ jest.mock("utils/auth", () => ({
   }),
 }));
 
-jest.mock("aws-amplify", () => ({
-  API: {
-    get: jest.fn(() => {
-      return {};
-    }),
-  },
-}));
-
-jest.mock("utils/api/requestMethods/getRequestHeaders", () => ({
-  getRequestHeaders: jest.fn(() => {
-    return {
-      "x-api-key": "",
-    };
-  }),
-}));
-
 describe("Test App", () => {
+  beforeEach(() => {
+    render(appComponent);
+  });
+
   test("App login page is visible", () => {
-    act(() => {
-      render(appComponent);
-    });
     expect(screen.getByTestId("app-container")).toBeVisible();
   });
 });
