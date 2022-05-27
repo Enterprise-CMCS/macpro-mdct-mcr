@@ -10,7 +10,7 @@ export const AppRoutes = ({ userRole }: Props) => {
   const adminBanner = AdminBanner();
 
   return (
-    <main id="main-wrapper">
+    <main id="main-wrapper" data-testid="main-wrapper">
       <Routes>
         <Route path="/" element={<Home adminBanner={adminBanner} />} />
         <Route

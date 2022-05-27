@@ -8,7 +8,7 @@ const notFoundView = <NotFound />;
 describe("Test NotFound 404 view", () => {
   test("Check that NotFound 404 page renders", () => {
     const { getByTestId } = render(notFoundView);
-    expect(getByTestId("not-found")).toBeVisible();
+    expect(getByTestId("404")).toBeVisible();
   });
 });
 
