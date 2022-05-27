@@ -8,8 +8,8 @@ export { Alert } from "./alerts/Alert";
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
 // banners
+export { AdminBanner } from "./banners/AdminBanner";
 export { Banner } from "./banners/Banner";
-export { AdminBannerProvider } from "./banners/AdminBannerProvider";
 // cards
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";

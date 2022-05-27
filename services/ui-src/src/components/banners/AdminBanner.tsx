@@ -1,12 +1,6 @@
-import {
-  useState,
-  useEffect,
-  ReactNode,
-  createContext,
-  // useContext,
-} from "react";
+import { useState, useEffect } from "react";
 // utils
-import { AdminBannerData, AdminBannerShape } from "utils/types/types";
+import { AdminBannerData } from "utils/types/types";
 import { bannerId } from "../../utils/constants/constants";
 // api
 import {
@@ -17,19 +11,6 @@ import {
 
 const ADMIN_BANNER_ID = bannerId;
 
-export const AdminBannerContext = createContext<AdminBannerShape>({
-  key: "string",
-  title: "string",
-  description: "string",
-  link: "string",
-  startDate: 0,
-  endDate: 0,
-  isActive: true,
-  fetchAdminBanner: () => {},
-  writeAdminBanner: () => {},
-  deleteAdminBanner: () => {},
-});
-
 const checkBannerActivityStatus = (
   startDate: number,
   endDate: number
@@ -38,7 +19,7 @@ const checkBannerActivityStatus = (
   return currentTime >= startDate && currentTime <= endDate;
 };
 
-export const AdminBannerProvider = ({ children }: Props) => {
+export const AdminBanner = () => {
   const [bannerData, setBannerData] = useState<AdminBannerData>({
     key: "",
     title: "",
@@ -79,20 +60,10 @@ export const AdminBannerProvider = ({ children }: Props) => {
     );
   }
 
-  const adminBannerData = {
+  return {
     ...bannerData,
     fetchAdminBanner,
     writeAdminBanner,
     deleteAdminBanner,
   };
-
-  return (
-    <AdminBannerContext.Provider value={adminBannerData}>
-      {children}
-    </AdminBannerContext.Provider>
-  );
 };
-
-interface Props {
-  children?: ReactNode;
-}
