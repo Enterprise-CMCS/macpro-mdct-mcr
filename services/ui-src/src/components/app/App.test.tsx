@@ -1,9 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
+import { useUser } from "utils/auth";
 //components
 import { App } from "components";
+
+const appComponent = (
+  <RouterWrappedComponent>
+    <App />
+  </RouterWrappedComponent>
+);
+
+// MOCKS
+
+jest.mock("utils/auth");
+const mockedUseUser = useUser as jest.Mock<typeof useUser>;
 
 jest.mock("../banners/AdminBanner", () => ({
   AdminBanner: jest.fn(() => ({
@@ -19,18 +31,15 @@ jest.mock("../banners/AdminBanner", () => ({
   })),
 }));
 
-const appComponent = (
-  <RouterWrappedComponent>
-    <App />
-  </RouterWrappedComponent>
-);
+// TESTS
+
+beforeEach(() => {
+  mockedUseUser.mockImplementation((): any => mockStateUser);
+});
 
 describe("Test App", () => {
-  beforeEach(() => {
-    render(appComponent);
-  });
-
   test("App login page is visible", () => {
+    render(appComponent);
     expect(screen.getByTestId("app-container")).toBeVisible();
   });
 });
