@@ -1,12 +1,9 @@
 import { ReactNode } from "react";
 import { FormProvider } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { InputChangeEvent } from "../../utils/types/types";
 
 export const Form = ({
   form,
-  formSchema,
-  mode,
   onInputChangeCallback,
   onSubmitCallback,
   children,
@@ -17,11 +14,8 @@ export const Form = ({
     onInputChangeCallback?.(id, value);
   };
 
-  form.resolver = yupResolver(formSchema);
-  form.mode = mode;
-
-  const onSubmit = () => {
-    onSubmitCallback?.();
+  const onSubmit = async () => {
+    await onSubmitCallback?.();
   };
 
   return (
@@ -33,10 +27,8 @@ export const Form = ({
 
 interface Props {
   form: any;
-  formSchema: any;
-  mode: string;
   onInputChangeCallback?: any;
-  onSubmitCallback?: any;
+  onSubmitCallback?: Function;
   children: ReactNode;
   [key: string]: any;
 }

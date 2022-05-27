@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
 import { Button, Flex } from "@chakra-ui/react";
@@ -64,14 +65,17 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     writeAdminBanner(newBannerData);
   };
 
-  const form = useForm();
+  const form = useForm<FormFields>({
+    mode: "onChange",
+    resolver: yupResolver(formSchema),
+  });
 
   return (
     <Form
       form={form}
       mode="onChange"
       formSchema={formSchema}
-      onSubmit={onSubmitCallback}
+      onSubmitCallback={onSubmitCallback}
       onInputChangeCallback={onInputChangeCallback}
     >
       <TextField
