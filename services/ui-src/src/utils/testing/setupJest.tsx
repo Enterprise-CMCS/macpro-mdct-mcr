@@ -37,6 +37,28 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
+const mockStateUser = {
+  user: {
+    attributes: {
+      "custom:cms_roles": "mdctmcr-state-user",
+      "custom:cms_state": "MA",
+      email: "stateuser1@test.com",
+      family_name: "States",
+      given_name: "Sammy",
+    },
+  },
+  userRole: "mdctmcr-state-user",
+  showLocalLogins: true,
+  logout: () => {},
+  loginWithIDM: () => {},
+};
+
+jest.mock("utils/auth", () => ({
+  useUser: jest.fn(() => {
+    return mockStateUser;
+  }),
+}));
+
 export const RouterWrappedComponent: React.FC = ({ children }) => (
   <Router>{children}</Router>
 );

@@ -5,25 +5,6 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 // views
 import { Profile } from "../index";
 
-const mockStateUser = {
-  user: {
-    attributes: {
-      "custom:cms_roles": "mdctmcr-state-user",
-      "custom:cms_state": "MA",
-      email: "stateuser1@test.com",
-      family_name: "States",
-      given_name: "Sammy",
-    },
-  },
-  userRole: "mdctmcr-state-user",
-};
-
-jest.mock("utils/auth", () => ({
-  useUser: jest.fn(() => {
-    return mockStateUser;
-  }),
-}));
-
 const profileView = (
   <RouterWrappedComponent>
     <Profile />
