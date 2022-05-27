@@ -9,7 +9,7 @@ export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
 // banners
 export { Banner } from "./banners/Banner";
-export { AdminBannerProvider } from "./banners/AdminBannerProvider";
+export * from "./banners/AdminBannerProvider";
 // cards
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
