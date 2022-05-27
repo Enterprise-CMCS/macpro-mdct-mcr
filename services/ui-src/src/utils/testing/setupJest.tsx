@@ -1,9 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { configure } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 
 global.React = React;
+
+configure({
+  computedStyleSupportsPseudoElements: true,
+});
 
 /*
  * Mocks window.matchMedia

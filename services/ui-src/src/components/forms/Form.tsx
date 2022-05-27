@@ -31,4 +31,5 @@ interface Props {
   onInputChangeCallback?: Function;
   onSubmitCallback?: Function;
   children: ReactNode;
+  [key: string]: any;
 }
