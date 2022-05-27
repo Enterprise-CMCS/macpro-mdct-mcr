@@ -25,17 +25,6 @@ const appComponent = (
   </RouterWrappedComponent>
 );
 
-jest.mock("utils/auth", () => ({
-  useUser: jest.fn(() => {
-    return {
-      logout: () => {},
-      user: true,
-      showLocalLogins: true,
-      loginWithIDM: () => {},
-    };
-  }),
-}));
-
 describe("Test App", () => {
   beforeEach(() => {
     render(appComponent);
