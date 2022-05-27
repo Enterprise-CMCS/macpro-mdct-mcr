@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 // components
 import { Button, Flex } from "@chakra-ui/react";
 import { Banner, DateField, Form, TextField } from "../index";
@@ -73,8 +72,6 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
   return (
     <Form
       form={form}
-      mode="onChange"
-      formSchema={formSchema}
       onSubmitCallback={onSubmitCallback}
       onInputChangeCallback={onInputChangeCallback}
     >
@@ -115,8 +112,6 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
           Replace Current Banner
         </Button>
       </Flex>
-      {/* </form>
-      </FormProvider> */}
     </Form>
   );
 };

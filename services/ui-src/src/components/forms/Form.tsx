@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { FormProvider } from "react-hook-form";
+// utils
 import { InputChangeEvent } from "../../utils/types/types";
 
 export const Form = ({
@@ -27,8 +28,7 @@ export const Form = ({
 
 interface Props {
   form: any;
-  onInputChangeCallback?: any;
+  onInputChangeCallback?: Function;
   onSubmitCallback?: Function;
   children: ReactNode;
-  [key: string]: any;
 }
