@@ -1,16 +1,21 @@
-import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 // components
 import { DateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
+import { InputChangeEvent, StyleObject, TimeMap } from "utils/types/types";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { StyleObject, InputChangeEvent, TimeMap } from "utils/types/types";
 import {
   convertDateEtToUtc,
   midnight,
   oneSecondToMidnight,
 } from "utils/time/time";
+
+/*
+ * Note: This file uses the names 'parent'/'parentField' to refer to
+ * the CMSDS Date Field (e.g. 'startDate'), and 'child'/'childField'
+ * to refer to  and the contained day, month, year fields (e.g. 'day')
+ */
 
 const eventTimeMap: TimeMap = {
   startDate: midnight,
@@ -19,57 +24,57 @@ const eventTimeMap: TimeMap = {
 
 export const DateField = ({
   name: parentFieldName,
-  label,
-  customErrorMessage,
+  label: parentFieldLabel,
   sxOverrides,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  const [childFieldData, setChildFieldData] = useState({
-    [`${parentFieldName}Day`]: 0,
-    [`${parentFieldName}Month`]: 0,
-    [`${parentFieldName}Year`]: 0,
-  });
+  // get the form context
+  const form = useFormContext();
 
+  // make child field names
   const dayFieldName = `${parentFieldName}Day`;
   const monthFieldName = `${parentFieldName}Month`;
   const yearFieldName = `${parentFieldName}Year`;
 
-  const updateChildDateFieldValue = async (e: InputChangeEvent) => {
-    const { name: childFieldName, value } = e.target;
-    // sets local field data state
-    await setChildFieldData({
-      ...childFieldData,
-      [childFieldName]: parseInt(value),
+  // set child field value in form data
+  const setChildFieldValue = (
+    childFieldName: string,
+    childFieldValue: number
+  ) => {
+    form.setValue(childFieldName, childFieldValue, {
+      shouldValidate: true,
     });
-    // sets child date field value in parent form data
-    const childFieldEvent = {
-      target: { id: childFieldName, value: parseInt(value) },
-    };
-    form.onInputChange(childFieldEvent);
   };
 
-  const updateParentFieldValue = () => {
-    const date = {
-      year: childFieldData[yearFieldName],
-      month: childFieldData[monthFieldName],
-      day: childFieldData[dayFieldName],
-    };
-    const time = eventTimeMap[parentFieldName as keyof TimeMap];
-    const parentEvent = {
-      target: { id: parentFieldName, value: convertDateEtToUtc(date, time) },
-    };
-    // updates parent field value in parent form data
-    form.onInputChange(parentEvent);
+  // set parent field value in form data
+  const setParentFieldValue = () => {
+    const {
+      [dayFieldName]: day,
+      [monthFieldName]: month,
+      [yearFieldName]: year,
+    } = form.getValues();
+    // check that all values have been entered
+    if (day && month && year) {
+      const time = eventTimeMap[parentFieldName as keyof TimeMap];
+      const calculatedDatetime = convertDateEtToUtc({ year, month, day }, time);
+      form.setValue(parentFieldName, calculatedDatetime, {
+        shouldValidate: true,
+      });
+    }
   };
 
-  const { ...form }: any = useFormContext();
-  const parentHasError = form.formState.errors?.[parentFieldName]?.message;
-  const parentErrorMessage = parentHasError
-    ? customErrorMessage || parentHasError
-    : "";
-  const childErrorMessage = (childFieldName: string): string => {
+  // call methods to update form data
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    const { name: childFieldName, value: childFieldValue } = event.target;
+    await setChildFieldValue(childFieldName, parseInt(childFieldValue));
+    setParentFieldValue();
+  };
+
+  const parentFieldErrorMessage =
+    form.formState.errors?.[parentFieldName]?.message;
+  const checkChildFieldError = (childFieldName: string): string => {
     return form.formState.errors?.[childFieldName]?.message;
   };
 
@@ -80,21 +85,18 @@ export const DateField = ({
       render={() => (
         <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
           <CmsdsDateField
-            label={label}
-            onChange={(value: any) => {
-              updateChildDateFieldValue?.(value);
-            }}
-            errorMessage={parentErrorMessage}
-            onBlur={updateParentFieldValue}
+            label={parentFieldLabel}
+            onBlur={(e) => onBlurHandler(e)}
+            errorMessage={parentFieldErrorMessage}
             dayName={dayFieldName}
             monthName={monthFieldName}
             yearName={yearFieldName}
-            dayFieldRef={() => props.register(dayFieldName)}
-            monthFieldRef={() => props.register(monthFieldName)}
-            yearFieldRef={() => props.register(yearFieldName)}
-            dayInvalid={!!childErrorMessage(dayFieldName)}
-            monthInvalid={!!childErrorMessage(monthFieldName)}
-            yearInvalid={!!childErrorMessage(yearFieldName)}
+            dayFieldRef={() => form.register(dayFieldName)}
+            monthFieldRef={() => form.register(monthFieldName)}
+            yearFieldRef={() => form.register(yearFieldName)}
+            dayInvalid={!!checkChildFieldError(dayFieldName)}
+            monthInvalid={!!checkChildFieldError(monthFieldName)}
+            yearInvalid={!!checkChildFieldError(yearFieldName)}
             {...props}
           />
         </Box>
@@ -106,7 +108,6 @@ export const DateField = ({
 interface Props {
   name: string;
   label: string;
-  customErrorMessage?: string;
   sxOverrides?: StyleObject;
   [key: string]: any;
 }

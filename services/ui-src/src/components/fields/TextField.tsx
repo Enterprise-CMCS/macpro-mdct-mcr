@@ -4,37 +4,40 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { StyleObject } from "utils/types/types";
+import { InputChangeEvent, StyleObject } from "utils/types/types";
 
 export const TextField = ({
   name,
   label,
   placeholder,
-  customErrorMessage,
   sxOverrides,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  const { ...form }: any = useFormContext();
-  const hasError = form.formState.errors?.[name]?.message;
-  const errorMessage = hasError ? customErrorMessage || hasError : "";
+  // get the form context
+  const form = useFormContext();
+
+  // update form data
+  const onChangeHandler = async (event: InputChangeEvent) => {
+    const { name, value } = event.target;
+    form.setValue(name, value, { shouldValidate: true });
+  };
+
+  const errorMessage = form.formState.errors?.[name]?.message;
 
   return (
     <Controller
       name={name}
       control={form.control}
-      render={({ field: { onChange, name } }) => (
+      render={() => (
         <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
           <CmsdsTextField
             name={name}
             id={name}
             label={label}
             placeholder={placeholder}
-            onChange={(value: any) => {
-              onChange(value);
-              form.onInputChange?.(value);
-            }}
+            onChange={(e) => onChangeHandler(e)}
             errorMessage={errorMessage}
             {...props}
           />
@@ -48,7 +51,6 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  customErrorMessage?: string;
   sxOverrides?: StyleObject;
   [key: string]: any;
 }
