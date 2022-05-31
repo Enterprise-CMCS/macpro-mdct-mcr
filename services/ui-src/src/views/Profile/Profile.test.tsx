@@ -30,7 +30,7 @@ describe("Test Profile view for state users", () => {
 
   test("Check that Profile page renders for state users", () => {
     const { getByTestId } = render(profileView);
-    expect(getByTestId("profile")).toBeVisible();
+    expect(getByTestId("profile-view")).toBeVisible();
   });
 
   test("Check that user state is visible", () => {
@@ -46,7 +46,7 @@ describe("Test Profile view for admin users", () => {
 
   test("Check that Profile page renders for admin users", () => {
     const { getByTestId } = render(profileView);
-    expect(getByTestId("profile")).toBeVisible();
+    expect(getByTestId("profile-view")).toBeVisible();
   });
 
   test("Check that admin button is visible", () => {
