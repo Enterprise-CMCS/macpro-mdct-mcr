@@ -11,14 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { Icon, MenuOption } from "../index";
 // utils
-import { useUser } from "utils/auth";
 import {
   makeMediaQueryClasses,
   useBreakpoint,
 } from "../../utils/useBreakpoint";
 
 export const Menu = ({ handleLogout }: Props) => {
-  const firstName = useUser().user?.attributes?.given_name;
   const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   return (
@@ -33,7 +31,7 @@ export const Menu = ({ handleLogout }: Props) => {
         >
           <MenuOption
             icon="personCircle"
-            text={firstName ? firstName : "Profile"}
+            text="My Account"
             hideText={isMobile}
           />
         </MenuButton>

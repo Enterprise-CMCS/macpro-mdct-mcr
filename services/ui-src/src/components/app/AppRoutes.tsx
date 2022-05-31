@@ -1,12 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Admin, Help, Home, NotFound, Profile } from "../../views";
+// components
+import { AdminBanner } from "components/banners/AdminBanner";
 // utils
-import { AdminBannerShape, UserRoles } from "utils/types/types";
+import { UserRoles } from "utils/types/types";
 
-export const AppRoutes = ({ adminBanner, userRole }: Props) => {
+export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
+  const adminBanner = AdminBanner();
+
   return (
-    <main id="main-wrapper">
+    <main id="main-wrapper" data-testid="main-wrapper">
       <Routes>
         <Route path="/" element={<Home adminBanner={adminBanner} />} />
         <Route
@@ -28,6 +32,5 @@ export const AppRoutes = ({ adminBanner, userRole }: Props) => {
 };
 
 interface Props {
-  adminBanner: AdminBannerShape;
   userRole: string;
 }
