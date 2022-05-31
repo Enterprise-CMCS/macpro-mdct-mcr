@@ -2,7 +2,6 @@ import { convertBreakpoints } from "./useBreakpoint";
 
 jest.mock("@chakra-ui/react", () => ({
   __esModule: true,
-  // useMediaQuery: (array: boolean[]): boolean[] => array,
   useTheme: () => ({
     breakpoints: {
       sm: "35em",
