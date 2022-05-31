@@ -14,7 +14,7 @@ const profileView = (
 describe("Test Profile", () => {
   test("Check that Profile page renders", () => {
     const { getByTestId } = render(profileView);
-    expect(getByTestId("profile")).toBeVisible();
+    expect(getByTestId("profile-view")).toBeVisible();
     expect(getByTestId("statetestid")).toBeVisible();
   });
 });

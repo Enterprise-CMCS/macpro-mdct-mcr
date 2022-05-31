@@ -18,7 +18,7 @@ export const Profile = () => {
   const navigate = useNavigate();
   return (
     <>
-      <Flex sx={sx.root} data-testid="profile">
+      <Flex sx={sx.root} data-testid="profile-view">
         <Heading as="h1" size="xl" sx={sx.heading}>
           Account Info
         </Heading>
