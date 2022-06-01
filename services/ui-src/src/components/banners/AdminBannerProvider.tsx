@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, ReactNode } from "react";
+import { useState, createContext, ReactNode } from "react";
 // utils
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
 import { bannerId } from "../../utils/constants/constants";
@@ -12,39 +12,40 @@ import {
 const ADMIN_BANNER_ID = bannerId;
 
 export const AdminBannerContext = createContext<AdminBannerShape>({
-  key: "string",
-  title: "string",
-  description: "string",
-  link: "string",
-  startDate: 0,
-  endDate: 0,
-  isActive: true,
+  bannerData: {
+    key: "string",
+    title: "string",
+    description: "string",
+    link: "string",
+    startDate: 0,
+    endDate: 0,
+    isActive: true,
+  },
   fetchAdminBanner: () => {},
   writeAdminBanner: () => {},
   deleteAdminBanner: () => {},
 });
 
-const checkBannerActivityStatus = (
-  startDate: number,
-  endDate: number
-): boolean => {
-  const currentTime = new Date().valueOf();
-  return currentTime >= startDate && currentTime <= endDate;
+const emptyBannerData = {
+  key: "",
+  title: "",
+  description: "",
+  link: "",
+  startDate: 0,
+  endDate: 0,
 };
 
 export const AdminBannerProvider = ({ children }: Props) => {
-  const [bannerData, setBannerData] = useState<AdminBannerData>({
-    key: "",
-    title: "",
-    description: "",
-    link: "",
-    startDate: 0,
-    endDate: 0,
-  });
+  const [bannerData, setBannerData] =
+    useState<AdminBannerData>(emptyBannerData);
 
   const fetchAdminBanner = async () => {
     const currentBanner = await getBanner(ADMIN_BANNER_ID);
-    setBannerData(currentBanner.Item);
+    if (currentBanner.Item) {
+      setBannerData(currentBanner.Item);
+    } else {
+      setBannerData(emptyBannerData);
+    }
   };
 
   const deleteAdminBanner = async () => {
@@ -57,24 +58,8 @@ export const AdminBannerProvider = ({ children }: Props) => {
     await fetchAdminBanner();
   };
 
-  useEffect(() => {
-    try {
-      fetchAdminBanner();
-    } catch (error: any) {
-      // swallowing error here as it is triggered by Cypress/A11y. Works live.
-      console.error("Error while fetching current banner.", error); // eslint-disable-line no-console
-    }
-  }, []);
-
-  if (bannerData) {
-    bannerData.isActive = checkBannerActivityStatus(
-      bannerData?.startDate,
-      bannerData?.endDate
-    );
-  }
-
   const adminBannerData = {
-    ...bannerData,
+    bannerData,
     fetchAdminBanner,
     writeAdminBanner,
     deleteAdminBanner,

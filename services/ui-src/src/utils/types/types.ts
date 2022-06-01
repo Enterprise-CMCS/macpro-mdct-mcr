@@ -51,7 +51,9 @@ export interface AdminBannerMethods {
   deleteAdminBanner: Function;
 }
 
-export interface AdminBannerShape extends AdminBannerData, AdminBannerMethods {}
+export interface AdminBannerShape extends AdminBannerMethods {
+  bannerData: AdminBannerData;
+}
 
 export enum AlertTypes {
   ERROR = "error",

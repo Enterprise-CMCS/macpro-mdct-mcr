@@ -6,14 +6,14 @@ import { useUser } from "utils/auth";
 //components
 import { App } from "components";
 
+jest.mock("utils/auth");
+const mockedUseUser = useUser as jest.Mock<typeof useUser>;
+
 const appComponent = (
   <RouterWrappedComponent>
     <App />
   </RouterWrappedComponent>
 );
-
-jest.mock("utils/auth");
-const mockedUseUser = useUser as jest.Mock<typeof useUser>;
 
 beforeEach(() => {
   mockedUseUser.mockImplementation((): any => mockStateUser);

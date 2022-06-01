@@ -1,18 +1,35 @@
+import { useContext } from "react";
 // components
 import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, TemplateCard } from "../../components/index";
+import {
+  AdminBannerContext,
+  Banner,
+  TemplateCard,
+} from "../../components/index";
 // data
 import data from "../../data/home-view.json";
-// utils
-import { AdminBannerShape } from "utils/types/types";
 
-export const Home = ({ adminBanner }: Props) => {
-  const showBanner = !!adminBanner.key && adminBanner.isActive;
+const checkBannerActivityStatus = (
+  startDate: number,
+  endDate: number
+): boolean => {
+  const currentTime = new Date().valueOf();
+  return currentTime >= startDate && currentTime <= endDate;
+};
+
+export const Home = () => {
+  const { bannerData } = useContext(AdminBannerContext);
+
+  const bannerIsActive = checkBannerActivityStatus(
+    bannerData?.startDate,
+    bannerData?.endDate
+  );
+  const showBanner = !!bannerData.key && bannerIsActive;
   return (
     <section>
       <Box sx={sx.root} data-testid="home-view">
         <Collapse in={showBanner}>
-          <Banner bannerData={adminBanner} />
+          <Banner bannerData={bannerData} />
         </Collapse>
         <Flex
           sx={sx.mainContentFlex}
@@ -41,10 +58,6 @@ export const Home = ({ adminBanner }: Props) => {
     </section>
   );
 };
-
-interface Props {
-  adminBanner: AdminBannerShape;
-}
 
 const sx = {
   root: {
