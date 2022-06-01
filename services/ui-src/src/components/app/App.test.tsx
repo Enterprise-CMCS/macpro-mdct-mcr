@@ -12,26 +12,8 @@ const appComponent = (
   </RouterWrappedComponent>
 );
 
-// MOCKS
-
 jest.mock("utils/auth");
 const mockedUseUser = useUser as jest.Mock<typeof useUser>;
-
-jest.mock("../banners/AdminBanner", () => ({
-  AdminBanner: jest.fn(() => ({
-    key: "",
-    title: "",
-    description: "",
-    link: "",
-    startDate: 0,
-    endDate: 0,
-    fetchAdminBanner: () => {},
-    writeAdminBanner: () => {},
-    deleteAdminBanner: () => {},
-  })),
-}));
-
-// TESTS
 
 beforeEach(() => {
   mockedUseUser.mockImplementation((): any => mockStateUser);

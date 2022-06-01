@@ -1,22 +1,7 @@
 import { render } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-//components
 import { AppRoutes } from "components";
-
-jest.mock("../banners/AdminBanner", () => ({
-  AdminBanner: jest.fn(() => ({
-    key: "",
-    title: "",
-    description: "",
-    link: "",
-    startDate: 0,
-    endDate: 0,
-    fetchAdminBanner: () => {},
-    writeAdminBanner: () => {},
-    deleteAdminBanner: () => {},
-  })),
-}));
 
 const adminUserRole = "mdctmcr-approver";
 const stateUserRole = "mdctmcr-state-user";
