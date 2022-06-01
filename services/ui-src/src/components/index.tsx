@@ -9,6 +9,10 @@ export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
 // banners
 export { AdminBanner } from "./banners/AdminBanner";
+export {
+  AdminBannerContext,
+  AdminBannerProvider,
+} from "./banners/AdminBannerProvider";
 export { Banner } from "./banners/Banner";
 // cards
 export { Card } from "./cards/Card";
