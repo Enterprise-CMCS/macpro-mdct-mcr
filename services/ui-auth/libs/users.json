@@ -20,7 +20,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-approver"
+        "Value": "mdctmcr-approver"
       }
     ]
   },
@@ -45,7 +45,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-state-user"
+        "Value": "mdctmcr-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -74,24 +74,24 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-help-desk"
+        "Value": "mdctmcr-help-desk"
       }
     ]
   },
   {
-    "username": "bouser@test.com",
+    "username": "staterep@test.com",
     "attributes": [
       {
         "Name": "email",
-        "Value": "bouser@test.com"
+        "Value": "staterep@test.com"
       },
       {
         "Name": "given_name",
-        "Value": "Bobby"
+        "Value": "Robert"
       },
       {
         "Name": "family_name",
-        "Value": "Business"
+        "Value": "States"
       },
       {
         "Name": "email_verified",
@@ -99,7 +99,11 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-bo-user"
+        "Value": "mdctmcr-state-rep"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MA"
       }
     ]
   },
@@ -124,7 +128,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-state-user"
+        "Value": "mdctmcr-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -153,7 +157,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-state-user"
+        "Value": "mdctmcr-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -182,7 +186,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-state-user"
+        "Value": "mdctmcr-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -211,7 +215,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-state-user"
+        "Value": "mdctmcr-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -240,7 +244,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-state-user"
+        "Value": "mdctmcr-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -269,7 +273,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-state-user"
+        "Value": "mdctmcr-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -298,7 +302,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctqmr-approver"
+        "Value": "mdctmcr-approver"
       }
     ]
   }

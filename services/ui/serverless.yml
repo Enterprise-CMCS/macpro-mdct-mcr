@@ -5,7 +5,7 @@ frameworkVersion: "2"
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: us-east-1
   iam:
     role:
@@ -17,6 +17,11 @@ plugins:
   - serverless-stack-termination-protection
   - serverless-iam-helper
   - serverless-s3-bucket-helper
+
+s3BucketHelper:
+  loggingConfiguration:
+    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
+    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
 
 custom:
   stage: ${opt:stage, self:provider.stage}

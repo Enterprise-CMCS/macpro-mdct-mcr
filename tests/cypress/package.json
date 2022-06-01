@@ -12,9 +12,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@cypress-audit/lighthouse": "^1.2.0",
     "@cypress-audit/pa11y": "^1.2.0",
     "concurrently": "^6.2.1",
+    "cy-verify-downloads": "^0.1.6",
     "cypress": "^9.4.1",
     "cypress-axe": "^0.14.0",
     "cypress-cucumber-preprocessor": "^4.2.0",

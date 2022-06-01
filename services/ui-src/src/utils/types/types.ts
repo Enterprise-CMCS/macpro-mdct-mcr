@@ -1,51 +1,13 @@
+import React from "react";
+
 export type { IconType } from "react-icons";
 
-export enum CoreSetAbbr {
-  ACS = "ACS",
-  CCS = "CCS",
-  CCSM = "CCSM",
-  CCSC = "CCSC",
-  HHCS = "HHCS",
-}
-
 export enum UserRoles {
-  ADMIN = "mdctqmr-approver",
-  STATE = "mdctqmr-state-user",
-  HELP = "mdctqmr-help-desk",
-  BO = "mdctqmr-bo-user",
-  BOR = "mdctqmr-bor",
-}
-
-export enum MeasureStatus {
-  COMPLETE = "complete",
-  INCOMPLETE = "incomplete",
-}
-
-export interface Params {
-  state?: string;
-  year?: string;
-  coreSetId?: CoreSetAbbr;
-}
-
-export interface MeasureData<DataType = any> {
-  compoundKey: string;
-  coreSet: CoreSetAbbr;
-  createdAt: number;
-  description: string;
-  lastAltered: number;
-  measure: string;
-  state: string;
-  status: "incomplete" | "complete" | undefined;
-  reporting: "yes" | "no" | null | undefined;
-  year: number;
-  data: DataType;
-}
-
-export enum AutoCompletedMeasures {
-  "LBW-CH" = "LBW-CH",
-  "LRCD-CH" = "LRCD-CH",
-  "PDENT-CH" = "PDENT-CH",
-  "NCIDDS-AD" = "NCIDDS-AD",
+  ADMIN = "mdctmcr-approver",
+  STATE = "mdctmcr-state-user",
+  HELP = "mdctmcr-help-desk",
+  STATE_REP = "mdctmcr-state-rep",
+  BOR = "mdctmcr-bor",
 }
 
 export interface ITerritoryList {
@@ -55,4 +17,64 @@ export interface ITerritoryList {
 
 export interface StyleObject {
   [key: string]: any;
+}
+
+export interface JsonObject {
+  [key: string]: any;
+}
+
+export interface TableContentShape {
+  headRow: string[];
+  bodyRows: string[][];
+}
+
+export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
+
+// BANNER
+
+export interface BannerData {
+  title: string;
+  description: string;
+  link?: string;
+}
+
+export interface AdminBannerData extends BannerData {
+  key: string;
+  startDate: number;
+  endDate: number;
+  isActive?: boolean;
+}
+
+export interface AdminBannerMethods {
+  fetchAdminBanner: Function;
+  writeAdminBanner: Function;
+  deleteAdminBanner: Function;
+}
+
+export interface AdminBannerShape extends AdminBannerData, AdminBannerMethods {}
+
+export enum AlertTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
+// TIME
+
+export interface DateShape {
+  year: number;
+  month: number;
+  day: number;
+}
+
+export interface TimeShape {
+  hour: number;
+  minute: number;
+  second: number;
+}
+
+export interface TimeMap {
+  startDate: TimeShape;
+  endDate: TimeShape;
 }

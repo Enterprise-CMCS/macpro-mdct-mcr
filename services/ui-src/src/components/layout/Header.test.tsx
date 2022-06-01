@@ -24,8 +24,8 @@ describe("Test Header", () => {
     expect(screen.getByTestId("app-logo")).toBeVisible();
   });
 
-  test("FAQ button is visible", () => {
-    expect(screen.getByTestId("faq-button")).toBeVisible();
+  test("Help button is visible", () => {
+    expect(screen.getByTestId("help-button")).toBeVisible();
   });
 
   test("Menu button is visible", () => {

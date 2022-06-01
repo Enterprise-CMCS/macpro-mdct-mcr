@@ -1,30 +1,44 @@
 // utils
 import { useUser } from "utils/auth";
 // components
-import { Container, Divider, Flex, Stack } from "@chakra-ui/react";
-import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
+import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
+import {
+  AdminBanner,
+  AppRoutes,
+  Footer,
+  Header,
+  LoginCognito,
+  LoginIDM,
+} from "components";
 
 export const App = () => {
-  const { logout, user, showLocalLogins, loginWithIDM } = useUser();
+  const { logout, user, userRole, showLocalLogins, loginWithIDM } = useUser();
   return (
     <div id="app-wrapper">
       {user && (
         <Flex sx={sx.appLayout}>
           <Header handleLogout={logout} />
-          <Container sx={sx.appContainer}>
-            <AppRoutes />
+          <Container sx={sx.appContainer} data-testid="app-container">
+            <AppRoutes adminBanner={AdminBanner()} userRole={userRole} />
           </Container>
           <Footer />
         </Flex>
       )}
       {!user && showLocalLogins && (
-        <Container sx={sx.loginContainer}>
-          <Stack spacing={8}>
-            <LoginIDM loginWithIDM={loginWithIDM} />
-            <Divider />
-            <LoginCognito />
-          </Stack>
-        </Container>
+        <main>
+          <Container sx={sx.appContainer}>
+            <Heading as="h1" size="xl" sx={{ my: "6rem", textAlign: "center" }}>
+              Managed Care Reporting
+            </Heading>
+          </Container>
+          <Container sx={sx.loginContainer}>
+            <Stack spacing={8}>
+              <LoginIDM loginWithIDM={loginWithIDM} />
+              <Divider />
+              <LoginCognito />
+            </Stack>
+          </Container>
+        </main>
       )}
     </div>
   );
@@ -32,11 +46,11 @@ export const App = () => {
 
 const sx = {
   appLayout: {
-    flexDirection: "column",
     minHeight: "100vh",
+    flexDirection: "column",
   },
   appContainer: {
-    maxW: "7xl",
+    maxW: "appMax",
     flex: "1 0 auto",
   },
   loginContainer: {
