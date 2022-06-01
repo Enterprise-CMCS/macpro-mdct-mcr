@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
@@ -6,14 +6,14 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Admin } from "../index";
 
 const mockBannerData = {
-  key: "",
-  title: "",
-  description: "",
-  startDate: 0,
-  endDate: 0,
-  fetchAdminBanner: () => {},
-  writeAdminBanner: () => {},
-  deleteAdminBanner: () => {},
+  key: "bannerId",
+  title: "Yes here I am a banner",
+  description: "I have a description too",
+  startDate: 1641016800000, // 1/1/2022
+  endDate: 1672552799000, // 12/31/2022
+  fetchAdminBanner: jest.fn(() => {}),
+  writeAdminBanner: jest.fn(() => {}),
+  deleteAdminBanner: jest.fn(() => {}),
 };
 
 const adminView = (
@@ -29,6 +29,13 @@ describe("Test /admin view", () => {
 
   test("Check that /admin view renders", () => {
     expect(screen.getByTestId("admin-view")).toBeVisible();
+  });
+
+  test("Check that delete admin banner button works", () => {
+    const deleteButton = screen.getByTestId("delete-admin-banner-button");
+    expect(deleteButton).toBeVisible();
+    fireEvent.click(deleteButton);
+    expect(mockBannerData.deleteAdminBanner).toHaveBeenCalled();
   });
 });
 
