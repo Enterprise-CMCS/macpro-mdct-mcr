@@ -18,7 +18,7 @@ const mockBannerData = {
 
 const adminView = (
   <RouterWrappedComponent>
-    <Admin adminBanner={mockBannerData} />
+    <Admin />
   </RouterWrappedComponent>
 );
 

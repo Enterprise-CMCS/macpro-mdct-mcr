@@ -6,22 +6,11 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 // views
 import { Home } from "../index";
 
-const mockBannerData = {
-  key: "",
-  title: "",
-  description: "",
-  startDate: 0,
-  endDate: 0,
-  fetchAdminBanner: () => {},
-  writeAdminBanner: () => {},
-  deleteAdminBanner: () => {},
-};
-
 const queryClient = new QueryClient();
 const homeView = (
   <QueryClientProvider client={queryClient}>
     <RouterWrappedComponent>
-      <Home adminBanner={mockBannerData} />
+      <Home />
     </RouterWrappedComponent>
   </QueryClientProvider>
 );

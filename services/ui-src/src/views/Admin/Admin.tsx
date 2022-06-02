@@ -3,8 +3,8 @@ import { useContext } from "react";
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   AdminBannerContext,
-  Banner,
   AdminBannerForm,
+  Banner,
 } from "../../components/index";
 // utils
 import { formatDateUtcToEt } from "utils/time/time";
