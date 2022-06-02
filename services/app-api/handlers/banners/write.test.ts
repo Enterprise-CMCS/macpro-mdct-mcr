@@ -43,7 +43,7 @@ describe("Test Write Banner", () => {
     const res = await writeBanner(testEvent, null);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
   });
 
   test("Test Successful Run of Banner Creation", async () => {
@@ -62,7 +62,7 @@ describe("Test Write Banner", () => {
     const res = await writeBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
+    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });
 
   test("Test bannerKey empty", async () => {
@@ -73,6 +73,6 @@ describe("Test Write Banner", () => {
     const res = await writeBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
+    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });
 });
