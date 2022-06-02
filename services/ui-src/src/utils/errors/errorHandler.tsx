@@ -1,9 +1,6 @@
 export const errorHandler = (error: Error | any): void => {
-  let message = error.toString();
-
-  if (!(error instanceof Error) && error.message) {
-    message = error.message;
-  }
-
+  const isError = error && error.stack && error.message;
+  const message = isError ? error.message : JSON.stringify(error);
   alert(message);
+  return message;
 };
