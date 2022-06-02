@@ -3,14 +3,14 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/maintainability)](https://codeclimate.com/github/CMSgov/mdct-mcr/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/CMSgov/mdct-mcr/test_coverage)
 
-MDCT-MCR is an application meant to collect state report data to help health of the program and access to Medicaid Managed Care.
+MDCT-MCR is an application meant to collect state report data to help the health of the program and access to Medicaid Managed Care.
 
-Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and managed care organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
+Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and Managed Care Organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
 
 Project Goals:
 
-- Improve monitoring and oversight of managed care as the dominant delivery system for medicaid/CHIP.
-- Generate and analyze state-specific and nationwide data across the universe of managed care programs and requirements.
+- Improve monitoring and oversight of managed care as the dominant delivery system for Medicaid/CHIP.
+- Generate and analyze state-specific and nationwide data across managed care programs and requirements.
 - Identify and target efforts to assist states in improving their managed care programs.
 - Ensure compliance with managed care statutes and regulations, such as ensuring access to care.
 
@@ -43,7 +43,10 @@ Before starting the project we're going to install some tools. We recommend havi
 3. In the services/ui-src directory copy the .env_example file and name it .env
 4. Overwrite the values here with the examples in the Environment Configuration below
 5. In the root directory run `pre-commit install`
-6. Also in the root of the project run `./dev local`
+
+### Running the project locally
+
+In the root of the project run `./dev local`
 
 #### Environment Configuration
 
@@ -91,19 +94,19 @@ For a password to that user, please ask a fellow developer.
 
 ### Running DynamoDB locally
 
-In order to run dynamodb locally you will need to have java installed on your system. If not currently installed go here: https://java.com/en/download/ to download the latest version.
+In order to run DynamoDB locally you will need to have java installed on your system. M1 Mac users can download [java from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`. Otherwise [install java from here](https://java.com/en/download/).
 
-If you want to a visual view of your dynamodb after the application is up and running you can install the dynamodb-admin tool from here: https://www.npmjs.com/package/dynamodb-admin
+To view your database after the application is up and running you can install the [dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
 
-- to run the dynamodb gui, run `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin` in a new terminal window
+- Install and run `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin` in a new terminal window
 
 ### Local Development Additional Info
 
-Local dev is configured in typescript project in `./src`. The entrypoint is `./src/dev.ts`, it manages running the moving pieces locally: the API, the database, the filestore, and the frontend.
+Local dev is configured as a Typescript project. The entrypoint in `./src/dev.ts` manages running the moving pieces locally: the API, database, filestore, and frontend.
 
-Local dev is built around the Serverless plugin [`serverless-offline`](https://github.com/dherault/serverless-offline). `serverless-offline` runs an API gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your lambdas on every save. The plugins [`serverless-dynamodb-local`](https://github.com/99x/serverless-dynamodb-local) and [`serverless-s3-local`](https://github.com/ar90n/serverless-s3-local) stand up the local db and local s3 in a similar fashion.
+Local dev is built around the Serverless plugin [serverless-offline](https://github.com/dherault/serverless-offline). `serverless-offline` runs an API Gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your Lambdas on every save. The plugins [serverless-dynamodb-local](https://github.com/99x/serverless-dynamodb-local) and [serverless-s3-local](https://github.com/ar90n/serverless-s3-local) stand up the local database and s3 in a similar fashion.
 
-When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
+Local authorization bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
 ## Testing
 
@@ -111,12 +114,29 @@ When run locally, auth bypasses Cognito. The frontend mimics login in local stor
 
 We use Jest for unit tests.
 
+Run all frontend unit tests
+
 ```
-# run all unit tests
 cd services/ui-src/
 yarn test
+```
 
-# live reload all tests
+Run all backend unit tests
+
+```
+cd services/app-api/
+yarn test
+```
+
+In either of these directories you can also check code coverage with
+
+```
+yarn coverage
+```
+
+Live reload all tests
+
+```
 yarn test --watch
 ```
 
@@ -132,11 +152,11 @@ Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](h
 
 Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe) and [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html).
 
-### Prettier Linter
+### Prettier and ESLint
 
-We use Prettier to format all code. This runs as part of a Git Hook and changes to files will cause the deploy to fail. If you followed the instructions above this is already installed and configured.
+We use Prettier to format all code. This runs as part of a Git Hook and invalid formats in changed files will cause the deploy to fail. If you followed the instructions above this is already installed and configured.
 
-Most IDEs have a Prettier plugin that can be configured to run on file save. You can also run the format check manually from the IDE or invoking Prettier on the command line.
+Most IDEs have a Prettier plugin that can be configured to run on file save. You can also run the format check manually from the IDE or by invoking Prettier on the command line.
 
 ```
 npx prettier --write "**/*.tsx"
@@ -144,11 +164,13 @@ npx prettier --write "**/*.tsx"
 
 All changed files will also be checked for formatting via the pre-commit hook.
 
+ESLint works in a similar manner for all code linting.
+
 ### Github Action Script Checks
 
-On push to the repository push or opening of a pull request, the [deploy.yml](https://github.com/CMSgov/mdct-mcr/blob/main/.github/workflows/deploy.yml) file will trigger and run. This script sets up and does a number of things, but since this is a simple push its mostly looking to see what the code coverage of the tests are.
+On a push to the repository or opening a pull request the [deploy.yml](https://github.com/CMSgov/mdct-mcr/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
 
-On pull request submission into the main branch the scripts will also trigger a Cypress E2E and an A11y step to ensure that the code quality is still passing the End-to-End and accessibility tests.
+Upon opening a pull request into the main branch the scripts will also trigger a Cypress E2E and an A11y step to ensure that the code quality is still passing the End-to-End and accessibility tests.
 
 ## Deployments
 
@@ -156,7 +178,7 @@ This application is built and deployed via GitHub Actions.
 
 ### Deployment Prerequisites
 
-While not necessary, it might be beneficial to have AWS CLI installed/configured & authed with AWS account. You will get this after you've filled out your eQIP forms and have successfully made it through the CMS new user process. Talk to a fellow developer for more details. You don't technically need this since all deployments are automated through Github Actions, but should something go wrong, you will.
+While not necessary, it might be beneficial to have AWS CLI installed/configured & authed with an AWS account. You will get this after you've filled out your eQIP forms and have successfully made it through the CMS new user process. Talk to a fellow developer for more details. You don't technically need this since all deployments are automated through Github Actions, but should something go wrong, you will.
 
 ### Deployment Steps
 
@@ -174,7 +196,7 @@ We have 3 main branches that we work out of:
 - Val (Pointed to [https://mdctmcrval.cms.gov/](https://mdctmcrval.cms.gov/)) is our beta branch
 - Production (Pointed to [http://mdctmcr.cms.gov/](http://mdctmcr.cms.gov/)) is our release branch
 
-When a pull request is approved and merged into main, the deploy script will spin up and upon completion will deploy to [https://mdctmcrdev.cms.gov/](https://mdctmcrdev.cms.gov/). If a user wants to deploy to val, they simply need to create a pull request where Main is being merged into Val. Once that pull request is approved, the deploy script will run again and upon completion will deploy to [https://mdctmcrval.cms.gov/](https://mdctmcrval.cms.gov/). So to quickly break it down:
+When a pull request is approved and merged into main the deploy script will spin up and upon completion will deploy to [https://mdctmcrdev.cms.gov/](https://mdctmcrdev.cms.gov/). If a user wants to deploy to val they simply need to create a pull request where Main is being merged into Val. Once that pull request is approved, the deploy script will run again and upon completion will deploy to [https://mdctmcrval.cms.gov/](https://mdctmcrval.cms.gov/). So to quickly break it down:
 
 - Submit pull request of your code to Main.
 - Approve pull request and merge into main.
