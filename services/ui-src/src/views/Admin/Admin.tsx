@@ -46,6 +46,7 @@ export const Admin = ({ adminBanner }: Props) => (
                 sx={sx.deleteBannerButton}
                 colorScheme="colorSchemes.error"
                 onClick={() => adminBanner.deleteAdminBanner()}
+                data-testid="delete-admin-banner-button"
               >
                 Delete Current Banner
               </Button>
