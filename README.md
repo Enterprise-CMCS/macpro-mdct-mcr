@@ -137,7 +137,6 @@ Integration tests can use [cypress-axe](https://github.com/component-driven/cypr
 We use Prettier to format all code. This runs as part of a Git Hook and changes to files will cause the deploy to fail. If you followed the instructions above this is already installed and configured.
 
 Most IDEs have a Prettier plugin that can be configured to run on file save. You can also run the format check manually from the IDE or invoking Prettier on the command line.
-!!!! Is this right?
 
 ```
 npx prettier --write "**/*.tsx"
