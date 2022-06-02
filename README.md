@@ -1,7 +1,7 @@
 # MDCT-MCR
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/CMSgov/mdct-mcr/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/maintainability)](https://codeclimate.com/github/CMSgov/mdct-mcr/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/CMSgov/mdct-mcr/test_coverage)
 
 MDCT-MCR is an application meant to collect state report data to help health of the program and access to Medicaid Managed Care.
 
