@@ -1,4 +1,4 @@
-import { useState, createContext, ReactNode, useMemo } from "react";
+import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
 import { bannerId } from "../../utils/constants/constants";
@@ -38,6 +38,10 @@ export const AdminBannerProvider = ({ children }: Props) => {
     await writeBanner(newBannerData);
     await fetchAdminBanner();
   };
+
+  useEffect(() => {
+    fetchAdminBanner();
+  }, []);
 
   const providerValue = useMemo(
     () => ({
