@@ -25,7 +25,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
 
   const fetchAdminBanner = async () => {
     const currentBanner = await getBanner(ADMIN_BANNER_ID);
-    const newBannerData = currentBanner.Item || {};
+    const newBannerData = currentBanner?.Item || {};
     setBannerData(newBannerData);
   };
 

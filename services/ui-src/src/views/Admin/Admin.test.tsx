@@ -20,14 +20,9 @@ describe("Test /admin view", () => {
     expect(screen.getByTestId("admin-view")).toBeVisible();
   });
 
-  test("Check that delete admin banner button works", () => {
+  test("Check that delete admin banner button does not render if there is not a current banner", () => {
     const deleteButton = screen.getByTestId("delete-admin-banner-button");
-    expect(deleteButton).toBeVisible();
-    /*
-     * TODO: Finish this test
-     * fireEvent.click(deleteButton);
-     * expect(mockBannerData.deleteAdminBanner).toHaveBeenCalled();
-     */
+    expect(deleteButton).not.toBeVisible();
   });
 });
 

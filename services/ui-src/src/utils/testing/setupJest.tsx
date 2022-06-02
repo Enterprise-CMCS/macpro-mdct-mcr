@@ -78,13 +78,16 @@ export const mockAdminUser = {
 jest.mock("aws-amplify", () => ({
   __esModule: true,
   Auth: {
-    currentSession: jest.fn().mockImplementation(() => {
-      return {
-        idToken: {
-          jwtToken: "eyJLongToken",
-        },
-      };
+    currentSession: jest.fn().mockReturnValue({
+      getIdToken: () => ({
+        getJwtToken: () => "eyJLongToken",
+      }),
     }),
+  },
+  API: {
+    get: () => {
+      // console.log("yeah im being used");
+    },
   },
 }));
 

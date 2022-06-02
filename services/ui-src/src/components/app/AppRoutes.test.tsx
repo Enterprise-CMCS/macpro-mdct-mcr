@@ -13,7 +13,7 @@ const appRoutesComponent = (history: any, userRole: string) => (
 );
 
 describe("Test AppRoutes for admin-specific routes", () => {
-  test.only("/admin is visible for admin user", () => {
+  test("/admin is visible for admin user", () => {
     const history = createMemoryHistory();
     history.push("/admin");
     render(appRoutesComponent(history, adminUserRole));
