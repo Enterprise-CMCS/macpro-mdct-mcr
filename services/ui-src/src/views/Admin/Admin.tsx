@@ -66,6 +66,7 @@ export const Admin = () => {
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
                   onClick={() => deleteAdminBanner()}
+                  data-testid="delete-admin-banner-button"
                 >
                   Delete Current Banner
                 </Button>
