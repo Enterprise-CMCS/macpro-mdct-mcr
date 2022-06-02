@@ -6,16 +6,10 @@ import {
   Banner,
   TemplateCard,
 } from "../../components/index";
+// utils
+import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 // data
 import data from "../../data/home-view.json";
-
-const checkBannerActivityStatus = (
-  startDate: number,
-  endDate: number
-): boolean => {
-  const currentTime = new Date().valueOf();
-  return currentTime >= startDate && currentTime <= endDate;
-};
 
 export const Home = () => {
   const { bannerData } = useContext(AdminBannerContext);

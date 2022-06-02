@@ -7,17 +7,10 @@ import {
   Banner,
 } from "../../components/index";
 // utils
+import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 import { formatDateUtcToEt } from "utils/time/time";
 // data
 import data from "../../data/admin-view.json";
-
-const checkBannerActivityStatus = (
-  startDate: number,
-  endDate: number
-): boolean => {
-  const currentTime = new Date().valueOf();
-  return currentTime >= startDate && currentTime <= endDate;
-};
 
 export const Admin = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner } =
