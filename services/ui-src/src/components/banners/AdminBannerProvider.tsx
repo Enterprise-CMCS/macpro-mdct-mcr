@@ -1,4 +1,4 @@
-import { useState, createContext, ReactNode } from "react";
+import { useState, createContext, ReactNode, useMemo } from "react";
 // utils
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
 import { bannerId } from "../../utils/constants/constants";
@@ -12,40 +12,21 @@ import {
 const ADMIN_BANNER_ID = bannerId;
 
 export const AdminBannerContext = createContext<AdminBannerShape>({
-  bannerData: {
-    key: "string",
-    title: "string",
-    description: "string",
-    link: "string",
-    startDate: 0,
-    endDate: 0,
-    isActive: true,
-  },
+  bannerData: {} as AdminBannerData,
   fetchAdminBanner: () => {},
   writeAdminBanner: () => {},
   deleteAdminBanner: () => {},
 });
 
-const emptyBannerData = {
-  key: "",
-  title: "",
-  description: "",
-  link: "",
-  startDate: 0,
-  endDate: 0,
-};
-
 export const AdminBannerProvider = ({ children }: Props) => {
-  const [bannerData, setBannerData] =
-    useState<AdminBannerData>(emptyBannerData);
+  const [bannerData, setBannerData] = useState<AdminBannerData>(
+    {} as AdminBannerData
+  );
 
   const fetchAdminBanner = async () => {
     const currentBanner = await getBanner(ADMIN_BANNER_ID);
-    if (currentBanner.Item) {
-      setBannerData(currentBanner.Item);
-    } else {
-      setBannerData(emptyBannerData);
-    }
+    const newBannerData = currentBanner.Item || {};
+    setBannerData(newBannerData);
   };
 
   const deleteAdminBanner = async () => {
@@ -58,15 +39,18 @@ export const AdminBannerProvider = ({ children }: Props) => {
     await fetchAdminBanner();
   };
 
-  const adminBannerData = {
-    bannerData,
-    fetchAdminBanner,
-    writeAdminBanner,
-    deleteAdminBanner,
-  };
+  const providerValue = useMemo(
+    () => ({
+      bannerData,
+      fetchAdminBanner,
+      writeAdminBanner,
+      deleteAdminBanner,
+    }),
+    [bannerData]
+  );
 
   return (
-    <AdminBannerContext.Provider value={adminBannerData}>
+    <AdminBannerContext.Provider value={providerValue}>
       {children}
     </AdminBannerContext.Provider>
   );

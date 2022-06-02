@@ -2,18 +2,21 @@ import { render } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { AppRoutes } from "components";
+import { ApiProvider } from "utils/api";
 
 const adminUserRole = "mdctmcr-approver";
 const stateUserRole = "mdctmcr-state-user";
 
 const appRoutesComponent = (history: any, userRole: string) => (
   <Router location={history.location} navigator={history}>
-    <AppRoutes userRole={userRole} />
+    <ApiProvider>
+      <AppRoutes userRole={userRole} />
+    </ApiProvider>
   </Router>
 );
 
 describe("Test AppRoutes for admin-specific routes", () => {
-  test("/admin is visible for admin user", () => {
+  test.only("/admin is visible for admin user", () => {
     const history = createMemoryHistory();
     history.push("/admin");
     render(appRoutesComponent(history, adminUserRole));

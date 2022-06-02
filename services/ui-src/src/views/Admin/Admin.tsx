@@ -20,10 +20,8 @@ const checkBannerActivityStatus = (
 };
 
 export const Admin = () => {
-  const { bannerData, fetchAdminBanner, deleteAdminBanner, writeAdminBanner } =
+  const { bannerData, deleteAdminBanner, writeAdminBanner } =
     useContext(AdminBannerContext);
-
-  fetchAdminBanner();
   const bannerIsActive = checkBannerActivityStatus(
     bannerData?.startDate,
     bannerData?.endDate
@@ -41,8 +39,8 @@ export const Admin = () => {
           </Box>
           <Box sx={sx.currentBannerSectionBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
-            <Collapse in={!!bannerData.key}>
-              {bannerData.key && (
+            <Collapse in={!!bannerData?.key}>
+              {bannerData?.key && (
                 <Flex sx={sx.currentBannerInfo}>
                   <Text sx={sx.currentBannerStatus}>
                     Status:{" "}
@@ -52,11 +50,11 @@ export const Admin = () => {
                   </Text>
                   <Text sx={sx.currentBannerDate}>
                     Start Date:{" "}
-                    <span>{formatDateUtcToEt(bannerData.startDate)}</span>
+                    <span>{formatDateUtcToEt(bannerData?.startDate)}</span>
                   </Text>
                   <Text sx={sx.currentBannerDate}>
                     End Date:{" "}
-                    <span>{formatDateUtcToEt(bannerData.endDate)}</span>
+                    <span>{formatDateUtcToEt(bannerData?.endDate)}</span>
                   </Text>
                 </Flex>
               )}
@@ -72,7 +70,7 @@ export const Admin = () => {
                 </Button>
               </Flex>
             </Collapse>
-            {!bannerData.key && <Text>There is no current banner</Text>}
+            {!bannerData?.key && <Text>There is no current banner</Text>}
           </Box>
           <Flex sx={sx.newBannerBox}>
             <Text sx={sx.sectionHeader}>Create a New Banner</Text>

@@ -64,6 +64,19 @@ export const mockAdminUser = {
   loginWithIDM: () => {},
 };
 
+jest.mock("aws-amplify", () => ({
+  __esModule: true,
+  Auth: {
+    currentSession: jest.fn().mockImplementation(() => {
+      return {
+        idToken: {
+          jwtToken: "eyJLongToken",
+        },
+      };
+    }),
+  },
+}));
+
 export const RouterWrappedComponent: React.FC = ({ children }) => (
   <Router>{children}</Router>
 );

@@ -19,12 +19,12 @@ const checkBannerActivityStatus = (
 
 export const Home = () => {
   const { bannerData } = useContext(AdminBannerContext);
-
   const bannerIsActive = checkBannerActivityStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
   const showBanner = !!bannerData.key && bannerIsActive;
+
   return (
     <section>
       <Box sx={sx.root} data-testid="home-view">
