@@ -16,13 +16,11 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
 }));
 
 jest.mock("../../utils/auth/authorization", () => ({
-  __esModule: true,
   isAuthorized: jest.fn().mockReturnValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
-  __esModule: true,
   init: jest.fn(),
   flush: jest.fn(),
 }));
@@ -33,12 +31,12 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
-describe("Test Delete Banner", () => {
+describe("Test deleteBanner API method", () => {
   beforeEach(() => {
     process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
   });
 
-  test("Test not authorized to delete banner", async () => {
+  test("Test not authorized to delete banner throws 403 error", async () => {
     const res = await deleteBanner(testEvent, null);
 
     expect(res.statusCode).toBe(403);
@@ -53,7 +51,7 @@ describe("Test Delete Banner", () => {
     expect(res.body).toContain("testKey");
   });
 
-  test("Test bannerKey not provided", async () => {
+  test("Test bannerKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: {},
@@ -64,7 +62,7 @@ describe("Test Delete Banner", () => {
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });
 
-  test("Test bannerKey empty", async () => {
+  test("Test bannerKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: { bannerId: "" },
