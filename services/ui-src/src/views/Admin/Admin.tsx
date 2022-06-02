@@ -34,8 +34,14 @@ export const Admin = () => {
             <Text sx={sx.sectionHeader}>Current Banner</Text>
             <Collapse in={!!bannerData?.key}>
               {bannerData?.key && (
-                <Flex sx={sx.currentBannerInfo}>
-                  <Text sx={sx.currentBannerStatus}>
+                <Flex
+                  sx={sx.currentBannerInfo}
+                  data-testid="current-banner-info"
+                >
+                  <Text
+                    sx={sx.currentBannerStatus}
+                    data-testid="current-banner-status"
+                  >
                     Status:{" "}
                     <span className={bannerIsActive ? "active" : "inactive"}>
                       {bannerIsActive ? "Active" : "Inactive"}
