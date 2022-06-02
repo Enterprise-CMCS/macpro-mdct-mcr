@@ -14,7 +14,7 @@ Project Goals:
 - Identify and target efforts to assist states in improving their managed care programs.
 - Ensure compliance with managed care statutes and regulations, such as ensuring access to care.
 
-## Table of contents
+## Table of Contents
 
 - [Quick Start](#quick-start)
 - [Testing](#testing)
