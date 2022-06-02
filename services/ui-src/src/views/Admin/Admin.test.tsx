@@ -5,20 +5,9 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 // views
 import { Admin } from "../index";
 
-const mockBannerData = {
-  key: "",
-  title: "",
-  description: "",
-  startDate: 0,
-  endDate: 0,
-  fetchAdminBanner: () => {},
-  writeAdminBanner: () => {},
-  deleteAdminBanner: () => {},
-};
-
 const adminView = (
   <RouterWrappedComponent>
-    <Admin adminBanner={mockBannerData} />
+    <Admin />
   </RouterWrappedComponent>
 );
 
@@ -29,6 +18,11 @@ describe("Test /admin view", () => {
 
   test("Check that /admin view renders", () => {
     expect(screen.getByTestId("admin-view")).toBeVisible();
+  });
+
+  test("Check that delete admin banner button does not render if there is not a current banner", () => {
+    const deleteButton = screen.getByTestId("delete-admin-banner-button");
+    expect(deleteButton).not.toBeVisible();
   });
 });
 

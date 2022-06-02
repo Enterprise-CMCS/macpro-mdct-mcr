@@ -1,22 +1,8 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-//components
 import { AppRoutes } from "components";
-
-jest.mock("../banners/AdminBanner", () => ({
-  AdminBanner: jest.fn(() => ({
-    key: "",
-    title: "",
-    description: "",
-    link: "",
-    startDate: 0,
-    endDate: 0,
-    fetchAdminBanner: () => {},
-    writeAdminBanner: () => {},
-    deleteAdminBanner: () => {},
-  })),
-}));
 
 const adminUserRole = "mdctmcr-approver";
 const stateUserRole = "mdctmcr-state-user";
@@ -27,31 +13,62 @@ const appRoutesComponent = (history: any, userRole: string) => (
   </Router>
 );
 
+let history: any;
+
 describe("Test AppRoutes for admin-specific routes", () => {
-  test("/admin is visible for admin user", () => {
-    const history = createMemoryHistory();
+  beforeEach(async () => {
+    history = createMemoryHistory();
     history.push("/admin");
-    render(appRoutesComponent(history, adminUserRole));
+    await act(async () => {
+      render(appRoutesComponent(history, adminUserRole));
+    });
+  });
+  test("/admin is visible for admin user", async () => {
     const currentPath = history.location.pathname;
     expect(currentPath).toEqual("/admin");
   });
 });
 
-describe("Test AppRoutes for user-specific routes", () => {
-  test("/admin not visible for state user; redirects to /profile", () => {
-    const history = createMemoryHistory();
+describe("Test AppRoutes for non-admin-specific routes", () => {
+  beforeEach(async () => {
+    history = createMemoryHistory();
     history.push("/admin");
-    render(appRoutesComponent(history, stateUserRole));
+    await act(async () => {
+      render(appRoutesComponent(history, stateUserRole));
+    });
+  });
+
+  test("/admin not visible for state user; redirects to /profile", async () => {
+    const currentPath = history.location.pathname;
+    expect(currentPath).toEqual("/profile");
+  });
+});
+
+describe("Test AppRoutes for non-admin-specific routes", () => {
+  beforeEach(async () => {
+    history = createMemoryHistory();
+    history.push("/admin");
+    await act(async () => {
+      render(appRoutesComponent(history, stateUserRole));
+    });
+  });
+
+  test("/admin not visible for state user; redirects to /profile", async () => {
     const currentPath = history.location.pathname;
     expect(currentPath).toEqual("/profile");
   });
 });
 
 describe("Test AppRoutes 404 handling", () => {
-  test("not-found routes redirect to 404", () => {
-    const history = createMemoryHistory();
+  beforeEach(async () => {
+    history = createMemoryHistory();
     history.push("/obviously-fake-route");
-    const { getByTestId } = render(appRoutesComponent(history, stateUserRole));
-    expect(getByTestId("404")).toBeVisible();
+    await act(async () => {
+      render(appRoutesComponent(history, stateUserRole));
+    });
+  });
+
+  test("not-found routes redirect to 404", () => {
+    expect(screen.getByTestId("404")).toBeVisible();
   });
 });
