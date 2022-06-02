@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
 import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
@@ -20,8 +21,10 @@ beforeEach(() => {
 });
 
 describe("Test App", () => {
-  test("App login page is visible", () => {
-    render(appComponent);
+  test("App login page is visible", async () => {
+    await act(async () => {
+      render(appComponent);
+    });
     expect(screen.getByTestId("app-container")).toBeVisible();
   });
 });
@@ -29,7 +32,8 @@ describe("Test App", () => {
 describe("App login page accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(appComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    await act(async () => {
+      expect(await axe(container)).toHaveNoViolations();
+    });
   });
 });
