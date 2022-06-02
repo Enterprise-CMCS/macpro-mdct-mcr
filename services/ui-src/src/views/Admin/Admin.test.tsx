@@ -54,9 +54,18 @@ describe("Test /admin view without banner", () => {
     expect(screen.getByTestId("admin-view")).toBeVisible();
   });
 
-  test("Check that delete admin banner button does not render if there is not a current banner", () => {
+  test("Check that current banner info does not render", () => {
+    const currentBannerInfo = screen.queryByTestId("current-banner-info");
+    expect(currentBannerInfo).not.toBeInTheDocument();
+
     const deleteButton = screen.getByTestId("delete-admin-banner-button");
     expect(deleteButton).not.toBeVisible();
+  });
+
+  test("Check that 'no current banner' text shows", () => {
+    expect(
+      screen.queryByText("There is no current banner")
+    ).toBeInTheDocument();
   });
 });
 
@@ -71,9 +80,44 @@ describe("Test /admin view with banner", () => {
     expect(screen.getByTestId("admin-view")).toBeVisible();
   });
 
-  test("Check that delete admin banner button renders if there is a current banner", () => {
+  test("Check that current banner info renders", () => {
+    const currentBannerInfo = screen.getByTestId("current-banner-info");
+    expect(currentBannerInfo).toBeVisible();
+
     const deleteButton = screen.getByTestId("delete-admin-banner-button");
     expect(deleteButton).toBeVisible();
+  });
+
+  test("Check that 'no current banner' text does not show", () => {
+    expect(
+      screen.queryByText("There is no current banner")
+    ).not.toBeInTheDocument();
+  });
+});
+
+describe("Test /admin view with active/inactive banner", () => {
+  const currentTime = Date.now(); // 'current' time in ms since unix epoch
+  const oneDay = 1000 * 60 * 60 * 24; // 1000ms * 60s * 60m * 24h = 86,400,000ms
+  const context = mockContextWithBanner;
+
+  test("Active banner shows 'active' status", async () => {
+    context.bannerData.startDate = currentTime - oneDay;
+    context.bannerData.endDate = currentTime + oneDay;
+    await act(async () => {
+      render(adminView(context));
+    });
+    const currentBannerStatus = screen.getByTestId("current-banner-status");
+    expect(currentBannerStatus.textContent).toEqual("Status: Active");
+  });
+
+  test("Inactive banner shows 'inactive' status", async () => {
+    context.bannerData.startDate = currentTime + oneDay;
+    context.bannerData.endDate = currentTime + oneDay + oneDay;
+    await act(async () => {
+      render(adminView(context));
+    });
+    const currentBannerStatus = screen.getByTestId("current-banner-status");
+    expect(currentBannerStatus.textContent).toEqual("Status: Inactive");
   });
 });
 
