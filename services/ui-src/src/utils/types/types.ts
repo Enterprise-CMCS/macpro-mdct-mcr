@@ -76,8 +76,3 @@ export interface TimeShape {
   minute: number;
   second: number;
 }
-
-export interface TimeMap {
-  startDate: TimeShape;
-  endDate: TimeShape;
-}

@@ -8,14 +8,19 @@ import { DateField } from "components";
 const errorVerbiage = "date-field-error";
 
 jest.mock("react-hook-form", () => ({
+  __esModule: true,
   ...jest.requireActual("react-hook-form"),
   useForm: () => ({
     control: () => ({}),
   }),
   useFormContext: () => ({
     register: () => {},
-    setValue: () => {},
-    getValues: () => {},
+    setValue: jest.fn(() => {}),
+    getValues: () => ({
+      testDateFieldMonth: 1,
+      testDateFieldDay: 2,
+      testDateFieldYear: 2022,
+    }),
     formState: {
       errors: {
         testDateField: {
@@ -26,18 +31,18 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
-const form = require("react-hook-form").useForm;
-const mockOnChangeHandler = jest.fn();
+const formProvider = require("react-hook-form").useForm();
+const mockOnBlurHandler = jest.fn(() => {});
 
 const dateFieldComponent = (
-  <FormProvider {...form}>
+  <FormProvider {...formProvider}>
     <form>
       <div>
         <DateField
           name="testDateField"
           label="test-date-field"
           labelId="test-date-field"
-          onChange={mockOnChangeHandler}
+          onBlur={mockOnBlurHandler}
         />
       </div>
     </form>
@@ -45,6 +50,9 @@ const dateFieldComponent = (
 );
 
 describe("Test DateField component", () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+  });
   test("DateField is visible", async () => {
     const result = render(dateFieldComponent);
     const dateField = result.container.querySelector("#test-date-field");
@@ -56,14 +64,21 @@ describe("Test DateField component", () => {
     expect(screen.queryByText(errorVerbiage)).toBeInTheDocument();
   });
 
-  test("onChange event fires handler", async () => {
-    render(dateFieldComponent);
+  test("onChange event updates value", async () => {
     const result = render(dateFieldComponent);
     const dateFieldMonthInput: HTMLInputElement =
       result.container.querySelector('[name="testDateFieldMonth"]')!;
     await userEvent.type(dateFieldMonthInput, "1");
     expect(dateFieldMonthInput).toHaveValue("1");
-    expect(mockOnChangeHandler).toHaveBeenCalled();
+  });
+
+  test("onBlur event fires handler", async () => {
+    const result = render(dateFieldComponent);
+    const dateFieldMonthInput: HTMLInputElement =
+      result.container.querySelector('[name="testDateFieldMonth"]')!;
+    await userEvent.type(dateFieldMonthInput, "1");
+    await userEvent.tab();
+    expect(mockOnBlurHandler).toHaveBeenCalled();
   });
 });
 

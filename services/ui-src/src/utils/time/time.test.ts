@@ -1,4 +1,11 @@
-import { convertDateEtToUtc, formatDateUtcToEt } from "./time";
+import {
+  calculateTimeByDateType,
+  convertDateEtToUtc,
+  formatDateUtcToEt,
+  midnight,
+  noon,
+  oneSecondToMidnight,
+} from "./time";
 
 // 1/1/2022 @ 00:00:00
 const testDate = {
@@ -6,6 +13,21 @@ const testDate = {
   utcString: "Sat, 01 Jan 2022 05:00:00 GMT",
   etFormattedString: "1/1/22",
 };
+
+describe("Test calculateTimeByDateType", () => {
+  test("known dateType returns correct date value", () => {
+    const startDateTest = calculateTimeByDateType("startDate");
+    expect(startDateTest).toEqual(midnight);
+
+    const endDateTest = calculateTimeByDateType("endDate");
+    expect(endDateTest).toEqual(oneSecondToMidnight);
+  });
+
+  test("unknown dateType returns noon date value", () => {
+    const unknownTest = calculateTimeByDateType("whatever");
+    expect(unknownTest).toEqual(noon);
+  });
+});
 
 describe("Test convertDateEtToUtc", () => {
   test("Valid ET datetime converts to UTC correctly", () => {

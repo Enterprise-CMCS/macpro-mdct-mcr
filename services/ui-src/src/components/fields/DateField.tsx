@@ -3,24 +3,15 @@ import { useFormContext } from "react-hook-form";
 import { DateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { InputChangeEvent, StyleObject, TimeMap } from "utils/types/types";
+import { InputChangeEvent, StyleObject } from "utils/types/types";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import {
-  convertDateEtToUtc,
-  midnight,
-  oneSecondToMidnight,
-} from "utils/time/time";
+import { convertDateEtToUtc, calculateTimeByDateType } from "utils/time/time";
 
 /*
  * Note: This file uses the names 'parent'/'parentField' to refer to
  * the CMSDS Date Field (e.g. 'startDate'), and 'child'/'childField'
  * to refer to  and the contained day, month, year fields (e.g. 'day')
  */
-
-const eventTimeMap: TimeMap = {
-  startDate: midnight,
-  endDate: oneSecondToMidnight,
-};
 
 export const DateField = ({
   name: parentFieldName,
@@ -57,7 +48,7 @@ export const DateField = ({
     } = form.getValues();
     // check that all values have been entered
     if (day && month && year) {
-      const time = eventTimeMap[parentFieldName as keyof TimeMap];
+      const time = calculateTimeByDateType(parentFieldName);
       const calculatedDatetime = convertDateEtToUtc({ year, month, day }, time);
       form.setValue(parentFieldName, calculatedDatetime, {
         shouldValidate: true,

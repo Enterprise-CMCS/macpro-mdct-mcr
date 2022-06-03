@@ -53,7 +53,7 @@ describe("Test TextField component", () => {
     expect(screen.queryByText(errorVerbiage)).toBeInTheDocument();
   });
 
-  test("onChange event fires handler", async () => {
+  test("onChange event updates value; fires handler", async () => {
     render(textFieldComponent);
     const textFieldInput: HTMLInputElement =
       screen.getByTestId("test-text-field");
