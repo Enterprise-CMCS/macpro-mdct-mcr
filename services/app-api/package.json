@@ -51,7 +51,10 @@
     ],
     "collectCoverageFrom": [
       "handlers/**/*.{ts,tsx}",
-      "libs/**/*.{ts,tsx}"
+      "utils/**/*.{ts,tsx}",
+      "!utils/constants/*",
+      "!utils/testing/*",
+      "!utils/types/*"
     ],
     "moduleDirectories": [
       "node_modules",
