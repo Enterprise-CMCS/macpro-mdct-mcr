@@ -1,29 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // views
 import { Home } from "../index";
 
-const mockBannerData = {
-  key: "",
-  title: "",
-  description: "",
-  startDate: 0,
-  endDate: 0,
-  fetchAdminBanner: () => {},
-  writeAdminBanner: () => {},
-  deleteAdminBanner: () => {},
-};
-
-const queryClient = new QueryClient();
 const homeView = (
-  <QueryClientProvider client={queryClient}>
-    <RouterWrappedComponent>
-      <Home adminBanner={mockBannerData} />
-    </RouterWrappedComponent>
-  </QueryClientProvider>
+  <RouterWrappedComponent>
+    <Home />
+  </RouterWrappedComponent>
 );
 
 describe("Test Home view", () => {
