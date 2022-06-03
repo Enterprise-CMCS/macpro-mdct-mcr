@@ -20,6 +20,6 @@ describe("Test QueryProvider renders", () => {
   });
 
   test("QueryProvider renders children", async () => {
-    expect(screen.getByTestId("testdiv")).toBeVisible;
+    expect(screen.getByTestId("testdiv")).toHaveTextContent("Test");
   });
 });

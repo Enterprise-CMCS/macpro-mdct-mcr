@@ -19,7 +19,7 @@ describe("Test ApiProvider renders", () => {
     });
   });
 
-  test("ApiProvider renders children", async () => {
-    expect(screen.getByTestId("testdiv")).toBeVisible;
+  test("ApiProvider renders children", () => {
+    expect(screen.getByTestId("testdiv")).toHaveTextContent("Test");
   });
 });
