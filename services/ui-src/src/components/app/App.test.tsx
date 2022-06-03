@@ -23,7 +23,7 @@ beforeEach(() => {
 describe("Test App", () => {
   test("App login page is visible", async () => {
     await act(async () => {
-      render(appComponent);
+      await render(appComponent);
     });
     expect(screen.getByTestId("app-container")).toBeVisible();
   });
