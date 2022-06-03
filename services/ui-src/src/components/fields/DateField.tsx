@@ -1,4 +1,4 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 // components
 import { DateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
@@ -79,29 +79,23 @@ export const DateField = ({
   };
 
   return (
-    <Controller
-      name={parentFieldName}
-      control={form.control}
-      render={() => (
-        <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
-          <CmsdsDateField
-            label={parentFieldLabel}
-            onBlur={(e) => onBlurHandler(e)}
-            errorMessage={parentFieldErrorMessage}
-            dayName={dayFieldName}
-            monthName={monthFieldName}
-            yearName={yearFieldName}
-            dayFieldRef={() => form.register(dayFieldName)}
-            monthFieldRef={() => form.register(monthFieldName)}
-            yearFieldRef={() => form.register(yearFieldName)}
-            dayInvalid={!!checkChildFieldError(dayFieldName)}
-            monthInvalid={!!checkChildFieldError(monthFieldName)}
-            yearInvalid={!!checkChildFieldError(yearFieldName)}
-            {...props}
-          />
-        </Box>
-      )}
-    />
+    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+      <CmsdsDateField
+        label={parentFieldLabel}
+        onBlur={(e) => onBlurHandler(e)}
+        errorMessage={parentFieldErrorMessage}
+        dayName={dayFieldName}
+        monthName={monthFieldName}
+        yearName={yearFieldName}
+        dayFieldRef={() => form.register(dayFieldName)}
+        monthFieldRef={() => form.register(monthFieldName)}
+        yearFieldRef={() => form.register(yearFieldName)}
+        dayInvalid={!!checkChildFieldError(dayFieldName)}
+        monthInvalid={!!checkChildFieldError(monthFieldName)}
+        yearInvalid={!!checkChildFieldError(yearFieldName)}
+        {...props}
+      />
+    </Box>
   );
 };
 

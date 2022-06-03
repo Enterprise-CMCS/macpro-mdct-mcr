@@ -1,4 +1,4 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
@@ -27,23 +27,17 @@ export const TextField = ({
   const errorMessage = form.formState.errors?.[name]?.message;
 
   return (
-    <Controller
-      name={name}
-      control={form.control}
-      render={() => (
-        <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
-          <CmsdsTextField
-            name={name}
-            id={name}
-            label={label}
-            placeholder={placeholder}
-            onChange={(e) => onChangeHandler(e)}
-            errorMessage={errorMessage}
-            {...props}
-          />
-        </Box>
-      )}
-    />
+    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+      <CmsdsTextField
+        name={name}
+        id={name}
+        label={label}
+        placeholder={placeholder}
+        onChange={(e) => onChangeHandler(e)}
+        errorMessage={errorMessage}
+        {...props}
+      />
+    </Box>
   );
 };
 

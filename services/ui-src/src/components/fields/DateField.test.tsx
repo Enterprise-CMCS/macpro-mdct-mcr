@@ -14,6 +14,7 @@ jest.mock("react-hook-form", () => ({
     formState: {
       errors: {},
     },
+    register: () => {},
   }),
 }));
 
@@ -22,10 +23,24 @@ const form = require("react-hook-form").useForm;
 const dateFieldComponent = (
   <FormProvider {...form}>
     <form>
-      <DateField name="startDate" label="Start date" />
+      <div>
+        <DateField
+          name="startDate"
+          label="Start date"
+          labelId="test-date-field"
+        />
+      </div>
     </form>
   </FormProvider>
 );
+
+describe("Test DateField component", () => {
+  test("DateField is visible", async () => {
+    const result = render(dateFieldComponent);
+    const dateField = result.container.querySelector("#test-date-field");
+    expect(dateField).toBeVisible();
+  });
+});
 
 describe("Test DateField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
