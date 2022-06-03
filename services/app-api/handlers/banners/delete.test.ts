@@ -1,5 +1,4 @@
 import { deleteBanner } from "./delete";
-
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
