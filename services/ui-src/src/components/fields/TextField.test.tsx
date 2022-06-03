@@ -8,6 +8,7 @@ import { TextField } from "components";
 const errorVerbiage = "text-field-error";
 
 jest.mock("react-hook-form", () => ({
+  __esModule: true,
   ...jest.requireActual("react-hook-form"),
   useForm: () => ({
     control: () => ({}),
@@ -42,13 +43,13 @@ const textFieldComponent = (
 );
 
 describe("Test TextField component", () => {
-  test("TextField is visible", async () => {
+  test("TextField is visible", () => {
     render(textFieldComponent);
     const textField = screen.getByTestId("test-text-field");
     expect(textField).toBeVisible();
   });
 
-  test("Error message shows when there's an error", async () => {
+  test("Error message shows when there's an error", () => {
     render(textFieldComponent);
     expect(screen.queryByText(errorVerbiage)).toBeInTheDocument();
   });

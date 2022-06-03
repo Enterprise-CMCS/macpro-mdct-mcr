@@ -57,7 +57,10 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        data-testid="admin-banner-form"
+      >
         <TextField
           name="title"
           label="Title text"
