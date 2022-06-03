@@ -32,6 +32,17 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
+jest.mock("aws-amplify", () => ({
+  __esModule: true,
+  Auth: {
+    currentSession: jest.fn().mockReturnValue({
+      getIdToken: () => ({
+        getJwtToken: () => "eyJLongToken",
+      }),
+    }),
+  },
+}));
+
 export const mockStateUser = {
   user: {
     attributes: {
@@ -63,6 +74,20 @@ export const mockAdminUser = {
   logout: () => {},
   loginWithIDM: () => {},
 };
+
+jest.mock("aws-amplify", () => ({
+  __esModule: true,
+  Auth: {
+    currentSession: jest.fn().mockReturnValue({
+      getIdToken: () => ({
+        getJwtToken: () => "eyJLongToken",
+      }),
+    }),
+  },
+  API: {
+    get: () => {},
+  },
+}));
 
 export const RouterWrappedComponent: React.FC = ({ children }) => (
   <Router>{children}</Router>
