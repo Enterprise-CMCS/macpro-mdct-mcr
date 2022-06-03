@@ -1,10 +1,15 @@
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
+import { FormProvider } from "react-hook-form";
 import { TextField } from "components";
 
 jest.mock("react-hook-form", () => ({
-  // __esModule: true,
+  ...jest.requireActual("react-hook-form"),
+  Controller: () => <></>,
+  useForm: () => ({
+    control: () => ({}),
+  }),
   useFormContext: () => ({
     formState: {
       errors: {},
@@ -12,12 +17,18 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
+const form = require("react-hook-form").useForm;
+
 const textFieldComponent = (
-  <TextField
-    name="testname"
-    label="test-label"
-    placeholder="test-placeholder"
-  />
+  <FormProvider {...form}>
+    <form>
+      <TextField
+        name="testname"
+        label="test-label"
+        placeholder="test-placeholder"
+      />
+    </form>
+  </FormProvider>
 );
 
 describe("Test TextField accessibility", () => {
