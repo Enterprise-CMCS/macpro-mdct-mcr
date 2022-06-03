@@ -2,9 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { ApiProvider } from "./ApiProvider";
 
-const TestComponent = () => {
-  return <div data-testid="testdiv">Test</div>;
-};
+const TestComponent = () => <div data-testid="testdiv">Test</div>;
 
 const testComponent = (
   <ApiProvider>
