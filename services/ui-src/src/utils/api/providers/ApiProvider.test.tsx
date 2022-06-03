@@ -13,7 +13,7 @@ const testComponent = (
 describe("Test ApiProvider renders", () => {
   beforeEach(async () => {
     await act(async () => {
-      render(testComponent);
+      await render(testComponent);
     });
   });
 

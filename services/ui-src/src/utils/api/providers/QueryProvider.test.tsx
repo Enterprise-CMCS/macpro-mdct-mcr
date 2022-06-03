@@ -13,7 +13,7 @@ const testComponent = (
 describe("Test QueryProvider renders", () => {
   beforeEach(async () => {
     await act(async () => {
-      render(testComponent);
+      await render(testComponent);
     });
   });
 
