@@ -64,12 +64,12 @@ describe("Test DateField component", () => {
     expect(screen.queryByText(errorVerbiage)).toBeInTheDocument();
   });
 
-  test("onChange event updates value", async () => {
+  test("onChange event updates value (fires handler)", async () => {
     const result = render(dateFieldComponent);
     const dateFieldMonthInput: HTMLInputElement =
       result.container.querySelector('[name="testDateFieldMonth"]')!;
     await userEvent.type(dateFieldMonthInput, "1");
-    expect(dateFieldMonthInput).toHaveValue("1");
+    expect(dateFieldMonthInput.value).toEqual("1");
   });
 
   test("onBlur event fires handler", async () => {
