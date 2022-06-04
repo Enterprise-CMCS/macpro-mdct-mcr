@@ -26,7 +26,6 @@ jest.mock("react-hook-form", () => ({
 }));
 
 const form = require("react-hook-form").useForm;
-const mockOnChangeHandler = jest.fn();
 
 const textFieldComponent = (
   <FormProvider {...form}>
@@ -36,7 +35,6 @@ const textFieldComponent = (
         label="test-label"
         placeholder="test-placeholder"
         data-testid="test-text-field"
-        onChange={mockOnChangeHandler}
       />
     </form>
   </FormProvider>
@@ -54,13 +52,12 @@ describe("Test TextField component", () => {
     expect(screen.queryByText(errorVerbiage)).toBeInTheDocument();
   });
 
-  test("onChange event updates value; fires handler", async () => {
+  test("onChange event updates value (fires handler)", async () => {
     render(textFieldComponent);
     const textFieldInput: HTMLInputElement =
       screen.getByTestId("test-text-field");
     await userEvent.type(textFieldInput, "testinput");
-    expect(textFieldInput).toHaveValue("testinput");
-    expect(mockOnChangeHandler).toHaveBeenCalled();
+    expect(textFieldInput.value).toEqual("testinput");
   });
 });
 
