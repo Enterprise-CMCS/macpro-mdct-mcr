@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
@@ -42,6 +43,19 @@ const adminView = (context: any) => (
     </AdminBannerContext.Provider>
   </RouterWrappedComponent>
 );
+
+describe("Test /admin view banner manipulation functionality", () => {
+  it("Deletes current banner on delete button click", async () => {
+    await act(async () => {
+      await render(adminView(mockContextWithBanner));
+    });
+    const deleteButton = screen.getByText("Delete Current Banner");
+    await userEvent.click(deleteButton);
+    await waitFor(() =>
+      expect(mockContextWithBanner.deleteAdminBanner).toHaveBeenCalled()
+    );
+  });
+});
 
 describe("Test /admin view without banner", () => {
   beforeEach(async () => {
