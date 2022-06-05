@@ -43,6 +43,14 @@ jest.mock("aws-amplify", () => ({
   },
 }));
 
+export const mockNoUser = {
+  user: null,
+  userRole: "",
+  showLocalLogins: true,
+  logout: () => {},
+  loginWithIDM: () => {},
+};
+
 export const mockStateUser = {
   user: {
     attributes: {

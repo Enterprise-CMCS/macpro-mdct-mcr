@@ -24,7 +24,7 @@ export const App = () => {
               Managed Care Reporting
             </Heading>
           </Container>
-          <Container sx={sx.loginContainer}>
+          <Container sx={sx.loginContainer} data-testid="login-container">
             <Stack spacing={8}>
               <LoginIDM loginWithIDM={loginWithIDM} />
               <Divider />

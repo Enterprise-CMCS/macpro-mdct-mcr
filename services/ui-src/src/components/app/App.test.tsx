@@ -2,7 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
-import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
+import {
+  mockStateUser,
+  mockNoUser,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 import { useUser } from "utils/auth";
 //components
 import { App } from "components";
@@ -21,11 +25,20 @@ beforeEach(() => {
 });
 
 describe("Test App", () => {
-  test("App login page is visible", async () => {
+  test("App is visible", async () => {
+    mockedUseUser.mockImplementation((): any => mockStateUser);
     await act(async () => {
       await render(appComponent);
     });
     expect(screen.getByTestId("app-container")).toBeVisible();
+  });
+
+  test("App renders local logins if there is no user", async () => {
+    mockedUseUser.mockImplementation((): any => mockNoUser);
+    await act(async () => {
+      await render(appComponent);
+    });
+    expect(screen.getByTestId("login-container")).toBeVisible();
   });
 });
 
