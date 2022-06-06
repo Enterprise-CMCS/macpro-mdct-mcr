@@ -79,6 +79,19 @@ jest.mock("aws-amplify", () => ({
         getJwtToken: () => "eyJLongToken",
       }),
     }),
+    currentAuthenticatedUser: jest.fn().mockReturnValue({
+      signInUserSession: {
+        idToken: {
+          payload: {
+            ["custom:cms_roles"]: "mdctmcr-state-user",
+            ["custom:cms_state"]: "AL",
+          },
+        },
+      },
+    }),
+    configure: () => {},
+    signOut: () => {},
+    federatedSignIn: () => {},
   },
   API: {
     get: () => {},
