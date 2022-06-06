@@ -24,7 +24,7 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  const errorMessage = form.formState.errors?.[name]?.message;
+  const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
     <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
