@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
 
@@ -17,8 +17,7 @@ const authenticateWithIDM = async () => {
 
 export const UserProvider = ({ children }: Props) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isProduction = window.location.origin.includes("mdctmcr.cms.gov");
+  const isProduction = location.hostname.includes("mdctmcr.cms.gov");
 
   const [user, setUser] = useState<any>(null);
   const [showLocalLogins, setShowLocalLogins] = useState(false);

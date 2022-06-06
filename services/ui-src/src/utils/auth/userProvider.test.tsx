@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { UserProvider } from "./userProvider";
 import { UserContext } from "./userContext";
+import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 
@@ -11,6 +12,9 @@ jest.mock("aws-amplify", () => ({
   Auth: {
     currentAuthenticatedUser: jest
       .fn()
+      .mockImplementationOnce(() => {
+        throw new Error("failed!");
+      })
       .mockImplementationOnce(() => {
         throw new Error("failed!");
       })
@@ -62,6 +66,38 @@ const testComponent = (
     </UserProvider>
   </RouterWrappedComponent>
 );
+
+describe("Test UserProvider with production path", () => {
+  let originalLocationDescriptor: any;
+  let federatedSignInSpy: any;
+  beforeAll(async () => {
+    federatedSignInSpy = jest.spyOn(Auth, "federatedSignIn");
+    originalLocationDescriptor = Object.getOwnPropertyDescriptor(
+      global,
+      "location"
+    );
+    global.window = Object.create(window);
+    Object.defineProperty(window, "location", {
+      value: {
+        hostname: "mdctmcr.cms.gov",
+      },
+      writable: true,
+    });
+
+    await act(async () => {
+      await render(testComponent);
+    });
+  });
+  afterAll(() => {
+    Object.defineProperty(global, "location", originalLocationDescriptor);
+    federatedSignInSpy.mockRestore();
+  });
+  test("test production authenticates with idm when current authenticated user throws an error", () => {
+    expect(window.location.hostname).toContain("mdctmcr.cms.gov");
+    expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+    expect(federatedSignInSpy).toHaveBeenCalledTimes(1);
+  });
+});
 
 describe("Test UserProvider", () => {
   beforeEach(async () => {
