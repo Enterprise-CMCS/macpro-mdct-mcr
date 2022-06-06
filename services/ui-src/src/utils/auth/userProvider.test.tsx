@@ -79,7 +79,7 @@ describe("Test UserProvider with production path", () => {
     global.window = Object.create(window);
     Object.defineProperty(window, "location", {
       value: {
-        hostname: "mdctmcr.cms.gov",
+        origin: "mdctmcr.cms.gov",
       },
       writable: true,
     });
@@ -93,7 +93,7 @@ describe("Test UserProvider with production path", () => {
     federatedSignInSpy.mockRestore();
   });
   test("test production authenticates with idm when current authenticated user throws an error", () => {
-    expect(window.location.hostname).toContain("mdctmcr.cms.gov");
+    expect(window.location.origin).toContain("mdctmcr.cms.gov");
     expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
     expect(federatedSignInSpy).toHaveBeenCalledTimes(1);
   });
