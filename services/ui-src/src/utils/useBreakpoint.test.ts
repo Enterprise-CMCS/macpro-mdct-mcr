@@ -1,7 +1,6 @@
 import { convertBreakpoints } from "./useBreakpoint";
 
 jest.mock("@chakra-ui/react", () => ({
-  __esModule: true,
   useTheme: () => ({
     breakpoints: {
       sm: "35em",
