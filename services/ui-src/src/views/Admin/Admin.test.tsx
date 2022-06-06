@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
@@ -43,10 +44,23 @@ const adminView = (context: any) => (
   </RouterWrappedComponent>
 );
 
+describe("Test /admin view banner manipulation functionality", () => {
+  it("Deletes current banner on delete button click", async () => {
+    await act(async () => {
+      await render(adminView(mockContextWithBanner));
+    });
+    const deleteButton = screen.getByText("Delete Current Banner");
+    await userEvent.click(deleteButton);
+    await waitFor(() =>
+      expect(mockContextWithBanner.deleteAdminBanner).toHaveBeenCalled()
+    );
+  });
+});
+
 describe("Test /admin view without banner", () => {
   beforeEach(async () => {
     await act(async () => {
-      render(adminView(mockContextWithoutBanner));
+      await render(adminView(mockContextWithoutBanner));
     });
   });
 
@@ -72,7 +86,7 @@ describe("Test /admin view without banner", () => {
 describe("Test /admin view with banner", () => {
   beforeEach(async () => {
     await act(async () => {
-      render(adminView(mockContextWithBanner));
+      await render(adminView(mockContextWithBanner));
     });
   });
 
@@ -104,7 +118,7 @@ describe("Test /admin view with active/inactive banner", () => {
     context.bannerData.startDate = currentTime - oneDay;
     context.bannerData.endDate = currentTime + oneDay;
     await act(async () => {
-      render(adminView(context));
+      await render(adminView(context));
     });
     const currentBannerStatus = screen.getByTestId("current-banner-status");
     expect(currentBannerStatus.textContent).toEqual("Status: Active");
@@ -114,7 +128,7 @@ describe("Test /admin view with active/inactive banner", () => {
     context.bannerData.startDate = currentTime + oneDay;
     context.bannerData.endDate = currentTime + oneDay + oneDay;
     await act(async () => {
-      render(adminView(context));
+      await render(adminView(context));
     });
     const currentBannerStatus = screen.getByTestId("current-banner-status");
     expect(currentBannerStatus.textContent).toEqual("Status: Inactive");

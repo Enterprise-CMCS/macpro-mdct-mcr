@@ -20,7 +20,7 @@ describe("Test AppRoutes for admin-specific routes", () => {
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
-      render(appRoutesComponent(history, adminUserRole));
+      await render(appRoutesComponent(history, adminUserRole));
     });
   });
   test("/admin is visible for admin user", async () => {
@@ -34,7 +34,7 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
-      render(appRoutesComponent(history, stateUserRole));
+      await render(appRoutesComponent(history, stateUserRole));
     });
   });
 
@@ -49,7 +49,7 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
-      render(appRoutesComponent(history, stateUserRole));
+      await render(appRoutesComponent(history, stateUserRole));
     });
   });
 
@@ -64,7 +64,7 @@ describe("Test AppRoutes 404 handling", () => {
     history = createMemoryHistory();
     history.push("/obviously-fake-route");
     await act(async () => {
-      render(appRoutesComponent(history, stateUserRole));
+      await render(appRoutesComponent(history, stateUserRole));
     });
   });
 

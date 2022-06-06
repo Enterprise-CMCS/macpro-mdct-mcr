@@ -2,7 +2,6 @@ import { useMediaQuery } from "@chakra-ui/react";
 import { convertBreakpoints, makeMediaQueryClasses } from "./useBreakpoint";
 
 jest.mock("@chakra-ui/react", () => ({
-  __esModule: true,
   useMediaQuery: jest.fn((array: boolean[]): boolean[] => array),
   useTheme: () => ({
     breakpoints: {
