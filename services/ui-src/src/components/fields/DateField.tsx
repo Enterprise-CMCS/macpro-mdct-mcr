@@ -64,9 +64,9 @@ export const DateField = ({
   };
 
   const parentFieldErrorMessage =
-    form.formState.errors?.[parentFieldName]?.message;
+    form?.formState?.errors?.[parentFieldName]?.message;
   const checkChildFieldError = (childFieldName: string): string => {
-    return form.formState.errors?.[childFieldName];
+    return form?.formState?.errors?.[childFieldName];
   };
 
   return (
