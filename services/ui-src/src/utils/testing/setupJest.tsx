@@ -32,17 +32,6 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
-jest.mock("aws-amplify", () => ({
-  __esModule: true,
-  Auth: {
-    currentSession: jest.fn().mockReturnValue({
-      getIdToken: () => ({
-        getJwtToken: () => "eyJLongToken",
-      }),
-    }),
-  },
-}));
-
 export const mockStateUser = {
   user: {
     attributes: {
@@ -98,6 +87,9 @@ jest.mock("aws-amplify", () => ({
   },
   API: {
     get: () => {},
+    post: () => {},
+    del: () => {},
+    configure: () => {},
   },
 }));
 
