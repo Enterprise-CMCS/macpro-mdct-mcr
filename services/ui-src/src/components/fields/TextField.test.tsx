@@ -8,7 +8,6 @@ import { TextField } from "components";
 const errorVerbiage = "text-field-error";
 
 jest.mock("react-hook-form", () => ({
-  __esModule: true,
   ...jest.requireActual("react-hook-form"),
   useForm: () => ({
     control: () => ({}),
