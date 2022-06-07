@@ -122,57 +122,26 @@ resources:
             - Event: s3:ObjectCreated:Put
               Function: !GetAtt AvScanLambdaFunction.Arn
       DependsOn: LambdaInvokePermission
-    AVBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket: !Ref ClamDefsBucket
-        PolicyDocument:
-          Statement:
-            - Action:
-                - "s3:PutObject"
-              Effect: "Allow"
-              Resource: !Sub ${ClamDefsBucket.Arn}/*
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Action:
-                - "s3:GetBucketLocation"
-                - "s3:ListBucket"
-              Effect: "Allow"
-              Resource: !Sub ${ClamDefsBucket.Arn}
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Action:
-                - "s3:GetObject"
-              Effect: "Allow"
-              Resource: !Sub ${ClamDefsBucket.Arn}/*
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Sid: "AllowSSLRequestsOnly"
-              Effect: Deny
-              Action: "s3:*"
-              Principal: "*"
-              Resource:
-                - !Sub arn:aws:s3:::${ClamDefsBucket}/*
-                - !Sub arn:aws:s3:::${ClamDefsBucket}
-              Condition:
-                Bool:
-                  aws:SecureTransport: false
     AttachmentsBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
         Bucket: !Ref AttachmentsBucket
         PolicyDocument:
           Statement:
-            - Action:
-                - "s3:GetObject"
-              Effect: "Deny"
-              Resource: !Sub ${AttachmentsBucket.Arn}/*
+            # - Action:
+            #     - "s3:GetObject"
+            #   Effect: "Deny"
+            #   Resource: !Sub ${AttachmentsBucket.Arn}/*
+            #   Principal: "*"
+            #   Condition:
+            #     StringNotEquals:
+            #       s3:ExistingObjectTag/virusScanStatus:
+            #         - "CLEAN"
+            #       aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
+            - Effect: Allow
+              Action: "s3:GetObject"
+              Resource: !Sub arn:aws:s3:::${AttachmentsBucket}/*
               Principal: "*"
-              Condition:
-                StringNotEquals:
-                  s3:ExistingObjectTag/virusScanStatus:
-                    - "CLEAN"
-                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
             - Action: "s3:PutObject"
               Effect: Deny
               Principal: "*"
@@ -208,14 +177,6 @@ resources:
               Condition:
                 Bool:
                   aws:SecureTransport: false
-    LambdaInvokePermission:
-      Type: AWS::Lambda::Permission
-      Properties:
-        FunctionName: !GetAtt AvScanLambdaFunction.Arn
-        Action: lambda:InvokeFunction
-        Principal: s3.amazonaws.com
-        SourceAccount: !Sub ${AWS::AccountId}
-        SourceArn: !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}
     ClamDefsBucket:
       Type: AWS::S3::Bucket
       Properties:
@@ -225,6 +186,49 @@ resources:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
         AccessControl: Private
+    AVBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref ClamDefsBucket
+        PolicyDocument:
+          Statement:
+            - Action:
+                - "s3:PutObject"
+              Effect: "Allow"
+              Resource: !Sub ${ClamDefsBucket.Arn}/*
+              Principal:
+                AWS: !GetAtt IamRoleLambdaExecution.Arn
+            - Action:
+                - "s3:GetBucketLocation"
+                - "s3:ListBucket"
+              Effect: "Allow"
+              Resource: !Sub ${ClamDefsBucket.Arn}
+              Principal:
+                AWS: !GetAtt IamRoleLambdaExecution.Arn
+            - Action:
+                - "s3:GetObject"
+              Effect: "Allow"
+              Resource: !Sub ${ClamDefsBucket.Arn}/*
+              Principal:
+                AWS: !GetAtt IamRoleLambdaExecution.Arn
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${ClamDefsBucket}/*
+                - !Sub arn:aws:s3:::${ClamDefsBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
+    LambdaInvokePermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: !GetAtt AvScanLambdaFunction.Arn
+        Action: lambda:InvokeFunction
+        Principal: s3.amazonaws.com
+        SourceAccount: !Sub ${AWS::AccountId}
+        SourceArn: !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}
     BucketAVScanRole:
       Type: "AWS::IAM::Role"
       Properties:

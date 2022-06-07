@@ -45,7 +45,7 @@ export const Home = () => {
           />
           <TemplateCard
             verbiage={data.cards.NAAAR}
-            cardprops={{ ...sx.card, "data-testid": "naar-template-card" }}
+            cardprops={{ ...sx.card, "data-testid": "naaar-template-card" }}
           />
         </Flex>
       </Box>
