@@ -7,6 +7,7 @@ import data from "../../data/home-view.json";
 
 const templateCardComponent = (
   <TemplateCard
+    templateName="testTemplate"
     verbiage={data.cards.MCPAR}
     data-testid="template-download-card"
   />
