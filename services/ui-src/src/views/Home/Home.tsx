@@ -36,14 +36,17 @@ export const Home = () => {
             <Text>{data.intro.body}</Text>
           </Box>
           <TemplateCard
+            templateName="MCPAR"
             verbiage={data.cards.MCPAR}
             cardprops={{ ...sx.card, "data-testid": "mcpar-template-card" }}
           />
           <TemplateCard
+            templateName="MLR"
             verbiage={data.cards.MLR}
             cardprops={{ ...sx.card, "data-testid": "mlr-template-card" }}
           />
           <TemplateCard
+            templateName="NAAAR"
             verbiage={data.cards.NAAAR}
             cardprops={{ ...sx.card, "data-testid": "naaar-template-card" }}
           />
