@@ -1,8 +1,5 @@
-/* eslint-disable */
-import { S3 } from "aws-sdk";
-// import { Storage } from "aws-amplify";
 // components
-import { Button, Flex, Image, Link, Text } from "@chakra-ui/react";
+import { Button, Flex, Image, Text } from "@chakra-ui/react";
 import { Card, Icon, TemplateCardAccordion } from "../index";
 // utils
 import {
@@ -10,47 +7,18 @@ import {
   useBreakpoint,
 } from "../../utils/useBreakpoint";
 import { JsonObject } from "utils/types/types";
+import { getSignedTemplateUrl } from "utils/api/index";
 // assets
 import spreadsheetIcon from "../../assets/images/icon_spreadsheet.png";
-// import temporaryExcelTemplate from "../../assets/templates/MCPARDummy.xls";
-// import { errorHandler } from "utils/errors/errorHandler";
 
-// inside your template or JSX code. Note <a download> doesn't work here because it is not same origin
-
-// const downloadTemplate = (templateName: string) => {
-// const s3 = new S3();
-// const fileName = templateName + "xls";
-// try {
-//   s3.getObject({
-//     Bucket: process.env.S3_ATTACHMENTS_BUCKET_NAME!,
-//     Key: fileName,
-//   });
-// } catch (error: any) {
-//   errorHandler("Failed to retrieve an object: " + error);
-// }
-// const link = document.createElement("a");
-// link.setAttribute("target", "_blank");
-// link.setAttribute("href", temporaryExcelTemplate);
-// link.setAttribute("download", `Dummy.xls`);
-// link.click();
-// link.remove();
-// };
-
-// const downloadBlob = (blob: any, fileName: string) => {
-//   const url = URL.createObjectURL(blob);
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = fileName;
-//   const clickHandler = () => {
-//     setTimeout(() => {
-//       URL.revokeObjectURL(url);
-//       a.removeEventListener("click", clickHandler);
-//     }, 150);
-//   };
-//   a.addEventListener("click", clickHandler, false);
-//   a.click();
-//   return a;
-// };
+const downloadTemplate = async (templateName: string) => {
+  const signedUrl = await getSignedTemplateUrl(templateName);
+  const link = document.createElement("a");
+  link.setAttribute("target", "_blank");
+  link.setAttribute("href", signedUrl);
+  link.click();
+  link.remove();
+};
 
 export const TemplateCard = ({
   templateName,
@@ -60,39 +28,6 @@ export const TemplateCard = ({
 }: Props) => {
   const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
-
-  // get the signed URL string
-  // const signedURL = async () => {
-  //   return await Storage.get(templateName);
-  // };
-
-  // usage
-  // const download = async () => {
-  //   const result = await Storage.get(templateName, { download: true });
-  //   downloadBlob(result.Body, fileName);
-  // };
-
-  const fileName = templateName + "xls";
-
-  console.log(
-    "process.env.S3_ATTACHMENTS_BUCKET_NAME",
-    process.env.S3_ATTACHMENTS_BUCKET_NAME
-  );
-
-  const s3 = new S3();
-  console.log(
-    "bucket list",
-    s3.listObjects({
-      Bucket: process.env.S3_ATTACHMENTS_BUCKET_NAME!,
-    })
-  );
-
-  const url = s3.getSignedUrl("getObject", {
-    Bucket: process.env.S3_ATTACHMENTS_BUCKET_NAME!,
-    Key: fileName,
-  });
-
-  console.log("signed url", url);
 
   return (
     <Card {...cardprops}>
@@ -109,16 +44,16 @@ export const TemplateCard = ({
           {!isDesktop && <Text>{verbiage.dueDate}</Text>}
           <Text>{verbiage.body}</Text>
           {isDesktop && verbiage.note && <Text>{verbiage.note}</Text>}
-          <Link href={url} isExternal>
-            <Button
-              sx={sx.templateDownloadButton}
-              leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem" />}
-              // onClick={download}
-              data-testid="template-download-button"
-            >
-              Download Excel Template
-            </Button>
-          </Link>
+          <Button
+            sx={sx.templateDownloadButton}
+            leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem" />}
+            onClick={async () => {
+              await downloadTemplate(templateName);
+            }}
+            data-testid="template-download-button"
+          >
+            Download Excel Template
+          </Button>
           <TemplateCardAccordion verbiage={verbiage.accordion} />
         </Flex>
       </Flex>

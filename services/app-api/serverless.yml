@@ -34,6 +34,7 @@ custom:
       - val
       - production
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
+  templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
     name: ${self:custom.webAclName}
@@ -79,8 +80,14 @@ provider:
           Action:
             - ssm:GetParameter
           Resource: "*"
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:ListBucket"
+          Resource: "arn:aws:s3:::${self:custom.templateBucket}"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
+    TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
 
 functions:
@@ -120,6 +127,18 @@ functions:
             parameters:
               paths:
                 bannerId: true
+  getTemplate:
+    handler: handlers/templates/get.getTemplate
+    events:
+      - http:
+          path: templates/{templateName}
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                templateName: true
 resources:
   Resources:
     GatewayResponseDefault4XX:
