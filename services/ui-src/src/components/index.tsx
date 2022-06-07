@@ -19,6 +19,7 @@ export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // fields
 export { DateField } from "./fields/DateField";
+export { Dropdown } from "./fields/Dropdown";
 export { TextField } from "./fields/TextField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
