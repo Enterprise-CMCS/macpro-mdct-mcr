@@ -10,7 +10,6 @@ export const Dropdown = ({
   name,
   label,
   options,
-  value,
   sxOverrides,
   ...props
 }: Props) => {
@@ -33,7 +32,6 @@ export const Dropdown = ({
         name={name}
         id={name}
         label={label}
-        value={value}
         options={options}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
@@ -52,7 +50,6 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
-  value: string;
   sxOverrides?: StyleObject;
   [key: string]: any;
 }
