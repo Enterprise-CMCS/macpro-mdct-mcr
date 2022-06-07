@@ -10,7 +10,7 @@ export const Dropdown = ({
   name,
   label,
   options,
-  defaultValue,
+  value,
   sxOverrides,
   ...props
 }: Props) => {
@@ -21,8 +21,8 @@ export const Dropdown = ({
 
   // update form data
   const onChangeHandler = async (event: InputChangeEvent) => {
-    const { name, value } = event.target;
-    form.setValue(name, value, { shouldValidate: true });
+    const { name: dropdownName, value: dropdownValue } = event.target;
+    form.setValue(dropdownName, dropdownValue, { shouldValidate: true });
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
@@ -33,7 +33,7 @@ export const Dropdown = ({
         name={name}
         id={name}
         label={label}
-        defaultValue={defaultValue}
+        value={value}
         options={options}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
@@ -52,7 +52,7 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
-  defaultValue: string;
+  value: string;
   sxOverrides?: StyleObject;
   [key: string]: any;
 }
