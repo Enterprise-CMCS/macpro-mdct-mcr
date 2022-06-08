@@ -84,7 +84,9 @@ provider:
           Action:
             - "s3:GetObject"
             - "s3:ListBucket"
-          Resource: "arn:aws:s3:::${self:custom.templateBucket}"
+          Resource:
+            - "arn:aws:s3:::${self:custom.templateBucket}"
+            - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
