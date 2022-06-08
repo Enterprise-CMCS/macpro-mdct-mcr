@@ -24,7 +24,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  pathParameters: { templateName: "MCPAR" },
+  pathParameters: { templateName: "test" },
 };
 
 describe("Test getTemplate API method", () => {
@@ -32,8 +32,34 @@ describe("Test getTemplate API method", () => {
     process.env["TEMPLATE_BUCKET"] = "fakeTestBucket";
   });
 
-  test("Test Successful template url fetch", async () => {
-    const res = await getTemplate(testEvent, null);
+  test("Test Successful template url fetch with MCPAR", async () => {
+    const mcparEvent: APIGatewayProxyEvent = {
+      ...testEvent,
+      pathParameters: { templateName: "MCPAR" },
+    };
+    const res = await getTemplate(mcparEvent, null);
+
+    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.body).toContain("s3://fakeurl.bucket.here");
+  });
+
+  test("Test Successful template url fetch with MLR", async () => {
+    const mlrEvent: APIGatewayProxyEvent = {
+      ...testEvent,
+      pathParameters: { templateName: "MLR" },
+    };
+    const res = await getTemplate(mlrEvent, null);
+
+    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.body).toContain("s3://fakeurl.bucket.here");
+  });
+
+  test("Test Successful template url fetch with NAAAR", async () => {
+    const naaarEvent: APIGatewayProxyEvent = {
+      ...testEvent,
+      pathParameters: { templateName: "NAAAR" },
+    };
+    const res = await getTemplate(naaarEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
