@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { InputChangeEvent, StyleObject } from "utils/types/types";
 
-export const Dropdown = ({
+export const DropdownField = ({
   name,
   label,
   options,

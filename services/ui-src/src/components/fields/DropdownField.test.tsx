@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
-import { Dropdown } from "components";
+import { DropdownField } from "components";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("react-hook-form", () => ({
@@ -11,7 +11,7 @@ jest.mock("react-hook-form", () => ({
 }));
 
 const dropdownComponent = (
-  <Dropdown
+  <DropdownField
     name="testDropdown"
     label="test-label"
     data-testid="test-dropdown-field"
