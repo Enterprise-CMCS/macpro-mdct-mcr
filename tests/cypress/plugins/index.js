@@ -22,6 +22,4 @@ module.exports = (on, config) => {
   on("task", {
     pa11y: pa11y(),
   });
-
-  on("task", { isFileExist });
 };
