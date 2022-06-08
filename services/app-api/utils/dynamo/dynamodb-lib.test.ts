@@ -35,7 +35,7 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
       key: "dynamoKey",
       createdAt: Date.now(),
       lastAltered: Date.now(),
-      lastAlteredBy: `event.headers["cognito-identity-id"]`,
+      lastAlteredBy: `event?.headers["cognito-identity-id"]`,
       data: {},
     };
     dynamoLib.query(true);
