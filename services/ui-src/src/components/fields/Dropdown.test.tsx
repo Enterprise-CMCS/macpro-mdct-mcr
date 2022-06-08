@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { Dropdown } from "components";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
@@ -28,6 +29,18 @@ describe("Test Dropdown component", () => {
     render(dropdownComponent);
     const dropdown = screen.getByTestId("test-dropdown-field");
     expect(dropdown).toBeVisible();
+  });
+
+  test("Dropdown calls onChange function successfully", async () => {
+    render(dropdownComponent);
+    const dropdown = screen.getByTestId("test-dropdown-field");
+    const option0 = dropdown.children.item(0) as HTMLOptionElement;
+    const option1 = dropdown.children.item(1) as HTMLOptionElement;
+    expect(option0.selected).toBe(true);
+    expect(option1.selected).toBe(false);
+    await userEvent.selectOptions(dropdown, ["1"]);
+    expect(option0.selected).toBe(false);
+    expect(option1.selected).toBe(true);
   });
 });
 

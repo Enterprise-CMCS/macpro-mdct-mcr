@@ -35,6 +35,7 @@ export const Dropdown = ({
         options={options}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
+        data-testid="cmsdsDropdown"
         {...props}
       />
     </Box>
