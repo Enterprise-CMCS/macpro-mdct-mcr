@@ -23,7 +23,7 @@ export const writeBanner = handler(async (event, _context) => {
         key: event.pathParameters.bannerId,
         createdAt: Date.now(),
         lastAltered: Date.now(),
-        lastAlteredBy: event.headers["cognito-identity-id"],
+        lastAlteredBy: event?.headers["cognito-identity-id"],
         type: body.type,
         title: body.title,
         description: body.description,
