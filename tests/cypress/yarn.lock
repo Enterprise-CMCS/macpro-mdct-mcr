@@ -2085,11 +2085,6 @@ cucumber@^4.2.1:
     util-arity "^1.0.2"
     verror "^1.9.0"
 
-cy-verify-downloads@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/cy-verify-downloads/-/cy-verify-downloads-0.1.6.tgz#99c31adbb9777ee2b58b411799b72699b990da7b"
-  integrity sha512-oYeAgL/ncAAfeh3bjCQlrD125cHzwlTQ+20hgMeQw64oBQp95DOcji7epPOADtzuRXu72P8j3DkZYlaY8gINtA==
-
 cypress-axe@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/cypress-axe/-/cypress-axe-0.14.0.tgz#5f5e70fb36b8cb3ba73a8ba01e9262ff1268d5e2"

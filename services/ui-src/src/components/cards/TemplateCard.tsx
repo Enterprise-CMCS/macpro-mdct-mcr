@@ -7,20 +7,25 @@ import {
   useBreakpoint,
 } from "../../utils/useBreakpoint";
 import { JsonObject } from "utils/types/types";
+import { getSignedTemplateUrl } from "utils/api/index";
 // assets
 import spreadsheetIcon from "../../assets/images/icon_spreadsheet.png";
-import temporaryExcelTemplate from "../../assets/templates/MCPARDummy.xls";
 
-const downloadTemplate = () => {
+const downloadTemplate = async (templateName: string) => {
+  const signedUrl = await getSignedTemplateUrl(templateName);
   const link = document.createElement("a");
   link.setAttribute("target", "_blank");
-  link.setAttribute("href", temporaryExcelTemplate);
-  link.setAttribute("download", `Dummy.xls`);
+  link.setAttribute("href", signedUrl);
   link.click();
   link.remove();
 };
 
-export const TemplateCard = ({ verbiage, cardprops, ...props }: Props) => {
+export const TemplateCard = ({
+  templateName,
+  verbiage,
+  cardprops,
+  ...props
+}: Props) => {
   const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
 
@@ -42,7 +47,9 @@ export const TemplateCard = ({ verbiage, cardprops, ...props }: Props) => {
           <Button
             sx={sx.templateDownloadButton}
             leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem" />}
-            onClick={downloadTemplate}
+            onClick={async () => {
+              await downloadTemplate(templateName);
+            }}
             data-testid="template-download-button"
           >
             Download Excel Template
@@ -55,6 +62,7 @@ export const TemplateCard = ({ verbiage, cardprops, ...props }: Props) => {
 };
 
 interface Props {
+  templateName: string;
   verbiage: JsonObject;
   [key: string]: any;
 }
