@@ -163,6 +163,16 @@ resources:
         Bucket: !Ref AttachmentsBucket
         PolicyDocument:
           Statement:
+            - Action:
+                - "s3:GetObject"
+              Effect: "Deny"
+              Resource: !Sub ${AttachmentsBucket.Arn}/*
+              Principal: "*"
+              Condition:
+                StringNotEquals:
+                  s3:ExistingObjectTag/virusScanStatus:
+                    - "CLEAN"
+                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
             - Action: "s3:PutObject"
               Effect: Deny
               Principal: "*"
