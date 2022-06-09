@@ -3,11 +3,7 @@ import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
 import { bannerId } from "../../utils/constants/constants";
 // api
-import {
-  deleteBanner,
-  getBanner,
-  writeBanner,
-} from "utils/api/requestMethods/banner";
+import { deleteBanner, getBanner, writeBanner } from "utils/api/index";
 
 const ADMIN_BANNER_ID = bannerId;
 

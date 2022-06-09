@@ -35,9 +35,21 @@ export const Home = () => {
             </Heading>
             <Text>{data.intro.body}</Text>
           </Box>
-          <TemplateCard verbiage={data.cards.MCPAR} cardprops={sx.card} />
-          <TemplateCard verbiage={data.cards.MLR} cardprops={sx.card} />
-          <TemplateCard verbiage={data.cards.NAAAR} cardprops={sx.card} />
+          <TemplateCard
+            templateName="MCPAR"
+            verbiage={data.cards.MCPAR}
+            cardprops={sx.card}
+          />
+          <TemplateCard
+            templateName="MLR"
+            verbiage={data.cards.MLR}
+            cardprops={sx.card}
+          />
+          <TemplateCard
+            templateName="NAAAR"
+            verbiage={data.cards.NAAAR}
+            cardprops={sx.card}
+          />
         </Flex>
       </Box>
     </section>

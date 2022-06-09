@@ -57,3 +57,11 @@ export const enum UserRoles {
   STATE_REP = "mdctmcr-state-rep",
   BOR = "mdctmcr-bor",
 }
+
+// TEMPLATES
+
+export const enum TemplateKeys {
+  MCPAR = "templates/MCPAR-2022-TEMPLATE.xls",
+  MLR = "templates/MLR-2022-TEMPLATE.xls",
+  NAAAR = "templates/NAAAR-2022-TEMPLATE.xls",
+}

@@ -5,7 +5,5 @@
 
 import "cypress-xpath";
 import "cypress-axe";
-require("cy-verify-downloads").addCustomCommand();
-
 import "./accessibility";
 import "./authentication";
