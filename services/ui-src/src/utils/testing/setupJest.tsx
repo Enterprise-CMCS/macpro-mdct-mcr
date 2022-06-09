@@ -34,7 +34,6 @@ jest.mock("@chakra-ui/transition", () => ({
 
 export const mockNoUser = {
   user: null,
-  userRole: "",
   showLocalLogins: true,
   logout: () => {},
   loginWithIDM: () => {},
@@ -42,15 +41,12 @@ export const mockNoUser = {
 
 export const mockStateUser = {
   user: {
-    attributes: {
-      "custom:cms_roles": "mdctmcr-state-user",
-      "custom:cms_state": "MA",
-      email: "stateuser1@test.com",
-      family_name: "States",
-      given_name: "Sammy",
-    },
+    userRole: "mdctmcr-state-user",
+    state: "MA",
+    email: "stateuser1@test.com",
+    family_name: "States",
+    given_name: "Sammy",
   },
-  userRole: "mdctmcr-state-user",
   showLocalLogins: true,
   logout: () => {},
   loginWithIDM: () => {},
@@ -58,15 +54,12 @@ export const mockStateUser = {
 
 export const mockAdminUser = {
   user: {
-    attributes: {
-      "custom:cms_roles": "mdctmcr-approver",
-      "custom:cms_state": undefined,
-      email: "adminuser@test.com",
-      family_name: "Admin",
-      given_name: "Adam",
-    },
+    userRole: "mdctmcr-approver",
+    state: undefined,
+    email: "adminuser@test.com",
+    family_name: "Admin",
+    given_name: "Adam",
   },
-  userRole: "mdctmcr-approver",
   showLocalLogins: false,
   logout: () => {},
   loginWithIDM: () => {},
@@ -78,16 +71,6 @@ jest.mock("aws-amplify", () => ({
       getIdToken: () => ({
         getJwtToken: () => "eyJLongToken",
       }),
-    }),
-    currentAuthenticatedUser: jest.fn().mockReturnValue({
-      signInUserSession: {
-        idToken: {
-          payload: {
-            ["custom:cms_roles"]: "mdctmcr-state-user",
-            ["custom:cms_state"]: "AL",
-          },
-        },
-      },
     }),
     configure: () => {},
     signOut: () => {},

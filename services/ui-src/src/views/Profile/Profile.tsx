@@ -5,16 +5,8 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useUser } from "utils/auth";
 import { UserRoles } from "utils/types/types";
 
-const userDetails = () => {
-  const userInfo = useUser();
-  const { email, given_name, family_name } = userInfo.user.attributes;
-  const { userRole } = userInfo;
-  const state = userInfo.user.attributes?.["custom:cms_state"] || "";
-  return { email, given_name, family_name, userRole, state };
-};
-
 export const Profile = () => {
-  const { email, given_name, family_name, userRole, state } = userDetails();
+  const { email, given_name, family_name, userRole, state } = useUser().user;
   const navigate = useNavigate();
   return (
     <>
