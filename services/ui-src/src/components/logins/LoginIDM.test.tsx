@@ -7,7 +7,7 @@ import { LoginIDM } from "components";
 
 const loginIDMComponent = (
   <RouterWrappedComponent>
-    <LoginIDM loginWithIDM={() => {}} />
+    <LoginIDM />
   </RouterWrappedComponent>
 );
 
@@ -17,7 +17,8 @@ describe("Test LoginIDM", () => {
   });
 
   test("LoginIDM is visible", () => {
-    expect(screen.getByTestId("idm-login-button")).toBeVisible();
+    const loginButton = screen.getByRole("button");
+    expect(loginButton).toBeVisible();
   });
 });
 

@@ -43,7 +43,6 @@ export const TemplateCard = ({ verbiage, cardprops, ...props }: Props) => {
             sx={sx.templateDownloadButton}
             leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem" />}
             onClick={downloadTemplate}
-            data-testid="template-download-button"
           >
             Download Excel Template
           </Button>

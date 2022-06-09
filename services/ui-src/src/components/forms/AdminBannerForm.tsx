@@ -25,7 +25,7 @@ const formSchema = yup.object().shape({
   endDateDay: yup.number().required().max(31),
 });
 
-export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
+export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   // make form context
@@ -57,10 +57,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
 
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        data-testid="admin-banner-form"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
         <TextField
           name="title"
           label="Title text"
@@ -103,6 +100,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
 
 interface Props {
   writeAdminBanner: Function;
+  [key: string]: any;
 }
 
 interface FormInput {

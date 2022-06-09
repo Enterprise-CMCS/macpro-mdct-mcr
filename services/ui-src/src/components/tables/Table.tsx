@@ -4,21 +4,10 @@ import { Table as TableRoot, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { TableContentShape } from "utils/types/types";
 
-export const Table = ({
-  content,
-  variant,
-  lastCellsBold,
-  dataTestId,
-  ...props
-}: Props) => {
+export const Table = ({ content, variant, lastCellsBold, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
-    <TableRoot
-      variant={variant}
-      size="sm"
-      data-testid={dataTestId || "table"}
-      {...props}
-    >
+    <TableRoot variant={variant} size="sm" {...props}>
       <Thead>
         <Tr>
           {/* Head Row */}
@@ -56,7 +45,6 @@ interface Props {
   content: TableContentShape;
   variant?: string;
   lastCellsBold?: boolean;
-  dataTestId?: string;
   [key: string]: any;
 }
 

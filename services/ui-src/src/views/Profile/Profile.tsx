@@ -40,16 +40,14 @@ export const Profile = () => {
         </Flex>
         {state && (
           <Flex sx={sx.variantRow}>
-            <Text sx={sx.fieldName} data-testid="statetestid">
-              State
-            </Text>
+            <Text sx={sx.fieldName}>State</Text>
             <Text>{state}</Text>
           </Flex>
         )}
         {userRole === UserRoles.ADMIN && (
           <Button
             colorScheme="colorSchemes.main"
-            data-testid="admin-button"
+            data-testid="banner-admin-button"
             sx={sx.adminButton}
             onClick={() => navigate("/admin")}
           >
