@@ -4,7 +4,6 @@ import { Auth } from "aws-amplify";
 import config from "config";
 
 import { MCRUser, UserContext, UserContextInterface } from "./userContext";
-import { UserRoles } from "utils/types/types";
 import { errorHandler } from "utils/errors/errorHandler";
 
 interface Props {
