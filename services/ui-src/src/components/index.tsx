@@ -4,6 +4,7 @@ export { FaqAccordion } from "./accordions/FaqAccordion";
 export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
 // alerts
 export { Alert } from "./alerts/Alert";
+export { ErrorAlert } from "./alerts/ErrorAlert";
 // app
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";

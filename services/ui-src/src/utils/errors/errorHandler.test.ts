@@ -1,20 +1,22 @@
 import { errorHandler } from "./errorHandler";
 
 jest.spyOn(window, "alert").mockImplementation(() => {});
+const mockCallback = jest.fn(() => {});
 
 describe("Test errorHandler", () => {
   test("Expect error to alert user", () => {
     const errorMessage = "Test error message";
     const newError = new Error(errorMessage);
-    errorHandler(newError);
-    expect(window.alert).toHaveBeenCalled();
+    errorHandler(newError, mockCallback);
+    expect(mockCallback).toHaveBeenCalled();
   });
 
   test("If error is well constructed, the error message is used", () => {
     const errorMessage = "Test error message";
     const wellConstructedError = new Error(errorMessage);
-    errorHandler(wellConstructedError);
-    expect(errorHandler(wellConstructedError)).toEqual(errorMessage);
+    expect(errorHandler(wellConstructedError, mockCallback).message).toEqual(
+      errorMessage
+    );
   });
 
   test("If error is not well constructed, it is stringified", () => {
@@ -22,8 +24,7 @@ describe("Test errorHandler", () => {
       error: "idk am i an error?",
       yeah: "guess so",
     };
-    errorHandler(poorlyConstructedError);
-    expect(errorHandler(poorlyConstructedError)).toEqual(
+    expect(errorHandler(poorlyConstructedError, mockCallback).message).toEqual(
       JSON.stringify(poorlyConstructedError)
     );
   });

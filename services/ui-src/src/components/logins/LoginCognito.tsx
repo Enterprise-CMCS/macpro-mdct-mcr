@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 // components
 import { Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import { ErrorAlert } from "components";
+// utils
 import { errorHandler } from "utils/errors/errorHandler";
 
 const useFormFields = (initialState: any) => {
@@ -26,13 +28,14 @@ export const LoginCognito = () => {
     email: "",
     password: "",
   });
+  const [errorState, setErrorState] = useState(null);
 
   const handleLogin = async () => {
     try {
       await Auth.signIn(fields.email, fields.password);
       navigate(`/`);
     } catch (error) {
-      errorHandler(error);
+      errorHandler(error, setErrorState);
     }
   };
 
@@ -71,6 +74,7 @@ export const LoginCognito = () => {
       >
         Log In with Cognito
       </Button>
+      <ErrorAlert errorData={errorState} />
     </Stack>
   );
 };

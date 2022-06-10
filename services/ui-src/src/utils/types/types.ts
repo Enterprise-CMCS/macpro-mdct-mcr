@@ -39,6 +39,11 @@ export interface BannerData {
   [key: string]: any;
 }
 
+export interface ErrorData {
+  name?: string;
+  message: string;
+}
+
 export interface AdminBannerData extends BannerData {
   key: string;
   startDate: number;
