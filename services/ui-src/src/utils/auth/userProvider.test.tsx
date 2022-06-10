@@ -107,17 +107,6 @@ describe("Test UserProvider", () => {
     expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
   });
 
-  test("test logout function fails", async () => {
-    jest.spyOn(window, "alert").mockImplementation(() => {});
-
-    await act(async () => {
-      const logoutButton = screen.getByTestId("logout-button");
-      await userEvent.click(logoutButton);
-    });
-
-    expect(window.alert).toHaveBeenCalledWith("failed!");
-  });
-
   test("test logout function", async () => {
     // stash alert and define temporary mock for use by jest-dom
     const actualAlert = window.alert;
