@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
+import { UserContextInterface } from "../auth/userContext";
 
 global.React = React;
 
@@ -32,43 +33,36 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
-export const mockNoUser = {
-  user: null,
-  userRole: "",
+export const mockNoUser: UserContextInterface = {
+  user: undefined,
   showLocalLogins: true,
-  logout: () => {},
+  logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockStateUser = {
+export const mockStateUser: UserContextInterface = {
   user: {
-    attributes: {
-      "custom:cms_roles": "mdctmcr-state-user",
-      "custom:cms_state": "MA",
-      email: "stateuser1@test.com",
-      family_name: "States",
-      given_name: "Sammy",
-    },
+    userRole: "mdctmcr-state-user",
+    state: "MA",
+    email: "stateuser1@test.com",
+    family_name: "States",
+    given_name: "Sammy",
   },
-  userRole: "mdctmcr-state-user",
   showLocalLogins: true,
-  logout: () => {},
+  logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockAdminUser = {
+export const mockAdminUser: UserContextInterface = {
   user: {
-    attributes: {
-      "custom:cms_roles": "mdctmcr-approver",
-      "custom:cms_state": undefined,
-      email: "adminuser@test.com",
-      family_name: "Admin",
-      given_name: "Adam",
-    },
+    userRole: "mdctmcr-approver",
+    state: undefined,
+    email: "adminuser@test.com",
+    family_name: "Admin",
+    given_name: "Adam",
   },
-  userRole: "mdctmcr-approver",
   showLocalLogins: false,
-  logout: () => {},
+  logout: async () => {},
   loginWithIDM: () => {},
 };
 
@@ -78,16 +72,6 @@ jest.mock("aws-amplify", () => ({
       getIdToken: () => ({
         getJwtToken: () => "eyJLongToken",
       }),
-    }),
-    currentAuthenticatedUser: jest.fn().mockReturnValue({
-      signInUserSession: {
-        idToken: {
-          payload: {
-            ["custom:cms_roles"]: "mdctmcr-state-user",
-            ["custom:cms_state"]: "AL",
-          },
-        },
-      },
     }),
     configure: () => {},
     signOut: () => {},

@@ -19,43 +19,24 @@ const profileView = (
 // MOCKS
 
 jest.mock("utils/auth");
-const mockedUseUser = useUser as jest.Mock<typeof useUser>;
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 // TESTS
 
-describe("Test Profile view for state users", () => {
-  beforeEach(() => {
-    mockedUseUser.mockImplementation((): any => mockStateUser);
-  });
-
-  test("Check that Profile page renders for state users", () => {
-    render(profileView);
-    expect(screen.getByTestId("profile-view")).toBeVisible();
-  });
-
-  test("Check that user state is visible", () => {
-    render(profileView);
-    expect(screen.getByText("State")).toBeVisible();
-  });
-});
-
 describe("Test Profile view for admin users", () => {
   beforeEach(() => {
-    mockedUseUser.mockImplementation((): any => mockAdminUser);
-  });
-
-  test("Check that Profile page renders for admin users", () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
     render(profileView);
+  });
+  test("Check that Profile page renders for admin users", () => {
     expect(screen.getByTestId("profile-view")).toBeVisible();
   });
 
   test("Check that admin button is visible", () => {
-    render(profileView);
     expect(screen.getByTestId("banner-admin-button")).toBeVisible();
   });
 
   test("Check that admin button navigates to /admin on click", () => {
-    render(profileView);
     const adminButton = screen.getByTestId("banner-admin-button");
     expect(adminButton).toBeVisible();
     fireEvent.click(adminButton);
@@ -63,9 +44,23 @@ describe("Test Profile view for admin users", () => {
   });
 });
 
+describe("Test Profile view for state users", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(profileView);
+  });
+  test("Check that Profile page renders for state users", () => {
+    expect(screen.getByTestId("profile-view")).toBeVisible();
+  });
+
+  test("Check that user state is visible", () => {
+    expect(screen.getByText("State")).toBeVisible();
+  });
+});
+
 describe("Test Profile view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    mockedUseUser.mockImplementation((): any => mockStateUser);
+    mockedUseUser.mockReturnValue(mockAdminUser);
     const { container } = render(profileView);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
