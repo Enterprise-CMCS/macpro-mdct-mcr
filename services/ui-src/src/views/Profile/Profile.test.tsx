@@ -6,7 +6,6 @@ import {
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils/auth";
 // views
 import { Profile } from "../index";
 
@@ -18,32 +17,18 @@ const profileView = (
 
 // MOCKS
 
-jest.mock("utils/auth");
-const mockedUseUser = useUser as jest.Mock<typeof useUser>;
+jest.mock("utils/auth", () => ({
+  useUser: jest
+    .fn()
+    .mockReturnValueOnce(mockAdminUser)
+    .mockReturnValueOnce(mockAdminUser)
+    .mockReturnValueOnce(mockAdminUser)
+    .mockReturnValue(mockStateUser),
+}));
 
 // TESTS
 
-describe("Test Profile view for state users", () => {
-  beforeEach(() => {
-    mockedUseUser.mockImplementation((): any => mockStateUser);
-  });
-
-  test("Check that Profile page renders for state users", () => {
-    const { getByTestId } = render(profileView);
-    expect(getByTestId("profile-view")).toBeVisible();
-  });
-
-  test("Check that user state is visible", () => {
-    const { getByTestId } = render(profileView);
-    expect(getByTestId("statetestid")).toBeVisible();
-  });
-});
-
 describe("Test Profile view for admin users", () => {
-  beforeEach(() => {
-    mockedUseUser.mockImplementation((): any => mockAdminUser);
-  });
-
   test("Check that Profile page renders for admin users", () => {
     const { getByTestId } = render(profileView);
     expect(getByTestId("profile-view")).toBeVisible();
@@ -63,9 +48,20 @@ describe("Test Profile view for admin users", () => {
   });
 });
 
+describe("Test Profile view for state users", () => {
+  test("Check that Profile page renders for state users", () => {
+    const { getByTestId } = render(profileView);
+    expect(getByTestId("profile-view")).toBeVisible();
+  });
+
+  test("Check that user state is visible", () => {
+    const { getByTestId } = render(profileView);
+    expect(getByTestId("statetestid")).toBeVisible();
+  });
+});
+
 describe("Test Profile view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    mockedUseUser.mockImplementation((): any => mockStateUser);
     const { container } = render(profileView);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

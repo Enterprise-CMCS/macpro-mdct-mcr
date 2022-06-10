@@ -3,7 +3,7 @@ export interface MCRUser {
   email: string;
   given_name: string;
   family_name: string;
-  userRole: string | undefined;
+  userRole?: string;
   state?: string;
 }
 

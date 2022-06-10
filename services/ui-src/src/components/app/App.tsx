@@ -12,7 +12,7 @@ export const App = () => {
         <Flex sx={sx.appLayout}>
           <Header handleLogout={logout} />
           <Container sx={sx.appContainer} data-testid="app-container">
-            <AppRoutes userRole={user?.userRole} />
+            <AppRoutes userRole={user.userRole} />
           </Container>
           <Footer />
         </Flex>

@@ -7,12 +7,15 @@ import {
   mockNoUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils/auth";
 //components
 import { App } from "components";
 
-jest.mock("utils/auth");
-const mockedUseUser = useUser as jest.Mock<typeof useUser>;
+jest.mock("utils/auth", () => ({
+  useUser: jest
+    .fn()
+    .mockReturnValueOnce(mockStateUser)
+    .mockReturnValue(mockNoUser),
+}));
 
 const appComponent = (
   <RouterWrappedComponent>
@@ -20,13 +23,8 @@ const appComponent = (
   </RouterWrappedComponent>
 );
 
-beforeEach(() => {
-  mockedUseUser.mockImplementation((): any => mockStateUser);
-});
-
 describe("Test App", () => {
   test("App is visible", async () => {
-    mockedUseUser.mockImplementation((): any => mockStateUser);
     await act(async () => {
       await render(appComponent);
     });
@@ -34,7 +32,6 @@ describe("Test App", () => {
   });
 
   test("App renders local logins if there is no user", async () => {
-    mockedUseUser.mockImplementation((): any => mockNoUser);
     await act(async () => {
       await render(appComponent);
     });

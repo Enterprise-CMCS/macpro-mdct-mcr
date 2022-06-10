@@ -27,5 +27,5 @@ export const AppRoutes = ({ userRole }: Props) => {
 };
 
 interface Props {
-  userRole: string;
+  userRole?: string;
 }

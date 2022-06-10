@@ -6,7 +6,8 @@ import { useUser } from "utils/auth";
 import { UserRoles } from "utils/types/types";
 
 export const Profile = () => {
-  const { email, given_name, family_name, userRole, state } = useUser().user;
+  const { user } = useUser();
+  const { email, given_name, family_name, userRole, state } = user!;
   const navigate = useNavigate();
   return (
     <>
