@@ -4,12 +4,8 @@ import { AccordionItem, Table } from "../index";
 // utils
 import { JsonObject } from "utils/types/types";
 
-export const TemplateCardAccordion = ({ verbiage }: Props) => (
-  <Accordion
-    sx={sx.root}
-    allowToggle={true}
-    data-testid="template-card-accordion"
-  >
+export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
+  <Accordion sx={sx.root} allowToggle={true} {...props}>
     <AccordionItem label={verbiage.buttonLabel}>
       <Text>{verbiage.bodyText}</Text>
       {verbiage.table && (
@@ -18,7 +14,6 @@ export const TemplateCardAccordion = ({ verbiage }: Props) => (
           variant="striped"
           lastCellsBold
           {...sx.table}
-          dataTestId="template-card-accordion-table"
         />
       )}
       {verbiage.list && (
@@ -34,6 +29,7 @@ export const TemplateCardAccordion = ({ verbiage }: Props) => (
 
 interface Props {
   verbiage: JsonObject;
+  [key: string]: any;
 }
 
 const sx = {

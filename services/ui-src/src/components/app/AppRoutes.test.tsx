@@ -69,6 +69,6 @@ describe("Test AppRoutes 404 handling", () => {
   });
 
   test("not-found routes redirect to 404", () => {
-    expect(screen.getByTestId("404")).toBeVisible();
+    expect(screen.getByTestId("404-view")).toBeVisible();
   });
 });

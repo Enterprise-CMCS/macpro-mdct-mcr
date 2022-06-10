@@ -69,10 +69,10 @@ describe("Test /admin view without banner", () => {
   });
 
   test("Check that current banner info does not render", () => {
-    const currentBannerInfo = screen.queryByTestId("current-banner-info");
-    expect(currentBannerInfo).not.toBeInTheDocument();
+    const currentBannerStatus = screen.queryByText("Status:");
+    expect(currentBannerStatus).not.toBeInTheDocument();
 
-    const deleteButton = screen.getByTestId("delete-admin-banner-button");
+    const deleteButton = screen.getByText("Delete Current Banner");
     expect(deleteButton).not.toBeVisible();
   });
 
@@ -95,10 +95,10 @@ describe("Test /admin view with banner", () => {
   });
 
   test("Check that current banner info renders", () => {
-    const currentBannerInfo = screen.getByTestId("current-banner-info");
-    expect(currentBannerInfo).toBeVisible();
+    const currentBannerStatus = screen.queryByText("Status:");
+    expect(currentBannerStatus).toBeVisible();
 
-    const deleteButton = screen.getByTestId("delete-admin-banner-button");
+    const deleteButton = screen.getByText("Delete Current Banner");
     expect(deleteButton).toBeVisible();
   });
 
@@ -120,7 +120,7 @@ describe("Test /admin view with active/inactive banner", () => {
     await act(async () => {
       await render(adminView(context));
     });
-    const currentBannerStatus = screen.getByTestId("current-banner-status");
+    const currentBannerStatus = screen.getByText("Status:");
     expect(currentBannerStatus.textContent).toEqual("Status: Active");
   });
 
@@ -130,7 +130,7 @@ describe("Test /admin view with active/inactive banner", () => {
     await act(async () => {
       await render(adminView(context));
     });
-    const currentBannerStatus = screen.getByTestId("current-banner-status");
+    const currentBannerStatus = screen.getByText("Status:");
     expect(currentBannerStatus.textContent).toEqual("Status: Inactive");
   });
 });

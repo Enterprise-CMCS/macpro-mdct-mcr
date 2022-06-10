@@ -50,7 +50,6 @@ export const TemplateCard = ({
             onClick={async () => {
               await downloadTemplate(templateName);
             }}
-            data-testid="template-download-button"
           >
             Download Excel Template
           </Button>

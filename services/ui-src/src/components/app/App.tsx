@@ -5,7 +5,7 @@ import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
 
 export const App = () => {
-  const { logout, user, userRole, showLocalLogins, loginWithIDM } = useUser();
+  const { logout, user, userRole, showLocalLogins } = useUser();
   return (
     <div id="app-wrapper">
       {user && (
@@ -26,7 +26,7 @@ export const App = () => {
           </Container>
           <Container sx={sx.loginContainer} data-testid="login-container">
             <Stack spacing={8}>
-              <LoginIDM loginWithIDM={loginWithIDM} />
+              <LoginIDM />
               <Divider />
               <LoginCognito />
             </Stack>

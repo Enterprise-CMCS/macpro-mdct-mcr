@@ -1,7 +1,8 @@
 // element selectors
-const menuButton = '[data-testid="menu-button"]';
-const menuOptionManageAccount = '[data-testid="menu-option-manage-account"]';
-const adminButton = '[data-testid="admin-button"]';
+const menuButton = '[data-testid="header-menu-dropdown-button"]';
+const menuOptionManageAccount =
+  '[data-testid="header-menu-option-manage-account"]';
+const adminButton = '[data-testid="banner-admin-button"]';
 
 beforeEach(() => {
   cy.visit("/");

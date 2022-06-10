@@ -38,17 +38,17 @@ export const Home = () => {
           <TemplateCard
             templateName="MCPAR"
             verbiage={data.cards.MCPAR}
-            cardprops={{ ...sx.card, "data-testid": "mcpar-template-card" }}
+            cardprops={sx.card}
           />
           <TemplateCard
             templateName="MLR"
             verbiage={data.cards.MLR}
-            cardprops={{ ...sx.card, "data-testid": "mlr-template-card" }}
+            cardprops={sx.card}
           />
           <TemplateCard
             templateName="NAAAR"
             verbiage={data.cards.NAAAR}
-            cardprops={{ ...sx.card, "data-testid": "naaar-template-card" }}
+            cardprops={sx.card}
           />
         </Flex>
       </Box>
