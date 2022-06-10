@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // components
 import { Button, Flex } from "@chakra-ui/react";
-import { Banner, DateField, TextField } from "../index";
+import { Banner, DateField, ErrorAlert, TextField } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { bannerId } from "utils/constants/constants";
+import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
+import { errorHandler } from "utils/errors/errorHandler";
 
 const formSchema = yup.object().shape({
   title: yup.string().required("Title text is required"),
@@ -27,6 +29,7 @@ const formSchema = yup.object().shape({
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [errorState, setErrorState] = useState(null);
 
   // make form context
   const form = useForm<FormInput>({
@@ -35,7 +38,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   });
 
   // submit new banner data via write method
-  const onSubmit = (formData: FormInput) => {
+  const onSubmit = async (formData: FormInput) => {
     const newBannerData = {
       key: bannerId,
       title: formData.title,
@@ -44,7 +47,11 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       startDate: formData.startDate,
       endDate: formData.endDate,
     };
-    writeAdminBanner(newBannerData);
+    try {
+      await writeAdminBanner(newBannerData);
+    } catch (error) {
+      errorHandler(error, setErrorState, REPLACE_BANNER_FAILED);
+    }
   };
 
   // set banner preview data
@@ -58,6 +65,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
+        <ErrorAlert errorData={errorState} />
         <TextField
           name="title"
           label="Title text"

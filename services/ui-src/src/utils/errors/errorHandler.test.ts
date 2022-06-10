@@ -1,31 +1,35 @@
 import { errorHandler } from "./errorHandler";
 
-jest.spyOn(window, "alert").mockImplementation(() => {});
 const mockCallback = jest.fn(() => {});
+const errorMessage = "Test error message";
+
+beforeAll(() => {
+  jest.spyOn(console, "log").mockImplementation(jest.fn());
+});
 
 describe("Test errorHandler", () => {
-  test("Expect error to alert user", () => {
-    const errorMessage = "Test error message";
-    const newError = new Error(errorMessage);
-    errorHandler(newError, mockCallback);
-    expect(mockCallback).toHaveBeenCalled();
+  test("Error is logged to the console", () => {
+    const spy = jest.spyOn(console, "log");
+    const error = new Error(errorMessage);
+    errorHandler(error, mockCallback);
+    expect(spy).toHaveBeenCalledWith("Error", errorMessage);
   });
 
-  test("If error is well constructed, the error message is used", () => {
-    const errorMessage = "Test error message";
-    const wellConstructedError = new Error(errorMessage);
-    expect(errorHandler(wellConstructedError, mockCallback).message).toEqual(
-      errorMessage
-    );
+  test("If callback is passed, it is called with correct data", () => {
+    const error = new Error(errorMessage);
+    errorHandler(error, mockCallback);
+    expect(mockCallback).toHaveBeenCalledWith({
+      name: "Error",
+      message: errorMessage,
+    });
   });
 
-  test("If error is not well constructed, it is stringified", () => {
-    const poorlyConstructedError = {
-      error: "idk am i an error?",
-      yeah: "guess so",
-    };
-    expect(errorHandler(poorlyConstructedError, mockCallback).message).toEqual(
-      JSON.stringify(poorlyConstructedError)
-    );
+  test("If override message is passed, it is used", () => {
+    const error = new Error(errorMessage);
+    errorHandler(error, mockCallback, "override message");
+    expect(mockCallback).toHaveBeenCalledWith({
+      name: "Error",
+      message: "override message",
+    });
   });
 });

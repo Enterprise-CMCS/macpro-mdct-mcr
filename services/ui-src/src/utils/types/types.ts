@@ -39,11 +39,6 @@ export interface BannerData {
   [key: string]: any;
 }
 
-export interface ErrorData {
-  name?: string;
-  message: string;
-}
-
 export interface AdminBannerData extends BannerData {
   key: string;
   startDate: number;
@@ -80,4 +75,11 @@ export interface TimeShape {
   hour: number;
   minute: number;
   second: number;
+}
+
+// ERRORS
+
+export interface ErrorData {
+  name?: string;
+  message: string;
 }

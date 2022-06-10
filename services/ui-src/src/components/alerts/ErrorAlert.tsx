@@ -36,6 +36,7 @@ const sx = {
   root: {
     minHeight: 0,
     marginY: "1rem",
+    borderInlineStartWidth: "0.5rem",
     "&.toast": {
       position: "absolute",
       right: 0,

@@ -1,14 +1,12 @@
-import { ErrorData } from "utils/types/types";
-
 export const errorHandler = (
   error: Error | any,
-  callback: Function
-): ErrorData => {
-  const isError = error && error.stack && error.message;
+  callback?: Function,
+  message?: string
+): void => {
   const errorData = {
-    name: error.name || "",
-    message: isError ? error.message : JSON.stringify(error),
+    name: error.name,
+    message: message || error.message,
   };
-  callback(errorData);
-  return errorData;
+  if (callback) callback(errorData);
+  console.log(errorData.name, errorData.message); // eslint-disable-line no-console
 };

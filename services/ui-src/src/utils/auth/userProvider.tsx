@@ -4,6 +4,7 @@ import { Auth } from "aws-amplify";
 import config from "config";
 
 import { MCRUser, UserContext, UserContextInterface } from "./userContext";
+import { errorHandler } from "utils/errors/errorHandler";
 
 interface Props {
   children?: ReactNode;
@@ -25,7 +26,9 @@ export const UserProvider = ({ children }: Props) => {
     try {
       setUser(null);
       await Auth.signOut();
-    } catch (error) {} // eslint-disable-line no-empty -- swallow error
+    } catch (error) {
+      errorHandler(error);
+    }
     navigate("/");
   }, [navigate]);
 
