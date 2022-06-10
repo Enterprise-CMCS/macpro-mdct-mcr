@@ -14,7 +14,7 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   return (
-    <AccordionItemRoot sx={sx.root} {...props} data-testid="accordion-item">
+    <AccordionItemRoot sx={sx.root} {...props}>
       {({ isExpanded }) => (
         <>
           <AccordionButton

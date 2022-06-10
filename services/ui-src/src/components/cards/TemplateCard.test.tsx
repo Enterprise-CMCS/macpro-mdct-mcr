@@ -9,10 +9,19 @@ import data from "../../data/home-view.json";
 
 const mockAPI = require("utils/api/requestMethods/template");
 
+jest.mock("../../utils/useBreakpoint", () => ({
+  useBreakpoint: jest.fn(() => ({
+    isDesktop: true,
+  })),
+  makeMediaQueryClasses: jest.fn(() => "desktop"),
+}));
+
+const templateVerbiage = data.cards.MCPAR;
+
 const templateCardComponent = (
   <TemplateCard
     templateName="testTemplate"
-    verbiage={data.cards.MCPAR}
+    verbiage={templateVerbiage}
     data-testid="template-download-card"
   />
 );
@@ -28,12 +37,17 @@ describe("Test TemplateCard", () => {
 
   test("TemplateCard download button is visible and clickable", async () => {
     const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
-    const downloadButton = screen.getByTestId("template-download-button");
+    const downloadButton = screen.getByText("Download Excel Template");
     expect(downloadButton).toBeVisible();
     await act(async () => {
       await userEvent.click(downloadButton);
     });
     await waitFor(() => expect(apiSpy).toHaveBeenCalledTimes(1));
+  });
+
+  test("TemplateCard image is visible on desktop", () => {
+    const imageAltText = "Spreadsheet icon";
+    expect(screen.getByAltText(imageAltText)).toBeVisible();
   });
 });
 

@@ -14,34 +14,23 @@ export const Footer = () => {
   const { isMobile, isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   return (
-    <Box sx={sx.root} role="contentinfo" data-testid="footer-container">
+    <Box sx={sx.root} role="contentinfo">
       <Box sx={sx.footerTop}>
         <Container sx={sx.footerTopContainer}>
           <Flex sx={sx.footerTopFlex} className={mqClasses}>
             <Flex sx={sx.footerTopLogoFlex} className={mqClasses}>
               {isMobile && (
-                <Image
-                  src={hhsLogo}
-                  alt="HHS logo"
-                  sx={sx.hhsLogo}
-                  data-testid="hhs-logo"
-                />
+                <Image src={hhsLogo} alt="HHS logo" sx={sx.hhsLogo} />
               )}
               <Image
                 src={medicaidLogo}
                 alt="Medicaid logo"
                 sx={sx.medicaidLogo}
-                data-testid="medicaid-logo"
               />
             </Flex>
             <Flex sx={sx.footerTopTextFlex}>
               {!isMobile && (
-                <Image
-                  src={hhsLogo}
-                  alt="HHS logo"
-                  sx={sx.hhsLogo}
-                  data-testid="hhs-logo"
-                />
+                <Image src={hhsLogo} alt="HHS logo" sx={sx.hhsLogo} />
               )}
               <Text sx={sx.footerText} className={mqClasses}>
                 A federal government website managed and paid for by the U.S.
@@ -62,7 +51,6 @@ export const Footer = () => {
                 variant="inverse"
                 sx={sx.link}
                 className={mqClasses}
-                data-testid="help-link"
               >
                 Contact Us
               </Link>
@@ -70,7 +58,6 @@ export const Footer = () => {
               <Link
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
-                data-testid="accessibility-statement-link"
                 variant="inverse"
                 className={mqClasses}
                 sx={sx.link}

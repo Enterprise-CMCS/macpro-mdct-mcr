@@ -11,7 +11,10 @@ import data from "../../data/home-view.json";
 const accordionItemComponent = (
   <RouterWrappedComponent>
     <Accordion>
-      <AccordionItem label={data.cards.MCPAR.accordion.buttonLabel} />
+      <AccordionItem
+        label={data.cards.MCPAR.accordion.buttonLabel}
+        data-testid="accordion-item"
+      />
     </Accordion>
   </RouterWrappedComponent>
 );

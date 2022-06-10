@@ -9,7 +9,7 @@ export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
 
   return (
-    <main id="main-wrapper" data-testid="main-wrapper">
+    <main id="app-routes-wrapper">
       <AdminBannerProvider>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -27,5 +27,5 @@ export const AppRoutes = ({ userRole }: Props) => {
 };
 
 interface Props {
-  userRole: string;
+  userRole?: string;
 }
