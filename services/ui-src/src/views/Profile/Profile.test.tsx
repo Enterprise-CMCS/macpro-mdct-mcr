@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import {
@@ -30,18 +30,18 @@ jest.mock("utils/auth", () => ({
 
 describe("Test Profile view for admin users", () => {
   test("Check that Profile page renders for admin users", () => {
-    const { getByTestId } = render(profileView);
-    expect(getByTestId("profile-view")).toBeVisible();
+    render(profileView);
+    expect(screen.getByTestId("profile-view")).toBeVisible();
   });
 
   test("Check that admin button is visible", () => {
-    const { getByTestId } = render(profileView);
-    expect(getByTestId("admin-button")).toBeVisible();
+    render(profileView);
+    expect(screen.getByTestId("banner-admin-button")).toBeVisible();
   });
 
   test("Check that admin button navigates to /admin on click", () => {
-    const { getByTestId } = render(profileView);
-    const adminButton = getByTestId("admin-button");
+    render(profileView);
+    const adminButton = screen.getByTestId("banner-admin-button");
     expect(adminButton).toBeVisible();
     fireEvent.click(adminButton);
     expect(window.location.pathname).toEqual("/admin");

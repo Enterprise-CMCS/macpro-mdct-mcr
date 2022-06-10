@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
-
 // element selectors
 const cognitoEmailInputField = "//input[@name='email']";
 const cognitoPasswordInputField = "//input[@name='password']";
+const cognitoLoginButton = "[data-testid='cognito-login-button']";
 
 // credentials
 const stateUser = {
@@ -18,6 +17,7 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   let credentials = {};
 
   if (userType && userCredentials) {
+    /* eslint-disable-next-line no-console */
     console.warn(
       "If userType and userCredentials are both provided, userType is ignored and provided userCredentials are used."
     );
@@ -40,5 +40,5 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
 
   cy.xpath(cognitoEmailInputField).type(credentials.email);
   cy.xpath(cognitoPasswordInputField).type(credentials.password);
-  cy.get('[data-testid="cognito-login-button"]').click();
+  cy.get(cognitoLoginButton).click();
 });

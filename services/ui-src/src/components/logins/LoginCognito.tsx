@@ -39,7 +39,7 @@ export const LoginCognito = () => {
   return (
     <Stack>
       <Heading size="md" alignSelf="center">
-        Login with Cognito
+        Log In with Cognito
       </Heading>
       <label>
         <Text mb="2">Email</Text>
@@ -50,7 +50,6 @@ export const LoginCognito = () => {
           value={fields.email}
           onChange={handleFieldChange}
           className="field"
-          data-testid="email-input-field"
         />
       </label>
       <label>
@@ -62,18 +61,15 @@ export const LoginCognito = () => {
           value={fields.password}
           onChange={handleFieldChange}
           className="field"
-          data-testid="password-input-field"
         />
       </label>
       <Button
         colorScheme="colorSchemes.main"
-        onClick={() => {
-          handleLogin();
-        }}
+        onClick={handleLogin}
         isFullWidth
         data-testid="cognito-login-button"
       >
-        Login with Cognito
+        Log In with Cognito
       </Button>
     </Stack>
   );

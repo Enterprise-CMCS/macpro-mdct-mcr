@@ -9,7 +9,10 @@ import data from "../../data/home-view.json";
 
 const accordionComponent = (
   <RouterWrappedComponent>
-    <TemplateCardAccordion verbiage={data.cards.MCPAR} />
+    <TemplateCardAccordion
+      verbiage={data.cards.MCPAR}
+      data-testid="test-accordion"
+    />
   </RouterWrappedComponent>
 );
 
@@ -19,7 +22,7 @@ describe("Test TemplateCardAccordion", () => {
   });
 
   test("Accordion is visible", () => {
-    expect(screen.getByTestId("template-card-accordion")).toBeVisible();
+    expect(screen.getByTestId("test-accordion")).toBeVisible();
   });
 });
 

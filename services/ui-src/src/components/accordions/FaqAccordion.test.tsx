@@ -9,7 +9,10 @@ import data from "../../data/help-view.json";
 
 const faqAccordionComponent = (
   <RouterWrappedComponent>
-    <FaqAccordion accordionItems={data.accordionItems} />
+    <FaqAccordion
+      accordionItems={data.accordionItems}
+      data-testid="faq-accordion"
+    />
   </RouterWrappedComponent>
 );
 

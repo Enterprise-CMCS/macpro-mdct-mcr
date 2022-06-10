@@ -50,7 +50,7 @@ const TestComponent = () => {
         onClick={() => context.loginWithIDM()}
         data-testid="login-idm-button"
       >
-        Login with IDM
+        Log In with IDM
       </button>
       User Test
     </div>

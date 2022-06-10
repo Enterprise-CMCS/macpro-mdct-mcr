@@ -26,7 +26,7 @@ export const App = () => {
           </Container>
           <Container sx={sx.loginContainer} data-testid="login-container">
             <Stack spacing={8}>
-              <LoginIDM loginWithIDM={loginWithIDM} />
+              <LoginIDM />
               <Divider />
               <LoginCognito />
             </Stack>

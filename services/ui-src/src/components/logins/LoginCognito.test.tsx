@@ -17,15 +17,15 @@ describe("Test LoginCognito", () => {
   });
 
   test("LoginCognito email field is visible", () => {
-    expect(screen.getByTestId("email-input-field")).toBeVisible();
+    expect(screen.getByText("Email")).toBeVisible();
   });
 
   test("LoginCognito password field is visible", () => {
-    expect(screen.getByTestId("password-input-field")).toBeVisible();
+    expect(screen.getByText("Password")).toBeVisible();
   });
 
   test("LoginCognito login button is visible", () => {
-    expect(screen.getByTestId("cognito-login-button")).toBeVisible();
+    expect(screen.getByRole("button")).toBeVisible();
   });
 });
 

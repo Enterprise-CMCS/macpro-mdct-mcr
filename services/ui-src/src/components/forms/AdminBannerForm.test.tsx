@@ -9,13 +9,16 @@ import { convertDateEtToUtc } from "utils/time/time";
 const mockWriteAdminBanner = jest.fn();
 
 const adminBannerFormComponent = (
-  <AdminBannerForm writeAdminBanner={mockWriteAdminBanner} />
+  <AdminBannerForm
+    writeAdminBanner={mockWriteAdminBanner}
+    data-testid="test-form"
+  />
 );
 
 describe("Test AdminBannerForm component", () => {
   test("AdminBannerForm is visible", () => {
     render(adminBannerFormComponent);
-    const form = screen.getByTestId("admin-banner-form");
+    const form = screen.getByTestId("test-form");
     expect(form).toBeVisible();
   });
 
