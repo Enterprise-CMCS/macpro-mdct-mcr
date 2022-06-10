@@ -17,19 +17,20 @@ describe("Test Header", () => {
   });
 
   test("Header is visible", () => {
-    expect(screen.getByTestId("header-banner-container")).toBeVisible();
+    const header = screen.getByRole("navigation");
+    expect(header).toBeVisible();
   });
 
   test("Logo is visible", () => {
-    expect(screen.getByTestId("app-logo")).toBeVisible();
+    expect(screen.getByAltText("MCR logo")).toBeVisible();
   });
 
   test("Help button is visible", () => {
-    expect(screen.getByTestId("help-button")).toBeVisible();
+    expect(screen.getByTestId("header-help-button")).toBeVisible();
   });
 
   test("Menu button is visible", () => {
-    expect(screen.getByTestId("menu-button")).toBeVisible();
+    expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
   });
 });
 

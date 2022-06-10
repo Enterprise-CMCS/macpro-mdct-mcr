@@ -1,6 +1,6 @@
 import { useMediaQuery, useTheme } from "@chakra-ui/react";
 
-export const useBreakpoint = (): { [key: string]: boolean } => {
+export const convertBreakpoints = () => {
   // get breakpoints from theme
   const { breakpoints } = useTheme();
   const keys: string[] = Object.keys(breakpoints || {});
@@ -10,7 +10,11 @@ export const useBreakpoint = (): { [key: string]: boolean } => {
   keys.map((e: string) => {
     pxBreaks[e] = parseInt(breakpoints[e].slice(0, -2)) * 16;
   });
+  return pxBreaks;
+};
 
+export const useBreakpoint = (): { [key: string]: boolean } => {
+  const pxBreaks = convertBreakpoints();
   const [isMobile, isTablet, isDesktop, isUltrawide]: boolean[] = useMediaQuery(
     [
       // mobile (<=35em|560px)
@@ -23,7 +27,6 @@ export const useBreakpoint = (): { [key: string]: boolean } => {
       `(min-width: ${pxBreaks.xl + 1}px)`,
     ]
   );
-
   return { isMobile, isTablet, isDesktop, isUltrawide };
 };
 

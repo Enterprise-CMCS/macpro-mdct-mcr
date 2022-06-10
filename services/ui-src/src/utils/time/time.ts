@@ -7,6 +7,19 @@ export const oneSecondToMidnight: TimeShape = {
   minute: 59,
   second: 59,
 };
+export const noon: TimeShape = {
+  hour: 12,
+  minute: 0,
+  second: 0,
+};
+
+export const calculateTimeByDateType = (dateType: string): TimeShape => {
+  const timeMap: any = {
+    startDate: midnight,
+    endDate: oneSecondToMidnight,
+  };
+  return timeMap[dateType] || noon;
+};
 
 /*
  * Converts passed ET datetime to UTC

@@ -1,7 +1,7 @@
 // selectors
-const menuButton = '[data-testid="menu-button"]';
-const profileButton = '[data-testid="menu-option-manage-account"]';
-const adminButton = '[data-testid="admin-button"]';
+const menuButton = '[data-testid="header-menu-dropdown-button"]';
+const profileButton = '[data-testid="header-menu-option-manage-account"]';
+const adminButton = '[data-testid="banner-admin-button"]';
 
 describe("Baseline accessibility check", () => {
   beforeEach(() => {

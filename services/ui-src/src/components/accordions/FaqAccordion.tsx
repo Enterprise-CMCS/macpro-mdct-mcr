@@ -5,15 +5,11 @@ import { AccordionItem } from "../index";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { JsonObject } from "utils/types/types";
 
-export const FaqAccordion = ({ accordionItems }: Props) => {
+export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   return (
-    <Accordion
-      allowToggle={true}
-      allowMultiple={true}
-      data-testid="faq-accordion"
-    >
+    <Accordion allowToggle={true} allowMultiple={true} {...props}>
       {accordionItems.map((item: JsonObject, index: number) => (
         <AccordionItem key={index} label={item.question} sx={sx.item}>
           <Box sx={sx.answerBox} className={mqClasses}>
@@ -27,6 +23,7 @@ export const FaqAccordion = ({ accordionItems }: Props) => {
 
 interface Props {
   accordionItems: JsonObject;
+  [key: string]: any;
 }
 
 const sx = {

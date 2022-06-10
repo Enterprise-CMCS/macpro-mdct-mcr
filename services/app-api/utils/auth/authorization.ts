@@ -60,7 +60,7 @@ export const isAuthorized = async (event: APIGatewayProxyEvent) => {
 
   let payload;
 
-  if (event.headers["x-api-key"]) {
+  if (event?.headers["x-api-key"]) {
     try {
       payload = await verifier.verify(event.headers["x-api-key"]);
     } catch {
@@ -77,7 +77,7 @@ export const hasPermissions = (
 ) => {
   let isAllowed = false;
   // decode the idToken
-  if (event.headers["x-api-key"]) {
+  if (event?.headers["x-api-key"]) {
     const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
     const idmUserRoles = decoded["custom:cms_roles"];
     const mcrUserRole = idmUserRoles

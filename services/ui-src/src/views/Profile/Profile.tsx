@@ -5,20 +5,13 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useUser } from "utils/auth";
 import { UserRoles } from "utils/types/types";
 
-const userDetails = () => {
-  const userInfo = useUser();
-  const { email, given_name, family_name } = userInfo.user.attributes;
-  const { userRole } = userInfo;
-  const state = userInfo.user.attributes?.["custom:cms_state"] || "";
-  return { email, given_name, family_name, userRole, state };
-};
-
 export const Profile = () => {
-  const { email, given_name, family_name, userRole, state } = userDetails();
+  const { user } = useUser();
+  const { email, given_name, family_name, userRole, state } = user ?? {};
   const navigate = useNavigate();
   return (
     <>
-      <Flex sx={sx.root} data-testid="profile">
+      <Flex sx={sx.root} data-testid="profile-view">
         <Heading as="h1" size="xl" sx={sx.heading}>
           Account Info
         </Heading>
@@ -40,16 +33,14 @@ export const Profile = () => {
         </Flex>
         {state && (
           <Flex sx={sx.variantRow}>
-            <Text sx={sx.fieldName} data-testid="statetestid">
-              State
-            </Text>
+            <Text sx={sx.fieldName}>State</Text>
             <Text>{state}</Text>
           </Flex>
         )}
         {userRole === UserRoles.ADMIN && (
           <Button
             colorScheme="colorSchemes.main"
-            data-testid="admin-button"
+            data-testid="banner-admin-button"
             sx={sx.adminButton}
             onClick={() => navigate("/admin")}
           >
