@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import {
@@ -16,13 +16,16 @@ import { DELETE_BANNER_FAILED } from "utils/constants/constants";
 import data from "../../data/admin-view.json";
 
 export const Admin = () => {
-  const { bannerData, deleteAdminBanner, writeAdminBanner } =
+  const { bannerData, deleteAdminBanner, writeAdminBanner, errorData } =
     useContext(AdminBannerContext);
-  const [errorState, setErrorState] = useState(null);
+  const [errorState, setErrorState] = useState(errorData);
   const bannerIsActive = checkBannerActivityStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
+  useEffect(() => {
+    setErrorState(errorData);
+  }, [errorData]);
 
   const deleteBanner = async () => {
     try {
@@ -35,6 +38,7 @@ export const Admin = () => {
   return (
     <section>
       <Box sx={sx.root} data-testid="admin-view">
+        <ErrorAlert error={errorState} sxOverrides={sx.errorAlert} />
         <Flex sx={sx.mainContentFlex}>
           <Box sx={sx.introTextBox}>
             <Heading as="h1" sx={sx.headerText}>
@@ -44,7 +48,6 @@ export const Admin = () => {
           </Box>
           <Box sx={sx.currentBannerSectionBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
-            <ErrorAlert error={errorState} />
             <Collapse in={!!bannerData?.key}>
               {bannerData?.key && (
                 <Flex sx={sx.currentBannerInfo}>
@@ -91,6 +94,7 @@ const sx = {
   root: {
     flexShrink: "0",
   },
+  errorAlert: {},
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",

@@ -1,6 +1,4 @@
 import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
-// components
-import { ErrorAlert } from "components";
 // utils
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
 import { bannerId, GET_BANNER_FAILED } from "../../utils/constants/constants";
@@ -15,6 +13,7 @@ export const AdminBannerContext = createContext<AdminBannerShape>({
   fetchAdminBanner: () => {},
   writeAdminBanner: () => {},
   deleteAdminBanner: () => {},
+  errorData: null,
 });
 
 export const AdminBannerProvider = ({ children }: Props) => {
@@ -53,13 +52,13 @@ export const AdminBannerProvider = ({ children }: Props) => {
       fetchAdminBanner,
       writeAdminBanner,
       deleteAdminBanner,
+      errorData: errorState,
     }),
-    [bannerData]
+    [bannerData, errorState]
   );
 
   return (
     <AdminBannerContext.Provider value={providerValue}>
-      <ErrorAlert error={errorState} variant="toast" />
       {children}
     </AdminBannerContext.Provider>
   );
