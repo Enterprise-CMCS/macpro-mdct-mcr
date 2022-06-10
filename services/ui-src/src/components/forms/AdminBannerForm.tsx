@@ -65,7 +65,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
-        <ErrorAlert errorData={errorState} />
+        <ErrorAlert errorData={errorState} sxOverrides={sx.errorAlert} />
         <TextField
           name="title"
           label="Title text"
@@ -126,6 +126,9 @@ interface FormInput {
 }
 
 const sx = {
+  errorAlert: {
+    maxWidth: "40rem",
+  },
   dateFieldContainer: {
     ".ds-c-fieldset:first-of-type": {
       marginRight: "3rem",
