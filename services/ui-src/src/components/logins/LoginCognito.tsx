@@ -74,7 +74,7 @@ export const LoginCognito = () => {
       >
         Log In with Cognito
       </Button>
-      <ErrorAlert errorData={errorState} />
+      <ErrorAlert error={errorState} />
     </Stack>
   );
 };

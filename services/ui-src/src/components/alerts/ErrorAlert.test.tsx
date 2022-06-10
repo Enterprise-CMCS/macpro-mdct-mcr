@@ -5,7 +5,7 @@ import { ErrorAlert } from "components";
 
 const errorAlertComponent = (
   <ErrorAlert
-    errorData={{ message: "test-message" }}
+    error={{ message: "test-message" }}
     data-testid="test-error-alert"
   />
 );

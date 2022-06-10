@@ -1,24 +1,36 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   AdminBannerContext,
   AdminBannerForm,
   Banner,
-} from "../../components/index";
+  ErrorAlert,
+} from "../../components";
 // utils
 import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 import { formatDateUtcToEt } from "utils/time/time";
+import { errorHandler } from "utils/errors/errorHandler";
+import { DELETE_BANNER_FAILED } from "utils/constants/constants";
 // data
 import data from "../../data/admin-view.json";
 
 export const Admin = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner } =
     useContext(AdminBannerContext);
+  const [errorState, setErrorState] = useState(null);
   const bannerIsActive = checkBannerActivityStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
+
+  const deleteBanner = async () => {
+    try {
+      await deleteAdminBanner();
+    } catch (error) {
+      errorHandler(error, setErrorState, DELETE_BANNER_FAILED);
+    }
+  };
 
   return (
     <section>
@@ -32,6 +44,7 @@ export const Admin = () => {
           </Box>
           <Box sx={sx.currentBannerSectionBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>
+            <ErrorAlert error={errorState} />
             <Collapse in={!!bannerData?.key}>
               {bannerData?.key && (
                 <Flex sx={sx.currentBannerInfo}>
@@ -56,7 +69,7 @@ export const Admin = () => {
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
-                  onClick={() => deleteAdminBanner()}
+                  onClick={deleteBanner}
                 >
                   Delete Current Banner
                 </Button>

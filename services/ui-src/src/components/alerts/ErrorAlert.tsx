@@ -5,18 +5,18 @@ import { Collapse } from "@chakra-ui/react";
 import { AlertTypes, ErrorData, StyleObject } from "utils/types/types";
 
 export const ErrorAlert = ({
-  errorData,
+  error,
   variant = "inline",
   sxOverrides,
   ...props
 }: Props) => {
   return (
-    <Collapse in={!!errorData}>
-      {errorData && (
+    <Collapse in={!!error}>
+      {error && (
         <Alert
           status={AlertTypes.ERROR}
-          title={errorData?.name}
-          description={errorData?.message}
+          title={error?.name}
+          description={error?.message}
           showIcon={false}
           className={variant}
           sx={{ ...sx.root, ...sxOverrides }}
@@ -28,7 +28,7 @@ export const ErrorAlert = ({
 };
 
 interface Props {
-  errorData: ErrorData | null;
+  error: ErrorData | null;
   variant?: "inline" | "toast";
   sxOverrides?: StyleObject;
   [key: string]: any;

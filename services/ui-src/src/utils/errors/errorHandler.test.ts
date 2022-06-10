@@ -4,12 +4,12 @@ const mockCallback = jest.fn(() => {});
 const errorMessage = "Test error message";
 
 beforeAll(() => {
-  jest.spyOn(console, "log").mockImplementation(jest.fn());
+  jest.spyOn(console, "error").mockImplementation(jest.fn());
 });
 
 describe("Test errorHandler", () => {
   test("Error is logged to the console", () => {
-    const spy = jest.spyOn(console, "log");
+    const spy = jest.spyOn(console, "error");
     const error = new Error(errorMessage);
     errorHandler(error, mockCallback);
     expect(spy).toHaveBeenCalledWith("Error", errorMessage);

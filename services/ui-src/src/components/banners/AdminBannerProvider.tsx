@@ -1,7 +1,10 @@
 import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
+// components
+import { ErrorAlert } from "components";
 // utils
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
-import { bannerId } from "../../utils/constants/constants";
+import { bannerId, GET_BANNER_FAILED } from "../../utils/constants/constants";
+import { errorHandler } from "utils/errors/errorHandler";
 // api
 import { deleteBanner, getBanner, writeBanner } from "utils/api/index";
 
@@ -18,11 +21,16 @@ export const AdminBannerProvider = ({ children }: Props) => {
   const [bannerData, setBannerData] = useState<AdminBannerData>(
     {} as AdminBannerData
   );
+  const [errorState, setErrorState] = useState(null);
 
   const fetchAdminBanner = async () => {
-    const currentBanner = await getBanner(ADMIN_BANNER_ID);
-    const newBannerData = currentBanner?.Item || {};
-    setBannerData(newBannerData);
+    try {
+      const currentBanner = await getBanner(ADMIN_BANNER_ID);
+      const newBannerData = currentBanner?.Item || {};
+      setBannerData(newBannerData);
+    } catch (error) {
+      errorHandler(error, setErrorState, GET_BANNER_FAILED);
+    }
   };
 
   const deleteAdminBanner = async () => {
@@ -51,6 +59,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
 
   return (
     <AdminBannerContext.Provider value={providerValue}>
+      <ErrorAlert error={errorState} variant="toast" />
       {children}
     </AdminBannerContext.Provider>
   );

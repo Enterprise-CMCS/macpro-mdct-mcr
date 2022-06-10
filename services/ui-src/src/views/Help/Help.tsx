@@ -1,6 +1,6 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { EmailCard, FaqAccordion } from "../../components/index";
+import { EmailCard, FaqAccordion } from "../../components";
 // data
 import data from "../../data/help-view.json";
 
