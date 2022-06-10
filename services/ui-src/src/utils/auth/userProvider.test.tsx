@@ -81,7 +81,6 @@ describe("Test UserProvider with production path", () => {
       },
       writable: true,
     });
-
     await act(async () => {
       await render(testComponent);
     });

@@ -7,7 +7,7 @@ import { UserRoles } from "utils/types/types";
 
 export const Profile = () => {
   const { user } = useUser();
-  const { email, given_name, family_name, userRole, state } = user!;
+  const { email, given_name, family_name, userRole, state } = user ?? {};
   const navigate = useNavigate();
   return (
     <>

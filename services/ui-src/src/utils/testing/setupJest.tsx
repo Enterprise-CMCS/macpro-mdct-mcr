@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
+import { UserContextInterface } from "../auth/userContext";
 
 global.React = React;
 
@@ -32,14 +33,14 @@ jest.mock("@chakra-ui/transition", () => ({
   )),
 }));
 
-export const mockNoUser = {
-  user: null,
+export const mockNoUser: UserContextInterface = {
+  user: undefined,
   showLocalLogins: true,
-  logout: () => {},
+  logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockStateUser = {
+export const mockStateUser: UserContextInterface = {
   user: {
     userRole: "mdctmcr-state-user",
     state: "MA",
@@ -48,11 +49,11 @@ export const mockStateUser = {
     given_name: "Sammy",
   },
   showLocalLogins: true,
-  logout: () => {},
+  logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockAdminUser = {
+export const mockAdminUser: UserContextInterface = {
   user: {
     userRole: "mdctmcr-approver",
     state: undefined,
@@ -61,7 +62,7 @@ export const mockAdminUser = {
     given_name: "Adam",
   },
   showLocalLogins: false,
-  logout: () => {},
+  logout: async () => {},
   loginWithIDM: () => {},
 };
 

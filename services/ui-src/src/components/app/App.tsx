@@ -5,7 +5,7 @@ import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
 
 export const App = () => {
-  const { logout, user, showLocalLogins, loginWithIDM } = useUser();
+  const { logout, user, showLocalLogins } = useUser();
   return (
     <div id="app-wrapper">
       {user && (
