@@ -8,5 +8,5 @@ export const errorHandler = (
     message: message || error.message,
   };
   if (callback) callback(errorData);
-  console.error(errorData.name, errorData.message); // eslint-disable-line no-console
+  console.log(errorData.name, errorData.message); // eslint-disable-line no-console
 };

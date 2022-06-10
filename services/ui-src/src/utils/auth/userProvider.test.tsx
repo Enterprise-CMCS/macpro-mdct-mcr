@@ -29,12 +29,7 @@ jest.mock("aws-amplify", () => ({
         }),
       }),
     configure: () => {},
-    signOut: jest
-      .fn()
-      .mockImplementationOnce(() => {
-        throw new Error("failed!");
-      })
-      .mockImplementation(() => {}),
+    signOut: jest.fn().mockImplementation(() => {}),
     federatedSignIn: () => {},
   },
 }));
