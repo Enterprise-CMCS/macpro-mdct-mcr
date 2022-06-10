@@ -8,7 +8,6 @@ jest.mock("react", () => ({
   createContext: jest.fn().mockReturnValue({
     logout: async () => {},
     loginWithIDM: () => {},
-    isStateUser: false,
   }),
 }));
 

@@ -3,8 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
 
-import { UserContext, UserContextInterface } from "./userContext";
-import { UserRoles } from "utils/types/types";
+import { MCRUser, UserContext, UserContextInterface } from "./userContext";
 
 interface Props {
   children?: ReactNode;
@@ -26,16 +25,27 @@ export const UserProvider = ({ children }: Props) => {
     try {
       setUser(null);
       await Auth.signOut();
-    } catch (error) {
-      // swallow error
-    }
+    } catch (error) {} // eslint-disable-line no-empty -- swallow error
     navigate("/");
   }, [navigate]);
 
   const checkAuthState = useCallback(async () => {
     try {
-      const authenticatedUser = await Auth.currentAuthenticatedUser();
-      setUser(authenticatedUser);
+      const session = await Auth.currentSession();
+      const payload = session.getIdToken().payload;
+      const { email, given_name, family_name } = payload;
+      // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to MCR
+      const cms_role = (payload["custom:cms_roles"] as string) ?? "";
+      const userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
+      const state = payload["custom:cms_state"] as string | undefined;
+      const currentUser: MCRUser = {
+        email,
+        given_name,
+        family_name,
+        userRole,
+        state,
+      };
+      setUser(currentUser);
     } catch (error) {
       if (isProduction) {
         authenticateWithIDM();
@@ -44,20 +54,6 @@ export const UserProvider = ({ children }: Props) => {
       }
     }
   }, [isProduction]);
-
-  // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to qmr
-  const userRole = (
-    user?.signInUserSession?.idToken?.payload?.["custom:cms_roles"] as
-      | string
-      | undefined
-  )
-    ?.split(",")
-    .find((r) => r.includes("mdctmcr"));
-
-  const isStateUser = userRole === UserRoles.STATE;
-
-  const userState =
-    user?.signInUserSession?.idToken?.payload?.["custom:cms_state"];
 
   // single run configuration
   useEffect(() => {
@@ -71,7 +67,7 @@ export const UserProvider = ({ children }: Props) => {
         domain: config.cognito.APP_CLIENT_DOMAIN,
         redirectSignIn: config.cognito.REDIRECT_SIGNIN,
         redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
-        scope: ["email", "openid", "profile", "aws.cognito.signin.user.admin"],
+        scope: ["email", "openid", "profile"],
         responseType: "token",
       },
     });
@@ -88,11 +84,8 @@ export const UserProvider = ({ children }: Props) => {
       logout,
       showLocalLogins,
       loginWithIDM: authenticateWithIDM,
-      isStateUser,
-      userState,
-      userRole,
     }),
-    [user, logout, showLocalLogins, isStateUser, userState, userRole]
+    [user, logout, showLocalLogins]
   );
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;

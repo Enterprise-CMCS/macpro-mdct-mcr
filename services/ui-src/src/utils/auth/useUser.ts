@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { UserContext } from "./userContext";
+import { UserContext, UserContextInterface } from "./userContext";
 
-export const useUser = (): any => {
+export const useUser = (): UserContextInterface => {
   const context = useContext(UserContext);
 
   if (typeof context === "undefined") {

@@ -128,7 +128,6 @@ resources:
           - email
           - openid
           - profile
-          - aws.cognito.signin.user.admin # needed for retrieving user attributes in IDM flow
         CallbackURLs:
           - ${self:custom.application_endpoint_url}
           - http://localhost:3000/

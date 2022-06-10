@@ -10,25 +10,23 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 
 jest.mock("aws-amplify", () => ({
   Auth: {
-    currentAuthenticatedUser: jest
+    currentSession: jest
       .fn()
-      .mockImplementationOnce(() => {
-        throw new Error("failed!");
+      .mockReturnValueOnce({
+        getIdToken: () => {
+          throw new Error("test error flow");
+        },
       })
-      .mockImplementationOnce(() => {
-        throw new Error("failed!");
-      })
-      .mockImplementation(() => {
-        return {
-          signInUserSession: {
-            idToken: {
-              payload: {
-                ["custom:cms_roles"]: "mdctmcr-state-user",
-                ["custom:cms_state"]: "AL",
-              },
-            },
+      .mockReturnValue({
+        getIdToken: () => ({
+          payload: {
+            email: "test@email.com",
+            given_name: "Test",
+            family_name: "IsMe",
+            ["custom:cms_roles"]: "mdctmcr-state-user",
+            ["custom:cms_state"]: "AL",
           },
-        };
+        }),
       }),
     configure: () => {},
     signOut: jest
@@ -83,7 +81,6 @@ describe("Test UserProvider with production path", () => {
       },
       writable: true,
     });
-
     await act(async () => {
       await render(testComponent);
     });
