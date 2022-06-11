@@ -10,9 +10,9 @@ const ADMIN_BANNER_ID = bannerId;
 
 export const AdminBannerContext = createContext<AdminBannerShape>({
   bannerData: {} as AdminBannerData,
-  fetchAdminBanner: () => {},
-  writeAdminBanner: () => {},
-  deleteAdminBanner: () => {},
+  fetchAdminBanner: Function,
+  writeAdminBanner: Function,
+  deleteAdminBanner: Function,
   errorData: null,
 });
 

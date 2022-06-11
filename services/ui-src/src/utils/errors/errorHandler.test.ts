@@ -24,6 +24,12 @@ describe("Test errorHandler", () => {
     });
   });
 
+  test("If callback is not passed, callback is not called", () => {
+    const error = new Error(errorMessage);
+    errorHandler(error);
+    expect(mockCallback).not.toHaveBeenCalledWith();
+  });
+
   test("If override message is passed, it is used", () => {
     const error = new Error(errorMessage);
     errorHandler(error, mockCallback, "override message");

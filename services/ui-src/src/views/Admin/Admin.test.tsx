@@ -3,10 +3,19 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import {
+  RouterWrappedComponent,
+  mockBannerData,
+  mockBannerDataEmpty,
+} from "utils/testing/setupJest";
+import { errorHandler } from "utils/errors/errorHandler";
 // views
 import { Admin } from "../index";
 import { AdminBannerContext } from "components";
+
+jest.mock("utils/errors/errorHandler", () => ({
+  errorHandler: jest.fn(),
+}));
 
 const mockBannerMethods = {
   fetchAdminBanner: jest.fn(() => {}),
@@ -15,25 +24,15 @@ const mockBannerMethods = {
 };
 
 const mockContextWithoutBanner = {
-  bannerData: {
-    key: "",
-    title: "",
-    description: "",
-    startDate: 0,
-    endDate: 0,
-  },
   ...mockBannerMethods,
+  bannerData: mockBannerDataEmpty,
+  errorData: null,
 };
 
 const mockContextWithBanner = {
-  bannerData: {
-    key: "bannerId",
-    title: "Yes here I am, a banner",
-    description: "I have a description too thank you very much",
-    startDate: 1640995200000, // 1/1/2022 00:00:00 UTC
-    endDate: 1672531199000, // 12/31/2022 23:59:59 UTC
-  },
   ...mockBannerMethods,
+  bannerData: mockBannerData,
+  errorData: null,
 };
 
 const adminView = (context: any) => (
@@ -71,7 +70,6 @@ describe("Test /admin view without banner", () => {
   test("Check that current banner info does not render", () => {
     const currentBannerStatus = screen.queryByText("Status:");
     expect(currentBannerStatus).not.toBeInTheDocument();
-
     const deleteButton = screen.getByText("Delete Current Banner");
     expect(deleteButton).not.toBeVisible();
   });
@@ -132,6 +130,21 @@ describe("Test /admin view with active/inactive banner", () => {
     });
     const currentBannerStatus = screen.getByText("Status:");
     expect(currentBannerStatus.textContent).toEqual("Status: Inactive");
+  });
+});
+
+describe("Test /admin delete banner error handling", () => {
+  it("Calls errorHandler if deleteBanner throws error", async () => {
+    const context = mockContextWithBanner;
+    context.deleteAdminBanner = jest.fn(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(adminView(context));
+    });
+    const deleteButton = screen.getByText("Delete Current Banner");
+    await userEvent.click(deleteButton);
+    expect(errorHandler).toHaveBeenCalled();
   });
 });
 
