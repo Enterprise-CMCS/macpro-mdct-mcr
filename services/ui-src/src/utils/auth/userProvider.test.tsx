@@ -50,6 +50,11 @@ const TestComponent = () => {
         Log In with IDM
       </button>
       User Test
+      <p data-testid="show-local-logins">
+        {context.showLocalLogins
+          ? "showLocalLogins is true"
+          : "showLocalLogins is false"}
+      </p>
     </div>
   );
 };
@@ -58,23 +63,6 @@ const wrappedTestComponent = (
   <RouterWrappedComponent>
     <UserProvider>
       <TestComponent />
-    </UserProvider>
-  </RouterWrappedComponent>
-);
-
-const NonProdComponent = () => {
-  const context = useContext(UserContext);
-  return (
-    <p data-testid="show-local-logins">
-      {context.showLocalLogins ? "showLocalLogins is true" : "whatever"}
-    </p>
-  );
-};
-
-const wrappedNonProdComponent = (
-  <RouterWrappedComponent>
-    <UserProvider>
-      <NonProdComponent />
     </UserProvider>
   </RouterWrappedComponent>
 );
@@ -166,7 +154,7 @@ describe("Test UserProvider with non-production path", () => {
     await setWindowOrigin("wherever");
     await breakCheckAuthState();
     await act(async () => {
-      await render(wrappedNonProdComponent);
+      await render(wrappedTestComponent);
     });
     expect(window.location.origin).toContain("wherever");
     const showLocalLogins = screen.getByTestId("show-local-logins");
