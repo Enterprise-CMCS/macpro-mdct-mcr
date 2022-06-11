@@ -59,7 +59,7 @@ const TestComponent = () => {
   );
 };
 
-const wrappedTestComponent = (
+const testComponent = (
   <RouterWrappedComponent>
     <UserProvider>
       <TestComponent />
@@ -91,7 +91,7 @@ const breakCheckAuthState = async () => {
 describe("Test UserProvider", () => {
   beforeEach(async () => {
     await act(async () => {
-      render(wrappedTestComponent);
+      render(testComponent);
     });
   });
 
@@ -132,7 +132,7 @@ describe("Test UserProvider with production path", () => {
     await setWindowOrigin("mdctmcr.cms.gov");
     await breakCheckAuthState();
     await act(async () => {
-      await render(wrappedTestComponent);
+      await render(testComponent);
     });
     expect(window.location.origin).toContain("mdctmcr.cms.gov");
     expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
@@ -154,7 +154,7 @@ describe("Test UserProvider with non-production path", () => {
     await setWindowOrigin("wherever");
     await breakCheckAuthState();
     await act(async () => {
-      await render(wrappedTestComponent);
+      await render(testComponent);
     });
     expect(window.location.origin).toContain("wherever");
     const showLocalLogins = screen.getByTestId("show-local-logins");
@@ -169,7 +169,7 @@ describe("Test UserProvider error handling", () => {
       throw new Error();
     });
     await act(async () => {
-      render(wrappedTestComponent);
+      render(testComponent);
     });
     await act(async () => {
       const logoutButton = screen.getByTestId("logout-button");
