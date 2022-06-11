@@ -7,32 +7,34 @@ import { UserContext } from "./userContext";
 import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { errorHandler } from "utils/errors/errorHandler";
+
+// MOCKS
+
+jest.mock("utils/errors/errorHandler", () => ({
+  errorHandler: jest.fn(),
+}));
 
 jest.mock("aws-amplify", () => ({
   Auth: {
-    currentSession: jest
-      .fn()
-      .mockReturnValueOnce({
-        getIdToken: () => {
-          throw new Error("test error flow");
+    currentSession: jest.fn().mockReturnValue({
+      getIdToken: () => ({
+        payload: {
+          email: "test@email.com",
+          given_name: "Test",
+          family_name: "IsMe",
+          ["custom:cms_roles"]: "mdctmcr-state-user",
+          ["custom:cms_state"]: "AL",
         },
-      })
-      .mockReturnValue({
-        getIdToken: () => ({
-          payload: {
-            email: "test@email.com",
-            given_name: "Test",
-            family_name: "IsMe",
-            ["custom:cms_roles"]: "mdctmcr-state-user",
-            ["custom:cms_state"]: "AL",
-          },
-        }),
       }),
+    }),
     configure: () => {},
     signOut: jest.fn().mockImplementation(() => {}),
     federatedSignIn: () => {},
   },
 }));
+
+// COMPONENTS
 
 const TestComponent = () => {
   const { ...context } = useContext(UserContext);
@@ -52,7 +54,7 @@ const TestComponent = () => {
   );
 };
 
-const testComponent = (
+const wrappedTestComponent = (
   <RouterWrappedComponent>
     <UserProvider>
       <TestComponent />
@@ -60,41 +62,48 @@ const testComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test UserProvider with production path", () => {
-  let originalLocationDescriptor: any;
-  let federatedSignInSpy: any;
-  beforeAll(async () => {
-    federatedSignInSpy = jest.spyOn(Auth, "federatedSignIn");
-    originalLocationDescriptor = Object.getOwnPropertyDescriptor(
-      global,
-      "location"
-    );
-    global.window = Object.create(window);
-    Object.defineProperty(window, "location", {
-      value: {
-        origin: "mdctmcr.cms.gov",
-      },
-      writable: true,
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
+const NonProdComponent = () => {
+  const context = useContext(UserContext);
+  return (
+    <p data-testid="show-local-logins">
+      {context.showLocalLogins ? "showLocalLogins is true" : "whatever"}
+    </p>
+  );
+};
+
+const wrappedNonProdComponent = (
+  <RouterWrappedComponent>
+    <UserProvider>
+      <NonProdComponent />
+    </UserProvider>
+  </RouterWrappedComponent>
+);
+
+// HELPERS
+
+const setWindowOrigin = (windowOrigin: string) => {
+  global.window = Object.create(window);
+  Object.defineProperty(window, "location", {
+    value: {
+      origin: windowOrigin,
+    },
+    writable: true,
   });
-  afterAll(() => {
-    Object.defineProperty(global, "location", originalLocationDescriptor);
-    federatedSignInSpy.mockRestore();
+};
+
+const breakCheckAuthState = async () => {
+  const mockAmplify = require("aws-amplify");
+  mockAmplify.Auth.currentSession = jest.fn().mockImplementation(() => {
+    throw new Error();
   });
-  test("test production authenticates with idm when current authenticated user throws an error", () => {
-    expect(window.location.origin).toContain("mdctmcr.cms.gov");
-    expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
-    expect(federatedSignInSpy).toHaveBeenCalledTimes(1);
-  });
-});
+};
+
+// TESTS
 
 describe("Test UserProvider", () => {
   beforeEach(async () => {
     await act(async () => {
-      render(testComponent);
+      render(wrappedTestComponent);
     });
   });
 
@@ -103,18 +112,11 @@ describe("Test UserProvider", () => {
   });
 
   test("test logout function", async () => {
-    // stash alert and define temporary mock for use by jest-dom
-    const actualAlert = window.alert;
-    window.alert = () => {};
-
     await act(async () => {
       const logoutButton = screen.getByTestId("logout-button");
       await userEvent.click(logoutButton);
     });
     expect(location.pathname).toEqual("/");
-
-    // restore actual alert method
-    window.alert = actualAlert;
   });
 
   test("test login with IDM function", async () => {
@@ -123,5 +125,68 @@ describe("Test UserProvider", () => {
       await userEvent.click(loginButton);
     });
     expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+  });
+});
+
+describe("Test UserProvider with production path", () => {
+  const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
+    global,
+    "location"
+  );
+  const federatedSignInSpy = jest.spyOn(Auth, "federatedSignIn");
+
+  afterAll(() => {
+    Object.defineProperty(global, "location", originalLocationDescriptor);
+    federatedSignInSpy.mockRestore();
+  });
+
+  test("test production authenticates with idm when current authenticated user throws an error", async () => {
+    await setWindowOrigin("mdctmcr.cms.gov");
+    await breakCheckAuthState();
+    await act(async () => {
+      await render(wrappedTestComponent);
+    });
+    expect(window.location.origin).toContain("mdctmcr.cms.gov");
+    expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+    expect(federatedSignInSpy).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("Test UserProvider with non-production path", () => {
+  const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
+    global,
+    "location"
+  );
+
+  afterAll(() => {
+    Object.defineProperty(global, "location", originalLocationDescriptor);
+  });
+
+  test("Non-production error state correctly sets showLocalLogins", async () => {
+    await setWindowOrigin("wherever");
+    await breakCheckAuthState();
+    await act(async () => {
+      await render(wrappedNonProdComponent);
+    });
+    expect(window.location.origin).toContain("wherever");
+    const showLocalLogins = screen.getByTestId("show-local-logins");
+    expect(showLocalLogins).toHaveTextContent("showLocalLogins is true");
+  });
+});
+
+describe("Test UserProvider error handling", () => {
+  it("Calls errorHandler if logout throws error", async () => {
+    const mockAmplify = require("aws-amplify");
+    mockAmplify.Auth.signOut = jest.fn().mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      render(wrappedTestComponent);
+    });
+    await act(async () => {
+      const logoutButton = screen.getByTestId("logout-button");
+      await userEvent.click(logoutButton);
+    });
+    expect(errorHandler).toHaveBeenCalled();
   });
 });
