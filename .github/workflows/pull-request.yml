@@ -10,8 +10,11 @@ jobs:
       - name: assign pr to creator
         run: |
           pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          echo $GITHUB_EVENT_PATH
           cat /home/runner/work/_temp/_github_workflow/event.json
+          creator=$(jq --raw-output .pull_request.sender.login "$GITHUB_EVENT_PATH")
+          user=$(jq --raw-output .pull_request.user.login "$GITHUB_EVENT_PATH")
+          echo $creator
+          echo $user
           gh pr edit $pull_number --add-assignee "@me"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
