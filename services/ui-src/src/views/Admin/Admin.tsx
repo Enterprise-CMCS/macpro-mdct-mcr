@@ -6,7 +6,7 @@ import {
   AdminBannerForm,
   Banner,
   ErrorAlert,
-} from "../../components";
+} from "../../components/index";
 // utils
 import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 import { formatDateUtcToEt } from "utils/time/time";
