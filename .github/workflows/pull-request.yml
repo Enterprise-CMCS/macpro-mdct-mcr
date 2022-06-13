@@ -9,7 +9,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: try this
         run: |
-          gh auth login
           pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
           gh pr edit $pull_number --add-assignee "@me"
       - uses: actions/setup-python@v2
