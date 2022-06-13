@@ -4,16 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // components
 import { AdminBannerContext, AdminBannerProvider } from "./AdminBannerProvider";
-// constants
-import { bannerId } from "../../utils/constants/constants";
-
-const mockBannerData = {
-  key: bannerId,
-  title: "Yes here I am, a banner",
-  description: "I have a description too thank you very much",
-  startDate: 1640995200000, // 1/1/2022 00:00:00 UTC
-  endDate: 1672531199000, // 12/31/2022 23:59:59 UTC
-};
+// utils
+import { mockBannerData } from "utils/testing/setupJest";
 
 jest.mock("utils/api/requestMethods/banner", () => ({
   deleteBanner: jest.fn(() => {}),
@@ -45,6 +37,9 @@ const TestComponent = () => {
       >
         Delete
       </button>
+      {context.errorMessage && (
+        <p data-testid="error-message">{context.errorMessage}</p>
+      )}
     </div>
   );
 };
@@ -78,6 +73,16 @@ describe("Test AdminBannerProvider fetchAdminBanner method", () => {
     });
     // 1 call on render + 1 call on button click
     await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
+  });
+
+  it("Shows error if fetchBanner throws error", async () => {
+    mockAPI.getBanner.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
   });
 });
 
