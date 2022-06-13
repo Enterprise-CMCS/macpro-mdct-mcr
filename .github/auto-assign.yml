@@ -1,0 +1,15 @@
+# Set to true to add reviewers to pull requests
+addReviewers: true
+
+# Set addAssignees to 'author' to set the PR creator as the assignee.
+addAssignees: author
+
+# A list of reviewers to be added to pull requests (GitHub user name)
+reviewers:
+  - karla-vm
+  - TheDanMiller
+  - BearHanded
+  - bodnarbm
+  - braxex
+  - gmrabian
+  - ntsummers1
