@@ -7,6 +7,7 @@ const alertComponent = (
   <Alert
     title="Test alert!"
     description="This is for testing."
+    link="test-link"
     data-testid="test-alert"
   />
 );
