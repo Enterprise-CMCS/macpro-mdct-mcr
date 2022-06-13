@@ -11,6 +11,8 @@ jobs:
         run: |
           pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
           gh pr edit $pull_number --add-assignee "@me"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v2
       - uses: pre-commit/action@v2.0.2
       - uses: actions/setup-node@v3
