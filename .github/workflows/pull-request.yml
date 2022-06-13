@@ -6,6 +6,9 @@ jobs:
   prchecks:
     runs-on: ubuntu-latest
     steps:
+      - run: |
+        pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        gh pr edit $pull_number --add-assignee "@me"
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
       - uses: pre-commit/action@v2.0.2
