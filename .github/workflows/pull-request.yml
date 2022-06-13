@@ -7,13 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: assign pr to creator
-        run: |
-          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          user=$(jq --raw-output .pull_request.user.login "$GITHUB_EVENT_PATH")
-          gh pr edit $pull_number --add-assignee $user
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v2
       - uses: pre-commit/action@v2.0.2
       - uses: actions/setup-node@v3
@@ -31,3 +24,17 @@ jobs:
       - name: Jest (API)
         run: yarn test
         working-directory: ./services/app-api
+  assignAuthor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign PR to Creator
+        run: |
+          if [ "$PR_AUTHOR_TYPE" != "Bot" ]
+            then
+              gh pr edit $PRNUM --add-assignee $PR_AUTHOR
+            fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRNUM: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_AUTHOR_TYPE: ${{ github.event.pull_request.user.type }}
