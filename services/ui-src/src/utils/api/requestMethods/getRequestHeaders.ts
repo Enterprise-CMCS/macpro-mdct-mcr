@@ -1,5 +1,4 @@
 import { Auth } from "aws-amplify";
-import { errorHandler } from "utils/errors/errorHandler";
 
 export const getRequestHeaders = async (): Promise<any> => {
   try {
@@ -10,6 +9,6 @@ export const getRequestHeaders = async (): Promise<any> => {
     };
     return headers;
   } catch (error) {
-    errorHandler(error);
+    console.log(error); //eslint-disable-line no-console
   }
 };

@@ -8,7 +8,6 @@ import { Banner, DateField, ErrorAlert, TextField } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
-import { errorHandler } from "utils/errors/errorHandler";
 
 const formSchema = yup.object().shape({
   title: yup.string().required("Title text is required"),
@@ -29,7 +28,7 @@ const formSchema = yup.object().shape({
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [errorState, setErrorState] = useState(null);
+  const [error, setError] = useState<string>();
 
   // make form context
   const form = useForm<FormInput>({
@@ -49,8 +48,8 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     };
     try {
       await writeAdminBanner(newBannerData);
-    } catch (error) {
-      errorHandler(error, setErrorState, REPLACE_BANNER_FAILED);
+    } catch (error: any) {
+      setError(REPLACE_BANNER_FAILED);
     }
   };
 
@@ -65,7 +64,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
-        <ErrorAlert error={errorState} sxOverrides={sx.errorAlert} />
+        <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
         <TextField
           name="title"
           label="Title text"

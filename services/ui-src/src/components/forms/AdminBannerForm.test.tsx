@@ -5,11 +5,6 @@ import { axe } from "jest-axe";
 import { AdminBannerForm } from "components";
 import { bannerId } from "utils/constants/constants";
 import { convertDateEtToUtc } from "utils/time/time";
-import { errorHandler } from "utils/errors/errorHandler";
-
-jest.mock("utils/errors/errorHandler", () => ({
-  errorHandler: jest.fn(),
-}));
 
 const mockWriteAdminBanner = jest.fn();
 const mockWriteAdminBannerWithError = jest.fn(() => {
@@ -74,7 +69,7 @@ describe("Test AdminBannerForm component", () => {
     });
   });
 
-  test("Calls errorHandler if writeBanner throws error", async () => {
+  test("Shows error if writeBanner throws error", async () => {
     const result = render(
       adminBannerFormComponent(mockWriteAdminBannerWithError)
     );
@@ -82,7 +77,7 @@ describe("Test AdminBannerForm component", () => {
     await fillOutForm(form);
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
-    await expect(errorHandler).toHaveBeenCalled();
+    await expect(screen.getByText("Error")).toBeVisible();
   });
 });
 

@@ -8,14 +8,9 @@ import {
   mockBannerData,
   mockBannerDataEmpty,
 } from "utils/testing/setupJest";
-import { errorHandler } from "utils/errors/errorHandler";
 // views
 import { Admin } from "../index";
 import { AdminBannerContext } from "components";
-
-jest.mock("utils/errors/errorHandler", () => ({
-  errorHandler: jest.fn(),
-}));
 
 const mockBannerMethods = {
   fetchAdminBanner: jest.fn(() => {}),
@@ -134,7 +129,7 @@ describe("Test /admin view with active/inactive banner", () => {
 });
 
 describe("Test /admin delete banner error handling", () => {
-  it("Calls errorHandler if deleteBanner throws error", async () => {
+  it("Displays error if deleteBanner throws error", async () => {
     const context = mockContextWithBanner;
     context.deleteAdminBanner = jest.fn(() => {
       throw new Error();
@@ -144,7 +139,7 @@ describe("Test /admin delete banner error handling", () => {
     });
     const deleteButton = screen.getByText("Delete Current Banner");
     await userEvent.click(deleteButton);
-    expect(errorHandler).toHaveBeenCalled();
+    expect(screen.getByText("Error")).toBeVisible();
   });
 });
 

@@ -4,10 +4,7 @@ import { axe } from "jest-axe";
 import { ErrorAlert } from "components";
 
 const errorAlertComponent = (
-  <ErrorAlert
-    error={{ message: "test-message" }}
-    data-testid="test-error-alert"
-  />
+  <ErrorAlert error={"test-message"} data-testid="test-error-alert" />
 );
 
 describe("Test ErrorAlert component", () => {

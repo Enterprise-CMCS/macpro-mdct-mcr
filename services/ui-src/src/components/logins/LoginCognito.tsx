@@ -4,8 +4,6 @@ import { Auth } from "aws-amplify";
 // components
 import { Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
-// utils
-import { errorHandler } from "utils/errors/errorHandler";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -28,14 +26,14 @@ export const LoginCognito = () => {
     email: "",
     password: "",
   });
-  const [errorState, setErrorState] = useState(null);
+  const [error, setError] = useState<string>();
 
   const handleLogin = async () => {
     try {
       await Auth.signIn(fields.email, fields.password);
       navigate(`/`);
-    } catch (error) {
-      errorHandler(error, setErrorState);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
@@ -74,7 +72,7 @@ export const LoginCognito = () => {
       >
         Log In with Cognito
       </Button>
-      <ErrorAlert error={errorState} />
+      <ErrorAlert error={error} />
     </Stack>
   );
 };

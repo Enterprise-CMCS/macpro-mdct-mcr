@@ -7,13 +7,6 @@ import { UserContext } from "./userContext";
 import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { errorHandler } from "utils/errors/errorHandler";
-
-// MOCKS
-
-jest.mock("utils/errors/errorHandler", () => ({
-  errorHandler: jest.fn(),
-}));
 
 jest.mock("aws-amplify", () => ({
   Auth: {
@@ -163,11 +156,15 @@ describe("Test UserProvider with non-production path", () => {
 });
 
 describe("Test UserProvider error handling", () => {
-  it("Calls errorHandler if logout throws error", async () => {
+  it("Logs error to console if logout throws error", async () => {
+    jest.spyOn(console, "log").mockImplementation(jest.fn());
+    const spy = jest.spyOn(console, "log");
+
     const mockAmplify = require("aws-amplify");
     mockAmplify.Auth.signOut = jest.fn().mockImplementation(() => {
       throw new Error();
     });
+
     await act(async () => {
       render(testComponent);
     });
@@ -175,6 +172,7 @@ describe("Test UserProvider error handling", () => {
       const logoutButton = screen.getByTestId("logout-button");
       await userEvent.click(logoutButton);
     });
-    expect(errorHandler).toHaveBeenCalled();
+
+    expect(spy).toHaveBeenCalled();
   });
 });

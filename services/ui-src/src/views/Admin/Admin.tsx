@@ -10,35 +10,34 @@ import {
 // utils
 import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 import { formatDateUtcToEt } from "utils/time/time";
-import { errorHandler } from "utils/errors/errorHandler";
 import { DELETE_BANNER_FAILED } from "utils/constants/constants";
 // data
 import data from "../../data/admin-view.json";
 
 export const Admin = () => {
-  const { bannerData, deleteAdminBanner, writeAdminBanner, errorData } =
+  const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
     useContext(AdminBannerContext);
-  const [errorState, setErrorState] = useState(errorData);
+  const [error, setError] = useState<string | undefined>(errorMessage);
   const bannerIsActive = checkBannerActivityStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
   useEffect(() => {
-    setErrorState(errorData);
-  }, [errorData]);
+    setError(errorMessage);
+  }, [errorMessage]);
 
   const deleteBanner = async () => {
     try {
       await deleteAdminBanner();
-    } catch (error) {
-      errorHandler(error, setErrorState, DELETE_BANNER_FAILED);
+    } catch (error: any) {
+      setError(DELETE_BANNER_FAILED);
     }
   };
 
   return (
     <section>
       <Box sx={sx.root} data-testid="admin-view">
-        <ErrorAlert error={errorState} sxOverrides={sx.errorAlert} />
+        <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
         <Flex sx={sx.mainContentFlex}>
           <Box sx={sx.introTextBox}>
             <Heading as="h1" sx={sx.headerText}>

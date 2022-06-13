@@ -6,16 +6,11 @@ import { act } from "react-dom/test-utils";
 import { AdminBannerContext, AdminBannerProvider } from "./AdminBannerProvider";
 // utils
 import { mockBannerData } from "utils/testing/setupJest";
-import { errorHandler } from "utils/errors/errorHandler";
 
 jest.mock("utils/api/requestMethods/banner", () => ({
   deleteBanner: jest.fn(() => {}),
   getBanner: jest.fn(() => {}),
   writeBanner: jest.fn(() => {}),
-}));
-
-jest.mock("utils/errors/errorHandler", () => ({
-  errorHandler: jest.fn(),
 }));
 
 const mockAPI = require("utils/api/requestMethods/banner");
@@ -42,6 +37,9 @@ const TestComponent = () => {
       >
         Delete
       </button>
+      {context.errorMessage && (
+        <p data-testid="error-message">{context.errorMessage}</p>
+      )}
     </div>
   );
 };
@@ -77,14 +75,14 @@ describe("Test AdminBannerProvider fetchAdminBanner method", () => {
     await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
   });
 
-  it("Calls errorHandler if fetchBanner throws error", async () => {
+  it("Shows error if fetchBanner throws error", async () => {
     mockAPI.getBanner.mockImplementation(() => {
       throw new Error();
     });
     await act(async () => {
       await render(testComponent);
     });
-    expect(errorHandler).toHaveBeenCalled();
+    expect(screen.queryByTestId("error-message")).toBeVisible();
   });
 });
 

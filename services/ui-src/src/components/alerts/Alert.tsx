@@ -52,9 +52,9 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  title?: string | undefined;
-  description?: string | undefined;
-  link?: string | undefined;
+  title?: string;
+  description?: string;
+  link?: string;
   showIcon?: boolean;
   [key: string]: any;
 }

@@ -54,7 +54,7 @@ export interface AdminBannerMethods {
 
 export interface AdminBannerShape extends AdminBannerMethods {
   bannerData: AdminBannerData;
-  errorData: ErrorData | null;
+  errorMessage?: string;
 }
 
 export enum AlertTypes {
@@ -76,11 +76,4 @@ export interface TimeShape {
   hour: number;
   minute: number;
   second: number;
-}
-
-// ERRORS
-
-export interface ErrorData {
-  name?: string;
-  message: string;
 }
