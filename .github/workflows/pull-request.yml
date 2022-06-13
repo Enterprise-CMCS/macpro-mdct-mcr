@@ -11,6 +11,7 @@ jobs:
         run: |
           pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
           echo $GITHUB_EVENT_PATH
+          cat /home/runner/work/_temp/_github_workflow/event.json
           gh pr edit $pull_number --add-assignee "@me"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
