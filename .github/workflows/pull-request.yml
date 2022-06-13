@@ -7,11 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: assign pr to creator
+        run: |
+          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo $GITHUB_EVENT_PATH
+          gh pr edit $pull_number --add-assignee "@me"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v2
       - uses: pre-commit/action@v2.0.2
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: "14"
       - name: Prepare for Jest (frontend)
         run: yarn install --frozen-lockfile
         working-directory: ./services/ui-src
