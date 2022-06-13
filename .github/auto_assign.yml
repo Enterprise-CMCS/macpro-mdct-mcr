@@ -13,3 +13,5 @@ reviewers:
   - braxex
   - gmrabian
   - ntsummers1
+
+runOnDraft: true
