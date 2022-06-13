@@ -1,11 +1,7 @@
 import { useContext } from "react";
 // components
 import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import {
-  AdminBannerContext,
-  Banner,
-  TemplateCard,
-} from "../../components/index";
+import { AdminBannerContext, Banner, TemplateCard } from "../../components";
 // utils
 import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 // data
