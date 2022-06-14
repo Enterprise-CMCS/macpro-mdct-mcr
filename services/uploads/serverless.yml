@@ -23,18 +23,6 @@ provider:
     role:
       path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
       permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
-      statements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:DescribeTable
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource: "*"
-
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
@@ -67,6 +55,7 @@ functions:
   avScan:
     handler: src/antivirus.lambdaHandleEvent
     name: ${self:service.name}-${self:custom.stage}-avScan
+    role: BucketAVScanRole
     timeout: 300 # 300 seconds = 5 minutes. Average scan is 25 seconds.
     memorySize: 3008
     layers:
@@ -78,8 +67,9 @@ functions:
     handler: src/download-definitions.lambdaHandleEvent
     events:
       - schedule: cron(15 1 * * ? *)
+    role: BucketAVDownloadRole
     timeout: 300 # 300 seconds = 5 minutes
-    memorySize: 3072
+    memorySize: 1024
     layers:
       - !Ref ClamDefsLambdaLayer
     environment:
