@@ -12,7 +12,7 @@
   "videosFolder": "videos",
   "downloadsFolder": "downloads",
   "supportFile": "support/index.js",
-  "defaultCommandTimeout": 15000,
+  "defaultCommandTimeout": 20000,
   "types": ["cypress", "cypress-axe"],
   "env": {
     "STATE_USER_EMAIL": "stateuser1@test.com",

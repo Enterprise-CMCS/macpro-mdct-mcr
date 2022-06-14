@@ -20,7 +20,12 @@ export const Header = ({ handleLogout }: Props) => {
               <Image src={appLogo} alt="MCR logo" sx={sx.appLogo} />
             </Link>
             <Flex sx={sx.menuFlex}>
-              <Link as={RouterLink} to="/help" data-testid="header-help-button">
+              <Link
+                as={RouterLink}
+                to="/help"
+                aria-label="get help"
+                data-testid="header-help-button"
+              >
                 <MenuOption
                   icon="questionCircleFill"
                   text="Get Help"
