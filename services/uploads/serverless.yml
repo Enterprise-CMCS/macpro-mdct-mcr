@@ -58,6 +58,10 @@ functions:
     role: BucketAVScanRole
     timeout: 300 # 300 seconds = 5 minutes. Average scan is 25 seconds.
     memorySize: 3008
+    events:
+      - s3:
+          bucket: !Ref AttachmentsBucket
+          event: s3:ObjectCreated:*
     layers:
       - !Ref ClamDefsLambdaLayer
     environment:
@@ -101,11 +105,6 @@ resources:
               MaxAge: 3000
               ExposedHeaders:
                 - ETag
-        NotificationConfiguration:
-          LambdaConfigurations:
-            - Event: s3:ObjectCreated:Put
-              Function: !GetAtt AvScanLambdaFunction.Arn
-      DependsOn: LambdaInvokePermission
     AttachmentsBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -194,14 +193,6 @@ resources:
               Condition:
                 Bool:
                   aws:SecureTransport: false
-    LambdaInvokePermission:
-      Type: AWS::Lambda::Permission
-      Properties:
-        FunctionName: !GetAtt AvScanLambdaFunction.Arn
-        Action: lambda:InvokeFunction
-        Principal: s3.amazonaws.com
-        SourceAccount: !Sub ${AWS::AccountId}
-        SourceArn: !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}
     BucketAVScanRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -286,7 +277,6 @@ resources:
                   Action:
                     - s3:ListBucket
                   Resource: !GetAtt ClamDefsBucket.Arn
-
   Outputs:
     AttachmentsBucketName: # Print out the name of the bucket that is created
       Value: !Ref AttachmentsBucket
