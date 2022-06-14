@@ -64,12 +64,6 @@ layers:
     package:
       artifact: lambda_layer.zip
 functions:
-  dynamoSync:
-    handler: src/dynamoSync/handler.syncDynamoToS3
-    events:
-      - schedule: cron(30 * * * ? *)
-    environment:
-      uploadS3BucketName: !Ref AttachmentsBucket
   avScan:
     handler: src/antivirus.lambdaHandleEvent
     name: ${self:service.name}-${self:custom.stage}-avScan
