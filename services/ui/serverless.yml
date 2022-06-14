@@ -204,7 +204,7 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
             FunctionAssociations:
               - EventType: viewer-response
-                FunctionARN: !GetAtt HstsCloudfrontFunction.FunctionMetadata.FunctionARN
+                FunctionARN: !GetAtt HeadersCloudfrontFunction.FunctionMetadata.FunctionARN
           ViewerCertificate:
             Fn::If:
               - CreateCustomCloudFrontDomain
@@ -231,7 +231,7 @@ resources:
           HostedZoneId: Z2FDTNDATAQYW2
           EvaluateTargetHealth: false
         Type: A
-    HstsCloudfrontFunction:
+    HeadersCloudfrontFunction:
       Type: AWS::CloudFront::Function
       Properties:
         AutoPublish: true
@@ -240,12 +240,14 @@ resources:
             var response = event.response;
             var headers = response.headers;
             headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};
+            headers['x-content-type-options'] = { value: 'nosniff' };
+            headers['x-xss-protection'] = { value: '0' };
             return response;
           }
         FunctionConfig:
-          Comment: This function adds headers to implement HSTS
+          Comment: This function adds headers for security - HSTS, NoSniffContentType, XSS Protection
           Runtime: cloudfront-js-1.0
-        Name: hsts-${self:custom.stage}
+        Name: security-headers-${self:custom.stage}
     ###############This code block enables logging on waf and sends all logs to s3.##################################
     WaflogsUploadBucket:
       Type: AWS::S3::Bucket
