@@ -11,7 +11,7 @@ jobs:
       - uses: pre-commit/action@v2.0.2
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: "14"
       - name: Prepare for Jest (frontend)
         run: yarn install --frozen-lockfile
         working-directory: ./services/ui-src
@@ -24,3 +24,18 @@ jobs:
       - name: Jest (API)
         run: yarn test
         working-directory: ./services/app-api
+  assignAuthor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Assign PR to Creator
+        run: |
+          if [ "$PR_AUTHOR_TYPE" != "Bot" ]
+            then
+              gh pr edit $PRNUM --add-assignee $PR_AUTHOR
+            fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRNUM: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_AUTHOR_TYPE: ${{ github.event.pull_request.user.type }}
