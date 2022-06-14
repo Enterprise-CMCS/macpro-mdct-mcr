@@ -23,6 +23,25 @@ provider:
     role:
       path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
       permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      statements:
+        - Effect: "Allow"
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "arn:aws:logs:*:*:*"
+        - Effect: "Allow"
+          Action:
+            - s3:GetObject
+            - s3:GetObjectTagging
+            - s3:PutObject
+            - s3:PutObjectAcl
+            - s3:PutObjectTagging
+            - s3:PutObjectVersionTagging
+            - s3:ListBucket
+          Resource:
+            - !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}/*
+            - !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-avscan-${AWS::AccountId}/*
 custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
@@ -55,7 +74,6 @@ functions:
   avScan:
     handler: src/antivirus.lambdaHandleEvent
     name: ${self:service.name}-${self:custom.stage}-avScan
-    role: BucketAVScanRole
     timeout: 300 # 300 seconds = 5 minutes. Average scan is 25 seconds.
     memorySize: 3008
     events:
@@ -71,7 +89,6 @@ functions:
     handler: src/download-definitions.lambdaHandleEvent
     events:
       - schedule: cron(15 1 * * ? *)
-    role: BucketAVDownloadRole
     timeout: 300 # 300 seconds = 5 minutes
     memorySize: 1024
     layers:
@@ -105,6 +122,11 @@ resources:
               MaxAge: 3000
               ExposedHeaders:
                 - ETag
+        NotificationConfiguration:
+          LambdaConfigurations:
+            - Event: s3:ObjectCreated:Put
+              Function: !GetAtt AvScanLambdaFunction.Arn
+      DependsOn: LambdaInvokePermission
     AttachmentsBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -193,90 +215,14 @@ resources:
               Condition:
                 Bool:
                   aws:SecureTransport: false
-    BucketAVScanRole:
-      Type: "AWS::IAM::Role"
+    LambdaInvokePermission:
+      Type: AWS::Lambda::Permission
       Properties:
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Principal:
-                Service: "lambda.amazonaws.com"
-              Action: "sts:AssumeRole"
-        Policies:
-          - PolicyName: "BucketAVScanRolePolicy"
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: "Allow"
-                  Action:
-                    - logs:CreateLogGroup
-                    - logs:CreateLogStream
-                    - logs:PutLogEvents
-                  Resource: "arn:aws:logs:*:*:*"
-                - Effect: "Allow"
-                  Action:
-                    - s3:GetObject
-                    - s3:GetObjectTagging
-                    - s3:PutObject
-                    - s3:PutObjectAcl
-                    - s3:PutObjectTagging
-                    - s3:PutObjectVersionTagging
-                  Resource: !Sub ${AttachmentsBucket.Arn}/*
-                - Effect: "Allow"
-                  Action:
-                    - s3:ListBucket
-                  Resource: !Sub ${AttachmentsBucket.Arn}
-                - Effect: "Allow"
-                  Action:
-                    - s3:ListBucket
-                  Resource: !Sub ${ClamDefsBucket.Arn}
-                - Effect: "Allow"
-                  Action:
-                    - s3:GetObject
-                    - s3:GetObjectTagging
-                    - s3:PutObject
-                    - s3:PutObjectAcl
-                    - s3:PutObjectTagging
-                    - s3:PutObjectVersionTagging
-                    - s3:DeleteObject
-                    - s3:ListBucket
-                  Resource: !Sub ${ClamDefsBucket.Arn}/*
-    BucketAVDownloadRole:
-      Type: "AWS::IAM::Role"
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Principal:
-                Service: "lambda.amazonaws.com"
-              Action: "sts:AssumeRole"
-        Policies:
-          - PolicyName: "BucketAVDownloadRolePolicy"
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: "Allow"
-                  Action:
-                    - logs:CreateLogGroup
-                    - logs:CreateLogStream
-                    - logs:PutLogEvents
-                  Resource: "arn:aws:logs:*:*:*"
-                - Effect: "Allow"
-                  Action:
-                    - s3:GetObject
-                    - s3:GetObjectTagging
-                    - s3:PutObject
-                    - s3:PutObjectAcl
-                    - s3:PutObjectTagging
-                    - s3:PutObjectVersionTagging
-                    - s3:ListBucket
-                  Resource: !Sub ${ClamDefsBucket.Arn}/*
-                - Effect: "Allow"
-                  Action:
-                    - s3:ListBucket
-                  Resource: !GetAtt ClamDefsBucket.Arn
+        FunctionName: !GetAtt AvScanLambdaFunction.Arn
+        Action: lambda:InvokeFunction
+        Principal: s3.amazonaws.com
+        SourceAccount: !Sub ${AWS::AccountId}
+        SourceArn: !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}
   Outputs:
     AttachmentsBucketName: # Print out the name of the bucket that is created
       Value: !Ref AttachmentsBucket
