@@ -29,7 +29,7 @@ describe("Test EmailCard", () => {
       subject: "the subject",
       body: "the body",
     };
-    const expectedEmailLink = "mailto:test@test.com?the%20subject&the%20body";
+    const expectedEmailLink = "mailto:test@test.com?the%20subject";
     expect(createEmailLink(mockEmailData)).toEqual(expectedEmailLink);
   });
 

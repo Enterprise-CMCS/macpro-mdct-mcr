@@ -1,13 +1,11 @@
 export const createEmailLink = (emailData: Props): string => {
-  const { address, subject, body } = emailData;
+  const { address, subject } = emailData;
   const mailtoSubject = subject ? `?${encodeURIComponent(subject)}` : "";
-  const mailtoBody = body ? `&${encodeURIComponent(body)}` : "";
 
-  return `mailto:${address}${mailtoSubject}${mailtoBody}`;
+  return `mailto:${address}${mailtoSubject}`;
 };
 
 interface Props {
   address: string;
   subject?: string;
-  body?: string;
 }
