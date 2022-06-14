@@ -2,18 +2,27 @@ import "cypress-file-upload";
 import "@cypress-audit/pa11y/commands";
 
 const breakpoints = {
-  mobile: [500, 800],
-  desktop: [1200, 1200],
+  mobile: [560, 800],
   tablet: [880, 1000],
+  desktop: [1200, 1200],
 };
 
 export const checkCurrentRouteAccessibility = () => {
   Object.keys(breakpoints).forEach((deviceSize) => {
     const size = breakpoints[deviceSize];
-    it(`Has no basic accessibility issues on ${deviceSize}`, () => {
-      cy.viewport(...size);
-      cy.runAccessibilityTests();
-    });
+    it(
+      `Has no basic accessibility issues on ${deviceSize}`,
+      {
+        retries: {
+          runMode: 0,
+          openMode: 0,
+        },
+      },
+      () => {
+        cy.viewport(...size);
+        cy.runAccessibilityTests();
+      }
+    );
   });
 };
 
