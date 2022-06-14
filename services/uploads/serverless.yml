@@ -138,6 +138,7 @@ resources:
                 StringNotEquals:
                   s3:ExistingObjectTag/virusScanStatus:
                     - "CLEAN"
+                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
             - Action: "s3:PutObject"
               Effect: Deny
               Principal: "*"
@@ -192,15 +193,21 @@ resources:
                 - "s3:PutObject"
               Effect: "Allow"
               Resource: !Sub ${ClamDefsBucket.Arn}/*
+              Principal:
+                AWS: !GetAtt IamRoleLambdaExecution.Arn
             - Action:
                 - "s3:GetBucketLocation"
                 - "s3:ListBucket"
               Effect: "Allow"
               Resource: !Sub ${ClamDefsBucket.Arn}
+              Principal:
+                AWS: !GetAtt IamRoleLambdaExecution.Arn
             - Action:
                 - "s3:GetObject"
               Effect: "Allow"
               Resource: !Sub ${ClamDefsBucket.Arn}/*
+              Principal:
+                AWS: !GetAtt IamRoleLambdaExecution.Arn
             - Sid: "AllowSSLRequestsOnly"
               Effect: Deny
               Action: "s3:*"
