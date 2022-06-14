@@ -6,12 +6,14 @@ const cognitoLoginButton = "[data-testid='cognito-login-button']";
 const stateUserPassword = Cypress.env("STATE_USER_PASSWORD");
 const adminUserPassword = Cypress.env("ADMIN_USER_PASSWORD");
 
+// pragma: allowlist nextline secret
 if (typeof stateUserPassword !== "string" || !stateUserPassword) {
   throw new Error(
     "Missing state user password value, set using CYPRESS_STATE_USER_PASSWORD=..."
   );
 }
 
+// pragma: allowlist nextline secret
 if (typeof adminUserPassword !== "string" || !adminUserPassword) {
   throw new Error(
     "Missing state user password value, set using CYPRESS_ADMIN_USER_PASSWORD=..."
