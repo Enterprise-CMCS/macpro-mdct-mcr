@@ -17,6 +17,17 @@
 
 `cypress.json` may use any of [these](https://docs.cypress.io/guides/references/configuration#Global) config options.
 
+## Running tests
+
+To run cypress tests locally you need to pass in environment variables for the state user and admin user passwords.
+The final command will look something like this:
+
+`CYPRESS_ADMIN_USER_PASSWORD=passwordhere CYPRESS_STATE_USER_PASSWORD=passwordhere yarn test`
+
+If you don't have these passwords you can find them in AWS SSM parameters in the mdct-mcr-dev account. Look for the parameter with a name like `/configuration/default/cognito/bootstrapUsers/password`. Ask a repository contributor for help if needed.
+
+_These variables are included in GitHub secrets for CI stages._
+
 ## Cypress CLI
 
 The [cypress cli](https://docs.cypress.io/guides/guides/command-line) comes with a number of options/flags/behaviors built into it, which allow it to target browsers, configure parallelization, and so on.

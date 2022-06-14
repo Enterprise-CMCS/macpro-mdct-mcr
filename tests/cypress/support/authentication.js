@@ -3,14 +3,29 @@ const cognitoEmailInputField = "//input[@name='email']";
 const cognitoPasswordInputField = "//input[@name='password']";
 const cognitoLoginButton = "[data-testid='cognito-login-button']";
 
+const stateUserPassword = Cypress.env("STATE_USER_PASSWORD");
+const adminUserPassword = Cypress.env("ADMIN_USER_PASSWORD");
+
+if (typeof stateUserPassword !== "string" || !stateUserPassword) {
+  throw new Error(
+    "Missing state user password value, set using CYPRESS_STATE_USER_PASSWORD=..."
+  );
+}
+
+if (typeof adminUserPassword !== "string" || !adminUserPassword) {
+  throw new Error(
+    "Missing state user password value, set using CYPRESS_ADMIN_USER_PASSWORD=..."
+  );
+}
+
 // credentials
 const stateUser = {
   email: Cypress.env("STATE_USER_EMAIL"),
-  password: Cypress.env("STATE_USER_PASSWORD"),
+  password: stateUserPassword,
 };
 const adminUser = {
   email: Cypress.env("ADMIN_USER_EMAIL"),
-  password: Cypress.env("ADMIN_USER_PASSWORD"),
+  password: adminUserPassword,
 };
 
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
@@ -39,6 +54,8 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   }
 
   cy.xpath(cognitoEmailInputField).type(credentials.email);
-  cy.xpath(cognitoPasswordInputField).type(credentials.password);
+  cy.xpath(cognitoPasswordInputField).type(credentials.password, {
+    log: false,
+  });
   cy.get(cognitoLoginButton).click();
 });
