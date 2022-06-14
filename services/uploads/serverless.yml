@@ -76,10 +76,6 @@ functions:
     name: ${self:service.name}-${self:custom.stage}-avScan
     timeout: 300 # 300 seconds = 5 minutes. Average scan is 25 seconds.
     memorySize: 3008
-    events:
-      - s3:
-          bucket: !Ref AttachmentsBucket
-          event: s3:ObjectCreated:*
     layers:
       - !Ref ClamDefsLambdaLayer
     environment:
