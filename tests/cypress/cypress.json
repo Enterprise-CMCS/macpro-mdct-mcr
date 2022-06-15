@@ -16,8 +16,6 @@
   "types": ["cypress", "cypress-axe"],
   "env": {
     "STATE_USER_EMAIL": "stateuser1@test.com",
-    "STATE_USER_PASSWORD": "5uPTZKrB@TWb",
-    "ADMIN_USER_EMAIL": "adminuser@test.com",
-    "ADMIN_USER_PASSWORD": "5uPTZKrB@TWb"
+    "ADMIN_USER_EMAIL": "adminuser@test.com"
   }
 }
