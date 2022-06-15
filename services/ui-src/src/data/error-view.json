@@ -1,0 +1,9 @@
+{
+  "header": "Error",
+  "subHeading": "Sorry! An error has occurred.",
+  "emailText": {
+    "preLinkText": "Please refresh and try again, or email ",
+    "cmsEmail": "mdct_help@cms.hhs.gov",
+    "postLinkText": " for help."
+  }
+}
