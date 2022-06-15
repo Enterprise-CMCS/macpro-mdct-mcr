@@ -67,7 +67,7 @@ const sx = {
     fontSize: "4xl",
     fontWeight: "normal",
     "&.mobile": {
-      fontSize: "1.75rem",
+      fontSize: "2xl",
     },
   },
   subHeadingText: {
