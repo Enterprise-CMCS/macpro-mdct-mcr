@@ -8,16 +8,14 @@
       "body": "For technical support and login issues: ",
       "email": {
         "address": "mdct_help@cms.hhs.gov",
-        "subject": "The subject of the email",
-        "body": "The body of the email"
+        "subject": "The subject of the email"
       }
     },
     "template": {
       "body": "For questions about the template download:",
       "email": {
         "address": "ManagedCareTA@mathematica-mpr.com",
-        "subject": "The subject of the email",
-        "body": "The body of the email"
+        "subject": "The subject of the email"
       }
     }
   },
