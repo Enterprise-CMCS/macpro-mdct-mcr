@@ -56,7 +56,7 @@ const sx = {
     backgroundColor: "palette.gray_lightest",
   },
   headerBar: {
-    height: "4rem",
+    minHeight: "4rem",
     alignItems: "center",
     bg: "palette.main_darkest",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
