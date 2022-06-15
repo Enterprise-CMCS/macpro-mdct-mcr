@@ -1,8 +1,9 @@
-describe("Baseline accessibility check", () => {
+import { checkCurrentRouteAccessibility } from "../../support/accessibility";
+
+describe("Baseline / (login) accessibility check", () => {
   beforeEach(() => {
     cy.visit("/");
   });
-  it("Login page has no basic accessibility issues", () => {
-    cy.checkCurrentPageAccessibility();
-  });
+
+  checkCurrentRouteAccessibility();
 });

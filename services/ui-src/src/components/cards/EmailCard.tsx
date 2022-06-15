@@ -7,6 +7,7 @@ import {
   useBreakpoint,
 } from "../../utils/useBreakpoint";
 import { JsonObject } from "utils/types/types";
+import { createEmailLink } from "utils/email/email";
 // assets
 import spreadsheetIcon from "../../assets/images/icon_spreadsheet.png";
 import settingsIcon from "../../assets/images/icon_wrench-gear.png";
@@ -20,15 +21,6 @@ const iconMap: { [key: string]: { [key: string]: string } } = {
     image: settingsIcon,
     alt: "settings icon",
   },
-};
-
-export const createEmailLink = (emailData: {
-  [key: string]: string;
-}): string => {
-  const { address, subject, body } = emailData;
-  return `mailto:${address}?${encodeURIComponent(subject)}&${encodeURIComponent(
-    body
-  )}`;
 };
 
 export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
