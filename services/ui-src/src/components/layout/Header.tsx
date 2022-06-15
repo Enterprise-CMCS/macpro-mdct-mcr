@@ -12,7 +12,9 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   return (
     <Box sx={sx.root}>
-      <UsaBanner />
+      <Flex sx={sx.usaBannerContainer}>
+        <UsaBanner />
+      </Flex>
       <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
@@ -51,6 +53,12 @@ const sx = {
     position: "sticky",
     top: 0,
     zIndex: "sticky",
+  },
+  usaBannerContainer: {
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "palette.gray_lightest",
   },
   headerBar: {
     height: "4rem",
