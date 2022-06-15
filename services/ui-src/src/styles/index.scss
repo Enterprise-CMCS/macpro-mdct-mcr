@@ -48,14 +48,11 @@ a {
 // USA BANNER STYLES
 
 .ds-c-usa-banner {
-  display: flex;
-  justify-content: center;
-  background-color: var(--chakra-colors-palette-gray_lightest);
-}
-
-.ds-c-usa-banner__header {
   width: 100%;
   max-width: var(--chakra-sizes-appMax);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--chakra-colors-palette-gray_lightest);
 }
 
 // ACCESSIBILITY & TAB NAVIGATION STYLES
@@ -76,7 +73,8 @@ p:active {
   background-color: inherit;
 }
 
-a, button {
+a,
+button {
   &:focus {
     box-shadow: none !important;
   }
