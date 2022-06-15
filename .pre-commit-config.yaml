@@ -10,11 +10,11 @@ repos:
         files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
         types: [file]
         additional_dependencies:
-          - 'eslint'
-          - '@typescript-eslint/parser'
-          - '@typescript-eslint/eslint-plugin'
-          - 'eslint-plugin-jest'
-          - 'eslint-plugin-cypress'
+          - "eslint"
+          - "@typescript-eslint/parser"
+          - "@typescript-eslint/eslint-plugin"
+          - "eslint-plugin-jest"
+          - "eslint-plugin-cypress"
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.3.1
     hooks:
@@ -27,5 +27,3 @@ repos:
         args:
           - --exclude-files
           - services/uploads/src/test.json
-          - --exclude-files
-          - tests/cypress/cypress.json
