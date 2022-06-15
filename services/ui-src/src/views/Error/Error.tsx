@@ -14,7 +14,7 @@ export const Error = () => {
   const { preLinkText, cmsEmail, postLinkText } = emailText;
 
   return (
-    <Box sx={sx.root} data-testid="404-view">
+    <Box sx={sx.root} data-testid="error-view">
       <Flex sx={sx.mainContentFlex}>
         <Flex sx={sx.heading}>
           <Image
