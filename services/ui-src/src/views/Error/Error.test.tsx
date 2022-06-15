@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 // views
-import { Error } from "../index";
+import { NotFound } from "../index";
 
-const notFoundView = <Error />;
+const notFoundView = <NotFound />;
 
 describe("Test Error view", () => {
   test("Check that Error page renders", () => {
