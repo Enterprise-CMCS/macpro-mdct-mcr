@@ -14,6 +14,7 @@ export const Home = () => {
     bannerData?.endDate
   );
   const showBanner = !!bannerData.key && bannerIsActive;
+
   return (
     <section>
       <Box sx={sx.root} data-testid="home-view">
