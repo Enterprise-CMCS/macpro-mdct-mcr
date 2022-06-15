@@ -50,7 +50,7 @@ const sx = {
     flexDirection: "column",
     alignContent: "center",
     margin: "5.5rem auto 0",
-    maxWidth: "30.625rem",
+    maxWidth: "35rem",
   },
   heading: {
     gap: "12px",
