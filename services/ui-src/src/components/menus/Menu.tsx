@@ -27,6 +27,7 @@ export const Menu = ({ handleLogout }: Props) => {
           rightIcon={<Icon icon="chevronDown" color="palette.white" />}
           sx={sx.menuButton}
           className={mqClasses}
+          aria-label="manage my account"
           data-testid="header-menu-dropdown-button"
         >
           <MenuOption
