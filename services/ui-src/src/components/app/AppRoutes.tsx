@@ -4,12 +4,14 @@ import { Admin, Help, Home, NotFound, Profile } from "../../views";
 import { AdminBannerProvider } from "components";
 // utils
 import { UserRoles } from "utils/types/types";
+import { ScrollToTopComponent } from "utils/scroll/scrollToTop";
 
 export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
 
   return (
     <main id="app-routes-wrapper">
+      <ScrollToTopComponent />
       <AdminBannerProvider>
         <Routes>
           <Route path="/" element={<Home />} />

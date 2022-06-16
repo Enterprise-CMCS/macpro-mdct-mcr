@@ -51,6 +51,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     } catch (error: any) {
       setError(REPLACE_BANNER_FAILED);
     }
+    window.scrollTo(0, 0);
   };
 
   // set banner preview data
