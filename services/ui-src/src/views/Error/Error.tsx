@@ -11,7 +11,7 @@ import data from "../../data/error-view.json";
 export const Error = () => {
   const mqClasses = makeMediaQueryClasses();
   const { header, subHeading, emailText } = data;
-  const { preLinkText, cmsEmail, postLinkText } = emailText;
+  const { preLinkText, helpDeskEmail, postLinkText } = emailText;
 
   return (
     <Box sx={sx.root} data-testid="error-view">
@@ -19,9 +19,9 @@ export const Error = () => {
         <Flex sx={sx.heading}>
           <Image
             src={warningIcon}
+            className={mqClasses}
             alt="warning icon"
             sx={sx.warningIcon}
-            className={mqClasses}
           />
           <Heading as="h1" sx={sx.headerText} className={mqClasses}>
             {header}
@@ -32,7 +32,9 @@ export const Error = () => {
         </Heading>
         <Text sx={sx.descriptionText}>
           {preLinkText}
-          <Link href={createEmailLink({ address: cmsEmail })}>{cmsEmail}</Link>
+          <Link href={createEmailLink({ address: helpDeskEmail })}>
+            {helpDeskEmail}
+          </Link>
           {postLinkText}
         </Text>
       </Flex>
