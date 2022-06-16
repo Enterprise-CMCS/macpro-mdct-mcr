@@ -9,6 +9,6 @@ export const getRequestHeaders = async (): Promise<any> => {
     };
     return headers;
   } catch (error) {
-    console.log({ error }); // eslint-disable-line no-console
+    console.log(error); //eslint-disable-line no-console
   }
 };

@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // components
 import { Button, Flex } from "@chakra-ui/react";
-import { Banner, DateField, TextField } from "../index";
+import { Banner, DateField, ErrorAlert, TextField } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { bannerId } from "utils/constants/constants";
+import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
 
 const formSchema = yup.object().shape({
   title: yup.string().required("Title text is required"),
@@ -27,6 +28,7 @@ const formSchema = yup.object().shape({
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [error, setError] = useState<string>();
 
   // make form context
   const form = useForm<FormInput>({
@@ -35,7 +37,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   });
 
   // submit new banner data via write method
-  const onSubmit = (formData: FormInput) => {
+  const onSubmit = async (formData: FormInput) => {
     const newBannerData = {
       key: bannerId,
       title: formData.title,
@@ -44,7 +46,13 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       startDate: formData.startDate,
       endDate: formData.endDate,
     };
-    writeAdminBanner(newBannerData);
+    try {
+      await writeAdminBanner(newBannerData);
+      document.getElementById("AdminHeader")!.focus();
+    } catch (error: any) {
+      setError(REPLACE_BANNER_FAILED);
+    }
+    window.scrollTo(0, 0);
   };
 
   // set banner preview data
@@ -58,6 +66,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
+        <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
         <TextField
           name="title"
           label="Title text"
@@ -118,6 +127,9 @@ interface FormInput {
 }
 
 const sx = {
+  errorAlert: {
+    maxWidth: "40rem",
+  },
   dateFieldContainer: {
     ".ds-c-fieldset:first-of-type": {
       marginRight: "3rem",

@@ -7,46 +7,50 @@ import { bannerId } from "utils/constants/constants";
 import { convertDateEtToUtc } from "utils/time/time";
 
 const mockWriteAdminBanner = jest.fn();
+const mockWriteAdminBannerWithError = jest.fn(() => {
+  throw new Error();
+});
 
-const adminBannerFormComponent = (
+const adminBannerFormComponent = (writeAdminBanner: Function) => (
   <AdminBannerForm
-    writeAdminBanner={mockWriteAdminBanner}
+    writeAdminBanner={writeAdminBanner}
     data-testid="test-form"
   />
 );
 
+const fillOutForm = async (form: any) => {
+  // selectors for all the required fields
+  const titleInput = form.querySelector("[name='title']")!;
+  const descriptionInput = form.querySelector("[name='description']")!;
+  const startDateMonthInput = form.querySelector("[name='startDateMonth']")!;
+  const startDateDayInput = form.querySelector("[name='startDateDay']")!;
+  const startDateYearInput = form.querySelector("[name='startDateYear']")!;
+  const endDateMonthInput = form.querySelector("[name='endDateMonth']")!;
+  const endDateDayInput = form.querySelector("[name='endDateDay']")!;
+  const endDateYearInput = form.querySelector("[name='endDateYear']")!;
+  // fill out form fields
+  await userEvent.type(titleInput, "this is the title text");
+  await userEvent.type(descriptionInput, "this is the description text");
+  await userEvent.type(startDateMonthInput, "1");
+  await userEvent.type(startDateDayInput, "1");
+  await userEvent.type(startDateYearInput, "2022");
+  await userEvent.type(endDateMonthInput, "2");
+  await userEvent.type(endDateDayInput, "2");
+  await userEvent.type(endDateYearInput, "2022");
+  await userEvent.tab();
+};
+
 describe("Test AdminBannerForm component", () => {
   test("AdminBannerForm is visible", () => {
-    render(adminBannerFormComponent);
+    render(adminBannerFormComponent(mockWriteAdminBanner));
     const form = screen.getByTestId("test-form");
     expect(form).toBeVisible();
   });
 
   test("Form submits correctly", async () => {
-    const result = render(adminBannerFormComponent);
+    const result = render(adminBannerFormComponent(mockWriteAdminBanner));
     const form = result.container;
-
-    // selectors for all the required fields
-    const titleInput = form.querySelector("[name='title']")!;
-    const descriptionInput = form.querySelector("[name='description']")!;
-    const startDateMonthInput = form.querySelector("[name='startDateMonth']")!;
-    const startDateDayInput = form.querySelector("[name='startDateDay']")!;
-    const startDateYearInput = form.querySelector("[name='startDateYear']")!;
-    const endDateMonthInput = form.querySelector("[name='endDateMonth']")!;
-    const endDateDayInput = form.querySelector("[name='endDateDay']")!;
-    const endDateYearInput = form.querySelector("[name='endDateYear']")!;
-
-    // fill out form fields
-    await userEvent.type(titleInput, "this is the title text");
-    await userEvent.type(descriptionInput, "this is the description text");
-    await userEvent.type(startDateMonthInput, "1");
-    await userEvent.type(startDateDayInput, "1");
-    await userEvent.type(startDateYearInput, "2022");
-    await userEvent.type(endDateMonthInput, "2");
-    await userEvent.type(endDateDayInput, "2");
-    await userEvent.type(endDateYearInput, "2022");
-    await userEvent.tab();
-
+    await fillOutForm(form);
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
@@ -64,11 +68,24 @@ describe("Test AdminBannerForm component", () => {
       ),
     });
   });
+
+  test("Shows error if writeBanner throws error", async () => {
+    const result = render(
+      adminBannerFormComponent(mockWriteAdminBannerWithError)
+    );
+    const form = result.container;
+    await fillOutForm(form);
+    const submitButton = screen.getByRole("button");
+    await userEvent.click(submitButton);
+    await expect(screen.getByText("Error")).toBeVisible();
+  });
 });
 
 describe("Test AdminBannerForm accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(adminBannerFormComponent);
+    const { container } = render(
+      adminBannerFormComponent(mockWriteAdminBanner)
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

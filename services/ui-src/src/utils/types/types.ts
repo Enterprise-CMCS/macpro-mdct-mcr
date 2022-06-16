@@ -54,6 +54,7 @@ export interface AdminBannerMethods {
 
 export interface AdminBannerShape extends AdminBannerMethods {
   bannerData: AdminBannerData;
+  errorMessage?: string;
 }
 
 export enum AlertTypes {

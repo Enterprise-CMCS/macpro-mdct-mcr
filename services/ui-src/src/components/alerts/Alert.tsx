@@ -30,18 +30,20 @@ export const Alert = ({
     >
       <Flex>
         {showIcon && <AlertIcon sx={sx.icon} />}
-        <Box sx={sx.contentBox}>
-          <AlertTitle>{title}</AlertTitle>
-          <AlertDescription>
-            <Text>{description}</Text>
-            {link && (
-              <Text>
-                <Link href={link} isExternal variant="inline">
-                  {link}
-                </Link>
-              </Text>
-            )}
-          </AlertDescription>
+        <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
+          {title && <AlertTitle>{title}</AlertTitle>}
+          {description && (
+            <AlertDescription>
+              <Text>{description}</Text>
+              {link && (
+                <Text>
+                  <Link href={link} isExternal variant="inline">
+                    {link}
+                  </Link>
+                </Text>
+              )}
+            </AlertDescription>
+          )}
         </Box>
       </Flex>
     </AlertRoot>
@@ -50,8 +52,8 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   link?: string;
   showIcon?: boolean;
   [key: string]: any;
@@ -87,5 +89,8 @@ const sx = {
   },
   contentBox: {
     marginLeft: "2rem",
+    "&.no-icon": {
+      marginLeft: 0,
+    },
   },
 };
