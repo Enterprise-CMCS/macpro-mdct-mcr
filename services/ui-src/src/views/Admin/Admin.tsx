@@ -37,8 +37,8 @@ export const Admin = () => {
   return (
     <section>
       <Box sx={sx.root} data-testid="admin-view">
-        <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
         <Flex sx={sx.mainContentFlex}>
+          <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
           <Box sx={sx.introTextBox}>
             <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
               {data.intro.header}
@@ -93,7 +93,9 @@ const sx = {
   root: {
     flexShrink: "0",
   },
-  errorAlert: {},
+  errorAlert: {
+    width: "100% !important",
+  },
   mainContentFlex: {
     flexDirection: "column",
     alignItems: "center",
