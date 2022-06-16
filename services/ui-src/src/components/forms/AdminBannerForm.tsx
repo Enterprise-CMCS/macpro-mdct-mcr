@@ -8,7 +8,6 @@ import { Banner, DateField, ErrorAlert, TextField } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
-import { scrollToTopFormSubmit } from "utils/scroll/scrollToTop";
 
 const formSchema = yup.object().shape({
   title: yup.string().required("Title text is required"),
@@ -52,7 +51,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     } catch (error: any) {
       setError(REPLACE_BANNER_FAILED);
     }
-    scrollToTopFormSubmit();
+    window.scrollTo(0, 0);
   };
 
   // set banner preview data
