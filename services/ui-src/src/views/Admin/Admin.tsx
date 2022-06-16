@@ -40,7 +40,7 @@ export const Admin = () => {
         <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
         <Flex sx={sx.mainContentFlex}>
           <Box sx={sx.introTextBox}>
-            <Heading as="h1" sx={sx.headerText}>
+            <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
               {data.intro.header}
             </Heading>
             <Text>{data.intro.body}</Text>
