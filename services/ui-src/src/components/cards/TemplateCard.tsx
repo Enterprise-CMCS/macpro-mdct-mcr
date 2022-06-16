@@ -24,6 +24,7 @@ export const TemplateCard = ({
   templateName,
   verbiage,
   cardprops,
+  isDisabled = false,
   ...props
 }: Props) => {
   const { isDesktop } = useBreakpoint();
@@ -50,6 +51,7 @@ export const TemplateCard = ({
             onClick={async () => {
               await downloadTemplate(templateName);
             }}
+            isDisabled={isDisabled}
           >
             Download Excel Template
           </Button>
@@ -63,6 +65,7 @@ export const TemplateCard = ({
 interface Props {
   templateName: string;
   verbiage: JsonObject;
+  isDisabled?: boolean;
   [key: string]: any;
 }
 

@@ -40,11 +40,13 @@ export const Home = () => {
             templateName="MLR"
             verbiage={data.cards.MLR}
             cardprops={sx.card}
+            isDisabled
           />
           <TemplateCard
             templateName="NAAAR"
             verbiage={data.cards.NAAAR}
             cardprops={sx.card}
+            isDisabled
           />
         </Flex>
       </Box>
