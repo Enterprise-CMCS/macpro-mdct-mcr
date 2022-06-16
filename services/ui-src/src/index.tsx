@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
 // import { ReactQueryDevtools } from "react-query/devtools";
 import { Amplify } from "aws-amplify";
 import config from "config";
@@ -8,6 +9,7 @@ import { ApiProvider, QueryProvider } from "utils/api";
 import { UserProvider } from "utils/auth";
 // components
 import { App } from "components";
+import { Error } from "./views";
 // styles
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "styles/theme";
@@ -22,17 +24,19 @@ Amplify.configure({
 });
 
 ReactDOM.render(
-  <Router>
-    <UserProvider>
-      <ApiProvider>
-        <QueryProvider>
-          <ChakraProvider theme={theme}>
-            <App />
-          </ChakraProvider>
-          {/* <ReactQueryDevtools /> */}
-        </QueryProvider>
-      </ApiProvider>
-    </UserProvider>
-  </Router>,
+  <ErrorBoundary FallbackComponent={Error}>
+    <Router>
+      <UserProvider>
+        <ApiProvider>
+          <QueryProvider>
+            <ChakraProvider theme={theme}>
+              <App />
+            </ChakraProvider>
+            {/* <ReactQueryDevtools /> */}
+          </QueryProvider>
+        </ApiProvider>
+      </UserProvider>
+    </Router>
+  </ErrorBoundary>,
   document.getElementById("root")
 );
