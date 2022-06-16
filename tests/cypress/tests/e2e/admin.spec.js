@@ -21,11 +21,6 @@ beforeEach(() => {
 });
 
 describe("Admin banner integration tests", () => {
-  it("Fetches banner, if any, without error", () => {
-    cy.contains(bannerFetchErrorMessage).should("not.exist");
-    cy.contains(noCurrentBannerMessage).should("be.visible");
-  });
-
   it("Fills out form and writes banner without error", () => {
     // selectors for all the required fields
     const titleInput = "[id='title']";
@@ -62,6 +57,12 @@ describe("Admin banner integration tests", () => {
     cy.contains(deleteButton).click();
 
     cy.contains(bannerDeleteErrorMessage).should("not.exist");
+    cy.contains(noCurrentBannerMessage).should("be.visible");
+  });
+
+  it("Fetches banner on page load without error", () => {
+    cy.reload();
+    cy.contains(bannerFetchErrorMessage).should("not.exist");
     cy.contains(noCurrentBannerMessage).should("be.visible");
   });
 });
