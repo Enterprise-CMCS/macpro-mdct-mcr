@@ -1,35 +1,50 @@
 import "cypress-file-upload";
 import "@cypress-audit/pa11y/commands";
 
+const breakpoints = {
+  mobile: [560, 800],
+  tablet: [880, 1000],
+  desktop: [1200, 1200],
+};
+
+export const checkCurrentRouteAccessibility = () => {
+  Object.keys(breakpoints).forEach((deviceSize) => {
+    const size = breakpoints[deviceSize];
+    it(
+      `Has no basic accessibility issues on ${deviceSize}`,
+      { retries: 0 },
+      () => {
+        cy.viewport(...size);
+        cy.runAccessibilityTests();
+      }
+    );
+  });
+};
+
 // ***** ACCESSIBILITY COMMANDS *****
 
-Cypress.Commands.add("checkCurrentPageAccessibility", () => {
+Cypress.Commands.add("runAccessibilityTests", () => {
   cy.wait(3000);
 
-  // check accessibility using axe-core
+  // run cypress-axe accessibility tests (https://bit.ly/3HnJT9H)
   cy.injectAxe();
   cy.checkA11y(
     null,
     {
       values: ["wcag2a", "wcag2aa"],
-      includedImpacts: ["minor", "moderate", "serious", "critical"], // options: "minor", "moderate", "serious", "critical"
+      includedImpacts: ["minor", "moderate", "serious", "critical"],
     },
-    terminalLog,
-    (err) => {
-      console.log("Accessibility violations:"); // eslint-disable-line no-console
-      console.log({ err }); // eslint-disable-line no-console
-    },
-    true // does not fail tests for ally violations
+    terminalLog
   );
 
-  // check accessibility using pa11y
+  // check accessibility using pa11y (https://bit.ly/2LwFQe6)
   cy.pa11y({
-    threshold: 10,
+    threshold: 0,
     standard: "WCAG2AA",
   });
 });
 
-// ***** LOGGING *****
+// ***** LOGGING ***** (https://bit.ly/3HnJT9H)
 
 function terminalLog(violations) {
   cy.task(
