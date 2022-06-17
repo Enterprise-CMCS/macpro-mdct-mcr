@@ -39,7 +39,7 @@
       "buttonText": "Download NAAAR Template",
       "accordion": {
         "buttonLabel": "When is the NAAAR due?",
-        "bodyText": "Submit your NAAAR when (1) your state enters contract with a new managed care plan or (2) there are any significant changes to a Managed Care Organization (MCO), Prepaid Inpatient Health Plan (PIHP) or Prepaid Ambulatory Health Plan (PAHP) operation such as:",
+        "bodyText": "Submit a Network Adequacy and Access Assurances Report (NAAAR) (1) at least annually; (2) at the time your state enters into a contract with a new Managed Care Organization (MCO), Prepaid Inpatient Health Plan (PIHP) or Prepaid Ambulatory Health Plan (PAHP); and (3) there are any significant changes to a MCO, PIHP, or PAHP operation that would affect the adequacy of capacity and services such as:",
         "list": [
           "Enrollment of a new population",
           "Changes to services, benefits, geographic service area, composition of provider network or payments to its provider network"
