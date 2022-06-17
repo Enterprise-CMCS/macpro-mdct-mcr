@@ -196,12 +196,7 @@ function scanLocalFile(pathToFile) {
     );
 
     console.log(avResult.toString()); // eslint-disable-line no-console
-
-    if (avResult.toString() === "0") {
-      utils.generateSystemMessage("SUCCESSFUL SCAN, FILE CLEAN");
-    } else {
-      throw new Error({ status: "processing failed" });
-    }
+    utils.generateSystemMessage("SUCCESSFUL SCAN, FILE CLEAN");
 
     return constants.STATUS_CLEAN_FILE;
   } catch (err) {
