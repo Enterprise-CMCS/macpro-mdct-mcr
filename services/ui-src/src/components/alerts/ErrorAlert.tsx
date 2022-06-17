@@ -1,6 +1,6 @@
 // components
 import { Alert } from "../index";
-import { Collapse } from "@chakra-ui/react";
+import { Box, Collapse } from "@chakra-ui/react";
 // utils
 import { AlertTypes, StyleObject } from "utils/types/types";
 
@@ -11,19 +11,21 @@ export const ErrorAlert = ({
   ...props
 }: Props) => {
   return (
-    <Collapse in={!!error}>
-      {error && (
-        <Alert
-          status={AlertTypes.ERROR}
-          title="Error"
-          description={error}
-          showIcon={false}
-          className={variant}
-          sx={{ ...sx.root, ...sxOverrides }}
-          {...props}
-        />
-      )}
-    </Collapse>
+    <Box sx={sxOverrides}>
+      <Collapse in={!!error}>
+        {error && (
+          <Alert
+            status={AlertTypes.ERROR}
+            title="Error"
+            description={error}
+            showIcon={false}
+            className={variant}
+            sx={sx.root}
+            {...props}
+          />
+        )}
+      </Collapse>
+    </Box>
   );
 };
 

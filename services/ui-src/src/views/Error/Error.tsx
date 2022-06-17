@@ -6,22 +6,22 @@ import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // assets
 import warningIcon from "../../assets/images/icon_warning.png";
 // data
-import data from "../../data/notfound-view.json";
+import data from "../../data/error-view.json";
 
-export const NotFound = () => {
+export const Error = () => {
   const mqClasses = makeMediaQueryClasses();
-  const { header, subHeading, emailText, body } = data;
-  const { preLinkText, cmsEmail, postLinkText } = emailText;
+  const { header, subHeading, emailText } = data;
+  const { preLinkText, helpDeskEmail, postLinkText } = emailText;
 
   return (
-    <Box sx={sx.root} data-testid="404-view">
+    <Box sx={sx.root} data-testid="error-view">
       <Flex sx={sx.mainContentFlex}>
         <Flex sx={sx.heading}>
           <Image
             src={warningIcon}
+            className={mqClasses}
             alt="warning icon"
             sx={sx.warningIcon}
-            className={mqClasses}
           />
           <Heading as="h1" sx={sx.headerText} className={mqClasses}>
             {header}
@@ -32,10 +32,11 @@ export const NotFound = () => {
         </Heading>
         <Text sx={sx.descriptionText}>
           {preLinkText}
-          <Link href={createEmailLink({ address: cmsEmail })}>{cmsEmail}</Link>
+          <Link href={createEmailLink({ address: helpDeskEmail })}>
+            {helpDeskEmail}
+          </Link>
           {postLinkText}
         </Text>
-        <Text>{body}</Text>
       </Flex>
     </Box>
   );
@@ -50,7 +51,7 @@ const sx = {
     flexDirection: "column",
     alignContent: "center",
     margin: "5.5rem auto 0",
-    maxWidth: "35rem",
+    maxWidth: "30.625rem",
   },
   heading: {
     gap: "12px",
