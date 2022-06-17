@@ -154,6 +154,7 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
+        width: "fit-content",
         transition: "all 0.3s ease",
       },
     },

@@ -32,7 +32,7 @@ export const TemplateCard = ({
 
   return (
     <Card {...cardprops}>
-      <Flex sx={sx.root} className={mqClasses} {...props}>
+      <Flex sx={sx.root} {...props}>
         {isDesktop && (
           <Image
             src={spreadsheetIcon}
@@ -42,18 +42,17 @@ export const TemplateCard = ({
         )}
         <Flex sx={sx.cardContentFlex}>
           <Text sx={sx.cardTitleText}>{verbiage.title}</Text>
-          {!isDesktop && <Text>{verbiage.dueDate}</Text>}
           <Text>{verbiage.body}</Text>
-          {isDesktop && verbiage.note && <Text>{verbiage.note}</Text>}
           <Button
+            className={mqClasses}
             sx={sx.templateDownloadButton}
             leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem" />}
+            isDisabled={isDisabled}
             onClick={async () => {
               await downloadTemplate(templateName);
             }}
-            isDisabled={isDisabled}
           >
-            Download Excel Template
+            {verbiage.buttonText}
           </Button>
           <TemplateCardAccordion verbiage={verbiage.accordion} />
         </Flex>
@@ -87,7 +86,6 @@ const sx = {
     fontWeight: "bold",
   },
   templateDownloadButton: {
-    maxW: "16.5rem",
     justifyContent: "start",
     marginTop: "1rem",
     borderRadius: "0.25rem",
@@ -100,6 +98,9 @@ const sx = {
     },
     _hover: {
       background: "palette.main_darker",
+    },
+    "&.mobile": {
+      fontSize: "sm",
     },
   },
 };
