@@ -96,6 +96,8 @@ function extractBucketFromApiEvent(s3Event) {
  */
 function generateSystemMessage(systemMessage) {
   let finalMessage = `--- ${systemMessage} ---`;
+  // eslint-disable-next-line no-console
+  console.log(finalMessage);
   return finalMessage;
 }
 

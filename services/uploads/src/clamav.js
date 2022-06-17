@@ -192,7 +192,7 @@ async function uploadAVDefinitions() {
 function scanLocalFile(pathToFile) {
   try {
     execSync(
-      `${constants.PATH_TO_CLAMAV} -v -a --stdout -d /tmp/ ${pathToFile}`
+      `${constants.PATH_TO_CLAMAV} -v -a --stdout -d "/tmp/download/${pathToFile}"`
     );
 
     utils.generateSystemMessage("SUCCESSFUL SCAN, FILE CLEAN");

@@ -24,16 +24,14 @@ provider:
       path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
       permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
       statements:
-        - Effect: "Allow"
+        - Sid: ScanUploads
+          Effect: "Allow"
           Action:
-            - dynamodb:DescribeTable
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource: "*"
+            - s3:GetObject*
+            - s3:PutObjectTagging
+            - s3:PutObjectVersionTagging
+          Resource:
+            - !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}/*
 
 custom:
   stage: ${opt:stage, self:provider.stage}
