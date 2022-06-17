@@ -13,7 +13,7 @@ export const App = () => {
     <div id="app-wrapper">
       {user && (
         <Flex sx={sx.appLayout}>
-          <SkipNav href="#main">Skip to main content</SkipNav>
+          <SkipNav href="#main-content">Skip to main content</SkipNav>
           <Header handleLogout={logout} />
           <Container sx={sx.appContainer} data-testid="app-container">
             <ErrorBoundary FallbackComponent={Error}>
