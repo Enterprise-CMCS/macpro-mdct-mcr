@@ -23,16 +23,6 @@ body,
   min-height: 100%;
 }
 
-.ds-c-skip-nav {
-  position: absolute;
-  top: -100;
-  left: 0;
-  z-index: var(--chakra-zIndices-skipLink);
-  &:focus {
-    top: 0;
-  }
-}
-
 #main-content {
   flex: 1;
   display: flex;

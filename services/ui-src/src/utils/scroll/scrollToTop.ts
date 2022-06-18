@@ -5,7 +5,7 @@ export const ScrollToTopComponent = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    document.getElementById("main-content")!.focus();
+    document.getElementById("skip-nav-main")!.focus();
     window.scrollTo(0, 0);
   }, [pathname]);
 
