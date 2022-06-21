@@ -7,15 +7,13 @@
     "helpdesk": {
       "body": "For technical support and login issues: ",
       "email": {
-        "address": "mdct_help@cms.hhs.gov",
-        "subject": "The subject of the email"
+        "address": "mdct_help@cms.hhs.gov"
       }
     },
     "template": {
       "body": "For support on the MCPAR, MLR and NAAAR reports, including questions about policy:",
       "email": {
-        "address": "ManagedCareTA@mathematica-mpr.com",
-        "subject": "The subject of the email"
+        "address": "ManagedCareTA@mathematica-mpr.com"
       }
     }
   },
