@@ -23,6 +23,8 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
+window.scrollTo = jest.fn();
+
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
 jest.mock("@chakra-ui/transition", () => ({
   ...jest.requireActual("@chakra-ui/transition"),
