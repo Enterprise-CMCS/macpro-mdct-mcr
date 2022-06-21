@@ -23,17 +23,7 @@ body,
   min-height: 100%;
 }
 
-.ds-c-skip-nav {
-  position: absolute;
-  top: -100;
-  left: 0;
-  z-index: var(--chakra-zIndices-skipLink);
-  &:focus {
-    top: 0;
-  }
-}
-
-#main {
+#main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -67,8 +57,7 @@ a {
 
 // ACCESSIBILITY & TAB NAVIGATION STYLES
 
-*,
-#main {
+* {
   &:active,
   &:focus {
     outline: none !important;
@@ -94,6 +83,17 @@ button {
   }
 }
 
+#main-content {
+  &:focus {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  &:focus-visible {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+}
+
 * .chakra-accordion__button {
   &:hover {
     p {
@@ -106,4 +106,8 @@ button {
   &:focus-visible {
     @include tabbed-focus;
   }
+}
+
+.chakra-collapse {
+  overflow: visible !important;
 }

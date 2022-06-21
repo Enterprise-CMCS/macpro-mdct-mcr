@@ -8,6 +8,7 @@ export { ErrorAlert } from "./alerts/ErrorAlert";
 // app
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
+export { SkipNav } from "./app/SkipNav";
 // banners
 export {
   AdminBannerContext,
