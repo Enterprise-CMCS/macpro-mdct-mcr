@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
-import { ChoiceList } from "components";
+import { ChoiceListField } from "components";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("react-hook-form", () => ({
@@ -10,16 +10,15 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
-const ChoiceListComponent = (
+const ChoiceListFieldComponent = (
   <div data-testid="test-checkbox-list">
-    <ChoiceList
+    <ChoiceListField
       choices={[
         { label: "Choice 1", value: "A", defaultChecked: true },
         { label: "Choice 2", value: "B" },
         { label: "Disabled choice 3", value: "C", disabled: true },
       ]}
       label="Checkbox example"
-      hint="Helpful hint text"
       name="checkbox_choices"
       type="checkbox"
     />
@@ -28,13 +27,13 @@ const ChoiceListComponent = (
 
 describe("Test ChoiceList component", () => {
   test("ChoiceList renders as Checkbox", () => {
-    render(ChoiceListComponent);
+    render(ChoiceListFieldComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByTestId("test-checkbox-list")).toBeVisible();
   });
 
   test("ChoiceList allows checking choices", async () => {
-    const wrapper = render(ChoiceListComponent);
+    const wrapper = render(ChoiceListFieldComponent);
     const checkboxContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
@@ -53,7 +52,7 @@ describe("Test ChoiceList component", () => {
   });
 
   test("ChoiceList allows disabled choices", async () => {
-    const wrapper = render(ChoiceListComponent);
+    const wrapper = render(ChoiceListFieldComponent);
     const checkboxContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
@@ -66,7 +65,7 @@ describe("Test ChoiceList component", () => {
 
 describe("Test ChoiceList accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(ChoiceListComponent);
+    const { container } = render(ChoiceListFieldComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

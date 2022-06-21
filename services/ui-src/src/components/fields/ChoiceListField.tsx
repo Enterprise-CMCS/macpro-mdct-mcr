@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 import { InputChangeEvent, StyleObject } from "utils/types/types";
 
-export const ChoiceList = ({
+export const ChoiceListField = ({
   name,
   type,
   label,
@@ -26,7 +26,7 @@ export const ChoiceList = ({
   };
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={sxOverrides} className={mqClasses}>
       <CmsdsChoiceList
         name={name}
         type={type}
@@ -49,11 +49,8 @@ interface ChoiceListChoices {
 interface Props {
   name: string;
   type: "checkbox" | "radio";
-  label?: string;
-  hint?: string;
+  label: string;
   choices: ChoiceListChoices[];
   sxOverrides?: StyleObject;
   [key: string]: any;
 }
-
-const sx = {};
