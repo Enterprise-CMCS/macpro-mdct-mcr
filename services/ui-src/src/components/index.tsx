@@ -20,6 +20,8 @@ export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // fields
+export { ChoiceField } from "./fields/ChoiceField";
+export { ChoiceListField } from "./fields/ChoiceListField";
 export { DateField } from "./fields/DateField";
 export { DropdownField } from "./fields/DropdownField";
 export { TextField } from "./fields/TextField";
