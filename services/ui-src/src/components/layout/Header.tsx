@@ -25,7 +25,7 @@ export const Header = ({ handleLogout }: Props) => {
               <Link
                 as={RouterLink}
                 to="/help"
-                aria-label="get help"
+                aria-label="Get Help"
                 data-testid="header-help-button"
               >
                 <MenuOption
