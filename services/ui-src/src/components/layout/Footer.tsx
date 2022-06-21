@@ -8,10 +8,11 @@ import {
 } from "../../utils/useBreakpoint";
 // assets
 import hhsLogo from "../../assets/images/logo_hhs.svg";
+import mcrLogo from "../../assets/images/logo_mcr_footer.png";
 import medicaidLogo from "../../assets/images/logo_medicaid.svg";
 
 export const Footer = () => {
-  const { isMobile, isDesktop } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   return (
     <Box sx={sx.root} role="contentinfo">
@@ -19,24 +20,51 @@ export const Footer = () => {
         <Container sx={sx.footerTopContainer}>
           <Flex sx={sx.footerTopFlex} className={mqClasses}>
             <Flex sx={sx.footerTopLogoFlex} className={mqClasses}>
-              {isMobile && (
-                <Image src={hhsLogo} alt="HHS logo" sx={sx.hhsLogo} />
-              )}
               <Image
-                src={medicaidLogo}
-                alt="Medicaid logo"
-                sx={sx.medicaidLogo}
+                src={mcrLogo}
+                alt="Managed Care Reporting logo"
+                sx={sx.mcrLogo}
               />
             </Flex>
-            <Flex sx={sx.footerTopTextFlex}>
+            <Flex sx={sx.footerRightLogosFlex}>
               {!isMobile && (
-                <Image src={hhsLogo} alt="HHS logo" sx={sx.hhsLogo} />
+                <Image
+                  src={hhsLogo}
+                  alt="HHS logo"
+                  sx={sx.hhsLogo}
+                  className={mqClasses}
+                />
               )}
-              <Text sx={sx.footerText} className={mqClasses}>
-                A federal government website managed and paid for by the U.S.
-                Centers for Medicare and Medicaid Services and part of the
-                MACPro suite.
-              </Text>
+              <Flex sx={sx.footerRightLogosTextFlex} className={mqClasses}>
+                {isMobile && (
+                  <Flex sx={sx.hhsMedicaidLogoMobile}>
+                    <Image
+                      src={hhsLogo}
+                      alt="HHS logo"
+                      sx={sx.hhsLogo}
+                      className={mqClasses}
+                    />
+                    <Image
+                      src={medicaidLogo}
+                      alt="Medicaid logo"
+                      sx={sx.medicaidLogo}
+                      className={mqClasses}
+                    />
+                  </Flex>
+                )}
+                <Text sx={sx.footerText} className={mqClasses}>
+                  A federal government website managed and paid for by the U.S.
+                  Centers for Medicare and Medicaid Services and part of the
+                  MDCT suite.
+                </Text>
+                {!isMobile && (
+                  <Image
+                    src={medicaidLogo}
+                    alt="Medicaid logo"
+                    sx={sx.medicaidLogo}
+                  />
+                )}
+              </Flex>
             </Flex>
           </Flex>
         </Container>
@@ -54,7 +82,7 @@ export const Footer = () => {
               >
                 Contact Us
               </Link>
-              {isDesktop && <Text sx={sx.divider}>|</Text>}
+              {!isMobile && <Text sx={sx.divider}>|</Text>}
               <Link
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
@@ -65,9 +93,11 @@ export const Footer = () => {
                 Accessibility Statement
               </Link>
             </Flex>
-            <Text sx={sx.address} className={mqClasses}>
-              7500 Security Boulevard Baltimore, MD 21244
-            </Text>
+            <Flex>
+              <Text sx={sx.address} className={mqClasses}>
+                7500 Security Boulevard Baltimore, MD 21244
+              </Text>
+            </Flex>
           </Flex>
         </Container>
       </Box>
@@ -87,35 +117,63 @@ const sx = {
     maxW: "appMax",
   },
   footerTopFlex: {
-    minH: "7rem",
+    minH: "12.5rem",
     justifyContent: "space-between",
-    alignItems: "center",
-    paddingY: "1rem",
+    alignItems: "flex-start",
+    paddingY: "2rem",
     "&.mobile": {
       flexDirection: "column",
+      alignItems: "center",
     },
   },
   footerTopLogoFlex: {
     paddingRight: "1rem",
     "&.mobile": {
-      marginTop: "2rem",
       minWidth: "200px",
+      paddingRight: 0,
+      justifyContent: "center",
     },
   },
-  footerTopTextFlex: {
-    alignItems: "center",
+  footerRightLogosFlex: {
+    alignItems: "flex-start",
+  },
+  footerRightLogosTextFlex: {
+    flexDirection: "column",
+    gap: "1.375rem",
+    "&.mobile": {
+      gap: "0",
+    },
+  },
+  mcrLogo: {
+    maxWidth: "12.125rem",
+    "&.mobile": {
+      maxWidth: "10.125rem",
+    },
   },
   medicaidLogo: {
-    minWidth: "150px",
+    maxWidth: "12.875rem",
+    "&.mobile": {
+      maxWidth: "9.375rem",
+    },
   },
   hhsLogo: {
-    marginRight: "1.25rem",
+    marginRight: "1.5rem",
+    marginTop: "-0.5rem",
+    "&.mobile": {
+      maxHeight: "4.25rem",
+      marginRight: "0.75rem",
+    },
+  },
+  hhsMedicaidLogoMobile: {
+    marginY: "1.75rem",
+    justifyContent: "center",
   },
   footerText: {
-    maxW: "24rem",
-    fontSize: "14px",
+    maxW: "20rem",
+    fontSize: "0.875rem",
     "&.mobile": {
-      marginY: "1rem",
+      maxW: "100%",
+      marginX: "1rem",
     },
   },
   footerBottom: {
@@ -127,16 +185,15 @@ const sx = {
     maxW: "appMax",
   },
   footerBottomFlex: {
-    paddingY: ".5rem",
+    paddingY: "1rem",
     justifyContent: "space-between",
-    alignItems: "center",
     "&.mobile": {
       alignItems: "normal",
       flexDirection: "column",
     },
   },
   footerBottomLinkFlex: {
-    "&.mobile, &.tablet": {
+    "&.mobile": {
       flexDirection: "column",
     },
     "a:first-of-type > p": {
@@ -144,21 +201,23 @@ const sx = {
     },
   },
   link: {
-    margin: "0.5rem",
-    "&.mobile, &.tablet": {
+    textDecoration: "underline !important",
+    margin: "0.5rem 0",
+    "&.mobile": {
       margin: "0.25rem 0",
     },
   },
   divider: {
     color: "palette.white",
-
     margin: "0.5rem",
     cursor: "default",
   },
   address: {
     color: "palette.white",
-    "&.mobile, &.tablet": {
-      margin: "0.25rem 0",
+    fontWeight: "bold",
+    alignSelf: "center",
+    "&.mobile": {
+      margin: "2.25rem 0 0",
     },
   },
 };
