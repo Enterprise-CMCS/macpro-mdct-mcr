@@ -93,9 +93,11 @@ export const Footer = () => {
                 Accessibility Statement
               </Link>
             </Flex>
-            <Text sx={sx.address} className={mqClasses}>
-              7500 Security Boulevard Baltimore, MD 21244
-            </Text>
+            <Flex>
+              <Text sx={sx.address} className={mqClasses}>
+                7500 Security Boulevard Baltimore, MD 21244
+              </Text>
+            </Flex>
           </Flex>
         </Container>
       </Box>
@@ -118,7 +120,7 @@ const sx = {
     minH: "12.5rem",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    paddingY: "2.75rem",
+    paddingY: "2rem",
     "&.mobile": {
       flexDirection: "column",
       alignItems: "center",
@@ -127,8 +129,9 @@ const sx = {
   footerTopLogoFlex: {
     paddingRight: "1rem",
     "&.mobile": {
-      marginTop: "2rem",
       minWidth: "200px",
+      paddingRight: 0,
+      justifyContent: "center",
     },
   },
   footerRightLogosFlex: {
@@ -169,7 +172,8 @@ const sx = {
     maxW: "20rem",
     fontSize: "0.875rem",
     "&.mobile": {
-      fontSize: "0.75rem",
+      maxW: "100%",
+      marginX: "1rem",
     },
   },
   footerBottom: {
@@ -181,7 +185,7 @@ const sx = {
     maxW: "appMax",
   },
   footerBottomFlex: {
-    paddingY: ".5rem",
+    paddingY: "1rem",
     justifyContent: "space-between",
     "&.mobile": {
       alignItems: "normal",
@@ -197,6 +201,7 @@ const sx = {
     },
   },
   link: {
+    textDecoration: "underline !important",
     margin: "0.5rem 0",
     "&.mobile": {
       margin: "0.25rem 0",
@@ -204,14 +209,15 @@ const sx = {
   },
   divider: {
     color: "palette.white",
-
     margin: "0.5rem",
     cursor: "default",
   },
   address: {
     color: "palette.white",
+    fontWeight: "bold",
+    alignSelf: "center",
     "&.mobile": {
-      margin: "2.25rem 0",
+      margin: "2.25rem 0 0",
     },
   },
 };
