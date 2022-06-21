@@ -10,7 +10,7 @@ export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
 
   return (
-    <main id="app-routes-wrapper">
+    <main id="main-content" tabIndex={-1}>
       <ScrollToTopComponent />
       <AdminBannerProvider>
         <Routes>
