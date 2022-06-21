@@ -32,7 +32,7 @@ async function isS3FileTooBig(s3ObjectKey, s3ObjectBucket) {
   return fileSize > constants.MAX_FILE_SIZE;
 }
 
-let downloadDir = constants.DOWNLOAD_DIR;
+const downloadDir = constants.DOWNLOAD_DIR;
 
 /**
  * Returns the /tmp local path from an s3ObjectKey
