@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // components
 import { Button, Flex } from "@chakra-ui/react";
-import { Banner, DateField, TextField } from "../index";
+import { Banner, DateField, ErrorAlert, TextField } from "../index";
 // utils
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent } from "../../utils/types/types";
-import { bannerId } from "utils/constants/constants";
+import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
 
 const formSchema = yup.object().shape({
   title: yup.string().required("Title text is required"),
@@ -27,38 +26,47 @@ const formSchema = yup.object().shape({
   endDateDay: yup.number().required().max(31),
 });
 
-export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
+export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [error, setError] = useState<string>();
 
-  const [newBannerData, setNewBannerData] = useState({
-    key: bannerId,
-    title: "New banner title",
-    description: "New banner description",
-    startDate: 0,
-    endDate: 0,
-  });
-
-  const handleInputChange = (e: InputChangeEvent) => {
-    const { id, value }: any = e.target;
-    setNewBannerData({
-      ...newBannerData,
-      [id]: value,
-    });
-    form.setValue(id, value);
-  };
-
+  // make form context
   const form = useForm<FormInput>({
     mode: "onChange",
     resolver: yupResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormInput> = () => {
-    writeAdminBanner(newBannerData);
+  // submit new banner data via write method
+  const onSubmit = async (formData: FormInput) => {
+    const newBannerData = {
+      key: bannerId,
+      title: formData.title,
+      description: formData.description,
+      link: formData.link,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+    };
+    try {
+      await writeAdminBanner(newBannerData);
+      document.getElementById("AdminHeader")!.focus();
+    } catch (error: any) {
+      setError(REPLACE_BANNER_FAILED);
+    }
+    window.scrollTo(0, 0);
+  };
+
+  // set banner preview data
+  const formData = form.getValues();
+  const bannerPreviewData = {
+    title: formData.title || "New banner title",
+    description: formData.description || "New banner description",
+    link: formData.link || "",
   };
 
   return (
-    <FormProvider {...{ ...form, onInputChange: handleInputChange }}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
+        <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
         <TextField
           name="title"
           label="Title text"
@@ -77,17 +85,15 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
             name="startDate"
             label="Start date"
             hint="mm/dd/yyyy (12:00:00am)"
-            {...form}
           />
           <DateField
             name="endDate"
             label="End date"
             hint="mm/dd/yyyy (11:59:59pm)"
-            {...form}
           />
         </Flex>
         <Flex sx={sx.previewFlex}>
-          <Banner bannerData={newBannerData} />
+          <Banner bannerData={bannerPreviewData} />
           <Button
             type="submit"
             sx={sx.replaceBannerButton}
@@ -103,6 +109,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
 
 interface Props {
   writeAdminBanner: Function;
+  [key: string]: any;
 }
 
 interface FormInput {
@@ -120,6 +127,9 @@ interface FormInput {
 }
 
 const sx = {
+  errorAlert: {
+    maxWidth: "40rem",
+  },
   dateFieldContainer: {
     ".ds-c-fieldset:first-of-type": {
       marginRight: "3rem",

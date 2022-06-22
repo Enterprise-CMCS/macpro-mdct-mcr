@@ -1,23 +1,37 @@
+// utils
+import { useUser } from "utils/auth";
 // components
-import { Box, Button, Divider, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading } from "@chakra-ui/react";
 
-interface Props {
-  loginWithIDM: () => void;
-}
+export const LoginIDM = () => {
+  const { loginWithIDM } = useUser();
 
-export const LoginIDM = ({ loginWithIDM }: Props) => (
-  <Box textAlign="center">
-    <Heading mb="2" size="md" alignSelf="center">
-      Login with IDM
-    </Heading>
-    <Divider />
-    <Button
-      colorScheme="colorSchemes.main"
-      onClick={loginWithIDM}
-      isFullWidth
-      data-testid="idm-login-button"
-    >
-      Login with IDM
-    </Button>
-  </Box>
-);
+  return (
+    <Box sx={sx.root}>
+      <Heading size="md" sx={sx.heading}>
+        Log In with IDM
+      </Heading>
+      <Button
+        sx={sx.button}
+        colorScheme="colorSchemes.main"
+        onClick={loginWithIDM}
+        isFullWidth
+      >
+        Log In with IDM
+      </Button>
+    </Box>
+  );
+};
+
+const sx = {
+  root: {
+    textAlign: "center",
+  },
+  heading: {
+    marginBottom: "2rem",
+    alignSelf: "center",
+  },
+  button: {
+    width: "100%",
+  },
+};

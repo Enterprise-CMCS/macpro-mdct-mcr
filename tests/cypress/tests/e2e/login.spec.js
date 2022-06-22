@@ -1,7 +1,7 @@
 // element selectors
-const cognitoLoginButton = '[data-testid="cognito-login-button"]';
-const menuButton = '[data-testid="menu-button"]';
-const menuOptionLogOut = '[data-testid="menu-option-log-out"]';
+const cognitoLoginButton = "[data-testid='cognito-login-button']";
+const menuButton = '[data-testid="header-menu-dropdown-button"]';
+const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
 
 beforeEach(() => {
   cy.visit("/");

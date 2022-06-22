@@ -30,18 +30,20 @@ export const Alert = ({
     >
       <Flex>
         {showIcon && <AlertIcon sx={sx.icon} />}
-        <Box sx={sx.contentBox}>
-          <AlertTitle>{title}</AlertTitle>
-          <AlertDescription>
-            <Text>{description}</Text>
-            {link && (
-              <Text>
-                <Link href={link} isExternal variant="inline">
-                  {link}
-                </Link>
-              </Text>
-            )}
-          </AlertDescription>
+        <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
+          {title && <AlertTitle>{title}</AlertTitle>}
+          {description && (
+            <AlertDescription>
+              <Text sx={sx.descriptionText}>{description}</Text>
+              {link && (
+                <Text sx={sx.linkText}>
+                  <Link href={link} isExternal variant="inline">
+                    {link}
+                  </Link>
+                </Text>
+              )}
+            </AlertDescription>
+          )}
         </Box>
       </Flex>
     </AlertRoot>
@@ -50,8 +52,8 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   link?: string;
   showIcon?: boolean;
   [key: string]: any;
@@ -63,6 +65,7 @@ const sx = {
     minHeight: "5.25rem",
     borderInlineStartWidth: "0.5rem",
     marginTop: "1.25rem",
+    padding: "1rem",
     "&.info": {
       backgroundColor: "palette.alt_lightest",
       borderInlineStartColor: "palette.alt",
@@ -80,6 +83,13 @@ const sx = {
       borderInlineStartColor: "palette.error",
     },
   },
+  descriptionText: {
+    marginTop: ".25rem",
+  },
+  linkText: {
+    marginTop: ".25rem",
+    marginBottom: ".25rem",
+  },
   icon: {
     position: "absolute",
     color: "palette.gray_darkest",
@@ -87,5 +97,8 @@ const sx = {
   },
   contentBox: {
     marginLeft: "2rem",
+    "&.no-icon": {
+      marginLeft: 0,
+    },
   },
 };

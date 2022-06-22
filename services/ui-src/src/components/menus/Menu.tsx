@@ -27,22 +27,30 @@ export const Menu = ({ handleLogout }: Props) => {
           rightIcon={<Icon icon="chevronDown" color="palette.white" />}
           sx={sx.menuButton}
           className={mqClasses}
-          data-testid="menu-button"
+          aria-label="my account"
+          data-testid="header-menu-dropdown-button"
         >
-          <MenuOption icon="personCircle" text="Profile" hideText={isMobile} />
+          <MenuOption
+            icon="personCircle"
+            text="My Account"
+            hideText={isMobile}
+          />
         </MenuButton>
       </Box>
-      <MenuList sx={sx.menuList} data-testid="menu-list">
-        <MenuItem sx={sx.menuItem} data-testid="menu-option-manage-account">
-          <Link as={RouterLink} to="/profile">
+      <MenuList sx={sx.menuList} data-testid="header-menu-options-list">
+        <Link as={RouterLink} to="/profile">
+          <MenuItem
+            sx={sx.menuItem}
+            data-testid="header-menu-option-manage-account"
+          >
             <MenuOption icon="pencilSquare" text="Manage Account" />
-          </Link>
-        </MenuItem>
+          </MenuItem>
+        </Link>
         <MenuItem
           onClick={handleLogout}
           sx={sx.menuItem}
           tabIndex={0}
-          data-testid="menu-option-log-out"
+          data-testid="header-menu-option-log-out"
         >
           <MenuOption icon="arrowRightSquare" text="Log Out" />
         </MenuItem>

@@ -1,6 +1,6 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { EmailCard, FaqAccordion } from "../../components/index";
+import { EmailCard, FaqAccordion } from "../../components";
 // data
 import data from "../../data/help-view.json";
 
@@ -18,12 +18,12 @@ export const Help = () => (
           <EmailCard
             verbiage={data.cards.helpdesk}
             icon="settings"
-            cardprops={{ ...sx.card, "data-testid": "helpdesk-email-card" }}
+            cardprops={sx.card}
           />
           <EmailCard
             verbiage={data.cards.template}
             icon="spreadsheet"
-            cardprops={{ ...sx.card, "data-testid": "template-email-card" }}
+            cardprops={sx.card}
           />
         </Box>
         <Box sx={sx.faqAccordionBox}>

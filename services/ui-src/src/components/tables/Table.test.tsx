@@ -10,12 +10,7 @@ import data from "../../data/home-view.json";
 const tableContent = data.cards.MCPAR.accordion.table;
 const tableComponent = (
   <RouterWrappedComponent>
-    <Table
-      content={tableContent}
-      variant="striped"
-      lastCellsBold
-      dataTestId="template-card-accordion-table"
-    />
+    <Table content={tableContent} variant="striped" lastCellsBold />
   </RouterWrappedComponent>
 );
 
@@ -25,7 +20,7 @@ describe("Test Table", () => {
   });
 
   test("Table is visible", () => {
-    expect(screen.getByTestId("template-card-accordion-table")).toBeVisible();
+    expect(screen.getByRole("table")).toBeVisible();
   });
 });
 

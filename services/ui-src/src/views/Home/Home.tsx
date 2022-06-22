@@ -1,18 +1,25 @@
+import { useContext } from "react";
 // components
 import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { Banner, TemplateCard } from "../../components/index";
+import { AdminBannerContext, Banner, TemplateCard } from "../../components";
+// utils
+import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 // data
 import data from "../../data/home-view.json";
-// utils
-import { AdminBannerShape } from "utils/types/types";
 
-export const Home = ({ adminBanner }: Props) => {
-  const showBanner = !!adminBanner.key && adminBanner.isActive;
+export const Home = () => {
+  const { bannerData } = useContext(AdminBannerContext);
+  const bannerIsActive = checkBannerActivityStatus(
+    bannerData?.startDate,
+    bannerData?.endDate
+  );
+  const showBanner = !!bannerData.key && bannerIsActive;
+
   return (
     <section>
       <Box sx={sx.root} data-testid="home-view">
         <Collapse in={showBanner}>
-          <Banner bannerData={adminBanner} />
+          <Banner bannerData={bannerData} />
         </Collapse>
         <Flex
           sx={sx.mainContentFlex}
@@ -25,26 +32,27 @@ export const Home = ({ adminBanner }: Props) => {
             <Text>{data.intro.body}</Text>
           </Box>
           <TemplateCard
+            templateName="MCPAR"
             verbiage={data.cards.MCPAR}
-            cardprops={{ ...sx.card, "data-testid": "mcpar-template-card" }}
+            cardprops={sx.card}
           />
           <TemplateCard
+            templateName="MLR"
             verbiage={data.cards.MLR}
-            cardprops={{ ...sx.card, "data-testid": "mlr-template-card" }}
+            cardprops={sx.card}
+            isDisabled
           />
           <TemplateCard
+            templateName="NAAAR"
             verbiage={data.cards.NAAAR}
-            cardprops={{ ...sx.card, "data-testid": "naar-template-card" }}
+            cardprops={sx.card}
+            isDisabled
           />
         </Flex>
       </Box>
     </section>
   );
 };
-
-interface Props {
-  adminBanner: AdminBannerShape;
-}
 
 const sx = {
   root: {

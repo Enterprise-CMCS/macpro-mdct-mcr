@@ -1,19 +1,34 @@
 // element selectors
-const menuButton = '[data-testid="menu-button"]';
-const menuOptionManageAccount = '[data-testid="menu-option-manage-account"]';
-const adminButton = '[data-testid="admin-button"]';
+const menuButton = '[data-testid="header-menu-dropdown-button"]';
+const menuOptionManageAccount =
+  '[data-testid="header-menu-option-manage-account"]';
+const adminButton = '[data-testid="banner-admin-button"]';
 
 beforeEach(() => {
   cy.visit("/");
-  cy.authenticate("adminUser");
 });
 
 describe("Profile integration tests", () => {
-  it("Navigate to profile page and then admin page", () => {
+  it("Allows admin user to navigate to /admin", () => {
+    cy.authenticate("adminUser");
+
     cy.get(menuButton).click();
     cy.get(menuOptionManageAccount).click();
     cy.location("pathname").should("match", /profile/);
+
     cy.get(adminButton).click();
     cy.location("pathname").should("match", /admin/);
+  });
+
+  it("Disallows state user to navigate to /admin (redirects to /profile)", () => {
+    cy.authenticate("stateUser");
+
+    cy.get(menuButton).click();
+    cy.get(menuOptionManageAccount).click();
+    cy.location("pathname").should("match", /profile/);
+    cy.get(adminButton).should("not.exist");
+
+    cy.visit("/admin");
+    cy.location("pathname").should("match", /profile/);
   });
 });

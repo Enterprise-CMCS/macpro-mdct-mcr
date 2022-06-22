@@ -4,27 +4,22 @@ import { AccordionItem, Table } from "../index";
 // utils
 import { JsonObject } from "utils/types/types";
 
-export const TemplateCardAccordion = ({ verbiage }: Props) => (
-  <Accordion
-    sx={sx.root}
-    allowToggle={true}
-    data-testid="template-card-accordion"
-  >
+export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
+  <Accordion sx={sx.root} allowToggle={true} {...props}>
     <AccordionItem label={verbiage.buttonLabel}>
-      <Text>{verbiage.bodyText}</Text>
+      <Text sx={sx.text}>{verbiage.text}</Text>
       {verbiage.table && (
         <Table
           content={verbiage.table}
           variant="striped"
           lastCellsBold
           {...sx.table}
-          dataTestId="template-card-accordion-table"
         />
       )}
       {verbiage.list && (
         <UnorderedList sx={sx.list}>
-          {verbiage.list.map((item: string, index: number) => (
-            <ListItem key={index}>{item}</ListItem>
+          {verbiage.list.map((listItem: string, index: number) => (
+            <ListItem key={index}>{listItem}</ListItem>
           ))}
         </UnorderedList>
       )}
@@ -34,16 +29,23 @@ export const TemplateCardAccordion = ({ verbiage }: Props) => (
 
 interface Props {
   verbiage: JsonObject;
+  [key: string]: any;
 }
 
 const sx = {
   root: {
     marginTop: "2rem",
   },
-  table: {
-    marginTop: "1rem",
+  text: {
+    marginBottom: "1rem",
   },
   list: {
+    paddingLeft: "1rem",
+    "li:last-of-type": {
+      fontWeight: "bold",
+    },
+  },
+  table: {
     marginTop: "1rem",
   },
 };

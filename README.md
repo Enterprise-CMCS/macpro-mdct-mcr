@@ -1,53 +1,52 @@
-# mdct-mcr
+# MDCT-MCR
 
-A serverless form submission application built and deployed to AWS with the Serverless Application Framework.
+[![Maintainability](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/maintainability)](https://codeclimate.com/github/CMSgov/mdct-mcr/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/CMSgov/mdct-mcr/test_coverage)
 
-## Release
+MDCT-MCR is an application meant to collect state report data to help the health of the program and access to Medicaid Managed Care.
 
-Our product is promoted through branches. Main is merged to val to affect a main release, and val is merged to production to affect a production release. Please use the buttons below to promote/release code to higher environments.<br />
+Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and Managed Care Organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
 
-## Requirements
+Project Goals:
 
-### Node
+- Improve monitoring and oversight of managed care as the dominant delivery system for Medicaid/CHIP.
+- Generate and analyze state-specific and nationwide data across managed care programs and requirements.
+- Identify and target efforts to assist states in improving their managed care programs.
+- Ensure compliance with managed care statutes and regulations, such as ensuring access to care.
 
-We enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Testing](#testing)
+- [Deployments](#deployments)
+- [Architecture](#architecture)
+- [Copyright and license](#copyright-and-license)
+
+## Quick Start
+
+### One time only
+
+Before starting the project we're going to install some tools. We recommend having Homebrew installed if you haven't already to install other dependencies. Open up terminal on your mac and run the following:
+
+- (Optional) Install [Homebrew](https://brew.sh/): `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
 - Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
-
-- Install specified version of node: `nvm install`, then `nvm use`
-
-### Serverless
-
-Install [Serverless](https://www.serverless.com/framework/docs/providers/aws/guide/installation/): `npm install -g serverless`
-
-### Yarn
-
+- Install specified version of node. We enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating): `nvm install`, then `nvm use`
+- Install [Serverless](https://www.serverless.com/framework/docs/providers/aws/guide/installation/): `npm install -g serverless`
 - Install [yarn](https://classic.yarnpkg.com/en/docs/install/): `brew install yarn`
-
-### AWS
-
-- You'll need an AWS account with appropriate IAM permissions (admin recommended) to deploy this app (see deployments).
-
-### Pre-Commit
-
-We use pre-commit to run checks on code before it gets committed.
-
 - Install pre-commit on your machine with either: `pip install pre-commit` or `brew install pre-commit`
-- Enable pre-commit for this repo by running: `pre-commit install`
 
-## Local Dev
+### Setting up the project locally
 
-Local dev is configured in typescript project in `./src`. The entrypoint is `./src/dev.ts`, it manages running the moving pieces locally: the API, the database, the filestore, and the frontend.
+1. Clone the repo: `git clone https://github.com/CMSgov/mdct-mcr.git`
+2. In the root directory copy the .env_example file and name it .env
+3. In the services/ui-src directory copy the .env_example file and name it .env
+4. Overwrite the values here with the examples in the Environment Configuration below
+5. In the root directory run `pre-commit install`
 
-Local dev is built around the Serverless plugin [`serverless-offline`](https://github.com/dherault/serverless-offline). `serverless-offline` runs an API gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your lambdas on every save. The plugins [`serverless-dynamodb-local`](https://github.com/99x/serverless-dynamodb-local) and [`serverless-s3-local`](https://github.com/ar90n/serverless-s3-local) stand up the local db and local s3 in a similar fashion.
+### Running the project locally
 
-When run locally, auth bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
-
-### Running the app locally
-
-- Populate .env files in the root directory and in the `ui-src` directory. See Environment Configuration below for up-to-date files.
-- Run all the services locally with the command `./dev local`
-- Troubleshooting: See the Requirements section if the command asks for any prerequisites you don't have installed.
+In the root of the project run `./dev local`
 
 #### Environment Configuration
 
@@ -62,6 +61,7 @@ S3_LOCAL_ENDPOINT=http://localhost:4569
 S3_ATTACHMENTS_BUCKET_NAME=local-uploads
 URL=http://localhost/3000
 BANNER_TABLE_NAME=local-banners
+TEMPLATE_BUCKET=local-uploads
 DISABLE_ESLINT_PLUGIN=true
 COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
 COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
@@ -85,31 +85,29 @@ S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
 S3_LOCAL_ENDPOINT=http://localhost:4569
 ```
 
-## Running the database locally
+### Logging in
 
-In order to run dynamodb locally you will need to have java installed on your system. If not currently installed, [download the latest version](https://java.com/en/download/).
+(Make sure you've finished setting up the project locally above before moving on to this step!)
 
-If you want to a visual view of your dynamodb after the application is up and running you can install [the dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
+Once you've run `./dev local` you'll find yourself on a login page at localhost:3000. For local development there is a list of users that can be found at services/ui-auth/libs/users.json. That's where you can grab an email to fill in.
 
-To run the dynamodb gui, open a new terminal window and run: `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin`
+For a password to that user, please ask a fellow developer.
 
-## Deployments
+### Running DynamoDB locally
 
-This application is built and deployed via GitHub Actions.
+In order to run DynamoDB locally you will need to have java installed on your system. M1 Mac users can download [java from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`. Otherwise [install java from here](https://java.com/en/download/).
 
-### Deployment Prerequisites
+To view your database after the application is up and running you can install the [dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
 
-- AWS CLI installed/configured & authed with AWS account
-- Serverless installed (`npm install -g severless`)
-- Packages up to date (`brew install yarn`)
+- Install and run `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin` in a new terminal window
 
-### Deployment Script
+### Local Development Additional Info
 
-`sh scripts/deploy.sh`
+Local dev is configured as a Typescript project. The entrypoint in `./src/dev.ts` manages running the moving pieces locally: the API, database, filestore, and frontend.
 
-## Architecture
+Local dev is built around the Serverless plugin [serverless-offline](https://github.com/dherault/serverless-offline). `serverless-offline` runs an API Gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your Lambdas on every save. The plugins [serverless-dynamodb-local](https://github.com/99x/serverless-dynamodb-local) and [serverless-s3-local](https://github.com/ar90n/serverless-s3-local) stand up the local database and s3 in a similar fashion.
 
-![Architecture Diagram](./.images/architecture.svg?raw=true)
+Local authorization bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
 
 ## Testing
 
@@ -117,12 +115,29 @@ This application is built and deployed via GitHub Actions.
 
 We use Jest for unit tests.
 
+Run all frontend unit tests
+
 ```
-# run all unit tests
 cd services/ui-src/
 yarn test
+```
 
-# live reload all tests
+Run all backend unit tests
+
+```
+cd services/app-api/
+yarn test
+```
+
+In either of these directories you can also check code coverage with
+
+```
+yarn coverage
+```
+
+Live reload all tests
+
+```
 yarn test --watch
 ```
 
@@ -138,11 +153,11 @@ Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](h
 
 Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe) and [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html).
 
-### Formatting
+### Prettier and ESLint
 
-We use Prettier to format all code. This runs as part of a Git Hook and changes to files will cause the deploy to fail.
+We use Prettier to format all code. This runs as part of a Git Hook and invalid formats in changed files will cause the deploy to fail. If you followed the instructions above this is already installed and configured.
 
-Most IDEs have a Prettier plugin that can be configured to run on file save. You can also run the format check manually from the IDE or invoking Prettier on the command line.
+Most IDEs have a Prettier plugin that can be configured to run on file save. You can also run the format check manually from the IDE or by invoking Prettier on the command line.
 
 ```
 npx prettier --write "**/*.tsx"
@@ -150,21 +165,55 @@ npx prettier --write "**/*.tsx"
 
 All changed files will also be checked for formatting via the pre-commit hook.
 
-## Contributing / To-Do
+ESLint works in a similar manner for all code linting.
 
-See current open [issues](https://github.com/mdial89f/quickstart-serverless/issues) or check out the [project board](https://github.com/mdial89f/quickstart-serverless/projects/1)
+### Github Action Script Checks
 
-Please feel free to open new issues for defects or enhancements.
+On a push to the repository or opening a pull request the [deploy.yml](https://github.com/CMSgov/mdct-mcr/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
 
-To contribute:
+Upon opening a pull request into the main branch the scripts will also trigger a Cypress E2E and an A11y step to ensure that the code quality is still passing the End-to-End and accessibility tests.
 
-- Fork this repository
-- Make changes in your fork
-- Open a pull request targetting this repository
+## Deployments
 
-Pull requests are being accepted.
+This application is built and deployed via GitHub Actions.
 
-## License
+### Deployment Prerequisites
+
+While not necessary, it might be beneficial to have AWS CLI installed/configured & authed with an AWS account. You will get this after you've filled out your eQIP forms and have successfully made it through the CMS new user process. Talk to a fellow developer for more details. You don't technically need this since all deployments are automated through Github Actions, but should something go wrong, you will.
+
+### Deployment Steps
+
+| branch     | status                                                                                                                                                                    | release                                                                                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Main       | [![Deploy](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml)       | [![release to main](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/CMSgov/mdct-mcr/compare?quick_pull=1)                        |
+| Val        | [![Deploy](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=val)](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml)        | [![release to val](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/CMSgov/mdct-mcr/compare/val...main?quick_pull=1)              |
+| Production | [![Deploy](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=production)](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml) | [![release to production](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/CMSgov/mdct-mcr/compare/production...val?quick_pull=1) |
+
+**Please Note: Do Not Squash Your Merge Into Val Or Prod When Submitting Your Pull Request.**
+
+We have 3 main branches that we work out of:
+
+- Main (Pointed to [https://mdctmcrdev.cms.gov/](https://mdctmcrdev.cms.gov/)) is our development branch
+- Val (Pointed to [https://mdctmcrval.cms.gov/](https://mdctmcrval.cms.gov/)) is our beta branch
+- Production (Pointed to [http://mdctmcr.cms.gov/](http://mdctmcr.cms.gov/)) is our release branch
+
+When a pull request is approved and merged into main the deploy script will spin up and upon completion will deploy to [https://mdctmcrdev.cms.gov/](https://mdctmcrdev.cms.gov/). If a user wants to deploy to val they simply need to create a pull request where Main is being merged into Val. Once that pull request is approved, the deploy script will run again and upon completion will deploy to [https://mdctmcrval.cms.gov/](https://mdctmcrval.cms.gov/). So to quickly break it down:
+
+- Submit pull request of your code to Main.
+- Approve pull request and merge into main.
+- Deploy script runs and will deploy to [https://mdctmcrdev.cms.gov/](https://mdctmcrdev.cms.gov/).
+- Submit pull request pointing Main into Val.
+- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Val
+- Deploy script runs and will deploy to [https://mdctmcrval.cms.gov/](https://mdctmcrval.cms.gov/).
+- Submit pull request pointing Val into Production.
+- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Production
+- Deploy script runs and will deploy to [http://mdctmcr.cms.gov/](http://mdctmcr.cms.gov/).
+
+## Architecture
+
+![Architecture Diagram](./.images/architecture.svg?raw=true)
+
+## Copyright and license
 
 [![License](https://img.shields.io/badge/License-CC0--1.0--Universal-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/legalcode)
 
@@ -177,10 +226,3 @@ in the public domain within the United States.
 Additionally, we waive copyright and related rights in the
 work worldwide through the CC0 1.0 Universal public domain dedication.
 ```
-
-## Status
-
-<!-- Adding this at the end until we refactor the README -->
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/CMSgov/mdct-mcr/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/maintainability)](https://codeclimate.com/github/CMSgov/mdct-mcr/maintainability)

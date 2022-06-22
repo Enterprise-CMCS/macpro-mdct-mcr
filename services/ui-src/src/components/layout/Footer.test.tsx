@@ -17,15 +17,16 @@ describe("Test Footer", () => {
   });
 
   test("Footer is visible", () => {
-    expect(screen.getByTestId("footer-container")).toBeVisible();
+    const footer = screen.getByRole("contentinfo");
+    expect(footer).toBeVisible();
   });
 
   test("Help link is visible", () => {
-    expect(screen.getByTestId("help-link")).toBeVisible();
+    expect(screen.getByText("Contact Us")).toBeVisible();
   });
 
   test("Accessibility statement link is visible", () => {
-    expect(screen.getByTestId("accessibility-statement-link")).toBeVisible();
+    expect(screen.getByText("Accessibility Statement")).toBeVisible();
   });
 });
 

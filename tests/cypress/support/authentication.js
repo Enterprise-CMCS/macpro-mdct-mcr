@@ -1,23 +1,40 @@
-/* eslint-disable no-console */
-
 // element selectors
 const cognitoEmailInputField = "//input[@name='email']";
 const cognitoPasswordInputField = "//input[@name='password']";
+const cognitoLoginButton = "[data-testid='cognito-login-button']";
+
+const stateUserPassword = Cypress.env("STATE_USER_PASSWORD");
+const adminUserPassword = Cypress.env("ADMIN_USER_PASSWORD");
+
+// pragma: allowlist nextline secret
+if (typeof stateUserPassword !== "string" || !stateUserPassword) {
+  throw new Error(
+    "Missing state user password value, set using CYPRESS_STATE_USER_PASSWORD=..."
+  );
+}
+
+// pragma: allowlist nextline secret
+if (typeof adminUserPassword !== "string" || !adminUserPassword) {
+  throw new Error(
+    "Missing state user password value, set using CYPRESS_ADMIN_USER_PASSWORD=..."
+  );
+}
 
 // credentials
 const stateUser = {
   email: Cypress.env("STATE_USER_EMAIL"),
-  password: Cypress.env("STATE_USER_PASSWORD"),
+  password: stateUserPassword,
 };
 const adminUser = {
   email: Cypress.env("ADMIN_USER_EMAIL"),
-  password: Cypress.env("ADMIN_USER_PASSWORD"),
+  password: adminUserPassword,
 };
 
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   let credentials = {};
 
   if (userType && userCredentials) {
+    /* eslint-disable-next-line no-console */
     console.warn(
       "If userType and userCredentials are both provided, userType is ignored and provided userCredentials are used."
     );
@@ -39,6 +56,8 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   }
 
   cy.xpath(cognitoEmailInputField).type(credentials.email);
-  cy.xpath(cognitoPasswordInputField).type(credentials.password);
-  cy.get('[data-testid="cognito-login-button"]').click();
+  cy.xpath(cognitoPasswordInputField).type(credentials.password, {
+    log: false,
+  });
+  cy.get(cognitoLoginButton).click();
 });

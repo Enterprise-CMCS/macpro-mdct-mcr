@@ -36,6 +36,7 @@ export interface BannerData {
   title: string;
   description: string;
   link?: string;
+  [key: string]: any;
 }
 
 export interface AdminBannerData extends BannerData {
@@ -51,7 +52,10 @@ export interface AdminBannerMethods {
   deleteAdminBanner: Function;
 }
 
-export interface AdminBannerShape extends AdminBannerData, AdminBannerMethods {}
+export interface AdminBannerShape extends AdminBannerMethods {
+  bannerData: AdminBannerData;
+  errorMessage?: string;
+}
 
 export enum AlertTypes {
   ERROR = "error",
@@ -72,9 +76,4 @@ export interface TimeShape {
   hour: number;
   minute: number;
   second: number;
-}
-
-export interface TimeMap {
-  startDate: TimeShape;
-  endDate: TimeShape;
 }

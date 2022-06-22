@@ -1,11 +1,12 @@
 // element selectors
-const helpButton = '[data-testid="help-button"]';
-const appLogo = '[data-testid="app-logo"]';
-const menuButton = '[data-testid="menu-button"]';
-const menuList = '[data-testid="menu-list"]';
-const menuOptionManageAccount = '[data-testid="menu-option-manage-account"]';
-const menuOptionLogOut = '[data-testid="menu-option-log-out"]';
-const cognitoLoginButton = '[data-testid="cognito-login-button"]';
+const headerHelpButton = "[data-testid='header-help-button']";
+const appLogo = '[alt="MCR logo"]';
+const menuButton = '[data-testid="header-menu-dropdown-button"]';
+const menuList = '[data-testid="header-menu-options-list"]';
+const menuOptionManageAccount =
+  '[data-testid="header-menu-option-manage-account"]';
+const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
+const cognitoLoginButton = "[data-testid='cognito-login-button']";
 
 beforeEach(() => {
   cy.visit("/");
@@ -14,12 +15,12 @@ beforeEach(() => {
 
 describe("Header integration tests", () => {
   it("Header help button navigates to /help", () => {
-    cy.get(helpButton).click();
+    cy.get(headerHelpButton).click();
     cy.location("pathname").should("match", /help/);
   });
 
   it("Header app logo navigates to /", () => {
-    cy.get(helpButton).click();
+    cy.get(headerHelpButton).click();
     cy.get(appLogo).click();
     cy.location("pathname").should("match", /\//);
   });
