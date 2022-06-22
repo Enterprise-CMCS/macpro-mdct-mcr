@@ -42,30 +42,28 @@ export const LoginCognito = () => {
       <Heading size="md" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      <Stack>
-        <label>
-          <Text sx={sx.label}>Email</Text>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            value={fields.email}
-            onChange={handleFieldChange}
-            className="field"
-          />
-        </label>
-        <label>
-          <Text sx={sx.label}>Password</Text>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            value={fields.password}
-            onChange={handleFieldChange}
-            className="field"
-          />
-        </label>
-      </Stack>
+      <label>
+        <Text sx={sx.label}>Email</Text>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          value={fields.email}
+          onChange={handleFieldChange}
+          className="field"
+        />
+      </label>
+      <label>
+        <Text sx={sx.label}>Password</Text>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          value={fields.password}
+          onChange={handleFieldChange}
+          className="field"
+        />
+      </label>
       <Button
         sx={sx.button}
         colorScheme="colorSchemes.main"
