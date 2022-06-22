@@ -39,11 +39,11 @@ export const LoginCognito = () => {
 
   return (
     <Stack>
-      <Heading size="md" alignSelf="center">
+      <Heading size="md" sx={sx.heading}>
         Log In with Cognito
       </Heading>
       <label>
-        <Text mb="2">Email</Text>
+        <Text sx={sx.label}>Email</Text>
         <Input
           id="email"
           name="email"
@@ -54,7 +54,7 @@ export const LoginCognito = () => {
         />
       </label>
       <label>
-        <Text mb="2">Password</Text>
+        <Text sx={sx.label}>Password</Text>
         <Input
           id="password"
           name="password"
@@ -65,6 +65,7 @@ export const LoginCognito = () => {
         />
       </label>
       <Button
+        sx={sx.button}
         colorScheme="colorSchemes.main"
         onClick={handleLogin}
         isFullWidth
@@ -75,4 +76,16 @@ export const LoginCognito = () => {
       <ErrorAlert error={error} />
     </Stack>
   );
+};
+
+const sx = {
+  heading: {
+    alignSelf: "center",
+  },
+  label: {
+    marginBottom: "0.5rem",
+  },
+  button: {
+    width: "100%",
+  },
 };
