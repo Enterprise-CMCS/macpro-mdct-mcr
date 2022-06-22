@@ -7,26 +7,24 @@
     "helpdesk": {
       "body": "For technical support and login issues: ",
       "email": {
-        "address": "mdct_help@cms.hhs.gov",
-        "subject": "The subject of the email"
+        "address": "mdct_help@cms.hhs.gov"
       }
     },
     "template": {
-      "body": "For questions about the template download:",
+      "body": "For support on the MCPAR, MLR and NAAAR reports, including questions about policy:",
       "email": {
-        "address": "ManagedCareTA@mathematica-mpr.com",
-        "subject": "The subject of the email"
+        "address": "ManagedCareTA@mathematica-mpr.com"
       }
     }
   },
   "accordionItems": [
     {
-      "question": "When will the MCPAR webform be available? ",
-      "answer": "The MCPAR webform will be available in OCT 2022."
+      "question": "When will the MCPAR online reporting portal be available?",
+      "answer": "The MCPAR online reporting portal will be available starting early November 2022."
     },
     {
-      "question": "Question #2",
-      "answer": "Here's the answer"
+      "question": "How do I log into my IDM account?",
+      "answer": "CMCS staff will be reaching out to states directly to make sure that appropriate state staff are granted access in the very near future so that each state has access in advance of the web-based forms being ready for use. Once the web-based forms are ready, you’ll receive an announcement from CMS."
     }
   ]
 }

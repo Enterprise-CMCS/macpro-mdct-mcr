@@ -34,9 +34,9 @@ export const Alert = ({
           {title && <AlertTitle>{title}</AlertTitle>}
           {description && (
             <AlertDescription>
-              <Text>{description}</Text>
+              <Text sx={sx.descriptionText}>{description}</Text>
               {link && (
-                <Text>
+                <Text sx={sx.linkText}>
                   <Link href={link} isExternal variant="inline">
                     {link}
                   </Link>
@@ -65,6 +65,7 @@ const sx = {
     minHeight: "5.25rem",
     borderInlineStartWidth: "0.5rem",
     marginTop: "1.25rem",
+    padding: "1rem",
     "&.info": {
       backgroundColor: "palette.alt_lightest",
       borderInlineStartColor: "palette.alt",
@@ -81,6 +82,13 @@ const sx = {
       bgColor: "palette.error_lightest",
       borderInlineStartColor: "palette.error",
     },
+  },
+  descriptionText: {
+    marginTop: ".25rem",
+  },
+  linkText: {
+    marginTop: ".25rem",
+    marginBottom: ".25rem",
   },
   icon: {
     position: "absolute",

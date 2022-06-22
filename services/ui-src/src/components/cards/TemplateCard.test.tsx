@@ -37,7 +37,7 @@ describe("Test TemplateCard", () => {
 
   test("TemplateCard download button is visible and clickable", async () => {
     const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
-    const downloadButton = screen.getByText("Download Excel Template");
+    const downloadButton = screen.getByText("Download MCPAR Worksheet");
     expect(downloadButton).toBeVisible();
     await act(async () => {
       await userEvent.click(downloadButton);
