@@ -2,9 +2,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
-
 import { MCRUser, UserContext, UserContextInterface } from "./userContext";
-import { errorHandler } from "utils/errors/errorHandler";
 
 interface Props {
   children?: ReactNode;
@@ -27,7 +25,7 @@ export const UserProvider = ({ children }: Props) => {
       setUser(null);
       await Auth.signOut();
     } catch (error) {
-      errorHandler(error);
+      console.log(error); // eslint-disable-line no-console
     }
     navigate("/");
   }, [navigate]);
@@ -38,7 +36,7 @@ export const UserProvider = ({ children }: Props) => {
       const payload = session.getIdToken().payload;
       const { email, given_name, family_name } = payload;
       // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to MCR
-      const cms_role = (payload["custom:cms_roles"] as string) ?? "";
+      const cms_role = payload["custom:cms_roles"] as string;
       const userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
       const state = payload["custom:cms_state"] as string | undefined;
       const currentUser: MCRUser = {

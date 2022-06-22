@@ -1,7 +1,7 @@
 import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
 import { AdminBannerData, AdminBannerShape } from "utils/types/types";
-import { bannerId } from "../../utils/constants/constants";
+import { bannerId, GET_BANNER_FAILED } from "../../utils/constants/constants";
 // api
 import { deleteBanner, getBanner, writeBanner } from "utils/api/index";
 
@@ -9,20 +9,26 @@ const ADMIN_BANNER_ID = bannerId;
 
 export const AdminBannerContext = createContext<AdminBannerShape>({
   bannerData: {} as AdminBannerData,
-  fetchAdminBanner: () => {},
-  writeAdminBanner: () => {},
-  deleteAdminBanner: () => {},
+  fetchAdminBanner: Function,
+  writeAdminBanner: Function,
+  deleteAdminBanner: Function,
+  errorMessage: undefined,
 });
 
 export const AdminBannerProvider = ({ children }: Props) => {
   const [bannerData, setBannerData] = useState<AdminBannerData>(
     {} as AdminBannerData
   );
+  const [error, setError] = useState<string>();
 
   const fetchAdminBanner = async () => {
-    const currentBanner = await getBanner(ADMIN_BANNER_ID);
-    const newBannerData = currentBanner?.Item || {};
-    setBannerData(newBannerData);
+    try {
+      const currentBanner = await getBanner(ADMIN_BANNER_ID);
+      const newBannerData = currentBanner?.Item || {};
+      setBannerData(newBannerData);
+    } catch (e: any) {
+      setError(GET_BANNER_FAILED);
+    }
   };
 
   const deleteAdminBanner = async () => {
@@ -45,8 +51,9 @@ export const AdminBannerProvider = ({ children }: Props) => {
       fetchAdminBanner,
       writeAdminBanner,
       deleteAdminBanner,
+      errorMessage: error,
     }),
-    [bannerData]
+    [bannerData, error]
   );
 
   return (

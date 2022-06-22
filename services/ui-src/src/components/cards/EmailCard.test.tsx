@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { EmailCard } from "components";
-import { createEmailLink } from "./EmailCard";
+import { createEmailLink } from "../../utils/email/email";
 // data
 import data from "../../data/help-view.json";
 
@@ -29,7 +29,7 @@ describe("Test EmailCard", () => {
       subject: "the subject",
       body: "the body",
     };
-    const expectedEmailLink = "mailto:test@test.com?the%20subject&the%20body";
+    const expectedEmailLink = "mailto:test@test.com?the%20subject";
     expect(createEmailLink(mockEmailData)).toEqual(expectedEmailLink);
   });
 

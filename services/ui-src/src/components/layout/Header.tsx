@@ -12,7 +12,9 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   return (
     <Box sx={sx.root}>
-      <UsaBanner />
+      <Flex sx={sx.usaBannerContainer}>
+        <UsaBanner />
+      </Flex>
       <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
@@ -20,7 +22,12 @@ export const Header = ({ handleLogout }: Props) => {
               <Image src={appLogo} alt="MCR logo" sx={sx.appLogo} />
             </Link>
             <Flex sx={sx.menuFlex}>
-              <Link as={RouterLink} to="/help" data-testid="header-help-button">
+              <Link
+                as={RouterLink}
+                to="/help"
+                aria-label="Get Help"
+                data-testid="header-help-button"
+              >
                 <MenuOption
                   icon="questionCircleFill"
                   text="Get Help"
@@ -47,8 +54,14 @@ const sx = {
     top: 0,
     zIndex: "sticky",
   },
+  usaBannerContainer: {
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "palette.gray_lightest",
+  },
   headerBar: {
-    height: "4rem",
+    minHeight: "4rem",
     alignItems: "center",
     bg: "palette.main_darkest",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",

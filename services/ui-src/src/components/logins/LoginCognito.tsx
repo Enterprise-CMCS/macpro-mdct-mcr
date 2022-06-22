@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 // components
 import { Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
-import { errorHandler } from "utils/errors/errorHandler";
+import { ErrorAlert } from "components";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -26,23 +26,24 @@ export const LoginCognito = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState<string>();
 
   const handleLogin = async () => {
     try {
       await Auth.signIn(fields.email, fields.password);
       navigate(`/`);
-    } catch (error) {
-      errorHandler(error);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
   return (
     <Stack>
-      <Heading size="md" alignSelf="center">
+      <Heading size="md" sx={sx.heading}>
         Log In with Cognito
       </Heading>
       <label>
-        <Text mb="2">Email</Text>
+        <Text sx={sx.label}>Email</Text>
         <Input
           id="email"
           name="email"
@@ -53,7 +54,7 @@ export const LoginCognito = () => {
         />
       </label>
       <label>
-        <Text mb="2">Password</Text>
+        <Text sx={sx.label}>Password</Text>
         <Input
           id="password"
           name="password"
@@ -64,6 +65,7 @@ export const LoginCognito = () => {
         />
       </label>
       <Button
+        sx={sx.button}
         colorScheme="colorSchemes.main"
         onClick={handleLogin}
         isFullWidth
@@ -71,6 +73,19 @@ export const LoginCognito = () => {
       >
         Log In with Cognito
       </Button>
+      <ErrorAlert error={error} />
     </Stack>
   );
+};
+
+const sx = {
+  heading: {
+    alignSelf: "center",
+  },
+  label: {
+    marginBottom: "0.5rem",
+  },
+  button: {
+    width: "100%",
+  },
 };

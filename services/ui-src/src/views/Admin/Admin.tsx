@@ -1,31 +1,46 @@
-import { useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 // components
 import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   AdminBannerContext,
   AdminBannerForm,
   Banner,
-} from "../../components/index";
+  ErrorAlert,
+} from "../../components";
 // utils
 import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
 import { formatDateUtcToEt } from "utils/time/time";
+import { DELETE_BANNER_FAILED } from "utils/constants/constants";
 // data
 import data from "../../data/admin-view.json";
 
 export const Admin = () => {
-  const { bannerData, deleteAdminBanner, writeAdminBanner } =
+  const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
     useContext(AdminBannerContext);
+  const [error, setError] = useState<string | undefined>(errorMessage);
   const bannerIsActive = checkBannerActivityStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
+  useEffect(() => {
+    setError(errorMessage);
+  }, [errorMessage]);
+
+  const deleteBanner = async () => {
+    try {
+      await deleteAdminBanner();
+    } catch (error: any) {
+      setError(DELETE_BANNER_FAILED);
+    }
+  };
 
   return (
     <section>
       <Box sx={sx.root} data-testid="admin-view">
         <Flex sx={sx.mainContentFlex}>
+          <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
           <Box sx={sx.introTextBox}>
-            <Heading as="h1" sx={sx.headerText}>
+            <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
               {data.intro.header}
             </Heading>
             <Text>{data.intro.body}</Text>
@@ -56,7 +71,7 @@ export const Admin = () => {
                 <Button
                   sx={sx.deleteBannerButton}
                   colorScheme="colorSchemes.error"
-                  onClick={() => deleteAdminBanner()}
+                  onClick={deleteBanner}
                 >
                   Delete Current Banner
                 </Button>
@@ -77,6 +92,9 @@ export const Admin = () => {
 const sx = {
   root: {
     flexShrink: "0",
+  },
+  errorAlert: {
+    width: "100% !important",
   },
   mainContentFlex: {
     flexDirection: "column",

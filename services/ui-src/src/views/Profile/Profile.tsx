@@ -44,7 +44,7 @@ export const Profile = () => {
             sx={sx.adminButton}
             onClick={() => navigate("/admin")}
           >
-            Banner editor
+            Banner Editor
           </Button>
         )}
       </Flex>
@@ -71,6 +71,5 @@ const sx = {
   },
   adminButton: {
     marginTop: "2rem",
-    maxWidth: "10rem",
   },
 };

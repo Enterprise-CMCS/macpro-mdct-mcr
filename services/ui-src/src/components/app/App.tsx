@@ -1,8 +1,17 @@
+import { ErrorBoundary } from "react-error-boundary";
 // utils
 import { useUser } from "utils/auth";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
-import { AppRoutes, Footer, Header, LoginCognito, LoginIDM } from "components";
+import {
+  AppRoutes,
+  Footer,
+  Header,
+  LoginCognito,
+  LoginIDM,
+  SkipNav,
+} from "components";
+import { Error } from "../../views";
 
 export const App = () => {
   const { logout, user, showLocalLogins } = useUser();
@@ -10,9 +19,16 @@ export const App = () => {
     <div id="app-wrapper">
       {user && (
         <Flex sx={sx.appLayout}>
+          <SkipNav
+            id="skip-nav-main"
+            href="#main-content"
+            text="Skip to main content"
+          />
           <Header handleLogout={logout} />
           <Container sx={sx.appContainer} data-testid="app-container">
-            <AppRoutes userRole={user.userRole} />
+            <ErrorBoundary FallbackComponent={Error}>
+              <AppRoutes userRole={user?.userRole} />
+            </ErrorBoundary>
           </Container>
           <Footer />
         </Flex>
