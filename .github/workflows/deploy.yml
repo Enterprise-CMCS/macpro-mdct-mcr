@@ -22,6 +22,7 @@ jobs:
         run: ./.github/build-vars.sh set_values
         env:
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+          CODE_CLIMATE_CMS_ID: ${{secrets.CODE_CLIMATE_CMS_ID}}
       - name: read .nvmrc
         id: node_version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
