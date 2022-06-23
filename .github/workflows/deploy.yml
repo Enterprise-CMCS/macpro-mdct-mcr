@@ -48,6 +48,15 @@ jobs:
           coverageLocations: |
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: publish test coverage to code climate CMS org view
+        if: env.CODE_CLIMATE_CMS_ID != ''
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: Store unit test reults
         uses: actions/upload-artifact@v2
         with:
