@@ -1,72 +1,18 @@
 [
   {
-    "username": "paul@test.com",
+    "username": "helpdeskuser@test.com",
     "attributes": [
       {
         "Name": "email",
-        "Value": "paul@test.com"
+        "Value": "helpdeskuser@test.com"
       },
       {
         "Name": "given_name",
-        "Value": "Paul"
+        "Value": "Clippy"
       },
       {
         "Name": "family_name",
-        "Value": "McCartney"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:cms_roles",
-        "Value": "mdctmcr-approver"
-      }
-    ]
-  },
-  {
-    "username": "john@test.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "john@test.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "John"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Lennon"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:cms_roles",
-        "Value": "mdctmcr-state-user"
-      },
-      {
-        "Name": "custom:cms_state",
-        "Value": "OH"
-      }
-    ]
-  },
-  {
-    "username": "george@test.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "george@test.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "George"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Harrison"
+        "Value": "Helperson"
       },
       {
         "Name": "email_verified",
@@ -104,6 +50,35 @@
       {
         "Name": "custom:cms_state",
         "Value": "MA"
+      }
+    ]
+  },
+  {
+    "username": "stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Thelonious"
+      },
+      {
+        "Name": "family_name",
+        "Value": "States"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MN"
       }
     ]
   },
