@@ -36,6 +36,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Settings", icon: FiSettings },
 ];
 
+// from https://chakra-templates.dev/navigation/sidebar
 export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
