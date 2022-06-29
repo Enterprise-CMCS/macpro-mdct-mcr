@@ -1,16 +1,10 @@
 import { Sidebar } from "../../components";
 // components
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 export const SideNav = () => {
   return (
     <Flex sx={sx.root} data-testid="sidenav-view">
-      <Heading as="h1" size="xl" sx={sx.heading}>
-        SideNav for MCPAR
-      </Heading>
-      <Flex sx={sx.variantRow}>
-        <Text sx={sx.fieldName}>Welcome to the sidenav page</Text>
-      </Flex>
       <Sidebar />
     </Flex>
   );

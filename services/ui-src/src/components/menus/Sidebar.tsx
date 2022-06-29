@@ -1,50 +1,35 @@
 import React, { ReactText } from "react";
 import {
-  IconButton,
   Box,
-  CloseButton,
   Flex,
-  Icon,
-  useColorModeValue,
   Link,
   Drawer,
   DrawerContent,
   Text,
   useDisclosure,
-  BoxProps,
   FlexProps,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-} from "react-icons/fi";
-import { IconType } from "react-icons";
+import { ArrowIcon, CheckCircleIcon } from "@cmsgov/design-system";
 
 interface LinkItemProps {
   name: string;
-  icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Get Started" },
+  { name: "A: Program Information" },
+  { name: "B: State-Level Indicators" },
+  { name: "C: Program-Level Indicators" },
+  { name: "D: Plan-Level Indicators" },
+  { name: "E: BSS Entity Indicators" },
+  { name: "Review & Submit" },
 ];
 
 // from https://chakra-templates.dev/navigation/sidebar
 export const Sidebar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
+    <Box minH="100vh">
+      <SidebarContent onClose={() => onClose} />
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -58,35 +43,27 @@ export const Sidebar = () => {
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      {/* mobilenav */}
-      <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
     </Box>
   );
 };
 
-interface SidebarProps extends BoxProps {
-  onClose: () => void;
-}
-
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ ...rest }) => {
   return (
-    <Box
-      bg={useColorModeValue("white", "gray.900")}
-      borderRight="1px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
-      w={{ base: "full", md: 60 }}
-      pos="fixed"
-      h="full"
-      {...rest}
-    >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+    <Box bg="palette.gray_lightest" maxW="15rem" {...rest}>
+      <Flex
+        h="20"
+        alignItems="center"
+        mx="8"
+        justifyContent="space-between"
+        borderBottom="1px solid gray"
+      >
+        <Text fontSize="xl" fontWeight="bold" minW="11.5rem">
+          MCPAR Report Submission Form
         </Text>
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
+        <CloseButton />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} itemName={link.name}>
           {link.name}
         </NavItem>
       ))}
@@ -94,72 +71,33 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   );
 };
 
-interface NavItemProps extends FlexProps {
-  icon: IconType;
-  children: ReactText;
-}
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const CloseButton = () => {
   return (
-    <Link
-      href="#"
-      style={{ textDecoration: "none" }}
-      _focus={{ boxShadow: "none" }}
-    >
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        _hover={{
-          bg: "cyan.400",
-          color: "white",
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: "white",
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
-    </Link>
+    <Flex align="center" paddingY="0.5rem" marginLeft="1.25rem">
+      <ArrowIcon title="title" direction="left" />
+    </Flex>
   );
 };
 
-interface MobileProps extends FlexProps {
-  onOpen: () => void;
+interface NavItemProps extends FlexProps {
+  itemName: string;
+  children: ReactText;
 }
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const NavItem = ({ itemName, children, ...rest }: NavItemProps) => {
+  const linkPath = window.location + "/" + itemName;
   return (
-    <Flex
-      ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 24 }}
-      height="20"
-      alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent="flex-start"
-      {...rest}
-    >
-      <IconButton
-        variant="outline"
-        onClick={onOpen}
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
-
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Logo
-      </Text>
-    </Flex>
+    <Link href={linkPath} textColor="palette.gray_darkest">
+      <Flex
+        align="center"
+        paddingY="0.5rem"
+        marginLeft="1.25rem"
+        role="group"
+        {...rest}
+        borderBottom="1px solid gray"
+      >
+        <CheckCircleIcon viewBox="10 10 200 200" />
+        {children}
+      </Flex>
+    </Link>
   );
 };
