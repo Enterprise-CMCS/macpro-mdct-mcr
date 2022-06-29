@@ -19,8 +19,7 @@ import appLogo from "../../assets/images/logo_mcr_draft.png";
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
-  // TODO: Change to /mcpar/
-  const isMcparReport = pathname.includes("/help");
+  const isMcparReport = pathname.includes("/mcpar");
 
   return (
     <Box sx={sx.root}>
@@ -72,7 +71,11 @@ export const Header = ({ handleLogout }: Props) => {
                     sx={sx.leaveFormLink}
                     tabIndex={-1}
                   >
-                    <Button sx={sx.subnavButton} variant="outline">
+                    <Button
+                      sx={sx.subnavButton}
+                      variant="outline"
+                      data-testid="leave-form-button"
+                    >
                       Leave form
                     </Button>
                   </Link>
