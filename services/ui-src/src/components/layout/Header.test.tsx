@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { useLocation } from "react-router-dom";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
@@ -13,7 +12,7 @@ const headerComponent = (
 );
 
 jest.mock("react-router-dom", () => ({
-  useLocation: jest.fn(),
+  useLocation: jest.fn(() => ({ pathname: "/mcpar" })),
 }));
 
 describe("Test Header", () => {
@@ -36,13 +35,6 @@ describe("Test Header", () => {
 
   test("Menu button is visible", () => {
     expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
-  });
-});
-
-describe("Test Header Subnav", () => {
-  beforeEach(() => {
-    (useLocation as jest.Mock).mockReturnValue({ pathname: "/mcpar" });
-    render(headerComponent);
   });
 
   test("Subnav is visible on MCPAR report screens", () => {
