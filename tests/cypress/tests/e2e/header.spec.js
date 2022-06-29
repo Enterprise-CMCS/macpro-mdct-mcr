@@ -7,7 +7,6 @@ const menuOptionManageAccount =
   '[data-testid="header-menu-option-manage-account"]';
 const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
 const cognitoLoginButton = "[data-testid='cognito-login-button']";
-const subnavLeaveFormButton = "[data-testid='leave-form-button']";
 
 beforeEach(() => {
   cy.visit("/");
@@ -46,11 +45,14 @@ describe("Header integration tests", () => {
     cy.get(cognitoLoginButton).should("be.visible");
   });
 
-  it.only("Header subnav leave form button navigates to /", () => {
-    cy.visit("/mcpar");
-    cy.location("pathname").should("match", /\/mcpar/);
-
-    cy.get(subnavLeaveFormButton).click();
-    cy.location("pathname").should("match", /\//);
-  });
+  /*
+   * TODO: Uncomment during 'program creation' ticket work
+   * it("Header subnav leave form button navigates to /", () => {
+   *   // TODO: navigate to /mcpar via report creation or something
+   *   cy.location("pathname").should("match", /mcpar/);
+   *   const subnavLeaveFormButton = "[data-testid='leave-form-button']";
+   *   cy.get(subnavLeaveFormButton).click();
+   *   cy.location("pathname").should("match", /\//);
+   * });
+   */
 });

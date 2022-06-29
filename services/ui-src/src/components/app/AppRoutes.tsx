@@ -20,7 +20,7 @@ export const AppRoutes = ({ userRole }: Props) => {
             element={!isAdmin ? <Navigate to="/profile" /> : <Admin />}
           />
           <Route path="/help" element={<Help />} />
-          {/* TODO: Change /mcpar element during program creation ticket */}
+          {/* TODO: Change /mcpar element during program creation ticket work */}
           <Route path="/mcpar" element={<Help />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
