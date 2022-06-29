@@ -1,7 +1,15 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { UsaBanner } from "@cmsgov/design-system";
-import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Image,
+  Link,
+  Text,
+} from "@chakra-ui/react";
 import { Menu, MenuOption } from "../index";
 // utils
 import { useBreakpoint } from "../../utils/useBreakpoint";
@@ -10,6 +18,10 @@ import appLogo from "../../assets/images/logo_mcr_draft.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
+  const { pathname } = useLocation();
+  // TODO: Change to /mcpar/
+  const isMcparReport = pathname.includes("/help");
+
   return (
     <Box sx={sx.root}>
       <Flex sx={sx.usaBannerContainer}>
@@ -40,6 +52,36 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
+      {isMcparReport && (
+        <Flex sx={sx.subnavBar}>
+          <Container sx={sx.subnavContainer}>
+            <Flex sx={sx.subnavFlex}>
+              <Flex>
+                {/* TODO: Get current program name */}
+                <Text sx={sx.programNameText}>
+                  Program: Current Program Name
+                </Text>
+              </Flex>
+              <Flex sx={sx.subnavFlexRight}>
+                {/* TODO: Get save state */}
+                <Text sx={sx.autosaveText}>Autosave state</Text>
+                {!isMobile && (
+                  <Link
+                    as={RouterLink}
+                    to="/"
+                    sx={sx.leaveFormLink}
+                    tabIndex={-1}
+                  >
+                    <Button sx={sx.subnavButton} variant="outline">
+                      Leave form
+                    </Button>
+                  </Link>
+                )}
+              </Flex>
+            </Flex>
+          </Container>
+        </Flex>
+      )}
     </Box>
   );
 };
@@ -53,6 +95,7 @@ const sx = {
     position: "sticky",
     top: 0,
     zIndex: "sticky",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   usaBannerContainer: {
     width: "100%",
@@ -64,7 +107,6 @@ const sx = {
     minHeight: "4rem",
     alignItems: "center",
     bg: "palette.main_darkest",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   headerContainer: {
     maxW: "appMax",
@@ -78,5 +120,39 @@ const sx = {
   },
   appLogo: {
     maxWidth: "200px",
+  },
+  subnavBar: {
+    bg: "palette.alt_lightest",
+  },
+  subnavContainer: {
+    maxW: "appMax",
+  },
+  subnavFlex: {
+    height: "60px",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  programNameText: {
+    fontWeight: "bold",
+  },
+  autosaveText: {
+    textAlign: "right",
+  },
+  subnavFlexRight: {
+    alignItems: "center",
+    paddingRight: ".5rem",
+  },
+  leaveFormLink: {
+    marginLeft: "2rem",
+  },
+  subnavButton: {
+    color: "palette.main",
+    border: "1px solid",
+    borderColor: "palette.main",
+    borderRadius: "0.25rem",
+    "&:hover": {
+      bg: "palette.main",
+      color: "white",
+    },
   },
 };
