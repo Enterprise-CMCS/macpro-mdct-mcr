@@ -7,6 +7,7 @@ const menuOptionManageAccount =
   '[data-testid="header-menu-option-manage-account"]';
 const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
 const cognitoLoginButton = "[data-testid='cognito-login-button']";
+const subnavLeaveFormButton = "[data-testid='leave-form-button']";
 
 beforeEach(() => {
   cy.visit("/");
@@ -43,5 +44,13 @@ describe("Header integration tests", () => {
     cy.get(menuOptionLogOut).click();
     cy.location("pathname").should("match", /\//);
     cy.get(cognitoLoginButton).should("be.visible");
+  });
+
+  it.only("Header subnav leave form button navigates to /", () => {
+    cy.visit("/mcpar");
+    cy.location("pathname").should("match", /\/mcpar/);
+
+    cy.get(subnavLeaveFormButton).click();
+    cy.location("pathname").should("match", /\//);
   });
 });
