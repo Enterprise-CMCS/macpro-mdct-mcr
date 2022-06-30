@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Button, Flex } from "@chakra-ui/react";
 import { Banner, ErrorAlert } from "../index";
@@ -15,8 +14,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 
   // make form context
   const form = useForm<any>({
-    mode: formJson.options.mode as any,
-    resolver: yupResolver(formJson.schema),
+    ...formJson.options,
   });
 
   // submit new banner data via write method

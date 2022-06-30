@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 // utils
 import { makeFormSchema } from "../../utils/forms/forms";
 
@@ -94,7 +95,8 @@ const formSchema = { schema: makeFormSchema(formFields.fields) };
 
 export const form = {
   options: {
-    mode: "onChange",
+    mode: "onChange" as any,
+    resolver: yupResolver(formSchema.schema),
   },
   ...formSchema,
   ...formFields,
