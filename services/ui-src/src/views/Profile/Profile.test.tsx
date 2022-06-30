@@ -18,7 +18,7 @@ const profileView = (
 
 // MOCKS
 
-jest.mock("utils/auth");
+jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 // TESTS
