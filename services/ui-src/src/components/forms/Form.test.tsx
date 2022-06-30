@@ -1,4 +1,3 @@
-import * as yup from "yup";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
@@ -22,7 +21,13 @@ const mockFormJson = {
         name: "testfield",
         label: "testfield",
       },
-      validation: yup.string().required("Test field is required"),
+      validation: {
+        type: "string",
+        options: { required: true },
+        errorMessages: {
+          required: "Test field is required",
+        },
+      },
     },
   ],
 };
