@@ -257,6 +257,31 @@
     ]
   },
   {
+    "username": "bouser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "bouser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Bobby"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Business"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-bo-user"
+      }
+    ]
+  },
+  {
     "username": "adminuser@test.com",
     "attributes": [
       {
