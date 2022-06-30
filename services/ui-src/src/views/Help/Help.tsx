@@ -1,38 +1,40 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { EmailCard, FaqAccordion } from "../../components";
-// data
-import data from "../../data/help-view.json";
+import { EmailCard, FaqAccordion } from "components";
+import verbiage from "verbiage/help-view";
 
-export const Help = () => (
-  <section>
-    <Box sx={sx.root} data-testid="help-view">
-      <Flex sx={sx.mainContentFlex}>
-        <Box sx={sx.leadTextBox}>
-          <Heading as="h1" sx={sx.headerText}>
-            {data.intro.header}
-          </Heading>
-          <Text>{data.intro.body}</Text>
-        </Box>
-        <Box sx={sx.emailCardBox}>
-          <EmailCard
-            verbiage={data.cards.helpdesk}
-            icon="settings"
-            cardprops={sx.card}
-          />
-          <EmailCard
-            verbiage={data.cards.template}
-            icon="spreadsheet"
-            cardprops={sx.card}
-          />
-        </Box>
-        <Box sx={sx.faqAccordionBox}>
-          <FaqAccordion accordionItems={data.accordionItems} />
-        </Box>
-      </Flex>
-    </Box>
-  </section>
-);
+export const Help = () => {
+  const { intro, cards, accordionItems } = verbiage;
+  return (
+    <section>
+      <Box sx={sx.root} data-testid="help-view">
+        <Flex sx={sx.mainContentFlex}>
+          <Box sx={sx.leadTextBox}>
+            <Heading as="h1" sx={sx.headerText}>
+              {intro.header}
+            </Heading>
+            <Text>{intro.body}</Text>
+          </Box>
+          <Box sx={sx.emailCardBox}>
+            <EmailCard
+              verbiage={cards.helpdesk}
+              icon="settings"
+              cardprops={sx.card}
+            />
+            <EmailCard
+              verbiage={cards.template}
+              icon="spreadsheet"
+              cardprops={sx.card}
+            />
+          </Box>
+          <Box sx={sx.faqAccordionBox}>
+            <FaqAccordion accordionItems={accordionItems} />
+          </Box>
+        </Flex>
+      </Box>
+    </section>
+  );
+};
 
 const sx = {
   root: {

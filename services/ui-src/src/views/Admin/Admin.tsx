@@ -6,13 +6,11 @@ import {
   AdminBannerForm,
   Banner,
   ErrorAlert,
-} from "../../components";
+} from "components";
 // utils
-import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
-import { formatDateUtcToEt } from "utils/time/time";
-import { DELETE_BANNER_FAILED } from "utils/constants/constants";
-// data
-import data from "../../data/admin-view.json";
+import { checkBannerActivityStatus, formatDateUtcToEt } from "utils";
+import { DELETE_BANNER_FAILED } from "verbiage/errors";
+import verbiage from "verbiage/admin-view";
 
 export const Admin = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
@@ -41,9 +39,9 @@ export const Admin = () => {
           <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
           <Box sx={sx.introTextBox}>
             <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
-              {data.intro.header}
+              {verbiage.intro.header}
             </Heading>
-            <Text>{data.intro.body}</Text>
+            <Text>{verbiage.intro.body}</Text>
           </Box>
           <Box sx={sx.currentBannerSectionBox}>
             <Text sx={sx.sectionHeader}>Current Banner</Text>

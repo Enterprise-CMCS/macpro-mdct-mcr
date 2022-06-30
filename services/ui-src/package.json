@@ -90,9 +90,9 @@
       "!src/components/index.tsx",
       "src/utils/**/*.{ts,tsx}",
       "!src/utils/**/index.ts",
-      "!src/utils/constants/*",
       "!src/utils/testing/*",
-      "!src/utils/types/*",
+      "!src/utils/index.tsx",
+      "!src/types/index.ts*",
       "src/views/**/*.{ts,tsx}",
       "!src/views/index.tsx"
     ],

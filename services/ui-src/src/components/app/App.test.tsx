@@ -7,7 +7,7 @@ import {
   mockNoUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils/auth";
+import { useUser } from "utils";
 //components
 import { App } from "components";
 

@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Admin, Help, Home, NotFound, Profile } from "../../views";
+import { Admin, Help, Home, NotFound, Profile } from "views";
 // components
 import { AdminBannerProvider } from "components";
 // utils
-import { UserRoles } from "utils/types/types";
-import { ScrollToTopComponent } from "utils/scroll/scrollToTop";
+import { UserRoles } from "types";
+import { ScrollToTopComponent } from "utils";
 
 export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;

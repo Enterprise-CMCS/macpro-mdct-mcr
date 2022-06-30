@@ -1,16 +1,13 @@
 // components
 import { Flex, Image, Link, Text } from "@chakra-ui/react";
-import { Card } from "../index";
+import { Card } from "components";
 // utils
-import {
-  makeMediaQueryClasses,
-  useBreakpoint,
-} from "../../utils/useBreakpoint";
-import { JsonObject } from "utils/types/types";
-import { createEmailLink } from "utils/email/email";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import { AnyObject } from "types";
+import { createEmailLink } from "utils/other/email";
 // assets
-import spreadsheetIcon from "../../assets/images/icon_spreadsheet.png";
-import settingsIcon from "../../assets/images/icon_wrench-gear.png";
+import spreadsheetIcon from "assets/images/icons/icon_spreadsheet.png";
+import settingsIcon from "assets/images/icons/icon_wrench-gear.png";
 
 const iconMap: { [key: string]: { [key: string]: string } } = {
   spreadsheet: {
@@ -51,7 +48,7 @@ export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
 };
 
 interface Props {
-  verbiage: JsonObject;
+  verbiage: AnyObject;
   icon: string;
   [key: string]: any;
 }
