@@ -38,8 +38,18 @@ export interface FormField {
   props?: {
     [key: string]: any;
   };
-  validation: any;
+  validation: FormValidation;
   children?: any;
+}
+
+export interface FormValidation {
+  type: string;
+  options?: {
+    [key: string]: any;
+  };
+  errorMessages?: {
+    [key: string]: any;
+  };
 }
 
 export interface FormJson {
