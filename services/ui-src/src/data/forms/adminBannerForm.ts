@@ -1,11 +1,12 @@
 export const form = {
+  id: "adminBannerForm",
   options: {
     mode: "onChange",
   },
   fields: [
     {
-      type: "text",
       id: "title",
+      type: "text",
       props: {
         name: "title",
         label: "Title text",
@@ -20,8 +21,8 @@ export const form = {
       },
     },
     {
-      type: "textarea",
       id: "description",
+      type: "textarea",
       props: {
         name: "description",
         label: "Description text",
@@ -36,8 +37,8 @@ export const form = {
       },
     },
     {
-      type: "text",
       id: "link",
+      type: "text",
       props: {
         name: "link",
         label: "Link",
@@ -54,8 +55,8 @@ export const form = {
       },
     },
     {
-      type: "datesplit",
       id: "startDate",
+      type: "datesplit",
       props: {
         name: "startDate",
         label: "Start date",
@@ -73,8 +74,8 @@ export const form = {
       },
     },
     {
-      type: "child",
       id: "startDateYear",
+      type: "child",
       validation: {
         type: "number",
         options: {
@@ -84,8 +85,8 @@ export const form = {
       },
     },
     {
-      type: "child",
       id: "startDateMonth",
+      type: "child",
       validation: {
         type: "number",
         options: {
@@ -95,8 +96,8 @@ export const form = {
       },
     },
     {
-      type: "child",
       id: "startDateDay",
+      type: "child",
       validation: {
         type: "number",
         options: {
@@ -106,8 +107,8 @@ export const form = {
       },
     },
     {
-      type: "datesplit",
       id: "endDate",
+      type: "datesplit",
       props: {
         name: "endDate",
         label: "End date",
@@ -127,8 +128,8 @@ export const form = {
       },
     },
     {
-      type: "child",
       id: "endDateYear",
+      type: "child",
       validation: {
         type: "number",
         options: {
@@ -138,8 +139,8 @@ export const form = {
       },
     },
     {
-      type: "child",
       id: "endDateMonth",
+      type: "child",
       validation: {
         type: "number",
         options: {
@@ -149,8 +150,8 @@ export const form = {
       },
     },
     {
-      type: "child",
       id: "endDateDay",
+      type: "child",
       validation: {
         type: "number",
         options: {

@@ -2,11 +2,12 @@ import { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // utils
-import { makeFormSchema } from "utils/forms/forms";
+import { formFieldFactory, makeFormSchema } from "utils/forms/forms";
 // types
 import { FormField, FormJson } from "utils/types/types";
 
 export const Form = ({
+  id,
   formJson,
   onSubmit,
   onError,
@@ -25,9 +26,11 @@ export const Form = ({
   return (
     <FormProvider {...form}>
       <form
+        id={id}
         onSubmit={form.handleSubmit(onSubmit as any, onError as any)}
         {...props}
       >
+        {formFieldFactory(fields)}
         {children}
       </form>
     </FormProvider>
@@ -35,9 +38,10 @@ export const Form = ({
 };
 
 interface Props {
+  id: string;
   formJson: FormJson;
   onSubmit: Function;
   onError?: Function;
-  children: ReactNode;
+  children?: ReactNode;
   [key: string]: any;
 }

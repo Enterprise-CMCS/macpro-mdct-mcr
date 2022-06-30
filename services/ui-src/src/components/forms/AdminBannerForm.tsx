@@ -4,7 +4,6 @@ import { Button, Flex } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
-import { formFieldFactory } from "utils/forms/forms";
 // data
 import { form as formJson } from "data/forms/adminBannerForm";
 
@@ -30,12 +29,14 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   };
 
   return (
-    <Form formJson={formJson} onSubmit={onSubmit} {...props}>
+    <>
       <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
-      {formFieldFactory(formJson.fields)}
-      <Flex sx={sx.previewFlex}>
+      <Form id={formJson.id} formJson={formJson} onSubmit={onSubmit} {...props}>
         <PreviewBanner />
+      </Form>
+      <Flex sx={sx.previewFlex}>
         <Button
+          form={formJson.id}
           type="submit"
           sx={sx.replaceBannerButton}
           colorScheme="colorSchemes.main"
@@ -43,7 +44,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
           Replace Current Banner
         </Button>
       </Flex>
-    </Form>
+    </>
   );
 };
 

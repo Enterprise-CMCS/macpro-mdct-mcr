@@ -1,15 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-// components
 import { Form } from "components";
-// utils
-import { formFieldFactory } from "utils/forms/forms";
 
 const mockOnSubmit = jest.fn();
 const mockOnError = jest.fn();
 
 const mockFormJson = {
+  id: "mockForm",
   options: {
     mode: "onChange",
   },
@@ -33,15 +31,18 @@ const mockFormJson = {
 };
 
 const formComponent = (
-  <Form
-    formJson={mockFormJson}
-    onSubmit={mockOnSubmit}
-    onError={mockOnError}
-    data-testid="test-form"
-  >
-    {formFieldFactory(mockFormJson.fields)}
-    <button type="submit">Submit</button>
-  </Form>
+  <>
+    <Form
+      id={mockFormJson.id}
+      formJson={mockFormJson}
+      onSubmit={mockOnSubmit}
+      onError={mockOnError}
+      data-testid="test-form"
+    />
+    <button form={mockFormJson.id} type="submit">
+      Submit
+    </button>
+  </>
 );
 
 describe("Test Form component", () => {
