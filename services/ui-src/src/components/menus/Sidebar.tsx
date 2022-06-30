@@ -1,19 +1,11 @@
 import React, { ReactText } from "react";
-import {
-  Box,
-  Flex,
-  Link,
-  Drawer,
-  DrawerContent,
-  Text,
-  useDisclosure,
-  FlexProps,
-} from "@chakra-ui/react";
+import { Box, Flex, Link, Text, FlexProps } from "@chakra-ui/react";
 import { ArrowIcon, CheckCircleIcon } from "@cmsgov/design-system";
 
 interface LinkItemProps {
   name: string;
 }
+
 const LinkItems: Array<LinkItemProps> = [
   { name: "Get Started" },
   { name: "A: Program Information" },
@@ -26,30 +18,8 @@ const LinkItems: Array<LinkItemProps> = [
 
 // from https://chakra-templates.dev/navigation/sidebar
 export const Sidebar = () => {
-  const { isOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh">
-      <SidebarContent onClose={() => onClose} />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-    </Box>
-  );
-};
-
-const SidebarContent = ({ ...rest }) => {
-  return (
-    <Box bg="palette.gray_lightest" maxW="15rem" {...rest}>
+    <Box sx={sx.root}>
       <Flex
         h="20"
         alignItems="center"
@@ -67,13 +37,14 @@ const SidebarContent = ({ ...rest }) => {
           {link.name}
         </NavItem>
       ))}
+      {/* <SidebarContent onClose={() => onClose} /> */}
     </Box>
   );
 };
 
 const CloseButton = () => {
   return (
-    <Flex align="center" paddingY="0.5rem" marginLeft="1.25rem">
+    <Flex align="center" paddingY="0.5rem" marginLeft="1.25rem" sx={sx.temp}>
       <ArrowIcon title="title" direction="left" />
     </Flex>
   );
@@ -94,10 +65,34 @@ const NavItem = ({ itemName, children, ...rest }: NavItemProps) => {
         role="group"
         {...rest}
         borderBottom="1px solid gray"
+        sx={sx.temp2}
       >
         <CheckCircleIcon viewBox="10 10 200 200" />
         {children}
       </Flex>
     </Link>
   );
+};
+
+const sx = {
+  root: {
+    minH: "100vh",
+    bg: "palette.gray_lightest",
+    maxW: "15rem",
+  },
+  temp: {
+    ".ds-c-icon--arrow-left": {
+      marginBottom: "3.5rem",
+      marginLeft: "0.25rem",
+      borderRadius: "10px 0px 0px 10px",
+      backgroundColor: "palette.gray_lightest",
+      height: "16px",
+      width: "10px",
+    },
+  },
+  temp2: {
+    ".ds-c-icon--check-circle": {
+      fill: "palette.gray_lighter",
+    },
+  },
 };

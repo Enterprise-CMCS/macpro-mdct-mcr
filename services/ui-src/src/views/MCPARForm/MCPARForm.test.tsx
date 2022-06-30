@@ -1,13 +1,13 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // views
-import { SideNav } from "../index";
+import { MCPARForm } from "../index";
 
 const sideNavView = (
   <RouterWrappedComponent>
-    <SideNav />
+    <MCPARForm data-testid="MCPARForm-view" />
   </RouterWrappedComponent>
 );
 
@@ -18,7 +18,7 @@ describe("Test SideNav view", () => {
     render(sideNavView);
   });
   test("Check that SideNav page renders", () => {
-    expect(screen.getByTestId("sidenav-view")).toBeVisible();
+    expect(screen.getByTestId("MCPARForm-view")).toBeVisible();
   });
 });
 

@@ -2,9 +2,9 @@ import { Sidebar } from "../../components";
 // components
 import { Flex } from "@chakra-ui/react";
 
-export const SideNav = () => {
+export const MCPARForm = () => {
   return (
-    <Flex sx={sx.root} data-testid="sidenav-view">
+    <Flex sx={sx.root} data-testid="MCPARForm-view">
       <Sidebar />
     </Flex>
   );
