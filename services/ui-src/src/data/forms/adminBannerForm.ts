@@ -1,9 +1,9 @@
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-// utils
-import { makeFormSchema } from "../../utils/forms/forms";
 
-const formFields = {
+export const form = {
+  options: {
+    mode: "onChange",
+  },
   fields: [
     {
       type: "text",
@@ -66,7 +66,7 @@ const formFields = {
       props: {
         name: "endDate",
         label: "End date",
-        requirementLabel: "mm/dd/yyyy (11:59:59pm)",
+        hint: "mm/dd/yyyy (11:59:59pm)",
       },
       validation: yup
         .number()
@@ -89,15 +89,4 @@ const formFields = {
       validation: yup.number().required().max(31),
     },
   ],
-};
-
-const formSchema = { schema: makeFormSchema(formFields.fields) };
-
-export const form = {
-  options: {
-    mode: "onChange" as any,
-    resolver: yupResolver(formSchema.schema),
-  },
-  ...formSchema,
-  ...formFields,
 };

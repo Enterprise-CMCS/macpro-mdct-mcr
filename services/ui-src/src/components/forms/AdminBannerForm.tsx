@@ -1,23 +1,16 @@
-import React, { useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useState } from "react";
 // components
 import { Button, Flex } from "@chakra-ui/react";
-import { Banner, ErrorAlert } from "../index";
+import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
 import { formFieldFactory } from "utils/forms/forms";
 // data
-import { form as formJson } from "../../data/forms/adminBannerForm";
+import { form as formJson } from "data/forms/adminBannerForm";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
 
-  // make form context
-  const form = useForm<any>({
-    ...formJson.options,
-  });
-
-  // submit new banner data via write method
   const onSubmit = async (formData: any) => {
     const newBannerData = {
       key: bannerId,
@@ -36,31 +29,21 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     window.scrollTo(0, 0);
   };
 
-  // set banner preview data
-  const formData = form.getValues();
-  const bannerPreviewData = {
-    title: formData.title || "New banner title",
-    description: formData.description || "New banner description",
-    link: formData.link || "",
-  };
-
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
-        <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
-        <React.Fragment children={formFieldFactory(formJson.fields)} />
-        <Flex sx={sx.previewFlex}>
-          <Banner bannerData={bannerPreviewData} />
-          <Button
-            type="submit"
-            sx={sx.replaceBannerButton}
-            colorScheme="colorSchemes.main"
-          >
-            Replace Current Banner
-          </Button>
-        </Flex>
-      </form>
-    </FormProvider>
+    <Form formJson={formJson} onSubmit={onSubmit} {...props}>
+      <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
+      {formFieldFactory(formJson.fields)}
+      <Flex sx={sx.previewFlex}>
+        <PreviewBanner />
+        <Button
+          type="submit"
+          sx={sx.replaceBannerButton}
+          colorScheme="colorSchemes.main"
+        >
+          Replace Current Banner
+        </Button>
+      </Flex>
+    </Form>
   );
 };
 
