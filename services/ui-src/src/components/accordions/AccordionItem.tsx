@@ -6,9 +6,9 @@ import {
   AccordionPanel,
   Text,
 } from "@chakra-ui/react";
-import { Icon } from "../index";
+import { Icon } from "components";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+import { makeMediaQueryClasses } from "utils";
 
 export const AccordionItem = ({ label, children, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();

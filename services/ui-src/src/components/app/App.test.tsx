@@ -7,11 +7,11 @@ import {
   mockNoUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils/auth";
+import { useUser } from "utils";
 //components
 import { App } from "components";
 
-jest.mock("utils/auth");
+jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const appComponent = (

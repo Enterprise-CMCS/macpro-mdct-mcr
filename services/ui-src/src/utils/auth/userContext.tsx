@@ -1,20 +1,7 @@
 import { createContext } from "react";
-export interface MCRUser {
-  email: string;
-  given_name: string;
-  family_name: string;
-  userRole?: string;
-  state?: string;
-}
+import { UserContextI } from "types";
 
-export interface UserContextInterface {
-  user?: MCRUser;
-  showLocalLogins?: boolean;
-  logout: () => Promise<void>;
-  loginWithIDM: () => void;
-}
-
-export const UserContext = createContext<UserContextInterface>({
+export const UserContext = createContext<UserContextI>({
   logout: async () => {},
   loginWithIDM: () => {},
 });

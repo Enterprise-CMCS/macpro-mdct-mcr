@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 // utils
-import { AlertTypes } from "utils/types/types";
+import { AlertTypes } from "types";
 
 export const Alert = ({
   status = AlertTypes.INFO,

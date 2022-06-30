@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 //utils
-import { useUser } from "utils/auth";
-import { UserRoles } from "utils/types/types";
+import { useUser } from "utils";
+import { UserRoles } from "types";
 
 export const Profile = () => {
   const { user } = useUser();
