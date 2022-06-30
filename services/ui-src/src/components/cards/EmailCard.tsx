@@ -9,8 +9,8 @@ import {
 import { JsonObject } from "utils/types/types";
 import { createEmailLink } from "utils/email/email";
 // assets
-import spreadsheetIcon from "../../assets/images/icon_spreadsheet.png";
-import settingsIcon from "../../assets/images/icon_wrench-gear.png";
+import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
+import settingsIcon from "assets/icons/icon_wrench-gear.png";
 
 const iconMap: { [key: string]: { [key: string]: string } } = {
   spreadsheet: {

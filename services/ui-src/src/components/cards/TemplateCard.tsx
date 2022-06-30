@@ -9,7 +9,7 @@ import {
 import { JsonObject } from "utils/types/types";
 import { getSignedTemplateUrl } from "utils/api/index";
 // assets
-import spreadsheetIcon from "../../assets/images/icon_spreadsheet.png";
+import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
 const downloadTemplate = async (templateName: string) => {
   const signedUrl = await getSignedTemplateUrl(templateName);

@@ -4,7 +4,7 @@ import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { createEmailLink } from "utils/email/email";
 import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
 // assets
-import warningIcon from "../../assets/images/icon_warning.png";
+import warningIcon from "assets/icons/icon_warning.png";
 // data
 import data from "../../data/notfound-view.json";
 
