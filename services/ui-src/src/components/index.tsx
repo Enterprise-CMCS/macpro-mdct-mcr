@@ -25,6 +25,7 @@ export { ChoiceListField } from "./fields/ChoiceListField";
 export { DateField } from "./fields/DateField";
 export { DropdownField } from "./fields/DropdownField";
 export { TextField } from "./fields/TextField";
+export { TextAreaField } from "./fields/TextAreaField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 // icons

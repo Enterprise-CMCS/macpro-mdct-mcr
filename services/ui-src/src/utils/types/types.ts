@@ -15,6 +15,16 @@ export interface ITerritoryList {
   value: string;
 }
 
+export interface FormField {
+  id: string;
+  type: string;
+  props?: {
+    [key: string]: any;
+  };
+  validation: any;
+  children?: any;
+}
+
 export interface StyleObject {
   [key: string]: any;
 }
