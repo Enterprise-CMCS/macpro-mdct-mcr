@@ -1,8 +1,8 @@
 // components
 import { Table as TableRoot, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { TableContentShape } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { TableContentShape } from "types";
 
 export const Table = ({ content, variant, lastCellsBold, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();

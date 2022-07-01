@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
-// views
-import { Error } from "../index";
+import { Error } from "views";
 
 const errorView = <Error />;
 

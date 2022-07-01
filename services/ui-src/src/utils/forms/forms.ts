@@ -3,7 +3,7 @@ import * as yup from "yup";
 // components
 import { DateField, TextField, TextAreaField } from "components";
 // types
-import { FormField } from "utils/types/types";
+import { FormField } from "types";
 
 export const makeFormSchema = (fields: FormField[]) => {
   const schema: any = {};

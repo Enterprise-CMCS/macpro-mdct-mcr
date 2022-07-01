@@ -4,19 +4,18 @@ import { axe } from "jest-axe";
 import { act } from "react-dom/test-utils";
 //components
 import { TemplateCard } from "components";
-// data
-import data from "../../data/home-view.json";
+import verbiage from "verbiage/home-view";
 
-const mockAPI = require("utils/api/requestMethods/template");
+const mockAPI = require("utils/api/requestMethods/getTemplateUrl");
 
-jest.mock("../../utils/useBreakpoint", () => ({
+jest.mock("utils/other/useBreakpoint", () => ({
   useBreakpoint: jest.fn(() => ({
     isDesktop: true,
   })),
   makeMediaQueryClasses: jest.fn(() => "desktop"),
 }));
 
-const templateVerbiage = data.cards.MCPAR;
+const templateVerbiage = verbiage.cards.MCPAR;
 
 const templateCardComponent = (
   <TemplateCard

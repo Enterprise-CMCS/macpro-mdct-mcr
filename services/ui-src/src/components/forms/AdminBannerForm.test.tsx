@@ -3,8 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
 import { AdminBannerForm } from "components";
-import { bannerId } from "utils/constants/constants";
-import { convertDateEtToUtc } from "utils/time/time";
+import { bannerId } from "../../constants";
+// utils
+import { convertDateEtToUtc } from "utils";
 
 const mockWriteAdminBanner = jest.fn();
 const mockWriteAdminBannerWithError = jest.fn(() => {
