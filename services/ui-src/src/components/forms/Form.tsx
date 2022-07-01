@@ -54,7 +54,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
     <FormProvider {...form}>
       <form
         id={id}
-        onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler as any)}
+        onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
         {...props}
       >
         {formFieldFactory(fields)}
