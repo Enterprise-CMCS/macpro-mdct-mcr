@@ -4,7 +4,7 @@ import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { createEmailLink } from "utils/other/email";
 import { makeMediaQueryClasses } from "utils";
 // assets
-import warningIcon from "assets/images/icons/icon_warning.png";
+import warningIcon from "assets/icons/icon_warning.png";
 import verbiage from "verbiage/error-view";
 
 export const Error = () => {

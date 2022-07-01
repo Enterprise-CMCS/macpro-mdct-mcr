@@ -6,8 +6,8 @@ import { makeMediaQueryClasses, useBreakpoint } from "utils";
 import { AnyObject } from "types";
 import { createEmailLink } from "utils/other/email";
 // assets
-import spreadsheetIcon from "assets/images/icons/icon_spreadsheet.png";
-import settingsIcon from "assets/images/icons/icon_wrench-gear.png";
+import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
+import settingsIcon from "assets/icons/icon_wrench-gear.png";
 
 const iconMap: { [key: string]: { [key: string]: string } } = {
   spreadsheet: {

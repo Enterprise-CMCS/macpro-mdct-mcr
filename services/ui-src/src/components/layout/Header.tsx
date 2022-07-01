@@ -14,7 +14,7 @@ import { Menu, MenuOption } from "components";
 // utils
 import { useBreakpoint } from "utils";
 // assets
-import appLogo from "assets/images/logos/logo_mcr_draft.png";
+import appLogo from "assets/logos/logo_mcr_draft.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();

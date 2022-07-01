@@ -9,7 +9,7 @@ import {
 } from "utils";
 import { AnyObject } from "types";
 // assets
-import spreadsheetIcon from "assets/images/icons/icon_spreadsheet.png";
+import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
 const downloadTemplate = async (templateName: string) => {
   const signedUrl = await getSignedTemplateUrl(templateName);
