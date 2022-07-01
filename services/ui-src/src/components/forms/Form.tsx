@@ -2,12 +2,12 @@ import { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // utils
-import { focusElement } from "utils";
 import {
+  focusElement,
   formFieldFactory,
   makeFormSchema,
   sortFormErrors,
-} from "utils/forms/forms";
+} from "utils";
 // types
 import { FormField, FormJson } from "types";
 
