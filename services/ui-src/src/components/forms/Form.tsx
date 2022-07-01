@@ -15,8 +15,10 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
     ...(options as any),
   });
 
-  const scrollAndFocus = (fieldId: string) => {
-    const field = document.querySelector(`[name='${fieldId}']`)! as HTMLElement;
+  const scrollAndFocus = (fieldName: string) => {
+    const field = document.querySelector(
+      `[name='${fieldName}']`
+    )! as HTMLElement;
     const fieldTop = field?.getBoundingClientRect().top!;
     const headerHeight = document
       .getElementById("header")
