@@ -4,7 +4,6 @@ import { axe } from "jest-axe";
 import { Form } from "components";
 
 const mockOnSubmit = jest.fn();
-const mockOnError = jest.fn();
 
 const mockFormJson = {
   id: "mockForm",
@@ -36,7 +35,6 @@ const formComponent = (
       id={mockFormJson.id}
       formJson={mockFormJson}
       onSubmit={mockOnSubmit}
-      onError={mockOnError}
       data-testid="test-form"
     />
     <button form={mockFormJson.id} type="submit">
@@ -61,13 +59,6 @@ describe("Test Form component", () => {
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     await expect(mockOnSubmit).toHaveBeenCalled();
-  });
-
-  test("Invalid form fill blocks submission (calls onError)", async () => {
-    render(formComponent);
-    const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
-    await expect(mockOnError).toHaveBeenCalled();
   });
 });
 

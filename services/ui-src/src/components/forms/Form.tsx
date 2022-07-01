@@ -9,33 +9,45 @@ import { FormField, FormJson } from "utils/types/types";
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
   const schema = makeFormSchema(fields as FormField[]);
+
   // make form context
   const form = useForm({
     resolver: yupResolver(schema),
-    // shouldFocusError: true,
+    shouldFocusError: false,
     ...(options as any),
   });
 
   const scrollAndFocus = (fieldId: string) => {
     const field = document.querySelector(`[name='${fieldId}']`)! as HTMLElement;
+
     const fieldTop = field?.getBoundingClientRect().top!;
     const headerHeight = document
       .getElementById("header")
       ?.getBoundingClientRect()!.height!;
-    const rem = 16;
+    const scrollOffset = 16 * 6; // 6rem
 
-    let scrollLength;
     if (fieldTop <= headerHeight) {
-      scrollLength = fieldTop - headerHeight - rem * 6;
+      const scrollLength = fieldTop - headerHeight - scrollOffset;
       window.scrollBy({ top: scrollLength, left: 0, behavior: "smooth" });
     }
 
     field?.focus({ preventScroll: true });
   };
 
+  const sortErrors = (errors: any) => {
+    const orderedFields = Object.keys(form.getValues());
+    const sortedErrors: any = [];
+    orderedFields.forEach((fieldName: any) => {
+      if (errors[fieldName]) {
+        sortedErrors.push(fieldName);
+      }
+    });
+    return sortedErrors;
+  };
+
   const onErrorHandler = (errors: any) => {
-    const errorArray = Object.keys(errors);
-    scrollAndFocus(errorArray[0]);
+    const sortedErrors: any[] = sortErrors(errors);
+    scrollAndFocus(sortedErrors[0]);
   };
 
   return (

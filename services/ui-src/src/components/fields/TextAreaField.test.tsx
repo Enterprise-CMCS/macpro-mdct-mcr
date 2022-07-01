@@ -6,6 +6,7 @@ import { TextAreaField } from "components";
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     setValue: () => {},
+    register: () => {},
   }),
 }));
 
