@@ -60,6 +60,16 @@ describe("Test Form component", () => {
     await userEvent.click(submitButton);
     await expect(mockOnSubmit).toHaveBeenCalled();
   });
+
+  test("Submission fails on invalid fill; focuses first errored field", async () => {
+    const result = render(formComponent);
+    const form = result.container;
+    const submitButton = screen.getByRole("button");
+    await userEvent.click(submitButton);
+
+    const testField = form.querySelector("[name='testfield']")!;
+    await expect(testField).toHaveFocus();
+  });
 });
 
 describe("Test Form accessibility", () => {

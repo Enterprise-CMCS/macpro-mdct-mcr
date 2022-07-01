@@ -7,7 +7,7 @@ import {
   makeFormSchema,
   sortFormErrors,
 } from "utils/forms/forms";
-import { focusField } from "utils/scroll/focusField";
+import { focusElement } from "utils/scroll/focusElement";
 // types
 import { FormField, FormJson } from "utils/types/types";
 
@@ -24,7 +24,10 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
 
   const onErrorHandler = (errors: any) => {
     const sortedErrors: any[] = sortFormErrors(form, errors);
-    focusField(sortedErrors[0]);
+    const fieldToFocus = document.querySelector(
+      `[name='${sortedErrors[0]}']`
+    )! as HTMLElement;
+    focusElement(fieldToFocus);
   };
 
   return (
