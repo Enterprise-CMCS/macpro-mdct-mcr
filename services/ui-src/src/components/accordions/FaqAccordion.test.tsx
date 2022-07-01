@@ -3,14 +3,13 @@ import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
-import { FaqAccordion } from "../index";
-// data
-import data from "../../data/help-view.json";
+import { FaqAccordion } from "components";
+import verbiage from "verbiage/help-view";
 
 const faqAccordionComponent = (
   <RouterWrappedComponent>
     <FaqAccordion
-      accordionItems={data.accordionItems}
+      accordionItems={verbiage.accordionItems}
       data-testid="faq-accordion"
     />
   </RouterWrappedComponent>

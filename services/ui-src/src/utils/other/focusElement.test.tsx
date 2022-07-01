@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { focusElement } from "utils/scroll/focusElement";
+import { focusElement } from "utils/other/focusElement";
 
-jest.mock("utils/scroll/focusElement", () => ({
-  ...jest.requireActual("utils/scroll/focusElement"),
+jest.mock("utils/other/focusElement", () => ({
+  ...jest.requireActual("utils/other/focusElement"),
   checkElementPosition: jest.fn((): any => ({
     shouldScroll: true,
     scrollDistance: 100,

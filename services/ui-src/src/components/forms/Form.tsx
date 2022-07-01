@@ -3,13 +3,13 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // utils
 import {
+  focusElement,
   formFieldFactory,
   makeFormSchema,
   sortFormErrors,
-} from "utils/forms/forms";
-import { focusElement } from "utils/scroll/focusElement";
+} from "utils";
 // types
-import { FormField, FormJson } from "utils/types/types";
+import { FormField, FormJson } from "types";
 
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;

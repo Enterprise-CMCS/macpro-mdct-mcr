@@ -1,7 +1,7 @@
 import { API } from "aws-amplify";
 import { getRequestHeaders } from "./getRequestHeaders";
 
-async function getSignedTemplateUrl(templateName: string) {
+export async function getSignedTemplateUrl(templateName: string) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -14,5 +14,3 @@ async function getSignedTemplateUrl(templateName: string) {
   );
   return response;
 }
-
-export { getSignedTemplateUrl };

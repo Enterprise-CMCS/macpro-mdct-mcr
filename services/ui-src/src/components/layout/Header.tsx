@@ -10,11 +10,11 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { Menu, MenuOption } from "../index";
+import { Menu, MenuOption } from "components";
 // utils
-import { useBreakpoint } from "../../utils/useBreakpoint";
+import { useBreakpoint } from "utils";
 // assets
-import appLogo from "../../assets/images/logo_mcr_draft.png";
+import appLogo from "assets/logos/logo_mcr_draft.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();

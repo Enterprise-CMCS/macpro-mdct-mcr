@@ -3,8 +3,8 @@ import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent, StyleObject } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { InputChangeEvent, AnyObject } from "types";
 
 export const TextField = ({
   name,
@@ -46,7 +46,7 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  sxOverrides?: StyleObject;
+  sxOverrides?: AnyObject;
   [key: string]: any;
 }
 

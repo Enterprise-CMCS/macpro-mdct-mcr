@@ -2,13 +2,12 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { EmailCard } from "components";
-import { createEmailLink } from "../../utils/email/email";
-// data
-import data from "../../data/help-view.json";
+import { createEmailLink } from "utils/other/email";
+import verbiage from "verbiage/help-view";
 
 const emailCardComponent = (
   <EmailCard
-    verbiage={data.cards.helpdesk}
+    verbiage={verbiage.cards.helpdesk}
     icon="settings"
     cardprops={{ "data-testid": "email-card" }}
   />

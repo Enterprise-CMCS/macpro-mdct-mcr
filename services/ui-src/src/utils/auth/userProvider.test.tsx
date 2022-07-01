@@ -2,8 +2,7 @@ import { useContext } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-import { UserProvider } from "./userProvider";
-import { UserContext } from "./userContext";
+import { UserContext, UserProvider } from "utils";
 import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";

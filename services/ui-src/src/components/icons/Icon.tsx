@@ -1,5 +1,3 @@
-// utils
-import { IconType } from "../../utils/types/types";
 // components
 import { Icon as ChakraIcon } from "@chakra-ui/react";
 // assets
@@ -15,6 +13,8 @@ import {
 } from "react-icons/bs";
 import { FiMinus } from "react-icons/fi";
 import { HiDownload } from "react-icons/hi";
+// utils
+import { IconType } from "types";
 
 const iconMap: { [key: string]: IconType } = {
   arrowRightSquare: BsArrowRightSquare,
