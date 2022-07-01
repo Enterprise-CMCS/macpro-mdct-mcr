@@ -10,14 +10,16 @@ export const makeFormSchema = (fields: FormField[]) => {
   const fieldSchema: any = { type: "object", properties: {} };
   fields.forEach((field: FormField) => {
     const { type, options } = field.validation;
-    fieldSchema.properties[field.id] = { type, ...options };
+    fieldSchema.properties[field.props?.name] = { type, ...options };
   });
 
   // make error message schema
   const errorMessageSchema: any = { errMessages: {} };
   fields.forEach((field: FormField) => {
     const { errorMessages } = field.validation;
-    errorMessageSchema.errMessages[field.id] = { ...errorMessages };
+    errorMessageSchema.errMessages[field.props?.name] = {
+      ...errorMessages,
+    };
   });
 
   // make form schema
@@ -28,13 +30,13 @@ const fieldToComponentMap: any = {
   text: TextField,
   textarea: TextAreaField,
   datesplit: DateField,
-  child: React.Fragment,
 };
 
 export const formFieldFactory = (fields: FormField[]) =>
-  fields.map((field) =>
-    React.createElement(fieldToComponentMap[field.type], {
+  fields.map((field) => {
+    if (field.type === "child") return null;
+    return React.createElement(fieldToComponentMap[field.type], {
       key: field.id,
       ...field.props,
-    })
-  );
+    });
+  });

@@ -57,8 +57,8 @@ describe("Test AdminBannerForm component", () => {
     await userEvent.click(submitButton);
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
       key: bannerId,
-      title: "this is the title text",
-      description: "this is the description text",
+      titleText: "this is the title text",
+      descriptionText: "this is the description text",
       link: undefined,
       startDate: convertDateEtToUtc(
         { year: 2022, month: 1, day: 1 },

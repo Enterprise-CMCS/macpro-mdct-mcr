@@ -6,8 +6,8 @@ import { PreviewBanner } from "components";
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     getValues: jest.fn().mockReturnValue({
-      title: "Mock preview banner title",
-      description: "Mock preview banner description",
+      titleText: "Mock preview banner title",
+      descriptionText: "Mock preview banner description",
       link: "",
     }),
   }),

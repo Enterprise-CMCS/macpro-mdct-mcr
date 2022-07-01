@@ -3,9 +3,14 @@ import { Alert } from "../index";
 import { BannerData } from "utils/types/types";
 
 export const Banner = ({ bannerData, ...props }: Props) => {
-  const { title, description, link } = bannerData;
+  const { titleText, descriptionText, link } = bannerData;
   return (
-    <Alert title={title} description={description} link={link} {...props} />
+    <Alert
+      title={titleText}
+      description={descriptionText}
+      link={link}
+      {...props}
+    />
   );
 };
 
