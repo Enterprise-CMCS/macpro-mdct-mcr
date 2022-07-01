@@ -63,7 +63,7 @@ export interface FormJson {
 // BANNER
 
 export interface BannerData {
-  title: string;
+  titleText: string;
   description: string;
   link?: string;
   [key: string]: any;

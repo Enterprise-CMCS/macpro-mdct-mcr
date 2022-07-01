@@ -13,7 +13,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const onSubmit = async (formData: any) => {
     const newBannerData = {
       key: bannerId,
-      title: formData.title,
+      titleText: formData.titleText,
       description: formData.description,
       link: formData.link,
       startDate: formData.startDate,

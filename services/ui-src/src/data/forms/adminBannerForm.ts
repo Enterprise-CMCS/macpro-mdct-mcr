@@ -5,10 +5,10 @@ export const form = {
   },
   fields: [
     {
-      id: "abf-title",
+      id: "abf-titletext",
       type: "text",
       props: {
-        name: "abf-title",
+        name: "titleText",
         label: "Title text",
         placeholder: "New banner title",
       },
@@ -24,7 +24,7 @@ export const form = {
       id: "abf-description",
       type: "textarea",
       props: {
-        name: "abf-description",
+        name: "description",
         label: "Description text",
         placeholder: "New banner description",
       },
@@ -40,7 +40,7 @@ export const form = {
       id: "abf-link",
       type: "text",
       props: {
-        name: "abf-link",
+        name: "link",
         label: "Link",
         requirementLabel: "Optional",
       },
@@ -58,7 +58,7 @@ export const form = {
       id: "abf-startDate",
       type: "datesplit",
       props: {
-        name: "abf-startDate",
+        name: "startDate",
         label: "Start date",
         hint: "mm/dd/yyyy (12:00:00am)",
       },
@@ -76,6 +76,9 @@ export const form = {
     {
       id: "abf-startDateMonth",
       type: "child",
+      props: {
+        name: "startDateMonth",
+      },
       validation: {
         type: "number",
         options: {
@@ -87,6 +90,9 @@ export const form = {
     {
       id: "abf-startDateDay",
       type: "child",
+      props: {
+        name: "startDateDay",
+      },
       validation: {
         type: "number",
         options: {
@@ -98,6 +104,9 @@ export const form = {
     {
       id: "abf-startDateYear",
       type: "child",
+      props: {
+        name: "startDateYear",
+      },
       validation: {
         type: "number",
         options: {
@@ -110,7 +119,7 @@ export const form = {
       id: "abf-endDate",
       type: "datesplit",
       props: {
-        name: "abf-endDate",
+        name: "endDate",
         label: "End date",
         hint: "mm/dd/yyyy (11:59:59pm)",
       },
@@ -130,6 +139,9 @@ export const form = {
     {
       id: "abf-endDateMonth",
       type: "child",
+      props: {
+        name: "endDateMonth",
+      },
       validation: {
         type: "number",
         options: {
@@ -141,6 +153,9 @@ export const form = {
     {
       id: "abf-endDateDay",
       type: "child",
+      props: {
+        name: "endDateDay",
+      },
       validation: {
         type: "number",
         options: {
@@ -152,6 +167,9 @@ export const form = {
     {
       id: "abf-endDateYear",
       type: "child",
+      props: {
+        name: "endDateYear",
+      },
       validation: {
         type: "number",
         options: {
