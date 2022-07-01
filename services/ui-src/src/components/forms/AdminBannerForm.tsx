@@ -4,10 +4,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 // components
 import { Button, Flex } from "@chakra-ui/react";
-import { Banner, DateField, ErrorAlert, TextField } from "../index";
+import { Banner, DateField, ErrorAlert, TextField } from "components";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
+import { makeMediaQueryClasses } from "utils";
+import { bannerId } from "../../constants";
+import { REPLACE_BANNER_FAILED } from "verbiage/errors";
 
 const formSchema = yup.object().shape({
   title: yup.string().required("Title text is required"),

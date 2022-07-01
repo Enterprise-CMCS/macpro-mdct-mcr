@@ -2,10 +2,7 @@ import { Link as RouterLink } from "react-router-dom";
 // components
 import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 // utils
-import {
-  makeMediaQueryClasses,
-  useBreakpoint,
-} from "../../utils/useBreakpoint";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
 // assets
 import hhsLogo from "assets/logos/logo_hhs.svg";
 import mcrLogo from "assets/logos/logo_mcr_footer.png";

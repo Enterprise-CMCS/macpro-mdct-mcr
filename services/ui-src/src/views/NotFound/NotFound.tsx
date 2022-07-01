@@ -1,16 +1,15 @@
 // components
 import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 // utils
-import { createEmailLink } from "utils/email/email";
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
+import { createEmailLink } from "utils/other/email";
+import { makeMediaQueryClasses } from "utils";
 // assets
 import warningIcon from "assets/icons/icon_warning.png";
-// data
-import data from "../../data/notfound-view.json";
+import verbiage from "verbiage/notfound-view";
 
 export const NotFound = () => {
   const mqClasses = makeMediaQueryClasses();
-  const { header, subHeading, emailText, body } = data;
+  const { header, subHeading, emailText, body } = verbiage;
   const { preLinkText, cmsEmail, postLinkText } = emailText;
 
   return (
