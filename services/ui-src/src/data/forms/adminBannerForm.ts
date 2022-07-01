@@ -5,10 +5,10 @@ export const form = {
   },
   fields: [
     {
-      id: "title",
+      id: "abf-title",
       type: "text",
       props: {
-        name: "title",
+        name: "abf-title",
         label: "Title text",
         placeholder: "New banner title",
       },
@@ -21,10 +21,10 @@ export const form = {
       },
     },
     {
-      id: "description",
+      id: "abf-description",
       type: "textarea",
       props: {
-        name: "description",
+        name: "abf-description",
         label: "Description text",
         placeholder: "New banner description",
       },
@@ -37,10 +37,10 @@ export const form = {
       },
     },
     {
-      id: "link",
+      id: "abf-link",
       type: "text",
       props: {
-        name: "link",
+        name: "abf-link",
         label: "Link",
         requirementLabel: "Optional",
       },
@@ -55,10 +55,10 @@ export const form = {
       },
     },
     {
-      id: "startDate",
+      id: "abf-startDate",
       type: "datesplit",
       props: {
-        name: "startDate",
+        name: "abf-startDate",
         label: "Start date",
         hint: "mm/dd/yyyy (12:00:00am)",
       },
@@ -74,18 +74,7 @@ export const form = {
       },
     },
     {
-      id: "startDateYear",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          min: 2022,
-        },
-      },
-    },
-    {
-      id: "startDateMonth",
+      id: "abf-startDateMonth",
       type: "child",
       validation: {
         type: "number",
@@ -96,7 +85,7 @@ export const form = {
       },
     },
     {
-      id: "startDateDay",
+      id: "abf-startDateDay",
       type: "child",
       validation: {
         type: "number",
@@ -107,10 +96,21 @@ export const form = {
       },
     },
     {
-      id: "endDate",
+      id: "abf-startDateYear",
+      type: "child",
+      validation: {
+        type: "number",
+        options: {
+          required: true,
+          min: 2022,
+        },
+      },
+    },
+    {
+      id: "abf-endDate",
       type: "datesplit",
       props: {
-        name: "endDate",
+        name: "abf-endDate",
         label: "End date",
         hint: "mm/dd/yyyy (11:59:59pm)",
       },
@@ -128,18 +128,7 @@ export const form = {
       },
     },
     {
-      id: "endDateYear",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          min: 2022,
-        },
-      },
-    },
-    {
-      id: "endDateMonth",
+      id: "abf-endDateMonth",
       type: "child",
       validation: {
         type: "number",
@@ -150,13 +139,24 @@ export const form = {
       },
     },
     {
-      id: "endDateDay",
+      id: "abf-endDateDay",
       type: "child",
       validation: {
         type: "number",
         options: {
           required: true,
           max: 31,
+        },
+      },
+    },
+    {
+      id: "abf-endDateYear",
+      type: "child",
+      validation: {
+        type: "number",
+        options: {
+          required: true,
+          min: 2022,
         },
       },
     },
