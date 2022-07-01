@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Button, Flex } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
-import { bannerId, REPLACE_BANNER_FAILED } from "utils/constants/constants";
+import { bannerId } from "../../constants";
+import { REPLACE_BANNER_FAILED } from "verbiage/errors";
 // data
 import { form as formJson } from "data/forms/adminBannerForm";
 

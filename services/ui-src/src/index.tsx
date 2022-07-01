@@ -5,8 +5,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Amplify } from "aws-amplify";
 import config from "config";
 // utils
-import { ApiProvider, QueryProvider } from "utils/api";
-import { UserProvider } from "utils/auth";
+import { ApiProvider, QueryProvider, UserProvider } from "utils";
 // components
 import { App } from "components";
 import { Error } from "./views";

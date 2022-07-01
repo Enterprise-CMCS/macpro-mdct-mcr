@@ -1,6 +1,6 @@
 // components
 import { Flex, Text } from "@chakra-ui/react";
-import { Icon } from "../index";
+import { Icon } from "components";
 
 export const MenuOption = ({ text, icon, role, hideText }: Props) => {
   return (

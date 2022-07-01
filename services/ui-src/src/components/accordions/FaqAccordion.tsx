@@ -1,16 +1,16 @@
 // components
 import { Accordion, Box, Text } from "@chakra-ui/react";
-import { AccordionItem } from "../index";
+import { AccordionItem } from "components";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { JsonObject } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { AnyObject } from "types";
 
 export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   return (
     <Accordion allowToggle={true} allowMultiple={true} {...props}>
-      {accordionItems.map((item: JsonObject, index: number) => (
+      {accordionItems.map((item: AnyObject, index: number) => (
         <AccordionItem key={index} label={item.question} sx={sx.item}>
           <Box sx={sx.answerBox} className={mqClasses}>
             <Text>{item.answer}</Text>
@@ -22,7 +22,7 @@ export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
 };
 
 interface Props {
-  accordionItems: JsonObject;
+  accordionItems: AnyObject;
   [key: string]: any;
 }
 

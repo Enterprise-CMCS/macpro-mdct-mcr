@@ -1,7 +1,3 @@
-// BANNERS
-export const bannerId = "admin-banner-id";
-
-// ERRORS
 export const GET_BANNER_FAILED =
   "Banner could not be fetched. Please contact support.";
 

@@ -3,8 +3,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 // utils
-import { UserContextInterface } from "../auth/userContext";
-import { bannerId } from "../constants/constants";
+import { UserContextI } from "types";
+import { bannerId } from "../../constants";
 
 // GLOBALS
 
@@ -35,14 +35,14 @@ jest.mock("@chakra-ui/transition", () => ({
 
 // USERS
 
-export const mockNoUser: UserContextInterface = {
+export const mockNoUser: UserContextI = {
   user: undefined,
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockStateUser: UserContextInterface = {
+export const mockStateUser: UserContextI = {
   user: {
     userRole: "mdctmcr-state-user",
     state: "MA",
@@ -55,7 +55,7 @@ export const mockStateUser: UserContextInterface = {
   loginWithIDM: () => {},
 };
 
-export const mockAdminUser: UserContextInterface = {
+export const mockAdminUser: UserContextI = {
   user: {
     userRole: "mdctmcr-approver",
     state: undefined,

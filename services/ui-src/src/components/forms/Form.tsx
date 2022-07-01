@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // utils
 import { formFieldFactory, makeFormSchema } from "utils/forms/forms";
 // types
-import { FormField, FormJson } from "utils/types/types";
+import { FormField, FormJson } from "types";
 
 export const Form = ({
   id,

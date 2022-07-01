@@ -1,11 +1,10 @@
 import { useContext } from "react";
 // components
 import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { AdminBannerContext, Banner, TemplateCard } from "../../components";
+import { AdminBannerContext, Banner, TemplateCard } from "components";
 // utils
-import { checkBannerActivityStatus } from "utils/adminbanner/adminBanner";
-// data
-import data from "../../data/home-view.json";
+import { checkBannerActivityStatus } from "utils";
+import verbiage from "verbiage/home-view";
 
 export const Home = () => {
   const { bannerData } = useContext(AdminBannerContext);
@@ -14,7 +13,7 @@ export const Home = () => {
     bannerData?.endDate
   );
   const showBanner = !!bannerData.key && bannerIsActive;
-
+  const { intro, cards } = verbiage;
   return (
     <section>
       <Box sx={sx.root} data-testid="home-view">
@@ -27,24 +26,24 @@ export const Home = () => {
         >
           <Box sx={sx.introTextBox}>
             <Heading as="h1" sx={sx.headerText}>
-              {data.intro.header}
+              {intro.header}
             </Heading>
-            <Text>{data.intro.body}</Text>
+            <Text>{intro.body}</Text>
           </Box>
           <TemplateCard
             templateName="MCPAR"
-            verbiage={data.cards.MCPAR}
+            verbiage={cards.MCPAR}
             cardprops={sx.card}
           />
           <TemplateCard
             templateName="MLR"
-            verbiage={data.cards.MLR}
+            verbiage={cards.MLR}
             cardprops={sx.card}
             isDisabled
           />
           <TemplateCard
             templateName="NAAAR"
-            verbiage={data.cards.NAAAR}
+            verbiage={cards.NAAAR}
             cardprops={sx.card}
             isDisabled
           />

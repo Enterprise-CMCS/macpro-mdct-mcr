@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+// components
+import { Home } from "views";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-// views
-import { Home } from "../index";
 
 const homeView = (
   <RouterWrappedComponent>

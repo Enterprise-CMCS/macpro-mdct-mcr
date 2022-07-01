@@ -1,6 +1,6 @@
 import React from "react";
 
-export type { IconType } from "react-icons";
+// USERS
 
 export enum UserRoles {
   ADMIN = "mdctmcr-approver",
@@ -10,23 +10,22 @@ export enum UserRoles {
   BOR = "mdctmcr-bor",
 }
 
-export interface ITerritoryList {
-  label: string;
-  value: string;
+export interface MCRUser {
+  email: string;
+  given_name: string;
+  family_name: string;
+  userRole?: string;
+  state?: string;
 }
 
-export interface StyleObject {
-  [key: string]: any;
+export interface UserContextI {
+  user?: MCRUser;
+  showLocalLogins?: boolean;
+  logout: () => Promise<void>;
+  loginWithIDM: () => void;
 }
 
-export interface JsonObject {
-  [key: string]: any;
-}
-
-export interface TableContentShape {
-  headRow: string[];
-  bodyRows: string[][];
-}
+// FORMS
 
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
@@ -87,6 +86,8 @@ export interface AdminBannerShape extends AdminBannerMethods {
   errorMessage?: string;
 }
 
+// ALERTS
+
 export enum AlertTypes {
   ERROR = "error",
   INFO = "info",
@@ -106,4 +107,17 @@ export interface TimeShape {
   hour: number;
   minute: number;
   second: number;
+}
+
+// OTHER
+
+export type { IconType } from "react-icons";
+
+export interface AnyObject {
+  [key: string]: any;
+}
+
+export interface TableContentShape {
+  headRow: string[];
+  bodyRows: string[][];
 }

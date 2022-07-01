@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+// components
+import { Profile } from "views";
 // utils
 import {
   mockAdminUser,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils/auth";
-// views
-import { Profile } from "../index";
+import { useUser } from "utils";
 
 const profileView = (
   <RouterWrappedComponent>
@@ -18,7 +18,7 @@ const profileView = (
 
 // MOCKS
 
-jest.mock("utils/auth");
+jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 // TESTS

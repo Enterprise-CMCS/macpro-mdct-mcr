@@ -4,15 +4,14 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { Accordion } from "@chakra-ui/react";
-import { AccordionItem } from "../index";
-// data
-import data from "../../data/home-view.json";
+import { AccordionItem } from "components";
+import verbiage from "verbiage/home-view";
 
 const accordionItemComponent = (
   <RouterWrappedComponent>
     <Accordion>
       <AccordionItem
-        label={data.cards.MCPAR.accordion.buttonLabel}
+        label={verbiage.cards.MCPAR.accordion.buttonLabel}
         data-testid="accordion-item"
       />
     </Accordion>

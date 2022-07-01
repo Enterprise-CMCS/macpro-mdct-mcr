@@ -2,14 +2,11 @@ import { Link as RouterLink } from "react-router-dom";
 // components
 import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 // utils
-import {
-  makeMediaQueryClasses,
-  useBreakpoint,
-} from "../../utils/useBreakpoint";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
 // assets
-import hhsLogo from "../../assets/images/logo_hhs.svg";
-import mcrLogo from "../../assets/images/logo_mcr_footer.png";
-import medicaidLogo from "../../assets/images/logo_medicaid.svg";
+import hhsLogo from "assets/logos/logo_hhs.svg";
+import mcrLogo from "assets/logos/logo_mcr_footer.png";
+import medicaidLogo from "assets/logos/logo_medicaid.svg";
 
 export const Footer = () => {
   const { isMobile } = useBreakpoint();
