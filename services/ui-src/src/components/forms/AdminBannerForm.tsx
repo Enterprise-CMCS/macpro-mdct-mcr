@@ -14,7 +14,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     const newBannerData = {
       key: bannerId,
       titleText: formData.titleText,
-      description: formData.description,
+      descriptionText: formData.descriptionText,
       link: formData.link,
       startDate: formData.startDate,
       endDate: formData.endDate,

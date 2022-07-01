@@ -7,7 +7,7 @@ const bannerComponent = (
   <Banner
     bannerData={{
       titleText: "Test banner!",
-      description: "This is for testing.",
+      descriptionText: "This is for testing.",
     }}
     data-testid="test-banner"
   />

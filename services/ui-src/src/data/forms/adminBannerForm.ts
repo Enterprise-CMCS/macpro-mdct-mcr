@@ -21,10 +21,10 @@ export const form = {
       },
     },
     {
-      id: "abf-description",
+      id: "abf-descriptionText",
       type: "textarea",
       props: {
-        name: "description",
+        name: "descriptionText",
         label: "Description text",
         placeholder: "New banner description",
       },

@@ -21,7 +21,7 @@ const adminBannerFormComponent = (writeAdminBanner: Function) => (
 const fillOutForm = async (form: any) => {
   // selectors for all the required fields
   const titleInput = form.querySelector("[name='titleText']")!;
-  const descriptionInput = form.querySelector("[name='description']")!;
+  const descriptionInput = form.querySelector("[name='descriptionText']")!;
   const startDateMonthInput = form.querySelector("[name='startDateMonth']")!;
   const startDateDayInput = form.querySelector("[name='startDateDay']")!;
   const startDateYearInput = form.querySelector("[name='startDateYear']")!;
@@ -56,7 +56,7 @@ describe("Test AdminBannerForm component", () => {
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
       key: bannerId,
       titleText: "this is the title text",
-      description: "this is the description text",
+      descriptionText: "this is the description text",
       link: undefined,
       startDate: convertDateEtToUtc(
         { year: 2022, month: 1, day: 1 },

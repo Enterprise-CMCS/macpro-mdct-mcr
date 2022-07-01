@@ -7,7 +7,7 @@ jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     getValues: jest.fn().mockReturnValue({
       titleText: "Mock preview banner title",
-      description: "Mock preview banner description",
+      descriptionText: "Mock preview banner description",
       link: "",
     }),
   }),
