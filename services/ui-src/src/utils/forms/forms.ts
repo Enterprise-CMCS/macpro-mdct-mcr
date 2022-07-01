@@ -38,3 +38,16 @@ export const formFieldFactory = (fields: FormField[]) =>
       ...field.props,
     })
   );
+
+export const sortFormErrors = (form: any, errors: any) => {
+  // get correct registration order of form fields
+  const orderedFields = Object.keys(form.getValues());
+  // sort errors into new array
+  const sortedErrorArray: any = [];
+  orderedFields.forEach((fieldName: any) => {
+    if (errors[fieldName]) {
+      sortedErrorArray.push(fieldName);
+    }
+  });
+  return sortedErrorArray;
+};
