@@ -5,10 +5,10 @@ export const form = {
   },
   fields: [
     {
-      id: "abf-titletext",
+      id: "abf-title",
       type: "text",
       props: {
-        name: "titleText",
+        name: "title",
         label: "Title text",
         placeholder: "New banner title",
       },
@@ -21,10 +21,10 @@ export const form = {
       },
     },
     {
-      id: "abf-descriptionText",
+      id: "abf-description",
       type: "textarea",
       props: {
-        name: "descriptionText",
+        name: "description",
         label: "Description text",
         placeholder: "New banner description",
       },
@@ -76,9 +76,6 @@ export const form = {
     {
       id: "abf-startDateMonth",
       type: "child",
-      props: {
-        name: "startDateMonth",
-      },
       validation: {
         type: "number",
         options: {
@@ -90,9 +87,6 @@ export const form = {
     {
       id: "abf-startDateDay",
       type: "child",
-      props: {
-        name: "startDateDay",
-      },
       validation: {
         type: "number",
         options: {
@@ -104,9 +98,6 @@ export const form = {
     {
       id: "abf-startDateYear",
       type: "child",
-      props: {
-        name: "startDateYear",
-      },
       validation: {
         type: "number",
         options: {
@@ -139,9 +130,6 @@ export const form = {
     {
       id: "abf-endDateMonth",
       type: "child",
-      props: {
-        name: "endDateMonth",
-      },
       validation: {
         type: "number",
         options: {
@@ -153,9 +141,6 @@ export const form = {
     {
       id: "abf-endDateDay",
       type: "child",
-      props: {
-        name: "endDateDay",
-      },
       validation: {
         type: "number",
         options: {
@@ -167,9 +152,6 @@ export const form = {
     {
       id: "abf-endDateYear",
       type: "child",
-      props: {
-        name: "endDateYear",
-      },
       validation: {
         type: "number",
         options: {

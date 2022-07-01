@@ -23,7 +23,7 @@ beforeEach(() => {
 describe("Admin banner integration tests", () => {
   it("Fills out form and writes banner without error", () => {
     // selectors for all the required fields
-    const titleInput = "[name='titleText']";
+    const titleInput = "[name='title']";
     const descriptionInput = "[name='description']";
     const startDateMonthInput = "[name='startDateMonth']";
     const startDateDayInput = "[name='startDateDay']";

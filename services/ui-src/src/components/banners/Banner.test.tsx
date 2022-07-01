@@ -6,8 +6,8 @@ import { Banner } from "components";
 const bannerComponent = (
   <Banner
     bannerData={{
-      titleText: "Test banner!",
-      descriptionText: "This is for testing.",
+      title: "Test banner!",
+      description: "This is for testing.",
     }}
     data-testid="test-banner"
   />
