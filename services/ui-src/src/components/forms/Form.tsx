@@ -12,7 +12,6 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   // make form context
   const form = useForm({
     resolver: yupResolver(schema),
-    // shouldFocusError: true,
     ...(options as any),
   });
 
@@ -22,11 +21,11 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
     const headerHeight = document
       .getElementById("header")
       ?.getBoundingClientRect()!.height!;
-    const rem = 16;
+    const scrollOffset = 16 * 6; // 6rem
 
     let scrollLength;
     if (fieldTop <= headerHeight) {
-      scrollLength = fieldTop - headerHeight - rem * 6;
+      scrollLength = fieldTop - headerHeight - scrollOffset;
       window.scrollBy({ top: scrollLength, left: 0, behavior: "smooth" });
     }
 
