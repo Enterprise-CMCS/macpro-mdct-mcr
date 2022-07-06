@@ -37,7 +37,7 @@ export const Profile = () => {
             <Text>{state}</Text>
           </Flex>
         )}
-        {userRole === UserRoles.BO_REP_ADMIN && (
+        {userRole === UserRoles.ADMIN && (
           <Button
             colorScheme="colorSchemes.main"
             data-testid="banner-admin-button"
