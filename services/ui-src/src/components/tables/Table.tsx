@@ -17,9 +17,9 @@ export const Table = ({ content, variant, lastCellsBold, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <TableRoot variant={variant} size="sm" {...props}>
-      <VisuallyHidden>
-        <TableCaption placement="top">{content.caption}</TableCaption>
-      </VisuallyHidden>
+      <TableCaption placement="top" sx={sx.captionBox}>
+        <VisuallyHidden>{content.caption}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           {/* Head Row */}
@@ -66,6 +66,11 @@ interface Props {
 }
 
 const sx = {
+  captionBox: {
+    margin: 0,
+    padding: 0,
+    height: 0,
+  },
   tableHeader: {
     padding: "0.75rem 0.5rem",
     fontSize: "sm",
