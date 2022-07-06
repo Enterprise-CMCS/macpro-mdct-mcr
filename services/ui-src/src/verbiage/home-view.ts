@@ -12,6 +12,7 @@ export default {
         buttonLabel: "When is the MCPAR due?",
         text: "Due dates vary based on contract year of the managed care program and contract period for the first report.",
         table: {
+          caption: "MCPAR Due Dates by Contract Year",
           headRow: ["Contract Year", "Contract Period", "Due Date"],
           bodyRows: [
             ["Jul to Jun", "7/1/21 to 6/30/22", "Dec 27, 2022"],
