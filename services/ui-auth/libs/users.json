@@ -302,7 +302,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctmcr-approver"
+        "Value": "mdctmcr-bo-user"
       }
     ]
   }

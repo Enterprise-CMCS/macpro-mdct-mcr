@@ -7,7 +7,7 @@ import { UserRoles } from "types";
 import { ScrollToTopComponent } from "utils";
 
 export const AppRoutes = ({ userRole }: Props) => {
-  const isAdmin = userRole === UserRoles.ADMIN;
+  const isAdmin = userRole === UserRoles.BO_REP_ADMIN;
 
   return (
     <main id="main-content" tabIndex={-1}>

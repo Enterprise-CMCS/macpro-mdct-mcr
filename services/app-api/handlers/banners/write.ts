@@ -8,7 +8,7 @@ import {
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
 export const writeBanner = handler(async (event, _context) => {
-  if (!hasPermissions(event, [UserRoles.ADMIN])) {
+  if (!hasPermissions(event, [UserRoles.BO_REP_ADMIN])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: UNAUTHORIZED_MESSAGE,

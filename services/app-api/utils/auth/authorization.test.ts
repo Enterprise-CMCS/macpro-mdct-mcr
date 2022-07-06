@@ -43,18 +43,18 @@ describe("Check user has permissions", () => {
   beforeEach(() => {
     event.headers = { "x-api-key": "test" };
     mockedDecode.mockReturnValue({
-      "custom:cms_roles": UserRoles.ADMIN,
+      "custom:cms_roles": UserRoles.BO_REP_ADMIN,
     });
   });
 
   test("has permissions should pass when the asked for role is the given role", () => {
-    expect(hasPermissions(event, [UserRoles.ADMIN])).toBeTruthy();
+    expect(hasPermissions(event, [UserRoles.BO_REP_ADMIN])).toBeTruthy();
   });
   test("has permissions should fail when the asked for role is the given role", () => {
-    expect(hasPermissions(event, [UserRoles.STATE])).toBeFalsy();
+    expect(hasPermissions(event, [UserRoles.STATE_USER])).toBeFalsy();
   });
   test("has permissions should fail when the api token is missing", () => {
     event.headers = {};
-    expect(hasPermissions(event, [UserRoles.ADMIN])).toBeFalsy();
+    expect(hasPermissions(event, [UserRoles.BO_REP_ADMIN])).toBeFalsy();
   });
 });
