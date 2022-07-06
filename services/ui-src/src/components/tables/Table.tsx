@@ -1,5 +1,14 @@
 // components
-import { Table as TableRoot, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Table as TableRoot,
+  TableCaption,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  VisuallyHidden,
+} from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses } from "utils";
 import { TableContentShape } from "types";
@@ -8,11 +17,19 @@ export const Table = ({ content, variant, lastCellsBold, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <TableRoot variant={variant} size="sm" {...props}>
+      <VisuallyHidden>
+        <TableCaption placement="top">{content.caption}</TableCaption>
+      </VisuallyHidden>
       <Thead>
         <Tr>
           {/* Head Row */}
           {content.headRow.map((headerCell: string, index: number) => (
-            <Th key={index} sx={sx.tableHeader} className={mqClasses}>
+            <Th
+              key={index}
+              scope="col"
+              sx={sx.tableHeader}
+              className={mqClasses}
+            >
               {headerCell}
             </Th>
           ))}
