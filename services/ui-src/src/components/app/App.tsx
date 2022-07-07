@@ -10,6 +10,7 @@ import {
   LoginCognito,
   LoginIDM,
   SkipNav,
+  Sidebar,
 } from "components";
 import { Error } from "../../views";
 
@@ -25,6 +26,7 @@ export const App = () => {
             text="Skip to main content"
           />
           <Header handleLogout={logout} />
+          <Sidebar />
           <Container sx={sx.appContainer} data-testid="app-container">
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes userRole={user?.userRole} />
