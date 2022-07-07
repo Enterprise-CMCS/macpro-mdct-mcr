@@ -80,11 +80,11 @@ const LinkItems: LinkItemProps[] = [
 export const Sidebar = () => {
   const { pathname } = useLocation();
   const isMcparReport = pathname.includes("/mcpar");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <>
       {isMcparReport && (
-        <Box sx={sx.root} className={isOpen ? "closed" : "open"}>
+        <Box sx={sx.root} className={isOpen ? "open" : "closed"}>
           <Box
             as="button"
             sx={sx.closeButton}
