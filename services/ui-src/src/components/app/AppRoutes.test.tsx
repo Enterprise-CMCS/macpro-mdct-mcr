@@ -3,9 +3,10 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { AppRoutes } from "components";
+import { UserRoles } from "types";
 
-const adminUserRole = "mdctmcr-approver";
-const stateUserRole = "mdctmcr-state-user";
+const adminUserRole = UserRoles.ADMIN;
+const stateUserRole = UserRoles.STATE_USER;
 
 const appRoutesComponent = (history: any, userRole: string) => (
   <Router location={history.location} navigator={history}>
