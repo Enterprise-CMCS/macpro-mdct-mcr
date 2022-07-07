@@ -5,6 +5,7 @@ import {
   AdminBannerContext,
   AdminBannerForm,
   Banner,
+  BasicPage,
   ErrorAlert,
 } from "components";
 // utils
@@ -33,72 +34,63 @@ export const Admin = () => {
   };
 
   return (
-    <section>
-      <Box sx={sx.root} data-testid="admin-view">
-        <Flex sx={sx.mainContentFlex}>
-          <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
-          <Box sx={sx.introTextBox}>
-            <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
-              {verbiage.intro.header}
-            </Heading>
-            <Text>{verbiage.intro.body}</Text>
-          </Box>
-          <Box sx={sx.currentBannerSectionBox}>
-            <Text sx={sx.sectionHeader}>Current Banner</Text>
-            <Collapse in={!!bannerData?.key}>
-              {bannerData?.key && (
-                <Flex sx={sx.currentBannerInfo}>
-                  <Text sx={sx.currentBannerStatus}>
-                    Status:{" "}
-                    <span className={bannerIsActive ? "active" : "inactive"}>
-                      {bannerIsActive ? "Active" : "Inactive"}
-                    </span>
-                  </Text>
-                  <Text sx={sx.currentBannerDate}>
-                    Start Date:{" "}
-                    <span>{formatDateUtcToEt(bannerData?.startDate)}</span>
-                  </Text>
-                  <Text sx={sx.currentBannerDate}>
-                    End Date:{" "}
-                    <span>{formatDateUtcToEt(bannerData?.endDate)}</span>
-                  </Text>
-                </Flex>
-              )}
-              <Flex sx={sx.currentBannerFlex}>
-                <Banner bannerData={bannerData} />
-                <Button
-                  sx={sx.deleteBannerButton}
-                  colorScheme="colorSchemes.error"
-                  onClick={deleteBanner}
-                >
-                  Delete Current Banner
-                </Button>
-              </Flex>
-            </Collapse>
-            {!bannerData?.key && <Text>There is no current banner</Text>}
-          </Box>
-          <Flex sx={sx.newBannerBox}>
-            <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-            <AdminBannerForm writeAdminBanner={writeAdminBanner} />
-          </Flex>
-        </Flex>
+    <BasicPage sxOverride={sx.layout} data-testid="admin-view">
+      <ErrorAlert error={error} sxOverride={sx.errorAlert} />
+      <Box sx={sx.introTextBox}>
+        <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
+          {verbiage.intro.header}
+        </Heading>
+        <Text>{verbiage.intro.body}</Text>
       </Box>
-    </section>
+      <Box sx={sx.currentBannerSectionBox}>
+        <Text sx={sx.sectionHeader}>Current Banner</Text>
+        <Collapse in={!!bannerData?.key}>
+          {bannerData?.key && (
+            <Flex sx={sx.currentBannerInfo}>
+              <Text sx={sx.currentBannerStatus}>
+                Status:{" "}
+                <span className={bannerIsActive ? "active" : "inactive"}>
+                  {bannerIsActive ? "Active" : "Inactive"}
+                </span>
+              </Text>
+              <Text sx={sx.currentBannerDate}>
+                Start Date:{" "}
+                <span>{formatDateUtcToEt(bannerData?.startDate)}</span>
+              </Text>
+              <Text sx={sx.currentBannerDate}>
+                End Date: <span>{formatDateUtcToEt(bannerData?.endDate)}</span>
+              </Text>
+            </Flex>
+          )}
+          <Flex sx={sx.currentBannerFlex}>
+            <Banner bannerData={bannerData} />
+            <Button
+              sx={sx.deleteBannerButton}
+              colorScheme="colorSchemes.error"
+              onClick={deleteBanner}
+            >
+              Delete Current Banner
+            </Button>
+          </Flex>
+        </Collapse>
+        {!bannerData?.key && <Text>There is no current banner</Text>}
+      </Box>
+      <Flex sx={sx.newBannerBox}>
+        <Text sx={sx.sectionHeader}>Create a New Banner</Text>
+        <AdminBannerForm writeAdminBanner={writeAdminBanner} />
+      </Flex>
+    </BasicPage>
   );
 };
 
 const sx = {
-  root: {
-    flexShrink: "0",
+  layout: {
+    ".contentFlex": {
+      marginTop: "3.5rem",
+    },
   },
   errorAlert: {
     width: "100% !important",
-  },
-  mainContentFlex: {
-    flexDirection: "column",
-    alignItems: "center",
-    margin: "3.5rem auto 0",
-    maxWidth: "contentColumnSmall",
   },
   introTextBox: {
     width: "100%",

@@ -1,73 +1,68 @@
 import { useNavigate } from "react-router-dom";
 // components
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Heading } from "@chakra-ui/react";
+import { BasicPage, Table } from "components";
 //utils
 import { useUser } from "utils";
 import { UserRoles } from "types";
 
 export const Profile = () => {
+  const navigate = useNavigate();
+
   const { user } = useUser();
   const { email, given_name, family_name, userRole, state } = user ?? {};
-  const navigate = useNavigate();
+
+  const tableContent = {
+    caption: "Profile Account Information",
+    bodyRows: [
+      ["Email", email!],
+      ["First Name", given_name!],
+      ["Last Name", family_name!],
+      ["Role", userRole!],
+    ],
+  };
+  if (state) {
+    tableContent.bodyRows.push(["State", state]);
+  }
+
   return (
-    <>
-      <Flex sx={sx.root} data-testid="profile-view">
-        <Heading as="h1" size="xl" sx={sx.heading}>
-          Account Info
-        </Heading>
-        <Flex sx={sx.variantRow}>
-          <Text sx={sx.fieldName}>Email</Text>
-          <Text>{email}</Text>
-        </Flex>
-        <Flex>
-          <Text sx={sx.fieldName}>First Name</Text>
-          <Text>{given_name}</Text>
-        </Flex>
-        <Flex sx={sx.variantRow}>
-          <Text sx={sx.fieldName}>Last Name</Text>
-          <Text>{family_name}</Text>
-        </Flex>
-        <Flex>
-          <Text sx={sx.fieldName}>Role</Text>
-          <Text>{userRole}</Text>
-        </Flex>
-        {state && (
-          <Flex sx={sx.variantRow}>
-            <Text sx={sx.fieldName}>State</Text>
-            <Text>{state}</Text>
-          </Flex>
-        )}
-        {userRole === UserRoles.ADMIN && (
-          <Button
-            colorScheme="colorSchemes.main"
-            data-testid="banner-admin-button"
-            sx={sx.adminButton}
-            onClick={() => navigate("/admin")}
-          >
-            Banner Editor
-          </Button>
-        )}
-      </Flex>
-    </>
+    <BasicPage sx={sx.layout} data-testid="profile-view">
+      <Heading as="h1" size="xl" sx={sx.heading}>
+        Account Info
+      </Heading>
+      <Table content={tableContent} variant="striped" sxOverride={sx.table} />
+      {userRole === UserRoles.ADMIN && (
+        <Button
+          colorScheme="colorSchemes.main"
+          data-testid="banner-admin-button"
+          sx={sx.adminButton}
+          onClick={() => navigate("/admin")}
+        >
+          Banner Editor
+        </Button>
+      )}
+    </BasicPage>
   );
 };
 
 const sx = {
-  root: {
-    maxW: "30rem",
-    paddingY: "12",
-    height: "100%",
-    flexDirection: "column",
+  layout: {
+    ".contentFlex": {
+      marginTop: "3.5rem",
+    },
   },
   heading: {
     marginBottom: "2rem",
   },
-  fieldName: {
-    minWidth: "8rem",
-    fontWeight: "semibold",
-  },
-  variantRow: {
-    background: "palette.gray_lightest",
+  table: {
+    maxWidth: "25rem",
+    "tr td:first-of-type": {
+      width: "8rem",
+      fontWeight: "semibold",
+    },
+    td: {
+      padding: "0.5rem",
+    },
   },
   adminButton: {
     marginTop: "2rem",

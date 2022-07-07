@@ -19,7 +19,7 @@ import {
 export const DateField = ({
   name: parentFieldName,
   label: parentFieldLabel,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -73,7 +73,7 @@ export const DateField = ({
   };
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDateField
         label={parentFieldLabel}
         onBlur={(e) => onBlurHandler(e)}
@@ -96,7 +96,7 @@ export const DateField = ({
 interface Props {
   name: string;
   label: string;
-  sxOverrides?: AnyObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 

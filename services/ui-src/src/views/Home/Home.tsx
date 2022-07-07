@@ -1,7 +1,12 @@
 import { useContext } from "react";
 // components
-import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { AdminBannerContext, Banner, TemplateCard } from "components";
+import { Box, Collapse, Heading, Text } from "@chakra-ui/react";
+import {
+  AdminBannerContext,
+  Banner,
+  BasicPage,
+  TemplateCard,
+} from "components";
 // utils
 import { checkBannerActivityStatus } from "utils";
 import verbiage from "verbiage/home-view";
@@ -15,54 +20,42 @@ export const Home = () => {
   const showBanner = !!bannerData.key && bannerIsActive;
   const { intro, cards } = verbiage;
   return (
-    <section>
-      <Box sx={sx.root} data-testid="home-view">
-        <Collapse in={showBanner}>
-          <Banner bannerData={bannerData} />
-        </Collapse>
-        <Flex
-          sx={sx.mainContentFlex}
-          className={showBanner ? "with-banner" : ""}
-        >
-          <Box sx={sx.introTextBox}>
-            <Heading as="h1" sx={sx.headerText}>
-              {intro.header}
-            </Heading>
-            <Text>{intro.body}</Text>
-          </Box>
-          <TemplateCard
-            templateName="MCPAR"
-            verbiage={cards.MCPAR}
-            cardprops={sx.card}
-          />
-          <TemplateCard
-            templateName="MLR"
-            verbiage={cards.MLR}
-            cardprops={sx.card}
-            isDisabled
-          />
-          <TemplateCard
-            templateName="NAAAR"
-            verbiage={cards.NAAAR}
-            cardprops={sx.card}
-            isDisabled
-          />
-        </Flex>
-      </Box>
-    </section>
+    <>
+      <Collapse in={showBanner}>
+        <Banner bannerData={bannerData} />
+      </Collapse>
+      <BasicPage sx={sx.layout} data-testid="home-view">
+        <Box sx={sx.introTextBox}>
+          <Heading as="h1" sx={sx.headerText}>
+            {intro.header}
+          </Heading>
+          <Text>{intro.body}</Text>
+        </Box>
+        <TemplateCard
+          templateName="MCPAR"
+          verbiage={cards.MCPAR}
+          cardprops={sx.card}
+        />
+        <TemplateCard
+          templateName="MLR"
+          verbiage={cards.MLR}
+          cardprops={sx.card}
+          isDisabled
+        />
+        <TemplateCard
+          templateName="NAAAR"
+          verbiage={cards.NAAAR}
+          cardprops={sx.card}
+          isDisabled
+        />
+      </BasicPage>
+    </>
   );
 };
 
 const sx = {
-  root: {
-    flexShrink: "0",
-  },
-  mainContentFlex: {
-    flexDirection: "column",
-    alignItems: "center",
-    margin: "5.5rem auto 0",
-    maxWidth: "contentColumnSmall",
-    "&.with-banner": {
+  layout: {
+    ".contentFlex": {
       marginTop: "3.5rem",
     },
   },

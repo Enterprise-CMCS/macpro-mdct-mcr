@@ -10,7 +10,7 @@ export const TextField = ({
   name,
   label,
   placeholder,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -27,7 +27,7 @@ export const TextField = ({
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsTextField
         name={name}
         id={name}
@@ -45,7 +45,7 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  sxOverrides?: AnyObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 

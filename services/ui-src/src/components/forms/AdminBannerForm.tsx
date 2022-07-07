@@ -67,7 +67,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
-        <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
+        <ErrorAlert error={error} sxOverride={sx.errorAlert} />
         <TextField
           name="title"
           label="Title text"

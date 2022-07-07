@@ -5,13 +5,13 @@ import { useUser } from "utils";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
   AppRoutes,
+  Error,
   Footer,
   Header,
   LoginCognito,
   LoginIDM,
   SkipNav,
 } from "components";
-import { Error } from "views";
 
 export const App = () => {
   const { logout, user, showLocalLogins } = useUser();
