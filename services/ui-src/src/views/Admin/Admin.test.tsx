@@ -2,15 +2,15 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
+// components
+import { Admin } from "views";
+import { AdminBannerContext } from "components";
 // utils
 import {
   RouterWrappedComponent,
   mockBannerData,
   mockBannerDataEmpty,
 } from "utils/testing/setupJest";
-// views
-import { Admin } from "../index";
-import { AdminBannerContext } from "components";
 
 const mockBannerMethods = {
   fetchAdminBanner: jest.fn(() => {}),

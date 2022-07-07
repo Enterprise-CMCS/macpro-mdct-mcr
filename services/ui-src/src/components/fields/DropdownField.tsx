@@ -3,8 +3,8 @@ import { useFormContext } from "react-hook-form";
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent, StyleObject } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { InputChangeEvent, AnyObject } from "types";
 
 export const DropdownField = ({
   name,
@@ -50,7 +50,7 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
-  sxOverrides?: StyleObject;
+  sxOverrides?: AnyObject;
   [key: string]: any;
 }
 

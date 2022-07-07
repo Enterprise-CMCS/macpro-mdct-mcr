@@ -1,4 +1,4 @@
-import { getSignedTemplateUrl } from "./template";
+import { getSignedTemplateUrl } from "./getTemplateUrl";
 
 const testTemplateName = "TestName";
 

@@ -1,5 +1,5 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import { DateShape, TimeShape } from "../types/types";
+import { DateShape, TimeShape } from "types";
 
 export const midnight: TimeShape = { hour: 0, minute: 0, second: 0 };
 export const oneSecondToMidnight: TimeShape = {

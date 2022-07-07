@@ -1,5 +1,5 @@
 // utils
-import { useUser } from "utils/auth";
+import { useUser } from "utils";
 // components
 import { Box, Button, Heading } from "@chakra-ui/react";
 

@@ -9,12 +9,9 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { Icon, MenuOption } from "../index";
+import { Icon, MenuOption } from "components";
 // utils
-import {
-  makeMediaQueryClasses,
-  useBreakpoint,
-} from "../../utils/useBreakpoint";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();

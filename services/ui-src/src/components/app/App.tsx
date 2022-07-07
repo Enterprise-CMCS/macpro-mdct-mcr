@@ -1,6 +1,6 @@
 import { ErrorBoundary } from "react-error-boundary";
 // utils
-import { useUser } from "utils/auth";
+import { useUser } from "utils";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
@@ -11,7 +11,7 @@ import {
   LoginIDM,
   SkipNav,
 } from "components";
-import { Error } from "../../views";
+import { Error } from "views";
 
 export const App = () => {
   const { logout, user, showLocalLogins } = useUser();

@@ -11,6 +11,10 @@ const headerComponent = (
   </RouterWrappedComponent>
 );
 
+jest.mock("react-router-dom", () => ({
+  useLocation: jest.fn(() => ({ pathname: "/mcpar" })),
+}));
+
 describe("Test Header", () => {
   beforeEach(() => {
     render(headerComponent);
@@ -31,6 +35,10 @@ describe("Test Header", () => {
 
   test("Menu button is visible", () => {
     expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
+  });
+
+  test("Subnav is visible on MCPAR report screens", () => {
+    expect(screen.getByTestId("leave-form-button")).toBeVisible();
   });
 });
 
