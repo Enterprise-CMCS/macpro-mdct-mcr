@@ -13,7 +13,6 @@ export const MCPARForm = () => {
 const sx = {
   root: {
     maxW: "30rem",
-    paddingY: "12",
     height: "100%",
     flexDirection: "column",
   },

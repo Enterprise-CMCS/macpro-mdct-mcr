@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Flex, Link, Text, FlexProps } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, FlexProps } from "@chakra-ui/react";
 import { ArrowIcon, CheckCircleIcon } from "@cmsgov/design-system";
 
 interface LinkItemProps {
@@ -67,6 +67,7 @@ const LinkItems: LinkItemProps[] = [
 ];
 
 export const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [openMenuItemList, setOpenMenuItems] = useState([""]);
   const toggleVisibility = (parentName: string) => {
     if (openMenuItemList.includes(parentName)) {
@@ -75,12 +76,15 @@ export const Sidebar = () => {
       setOpenMenuItems((state) => [...state, parentName]);
     }
   };
+
   return (
-    <Box sx={sx.root}>
-      <Flex sx={sx.sideNavTopFlex}>
-        <Text sx={sx.sideNavHeader}>MCPAR Report Submission Form</Text>
-        <CloseButton />
-      </Flex>
+    <Box sx={sx.root} className={isOpen ? "closed" : "open"}>
+      <Box as="button" sx={sx.closeButton} onClick={() => setIsOpen(!isOpen)}>
+        <ArrowIcon title="closeNavBarButton" direction="left" />
+      </Box>
+      <Box sx={sx.topBox}>
+        <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
+      </Box>
       {LinkItems.map((link) => (
         <NavItem
           key={link.name}
@@ -97,14 +101,6 @@ export const Sidebar = () => {
   );
 };
 
-const CloseButton = () => {
-  return (
-    <Flex align="center" paddingY="0.5rem" marginLeft="1.25rem" sx={sx.temp}>
-      <ArrowIcon title="closeNavBarButton" direction="left" />
-    </Flex>
-  );
-};
-
 interface NavItemProps extends FlexProps {
   path: string;
   name: string;
@@ -113,8 +109,9 @@ interface NavItemProps extends FlexProps {
   children?: any;
   onClick?: any;
 }
+
 const NavItem = ({
-  path,
+  // path,
   name,
   hasSubItems,
   itemLevel,
@@ -122,69 +119,95 @@ const NavItem = ({
   onClick,
   ...rest
 }: NavItemProps) => {
-  const linkPath = window.location.origin + "/mcpar/" + path;
+  // const linkPath = window.location.origin + "/mcpar/" + path;
   return (
     // <Link href={linkPath} textColor="palette.gray_darkest">
-    <Flex sx={sx.navItemFlex} {...rest} className={itemLevel}>
-      <CheckCircleIcon viewBox="10 10 200 200" />
-      <Text>{name}</Text>
-      <Flex direction="column">{children}</Flex>
-      {hasSubItems && (
-        <Button onClick={onClick}>
+    <button onClick={onClick}>
+      <Flex sx={sx.navItemFlex} {...rest} className={itemLevel}>
+        {/* TODO: swap out for new assets from design */}
+        <CheckCircleIcon />
+        <Text sx={sx.navItemTitle}>{name}</Text>
+        <Flex direction="column">{children}</Flex>
+        {hasSubItems && (
+          // TODO: swap out for new assets from design
           <ArrowIcon title="openNavItemsArrow" direction="down" />
-        </Button>
-      )}
-    </Flex>
+        )}
+      </Flex>
+    </button>
     // </Link>
   );
 };
 
 const sx = {
   root: {
+    position: "relative",
     minH: "100vh",
+    width: "20rem",
     bg: "palette.gray_lightest",
-    maxW: "15rem",
+    transition: "all 0.3s ease",
+    "&.open": {
+      marginLeft: "-1rem",
+    },
+    "&.closed": {
+      marginLeft: "-21rem",
+    },
   },
-  sideNavTopFlex: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
-    padding: "1rem 1.5rem",
+  topBox: {
+    borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",
   },
-  sideNavHeader: {
+  title: {
     fontSize: "xl",
     fontWeight: "bold",
     minW: "11.5rem",
+    padding: "1rem 1.5rem",
   },
-  temp: {
+  closeButton: {
+    position: "absolute",
+    top: 0,
+    right: "-2rem",
+    height: "2.5rem",
+    width: "2rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "0px 10px 10px 0px",
+    bg: "palette.gray_lightest",
     ".ds-c-icon--arrow-left": {
-      marginBottom: "3.5rem",
-      marginLeft: "0.25rem",
-      borderRadius: "10px 0px 0px 10px",
-      backgroundColor: "palette.gray_lightest",
-      height: "16px",
-      width: "10px",
+      height: "1rem",
+      marginRight: "2px",
+      color: "palette.gray",
     },
   },
   navItemFlex: {
+    width: "20rem",
+    minHeight: "2.5rem",
+    position: "relative",
     align: "center",
-    paddingY: "0.5rem",
-    paddingLeft: "1.25rem",
     role: "group",
-    borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
+    borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",
     fontSize: "0.875rem",
     ".ds-c-icon--check-circle": {
-      fill: "palette.gray_lighter",
+      position: "absolute",
+      top: "13px",
+      left: "0.5rem",
+      color: "palette.gray_lighter",
+      height: "1rem",
+      width: "1rem",
     },
     ".ds-c-icon--arrow-down": {
-      backgroundColor: "palette.gray_lightest",
+      position: "absolute",
+      top: "10px",
+      right: "0.5rem",
+      fontSize: "13px",
       color: "palette.gray",
-      height: "16px",
-      width: "10px",
-      marginLeft: "0.5rem",
-      alignSelf: "center",
     },
+  },
+  navItemTitle: {
+    marginLeft: "2rem",
+    marginRight: "2.5rem",
+    fontSize: "14px",
+    marginY: "10px",
+    width: "100%",
+    textAlign: "left",
   },
 };
