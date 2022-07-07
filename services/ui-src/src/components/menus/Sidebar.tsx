@@ -136,15 +136,14 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
         )}
         {!!children && (
           <Collapse in={isOpen}>
-            {isOpen &&
-              children.map((section) => (
-                <NavSection
-                  key={section.name}
-                  section={section}
-                  level={level + 1}
-                  basePath={itemPath}
-                />
-              ))}
+            {children.map((section) => (
+              <NavSection
+                key={section.name}
+                section={section}
+                level={level + 1}
+                basePath={itemPath}
+              />
+            ))}
           </Collapse>
         )}
       </React.Fragment>
