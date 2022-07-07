@@ -128,11 +128,9 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
             <NavItem name={name} level={level} hasChildren={!!children} />
           </Box>
         ) : (
-          <>
-            <Link as={RouterLink} to={itemPath}>
-              <NavItem name={name} level={level} hasChildren={!!children} />
-            </Link>
-          </>
+          <Link as={RouterLink} to={itemPath}>
+            <NavItem name={name} level={level} hasChildren={!!children} />
+          </Link>
         )}
         {!!children && (
           <Collapse in={isOpen}>
