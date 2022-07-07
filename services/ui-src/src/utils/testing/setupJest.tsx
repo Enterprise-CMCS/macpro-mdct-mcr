@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 // utils
-import { UserContextI } from "types";
+import { UserContextI, UserRoles } from "types";
 import { bannerId } from "../../constants";
 
 // GLOBALS
@@ -44,11 +44,11 @@ export const mockNoUser: UserContextI = {
 
 export const mockStateUser: UserContextI = {
   user: {
-    userRole: "mdctmcr-state-user",
-    state: "MA",
-    email: "stateuser1@test.com",
+    userRole: UserRoles.STATE_USER,
+    email: "stateuser@test.com",
+    given_name: "Thelonious",
     family_name: "States",
-    given_name: "Sammy",
+    state: "MN",
   },
   showLocalLogins: true,
   logout: async () => {},
@@ -57,11 +57,11 @@ export const mockStateUser: UserContextI = {
 
 export const mockAdminUser: UserContextI = {
   user: {
-    userRole: "mdctmcr-approver",
-    state: undefined,
+    userRole: UserRoles.ADMIN,
     email: "adminuser@test.com",
-    family_name: "Admin",
     given_name: "Adam",
+    family_name: "Admin",
+    state: undefined,
   },
   showLocalLogins: false,
   logout: async () => {},

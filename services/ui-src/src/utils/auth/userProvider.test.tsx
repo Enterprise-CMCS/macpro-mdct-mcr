@@ -6,18 +6,21 @@ import { UserContext, UserProvider } from "utils";
 import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { UserRoles } from "types";
+
+const mockAuthPayload = {
+  email: "test@email.com",
+  given_name: "Test",
+  family_name: "IsMe",
+  ["custom:cms_roles"]: UserRoles.STATE_USER,
+  ["custom:cms_state"]: "AL",
+};
 
 jest.mock("aws-amplify", () => ({
   Auth: {
     currentSession: jest.fn().mockReturnValue({
       getIdToken: () => ({
-        payload: {
-          email: "test@email.com",
-          given_name: "Test",
-          family_name: "IsMe",
-          ["custom:cms_roles"]: "mdctmcr-state-user",
-          ["custom:cms_state"]: "AL",
-        },
+        payload: mockAuthPayload,
       }),
     }),
     configure: () => {},
