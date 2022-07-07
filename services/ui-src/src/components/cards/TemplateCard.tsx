@@ -1,5 +1,5 @@
 // components
-import { Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, Icon, TemplateCardAccordion } from "components";
 // utils
 import {
@@ -41,7 +41,7 @@ export const TemplateCard = ({
           />
         )}
         <Flex sx={sx.cardContentFlex}>
-          <Text sx={sx.cardTitleText}>{verbiage.title}</Text>
+          <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
           <Text>{verbiage.body}</Text>
           <Button
             className={mqClasses}
@@ -84,6 +84,7 @@ const sx = {
     marginBottom: "0.5rem",
     fontSize: "lg",
     fontWeight: "bold",
+    lineHeight: "1.5",
   },
   templateDownloadButton: {
     justifyContent: "start",

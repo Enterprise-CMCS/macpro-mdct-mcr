@@ -1,5 +1,55 @@
 [
   {
+    "username": "adminuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "adminuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Adam"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Admins"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-bor"
+      }
+    ]
+  },
+  {
+    "username": "borep@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "borep@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Bobby"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Business"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-bor"
+      }
+    ]
+  },
+  {
     "username": "helpdeskuser@test.com",
     "attributes": [
       {
@@ -50,6 +100,35 @@
       {
         "Name": "custom:cms_state",
         "Value": "MA"
+      }
+    ]
+  },
+  {
+    "username": "stateapprover@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateapprover@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Zara"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Zustimmer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-approver"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MN"
       }
     ]
   },
@@ -170,19 +249,19 @@
     ]
   },
   {
-    "username": "stateuserME@test.com",
+    "username": "stateuserCA@test.com",
     "attributes": [
       {
         "Name": "email",
-        "Value": "stateuserME@test.com"
+        "Value": "stateuserCA@test.com"
       },
       {
         "Name": "given_name",
-        "Value": "Mary"
+        "Value": "Carol"
       },
       {
         "Name": "family_name",
-        "Value": "Maine"
+        "Value": "California"
       },
       {
         "Name": "email_verified",
@@ -194,7 +273,7 @@
       },
       {
         "Name": "custom:cms_state",
-        "Value": "ME"
+        "Value": "CA"
       }
     ]
   },
@@ -228,19 +307,19 @@
     ]
   },
   {
-    "username": "stateuserCA@test.com",
+    "username": "stateuserME@test.com",
     "attributes": [
       {
         "Name": "email",
-        "Value": "stateuserCA@test.com"
+        "Value": "stateuserME@test.com"
       },
       {
         "Name": "given_name",
-        "Value": "Carol"
+        "Value": "Mary"
       },
       {
         "Name": "family_name",
-        "Value": "California"
+        "Value": "Maine"
       },
       {
         "Name": "email_verified",
@@ -252,57 +331,7 @@
       },
       {
         "Name": "custom:cms_state",
-        "Value": "CA"
-      }
-    ]
-  },
-  {
-    "username": "bouser@test.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "bouser@test.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "Bobby"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Business"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:cms_roles",
-        "Value": "mdctmcr-bo-user"
-      }
-    ]
-  },
-  {
-    "username": "adminuser@test.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "adminuser@test.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "Adam"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Admins"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:cms_roles",
-        "Value": "mdctmcr-approver"
+        "Value": "ME"
       }
     ]
   }
