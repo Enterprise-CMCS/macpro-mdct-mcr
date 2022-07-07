@@ -1,155 +1,185 @@
 import React, { useState } from "react";
-import { Box, Flex, Heading, Text, FlexProps } from "@chakra-ui/react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
+// TODO: swap out for new assets from design
 import { ArrowIcon, CheckCircleIcon } from "@cmsgov/design-system";
 
 interface LinkItemProps {
   name: string;
   path: string;
-  hasSubItems?: boolean;
-  parent?: string;
+  children?: LinkItemProps[] | null;
 }
 
 const LinkItems: LinkItemProps[] = [
-  { name: "Get Started", path: "get-started" },
+  {
+    name: "Get Started",
+    path: "/get-started",
+  },
   {
     name: "A: Program Information",
-    path: "program-information",
-    hasSubItems: true,
-  },
-  {
-    name: "Point of Contact",
-    path: "point-of-contact",
-    parent: "A: Program Information",
-  },
-  {
-    name: "Reporting Period",
-    path: "reporting-period",
-    parent: "A: Program Information",
-  },
-  { name: "Add Plans", path: "add-plans", parent: "A: Program Information" },
-  {
-    name: "Add BSS Entities",
-    path: "add-bss-entities",
-    parent: "A: Program Information",
+    path: "/program-information",
+    children: [
+      {
+        name: "Point of Contact",
+        path: "/point-of-contact",
+        children: [
+          {
+            name: "fake sub 1",
+            path: "/fake-sub-1",
+          },
+          {
+            name: "fake sub 2",
+            path: "/fake-sub-2",
+          },
+        ],
+      },
+      {
+        name: "Reporting Period",
+        path: "/reporting-period",
+      },
+      { name: "Add Plans", path: "/add-plans" },
+      {
+        name: "Add BSS Entities",
+        path: "/add-bss-entities",
+      },
+    ],
   },
   {
     name: "B: State-Level Indicators",
-    path: "state-level-indicators",
-    hasSubItems: true,
+    path: "/state-level-indicators",
+    children: [
+      {
+        name: "I: Program Characteristics",
+        path: "/program-characteristics",
+      },
+      {
+        name: "III: Encounter Data Report",
+        path: "/encounter-data-report",
+      },
+      {
+        name: "X: Program Integrity",
+        path: "/program-integrity",
+      },
+    ],
   },
-  {
-    name: "I: Program Characteristics",
-    path: "program-characteristics",
-    parent: "B: State-Level Indicators",
-  },
-  {
-    name: "III: Encounter Data Report",
-    path: "encounter-data-report",
-    parent: "B: State-Level Indicators",
-  },
-  {
-    name: "X: Program Integrity",
-    path: "program-integrity",
-    parent: "B: State-Level Indicators",
-  },
+
   {
     name: "C: Program-Level Indicators",
-    path: "program-level-indicators",
-    hasSubItems: true,
+    path: "/program-level-indicators",
+    children: null,
   },
   {
     name: "D: Plan-Level Indicators",
-    path: "plan-level-indicators",
-    hasSubItems: true,
+    path: "/plan-level-indicators",
+    children: null,
   },
-  { name: "E: BSS Entity Indicators", path: "bss-entity-indicators" },
-  { name: "Review & Submit", path: "review-and-submit" },
+  { name: "E: BSS Entity Indicators", path: "/bss-entity-indicators" },
+  { name: "Review & Submit", path: "/review-and-submit" },
 ];
 
 export const Sidebar = () => {
+  const { pathname } = useLocation();
+  const isMcparReport = pathname.includes("/mcpar");
   const [isOpen, setIsOpen] = useState(false);
-  const [openMenuItemList, setOpenMenuItems] = useState([""]);
-  const toggleVisibility = (parentName: string) => {
-    if (openMenuItemList.includes(parentName)) {
-      setOpenMenuItems(openMenuItemList.filter((name) => name !== parentName));
-    } else {
-      setOpenMenuItems((state) => [...state, parentName]);
-    }
-  };
-
   return (
-    <Box sx={sx.root} className={isOpen ? "closed" : "open"}>
-      <Box as="button" sx={sx.closeButton} onClick={() => setIsOpen(!isOpen)}>
-        <ArrowIcon title="closeNavBarButton" direction="left" />
-      </Box>
-      <Box sx={sx.topBox}>
-        <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
-      </Box>
-      {LinkItems.map((link) => (
-        <NavItem
-          key={link.name}
-          path={link.path}
-          hasSubItems={!!link.hasSubItems}
-          name={link.name}
-          hidden={!!link.parent && !openMenuItemList.includes(link.parent)}
-          onClick={() => {
-            toggleVisibility(link.name);
-          }}
-        />
-      ))}
-    </Box>
+    <>
+      {isMcparReport && (
+        <Box sx={sx.root} className={isOpen ? "closed" : "open"}>
+          <Box
+            as="button"
+            sx={sx.closeButton}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <ArrowIcon title="closeNavBarButton" direction="left" />
+          </Box>
+          <Box sx={sx.topBox}>
+            <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
+          </Box>
+          {LinkItems.map((section) => (
+            <NavSection
+              key={section.name}
+              section={section}
+              level={1}
+              basePath="/mcpar"
+            />
+          ))}
+        </Box>
+      )}
+    </>
   );
 };
 
-interface NavItemProps extends FlexProps {
-  path: string;
-  name: string;
-  hasSubItems: boolean;
-  itemLevel?: string;
-  children?: any;
-  onClick?: any;
+interface NavSectionProps {
+  key: string;
+  section: LinkItemProps;
+  level: number;
+  basePath: string;
 }
 
-const NavItem = ({
-  // path,
-  name,
-  hasSubItems,
-  itemLevel,
-  children,
-  onClick,
-  ...rest
-}: NavItemProps) => {
-  // const linkPath = window.location.origin + "/mcpar/" + path;
+const NavSection = ({ section, level, basePath }: NavSectionProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { name, path, children } = section;
+  const itemPath = `${basePath}${path}`;
   return (
-    // <Link href={linkPath} textColor="palette.gray_darkest">
-    <button onClick={onClick}>
-      <Flex sx={sx.navItemFlex} {...rest} className={itemLevel}>
-        {/* TODO: swap out for new assets from design */}
-        <CheckCircleIcon />
-        <Text sx={sx.navItemTitle}>{name}</Text>
-        <Flex direction="column">{children}</Flex>
-        {hasSubItems && (
-          // TODO: swap out for new assets from design
-          <ArrowIcon title="openNavItemsArrow" direction="down" />
+    <>
+      <React.Fragment key={itemPath}>
+        {children ? (
+          <Box as="button" onClick={() => setIsOpen(!isOpen)}>
+            <NavItem name={name} level={level} hasChildren={!!children} />
+          </Box>
+        ) : (
+          <>
+            <Link as={RouterLink} to={itemPath}>
+              <NavItem name={name} level={level} hasChildren={!!children} />
+            </Link>
+          </>
         )}
-      </Flex>
-    </button>
-    // </Link>
+        {!!children && (
+          <Collapse in={isOpen}>
+            {isOpen &&
+              children.map((section) => (
+                <NavSection
+                  key={section.name}
+                  section={section}
+                  level={level + 1}
+                  basePath={itemPath}
+                />
+              ))}
+          </Collapse>
+        )}
+      </React.Fragment>
+    </>
   );
 };
+
+interface NavItemProps {
+  name: string;
+  level: number;
+  hasChildren: boolean;
+}
+
+const NavItem = ({ name, level, hasChildren }: NavItemProps) => (
+  <Flex sx={sx.navItemFlex}>
+    <CheckCircleIcon />
+    <Text sx={sx.navItemTitle} className={`level-${level}`}>
+      {name}
+    </Text>
+    {!!hasChildren && <ArrowIcon title="openNavItemsArrow" direction="down" />}
+  </Flex>
+);
 
 const sx = {
   root: {
     position: "relative",
-    minH: "100vh",
+    height: "100vh",
     width: "20rem",
     bg: "palette.gray_lightest",
     transition: "all 0.3s ease",
     "&.open": {
-      marginLeft: "-1rem",
+      marginLeft: 0,
     },
     "&.closed": {
-      marginLeft: "-21rem",
+      marginLeft: "-20rem",
     },
   },
   topBox: {
@@ -179,6 +209,7 @@ const sx = {
     },
   },
   navItemFlex: {
+    flexDirection: "column",
     width: "20rem",
     minHeight: "2.5rem",
     position: "relative",
@@ -203,11 +234,18 @@ const sx = {
     },
   },
   navItemTitle: {
-    marginLeft: "2rem",
     marginRight: "2.5rem",
     fontSize: "14px",
     marginY: "10px",
-    width: "100%",
     textAlign: "left",
+    "&.level-1": {
+      marginLeft: "2rem",
+    },
+    "&.level-2": {
+      marginLeft: "3rem",
+    },
+    "&.level-3": {
+      marginLeft: "4rem",
+    },
   },
 };
