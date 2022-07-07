@@ -29,12 +29,13 @@ export const TextField = ({
   return (
     <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
       <CmsdsTextField
-        name={name}
         id={name}
+        name={name}
         label={label}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
+        inputRef={() => form.register(name)}
         {...props}
       />
     </Box>

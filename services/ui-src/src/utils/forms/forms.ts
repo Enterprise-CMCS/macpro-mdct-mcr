@@ -5,6 +5,23 @@ import { DateField, TextField, TextAreaField } from "components";
 // types
 import { FormField } from "types";
 
+export const formFieldFactory = (fields: FormField[]) => {
+  // define form field components
+  const fieldToComponentMap: any = {
+    text: TextField,
+    textarea: TextAreaField,
+    datesplit: DateField,
+    child: React.Fragment,
+  };
+  // create elements from provided fields
+  return fields.map((field) =>
+    React.createElement(fieldToComponentMap[field.type], {
+      key: field.id,
+      ...field.props,
+    })
+  );
+};
+
 export const makeFormSchema = (fields: FormField[]) => {
   // make field validation schema
   const fieldSchema: any = { type: "object", properties: {} };
@@ -24,17 +41,15 @@ export const makeFormSchema = (fields: FormField[]) => {
   return buildYup(fieldSchema, errorMessageSchema);
 };
 
-const fieldToComponentMap: any = {
-  text: TextField,
-  textarea: TextAreaField,
-  datesplit: DateField,
-  child: React.Fragment,
+export const sortFormErrors = (form: any, errors: any) => {
+  // get correct registration order of form fields
+  const orderedFields = Object.keys(form.getValues());
+  // sort errors into new array
+  const sortedErrorArray: any = [];
+  orderedFields.forEach((fieldName: any) => {
+    if (errors[fieldName]) {
+      sortedErrorArray.push(fieldName);
+    }
+  });
+  return sortedErrorArray;
 };
-
-export const formFieldFactory = (fields: FormField[]) =>
-  fields.map((field) =>
-    React.createElement(fieldToComponentMap[field.type], {
-      key: field.id,
-      ...field.props,
-    })
-  );

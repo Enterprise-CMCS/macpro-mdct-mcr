@@ -22,7 +22,7 @@ export const Header = ({ handleLogout }: Props) => {
   const isMcparReport = pathname.includes("/mcpar");
 
   return (
-    <Box sx={sx.root}>
+    <Box sx={sx.root} id="header">
       <Flex sx={sx.usaBannerContainer}>
         <UsaBanner />
       </Flex>
