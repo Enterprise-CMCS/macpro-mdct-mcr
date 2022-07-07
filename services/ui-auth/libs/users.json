@@ -20,16 +20,16 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctmcr-bo-user"
+        "Value": "mdctmcr-bor"
       }
     ]
   },
   {
-    "username": "bouser@test.com",
+    "username": "borep@test.com",
     "attributes": [
       {
         "Name": "email",
-        "Value": "bouser@test.com"
+        "Value": "borep@test.com"
       },
       {
         "Name": "given_name",
@@ -45,7 +45,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctmcr-bo-user"
+        "Value": "mdctmcr-bor"
       }
     ]
   },
