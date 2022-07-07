@@ -1,14 +1,27 @@
 import React from "react";
-import * as yup from "yup";
+import { buildYup } from "schema-to-yup";
 // components
 import { DateField, TextField, TextAreaField } from "components";
 // types
 import { FormField } from "types";
 
 export const makeFormSchema = (fields: FormField[]) => {
-  const schema: any = {};
-  fields.forEach((field: FormField) => (schema[field.id] = field.validation));
-  return yup.object().shape(schema);
+  // make field validation schema
+  const fieldSchema: any = { type: "object", properties: {} };
+  fields.forEach((field: FormField) => {
+    const { type, options } = field.validation;
+    fieldSchema.properties[field.id] = { type, ...options };
+  });
+
+  // make error message schema
+  const errorMessageSchema: any = { errMessages: {} };
+  fields.forEach((field: FormField) => {
+    const { errorMessages } = field.validation;
+    errorMessageSchema.errMessages[field.id] = { ...errorMessages };
+  });
+
+  // make form schema
+  return buildYup(fieldSchema, errorMessageSchema);
 };
 
 const fieldToComponentMap: any = {
