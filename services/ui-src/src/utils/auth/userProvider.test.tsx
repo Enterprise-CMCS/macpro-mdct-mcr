@@ -2,23 +2,25 @@ import { useContext } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-import { UserProvider } from "./userProvider";
-import { UserContext } from "./userContext";
+import { UserContext, UserProvider } from "utils";
 import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { UserRoles } from "types";
+
+const mockAuthPayload = {
+  email: "test@email.com",
+  given_name: "Test",
+  family_name: "IsMe",
+  ["custom:cms_roles"]: UserRoles.STATE_USER,
+  ["custom:cms_state"]: "AL",
+};
 
 jest.mock("aws-amplify", () => ({
   Auth: {
     currentSession: jest.fn().mockReturnValue({
       getIdToken: () => ({
-        payload: {
-          email: "test@email.com",
-          given_name: "Test",
-          family_name: "IsMe",
-          ["custom:cms_roles"]: "mdctmcr-state-user",
-          ["custom:cms_state"]: "AL",
-        },
+        payload: mockAuthPayload,
       }),
     }),
     configure: () => {},

@@ -87,12 +87,12 @@
     ],
     "collectCoverageFrom": [
       "src/components/**/*.{ts,tsx}",
-      "!src/components/index.tsx",
+      "!src/components/index.ts*",
       "src/utils/**/*.{ts,tsx}",
-      "!src/utils/**/index.ts",
-      "!src/utils/constants/*",
+      "!src/utils/**/index.ts*",
       "!src/utils/testing/*",
-      "!src/utils/types/*",
+      "!src/utils/index.ts*",
+      "!src/types/index.ts*",
       "src/views/**/*.{ts,tsx}",
       "!src/views/index.tsx"
     ],

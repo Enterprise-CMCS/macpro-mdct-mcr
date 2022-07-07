@@ -1,8 +1,8 @@
 // components
 import { Accordion, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { AccordionItem, Table } from "../index";
+import { AccordionItem, Table } from "components";
 // utils
-import { JsonObject } from "utils/types/types";
+import { AnyObject } from "types";
 
 export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
   <Accordion sx={sx.root} allowToggle={true} {...props}>
@@ -28,7 +28,7 @@ export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
 );
 
 interface Props {
-  verbiage: JsonObject;
+  verbiage: AnyObject;
   [key: string]: any;
 }
 

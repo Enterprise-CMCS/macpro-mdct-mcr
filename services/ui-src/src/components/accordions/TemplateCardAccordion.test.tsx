@@ -4,13 +4,12 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { TemplateCardAccordion } from "components";
-// data
-import data from "../../data/home-view.json";
+import verbiage from "verbiage/home-view";
 
 const accordionComponent = (
   <RouterWrappedComponent>
     <TemplateCardAccordion
-      verbiage={data.cards.MCPAR}
+      verbiage={verbiage.cards.MCPAR}
       data-testid="test-accordion"
     />
   </RouterWrappedComponent>

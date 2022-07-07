@@ -44,4 +44,15 @@ describe("Header integration tests", () => {
     cy.location("pathname").should("match", /\//);
     cy.get(cognitoLoginButton).should("be.visible");
   });
+
+  /*
+   * TODO: Uncomment during 'program creation' ticket work
+   * it("Header subnav leave form button navigates to /", () => {
+   *   // TODO: navigate to /mcpar via report creation or something
+   *   cy.location("pathname").should("match", /mcpar/);
+   *   const subnavLeaveFormButton = "[data-testid='leave-form-button']";
+   *   cy.get(subnavLeaveFormButton).click();
+   *   cy.location("pathname").should("match", /\//);
+   * });
+   */
 });

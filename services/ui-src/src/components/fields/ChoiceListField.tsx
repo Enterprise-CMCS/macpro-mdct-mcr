@@ -3,8 +3,8 @@ import { useFormContext } from "react-hook-form";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent, StyleObject } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { InputChangeEvent, AnyObject } from "types";
 
 export const ChoiceListField = ({
   name,
@@ -51,6 +51,6 @@ interface Props {
   type: "checkbox" | "radio";
   label: string;
   choices: ChoiceListChoices[];
-  sxOverrides?: StyleObject;
+  sxOverrides?: AnyObject;
   [key: string]: any;
 }

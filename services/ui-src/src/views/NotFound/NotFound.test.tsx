@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
-// views
-import { NotFound } from "../index";
+// components
+import { NotFound } from "views";
 
 const notFoundView = <NotFound />;
 

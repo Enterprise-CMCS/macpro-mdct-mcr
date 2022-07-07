@@ -1,32 +1,31 @@
 import React from "react";
 
-export type { IconType } from "react-icons";
+// USERS
 
 export enum UserRoles {
-  ADMIN = "mdctmcr-approver",
-  STATE = "mdctmcr-state-user",
-  HELP = "mdctmcr-help-desk",
-  STATE_REP = "mdctmcr-state-rep",
-  BOR = "mdctmcr-bor",
+  ADMIN = "mdctmcr-bo-user", // "MDCT MCR Business Owner Representative"
+  HELP_DESK = "mdctmcr-help-desk", // "MDCTMCR Help Desk"
+  STATE_APPROVER = "mdctmcr-approver", // "MDCT MCR Approver"
+  STATE_REP = "mdctmcr-state-rep", // "MDCT MCR State Representative"
+  STATE_USER = "mdctmcr-state-user", // "MDCT MCR State User"
 }
 
-export interface ITerritoryList {
-  label: string;
-  value: string;
+export interface MCRUser {
+  email: string;
+  given_name: string;
+  family_name: string;
+  userRole?: string;
+  state?: string;
 }
 
-export interface StyleObject {
-  [key: string]: any;
+export interface UserContextI {
+  user?: MCRUser;
+  showLocalLogins?: boolean;
+  logout: () => Promise<void>;
+  loginWithIDM: () => void;
 }
 
-export interface JsonObject {
-  [key: string]: any;
-}
-
-export interface TableContentShape {
-  headRow: string[];
-  bodyRows: string[][];
-}
+// FORMS
 
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
@@ -57,6 +56,8 @@ export interface AdminBannerShape extends AdminBannerMethods {
   errorMessage?: string;
 }
 
+// ALERTS
+
 export enum AlertTypes {
   ERROR = "error",
   INFO = "info",
@@ -76,4 +77,18 @@ export interface TimeShape {
   hour: number;
   minute: number;
   second: number;
+}
+
+// OTHER
+
+export type { IconType } from "react-icons";
+
+export interface AnyObject {
+  [key: string]: any;
+}
+
+export interface TableContentShape {
+  caption: string;
+  headRow: string[];
+  bodyRows: string[][];
 }
