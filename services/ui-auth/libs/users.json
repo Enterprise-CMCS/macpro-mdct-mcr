@@ -20,7 +20,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctmcr-bo-user"
+        "Value": "mdctmcr-bor"
       }
     ]
   },
@@ -45,7 +45,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctmcr-bo-user"
+        "Value": "mdctmcr-bor"
       }
     ]
   },

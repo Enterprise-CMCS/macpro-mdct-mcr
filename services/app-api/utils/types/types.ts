@@ -51,7 +51,7 @@ export const enum StatusCodes {
 // USERS
 
 export const enum UserRoles {
-  ADMIN = "mdctmcr-bo-user", // "MDCT MCR Business Owner Representative"
+  ADMIN = "mdctmcr-bor", // "MDCT MCR Business Owner Representative"
   HELP_DESK = "mdctmcr-help-desk", // "MDCTMCR Help Desk"
   STATE_APPROVER = "mdctmcr-approver", // "MDCT MCR Approver"
   STATE_REP = "mdctmcr-state-rep", // "MDCT MCR State Representative"
