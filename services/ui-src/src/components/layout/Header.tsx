@@ -20,6 +20,8 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
   const isMcparReport = pathname.includes("/mcpar/");
+  // TODO: Get current program name
+  const currentProgramName = "Current Program Name";
 
   return (
     <Box sx={sx.root} id="header">
@@ -56,9 +58,8 @@ export const Header = ({ handleLogout }: Props) => {
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
-                {/* TODO: Get current program name */}
                 <Text sx={sx.programNameText}>
-                  Program: Current Program Name
+                  Program: {currentProgramName}
                 </Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
