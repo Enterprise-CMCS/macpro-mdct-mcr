@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { Help } from "views";
+import { Help } from "routes";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 

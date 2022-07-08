@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Admin, Help, Home, NotFound, Profile } from "views";
+import { Admin, Help, Home, NotFound, Profile } from "routes";
 // components
 import { AdminBannerProvider } from "components";
 // utils

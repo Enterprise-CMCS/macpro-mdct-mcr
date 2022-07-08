@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // components
-import { Admin } from "views";
+import { Admin } from "routes";
 import { AdminBannerContext } from "components";
 // utils
 import {
