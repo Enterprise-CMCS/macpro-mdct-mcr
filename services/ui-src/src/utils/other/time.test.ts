@@ -16,10 +16,10 @@ const testDate = {
 
 describe("Test calculateTimeByDateType", () => {
   test("known dateType returns correct date value", () => {
-    const startDateTest = calculateTimeByDateType("startDate");
+    const startDateTest = calculateTimeByDateType("abf-startDate");
     expect(startDateTest).toEqual(midnight);
 
-    const endDateTest = calculateTimeByDateType("endDate");
+    const endDateTest = calculateTimeByDateType("abf-endDate");
     expect(endDateTest).toEqual(oneSecondToMidnight);
   });
 

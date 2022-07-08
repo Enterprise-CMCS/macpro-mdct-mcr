@@ -29,6 +29,36 @@ export interface UserContextI {
 
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
+// FORM
+
+export interface FormField {
+  id: string;
+  type: string;
+  props?: {
+    [key: string]: any;
+  };
+  validation: FormValidation;
+  children?: any;
+}
+
+export interface FormValidation {
+  type: string;
+  options?: {
+    [key: string]: any;
+  };
+  errorMessages?: {
+    [key: string]: any;
+  };
+}
+
+export interface FormJson {
+  options: {
+    mode: string;
+    [key: string]: any;
+  };
+  fields: FormField[];
+}
+
 // BANNER
 
 export interface BannerData {
