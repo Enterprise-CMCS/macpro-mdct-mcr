@@ -1,29 +1,30 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { Apoc } from "routes";
+import { McparReport } from "routes";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import sectionA_pointofcontact from "verbiage/forms/apoc.json";
 
-const apocFormComponent = (
+const mcparComponent = (
   <RouterWrappedComponent>
-    <Apoc />
+    <McparReport pageJson={sectionA_pointofcontact} />
   </RouterWrappedComponent>
 );
 
-describe("Test Apoc view", () => {
+describe("Test McparReport view", () => {
   beforeEach(() => {
-    render(apocFormComponent);
+    render(mcparComponent);
   });
 
-  test("Check that Apoc view renders", () => {
+  test("Check that McparReport view renders", () => {
     expect(screen.getByTestId("apointofcontact")).toBeVisible();
   });
 });
 
-describe("Test Apoc view accessibility", () => {
+describe("Test McparReport view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(apocFormComponent);
+    const { container } = render(mcparComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

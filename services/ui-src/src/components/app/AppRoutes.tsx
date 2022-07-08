@@ -1,10 +1,20 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Admin, Apoc, Dashboard, Help, Home, NotFound, Profile } from "routes";
+import {
+  Admin,
+  Dashboard,
+  Help,
+  Home,
+  McparReport,
+  NotFound,
+  Profile,
+} from "routes";
 // components
 import { AdminBannerProvider } from "components";
 // utils
 import { UserRoles } from "types";
 import { ScrollToTopComponent } from "utils";
+
+import { mcparReportPages } from "verbiage/forms/mcparPages";
 
 export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
@@ -21,10 +31,13 @@ export const AppRoutes = ({ userRole }: Props) => {
           />
           <Route path="/help" element={<Help />} />
           <Route path="/mcpar" element={<Dashboard />} />
-          <Route
-            path="/mcpar/program-information/point-of-contact"
-            element={<Apoc />}
-          />
+          {mcparReportPages.map((page) => (
+            <Route
+              key={page.path}
+              path={`/mcpar${page.path}`}
+              element={<McparReport pageJson={page} />}
+            />
+          ))}
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

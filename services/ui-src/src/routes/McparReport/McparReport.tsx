@@ -2,16 +2,23 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage } from "components";
 // data
-import { pageJson } from "verbiage/forms/aPointOfContact";
+import { AnyObject } from "types";
 
 const onSubmit = () => {};
 
-interface ReportPageIntroI {
-  text: {
-    section: string;
-    subsection: string;
-    info?: string;
-  };
+export const McparReport = ({ pageJson }: Props) => {
+  const { intro, form } = pageJson;
+  return (
+    <ReportPage data-testid={form.id}>
+      <ReportPageIntro text={intro} />
+      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
+      <ReportPageFooter formId={form.id} />
+    </ReportPage>
+  );
+};
+
+interface Props {
+  pageJson: AnyObject;
 }
 
 const ReportPageIntro = ({ text }: ReportPageIntroI) => {
@@ -29,8 +36,12 @@ const ReportPageIntro = ({ text }: ReportPageIntroI) => {
   );
 };
 
-interface ReportPageFooterI {
-  formId: string;
+interface ReportPageIntroI {
+  text: {
+    section: string;
+    subsection: string;
+    info?: string;
+  };
 }
 
 const ReportPageFooter = ({ formId }: ReportPageFooterI) => {
@@ -60,16 +71,9 @@ const ReportPageFooter = ({ formId }: ReportPageFooterI) => {
   );
 };
 
-export const Apoc = () => {
-  const { intro, form } = pageJson;
-  return (
-    <ReportPage data-testid={form.id}>
-      <ReportPageIntro text={intro} />
-      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
-      <ReportPageFooter formId={form.id} />
-    </ReportPage>
-  );
-};
+interface ReportPageFooterI {
+  formId: string;
+}
 
 const sx = {
   introBox: {
