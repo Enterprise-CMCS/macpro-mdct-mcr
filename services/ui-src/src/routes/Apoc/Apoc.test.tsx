@@ -1,27 +1,27 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { APointOfContact } from "routes";
+import { Apoc } from "routes";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 
 const apocFormComponent = (
   <RouterWrappedComponent>
-    <APointOfContact />
+    <Apoc />
   </RouterWrappedComponent>
 );
 
-describe("Test APointOfContact view", () => {
+describe("Test Apoc view", () => {
   beforeEach(() => {
     render(apocFormComponent);
   });
 
-  test("Check that APointOfContact view renders", () => {
+  test("Check that Apoc view renders", () => {
     expect(screen.getByTestId("apointofcontact")).toBeVisible();
   });
 });
 
-describe("Test APointOfContact view accessibility", () => {
+describe("Test Apoc view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(apocFormComponent);
     const results = await axe(container);

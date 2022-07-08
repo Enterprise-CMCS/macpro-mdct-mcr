@@ -5,4 +5,4 @@ export { Home } from "./Home/Home";
 export { NotFound } from "./NotFound/NotFound";
 export { Profile } from "./Profile/Profile";
 // forms
-export { APointOfContact } from "./APointOfContact/APointOfContact";
+export { Apoc } from "./Apoc/Apoc";

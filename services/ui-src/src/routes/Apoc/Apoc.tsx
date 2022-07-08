@@ -65,7 +65,7 @@ const ReportPageFooter = ({ formId }: ReportPageFooterI) => {
   );
 };
 
-export const APointOfContact = () => {
+export const Apoc = () => {
   const { intro, form } = pageJson;
   return (
     <ReportPage data-testid={form.id}>

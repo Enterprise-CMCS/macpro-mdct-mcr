@@ -1,13 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import {
-  Admin,
-  APointOfContact,
-  Dashboard,
-  Help,
-  Home,
-  NotFound,
-  Profile,
-} from "routes";
+import { Admin, Apoc, Dashboard, Help, Home, NotFound, Profile } from "routes";
 // components
 import { AdminBannerProvider } from "components";
 // utils
@@ -31,7 +23,7 @@ export const AppRoutes = ({ userRole }: Props) => {
           <Route path="/mcpar" element={<Dashboard />} />
           <Route
             path="/mcpar/program-information/point-of-contact"
-            element={<APointOfContact />}
+            element={<Apoc />}
           />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
