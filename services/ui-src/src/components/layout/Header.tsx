@@ -67,7 +67,7 @@ export const Header = ({ handleLogout }: Props) => {
                 {!isMobile && (
                   <Link
                     as={RouterLink}
-                    to="/"
+                    to="/mcpar"
                     sx={sx.leaveFormLink}
                     tabIndex={-1}
                   >
