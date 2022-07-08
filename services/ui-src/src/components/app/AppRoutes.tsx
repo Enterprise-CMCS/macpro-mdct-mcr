@@ -22,6 +22,7 @@ export const AppRoutes = ({ userRole }: Props) => {
           <Route path="/help" element={<Help />} />
           {/* TODO: Change /mcpar element during program creation ticket work */}
           <Route path="/mcpar" element={<Dashboard />} />
+          <Route path="/mcpar/temp" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

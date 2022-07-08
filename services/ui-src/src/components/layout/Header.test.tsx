@@ -12,7 +12,7 @@ const headerComponent = (
 );
 
 jest.mock("react-router-dom", () => ({
-  useLocation: jest.fn(() => ({ pathname: "/mcpar" })),
+  useLocation: jest.fn(() => ({ pathname: "/mcpar/temp" })),
 }));
 
 describe("Test Header", () => {
