@@ -6,7 +6,7 @@ import { AnyObject } from "types";
 
 const onSubmit = () => {};
 
-export const McparReport = ({ pageJson }: Props) => {
+export const McparReportPage = ({ pageJson }: Props) => {
   const { intro, form } = pageJson;
   return (
     <ReportPage data-testid={form.id}>
