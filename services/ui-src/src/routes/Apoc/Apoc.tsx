@@ -1,13 +1,10 @@
-import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage } from "components";
 // data
 import { pageJson } from "verbiage/forms/aPointOfContact";
 
-const onSubmit = () => {
-  console.log("on submit called"); // eslint-disable-line no-console
-};
+const onSubmit = () => {};
 
 interface ReportPageIntroI {
   text: {
@@ -37,13 +34,11 @@ interface ReportPageFooterI {
 }
 
 const ReportPageFooter = ({ formId }: ReportPageFooterI) => {
-  const navigate = useNavigate();
   return (
     <Box sx={sx.footerBox}>
       <Box>
         <Flex sx={sx.buttonFlex}>
           <Button
-            onClick={() => navigate("/mcpar")}
             variant="outline"
             colorScheme="colorSchemes.outline"
             leftIcon={<Icon icon="arrowLeft" />}
