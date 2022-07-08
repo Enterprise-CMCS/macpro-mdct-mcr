@@ -31,7 +31,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 
   return (
     <>
-      <ErrorAlert error={error} sxOverrides={sx.errorAlert} />
+      <ErrorAlert error={error} sxOverride={sx.errorAlert} />
       <Form id={formJson.id} formJson={formJson} onSubmit={onSubmit} {...props}>
         <PreviewBanner />
       </Form>
