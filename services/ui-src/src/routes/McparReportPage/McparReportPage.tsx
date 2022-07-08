@@ -1,18 +1,30 @@
+import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage } from "components";
-// data
+// utils
+import { makeNextRoute, makePreviousRoute } from "utils";
 import { AnyObject } from "types";
-
-const onSubmit = () => {};
+import { mcparReportPageOrder as pathArray } from "verbiage/forms/mcparReportPages";
 
 export const McparReportPage = ({ pageJson }: Props) => {
-  const { intro, form } = pageJson;
+  const navigate = useNavigate();
+  const { path, intro, form } = pageJson;
+
+  // make routes
+  const previousRoute = makePreviousRoute(pathArray, "/mcpar", path);
+  const nextRoute = makeNextRoute(pathArray, "/mcpar", path);
+
+  const onSubmit = () => {
+    // TODO: Wire up submit functionality
+    navigate(nextRoute);
+  };
+
   return (
     <ReportPage data-testid={form.id}>
       <ReportPageIntro text={intro} />
       <Form id={form.id} formJson={form} onSubmit={onSubmit} />
-      <ReportPageFooter formId={form.id} />
+      <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
     </ReportPage>
   );
 };
@@ -44,12 +56,14 @@ interface ReportPageIntroI {
   };
 }
 
-const ReportPageFooter = ({ formId }: ReportPageFooterI) => {
+const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
+  const navigate = useNavigate();
   return (
     <Box sx={sx.footerBox}>
       <Box>
         <Flex sx={sx.buttonFlex}>
           <Button
+            onClick={() => navigate(previousRoute)}
             variant="outline"
             colorScheme="colorSchemes.outline"
             leftIcon={<Icon icon="arrowLeft" />}
@@ -65,7 +79,7 @@ const ReportPageFooter = ({ formId }: ReportPageFooterI) => {
             Continue
           </Button>
         </Flex>
-        {/* TODO: Add Prince Print Button here */}
+        {/* TODO: Add Prince Print Button */}
       </Box>
     </Box>
   );
@@ -73,6 +87,7 @@ const ReportPageFooter = ({ formId }: ReportPageFooterI) => {
 
 interface ReportPageFooterI {
   formId: string;
+  previousRoute: string;
 }
 
 const sx = {

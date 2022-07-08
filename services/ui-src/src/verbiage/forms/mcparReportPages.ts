@@ -5,3 +5,5 @@ export const mcparReportPages = [
   sectionA_pointofcontact,
   sectionA_reportingperiod,
 ];
+
+export const mcparReportPageOrder = mcparReportPages.map((page) => page.path);

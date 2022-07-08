@@ -2,8 +2,7 @@
   "path": "/program-information/reporting-period",
   "intro": {
     "section": "Section A: Program Information",
-    "subsection": "Reporting Period",
-    "info": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
+    "subsection": "Reporting Period"
   },
   "form": {
     "id": "apointofcontact",
@@ -12,95 +11,51 @@
     },
     "fields": [
       {
-        "id": "arp-a1",
-        "type": "text",
+        "id": "arp-a5a",
+        "type": "datesplit",
         "props": {
-          "name": "arp-a1",
-          "label": "A.1 State name",
-          "hint": "Auto-populated from your account profile.",
-          "disabled": true
-        },
-        "validation": null
-      },
-      {
-        "id": "arp-a2a",
-        "type": "text",
-        "props": {
-          "name": "arp-a2a",
-          "label": "A.2a Contact name",
-          "hint": "First and last name of the contact person."
+          "name": "arp-a5a",
+          "label": "A.5a Reporting period start date",
+          "hint": "Enter start date of the reporting period represented in the report."
         },
         "validation": {
-          "type": "string",
+          "type": "number",
           "options": {
             "required": true
           },
           "errorMessages": {
-            "required": "Contact name is required"
+            "required": "Start date is required",
+            "format": "Invalid start date"
           }
         }
       },
       {
-        "id": "arp-a2b",
-        "type": "text",
+        "id": "arp-a5b",
+        "type": "datesplit",
         "props": {
-          "name": "arp-a2b",
-          "label": "A.2b Contact email address",
-          "hint": "Enter email address."
+          "name": "arp-a5b",
+          "label": "A.5b Reporting period end date",
+          "hint": "Enter end date of the reporting period represented in the report."
         },
         "validation": {
-          "type": "string",
+          "type": "number",
           "options": {
             "required": true
           },
           "errorMessages": {
-            "required": "Contact email address is required"
+            "required": "End date is required",
+            "format": "Invalid end date",
+            "min": "End date cannot be before start date"
           }
         }
       },
       {
-        "id": "arp-a3a",
+        "id": "arp-a6",
         "type": "text",
         "props": {
-          "name": "arp-a3a",
-          "label": "A.3a Submitter name",
-          "hint": "Auto-populated from your account profile. Correct if needed."
-        },
-        "validation": {
-          "type": "string",
-          "options": {
-            "required": true
-          },
-          "errorMessages": {
-            "required": "Submitter name is required"
-          }
-        }
-      },
-      {
-        "id": "arp-a3b",
-        "type": "text",
-        "props": {
-          "name": "arp-a3b",
-          "label": "A.3b Submitter email address",
-          "hint": "Auto-populated from your account profile. Correct if needed."
-        },
-        "validation": {
-          "type": "string",
-          "options": {
-            "required": true
-          },
-          "errorMessages": {
-            "required": "Submitter email address is required"
-          }
-        }
-      },
-      {
-        "id": "arp-a4",
-        "type": "text",
-        "props": {
-          "name": "arp-a4",
-          "label": "A.4 Date of report submission",
-          "hint": "CMS receives this date upon submission of this MCPAR report.",
+          "name": "arp-a6",
+          "label": "A.6 Program name",
+          "hint": "Auto-populated from report dashboard.",
           "disabled": true
         },
         "validation": null

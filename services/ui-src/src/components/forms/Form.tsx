@@ -55,7 +55,7 @@ interface Props {
 }
 
 const sx = {
-  ".ds-c-field": {
-    maxWidth: "30rem",
+  ".ds-c-field, .ds-c-label": {
+    maxWidth: "32rem",
   },
 };
