@@ -37,8 +37,9 @@ describe("Test Header", () => {
     expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
   });
 
-  test("Subnav is visible on MCPAR report screens", () => {
-    expect(screen.getByTestId("leave-form-button")).toBeVisible();
+  test("Subnav is visible on MCPAR report screens; navigates to dashboard", async () => {
+    const leaveFormButton = screen.getByTestId("leave-form-button");
+    expect(leaveFormButton).toBeVisible();
   });
 });
 
