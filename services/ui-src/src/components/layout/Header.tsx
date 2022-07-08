@@ -19,7 +19,7 @@ import appLogo from "assets/logos/logo_mcr_draft.png";
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
-  const isMcparReport = pathname.includes("/mcpar");
+  const isMcparReport = pathname.includes("/mcpar/");
 
   return (
     <Box sx={sx.root}>
@@ -67,7 +67,7 @@ export const Header = ({ handleLogout }: Props) => {
                 {!isMobile && (
                   <Link
                     as={RouterLink}
-                    to="/"
+                    to="/mcpar"
                     sx={sx.leaveFormLink}
                     tabIndex={-1}
                   >
