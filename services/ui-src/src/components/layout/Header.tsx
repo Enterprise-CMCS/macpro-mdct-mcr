@@ -19,7 +19,7 @@ import appLogo from "assets/logos/logo_mcr_draft.png";
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
-  const isMcparReport = pathname.includes("/mcpar/");
+  const isMcparReportPage = pathname.includes("/mcpar/");
   // TODO: Get current program name
   const currentProgramName = "Current Program Name";
 
@@ -53,7 +53,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isMcparReport && (
+      {isMcparReportPage && (
         <Flex sx={sx.subnavBar}>
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>

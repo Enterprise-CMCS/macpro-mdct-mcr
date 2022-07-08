@@ -4,7 +4,7 @@ import {
   Dashboard,
   Help,
   Home,
-  McparReport,
+  McparReportPage,
   NotFound,
   Profile,
 } from "routes";
@@ -35,7 +35,7 @@ export const AppRoutes = ({ userRole }: Props) => {
             <Route
               key={page.path}
               path={`/mcpar${page.path}`}
-              element={<McparReport pageJson={page} />}
+              element={<McparReportPage pageJson={page} />}
             />
           ))}
           <Route path="/profile" element={<Profile />} />

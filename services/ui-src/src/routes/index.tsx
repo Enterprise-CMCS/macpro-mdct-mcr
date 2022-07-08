@@ -5,4 +5,4 @@ export { Home } from "./Home/Home";
 export { NotFound } from "./NotFound/NotFound";
 export { Profile } from "./Profile/Profile";
 // forms
-export { McparReport } from "./McparReport/McparReport";
+export { McparReportPage } from "./McparReportPage/McparReportPage";
