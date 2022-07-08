@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Admin, Help, Home, NotFound, Profile } from "routes";
+import { Admin, Dashboard, Help, Home, NotFound, Profile } from "routes";
 // components
 import { AdminBannerProvider } from "components";
 // utils
@@ -21,7 +21,7 @@ export const AppRoutes = ({ userRole }: Props) => {
           />
           <Route path="/help" element={<Help />} />
           {/* TODO: Change /mcpar element during program creation ticket work */}
-          <Route path="/mcpar" element={<Help />} />
+          <Route path="/mcpar" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

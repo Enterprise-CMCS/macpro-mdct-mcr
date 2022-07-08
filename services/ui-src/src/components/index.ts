@@ -34,6 +34,7 @@ export { Icon } from "./icons/Icon";
 export { BasicPage } from "./layout/BasicPage";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
+export { ReportPage } from "./layout/ReportPage";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
