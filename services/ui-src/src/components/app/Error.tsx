@@ -1,5 +1,6 @@
 // components
-import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { BasicPage } from "components";
 // utils
 import { createEmailLink } from "utils/other/email";
 import { makeMediaQueryClasses } from "utils";
@@ -13,44 +14,35 @@ export const Error = () => {
   const { preLinkText, helpDeskEmail, postLinkText } = emailText;
 
   return (
-    <Box sx={sx.root} data-testid="error-view">
-      <Flex sx={sx.mainContentFlex}>
-        <Flex sx={sx.heading}>
-          <Image
-            src={warningIcon}
-            className={mqClasses}
-            alt="warning icon"
-            sx={sx.warningIcon}
-          />
-          <Heading as="h1" sx={sx.headerText} className={mqClasses}>
-            {header}
-          </Heading>
-        </Flex>
-        <Heading as="h2" sx={sx.subHeadingText} className={mqClasses}>
-          {subHeading}
+    <BasicPage data-testid="error-view" sxOverride={sx.layout}>
+      <Flex sx={sx.heading}>
+        <Image
+          src={warningIcon}
+          className={mqClasses}
+          alt="warning icon"
+          sx={sx.warningIcon}
+        />
+        <Heading as="h1" sx={sx.headerText} className={mqClasses}>
+          {header}
         </Heading>
-        <Text sx={sx.descriptionText}>
-          {preLinkText}
-          <Link href={createEmailLink({ address: helpDeskEmail })}>
-            {helpDeskEmail}
-          </Link>
-          {postLinkText}
-        </Text>
       </Flex>
-    </Box>
+      <Heading as="h2" sx={sx.subHeadingText} className={mqClasses}>
+        {subHeading}
+      </Heading>
+      <Text sx={sx.descriptionText}>
+        {preLinkText}
+        <Link href={createEmailLink({ address: helpDeskEmail })}>
+          {helpDeskEmail}
+        </Link>
+        {postLinkText}
+      </Text>
+    </BasicPage>
   );
 };
 
 const sx = {
-  root: {
-    flexShrink: "0",
+  layout: {
     marginBottom: "1.5rem",
-  },
-  mainContentFlex: {
-    flexDirection: "column",
-    alignContent: "center",
-    margin: "5.5rem auto 0",
-    maxWidth: "30.625rem",
   },
   heading: {
     gap: "12px",

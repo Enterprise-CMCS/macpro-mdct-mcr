@@ -1,5 +1,6 @@
 // components
-import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { BasicPage } from "components";
 // utils
 import { createEmailLink } from "utils/other/email";
 import { makeMediaQueryClasses } from "utils";
@@ -13,43 +14,37 @@ export const NotFound = () => {
   const { preLinkText, cmsEmail, postLinkText } = emailText;
 
   return (
-    <Box sx={sx.root} data-testid="404-view">
-      <Flex sx={sx.mainContentFlex}>
-        <Flex sx={sx.heading}>
-          <Image
-            src={warningIcon}
-            alt="warning icon"
-            sx={sx.warningIcon}
-            className={mqClasses}
-          />
-          <Heading as="h1" sx={sx.headerText} className={mqClasses}>
-            {header}
-          </Heading>
-        </Flex>
-        <Heading as="h2" sx={sx.subHeadingText} className={mqClasses}>
-          {subHeading}
+    <BasicPage data-testid="404-view" sxOverride={sx.layout}>
+      <Flex sx={sx.heading}>
+        <Image
+          src={warningIcon}
+          alt="warning icon"
+          sx={sx.warningIcon}
+          className={mqClasses}
+        />
+        <Heading as="h1" sx={sx.headerText} className={mqClasses}>
+          {header}
         </Heading>
-        <Text sx={sx.descriptionText}>
-          {preLinkText}
-          <Link href={createEmailLink({ address: cmsEmail })}>{cmsEmail}</Link>
-          {postLinkText}
-        </Text>
-        <Text>{body}</Text>
       </Flex>
-    </Box>
+      <Heading as="h2" sx={sx.subHeadingText} className={mqClasses}>
+        {subHeading}
+      </Heading>
+      <Text sx={sx.descriptionText}>
+        {preLinkText}
+        <Link href={createEmailLink({ address: cmsEmail })}>{cmsEmail}</Link>
+        {postLinkText}
+      </Text>
+      <Text>{body}</Text>
+    </BasicPage>
   );
 };
 
 const sx = {
-  root: {
-    flexShrink: "0",
+  layout: {
     marginBottom: "1.5rem",
-  },
-  mainContentFlex: {
-    flexDirection: "column",
-    alignContent: "center",
-    margin: "5.5rem auto 0",
-    maxWidth: "35rem",
+    ".contentFlex": {
+      maxWidth: "35rem",
+    },
   },
   heading: {
     gap: "12px",

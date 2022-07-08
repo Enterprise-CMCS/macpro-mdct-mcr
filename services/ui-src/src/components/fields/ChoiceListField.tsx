@@ -11,7 +11,7 @@ export const ChoiceListField = ({
   type,
   label,
   choices,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -26,7 +26,7 @@ export const ChoiceListField = ({
   };
 
   return (
-    <Box sx={sxOverrides} className={mqClasses}>
+    <Box sx={sxOverride} className={mqClasses}>
       <CmsdsChoiceList
         name={name}
         type={type}
@@ -51,6 +51,6 @@ interface Props {
   type: "checkbox" | "radio";
   label: string;
   choices: ChoiceListChoices[];
-  sxOverrides?: AnyObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }

@@ -1,5 +1,5 @@
 export { Admin } from "./Admin/Admin";
-export { Error } from "./Error/Error";
+export { Dashboard } from "./Dashboard/Dashboard";
 export { Help } from "./Help/Help";
 export { Home } from "./Home/Home";
 export { NotFound } from "./NotFound/NotFound";

@@ -118,7 +118,7 @@ export interface AnyObject {
 }
 
 export interface TableContentShape {
-  caption: string;
-  headRow: string[];
+  caption?: string;
+  headRow?: string[];
   bodyRows: string[][];
 }

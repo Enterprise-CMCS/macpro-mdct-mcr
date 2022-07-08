@@ -8,6 +8,7 @@ export { ErrorAlert } from "./alerts/ErrorAlert";
 // app
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
+export { Error } from "./app/Error";
 export { SkipNav } from "./app/SkipNav";
 // banners
 export {
@@ -33,8 +34,10 @@ export { Form } from "./forms/Form";
 // icons
 export { Icon } from "./icons/Icon";
 // layout
+export { BasicPage } from "./layout/BasicPage";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
+export { ReportPage } from "./layout/ReportPage";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";

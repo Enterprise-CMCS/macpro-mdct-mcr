@@ -3,7 +3,7 @@ import { extendTheme } from "@chakra-ui/react";
 
 export const theme = extendTheme({
   sizes: {
-    appMax: "75rem",
+    appMax: "100vw",
     contentColumnSmall: "46rem",
   },
   breakpoints: {

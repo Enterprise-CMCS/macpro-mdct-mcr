@@ -87,15 +87,15 @@
       "text-summary"
     ],
     "collectCoverageFrom": [
-      "src/components/**/*.{ts,tsx}",
       "!src/components/index.ts*",
-      "src/utils/**/*.{ts,tsx}",
-      "!src/utils/**/index.ts*",
-      "!src/utils/testing/*",
-      "!src/utils/index.ts*",
+      "src/components/**/*.{ts,tsx}",
+      "!src/routes/index.tsx",
+      "src/routes/**/*.{ts,tsx}",
       "!src/types/index.ts*",
-      "src/views/**/*.{ts,tsx}",
-      "!src/views/index.tsx"
+      "!src/utils/index.ts*",
+      "!src/utils/testing/*",
+      "!src/utils/**/index.ts*",
+      "src/utils/**/*.{ts,tsx}"
     ],
     "moduleDirectories": [
       "node_modules",
