@@ -50,8 +50,4 @@ interface Props {
   [key: string]: any;
 }
 
-const sx = {
-  ".ds-c-field": {
-    maxWidth: "40rem",
-  },
-};
+const sx = {};

@@ -26,10 +26,10 @@ const sx = {
   contentBox: {
     flexShrink: "0",
     marginLeft: "21rem",
-    paddingTop: "2rem",
+    paddingY: "4rem",
   },
   contentFlex: {
     flexDirection: "column",
-    maxWidth: "contentColumnSmall",
+    maxWidth: "reportPageWidth",
   },
 };
