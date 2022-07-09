@@ -34,9 +34,10 @@ export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 export interface FormField {
   id: string;
   type: string;
-  props?: {
+  hydrate?: string;
+  props: {
     [key: string]: any;
-  };
+  } | null;
   validation: FormValidation | null;
   children?: any;
 }
@@ -52,8 +53,8 @@ export interface FormValidation {
 }
 
 export interface FormJson {
-  options: {
-    mode: string;
+  id: string;
+  options?: {
     [key: string]: any;
   };
   fields: FormField[];

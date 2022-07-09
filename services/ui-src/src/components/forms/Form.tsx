@@ -58,4 +58,7 @@ const sx = {
   ".ds-c-field, .ds-c-label": {
     maxWidth: "32rem",
   },
+  ".ds-c-field[disabled]": {
+    color: "palette.gray",
+  },
 };

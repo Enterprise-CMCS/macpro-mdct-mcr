@@ -3,13 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage } from "components";
 // utils
-import { makeNextRoute, makePreviousRoute } from "utils";
+import { hydrateFormFields, makeNextRoute, makePreviousRoute } from "utils";
 import { AnyObject } from "types";
 import { mcparReportPageOrder as pathArray } from "verbiage/forms/mcparReportPages";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { path, intro, form } = pageJson;
+
+  const fakeData = {
+    stateName: "Temporary state name",
+    programName: "Temporary program name",
+  };
 
   // make routes
   const previousRoute = makePreviousRoute(pathArray, "/mcpar", path);
@@ -19,6 +24,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
     // TODO: Wire up submit functionality
     navigate(nextRoute);
   };
+  form.fields = hydrateFormFields(form.fields, fakeData);
 
   return (
     <ReportPage data-testid={form.id}>
