@@ -1,25 +1,43 @@
 import React from "react";
 import { buildYup } from "schema-to-yup";
 // components
-import { DateField, TextField, TextAreaField } from "components";
+import {
+  ChoiceField,
+  ChoiceListField,
+  DateField,
+  TextField,
+  TextAreaField,
+} from "components";
 // types
 import { AnyObject, FormField } from "types";
 
 export const formFieldFactory = (fields: FormField[]) => {
   // define form field components
   const fieldToComponentMap: any = {
+    choicelist: ChoiceListField,
+    choiceOption: ChoiceField,
+    datesplit: DateField,
     text: TextField,
     textarea: TextAreaField,
-    datesplit: DateField,
     child: React.Fragment,
   };
   // create elements from provided fields
-  return fields.map((field) =>
-    React.createElement(fieldToComponentMap[field.type], {
-      key: field.id,
-      ...field.props,
-    })
-  );
+  return fields.map((field) => {
+    if (field?.props!.choices) {
+      formFieldFactory(field.props!.choices);
+    }
+    if (field?.checkedChildren) {
+      formFieldFactory(field?.checkedChildren);
+    }
+    const componentToMake = React.createElement(
+      fieldToComponentMap[field.type],
+      {
+        key: field.id,
+        ...field.props,
+      }
+    );
+    return componentToMake;
+  });
 };
 
 export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {

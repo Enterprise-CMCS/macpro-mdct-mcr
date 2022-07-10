@@ -1,0 +1,57 @@
+{
+  "path": "/program-information/test",
+  "intro": {
+    "section": "TEST",
+    "subsection": "Test"
+  },
+  "form": {
+    "id": "atest",
+    "options": {
+      "mode": "onChange"
+    },
+    "fields": [
+      {
+        "id": "atest-1",
+        "type": "choicelist",
+        "props": {
+          "name": "atest-1",
+          "label": "Test 1",
+          "hint": "Pick one",
+          "type": "checkbox",
+          "choices": [
+            {
+              "id": "atest-1b",
+              "type": "choiceOption",
+              "name": "atest-1b",
+              "label": "A checkbox option i hope",
+              "value": "something",
+              "props": {},
+              "checkedChildren": {
+                "id": "atest-1c",
+                "type": "text",
+                "props": {
+                  "name": "atest-1c",
+                  "label": "Test 1c",
+                  "hint": "Enter some text"
+                },
+                "validation": null
+              },
+              "validation": null
+            }
+          ]
+        },
+        "validation": null
+      },
+      {
+        "id": "atest-2",
+        "type": "text",
+        "props": {
+          "name": "atest-2",
+          "label": "Test 2",
+          "hint": "Enter some text"
+        },
+        "validation": null
+      }
+    ]
+  }
+}

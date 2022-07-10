@@ -35,11 +35,9 @@ export interface FormField {
   id: string;
   type: string;
   hydrate?: string;
-  props: {
-    [key: string]: any;
-  } | null;
   validation: FormValidation | null;
   children?: any;
+  [key: string]: any;
 }
 
 export interface FormValidation {
