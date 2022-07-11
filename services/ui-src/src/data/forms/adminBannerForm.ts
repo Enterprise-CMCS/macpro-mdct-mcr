@@ -63,13 +63,14 @@ export const form = {
         hint: "mm/dd/yyyy (12:00:00am)",
       },
       validation: {
-        type: "number",
+        type: "string",
         options: {
           required: true,
+          matches: "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]",
         },
         errorMessages: {
           required: "Start date is required",
-          format: "Invalid start date",
+          matches: "Must be a valid date",
         },
       },
     },
@@ -82,15 +83,15 @@ export const form = {
         hint: "mm/dd/yyyy (11:59:59pm)",
       },
       validation: {
-        type: "number",
+        type: "string",
         options: {
           required: true,
+          matches: "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]",
           // TODO: add minimum start date reference min: "startDate"
         },
         errorMessages: {
           required: "End date is required",
-          format: "Invalid end date",
-          min: "End date cannot be before start date",
+          matches: "Must be a valid date",
         },
       },
     },

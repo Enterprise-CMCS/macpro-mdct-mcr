@@ -32,6 +32,9 @@ export const DateField = ({
 
   const onChangeHandler = async (event: string, formattedString: string) => {
     setDate(event);
+    form.setValue(parentFieldName, event ? parseInt(event) : undefined, {
+      shouldValidate: true,
+    });
     let year = parseInt(formattedString.split("/")?.[2]);
     let month = parseInt(formattedString.split("/")?.[0]);
     let day = parseInt(formattedString.split("/")?.[1]);

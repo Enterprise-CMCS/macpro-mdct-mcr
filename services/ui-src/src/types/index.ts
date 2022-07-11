@@ -70,8 +70,8 @@ export interface BannerData {
 
 export interface AdminBannerData extends BannerData {
   key: string;
-  startDate: number;
-  endDate: number;
+  startDate: string;
+  endDate: string;
   isActive?: boolean;
 }
 
