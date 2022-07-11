@@ -22,16 +22,6 @@ const LinkItems: LinkItemProps[] = [
       {
         name: "Point of Contact",
         path: "/point-of-contact",
-        children: [
-          {
-            name: "fake sub 1",
-            path: "/fake-sub-1",
-          },
-          {
-            name: "fake sub 2",
-            path: "/fake-sub-2",
-          },
-        ],
       },
       {
         name: "Reporting Period",
@@ -66,16 +56,104 @@ const LinkItems: LinkItemProps[] = [
   {
     name: "C: Program-Level Indicators",
     path: "/program-level-indicators",
-    children: null,
+    children: [
+      {
+        name: "I: Program Characteristics",
+        path: "/program-characteristics",
+      },
+      {
+        name: "III: Encounter Data Report",
+        path: "/encounter-data-report",
+      },
+      {
+        name: "IV: Appeals, State Fair Hearings & Grievances",
+        path: "/appeals-state-fair-hearings-and-grievances",
+      },
+      {
+        name: "V: Availability & Accessibility",
+        path: "/availability-and-accessibility",
+        children: [
+          {
+            name: "Network Adequacy",
+            path: "/network-adequacy",
+          },
+          {
+            name: "Access Measures",
+            path: "/access-measures",
+          },
+        ],
+      },
+      {
+        name: "IX: BSS",
+        path: "/bss",
+      },
+      {
+        name: "X: Program Integrity",
+        path: "/program-integrity",
+      },
+    ],
   },
   {
     name: "D: Plan-Level Indicators",
     path: "/plan-level-indicators",
-    children: null,
+    children: [
+      {
+        name: "I: Program Characteristics",
+        path: "/program-characteristics",
+      },
+      {
+        name: "II: Financial Performance",
+        path: "/financial-performance",
+      },
+      {
+        name: "III: Encounter Data Report",
+        path: "/encounter-data-report",
+      },
+      {
+        name: "IV: Appeals, State Fair Hearings & Grievances",
+        path: "/appeals-state-fair-hearings-and-grievances",
+        children: [
+          {
+            name: "Appeals Overview",
+            path: "/appeals-overview",
+          },
+          {
+            name: "Appeals by Service",
+            path: "/appeals-by-service",
+          },
+          {
+            name: "State Fair Hearings",
+            path: "/state-fair-hearings",
+          },
+          {
+            name: "Grievances Overview",
+            path: "/grievances-overview",
+          },
+          {
+            name: "Grievances by Reason",
+            path: "/grievances-by-reason",
+          },
+        ],
+      },
+      {
+        name: "VII: Quality Measures",
+        path: "/quality-measures",
+      },
+      {
+        name: "VIII: Sanctions",
+        path: "/sanctions",
+      },
+      {
+        name: "X: Program Integrity",
+        path: "/program-integrity",
+      },
+    ],
   },
   { name: "E: BSS Entity Indicators", path: "/bss-entity-indicators" },
   { name: "Review & Submit", path: "/review-and-submit" },
 ];
+
+const basePath = "/mcpar";
 
 export const Sidebar = () => {
   const { pathname } = useLocation();
@@ -100,7 +178,7 @@ export const Sidebar = () => {
               key={section.name}
               section={section}
               level={1}
-              basePath="/mcpar"
+              basePath={basePath}
             />
           ))}
         </Box>
@@ -125,11 +203,21 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
       <React.Fragment key={itemPath}>
         {children ? (
           <Box as="button" onClick={() => setIsOpen(!isOpen)}>
-            <NavItem name={name} level={level} hasChildren={!!children} />
+            <NavItem
+              name={name}
+              level={level}
+              optionPath={itemPath}
+              hasChildren={!!children}
+            />
           </Box>
         ) : (
           <Link as={RouterLink} to={itemPath}>
-            <NavItem name={name} level={level} hasChildren={!!children} />
+            <NavItem
+              name={name}
+              level={level}
+              optionPath={itemPath}
+              hasChildren={!!children}
+            />
           </Link>
         )}
         {!!children && (
@@ -151,19 +239,26 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
 
 interface NavItemProps {
   name: string;
+  optionPath: string;
   level: number;
   hasChildren: boolean;
 }
 
-const NavItem = ({ name, level, hasChildren }: NavItemProps) => (
-  <Flex sx={sx.navItemFlex}>
-    <CheckCircleIcon />
-    <Text sx={sx.navItemTitle} className={`level-${level}`}>
-      {name}
-    </Text>
-    {!!hasChildren && <ArrowIcon title="openNavItemsArrow" direction="down" />}
-  </Flex>
-);
+const NavItem = ({ name, optionPath, level, hasChildren }: NavItemProps) => {
+  const currentPath = window.location.pathname;
+  const selectedClass = optionPath === currentPath ? "selected" : "";
+  return (
+    <Flex sx={sx.navItemFlex} className={selectedClass}>
+      <CheckCircleIcon />
+      <Text sx={sx.navItemTitle} className={`level-${level}`}>
+        {name}
+      </Text>
+      {!!hasChildren && (
+        <ArrowIcon title="openNavItemsArrow" direction="down" />
+      )}
+    </Flex>
+  );
+};
 
 const sx = {
   root: {
@@ -228,6 +323,15 @@ const sx = {
       right: "0.5rem",
       fontSize: "13px",
       color: "palette.gray",
+    },
+    "&.selected": {
+      bg: "palette.custom_gray_lightest",
+      borderBottom: "none",
+      borderInlineStartWidth: "0.125rem",
+      borderInlineStartColor: "palette.alt",
+      ".chakra-text": {
+        color: "palette.alt_darkest",
+      },
     },
   },
   navItemTitle: {

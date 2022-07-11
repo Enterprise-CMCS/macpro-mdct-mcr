@@ -76,6 +76,7 @@ export const theme = extendTheme({
       error_darkest: "#981b1e",
       // neutrals
       white: "#ffffff",
+      custom_gray_lightest: "#f8f8f8",
       gray_lightest: "#f1f1f1",
       gray_lighter: "#d6d7d9",
       gray_light: "#aeb0b5",
