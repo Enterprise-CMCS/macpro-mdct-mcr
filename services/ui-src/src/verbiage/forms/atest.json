@@ -27,35 +27,13 @@
               "value": "option1",
               "props": {},
               "validation": null,
-              "checkedChildren": [
+              "children": [
                 {
                   "id": "atest-1-o1-child",
                   "type": "text",
                   "isChild": true,
                   "props": {
                     "name": "atest-1-o1-child",
-                    "label": "Test checked child component",
-                    "hint": "Enter some text"
-                  },
-                  "validation": null
-                }
-              ]
-            },
-            {
-              "id": "atest-1-o2",
-              "name": "atest-1-o2",
-              "type": "choiceOption",
-              "label": "Checkbox option 2",
-              "value": "option2",
-              "props": {},
-              "validation": null,
-              "checkedChildren": [
-                {
-                  "id": "atest-1-o2-child",
-                  "type": "text",
-                  "isChild": true,
-                  "props": {
-                    "name": "atest-1-o2-child",
                     "label": "Test checked child component",
                     "hint": "Enter some text"
                   },

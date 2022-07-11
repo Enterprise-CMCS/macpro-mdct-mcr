@@ -3,7 +3,6 @@ import React from "react";
 import { buildYup } from "schema-to-yup";
 // components
 import {
-  ChoiceField,
   ChoiceListField,
   DateField,
   TextField,
@@ -16,28 +15,36 @@ export const formFieldFactory = (fields: FormField[]) => {
   // define form field components
   const fieldToComponentMap: any = {
     choicelist: ChoiceListField,
-    choiceOption: ChoiceField,
+    // choiceOption: ChoiceField,
     datesplit: DateField,
     text: TextField,
     textarea: TextAreaField,
-    child: React.Fragment,
+    // child: React.Fragment,
   };
-  console.log("fields passed in to fff", fields);
+  console.log("fields passed in to factory", fields);
   // create elements from provided fields
   return fields.map((field) => {
     const fieldChoices = field?.props?.choices;
     if (fieldChoices) {
       fieldChoices.forEach((choice: any, index: number) => {
         console.log("choice", choice, "index", index);
-        field.props.choices[index].checkedChildren = formFieldFactory(
-          choice.checkedChildren
-        );
+        if (choice.children) {
+          field.props.choices[index].checkedChildren = formFieldFactory(
+            choice.children
+          );
+        }
       });
     }
     console.log("FIELD TYPE of", field.id, ":", field.type);
-    const componentFieldType =
-      fieldToComponentMap[field.type] || fieldToComponentMap["text"];
+    const componentFieldType = fieldToComponentMap[field.type];
+
     const propsToAdd = field.props;
+    if (propsToAdd.choices) {
+      propsToAdd.choices.forEach((choice: any) => {
+        delete choice.children;
+      });
+    }
+
     if (field.isChild) {
       console.log("IS CHILD");
       propsToAdd["className"] = "ds-c-choice__checkedChild";
