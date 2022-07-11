@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 import { buildYup } from "schema-to-yup";
 // components
@@ -21,22 +22,27 @@ export const formFieldFactory = (fields: FormField[]) => {
     textarea: TextAreaField,
     child: React.Fragment,
   };
+  console.log("fields passed in to fff", fields);
   // create elements from provided fields
   return fields.map((field) => {
-    if (field?.props!.choices) {
-      formFieldFactory(field.props!.choices);
+    const fieldChoices = field?.props?.choices;
+    if (fieldChoices) {
+      fieldChoices.forEach((choice: any, index: number) => {
+        console.log("choice", choice, "index", index);
+        field.props.choices[index].checkedChildren = formFieldFactory(
+          choice.checkedChildren
+        );
+      });
     }
-    if (field?.checkedChildren) {
-      formFieldFactory(field?.checkedChildren);
-    }
-    const componentToMake = React.createElement(
-      fieldToComponentMap[field.type],
-      {
-        key: field.id,
-        ...field.props,
-      }
-    );
-    return componentToMake;
+    console.log("FIELD TYPE of", field.id, ":", field.type);
+    const componentFieldType =
+      fieldToComponentMap[field.type] || fieldToComponentMap["text"];
+    const createdComponent = React.createElement(componentFieldType, {
+      key: field.id || "temp",
+      ...field.props,
+    });
+    console.log("CREATED COMPONENT", field.id, createdComponent);
+    return createdComponent;
   });
 };
 

@@ -20,35 +20,48 @@
           "type": "checkbox",
           "choices": [
             {
-              "id": "atest-1b",
+              "id": "atest-1-o1",
+              "name": "atest-1-o1",
               "type": "choiceOption",
-              "name": "atest-1b",
-              "label": "A checkbox option i hope",
-              "value": "something",
+              "label": "Checkbox option 1",
+              "value": "option1",
               "props": {},
-              "checkedChildren": {
-                "id": "atest-1c",
-                "type": "text",
-                "props": {
-                  "name": "atest-1c",
-                  "label": "Test 1c",
-                  "hint": "Enter some text"
-                },
-                "validation": null
-              },
-              "validation": null
+              "validation": null,
+              "checkedChildren": [
+                {
+                  "id": "atest-1-o1-child",
+                  "type": "text",
+                  "props": {
+                    "name": "atest-1-o1-child",
+                    "label": "Test checked child component",
+                    "hint": "Enter some text"
+                  },
+                  "validation": null
+                }
+              ]
+            },
+            {
+              "id": "atest-1-o2",
+              "name": "atest-1-o2",
+              "type": "choiceOption",
+              "label": "Checkbox option 2",
+              "value": "option2",
+              "props": {},
+              "validation": null,
+              "checkedChildren": [
+                {
+                  "id": "atest-1-o2-child",
+                  "type": "text",
+                  "props": {
+                    "name": "atest-1-o2-child",
+                    "label": "Test checked child component",
+                    "hint": "Enter some text"
+                  },
+                  "validation": null
+                }
+              ]
             }
           ]
-        },
-        "validation": null
-      },
-      {
-        "id": "atest-2",
-        "type": "text",
-        "props": {
-          "name": "atest-2",
-          "label": "Test 2",
-          "hint": "Enter some text"
         },
         "validation": null
       }
