@@ -63,7 +63,7 @@ export const form = {
         hint: "mm/dd/yyyy (12:00:00am)",
       },
       validation: {
-        type: "string",
+        type: "number",
         options: {
           required: true,
         },
