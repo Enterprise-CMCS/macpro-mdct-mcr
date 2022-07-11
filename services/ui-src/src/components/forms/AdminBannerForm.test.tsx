@@ -23,23 +23,13 @@ const fillOutForm = async (form: any) => {
   // selectors for all the required fields
   const titleInput = form.querySelector("[name='abf-title']")!;
   const descriptionInput = form.querySelector("[name='abf-description']")!;
-  const startDateMonthInput = form.querySelector(
-    "[name='abf-startDateMonth']"
-  )!;
-  const startDateDayInput = form.querySelector("[name='abf-startDateDay']")!;
-  const startDateYearInput = form.querySelector("[name='abf-startDateYear']")!;
-  const endDateMonthInput = form.querySelector("[name='abf-endDateMonth']")!;
-  const endDateDayInput = form.querySelector("[name='abf-endDateDay']")!;
-  const endDateYearInput = form.querySelector("[name='abf-endDateYear']")!;
+  const startDateInput = form.querySelector("[name='abf-startDate']")!;
+  const endDateInput = form.querySelector("[name='abf-endDate']")!;
   // fill out form fields
   await userEvent.type(titleInput, "this is the title text");
   await userEvent.type(descriptionInput, "this is the description text");
-  await userEvent.type(startDateMonthInput, "1");
-  await userEvent.type(startDateDayInput, "1");
-  await userEvent.type(startDateYearInput, "2022");
-  await userEvent.type(endDateMonthInput, "2");
-  await userEvent.type(endDateDayInput, "2");
-  await userEvent.type(endDateYearInput, "2022");
+  await userEvent.type(startDateInput, "07/11/2021");
+  await userEvent.type(endDateInput, "08/12/2021");
   await userEvent.tab();
 };
 
@@ -62,13 +52,13 @@ describe("Test AdminBannerForm component", () => {
       description: "this is the description text",
       link: undefined,
       startDate: convertDateEtToUtc(
-        { year: 2022, month: 1, day: 1 },
+        { year: 2021, month: 7, day: 11 },
         { hour: 0, minute: 0, second: 0 }
-      ),
+      ).toString(),
       endDate: convertDateEtToUtc(
-        { year: 2022, month: 2, day: 2 },
+        { year: 2021, month: 8, day: 12 },
         { hour: 23, minute: 59, second: 59 }
-      ),
+      ).toString(),
     });
   });
 

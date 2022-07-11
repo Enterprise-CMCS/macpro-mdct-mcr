@@ -9,9 +9,7 @@ jest.mock("react-hook-form", () => ({
     register: () => {},
     setValue: () => {},
     getValues: jest.fn().mockReturnValue({
-      testDateFieldDay: 1,
-      testDateFieldMonth: 1,
-      testDateFieldYear: 2022,
+      testDateField: "07/11/2022",
     }),
   }),
 }));
@@ -31,13 +29,13 @@ describe("Test DateField component", () => {
     expect(dateField).toBeVisible();
   });
 
-  test("onBlur event fires handler with all child fields defined", async () => {
+  test("onChange event fires handler when typing and stays even after blurred", async () => {
     const result = render(dateFieldComponent);
     const dateFieldMonthInput: HTMLInputElement =
-      result.container.querySelector('[name="testDateFieldMonth"]')!;
-    await userEvent.type(dateFieldMonthInput, "1");
+      result.container.querySelector("[name='testDateField']")!;
+    await userEvent.type(dateFieldMonthInput, "07/14/2022");
     await userEvent.tab();
-    expect(dateFieldMonthInput.value).toEqual("1");
+    expect(dateFieldMonthInput.value).toEqual("07/14/2022");
   });
 });
 
