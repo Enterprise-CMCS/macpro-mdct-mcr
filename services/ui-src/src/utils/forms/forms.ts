@@ -37,9 +37,15 @@ export const formFieldFactory = (fields: FormField[]) => {
     console.log("FIELD TYPE of", field.id, ":", field.type);
     const componentFieldType =
       fieldToComponentMap[field.type] || fieldToComponentMap["text"];
+    const propsToAdd = field.props;
+    if (field.isChild) {
+      console.log("IS CHILD");
+      propsToAdd["className"] = "ds-c-choice__checkedChild";
+    }
+    console.log("PROPS TO ADD", propsToAdd);
     const createdComponent = React.createElement(componentFieldType, {
       key: field.id || "temp",
-      ...field.props,
+      ...propsToAdd,
     });
     console.log("CREATED COMPONENT", field.id, createdComponent);
     return createdComponent;

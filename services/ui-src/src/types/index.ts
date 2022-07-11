@@ -35,6 +35,7 @@ export interface FormField {
   id: string;
   type: string;
   hydrate?: string;
+  isChild?: boolean;
   validation: FormValidation | null;
   children?: any;
   [key: string]: any;
