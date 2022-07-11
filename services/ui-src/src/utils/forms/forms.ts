@@ -15,13 +15,11 @@ export const formFieldFactory = (fields: FormField[]) => {
   // define form field components
   const fieldToComponentMap: any = {
     choicelist: ChoiceListField,
-    // choiceOption: ChoiceField,
     datesplit: DateField,
     text: TextField,
     textarea: TextAreaField,
-    // child: React.Fragment,
+    child: React.Fragment,
   };
-  console.log("fields passed in to factory", fields);
   // create elements from provided fields
   return fields.map((field) => {
     const fieldChoices = field?.props?.choices;
@@ -35,7 +33,6 @@ export const formFieldFactory = (fields: FormField[]) => {
         }
       });
     }
-    console.log("FIELD TYPE of", field.id, ":", field.type);
     const componentFieldType = fieldToComponentMap[field.type];
 
     const propsToAdd = field.props;
@@ -46,15 +43,12 @@ export const formFieldFactory = (fields: FormField[]) => {
     }
 
     if (field.isChild) {
-      console.log("IS CHILD");
       propsToAdd["className"] = "ds-c-choice__checkedChild";
     }
-    console.log("PROPS TO ADD", propsToAdd);
     const createdComponent = React.createElement(componentFieldType, {
       key: field.id || "temp",
       ...propsToAdd,
     });
-    console.log("CREATED COMPONENT", field.id, createdComponent);
     return createdComponent;
   });
 };

@@ -11,17 +11,17 @@
     },
     "fields": [
       {
-        "id": "atest-1",
+        "id": "atest1",
         "type": "choicelist",
         "props": {
-          "name": "atest-1",
-          "label": "Test 1",
+          "name": "atest1",
+          "label": "Top level",
           "hint": "Pick one",
           "type": "checkbox",
           "choices": [
             {
-              "id": "atest-1-o1",
-              "name": "atest-1-o1",
+              "id": "atest1o1",
+              "name": "atest1o1",
               "type": "choiceOption",
               "label": "Checkbox option 1",
               "value": "option1",
@@ -29,17 +29,51 @@
               "validation": null,
               "children": [
                 {
-                  "id": "atest-1-o1-child",
-                  "type": "text",
+                  "id": "atest1o1-c",
+                  "type": "choicelist",
                   "isChild": true,
                   "props": {
-                    "name": "atest-1-o1-child",
-                    "label": "Test checked child component",
-                    "hint": "Enter some text"
+                    "name": "atest1o1-c",
+                    "label": "One nested",
+                    "hint": "Pick one",
+                    "type": "checkbox",
+                    "choices": [
+                      {
+                        "id": "atest1o1-co1",
+                        "name": "atest1o1-co1",
+                        "type": "choiceOption",
+                        "label": "Checkbox option 1",
+                        "value": "option1-1",
+                        "props": {},
+                        "validation": null,
+                        "children": [
+                          {
+                            "id": "atest1o1-co1-c",
+                            "type": "text",
+                            "isChild": true,
+                            "props": {
+                              "name": "atest1o1-co1-c",
+                              "label": "Test checked child component",
+                              "hint": "Enter some text"
+                            },
+                            "validation": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "validation": null
                 }
               ]
+            },
+            {
+              "id": "atest-1-o2",
+              "name": "atest-1-o2",
+              "type": "choiceOption",
+              "label": "Checkbox option 2",
+              "value": "option2",
+              "props": {},
+              "validation": null
             }
           ]
         },
