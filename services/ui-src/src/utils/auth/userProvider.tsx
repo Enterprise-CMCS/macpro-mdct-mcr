@@ -2,7 +2,9 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
-import { MCRUser, UserContext, UserContextInterface } from "./userContext";
+import { UserContext } from "./userContext";
+// types
+import { MCRUser, UserContextI } from "types";
 
 interface Props {
   children?: ReactNode;
@@ -79,7 +81,7 @@ export const UserProvider = ({ children }: Props) => {
     checkAuthState();
   }, [location, checkAuthState]);
 
-  const values: UserContextInterface = useMemo(
+  const values: UserContextI = useMemo(
     () => ({
       user,
       logout,

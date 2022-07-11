@@ -1,6 +1,6 @@
 import { getBanner, writeBanner, deleteBanner } from "./banner";
 // utils
-import { bannerId } from "utils/constants/constants";
+import { bannerId } from "../../../constants";
 import { mockBannerData } from "utils/testing/setupJest";
 
 describe("Test banner methods", () => {

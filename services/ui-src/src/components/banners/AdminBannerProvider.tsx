@@ -1,9 +1,10 @@
 import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
-import { AdminBannerData, AdminBannerShape } from "utils/types/types";
-import { bannerId, GET_BANNER_FAILED } from "../../utils/constants/constants";
+import { AdminBannerData, AdminBannerShape } from "types";
+import { bannerId } from "../../constants";
+import { GET_BANNER_FAILED } from "verbiage/errors";
 // api
-import { deleteBanner, getBanner, writeBanner } from "utils/api/index";
+import { deleteBanner, getBanner, writeBanner } from "utils";
 
 const ADMIN_BANNER_ID = bannerId;
 

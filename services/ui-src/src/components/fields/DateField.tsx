@@ -3,9 +3,12 @@ import { useFormContext } from "react-hook-form";
 import { DateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { InputChangeEvent, StyleObject } from "utils/types/types";
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { convertDateEtToUtc, calculateTimeByDateType } from "utils/time/time";
+import { InputChangeEvent, AnyObject } from "types";
+import {
+  convertDateEtToUtc,
+  calculateTimeByDateType,
+  makeMediaQueryClasses,
+} from "utils";
 
 /*
  * Note: This file uses the names 'parent'/'parentField' to refer to
@@ -16,7 +19,7 @@ import { convertDateEtToUtc, calculateTimeByDateType } from "utils/time/time";
 export const DateField = ({
   name: parentFieldName,
   label: parentFieldLabel,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -70,7 +73,7 @@ export const DateField = ({
   };
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDateField
         label={parentFieldLabel}
         onBlur={(e) => onBlurHandler(e)}
@@ -93,7 +96,7 @@ export const DateField = ({
 interface Props {
   name: string;
   label: string;
-  sxOverrides?: StyleObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 

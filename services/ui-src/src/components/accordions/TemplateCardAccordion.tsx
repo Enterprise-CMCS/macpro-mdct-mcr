@@ -1,8 +1,8 @@
 // components
 import { Accordion, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { AccordionItem, Table } from "../index";
+import { AccordionItem, Table } from "components";
 // utils
-import { JsonObject } from "utils/types/types";
+import { AnyObject } from "types";
 
 export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
   <Accordion sx={sx.root} allowToggle={true} {...props}>
@@ -12,8 +12,7 @@ export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
         <Table
           content={verbiage.table}
           variant="striped"
-          lastCellsBold
-          {...sx.table}
+          sxOverride={sx.table}
         />
       )}
       {verbiage.list && (
@@ -28,7 +27,7 @@ export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
 );
 
 interface Props {
-  verbiage: JsonObject;
+  verbiage: AnyObject;
   [key: string]: any;
 }
 
@@ -39,13 +38,15 @@ const sx = {
   text: {
     marginBottom: "1rem",
   },
+  table: {
+    "tr td:last-of-type": {
+      fontWeight: "semibold",
+    },
+  },
   list: {
     paddingLeft: "1rem",
     "li:last-of-type": {
       fontWeight: "bold",
     },
-  },
-  table: {
-    marginTop: "1rem",
   },
 };

@@ -1,36 +1,54 @@
 // components
-import { Table as TableRoot, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Table as TableRoot,
+  TableCaption,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  VisuallyHidden,
+} from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { TableContentShape } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { AnyObject, TableContentShape } from "types";
 
-export const Table = ({ content, variant, lastCellsBold, ...props }: Props) => {
+export const Table = ({ content, variant, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
-    <TableRoot variant={variant} size="sm" {...props}>
-      <Thead>
-        <Tr>
+    <TableRoot
+      variant={variant}
+      size="sm"
+      sx={{ ...sx.root, ...sxOverride }}
+      {...props}
+    >
+      <TableCaption placement="top" sx={sx.captionBox}>
+        <VisuallyHidden>{content.caption}</VisuallyHidden>
+      </TableCaption>
+      {content.headRow && (
+        <Thead>
           {/* Head Row */}
-          {content.headRow.map((headerCell: string, index: number) => (
-            <Th key={index} sx={sx.tableHeader} className={mqClasses}>
-              {headerCell}
-            </Th>
-          ))}
-        </Tr>
-      </Thead>
+          <Tr>
+            {content.headRow.map((headerCell: string, index: number) => (
+              <Th
+                key={index}
+                scope="col"
+                sx={sx.tableHeader}
+                className={mqClasses}
+              >
+                {headerCell}
+              </Th>
+            ))}
+          </Tr>
+        </Thead>
+      )}
       <Tbody>
         {/* Body Rows */}
         {content.bodyRows.map((row: string[], index: number) => (
           <Tr key={index}>
             {/* Row Cells */}
             {row.map((cell: string, index: number) => (
-              <Td
-                key={index}
-                sx={sx.tableCell}
-                className={`${mqClasses}${
-                  lastCellsBold ? " boldLastCell" : ""
-                }`}
-              >
+              <Td key={index} sx={sx.tableCell} className={mqClasses}>
                 {cell}
               </Td>
             ))}
@@ -44,11 +62,19 @@ export const Table = ({ content, variant, lastCellsBold, ...props }: Props) => {
 interface Props {
   content: TableContentShape;
   variant?: string;
-  lastCellsBold?: boolean;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 
 const sx = {
+  root: {
+    width: "100%",
+  },
+  captionBox: {
+    margin: 0,
+    padding: 0,
+    height: 0,
+  },
   tableHeader: {
     padding: "0.75rem 0.5rem",
     fontSize: "sm",
@@ -65,9 +91,6 @@ const sx = {
     borderStyle: "none",
     fontWeight: "normal",
     color: "black",
-    "&.boldLastCell:last-child": {
-      fontWeight: "semibold",
-    },
     "&.mobile": {
       fontSize: "xs",
     },

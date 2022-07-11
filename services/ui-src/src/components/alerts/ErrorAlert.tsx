@@ -1,17 +1,17 @@
 // components
-import { Alert } from "../index";
 import { Box, Collapse } from "@chakra-ui/react";
+import { Alert } from "components";
 // utils
-import { AlertTypes, StyleObject } from "utils/types/types";
+import { AlertTypes, AnyObject } from "types";
 
 export const ErrorAlert = ({
   error,
   variant = "inline",
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   return (
-    <Box sx={sxOverrides}>
+    <Box sx={sxOverride}>
       <Collapse in={!!error}>
         {error && (
           <Alert
@@ -32,7 +32,7 @@ export const ErrorAlert = ({
 interface Props {
   error?: string;
   variant?: "inline" | "toast";
-  sxOverrides?: StyleObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 

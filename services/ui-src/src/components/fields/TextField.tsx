@@ -3,14 +3,14 @@ import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent, StyleObject } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { InputChangeEvent, AnyObject } from "types";
 
 export const TextField = ({
   name,
   label,
   placeholder,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -27,14 +27,15 @@ export const TextField = ({
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsTextField
-        name={name}
         id={name}
+        name={name}
         label={label}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
+        inputRef={() => form.register(name)}
         {...props}
       />
     </Box>
@@ -45,7 +46,7 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  sxOverrides?: StyleObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 

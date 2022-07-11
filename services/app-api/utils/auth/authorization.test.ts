@@ -51,7 +51,7 @@ describe("Check user has permissions", () => {
     expect(hasPermissions(event, [UserRoles.ADMIN])).toBeTruthy();
   });
   test("has permissions should fail when the asked for role is the given role", () => {
-    expect(hasPermissions(event, [UserRoles.STATE])).toBeFalsy();
+    expect(hasPermissions(event, [UserRoles.STATE_USER])).toBeFalsy();
   });
   test("has permissions should fail when the api token is missing", () => {
     event.headers = {};

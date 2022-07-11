@@ -3,8 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
 import { AdminBannerForm } from "components";
-import { bannerId } from "utils/constants/constants";
-import { convertDateEtToUtc } from "utils/time/time";
+import { bannerId } from "../../constants";
+// utils
+import { convertDateEtToUtc } from "utils";
 
 const mockWriteAdminBanner = jest.fn();
 const mockWriteAdminBannerWithError = jest.fn(() => {
@@ -20,14 +21,16 @@ const adminBannerFormComponent = (writeAdminBanner: Function) => (
 
 const fillOutForm = async (form: any) => {
   // selectors for all the required fields
-  const titleInput = form.querySelector("[name='title']")!;
-  const descriptionInput = form.querySelector("[name='description']")!;
-  const startDateMonthInput = form.querySelector("[name='startDateMonth']")!;
-  const startDateDayInput = form.querySelector("[name='startDateDay']")!;
-  const startDateYearInput = form.querySelector("[name='startDateYear']")!;
-  const endDateMonthInput = form.querySelector("[name='endDateMonth']")!;
-  const endDateDayInput = form.querySelector("[name='endDateDay']")!;
-  const endDateYearInput = form.querySelector("[name='endDateYear']")!;
+  const titleInput = form.querySelector("[name='abf-title']")!;
+  const descriptionInput = form.querySelector("[name='abf-description']")!;
+  const startDateMonthInput = form.querySelector(
+    "[name='abf-startDateMonth']"
+  )!;
+  const startDateDayInput = form.querySelector("[name='abf-startDateDay']")!;
+  const startDateYearInput = form.querySelector("[name='abf-startDateYear']")!;
+  const endDateMonthInput = form.querySelector("[name='abf-endDateMonth']")!;
+  const endDateDayInput = form.querySelector("[name='abf-endDateDay']")!;
+  const endDateYearInput = form.querySelector("[name='abf-endDateYear']")!;
   // fill out form fields
   await userEvent.type(titleInput, "this is the title text");
   await userEvent.type(descriptionInput, "this is the description text");

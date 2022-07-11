@@ -3,15 +3,15 @@ import { useFormContext } from "react-hook-form";
 import { Choice as CmsdsChoice } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent, StyleObject } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { InputChangeEvent, AnyObject } from "types";
 
 export const ChoiceField = ({
   name,
   type,
   value,
   label,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -26,7 +26,7 @@ export const ChoiceField = ({
   };
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsChoice
         name={name}
         type={type}
@@ -44,7 +44,7 @@ interface Props {
   type: "checkbox" | "radio";
   value: string;
   label?: string;
-  sxOverrides?: StyleObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 

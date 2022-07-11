@@ -1,6 +1,6 @@
 import { API } from "aws-amplify";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { AdminBannerData } from "../../types/types";
+import { AdminBannerData } from "types";
 
 async function getBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();

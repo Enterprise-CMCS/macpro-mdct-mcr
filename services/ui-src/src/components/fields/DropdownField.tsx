@@ -3,14 +3,14 @@ import { useFormContext } from "react-hook-form";
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "../../utils/useBreakpoint";
-import { InputChangeEvent, StyleObject } from "utils/types/types";
+import { makeMediaQueryClasses } from "utils";
+import { InputChangeEvent, AnyObject } from "types";
 
 export const DropdownField = ({
   name,
   label,
   options,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -27,7 +27,7 @@ export const DropdownField = ({
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDropdown
         name={name}
         id={name}
@@ -50,7 +50,7 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
-  sxOverrides?: StyleObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 
