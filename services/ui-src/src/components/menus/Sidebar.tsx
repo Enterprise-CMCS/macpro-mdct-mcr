@@ -26,7 +26,10 @@ export const Sidebar = () => {
             sx={sx.closeButton}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <ArrowIcon title="closeNavBarButton" direction="left" />
+            <ArrowIcon
+              title="closeNavBarButton"
+              direction={isOpen ? "left" : "right"}
+            />
           </Box>
           <Box sx={sx.topBox}>
             <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
@@ -66,6 +69,7 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
               level={level}
               optionPath={itemPath}
               hasChildren={!!children}
+              isOpen={isOpen}
             />
           </Box>
         ) : (
@@ -100,9 +104,16 @@ interface NavItemProps {
   optionPath: string;
   level: number;
   hasChildren: boolean;
+  isOpen?: boolean;
 }
 
-const NavItem = ({ name, optionPath, level, hasChildren }: NavItemProps) => {
+const NavItem = ({
+  name,
+  optionPath,
+  level,
+  hasChildren,
+  isOpen,
+}: NavItemProps) => {
   const currentPath = window.location.pathname;
   const selectedClass = optionPath === currentPath ? "selected" : "";
   return (
@@ -112,7 +123,10 @@ const NavItem = ({ name, optionPath, level, hasChildren }: NavItemProps) => {
         {name}
       </Text>
       {!!hasChildren && (
-        <ArrowIcon title="openNavItemsArrow" direction="down" />
+        <ArrowIcon
+          title="openNavItemsArrow"
+          direction={isOpen ? "up" : "down"}
+        />
       )}
     </Flex>
   );
@@ -152,7 +166,7 @@ const sx = {
     alignItems: "center",
     borderRadius: "0px 10px 10px 0px",
     bg: "palette.gray_lightest",
-    ".ds-c-icon--arrow-left": {
+    ".ds-c-icon--arrow": {
       height: "1rem",
       marginRight: "2px",
       color: "palette.gray",
@@ -175,7 +189,7 @@ const sx = {
       height: "1rem",
       width: "1rem",
     },
-    ".ds-c-icon--arrow-down": {
+    ".ds-c-icon--arrow": {
       position: "absolute",
       top: "10px",
       right: "0.5rem",
