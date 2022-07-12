@@ -14,12 +14,16 @@ export const formFieldFactory = (fields: FormField[]) => {
     child: React.Fragment,
   };
   // create elements from provided fields
-  return fields.map((field) =>
-    React.createElement(fieldToComponentMap[field.type], {
+  return fields.map((field) => {
+    const fieldProps = field.props || {};
+    if (field.type !== "child") {
+      fieldProps.name = field.id;
+    }
+    return React.createElement(fieldToComponentMap[field.type], {
       key: field.id,
       ...field.props,
-    })
-  );
+    });
+  });
 };
 
 export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
