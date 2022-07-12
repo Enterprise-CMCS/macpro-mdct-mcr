@@ -30,6 +30,6 @@ const sx = {
   contentFlex: {
     flexDirection: "column",
     margin: "5.5rem auto 0",
-    maxWidth: "contentColumnSmall",
+    maxWidth: "basicPageWidth",
   },
 };

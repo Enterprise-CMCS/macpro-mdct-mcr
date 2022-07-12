@@ -65,7 +65,7 @@ const sx = {
     flex: "1 0 auto",
   },
   loginContainer: {
-    maxWidth: "sm",
+    maxWidth: "25rem",
     height: "full",
     marginY: "auto",
   },

@@ -4,7 +4,19 @@ import { extendTheme } from "@chakra-ui/react";
 export const theme = extendTheme({
   sizes: {
     appMax: "100vw",
-    contentColumnSmall: "46rem",
+    basicPageWidth: "46rem",
+    reportPageWidth: "40rem",
+    // font sizes: https://design.cms.gov/utilities/font-size/
+    xs: "0.75rem", // 12px
+    sm: "0.875rem", // 14px
+    md: "1rem", // 16px
+    lg: "1.125rem", // 18px
+    xl: "1.3125rem", // 21px
+    "2xl": "1.5rem", // 24px
+    "3xl": "1.875rem", // 30px
+    "4xl": "2.25rem", // 36px
+    "5xl": "3rem", // 48px
+    "6xl": "3.75rem", // 60px
   },
   breakpoints: {
     // read this: https://bit.ly/3xSWnDt
@@ -17,19 +29,6 @@ export const theme = extendTheme({
   fonts: {
     heading: "Open Sans",
     body: "Open Sans",
-  },
-  fontSizes: {
-    // https://design.cms.gov/utilities/font-size/
-    xs: "0.75rem", // 12px
-    sm: "0.875rem", // 14px
-    md: "1rem", // 16px
-    lg: "1.125rem", // 18px
-    xl: "1.3125rem", // 21px
-    "2xl": "1.5rem", // 24px
-    "3xl": "1.875rem", // 30px
-    "4xl": "2.25rem", // 36px
-    "5xl": "3rem", // 48px
-    "6xl": "3.75rem", // 60px
   },
   lineHeights: {
     // https://design.cms.gov/utilities/line-height/
@@ -97,6 +96,17 @@ export const theme = extendTheme({
         400: "#0071bc",
         500: "#0071bc",
         600: "#205493",
+        700: "#205493",
+        800: "#112e51",
+        900: "#112e51",
+      },
+      outline: {
+        100: "#ffffff",
+        200: "#e1f3f8",
+        300: "#9bdaf1",
+        400: "#0071bc",
+        500: "#0071bc",
+        600: "#0071bc",
         700: "#205493",
         800: "#112e51",
         900: "#112e51",
