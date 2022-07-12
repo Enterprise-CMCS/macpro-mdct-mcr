@@ -20,11 +20,18 @@ export const Sidebar = () => {
   return (
     <>
       {isMcparReport && (
-        <Box sx={sx.root} className={isOpen ? "open" : "closed"}>
+        <Box
+          sx={sx.root}
+          className={isOpen ? "open" : "closed"}
+          role="navigation"
+          aria-label="Sidebar menu"
+          data-testid="sidebar-nav"
+        >
           <Box
             as="button"
             sx={sx.closeButton}
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Open/Close sidebar menu"
           >
             <ArrowIcon
               title="closeNavBarButton"
@@ -152,7 +159,7 @@ const sx = {
   title: {
     fontSize: "xl",
     fontWeight: "bold",
-    minW: "11.5rem",
+    width: "15rem",
     padding: "1rem 1.5rem",
   },
   closeButton: {

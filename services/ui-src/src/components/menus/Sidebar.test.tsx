@@ -1,17 +1,45 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { axe } from "jest-axe";
 //components
 import { Sidebar } from "components";
 
-const sidebarComponent = <Sidebar />;
+jest.mock("react-router-dom", () => ({
+  useLocation: jest.fn(() => ({ pathname: "/mcpar" })),
+}));
+
+const sidebarComponent = (
+  <RouterWrappedComponent>
+    <Sidebar />
+  </RouterWrappedComponent>
+);
 
 describe("Test Sidebar", () => {
   beforeEach(() => {
     render(sidebarComponent);
   });
 
-  test("Sidebar button is visible", () => {
-    expect(screen.getByText("Trending")).toBeVisible();
+  test("Sidebar menu is visible", () => {
+    expect(screen.getByTestId("sidebar-nav")).toBeVisible();
+  });
+
+  test("Sidebar button click opens and closes sidebar", async () => {
+    const sidebarNav = screen.getByTestId("sidebar-nav");
+    expect(sidebarNav).toHaveClass("open");
+
+    const sidebarButton = screen.getByLabelText("Open/Close sidebar menu");
+    await userEvent.click(sidebarButton);
+    await expect(sidebarNav).toHaveClass("closed");
+  });
+
+  test("Sidebar section click opens and closes section", async () => {
+    const sectionAFirstChild = screen.getByText("Point of Contact");
+    expect(sectionAFirstChild).not.toBeVisible();
+
+    const sidebarSectionA = screen.getByText("A: Program Information");
+    await userEvent.click(sidebarSectionA);
+    await expect(sectionAFirstChild).toBeVisible();
   });
 });
 
