@@ -39,7 +39,7 @@ export const LoginCognito = () => {
 
   return (
     <Stack>
-      <Heading size="md" sx={sx.heading}>
+      <Heading size="md" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
       <label>

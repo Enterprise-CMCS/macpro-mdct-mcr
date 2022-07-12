@@ -1,0 +1,65 @@
+{
+  "path": "/program-information/reporting-period",
+  "intro": {
+    "section": "Section A: Program Information",
+    "subsection": "Reporting Period"
+  },
+  "form": {
+    "id": "apointofcontact",
+    "options": {
+      "mode": "onChange"
+    },
+    "fields": [
+      {
+        "id": "arp-a5a",
+        "type": "datesplit",
+        "props": {
+          "name": "arp-a5a",
+          "label": "A.5a Reporting period start date",
+          "hint": "Enter start date of the reporting period represented in the report."
+        },
+        "validation": {
+          "type": "number",
+          "options": {
+            "required": true
+          },
+          "errorMessages": {
+            "required": "Start date is required",
+            "format": "Invalid start date"
+          }
+        }
+      },
+      {
+        "id": "arp-a5b",
+        "type": "datesplit",
+        "props": {
+          "name": "arp-a5b",
+          "label": "A.5b Reporting period end date",
+          "hint": "Enter end date of the reporting period represented in the report."
+        },
+        "validation": {
+          "type": "number",
+          "options": {
+            "required": true
+          },
+          "errorMessages": {
+            "required": "End date is required",
+            "format": "Invalid end date",
+            "min": "End date cannot be before start date"
+          }
+        }
+      },
+      {
+        "id": "arp-a6",
+        "type": "text",
+        "props": {
+          "name": "arp-a6",
+          "label": "A.6 Program name",
+          "hint": "Auto-populated from report dashboard.",
+          "disabled": true
+        },
+        "validation": null
+      }
+    ]
+  }
+}
