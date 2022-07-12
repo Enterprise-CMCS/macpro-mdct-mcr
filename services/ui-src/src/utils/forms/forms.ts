@@ -3,7 +3,7 @@ import { buildYup } from "schema-to-yup";
 // components
 import { DateField, TextField, TextAreaField } from "components";
 // types
-import { FormField } from "types";
+import { AnyObject, FormField } from "types";
 
 export const formFieldFactory = (fields: FormField[]) => {
   // define form field components
@@ -20,6 +20,22 @@ export const formFieldFactory = (fields: FormField[]) => {
       ...field.props,
     })
   );
+};
+
+export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
+  // filter to only fields that need hydration
+  const fieldsToHydrate = formFields.filter(
+    (field: FormField) => !!field.hydrate
+  );
+
+  fieldsToHydrate.forEach((field: FormField) => {
+    // get index of field in form
+    const fieldFormIndex = formFields.indexOf(field!);
+    // add value attribute with hydration value
+    const hydrationValue = data[field?.hydrate!] || "ERROR";
+    formFields[fieldFormIndex].props!.value = hydrationValue;
+  });
+  return formFields;
 };
 
 export const makeFormSchema = (fields: FormField[]) => {

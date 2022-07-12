@@ -52,6 +52,7 @@
       {
         "id": "arp-a6",
         "type": "text",
+        "hydrate": "programName",
         "props": {
           "name": "arp-a6",
           "label": "A.6 Program name",
