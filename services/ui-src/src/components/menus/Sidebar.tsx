@@ -41,6 +41,7 @@ export const Sidebar = () => {
           <Box sx={sx.topBox}>
             <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
           </Box>
+          <Box sx={sx.navSectionsBox}></Box>
           {NavItems.map((section) => (
             <NavSection
               key={section.name}
@@ -67,42 +68,40 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
   const { name, path, children } = section;
   const itemPath = `${basePath}${path}`;
   return (
-    <>
-      <React.Fragment key={itemPath}>
-        {children ? (
-          <Box as="button" onClick={() => setIsOpen(!isOpen)}>
-            <NavItem
-              name={name}
-              level={level}
-              optionPath={itemPath}
-              hasChildren={!!children}
-              isOpen={isOpen}
+    <React.Fragment key={itemPath}>
+      {children ? (
+        <Box as="button" onClick={() => setIsOpen(!isOpen)}>
+          <NavItem
+            name={name}
+            level={level}
+            optionPath={itemPath}
+            hasChildren={!!children}
+            isOpen={isOpen}
+          />
+        </Box>
+      ) : (
+        <Link as={RouterLink} to={itemPath}>
+          <NavItem
+            name={name}
+            level={level}
+            optionPath={itemPath}
+            hasChildren={!!children}
+          />
+        </Link>
+      )}
+      {!!children && (
+        <Collapse in={isOpen}>
+          {children.map((section) => (
+            <NavSection
+              key={section.name}
+              section={section}
+              level={level + 1}
+              basePath={itemPath}
             />
-          </Box>
-        ) : (
-          <Link as={RouterLink} to={itemPath}>
-            <NavItem
-              name={name}
-              level={level}
-              optionPath={itemPath}
-              hasChildren={!!children}
-            />
-          </Link>
-        )}
-        {!!children && (
-          <Collapse in={isOpen}>
-            {children.map((section) => (
-              <NavSection
-                key={section.name}
-                section={section}
-                level={level + 1}
-                basePath={itemPath}
-              />
-            ))}
-          </Collapse>
-        )}
-      </React.Fragment>
-    </>
+          ))}
+        </Collapse>
+      )}
+    </React.Fragment>
   );
 };
 
@@ -141,16 +140,16 @@ const NavItem = ({
 
 const sx = {
   root: {
-    position: "relative",
+    position: "fixed",
     height: "100vh",
     width: "20rem",
     bg: "palette.gray_lightest",
     transition: "all 0.3s ease",
     "&.open": {
-      marginLeft: 0,
+      marginLeft: "-1rem",
     },
     "&.closed": {
-      marginLeft: "-20rem",
+      marginLeft: "-21rem",
     },
   },
   topBox: {
@@ -178,6 +177,9 @@ const sx = {
       marginRight: "2px",
       color: "palette.gray",
     },
+  },
+  navSectionsBox: {
+    // overflowY: "scroll",
   },
   navItemFlex: {
     flexDirection: "column",

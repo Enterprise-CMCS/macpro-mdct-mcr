@@ -26,8 +26,8 @@ export const App = () => {
             text="Skip to main content"
           />
           <Header handleLogout={logout} />
-          <Sidebar />
           <Container sx={sx.appContainer} data-testid="app-container">
+            <Sidebar />
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes userRole={user?.userRole} />
             </ErrorBoundary>
