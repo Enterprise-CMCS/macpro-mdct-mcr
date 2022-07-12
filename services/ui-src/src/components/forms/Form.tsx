@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+// components
+import { Box } from "@chakra-ui/react";
 // utils
 import {
   focusElement,
@@ -37,7 +39,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
         onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
         {...props}
       >
-        {formFieldFactory(fields)}
+        <Box sx={sx}>{formFieldFactory(fields)}</Box>
         {children}
       </form>
     </FormProvider>
@@ -51,3 +53,9 @@ interface Props {
   children?: ReactNode;
   [key: string]: any;
 }
+
+const sx = {
+  ".ds-c-field, .ds-c-label": {
+    maxWidth: "32rem",
+  },
+};

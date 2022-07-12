@@ -12,6 +12,7 @@ export * from "./auth/userProvider";
 export * from "./banners/adminBanner";
 // forms
 export * from "./forms/forms";
+export * from "./forms/routing";
 // other
 export * from "./other/email";
 export * from "./other/focusElement";

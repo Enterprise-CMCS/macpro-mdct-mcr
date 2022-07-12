@@ -27,7 +27,7 @@ export const TextField = ({
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box sx={sxOverride} className={mqClasses}>
       <CmsdsTextField
         id={name}
         name={name}
@@ -49,9 +49,3 @@ interface Props {
   sxOverride?: AnyObject;
   [key: string]: any;
 }
-
-const sx = {
-  ".ds-c-field": {
-    maxWidth: "40rem",
-  },
-};
