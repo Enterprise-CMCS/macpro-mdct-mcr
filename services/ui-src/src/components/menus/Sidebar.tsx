@@ -115,9 +115,9 @@ const NavItem = ({
   isOpen,
 }: NavItemProps) => {
   const currentPath = window.location.pathname;
-  const selectedClass = optionPath === currentPath ? "selected" : "";
+  const isCurrentPath = optionPath === currentPath;
   return (
-    <Flex sx={sx.navItemFlex} className={selectedClass}>
+    <Flex sx={sx.navItemFlex} className={isCurrentPath ? "selected" : ""}>
       <CheckCircleIcon />
       <Text sx={sx.navItemTitle} className={`level-${level}`}>
         {name}
@@ -197,7 +197,7 @@ const sx = {
       color: "palette.gray",
     },
     "&.selected": {
-      bg: "palette.custom_gray_lightest",
+      bg: "palette.gray_lightest_highlight",
       borderBottom: "none",
       borderInlineStartWidth: "0.125rem",
       borderInlineStartColor: "palette.alt",
