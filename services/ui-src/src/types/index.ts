@@ -37,7 +37,7 @@ export interface FormField {
   props?: {
     [key: string]: any;
   };
-  validation: FormValidation;
+  validation: FormValidation | null;
   children?: any;
 }
 

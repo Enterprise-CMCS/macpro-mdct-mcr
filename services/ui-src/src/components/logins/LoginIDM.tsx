@@ -8,7 +8,7 @@ export const LoginIDM = () => {
 
   return (
     <Box sx={sx.root}>
-      <Heading size="md" sx={sx.heading}>
+      <Heading as="h2" size="md" sx={sx.heading}>
         Log In with IDM
       </Heading>
       <Button
