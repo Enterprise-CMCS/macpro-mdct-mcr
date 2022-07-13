@@ -3,7 +3,7 @@ import { buildYup } from "schema-to-yup";
 // components
 import { DateField, TextField, TextAreaField } from "components";
 // types
-import { FormField } from "types";
+import { AnyObject, FormField } from "types";
 
 export const formFieldFactory = (fields: FormField[]) => {
   // define form field components
@@ -14,12 +14,32 @@ export const formFieldFactory = (fields: FormField[]) => {
     child: React.Fragment,
   };
   // create elements from provided fields
-  return fields.map((field) =>
-    React.createElement(fieldToComponentMap[field.type], {
+  return fields.map((field) => {
+    const fieldProps = field.props || {};
+    if (field.type !== "child") {
+      fieldProps.name = field.id;
+    }
+    return React.createElement(fieldToComponentMap[field.type], {
       key: field.id,
       ...field.props,
-    })
+    });
+  });
+};
+
+export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
+  // filter to only fields that need hydration
+  const fieldsToHydrate = formFields.filter(
+    (field: FormField) => !!field.hydrate
   );
+
+  fieldsToHydrate.forEach((field: FormField) => {
+    // get index of field in form
+    const fieldFormIndex = formFields.indexOf(field!);
+    // add value attribute with hydration value
+    const hydrationValue = data[field?.hydrate!] || "ERROR";
+    formFields[fieldFormIndex].props!.value = hydrationValue;
+  });
+  return formFields;
 };
 
 export const makeFormSchema = (fields: FormField[]) => {
