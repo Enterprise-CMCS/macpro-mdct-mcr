@@ -15,8 +15,8 @@ export const noon: TimeShape = {
 
 export const calculateTimeByDateType = (dateType: string): TimeShape => {
   const timeMap: any = {
-    startDate: midnight,
-    endDate: oneSecondToMidnight,
+    "abf-startDate": midnight,
+    "abf-endDate": oneSecondToMidnight,
   };
   return timeMap[dateType] || noon;
 };

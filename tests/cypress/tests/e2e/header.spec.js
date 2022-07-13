@@ -46,13 +46,12 @@ describe("Header integration tests", () => {
   });
 
   /*
-   * TODO: Uncomment during 'program creation' ticket work
-   * it("Header subnav leave form button navigates to /", () => {
-   *   // TODO: navigate to /mcpar via report creation or something
-   *   cy.location("pathname").should("match", /mcpar/);
+   * // TODO: Uncomment during program creation work
+   * it("Header subnav leave form button navigates to /mcpar", () => {
+   *   // TODO: Navigate to /mcpar/something
    *   const subnavLeaveFormButton = "[data-testid='leave-form-button']";
    *   cy.get(subnavLeaveFormButton).click();
-   *   cy.location("pathname").should("match", /\//);
+   *   cy.location("pathname").should("match", /mcpar/);
    * });
    */
 });

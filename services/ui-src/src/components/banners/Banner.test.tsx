@@ -5,7 +5,10 @@ import { Banner } from "components";
 
 const bannerComponent = (
   <Banner
-    bannerData={{ title: "Test banner!", description: "This is for testing." }}
+    bannerData={{
+      title: "Test banner!",
+      description: "This is for testing.",
+    }}
     data-testid="test-banner"
   />
 );

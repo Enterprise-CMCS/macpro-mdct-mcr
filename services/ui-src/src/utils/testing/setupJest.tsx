@@ -23,6 +23,7 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
+window.scrollBy = jest.fn();
 window.scrollTo = jest.fn();
 
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */

@@ -10,7 +10,7 @@ export const TextField = ({
   name,
   label,
   placeholder,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -27,14 +27,15 @@ export const TextField = ({
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={sxOverride} className={mqClasses}>
       <CmsdsTextField
-        name={name}
         id={name}
+        name={name}
         label={label}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
+        inputRef={() => form.register(name)}
         {...props}
       />
     </Box>
@@ -45,12 +46,6 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  sxOverrides?: AnyObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
-
-const sx = {
-  ".ds-c-field": {
-    maxWidth: "40rem",
-  },
-};

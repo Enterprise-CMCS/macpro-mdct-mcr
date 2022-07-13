@@ -29,6 +29,37 @@ export interface UserContextI {
 
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
+// FORM
+
+export interface FormField {
+  id: string;
+  type: string;
+  hydrate?: string;
+  props: {
+    [key: string]: any;
+  } | null;
+  validation: FormValidation | null;
+  children?: any;
+}
+
+export interface FormValidation {
+  type: string;
+  options?: {
+    [key: string]: any;
+  };
+  errorMessages?: {
+    [key: string]: any;
+  };
+}
+
+export interface FormJson {
+  id: string;
+  options?: {
+    [key: string]: any;
+  };
+  fields: FormField[];
+}
+
 // BANNER
 
 export interface BannerData {
@@ -88,7 +119,7 @@ export interface AnyObject {
 }
 
 export interface TableContentShape {
-  caption: string;
-  headRow: string[];
+  caption?: string;
+  headRow?: string[];
   bodyRows: string[][];
 }

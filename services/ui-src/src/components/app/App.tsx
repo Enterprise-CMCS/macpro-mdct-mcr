@@ -5,13 +5,14 @@ import { useUser } from "utils";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
   AppRoutes,
+  Error,
   Footer,
   Header,
   LoginCognito,
   LoginIDM,
   SkipNav,
+  Sidebar,
 } from "components";
-import { Error } from "views";
 
 export const App = () => {
   const { logout, user, showLocalLogins } = useUser();
@@ -26,6 +27,7 @@ export const App = () => {
           />
           <Header handleLogout={logout} />
           <Container sx={sx.appContainer} data-testid="app-container">
+            <Sidebar />
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes userRole={user?.userRole} />
             </ErrorBoundary>
@@ -63,7 +65,7 @@ const sx = {
     flex: "1 0 auto",
   },
   loginContainer: {
-    maxWidth: "sm",
+    maxWidth: "25rem",
     height: "full",
     marginY: "auto",
   },

@@ -9,7 +9,7 @@ import verbiage from "verbiage/home-view";
 const tableContent = verbiage.cards.MCPAR.accordion.table;
 const tableComponent = (
   <RouterWrappedComponent>
-    <Table content={tableContent} variant="striped" lastCellsBold />
+    <Table content={tableContent} variant="striped" />
   </RouterWrappedComponent>
 );
 
