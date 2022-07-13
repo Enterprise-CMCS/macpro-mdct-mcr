@@ -141,6 +141,7 @@ const NavItem = ({
 const sx = {
   root: {
     position: "fixed",
+    zIndex: "dropdown",
     height: "100vh",
     width: "20rem",
     bg: "palette.gray_lightest",
