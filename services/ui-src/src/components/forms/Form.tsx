@@ -23,7 +23,6 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
     shouldFocusError: false,
     ...(options as any),
   });
-
   const onErrorHandler = (errors: any) => {
     const sortedErrors: any[] = sortFormErrors(form, errors);
     const fieldToFocus = document.querySelector(

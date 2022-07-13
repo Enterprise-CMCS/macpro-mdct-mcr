@@ -14,45 +14,36 @@
         "id": "atest1",
         "type": "choicelist",
         "props": {
-          "name": "atest1",
+          "type": "checkbox",
           "label": "Top level",
           "hint": "Pick one",
-          "type": "checkbox",
+          "validation": null,
           "choices": [
             {
-              "id": "atest1o1",
               "name": "atest1o1",
-              "type": "choiceOption",
+              "type": "choice",
               "label": "Checkbox option 1",
               "value": "option1",
-              "props": {},
-              "validation": null,
               "children": [
                 {
                   "id": "atest1o1-c",
                   "type": "choicelist",
-                  "isNested": true,
                   "props": {
-                    "name": "atest1o1-c",
                     "label": "One nested",
                     "hint": "Pick one",
                     "type": "checkbox",
+                    "validation": null,
                     "choices": [
                       {
-                        "id": "atest1o1-co1",
                         "name": "atest1o1-co1",
-                        "type": "choiceOption",
+                        "type": "choice",
                         "label": "Checkbox option 1",
                         "value": "option1-1",
-                        "props": {},
-                        "validation": null,
                         "children": [
                           {
                             "id": "atest1o1-co1-c",
                             "type": "text",
-                            "isNested": true,
                             "props": {
-                              "name": "atest1o1-co1-c",
                               "label": "Test checked child component",
                               "hint": "Enter some text"
                             },
@@ -66,23 +57,18 @@
                         ]
                       }
                     ]
-                  },
-                  "validation": null
+                  }
                 }
               ]
             },
             {
-              "id": "atest-1-o2",
               "name": "atest-1-o2",
-              "type": "choiceOption",
+              "type": "choice",
               "label": "Checkbox option 2",
-              "value": "option2",
-              "props": {},
-              "validation": null
+              "value": "option2"
             }
           ]
-        },
-        "validation": null
+        }
       }
     ]
   }
