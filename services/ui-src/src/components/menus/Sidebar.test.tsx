@@ -1,17 +1,27 @@
+import { useContext } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { axe } from "jest-axe";
 //components
-import { Sidebar } from "components";
+import { Sidebar, SidebarOpenContext } from "components";
 
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(() => ({ pathname: "/mcpar" })),
 }));
 
+const TestSidebarComponent = () => {
+  const { sidebarIsOpen, setSidebarIsOpen } = useContext(SidebarOpenContext);
+  return (
+    <SidebarOpenContext.Provider value={{ sidebarIsOpen, setSidebarIsOpen }}>
+      <Sidebar />
+    </SidebarOpenContext.Provider>
+  );
+};
+
 const sidebarComponent = (
   <RouterWrappedComponent>
-    <Sidebar />
+    <TestSidebarComponent />
   </RouterWrappedComponent>
 );
 
