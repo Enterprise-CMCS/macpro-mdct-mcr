@@ -44,5 +44,6 @@ export { LoginIDM } from "./logins/LoginIDM";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
+export { Sidebar } from "./menus/Sidebar";
 // tables
 export { Table } from "./tables/Table";

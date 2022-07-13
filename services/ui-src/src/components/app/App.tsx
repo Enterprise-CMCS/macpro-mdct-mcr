@@ -11,6 +11,7 @@ import {
   LoginCognito,
   LoginIDM,
   SkipNav,
+  Sidebar,
 } from "components";
 
 export const App = () => {
@@ -26,6 +27,7 @@ export const App = () => {
           />
           <Header handleLogout={logout} />
           <Container sx={sx.appContainer} data-testid="app-container">
+            <Sidebar />
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes userRole={user?.userRole} />
             </ErrorBoundary>

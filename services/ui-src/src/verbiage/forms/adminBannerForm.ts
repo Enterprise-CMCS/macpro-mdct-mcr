@@ -8,7 +8,6 @@ export const form = {
       id: "abf-title",
       type: "text",
       props: {
-        name: "abf-title",
         label: "Title text",
         placeholder: "New banner title",
       },
@@ -24,7 +23,6 @@ export const form = {
       id: "abf-description",
       type: "textarea",
       props: {
-        name: "abf-description",
         label: "Description text",
         placeholder: "New banner description",
       },
@@ -40,7 +38,6 @@ export const form = {
       id: "abf-link",
       type: "text",
       props: {
-        name: "abf-link",
         label: "Link",
         requirementLabel: "Optional",
       },
@@ -58,7 +55,6 @@ export const form = {
       id: "abf-startDate",
       type: "datesplit",
       props: {
-        name: "abf-startDate",
         label: "Start date",
         hint: "mm/dd/yyyy (12:00:00am)",
       },
@@ -113,7 +109,6 @@ export const form = {
       id: "abf-endDate",
       type: "datesplit",
       props: {
-        name: "abf-endDate",
         label: "End date",
         hint: "mm/dd/yyyy (11:59:59pm)",
       },

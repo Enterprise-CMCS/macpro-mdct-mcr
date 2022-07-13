@@ -23,11 +23,14 @@ export const formFieldFactory = (fields: FormField[]) => {
   // create elements from provided fields
   return fields.map((field) => {
     const fieldChoices = field?.props?.choices;
+    if (field.type !== "child") {
+      field.props!.name = field.id;
+    }
     if (fieldChoices) {
       fieldChoices.forEach((choice: any, index: number) => {
         console.log("choice", choice, "index", index);
         if (choice.children) {
-          field.props.choices[index].checkedChildren = formFieldFactory(
+          field.props!.choices[index].checkedChildren = formFieldFactory(
             choice.children
           );
         }
@@ -35,8 +38,8 @@ export const formFieldFactory = (fields: FormField[]) => {
     }
     const componentFieldType = fieldToComponentMap[field.type];
 
-    const propsToAdd = field.props;
-    if (propsToAdd.choices) {
+    const propsToAdd = field.props || {};
+    if (propsToAdd?.choices) {
       propsToAdd.choices.forEach((choice: any) => {
         delete choice.children;
       });
