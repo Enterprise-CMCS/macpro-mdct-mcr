@@ -14,6 +14,8 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const onSubmit = async (formData: any) => {
     const newBannerData = {
       key: bannerId,
+      radioList: formData["abf-radio"],
+      checkList: formData["abf-check"],
       title: formData["abf-title"],
       description: formData["abf-description"],
       link: formData["abf-link"],
