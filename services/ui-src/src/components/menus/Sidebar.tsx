@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // TODO: swap out for new assets from design
@@ -17,6 +17,39 @@ export const Sidebar = () => {
   const { pathname } = useLocation();
   const isMcparReport = pathname.includes("/mcpar");
   const [isOpen, setIsOpen] = useState(true);
+
+  const useScrollPosition = () => {
+    const [scrollPosition, setScrollPosition] = useState(0);
+
+    useEffect(() => {
+      const updatePosition = () => {
+        setScrollPosition(window.pageYOffset);
+      };
+      window.addEventListener("scroll", updatePosition);
+      updatePosition();
+      return () => window.removeEventListener("scroll", updatePosition);
+    }, []);
+
+    return scrollPosition;
+  };
+
+  const scrollPosition = useScrollPosition();
+
+  const [navSectionHeight, setNavSectionHeight] = useState<number>(0);
+
+  useEffect(() => {
+    const headerRect = document
+      .getElementById("header")
+      ?.getBoundingClientRect();
+    const headerBottom = headerRect?.bottom!;
+    const footerRect = document
+      .getElementById("footer")
+      ?.getBoundingClientRect();
+    const footerTop = footerRect?.top!;
+    const calcul = footerTop! - headerBottom! - 80 || 0;
+    setNavSectionHeight(calcul);
+  }, [scrollPosition]);
+
   return (
     <>
       {isMcparReport && (
@@ -41,15 +74,19 @@ export const Sidebar = () => {
           <Box sx={sx.topBox}>
             <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
           </Box>
-          <Box sx={sx.navSectionsBox}></Box>
-          {NavItems.map((section) => (
-            <NavSection
-              key={section.name}
-              section={section}
-              level={1}
-              basePath={basePath}
-            />
-          ))}
+          <Box
+            sx={{ ...sx.navSectionsBox, height: navSectionHeight }}
+            className="nav-sections-box"
+          >
+            {NavItems.map((section) => (
+              <NavSection
+                key={section.name}
+                section={section}
+                level={1}
+                basePath={basePath}
+              />
+            ))}
+          </Box>
         </Box>
       )}
     </>
@@ -180,7 +217,11 @@ const sx = {
     },
   },
   navSectionsBox: {
-    // overflowY: "scroll",
+    overflowY: "scroll",
+    height: "500px",
+    overflowX: "hidden",
+    marginBottom: -1,
+    borderBottom: "1px solid red",
   },
   navItemFlex: {
     flexDirection: "column",
