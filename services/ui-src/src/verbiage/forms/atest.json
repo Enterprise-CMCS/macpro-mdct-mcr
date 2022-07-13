@@ -31,7 +31,7 @@
                 {
                   "id": "atest1o1-c",
                   "type": "choicelist",
-                  "isChild": true,
+                  "isNested": true,
                   "props": {
                     "name": "atest1o1-c",
                     "label": "One nested",
@@ -50,13 +50,18 @@
                           {
                             "id": "atest1o1-co1-c",
                             "type": "text",
-                            "isChild": true,
+                            "isNested": true,
                             "props": {
                               "name": "atest1o1-co1-c",
                               "label": "Test checked child component",
                               "hint": "Enter some text"
                             },
-                            "validation": null
+                            "validation": {
+                              "type": "string",
+                              "options": {
+                                "required": true
+                              }
+                            }
                           }
                         ]
                       }

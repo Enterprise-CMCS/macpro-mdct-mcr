@@ -26,7 +26,7 @@ export const ChoiceListField = ({
   };
 
   return (
-    <Box sx={sxOverride} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses} {...props}>
       <CmsdsChoiceList
         name={name}
         type={type}
@@ -54,3 +54,5 @@ interface Props {
   sxOverride?: AnyObject;
   [key: string]: any;
 }
+
+const sx = {};

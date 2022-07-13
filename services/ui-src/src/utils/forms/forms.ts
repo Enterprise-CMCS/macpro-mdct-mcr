@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from "react";
 import { buildYup } from "schema-to-yup";
 // components
@@ -11,50 +10,50 @@ import {
 // types
 import { AnyObject, FormField } from "types";
 
-export const formFieldFactory = (fields: FormField[]) => {
-  // define form field components
-  const fieldToComponentMap: any = {
-    choicelist: ChoiceListField,
-    datesplit: DateField,
-    text: TextField,
-    textarea: TextAreaField,
-    child: React.Fragment,
-  };
-  // create elements from provided fields
-  return fields.map((field) => {
-    const fieldChoices = field?.props?.choices;
+// define form field components
+const fieldToComponentMap: any = {
+  choicelist: ChoiceListField,
+  datesplit: DateField,
+  text: TextField,
+  textarea: TextAreaField,
+  // TODO: remove after DateField is updated
+  child: React.Fragment,
+};
+
+// return created elements from provided fields
+export const formFieldFactory = (fields: FormField[]) =>
+  fields.map((field) => {
+    const componentFieldType = fieldToComponentMap[field.type];
+    const fieldProps = field.props || {};
+    // TODO: remove after DateField is updated
     if (field.type !== "child") {
-      field.props!.name = field.id;
+      fieldProps!.name = field.id;
     }
+    // if field is a choiceList component
+    const fieldChoices = fieldProps?.choices;
     if (fieldChoices) {
       fieldChoices.forEach((choice: any, index: number) => {
-        console.log("choice", choice, "index", index);
-        if (choice.children) {
-          field.props!.choices[index].checkedChildren = formFieldFactory(
-            choice.children
-          );
+        // if a choice/option has a child field to conditionally render
+        const nestedChildren = choice?.children;
+        if (nestedChildren) {
+          // explicitly set nested class for each nested child
+          nestedChildren.forEach((child: any) => {
+            child.props["className"] = "ds-c-choice__checkedChild";
+          });
+          // store ReactNode-converted child field as 'checkedChildren'
+          field.props!.choices[index].checkedChildren =
+            formFieldFactory(nestedChildren);
+          // remove invalid prop 'children'
+          delete choice.children;
         }
       });
     }
-    const componentFieldType = fieldToComponentMap[field.type];
-
-    const propsToAdd = field.props || {};
-    if (propsToAdd?.choices) {
-      propsToAdd.choices.forEach((choice: any) => {
-        delete choice.children;
-      });
-    }
-
-    if (field.isChild) {
-      propsToAdd["className"] = "ds-c-choice__checkedChild";
-    }
-    const createdComponent = React.createElement(componentFieldType, {
+    // return created element
+    return React.createElement(componentFieldType, {
       key: field.id || "temp",
-      ...propsToAdd,
+      ...fieldProps,
     });
-    return createdComponent;
   });
-};
 
 export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
   // filter to only fields that need hydration
