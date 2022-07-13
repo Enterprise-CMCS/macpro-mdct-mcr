@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
@@ -10,10 +9,14 @@ jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(() => ({ pathname: "/mcpar" })),
 }));
 
+const mockSidebarOpenContext = {
+  sidebarIsOpen: true,
+  setSidebarIsOpen: jest.fn(),
+};
+
 const TestSidebarComponent = () => {
-  const { sidebarIsOpen, setSidebarIsOpen } = useContext(SidebarOpenContext);
   return (
-    <SidebarOpenContext.Provider value={{ sidebarIsOpen, setSidebarIsOpen }}>
+    <SidebarOpenContext.Provider value={mockSidebarOpenContext}>
       <Sidebar />
     </SidebarOpenContext.Provider>
   );
@@ -40,7 +43,7 @@ describe("Test Sidebar", () => {
 
     const sidebarButton = screen.getByLabelText("Open/Close sidebar menu");
     await userEvent.click(sidebarButton);
-    await expect(sidebarNav).toHaveClass("closed");
+    expect(mockSidebarOpenContext.setSidebarIsOpen).toHaveBeenCalledWith(false);
   });
 
   test("Sidebar section click opens and closes section", async () => {
