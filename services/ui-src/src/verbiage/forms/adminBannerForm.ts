@@ -5,6 +5,40 @@ export const form = {
   },
   fields: [
     {
+      id: "abf-radio",
+      type: "choiceList",
+      props: {
+        name: "Choice List Radio Name",
+        type: "radio",
+        label: "Choice List Radio Label",
+        choices: [
+          { label: "Choice 1", value: "A", defaultChecked: true },
+          { label: "Choice 2", value: "B" },
+          { label: "Disabled choice 3", value: "C", disabled: true },
+        ],
+      },
+      validation: {
+        type: "array",
+      },
+    },
+    {
+      id: "abf-check",
+      type: "choiceList",
+      props: {
+        name: "Choice List Checkbox Name",
+        type: "checkbox",
+        label: "Choice List Checkbox Label",
+        choices: [
+          { label: "Choice 1", value: "A", defaultChecked: true },
+          { label: "Choice 2", value: "B" },
+          { label: "Disabled choice 3", value: "C", disabled: true },
+        ],
+      },
+      validation: {
+        type: "array",
+      },
+    },
+    {
       id: "abf-title",
       type: "text",
       props: {
