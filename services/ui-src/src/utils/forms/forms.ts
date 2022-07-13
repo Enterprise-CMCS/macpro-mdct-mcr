@@ -1,12 +1,7 @@
 import React from "react";
 import { buildYup } from "schema-to-yup";
 // components
-import {
-  DateField,
-  TextField,
-  TextAreaField,
-  ChoiceListField,
-} from "components";
+import { DateField, TextField, TextAreaField } from "components";
 // types
 import { AnyObject, FormField } from "types";
 
@@ -16,7 +11,6 @@ export const formFieldFactory = (fields: FormField[]) => {
     text: TextField,
     textarea: TextAreaField,
     datesplit: DateField,
-    choiceList: ChoiceListField,
     child: React.Fragment,
   };
   // create elements from provided fields

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -15,14 +16,31 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const defaultChoices = choices.map((choice) => {
+    return { value: choice.value, checked: choice.defaultChecked || false };
+  });
+
+  const [choicesChosen, setChoicesChosen] =
+    useState<ChoiceListSelected[]>(defaultChoices);
+
+  useEffect(() => {
+    form.setValue(name, choicesChosen, { shouldValidate: true });
+  }, [choicesChosen]);
 
   // get the form context
   const form = useFormContext();
 
   // update form data
-  const onChangeHandler = async (event: InputChangeEvent) => {
-    const { name: choiceListName, value: choiceListValue } = event.target;
-    form.setValue(choiceListName, choiceListValue, { shouldValidate: true });
+  const onChangeHandler = (event: InputChangeEvent) => {
+    const choiceSelected: ChoiceListSelected = {
+      value: event.target.value,
+      checked: event.target.checked,
+    };
+    setChoicesChosen((prevState) => {
+      return prevState.map((choice) => {
+        return choice.value === choiceSelected.value ? choiceSelected : choice;
+      });
+    });
   };
 
   return (
@@ -38,6 +56,11 @@ export const ChoiceListField = ({
     </Box>
   );
 };
+
+interface ChoiceListSelected {
+  value: string;
+  checked: boolean;
+}
 
 interface ChoiceListChoices {
   label: string;
