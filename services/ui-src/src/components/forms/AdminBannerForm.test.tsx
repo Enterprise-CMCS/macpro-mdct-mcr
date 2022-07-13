@@ -54,11 +54,11 @@ describe("Test AdminBannerForm component", () => {
       startDate: convertDateEtToUtc(
         { year: 2021, month: 7, day: 11 },
         { hour: 0, minute: 0, second: 0 }
-      ).toString(),
+      ),
       endDate: convertDateEtToUtc(
         { year: 2021, month: 8, day: 12 },
         { hour: 23, minute: 59, second: 59 }
-      ).toString(),
+      ),
     });
   });
 

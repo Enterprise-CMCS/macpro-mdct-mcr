@@ -108,8 +108,8 @@ describe("Test /admin view with active/inactive banner", () => {
   const context = mockContextWithBanner;
 
   test("Active banner shows 'active' status", async () => {
-    context.bannerData.startDate = (currentTime - oneDay).toString();
-    context.bannerData.endDate = (currentTime + oneDay).toString();
+    context.bannerData.startDate = currentTime - oneDay;
+    context.bannerData.endDate = currentTime + oneDay;
     await act(async () => {
       await render(adminView(context));
     });
@@ -118,8 +118,8 @@ describe("Test /admin view with active/inactive banner", () => {
   });
 
   test("Inactive banner shows 'inactive' status", async () => {
-    context.bannerData.startDate = (currentTime + oneDay).toString();
-    context.bannerData.endDate = (currentTime + oneDay + oneDay).toString();
+    context.bannerData.startDate = currentTime + oneDay;
+    context.bannerData.endDate = currentTime + oneDay + oneDay;
     await act(async () => {
       await render(adminView(context));
     });

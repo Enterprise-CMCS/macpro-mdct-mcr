@@ -56,17 +56,14 @@ export const form = {
       type: "datesplit",
       props: {
         label: "Start date",
-        hint: "mm/dd/yyyy (12:00:00am)",
       },
       validation: {
-        type: "string",
+        type: "number",
         options: {
           required: true,
-          matches: "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]",
         },
         errorMessages: {
           required: "Start date is required",
-          matches: "Must be a valid date",
         },
       },
     },
@@ -75,18 +72,15 @@ export const form = {
       type: "datesplit",
       props: {
         label: "End date",
-        hint: "mm/dd/yyyy (11:59:59pm)",
       },
       validation: {
-        type: "string",
+        type: "number",
         options: {
           required: true,
-          matches: "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]",
           // TODO: add minimum start date reference min: "startDate"
         },
         errorMessages: {
           required: "End date is required",
-          matches: "Must be a valid date",
         },
       },
     },

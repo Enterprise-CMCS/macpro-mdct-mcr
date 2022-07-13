@@ -42,7 +42,7 @@ describe("Test convertDateEtToUtc", () => {
 
 describe("Test formatDateUtcToEt", () => {
   test("Valid UTC datetime converts to ET correctly", () => {
-    const result = formatDateUtcToEt(testDate.utcMS.toString());
+    const result = formatDateUtcToEt(testDate.utcMS);
     expect(result).toBe(testDate.etFormattedString);
   });
 });

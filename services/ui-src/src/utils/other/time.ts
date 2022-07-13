@@ -44,8 +44,8 @@ export const convertDateEtToUtc = (
  * Converts passed UTC datetime to ET date
  * returns -> ET date in format mm/dd/yyyy
  */
-export const formatDateUtcToEt = (date: string): string => {
-  const convertedDate = parseInt(date);
+export const formatDateUtcToEt = (date: number): string => {
+  const convertedDate = date;
   const easternDatetime = utcToZonedTime(
     new Date(convertedDate),
     "America/New_York"
