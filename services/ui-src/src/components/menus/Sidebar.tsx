@@ -4,6 +4,7 @@ import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // TODO: swap out for new assets from design
 import { ArrowIcon, CheckCircleIcon } from "@cmsgov/design-system";
 import NavItems from "data/navigation/MCPARSideNavItems";
+import { useBreakpoint, useScrollPosition } from "utils";
 
 interface LinkItemProps {
   name: string;
@@ -14,46 +15,33 @@ interface LinkItemProps {
 const basePath = "/mcpar";
 
 export const Sidebar = () => {
+  const { isDesktop } = useBreakpoint();
   const { pathname } = useLocation();
   const isMcparReport = pathname.includes("/mcpar");
+
   const [isOpen, setIsOpen] = useState(true);
-
-  const useScrollPosition = () => {
-    const [scrollPosition, setScrollPosition] = useState(0);
-
-    useEffect(() => {
-      const updatePosition = () => {
-        setScrollPosition(window.pageYOffset);
-      };
-      window.addEventListener("scroll", updatePosition);
-      updatePosition();
-      return () => window.removeEventListener("scroll", updatePosition);
-    }, []);
-
-    return scrollPosition;
-  };
+  const [navHeight, setNavHeight] = useState<number>(0);
 
   const scrollPosition = useScrollPosition();
 
-  const [navSectionHeight, setNavSectionHeight] = useState<number>(0);
-
   useEffect(() => {
-    const headerRect = document
+    const headerBottom = document
       .getElementById("header")
-      ?.getBoundingClientRect();
-    const headerBottom = headerRect?.bottom!;
-    const footerRect = document
-      .getElementById("footer")
-      ?.getBoundingClientRect();
-    const footerTop = footerRect?.top!;
-    const calcul = footerTop! - headerBottom! - 80 || 0;
-    setNavSectionHeight(calcul);
-  }, [scrollPosition]);
+      ?.getBoundingClientRect()?.bottom!;
+    const footerTop = document.getElementById("footer")?.getBoundingClientRect()
+      ?.top!;
+    const titleBoxHeight = document
+      .getElementById("sidebar-title-box")
+      ?.getBoundingClientRect()?.height!;
+    const newNavHeight = footerTop! - headerBottom! - titleBoxHeight || 0;
+    setNavHeight(newNavHeight);
+  }, [pathname, scrollPosition]);
 
   return (
     <>
       {isMcparReport && (
         <Box
+          id="sidebar"
           sx={sx.root}
           className={isOpen ? "open" : "closed"}
           role="navigation"
@@ -71,11 +59,14 @@ export const Sidebar = () => {
               direction={isOpen ? "left" : "right"}
             />
           </Box>
-          <Box sx={sx.topBox}>
+          <Box id="sidebar-title-box" sx={sx.topBox}>
             <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
           </Box>
           <Box
-            sx={{ ...sx.navSectionsBox, height: navSectionHeight }}
+            sx={{
+              ...sx.navSectionsBox,
+              height: isDesktop ? navHeight : "auto",
+            }}
             className="nav-sections-box"
           >
             {NavItems.map((section) => (
@@ -220,8 +211,6 @@ const sx = {
     overflowY: "scroll",
     height: "500px",
     overflowX: "hidden",
-    marginBottom: -1,
-    borderBottom: "1px solid red",
   },
   navItemFlex: {
     flexDirection: "column",
