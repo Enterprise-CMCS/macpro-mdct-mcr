@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
@@ -18,14 +18,14 @@ const dateFieldComponent = (
   <DateField
     name="testDateField"
     label="test-date-field"
-    labelId="test-date-field"
+    data-testid="test-date-field"
   />
 );
 
 describe("Test DateField component", () => {
   test("DateField is visible", () => {
-    const result = render(dateFieldComponent);
-    const dateField = result.container.querySelector("#test-date-field");
+    render(dateFieldComponent);
+    const dateField = screen.getByTestId("test-date-field");
     expect(dateField).toBeVisible();
   });
 
