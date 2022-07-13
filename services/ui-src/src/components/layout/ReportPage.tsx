@@ -32,7 +32,7 @@ interface Props {
 const sx = {
   contentBox: {
     flexShrink: "0",
-    marginLeft: "21rem",
+    marginLeft: "21.5rem",
     paddingY: "4rem",
     "&.tablet, &.mobile": {
       marginLeft: 0,
