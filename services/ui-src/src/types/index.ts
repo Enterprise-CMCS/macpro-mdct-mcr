@@ -35,30 +35,28 @@ export interface FormField {
   id: string;
   type: string;
   hydrate?: string;
-  isChild?: boolean;
-  props: {
-    [key: string]: any;
-  } | null;
-  validation: FormValidation | null;
-  children?: any;
-  [key: string]: any;
+  props?: AnyObject;
+  validation?: FormValidation;
+  choices?: FieldChoice[];
+}
+
+export interface FieldChoice {
+  name: string;
+  type: string;
+  label: string;
+  value: string;
+  children?: FormField[];
 }
 
 export interface FormValidation {
   type: string;
-  options?: {
-    [key: string]: any;
-  };
-  errorMessages?: {
-    [key: string]: any;
-  };
+  options?: AnyObject;
+  errorMessages?: AnyObject;
 }
 
 export interface FormJson {
   id: string;
-  options?: {
-    [key: string]: any;
-  };
+  options?: AnyObject;
   fields: FormField[];
 }
 

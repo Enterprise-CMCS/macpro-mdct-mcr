@@ -72,7 +72,6 @@ export const form = {
     {
       id: "abf-startDateMonth",
       type: "child",
-      props: null,
       validation: {
         type: "number",
         options: {
@@ -84,7 +83,6 @@ export const form = {
     {
       id: "abf-startDateDay",
       type: "child",
-      props: null,
       validation: {
         type: "number",
         options: {
@@ -96,7 +94,6 @@ export const form = {
     {
       id: "abf-startDateYear",
       type: "child",
-      props: null,
       validation: {
         type: "number",
         options: {
@@ -128,7 +125,6 @@ export const form = {
     {
       id: "abf-endDateMonth",
       type: "child",
-      props: null,
       validation: {
         type: "number",
         options: {
@@ -140,7 +136,6 @@ export const form = {
     {
       id: "abf-endDateDay",
       type: "child",
-      props: null,
       validation: {
         type: "number",
         options: {
@@ -152,7 +147,6 @@ export const form = {
     {
       id: "abf-endDateYear",
       type: "child",
-      props: null,
       validation: {
         type: "number",
         options: {

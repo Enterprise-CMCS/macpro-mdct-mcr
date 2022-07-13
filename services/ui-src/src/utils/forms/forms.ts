@@ -10,24 +10,23 @@ import {
 // types
 import { AnyObject, FormField } from "types";
 
-// define form field components
-const fieldToComponentMap: any = {
-  choicelist: ChoiceListField,
-  datesplit: DateField,
-  text: TextField,
-  textarea: TextAreaField,
-  // TODO: remove after DateField is updated
-  child: React.Fragment,
-};
-
 // return created elements from provided fields
-export const formFieldFactory = (fields: FormField[]) =>
-  fields.map((field) => {
+export const formFieldFactory = (fields: FormField[]) => {
+  // define form field components
+  const fieldToComponentMap: any = {
+    choicelist: ChoiceListField,
+    datesplit: DateField,
+    text: TextField,
+    textarea: TextAreaField,
+    // TODO: remove after DateField is updated
+    child: React.Fragment,
+  };
+  return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    const fieldProps = field.props || {};
+    const fieldProps = field?.props || {};
     // TODO: remove after DateField is updated
     if (field.type !== "child") {
-      fieldProps!.name = field.id;
+      fieldProps.name = field.id;
     }
     // if field is a choiceList component
     const fieldChoices = fieldProps?.choices;
@@ -54,6 +53,7 @@ export const formFieldFactory = (fields: FormField[]) =>
       ...fieldProps,
     });
   });
+};
 
 export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
   // filter to only fields that need hydration

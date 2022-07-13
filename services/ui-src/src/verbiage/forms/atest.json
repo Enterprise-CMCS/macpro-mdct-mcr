@@ -17,7 +17,6 @@
           "type": "checkbox",
           "label": "Top level",
           "hint": "Pick one",
-          "validation": null,
           "choices": [
             {
               "name": "atest1o1",
@@ -32,7 +31,6 @@
                     "label": "One nested",
                     "hint": "Pick one",
                     "type": "checkbox",
-                    "validation": null,
                     "choices": [
                       {
                         "name": "atest1o1-co1",
