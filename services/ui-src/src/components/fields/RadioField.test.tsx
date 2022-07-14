@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
-import { ChoiceListField } from "components";
+import { RadioField } from "components";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("react-hook-form", () => ({
@@ -10,9 +10,9 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
-const RadioListFieldComponent = (
+const RadioFieldComponent = (
   <div data-testid="test-radio-list">
-    <ChoiceListField
+    <RadioField
       choices={[
         { label: "Choice 1", value: "A" },
         { label: "Choice 2", value: "B" },
@@ -28,13 +28,13 @@ const RadioListFieldComponent = (
 
 describe("Test ChoiceList component", () => {
   test("ChoiceList renders as Radio", () => {
-    render(RadioListFieldComponent);
+    render(RadioFieldComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByTestId("test-radio-list")).toBeVisible();
   });
 
   test("ChoiceList allows checking radio choices", async () => {
-    const wrapper = render(RadioListFieldComponent);
+    const wrapper = render(RadioFieldComponent);
     const radioContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
@@ -53,7 +53,7 @@ describe("Test ChoiceList component", () => {
 
 describe("Test ChoiceList accessibility", () => {
   it("Should not have basic accessibility issues when given radio", async () => {
-    const { container } = render(RadioListFieldComponent);
+    const { container } = render(RadioFieldComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

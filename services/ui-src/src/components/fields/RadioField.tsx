@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+
 // components
 import {
   ChoiceListChoices,
@@ -11,7 +12,7 @@ import { Box } from "@chakra-ui/react";
 import { makeMediaQueryClasses } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 
-export const CheckboxListField = ({
+export const RadioField = ({
   name,
   label,
   choices,
@@ -19,12 +20,8 @@ export const CheckboxListField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const defaultChoices = choices.map((choice) => {
-    return { value: choice.value, checked: false };
-  });
 
-  const [choicesChosen, setChoicesChosen] =
-    useState<ChoiceListSelected[]>(defaultChoices);
+  const [choicesChosen, setChoicesChosen] = useState<ChoiceListSelected[]>([]);
 
   useEffect(() => {
     form.setValue(name, choicesChosen, { shouldValidate: true });
@@ -37,20 +34,16 @@ export const CheckboxListField = ({
   const onChangeHandler = (event: InputChangeEvent) => {
     const choiceSelected: ChoiceListSelected = {
       value: event.target.value,
-      checked: event.target.checked,
+      id: event.target.id,
     };
-    setChoicesChosen((prevState) => {
-      return prevState.map((choice) => {
-        return choice.value === choiceSelected.value ? choiceSelected : choice;
-      });
-    });
+    setChoicesChosen([choiceSelected]);
   };
 
   return (
     <Box sx={sxOverride} className={mqClasses}>
       <ChoiceListField
         name={name}
-        type={"checkbox"}
+        type={"radio"}
         label={label}
         choices={choices}
         onChangeHandler={onChangeHandler}

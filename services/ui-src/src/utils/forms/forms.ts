@@ -2,9 +2,9 @@ import React from "react";
 import { buildYup } from "schema-to-yup";
 // components
 import {
-  CheckboxListField,
+  CheckboxField,
   DateField,
-  RadioListField,
+  RadioField,
   TextField,
   TextAreaField,
 } from "components";
@@ -17,8 +17,8 @@ export const formFieldFactory = (fields: FormField[]) => {
     text: TextField,
     textarea: TextAreaField,
     datesplit: DateField,
-    checkboxList: CheckboxListField,
-    radioList: RadioListField,
+    checkboxList: CheckboxField,
+    radioList: RadioField,
     child: React.Fragment,
   };
   // create elements from provided fields

@@ -32,7 +32,7 @@ export const ChoiceListField = ({
 
 export interface ChoiceListSelected {
   value: string;
-  checked: boolean;
+  id: string;
 }
 
 export interface ChoiceListChoices {
