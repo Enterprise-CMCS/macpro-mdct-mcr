@@ -1,10 +1,11 @@
+import React from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
-import { InputChangeEvent, AnyObject } from "types";
+import { formFieldFactory, makeMediaQueryClasses } from "utils";
+import { InputChangeEvent, AnyObject, FieldChoice } from "types";
 
 export const ChoiceListField = ({
   name,
@@ -25,13 +26,25 @@ export const ChoiceListField = ({
     form.setValue(choiceListName, choiceListValue, { shouldValidate: true });
   };
 
+  const formatChoices = (choices: FieldChoice[]) =>
+    choices.map((choice: FieldChoice) => {
+      const choiceObject: FieldChoice = { ...choice };
+      const choiceChildren = choice?.children;
+      if (choiceChildren) {
+        const formattedChildren = formFieldFactory(choiceChildren);
+        choiceObject.checkedChildren = formattedChildren;
+      }
+      delete choiceObject.children;
+      return choiceObject;
+    });
+
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses} {...props}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsChoiceList
         name={name}
         type={type}
         label={label}
-        choices={choices}
+        choices={formatChoices(choices)}
         onChange={(e) => onChangeHandler(e)}
         {...props}
       />
@@ -39,20 +52,17 @@ export const ChoiceListField = ({
   );
 };
 
-interface ChoiceListChoices {
-  label: string;
-  value: string;
-  defaultChecked?: boolean;
-  disabled?: boolean;
-}
-
 interface Props {
   name: string;
   type: "checkbox" | "radio";
   label: string;
-  choices: ChoiceListChoices[];
+  choices: FieldChoice[];
   sxOverride?: AnyObject;
   [key: string]: any;
 }
 
-const sx = {};
+const sx = {
+  ".ds-c-choice[type='checkbox']:checked::after": {
+    boxSizing: "content-box",
+  },
+};

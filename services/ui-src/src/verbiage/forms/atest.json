@@ -60,7 +60,7 @@
               ]
             },
             {
-              "name": "atest-1-o2",
+              "name": "atest1o2",
               "type": "choice",
               "label": "Checkbox option 2",
               "value": "option2"

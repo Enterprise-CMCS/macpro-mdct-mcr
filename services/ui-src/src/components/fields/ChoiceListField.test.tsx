@@ -14,9 +14,9 @@ const ChoiceListFieldComponent = (
   <div data-testid="test-checkbox-list">
     <ChoiceListField
       choices={[
-        { label: "Choice 1", value: "A", defaultChecked: true },
-        { label: "Choice 2", value: "B" },
-        { label: "Disabled choice 3", value: "C", disabled: true },
+        { name: "Choice 1", label: "Choice 1", value: "A" },
+        { name: "Choice 2", label: "Choice 2", value: "B" },
+        { name: "Choice 3", label: "Choice 3", value: "C" },
       ]}
       label="Checkbox example"
       name="checkbox_choices"

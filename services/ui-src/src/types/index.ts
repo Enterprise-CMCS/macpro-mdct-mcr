@@ -42,10 +42,11 @@ export interface FormField {
 
 export interface FieldChoice {
   name: string;
-  type: string;
+  type?: string;
   label: string;
   value: string;
   children?: FormField[];
+  checkedChildren?: React.ReactNode;
 }
 
 export interface FormValidation {
