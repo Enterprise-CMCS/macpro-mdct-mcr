@@ -51,9 +51,7 @@ export const Sidebar = () => {
           <Box
             as="button"
             sx={sx.closeButton}
-            onClick={() => {
-              setSidebarIsOpen(!sidebarIsOpen);
-            }}
+            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
             aria-label="Open/Close sidebar menu"
           >
             <ArrowIcon
