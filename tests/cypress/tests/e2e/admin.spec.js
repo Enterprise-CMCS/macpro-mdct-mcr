@@ -26,17 +26,21 @@ describe("Admin banner integration tests", () => {
     const titleInput = "[name='abf-title']";
     const descriptionInput = "[name='abf-description']";
     const startDateInput = "[name='abf-startDate']";
+    const endDateInput = "[name='abf-endDate']";
 
     // fill out form fields
     cy.get(titleInput).type("test-title");
     cy.get(descriptionInput).type("test-description");
     cy.get(startDateInput).type("07142022");
+    cy.get(endDateInput).type("07142026");
 
     const submitButton = "[type='submit']";
     cy.get(submitButton).focus().click();
 
-    const startDateText = "07142022";
+    const startDateText = "07/14/2022";
     cy.contains(startDateText).should("be.visible");
+    const endDateText = "07/14/2026";
+    cy.contains(endDateText).should("be.visible");
 
     cy.contains(bannerWriteErrorMessage).should("not.exist");
     cy.contains(noCurrentBannerMessage).should("not.exist");
