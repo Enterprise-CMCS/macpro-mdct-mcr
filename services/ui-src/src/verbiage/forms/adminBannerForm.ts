@@ -56,7 +56,6 @@ export const form = {
       type: "datesplit",
       props: {
         label: "Start date",
-        hint: "mm/dd/yyyy (12:00:00am)",
       },
       validation: {
         type: "number",
@@ -107,7 +106,6 @@ export const form = {
       type: "datesplit",
       props: {
         label: "End date",
-        hint: "mm/dd/yyyy (11:59:59pm)",
       },
       validation: {
         type: "number",

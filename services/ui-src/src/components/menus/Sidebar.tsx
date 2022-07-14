@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
-// TODO: swap out for new assets from design
+import { SidebarOpenContext } from "components";
 import { ArrowIcon, CheckCircleIcon } from "@cmsgov/design-system";
 import NavItems from "data/navigation/MCPARSideNavItems";
 import { useBreakpoint, useScrollPosition } from "utils";
@@ -19,7 +19,7 @@ export const Sidebar = () => {
   const { pathname } = useLocation();
   const isMcparReport = pathname.includes("/mcpar");
 
-  const [isOpen, setIsOpen] = useState(true);
+  const { sidebarIsOpen, setSidebarIsOpen } = useContext(SidebarOpenContext);
   const [navHeight, setNavHeight] = useState<number>(0);
 
   const scrollPosition = useScrollPosition();
@@ -43,7 +43,7 @@ export const Sidebar = () => {
         <Box
           id="sidebar"
           sx={sx.root}
-          className={isOpen ? "open" : "closed"}
+          className={sidebarIsOpen ? "open" : "closed"}
           role="navigation"
           aria-label="Sidebar menu"
           data-testid="sidebar-nav"
@@ -51,12 +51,12 @@ export const Sidebar = () => {
           <Box
             as="button"
             sx={sx.closeButton}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
             aria-label="Open/Close sidebar menu"
           >
             <ArrowIcon
               title="closeNavBarButton"
-              direction={isOpen ? "left" : "right"}
+              direction={sidebarIsOpen ? "left" : "right"}
             />
           </Box>
           <Box id="sidebar-title-box" sx={sx.topBox}>

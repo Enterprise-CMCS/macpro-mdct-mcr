@@ -110,6 +110,6 @@ export const mockBannerDataEmpty = {
   key: "",
   title: "",
   description: "",
-  startDate: 0,
-  endDate: 0,
+  startDate: "",
+  endDate: "",
 };
