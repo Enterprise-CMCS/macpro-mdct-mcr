@@ -21,6 +21,7 @@ const ChoiceListFieldCheckboxComponent = (
       label="Checkbox example"
       name="checkbox_choices"
       type="checkbox"
+      onChangeHandler={jest.fn()}
     />
   </div>
 );
@@ -36,6 +37,7 @@ const ChoiceListFieldRadioComponent = (
       label="Radio example"
       name="radio_choices"
       type="radio"
+      onChangeHandler={jest.fn()}
     />
   </div>
 );

@@ -6,7 +6,7 @@ export const form = {
   fields: [
     {
       id: "abf-radio",
-      type: "choiceList",
+      type: "radioList",
       props: {
         name: "Choice List Radio Name",
         type: "radio",
@@ -23,7 +23,7 @@ export const form = {
     },
     {
       id: "abf-check",
-      type: "choiceList",
+      type: "checkboxList",
       props: {
         name: "Choice List Checkbox Name",
         type: "checkbox",
