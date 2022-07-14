@@ -1,6 +1,5 @@
+import { createContext, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-// utils
-import { useUser } from "utils";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
@@ -13,9 +12,17 @@ import {
   SkipNav,
   Sidebar,
 } from "components";
+// utils
+import { useUser } from "utils";
+
+export const SidebarOpenContext = createContext({
+  sidebarIsOpen: true,
+  setSidebarIsOpen: (status: boolean) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
+});
 
 export const App = () => {
   const { logout, user, showLocalLogins } = useUser();
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
   return (
     <div id="app-wrapper">
       {user && (
@@ -26,12 +33,16 @@ export const App = () => {
             text="Skip to main content"
           />
           <Header handleLogout={logout} />
-          <Container sx={sx.appContainer} data-testid="app-container">
-            <Sidebar />
-            <ErrorBoundary FallbackComponent={Error}>
-              <AppRoutes userRole={user?.userRole} />
-            </ErrorBoundary>
-          </Container>
+          <SidebarOpenContext.Provider
+            value={{ sidebarIsOpen, setSidebarIsOpen }}
+          >
+            <Container sx={sx.appContainer} data-testid="app-container">
+              <Sidebar />
+              <ErrorBoundary FallbackComponent={Error}>
+                <AppRoutes userRole={user?.userRole} />
+              </ErrorBoundary>
+            </Container>
+          </SidebarOpenContext.Provider>
           <Footer />
         </Flex>
       )}
