@@ -56,7 +56,6 @@ export const form = {
       type: "datesplit",
       props: {
         label: "Start date",
-        hint: "mm/dd/yyyy (12:00:00am)",
       },
       validation: {
         type: "number",
@@ -65,43 +64,6 @@ export const form = {
         },
         errorMessages: {
           required: "Start date is required",
-          format: "Invalid start date",
-        },
-      },
-    },
-    {
-      id: "abf-startDateMonth",
-      type: "child",
-      props: null,
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 12,
-        },
-      },
-    },
-    {
-      id: "abf-startDateDay",
-      type: "child",
-      props: null,
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 31,
-        },
-      },
-    },
-    {
-      id: "abf-startDateYear",
-      type: "child",
-      props: null,
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          min: 2022,
         },
       },
     },
@@ -110,7 +72,6 @@ export const form = {
       type: "datesplit",
       props: {
         label: "End date",
-        hint: "mm/dd/yyyy (11:59:59pm)",
       },
       validation: {
         type: "number",
@@ -120,44 +81,6 @@ export const form = {
         },
         errorMessages: {
           required: "End date is required",
-          format: "Invalid end date",
-          min: "End date cannot be before start date",
-        },
-      },
-    },
-    {
-      id: "abf-endDateMonth",
-      type: "child",
-      props: null,
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 12,
-        },
-      },
-    },
-    {
-      id: "abf-endDateDay",
-      type: "child",
-      props: null,
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 31,
-        },
-      },
-    },
-    {
-      id: "abf-endDateYear",
-      type: "child",
-      props: null,
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          min: 2022,
         },
       },
     },
