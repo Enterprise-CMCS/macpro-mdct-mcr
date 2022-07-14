@@ -12,9 +12,9 @@ export const form = {
         type: "radio",
         label: "Choice List Radio Label",
         choices: [
-          { label: "Choice 1", value: "A", defaultChecked: true },
+          { label: "Choice 1", value: "A" },
           { label: "Choice 2", value: "B" },
-          { label: "Disabled choice 3", value: "C", disabled: true },
+          { label: "Disabled choice 3", value: "C" },
         ],
       },
       validation: {
@@ -29,9 +29,9 @@ export const form = {
         type: "checkbox",
         label: "Choice List Checkbox Label",
         choices: [
-          { label: "Choice 1", value: "A", defaultChecked: true },
+          { label: "Choice 1", value: "A" },
           { label: "Choice 2", value: "B" },
-          { label: "Disabled choice 3", value: "C", disabled: true },
+          { label: "Disabled choice 3", value: "C" },
         ],
       },
       validation: {

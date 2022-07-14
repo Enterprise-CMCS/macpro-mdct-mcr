@@ -14,9 +14,9 @@ const ChoiceListFieldComponent = (
   <div data-testid="test-checkbox-list">
     <ChoiceListField
       choices={[
-        { label: "Choice 1", value: "A", defaultChecked: true },
+        { label: "Choice 1", value: "A" },
         { label: "Choice 2", value: "B" },
-        { label: "Disabled choice 3", value: "C", disabled: true },
+        { label: "Disabled choice 3", value: "C" },
       ]}
       label="Checkbox example"
       name="checkbox_choices"
@@ -49,17 +49,6 @@ describe("Test ChoiceList component", () => {
     await userEvent.click(secondCheckbox);
     expect(firstCheckbox.checked).toBe(true);
     expect(secondCheckbox.checked).toBe(true);
-  });
-
-  test("ChoiceList allows disabled choices", async () => {
-    const wrapper = render(ChoiceListFieldComponent);
-    const checkboxContainers = wrapper.container.querySelectorAll(
-      ".ds-c-choice-wrapper"
-    );
-    const thirdCheckbox = checkboxContainers[2].children[0] as HTMLInputElement;
-    expect(thirdCheckbox.checked).toBe(false);
-    await userEvent.click(thirdCheckbox);
-    expect(thirdCheckbox.checked).toBe(false);
   });
 });
 

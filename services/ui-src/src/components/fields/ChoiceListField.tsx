@@ -17,7 +17,7 @@ export const ChoiceListField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   const defaultChoices = choices.map((choice) => {
-    return { value: choice.value, checked: choice.defaultChecked || false };
+    return { value: choice.value, checked: false };
   });
 
   const [choicesChosen, setChoicesChosen] =
@@ -36,11 +36,23 @@ export const ChoiceListField = ({
       value: event.target.value,
       checked: event.target.checked,
     };
-    setChoicesChosen((prevState) => {
-      return prevState.map((choice) => {
-        return choice.value === choiceSelected.value ? choiceSelected : choice;
+    if (type == "checkbox") {
+      setChoicesChosen((prevState) => {
+        return prevState.map((choice) => {
+          return choice.value === choiceSelected.value
+            ? choiceSelected
+            : choice;
+        });
       });
-    });
+    } else if (type == "radio") {
+      setChoicesChosen((prevState) => {
+        return prevState.map((choice) => {
+          return choice.value === choiceSelected.value
+            ? choiceSelected
+            : { value: choice.value, checked: false };
+        });
+      });
+    }
   };
 
   return (
@@ -65,8 +77,6 @@ interface ChoiceListSelected {
 interface ChoiceListChoices {
   label: string;
   value: string;
-  defaultChecked?: boolean;
-  disabled?: boolean;
 }
 
 interface Props {
