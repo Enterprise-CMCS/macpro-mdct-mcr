@@ -1,3 +1,4 @@
+import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
@@ -17,6 +18,9 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+
+  const form = useFormContext();
+  form.register(name);
 
   const formatChoices = (choices: FieldChoice[]) =>
     choices.map((choice: FieldChoice) => {

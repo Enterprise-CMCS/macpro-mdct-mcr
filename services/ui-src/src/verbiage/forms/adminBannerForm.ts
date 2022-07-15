@@ -78,7 +78,7 @@ export const form = {
         type: "number",
         options: {
           required: true,
-          // TODO: add minimum start date reference min: "startDate"
+          // TODO: add minimum start date reference (dependent on 3rd-party lib)
         },
         errorMessages: {
           required: "End date is required",

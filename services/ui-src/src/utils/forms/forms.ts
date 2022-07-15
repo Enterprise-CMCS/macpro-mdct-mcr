@@ -18,10 +18,8 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     date: DateField,
     text: TextField,
     textarea: TextAreaField,
-    datesplit: DateField,
-    checkboxList: CheckboxField,
-    radioList: RadioField,
-    child: React.Fragment,
+    checkbox: CheckboxField,
+    radio: RadioField,
   };
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
@@ -69,7 +67,6 @@ export const makeFormSchema = (fields: FormField[]) => {
       errorMessageSchema.errMessages[field.id] = { ...errorMessages };
     }
   });
-
   // make form schema
   return buildYup(fieldSchema, errorMessageSchema);
 };
