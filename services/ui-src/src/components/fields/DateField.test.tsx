@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
@@ -9,9 +9,7 @@ jest.mock("react-hook-form", () => ({
     register: () => {},
     setValue: () => {},
     getValues: jest.fn().mockReturnValue({
-      testDateFieldDay: 1,
-      testDateFieldMonth: 1,
-      testDateFieldYear: 2022,
+      testDateField: "07/11/2022",
     }),
   }),
 }));
@@ -20,24 +18,24 @@ const dateFieldComponent = (
   <DateField
     name="testDateField"
     label="test-date-field"
-    labelId="test-date-field"
+    data-testid="test-date-field"
   />
 );
 
 describe("Test DateField component", () => {
   test("DateField is visible", () => {
-    const result = render(dateFieldComponent);
-    const dateField = result.container.querySelector("#test-date-field");
+    render(dateFieldComponent);
+    const dateField = screen.getByTestId("test-date-field");
     expect(dateField).toBeVisible();
   });
 
-  test("onBlur event fires handler with all child fields defined", async () => {
+  test("onChange event fires handler when typing and stays even after blurred", async () => {
     const result = render(dateFieldComponent);
     const dateFieldMonthInput: HTMLInputElement =
-      result.container.querySelector('[name="testDateFieldMonth"]')!;
-    await userEvent.type(dateFieldMonthInput, "1");
+      result.container.querySelector("[name='testDateField']")!;
+    await userEvent.type(dateFieldMonthInput, "07/14/2022");
     await userEvent.tab();
-    expect(dateFieldMonthInput.value).toEqual("1");
+    expect(dateFieldMonthInput.value).toEqual("07/14/2022");
   });
 });
 
