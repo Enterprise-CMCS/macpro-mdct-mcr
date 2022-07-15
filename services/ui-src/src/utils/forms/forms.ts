@@ -2,8 +2,9 @@ import React from "react";
 import { buildYup } from "schema-to-yup";
 // components
 import {
-  ChoiceListField,
+  CheckboxField,
   DateField,
+  RadioField,
   TextField,
   TextAreaField,
 } from "components";
@@ -14,10 +15,13 @@ import { AnyObject, FormField } from "types";
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
   const fieldToComponentMap: any = {
-    choicelist: ChoiceListField,
     date: DateField,
     text: TextField,
     textarea: TextAreaField,
+    datesplit: DateField,
+    checkboxList: CheckboxField,
+    radioList: RadioField,
+    child: React.Fragment,
   };
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];

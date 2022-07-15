@@ -1,10 +1,9 @@
-import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { formFieldFactory, makeMediaQueryClasses } from "utils";
-import { AnyObject, FieldChoice, InputChangeEvent } from "types";
+import { AnyObject, FieldChoice } from "types";
 
 export const ChoiceListField = ({
   name,
@@ -12,19 +11,12 @@ export const ChoiceListField = ({
   label,
   choices,
   nested,
+  onChangeHandler,
+  errorMessage,
   sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-
-  // get the form context
-  const form = useFormContext();
-
-  // update form data
-  const onChangeHandler = async (event: InputChangeEvent) => {
-    const { name: choiceListName, value: choiceListValue } = event.target;
-    form.setValue(choiceListName, choiceListValue, { shouldValidate: true });
-  };
 
   const formatChoices = (choices: FieldChoice[]) =>
     choices.map((choice: FieldChoice) => {
@@ -51,6 +43,7 @@ export const ChoiceListField = ({
         type={type}
         label={label}
         choices={formatChoices(choices)}
+        errorMessage={errorMessage}
         onChange={(e) => onChangeHandler(e)}
         {...props}
       />
@@ -64,6 +57,7 @@ interface Props {
   label: string;
   choices: FieldChoice[];
   nested?: boolean;
+  onChangeHandler: Function;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
