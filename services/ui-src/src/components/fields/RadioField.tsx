@@ -39,6 +39,8 @@ export const RadioField = ({
     setChoicesChosen([choiceSelected]);
   };
 
+  const errorMessage = form?.formState?.errors?.[name]?.message;
+
   return (
     <Box sx={sxOverride} className={mqClasses}>
       <ChoiceListField
@@ -47,6 +49,7 @@ export const RadioField = ({
         label={label}
         choices={choices}
         onChangeHandler={onChangeHandler}
+        errorMessage={errorMessage}
         {...props}
       />
     </Box>

@@ -11,6 +11,7 @@ export const ChoiceListField = ({
   label,
   choices,
   onChangeHandler,
+  errorMessage,
   sxOverride,
   ...props
 }: Props) => {
@@ -23,6 +24,7 @@ export const ChoiceListField = ({
         type={type}
         label={label}
         choices={choices}
+        errorMessage={errorMessage}
         onChange={(e) => onChangeHandler(e)}
         {...props}
       />

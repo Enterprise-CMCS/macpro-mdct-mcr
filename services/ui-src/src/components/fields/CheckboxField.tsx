@@ -47,14 +47,18 @@ export const CheckboxField = ({
     });
   };
 
+  const errorMessage = form?.formState?.errors?.[name]?.message;
+
   return (
     <Box sx={sxOverride} className={mqClasses}>
+      {errorMessage}
       <ChoiceListField
         name={name}
         type={"checkbox"}
         label={label}
         choices={choices}
         onChangeHandler={onChangeHandler}
+        errorMessage={errorMessage}
         {...props}
       />
     </Box>
