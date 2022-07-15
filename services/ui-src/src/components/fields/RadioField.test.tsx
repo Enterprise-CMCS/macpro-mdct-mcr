@@ -21,7 +21,6 @@ const RadioFieldComponent = (
       label="Radio example"
       name="radio_choices"
       type="radio"
-      onChangeHandler={jest.fn()}
     />
   </div>
 );
