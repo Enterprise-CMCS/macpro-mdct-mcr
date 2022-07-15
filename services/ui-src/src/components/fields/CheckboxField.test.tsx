@@ -3,12 +3,15 @@ import { axe } from "jest-axe";
 //components
 import { CheckboxField } from "components";
 import userEvent from "@testing-library/user-event";
+import { useFormContext } from "react-hook-form";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
-    setValue: () => {},
+    setValue: jest.fn(() => {}),
   }),
 }));
+
+const mockOnChangeHandler = jest.fn();
 
 const CheckboxFieldComponent = (
   <div data-testid="test-checkbox-list">
@@ -21,7 +24,7 @@ const CheckboxFieldComponent = (
       label="Checkbox example"
       name="checkbox_choices"
       type="checkbox"
-      onChangeHandler={jest.fn()}
+      onChangeHandler={mockOnChangeHandler}
     />
   </div>
 );
@@ -33,7 +36,9 @@ describe("Test ChoiceList component", () => {
     expect(screen.getByTestId("test-checkbox-list")).toBeVisible();
   });
 
-  test("ChoiceList allows checking checkbox choices", async () => {
+  test.only("ChoiceList allows checking checkbox choices", async () => {
+    const form = useFormContext();
+    const spy = jest.spyOn(form, "setValue");
     const wrapper = render(CheckboxFieldComponent);
     const checkboxContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
@@ -44,11 +49,7 @@ describe("Test ChoiceList component", () => {
     expect(firstCheckbox.checked).toBe(false);
     expect(secondCheckbox.checked).toBe(false);
     await userEvent.click(firstCheckbox);
-    expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(false);
-    await userEvent.click(secondCheckbox);
-    expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(true);
+    await expect(spy).toHaveBeenCalled();
   });
 });
 
