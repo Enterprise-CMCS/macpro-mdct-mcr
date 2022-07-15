@@ -10,62 +10,96 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
-const ChoiceListFieldComponent = (
+const ChoiceListFieldCheckboxComponent = (
   <div data-testid="test-checkbox-list">
     <ChoiceListField
       choices={[
-        { label: "Choice 1", value: "A", defaultChecked: true },
+        { label: "Choice 1", value: "A" },
         { label: "Choice 2", value: "B" },
-        { label: "Disabled choice 3", value: "C", disabled: true },
+        { label: "Choice 3", value: "C" },
       ]}
       label="Checkbox example"
       name="checkbox_choices"
       type="checkbox"
+      onChangeHandler={jest.fn()}
+    />
+  </div>
+);
+
+const ChoiceListFieldRadioComponent = (
+  <div data-testid="test-radio-list">
+    <ChoiceListField
+      choices={[
+        { label: "Choice 1", value: "A" },
+        { label: "Choice 2", value: "B" },
+        { label: "Choice 3", value: "C" },
+      ]}
+      label="Radio example"
+      name="radio_choices"
+      type="radio"
+      onChangeHandler={jest.fn()}
     />
   </div>
 );
 
 describe("Test ChoiceList component", () => {
   test("ChoiceList renders as Checkbox", () => {
-    render(ChoiceListFieldComponent);
+    render(ChoiceListFieldCheckboxComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByTestId("test-checkbox-list")).toBeVisible();
   });
 
-  test("ChoiceList allows checking choices", async () => {
-    const wrapper = render(ChoiceListFieldComponent);
+  test("ChoiceList renders as Radio", () => {
+    render(ChoiceListFieldRadioComponent);
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(screen.getByTestId("test-radio-list")).toBeVisible();
+  });
+
+  test("ChoiceList allows checking checkbox choices", async () => {
+    const wrapper = render(ChoiceListFieldCheckboxComponent);
     const checkboxContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
     const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
     const secondCheckbox = checkboxContainers[1]
       .children[0] as HTMLInputElement;
-    expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(false);
-    await userEvent.click(firstCheckbox);
     expect(firstCheckbox.checked).toBe(false);
     expect(secondCheckbox.checked).toBe(false);
     await userEvent.click(firstCheckbox);
+    expect(firstCheckbox.checked).toBe(true);
+    expect(secondCheckbox.checked).toBe(false);
     await userEvent.click(secondCheckbox);
     expect(firstCheckbox.checked).toBe(true);
     expect(secondCheckbox.checked).toBe(true);
   });
 
-  test("ChoiceList allows disabled choices", async () => {
-    const wrapper = render(ChoiceListFieldComponent);
-    const checkboxContainers = wrapper.container.querySelectorAll(
+  test("ChoiceList allows checking radio choices", async () => {
+    const wrapper = render(ChoiceListFieldRadioComponent);
+    const radioContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
-    const thirdCheckbox = checkboxContainers[2].children[0] as HTMLInputElement;
-    expect(thirdCheckbox.checked).toBe(false);
-    await userEvent.click(thirdCheckbox);
-    expect(thirdCheckbox.checked).toBe(false);
+    const firstRadio = radioContainers[0].children[0] as HTMLInputElement;
+    const secondRadio = radioContainers[1].children[0] as HTMLInputElement;
+    expect(firstRadio.checked).toBe(false);
+    expect(secondRadio.checked).toBe(false);
+    await userEvent.click(firstRadio);
+    expect(firstRadio.checked).toBe(true);
+    expect(secondRadio.checked).toBe(false);
+    await userEvent.click(secondRadio);
+    expect(firstRadio.checked).toBe(false);
+    expect(secondRadio.checked).toBe(true);
   });
 });
 
 describe("Test ChoiceList accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(ChoiceListFieldComponent);
+  it("Should not have basic accessibility issues when given checkbox", async () => {
+    const { container } = render(ChoiceListFieldCheckboxComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues when given radio", async () => {
+    const { container } = render(ChoiceListFieldRadioComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
