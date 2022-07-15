@@ -55,12 +55,6 @@ a {
   background-color: var(--chakra-colors-palette-gray_lightest);
 }
 
-// ChoiceList Override
-
-.ds-c-choice[type="checkbox"]:checked::after {
-  box-sizing: content-box;
-}
-
 // SCROLLBARS
 
 /* Hide scrollbar for Chrome, Safari and Opera */

@@ -17,7 +17,7 @@ export const ChoiceListField = ({
   const mqClasses = makeMediaQueryClasses();
 
   return (
-    <Box sx={sxOverride} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsChoiceList
         name={name}
         type={type}
@@ -49,3 +49,9 @@ interface Props {
   sxOverride?: AnyObject;
   [key: string]: any;
 }
+
+const sx = {
+  ".ds-c-choice[type='checkbox']:checked::after": {
+    boxSizing: "content-box",
+  },
+};
