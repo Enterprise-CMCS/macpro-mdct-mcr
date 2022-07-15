@@ -11,9 +11,11 @@ import {
 // types
 import { AnyObject, FormField } from "types";
 
-export const formFieldFactory = (fields: FormField[]) => {
+// return created elements from provided fields
+export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
   const fieldToComponentMap: any = {
+    date: DateField,
     text: TextField,
     textarea: TextAreaField,
     datesplit: DateField,
@@ -21,15 +23,14 @@ export const formFieldFactory = (fields: FormField[]) => {
     radioList: RadioField,
     child: React.Fragment,
   };
-  // create elements from provided fields
   return fields.map((field) => {
-    const fieldProps = field.props || {};
-    if (field.type !== "child") {
-      fieldProps.name = field.id;
-    }
-    return React.createElement(fieldToComponentMap[field.type], {
+    const componentFieldType = fieldToComponentMap[field.type];
+    // return created element
+    return React.createElement(componentFieldType, {
       key: field.id,
-      ...field.props,
+      name: field.id,
+      nested: isNested,
+      ...field?.props,
     });
   });
 };

@@ -2,15 +2,11 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 // components
-import {
-  ChoiceListChoices,
-  ChoiceListField,
-  ChoiceListSelected,
-} from "./ChoiceListField";
 import { Box } from "@chakra-ui/react";
+import { ChoiceListField } from "components";
 // utils
 import { makeMediaQueryClasses } from "utils";
-import { InputChangeEvent, AnyObject } from "types";
+import { InputChangeEvent, AnyObject, ChoiceValue, FieldChoice } from "types";
 
 export const RadioField = ({
   name,
@@ -21,7 +17,7 @@ export const RadioField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  const [choicesChosen, setChoicesChosen] = useState<ChoiceListSelected[]>([]);
+  const [choicesChosen, setChoicesChosen] = useState<ChoiceValue[]>([]);
 
   useEffect(() => {
     form.setValue(name, choicesChosen, { shouldValidate: true });
@@ -32,9 +28,8 @@ export const RadioField = ({
 
   // update form data
   const onChangeHandler = (event: InputChangeEvent) => {
-    const choiceSelected: ChoiceListSelected = {
+    const choiceSelected: ChoiceValue = {
       value: event.target.value,
-      id: event.target.id,
     };
     setChoicesChosen([choiceSelected]);
   };
@@ -59,7 +54,7 @@ export const RadioField = ({
 interface Props {
   name: string;
   label: string;
-  choices: ChoiceListChoices[];
+  choices: FieldChoice[];
   sxOverride?: AnyObject;
   [key: string]: any;
 }

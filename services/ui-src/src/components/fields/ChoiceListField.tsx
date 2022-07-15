@@ -2,14 +2,15 @@
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
-import { AnyObject } from "types";
+import { formFieldFactory, makeMediaQueryClasses } from "utils";
+import { AnyObject, FieldChoice } from "types";
 
 export const ChoiceListField = ({
   name,
   type,
   label,
   choices,
+  nested,
   onChangeHandler,
   errorMessage,
   sxOverride,
@@ -17,13 +18,31 @@ export const ChoiceListField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
+  const formatChoices = (choices: FieldChoice[]) =>
+    choices.map((choice: FieldChoice) => {
+      const choiceObject: FieldChoice = { ...choice };
+      const choiceChildren = choice?.children;
+      if (choiceChildren) {
+        const isNested = true;
+        const formattedChildren = formFieldFactory(choiceChildren, isNested);
+        choiceObject.checkedChildren = formattedChildren;
+      }
+      delete choiceObject.children;
+      return choiceObject;
+    });
+
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box
+      sx={{ ...sx, ...sxOverride }}
+      className={`${
+        nested ? "nested ds-c-choice__checkedChild" : ""
+      } ${mqClasses}`}
+    >
       <CmsdsChoiceList
         name={name}
         type={type}
         label={label}
-        choices={choices}
+        choices={formatChoices(choices)}
         errorMessage={errorMessage}
         onChange={(e) => onChangeHandler(e)}
         {...props}
@@ -32,21 +51,12 @@ export const ChoiceListField = ({
   );
 };
 
-export interface ChoiceListSelected {
-  value: string;
-  id: string;
-}
-
-export interface ChoiceListChoices {
-  label: string;
-  value: string;
-}
-
 interface Props {
   name: string;
   type: "checkbox" | "radio";
   label: string;
-  choices: ChoiceListChoices[];
+  choices: FieldChoice[];
+  nested?: boolean;
   onChangeHandler: Function;
   sxOverride?: AnyObject;
   [key: string]: any;
@@ -55,5 +65,10 @@ interface Props {
 const sx = {
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
+  },
+  "&.nested": {
+    fieldset: {
+      marginTop: 0,
+    },
   },
 };

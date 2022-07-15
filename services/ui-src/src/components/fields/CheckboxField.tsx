@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import {
-  ChoiceListChoices,
-  ChoiceListField,
-  ChoiceListSelected,
-} from "./ChoiceListField";
 import { Box } from "@chakra-ui/react";
+import { ChoiceListField } from "components";
 // utils
 import { makeMediaQueryClasses } from "utils";
-import { InputChangeEvent, AnyObject } from "types";
+import { AnyObject, InputChangeEvent, ChoiceValue, FieldChoice } from "types";
 
 export const CheckboxField = ({
   name,
@@ -20,7 +16,7 @@ export const CheckboxField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  const [choicesChosen, setChoicesChosen] = useState<ChoiceListSelected[]>([]);
+  const [choicesChosen, setChoicesChosen] = useState<ChoiceValue[]>([]);
 
   useEffect(() => {
     form.setValue(name, choicesChosen, { shouldValidate: true });
@@ -32,9 +28,8 @@ export const CheckboxField = ({
   // update form data
   const onChangeHandler = (event: InputChangeEvent) => {
     const checked = event.target.checked;
-    const choiceSelected: ChoiceListSelected = {
+    const choiceSelected: ChoiceValue = {
       value: event.target.value,
-      id: event.target.id,
     };
     setChoicesChosen((prevState) => {
       if (!checked) {
@@ -68,7 +63,7 @@ export const CheckboxField = ({
 interface Props {
   name: string;
   label: string;
-  choices: ChoiceListChoices[];
+  choices: FieldChoice[];
   sxOverride?: AnyObject;
   [key: string]: any;
 }

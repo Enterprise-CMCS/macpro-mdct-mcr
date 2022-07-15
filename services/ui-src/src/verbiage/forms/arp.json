@@ -12,7 +12,7 @@
     "fields": [
       {
         "id": "arp-a5a",
-        "type": "datesplit",
+        "type": "date",
         "props": {
           "label": "A.5a Reporting period start date",
           "hint": "Enter start date of the reporting period represented in the report."
@@ -30,7 +30,7 @@
       },
       {
         "id": "arp-a5b",
-        "type": "datesplit",
+        "type": "date",
         "props": {
           "label": "A.5b Reporting period end date",
           "hint": "Enter end date of the reporting period represented in the report."

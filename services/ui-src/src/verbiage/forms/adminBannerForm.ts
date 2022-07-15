@@ -53,7 +53,7 @@ export const form = {
     },
     {
       id: "abf-startDate",
-      type: "datesplit",
+      type: "date",
       props: {
         label: "Start date",
       },
@@ -64,12 +64,13 @@ export const form = {
         },
         errorMessages: {
           required: "Start date is required",
+          format: "Invalid start date",
         },
       },
     },
     {
       id: "abf-endDate",
-      type: "datesplit",
+      type: "date",
       props: {
         label: "End date",
       },
@@ -81,6 +82,8 @@ export const form = {
         },
         errorMessages: {
           required: "End date is required",
+          format: "Invalid end date",
+          min: "End date cannot be before start date",
         },
       },
     },

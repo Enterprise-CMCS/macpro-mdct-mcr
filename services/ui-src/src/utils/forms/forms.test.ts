@@ -40,7 +40,6 @@ describe("Test hydrateFormFields", () => {
         name: "mock-field-1",
         label: "1. First mocked field ",
       },
-      validation: null,
     },
     {
       id: "mock-field-2",
@@ -50,7 +49,6 @@ describe("Test hydrateFormFields", () => {
         name: "mock-field-2",
         label: "2. Second mocked field ",
       },
-      validation: null,
     },
   ];
   const mockHydrationData = { mockData: "the mocked data" };

@@ -14,9 +14,9 @@ const RadioFieldComponent = (
   <div data-testid="test-radio-list">
     <RadioField
       choices={[
-        { label: "Choice 1", value: "A" },
-        { label: "Choice 2", value: "B" },
-        { label: "Choice 3", value: "C" },
+        { name: "Choice 1", label: "Choice 1", value: "A" },
+        { name: "Choice 2", label: "Choice 2", value: "B" },
+        { name: "Choice 3", label: "Choice 3", value: "C" },
       ]}
       label="Radio example"
       name="radio_choices"
