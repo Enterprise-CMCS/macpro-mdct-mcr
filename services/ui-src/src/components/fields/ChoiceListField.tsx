@@ -35,12 +35,12 @@ export const ChoiceListField = ({
       return choiceObject;
     });
 
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${
-        nested ? "nested ds-c-choice__checkedChild" : ""
-      } ${mqClasses}`}
+      className={`${nestedChildClasses} ${mqClasses}`}
     >
       <CmsdsChoiceList
         name={name}

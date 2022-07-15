@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
+    register: () => {},
     setValue: () => {},
   }),
 }));
@@ -38,15 +39,9 @@ describe("Test ChoiceList component", () => {
       ".ds-c-choice-wrapper"
     );
     const firstRadio = radioContainers[0].children[0] as HTMLInputElement;
-    const secondRadio = radioContainers[1].children[0] as HTMLInputElement;
     expect(firstRadio.checked).toBe(false);
-    expect(secondRadio.checked).toBe(false);
     await userEvent.click(firstRadio);
     expect(firstRadio.checked).toBe(true);
-    expect(secondRadio.checked).toBe(false);
-    await userEvent.click(secondRadio);
-    expect(firstRadio.checked).toBe(false);
-    expect(secondRadio.checked).toBe(true);
   });
 });
 
