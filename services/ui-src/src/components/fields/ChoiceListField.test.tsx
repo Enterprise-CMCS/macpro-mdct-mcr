@@ -40,26 +40,15 @@ describe("Test ChoiceList component", () => {
     const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
     const secondCheckbox = checkboxContainers[1]
       .children[0] as HTMLInputElement;
-    expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(false);
-    await userEvent.click(firstCheckbox);
     expect(firstCheckbox.checked).toBe(false);
     expect(secondCheckbox.checked).toBe(false);
     await userEvent.click(firstCheckbox);
-    await userEvent.click(secondCheckbox);
     expect(firstCheckbox.checked).toBe(true);
+    expect(secondCheckbox.checked).toBe(false);
+    await userEvent.click(firstCheckbox);
+    await userEvent.click(secondCheckbox);
+    expect(firstCheckbox.checked).toBe(false);
     expect(secondCheckbox.checked).toBe(true);
-  });
-
-  test("ChoiceList allows disabled choices", async () => {
-    const wrapper = render(ChoiceListFieldComponent);
-    const checkboxContainers = wrapper.container.querySelectorAll(
-      ".ds-c-choice-wrapper"
-    );
-    const thirdCheckbox = checkboxContainers[2].children[0] as HTMLInputElement;
-    expect(thirdCheckbox.checked).toBe(false);
-    await userEvent.click(thirdCheckbox);
-    expect(thirdCheckbox.checked).toBe(false);
   });
 });
 

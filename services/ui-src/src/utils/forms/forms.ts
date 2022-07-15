@@ -15,20 +15,18 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
   const fieldToComponentMap: any = {
     choicelist: ChoiceListField,
-    datesplit: DateField,
+    date: DateField,
     text: TextField,
     textarea: TextAreaField,
   };
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    const fieldProps = field?.props || {};
-    // if field is nested, add nested prop
-    if (isNested) fieldProps["nested"] = isNested;
     // return created element
     return React.createElement(componentFieldType, {
       key: field.id,
       name: field.id,
-      ...fieldProps,
+      nested: isNested,
+      ...field?.props,
     });
   });
 };

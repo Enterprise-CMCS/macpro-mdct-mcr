@@ -53,7 +53,7 @@ export const form = {
     },
     {
       id: "abf-startDate",
-      type: "datesplit",
+      type: "date",
       props: {
         label: "Start date",
       },
@@ -69,41 +69,8 @@ export const form = {
       },
     },
     {
-      id: "abf-startDateMonth",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 12,
-        },
-      },
-    },
-    {
-      id: "abf-startDateDay",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 31,
-        },
-      },
-    },
-    {
-      id: "abf-startDateYear",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          min: 2022,
-        },
-      },
-    },
-    {
       id: "abf-endDate",
-      type: "datesplit",
+      type: "date",
       props: {
         label: "End date",
       },
@@ -117,39 +84,6 @@ export const form = {
           required: "End date is required",
           format: "Invalid end date",
           min: "End date cannot be before start date",
-        },
-      },
-    },
-    {
-      id: "abf-endDateMonth",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 12,
-        },
-      },
-    },
-    {
-      id: "abf-endDateDay",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          max: 31,
-        },
-      },
-    },
-    {
-      id: "abf-endDateYear",
-      type: "child",
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          min: 2022,
         },
       },
     },
