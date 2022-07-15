@@ -58,12 +58,15 @@ export const form = {
         label: "Start date",
       },
       validation: {
-        type: "number",
+        type: "string",
         options: {
           required: true,
+          regex: /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/,
         },
         errorMessages: {
           required: "Start date is required",
+          regex:
+            "Please ensure your format is in MM/DD/YYYY and is a real date",
         },
       },
     },
@@ -74,13 +77,16 @@ export const form = {
         label: "End date",
       },
       validation: {
-        type: "number",
+        type: "string",
         options: {
           required: true,
+          regex: /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/,
           // TODO: add minimum start date reference min: "startDate"
         },
         errorMessages: {
           required: "End date is required",
+          regex:
+            "Please ensure your format is in MM/DD/YYYY and is a real date",
         },
       },
     },

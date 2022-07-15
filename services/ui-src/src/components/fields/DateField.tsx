@@ -5,11 +5,7 @@ import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
-import {
-  convertDateEtToUtc,
-  calculateTimeByDateType,
-  makeMediaQueryClasses,
-} from "utils";
+import { makeMediaQueryClasses } from "utils";
 
 /*
  * Note: This file uses the names 'parent'/'parentField' to refer to
@@ -30,21 +26,15 @@ export const DateField = ({
 
   const [date, setDate] = useState("");
 
-  const onChangeHandler = async (event: string, formattedString: string) => {
-    setDate(event);
-    form.setValue(parentFieldName, event ? parseInt(event) : undefined, {
-      shouldValidate: true,
-    });
-    let year = parseInt(formattedString.split("/")?.[2]);
-    let month = parseInt(formattedString.split("/")?.[0]);
-    let day = parseInt(formattedString.split("/")?.[1]);
-    if (year && month && day) {
-      const time = calculateTimeByDateType(parentFieldName);
-      const calculatedDatetime = convertDateEtToUtc({ year, month, day }, time);
-      form.setValue(parentFieldName, calculatedDatetime, {
+  const onChangeHandler = async (inputtedString: string) => {
+    setDate(inputtedString);
+    form.setValue(
+      parentFieldName,
+      inputtedString ? inputtedString : undefined,
+      {
         shouldValidate: true,
-      });
-    }
+      }
+    );
   };
 
   const parentFieldErrorMessage =
