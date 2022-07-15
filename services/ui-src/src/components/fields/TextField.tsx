@@ -30,9 +30,9 @@ export const TextField = ({
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${
+      className={`${mqClasses} ${
         nested ? "nested ds-c-choice__checkedChild" : ""
-      } ${mqClasses}`}
+      }`}
     >
       <CmsdsTextField
         id={name}
