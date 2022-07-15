@@ -61,7 +61,7 @@ describe("Test McparReportPage previous navigation", () => {
     render(mcparReportPageComponent);
     const previousButton = screen.getByText("Previous")!;
     await userEvent.click(previousButton);
-    const expectedRoute = "/mcpar";
+    const expectedRoute = "/mcpar/program-information/reporting-period";
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
   });
 });

@@ -53,7 +53,7 @@ export const form = {
     },
     {
       id: "abf-startDate",
-      type: "datesplit",
+      type: "date",
       props: {
         label: "Start date",
       },
@@ -72,7 +72,7 @@ export const form = {
     },
     {
       id: "abf-endDate",
-      type: "datesplit",
+      type: "date",
       props: {
         label: "End date",
       },
