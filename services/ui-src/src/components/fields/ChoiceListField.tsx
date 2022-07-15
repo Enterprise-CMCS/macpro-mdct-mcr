@@ -1,17 +1,17 @@
-import React from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { formFieldFactory, makeMediaQueryClasses } from "utils";
-import { InputChangeEvent, AnyObject, FieldChoice } from "types";
+import { AnyObject, FieldChoice, InputChangeEvent } from "types";
 
 export const ChoiceListField = ({
   name,
   type,
   label,
   choices,
+  nested,
   sxOverride,
   ...props
 }: Props) => {
@@ -31,7 +31,8 @@ export const ChoiceListField = ({
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
-        const formattedChildren = formFieldFactory(choiceChildren);
+        const isNested = true;
+        const formattedChildren = formFieldFactory(choiceChildren, isNested);
         choiceObject.checkedChildren = formattedChildren;
       }
       delete choiceObject.children;
@@ -39,7 +40,12 @@ export const ChoiceListField = ({
     });
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box
+      sx={{ ...sx, ...sxOverride }}
+      className={`${
+        nested ? "nested ds-c-choice__checkedChild" : ""
+      } ${mqClasses}`}
+    >
       <CmsdsChoiceList
         name={name}
         type={type}
@@ -57,6 +63,7 @@ interface Props {
   type: "checkbox" | "radio";
   label: string;
   choices: FieldChoice[];
+  nested?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
@@ -64,5 +71,10 @@ interface Props {
 const sx = {
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
+  },
+  "&.nested": {
+    fieldset: {
+      marginTop: 0,
+    },
   },
 };

@@ -11,7 +11,7 @@ import {
 import { AnyObject, FormField } from "types";
 
 // return created elements from provided fields
-export const formFieldFactory = (fields: FormField[]) => {
+export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
   const fieldToComponentMap: any = {
     choicelist: ChoiceListField,
@@ -22,6 +22,8 @@ export const formFieldFactory = (fields: FormField[]) => {
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     const fieldProps = field?.props || {};
+    // if field is nested, add nested prop
+    if (isNested) fieldProps["nested"] = isNested;
     // return created element
     return React.createElement(componentFieldType, {
       key: field.id,
