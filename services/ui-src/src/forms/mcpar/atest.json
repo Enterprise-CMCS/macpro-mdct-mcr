@@ -44,12 +44,6 @@
                             "props": {
                               "label": "Test checked child component",
                               "hint": "Enter some text"
-                            },
-                            "validation": {
-                              "type": "string",
-                              "options": {
-                                "required": true
-                              }
                             }
                           }
                         ]

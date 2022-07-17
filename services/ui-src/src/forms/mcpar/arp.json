@@ -16,16 +16,6 @@
         "props": {
           "label": "A.5a Reporting period start date",
           "hint": "Enter start date of the reporting period represented in the report."
-        },
-        "validation": {
-          "type": "number",
-          "options": {
-            "required": true
-          },
-          "errorMessages": {
-            "required": "Start date is required",
-            "format": "Invalid start date"
-          }
         }
       },
       {
@@ -34,17 +24,6 @@
         "props": {
           "label": "A.5b Reporting period end date",
           "hint": "Enter end date of the reporting period represented in the report."
-        },
-        "validation": {
-          "type": "number",
-          "options": {
-            "required": true
-          },
-          "errorMessages": {
-            "required": "End date is required",
-            "format": "Invalid end date",
-            "min": "End date cannot be before start date"
-          }
         }
       },
       {
@@ -55,8 +34,7 @@
           "label": "A.6 Program name",
           "hint": "Auto-populated from report dashboard.",
           "disabled": true
-        },
-        "validation": null
+        }
       }
     ]
   }

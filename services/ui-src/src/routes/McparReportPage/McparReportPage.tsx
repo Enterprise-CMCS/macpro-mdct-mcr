@@ -5,7 +5,7 @@ import { Form, Icon, ReportPage } from "components";
 // utils
 import { hydrateFormFields, makeNextRoute, makePreviousRoute } from "utils";
 import { AnyObject } from "types";
-import { mcparReportPageOrder as pathArray } from "verbiage/forms/mcparReportPages";
+import { mcparReportPageOrder as pathArray } from "forms/mcpar";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
