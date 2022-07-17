@@ -11,13 +11,6 @@ export const form = {
         label: "Title text",
         placeholder: "New banner title",
       },
-      validation: {
-        type: "string",
-        options: { required: true },
-        errorMessages: {
-          required: "Title text is required",
-        },
-      },
     },
     {
       id: "abf-description",
@@ -25,13 +18,6 @@ export const form = {
       props: {
         label: "Description text",
         placeholder: "New banner description",
-      },
-      validation: {
-        type: "string",
-        options: { required: true },
-        errorMessages: {
-          required: "Description text is required",
-        },
       },
     },
     {
@@ -41,32 +27,12 @@ export const form = {
         label: "Link",
         requirementLabel: "Optional",
       },
-      validation: {
-        type: "string",
-        options: {
-          format: "url",
-        },
-        errorMessages: {
-          format: "URL must be valid",
-        },
-      },
     },
     {
       id: "abf-startDate",
       type: "date",
-      name: "abf-startDate",
       props: {
         label: "Start date",
-      },
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-        },
-        errorMessages: {
-          required: "Start date is required",
-          format: "Invalid start date",
-        },
       },
     },
     {
@@ -74,18 +40,6 @@ export const form = {
       type: "date",
       props: {
         label: "End date",
-      },
-      validation: {
-        type: "number",
-        options: {
-          required: true,
-          min: "abf-startDate",
-        },
-        errorMessages: {
-          required: "End date is required",
-          format: "Invalid end date",
-          min: "End date cannot be before start date",
-        },
       },
     },
   ],

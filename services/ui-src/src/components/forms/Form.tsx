@@ -1,21 +1,26 @@
 import { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, ref } from "yup";
 // components
 import { Box } from "@chakra-ui/react";
 // utils
-import {
-  focusElement,
-  formFieldFactory,
-  makeFormSchema,
-  sortFormErrors,
-} from "utils";
+import { focusElement, formFieldFactory, sortFormErrors } from "utils";
 // types
-import { FormField, FormJson } from "types";
+import { FormJson } from "types";
 
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
-  const schema = makeFormSchema(fields as FormField[]);
+
+  const schema = object({
+    "abf-title": string().required("Title text is required"),
+    "abf-description": string().required("Description text is required"),
+    "abf-link": string().url("URL must be valid"),
+    "abf-startDate": number().required("Start date is required"),
+    "abf-endDate": number()
+      .required("End date is required")
+      .min(ref("abf-startDate"), "End date cannot be before start date"),
+  });
 
   // make form context
   const form = useForm({

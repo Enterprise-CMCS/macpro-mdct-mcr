@@ -19,21 +19,15 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   form.register(name);
 
   const [displayValue, setDisplayValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
 
   const onChangeHandler = async (event: string, formattedString: string) => {
-    form.setValue(name, parseInt(event), {
-      shouldValidate: true,
-    });
     setDisplayValue(event);
-    setFormattedValue(formattedString);
-  };
-
-  const onBlurHandler = () => {
-    let year = parseInt(formattedValue.split("/")?.[2]);
-    let month = parseInt(formattedValue.split("/")?.[0]);
-    let day = parseInt(formattedValue.split("/")?.[1]);
-    if (!!year && !!month && !!day) {
+    // parse formatted string
+    let month = parseInt(formattedString.split("/")?.[0]);
+    let day = parseInt(formattedString.split("/")?.[1]);
+    let year = parseInt(formattedString.split("/")?.[2]);
+    // if full date entered, convert, set, and validate
+    if (month && day && year.toString().length === 4) {
       const time = calculateTimeByDateType(name);
       const calculatedDatetime = convertDateEtToUtc({ year, month, day }, time);
       form.setValue(name, calculatedDatetime, {
@@ -50,7 +44,6 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
         name={name}
         label={label}
         onChange={onChangeHandler}
-        onBlur={onBlurHandler}
         value={displayValue}
         errorMessage={errorMessage}
         {...props}
