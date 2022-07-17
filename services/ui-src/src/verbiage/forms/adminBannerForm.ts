@@ -54,6 +54,7 @@ export const form = {
     {
       id: "abf-startDate",
       type: "date",
+      name: "abf-startDate",
       props: {
         label: "Start date",
       },
@@ -78,7 +79,7 @@ export const form = {
         type: "number",
         options: {
           required: true,
-          // TODO: add minimum start date reference (dependent on 3rd-party lib)
+          min: "abf-startDate",
         },
         errorMessages: {
           required: "End date is required",

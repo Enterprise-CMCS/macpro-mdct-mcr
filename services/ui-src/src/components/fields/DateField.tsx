@@ -18,17 +18,22 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const form = useFormContext();
   form.register(name);
 
-  const [date, setDate] = useState("");
+  const [displayValue, setDisplayValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState("");
 
   const onChangeHandler = async (event: string, formattedString: string) => {
-    setDate(event);
-    form.setValue(name, event ? parseInt(event) : undefined, {
+    form.setValue(name, parseInt(event), {
       shouldValidate: true,
     });
-    let year = parseInt(formattedString.split("/")?.[2]);
-    let month = parseInt(formattedString.split("/")?.[0]);
-    let day = parseInt(formattedString.split("/")?.[1]);
-    if (year && month && day) {
+    setDisplayValue(event);
+    setFormattedValue(formattedString);
+  };
+
+  const onBlurHandler = () => {
+    let year = parseInt(formattedValue.split("/")?.[2]);
+    let month = parseInt(formattedValue.split("/")?.[0]);
+    let day = parseInt(formattedValue.split("/")?.[1]);
+    if (!!year && !!month && !!day) {
       const time = calculateTimeByDateType(name);
       const calculatedDatetime = convertDateEtToUtc({ year, month, day }, time);
       form.setValue(name, calculatedDatetime, {
@@ -37,7 +42,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
     }
   };
 
-  const parentFieldErrorMessage = form?.formState?.errors?.[name]?.message;
+  const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
@@ -45,8 +50,9 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
         name={name}
         label={label}
         onChange={onChangeHandler}
-        value={date}
-        errorMessage={parentFieldErrorMessage}
+        onBlur={onBlurHandler}
+        value={displayValue}
+        errorMessage={errorMessage}
         {...props}
       />
     </Box>
@@ -60,4 +66,8 @@ interface Props {
   [key: string]: any;
 }
 
-const sx = {};
+const sx = {
+  ".ds-c-field": {
+    maxWidth: "7rem",
+  },
+};
