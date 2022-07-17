@@ -1,5 +1,4 @@
 import React from "react";
-import { buildYup } from "schema-to-yup";
 // components
 import {
   CheckboxField,
@@ -47,28 +46,6 @@ export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
     formFields[fieldFormIndex].props!.value = hydrationValue;
   });
   return formFields;
-};
-
-export const makeFormSchema = (fields: FormField[]) => {
-  // make field validation schema
-  const fieldSchema: any = { type: "object", properties: {} };
-  fields.forEach((field: FormField) => {
-    if (field.validation) {
-      const { type, options } = field.validation;
-      fieldSchema.properties[field.id] = { type, ...options };
-    }
-  });
-
-  // make error message schema
-  const errorMessageSchema: any = { errMessages: {} };
-  fields.forEach((field: FormField) => {
-    if (field.validation) {
-      const { errorMessages } = field.validation;
-      errorMessageSchema.errMessages[field.id] = { ...errorMessages };
-    }
-  });
-  // make form schema
-  return buildYup(fieldSchema, errorMessageSchema);
 };
 
 export const sortFormErrors = (form: any, errors: any) => {

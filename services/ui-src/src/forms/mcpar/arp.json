@@ -5,7 +5,7 @@
     "subsection": "Reporting Period"
   },
   "form": {
-    "id": "apointofcontact",
+    "id": "areportingperiod",
     "options": {
       "mode": "onChange"
     },

@@ -1,49 +1,47 @@
 {
-  "path": "/program-information/test",
+  "path": "/test",
   "intro": {
-    "section": "TEST",
-    "subsection": "Test"
+    "section": "Test",
+    "subsection": "Test form"
   },
   "form": {
-    "id": "atest",
+    "id": "test",
     "options": {
       "mode": "onChange"
     },
     "fields": [
       {
-        "id": "atest1",
-        "type": "choicelist",
+        "id": "test1",
+        "type": "checkbox",
         "props": {
-          "type": "checkbox",
-          "label": "Top level",
-          "hint": "Pick one",
+          "label": "Top level checkbox",
+          "hint": "Pick the first option",
           "choices": [
             {
-              "name": "atest1o1",
+              "name": "test1-o1",
               "type": "choice",
-              "label": "Checkbox option 1",
+              "label": "Option 1, choice with children",
               "value": "option1",
               "children": [
                 {
-                  "id": "atest1o1-c",
-                  "type": "choicelist",
+                  "id": "test1-o1-c",
+                  "type": "checkbox",
                   "props": {
-                    "label": "One nested",
-                    "hint": "Pick one",
-                    "type": "checkbox",
+                    "label": "Nested child checkbox",
+                    "hint": "Pick the first option",
                     "choices": [
                       {
-                        "name": "atest1o1-co1",
+                        "name": "test1-o1-c-o1",
                         "type": "choice",
                         "label": "Checkbox option 1",
                         "value": "option1-1",
                         "children": [
                           {
-                            "id": "atest1o1-co1-c",
+                            "id": "test1-o1-c-o1-c",
                             "type": "text",
                             "props": {
-                              "label": "Test checked child component",
-                              "hint": "Enter some text"
+                              "label": "Nested child text field",
+                              "hint": "Enter some text or whatever"
                             }
                           }
                         ]
@@ -54,9 +52,9 @@
               ]
             },
             {
-              "name": "atest1o2",
+              "name": "test1o2",
               "type": "choice",
-              "label": "Checkbox option 2",
+              "label": "Option 2, no children",
               "value": "option2"
             }
           ]

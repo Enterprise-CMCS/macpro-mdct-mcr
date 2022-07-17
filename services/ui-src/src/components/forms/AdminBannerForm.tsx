@@ -6,7 +6,7 @@ import { ErrorAlert, Form, PreviewBanner } from "components";
 import { bannerId } from "../../constants";
 import { REPLACE_BANNER_FAILED } from "verbiage/errors";
 // data
-import formJson from "forms/internal/adminBannerForm.json";
+import formJson from "forms/internal/abf.json";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
