@@ -7,47 +7,32 @@ import { Box } from "@chakra-ui/react";
 import { AnyObject } from "types";
 import { makeMediaQueryClasses } from "utils";
 
-/*
- * Note: This file uses the names 'parent'/'parentField' to refer to
- * the CMSDS Date Field (e.g. 'startDate'), and 'child'/'childField'
- * to refer to  and the contained day, month, year fields (e.g. 'day')
- */
-
-export const DateField = ({
-  name: parentFieldName,
-  label: parentFieldLabel,
-  sxOverride,
-  ...props
-}: Props) => {
+export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  // get the form context
+  // get the form context and register form field
   const form = useFormContext();
+  form.register(name);
 
-  const [date, setDate] = useState("");
+  const [displayValue, setDisplayValue] = useState("");
 
   const onChangeHandler = async (inputtedString: string) => {
-    setDate(inputtedString);
-    form.setValue(
-      parentFieldName,
-      inputtedString ? inputtedString : undefined,
-      {
-        shouldValidate: true,
-      }
-    );
+    setDisplayValue(inputtedString);
+    form.setValue(name, inputtedString ? inputtedString : undefined, {
+      shouldValidate: true,
+    });
   };
 
-  const parentFieldErrorMessage =
-    form?.formState?.errors?.[parentFieldName]?.message;
+  const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDateField
-        name={parentFieldName}
-        label={parentFieldLabel}
+        name={name}
+        label={label}
         onChange={onChangeHandler}
-        value={date}
-        errorMessage={parentFieldErrorMessage}
+        value={displayValue || props.hydrate}
+        errorMessage={errorMessage}
         {...props}
       />
     </Box>
@@ -61,4 +46,8 @@ interface Props {
   [key: string]: any;
 }
 
-const sx = {};
+const sx = {
+  ".ds-c-field": {
+    maxWidth: "7rem",
+  },
+};

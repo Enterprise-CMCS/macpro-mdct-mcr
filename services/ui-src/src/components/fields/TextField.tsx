@@ -26,13 +26,12 @@ export const TextField = ({
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${
-        nested ? "nested ds-c-choice__checkedChild" : ""
-      }`}
+      className={`${mqClasses} ${nestedChildClasses}`}
     >
       <CmsdsTextField
         id={name}
@@ -42,6 +41,7 @@ export const TextField = ({
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => form.register(name)}
+        defaultValue={props?.hydrate}
         {...props}
       />
     </Box>

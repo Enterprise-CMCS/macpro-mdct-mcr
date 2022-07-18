@@ -60,7 +60,7 @@ describe("Test hydrateFormFields", () => {
     );
     const hydratedFieldValue = hydratedFormFields.find(
       (field) => field.id === "mock-field-1"
-    )?.props!.value;
+    )?.props!.hydrate;
     expect(hydratedFieldValue).toEqual("the mocked data");
   });
 
@@ -71,7 +71,7 @@ describe("Test hydrateFormFields", () => {
     );
     const hydratedFieldValue = hydratedFormFields.find(
       (field) => field.id === "mock-field-2"
-    )?.props!.value;
+    )?.props!.hydrate;
     expect(hydratedFieldValue).toEqual("ERROR");
   });
 });

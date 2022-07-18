@@ -1,5 +1,4 @@
 import React from "react";
-import { buildYup } from "schema-to-yup";
 // components
 import {
   CheckboxField,
@@ -18,10 +17,8 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     date: DateField,
     text: TextField,
     textarea: TextAreaField,
-    datesplit: DateField,
-    checkboxList: CheckboxField,
-    radioList: RadioField,
-    child: React.Fragment,
+    checkbox: CheckboxField,
+    radio: RadioField,
   };
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
@@ -46,32 +43,9 @@ export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
     const fieldFormIndex = formFields.indexOf(field!);
     // add value attribute with hydration value
     const hydrationValue = data[field?.hydrate!] || "ERROR";
-    formFields[fieldFormIndex].props!.value = hydrationValue;
+    formFields[fieldFormIndex].props!.hydrate = hydrationValue;
   });
   return formFields;
-};
-
-export const makeFormSchema = (fields: FormField[]) => {
-  // make field validation schema
-  const fieldSchema: any = { type: "object", properties: {} };
-  fields.forEach((field: FormField) => {
-    if (field.validation) {
-      const { type, options } = field.validation;
-      fieldSchema.properties[field.id] = { type, ...options };
-    }
-  });
-
-  // make error message schema
-  const errorMessageSchema: any = { errMessages: {} };
-  fields.forEach((field: FormField) => {
-    if (field.validation) {
-      const { errorMessages } = field.validation;
-      errorMessageSchema.errMessages[field.id] = { ...errorMessages };
-    }
-  });
-
-  // make form schema
-  return buildYup(fieldSchema, errorMessageSchema);
 };
 
 export const sortFormErrors = (form: any, errors: any) => {

@@ -1,0 +1,127 @@
+{
+  "path": "/test",
+  "intro": {
+    "section": "Test",
+    "subsection": "Test form"
+  },
+  "form": {
+    "id": "test",
+    "options": {
+      "mode": "onChange"
+    },
+    "fields": [
+      {
+        "id": "test1",
+        "type": "checkbox",
+        "props": {
+          "label": "Top level checkbox with nested fields",
+          "hint": "Pick the first option",
+          "choices": [
+            {
+              "name": "test1-o1",
+              "type": "choice",
+              "label": "Option 1, choice with nested child",
+              "value": "option1",
+              "children": [
+                {
+                  "id": "test1-o1-c",
+                  "type": "checkbox",
+                  "props": {
+                    "label": "Nested child checkbox",
+                    "hint": "Pick the first option",
+                    "choices": [
+                      {
+                        "name": "test1-o1-c-o1",
+                        "type": "choice",
+                        "label": "Option 1, choice with nested child",
+                        "value": "option1-1",
+                        "children": [
+                          {
+                            "id": "test1-o1-c-o1-c",
+                            "type": "text",
+                            "props": {
+                              "label": "Nested child text field",
+                              "hint": "Enter some text or whatever"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "test1-o1-c-o2",
+                        "type": "choice",
+                        "label": "Option 2, no children",
+                        "value": "option2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test1-o2",
+              "type": "choice",
+              "label": "Option 2, no children",
+              "value": "option2"
+            }
+          ]
+        }
+      },
+      {
+        "id": "test2",
+        "type": "radio",
+        "props": {
+          "label": "Top level radio with nested fields",
+          "hint": "Pick the first option",
+          "choices": [
+            {
+              "name": "test2-o1",
+              "type": "choice",
+              "label": "Option 1, choice with nested child",
+              "value": "option1",
+              "children": [
+                {
+                  "id": "test2-o1-c",
+                  "type": "radio",
+                  "props": {
+                    "label": "Nested child radio",
+                    "hint": "Pick the first option",
+                    "choices": [
+                      {
+                        "name": "test2-o1-c-o1",
+                        "type": "choice",
+                        "label": "Option 1, choice with nested child",
+                        "value": "option1-1",
+                        "children": [
+                          {
+                            "id": "test2-o1-c-o1-c",
+                            "type": "text",
+                            "props": {
+                              "label": "Nested child text field",
+                              "hint": "Enter some text or whatever"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "test2-o1-c-o2",
+                        "type": "choice",
+                        "label": "Option 2, no children",
+                        "value": "option2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test2-o2",
+              "type": "choice",
+              "label": "Option 2, no children",
+              "value": "option2"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

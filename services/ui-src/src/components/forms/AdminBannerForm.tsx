@@ -6,8 +6,10 @@ import { ErrorAlert, Form, PreviewBanner } from "components";
 import { bannerId } from "../../constants";
 import { REPLACE_BANNER_FAILED } from "verbiage/errors";
 // data
-import { form as formJson } from "verbiage/forms/adminBannerForm";
+
 import { calculateTimeByDateType, convertDateEtToUtc } from "utils";
+import formJson from "forms/internal/abf.json";
+import { formSchema } from "forms/formSchema";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
@@ -45,7 +47,13 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   return (
     <>
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
-      <Form id={formJson.id} formJson={formJson} onSubmit={onSubmit} {...props}>
+      <Form
+        id={formJson.id}
+        formJson={formJson}
+        formSchema={formSchema[formJson.id as keyof typeof formSchema]}
+        onSubmit={onSubmit}
+        {...props}
+      >
         <PreviewBanner />
       </Form>
       <Flex sx={sx.previewFlex}>

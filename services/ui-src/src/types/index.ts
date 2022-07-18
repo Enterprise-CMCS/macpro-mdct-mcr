@@ -31,15 +31,6 @@ export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
 // FORM
 
-export interface ChoiceValue {
-  value: string;
-}
-
-export interface ChoiceListChoices {
-  label: string;
-  value: string;
-}
-
 export interface FormField {
   id: string;
   type: string;

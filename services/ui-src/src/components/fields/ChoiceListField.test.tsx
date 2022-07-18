@@ -7,6 +7,7 @@ import { formFieldFactory } from "utils";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
+    register: () => {},
     setValue: () => {},
   }),
 }));

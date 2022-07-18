@@ -4,22 +4,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
 // utils
-import {
-  focusElement,
-  formFieldFactory,
-  makeFormSchema,
-  sortFormErrors,
-} from "utils";
-// types
-import { FormField, FormJson } from "types";
+import { focusElement, formFieldFactory, sortFormErrors } from "utils";
+import { FormJson } from "types";
 
-export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
+export const Form = ({
+  id,
+  formJson,
+  formSchema,
+  onSubmit,
+  children,
+  ...props
+}: Props) => {
   const { fields, options } = formJson;
-  const schema = makeFormSchema(fields as FormField[]);
 
   // make form context
   const form = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(formSchema),
     shouldFocusError: false,
     ...(options as any),
   });
@@ -49,6 +49,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
 interface Props {
   id: string;
   formJson: FormJson;
+  formSchema: any;
   onSubmit: Function;
   children?: ReactNode;
   [key: string]: any;
