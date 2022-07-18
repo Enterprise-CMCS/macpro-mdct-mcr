@@ -44,7 +44,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
         name={name}
         label={label}
         onChange={onChangeHandler}
-        value={displayValue}
+        value={displayValue || props.hydrate}
         errorMessage={errorMessage}
         {...props}
       />

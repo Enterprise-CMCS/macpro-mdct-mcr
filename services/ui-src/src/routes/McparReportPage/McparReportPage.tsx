@@ -13,9 +13,11 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { path, intro, form } = pageJson;
 
-  const fakeData = {
+  const temporaryHydrationData = {
     stateName: "Temporary state name",
     programName: "Temporary program name",
+    reportingPeriodStartDate: "xx/xx/xxxx",
+    reportingPeriodEndDate: "xx/xx/xxxx",
     reportSubmissionDate: "xx/xx/xxxx",
   };
 
@@ -27,7 +29,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
     // TODO: Wire up submit functionality
     navigate(nextRoute);
   };
-  form.fields = hydrateFormFields(form.fields, fakeData);
+  form.fields = hydrateFormFields(form.fields, temporaryHydrationData);
 
   return (
     <ReportPage data-testid={form.id}>

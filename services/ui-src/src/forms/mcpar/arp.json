@@ -13,17 +13,21 @@
       {
         "id": "arp-a5a",
         "type": "date",
+        "hydrate": "reportingPeriodStartDate",
         "props": {
           "label": "A.5a Reporting period start date",
-          "hint": "Enter start date of the reporting period represented in the report."
+          "hint": "Auto-populated from report dashboard.",
+          "disabled": true
         }
       },
       {
         "id": "arp-a5b",
         "type": "date",
+        "hydrate": "reportingPeriodEndDate",
         "props": {
           "label": "A.5b Reporting period end date",
-          "hint": "Enter end date of the reporting period represented in the report."
+          "hint": "Auto-populated from report dashboard.",
+          "disabled": true
         }
       },
       {

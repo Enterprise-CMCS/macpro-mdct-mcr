@@ -55,7 +55,7 @@
       },
       {
         "id": "apoc-a4",
-        "type": "text",
+        "type": "date",
         "hydrate": "reportSubmissionDate",
         "props": {
           "label": "A.4 Date of report submission",
