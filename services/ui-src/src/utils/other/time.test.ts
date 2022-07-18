@@ -15,15 +15,15 @@ const testDate = {
 };
 
 describe("Test calculateTimeByType", () => {
-  test("known dateType returns correct date value", () => {
-    const startDateTest = calculateTimeByType("abf-startDate");
+  test("known timeType returns correct datetime", () => {
+    const startDateTest = calculateTimeByType("startDate");
     expect(startDateTest).toEqual(midnight);
 
-    const endDateTest = calculateTimeByType("abf-endDate");
+    const endDateTest = calculateTimeByType("endDate");
     expect(endDateTest).toEqual(oneSecondToMidnight);
   });
 
-  test("unknown dateType returns noon date value", () => {
+  test("unknown timeType returns noon datetime", () => {
     const unknownTest = calculateTimeByType("whatever");
     expect(unknownTest).toEqual(noon);
   });
