@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 import { McparReportPage } from "routes";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import sectionA_pointofcontact from "verbiage/forms/apoc.json";
+import sectionA_pointofcontact from "forms/mcpar/apoc.json";
 
 const mockUseNavigate = jest.fn();
 
@@ -61,7 +61,7 @@ describe("Test McparReportPage previous navigation", () => {
     render(mcparReportPageComponent);
     const previousButton = screen.getByText("Previous")!;
     await userEvent.click(previousButton);
-    const expectedRoute = "/mcpar";
+    const expectedRoute = "/mcpar/program-information/reporting-period";
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
   });
 });

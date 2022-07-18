@@ -45,7 +45,11 @@ export const convertDateEtToUtc = (
  * returns -> ET date in format mm/dd/yyyy
  */
 export const formatDateUtcToEt = (date: number): string => {
-  const easternDatetime = utcToZonedTime(new Date(date), "America/New_York");
+  const convertedDate = date;
+  const easternDatetime = utcToZonedTime(
+    new Date(convertedDate),
+    "America/New_York"
+  );
   const month = new Date(easternDatetime).getMonth();
   const day = new Date(easternDatetime).getDate();
   const year = new Date(easternDatetime).getFullYear().toString().slice(-2);

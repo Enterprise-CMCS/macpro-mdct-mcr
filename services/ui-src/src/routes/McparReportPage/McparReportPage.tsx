@@ -5,15 +5,20 @@ import { Form, Icon, ReportPage } from "components";
 // utils
 import { hydrateFormFields, makeNextRoute, makePreviousRoute } from "utils";
 import { AnyObject } from "types";
-import { mcparReportPageOrder as pathArray } from "verbiage/forms/mcparReportPages";
+// form data
+import { mcparReportPageOrder as pathArray } from "forms/mcpar";
+import { formSchema } from "forms/formSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { path, intro, form } = pageJson;
 
-  const fakeData = {
+  const temporaryHydrationData = {
     stateName: "Temporary state name",
     programName: "Temporary program name",
+    reportingPeriodStartDate: "xx/xx/xxxx",
+    reportingPeriodEndDate: "xx/xx/xxxx",
+    reportSubmissionDate: "xx/xx/xxxx",
   };
 
   // make routes
@@ -24,12 +29,18 @@ export const McparReportPage = ({ pageJson }: Props) => {
     // TODO: Wire up submit functionality
     navigate(nextRoute);
   };
-  form.fields = hydrateFormFields(form.fields, fakeData);
+  form.fields = hydrateFormFields(form.fields, temporaryHydrationData);
 
   return (
     <ReportPage data-testid={form.id}>
       <ReportPageIntro text={intro} />
-      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
+
+      <Form
+        id={form.id}
+        formJson={form}
+        formSchema={formSchema[form.id as keyof typeof formSchema]}
+        onSubmit={onSubmit}
+      />
       <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
     </ReportPage>
   );
