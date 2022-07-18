@@ -5,7 +5,9 @@ import { Form, Icon, ReportPage } from "components";
 // utils
 import { hydrateFormFields, makeNextRoute, makePreviousRoute } from "utils";
 import { AnyObject } from "types";
+// form data
 import { mcparReportPageOrder as pathArray } from "forms/mcpar";
+import { formSchema } from "forms/formSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
@@ -14,6 +16,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const fakeData = {
     stateName: "Temporary state name",
     programName: "Temporary program name",
+    reportSubmissionDate: "xx/xx/xxxx",
   };
 
   // make routes
@@ -29,7 +32,13 @@ export const McparReportPage = ({ pageJson }: Props) => {
   return (
     <ReportPage data-testid={form.id}>
       <ReportPageIntro text={intro} />
-      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
+
+      <Form
+        id={form.id}
+        formJson={form}
+        formSchema={formSchema[form.id as keyof typeof formSchema]}
+        onSubmit={onSubmit}
+      />
       <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
     </ReportPage>
   );

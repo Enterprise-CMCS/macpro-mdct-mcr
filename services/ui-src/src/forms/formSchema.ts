@@ -6,7 +6,7 @@ import arpSchema from "./mcpar/arp.schema";
 // test
 import testSchema from "./mcpar/test.schema";
 
-export const validationSchema = {
+export const formSchema = {
   // internal
   adminBannerForm: abfSchema,
   // mcpar

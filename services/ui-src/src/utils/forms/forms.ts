@@ -43,7 +43,7 @@ export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
     const fieldFormIndex = formFields.indexOf(field!);
     // add value attribute with hydration value
     const hydrationValue = data[field?.hydrate!] || "ERROR";
-    formFields[fieldFormIndex].props!.value = hydrationValue;
+    formFields[fieldFormIndex].props!.hydrate = hydrationValue;
   });
   return formFields;
 };

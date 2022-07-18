@@ -56,6 +56,7 @@
       {
         "id": "apoc-a4",
         "type": "text",
+        "hydrate": "reportSubmissionDate",
         "props": {
           "label": "A.4 Date of report submission",
           "hint": "CMS receives this date upon submission of this MCPAR report.",
