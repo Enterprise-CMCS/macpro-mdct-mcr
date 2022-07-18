@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
@@ -16,11 +16,14 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 
   const [displayValue, setDisplayValue] = useState("");
 
+  useEffect(() => {
+    if (displayValue) {
+      form.setValue(name, displayValue || "", { shouldValidate: true });
+    }
+  }, [displayValue]);
+
   const onChangeHandler = async (inputtedString: string) => {
     setDisplayValue(inputtedString);
-    form.setValue(name, inputtedString ? inputtedString : undefined, {
-      shouldValidate: true,
-    });
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
