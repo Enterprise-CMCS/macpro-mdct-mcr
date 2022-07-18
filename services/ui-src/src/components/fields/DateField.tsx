@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
-import { makeMediaQueryClasses } from "utils";
+import { checkDateCompleteness, makeMediaQueryClasses } from "utils";
 
 export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -16,14 +16,12 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 
   const [displayValue, setDisplayValue] = useState<string>("");
 
-  useEffect(() => {
-    if (displayValue) {
-      form.setValue(name, displayValue || "", { shouldValidate: true });
+  const onChangeHandler = (rawValue: string, formattedValue: string) => {
+    setDisplayValue(rawValue);
+    const completeDate = checkDateCompleteness(formattedValue);
+    if (completeDate) {
+      form.setValue(name, formattedValue, { shouldValidate: true });
     }
-  }, [displayValue]);
-
-  const onChangeHandler = async (inputtedString: string) => {
-    setDisplayValue(inputtedString);
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
@@ -45,7 +43,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 interface Props {
   name: string;
   label: string;
-  timeType?: string;
+  timetype?: string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
