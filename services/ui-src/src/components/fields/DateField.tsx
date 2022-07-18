@@ -15,13 +15,19 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   form.register(name);
 
   const [displayValue, setDisplayValue] = useState<string>("");
+  const [formattedValue, setFormattedValue] = useState<string>("");
 
   const onChangeHandler = (rawValue: string, formattedValue: string) => {
     setDisplayValue(rawValue);
+    setFormattedValue(formattedValue);
     const completeDate = checkDateCompleteness(formattedValue);
     if (completeDate) {
       form.setValue(name, formattedValue, { shouldValidate: true });
     }
+  };
+
+  const onBlurHandler = () => {
+    form.setValue(name, formattedValue, { shouldValidate: true });
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
@@ -32,6 +38,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
         name={name}
         label={label}
         onChange={onChangeHandler}
+        onBlur={onBlurHandler}
         value={displayValue || props.hydrate}
         errorMessage={errorMessage}
         {...props}
