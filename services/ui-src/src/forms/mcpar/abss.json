@@ -16,15 +16,6 @@
         "type": "text",
         "props": {
           "label": "BSS entity name"
-        },
-        "validation": {
-          "type": "string",
-          "options": {
-            "required": true
-          },
-          "errorMessages": {
-            "required": "BSS entity name is required"
-          }
         }
       }
     ]

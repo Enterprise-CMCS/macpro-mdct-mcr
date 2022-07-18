@@ -1,3 +1,4 @@
+import { object, string } from "yup";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
@@ -7,9 +8,6 @@ const mockOnSubmit = jest.fn();
 
 const mockFormJson = {
   id: "mockForm",
-  options: {
-    mode: "onChange",
-  },
   fields: [
     {
       type: "text",
@@ -18,22 +16,20 @@ const mockFormJson = {
         name: "testfield",
         label: "testfield",
       },
-      validation: {
-        type: "string",
-        options: { required: true },
-        errorMessages: {
-          required: "Test field is required",
-        },
-      },
     },
   ],
 };
+
+const mockValidationSchema = object({
+  testfield: string().required("Test field is required"),
+});
 
 const formComponent = (
   <>
     <Form
       id={mockFormJson.id}
       formJson={mockFormJson}
+      formSchema={mockValidationSchema}
       onSubmit={mockOnSubmit}
       data-testid="test-form"
     />
