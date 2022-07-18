@@ -1,6 +1,6 @@
-import test from "./test.json";
-import sectionA_pointofcontact from "./apoc.json";
-import sectionA_reportingperiod from "./arp.json";
+import test from "./atest/test.json";
+import sectionA_pointofcontact from "./apoc/apoc.json";
+import sectionA_reportingperiod from "./arp/arp.json";
 
 export const mcparReportPages = [
   test,
