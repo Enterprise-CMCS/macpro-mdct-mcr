@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { SidebarOpenContext } from "components";
-import { ArrowIcon, CheckCircleIcon } from "@cmsgov/design-system";
+import { ArrowIcon } from "@cmsgov/design-system";
 import NavItems from "data/navigation/MCPARSideNavItems";
 import { useBreakpoint, useScrollPosition } from "utils";
 
@@ -152,7 +152,6 @@ const NavItem = ({
   const isCurrentPath = optionPath === currentPath;
   return (
     <Flex sx={sx.navItemFlex} className={isCurrentPath ? "selected" : ""}>
-      <CheckCircleIcon />
       <Text sx={sx.navItemTitle} className={`level-${level}`}>
         {name}
       </Text>
@@ -221,14 +220,6 @@ const sx = {
     role: "group",
     borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",
     fontSize: "0.875rem",
-    ".ds-c-icon--check-circle": {
-      position: "absolute",
-      top: "13px",
-      left: "0.5rem",
-      color: "palette.gray_lighter",
-      height: "1rem",
-      width: "1rem",
-    },
     ".ds-c-icon--arrow": {
       position: "absolute",
       top: "10px",
@@ -252,13 +243,13 @@ const sx = {
     marginY: "10px",
     textAlign: "left",
     "&.level-1": {
-      marginLeft: "2rem",
+      marginLeft: "1.5rem",
     },
     "&.level-2": {
-      marginLeft: "3rem",
+      marginLeft: "2.5rem",
     },
     "&.level-3": {
-      marginLeft: "4rem",
+      marginLeft: "3.5rem",
     },
   },
 };
