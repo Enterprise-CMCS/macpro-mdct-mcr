@@ -3,6 +3,7 @@ import React from "react";
 import {
   CheckboxField,
   DateField,
+  DynamicField,
   RadioField,
   TextField,
   TextAreaField,
@@ -10,18 +11,21 @@ import {
 // types
 import { AnyObject, FormField } from "types";
 
+// define form field components
+export const fieldToComponentMap: any = {
+  date: DateField,
+  text: TextField,
+  textarea: TextAreaField,
+  checkbox: CheckboxField,
+  radio: RadioField,
+  dynamic: DynamicField,
+};
+
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
-  // define form field components
-  const fieldToComponentMap: any = {
-    date: DateField,
-    text: TextField,
-    textarea: TextAreaField,
-    checkbox: CheckboxField,
-    radio: RadioField,
-  };
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
+
     // return created element
     return React.createElement(componentFieldType, {
       key: field.id,

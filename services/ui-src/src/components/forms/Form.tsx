@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
