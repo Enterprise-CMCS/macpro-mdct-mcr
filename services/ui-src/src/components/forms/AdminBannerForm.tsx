@@ -5,26 +5,13 @@ import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId } from "../../constants";
 import { REPLACE_BANNER_FAILED } from "verbiage/errors";
+import { convertDatetimeStringToNumber } from "utils/time/dateTimeConversion";
 // data
-
-import { calculateTimeByDateType, convertDateEtToUtc } from "utils";
 import formJson from "forms/internal/abf.json";
 import { formSchema } from "forms/formSchema";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
-
-  const convertTime = (date: string, fieldName: string) => {
-    const year = parseInt(date.split("/")?.[2]);
-    const month = parseInt(date.split("/")?.[0]);
-    const day = parseInt(date.split("/")?.[1]);
-    let convertedTime = undefined;
-    if (year && month && day) {
-      const time = calculateTimeByDateType(fieldName);
-      convertedTime = convertDateEtToUtc({ year, month, day }, time);
-    }
-    return convertedTime;
-  };
 
   const onSubmit = async (formData: any) => {
     const newBannerData = {
@@ -32,8 +19,14 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       title: formData["abf-title"],
       description: formData["abf-description"],
       link: formData["abf-link"],
-      startDate: convertTime(formData["abf-startDate"], "abf-startDate"),
-      endDate: convertTime(formData["abf-endDate"], "abf-endDate"),
+      startDate: convertDatetimeStringToNumber(
+        formData["abf-startDate"],
+        "abf-startDate"
+      ),
+      endDate: convertDatetimeStringToNumber(
+        formData["abf-endDate"],
+        "abf-endDate"
+      ),
     };
     try {
       await writeAdminBanner(newBannerData);
