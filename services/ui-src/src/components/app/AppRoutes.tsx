@@ -14,7 +14,7 @@ import { AdminBannerProvider } from "components";
 import { UserRoles } from "types";
 import { ScrollToTopComponent } from "utils";
 
-import { mcparReportPages } from "verbiage/forms/mcparReportPages";
+import { mcparReportPages } from "forms/mcpar";
 
 export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
