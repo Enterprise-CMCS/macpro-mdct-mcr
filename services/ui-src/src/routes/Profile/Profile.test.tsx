@@ -36,6 +36,11 @@ describe("Test Profile view for admin users", () => {
     expect(screen.getByTestId("banner-admin-button")).toBeVisible();
   });
 
+  test("Check that user state to be N/A", () => {
+    expect(screen.getByText("State")).toBeVisible();
+    expect(screen.getByText("N/A")).toBeVisible();
+  });
+
   test("Check that admin button navigates to /admin on click", () => {
     const adminButton = screen.getByTestId("banner-admin-button");
     expect(adminButton).toBeVisible();
@@ -55,6 +60,7 @@ describe("Test Profile view for state users", () => {
 
   test("Check that user state is visible", () => {
     expect(screen.getByText("State")).toBeVisible();
+    expect(screen.getByText("MN")).toBeVisible();
   });
 });
 

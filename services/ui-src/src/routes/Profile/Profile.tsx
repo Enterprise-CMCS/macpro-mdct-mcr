@@ -24,9 +24,6 @@ export const Profile = () => {
       ["State", state! || "N/A"],
     ],
   };
-  if (state) {
-    tableContent.bodyRows.push(["State", state]);
-  }
 
   return (
     <BasicPage sx={sx.layout} data-testid="profile-view">
@@ -69,7 +66,7 @@ const sx = {
     },
   },
   headerText: {
-    marginBottom: "2rem",
+    marginBottom: "rem",
     fontSize: "2rem",
     fontWeight: "normal",
   },
