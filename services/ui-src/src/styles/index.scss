@@ -124,3 +124,12 @@ button {
 .chakra-collapse {
   overflow: visible !important;
 }
+
+.ds-c-choice {
+  &:focus {
+    @include tabbed-focus;
+  }
+  &:focus-visible {
+    @include tabbed-focus;
+  }
+}
