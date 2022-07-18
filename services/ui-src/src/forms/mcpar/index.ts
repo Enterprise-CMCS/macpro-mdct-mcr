@@ -9,3 +9,11 @@ export const mcparReportPages = [
 ];
 
 export const mcparReportPageOrder = mcparReportPages.map((page) => page.path);
+
+/*
+ * console.log("ORDER: ", mcparReportPageOrder);
+ * change title of stuff to mcparRoutes
+ * make sections: get started, a, b, c, d, e, review/submit
+ * compose manually here, conditionally passing along an element
+ * create filter that makes a clean tree like in mcparsidenavitems
+ */
