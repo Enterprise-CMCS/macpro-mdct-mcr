@@ -14,7 +14,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const form = useFormContext();
   form.register(name);
 
-  const [displayValue, setDisplayValue] = useState("");
+  const [displayValue, setDisplayValue] = useState<string>("");
 
   useEffect(() => {
     if (displayValue) {
@@ -45,6 +45,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 interface Props {
   name: string;
   label: string;
+  timeType?: string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

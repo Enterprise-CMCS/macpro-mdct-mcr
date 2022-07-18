@@ -1,5 +1,5 @@
 import {
-  calculateTimeByDateType,
+  calculateTimeByType,
   convertDateEtToUtc,
   formatDateUtcToEt,
   midnight,
@@ -14,17 +14,17 @@ const testDate = {
   etFormattedString: "1/1/22",
 };
 
-describe("Test calculateTimeByDateType", () => {
+describe("Test calculateTimeByType", () => {
   test("known dateType returns correct date value", () => {
-    const startDateTest = calculateTimeByDateType("abf-startDate");
+    const startDateTest = calculateTimeByType("abf-startDate");
     expect(startDateTest).toEqual(midnight);
 
-    const endDateTest = calculateTimeByDateType("abf-endDate");
+    const endDateTest = calculateTimeByType("abf-endDate");
     expect(endDateTest).toEqual(oneSecondToMidnight);
   });
 
   test("unknown dateType returns noon date value", () => {
-    const unknownTest = calculateTimeByDateType("whatever");
+    const unknownTest = calculateTimeByType("whatever");
     expect(unknownTest).toEqual(noon);
   });
 });

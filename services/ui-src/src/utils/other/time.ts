@@ -13,12 +13,12 @@ export const noon: TimeShape = {
   second: 0,
 };
 
-export const calculateTimeByDateType = (dateType: string): TimeShape => {
+export const calculateTimeByType = (timeType: string): TimeShape => {
   const timeMap: any = {
-    "abf-startDate": midnight,
-    "abf-endDate": oneSecondToMidnight,
+    startDate: midnight,
+    endDate: oneSecondToMidnight,
   };
-  return timeMap[dateType] || noon;
+  return timeMap[timeType] || noon;
 };
 
 /*
@@ -56,4 +56,19 @@ export const formatDateUtcToEt = (date: number): string => {
 
   // month + 1 because Date object months are zero-indexed
   return `${month + 1}/${day}/${year}`;
+};
+
+export const convertDatetimeStringToNumber = (
+  date: string,
+  timeType: string
+): number | undefined => {
+  const month = parseInt(date.split("/")?.[0]);
+  const day = parseInt(date.split("/")?.[1]);
+  const year = parseInt(date.split("/")?.[2]);
+  let convertedTime;
+  if (month && day && year.toString().length === 4) {
+    const time = calculateTimeByType(timeType);
+    convertedTime = convertDateEtToUtc({ year, month, day }, time);
+  }
+  return convertedTime || undefined;
 };
