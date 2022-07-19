@@ -1,7 +1,5 @@
+import { numberFormatRegex } from "constants";
 import { object, string, array } from "yup";
-
-const numberFormatRegex =
-  /^(?<!\S)(?=.)(0|([1-9](\d*|\d{0,2}(,\d{3})*)))?(\.\d*[0-9])?(?!\S)$/;
 
 export default object({
   // checkbox example
