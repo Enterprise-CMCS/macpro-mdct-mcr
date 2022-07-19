@@ -49,6 +49,12 @@ export const NumberField = ({
   const errorMessage = form?.formState?.errors?.[name]?.message;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
+  /*
+   * Check if its not a custom mask and if the mask is defined as "currency" | "phone" | "ssn" | "zip".
+   * If its not, we dont want to use the mask prop so return undefined.
+   */
+  const useMask = mask && !isCustomMask(mask) ? mask : undefined;
+
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
@@ -63,8 +69,7 @@ export const NumberField = ({
         onBlur={onBlurHandler}
         errorMessage={errorMessage}
         inputRef={() => form.register(name)}
-        numeric
-        mask={isCustomMask(mask) ? undefined : mask}
+        mask={useMask}
         value={value}
         {...props}
       />
