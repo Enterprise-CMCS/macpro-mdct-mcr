@@ -1,4 +1,4 @@
-import { numberFormatRegex } from "constants";
+import { numberFormatRegex } from "../../constants";
 import { object, string, array } from "yup";
 
 export default object({
