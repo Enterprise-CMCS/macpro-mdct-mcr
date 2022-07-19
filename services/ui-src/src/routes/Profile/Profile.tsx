@@ -32,16 +32,14 @@ export const Profile = () => {
       </Heading>
       <Text>
         {intro.body}{" "}
-        <span>
-          <Link
-            sx={sx.emailText}
-            href={createEmailLink(intro.email)}
-            target="_blank"
-          >
-            {intro.email.address}
-          </Link>
-        </span>
-        {"."}
+        <Link
+          sx={sx.emailText}
+          href={createEmailLink(intro.email)}
+          target="_blank"
+        >
+          {intro.email.address}
+        </Link>
+        .
       </Text>
 
       <Table content={tableContent} variant="striped" sxOverride={sx.table} />
@@ -63,10 +61,11 @@ const sx = {
   layout: {
     ".contentFlex": {
       marginTop: "3.5rem",
+      marginBottom: "2rem",
     },
   },
   headerText: {
-    marginBottom: "rem",
+    marginBottom: "2rem",
     fontSize: "2rem",
     fontWeight: "normal",
   },
