@@ -32,14 +32,16 @@
       "id": "abf-startDate",
       "type": "date",
       "props": {
-        "label": "Start date"
+        "label": "Start date",
+        "timetype": "startDate"
       }
     },
     {
       "id": "abf-endDate",
       "type": "date",
       "props": {
-        "label": "End date"
+        "label": "End date",
+        "timetype": "endDate"
       }
     }
   ]

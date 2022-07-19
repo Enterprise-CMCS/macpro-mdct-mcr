@@ -5,6 +5,7 @@ import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId } from "../../constants";
 import { REPLACE_BANNER_FAILED } from "verbiage/errors";
+import { convertDatetimeStringToNumber } from "utils";
 // data
 import formJson from "forms/internal/abf.json";
 import { formSchema } from "forms/formSchema";
@@ -18,8 +19,14 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       title: formData["abf-title"],
       description: formData["abf-description"],
       link: formData["abf-link"],
-      startDate: formData["abf-startDate"],
-      endDate: formData["abf-endDate"],
+      startDate: convertDatetimeStringToNumber(
+        formData["abf-startDate"],
+        formJson.fields.find((el) => el.id === "abf-startDate")!.props.timetype!
+      ),
+      endDate: convertDatetimeStringToNumber(
+        formData["abf-endDate"],
+        formJson.fields.find((el) => el.id === "abf-endDate")!.props.timetype!
+      ),
     };
     try {
       await writeAdminBanner(newBannerData);

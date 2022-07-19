@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
@@ -24,18 +24,22 @@ const dateFieldComponent = (
 
 describe("Test DateField component", () => {
   test("DateField is visible", () => {
-    render(dateFieldComponent);
-    const dateField = screen.getByTestId("test-date-field");
-    expect(dateField).toBeVisible();
+    const result = render(dateFieldComponent);
+    const dateFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testDateField']"
+    )!;
+    expect(dateFieldInput).toBeVisible();
+    expect(dateFieldInput.value).toEqual("");
   });
 
   test("onChange event fires handler when typing and stays even after blurred", async () => {
     const result = render(dateFieldComponent);
-    const dateFieldMonthInput: HTMLInputElement =
-      result.container.querySelector("[name='testDateField']")!;
-    await userEvent.type(dateFieldMonthInput, "07/14/2022");
+    const dateFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testDateField']"
+    )!;
+    await userEvent.type(dateFieldInput, "07/14/2022");
     await userEvent.tab();
-    expect(dateFieldMonthInput.value).toEqual("07/14/2022");
+    expect(dateFieldInput.value).toEqual("07/14/2022");
   });
 });
 
