@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
-import { makeMediaQueryClasses } from "utils";
+import { checkDateCompleteness, makeMediaQueryClasses } from "utils";
 
 export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -14,16 +14,20 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const form = useFormContext();
   form.register(name);
 
-  const [displayValue, setDisplayValue] = useState("");
+  const [displayValue, setDisplayValue] = useState<string>("");
+  const [formattedValue, setFormattedValue] = useState<string>("");
 
-  useEffect(() => {
-    if (displayValue) {
-      form.setValue(name, displayValue || "", { shouldValidate: true });
+  const onChangeHandler = (rawValue: string, formattedValue: string) => {
+    setDisplayValue(rawValue);
+    setFormattedValue(formattedValue);
+    const completeDate = checkDateCompleteness(formattedValue);
+    if (completeDate) {
+      form.setValue(name, formattedValue, { shouldValidate: true });
     }
-  }, [displayValue]);
+  };
 
-  const onChangeHandler = async (inputtedString: string) => {
-    setDisplayValue(inputtedString);
+  const onBlurHandler = () => {
+    form.setValue(name, formattedValue, { shouldValidate: true });
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
@@ -34,7 +38,8 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
         name={name}
         label={label}
         onChange={onChangeHandler}
-        value={displayValue || props.hydrate}
+        onBlur={onBlurHandler}
+        value={displayValue || props.hydrate || ""}
         errorMessage={errorMessage}
         {...props}
       />
@@ -45,6 +50,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 interface Props {
   name: string;
   label: string;
+  timetype?: string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
