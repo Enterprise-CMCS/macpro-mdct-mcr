@@ -22,15 +22,6 @@ const dateFieldComponent = (
   />
 );
 
-const hydratedDateFieldComponent = (
-  <DateField
-    name="testDateField"
-    label="test-date-field"
-    data-testid="test-date-field"
-    value="07/19/2022"
-  />
-);
-
 describe("Test DateField component", () => {
   test("DateField is visible", () => {
     const result = render(dateFieldComponent);
@@ -49,15 +40,6 @@ describe("Test DateField component", () => {
     await userEvent.type(dateFieldInput, "07/14/2022");
     await userEvent.tab();
     expect(dateFieldInput.value).toEqual("07/14/2022");
-  });
-
-  test("should make sure field hydrates with passed in prop", () => {
-    const result = render(hydratedDateFieldComponent);
-    const dateFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testDateField']"
-    )!;
-    expect(dateFieldInput).toBeVisible();
-    expect(dateFieldInput.value).toEqual("07/19/2022");
   });
 });
 
