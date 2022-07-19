@@ -1,4 +1,4 @@
-import { object, string, array } from "yup";
+import { object, string, array, number } from "yup";
 
 export default object({
   // checkbox example
@@ -31,4 +31,13 @@ export default object({
     is: (value: any) => value && value.indexOf("option1-1") != -1,
     then: (schema: any) => schema.required("Field is required"),
   }),
+
+  test3: number().required().typeError("Please input a number"),
+  test4: number().required().typeError("Please input a number"),
+  test5: number().required().typeError("Please input a number"),
+  test6: number().required().typeError("Please input a number"),
+  test7: number().required().typeError("Please input a number"),
+  test8: number().required().typeError("Please input a number"),
+  test9: number().required().typeError("Please input a number"),
+  test10: number().required().typeError("Please input a number"),
 });
