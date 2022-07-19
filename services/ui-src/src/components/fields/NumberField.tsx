@@ -28,20 +28,17 @@ export const NumberField = ({
   // get the form context
   const form = useFormContext();
 
-  const onBlurHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    if (isCustomMask(mask)) {
-      const eventValue = customMask(evt.target.value, mask);
-      setValue(eventValue);
-      form.setValue(name, eventValue, { shouldValidate: true });
-    } else {
-      setValue(evt.target.value);
-      form.setValue(name, evt.target.value, { shouldValidate: true });
-    }
+  const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const eventValue = isCustomMask(mask)
+      ? customMask(e.target.value, mask)
+      : e.target.value;
+    setValue(eventValue);
+    form.setValue(name, eventValue, { shouldValidate: true });
   };
 
   // update form data
-  const onChangeHandler = async (event: InputChangeEvent) => {
-    const { name, value } = event.target;
+  const onChangeHandler = async (e: InputChangeEvent) => {
+    const { name, value } = e.target;
     setValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
