@@ -10,7 +10,7 @@ export default object({
     .matches(dateFormatRegex, "Invalid start date"),
   "abf-endDate": string()
     .required("End date is required")
-    .matches(dateFormatRegex, "Invalid start date")
+    .matches(dateFormatRegex, "Invalid end date")
     .test(
       "is after start date",
       "End date cannot be before start date",
