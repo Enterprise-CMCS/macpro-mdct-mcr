@@ -1,4 +1,7 @@
-import { object, string, array, number } from "yup";
+import { object, string, array } from "yup";
+
+const numberFormatRegex =
+  /^(?<!\S)(?=.)(0|([1-9](\d*|\d{0,2}(,\d{3})*)))?(\.\d*[0-9])?(?!\S)$/;
 
 export default object({
   // checkbox example
@@ -32,12 +35,28 @@ export default object({
     then: (schema: any) => schema.required("Field is required"),
   }),
 
-  test3: number().required().typeError("Please input a number"),
-  test4: number().required().typeError("Please input a number"),
-  test5: number().required().typeError("Please input a number"),
-  test6: number().required().typeError("Please input a number"),
-  test7: number().required().typeError("Please input a number"),
-  test8: number().required().typeError("Please input a number"),
-  test9: number().required().typeError("Please input a number"),
-  test10: number().required().typeError("Please input a number"),
+  test3: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
+  test4: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
+  test5: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
+  test6: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
+  test7: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
+  test8: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
+  test9: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
+  test10: string()
+    .required()
+    .matches(numberFormatRegex, "Please input a number"),
 });
