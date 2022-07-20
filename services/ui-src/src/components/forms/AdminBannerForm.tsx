@@ -21,11 +21,11 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       link: formData["abf-link"],
       startDate: convertDatetimeStringToNumber(
         formData["abf-startDate"],
-        formJson.fields.find((el) => el.id === "abf-startDate")!.props.timetype!
+        "startDate"
       ),
       endDate: convertDatetimeStringToNumber(
         formData["abf-endDate"],
-        formJson.fields.find((el) => el.id === "abf-endDate")!.props.timetype!
+        "endDate"
       ),
     };
     try {
@@ -43,7 +43,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       <Form
         id={formJson.id}
         formJson={formJson}
-        formSchema={formSchema[formJson.id as keyof typeof formSchema]}
+        formSchema={formSchema}
         onSubmit={onSubmit}
         {...props}
       >

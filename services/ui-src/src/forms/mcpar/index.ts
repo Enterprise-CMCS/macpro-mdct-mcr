@@ -21,7 +21,5 @@ export const mcparStructureWithData = addDataToReportStructure(
   mcparRouteStructure,
   combinedMcparForms
 );
-// console.log("filled with data: ", mcparStructureWithData);
 
 export const mcparRoutes = makeRouteArray(mcparStructureWithData);
-// console.log("mcpar routes: ", mcparRoutes);

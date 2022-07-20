@@ -8,8 +8,6 @@ export const addDataToReportStructure = (
     if (route.children) {
       // if there are children, call recursively
       addDataToReportStructure(route.children, reportPageArray);
-      // set first child path as redirect prop for router
-      route.redirect = route.children[0].path;
     } else {
       // if no children (is a visitable page), set pagejson if available
       const respectivePageJson = reportPageArray.find(
