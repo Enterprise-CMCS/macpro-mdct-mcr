@@ -36,13 +36,13 @@ export const DynamicField = ({ name, label }: Props) => {
                 }}
               />
               {index != 0 && (
-                <Link onClick={() => remove(index)}>
+                <Button onClick={() => remove(index)} variant="unstyled">
                   <Image
                     sx={sx.removeButton}
                     src={cancelIcon}
                     alt="Remove item"
                   />
-                </Link>
+                </Button>
               )}
             </Flex>
           );
