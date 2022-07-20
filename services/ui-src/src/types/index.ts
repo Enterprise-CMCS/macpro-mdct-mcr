@@ -25,9 +25,22 @@ export interface UserContextI {
   loginWithIDM: () => void;
 }
 
-// FORMS
+// REPORT
 
-export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
+export interface PageJson {
+  path: string;
+  intro?: AnyObject;
+  form: FormJson;
+}
+
+export interface ReportPath {
+  name: string;
+  path: string;
+  formId?: string;
+  element?: string;
+  pageJson?: PageJson;
+  children?: ReportPath[];
+}
 
 // FORM
 
@@ -113,11 +126,13 @@ export interface TimeShape {
 
 // OTHER
 
-export type { IconType } from "react-icons";
-
 export interface AnyObject {
   [key: string]: any;
 }
+
+export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
+
+export type { IconType } from "react-icons";
 
 export interface TableContentShape {
   caption?: string;
