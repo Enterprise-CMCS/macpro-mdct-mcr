@@ -1,10 +1,5 @@
 export default [
   {
-    name: "Test",
-    formId: "test",
-    path: "/mcpar/test",
-  },
-  {
     name: "Get Started",
     path: "/mcpar/get-started",
     element: "NotFound", // TODO: add custom page
@@ -179,5 +174,10 @@ export default [
     name: "Review & Submit",
     path: "/mcpar/review-and-submit",
     element: "NotFound", // TODO: add custom page
+  },
+  {
+    name: "Test",
+    formId: "test",
+    path: "/mcpar/test",
   },
 ];

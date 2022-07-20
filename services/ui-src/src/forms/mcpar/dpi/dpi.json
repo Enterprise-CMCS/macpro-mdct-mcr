@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/plan-level-indicators/program-integrity",
+  "intro": {
+    "section": "D: Plan-Level Indicators",
+    "subsection": "X: Program Integrity"
+  },
+  "form": {
+    "id": "dpi",
+    "fields": [
+      {
+        "id": "dpi-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}
