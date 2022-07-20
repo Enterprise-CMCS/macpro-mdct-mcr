@@ -15,7 +15,6 @@
         "id": "abss-a8",
         "type": "dynamic",
         "props": {
-          "type": "text",
           "label": "BSS entity name"
         }
       }

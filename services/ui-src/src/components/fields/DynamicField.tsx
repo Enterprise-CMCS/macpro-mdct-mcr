@@ -1,61 +1,36 @@
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, Link } from "@chakra-ui/react";
 // utils
-import { formFieldFactory, makeMediaQueryClasses } from "utils";
-import { AnyObject } from "types";
+import { makeMediaQueryClasses } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import { TextField } from "./TextField";
 
-export const DynamicField = ({
-  name,
-  label,
-  placeholder,
-  sxOverride,
-  nested,
-  ...props
-}: Props) => {
+export const DynamicField = ({ name, label }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
+  const form = useFormContext();
+  form.register(name);
+
   const { fields, append, remove } = useFieldArray({
-    name: "dynamicForm",
+    name: name,
+    shouldUnregister: true,
   });
-
-  const dynamicProps = {
-    props: {
-      label: label,
-      name: name,
-      placeholder: placeholder,
-      sxOverride: sxOverride,
-      ...props,
-    },
-  };
-
-  // have parent array with schema id (abss-8)
-  // change schema.ts to array, not string
-  // dynamic field is an array of text fields to add or delete
-  // array.min(1).required().test with some custom test
-
-  const components: AnyObject[] = [];
-  fields.forEach((item) => {
-    components.push({
-      type: props?.type,
-      ...dynamicProps,
-      id: name,
-    });
-  });
-
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
   if (fields.length === 0) append({});
 
   return (
-    <Box sx={sx} className={`${mqClasses} ${nestedChildClasses}`}>
+    <Box sx={sx} className={mqClasses}>
       <Box>
-        {components.map((field: any, index: any) => {
+        {fields.map((field: any, index: any) => {
           return (
             <Flex key={field.id} alignItems="flex-end">
-              {formFieldFactory(new Array(field))}
+              <TextField
+                name={`${name}[${index}]`}
+                label={label}
+                dynamic={{ parentName: name, index: index }}
+              />
               {index != 0 && (
                 <Link onClick={() => remove(index)}>
                   <Image
@@ -84,18 +59,9 @@ export const DynamicField = ({
 interface Props {
   name: string;
   label: string;
-  placeholder?: string;
-  nested?: boolean;
-  sxOverride?: AnyObject;
-  [key: string]: any;
 }
 
 const sx = {
-  "&.nested": {
-    label: {
-      marginTop: 0,
-    },
-  },
   removeButton: {
     boxSize: "1.25rem",
     marginBottom: "1rem",
