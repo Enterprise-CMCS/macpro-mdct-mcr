@@ -25,7 +25,6 @@ export const fieldToComponentMap: any = {
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-
     // return created element
     return React.createElement(componentFieldType, {
       key: field.id,

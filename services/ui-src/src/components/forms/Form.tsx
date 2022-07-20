@@ -24,10 +24,7 @@ export const Form = ({
     ...(options as any),
   });
 
-  console.log("form", form.getValues());
-
   const onErrorHandler = (errors: any) => {
-    console.log("found some errors: ", errors);
     const sortedErrors: any[] = sortFormErrors(form, errors);
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`

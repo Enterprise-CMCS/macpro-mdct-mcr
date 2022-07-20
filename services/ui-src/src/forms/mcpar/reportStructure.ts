@@ -31,7 +31,7 @@ export default [
       {
         name: "Add BSS Entities",
         path: "/mcpar/program-information/add-bss-entities",
-        formId: "absse",
+        formId: "abss",
       },
     ],
   },
