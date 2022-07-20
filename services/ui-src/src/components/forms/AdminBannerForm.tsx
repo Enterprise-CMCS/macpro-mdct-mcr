@@ -5,9 +5,10 @@ import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId } from "../../constants";
 import { REPLACE_BANNER_FAILED } from "verbiage/errors";
+import { convertDatetimeStringToNumber } from "utils";
 // data
-import formJson from "forms/internal/abf.json";
-import { formSchema } from "forms/formSchema";
+import formJson from "forms/internal/abf/abf.json";
+import formSchema from "forms/internal/abf/abf.schema";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
@@ -18,8 +19,14 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       title: formData["abf-title"],
       description: formData["abf-description"],
       link: formData["abf-link"],
-      startDate: formData["abf-startDate"],
-      endDate: formData["abf-endDate"],
+      startDate: convertDatetimeStringToNumber(
+        formData["abf-startDate"],
+        "startDate"
+      ),
+      endDate: convertDatetimeStringToNumber(
+        formData["abf-endDate"],
+        "endDate"
+      ),
     };
     try {
       await writeAdminBanner(newBannerData);
@@ -36,7 +43,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       <Form
         id={formJson.id}
         formJson={formJson}
-        formSchema={formSchema[formJson.id as keyof typeof formSchema]}
+        formSchema={formSchema}
         onSubmit={onSubmit}
         {...props}
       >

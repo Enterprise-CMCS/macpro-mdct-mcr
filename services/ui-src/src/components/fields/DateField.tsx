@@ -5,11 +5,7 @@ import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
-import {
-  convertDateEtToUtc,
-  calculateTimeByDateType,
-  makeMediaQueryClasses,
-} from "utils";
+import { checkDateCompleteness, makeMediaQueryClasses } from "utils";
 
 export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -18,22 +14,20 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const form = useFormContext();
   form.register(name);
 
-  const [displayValue, setDisplayValue] = useState("");
+  const [displayValue, setDisplayValue] = useState<string>("");
+  const [formattedValue, setFormattedValue] = useState<string>("");
 
-  const onChangeHandler = async (event: string, formattedString: string) => {
-    setDisplayValue(event);
-    // parse formatted string
-    let month = parseInt(formattedString.split("/")?.[0]);
-    let day = parseInt(formattedString.split("/")?.[1]);
-    let year = parseInt(formattedString.split("/")?.[2]);
-    // if full date entered, convert, set, and validate
-    if (month && day && year.toString().length === 4) {
-      const time = calculateTimeByDateType(name);
-      const calculatedDatetime = convertDateEtToUtc({ year, month, day }, time);
-      form.setValue(name, calculatedDatetime, {
-        shouldValidate: true,
-      });
+  const onChangeHandler = (rawValue: string, formattedValue: string) => {
+    setDisplayValue(rawValue);
+    setFormattedValue(formattedValue);
+    const completeDate = checkDateCompleteness(formattedValue);
+    if (completeDate) {
+      form.setValue(name, formattedValue, { shouldValidate: true });
     }
+  };
+
+  const onBlurHandler = () => {
+    form.setValue(name, formattedValue, { shouldValidate: true });
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
@@ -44,7 +38,8 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
         name={name}
         label={label}
         onChange={onChangeHandler}
-        value={displayValue || props.hydrate}
+        onBlur={onBlurHandler}
+        value={displayValue || props.hydrate || ""}
         errorMessage={errorMessage}
         {...props}
       />
@@ -55,6 +50,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 interface Props {
   name: string;
   label: string;
+  timetype?: string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
