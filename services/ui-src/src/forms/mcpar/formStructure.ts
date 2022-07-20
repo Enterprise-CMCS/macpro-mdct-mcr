@@ -4,182 +4,182 @@ export default [
   {
     name: "Test",
     formId: "test",
-    path: "/test",
+    path: "/mcpar/test",
   },
   {
     name: "Get Started",
-    path: "/get-started",
+    path: "/mcpar/get-started",
     element: NotFound, // TODO: add custom page
   },
   {
     name: "A: Program Information",
-    path: "/program-information",
+    path: "/mcpar/program-information",
     children: [
       {
         name: "Point of Contact",
-        path: "/point-of-contact",
+        path: "/mcpar/program-information/point-of-contact",
         formId: "apoc",
       },
       {
         name: "Reporting Period",
-        path: "/reporting-period",
+        path: "/mcpar/program-information/reporting-period",
         formId: "arp",
       },
       {
         name: "Add Plans",
-        path: "/add-plans",
+        path: "/mcpar/program-information/add-plans",
         formId: "aap",
       },
       {
         name: "Add BSS Entities",
-        path: "/add-bss-entities",
+        path: "/mcpar/program-information/add-bss-entities",
         formId: "absse",
       },
     ],
   },
   {
     name: "B: State-Level Indicators",
-    path: "/state-level-indicators",
+    path: "/mcpar/state-level-indicators",
     children: [
       {
         name: "I: Program Characteristics",
-        path: "/program-characteristics",
+        path: "/mcpar/state-level-indicators/program-characteristics",
         formId: "bpc",
       },
       {
         name: "III: Encounter Data Report",
-        path: "/encounter-data-report",
+        path: "/mcpar/state-level-indicators/encounter-data-report",
         formId: "bedr",
       },
       {
         name: "X: Program Integrity",
-        path: "/program-integrity",
+        path: "/mcpar/state-level-indicators/program-integrity",
         formId: "bpi",
       },
     ],
   },
   {
     name: "C: Program-Level Indicators",
-    path: "/program-level-indicators",
+    path: "/mcpar/program-level-indicators",
     children: [
       {
         name: "I: Program Characteristics",
-        path: "/program-characteristics",
+        path: "/mcpar/program-level-indicators/program-characteristics",
         formId: "cpc",
       },
       {
         name: "III: Encounter Data Report",
-        path: "/encounter-data-report",
+        path: "/mcpar/program-level-indicators/encounter-data-report",
         formId: "cedr",
       },
       {
         name: "IV: Appeals, State Fair Hearings & Grievances",
-        path: "/appeals-state-fair-hearings-and-grievances",
+        path: "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances",
         formId: "casfhag",
       },
       {
         name: "V: Availability & Accessibility",
-        path: "/availability-and-accessibility",
+        path: "/mcpar/program-level-indicators/availability-and-accessibility",
         children: [
           {
             name: "Network Adequacy",
-            path: "/network-adequacy",
+            path: "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
             formId: "cna",
           },
           {
             name: "Access Measures",
-            path: "/access-measures",
+            path: "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
             formId: "cam",
           },
         ],
       },
       {
         name: "IX: BSS",
-        path: "/bss",
+        path: "/mcpar/program-level-indicators/bss",
         formId: "cbss",
       },
       {
         name: "X: Program Integrity",
-        path: "/program-integrity",
+        path: "/mcpar/program-level-indicators/program-integrity",
         formId: "cpi",
       },
     ],
   },
   {
     name: "D: Plan-Level Indicators",
-    path: "/plan-level-indicators",
+    path: "/mcpar/plan-level-indicators",
     children: [
       {
         name: "I: Program Characteristics",
-        path: "/program-characteristics",
+        path: "/mcpar/plan-level-indicators/program-characteristics",
         formId: "dpc",
       },
       {
         name: "II: Financial Performance",
-        path: "/financial-performance",
+        path: "/mcpar/plan-level-indicators/financial-performance",
         formId: "dfp",
       },
       {
         name: "III: Encounter Data Report",
-        path: "/encounter-data-report",
+        path: "/mcpar/plan-level-indicators/encounter-data-report",
         formId: "dedr",
       },
       {
         name: "IV: Appeals, State Fair Hearings & Grievances",
-        path: "/appeals-state-fair-hearings-and-grievances",
+        path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances",
         children: [
           {
             name: "Appeals Overview",
-            path: "/appeals-overview",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
             formId: "dao",
           },
           {
             name: "Appeals by Service",
-            path: "/appeals-by-service",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-service",
             formId: "dabs",
           },
           {
             name: "State Fair Hearings",
-            path: "/state-fair-hearings",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/state-fair-hearings",
             formId: "dsfh",
           },
           {
             name: "Grievances Overview",
-            path: "/grievances-overview",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
             formId: "dgo",
           },
           {
             name: "Grievances by Reason",
-            path: "/grievances-by-reason",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-by-reason",
             formId: "dgbr",
           },
         ],
       },
       {
         name: "VII: Quality Measures",
-        path: "/quality-measures",
+        path: "/mcpar/plan-level-indicators/quality-measures",
         formId: "dqm",
       },
       {
         name: "VIII: Sanctions",
-        path: "/sanctions",
+        path: "/mcpar/plan-level-indicators/sanctions",
         formId: "ds",
       },
       {
         name: "X: Program Integrity",
-        path: "/program-integrity",
+        path: "/mcpar/plan-level-indicators/program-integrity",
         formId: "dpi",
       },
     ],
   },
   {
     name: "E: BSS Entity Indicators",
-    path: "/bss-entity-indicators",
+    path: "/mcpar/bss-entity-indicators",
     formId: "ebssei",
   },
   {
     name: "Review & Submit",
-    path: "/review-and-submit",
+    path: "/mcpar/review-and-submit",
     element: NotFound, // TODO: add custom page
   },
 ];

@@ -4,22 +4,22 @@ import mcparRouteStructure from "./formStructure";
 import {
   addDataToReportStructure,
   makeReportNavigationOrder,
-} from "utils/forms/routing";
+} from "utils/reports/reports";
 // pages/forms
 import test from "./atest/test.json";
 import sectionA_pointofcontact from "./apoc/apoc.json";
 import sectionA_reportingperiod from "./arp/arp.json";
 
-export const combinedMcparForms = [
+const combinedMcparForms = [
   test,
   sectionA_pointofcontact,
   sectionA_reportingperiod,
+  // note: add new forms here as they are created
 ];
 
 export const mcparRoutes = addDataToReportStructure(
   mcparRouteStructure,
-  combinedMcparForms,
-  "/mcpar"
+  combinedMcparForms
 );
 // console.log("created routes", mcparRoutes);
 

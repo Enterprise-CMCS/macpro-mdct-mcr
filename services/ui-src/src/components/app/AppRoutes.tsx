@@ -37,15 +37,15 @@ export const AppRoutes = ({ userRole }: Props) => {
             !route.children ? (
               <Route
                 key={route.path}
-                path={"/mcpar" + route.path}
+                path={route.path}
                 element={<McparReportPage pageJson={route.pageJson} />}
               />
             ) : (
               // render parent pages
               route.children.map((childRoute: any) => (
                 <Route
-                  key={route.path + childRoute.path}
-                  path={"/mcpar" + route.path + childRoute.path}
+                  key={childRoute.path}
+                  path={childRoute.path}
                   element={<McparReportPage pageJson={childRoute.pageJson} />}
                 />
               ))
