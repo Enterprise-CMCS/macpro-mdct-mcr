@@ -8,12 +8,12 @@ import {
   TemplateCard,
 } from "components";
 // utils
-import { checkBannerActivityStatus } from "utils";
+import { checkDateRangeStatus } from "utils";
 import verbiage from "verbiage/home-view";
 
 export const Home = () => {
   const { bannerData } = useContext(AdminBannerContext);
-  const bannerIsActive = checkBannerActivityStatus(
+  const bannerIsActive = checkDateRangeStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );

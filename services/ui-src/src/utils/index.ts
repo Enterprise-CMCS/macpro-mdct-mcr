@@ -8,8 +8,6 @@ export * from "./api/requestMethods/getTemplateUrl";
 export * from "./auth/useUser";
 export * from "./auth/userContext";
 export * from "./auth/userProvider";
-// banners
-export * from "./banners/adminBanner";
 // forms
 export * from "./forms/forms";
 // reports
