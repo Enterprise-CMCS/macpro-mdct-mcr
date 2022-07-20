@@ -1,3 +1,4 @@
+import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
@@ -18,6 +19,10 @@ import { ScrollToTopComponent } from "utils";
 export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
 
+  const elementToComponentMap: any = {
+    NotFound: NotFound,
+  };
+
   return (
     <main id="main-content" tabIndex={-1}>
       <ScrollToTopComponent />
@@ -37,7 +42,11 @@ export const AppRoutes = ({ userRole }: Props) => {
               key={route.path}
               path={route.path}
               element={
-                route.element || <McparReportPage pageJson={route.pageJson} />
+                route.element ? (
+                  React.createElement(elementToComponentMap[route.element])
+                ) : (
+                  <McparReportPage pageJson={route.pageJson} />
+                )
               }
             />
           ))}

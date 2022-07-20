@@ -9,7 +9,7 @@ const mockRouteArray = [
     path: "/base/fake-path-2",
   },
   {
-    path: "/base/fake-path-",
+    path: "/base/fake-path-3",
   },
 ];
 

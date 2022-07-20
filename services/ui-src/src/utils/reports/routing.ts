@@ -4,7 +4,7 @@ export const findRoute = (
   direction: "previous" | "next",
   homePath: string
 ): string => {
-  let path = homePath;
+  let path;
   // find current route and position in array
   const currentRouteObject = routeArray.find(
     (route: any) => route.path === currentPath
@@ -12,12 +12,12 @@ export const findRoute = (
   const currentPosition = routeArray.indexOf(currentRouteObject);
 
   if (direction === "previous") {
-    const previousRoutePath = routeArray[currentPosition - 1].path;
-    path = currentPosition && previousRoutePath;
+    const previousRoutePath = routeArray[currentPosition - 1]?.path;
+    path = previousRoutePath || homePath;
   }
   if (direction === "next") {
-    const nextRoutePath = routeArray[currentPosition + 1].path;
-    path = currentPosition !== routeArray.length - 1 && nextRoutePath;
+    const nextRoutePath = routeArray[currentPosition + 1]?.path;
+    path = nextRoutePath || homePath;
   }
   return path;
 };
