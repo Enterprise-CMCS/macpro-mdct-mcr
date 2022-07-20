@@ -1,5 +1,5 @@
 // structure
-import mcparRouteStructure from "./formStructure";
+import mcparRouteStructure from "./reportStructure";
 // utils
 import {
   addDataToReportStructure,

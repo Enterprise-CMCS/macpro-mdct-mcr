@@ -7,7 +7,7 @@ import { hydrateFormFields, makeNextRoute, makePreviousRoute } from "utils";
 import { AnyObject } from "types";
 // form data
 import { mcparPageNavigationOrder as pageNavOrder } from "forms/mcpar";
-import { formSchema } from "forms/mcpar/formSchema";
+import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
       <Form
         id={form.id}
         formJson={form}
-        formSchema={formSchema[form.id as keyof typeof formSchema]}
+        formSchema={reportSchema[form.id as keyof typeof reportSchema]}
         onSubmit={onSubmit}
       />
       <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
