@@ -2,7 +2,7 @@
  * Custom Masks Type Guard
  * Add any future custom masks here!
  */
-const customMasks = ["comma-seperated"] as const;
+const customMasks = ["comma-separated"] as const;
 export type CustomMasks = typeof customMasks[number];
 export const isCustomMask = (x: any): x is CustomMasks =>
   customMasks.includes(x);
@@ -12,22 +12,27 @@ export const isCustomMask = (x: any): x is CustomMasks =>
  * @param {String} value
  * @returns {String}
  */
-function isCustomValueMaskable(value: string): boolean {
-  if (value && typeof value === "string") {
-    const hasDigits = value.match(/\d/);
-    if (hasDigits) {
-      return true;
-    }
-  }
-  return false;
-}
+export const isNumberStringMaskable = (value: string): boolean =>
+  value?.match(/\d/) ? true : false;
 
 /**
  * Converts a number-like string to a comma seperated value
  * @param {String} value
  * @returns {String}
  */
-function toCommaSeperated(value: string): string {
+export function convertToCommaSeparatedString(value: string): string {
+  // Remove all characters except digits and decimal points.
+  value = value.replace(/[^\d.]/g, "");
+
+  // Remove all but the first decimal point.
+  const firstDecimalPointIndex = value.indexOf(".");
+  value = value.replace(/[.]/g, (match, index) => {
+    return index > firstDecimalPointIndex ? "" : match;
+  });
+
+  // Remove leading zeroes (we'll add one back later if needed).
+  value = value.replace(/^0+/g, "");
+
   // Convert String to a float to begin operation
   const valueAsFloat = parseFloat(value);
 
@@ -43,15 +48,13 @@ function toCommaSeperated(value: string): string {
 }
 
 /**
- * Returns the value with additional masking characters, or the same value back if invalid numeric string
+ * Converts string to the appropriate custom masked format
  * @param {String} value
+ * @param {CustomMasks} mask
  * @returns {String}
  */
-export function customMask(value = "", mask: string): string {
-  if (isCustomValueMaskable(value)) {
-    if (mask === "comma-seperated") {
-      value = toCommaSeperated(value);
-    }
-  }
-  return value;
+export function maskValue(value: string = "", mask: CustomMasks): string {
+  if (isNumberStringMaskable(value) && mask === "comma-separated") {
+    return convertToCommaSeparatedString(value);
+  } else return value;
 }
