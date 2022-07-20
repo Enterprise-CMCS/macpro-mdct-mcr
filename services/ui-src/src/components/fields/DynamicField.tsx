@@ -1,6 +1,6 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
-import { Box, Button, Flex, Image, Link } from "@chakra-ui/react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses } from "utils";
 // assets
