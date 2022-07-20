@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+// components
 import {
   Admin,
   Dashboard,
@@ -8,13 +9,11 @@ import {
   NotFound,
   Profile,
 } from "routes";
-// components
+import { mcparRoutes } from "forms/mcpar";
 import { AdminBannerProvider } from "components";
 // utils
 import { UserRoles } from "types";
 import { ScrollToTopComponent } from "utils";
-
-import { mcparReportPages } from "forms/mcpar";
 
 export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
@@ -30,14 +29,29 @@ export const AppRoutes = ({ userRole }: Props) => {
             element={!isAdmin ? <Navigate to="/profile" /> : <Admin />}
           />
           <Route path="/help" element={<Help />} />
+
+          {/* MCPAR REPORT */}
           <Route path="/mcpar" element={<Dashboard />} />
-          {mcparReportPages.map((page) => (
-            <Route
-              key={page.path}
-              path={`/mcpar${page.path}`}
-              element={<McparReportPage pageJson={page} />}
-            />
-          ))}
+          {mcparRoutes.map((route: any) =>
+            // render form pages
+            !route.children ? (
+              <Route
+                key={route.path}
+                path={"/mcpar" + route.path}
+                element={<McparReportPage pageJson={route.pageJson} />}
+              />
+            ) : (
+              // render parent pages
+              route.children.map((childRoute: any) => (
+                <Route
+                  key={route.path + childRoute.path}
+                  path={"/mcpar" + route.path + childRoute.path}
+                  element={<McparReportPage pageJson={childRoute.pageJson} />}
+                />
+              ))
+            )
+          )}
+
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

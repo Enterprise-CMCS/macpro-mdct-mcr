@@ -6,8 +6,8 @@ import testSchema from "./atest/test.schema";
 
 export const formSchema = {
   // mcpar
-  apointofcontact: apocSchema,
-  areportingperiod: arpSchema,
+  apoc: apocSchema,
+  arp: arpSchema,
   // test
   test: testSchema,
 };

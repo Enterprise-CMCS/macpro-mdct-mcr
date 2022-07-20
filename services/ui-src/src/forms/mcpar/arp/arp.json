@@ -5,7 +5,7 @@
     "subsection": "Reporting Period"
   },
   "form": {
-    "id": "areportingperiod",
+    "id": "arp",
     "options": {
       "mode": "onChange"
     },
