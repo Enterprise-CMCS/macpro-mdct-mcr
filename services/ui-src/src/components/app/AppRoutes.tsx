@@ -36,9 +36,12 @@ export const AppRoutes = ({ userRole }: Props) => {
             <Route
               key={route.path}
               path={route.path}
-              element={<McparReportPage pageJson={route.pageJson} />}
+              element={
+                route.element || <McparReportPage pageJson={route.pageJson} />
+              }
             />
           ))}
+          <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />

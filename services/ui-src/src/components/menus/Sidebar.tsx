@@ -222,7 +222,7 @@ const sx = {
     },
     "&.selected": {
       bg: "palette.gray_lightest_highlight",
-      borderBottom: "none",
+      borderBottom: "1px solid transparent",
       borderInlineStartWidth: "0.125rem",
       borderInlineStartColor: "palette.alt",
       ".chakra-text": {

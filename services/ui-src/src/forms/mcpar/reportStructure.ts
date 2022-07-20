@@ -1,3 +1,4 @@
+import React from "react";
 import { NotFound } from "routes";
 
 export default [
@@ -9,7 +10,7 @@ export default [
   {
     name: "Get Started",
     path: "/mcpar/get-started",
-    element: NotFound, // TODO: add custom page
+    element: React.createElement(NotFound), // TODO: add custom page
   },
   {
     name: "A: Program Information",
@@ -180,6 +181,6 @@ export default [
   {
     name: "Review & Submit",
     path: "/mcpar/review-and-submit",
-    element: NotFound, // TODO: add custom page
+    element: React.createElement(NotFound), // TODO: add custom page
   },
 ];
