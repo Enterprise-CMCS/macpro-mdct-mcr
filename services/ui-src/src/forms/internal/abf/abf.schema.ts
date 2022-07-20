@@ -1,5 +1,5 @@
 import { object, string } from "yup";
-import { dateFormatRegex } from "../../constants";
+import { dateFormatRegex } from "../../../constants";
 
 export default object({
   "abf-title": string().required("Title text is required"),
