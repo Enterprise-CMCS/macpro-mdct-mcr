@@ -42,13 +42,4 @@ export default object({
   test5: string()
     .required()
     .matches(numberFormatRegex, "Please input a number"),
-  test6: string()
-    .required()
-    .matches(numberFormatRegex, "Please input a number"),
-  test7: string()
-    .required()
-    .matches(numberFormatRegex, "Please input a number"),
-  test8: string().required(),
-  test9: string().required(),
-  test10: string().required(),
 });

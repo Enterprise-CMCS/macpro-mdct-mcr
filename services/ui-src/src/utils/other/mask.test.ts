@@ -22,7 +22,7 @@ const commaSeparatedMaskAcceptableTestCases = [
   { test: "100,000,000", expected: "100,000,000.00" },
   { test: "100000000", expected: "100,000,000.00" },
   {
-    test: "Techinically a wrong input that validation would pick up but would actually still work with 1 number",
+    test: "Technically a wrong input that validation would pick up but would actually still work with 1 number",
     expected: "1.00",
   },
 ];
