@@ -1,12 +1,16 @@
+import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { TextField } from "./TextField";
 // utils
-import { makeMediaQueryClasses } from "utils";
+import {
+  CustomMasks,
+  isCustomMask,
+  makeMediaQueryClasses,
+  maskValue,
+} from "utils";
 import { InputChangeEvent, AnyObject } from "types";
-import React, { useState } from "react";
-import { customMask, CustomMasks, isCustomMask } from "utils/other/mask";
 
 export const NumberField = ({
   name,
@@ -19,18 +23,14 @@ export const NumberField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  const [value, setValue] = useState(
-    isCustomMask(mask)
-      ? customMask(props?.hydrate || "", mask)
-      : props?.hydrate || ""
-  );
+  const [value, setValue] = useState(props?.hydrate || "");
 
   // get the form context
   const form = useFormContext();
 
   const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const eventValue = isCustomMask(mask)
-      ? customMask(e.target.value, mask)
+      ? maskValue(e.target.value, mask)
       : e.target.value;
     setValue(eventValue);
     form.setValue(name, eventValue, { shouldValidate: true });
@@ -47,7 +47,7 @@ export const NumberField = ({
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
   /*
-   * Check if its not a custom mask and if the mask is defined as "currency" | "phone" | "ssn" | "zip".
+   * Check if its not a custom mask and if the mask is defined as "currency"
    * If its not, we dont want to use the mask prop so return undefined.
    */
   const useMask = mask && !isCustomMask(mask) ? mask : undefined;
@@ -57,17 +57,19 @@ export const NumberField = ({
       sx={{ ...sx, ...sxOverride }}
       className={`${mqClasses} ${nestedChildClasses}`}
     >
-      <CmsdsTextField
+      <TextField
         id={name}
         name={name}
         label={label}
         placeholder={placeholder}
-        onChange={(e) => onChangeHandler(e)}
+        onChange={onChangeHandler}
         onBlur={onBlurHandler}
         errorMessage={errorMessage}
         inputRef={() => form.register(name)}
         mask={useMask}
         value={value}
+        sx={{ ...sx, ...sxOverride }}
+        className={`${mqClasses} ${nestedChildClasses}`}
         {...props}
       />
     </Box>
@@ -77,7 +79,7 @@ export const NumberField = ({
 interface Props {
   name: string;
   label: string;
-  mask?: "currency" | "phone" | "ssn" | "zip" | CustomMasks;
+  mask?: "currency" | CustomMasks;
   placeholder?: string;
   nested?: boolean;
   sxOverride?: AnyObject;
