@@ -43,7 +43,7 @@ export const TextField = ({
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
-        inputRef={() => form.register(name)}
+        inputRef={() => dynamic?.inputRef || form.register(name)}
         defaultValue={props?.hydrate}
         {...props}
       />

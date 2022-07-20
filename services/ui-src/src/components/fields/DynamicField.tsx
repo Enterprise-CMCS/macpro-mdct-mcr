@@ -18,7 +18,7 @@ export const DynamicField = ({ name, label }: Props) => {
     shouldUnregister: true,
   });
 
-  if (fields.length === 0) append({});
+  if (fields.length === 0) append("");
 
   return (
     <Box sx={sx} className={mqClasses}>
@@ -29,7 +29,11 @@ export const DynamicField = ({ name, label }: Props) => {
               <TextField
                 name={`${name}[${index}]`}
                 label={label}
-                dynamic={{ parentName: name, index: index }}
+                dynamic={{
+                  parentName: name,
+                  index,
+                  inputRef: () => form.register,
+                }}
               />
               {index != 0 && (
                 <Link onClick={() => remove(index)}>
@@ -47,7 +51,7 @@ export const DynamicField = ({ name, label }: Props) => {
       <Button
         sx={sx.appendButton}
         onClick={() => {
-          append({});
+          append("");
         }}
       >
         Add a row
