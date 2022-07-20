@@ -91,6 +91,8 @@ const sx = {
   },
   errorAlert: {
     width: "100% !important",
+    marginTop: "-4rem",
+    marginBottom: "2rem",
   },
   introTextBox: {
     width: "100%",
