@@ -1,4 +1,4 @@
-import { addDataToReportStructure, makeReportNavigationOrder } from "./reports";
+import { addDataToReportStructure, makeRouteArray } from "./reports";
 
 describe("Test addDataToReportStructure", () => {
   it("addDataToReportStructure", () => {
@@ -7,9 +7,9 @@ describe("Test addDataToReportStructure", () => {
   });
 });
 
-describe("Test makeReportNavigationOrder", () => {
-  it("makeReportNavigationOrder", () => {
-    let route = makeReportNavigationOrder;
-    expect(route).toEqual("makeReportNavigationOrder");
+describe("Test makeRouteArray", () => {
+  it("makeRouteArray", () => {
+    let route = makeRouteArray;
+    expect(route).toEqual("makeRouteArray");
   });
 });

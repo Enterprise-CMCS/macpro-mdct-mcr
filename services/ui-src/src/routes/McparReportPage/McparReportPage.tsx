@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage } from "components";
 // utils
-import { hydrateFormFields, makeNextRoute, makePreviousRoute } from "utils";
+import { hydrateFormFields, findRoute } from "utils";
 import { AnyObject } from "types";
 // form data
-import { mcparPageNavigationOrder as pageNavOrder } from "forms/mcpar";
+import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
@@ -22,8 +22,8 @@ export const McparReportPage = ({ pageJson }: Props) => {
   };
 
   // make routes
-  const previousRoute = makePreviousRoute(pageNavOrder, path);
-  const nextRoute = makeNextRoute(pageNavOrder, path);
+  const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
+  const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
   const onSubmit = () => {
     // TODO: Wire up submit functionality

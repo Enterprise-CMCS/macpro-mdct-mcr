@@ -7,15 +7,13 @@ import { SidebarOpenContext } from "components";
 // utils
 import { useBreakpoint, useScrollPosition } from "utils";
 // data
-import NavItems from "data/navigation/MCPARSideNavItems";
+import mcparRouteStructure from "forms/mcpar/reportStructure";
 
 interface LinkItemProps {
   name: string;
   path: string;
   children?: LinkItemProps[] | null;
 }
-
-const basePath = "/mcpar";
 
 export const Sidebar = () => {
   const { isDesktop } = useBreakpoint();
@@ -72,13 +70,8 @@ export const Sidebar = () => {
             }}
             className="nav-sections-box"
           >
-            {NavItems.map((section) => (
-              <NavSection
-                key={section.name}
-                section={section}
-                level={1}
-                basePath={basePath}
-              />
+            {mcparRouteStructure.map((section) => (
+              <NavSection key={section.name} section={section} level={1} />
             ))}
           </Box>
         </Box>
@@ -91,31 +84,29 @@ interface NavSectionProps {
   key: string;
   section: LinkItemProps;
   level: number;
-  basePath: string;
 }
 
-const NavSection = ({ section, level, basePath }: NavSectionProps) => {
+const NavSection = ({ section, level }: NavSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { name, path, children } = section;
-  const itemPath = `${basePath}${path}`;
   return (
-    <React.Fragment key={itemPath}>
+    <React.Fragment key={path}>
       {children ? (
         <Box as="button" onClick={() => setIsOpen(!isOpen)}>
           <NavItem
             name={name}
             level={level}
-            optionPath={itemPath}
+            optionPath={path}
             hasChildren={!!children}
             isOpen={isOpen}
           />
         </Box>
       ) : (
-        <Link as={RouterLink} to={itemPath}>
+        <Link as={RouterLink} to={path}>
           <NavItem
             name={name}
             level={level}
-            optionPath={itemPath}
+            optionPath={path}
             hasChildren={!!children}
           />
         </Link>
@@ -127,7 +118,6 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
               key={section.name}
               section={section}
               level={level + 1}
-              basePath={itemPath}
             />
           ))}
         </Collapse>

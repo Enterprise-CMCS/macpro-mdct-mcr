@@ -3,7 +3,7 @@ import mcparRouteStructure from "./reportStructure";
 // utils
 import {
   addDataToReportStructure,
-  makeReportNavigationOrder,
+  makeRouteArray,
 } from "utils/reports/reports";
 // pages/forms
 import test from "./atest/test.json";
@@ -17,14 +17,11 @@ const combinedMcparForms = [
   // note: add new forms here as they are created
 ];
 
-export const mcparRoutes = addDataToReportStructure(
+export const mcparStructureWithData = addDataToReportStructure(
   mcparRouteStructure,
   combinedMcparForms
 );
-// console.log("created routes", mcparRoutes);
+// console.log("filled with data: ", mcparStructureWithData);
 
-export const mcparPageNavigationOrder = makeReportNavigationOrder(
-  mcparRouteStructure,
-  "/mcpar"
-);
-// console.log("mcpar nav order: ", mcparPageNavigationOrder);
+export const mcparRoutes = makeRouteArray(mcparStructureWithData);
+// console.log("mcpar routes: ", mcparRoutes);

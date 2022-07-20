@@ -1,15 +1,23 @@
-export const makeNextRoute = (
-  pathOrderArray: string[],
-  currentPath: string
+export const findRoute = (
+  routeArray: any[],
+  currentPath: string,
+  direction: "previous" | "next",
+  homePath: string
 ): string => {
-  const currentPosition = pathOrderArray.indexOf(currentPath);
-  return currentPosition ? pathOrderArray[currentPosition + 1] : "";
-};
+  let path = homePath;
+  // find current route and position in array
+  const currentRouteObject = routeArray.find(
+    (route: any) => route.path === currentPath
+  );
+  const currentPosition = routeArray.indexOf(currentRouteObject);
 
-export const makePreviousRoute = (
-  pathOrderArray: string[],
-  currentPath: string
-): string => {
-  const currentPosition = pathOrderArray.indexOf(currentPath);
-  return currentPosition ? pathOrderArray[currentPosition - 1] : "";
+  if (direction === "previous") {
+    const previousRoutePath = routeArray[currentPosition - 1].path;
+    path = currentPosition && previousRoutePath;
+  }
+  if (direction === "next") {
+    const nextRoutePath = routeArray[currentPosition + 1].path;
+    path = currentPosition !== routeArray.length - 1 && nextRoutePath;
+  }
+  return path;
 };

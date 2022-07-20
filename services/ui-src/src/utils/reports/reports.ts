@@ -20,19 +20,18 @@ export const addDataToReportStructure = (
     return route;
   });
 
-export const makeReportNavigationOrder = (
-  routeStructure: any,
-  basePath: string
-): string[] => {
-  const reportNavigationOrder: string[] = [basePath];
-  const mapStructureToArray = (structure: any) => {
+export const makeRouteArray = (routeStructure: any): string[] => {
+  const reportNavigationOrder: string[] = [];
+  const mapRoutesToArray = (structure: any) => {
     structure.map((route: any) => {
-      route?.children && mapStructureToArray(route.children);
+      // map through children if any
+      route?.children && mapRoutesToArray(route.children);
+      // if page should be rendered, push to array
       if (route.formId || route.element) {
-        reportNavigationOrder.push(route.path);
+        reportNavigationOrder.push(route);
       }
     });
   };
-  mapStructureToArray(routeStructure);
+  mapRoutesToArray(routeStructure);
   return reportNavigationOrder;
 };

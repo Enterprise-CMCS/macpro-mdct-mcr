@@ -32,25 +32,13 @@ export const AppRoutes = ({ userRole }: Props) => {
 
           {/* MCPAR REPORT */}
           <Route path="/mcpar" element={<Dashboard />} />
-          {mcparRoutes.map((route: any) =>
-            // render form pages
-            !route.children ? (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<McparReportPage pageJson={route.pageJson} />}
-              />
-            ) : (
-              // render parent pages
-              route.children.map((childRoute: any) => (
-                <Route
-                  key={childRoute.path}
-                  path={childRoute.path}
-                  element={<McparReportPage pageJson={childRoute.pageJson} />}
-                />
-              ))
-            )
-          )}
+          {mcparRoutes.map((route: any) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={<McparReportPage pageJson={route.pageJson} />}
+            />
+          ))}
 
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
