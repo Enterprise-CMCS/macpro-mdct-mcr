@@ -10,7 +10,9 @@ export * from "./auth/userContext";
 export * from "./auth/userProvider";
 // forms
 export * from "./forms/forms";
-export * from "./forms/routing";
+// reports
+export * from "./reports/reports";
+export * from "./reports/routing";
 // other
 export * from "./other/email";
 export * from "./other/focusElement";
