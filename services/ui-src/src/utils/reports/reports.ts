@@ -1,27 +1,27 @@
-// TODO: Add types
+import { ReportPath, PageJson } from "types";
 
 export const addDataToReportStructure = (
-  structure: any,
-  reportPageArray: any
-) =>
-  structure.map((route: any) => {
+  structure: ReportPath[],
+  reportPageArray: PageJson[]
+): ReportPath[] =>
+  structure.map((route: ReportPath) => {
     if (route.children) {
       // if there are children, call recursively
       addDataToReportStructure(route.children, reportPageArray);
     } else {
       // if no children (is a visitable page), set pagejson if available
       const respectivePageJson = reportPageArray.find(
-        (page: any) => page.form.id === route.formId
+        (page: PageJson) => page.form.id === route.formId
       );
       route.pageJson = respectivePageJson;
     }
     return route;
   });
 
-export const makeRouteArray = (routeStructure: any): string[] => {
-  const reportNavigationOrder: string[] = [];
-  const mapRoutesToArray = (structure: any) => {
-    structure.map((route: any) => {
+export const makeRouteArray = (routeStructure: ReportPath[]): ReportPath[] => {
+  const reportNavigationOrder: ReportPath[] = [];
+  const mapRoutesToArray = (structure: ReportPath[]) => {
+    structure.map((route: ReportPath) => {
       // map through children if any
       route?.children && mapRoutesToArray(route.children);
       // if page should be rendered, push to array

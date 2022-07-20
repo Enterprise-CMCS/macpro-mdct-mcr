@@ -1,5 +1,10 @@
 import { addDataToReportStructure, makeRouteArray } from "./reports";
 
+const mockFormField = {
+  id: "mockId",
+  type: "mockType",
+};
+
 const mockReportStructure = [
   {
     name: "mock1",
@@ -35,18 +40,21 @@ const mockCombinedForms = [
     path: "/base/mock1",
     form: {
       id: "mockId1",
+      fields: [mockFormField],
     },
   },
   {
     path: "/base/mock2/mock2a",
     form: {
       id: "mockId2a",
+      fields: [mockFormField],
     },
   },
   {
     path: "/base/mock2/mock2b/mock2bi",
     form: {
       id: "mockId2bi",
+      fields: [mockFormField],
     },
   },
 ];
