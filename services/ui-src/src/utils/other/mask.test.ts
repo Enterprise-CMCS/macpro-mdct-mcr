@@ -5,6 +5,28 @@ import {
   maskValue,
 } from "utils";
 
+const commaSeparatedMaskAcceptableTestCases = [
+  { test: "0....0123", expected: "0.01" },
+  { test: "000000123", expected: "123.00" },
+  { test: "123", expected: "123.00" },
+  { test: "123.00", expected: "123.00" },
+  { test: ".05000000000000", expected: "0.05" },
+  { test: ".05", expected: "0.05" },
+  { test: ".5", expected: "0.50" },
+  { test: "0.05", expected: "0.05" },
+  { test: "1,234.00", expected: "1,234.00" },
+  { test: "1,234", expected: "1,234.00" },
+  { test: "1234", expected: "1,234.00" },
+  { test: "1,234.00", expected: "1,234.00" },
+  { test: "1,234", expected: "1,234.00" },
+  { test: "100,000,000", expected: "100,000,000.00" },
+  { test: "100000000", expected: "100,000,000.00" },
+  {
+    test: "Techinically a wrong input that validation would pick up but would actually still work with 1 number",
+    expected: "1.00",
+  },
+];
+
 describe("Test isCustomMask", () => {
   test("Check if good and bad mask values return accurately", () => {
     const commaSeparated = isCustomMask("comma-separated");
@@ -16,24 +38,8 @@ describe("Test isCustomMask", () => {
 
 describe("Test isNumberStringMaskable", () => {
   test("Check if strings with numbers are maskable", () => {
-    const testCases = [
-      "123",
-      "123.0",
-      "123.00",
-      ".05",
-      ".5",
-      "0.05",
-      "1,234.00",
-      "1,234",
-      "1234",
-      "100000000",
-      "100,000,000",
-      "100,000,000.00",
-      "$123",
-      "Technically this string is acceptable because there is the number 1",
-    ];
-    for (let testCase of testCases) {
-      expect(isNumberStringMaskable(testCase)).toEqual(true);
+    for (let testCase of commaSeparatedMaskAcceptableTestCases) {
+      expect(isNumberStringMaskable(testCase.test)).toEqual(true);
     }
   });
 
@@ -47,25 +53,7 @@ describe("Test isNumberStringMaskable", () => {
 
 describe("Test convertToCommaSeparatedString", () => {
   test("Check if number strings can be appropriately comma-seperated", () => {
-    const testCases = [
-      { test: "123", expected: "123.00" },
-      { test: "123.00", expected: "123.00" },
-      { test: ".05", expected: "0.05" },
-      { test: ".5", expected: "0.50" },
-      { test: "0.05", expected: "0.05" },
-      { test: "1,234.00", expected: "1,234.00" },
-      { test: "1,234", expected: "1,234.00" },
-      { test: "1234", expected: "1,234.00" },
-      { test: "1,234.00", expected: "1,234.00" },
-      { test: "1,234", expected: "1,234.00" },
-      { test: "100,000,000", expected: "100,000,000.00" },
-      { test: "100000000", expected: "100,000,000.00" },
-      {
-        test: "Techinically a wrong input that validation would pick up but would actually still work with 1 number",
-        expected: "1.00",
-      },
-    ];
-    for (let testCase of testCases) {
+    for (let testCase of commaSeparatedMaskAcceptableTestCases) {
       expect(convertToCommaSeparatedString(testCase.test)).toEqual(
         testCase.expected
       );
@@ -86,25 +74,7 @@ describe("Test convertToCommaSeparatedString", () => {
 
 describe("Test maskValue accepts custom masks and returns the correct output", () => {
   test("Check if strings with numbers are masked correctly when given the comma-separated mask", () => {
-    const testCases = [
-      { test: "123", expected: "123.00" },
-      { test: "123.00", expected: "123.00" },
-      { test: ".05", expected: "0.05" },
-      { test: ".5", expected: "0.50" },
-      { test: "0.05", expected: "0.05" },
-      { test: "1,234.00", expected: "1,234.00" },
-      { test: "1,234", expected: "1,234.00" },
-      { test: "1234", expected: "1,234.00" },
-      { test: "1,234.00", expected: "1,234.00" },
-      { test: "1,234", expected: "1,234.00" },
-      { test: "100,000,000", expected: "100,000,000.00" },
-      { test: "100000000", expected: "100,000,000.00" },
-      {
-        test: "Techinically a wrong input that validation would pick up but would actually still work with 1 number",
-        expected: "1.00",
-      },
-    ];
-    for (let testCase of testCases) {
+    for (let testCase of commaSeparatedMaskAcceptableTestCases) {
       expect(maskValue(testCase.test, "comma-separated")).toEqual(
         testCase.expected
       );

@@ -53,7 +53,7 @@ export function convertToCommaSeparatedString(value: string): string {
  * @param {CustomMasks} mask
  * @returns {String}
  */
-export function maskValue(value: string = "", mask: CustomMasks): string {
+export function maskValue(value: string, mask: CustomMasks): string {
   if (isNumberStringMaskable(value) && mask === "comma-separated") {
     return convertToCommaSeparatedString(value);
   } else return value;
