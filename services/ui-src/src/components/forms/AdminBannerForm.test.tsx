@@ -28,8 +28,8 @@ const fillOutForm = async (form: any) => {
   // fill out form fields
   await userEvent.type(titleInput, "this is the title text");
   await userEvent.type(descriptionInput, "this is the description text");
-  await userEvent.type(startDateInput, "07/11/2021");
-  await userEvent.type(endDateInput, "08/12/2021");
+  await userEvent.type(startDateInput, "7/11/2021");
+  await userEvent.type(endDateInput, "8/12/2021");
   await userEvent.tab();
 };
 
