@@ -3,7 +3,7 @@ import { axe } from "jest-axe";
 //components
 import { EmailCard } from "components";
 import { createEmailLink } from "utils/other/email";
-import verbiage from "verbiage/help-view";
+import verbiage from "verbiage/pages/help";
 
 const emailCardComponent = (
   <EmailCard

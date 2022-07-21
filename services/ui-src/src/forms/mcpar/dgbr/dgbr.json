@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-by-reason",
+  "intro": {
+    "section": "D: Plan-Level Indicators > IV: Appeals, State Fair Hearings & Grievances",
+    "subsection": "Grievances by Reason"
+  },
+  "form": {
+    "id": "dgbr",
+    "fields": [
+      {
+        "id": "dgbr-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

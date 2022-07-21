@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
+  "intro": {
+    "section": "C: Program-Level Indicators > V: Availability & Accessibility",
+    "subsection": "Network Adequacy"
+  },
+  "form": {
+    "id": "cna",
+    "fields": [
+      {
+        "id": "cna-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

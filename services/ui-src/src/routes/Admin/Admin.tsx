@@ -11,7 +11,7 @@ import {
 // utils
 import { checkDateRangeStatus, formatDateUtcToEt } from "utils";
 import { DELETE_BANNER_FAILED } from "verbiage/errors";
-import verbiage from "verbiage/admin-view";
+import verbiage from "verbiage/pages/admin";
 
 export const Admin = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
