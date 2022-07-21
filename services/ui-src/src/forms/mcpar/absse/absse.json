@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/program-information/add-bss-entities",
+  "intro": {
+    "section": "Section A: Program Information",
+    "subsection": "Add BSS Entities"
+  },
+  "form": {
+    "id": "absse",
+    "fields": [
+      {
+        "id": "absse-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/plan-level-indicators/encounter-data-report",
+  "intro": {
+    "section": "D: Plan-Level Indicators",
+    "subsection": "III: Encounter Data Report"
+  },
+  "form": {
+    "id": "dedr",
+    "fields": [
+      {
+        "id": "dedr-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

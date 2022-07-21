@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/state-level-indicators/encounter-data-report",
+  "intro": {
+    "section": "B: State-Level Indicators",
+    "subsection": "III: Encounter Data Report"
+  },
+  "form": {
+    "id": "bedr",
+    "fields": [
+      {
+        "id": "bedr-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

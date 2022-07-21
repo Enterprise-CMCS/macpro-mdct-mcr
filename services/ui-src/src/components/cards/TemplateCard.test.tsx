@@ -4,7 +4,7 @@ import { axe } from "jest-axe";
 import { act } from "react-dom/test-utils";
 //components
 import { TemplateCard } from "components";
-import verbiage from "verbiage/home-view";
+import verbiage from "verbiage/pages/home";
 
 const mockAPI = require("utils/api/requestMethods/getTemplateUrl");
 

@@ -1,7 +1,7 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { ReportPage } from "components";
-import verbiage from "verbiage/dashboard-view";
+import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 
 export const Dashboard = () => {
   const { intro } = verbiage;

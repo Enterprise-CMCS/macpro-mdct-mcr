@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-service",
+  "intro": {
+    "section": "D: Plan-Level Indicators > IV: Appeals, State Fair Hearings & Grievances",
+    "subsection": "Appeals by Service"
+  },
+  "form": {
+    "id": "dabs",
+    "fields": [
+      {
+        "id": "dabs-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}
