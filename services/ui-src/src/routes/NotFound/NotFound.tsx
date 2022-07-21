@@ -6,7 +6,7 @@ import { createEmailLink } from "utils/other/email";
 import { makeMediaQueryClasses } from "utils";
 // assets
 import warningIcon from "assets/icons/icon_warning.png";
-import verbiage from "verbiage/notfound-view";
+import verbiage from "verbiage/pages/not-found";
 
 export const NotFound = () => {
   const mqClasses = makeMediaQueryClasses();

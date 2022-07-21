@@ -1,6 +1,6 @@
 export default {
   intro: {
     header: "MCPAR Dashboard",
-    body: "MCPAR Dashboard will go here.",
+    body: "Placeholder page",
   },
 };

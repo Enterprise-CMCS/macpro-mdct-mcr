@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/plan-level-indicators/program-characteristics",
+  "intro": {
+    "section": "D: Plan-Level Indicators",
+    "subsection": "I: Program Characteristics"
+  },
+  "form": {
+    "id": "dpc",
+    "fields": [
+      {
+        "id": "dpc-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

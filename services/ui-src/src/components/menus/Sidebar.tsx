@@ -8,6 +8,7 @@ import { SidebarOpenContext } from "components";
 import { useBreakpoint, useScrollPosition } from "utils";
 // data
 import mcparRouteStructure from "forms/mcpar/reportStructure";
+import { nonSidebarMcparRoutes } from "forms/mcpar";
 
 interface LinkItemProps {
   name: string;
@@ -18,7 +19,10 @@ interface LinkItemProps {
 export const Sidebar = () => {
   const { isDesktop } = useBreakpoint();
   const { pathname } = useLocation();
-  const isMcparReport = pathname.includes("/mcpar");
+
+  const isMcparReport =
+    pathname.includes("/mcpar/") &&
+    !nonSidebarMcparRoutes.find((route) => route === pathname);
 
   const { sidebarIsOpen, setSidebarIsOpen } = useContext(SidebarOpenContext);
   const [navHeight, setNavHeight] = useState<number>(0);

@@ -1,13 +1,15 @@
 export default [
-  {
-    name: "Test",
-    formId: "test",
-    path: "/mcpar/test",
-  },
+  /*
+   * {
+   *   name: "Test", // uncomment for testing new components
+   *   formId: "test",
+   *   path: "/mcpar/test",
+   * },
+   */
   {
     name: "Get Started",
     path: "/mcpar/get-started",
-    element: "NotFound", // TODO: add custom page
+    isNonFormPage: true,
   },
   {
     name: "A: Program Information",
@@ -178,6 +180,6 @@ export default [
   {
     name: "Review & Submit",
     path: "/mcpar/review-and-submit",
-    element: "NotFound", // TODO: add custom page
+    isNonFormPage: true,
   },
 ];
