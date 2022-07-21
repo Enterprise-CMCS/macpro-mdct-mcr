@@ -11,18 +11,17 @@ import {
 // types
 import { AnyObject, FormField } from "types";
 
-// define form field components
-export const fieldToComponentMap: any = {
-  date: DateField,
-  text: TextField,
-  textarea: TextAreaField,
-  checkbox: CheckboxField,
-  radio: RadioField,
-  dynamic: DynamicField,
-};
-
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
+  // define form field components
+  const fieldToComponentMap: any = {
+    date: DateField,
+    text: TextField,
+    textarea: TextAreaField,
+    checkbox: CheckboxField,
+    radio: RadioField,
+    dynamic: DynamicField,
+  };
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     // return created element
