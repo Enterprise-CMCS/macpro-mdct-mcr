@@ -1,12 +1,12 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { ReportPage } from "components";
-import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 
-export const Dashboard = () => {
+export const GetStarted = () => {
   const { intro } = verbiage;
   return (
-    <ReportPage data-testid="dashboard-view">
+    <ReportPage data-testid="get-started-view">
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
