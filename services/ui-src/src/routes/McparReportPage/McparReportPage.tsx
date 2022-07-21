@@ -92,7 +92,7 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
             colorScheme="colorSchemes.main"
             rightIcon={<Icon icon="arrowRight" />}
           >
-            Continue
+            Save & continue
           </Button>
         </Flex>
         {/* TODO: Add Prince Print Button */}
