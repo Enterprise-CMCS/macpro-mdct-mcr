@@ -5,7 +5,7 @@ import { BasicPage, Table } from "components";
 //utils
 import { createEmailLink, useUser } from "utils";
 import { UserRoles } from "types";
-import verbiage from "verbiage/profile-view";
+import verbiage from "verbiage/pages/profile";
 
 export const Profile = () => {
   const navigate = useNavigate();

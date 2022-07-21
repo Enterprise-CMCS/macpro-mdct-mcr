@@ -9,7 +9,7 @@ import {
 } from "components";
 // utils
 import { checkDateRangeStatus } from "utils";
-import verbiage from "verbiage/home-view";
+import verbiage from "verbiage/pages/home";
 
 export const Home = () => {
   const { bannerData } = useContext(AdminBannerContext);

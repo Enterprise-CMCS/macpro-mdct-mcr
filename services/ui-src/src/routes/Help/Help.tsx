@@ -1,7 +1,7 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { BasicPage, EmailCard, FaqAccordion } from "components";
-import verbiage from "verbiage/help-view";
+import verbiage from "verbiage/pages/help";
 
 export const Help = () => {
   const { intro, cards, accordionItems } = verbiage;

@@ -6,7 +6,9 @@ import { axe } from "jest-axe";
 import { Sidebar, SidebarOpenContext } from "components";
 
 jest.mock("react-router-dom", () => ({
-  useLocation: jest.fn(() => ({ pathname: "/mcpar" })),
+  useLocation: jest.fn(() => ({
+    pathname: "/mcpar/review-and-submit",
+  })),
 }));
 
 const mockSidebarOpenContext = {
