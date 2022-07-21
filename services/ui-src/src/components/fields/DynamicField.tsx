@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
@@ -18,7 +19,9 @@ export const DynamicField = ({ name, label }: Props) => {
     shouldUnregister: true,
   });
 
-  if (fields.length === 0) append("");
+  useEffect(() => {
+    if (fields.length === 0) append("");
+  });
 
   return (
     <Box sx={sx} className={mqClasses}>
