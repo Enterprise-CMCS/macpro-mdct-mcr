@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+// components
+import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { SidebarOpenContext } from "components";
-import { ArrowIcon } from "@cmsgov/design-system";
-import NavItems from "data/navigation/MCPARSideNavItems";
+// utils
 import { useBreakpoint, useScrollPosition } from "utils";
+// data
+import mcparRouteStructure from "forms/mcpar/reportStructure";
+import { nonSidebarMcparRoutes } from "forms/mcpar";
 
 interface LinkItemProps {
   name: string;
@@ -12,12 +16,13 @@ interface LinkItemProps {
   children?: LinkItemProps[] | null;
 }
 
-const basePath = "/mcpar";
-
 export const Sidebar = () => {
   const { isDesktop } = useBreakpoint();
   const { pathname } = useLocation();
-  const isMcparReport = pathname.includes("/mcpar");
+
+  const isMcparReport =
+    pathname.includes("/mcpar/") &&
+    !nonSidebarMcparRoutes.find((route) => route === pathname);
 
   const { sidebarIsOpen, setSidebarIsOpen } = useContext(SidebarOpenContext);
   const [navHeight, setNavHeight] = useState<number>(0);
@@ -69,13 +74,8 @@ export const Sidebar = () => {
             }}
             className="nav-sections-box"
           >
-            {NavItems.map((section) => (
-              <NavSection
-                key={section.name}
-                section={section}
-                level={1}
-                basePath={basePath}
-              />
+            {mcparRouteStructure.map((section) => (
+              <NavSection key={section.name} section={section} level={1} />
             ))}
           </Box>
         </Box>
@@ -88,31 +88,29 @@ interface NavSectionProps {
   key: string;
   section: LinkItemProps;
   level: number;
-  basePath: string;
 }
 
-const NavSection = ({ section, level, basePath }: NavSectionProps) => {
+const NavSection = ({ section, level }: NavSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { name, path, children } = section;
-  const itemPath = `${basePath}${path}`;
   return (
-    <React.Fragment key={itemPath}>
+    <React.Fragment key={path}>
       {children ? (
         <Box as="button" onClick={() => setIsOpen(!isOpen)}>
           <NavItem
             name={name}
             level={level}
-            optionPath={itemPath}
+            optionPath={path}
             hasChildren={!!children}
             isOpen={isOpen}
           />
         </Box>
       ) : (
-        <Link as={RouterLink} to={itemPath}>
+        <Link as={RouterLink} to={path}>
           <NavItem
             name={name}
             level={level}
-            optionPath={itemPath}
+            optionPath={path}
             hasChildren={!!children}
           />
         </Link>
@@ -124,7 +122,6 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
               key={section.name}
               section={section}
               level={level + 1}
-              basePath={itemPath}
             />
           ))}
         </Collapse>
@@ -229,7 +226,7 @@ const sx = {
     },
     "&.selected": {
       bg: "palette.gray_lightest_highlight",
-      borderBottom: "none",
+      borderBottom: "1px solid transparent",
       borderInlineStartWidth: "0.125rem",
       borderInlineStartColor: "palette.alt",
       ".chakra-text": {

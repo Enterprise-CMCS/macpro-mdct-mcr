@@ -9,15 +9,15 @@ import {
   ErrorAlert,
 } from "components";
 // utils
-import { checkBannerActivityStatus, formatDateUtcToEt } from "utils";
+import { checkDateRangeStatus, formatDateUtcToEt } from "utils";
 import { DELETE_BANNER_FAILED } from "verbiage/errors";
-import verbiage from "verbiage/admin-view";
+import verbiage from "verbiage/pages/admin";
 
 export const Admin = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
     useContext(AdminBannerContext);
   const [error, setError] = useState<string | undefined>(errorMessage);
-  const bannerIsActive = checkBannerActivityStatus(
+  const bannerIsActive = checkDateRangeStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
@@ -91,6 +91,8 @@ const sx = {
   },
   errorAlert: {
     width: "100% !important",
+    marginTop: "-4rem",
+    marginBottom: "2rem",
   },
   introTextBox: {
     width: "100%",

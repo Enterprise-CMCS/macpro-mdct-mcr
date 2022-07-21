@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/state-level-indicators/program-characteristics",
+  "intro": {
+    "section": "B: State-Level Indicators",
+    "subsection": "I: Program Characteristics"
+  },
+  "form": {
+    "id": "bpc",
+    "fields": [
+      {
+        "id": "bpc-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

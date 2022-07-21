@@ -5,7 +5,7 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
-import verbiage from "verbiage/home-view";
+import verbiage from "verbiage/pages/home";
 
 const accordionItemComponent = (
   <RouterWrappedComponent>

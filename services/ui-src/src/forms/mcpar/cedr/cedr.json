@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/program-level-indicators/encounter-data-report",
+  "intro": {
+    "section": "C: Program-Level Indicators",
+    "subsection": "III: Encounter Data Report"
+  },
+  "form": {
+    "id": "cedr",
+    "fields": [
+      {
+        "id": "cedr-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

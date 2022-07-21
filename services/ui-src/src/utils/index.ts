@@ -8,11 +8,11 @@ export * from "./api/requestMethods/getTemplateUrl";
 export * from "./auth/useUser";
 export * from "./auth/userContext";
 export * from "./auth/userProvider";
-// banners
-export * from "./banners/adminBanner";
 // forms
 export * from "./forms/forms";
-export * from "./forms/routing";
+// reports
+export * from "./reports/reports";
+export * from "./reports/routing";
 // other
 export * from "./other/email";
 export * from "./other/focusElement";
