@@ -1,6 +1,18 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Admin, Help, Home, NotFound, Profile } from "views";
 // components
+import {
+  Admin,
+  Dashboard,
+  GetStarted,
+  Help,
+  Home,
+  Intro,
+  McparReportPage,
+  NotFound,
+  Profile,
+  ReviewSubmit,
+} from "routes";
+import { mcparRoutes } from "forms/mcpar";
 import { AdminBannerProvider } from "components";
 // utils
 import { UserRoles } from "types";
@@ -20,8 +32,25 @@ export const AppRoutes = ({ userRole }: Props) => {
             element={!isAdmin ? <Navigate to="/profile" /> : <Admin />}
           />
           <Route path="/help" element={<Help />} />
-          {/* TODO: Change /mcpar element during program creation ticket work */}
-          <Route path="/mcpar" element={<Help />} />
+
+          {/* MCPAR ROUTES */}
+          <Route path="/mcpar/dashboard" element={<Dashboard />} />
+          <Route path="/mcpar/intro" element={<Intro />} />
+          <Route path="/mcpar/get-started" element={<GetStarted />} />
+          {mcparRoutes.map(
+            (route: any) =>
+              !route.isNonFormPage && (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<McparReportPage pageJson={route.pageJson} />}
+                />
+              )
+          )}
+          <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
+          <Route path="/mcpar" element={<Navigate to="/mcpar/dashboard" />} />
+          <Route path="/mcpar/*" element={<Navigate to="/mcpar/dashboard" />} />
+
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

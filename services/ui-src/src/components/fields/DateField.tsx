@@ -1,92 +1,46 @@
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { DateField as CmsdsDateField } from "@cmsgov/design-system";
+import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { InputChangeEvent, AnyObject } from "types";
-import {
-  convertDateEtToUtc,
-  calculateTimeByDateType,
-  makeMediaQueryClasses,
-} from "utils";
+import { AnyObject } from "types";
+import { checkDateCompleteness, makeMediaQueryClasses } from "utils";
 
-/*
- * Note: This file uses the names 'parent'/'parentField' to refer to
- * the CMSDS Date Field (e.g. 'startDate'), and 'child'/'childField'
- * to refer to  and the contained day, month, year fields (e.g. 'day')
- */
-
-export const DateField = ({
-  name: parentFieldName,
-  label: parentFieldLabel,
-  sxOverrides,
-  ...props
-}: Props) => {
+export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  // get the form context
+  // get the form context and register form field
   const form = useFormContext();
+  form.register(name);
 
-  // make child field names
-  const dayFieldName = `${parentFieldName}Day`;
-  const monthFieldName = `${parentFieldName}Month`;
-  const yearFieldName = `${parentFieldName}Year`;
+  const [displayValue, setDisplayValue] = useState<string>("");
+  const [formattedValue, setFormattedValue] = useState<string>("");
 
-  // set child field value in form data
-  const setChildFieldValue = (
-    childFieldName: string,
-    childFieldValue: number
-  ) => {
-    form.setValue(childFieldName, childFieldValue, {
-      shouldValidate: true,
-    });
-  };
-
-  // set parent field value in form data
-  const setParentFieldValue = () => {
-    const {
-      [dayFieldName]: day,
-      [monthFieldName]: month,
-      [yearFieldName]: year,
-    } = form.getValues();
-    // check that all values have been entered
-    if (day && month && year) {
-      const time = calculateTimeByDateType(parentFieldName);
-      const calculatedDatetime = convertDateEtToUtc({ year, month, day }, time);
-      form.setValue(parentFieldName, calculatedDatetime, {
-        shouldValidate: true,
-      });
+  const onChangeHandler = (rawValue: string, formattedValue: string) => {
+    setDisplayValue(rawValue);
+    setFormattedValue(formattedValue);
+    const completeDate = checkDateCompleteness(formattedValue);
+    if (completeDate) {
+      form.setValue(name, formattedValue, { shouldValidate: true });
     }
   };
 
-  // call methods to update form data
-  const onBlurHandler = async (event: InputChangeEvent) => {
-    const { name: childFieldName, value: childFieldValue } = event.target;
-    await setChildFieldValue(childFieldName, parseInt(childFieldValue));
-    setParentFieldValue();
+  const onBlurHandler = () => {
+    form.setValue(name, formattedValue, { shouldValidate: true });
   };
 
-  const parentFieldErrorMessage =
-    form?.formState?.errors?.[parentFieldName]?.message;
-  const checkChildFieldError = (childFieldName: string): string => {
-    return form?.formState?.errors?.[childFieldName];
-  };
+  const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDateField
-        label={parentFieldLabel}
-        onBlur={(e) => onBlurHandler(e)}
-        errorMessage={parentFieldErrorMessage}
-        dayName={dayFieldName}
-        monthName={monthFieldName}
-        yearName={yearFieldName}
-        dayFieldRef={() => form.register(dayFieldName)}
-        monthFieldRef={() => form.register(monthFieldName)}
-        yearFieldRef={() => form.register(yearFieldName)}
-        dayInvalid={!!checkChildFieldError(dayFieldName)}
-        monthInvalid={!!checkChildFieldError(monthFieldName)}
-        yearInvalid={!!checkChildFieldError(yearFieldName)}
+        name={name}
+        label={label}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
+        value={displayValue || props.hydrate || ""}
+        errorMessage={errorMessage}
         {...props}
       />
     </Box>
@@ -96,8 +50,13 @@ export const DateField = ({
 interface Props {
   name: string;
   label: string;
-  sxOverrides?: AnyObject;
+  timetype?: string;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 
-const sx = {};
+const sx = {
+  ".ds-c-field": {
+    maxWidth: "7rem",
+  },
+};

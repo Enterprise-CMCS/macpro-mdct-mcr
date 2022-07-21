@@ -10,7 +10,7 @@ export const DropdownField = ({
   name,
   label,
   options,
-  sxOverrides,
+  sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -27,7 +27,7 @@ export const DropdownField = ({
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDropdown
         name={name}
         id={name}
@@ -50,7 +50,7 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
-  sxOverrides?: AnyObject;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 

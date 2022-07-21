@@ -23,30 +23,24 @@ beforeEach(() => {
 describe("Admin banner integration tests", () => {
   it("Fills out form and writes banner without error", () => {
     // selectors for all the required fields
-    const titleInput = "[id='title']";
-    const descriptionInput = "[id='description']";
-    const startDateMonthInput = "[name='startDateMonth']";
-    const startDateDayInput = "[name='startDateDay']";
-    const startDateYearInput = "[name='startDateYear']";
-    const endDateMonthInput = "[name='endDateMonth']";
-    const endDateDayInput = "[name='endDateDay']";
-    const endDateYearInput = "[name='endDateYear']";
+    const titleInput = "[name='abf-title']";
+    const descriptionInput = "[name='abf-description']";
+    const startDateInput = "[name='abf-startDate']";
+    const endDateInput = "[name='abf-endDate']";
 
     // fill out form fields
     cy.get(titleInput).type("test-title");
     cy.get(descriptionInput).type("test-description");
-    cy.get(startDateMonthInput).type("1");
-    cy.get(startDateDayInput).type("1");
-    cy.get(startDateYearInput).type("2022");
-    cy.get(endDateMonthInput).type("12");
-    cy.get(endDateDayInput).type("31");
-    cy.get(endDateYearInput).type("2022");
+    cy.get(startDateInput).type("07142022");
+    cy.get(endDateInput).type("07142026");
 
     const submitButton = "[type='submit']";
     cy.get(submitButton).focus().click();
 
-    const startDateText = "1/1/22";
+    const startDateText = "7/14/22";
     cy.contains(startDateText).should("be.visible");
+    const endDateText = "7/14/26";
+    cy.contains(endDateText).should("be.visible");
 
     cy.contains(bannerWriteErrorMessage).should("not.exist");
     cy.contains(noCurrentBannerMessage).should("not.exist");

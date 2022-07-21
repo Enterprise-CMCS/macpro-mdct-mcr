@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/program-level-indicators/bss",
+  "intro": {
+    "section": "C: Program-Level Indicators",
+    "subsection": "IX: BSS"
+  },
+  "form": {
+    "id": "cbss",
+    "fields": [
+      {
+        "id": "cbss-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

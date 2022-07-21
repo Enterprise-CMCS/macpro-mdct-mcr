@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
+  "intro": {
+    "section": "D: Plan-Level Indicators > IV: Appeals, State Fair Hearings & Grievances",
+    "subsection": "Grievances Overview"
+  },
+  "form": {
+    "id": "dgo",
+    "fields": [
+      {
+        "id": "dgo-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

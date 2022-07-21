@@ -7,8 +7,7 @@ import config from "config";
 // utils
 import { ApiProvider, QueryProvider, UserProvider } from "utils";
 // components
-import { App } from "components";
-import { Error } from "./views";
+import { App, Error } from "components";
 // styles
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "styles/theme";

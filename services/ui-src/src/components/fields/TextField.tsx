@@ -10,7 +10,8 @@ export const TextField = ({
   name,
   label,
   placeholder,
-  sxOverrides,
+  sxOverride,
+  nested,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -25,16 +26,22 @@ export const TextField = ({
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
   return (
-    <Box sx={{ ...sx, ...sxOverrides }} className={mqClasses}>
+    <Box
+      sx={{ ...sx, ...sxOverride }}
+      className={`${mqClasses} ${nestedChildClasses}`}
+    >
       <CmsdsTextField
-        name={name}
         id={name}
+        name={name}
         label={label}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
+        inputRef={() => form.register(name)}
+        defaultValue={props?.hydrate}
         {...props}
       />
     </Box>
@@ -45,12 +52,15 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  sxOverrides?: AnyObject;
+  nested?: boolean;
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 
 const sx = {
-  ".ds-c-field": {
-    maxWidth: "40rem",
+  "&.nested": {
+    label: {
+      marginTop: 0,
+    },
   },
 };

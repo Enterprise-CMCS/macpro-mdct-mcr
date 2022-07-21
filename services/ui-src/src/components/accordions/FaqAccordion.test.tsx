@@ -4,7 +4,7 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { FaqAccordion } from "components";
-import verbiage from "verbiage/help-view";
+import verbiage from "verbiage/pages/help";
 
 const faqAccordionComponent = (
   <RouterWrappedComponent>

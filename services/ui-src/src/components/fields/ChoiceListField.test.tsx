@@ -1,71 +1,129 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { ChoiceListField } from "components";
-import userEvent from "@testing-library/user-event";
+import { formFieldFactory } from "utils";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
+    register: () => {},
     setValue: () => {},
   }),
 }));
 
-const ChoiceListFieldComponent = (
+jest.mock("utils", () => ({
+  makeMediaQueryClasses: () => {},
+  formFieldFactory: jest.fn(),
+}));
+
+const mockChoices = [
+  { name: "Choice 1", label: "Choice 1", value: "A" },
+  { name: "Choice 2", label: "Choice 2", value: "B" },
+];
+
+const mockNestedChildren = [
+  {
+    id: "test-nested-child",
+    type: "text",
+  },
+];
+
+const mockChoiceWithChild = {
+  name: "Choice 3",
+  label: "Choice 3",
+  value: "C",
+  children: mockNestedChildren,
+};
+
+const ChoiceListFieldCheckboxComponent = (
   <div data-testid="test-checkbox-list">
     <ChoiceListField
-      choices={[
-        { label: "Choice 1", value: "A", defaultChecked: true },
-        { label: "Choice 2", value: "B" },
-        { label: "Disabled choice 3", value: "C", disabled: true },
-      ]}
+      choices={mockChoices}
       label="Checkbox example"
       name="checkbox_choices"
       type="checkbox"
+      onChangeHandler={jest.fn()}
+    />
+  </div>
+);
+
+const ChoiceListFieldRadioComponent = (
+  <div data-testid="test-radio-list">
+    <ChoiceListField
+      choices={mockChoices}
+      label="Radio example"
+      name="radio_choices"
+      type="radio"
+      onChangeHandler={jest.fn()}
+    />
+  </div>
+);
+
+const ChoiceListFieldWithNestedChildren = (
+  <div data-testid="test-radio-list">
+    <ChoiceListField
+      choices={[...mockChoices, mockChoiceWithChild]}
+      label="Radio example"
+      name="radio_choices"
+      type="radio"
+      onChangeHandler={jest.fn()}
     />
   </div>
 );
 
 describe("Test ChoiceList component", () => {
   test("ChoiceList renders as Checkbox", () => {
-    render(ChoiceListFieldComponent);
+    render(ChoiceListFieldCheckboxComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByTestId("test-checkbox-list")).toBeVisible();
   });
 
-  test("ChoiceList allows checking choices", async () => {
-    const wrapper = render(ChoiceListFieldComponent);
+  test("ChoiceList renders as Radio", () => {
+    render(ChoiceListFieldRadioComponent);
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(screen.getByTestId("test-radio-list")).toBeVisible();
+  });
+
+  test("ChoiceList allows checking checkbox choices", async () => {
+    const wrapper = render(ChoiceListFieldCheckboxComponent);
     const checkboxContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
     const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
-    const secondCheckbox = checkboxContainers[1]
-      .children[0] as HTMLInputElement;
-    expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(false);
-    await userEvent.click(firstCheckbox);
     expect(firstCheckbox.checked).toBe(false);
-    expect(secondCheckbox.checked).toBe(false);
     await userEvent.click(firstCheckbox);
-    await userEvent.click(secondCheckbox);
     expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(true);
   });
 
-  test("ChoiceList allows disabled choices", async () => {
-    const wrapper = render(ChoiceListFieldComponent);
-    const checkboxContainers = wrapper.container.querySelectorAll(
+  test("ChoiceList allows checking radio choices", async () => {
+    const wrapper = render(ChoiceListFieldRadioComponent);
+    const radioContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
-    const thirdCheckbox = checkboxContainers[2].children[0] as HTMLInputElement;
-    expect(thirdCheckbox.checked).toBe(false);
-    await userEvent.click(thirdCheckbox);
-    expect(thirdCheckbox.checked).toBe(false);
+    const firstRadio = radioContainers[0].children[0] as HTMLInputElement;
+    expect(firstRadio.checked).toBe(false);
+    await userEvent.click(firstRadio);
+    expect(firstRadio.checked).toBe(true);
+  });
+});
+
+describe("Test ChoiceList component choice rendering", () => {
+  it("Should render nested child fields for choices with children", () => {
+    render(ChoiceListFieldWithNestedChildren);
+    expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, true);
   });
 });
 
 describe("Test ChoiceList accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(ChoiceListFieldComponent);
+  it("Should not have basic accessibility issues when given checkbox", async () => {
+    const { container } = render(ChoiceListFieldCheckboxComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues when given radio", async () => {
+    const { container } = render(ChoiceListFieldRadioComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

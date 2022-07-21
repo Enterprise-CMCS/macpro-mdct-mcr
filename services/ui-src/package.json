@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^1.7.0",
-    "@cmsgov/design-system": "^3.4.0",
+    "@cmsgov/design-system": "^3.6.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@hookform/resolvers": "^2.8.4",
@@ -88,13 +88,13 @@
     "collectCoverageFrom": [
       "src/components/**/*.{ts,tsx}",
       "!src/components/index.ts*",
+      "src/routes/**/*.{ts,tsx}",
+      "!src/routes/index.tsx",
+      "!src/types/index.ts*",
       "src/utils/**/*.{ts,tsx}",
-      "!src/utils/**/index.ts*",
       "!src/utils/testing/*",
       "!src/utils/index.ts*",
-      "!src/types/index.ts*",
-      "src/views/**/*.{ts,tsx}",
-      "!src/views/index.tsx"
+      "!src/utils/**/index.ts*"
     ],
     "moduleDirectories": [
       "node_modules",

@@ -4,12 +4,12 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { Table } from "components";
-import verbiage from "verbiage/home-view";
+import verbiage from "verbiage/pages/home";
 
 const tableContent = verbiage.cards.MCPAR.accordion.table;
 const tableComponent = (
   <RouterWrappedComponent>
-    <Table content={tableContent} variant="striped" lastCellsBold />
+    <Table content={tableContent} variant="striped" />
   </RouterWrappedComponent>
 );
 

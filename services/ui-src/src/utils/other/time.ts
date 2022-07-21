@@ -13,12 +13,14 @@ export const noon: TimeShape = {
   second: 0,
 };
 
-export const calculateTimeByDateType = (dateType: string): TimeShape => {
+export const calculateTimeByType = (
+  timeType: string | undefined
+): TimeShape => {
   const timeMap: any = {
     startDate: midnight,
     endDate: oneSecondToMidnight,
   };
-  return timeMap[dateType] || noon;
+  return timeMap?.[timeType as keyof typeof timeMap] || noon;
 };
 
 /*
@@ -45,11 +47,44 @@ export const convertDateEtToUtc = (
  * returns -> ET date in format mm/dd/yyyy
  */
 export const formatDateUtcToEt = (date: number): string => {
-  const easternDatetime = utcToZonedTime(new Date(date), "America/New_York");
+  const convertedDate = date;
+  const easternDatetime = utcToZonedTime(
+    new Date(convertedDate),
+    "America/New_York"
+  );
   const month = new Date(easternDatetime).getMonth();
   const day = new Date(easternDatetime).getDate();
   const year = new Date(easternDatetime).getFullYear().toString().slice(-2);
 
   // month + 1 because Date object months are zero-indexed
   return `${month + 1}/${day}/${year}`;
+};
+
+export const checkDateCompleteness = (date: string) => {
+  const month = parseInt(date.split("/")?.[0]);
+  const day = parseInt(date.split("/")?.[1]);
+  const year = parseInt(date.split("/")?.[2]);
+  const dateIsComplete = month && day && year.toString().length === 4;
+  return dateIsComplete ? { year, month, day } : null;
+};
+
+export const convertDatetimeStringToNumber = (
+  date: string,
+  timeType: string | undefined
+): number | undefined => {
+  const completeDate = checkDateCompleteness(date);
+  let convertedTime;
+  if (completeDate) {
+    const time = calculateTimeByType(timeType);
+    convertedTime = convertDateEtToUtc(completeDate, time);
+  }
+  return convertedTime || undefined;
+};
+
+export const checkDateRangeStatus = (
+  startDate: number,
+  endDate: number
+): boolean => {
+  const currentTime = new Date().valueOf();
+  return currentTime >= startDate && currentTime <= endDate;
 };

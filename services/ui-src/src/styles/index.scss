@@ -55,6 +55,19 @@ a {
   background-color: var(--chakra-colors-palette-gray_lightest);
 }
 
+// SCROLLBARS
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.nav-sections-box::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.nav-sections-box {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 // ACCESSIBILITY & TAB NAVIGATION STYLES
 
 * {
@@ -110,4 +123,13 @@ button {
 
 .chakra-collapse {
   overflow: visible !important;
+}
+
+.ds-c-choice {
+  &:focus {
+    @include tabbed-focus;
+  }
+  &:focus-visible {
+    @include tabbed-focus;
+  }
 }

@@ -25,9 +25,54 @@ export interface UserContextI {
   loginWithIDM: () => void;
 }
 
-// FORMS
+// REPORT
 
-export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
+export interface PageJson {
+  path: string;
+  intro?: AnyObject;
+  form: FormJson;
+}
+
+export interface ReportPath {
+  name: string;
+  path: string;
+  formId?: string;
+  element?: string;
+  pageJson?: PageJson;
+  children?: ReportPath[];
+}
+
+// FORM
+
+export interface FormField {
+  id: string;
+  type: string;
+  hydrate?: string;
+  props?: AnyObject;
+  validation?: FormValidation;
+  choices?: FieldChoice[];
+}
+
+export interface FieldChoice {
+  name: string;
+  type?: string;
+  label: string;
+  value: string;
+  children?: FormField[];
+  checkedChildren?: React.ReactNode;
+}
+
+export interface FormValidation {
+  type: string;
+  options?: AnyObject;
+  errorMessages?: AnyObject;
+}
+
+export interface FormJson {
+  id: string;
+  options?: AnyObject;
+  fields: FormField[];
+}
 
 // BANNER
 
@@ -81,14 +126,16 @@ export interface TimeShape {
 
 // OTHER
 
-export type { IconType } from "react-icons";
-
 export interface AnyObject {
   [key: string]: any;
 }
 
+export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
+
+export type { IconType } from "react-icons";
+
 export interface TableContentShape {
-  caption: string;
-  headRow: string[];
+  caption?: string;
+  headRow?: string[];
   bodyRows: string[][];
 }

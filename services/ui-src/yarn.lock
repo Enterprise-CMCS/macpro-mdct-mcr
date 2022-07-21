@@ -3600,22 +3600,24 @@
   dependencies:
     "@chakra-ui/utils" "1.10.4"
 
-"@cmsgov/design-system@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@cmsgov/design-system/-/design-system-3.4.0.tgz#f9af48df5a1a4b1f3ebc4bbbf489d75a030bb067"
-  integrity sha512-h7G0ClAUUaWVOkXjrX+gAdDBHKTlOKUziQxFQnGTVoPUOGfZnx4qCJ7Z94Xo5Wdu/rHKFxnpK5AFu6ubZ4eiMg==
+"@cmsgov/design-system@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@cmsgov/design-system/-/design-system-3.6.0.tgz#faa6832763224dc80c4c6b6e5df7960501a838b3"
+  integrity sha512-nXG9KKPJ9rFQTt5na/uaMeBX0EbbF3PwvOQ1q/xCcIahoKfheAG/8S7pmDsgJjb4QVeLdDivl1y9vmX5dMgauw==
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/react" "^17.0.10"
     "@types/react-dom" "^17.0.10"
     classnames "^2.2.5"
     core-js "^3.6.5"
+    date-fns "^2.28.0"
     downshift "^3.2.10"
-    ev-emitter "^2.1.2"
+    ev-emitter "^1.1.1"
     focus-trap-react "^6.0.0"
     lodash "^4.17.21"
     prop-types "^15.7.2"
     react-aria-modal "^2.11.1"
+    react-day-picker "^8.0.5"
     react-transition-group "^4.4.2"
 
 "@cnakazawa/watch@^1.0.3":
@@ -4187,6 +4189,14 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
+"@reach/auto-id@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.16.0.tgz#dfabc3227844e8c04f8e6e45203a8e14a8edbaed"
+  integrity sha512-5ssbeP5bCkM39uVsfQCwBBL+KT8YColdnMN5/Eto6Rj7929ql95R3HZUOkKIvj7mgPtEb60BLQxd1P3o6cjbmg==
+  dependencies:
+    "@reach/utils" "0.16.0"
+    tslib "^2.3.0"
+
 "@reach/utils@0.13.2":
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.13.2.tgz#87e8fef8ebfe583fa48250238a1a3ed03189fcc8"
@@ -4195,6 +4205,14 @@
     "@types/warning" "^3.0.0"
     tslib "^2.1.0"
     warning "^4.0.3"
+
+"@reach/utils@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.16.0.tgz#5b0777cf16a7cab1ddd4728d5d02762df0ba84ce"
+  integrity sha512-PCggBet3qaQmwFNcmQ/GqHSefadAFyNCUekq9RrWoaU9hh/S4iaFgf2MBMdM47eQj5i/Bk0Mm07cP/XPFlkN+Q==
+  dependencies:
+    tiny-warning "^1.0.3"
+    tslib "^2.3.0"
 
 "@reach/visually-hidden@0.13.2":
   version "0.13.2"
@@ -6680,7 +6698,7 @@ date-fns-tz@^1.2.2:
   resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-1.3.4.tgz#8b0e75beb771c7e9f1597aba467dc14431bb5403"
   integrity sha512-O47vEyz85F2ax/ZdhMBJo187RivZGjH6V0cPjPzpm/yi6YffJg4upD/8ibezO11ezZwP3QYlBHh/t4JhRNx0Ow==
 
-date-fns@^2.26.0:
+date-fns@^2.26.0, date-fns@^2.28.0:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
@@ -7448,10 +7466,10 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-ev-emitter@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/ev-emitter/-/ev-emitter-2.1.2.tgz#91737a2deae9fa95453e7e86cfae976f8c3ced38"
-  integrity sha512-jQ5Ql18hdCQ4qS+RCrbLfz1n+Pags27q5TwMKvZyhp5hh2UULUYZUy1keqj6k6SYsdqIYjnmz7xyyEY0V67B8Q==
+ev-emitter@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ev-emitter/-/ev-emitter-1.1.1.tgz#8f18b0ce5c76a5d18017f71c0a795c65b9138f2a"
+  integrity sha512-ipiDYhdQSCZ4hSbX4rMW+XzNKMD1prg/sTvoVmSLkuQ1MVlwjJQQA+sW8tMYR3BLUr9KjodFV4pvzunvRhd33Q==
 
 eventemitter3@^4.0.0:
   version "4.0.7"
@@ -11540,6 +11558,13 @@ react-clientside-effect@^1.2.5:
   dependencies:
     "@babel/runtime" "^7.12.13"
 
+react-day-picker@^8.0.5:
+  version "8.0.7"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-8.0.7.tgz#6f2fb98b33a6f7e1a4e03d557bd78fffeb21ccda"
+  integrity sha512-isrLVhWpfdsxtG8YarHh5c0erL5aV1nrfolR/yK3KGTUqb7UGiCFnleBSH/Bv45tNpC2CZNFne01dsQEiocjYw==
+  dependencies:
+    "@reach/auto-id" "0.16.0"
+
 react-dev-utils@^12.0.1:
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-12.0.1.tgz#ba92edb4a1f379bd46ccd6bcd4e7bc398df33e73"
@@ -13007,6 +13032,11 @@ tiny-invariant@^1.0.6:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.2.0.tgz#a1141f86b672a9148c72e978a19a73b9b94a15a9"
   integrity sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==
+
+tiny-warning@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
+  integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
 tmp@^0.0.33:
   version "0.0.33"

@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/state-level-indicators/program-integrity",
+  "intro": {
+    "section": "B: State-Level Indicators",
+    "subsection": "X: Program Integrity"
+  },
+  "form": {
+    "id": "bpi",
+    "fields": [
+      {
+        "id": "bpi-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}
