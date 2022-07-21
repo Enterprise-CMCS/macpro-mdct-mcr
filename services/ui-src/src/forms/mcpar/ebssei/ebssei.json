@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/bss-entity-indicators",
+  "intro": {
+    "section": "E: BSS Entity Indicators",
+    "subsection": "X: Program Integrity"
+  },
+  "form": {
+    "id": "ebssei",
+    "fields": [
+      {
+        "id": "ebssei-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

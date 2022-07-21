@@ -4,7 +4,7 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { TemplateCardAccordion } from "components";
-import verbiage from "verbiage/home-view";
+import verbiage from "verbiage/pages/home";
 
 const accordionComponent = (
   <RouterWrappedComponent>
