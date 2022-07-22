@@ -21,6 +21,7 @@ custom:
       - val
       - production
   bannerTableName: ${self:custom.stage}-banners
+  reportTableName: ${self:custom.stage}-reports
   dynamodb:
     stages:
       - local
@@ -51,6 +52,21 @@ resources:
           - AttributeName: key
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    ReportTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.reportTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
@@ -58,5 +74,11 @@ resources:
       Value: !GetAtt BannerTable.Arn
     BannerTableStreamArn:
       Value: !GetAtt BannerTable.StreamArn
+    ReportTableName:
+      Value: !Ref ReportTable
+    ReportTableArn:
+      Value: !GetAtt ReportTable.Arn
+    ReportTableStreamArn:
+      Value: !GetAtt ReportTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}
