@@ -2,15 +2,11 @@ import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
-// utils
-import { makeMediaQueryClasses } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { TextField } from "./TextField";
 
 export const DynamicField = ({ name, label }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
-
   const form = useFormContext();
   form.register(name);
 
@@ -24,33 +20,31 @@ export const DynamicField = ({ name, label }: Props) => {
   });
 
   return (
-    <Box sx={sx} className={mqClasses}>
-      <Box>
-        {fields.map((field: any, index: any) => {
-          return (
-            <Flex key={field.id} alignItems="flex-end">
-              <TextField
-                name={`${name}[${index}]`}
-                label={label}
-                dynamic={{
-                  parentName: name,
-                  index,
-                  inputRef: () => form.register,
-                }}
-              />
-              {index != 0 && (
-                <Button onClick={() => remove(index)} variant="unstyled">
-                  <Image
-                    sx={sx.removeButton}
-                    src={cancelIcon}
-                    alt="Remove item"
-                  />
-                </Button>
-              )}
-            </Flex>
-          );
-        })}
-      </Box>
+    <Box sx={sx}>
+      {fields.map((field: any, index: any) => {
+        return (
+          <Flex key={field.id} alignItems="flex-end">
+            <TextField
+              name={`${name}[${index}]`}
+              label={label}
+              dynamic={{
+                parentName: name,
+                index,
+                inputRef: () => form.register,
+              }}
+            />
+            {index != 0 && (
+              <button onClick={() => remove(index)}>
+                <Image
+                  sx={sx.removeButton}
+                  src={cancelIcon}
+                  alt="Remove item"
+                />
+              </button>
+            )}
+          </Flex>
+        );
+      })}
       <Button
         sx={sx.appendButton}
         onClick={() => {
