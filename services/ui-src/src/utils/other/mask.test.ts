@@ -1,29 +1,28 @@
 import {
   convertToCommaSeparatedString,
   isCustomMask,
-  isNumberStringMaskable,
+  isValidNumericalString,
   maskValue,
 } from "utils";
 
 const commaSeparatedMaskAcceptableTestCases = [
   { test: "0....0123", expected: "0.01" },
-  { test: "000000123", expected: "123.00" },
-  { test: "123", expected: "123.00" },
-  { test: "123.00", expected: "123.00" },
+  { test: "000000123", expected: "123" },
+  { test: "123", expected: "123" },
+  { test: "123.00", expected: "123" },
   { test: ".05000000000000", expected: "0.05" },
   { test: ".05", expected: "0.05" },
-  { test: ".5", expected: "0.50" },
+  { test: ".5", expected: "0.5" },
   { test: "0.05", expected: "0.05" },
-  { test: "1,234.00", expected: "1,234.00" },
-  { test: "1,234", expected: "1,234.00" },
-  { test: "1234", expected: "1,234.00" },
-  { test: "1,234.00", expected: "1,234.00" },
-  { test: "1,234", expected: "1,234.00" },
-  { test: "100,000,000", expected: "100,000,000.00" },
-  { test: "100000000", expected: "100,000,000.00" },
+  { test: "1,234.00", expected: "1,234" },
+  { test: "1,234", expected: "1,234" },
+  { test: "1234", expected: "1,234" },
+  { test: "1,234", expected: "1,234" },
+  { test: "100,000,000", expected: "100,000,000" },
+  { test: "100000000", expected: "100,000,000" },
   {
     test: "Technically a wrong input that validation would pick up but would actually still work with 1 number",
-    expected: "1.00",
+    expected: "1",
   },
 ];
 
@@ -36,23 +35,23 @@ describe("Test isCustomMask", () => {
   });
 });
 
-describe("Test isNumberStringMaskable", () => {
+describe("Test isValidNumericalString", () => {
   test("Check if strings with numbers are maskable", () => {
     for (let testCase of commaSeparatedMaskAcceptableTestCases) {
-      expect(isNumberStringMaskable(testCase.test)).toEqual(true);
+      expect(isValidNumericalString(testCase.test)).toEqual(true);
     }
   });
 
-  test("Check if strings without numbers are not maskable", () => {
+  test("Non-numerical strings are rejected", () => {
     const testCases = ["abc", "harryhadalittlelamb"];
     for (let testCase of testCases) {
-      expect(isNumberStringMaskable(testCase)).toEqual(false);
+      expect(isValidNumericalString(testCase)).toEqual(false);
     }
   });
 });
 
 describe("Test convertToCommaSeparatedString", () => {
-  test("Check if number strings can be appropriately comma-seperated", () => {
+  test("Valid numerical string is correctly masked with thousands separators", () => {
     for (let testCase of commaSeparatedMaskAcceptableTestCases) {
       expect(convertToCommaSeparatedString(testCase.test)).toEqual(
         testCase.expected

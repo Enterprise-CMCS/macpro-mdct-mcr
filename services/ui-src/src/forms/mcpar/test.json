@@ -126,9 +126,7 @@
         "id": "test3",
         "type": "number",
         "props": {
-          "label": "Non-Masked Numberfield",
-          "mask": "",
-          "placeholder": ""
+          "label": "Non-Masked Numberfield"
         }
       },
       {

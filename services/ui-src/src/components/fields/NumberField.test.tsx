@@ -12,121 +12,80 @@ jest.mock("react-hook-form", () => ({
 }));
 
 const numberFieldComponent = (
-  <NumberField
-    name="testNumberField"
-    label="test-label"
-    placeholder="123.00"
-    data-testid="test-number-field"
-  />
+  <NumberField name="testNumberField" label="test-label" />
 );
 
 const commaMaskedNumberFieldComponent = (
   <NumberField
     name="testNumberField"
     label="test-label"
-    placeholder="123.00"
-    data-testid="test-number-field"
     mask="comma-separated"
   />
 );
 
 const currencyMaskedNumberFieldComponent = (
-  <NumberField
-    name="testNumberField"
-    label="test-label"
-    placeholder="123.00"
-    data-testid="test-number-field"
-    mask="currency"
-  />
+  <NumberField name="testNumberField" label="test-label" mask="currency" />
 );
 
-describe("Test Maskless NumberField component", () => {
+describe("Test Maskless NumberField", () => {
   test("NumberField is visible", () => {
     const result = render(numberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
     )!;
     expect(numberFieldInput).toBeVisible();
-    expect(numberFieldInput.value).toEqual("");
   });
 
-  test("onChange event fires handler when typing", async () => {
+  test("onChangeHandler updates unmasked field value", async () => {
     const result = render(numberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
     )!;
     await userEvent.type(numberFieldInput, "123");
     expect(numberFieldInput.value).toEqual("123");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("123");
   });
+});
 
-  test("onChange event fires handler when typing and stays even after blurred", async () => {
-    const result = render(numberFieldComponent);
+describe("Test Comma-Separated Masked NumberField", () => {
+  test("onChangeHandler updates masked field value", async () => {
+    const result = render(commaMaskedNumberFieldComponent);
+    const numberFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    await userEvent.type(numberFieldInput, "123");
+    expect(numberFieldInput.value).toEqual("123");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("123");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "12055");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("12,055");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "12055.99");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("12,055.99");
+  });
+});
+
+describe("Test Currency Masked NumberField", () => {
+  test("onChangeHandler updates masked field value", async () => {
+    const result = render(currencyMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
     )!;
     await userEvent.type(numberFieldInput, "123");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("123");
-  });
-});
-
-describe("Test Comma-Separated Mask NumberField component", () => {
-  test("NumberField is visible", () => {
-    const result = render(commaMaskedNumberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
-    expect(numberFieldInput).toBeVisible();
-    expect(numberFieldInput.value).toEqual("");
-  });
-
-  test("onChange event fires handler when typing", async () => {
-    const result = render(commaMaskedNumberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
-    await userEvent.type(numberFieldInput, "123");
-    expect(numberFieldInput.value).toEqual("123");
-  });
-
-  test("onChange event fires handler when typing and stays even after blurred", async () => {
-    const result = render(commaMaskedNumberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
-    await userEvent.type(numberFieldInput, "123");
-    await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("123.00");
-  });
-});
-
-describe("Test Currency Mask NumberField component", () => {
-  test("NumberField is visible", () => {
-    const result = render(currencyMaskedNumberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
-    expect(numberFieldInput).toBeVisible();
-    expect(numberFieldInput.value).toEqual("");
-  });
-
-  test("onChange event fires handler when typing", async () => {
-    const result = render(currencyMaskedNumberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
-    await userEvent.type(numberFieldInput, "123");
-    expect(numberFieldInput.value).toEqual("123");
-  });
-
-  test("onChange event fires handler when typing and stays even after blurred", async () => {
-    const result = render(currencyMaskedNumberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
+    await userEvent.clear(numberFieldInput);
     await userEvent.type(numberFieldInput, "5.99");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("5.99");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "1234.00");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("1,234");
   });
 });
 

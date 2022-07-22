@@ -4,12 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
 import { TextField } from "./TextField";
 // utils
-import {
-  CustomMasks,
-  isCustomMask,
-  makeMediaQueryClasses,
-  maskValue,
-} from "utils";
+import { isCustomMask, makeMediaQueryClasses, maskValue } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 
 export const NumberField = ({
@@ -18,12 +13,11 @@ export const NumberField = ({
   placeholder,
   mask,
   sxOverride,
-  nested,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  const [value, setValue] = useState(props?.hydrate || "");
+  const [displayValue, setDisplayValue] = useState(props?.hydrate || "");
 
   // get the form context
   const form = useFormContext();
@@ -32,31 +26,28 @@ export const NumberField = ({
     const eventValue = isCustomMask(mask)
       ? maskValue(e.target.value, mask)
       : e.target.value;
-    setValue(eventValue);
+    setDisplayValue(eventValue);
     form.setValue(name, eventValue, { shouldValidate: true });
   };
 
   // update form data
   const onChangeHandler = async (e: InputChangeEvent) => {
     const { name, value } = e.target;
-    setValue(value);
+    setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  const errorMessage = form?.formState?.errors?.[name]?.message;
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
-
   /*
    * Check if its not a custom mask and if the mask is defined as "currency"
+   * or another CMSDS provided mask
    * If its not, we dont want to use the mask prop so return undefined.
    */
-  const useMask = mask && !isCustomMask(mask) ? mask : undefined;
+  const isCmsdsProvidedMask = mask && !isCustomMask(mask) ? mask : undefined;
+
+  // const maskToUse = customMaskMap[mask] || mask;
 
   return (
-    <Box
-      sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${nestedChildClasses}`}
-    >
+    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <TextField
         id={name}
         name={name}
@@ -64,12 +55,8 @@ export const NumberField = ({
         placeholder={placeholder}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        errorMessage={errorMessage}
-        inputRef={() => form.register(name)}
-        mask={useMask}
-        value={value}
-        sx={{ ...sx, ...sxOverride }}
-        className={`${mqClasses} ${nestedChildClasses}`}
+        mask={isCmsdsProvidedMask}
+        value={displayValue}
         {...props}
       />
     </Box>
@@ -79,7 +66,7 @@ export const NumberField = ({
 interface Props {
   name: string;
   label: string;
-  mask?: "currency" | CustomMasks;
+  mask?: string;
   placeholder?: string;
   nested?: boolean;
   sxOverride?: AnyObject;
@@ -87,9 +74,7 @@ interface Props {
 }
 
 const sx = {
-  "&.nested": {
-    label: {
-      marginTop: 0,
-    },
+  ".ds-c-field": {
+    maxWidth: "15rem",
   },
 };

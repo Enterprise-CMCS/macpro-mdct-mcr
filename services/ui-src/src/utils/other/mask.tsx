@@ -2,17 +2,19 @@
  * Custom Masks Type Guard
  * Add any future custom masks here!
  */
-const customMasks = ["comma-separated"] as const;
-export type CustomMasks = typeof customMasks[number];
+export type CustomMasks = typeof customMaskMap;
 export const isCustomMask = (x: any): x is CustomMasks =>
-  customMasks.includes(x);
+  Object.keys(customMaskMap).includes(x);
 
+export const customMaskMap: any = {
+  "comma-separated": convertToCommaSeparatedString,
+};
 /**
  * Checks if the provided string is contains numbers to mask
  * @param {String} value
  * @returns {String}
  */
-export const isNumberStringMaskable = (value: string): boolean =>
+export const isValidNumericalString = (value: string): boolean =>
   value?.match(/\d/) ? true : false;
 
 /**
@@ -40,11 +42,9 @@ export function convertToCommaSeparatedString(value: string): string {
   const fixedDecimal = valueAsFloat.toFixed(2);
 
   // Clean up the float value and add in commas to delineate thousands if needed
-  const cleanedValue = Number(fixedDecimal).toLocaleString("en", {
-    minimumFractionDigits: 2,
-  });
+  const cleanedValue = Number(fixedDecimal).toLocaleString("en");
 
-  return `${cleanedValue}`;
+  return cleanedValue.toString();
 }
 
 /**
@@ -54,7 +54,8 @@ export function convertToCommaSeparatedString(value: string): string {
  * @returns {String}
  */
 export function maskValue(value: string, mask: CustomMasks): string {
-  if (isNumberStringMaskable(value) && mask === "comma-separated") {
-    return convertToCommaSeparatedString(value);
+  const maskToUse = customMaskMap[mask];
+  if (isValidNumericalString(value) && maskToUse) {
+    return maskToUse(value);
   } else return value;
 }
