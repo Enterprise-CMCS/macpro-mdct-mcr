@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/plan-level-indicators/financial-performance",
+  "intro": {
+    "section": "D: Plan-Level Indicators",
+    "subsection": "II: Financial Performance"
+  },
+  "form": {
+    "id": "dfp",
+    "fields": [
+      {
+        "id": "dfp-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

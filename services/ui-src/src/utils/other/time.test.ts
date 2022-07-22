@@ -1,5 +1,6 @@
 import {
   calculateTimeByType,
+  checkDateRangeStatus,
   convertDateEtToUtc,
   formatDateUtcToEt,
   midnight,
@@ -44,5 +45,32 @@ describe("Test formatDateUtcToEt", () => {
   test("Valid UTC datetime converts to ET correctly", () => {
     const result = formatDateUtcToEt(testDate.utcMS);
     expect(result).toBe(testDate.etFormattedString);
+  });
+});
+
+describe("Test checkDateRangeStatus", () => {
+  const currentTime = Date.now(); // 'current' time in ms since unix epoch
+  const oneDay = 1000 * 60 * 60 * 24; // 1000ms * 60s * 60m * 24h = 86,400,000ms
+  const twoDays = oneDay * 2;
+
+  it("returns false if startDate is in the future", () => {
+    const startDate = currentTime + oneDay;
+    const endDate = currentTime + twoDays;
+    const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
+    expect(dateRangeStatus).toBeFalsy();
+  });
+
+  it("returns false if endDate is in the past", () => {
+    const startDate = currentTime - twoDays;
+    const endDate = currentTime - oneDay;
+    const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
+    expect(dateRangeStatus).toBeFalsy();
+  });
+
+  it("returns true if startDate is in the past and endDate is in the future", () => {
+    const startDate = currentTime - oneDay;
+    const endDate = currentTime + oneDay;
+    const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
+    expect(dateRangeStatus).toBeTruthy();
   });
 });

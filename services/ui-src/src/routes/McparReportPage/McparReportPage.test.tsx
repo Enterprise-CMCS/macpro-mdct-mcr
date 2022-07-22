@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 import { McparReportPage } from "routes";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import sectionA_pointofcontact from "forms/mcpar/apoc.json";
+import sectionA_pointofcontact from "forms/mcpar/apoc/apoc.json";
 
 const mockUseNavigate = jest.fn();
 
@@ -19,7 +19,7 @@ const mcparReportPageComponent = (
   </RouterWrappedComponent>
 );
 
-const testFormName = "apointofcontact";
+const testFormId = "apoc";
 
 const fillOutForm = async (form: any) => {
   // selectors for all the required fields
@@ -40,7 +40,7 @@ describe("Test McparReportPage view", () => {
   });
 
   test("McparReportPage view renders", () => {
-    expect(screen.getByTestId(testFormName)).toBeVisible();
+    expect(screen.getByTestId(testFormId)).toBeVisible();
   });
 });
 

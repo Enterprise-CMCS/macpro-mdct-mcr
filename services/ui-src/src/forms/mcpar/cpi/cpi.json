@@ -1,0 +1,20 @@
+{
+  "path": "/mcpar/program-level-indicators/program-integrity",
+  "intro": {
+    "section": "C: Program-Level Indicators",
+    "subsection": "X: Program Integrity"
+  },
+  "form": {
+    "id": "cpi",
+    "fields": [
+      {
+        "id": "cpi-1",
+        "type": "text",
+        "props": {
+          "label": "Temporary placeholder field",
+          "disabled": true
+        }
+      }
+    ]
+  }
+}

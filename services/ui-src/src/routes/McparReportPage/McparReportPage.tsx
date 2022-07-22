@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage } from "components";
 // utils
-import { hydrateFormFields, makeNextRoute, makePreviousRoute } from "utils";
+import { hydrateFormFields, findRoute } from "utils";
 import { AnyObject } from "types";
 // form data
-import { mcparReportPageOrder as pathArray } from "forms/mcpar";
-import { formSchema } from "forms/formSchema";
+import { mcparRoutes } from "forms/mcpar";
+import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
@@ -22,8 +22,8 @@ export const McparReportPage = ({ pageJson }: Props) => {
   };
 
   // make routes
-  const previousRoute = makePreviousRoute(pathArray, "/mcpar", path);
-  const nextRoute = makeNextRoute(pathArray, "/mcpar", path);
+  const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
+  const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
   const onSubmit = () => {
     // TODO: Wire up submit functionality
@@ -34,11 +34,10 @@ export const McparReportPage = ({ pageJson }: Props) => {
   return (
     <ReportPage data-testid={form.id}>
       <ReportPageIntro text={intro} />
-
       <Form
         id={form.id}
         formJson={form}
-        formSchema={formSchema[form.id as keyof typeof formSchema]}
+        formSchema={reportSchema[form.id as keyof typeof reportSchema]}
         onSubmit={onSubmit}
       />
       <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
@@ -93,7 +92,7 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
             colorScheme="colorSchemes.main"
             rightIcon={<Icon icon="arrowRight" />}
           >
-            Continue
+            Save & continue
           </Button>
         </Flex>
         {/* TODO: Add Prince Print Button */}
