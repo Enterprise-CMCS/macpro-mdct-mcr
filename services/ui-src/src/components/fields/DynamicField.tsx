@@ -2,15 +2,11 @@ import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
-// utils
-import { makeMediaQueryClasses } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { TextField } from "./TextField";
 
 export const DynamicField = ({ name, label }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
-
   const form = useFormContext();
   form.register(name);
 

@@ -3,8 +3,6 @@ import { axe } from "jest-axe";
 //components
 import { DynamicField } from "components";
 
-const appendButtonText = "Add a row";
-
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     register: () => {},
@@ -36,7 +34,7 @@ describe("Test DynamicField component", () => {
 
   test("DynamicField append button is visible", () => {
     render(dynamicFieldComponent);
-    const appendButton = screen.getByText(appendButtonText);
+    const appendButton = screen.getByText("Add a row");
     expect(appendButton).toBeVisible();
   });
 });
