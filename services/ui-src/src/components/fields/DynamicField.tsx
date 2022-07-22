@@ -20,31 +20,30 @@ export const DynamicField = ({ name, label }: Props) => {
   });
 
   return (
-    <Box sx={sx}>
-      {fields.map((field: any, index: any) => {
-        return (
-          <Flex key={field.id} alignItems="flex-end">
-            <TextField
-              name={`${name}[${index}]`}
-              label={label}
-              dynamic={{
-                parentName: name,
-                index,
-                inputRef: () => form.register,
-              }}
-            />
-            {index != 0 && (
-              <button onClick={() => remove(index)}>
-                <Image
-                  sx={sx.removeButton}
-                  src={cancelIcon}
-                  alt="Remove item"
-                />
-              </button>
-            )}
-          </Flex>
-        );
-      })}
+    <Box sx={sx} className={mqClasses}>
+      <Box>
+        {fields.map((field: any, index: any) => {
+          return (
+            <Flex key={field.id} alignItems="flex-end">
+              <TextField
+                name={`${name}[${index}]`}
+                label={label}
+                dynamic={{
+                  parentName: name,
+                  index,
+                  inputRef: () => form.register,
+                }}
+                sxOverride={sx.textFieldOverride}
+              />
+              {index != 0 && (
+                <button onClick={() => remove(index)} className="remove-button">
+                  <Image src={cancelIcon} alt="Remove item" />
+                </button>
+              )}
+            </Flex>
+          );
+        })}
+      </Box>
       <Button
         sx={sx.appendButton}
         onClick={() => {
@@ -63,10 +62,11 @@ interface Props {
 }
 
 const sx = {
-  removeButton: {
-    boxSize: "1.25rem",
-    marginBottom: "1rem",
-    marginLeft: "0.625rem",
+  ".remove-button": {
+    height: "1.75rem",
+    width: "1.75rem",
+    marginBottom: "0.625rem",
+    marginLeft: "0.5rem",
   },
   appendButton: {
     minWidth: "202px",
@@ -78,5 +78,11 @@ const sx = {
     border: "1px solid var(--chakra-colors-palette-main)",
     borderRadius: "3px",
     marginTop: "2rem",
+  },
+  textFieldOverride: {
+    width: "32rem",
+    ".ds-u-clearfix": {
+      width: "100%",
+    },
   },
 };
