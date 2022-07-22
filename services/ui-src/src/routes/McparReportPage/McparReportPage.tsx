@@ -9,6 +9,11 @@ import { AnyObject } from "types";
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
 
+/// TEMP
+import { DELETE_BANNER_FAILED } from "verbiage/errors";
+import { writeReportToDb } from "utils/api/requestMethods/report";
+/// TEMP
+
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { path, intro, form } = pageJson;
@@ -25,8 +30,21 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
-  const onSubmit = () => {
+  const onSubmit = async (formData: any) => {
     // TODO: Wire up submit functionality
+    console.log("running submit");
+    console.log("formData", formData);
+    ///TEST
+    const report = {
+      key: "AK2022",
+      report: formData,
+    };
+    try {
+      await writeReportToDb(report);
+    } catch (error: any) {
+      console.log(DELETE_BANNER_FAILED);
+    }
+    /// TEST
     navigate(nextRoute);
   };
   form.fields = hydrateFormFields(form.fields, temporaryHydrationData);

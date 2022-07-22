@@ -34,6 +34,8 @@ custom:
       - val
       - production
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
+  reportTableName: ${env:REPORT_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
+  reportStatusTableName: ${env:REPORT_STATUS_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
@@ -89,6 +91,8 @@ provider:
             - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
+    REPORT_TABLE_NAME: ${self:custom.reportTableName}
+    REPORT_STATUS_TABLE_NAME: ${self:custom.reportStatusTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
 
@@ -129,6 +133,18 @@ functions:
             parameters:
               paths:
                 bannerId: true
+  writeReports:
+    handler: handlers/reports/write.writeReport
+    events:
+      - http:
+          path: reports/{reportId}
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                reportId: true
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:
