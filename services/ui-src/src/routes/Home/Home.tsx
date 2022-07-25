@@ -27,7 +27,7 @@ export const Home = () => {
       <BasicPage sx={sx.layout} data-testid="home-view">
         <Box sx={sx.introTextBox}>
           <Heading as="h2" sx={sx.subHeaderText}>
-            {intro.header}
+            {intro.subheader}
           </Heading>
           <Heading as="h1" sx={sx.headerText}>
             {intro.header}
