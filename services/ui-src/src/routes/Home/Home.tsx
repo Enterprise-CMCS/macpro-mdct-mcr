@@ -13,7 +13,7 @@ import verbiage from "verbiage/pages/home";
 
 /// TEMP
 import { DELETE_BANNER_FAILED } from "verbiage/errors";
-import { writeReportToDb } from "utils/api/requestMethods/report";
+import { getReport, writeReport } from "utils/api/requestMethods/report";
 import { Button } from "@chakra-ui/react"; // eslint-disable-line
 /// TEMP
 
@@ -27,7 +27,7 @@ export const Home = () => {
   const { intro, cards } = verbiage;
 
   //TEMP
-  const writeReport = async () => {
+  const writeReportToDb = async () => {
     const report = {
       key: "AK2022",
       report: {
@@ -37,9 +37,35 @@ export const Home = () => {
       },
     };
     try {
-      await writeReportToDb(report);
+      await writeReport(report);
     } catch (error: any) {
       console.log(DELETE_BANNER_FAILED);
+    }
+  };
+
+  const writeMoreReportToDb = async () => {
+    const report = {
+      key: "AK2022",
+      report: {
+        text2: "nu text",
+        value2: "nu nu",
+        array2: ["nu arr", "arrun"],
+      },
+    };
+    try {
+      await writeReport(report);
+    } catch (error: any) {
+      console.log(DELETE_BANNER_FAILED);
+    }
+  };
+
+  const getReportFromDb = async () => {
+    const reportKey = "AK2022";
+    try {
+      const response = await getReport(reportKey);
+      console.log("response", response);
+    } catch (error: any) {
+      console.log("couldn't get");
     }
   };
   //TEMP
@@ -54,7 +80,15 @@ export const Home = () => {
         <Heading as="h1" sx={sx.headerText}>
           Click here to submit report data
         </Heading>
-        <Button onClick={writeReport}>Write report</Button>
+        <Button onClick={writeReportToDb}>Write report</Button>
+        <Heading as="h1" sx={sx.headerText}>
+          Click here to get report data
+        </Heading>
+        <Button onClick={getReportFromDb}>Get report</Button>
+        <Heading as="h1" sx={sx.headerText}>
+          Click here to submit even more report data
+        </Heading>
+        <Button onClick={writeMoreReportToDb}>Write report</Button>
       </Box>
       {/*TEMP */}
       <BasicPage sx={sx.layout} data-testid="home-view">

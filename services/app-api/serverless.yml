@@ -133,6 +133,18 @@ functions:
             parameters:
               paths:
                 bannerId: true
+  getReport:
+    handler: handlers/reports/get.getReport
+    events:
+      - http:
+          path: reports/{reportId}
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                reportId: true
   writeReports:
     handler: handlers/reports/write.writeReport
     events:

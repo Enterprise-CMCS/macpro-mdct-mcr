@@ -11,7 +11,7 @@ import { reportSchema } from "forms/mcpar/reportSchema";
 
 /// TEMP
 import { DELETE_BANNER_FAILED } from "verbiage/errors";
-import { writeReportToDb } from "utils/api/requestMethods/report";
+import { writeReport } from "utils/api/requestMethods/report";
 /// TEMP
 
 export const McparReportPage = ({ pageJson }: Props) => {
@@ -40,7 +40,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
       report: formData,
     };
     try {
-      await writeReportToDb(report);
+      await writeReport(report);
     } catch (error: any) {
       console.log(DELETE_BANNER_FAILED);
     }
