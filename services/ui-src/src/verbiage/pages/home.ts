@@ -1,13 +1,23 @@
 export default {
   intro: {
-    header: "Your fiscal year 2022 templates",
-    body: "Download these Excel files to begin gathering data for your Medicaid managed care programs.",
+    header: "Online Managed Care Reporting Portal",
+    subheader: "Reporting Year: 2022",
+    body: "Get started by adding all the Medicaid managed care programs for your state. Learn more about this new data collection tool from CMS.",
   },
   cards: {
     MCPAR: {
       title: "Managed Care Program Annual Report (MCPAR)",
-      body: "The MCPAR online form will be available on this website in November 2022. Note: Every state must complete one report per program.",
-      buttonText: "Download MCPAR Worksheet",
+      body: {
+        unavailable:
+          "The MCPAR online form will be available on this website in November 2022. Note: Every state must complete one report per program.",
+        available:
+          "The MCPAR online form is now available. Note: Every state must submit one report per program, through the online form.",
+      },
+      downloadText: "Download MCPAR Excel Workbook",
+      link: {
+        text: "Enter MCPAR online",
+        route: "mcpar/intro",
+      },
       accordion: {
         buttonLabel: "When is the MCPAR due?",
         text: "Due dates vary based on contract year of the managed care program and contract period for the first report.",
@@ -28,7 +38,7 @@ export default {
     MLR: {
       title: "Medical Loss Ratio (MLR)",
       body: "The requirement for states to submit this information to CMS began for rating periods starting on or after July 1, 2017. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, it should be submitted as additional documentation when the annual rate certification is submitted.",
-      buttonText: "Download MLR Template",
+      downloadText: "Download MLR Template",
       accordion: {
         buttonLabel: "When is the MLR due?",
         text: "This report is required to be submitted annually at the same time the annual rate certification is submitted.",
@@ -37,7 +47,7 @@ export default {
     NAAAR: {
       title: "Network Adequacy and Access Assurances Report (NAAAR)",
       body: "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, CMS recommends that the report be submitted as supporting documentation at the same time a state submits the associated managed care contract to CMS for approval, including a new contract, a renewal, or an amendment.",
-      buttonText: "Download NAAAR Template",
+      downloadText: "Download NAAAR Template",
       accordion: {
         buttonLabel: "When is the NAAAR due?",
         text: "The information is required to be submitted:",
