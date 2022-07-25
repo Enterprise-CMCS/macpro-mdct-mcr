@@ -16,6 +16,7 @@ export * from "./reports/routing";
 // other
 export * from "./other/email";
 export * from "./other/focusElement";
+export * from "./other/mask";
 export * from "./other/scrollToTop";
 export * from "./other/time";
 export * from "./other/useBreakpoint";
