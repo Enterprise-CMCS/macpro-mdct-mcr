@@ -34,15 +34,8 @@ interface Props {
 const sx = {
   contentBox: {
     flexShrink: "0",
-    marginLeft: "21.5rem",
-    marginRight: "1.5rem",
-    paddingY: "4rem",
-    "&.mobile, &.withClosedSidebar": {
-      marginLeft: "3rem",
-    },
   },
   contentFlex: {
     flexDirection: "column",
-    maxWidth: "reportPageWidth",
   },
 };

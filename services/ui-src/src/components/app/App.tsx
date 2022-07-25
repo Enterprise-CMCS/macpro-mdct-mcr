@@ -10,7 +10,6 @@ import {
   LoginCognito,
   LoginIDM,
   SkipNav,
-  Sidebar,
 } from "components";
 // utils
 import { useUser } from "utils";
@@ -37,7 +36,6 @@ export const App = () => {
             value={{ sidebarIsOpen, setSidebarIsOpen }}
           >
             <Container sx={sx.appContainer} data-testid="app-container">
-              <Sidebar />
               <ErrorBoundary FallbackComponent={Error}>
                 <AppRoutes userRole={user?.userRole} />
               </ErrorBoundary>
