@@ -20,30 +20,28 @@ export const DynamicField = ({ name, label }: Props) => {
   });
 
   return (
-    <Box sx={sx} className={mqClasses}>
-      <Box>
-        {fields.map((field: any, index: any) => {
-          return (
-            <Flex key={field.id} alignItems="flex-end">
-              <TextField
-                name={`${name}[${index}]`}
-                label={label}
-                dynamic={{
-                  parentName: name,
-                  index,
-                  inputRef: () => form.register,
-                }}
-                sxOverride={sx.textFieldOverride}
-              />
-              {index != 0 && (
-                <button onClick={() => remove(index)} className="remove-button">
-                  <Image src={cancelIcon} alt="Remove item" />
-                </button>
-              )}
-            </Flex>
-          );
-        })}
-      </Box>
+    <Box>
+      {fields.map((field: Record<"id", string>, index: number) => {
+        return (
+          <Flex key={field.id} alignItems="flex-end">
+            <TextField
+              name={`${name}[${index}]`}
+              label={label}
+              dynamic={{
+                parentName: name,
+                index,
+                inputRef: () => form.register,
+              }}
+              sxOverride={sx.textFieldOverride}
+            />
+            {index != 0 && (
+              <button onClick={() => remove(index)} className="remove-button">
+                <Image sx={sx.removeImage} src={cancelIcon} alt="Remove item" />
+              </button>
+            )}
+          </Flex>
+        );
+      })}
       <Button
         sx={sx.appendButton}
         onClick={() => {
@@ -63,21 +61,26 @@ interface Props {
 
 const sx = {
   ".remove-button": {
-    height: "1.75rem",
-    width: "1.75rem",
+    height: "1.25rem",
+    width: "1.25rem",
     marginBottom: "0.625rem",
     marginLeft: "0.5rem",
+  },
+  removeImage: {
+    boxSize: "1.25rem",
+    // marginBottom: "0.625rem",
+    // marginLeft: "0.5rem",
   },
   appendButton: {
     minWidth: "202px",
     minHeight: "42px",
-    fontWeight: "bold",
-    fontSize: "1rem",
-    color: "palette.main",
-    bg: "palette.white",
+    marginTop: "2rem",
     border: "1px solid var(--chakra-colors-palette-main)",
     borderRadius: "3px",
-    marginTop: "2rem",
+    bg: "palette.white",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    color: "palette.main",
   },
   textFieldOverride: {
     width: "32rem",
