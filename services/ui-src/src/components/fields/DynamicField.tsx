@@ -35,9 +35,15 @@ export const DynamicField = ({ name, label }: Props) => {
               sxOverride={sx.textFieldOverride}
             />
             {index != 0 && (
-              <button onClick={() => remove(index)} className="remove-button">
-                <Image sx={sx.removeImage} src={cancelIcon} alt="Remove item" />
-              </button>
+              <Box sx={sx.removeBox}>
+                <button onClick={() => remove(index)}>
+                  <Image
+                    sx={sx.removeImage}
+                    src={cancelIcon}
+                    alt="Remove item"
+                  />
+                </button>
+              </Box>
             )}
           </Flex>
         );
@@ -60,16 +66,13 @@ interface Props {
 }
 
 const sx = {
-  ".remove-button": {
-    height: "1.25rem",
-    width: "1.25rem",
+  removeBox: {
     marginBottom: "0.625rem",
-    marginLeft: "0.5rem",
+    marginLeft: "0.625rem",
   },
   removeImage: {
-    boxSize: "1.25rem",
-    // marginBottom: "0.625rem",
-    // marginLeft: "0.5rem",
+    width: "1.25rem",
+    height: "1.25rem",
   },
   appendButton: {
     minWidth: "202px",
