@@ -93,6 +93,16 @@ describe("Test DynamicField component", () => {
     const appendButton = screen.getByText("Add a row");
     await userEvent.click(appendButton);
 
+    // verify there are two text boxes
+    const twoInputBoxLabel = screen.getAllByText("test-label");
+    expect(twoInputBoxLabel).toHaveLength(2);
+    expect(appendButton).toBeVisible();
+
+    // verify there is one remove button
+    const oneRemoveButton = screen.getAllByTestId("removeButton");
+    expect(oneRemoveButton).toHaveLength(1);
+    expect(appendButton).toBeVisible();
+
     // get second text box and type
     const secondTextBox: HTMLInputElement = result.container.querySelector(
       "[name='testDynamicField[1]']" // Get second text box
@@ -103,8 +113,8 @@ describe("Test DynamicField component", () => {
     await userEvent.click(appendButton);
 
     // verify there are now three text boxes
-    const inputBoxLabel = screen.getAllByText("test-label");
-    expect(inputBoxLabel).toHaveLength(3);
+    const threeInputBoxLabel = screen.getAllByText("test-label");
+    expect(threeInputBoxLabel).toHaveLength(3);
     expect(appendButton).toBeVisible();
 
     // verify there are two remove buttons
