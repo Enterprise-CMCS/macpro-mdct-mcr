@@ -26,9 +26,6 @@ export const Home = () => {
       </Collapse>
       <BasicPage sx={sx.layout} data-testid="home-view">
         <Box sx={sx.introTextBox}>
-          <Heading as="h2" sx={sx.subHeaderText}>
-            {intro.subheader}
-          </Heading>
           <Heading as="h1" sx={sx.headerText}>
             {intro.header}
           </Heading>
@@ -70,12 +67,6 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
-  },
-  subHeaderText: {
-    fontSize: "1.1rem",
-    fontWeight: "bold",
-    marginBottom: ".5rem",
-    color: "palette.gray",
   },
   card: {
     marginBottom: "2rem",

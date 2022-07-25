@@ -1,7 +1,6 @@
 export default {
   intro: {
     header: "Online Managed Care Reporting Portal",
-    subheader: "Reporting Year: 2022",
     body: "Get started by adding all the Medicaid managed care programs for your state. Learn more about this new data collection tool from CMS.",
   },
   cards: {

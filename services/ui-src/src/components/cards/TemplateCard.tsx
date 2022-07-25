@@ -2,12 +2,12 @@
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
 // utils
+import { useNavigate } from "react-router-dom";
 import {
   getSignedTemplateUrl,
   makeMediaQueryClasses,
   useBreakpoint,
 } from "utils";
-import { useNavigate } from "react-router-dom";
 import { AnyObject } from "types";
 // assets
 import downloadIcon from "assets/icons/icon_download.png";
@@ -71,7 +71,7 @@ export const TemplateCard = ({
             {showFormLink && (
               <Button
                 className={mqClasses}
-                sx={sx.mcparButton}
+                sx={sx.formLink}
                 onClick={() => navigate(verbiage.link.route)}
                 rightIcon={
                   <Image src={nextIcon} alt="Link Icon" height="1rem" />
@@ -124,11 +124,11 @@ const sx = {
   templateDownloadButton: {
     justifyContent: "start",
     marginTop: "1rem",
+    marginRight: "1rem",
+    padding: "0",
     borderRadius: "0.25rem",
     fontWeight: "bold",
     color: "palette.main",
-    padding: "0",
-    marginRight: "1rem",
     span: {
       marginLeft: "0rem",
       marginRight: "0.5rem",
@@ -138,7 +138,7 @@ const sx = {
       marginRight: "0",
     },
   },
-  mcparButton: {
+  formLink: {
     justifyContent: "start",
     marginTop: "1rem",
     borderRadius: "0.25rem",
