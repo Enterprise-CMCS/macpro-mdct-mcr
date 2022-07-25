@@ -36,7 +36,10 @@ export const DynamicField = ({ name, label }: Props) => {
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>
-                <button onClick={() => remove(index)}>
+                <button
+                  onClick={() => remove(index)}
+                  data-testid="removeButton"
+                >
                   <Image
                     sx={sx.removeImage}
                     src={cancelIcon}
