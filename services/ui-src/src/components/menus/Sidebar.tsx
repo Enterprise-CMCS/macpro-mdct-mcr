@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { SidebarOpenContext } from "components";
 // utils
 import { makeMediaQueryClasses } from "utils";
 // data
@@ -18,13 +17,12 @@ interface LinkItemProps {
 
 export const Sidebar = () => {
   const mqClasses = makeMediaQueryClasses();
+  const [isOpen, toggleSidebar] = useState(true);
   const { pathname } = useLocation();
 
   const isMcparReport =
     pathname.includes("/mcpar/") &&
     !nonSidebarMcparRoutes.find((route) => route === pathname);
-
-  const { sidebarIsOpen, setSidebarIsOpen } = useContext(SidebarOpenContext);
 
   return (
     <>
@@ -32,7 +30,7 @@ export const Sidebar = () => {
         <Box
           id="sidebar"
           sx={sx.root}
-          className={`${mqClasses} ${sidebarIsOpen ? "open" : "closed"}`}
+          className={`${mqClasses} ${isOpen ? "open" : "closed"}`}
           role="navigation"
           aria-label="Sidebar menu"
           data-testid="sidebar-nav"
@@ -40,12 +38,12 @@ export const Sidebar = () => {
           <Box
             as="button"
             sx={sx.closeButton}
-            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+            onClick={() => toggleSidebar(!isOpen)}
             aria-label="Open/Close sidebar menu"
           >
             <ArrowIcon
               title="closeNavBarButton"
-              direction={sidebarIsOpen ? "left" : "right"}
+              direction={isOpen ? "left" : "right"}
             />
           </Box>
           <Box id="sidebar-title-box" sx={sx.topBox}>
