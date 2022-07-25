@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { ErrorBoundary } from "react-error-boundary";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
@@ -13,7 +14,7 @@ import {
   Sidebar,
 } from "components";
 // utils
-import { useUser } from "utils";
+import { useUser, fireTealiumPageView } from "utils";
 
 export const SidebarOpenContext = createContext({
   sidebarIsOpen: true,
@@ -23,6 +24,20 @@ export const SidebarOpenContext = createContext({
 export const App = () => {
   const { logout, user, showLocalLogins } = useUser();
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+
+  const { pathname, key } = useLocation();
+  useEffect(() => {
+    const contentType = pathname.includes("/mcpar") ? "form" : "app";
+    const sectionName = pathname.includes("/mcpar") ? "MCPAR form" : "Main app";
+    fireTealiumPageView(
+      user,
+      window.location.href,
+      contentType,
+      sectionName,
+      pathname
+    );
+  }, [key]);
+
   return (
     <div id="app-wrapper">
       {user && (
