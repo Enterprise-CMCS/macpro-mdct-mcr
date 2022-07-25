@@ -1,6 +1,6 @@
 import {
   convertToCommaSeparatedString,
-  isCustomMask,
+  isValidCustomMask,
   isValidNumericalString,
   maskValue,
 } from "utils";
@@ -26,10 +26,10 @@ const commaSeparatedMaskAcceptableTestCases = [
   },
 ];
 
-describe("Test isCustomMask", () => {
+describe("Test isValidCustomMask", () => {
   test("Check if good and bad mask values return accurately", () => {
-    const commaSeparated = isCustomMask("comma-separated");
-    const badMask = isCustomMask("cherry-tree");
+    const commaSeparated = isValidCustomMask("comma-separated");
+    const badMask = isValidCustomMask("cherry-tree");
     expect(commaSeparated).toEqual(true);
     expect(badMask).toEqual(false);
   });

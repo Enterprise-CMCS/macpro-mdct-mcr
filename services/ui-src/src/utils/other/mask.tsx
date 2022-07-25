@@ -3,7 +3,7 @@
  * Add any future custom masks here!
  */
 export type CustomMasks = typeof customMaskMap;
-export const isCustomMask = (x: any): x is CustomMasks =>
+export const isValidCustomMask = (x: any): x is CustomMasks =>
   Object.keys(customMaskMap).includes(x);
 
 export const customMaskMap: any = {

@@ -4,8 +4,14 @@ import { useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
 import { TextField } from "./TextField";
 // utils
-import { isCustomMask, makeMediaQueryClasses, maskValue } from "utils";
+import {
+  CustomMasks,
+  isValidCustomMask,
+  makeMediaQueryClasses,
+  maskValue,
+} from "utils";
 import { InputChangeEvent, AnyObject } from "types";
+import { TextFieldMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 
 export const NumberField = ({
   name,
@@ -23,9 +29,8 @@ export const NumberField = ({
   const form = useFormContext();
 
   const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const eventValue = isCustomMask(mask)
-      ? maskValue(e.target.value, mask)
-      : e.target.value;
+    const { name, value } = e.target;
+    const eventValue = isValidCustomMask(mask) ? maskValue(value, mask) : value;
     setDisplayValue(eventValue);
     form.setValue(name, eventValue, { shouldValidate: true });
   };
@@ -42,7 +47,7 @@ export const NumberField = ({
    * or another CMSDS provided mask
    * If its not, we dont want to use the mask prop so return undefined.
    */
-  const isCmsdsProvidedMask = mask && !isCustomMask(mask) ? mask : undefined;
+  const cmsdsProvidedMask = mask && !isValidCustomMask(mask) ? mask : undefined;
 
   // const maskToUse = customMaskMap[mask] || mask;
 
@@ -55,7 +60,7 @@ export const NumberField = ({
         placeholder={placeholder}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        mask={isCmsdsProvidedMask}
+        mask={cmsdsProvidedMask}
         value={displayValue}
         {...props}
       />
@@ -66,8 +71,8 @@ export const NumberField = ({
 interface Props {
   name: string;
   label: string;
-  mask?: string;
   placeholder?: string;
+  mask?: TextFieldMask | CustomMasks;
   nested?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
