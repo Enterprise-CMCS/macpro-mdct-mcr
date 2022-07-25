@@ -19,4 +19,3 @@ export * from "./other/focusElement";
 export * from "./other/scrollToTop";
 export * from "./other/time";
 export * from "./other/useBreakpoint";
-export * from "./other/useScrollPosition";
