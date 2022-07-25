@@ -129,9 +129,13 @@ const sx = {
     borderRadius: "0.25rem",
     fontWeight: "bold",
     color: "palette.main",
+    textDecoration: "underline",
     span: {
       marginLeft: "0rem",
       marginRight: "0.5rem",
+    },
+    _hover: {
+      textDecoration: "none",
     },
     "&.mobile": {
       fontSize: "sm",
