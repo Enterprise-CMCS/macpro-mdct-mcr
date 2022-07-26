@@ -39,7 +39,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
     try {
       await writeReport(report);
     } catch (error: any) {
-      console.log(DELETE_BANNER_FAILED);
+      console.log(DELETE_BANNER_FAILED); // eslint-disable-line
     }
     navigate(nextRoute);
   };
