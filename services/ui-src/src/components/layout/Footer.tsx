@@ -14,7 +14,7 @@ export const Footer = () => {
   return (
     <Box sx={sx.root} className={mqClasses} id="footer" role="contentinfo">
       <Box sx={sx.footerTop}>
-        <Container sx={sx.footerTopContainer}>
+        <Container sx={sx.footerTopContainer} className={mqClasses}>
           <Flex sx={sx.footerTopFlex} className={mqClasses}>
             <Flex sx={sx.footerTopLogoFlex} className={mqClasses}>
               <Image
@@ -67,7 +67,7 @@ export const Footer = () => {
         </Container>
       </Box>
       <Box sx={sx.footerBottom}>
-        <Container sx={sx.footerBottomContainer}>
+        <Container sx={sx.footerBottomContainer} className={mqClasses}>
           <Flex sx={sx.footerBottomFlex} className={mqClasses}>
             <Flex sx={sx.footerBottomLinkFlex} className={mqClasses}>
               <Link
@@ -116,6 +116,9 @@ const sx = {
   },
   footerTopContainer: {
     maxW: "appMax",
+    "&.desktop": {
+      padding: "0 40px",
+    },
   },
   footerTopFlex: {
     minH: "12.5rem",
@@ -184,6 +187,9 @@ const sx = {
   },
   footerBottomContainer: {
     maxW: "appMax",
+    "&.desktop": {
+      padding: "0 40px",
+    },
   },
   footerBottomFlex: {
     paddingY: "1rem",
