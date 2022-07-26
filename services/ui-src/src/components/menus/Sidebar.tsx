@@ -153,7 +153,7 @@ const sx = {
     "&.open": {
       marginLeft: "-1rem",
       "&.desktop": {
-        marginLeft: "-2.3rem",
+        marginLeft: "-2.25rem",
       },
     },
     "&.closed": {
