@@ -3,31 +3,37 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage } from "components";
 // utils
-import { hydrateFormFields, findRoute } from "utils";
+import { findRoute, hydrateFormFields, useUser, writeReport } from "utils";
 import { AnyObject } from "types";
+import { DELETE_BANNER_FAILED } from "verbiage/errors";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
-
-/// TEMP
-import { DELETE_BANNER_FAILED } from "verbiage/errors";
-import { writeReport } from "utils/api/requestMethods/report";
-/// TEMP
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { path, intro, form } = pageJson;
 
+  const temporaryHydrationData = {
+    stateName: "Temporary state name",
+    programName: "Temporary program name",
+    reportingPeriodStartDate: "xx/xx/xxxx",
+    reportingPeriodEndDate: "xx/xx/xxxx",
+    reportSubmissionDate: "xx/xx/xxxx",
+  };
+
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
+  // get user's state
+  const { user } = useUser();
+  const { state } = user ?? {};
+  const reportYear = "2022";
+
   const onSubmit = async (formData: any) => {
-    console.log("running submit");
-    console.log("formData", formData);
-    ///TEST
     const report = {
-      key: "AK2022",
+      key: `${state}${reportYear}`,
       report: formData,
     };
     try {
@@ -35,11 +41,10 @@ export const McparReportPage = ({ pageJson }: Props) => {
     } catch (error: any) {
       console.log(DELETE_BANNER_FAILED);
     }
-    /// TEST
     navigate(nextRoute);
   };
-
-  form.fields = await hydrateFormFields(form.fields);
+  // TODO: HYDRATION
+  form.fields = hydrateFormFields(form.fields, temporaryHydrationData);
 
   return (
     <ReportPage data-testid={form.id}>

@@ -7,9 +7,8 @@ import {
   TextField,
   TextAreaField,
 } from "components";
-// utils
-import { getReport } from "utils/api/requestMethods/report";
-import { FormField } from "types";
+// types
+import { AnyObject, FormField } from "types";
 
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
@@ -33,17 +32,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   });
 };
 
-export const hydrateFormFields = async (formFields: FormField[]) => {
-  // fetch db stuff
-  const reportKey = "AK2022";
-  let response: any;
-  try {
-    response = await getReport(reportKey);
-    console.log("response", response);
-  } catch (error: any) {
-    console.log("couldn't get");
-  }
-
+export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
   // filter to only fields that need hydration
   const fieldsToHydrate = formFields.filter(
     (field: FormField) => !!field.hydrate
@@ -53,7 +42,7 @@ export const hydrateFormFields = async (formFields: FormField[]) => {
     // get index of field in form
     const fieldFormIndex = formFields.indexOf(field!);
     // add value attribute with hydration value
-    const hydrationValue = response[field?.hydrate!] || "ERROR";
+    const hydrationValue = data[field?.hydrate!] || "ERROR";
     formFields[fieldFormIndex].props!.hydrate = hydrationValue;
   });
   return formFields;
