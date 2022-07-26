@@ -144,9 +144,6 @@ const sx = {
   programNameText: {
     fontWeight: "bold",
   },
-  autosaveText: {
-    textAlign: "right",
-  },
   subnavFlexRight: {
     alignItems: "center",
     paddingRight: ".5rem",
