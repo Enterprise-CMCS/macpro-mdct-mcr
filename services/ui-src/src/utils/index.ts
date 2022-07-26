@@ -4,6 +4,7 @@ export * from "./api/providers/QueryProvider";
 export * from "./api/requestMethods/banner";
 export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
+export * from "./api/requestMethods/report";
 // auth
 export * from "./auth/useUser";
 export * from "./auth/userContext";
