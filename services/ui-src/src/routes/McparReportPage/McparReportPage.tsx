@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Form, Icon, ReportPage, Sidebar } from "components";
+import { Form, Icon, ReportPage } from "components";
 // utils
 import { hydrateFormFields, findRoute } from "utils";
 import { AnyObject } from "types";
@@ -43,19 +43,14 @@ export const McparReportPage = ({ pageJson }: Props) => {
 
   return (
     <ReportPage data-testid={form.id}>
-      <Flex sx={sx.pageContainer}>
-        <Sidebar />
-        <Flex sx={sx.reportContainer}>
-          <ReportPageIntro text={intro} />
-          <Form
-            id={form.id}
-            formJson={form}
-            formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-            onSubmit={onSubmit}
-          />
-          <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
-        </Flex>
-      </Flex>
+      <ReportPageIntro text={intro} />
+      <Form
+        id={form.id}
+        formJson={form}
+        formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+        onSubmit={onSubmit}
+      />
+      <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
     </ReportPage>
   );
 };
@@ -122,16 +117,6 @@ interface ReportPageFooterI {
 }
 
 const sx = {
-  pageContainer: {
-    width: "100%",
-  },
-  reportContainer: {
-    flexDirection: "column",
-    width: "100%",
-    maxWidth: "reportPageWidth",
-    marginY: "3.5rem",
-    marginLeft: "3.5rem",
-  },
   introBox: {
     marginBottom: "2rem",
   },

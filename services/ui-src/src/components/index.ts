@@ -6,7 +6,7 @@ export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
 export { Alert } from "./alerts/Alert";
 export { ErrorAlert } from "./alerts/ErrorAlert";
 // app
-export { App } from "./app/App";
+export { App, SidebarOpenContext } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
 export { Error } from "./app/Error";
 export { SkipNav } from "./app/SkipNav";
@@ -27,8 +27,6 @@ export { ChoiceField } from "./fields/ChoiceField";
 export { ChoiceListField } from "./fields/ChoiceListField";
 export { DateField } from "./fields/DateField";
 export { DropdownField } from "./fields/DropdownField";
-export { DynamicField } from "./fields/DynamicField";
-export { NumberField } from "./fields/NumberField";
 export { RadioField } from "./fields/RadioField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";

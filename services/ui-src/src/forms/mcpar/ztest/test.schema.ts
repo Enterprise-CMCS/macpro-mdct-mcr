@@ -1,4 +1,3 @@
-import { numberFormatRegex } from "../../../constants";
 import { object, string, array } from "yup";
 
 export default object({
@@ -32,13 +31,4 @@ export default object({
     is: (value: any) => value && value.indexOf("option1-1") != -1,
     then: (schema: any) => schema.required("Field is required"),
   }),
-  test3: string()
-    .required("Number field is required")
-    .matches(numberFormatRegex, "Please input a number"),
-  test4: string()
-    .required("Number field is required")
-    .matches(numberFormatRegex, "Please input a number"),
-  test5: string()
-    .required("Number field is required")
-    .matches(numberFormatRegex, "Please input a number"),
 });
