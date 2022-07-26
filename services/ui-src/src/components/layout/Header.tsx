@@ -56,7 +56,7 @@ export const Header = ({ handleLogout }: Props) => {
       </Flex>
       {isMcparReportPage && (
         <Flex sx={sx.subnavBar}>
-          <Container sx={sx.subnavContainer}>
+          <Container sx={sx.subnavContainer} className={mqClasses}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
                 <Text sx={sx.programNameText}>
@@ -106,7 +106,7 @@ const sx = {
     alignItems: "center",
     backgroundColor: "palette.gray_lightest",
     "&.desktop": {
-      padding: "0 24px",
+      padding: "0 1.3rem",
     },
   },
   headerBar: {
@@ -117,7 +117,7 @@ const sx = {
   headerContainer: {
     maxW: "appMax",
     "&.desktop": {
-      padding: "0 40px",
+      padding: "0 2.3rem",
     },
   },
   headerFlex: {
@@ -135,6 +135,9 @@ const sx = {
   },
   subnavContainer: {
     maxW: "appMax",
+    "&.desktop": {
+      padding: "0 2.3rem",
+    },
   },
   subnavFlex: {
     height: "60px",

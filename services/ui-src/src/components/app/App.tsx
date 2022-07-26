@@ -11,9 +11,10 @@ import {
   SkipNav,
 } from "components";
 // utils
-import { useUser } from "utils";
+import { makeMediaQueryClasses, useUser } from "utils";
 
 export const App = () => {
+  const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
   return (
     <div id="app-wrapper">
@@ -25,7 +26,11 @@ export const App = () => {
             text="Skip to main content"
           />
           <Header handleLogout={logout} />
-          <Container sx={sx.appContainer} data-testid="app-container">
+          <Container
+            sx={sx.appContainer}
+            className={mqClasses}
+            data-testid="app-container"
+          >
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes userRole={user?.userRole} />
             </ErrorBoundary>
@@ -61,6 +66,9 @@ const sx = {
   appContainer: {
     maxW: "appMax",
     flex: "1 0 auto",
+    "&.desktop": {
+      padding: "0 2.3rem",
+    },
   },
   loginContainer: {
     maxWidth: "25rem",
