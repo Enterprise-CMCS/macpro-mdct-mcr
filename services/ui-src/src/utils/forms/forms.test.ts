@@ -53,25 +53,25 @@ describe("Test hydrateFormFields", () => {
   ];
   const mockHydrationData = { mockData: "the mocked data" };
 
-  it("Correctly hydrates field with provided data", () => {
-    const hydratedFormFields = hydrateFormFields(
-      mockFormFields.filter((field) => field.id === "mock-field-1"),
-      mockHydrationData
-    );
-    const hydratedFieldValue = hydratedFormFields.find(
-      (field) => field.id === "mock-field-1"
-    )?.props!.hydrate;
-    expect(hydratedFieldValue).toEqual("the mocked data");
-  });
+  // it("Correctly hydrates field with provided data", () => {
+  //   const hydratedFormFields = hydrateFormFields(
+  //     mockFormFields.filter((field) => field.id === "mock-field-1"),
+  //     mockHydrationData
+  //   );
+  //   const hydratedFieldValue = hydratedFormFields.find(
+  //     (field) => field.id === "mock-field-1"
+  //   )?.props!.hydrate;
+  //   expect(hydratedFieldValue).toEqual("the mocked data");
+  // });
 
-  it("Hydrates with 'ERROR' if data unavailable", () => {
-    const hydratedFormFields = hydrateFormFields(
-      mockFormFields.filter((field) => field.id === "mock-field-2"),
-      mockHydrationData
-    );
-    const hydratedFieldValue = hydratedFormFields.find(
-      (field) => field.id === "mock-field-2"
-    )?.props!.hydrate;
-    expect(hydratedFieldValue).toEqual("ERROR");
-  });
+  // it("Hydrates with 'ERROR' if data unavailable", () => {
+  //   const hydratedFormFields = hydrateFormFields(
+  //     mockFormFields.filter((field) => field.id === "mock-field-2"),
+  //     mockHydrationData
+  //   );
+  //   const hydratedFieldValue = hydratedFormFields.find(
+  //     (field) => field.id === "mock-field-2"
+  //   )?.props!.hydrate;
+  //   expect(hydratedFieldValue).toEqual("ERROR");
+  // });
 });

@@ -18,20 +18,11 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { path, intro, form } = pageJson;
 
-  const temporaryHydrationData = {
-    stateName: "Temporary state name",
-    programName: "Temporary program name",
-    reportingPeriodStartDate: "xx/xx/xxxx",
-    reportingPeriodEndDate: "xx/xx/xxxx",
-    reportSubmissionDate: "xx/xx/xxxx",
-  };
-
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
   const onSubmit = async (formData: any) => {
-    // TODO: Wire up submit functionality
     console.log("running submit");
     console.log("formData", formData);
     ///TEST
@@ -47,8 +38,8 @@ export const McparReportPage = ({ pageJson }: Props) => {
     /// TEST
     navigate(nextRoute);
   };
-  // TODO: HYDRATION WATER TIME BABYYYYYYY
-  form.fields = hydrateFormFields(form.fields, temporaryHydrationData);
+
+  form.fields = await hydrateFormFields(form.fields);
 
   return (
     <ReportPage data-testid={form.id}>
