@@ -159,7 +159,7 @@ const sx = {
     "&.closed": {
       marginLeft: "-21rem",
       "&.desktop": {
-        marginLeft: "-22.3rem",
+        marginLeft: "-22.25rem",
       },
     },
     "&.tablet, &.mobile": {
@@ -177,7 +177,7 @@ const sx = {
     width: "15rem",
     padding: "1rem 1.5rem",
     "&.desktop": {
-      padding: "1rem 0 1rem 2.3rem",
+      padding: "1rem 0 1rem 2.25rem",
     },
   },
   closeButton: {
@@ -239,19 +239,19 @@ const sx = {
     "&.level-1": {
       marginLeft: "1.5rem",
       "&.desktop": {
-        marginLeft: "2.3rem",
+        marginLeft: "2.25rem",
       },
     },
     "&.level-2": {
       marginLeft: "2.5rem",
       "&.desktop": {
-        marginLeft: "3.3rem",
+        marginLeft: "3.25rem",
       },
     },
     "&.level-3": {
       marginLeft: "3.5rem",
       "&.desktop": {
-        marginLeft: "4.3rem",
+        marginLeft: "4.25rem",
       },
     },
   },
