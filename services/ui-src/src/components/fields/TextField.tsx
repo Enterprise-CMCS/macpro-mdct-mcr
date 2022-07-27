@@ -41,6 +41,9 @@ export const TextField = ({
   }
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  const hintText = hint ? (
+    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }} />
+  ) : undefined;
 
   return (
     <Box
@@ -52,13 +55,7 @@ export const TextField = ({
         name={name}
         label={label}
         placeholder={placeholder}
-        hint={
-          hint ? (
-            <div
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
-            />
-          ) : undefined
-        }
+        hint={hintText}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => dynamic?.inputRef ?? form.register(name)}

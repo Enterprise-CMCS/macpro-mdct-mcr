@@ -27,6 +27,9 @@ export const DropdownField = ({
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
+  const hintText = hint ? (
+    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }} />
+  ) : undefined;
 
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
@@ -34,13 +37,7 @@ export const DropdownField = ({
         name={name}
         id={name}
         label={label}
-        hint={
-          hint ? (
-            <div
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
-            />
-          ) : undefined
-        }
+        hint={hintText}
         options={options}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}

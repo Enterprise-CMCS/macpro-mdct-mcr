@@ -38,19 +38,16 @@ export const DateField = ({
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
+  const hintText = hint ? (
+    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }} />
+  ) : undefined;
 
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDateField
         name={name}
         label={label}
-        hint={
-          hint ? (
-            <div
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
-            />
-          ) : undefined
-        }
+        hint={hintText}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue || props.hydrate || ""}

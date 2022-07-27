@@ -38,6 +38,9 @@ export const ChoiceListField = ({
     });
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  const hintText = hint ? (
+    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }} />
+  ) : undefined;
 
   return (
     <Box
@@ -49,13 +52,7 @@ export const ChoiceListField = ({
         type={type}
         label={label}
         choices={formatChoices(choices)}
-        hint={
-          hint ? (
-            <div
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
-            />
-          ) : undefined
-        }
+        hint={hintText}
         errorMessage={errorMessage}
         onChange={(e) => onChangeHandler(e)}
         {...props}
