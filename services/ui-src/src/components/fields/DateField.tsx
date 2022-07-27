@@ -7,8 +7,15 @@ import { Box } from "@chakra-ui/react";
 import { AnyObject } from "types";
 import { checkDateCompleteness, makeMediaQueryClasses } from "utils";
 
-export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
+export const DateField = ({
+  name,
+  label,
+  hint,
+  sxOverride,
+  ...props
+}: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const DOMPurify = require("dompurify")(window);
 
   // get the form context and register form field
   const form = useFormContext();
@@ -37,6 +44,13 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
       <CmsdsDateField
         name={name}
         label={label}
+        hint={
+          hint ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
+            />
+          ) : undefined
+        }
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue || props.hydrate || ""}
@@ -50,6 +64,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 interface Props {
   name: string;
   label: string;
+  hint?: string;
   timetype?: string;
   sxOverride?: AnyObject;
   [key: string]: any;

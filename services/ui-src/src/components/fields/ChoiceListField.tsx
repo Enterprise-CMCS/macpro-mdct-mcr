@@ -11,6 +11,7 @@ export const ChoiceListField = ({
   type,
   label,
   choices,
+  hint,
   nested,
   onChangeHandler,
   errorMessage,
@@ -18,6 +19,7 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const DOMPurify = require("dompurify")(window);
 
   const form = useFormContext();
   form.register(name);
@@ -47,6 +49,13 @@ export const ChoiceListField = ({
         type={type}
         label={label}
         choices={formatChoices(choices)}
+        hint={
+          hint ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
+            />
+          ) : undefined
+        }
         errorMessage={errorMessage}
         onChange={(e) => onChangeHandler(e)}
         {...props}

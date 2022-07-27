@@ -10,10 +10,12 @@ export const DropdownField = ({
   name,
   label,
   options,
+  hint,
   sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const DOMPurify = require("dompurify")(window);
 
   // get the form context
   const form = useFormContext();
@@ -32,6 +34,13 @@ export const DropdownField = ({
         name={name}
         id={name}
         label={label}
+        hint={
+          hint ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
+            />
+          ) : undefined
+        }
         options={options}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
@@ -50,6 +59,7 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
+  hint?: string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
