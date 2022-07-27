@@ -7,7 +7,7 @@ export default {
       linkText: "new data collection tool",
       linkLocation:
         "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html",
-      postLinkText: " tool from CMS.",
+      postLinkText: " from CMS.",
     },
   },
   cards: {
