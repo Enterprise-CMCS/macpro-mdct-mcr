@@ -4,9 +4,10 @@ import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
 import { ChoiceListField } from "components";
+import { ChoiceFieldProps } from "./ChoiceListField";
 // utils
 import { makeMediaQueryClasses } from "utils";
-import { InputChangeEvent, AnyObject, FieldChoice } from "types";
+import { InputChangeEvent } from "types";
 
 export const RadioField = ({
   name,
@@ -14,7 +15,7 @@ export const RadioField = ({
   choices,
   sxOverride,
   ...props
-}: Props) => {
+}: ChoiceFieldProps) => {
   const mqClasses = makeMediaQueryClasses();
 
   const [fieldValue, setFieldValue] = useState<string[] | null>(null);
@@ -50,11 +51,3 @@ export const RadioField = ({
     </Box>
   );
 };
-
-interface Props {
-  name: string;
-  label: string;
-  choices: FieldChoice[];
-  sxOverride?: AnyObject;
-  [key: string]: any;
-}

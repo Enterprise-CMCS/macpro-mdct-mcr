@@ -72,6 +72,14 @@ interface Props {
   [key: string]: any;
 }
 
+export interface ChoiceFieldProps {
+  name: string;
+  label: string;
+  choices: FieldChoice[];
+  sxOverride?: AnyObject;
+  [key: string]: any;
+}
+
 const sx = {
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
