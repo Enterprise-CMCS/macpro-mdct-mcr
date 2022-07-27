@@ -1,4 +1,4 @@
-import { getReport } from "./get";
+import { getReportStatus } from "./get";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -9,15 +9,11 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   default: {
     get: jest.fn().mockReturnValue({
       Item: {
+        createdAt: 1654198665696,
+        lastAltered: 1654198665696,
+        lastAlteredBy: "testUser",
         key: "AB2022",
         programName: "testProgram",
-        report: {
-          field1: "value1",
-          field2: "value2",
-          num1: 0,
-          num2: 1,
-          array: ["array1, array2"],
-        },
       },
     }),
   },
@@ -39,18 +35,17 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { reportId: "AB2022", programName: "testProgram" },
 };
 
-describe("Test getReport API method", () => {
+describe("Test getReportStatus API method", () => {
   beforeEach(() => {
-    process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_STATUS_TABLE_NAME"] = "fakeReportStatusTable";
   });
 
-  test("Test Successful Report Fetch", async () => {
-    const res = await getReport(testEvent, null);
+  test("Test Successful Report status Fetch", async () => {
+    const res = await getReportStatus(testEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.report.field1).toContain("value1");
-    expect(body.report.num1).toBeCloseTo(0);
+    expect(body.lastAlteredBy).toContain("testUser");
   });
 
   test("Test reportKey not provided throws 500 error", async () => {
@@ -58,7 +53,7 @@ describe("Test getReport API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await getReport(noKeyEvent, null);
+    const res = await getReportStatus(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
@@ -69,7 +64,7 @@ describe("Test getReport API method", () => {
       ...testEvent,
       pathParameters: { reportId: "", programName: "" },
     };
-    const res = await getReport(noKeyEvent, null);
+    const res = await getReportStatus(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);

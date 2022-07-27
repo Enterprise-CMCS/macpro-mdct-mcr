@@ -23,6 +23,11 @@ export const ApiProvider = ({ children }: Props) => {
           region: config.apiGateway.REGION,
         },
         {
+          name: "reportStatus",
+          endpoint: config.apiGateway.URL,
+          region: config.apiGateway.REGION,
+        },
+        {
           name: "templates",
           endpoint: config.apiGateway.URL,
           region: config.apiGateway.REGION,

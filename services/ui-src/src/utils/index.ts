@@ -5,6 +5,7 @@ export * from "./api/requestMethods/banner";
 export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
 export * from "./api/requestMethods/report";
+export * from "./api/requestMethods/reportStatus";
 // auth
 export * from "./auth/useUser";
 export * from "./auth/userContext";

@@ -137,7 +137,7 @@ functions:
     handler: handlers/reports/get.getReport
     events:
       - http:
-          path: reports/{reportId}
+          path: reports/{reportId}/{programName}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -145,11 +145,12 @@ functions:
             parameters:
               paths:
                 reportId: true
+                programName: true
   writeReports:
     handler: handlers/reports/write.writeReport
     events:
       - http:
-          path: reports/{reportId}
+          path: reports/{reportId}/{programName}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -157,6 +158,33 @@ functions:
             parameters:
               paths:
                 reportId: true
+                programName: true
+  getReportStatus:
+    handler: handlers/reportStatus/get.getReportStatus
+    events:
+      - http:
+          path: reportStatus/{reportId}/{programName}
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                reportId: true
+                programName: true
+  writeReportStatus:
+    handler: handlers/reportStatus/write.writeReportStatus
+    events:
+      - http:
+          path: reportStatus/{reportId}/{programName}
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                reportId: true
+                programName: true
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:

@@ -3,8 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Form, Icon, ReportPage, Sidebar } from "components";
 // utils
-import { findRoute, hydrateFormFields, useUser, writeReport } from "utils";
-import { AnyObject } from "types";
+import {
+  findRoute,
+  hydrateFormFields,
+  useUser,
+  writeReport,
+  writeReportStatus,
+} from "utils";
+import { AnyObject, UserRoles } from "types";
 import { WRITE_REPORT_FAILED } from "verbiage/errors";
 // form data
 import { mcparRoutes } from "forms/mcpar";
@@ -28,18 +34,31 @@ export const McparReportPage = ({ pageJson }: Props) => {
 
   // get user's state
   const { user } = useUser();
-  const { state } = user ?? {};
+  const { state, userRole } = user ?? {};
   const reportYear = "2022";
+  const reportKey = `${state}${reportYear}`;
+
+  // TODO: get real program name per report
+  const programName = "tempName";
 
   const onSubmit = async (formData: any) => {
-    const report = {
-      key: `${state}${reportYear}`,
-      report: formData,
-    };
-    try {
-      await writeReport(report);
-    } catch (error: any) {
-      console.log(WRITE_REPORT_FAILED); // eslint-disable-line
+    if (userRole === UserRoles.STATE_USER) {
+      const report = {
+        key: reportKey,
+        programName: programName,
+        report: formData,
+      };
+      const reportStatus = {
+        key: reportKey,
+        programName: programName,
+        status: "In Progress",
+      };
+      try {
+        await writeReport(report);
+        await writeReportStatus(reportStatus);
+      } catch (error: any) {
+        console.log(WRITE_REPORT_FAILED); // eslint-disable-line
+      }
     }
     navigate(nextRoute);
   };

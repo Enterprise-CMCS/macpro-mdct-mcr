@@ -64,9 +64,13 @@ resources:
         AttributeDefinitions:
           - AttributeName: key
             AttributeType: S
+          - AttributeName: programName
+            AttributeType: S
         KeySchema:
           - AttributeName: key
             KeyType: HASH
+          - AttributeName: programName
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     ReportStatusTable:
       Type: AWS::DynamoDB::Table
@@ -79,9 +83,13 @@ resources:
         AttributeDefinitions:
           - AttributeName: key
             AttributeType: S
+          - AttributeName: programName
+            AttributeType: S
         KeySchema:
           - AttributeName: key
             KeyType: HASH
+          - AttributeName: programName
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     BannerTableName:
