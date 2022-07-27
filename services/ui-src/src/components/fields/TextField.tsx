@@ -10,14 +10,12 @@ export const TextField = ({
   name,
   label,
   placeholder,
-  hint,
   sxOverride,
   nested,
   dynamic,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const DOMPurify = require("dompurify")(window);
 
   // get the form context
   const form = useFormContext();
@@ -41,9 +39,6 @@ export const TextField = ({
   }
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
-  const hintText = hint ? (
-    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }} />
-  ) : undefined;
 
   return (
     <Box
@@ -55,7 +50,6 @@ export const TextField = ({
         name={name}
         label={label}
         placeholder={placeholder}
-        hint={hintText}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => dynamic?.inputRef ?? form.register(name)}
@@ -75,7 +69,6 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  hint?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
   dynamic?: dynamicFieldInput;
