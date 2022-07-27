@@ -47,7 +47,9 @@ export const Sidebar = () => {
             />
           </Box>
           <Box id="sidebar-title-box" sx={sx.topBox}>
-            <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
+            <Heading sx={sx.title} className={mqClasses}>
+              MCPAR Report Submission Form
+            </Heading>
           </Box>
           <Box
             sx={sx.navSectionsBox}
@@ -124,11 +126,12 @@ const NavItem = ({
   hasChildren,
   isOpen,
 }: NavItemProps) => {
+  const mqClasses = makeMediaQueryClasses();
   const currentPath = window.location.pathname;
   const isCurrentPath = optionPath === currentPath;
   return (
     <Flex sx={sx.navItemFlex} className={isCurrentPath ? "selected" : ""}>
-      <Text sx={sx.navItemTitle} className={`level-${level}`}>
+      <Text sx={sx.navItemTitle} className={`level-${level} ${mqClasses}`}>
         {name}
       </Text>
       {!!hasChildren && (
@@ -149,9 +152,15 @@ const sx = {
     transition: "all 0.3s ease",
     "&.open": {
       marginLeft: "-1rem",
+      "&.desktop": {
+        marginLeft: "-2rem",
+      },
     },
     "&.closed": {
       marginLeft: "-21rem",
+      "&.desktop": {
+        marginLeft: "-22rem",
+      },
     },
     "&.tablet, &.mobile": {
       position: "fixed",
@@ -166,7 +175,10 @@ const sx = {
     fontSize: "xl",
     fontWeight: "bold",
     width: "15rem",
-    padding: "1rem 1.5rem",
+    padding: "1rem 1rem",
+    "&.desktop": {
+      padding: "1rem 0 1rem 2rem",
+    },
   },
   closeButton: {
     position: "absolute",
@@ -225,13 +237,22 @@ const sx = {
     marginY: "10px",
     textAlign: "left",
     "&.level-1": {
-      marginLeft: "1.5rem",
+      marginLeft: "1rem",
+      "&.desktop": {
+        marginLeft: "2rem",
+      },
     },
     "&.level-2": {
-      marginLeft: "2.5rem",
+      marginLeft: "2rem",
+      "&.desktop": {
+        marginLeft: "3rem",
+      },
     },
     "&.level-3": {
-      marginLeft: "3.5rem",
+      marginLeft: "3rem",
+      "&.desktop": {
+        marginLeft: "4rem",
+      },
     },
   },
 };

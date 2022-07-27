@@ -62,4 +62,7 @@ const sx = {
   ".ds-c-field[disabled]": {
     color: "palette.gray",
   },
+  ".ds-c-field__hint": {
+    fontSize: "sm",
+  },
 };
