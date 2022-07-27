@@ -17,6 +17,7 @@ export const TextField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const DOMPurify = require("dompurify")(window);
 
   // get the form context
   const form = useFormContext();
@@ -52,7 +53,11 @@ export const TextField = ({
         label={label}
         placeholder={placeholder}
         hint={
-          hint ? <div dangerouslySetInnerHTML={{ __html: hint }} /> : undefined
+          hint ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hint) }}
+            />
+          ) : undefined
         }
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
