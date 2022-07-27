@@ -60,11 +60,11 @@ export const writeReport = handler(async (event, context) => {
         lastAlteredBy: event?.headers["cognito-identity-id"],
       },
     };
-    await dynamoDb.put(reportParams);
-    await dynamoDb.put(statusParams);
-    return {
-      status: StatusCodes.SUCCESS,
-      body: { ...reportParams.Item, ...statusParams.Item },
-    };
   }
+  await dynamoDb.put(reportParams);
+  await dynamoDb.put(statusParams);
+  return {
+    status: StatusCodes.SUCCESS,
+    body: { ...reportParams.Item, ...statusParams.Item },
+  };
 });

@@ -115,7 +115,7 @@ export const mockBannerDataEmpty = {
 };
 
 export const mockReportData = {
-  key: "ZA3141",
+  key: "AB2022",
   report: {
     field1: "value1",
     field2: "value2",

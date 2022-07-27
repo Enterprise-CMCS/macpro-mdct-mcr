@@ -4,7 +4,7 @@ import { mockReportData } from "utils/testing/setupJest";
 
 describe("Test report methods", () => {
   test("getReport", () => {
-    expect(getReport("ZA3141")).toBeTruthy();
+    expect(getReport("AB2022")).toBeTruthy();
   });
 
   test("postBanner", () => {

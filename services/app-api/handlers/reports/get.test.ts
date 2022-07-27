@@ -12,7 +12,7 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
         createdAt: 1654198665696,
         endDate: 1657252799000,
         lastAltered: 1654198665696,
-        key: "ZA3141",
+        key: "AB2022",
         report: {
           field1: "value1",
           field2: "value2",
@@ -39,7 +39,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportId: "ZA3141" },
+  pathParameters: { reportId: "AB2022" },
 };
 
 describe("Test getReport API method", () => {
