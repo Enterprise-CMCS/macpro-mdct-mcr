@@ -21,8 +21,8 @@ custom:
       - val
       - production
   bannerTableName: ${self:custom.stage}-banners
-  reportTableName: ${self:custom.stage}-reports-update
-  reportStatusTableName: ${self:custom.stage}-reports-status-update
+  reportTableName: ${self:custom.stage}-reports
+  reportStatusTableName: ${self:custom.stage}-reports-status
   dynamodb:
     stages:
       - local
