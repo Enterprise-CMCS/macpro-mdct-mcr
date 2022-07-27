@@ -3,6 +3,7 @@ import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
 // utils
 import { useNavigate } from "react-router-dom";
+import config from "config";
 import {
   getSignedTemplateUrl,
   makeMediaQueryClasses,
@@ -34,7 +35,7 @@ export const TemplateCard = ({
   const mqClasses = makeMediaQueryClasses();
   const navigate = useNavigate();
 
-  const showFormLink = verbiage.link && process.env.NODE_ENV !== "production";
+  const showFormLink = verbiage.link && config.STAGE !== "production";
   const cardText = showFormLink
     ? verbiage.body.available
     : verbiage.body.unavailable;
@@ -51,6 +52,7 @@ export const TemplateCard = ({
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
           <Text>{cardText}</Text>
+          <Text>Config.stage variable = {config.STAGE}</Text>
 
           <Flex className={mqClasses} sx={sx.actionsFlex}>
             <Button
