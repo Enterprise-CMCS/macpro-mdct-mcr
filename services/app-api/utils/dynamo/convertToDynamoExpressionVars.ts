@@ -6,24 +6,21 @@ export const convertToDynamoExpression = (
   let expressionAttributeValues: any = {};
   let updateExpression = "";
   let filterExpression = "";
-  let alphaNumKey = "";
   Object.keys(listOfVars).forEach((key, index) => {
-    alphaNumKey = key.replace(/[^a-zA-Z0-9 ]/g, "");
-
-    expressionAttributeNames[`#${alphaNumKey}`] = alphaNumKey;
-    expressionAttributeValues[`:${alphaNumKey}`] = listOfVars[key];
+    expressionAttributeNames[`#${key}`] = key;
+    expressionAttributeValues[`:${key}`] = listOfVars[key];
 
     if (expressionType === "list") {
       filterExpression =
         index === 0
-          ? `#${alphaNumKey} = :${alphaNumKey}`
-          : `${filterExpression} AND #${alphaNumKey} = :${alphaNumKey}`;
+          ? `#${key} = :${key}`
+          : `${filterExpression} AND #${key} = :${key}`;
     }
     if (expressionType === "post") {
       updateExpression =
         index === 0
-          ? `set #${alphaNumKey}=:${alphaNumKey}`
-          : `${updateExpression}, #${alphaNumKey}=:${alphaNumKey}`;
+          ? `set #${key}=:${key}`
+          : `${updateExpression}, #${key}=:${key}`;
     }
   });
   if (expressionType === "post") {
