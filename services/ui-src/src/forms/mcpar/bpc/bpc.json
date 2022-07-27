@@ -21,7 +21,7 @@
         "type": "number",
         "props": {
           "label": "B.I.2 Statewide Medicaid managed care enrollment",
-          "hint": "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year. <br> Include enrollees in all programs, and count each person only once, even if they are enrolled in more than one managed care program or more than one managed care plan.",
+          "hint": "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year. Include enrollees in all programs, and count each person only once, even if they are enrolled in more than one managed care program or more than one managed care plan.",
           "mask": "comma-separated"
         }
       }
