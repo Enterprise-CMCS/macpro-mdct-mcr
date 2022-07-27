@@ -5,7 +5,7 @@ import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 
 export const getReport = handler(async (event, _context) => {
   if (
-    !event?.pathParameters?.reportId! ||
+    !event?.pathParameters?.stateYear! ||
     !event?.pathParameters?.programName!
   ) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
@@ -13,7 +13,7 @@ export const getReport = handler(async (event, _context) => {
   const reportParams = {
     TableName: process.env.REPORT_TABLE_NAME!,
     Key: {
-      key: event.pathParameters.reportId,
+      key: event.pathParameters.stateYear,
       programName: event.pathParameters.programName,
     },
   };

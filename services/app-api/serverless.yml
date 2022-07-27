@@ -137,53 +137,53 @@ functions:
     handler: handlers/reports/get.getReport
     events:
       - http:
-          path: reports/{reportId}/{programName}
+          path: reports/{stateYear}/{programName}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportId: true
+                stateYear: true
                 programName: true
   writeReports:
     handler: handlers/reports/write.writeReport
     events:
       - http:
-          path: reports/{reportId}/{programName}
+          path: reports/{stateYear}/{programName}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportId: true
+                stateYear: true
                 programName: true
   getReportStatus:
     handler: handlers/reportStatus/get.getReportStatus
     events:
       - http:
-          path: reportStatus/{reportId}/{programName}
+          path: reportStatus/{stateYear}/{programName}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportId: true
+                stateYear: true
                 programName: true
   writeReportStatus:
     handler: handlers/reportStatus/write.writeReportStatus
     events:
       - http:
-          path: reportStatus/{reportId}/{programName}
+          path: reportStatus/{stateYear}/{programName}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportId: true
+                stateYear: true
                 programName: true
   getTemplate:
     handler: handlers/templates/get.getTemplate

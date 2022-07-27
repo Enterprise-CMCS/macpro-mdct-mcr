@@ -32,7 +32,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportId: "AB2022", programName: "testProgram" },
+  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
 };
 
 describe("Test getReportStatus API method", () => {
@@ -62,7 +62,7 @@ describe("Test getReportStatus API method", () => {
   test("Test reportKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      pathParameters: { reportId: "", programName: "" },
+      pathParameters: { stateYear: "", programName: "" },
     };
     const res = await getReportStatus(noKeyEvent, null);
 

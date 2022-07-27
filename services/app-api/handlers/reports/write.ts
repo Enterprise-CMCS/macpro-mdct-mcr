@@ -15,19 +15,19 @@ export const writeReport = handler(async (event, context) => {
       body: UNAUTHORIZED_MESSAGE,
     };
   } else if (
-    !event?.pathParameters?.reportId! ||
+    !event?.pathParameters?.stateYear! ||
     !event?.pathParameters?.programName!
   ) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const body = JSON.parse(event!.body!);
-  const reportId: string = event.pathParameters.reportId;
+  const stateYear: string = event.pathParameters.stateYear;
   const programName: string = event.pathParameters.programName;
 
   let reportParams = {
     TableName: process.env.REPORT_TABLE_NAME!,
     Item: {
-      key: reportId,
+      key: stateYear,
       programName: programName,
       report: body.report,
     },
@@ -42,7 +42,7 @@ export const writeReport = handler(async (event, context) => {
     reportParams = {
       TableName: process.env.REPORT_TABLE_NAME!,
       Item: {
-        key: reportId,
+        key: stateYear,
         programName: programName,
         report: { ...newReport },
       },

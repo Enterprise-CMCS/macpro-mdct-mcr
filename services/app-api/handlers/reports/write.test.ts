@@ -32,14 +32,14 @@ const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"report":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportId: "AB2022", programName: "testProgram" },
+  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
 };
 
 const secondWriteEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"report":{"newField1":"newValue1","newField2":"newValue2","newNum1":1,"newArray":["newArray1", "newArray2"]}}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportId: "AB2022", programName: "testProgram" },
+  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
 };
 
 describe("Test writeReport API method", () => {
@@ -104,7 +104,7 @@ describe("Test writeReport API method", () => {
   test("Test reportKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      pathParameters: { reportId: "", programName: "" },
+      pathParameters: { stateYear: "", programName: "" },
     };
     const res = await writeReport(noKeyEvent, null);
 
