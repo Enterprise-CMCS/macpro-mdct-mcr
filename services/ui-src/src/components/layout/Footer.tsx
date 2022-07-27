@@ -117,7 +117,7 @@ const sx = {
   footerTopContainer: {
     maxW: "appMax",
     "&.desktop": {
-      padding: "0 2.25rem",
+      padding: "0 2rem",
     },
   },
   footerTopFlex: {
@@ -188,7 +188,7 @@ const sx = {
   footerBottomContainer: {
     maxW: "appMax",
     "&.desktop": {
-      padding: "0 2.25rem",
+      padding: "0 2rem",
     },
   },
   footerBottomFlex: {

@@ -106,7 +106,7 @@ const sx = {
     alignItems: "center",
     backgroundColor: "palette.gray_lightest",
     "&.desktop": {
-      padding: "0 1.25rem",
+      padding: "0 1rem",
     },
   },
   headerBar: {
@@ -117,7 +117,7 @@ const sx = {
   headerContainer: {
     maxW: "appMax",
     "&.desktop": {
-      padding: "0 2.25rem",
+      padding: "0 2rem",
     },
   },
   headerFlex: {
@@ -136,7 +136,7 @@ const sx = {
   subnavContainer: {
     maxW: "appMax",
     "&.desktop": {
-      padding: "0 2.25rem",
+      padding: "0 2rem",
     },
   },
   subnavFlex: {

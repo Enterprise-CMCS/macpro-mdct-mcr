@@ -67,7 +67,7 @@ const sx = {
     maxW: "appMax",
     flex: "1 0 auto",
     "&.desktop": {
-      padding: "0 2.25rem",
+      padding: "0 2rem",
     },
   },
   loginContainer: {

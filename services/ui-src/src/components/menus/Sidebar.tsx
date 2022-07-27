@@ -153,13 +153,13 @@ const sx = {
     "&.open": {
       marginLeft: "-1rem",
       "&.desktop": {
-        marginLeft: "-2.25rem",
+        marginLeft: "-2rem",
       },
     },
     "&.closed": {
       marginLeft: "-21rem",
       "&.desktop": {
-        marginLeft: "-22.25rem",
+        marginLeft: "-22rem",
       },
     },
     "&.tablet, &.mobile": {
@@ -175,9 +175,9 @@ const sx = {
     fontSize: "xl",
     fontWeight: "bold",
     width: "15rem",
-    padding: "1rem 1.5rem",
+    padding: "1rem 1rem",
     "&.desktop": {
-      padding: "1rem 0 1rem 2.25rem",
+      padding: "1rem 0 1rem 2rem",
     },
   },
   closeButton: {
@@ -237,21 +237,21 @@ const sx = {
     marginY: "10px",
     textAlign: "left",
     "&.level-1": {
-      marginLeft: "1.5rem",
+      marginLeft: "1rem",
       "&.desktop": {
-        marginLeft: "2.25rem",
+        marginLeft: "2rem",
       },
     },
     "&.level-2": {
-      marginLeft: "2.5rem",
+      marginLeft: "2rem",
       "&.desktop": {
-        marginLeft: "3.25rem",
+        marginLeft: "3rem",
       },
     },
     "&.level-3": {
-      marginLeft: "3.5rem",
+      marginLeft: "3rem",
       "&.desktop": {
-        marginLeft: "4.25rem",
+        marginLeft: "4rem",
       },
     },
   },
