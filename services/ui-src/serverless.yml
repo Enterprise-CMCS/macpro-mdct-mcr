@@ -64,6 +64,7 @@ custom:
         export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
         export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
         export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}
+        export STAGE=${self:custom.stage}
         export LOCAL_LOGIN=false
         ./scripts/configure-env.sh
         cp public/env-config.js build/env-config.js
