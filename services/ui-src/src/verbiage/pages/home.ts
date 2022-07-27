@@ -1,7 +1,14 @@
 export default {
   intro: {
     header: "Online Managed Care Reporting Portal",
-    body: "Get started by adding all the Medicaid managed care programs for your state. Learn more about this new data collection tool from CMS.",
+    body: {
+      preLinkText:
+        "Get started by adding all the Medicaid managed care programs for your state. Learn more about this ",
+      linkText: "new data collection tool",
+      linkLocation:
+        "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html",
+      postLinkText: " tool from CMS.",
+    },
   },
   cards: {
     MCPAR: {
