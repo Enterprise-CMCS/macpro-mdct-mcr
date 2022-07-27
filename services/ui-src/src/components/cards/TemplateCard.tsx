@@ -52,7 +52,6 @@ export const TemplateCard = ({
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
           <Text>{cardText}</Text>
-          <Text>Config.stage variable = {config.STAGE}</Text>
 
           <Flex className={mqClasses} sx={sx.actionsFlex}>
             <Button
