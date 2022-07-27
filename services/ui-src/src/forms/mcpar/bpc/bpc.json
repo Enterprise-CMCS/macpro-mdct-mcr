@@ -12,7 +12,7 @@
         "type": "number",
         "props": {
           "label": "B.I.1 Statewide medicaid enrollment",
-          "hint": "Enter the total number of individuals enrolled in Medicaid as of the first day of the last month of the reporting year. Include all FFS and managed care enrollees, and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
+          "hint": "Enter the total number of individuals enrolled in Medicaid as of the first day of the last month of the reporting year. <br> Include all FFS and managed care enrollees, and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
           "mask": "comma-separated"
         }
       },

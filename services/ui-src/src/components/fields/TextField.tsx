@@ -10,6 +10,7 @@ export const TextField = ({
   name,
   label,
   placeholder,
+  hint,
   sxOverride,
   nested,
   dynamic,
@@ -50,6 +51,9 @@ export const TextField = ({
         name={name}
         label={label}
         placeholder={placeholder}
+        hint={
+          hint ? <div dangerouslySetInnerHTML={{ __html: hint }} /> : undefined
+        }
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => dynamic?.inputRef ?? form.register(name)}
@@ -69,6 +73,7 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
+  hint?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
   dynamic?: dynamicFieldInput;
