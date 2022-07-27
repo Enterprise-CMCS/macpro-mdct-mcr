@@ -2,7 +2,7 @@ import { getReport, writeReport } from "./report";
 // utils
 import { mockReportData } from "utils/testing/setupJest";
 
-describe("Test banner methods", () => {
+describe("Test report methods", () => {
   test("getReport", () => {
     expect(getReport("ZA3141")).toBeTruthy();
   });

@@ -5,7 +5,7 @@ import { Form, Icon, ReportPage, Sidebar } from "components";
 // utils
 import { findRoute, hydrateFormFields, useUser, writeReport } from "utils";
 import { AnyObject } from "types";
-import { DELETE_BANNER_FAILED } from "verbiage/errors";
+import { WRITE_REPORT_FAILED } from "verbiage/errors";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
@@ -39,7 +39,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
     try {
       await writeReport(report);
     } catch (error: any) {
-      console.log(DELETE_BANNER_FAILED); // eslint-disable-line
+      console.log(WRITE_REPORT_FAILED); // eslint-disable-line
     }
     navigate(nextRoute);
   };

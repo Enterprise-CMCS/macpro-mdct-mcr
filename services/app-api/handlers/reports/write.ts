@@ -16,50 +16,50 @@ export const writeReport = handler(async (event, context) => {
     };
   } else if (!event?.pathParameters?.reportId!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
-  } else {
-    const body = JSON.parse(event!.body!);
-    const reportId: string = event.pathParameters.reportId;
+  }
 
-    let reportParams = {
+  const body = JSON.parse(event!.body!);
+  const reportId: string = event.pathParameters.reportId;
+
+  let reportParams = {
+    TableName: process.env.REPORT_TABLE_NAME!,
+    Item: {
+      key: reportId,
+      report: body.report,
+    },
+  };
+  let statusParams = {
+    TableName: process.env.REPORT_STATUS_TABLE_NAME!,
+    Item: {
+      key: reportId,
+      createdAt: Date.now(),
+      lastAltered: Date.now(),
+      lastAlteredBy: event?.headers["cognito-identity-id"],
+    },
+  };
+  const getCurrentReport = await getReport(event, context);
+  const currentBody = JSON.parse(getCurrentReport.body);
+  if (currentBody.report) {
+    const newReport = {
+      ...currentBody.report,
+      ...body.report,
+    };
+    reportParams = {
       TableName: process.env.REPORT_TABLE_NAME!,
       Item: {
         key: reportId,
-        report: body.report,
+        report: { ...newReport },
       },
     };
-    let statusParams = {
+    statusParams = {
       TableName: process.env.REPORT_STATUS_TABLE_NAME!,
       Item: {
         key: reportId,
-        createdAt: Date.now(),
+        createdAt: currentBody.createdAt,
         lastAltered: Date.now(),
         lastAlteredBy: event?.headers["cognito-identity-id"],
       },
     };
-    const getCurrentReport = await getReport(event, context);
-    const currentBody = JSON.parse(getCurrentReport.body);
-    if (currentBody.report) {
-      const newReport = {
-        ...currentBody.report,
-        ...body.report,
-      };
-      reportParams = {
-        TableName: process.env.REPORT_TABLE_NAME!,
-        Item: {
-          key: reportId,
-          report: { ...newReport },
-        },
-      };
-      statusParams = {
-        TableName: process.env.REPORT_STATUS_TABLE_NAME!,
-        Item: {
-          key: reportId,
-          createdAt: currentBody.createdAt,
-          lastAltered: Date.now(),
-          lastAlteredBy: event?.headers["cognito-identity-id"],
-        },
-      };
-    }
     await dynamoDb.put(reportParams);
     await dynamoDb.put(statusParams);
     return {
