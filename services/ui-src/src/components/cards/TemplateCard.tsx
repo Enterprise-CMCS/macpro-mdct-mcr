@@ -13,6 +13,7 @@ import { AnyObject } from "types";
 import downloadIcon from "assets/icons/icon_download.png";
 import nextIcon from "assets/icons/icon_next.png";
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
+import config from "config";
 
 const downloadTemplate = async (templateName: string) => {
   const signedUrl = await getSignedTemplateUrl(templateName);
@@ -33,8 +34,7 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   const navigate = useNavigate();
-
-  const showFormLink = verbiage.link && process.env.NODE_ENV !== "production";
+  const showFormLink = verbiage.link && config.STAGE !== "production";
   const cardText = showFormLink
     ? verbiage.body.available
     : verbiage.body.unavailable;
