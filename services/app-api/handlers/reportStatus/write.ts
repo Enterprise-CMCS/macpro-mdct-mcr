@@ -9,7 +9,7 @@ import {
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
 export const writeReportStatus = handler(async (event, context) => {
-  if (!hasPermissions(event, [UserRoles.STATE_USER])) {
+  if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: UNAUTHORIZED_MESSAGE,
