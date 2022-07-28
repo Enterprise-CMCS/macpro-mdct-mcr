@@ -50,13 +50,11 @@ export const Home = () => {
           templateName="MLR"
           verbiage={cards.MLR}
           cardprops={sx.card}
-          isDisabled
         />
         <TemplateCard
           templateName="NAAAR"
           verbiage={cards.NAAAR}
           cardprops={sx.card}
-          isDisabled
         />
       </BasicPage>
     </>
