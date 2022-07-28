@@ -4,13 +4,28 @@ import { axe } from "jest-axe";
 // components
 import { McparReportPage } from "routes";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { writeReport, writeReportStatus } from "utils";
+import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
 import sectionA_pointofcontact from "forms/mcpar/apoc/apoc.json";
+
+// MOCKS
 
 const mockUseNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
+  useLocation: jest.fn(() => ({
+    pathname: "/mcpar/program-information/point-of-contact",
+  })),
+}));
+
+jest.mock("utils", () => ({
+  ...jest.requireActual("utils"),
+  writeReport: jest.fn(),
+  writeReportStatus: jest.fn(),
+  useUser: () => {
+    return mockStateUser;
+  },
 }));
 
 const mcparReportPageComponent = (
@@ -53,6 +68,8 @@ describe("Test McparReportPage next navigation", () => {
     await userEvent.click(submitButton);
     const expectedRoute = "/mcpar/program-information/reporting-period";
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
+    await expect(writeReport).toHaveBeenCalledTimes(1);
+    await expect(writeReportStatus).toHaveBeenCalledTimes(1);
   });
 });
 

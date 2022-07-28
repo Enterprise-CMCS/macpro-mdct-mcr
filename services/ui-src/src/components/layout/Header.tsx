@@ -12,12 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { Menu, MenuOption } from "components";
 // utils
-import { useBreakpoint } from "utils";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
 // assets
 import appLogo from "assets/logos/logo_mcr_draft.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
+  const mqClasses = makeMediaQueryClasses();
   const { pathname } = useLocation();
   const isMcparReportPage = pathname.includes("/mcpar/");
   // TODO: Get current program name
@@ -25,11 +26,11 @@ export const Header = ({ handleLogout }: Props) => {
 
   return (
     <Box sx={sx.root} id="header">
-      <Flex sx={sx.usaBannerContainer}>
+      <Flex sx={sx.usaBannerContainer} className={mqClasses}>
         <UsaBanner />
       </Flex>
       <Flex sx={sx.headerBar} role="navigation">
-        <Container sx={sx.headerContainer}>
+        <Container sx={sx.headerContainer} className={mqClasses}>
           <Flex sx={sx.headerFlex}>
             <Link as={RouterLink} to="/">
               <Image src={appLogo} alt="MCR logo" sx={sx.appLogo} />
@@ -55,7 +56,7 @@ export const Header = ({ handleLogout }: Props) => {
       </Flex>
       {isMcparReportPage && (
         <Flex sx={sx.subnavBar}>
-          <Container sx={sx.subnavContainer}>
+          <Container sx={sx.subnavContainer} className={mqClasses}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
                 <Text sx={sx.programNameText}>
@@ -63,8 +64,6 @@ export const Header = ({ handleLogout }: Props) => {
                 </Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
-                {/* TODO: Get save state */}
-                <Text sx={sx.autosaveText}>Autosave state</Text>
                 {!isMobile && (
                   <Link
                     as={RouterLink}
@@ -106,6 +105,9 @@ const sx = {
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: "palette.gray_lightest",
+    "&.desktop": {
+      padding: "0 1rem",
+    },
   },
   headerBar: {
     minHeight: "4rem",
@@ -114,6 +116,9 @@ const sx = {
   },
   headerContainer: {
     maxW: "appMax",
+    "&.desktop": {
+      padding: "0 2rem",
+    },
   },
   headerFlex: {
     justifyContent: "space-between",
@@ -130,6 +135,9 @@ const sx = {
   },
   subnavContainer: {
     maxW: "appMax",
+    "&.desktop": {
+      padding: "0 2rem",
+    },
   },
   subnavFlex: {
     height: "60px",
@@ -138,9 +146,6 @@ const sx = {
   },
   programNameText: {
     fontWeight: "bold",
-  },
-  autosaveText: {
-    textAlign: "right",
   },
   subnavFlexRight: {
     alignItems: "center",

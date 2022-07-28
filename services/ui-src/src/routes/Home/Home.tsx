@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // components
-import { Box, Collapse, Heading, Text } from "@chakra-ui/react";
+import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminBannerContext,
   Banner,
@@ -29,7 +29,17 @@ export const Home = () => {
           <Heading as="h1" sx={sx.headerText}>
             {intro.header}
           </Heading>
-          <Text>{intro.body}</Text>
+          <Text>
+            {intro.body.preLinkText}
+            <Link
+              sx={sx.bodyLink}
+              href={intro.body.linkLocation}
+              target="_blank"
+            >
+              {intro.body.linkText}
+            </Link>
+            {intro.body.postLinkText}
+          </Text>
         </Box>
         <TemplateCard
           templateName="MCPAR"
@@ -40,13 +50,11 @@ export const Home = () => {
           templateName="MLR"
           verbiage={cards.MLR}
           cardprops={sx.card}
-          isDisabled
         />
         <TemplateCard
           templateName="NAAAR"
           verbiage={cards.NAAAR}
           cardprops={sx.card}
-          isDisabled
         />
       </BasicPage>
     </>
@@ -67,6 +75,12 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
+  },
+  bodyLink: {
+    textDecoration: "underline !important",
+    "&:hover": {
+      textDecoration: "none !important",
+    },
   },
   card: {
     marginBottom: "2rem",

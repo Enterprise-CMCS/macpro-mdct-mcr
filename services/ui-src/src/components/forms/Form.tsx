@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
@@ -61,5 +61,8 @@ const sx = {
   },
   ".ds-c-field[disabled]": {
     color: "palette.gray",
+  },
+  ".ds-c-field__hint": {
+    fontSize: "sm",
   },
 };
