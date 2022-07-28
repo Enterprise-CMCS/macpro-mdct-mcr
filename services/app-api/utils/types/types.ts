@@ -62,6 +62,6 @@ export const enum UserRoles {
 
 export const enum TemplateKeys {
   MCPAR = "templates/MCPAR_Workbook_AddProgramName_2022.xlsx",
-  MLR = "templates/MLR_Workbook_AddProgramName_2022.xlsx",
-  NAAAR = "templates/NAAAR_Workbook_AddProgramName_2022.xlsx",
+  MLR = "templates/MLR_Workbook_2022.xlsx",
+  NAAAR = "templates/NAAAR_Workbook_2022.xlsx",
 }
