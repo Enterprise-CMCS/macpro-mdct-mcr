@@ -1,3 +1,11 @@
-import { object } from "yup";
+import { array, object, string } from "yup";
 
-export default object({});
+export default object({
+  "absse-a8": array()
+    .min(1)
+    .of(
+      string()
+        .required("BSS entity name is required")
+        .typeError("BSS entity name must be a string")
+    ),
+});

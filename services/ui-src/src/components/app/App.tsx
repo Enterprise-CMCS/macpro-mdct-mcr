@@ -1,4 +1,3 @@
-import { createContext, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
@@ -10,19 +9,13 @@ import {
   LoginCognito,
   LoginIDM,
   SkipNav,
-  Sidebar,
 } from "components";
 // utils
-import { useUser } from "utils";
-
-export const SidebarOpenContext = createContext({
-  sidebarIsOpen: true,
-  setSidebarIsOpen: (status: boolean) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
-});
+import { makeMediaQueryClasses, useUser } from "utils";
 
 export const App = () => {
+  const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
   return (
     <div id="app-wrapper">
       {user && (
@@ -33,16 +26,15 @@ export const App = () => {
             text="Skip to main content"
           />
           <Header handleLogout={logout} />
-          <SidebarOpenContext.Provider
-            value={{ sidebarIsOpen, setSidebarIsOpen }}
+          <Container
+            sx={sx.appContainer}
+            className={mqClasses}
+            data-testid="app-container"
           >
-            <Container sx={sx.appContainer} data-testid="app-container">
-              <Sidebar />
-              <ErrorBoundary FallbackComponent={Error}>
-                <AppRoutes userRole={user?.userRole} />
-              </ErrorBoundary>
-            </Container>
-          </SidebarOpenContext.Provider>
+            <ErrorBoundary FallbackComponent={Error}>
+              <AppRoutes userRole={user?.userRole} />
+            </ErrorBoundary>
+          </Container>
           <Footer />
         </Flex>
       )}
@@ -74,6 +66,9 @@ const sx = {
   appContainer: {
     maxW: "appMax",
     flex: "1 0 auto",
+    "&.desktop": {
+      padding: "0 2rem",
+    },
   },
   loginContainer: {
     maxWidth: "25rem",

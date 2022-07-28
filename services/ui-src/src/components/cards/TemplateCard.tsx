@@ -1,7 +1,9 @@
 // components
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
-import { Card, Icon, TemplateCardAccordion } from "components";
+import { Card, TemplateCardAccordion } from "components";
 // utils
+import { useNavigate } from "react-router-dom";
+import config from "config";
 import {
   getSignedTemplateUrl,
   makeMediaQueryClasses,
@@ -9,6 +11,8 @@ import {
 } from "utils";
 import { AnyObject } from "types";
 // assets
+import downloadIcon from "assets/icons/icon_download.png";
+import nextIcon from "assets/icons/icon_next.png";
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
 const downloadTemplate = async (templateName: string) => {
@@ -29,7 +33,12 @@ export const TemplateCard = ({
 }: Props) => {
   const { isDesktop } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
+  const navigate = useNavigate();
 
+  const showFormLink = verbiage.link && config.STAGE !== "production";
+  const cardText = showFormLink
+    ? verbiage.body.available
+    : verbiage.body.unavailable;
   return (
     <Card {...cardprops}>
       <Flex sx={sx.root} {...props}>
@@ -42,18 +51,38 @@ export const TemplateCard = ({
         )}
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
-          <Text>{verbiage.body}</Text>
-          <Button
-            className={mqClasses}
-            sx={sx.templateDownloadButton}
-            leftIcon={<Icon icon="downloadArrow" boxSize="1.5rem" />}
-            isDisabled={isDisabled}
-            onClick={async () => {
-              await downloadTemplate(templateName);
-            }}
-          >
-            {verbiage.buttonText}
-          </Button>
+          <Text>{cardText}</Text>
+
+          <Flex className={mqClasses} sx={sx.actionsFlex}>
+            <Button
+              className={mqClasses}
+              sx={sx.templateDownloadButton}
+              leftIcon={
+                <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
+              }
+              variant="link"
+              isDisabled={isDisabled}
+              onClick={async () => {
+                await downloadTemplate(templateName);
+              }}
+            >
+              {verbiage.downloadText}
+            </Button>
+
+            {showFormLink && (
+              <Button
+                className={mqClasses}
+                sx={sx.formLink}
+                onClick={() => navigate(verbiage.link.route)}
+                rightIcon={
+                  <Image src={nextIcon} alt="Link Icon" height="1rem" />
+                }
+              >
+                {verbiage.link.text}
+              </Button>
+            )}
+          </Flex>
+
           <TemplateCardAccordion verbiage={verbiage.accordion} />
         </Flex>
       </Flex>
@@ -86,7 +115,35 @@ const sx = {
     fontWeight: "bold",
     lineHeight: "1.5",
   },
+  actionsFlex: {
+    justifyContent: "space-between",
+    flexFlow: "wrap",
+    "&.mobile": {
+      flexDirection: "column",
+    },
+  },
   templateDownloadButton: {
+    justifyContent: "start",
+    marginTop: "1rem",
+    marginRight: "1rem",
+    padding: "0",
+    borderRadius: "0.25rem",
+    fontWeight: "bold",
+    color: "palette.main",
+    textDecoration: "underline",
+    span: {
+      marginLeft: "0rem",
+      marginRight: "0.5rem",
+    },
+    _hover: {
+      textDecoration: "none",
+    },
+    "&.mobile": {
+      fontSize: "sm",
+      marginRight: "0",
+    },
+  },
+  formLink: {
     justifyContent: "start",
     marginTop: "1rem",
     borderRadius: "0.25rem",
@@ -94,8 +151,8 @@ const sx = {
     fontWeight: "bold",
     color: "palette.white",
     span: {
-      marginLeft: "-0.25rem",
-      marginRight: "0.25rem",
+      marginLeft: "0.5rem",
+      marginRight: "-0.25rem",
     },
     _hover: {
       background: "palette.main_darker",
