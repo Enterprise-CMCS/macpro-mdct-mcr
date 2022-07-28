@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Form, Icon, ReportPage, Sidebar } from "components";
+import { Error, Form, Icon, ReportPage, Sidebar } from "components";
 // utils
 import {
   findRoute,
@@ -18,6 +19,7 @@ import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
   const { path, intro, form } = pageJson;
 
   const temporaryHydrationData = {
@@ -58,6 +60,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
         await writeReportStatus(reportStatus);
       } catch (error: any) {
         console.log(WRITE_REPORT_FAILED); // eslint-disable-line
+        setError(true);
       }
     }
     navigate(nextRoute);
@@ -69,16 +72,20 @@ export const McparReportPage = ({ pageJson }: Props) => {
     <ReportPage data-testid={form.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        <Flex sx={sx.reportContainer}>
-          <ReportPageIntro text={intro} />
-          <Form
-            id={form.id}
-            formJson={form}
-            formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-            onSubmit={onSubmit}
-          />
-          <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
-        </Flex>
+        {error ? (
+          <Error />
+        ) : (
+          <Flex sx={sx.reportContainer}>
+            <ReportPageIntro text={intro} />
+            <Form
+              id={form.id}
+              formJson={form}
+              formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+              onSubmit={onSubmit}
+            />
+            <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
+          </Flex>
+        )}
       </Flex>
     </ReportPage>
   );
