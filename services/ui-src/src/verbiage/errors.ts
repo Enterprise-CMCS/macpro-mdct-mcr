@@ -8,8 +8,3 @@ export const REPLACE_BANNER_FAILED =
 
 export const DELETE_BANNER_FAILED =
   "Current banner could not be deleted. Please contact support.";
-
-// REPORTS
-
-export const WRITE_REPORT_FAILED =
-  "Failed to write report to database. Please contact support.";

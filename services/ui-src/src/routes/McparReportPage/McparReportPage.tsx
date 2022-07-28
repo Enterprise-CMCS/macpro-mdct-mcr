@@ -12,7 +12,6 @@ import {
   writeReportStatus,
 } from "utils";
 import { AnyObject, UserRoles } from "types";
-import { WRITE_REPORT_FAILED } from "verbiage/errors";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
@@ -59,7 +58,6 @@ export const McparReportPage = ({ pageJson }: Props) => {
         await writeReport(report);
         await writeReportStatus(reportStatus);
       } catch (error: any) {
-        console.log(WRITE_REPORT_FAILED); // eslint-disable-line
         setError(true);
       }
     }
