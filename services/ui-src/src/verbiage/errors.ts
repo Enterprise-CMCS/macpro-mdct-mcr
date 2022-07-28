@@ -1,5 +1,3 @@
-// BANNERS
-
 export const GET_BANNER_FAILED =
   "Banner could not be fetched. Please contact support.";
 
