@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { ErrorBoundary } from "react-error-boundary";
 // components
@@ -11,21 +11,16 @@ import {
   LoginCognito,
   LoginIDM,
   SkipNav,
-  Sidebar,
 } from "components";
 // utils
-import { useUser, fireTealiumPageView } from "utils";
-
-export const SidebarOpenContext = createContext({
-  sidebarIsOpen: true,
-  setSidebarIsOpen: (status: boolean) => {}, // eslint-disable-line @typescript-eslint/no-unused-vars
-});
+import { fireTealiumPageView, makeMediaQueryClasses, useUser } from "utils";
 
 export const App = () => {
+  const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
-
   const { pathname, key } = useLocation();
+
+  // fire tealium page view on route change
   useEffect(() => {
     const contentType = pathname.includes("/mcpar") ? "form" : "app";
     const sectionName = pathname.includes("/mcpar") ? "MCPAR form" : "Main app";
@@ -48,16 +43,15 @@ export const App = () => {
             text="Skip to main content"
           />
           <Header handleLogout={logout} />
-          <SidebarOpenContext.Provider
-            value={{ sidebarIsOpen, setSidebarIsOpen }}
+          <Container
+            sx={sx.appContainer}
+            className={mqClasses}
+            data-testid="app-container"
           >
-            <Container sx={sx.appContainer} data-testid="app-container">
-              <Sidebar />
-              <ErrorBoundary FallbackComponent={Error}>
-                <AppRoutes userRole={user?.userRole} />
-              </ErrorBoundary>
-            </Container>
-          </SidebarOpenContext.Provider>
+            <ErrorBoundary FallbackComponent={Error}>
+              <AppRoutes userRole={user?.userRole} />
+            </ErrorBoundary>
+          </Container>
           <Footer />
         </Flex>
       )}
@@ -89,6 +83,9 @@ const sx = {
   appContainer: {
     maxW: "appMax",
     flex: "1 0 auto",
+    "&.desktop": {
+      padding: "0 2rem",
+    },
   },
   loginContainer: {
     maxWidth: "25rem",

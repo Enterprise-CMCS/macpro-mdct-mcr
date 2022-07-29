@@ -22,6 +22,7 @@ const config = {
     REDIRECT_SIGNIN: window._env_.COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: window._env_.COGNITO_REDIRECT_SIGNOUT,
   },
+  STAGE: window._env_.STAGE,
   currentReportingYear: "2021",
 };
 
