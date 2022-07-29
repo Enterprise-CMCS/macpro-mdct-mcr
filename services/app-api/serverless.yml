@@ -35,7 +35,7 @@ custom:
       - production
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   reportTableName: ${env:REPORT_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
-  reportStatusTableName: ${env:REPORT_STATUS_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
+  reportStatusTableName: ${env:REPORT_STATUS_TABLE_NAME, cf:database-${self:custom.stage}.ReportStatusTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
