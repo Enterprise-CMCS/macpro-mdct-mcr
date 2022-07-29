@@ -2,17 +2,20 @@
   "path": "/mcpar/program-information/add-plans",
   "intro": {
     "section": "Section A: Program Information",
-    "subsection": "Add Plans"
+    "subsection": "Add plans (A.7)",
+    "info": "Enter the name of each plan that participates in the program for which the state is reporting data."
   },
   "form": {
     "id": "aap",
+    "options": {
+      "mode": "onChange"
+    },
     "fields": [
       {
         "id": "aap-1",
-        "type": "text",
+        "type": "dynamic",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "Plan name"
         }
       }
     ]
