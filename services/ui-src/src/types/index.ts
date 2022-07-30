@@ -42,6 +42,15 @@ export interface ReportPath {
   children?: ReportPath[];
 }
 
+export interface ReportShape {
+  reportData: AnyObject;
+}
+
+export interface ReportContextShape extends ReportShape {
+  reportStatus: string;
+  [key: string]: any;
+}
+
 // FORM
 
 export interface FormField {
