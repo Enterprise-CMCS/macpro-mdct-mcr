@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Error, Form, Icon, ReportPage, Sidebar } from "components";
 // utils
 import {
@@ -10,6 +10,7 @@ import {
   useUser,
   writeReport,
   writeReportStatus,
+  parseHtmlText,
 } from "utils";
 import { AnyObject, UserRoles } from "types";
 // form data
@@ -103,7 +104,9 @@ const ReportPageIntro = ({ text }: ReportPageIntroI) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {info && <Text sx={sx.infoText}>{info}</Text>}
+      {info && typeof info === "object" && (
+        <Box sx={sx.infoTextBox}>{parseHtmlText(info)}</Box>
+      )}
     </Box>
   );
 };
@@ -172,7 +175,7 @@ const sx = {
     fontWeight: "normal",
     fontSize: "4xl",
   },
-  infoText: {
+  infoTextBox: {
     marginTop: "2rem",
     color: "palette.gray",
   },
