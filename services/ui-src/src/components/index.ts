@@ -42,6 +42,7 @@ export { BasicPage } from "./layout/BasicPage";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { ReportPage } from "./layout/ReportPage";
+export { Section } from "./layout/Section";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
@@ -51,3 +52,7 @@ export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // tables
 export { Table } from "./tables/Table";
+// widgets
+export { IconWidget } from "./widgets/IconWidget";
+export { IconlessWidget } from "./widgets/IconlessWidget";
+export { ImageWidget } from "./widgets/ImageWidget";

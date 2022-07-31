@@ -124,6 +124,37 @@ export interface TimeShape {
   second: number;
 }
 
+// Widgets
+export interface iconlessWidget {
+  type: string;
+  content: {
+    leftBarColor: string;
+    title: string;
+    descriptionList: string[];
+  };
+}
+
+export interface iconWidget {
+  type: string;
+  content: {
+    leftBarColor: string;
+    icon: string;
+    iconDescription: string;
+    title: string;
+    descriptionList: string[];
+    additionalInfo: string;
+  };
+}
+
+export interface imageWidget {
+  type: string;
+  content: {
+    src: string;
+    alt: string;
+    additionalInfo?: string;
+  };
+}
+
 // OTHER
 
 export interface AnyObject {
