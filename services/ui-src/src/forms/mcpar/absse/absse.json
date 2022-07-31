@@ -5,7 +5,8 @@
     "subsection": "Add BSS entities (A.8)",
     "info": [
       {
-        "text": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data."
+        "type": "text",
+        "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data."
       }
     ]
   },

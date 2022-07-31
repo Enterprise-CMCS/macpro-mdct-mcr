@@ -1,29 +1,30 @@
 import React from "react";
+// components
+import { Link as RouterLink } from "react-router-dom";
+import { Heading, Link, Text } from "@chakra-ui/react";
+// types
 import { AnyObject } from "types";
 
-import { Text } from "@chakra-ui/react";
-
-// return created elements from provided fields
+// return
 export const parseHtmlText = (elementArray: AnyObject[]) => {
   // define custom elements
   const customElementMap: any = {
-    internalLink: Text,
-    externalLink: Text,
+    externalLink: Link,
+    internalLink: RouterLink,
     text: Text,
-    span: "span",
+    heading: Heading,
   };
   return elementArray.map((element, index) => {
-    const elementKey: string = Object.keys(element)[0];
-    const elementToRender: string = customElementMap[elementKey];
-    const elementChildren: string = element[elementKey];
-    // return created element if it exists
-    if (!elementToRender) return;
+    const { type, content, props } = element;
+    const elementType: string = customElementMap[type];
+    // return created element
     return React.createElement(
-      elementToRender,
+      elementType || type,
       {
-        key: elementKey + index,
+        key: type + index,
+        ...props,
       },
-      elementChildren
+      content
     );
   });
 };

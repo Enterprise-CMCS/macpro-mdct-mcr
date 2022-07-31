@@ -5,7 +5,33 @@
     "subsection": "Point of Contact",
     "info": [
       {
-        "text": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
+        "type": "text",
+        "content": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers. Here is an ",
+        "props": {
+          "as": "span"
+        }
+      },
+      {
+        "type": "externalLink",
+        "content": "external link",
+        "props": {
+          "href": "https://www.google.com",
+          "target": "_blank"
+        }
+      },
+      {
+        "type": "text",
+        "content": " and an ",
+        "props": {
+          "as": "span"
+        }
+      },
+      {
+        "type": "internalLink",
+        "content": "internal link",
+        "props": {
+          "to": "/admin"
+        }
       }
     ]
   },
