@@ -1,6 +1,6 @@
 import React from "react";
 // components
-import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { IconWidget, IconlessWidget, ImageWidget } from "components";
 import { makeMediaQueryClasses } from "utils";
 
@@ -19,7 +19,7 @@ export const Section = ({ index, content, ...props }: Props) => {
           {content.header}
         </Heading>
         <Text>{content.body}</Text>
-        <Grid sx={sx.widgetsContainer} className={mqClasses}>
+        <Flex sx={sx.widgetsContainer} className={mqClasses}>
           {content.widgets.map((widget, index) => {
             if (widget.type === "iconWidget") {
               return (
@@ -39,7 +39,7 @@ export const Section = ({ index, content, ...props }: Props) => {
             }
             return null;
           })}
-        </Grid>
+        </Flex>
       </Box>
     </Flex>
   );
@@ -81,22 +81,12 @@ const sx = {
     color: "palette.gray",
     fontSize: "2xl",
   },
-  contentBox: {
-    flexShrink: "0",
-    paddingTop: "2rem",
-  },
-  contentFlex: {
-    flexDirection: "column",
-    margin: "5.5rem auto 0",
-    maxWidth: "basicPageWidth",
-  },
   widgetsContainer: {
     marginTop: "1rem",
     gridGap: "2rem",
-    gridTemplateColumns: "1fr 1fr",
-    "&.mobile, &.tablet": {
-      gridGap: "3rem",
-      gridTemplateColumns: "1fr",
+    flexDirection: "column",
+    "&.desktop": {
+      flexDirection: "row",
     },
   },
 };

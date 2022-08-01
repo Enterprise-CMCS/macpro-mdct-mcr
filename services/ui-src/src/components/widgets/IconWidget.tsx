@@ -1,10 +1,10 @@
-import { Box, Flex, GridItem, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { iconWidget } from "types";
 
 export const IconWidget = ({ content, ...props }: Props) => {
   return (
-    <GridItem {...props}>
+    <Box {...props}>
       <Flex
         sx={sx.container}
         borderLeft={"4px"}
@@ -29,7 +29,7 @@ export const IconWidget = ({ content, ...props }: Props) => {
         </Box>
       </Flex>
       <Text sx={sx.additionalInfo}>{content.additionalInfo}</Text>
-    </GridItem>
+    </Box>
   );
 };
 

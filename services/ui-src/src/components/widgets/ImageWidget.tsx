@@ -1,15 +1,15 @@
-import { GridItem, Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { imageWidget } from "types";
 
 export const ImageWidget = ({ content, ...props }: Props) => {
   return (
-    <GridItem {...props}>
+    <Box {...props}>
       <Image src={content.src} alt={content.alt} sx={sx.image} />
       {content.additionalInfo && (
         <Text sx={sx.additionalInfo}>{content.additionalInfo}</Text>
       )}
-    </GridItem>
+    </Box>
   );
 };
 

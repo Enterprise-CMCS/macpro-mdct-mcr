@@ -1,10 +1,10 @@
-import { Box, GridItem, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { iconlessWidget } from "types";
 
 export const IconlessWidget = ({ content, ...props }: Props) => {
   return (
-    <GridItem {...props}>
+    <Box {...props}>
       <Box
         sx={sx.container}
         borderLeft={"4px"}
@@ -17,7 +17,7 @@ export const IconlessWidget = ({ content, ...props }: Props) => {
           ))}
         </Box>
       </Box>
-    </GridItem>
+    </Box>
   );
 };
 
