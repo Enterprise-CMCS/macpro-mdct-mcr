@@ -1,5 +1,7 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
+// components
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
+// utils
 import { iconWidget } from "types";
 
 export const IconWidget = ({ content, ...props }: Props) => {

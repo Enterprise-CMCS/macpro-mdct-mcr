@@ -1,5 +1,7 @@
-import { Box, Image, Text } from "@chakra-ui/react";
 import React from "react";
+// components
+import { Box, Image, Text } from "@chakra-ui/react";
+// utils
 import { imageWidget } from "types";
 
 export const ImageWidget = ({ content, ...props }: Props) => {

@@ -1,12 +1,9 @@
 import React from "react";
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { IconWidget, IconlessWidget, ImageWidget } from "components";
-import { makeMediaQueryClasses } from "utils";
+import { WidgetContainer } from "components/widgets/WidgetContainer";
 
 export const Section = ({ index, content, ...props }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
-
   return (
     <Flex sx={sx.sectionContainer} {...props}>
       <Box>
@@ -19,27 +16,9 @@ export const Section = ({ index, content, ...props }: Props) => {
           {content.header}
         </Heading>
         <Text>{content.body}</Text>
-        <Flex sx={sx.widgetsContainer} className={mqClasses}>
-          {content.widgets.map((widget, index) => {
-            if (widget.type === "iconWidget") {
-              return (
-                <IconWidget content={widget.content} key={`widget-${index}`} />
-              );
-            } else if (widget.type === "iconlessWidget") {
-              return (
-                <IconlessWidget
-                  content={widget.content}
-                  key={`widget-${index}`}
-                />
-              );
-            } else if (widget.type === "imageWidget") {
-              return (
-                <ImageWidget content={widget.content} key={`widget-${index}`} />
-              );
-            }
-            return null;
-          })}
-        </Flex>
+        <Box>
+          <WidgetContainer widgets={content.widgets} />
+        </Box>
       </Box>
     </Flex>
   );

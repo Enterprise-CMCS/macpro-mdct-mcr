@@ -2,8 +2,10 @@
 import { Box, Button, Image, Heading } from "@chakra-ui/react";
 import { BasicPage, Section } from "components";
 import { useNavigate } from "react-router-dom";
+// utils
 import { makeMediaQueryClasses } from "utils";
 import verbiage from "verbiage/pages/mcpar/mcpar-intro";
+// assets
 import nextIcon from "assets/icons/icon_next.png";
 
 export const Intro = () => {

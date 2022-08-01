@@ -1,5 +1,7 @@
-import { Box, Text } from "@chakra-ui/react";
 import React from "react";
+// components
+import { Box, Text } from "@chakra-ui/react";
+// types
 import { iconlessWidget } from "types";
 
 export const IconlessWidget = ({ content, ...props }: Props) => {
