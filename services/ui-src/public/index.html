@@ -21,19 +21,23 @@
       sizes="16x16"
       %
     />
-    <!-- Tealium Tag Manager - SYNC -->
-    <script src="https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/%REACT_APP_TEALIUM_ENV%/utag.sync.js"></script>
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+      var tealiumEnv = window._env_.REACT_APP_TEALIUM_ENV;
+      var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
+      document.write(`<script src="${tealiumUrl}" async><\/script>`);
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <!-- Tealium Tag Manager - ASYNC -->
+    <!-- Tealium Analytics Tag Manager -->
     <script>
       window.utag_cfg_ovrd = { noview: true };
     </script>
     <script>
       (function (t, e, a, l, i, u, m) {
         t = "cmsgov/cms-mdctmcr";
-        e = "%REACT_APP_TEALIUM_ENV%";
+        e = tealiumEnv;
         a = "/" + t + "/" + e + "/utag.js";
         l = "//tags.tiqcdn.com/utag" + a;
         i = document;
