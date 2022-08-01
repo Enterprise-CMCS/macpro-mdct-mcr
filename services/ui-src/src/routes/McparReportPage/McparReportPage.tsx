@@ -176,7 +176,7 @@ const sx = {
   infoTextBox: {
     marginTop: "2rem",
     // TODO: finalize inline link styles with design and move this to theme.ts
-    span: {
+    "p, span": {
       color: "palette.gray",
     },
     a: {
