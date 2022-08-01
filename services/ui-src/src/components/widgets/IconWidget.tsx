@@ -30,7 +30,9 @@ export const IconWidget = ({ content, ...props }: Props) => {
           </Box>
         </Box>
       </Flex>
-      <Text sx={sx.additionalInfo}>{content.additionalInfo}</Text>
+      {content.additionalInfo && (
+        <Text sx={sx.additionalInfo}>{content.additionalInfo}</Text>
+      )}
     </Box>
   );
 };
