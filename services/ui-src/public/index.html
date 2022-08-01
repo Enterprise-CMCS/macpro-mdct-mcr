@@ -31,7 +31,9 @@
       };
       var tealiumEnv = tealiumEnvMap[nodeEnv];
       var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
-      document.write(`<script src="${tealiumUrl}" async><\/script>`);
+      var tealiumScript = document.createElement("script");
+      tealiumScript.src = tealiumUrl;
+      document.getElementsByTagName("head")[0].appendChild(tealiumScript);
     </script>
   </head>
   <body>
