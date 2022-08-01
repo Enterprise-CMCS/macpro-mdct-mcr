@@ -3600,10 +3600,10 @@
   dependencies:
     "@chakra-ui/utils" "1.10.4"
 
-"@cmsgov/design-system@^3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@cmsgov/design-system/-/design-system-3.6.0.tgz#faa6832763224dc80c4c6b6e5df7960501a838b3"
-  integrity sha512-nXG9KKPJ9rFQTt5na/uaMeBX0EbbF3PwvOQ1q/xCcIahoKfheAG/8S7pmDsgJjb4QVeLdDivl1y9vmX5dMgauw==
+"@cmsgov/design-system@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@cmsgov/design-system/-/design-system-3.8.0.tgz#4b70089408440faec8f1828f7479701cb4696c32"
+  integrity sha512-YvER2ap2FNP2b8VPmgSg1DIHPa5hATcuUO4zl4P+g7Bpkmr0czsZH/1rVQdr2MPp1wsS/J66+vV9tl2bYZiOlA==
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/react" "^17.0.10"
