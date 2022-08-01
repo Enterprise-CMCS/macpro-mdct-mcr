@@ -6,10 +6,7 @@ import { IconlessWidget, IconWidget, ImageWidget } from "components";
 import { iconlessWidget, iconWidget, imageWidget } from "types";
 import { makeMediaQueryClasses } from "utils";
 
-const widgetSelector = (
-  widget: iconWidget | iconlessWidget | imageWidget,
-  index: number
-) => {
+const widgetSelector = (widget: any, index: number) => {
   switch (widget.type) {
     case "iconWidget":
       return (
