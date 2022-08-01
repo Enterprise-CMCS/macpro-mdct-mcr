@@ -1,5 +1,4 @@
 import React from "react";
-
 // USERS
 
 export enum UserRoles {
@@ -142,7 +141,7 @@ export interface TableContentShape {
 
 export interface CustomHtmlElement {
   type: string;
-  content: string;
+  content: string | any;
   as?: string;
   props?: AnyObject;
 }

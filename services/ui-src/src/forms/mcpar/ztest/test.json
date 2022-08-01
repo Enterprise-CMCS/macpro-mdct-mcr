@@ -5,6 +5,10 @@
     "subsection": "Test form",
     "info": [
       {
+        "type": "html",
+        "content": "<span><em>whatever</em></span>"
+      },
+      {
         "type": "text",
         "as": "span",
         "content": "Here is an "
@@ -16,6 +20,11 @@
           "href": "https://www.google.com",
           "target": "_blank"
         }
+      },
+      {
+        "type": "text",
+        "as": "em",
+        "content": " italic "
       },
       {
         "type": "text",

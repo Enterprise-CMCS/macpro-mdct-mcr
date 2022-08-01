@@ -1,6 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { parseCustomHtml } from "./parseCustomHtml";
+import { parseCustomHtml } from "./parsing";
+import DOMPurify from "dompurify";
 
+jest.mock("dompurify", () => ({
+  sanitize: jest.fn((el) => el),
+}));
+
+const mockHtmlString = "<span><em>whatever</em></span>";
 const testElementArray = [
   {
     type: "text",
@@ -23,10 +29,16 @@ const testElementArray = [
     type: "p",
     content: "Paragraph tag.",
   },
+  {
+    type: "html",
+    content: mockHtmlString,
+  },
 ];
 const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
 
 describe("Test parseCustomHtml", () => {
+  const sanitizationSpy = jest.spyOn(DOMPurify, "sanitize");
+
   beforeEach(() => {
     render(testComponent);
   });
@@ -39,5 +51,9 @@ describe("Test parseCustomHtml", () => {
   test("Non-custom element renders correctly", () => {
     const element = screen.getByText("Paragraph tag.");
     expect(element).toBeVisible();
+  });
+
+  test("Type 'html' is sanitized and parsed", () => {
+    expect(sanitizationSpy).toHaveBeenCalled();
   });
 });
