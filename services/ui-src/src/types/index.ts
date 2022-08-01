@@ -144,5 +144,5 @@ export interface CustomHtmlElement {
   type: string;
   content: string;
   as?: string;
-  props: AnyObject;
+  props?: AnyObject;
 }
