@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Error, Form, Icon, ReportPage, Sidebar } from "components";
-// utils
 import {
-  findRoute,
-  hydrateFormFields,
-  useUser,
-  writeReport,
-  writeReportStatus,
-} from "utils";
+  Error,
+  Form,
+  Icon,
+  ReportContext,
+  ReportPage,
+  Sidebar,
+} from "components";
+// utils
+import { findRoute, hydrateFormFields, useUser } from "utils";
 import { AnyObject, UserRoles } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
@@ -18,7 +19,15 @@ import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  const {
+    // reportStatus,
+    reportData,
+    fetchReportData,
+    updateReportData,
+    fetchReportStatus,
+    updateReportStatus,
+    errorMessage: error,
+  } = useContext(ReportContext);
   const { path, intro, form } = pageJson;
 
   const temporaryHydrationData = {
@@ -54,17 +63,14 @@ export const McparReportPage = ({ pageJson }: Props) => {
         programName: programName,
         status: "In Progress",
       };
-      try {
-        await writeReport(report);
-        await writeReportStatus(reportStatus);
-      } catch (error: any) {
-        setError(true);
-      }
+      updateReportData(report);
+      updateReportStatus(reportStatus);
     }
     navigate(nextRoute);
   };
+  console.log("reportData", reportData);
   // TODO: HYDRATION
-  form.fields = hydrateFormFields(form.fields, temporaryHydrationData);
+  form.fields = hydrateFormFields(form.fields, reportData?.report);
 
   return (
     <ReportPage data-testid={form.id}>

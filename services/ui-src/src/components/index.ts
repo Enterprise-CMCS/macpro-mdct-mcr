@@ -50,6 +50,6 @@ export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // reports
-export { ReportProvider } from "./reports/ReportProvider";
+export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables
 export { Table } from "./tables/Table";
