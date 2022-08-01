@@ -5,9 +5,9 @@ import { Heading, Link, Text } from "@chakra-ui/react";
 // types
 import { AnyObject } from "types";
 
-// return
-export const parseHtmlText = (elementArray: AnyObject[]) => {
-  // define custom elements
+// return created elements from custom html array
+export const parseCustomHtml = (elementArray: AnyObject[]) => {
+  // TODO: consider setting default props here as needed
   const customElementMap: any = {
     externalLink: Link,
     internalLink: RouterLink,

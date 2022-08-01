@@ -10,7 +10,7 @@ import {
   useUser,
   writeReport,
   writeReportStatus,
-  parseHtmlText,
+  parseCustomHtml,
 } from "utils";
 import { AnyObject, UserRoles } from "types";
 // form data
@@ -104,9 +104,7 @@ const ReportPageIntro = ({ text }: ReportPageIntroI) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {info && typeof info === "object" && (
-        <Box sx={sx.infoTextBox}>{parseHtmlText(info)}</Box>
-      )}
+      {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );
 };
@@ -115,7 +113,7 @@ interface ReportPageIntroI {
   text: {
     section: string;
     subsection: string;
-    info?: string;
+    info?: AnyObject[];
   };
 }
 
@@ -177,7 +175,16 @@ const sx = {
   },
   infoTextBox: {
     marginTop: "2rem",
-    color: "palette.gray",
+    // TODO: finalize inline link styles with design and move this to theme.ts
+    span: {
+      color: "palette.gray",
+    },
+    a: {
+      color: "palette.main",
+      "&:hover": {
+        color: "palette.main_darker",
+      },
+    },
   },
   footerBox: {
     marginTop: "3.5rem",

@@ -32,6 +32,13 @@
         "props": {
           "to": "/admin"
         }
+      },
+      {
+        "type": "text",
+        "content": ".",
+        "props": {
+          "as": "span"
+        }
       }
     ]
   },
