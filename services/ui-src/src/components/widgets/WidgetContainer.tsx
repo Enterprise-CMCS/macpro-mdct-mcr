@@ -7,26 +7,27 @@ import { iconlessWidget, iconWidget, imageWidget } from "types";
 import { makeMediaQueryClasses } from "utils";
 
 export const widgetSelector = (widget: any, index: number) => {
+  const key = `widget-${index}`;
   switch (widget.type) {
     case "iconWidget":
       return (
         <IconWidget
           content={widget.content as iconWidget["content"]}
-          key={`widget-${index}`}
+          key={key}
         />
       );
     case "iconlessWidget":
       return (
         <IconlessWidget
           content={widget.content as iconlessWidget["content"]}
-          key={`widget-${index}`}
+          key={key}
         />
       );
     case "imageWidget":
       return (
         <ImageWidget
           content={widget.content as imageWidget["content"]}
-          key={`widget-${index}`}
+          key={key}
         />
       );
     default:
