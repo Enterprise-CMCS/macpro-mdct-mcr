@@ -19,7 +19,7 @@ export * from "./reports/routing";
 export * from "./other/email";
 export * from "./other/focusElement";
 export * from "./other/mask";
-export * from "./other/parsing";
+export * from "./other/parseCustomHtml";
 export * from "./other/scrollToTop";
 export * from "./other/time";
 export * from "./other/useBreakpoint";
