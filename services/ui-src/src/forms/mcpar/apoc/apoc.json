@@ -6,10 +6,8 @@
     "info": [
       {
         "type": "text",
-        "content": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers. Here is an ",
-        "props": {
-          "as": "span"
-        }
+        "as": "span",
+        "content": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers. Here is an "
       },
       {
         "type": "externalLink",
@@ -21,10 +19,8 @@
       },
       {
         "type": "text",
-        "content": " and an ",
-        "props": {
-          "as": "span"
-        }
+        "as": "span",
+        "content": " and an "
       },
       {
         "type": "internalLink",
@@ -35,10 +31,8 @@
       },
       {
         "type": "text",
-        "content": ".",
-        "props": {
-          "as": "span"
-        }
+        "as": "span",
+        "content": "."
       }
     ]
   },

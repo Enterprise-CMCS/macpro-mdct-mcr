@@ -12,7 +12,7 @@ import {
   writeReportStatus,
   parseCustomHtml,
 } from "utils";
-import { AnyObject, UserRoles } from "types";
+import { AnyObject, CustomHtmlElement, UserRoles } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
@@ -113,7 +113,7 @@ interface ReportPageIntroI {
   text: {
     section: string;
     subsection: string;
-    info?: AnyObject[];
+    info?: CustomHtmlElement[];
   };
 }
 

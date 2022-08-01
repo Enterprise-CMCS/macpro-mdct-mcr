@@ -139,3 +139,10 @@ export interface TableContentShape {
   headRow?: string[];
   bodyRows: string[][];
 }
+
+export interface CustomHtmlElement {
+  type: string;
+  content: string;
+  as?: string;
+  props: AnyObject;
+}
