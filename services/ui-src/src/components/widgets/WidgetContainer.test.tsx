@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { WidgetContainer } from "./WidgetContainer";
+import { IconlessWidget, IconWidget, ImageWidget } from "components";
+import { WidgetContainer, widgetSelector } from "./WidgetContainer";
+// utils
+import { iconlessWidget, iconWidget, imageWidget } from "types";
 // assets
 import NavigationSectionsImage from "../../../assets/images/NavigationSections_2x.png";
 import greenSpreadsheetIcon from "../../../assets/icons/icon_spreadsheet_green.png";
@@ -49,6 +52,36 @@ describe("Test WidgetContainer with all props", () => {
     render(widgetContainer);
     expect(screen.getByTestId("widget-container")).toBeVisible();
     expect(screen.getByTestId("widget-container").children.length).toBe(3);
+  });
+});
+
+describe("Test WidgetContainer Switch statement", () => {
+  it("should return an ImageWidget", () => {
+    expect(widgetSelector(widgets[0], 0)).toEqual(
+      <ImageWidget
+        content={widgets[0].content as imageWidget["content"]}
+        key={`widget-${0}`}
+      />
+    );
+  });
+  it("should return an IconWidget", () => {
+    expect(widgetSelector(widgets[1], 1)).toEqual(
+      <IconWidget
+        content={widgets[1].content as iconWidget["content"]}
+        key={`widget-${1}`}
+      />
+    );
+  });
+  it("should return an IconlessWidget", () => {
+    expect(widgetSelector(widgets[2], 2)).toEqual(
+      <IconlessWidget
+        content={widgets[2].content as iconlessWidget["content"]}
+        key={`widget-${2}`}
+      />
+    );
+  });
+  it("should return an nothing", () => {
+    expect(widgetSelector({ type: "nulltype", content: [] }, 3)).toEqual(null);
   });
 });
 
