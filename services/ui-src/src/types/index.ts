@@ -142,7 +142,7 @@ export interface iconWidget {
     iconDescription: string;
     title: string;
     descriptionList: string[];
-    additionalInfo: string;
+    additionalInfo?: string;
   };
 }
 
