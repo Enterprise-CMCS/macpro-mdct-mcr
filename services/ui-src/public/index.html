@@ -30,11 +30,8 @@
         production: "prod",
       };
       var tealiumEnv = tealiumEnvMap[nodeEnv];
-      // var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
-      // var tealiumScript = document.createElement("script");
-      // tealiumScript.id = "tealium-sync";
-      // tealiumScript.src = tealiumUrl;
-      // document.getElementsByTagName("head")[0].appendChild(tealiumScript);
+      var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
+      document.write(`<script src="${tealiumUrl}" async><\/script>`);
     </script>
   </head>
   <body>
