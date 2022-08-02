@@ -5,7 +5,7 @@ import { Box } from "@chakra-ui/react";
 import { ChoiceListField } from "components";
 // utils
 import { makeMediaQueryClasses } from "utils";
-import { AnyObject, InputChangeEvent, FieldChoice } from "types";
+import { InputChangeEvent, ChoiceFieldProps } from "types";
 
 export const CheckboxField = ({
   name,
@@ -13,7 +13,7 @@ export const CheckboxField = ({
   choices,
   sxOverride,
   ...props
-}: Props) => {
+}: ChoiceFieldProps) => {
   const mqClasses = makeMediaQueryClasses();
   const [fieldValues, setFieldValues] = useState<string[] | null>(null);
 
@@ -56,11 +56,3 @@ export const CheckboxField = ({
     </Box>
   );
 };
-
-interface Props {
-  name: string;
-  label: string;
-  choices: FieldChoice[];
-  sxOverride?: AnyObject;
-  [key: string]: any;
-}
