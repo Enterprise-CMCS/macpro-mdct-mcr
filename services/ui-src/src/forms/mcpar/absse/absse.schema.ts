@@ -6,6 +6,6 @@ export default object({
     .of(
       string()
         .required("BSS entity name is required")
-        .typeError("BSS entity name must be a string")
+        .typeError("Invalid entity name")
     ),
 });
