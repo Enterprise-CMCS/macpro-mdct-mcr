@@ -3,12 +3,13 @@ import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
-import { InputChangeEvent, AnyObject } from "types";
+import { makeMediaQueryClasses, parseCustomHtml } from "utils";
+import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,
   label,
+  hint,
   placeholder,
   sxOverride,
   nested,
@@ -40,6 +41,8 @@ export const TextField = ({
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
+  const parsedHint = hint && parseCustomHtml(hint);
+
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
@@ -49,6 +52,7 @@ export const TextField = ({
         id={name}
         name={name}
         label={label}
+        hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
@@ -68,6 +72,7 @@ interface dynamicFieldInput {
 interface Props {
   name: string;
   label: string;
+  hint?: CustomHtmlElement[];
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;

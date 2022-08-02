@@ -61,6 +61,14 @@ export interface FieldChoice {
   checkedChildren?: React.ReactNode;
 }
 
+export interface ChoiceFieldProps {
+  name: string;
+  label: string;
+  choices: FieldChoice[];
+  sxOverride?: AnyObject;
+  [key: string]: any;
+}
+
 export interface FormValidation {
   type: string;
   options?: AnyObject;
