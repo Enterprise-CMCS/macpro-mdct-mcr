@@ -20,9 +20,40 @@
       href="%PUBLIC_URL%/favicon-16x16.png"
       sizes="16x16"
     />
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+      var nodeEnv = window._env_.STAGE;
+      var tealiumEnvMap = {
+        val: "qa",
+        production: "prod",
+      };
+      var tealiumEnv = tealiumEnvMap[nodeEnv] || "dev";
+      var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
+      document.write(`<script src="${tealiumUrl}" async><\/script>`);
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+      window.utag_cfg_ovrd = { noview: true };
+    </script>
+    <script>
+      (function (t, e, a, l, i, u, m) {
+        t = "cmsgov/cms-mdctmcr";
+        e = tealiumEnv;
+        a = "/" + t + "/" + e + "/utag.js";
+        l = "//tags.tiqcdn.com/utag" + a;
+        i = document;
+        u = "script";
+        m = i.createElement(u);
+        m.src = l;
+        m.type = "text/java" + u;
+        m.async = true;
+        l = i.getElementsByTagName(u)[0];
+        l.parentNode.insertBefore(m, l);
+      })();
+    </script>
     <div id="root"></div>
   </body>
 </html>
