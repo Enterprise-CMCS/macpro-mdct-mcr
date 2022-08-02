@@ -2,7 +2,48 @@
   "path": "/mcpar/test",
   "intro": {
     "section": "Test",
-    "subsection": "Test form"
+    "subsection": "Test form",
+    "info": [
+      {
+        "type": "html",
+        "content": "<span><em>whatever</em></span>"
+      },
+      {
+        "type": "text",
+        "as": "span",
+        "content": "Here is an "
+      },
+      {
+        "type": "externalLink",
+        "content": "external link",
+        "props": {
+          "href": "https://www.google.com",
+          "target": "_blank"
+        }
+      },
+      {
+        "type": "text",
+        "as": "em",
+        "content": " italic "
+      },
+      {
+        "type": "text",
+        "as": "span",
+        "content": " and an "
+      },
+      {
+        "type": "internalLink",
+        "content": "internal link",
+        "props": {
+          "to": "/admin"
+        }
+      },
+      {
+        "type": "text",
+        "as": "span",
+        "content": "."
+      }
+    ]
   },
   "form": {
     "id": "test",
@@ -120,6 +161,29 @@
               "value": "option2"
             }
           ]
+        }
+      },
+      {
+        "id": "test3",
+        "type": "number",
+        "props": {
+          "label": "Non-Masked Numberfield"
+        }
+      },
+      {
+        "id": "test4",
+        "type": "number",
+        "props": {
+          "label": "Custom Comma-separated Numberfield",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "test5",
+        "type": "number",
+        "props": {
+          "label": "Currency Numberfield",
+          "mask": "currency"
         }
       }
     ]

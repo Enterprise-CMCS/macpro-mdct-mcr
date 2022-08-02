@@ -22,7 +22,7 @@ const config = {
     REDIRECT_SIGNIN: window._env_.COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: window._env_.COGNITO_REDIRECT_SIGNOUT,
   },
-  currentReportingYear: "2021",
+  STAGE: window._env_.STAGE,
 };
 
 export default config;

@@ -33,6 +33,9 @@ Cypress.Commands.add("runAccessibilityTests", () => {
     {
       values: ["wcag2a", "wcag2aa"],
       includedImpacts: ["minor", "moderate", "serious", "critical"],
+      rules: {
+        "duplicate-id": { enabled: false },
+      },
     },
     terminalLog
   );

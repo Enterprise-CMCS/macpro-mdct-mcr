@@ -3,7 +3,12 @@
   "intro": {
     "section": "Section A: Program Information",
     "subsection": "Point of Contact",
-    "info": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
+    "info": [
+      {
+        "type": "text",
+        "content": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
+      }
+    ]
   },
   "form": {
     "id": "apoc",
@@ -17,7 +22,13 @@
         "hydrate": "stateName",
         "props": {
           "label": "A.1 State name",
-          "hint": "Auto-populated from your account profile.",
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Auto-populated from your account profile."
+            }
+          ],
           "disabled": true
         }
       },
@@ -26,7 +37,13 @@
         "type": "text",
         "props": {
           "label": "A.2a Contact name",
-          "hint": "First and last name of the contact person."
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "First and last name of the contact person."
+            }
+          ]
         }
       },
       {
@@ -34,7 +51,13 @@
         "type": "text",
         "props": {
           "label": "A.2b Contact email address",
-          "hint": "Enter email address."
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Enter email address."
+            }
+          ]
         }
       },
       {
@@ -42,7 +65,13 @@
         "type": "text",
         "props": {
           "label": "A.3a Submitter name",
-          "hint": "Auto-populated from your account profile. Correct if needed."
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Auto-populated from your account profile. Correct if needed."
+            }
+          ]
         }
       },
       {
@@ -50,7 +79,13 @@
         "type": "text",
         "props": {
           "label": "A.3b Submitter email address",
-          "hint": "Auto-populated from your account profile. Correct if needed."
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Auto-populated from your account profile. Correct if needed."
+            }
+          ]
         }
       },
       {
@@ -59,7 +94,13 @@
         "hydrate": "reportSubmissionDate",
         "props": {
           "label": "A.4 Date of report submission",
-          "hint": "CMS receives this date upon submission of this MCPAR report.",
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "CMS receives this date upon submission of this MCPAR report."
+            }
+          ],
           "disabled": true
         }
       }

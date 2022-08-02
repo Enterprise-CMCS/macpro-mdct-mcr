@@ -113,3 +113,21 @@ export const mockBannerDataEmpty = {
   startDate: "",
   endDate: "",
 };
+
+export const mockReportData = {
+  key: "AB2022",
+  programName: "testProgram",
+  report: {
+    field1: "value1",
+    field2: "value2",
+    num1: 0,
+    num2: 1,
+    array: ["array1, array2"],
+  },
+};
+
+export const mockReportStatusData = {
+  key: "AB2022",
+  programName: "testProgram",
+  status: "In Progress",
+};

@@ -4,6 +4,8 @@ export * from "./api/providers/QueryProvider";
 export * from "./api/requestMethods/banner";
 export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
+export * from "./api/requestMethods/report";
+export * from "./api/requestMethods/reportStatus";
 // auth
 export * from "./auth/useUser";
 export * from "./auth/userContext";
@@ -13,10 +15,13 @@ export * from "./forms/forms";
 // reports
 export * from "./reports/reports";
 export * from "./reports/routing";
+// tracking
+export * from "./tracking/tealium";
 // other
 export * from "./other/email";
 export * from "./other/focusElement";
+export * from "./other/mask";
+export * from "./other/parsing";
 export * from "./other/scrollToTop";
 export * from "./other/time";
 export * from "./other/useBreakpoint";
-export * from "./other/useScrollPosition";

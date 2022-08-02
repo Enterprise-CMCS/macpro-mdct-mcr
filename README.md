@@ -61,6 +61,8 @@ S3_LOCAL_ENDPOINT=http://localhost:4569
 S3_ATTACHMENTS_BUCKET_NAME=local-uploads
 URL=http://localhost/3000
 BANNER_TABLE_NAME=local-banners
+REPORT_TABLE_NAME=local-reports
+REPORT_STATUS_TABLE_NAME=local-reports-status
 TEMPLATE_BUCKET=local-uploads
 DISABLE_ESLINT_PLUGIN=true
 COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
@@ -83,6 +85,7 @@ COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
 S3_ATTACHMENTS_BUCKET_REGION=us-east-1
 S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
 S3_LOCAL_ENDPOINT=http://localhost:4569
+STAGE=local
 ```
 
 ### Logging in

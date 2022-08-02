@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { SidebarOpenContext } from "components";
 // utils
-import { useBreakpoint, useScrollPosition } from "utils";
+import { makeMediaQueryClasses } from "utils";
 // data
 import mcparRouteStructure from "forms/mcpar/reportStructure";
 import { nonSidebarMcparRoutes } from "forms/mcpar";
@@ -17,30 +16,13 @@ interface LinkItemProps {
 }
 
 export const Sidebar = () => {
-  const { isDesktop } = useBreakpoint();
+  const mqClasses = makeMediaQueryClasses();
+  const [isOpen, toggleSidebar] = useState(true);
   const { pathname } = useLocation();
 
   const isMcparReport =
     pathname.includes("/mcpar/") &&
     !nonSidebarMcparRoutes.find((route) => route === pathname);
-
-  const { sidebarIsOpen, setSidebarIsOpen } = useContext(SidebarOpenContext);
-  const [navHeight, setNavHeight] = useState<number>(0);
-
-  const scrollPosition = useScrollPosition();
-
-  useEffect(() => {
-    const headerBottom = document
-      .getElementById("header")
-      ?.getBoundingClientRect()?.bottom!;
-    const footerTop = document.getElementById("footer")?.getBoundingClientRect()
-      ?.top!;
-    const titleBoxHeight = document
-      .getElementById("sidebar-title-box")
-      ?.getBoundingClientRect()?.height!;
-    const newNavHeight = footerTop! - headerBottom! - titleBoxHeight || 0;
-    setNavHeight(newNavHeight);
-  }, [pathname, scrollPosition]);
 
   return (
     <>
@@ -48,7 +30,7 @@ export const Sidebar = () => {
         <Box
           id="sidebar"
           sx={sx.root}
-          className={sidebarIsOpen ? "open" : "closed"}
+          className={`${mqClasses} ${isOpen ? "open" : "closed"}`}
           role="navigation"
           aria-label="Sidebar menu"
           data-testid="sidebar-nav"
@@ -56,23 +38,22 @@ export const Sidebar = () => {
           <Box
             as="button"
             sx={sx.closeButton}
-            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+            onClick={() => toggleSidebar(!isOpen)}
             aria-label="Open/Close sidebar menu"
           >
             <ArrowIcon
               title="closeNavBarButton"
-              direction={sidebarIsOpen ? "left" : "right"}
+              direction={isOpen ? "left" : "right"}
             />
           </Box>
           <Box id="sidebar-title-box" sx={sx.topBox}>
-            <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
+            <Heading sx={sx.title} className={mqClasses}>
+              MCPAR Report Submission Form
+            </Heading>
           </Box>
           <Box
-            sx={{
-              ...sx.navSectionsBox,
-              height: isDesktop ? navHeight : "auto",
-            }}
-            className="nav-sections-box"
+            sx={sx.navSectionsBox}
+            className={`${mqClasses} nav-sections-box`}
           >
             {mcparRouteStructure.map((section) => (
               <NavSection key={section.name} section={section} level={1} />
@@ -145,11 +126,12 @@ const NavItem = ({
   hasChildren,
   isOpen,
 }: NavItemProps) => {
+  const mqClasses = makeMediaQueryClasses();
   const currentPath = window.location.pathname;
   const isCurrentPath = optionPath === currentPath;
   return (
     <Flex sx={sx.navItemFlex} className={isCurrentPath ? "selected" : ""}>
-      <Text sx={sx.navItemTitle} className={`level-${level}`}>
+      <Text sx={sx.navItemTitle} className={`level-${level} ${mqClasses}`}>
         {name}
       </Text>
       {!!hasChildren && (
@@ -164,17 +146,26 @@ const NavItem = ({
 
 const sx = {
   root: {
-    position: "fixed",
-    zIndex: "dropdown",
-    height: "100vh",
     width: "20rem",
+    position: "relative",
     bg: "palette.gray_lightest",
     transition: "all 0.3s ease",
     "&.open": {
       marginLeft: "-1rem",
+      "&.desktop": {
+        marginLeft: "-2rem",
+      },
     },
     "&.closed": {
       marginLeft: "-21rem",
+      "&.desktop": {
+        marginLeft: "-22rem",
+      },
+    },
+    "&.tablet, &.mobile": {
+      position: "fixed",
+      zIndex: "dropdown",
+      height: "100%",
     },
   },
   topBox: {
@@ -184,7 +175,10 @@ const sx = {
     fontSize: "xl",
     fontWeight: "bold",
     width: "15rem",
-    padding: "1rem 1.5rem",
+    padding: "1rem 1rem",
+    "&.desktop": {
+      padding: "1rem 0 1rem 2rem",
+    },
   },
   closeButton: {
     position: "absolute",
@@ -204,9 +198,12 @@ const sx = {
     },
   },
   navSectionsBox: {
-    overflowY: "scroll",
-    height: "500px",
-    overflowX: "hidden",
+    "&.tablet, &.mobile": {
+      height: "100%",
+      paddingBottom: "16rem",
+      overflowY: "scroll",
+      overflowX: "hidden",
+    },
   },
   navItemFlex: {
     flexDirection: "column",
@@ -240,13 +237,22 @@ const sx = {
     marginY: "10px",
     textAlign: "left",
     "&.level-1": {
-      marginLeft: "1.5rem",
+      marginLeft: "1rem",
+      "&.desktop": {
+        marginLeft: "2rem",
+      },
     },
     "&.level-2": {
-      marginLeft: "2.5rem",
+      marginLeft: "2rem",
+      "&.desktop": {
+        marginLeft: "3rem",
+      },
     },
     "&.level-3": {
-      marginLeft: "3.5rem",
+      marginLeft: "3rem",
+      "&.desktop": {
+        marginLeft: "4rem",
+      },
     },
   },
 };
