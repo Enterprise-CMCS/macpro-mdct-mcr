@@ -16,7 +16,13 @@
         "hydrate": "reportingPeriodStartDate",
         "props": {
           "label": "A.5a Reporting period start date",
-          "hint": "Auto-populated from report dashboard.",
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Auto-populated from report dashboard."
+            }
+          ],
           "disabled": true
         }
       },
@@ -26,7 +32,13 @@
         "hydrate": "reportingPeriodEndDate",
         "props": {
           "label": "A.5b Reporting period end date",
-          "hint": "Auto-populated from report dashboard.",
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Auto-populated from report dashboard."
+            }
+          ],
           "disabled": true
         }
       },
@@ -36,7 +48,13 @@
         "hydrate": "programName",
         "props": {
           "label": "A.6 Program name",
-          "hint": "Auto-populated from report dashboard.",
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Auto-populated from report dashboard."
+            }
+          ],
           "disabled": true
         }
       }
