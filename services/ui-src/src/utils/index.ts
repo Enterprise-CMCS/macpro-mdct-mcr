@@ -15,6 +15,8 @@ export * from "./forms/forms";
 // reports
 export * from "./reports/reports";
 export * from "./reports/routing";
+// tracking
+export * from "./tracking/tealium";
 // other
 export * from "./other/email";
 export * from "./other/focusElement";
