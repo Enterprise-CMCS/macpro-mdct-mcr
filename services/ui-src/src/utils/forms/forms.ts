@@ -11,7 +11,14 @@ import {
 } from "components";
 // types
 import { AnyObject, FormField } from "types";
-import { number } from "yargs";
+
+const temporaryHydrationData: AnyObject = {
+  stateName: "Temporary state name",
+  programName: "Temporary program name",
+  reportingPeriodStartDate: "xx/xx/xxxx",
+  reportingPeriodEndDate: "xx/xx/xxxx",
+  reportSubmissionDate: "xx/xx/xxxx",
+};
 
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
@@ -41,22 +48,27 @@ export const hydrateFormFields = (
   formFields: FormField[],
   data?: AnyObject
 ) => {
-  console.log("time to hydrate");
-  if (data) {
-    formFields.forEach((field: FormField) => {
-      // get index of field in form
-      const fieldFormIndex = formFields.indexOf(field!);
-      console.log("field: ", field);
-      console.log("data: ", data);
-      console.log("typeof data[field.id]: ", typeof data[field.id]);
-      // add value attribute with hydration value
+  formFields.forEach((field: FormField) => {
+    // get index of field in form
+    const fieldFormIndex = formFields.indexOf(field!);
+    // add value attribute with hydration value
+    let hydrationValue = "";
+    if (data) {
       if (typeof data[field.id] === "object") {
         // populate array fields here
+        for (let i = 0; i < data[field.id].length; i++) {
+          // TODO: hydrate prop is getting array, but not putting values in textField
+          hydrationValue = data[field.id][i] || "ERROR";
+          formFields[fieldFormIndex].props!.hydrate += hydrationValue;
+        }
       }
-      const hydrationValue = data[field.id] || "ERROR";
+      hydrationValue = data[field.id] || "ERROR";
       formFields[fieldFormIndex].props!.hydrate = hydrationValue;
-    });
-  }
+    } else {
+      hydrationValue = temporaryHydrationData[field?.hydrate!] || "ERROR";
+      formFields[fieldFormIndex].props!.hydrate = hydrationValue;
+    }
+  });
   return formFields;
 };
 

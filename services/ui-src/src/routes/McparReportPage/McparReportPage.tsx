@@ -20,23 +20,12 @@ import { reportSchema } from "forms/mcpar/reportSchema";
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const {
-    // reportStatus,
     reportData,
-    fetchReportData,
     updateReportData,
-    fetchReportStatus,
     updateReportStatus,
     errorMessage: error,
   } = useContext(ReportContext);
   const { path, intro, form } = pageJson;
-
-  const temporaryHydrationData = {
-    stateName: "Temporary state name",
-    programName: "Temporary program name",
-    reportingPeriodStartDate: "xx/xx/xxxx",
-    reportingPeriodEndDate: "xx/xx/xxxx",
-    reportSubmissionDate: "xx/xx/xxxx",
-  };
 
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
@@ -68,7 +57,6 @@ export const McparReportPage = ({ pageJson }: Props) => {
     }
     navigate(nextRoute);
   };
-  console.log("reportData", reportData);
   // TODO: HYDRATION
   form.fields = hydrateFormFields(form.fields, reportData?.report);
 
