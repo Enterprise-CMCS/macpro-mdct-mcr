@@ -12,7 +12,7 @@ export const checkCurrentRouteAccessibility = () => {
     const size = breakpoints[deviceSize];
     it(
       `Has no basic accessibility issues on ${deviceSize}`,
-      { retries: 1 },
+      { retries: 0 },
       () => {
         cy.viewport(...size);
         cy.runAccessibilityTests();

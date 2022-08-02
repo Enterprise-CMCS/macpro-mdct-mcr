@@ -36,7 +36,6 @@ custom:
   cognito_user_pool_client_domain: ${cf:ui-auth-${self:custom.stage}.UserPoolClientDomain}
   s3_attachments_bucket_region: ${cf:uploads-${self:custom.stage}.Region}
   s3_attachments_bucket_name: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName}
-  tealium_env: ${env:REACT_APP_TEALIUM_ENV, ssm:/configuration/${self:custom.stage}/tealium/env, ssm:/configuration/default/tealium/env}
   ui_s3_bucket_name: ${cf:ui-${self:custom.stage}.S3BucketName}
   ui_cloudfront_distribution_id: ${cf:ui-${self:custom.stage}.CloudFrontDistributionId}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
@@ -63,7 +62,6 @@ custom:
         export COGNITO_USER_POOL_CLIENT_DOMAIN=${self:custom.cognito_user_pool_client_domain}
         export COGNITO_REDIRECT_SIGNIN=${self:custom.application_endpoint_url}
         export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
-        export REACT_APP_TEALIUM_ENV=${self:custom.tealium_env}
         export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
         export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}
         export STAGE=${self:custom.stage}
