@@ -85,6 +85,7 @@ COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
 S3_ATTACHMENTS_BUCKET_REGION=us-east-1
 S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
 S3_LOCAL_ENDPOINT=http://localhost:4569
+STAGE=local
 ```
 
 ### Logging in
