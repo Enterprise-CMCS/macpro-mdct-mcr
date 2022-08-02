@@ -58,16 +58,22 @@ export const hydrateFormFields = (
         // populate array fields here
         for (let i = 0; i < data[field.id].length; i++) {
           // TODO: hydrate prop is getting array, but not putting values in textField
+          console.log("data[field.id][i]", data[field.id][i]);
+          console.log(
+            "formFields[fieldFormIndex].props!.hydrate",
+            formFields[fieldFormIndex].props!.hydrate
+          );
           hydrationValue = data[field.id][i] || "ERROR";
           formFields[fieldFormIndex].props!.hydrate += hydrationValue;
         }
       }
       hydrationValue = data[field.id] || "ERROR";
       formFields[fieldFormIndex].props!.hydrate = hydrationValue;
-    } else {
-      hydrationValue = temporaryHydrationData[field?.hydrate!] || "ERROR";
-      formFields[fieldFormIndex].props!.hydrate = hydrationValue;
     }
+    // else {
+    //   // hydrationValue = temporaryHydrationData[field?.hydrate!] || "ERROR";
+    //   // formFields[fieldFormIndex].props!.hydrate = hydrationValue;
+    // }
   });
   return formFields;
 };
