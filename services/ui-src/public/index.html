@@ -23,7 +23,13 @@
     />
     <!-- Tealium Analytics Tag Manager -->
     <script>
-      var tealiumEnv = window._env_.REACT_APP_TEALIUM_ENV;
+      var nodeEnv = "%NODE_ENV%";
+      var tealiumEnvMap = {
+        development: "dev",
+        val: "qa",
+        production: "prod",
+      };
+      var tealiumEnv = tealiumEnvMap[nodeEnv];
       var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
       document.write(`<script src="${tealiumUrl}" async><\/script>`);
     </script>
