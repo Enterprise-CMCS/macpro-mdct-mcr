@@ -12,14 +12,6 @@ import {
 // types
 import { AnyObject, FormField } from "types";
 
-const temporaryHydrationData: AnyObject = {
-  stateName: "Temporary state name",
-  programName: "Temporary program name",
-  reportingPeriodStartDate: "xx/xx/xxxx",
-  reportingPeriodEndDate: "xx/xx/xxxx",
-  reportSubmissionDate: "xx/xx/xxxx",
-};
-
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
@@ -45,35 +37,12 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
 };
 
 export const hydrateFormFields = (
-  formFields: FormField[],
-  data?: AnyObject
+  formFields: FormField[], // current page form fields
+  data: AnyObject // data from db with which to hydrate
 ) => {
   formFields.forEach((field: FormField) => {
-    // get index of field in form
     const fieldFormIndex = formFields.indexOf(field!);
-    // add value attribute with hydration value
-    let hydrationValue = "";
-    if (data) {
-      if (typeof data[field.id] === "object") {
-        // populate array fields here
-        for (let i = 0; i < data[field.id].length; i++) {
-          // TODO: hydrate prop is getting array, but not putting values in textField
-          console.log("data[field.id][i]", data[field.id][i]);
-          console.log(
-            "formFields[fieldFormIndex].props!.hydrate",
-            formFields[fieldFormIndex].props!.hydrate
-          );
-          hydrationValue = data[field.id][i] || "ERROR";
-          formFields[fieldFormIndex].props!.hydrate += hydrationValue;
-        }
-      }
-      hydrationValue = data[field.id] || "ERROR";
-      formFields[fieldFormIndex].props!.hydrate = hydrationValue;
-    }
-    // else {
-    //   // hydrationValue = temporaryHydrationData[field?.hydrate!] || "ERROR";
-    //   // formFields[fieldFormIndex].props!.hydrate = hydrationValue;
-    // }
+    formFields[fieldFormIndex].props!.hydrate = data[field.id];
   });
   return formFields;
 };

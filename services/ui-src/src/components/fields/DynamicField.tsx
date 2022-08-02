@@ -16,9 +16,8 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   });
 
   useEffect(() => {
-    if (fields.length === 0) append("");
-    if (props?.hydrate) {
-      console.log("props.hydrate", props.hydrate);
+    if (fields.length === 0) {
+      append(props?.hydrate || "");
     }
   });
 
@@ -35,7 +34,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                 index,
                 inputRef: () => form.register,
               }}
-              hydrate={props?.hydrate[index]}
+              hydrate={props?.hydrate?.[index]}
               sxOverride={sx.textFieldOverride}
             />
             {index != 0 && (

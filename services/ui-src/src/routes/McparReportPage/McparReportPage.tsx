@@ -57,8 +57,10 @@ export const McparReportPage = ({ pageJson }: Props) => {
     }
     navigate(nextRoute);
   };
-  // TODO: HYDRATION
-  form.fields = hydrateFormFields(form.fields, reportData?.report);
+
+  if (reportData?.report) {
+    form.fields = hydrateFormFields(form.fields, reportData.report);
+  }
 
   return (
     <ReportPage data-testid={form.id}>
