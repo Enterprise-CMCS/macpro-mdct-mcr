@@ -33,23 +33,16 @@ export const CheckboxField = ({
     setFieldValues(newFieldValues);
   };
 
-  // update form data
   useEffect(() => {
+    // update form data
     if (fieldValues) {
       form.setValue(name, fieldValues, { shouldValidate: true });
-
-      // get all field choice dom elements
-      const allFieldOptions = Array.from(document.getElementsByName(name));
-      // for each field choice, get dom element and check against fieldValues (from state)
+      // update choice checked status
       choices.forEach((choice) => {
-        // get the matching choice
-        const optionElement = allFieldOptions.find(
-          (option: any) => option.value === choice.value
-        );
-
-        // if the choice is in field values, check it; if not, uncheck it
         if (fieldValues.includes(choice.value)) {
-          optionElement?.setAttribute("checked", "true");
+          choice.checked = true;
+        } else {
+          choice.checked = false;
         }
       });
     }

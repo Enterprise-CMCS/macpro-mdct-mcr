@@ -27,8 +27,7 @@ export const ChoiceListField = ({
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
-        const isNested = true;
-        const formattedChildren = formFieldFactory(choiceChildren, isNested);
+        const formattedChildren = formFieldFactory(choiceChildren, true);
         choiceObject.checkedChildren = formattedChildren;
       }
       delete choiceObject.children;
