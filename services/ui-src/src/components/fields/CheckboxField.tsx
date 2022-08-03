@@ -22,16 +22,22 @@ export const CheckboxField = ({
 
   // update local state
   const onChangeHandler = (event: InputChangeEvent) => {
+    console.log("event", event);
     const checked = event.target.checked;
     const clickedChoice = event.target.value;
-    setFieldValues((fieldValues) => {
-      fieldValues = fieldValues || [];
-      // if checked, add to values; if unchecked, remove
-      return checked
-        ? [...fieldValues, clickedChoice]
-        : fieldValues.filter((value) => value !== clickedChoice);
-    });
+    const currentFieldValues = fieldValues || [];
+    const newFieldValues = checked
+      ? [...currentFieldValues, clickedChoice]
+      : currentFieldValues.filter((value) => value !== clickedChoice);
+    setFieldValues(newFieldValues);
+    if (!checked) {
+      const element: any = document.getElementById(event.target.id)!;
+      element.checked = false;
+      console.log("element", element);
+    }
   };
+
+  console.log("choices", choices);
 
   // update form data
   useEffect(() => {

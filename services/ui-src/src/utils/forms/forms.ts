@@ -42,7 +42,34 @@ export const hydrateFormFields = (
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
-    formFields[fieldFormIndex].props!.hydrate = data[field.id];
+    // parse checked fields
+    if (
+      (field.type === "checkbox" || field.type === "radio") &&
+      typeof data[field.id] === "object"
+    ) {
+      console.log("hydrating choices");
+      const choices = formFields[fieldFormIndex].props!.choices;
+      for (let i = 0; i < data[field.id].length; i++) {
+        choices.forEach((choice: any) => {
+          if (data[field.id][i] === choice.value) {
+            // Set matching field to checked
+            const choiceFieldIndex = choices.indexOf(choice);
+
+            // Recurse if choice has child fields
+            // if (choices[choiceFieldIndex].children) {
+            //   hydrateFormFields(
+            //     formFields[fieldFormIndex].props!.choices[choiceFieldIndex]
+            //       .children,
+            //     data
+            //   );
+            // }
+          }
+        });
+      }
+    } else {
+      // fill text boxes
+      formFields[fieldFormIndex].props!.hydrate = data[field.id];
+    }
   });
   return formFields;
 };
