@@ -38,12 +38,8 @@ export const CheckboxField = ({
     if (fieldValues) {
       form.setValue(name, fieldValues, { shouldValidate: true });
       // update choice checked status
-      choices.forEach((choice) => {
-        if (fieldValues.includes(choice.value)) {
-          choice.checked = true;
-        } else {
-          choice.checked = false;
-        }
+      choices.forEach((choice: FieldChoice) => {
+        choice.checked = fieldValues.includes(choice.value);
       });
     }
   }, [fieldValues]);
