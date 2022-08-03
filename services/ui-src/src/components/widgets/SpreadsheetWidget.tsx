@@ -1,28 +1,24 @@
 import React from "react";
 // components
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-// utils
-import { iconWidget } from "types";
+// assets
+import greenSpreadsheetIcon from "../../assets/icons/icon_spreadsheet_green.png";
 
-export const IconWidget = ({ content, ...props }: Props) => {
+export const SpreadsheetWidget = ({ content, ...props }: Props) => {
   return (
     <Box {...props}>
-      <Flex
-        sx={sx.container}
-        borderLeft={"4px"}
-        borderColor={content.leftBarColor}
-      >
+      <Flex sx={sx.container}>
         <Flex sx={sx.iconContainer}>
           <Image
-            src={content.icon}
-            alt={content.iconDescription}
+            src={greenSpreadsheetIcon}
+            alt={"Excel Workbook Icon"}
             sx={sx.icon}
           />
         </Flex>
         <Box>
           <Text>{content.title}</Text>
           <Box>
-            {content.descriptionList.map((description, index) => (
+            {content.descriptionList.map((description: any, index: any) => (
               <Text key={index} sx={sx.description}>
                 {description}
               </Text>
@@ -38,13 +34,19 @@ export const IconWidget = ({ content, ...props }: Props) => {
 };
 
 interface Props {
-  content: iconWidget["content"];
+  content: {
+    title: string;
+    descriptionList: string[];
+    additionalInfo?: string;
+  };
   [key: string]: any;
 }
 
 const sx = {
   container: {
     paddingLeft: "1rem",
+    borderLeft: ".3rem solid",
+    borderColor: "palette.success",
   },
   iconContainer: {
     maxWidth: "3rem",

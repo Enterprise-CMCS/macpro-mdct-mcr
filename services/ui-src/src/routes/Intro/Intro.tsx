@@ -1,6 +1,6 @@
 // components
-import { Box, Button, Image, Heading } from "@chakra-ui/react";
-import { BasicPage, Section } from "components";
+import { Box, Button, Image, Heading, Text, Flex } from "@chakra-ui/react";
+import { BasicPage, IntroSection, SpreadsheetWidget } from "components";
 import { useNavigate } from "react-router-dom";
 // utils
 import { makeMediaQueryClasses } from "utils";
@@ -13,6 +13,8 @@ export const Intro = () => {
   const mqClasses = makeMediaQueryClasses();
   const navigate = useNavigate();
 
+  const [section1, section2, section3] = body.sections;
+
   return (
     <BasicPage sx={sx.layout} data-testid="intro-view">
       <Box sx={sx.leadTextBox}>
@@ -21,13 +23,42 @@ export const Intro = () => {
         </Heading>
       </Box>
       <div>
-        {body.sections.map((section, index) => (
-          <Section
-            index={index + 1}
-            content={section}
-            key={`section-${index}`}
-          />
-        ))}
+        <IntroSection index={1} content={section1} key={`section-1`}>
+          <Flex sx={sx.widgetsContainer} className={mqClasses}>
+            <Box sx={sx.imagelessWidgetContainer}>
+              <Text sx={sx.imagelessWidgetTitle}>{section1.widget?.title}</Text>
+              <Box>
+                {section1.widget?.descriptionList.map((description, index) => (
+                  <Text key={index}>{description}</Text>
+                ))}
+              </Box>
+            </Box>
+          </Flex>
+        </IntroSection>
+        <IntroSection index={2} content={section2} key={`section-2`}>
+          <Flex sx={sx.widgetsContainer} className={mqClasses}>
+            <Box>
+              <Image
+                src={section2.img?.src}
+                alt={section2.img?.alt}
+                sx={sx.image}
+              />
+              <Text sx={sx.additionalInfo}>{section2.img?.description}</Text>
+            </Box>
+            <SpreadsheetWidget content={section2.spreadsheetWidget!} />
+          </Flex>
+        </IntroSection>
+        <IntroSection index={3} content={section3} key={`section-3`}>
+          <Flex sx={sx.widgetsContainer} className={mqClasses}>
+            <Box>
+              <Image
+                src={section3.img?.src}
+                alt={section3.img?.alt}
+                sx={sx.image}
+              />
+            </Box>
+          </Flex>
+        </IntroSection>
       </div>
       <Box sx={sx.pageLinkContainer}>
         <Button
@@ -57,6 +88,30 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
+  },
+  widgetsContainer: {
+    marginTop: "1rem",
+    gridGap: "2rem",
+    flexDirection: "column",
+    "&.desktop": {
+      flexDirection: "row",
+    },
+  },
+  imagelessWidgetContainer: {
+    marginTop: "1rem",
+    paddingLeft: "1rem",
+    borderLeft: ".3rem solid",
+    borderColor: "palette.main",
+  },
+  imagelessWidgetTitle: {
+    fontWeight: "bold",
+  },
+  image: {
+    maxWidth: "20rem",
+  },
+  additionalInfo: {
+    marginTop: "1rem",
+    fontSize: "14",
   },
   pageLinkContainer: {
     textAlign: "right",

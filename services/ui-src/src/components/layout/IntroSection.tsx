@@ -1,9 +1,8 @@
-import React from "react";
+import React, { ReactChild } from "react";
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { WidgetContainer } from "components/widgets/WidgetContainer";
 
-export const Section = ({ index, content, ...props }: Props) => {
+export const IntroSection = ({ index, content, children, ...props }: Props) => {
   return (
     <Flex sx={sx.sectionContainer} {...props}>
       <Box>
@@ -16,9 +15,7 @@ export const Section = ({ index, content, ...props }: Props) => {
           {content.header}
         </Heading>
         <Text>{content.body}</Text>
-        <Box>
-          <WidgetContainer widgets={content.widgets} />
-        </Box>
+        {children}
       </Box>
     </Flex>
   );
@@ -29,8 +26,8 @@ interface Props {
   content: {
     header: string;
     body: string;
-    widgets: any[];
   };
+  children?: ReactChild | ReactChild[];
   [key: string]: any;
 }
 

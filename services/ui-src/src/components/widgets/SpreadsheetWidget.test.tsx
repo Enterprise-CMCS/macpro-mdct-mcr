@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
-import { IconWidget } from "components";
+import { SpreadsheetWidget } from "components";
 import greenSpreadsheetIcon from "../../../assets/icons/icon_spreadsheet_green.png";
 
 const fullContent = {
@@ -14,23 +14,23 @@ const fullContent = {
     "Use these guides to understand which sections match specific tabs in the Excel workbook.",
 };
 
-const iconWidgetComponent = (
-  <IconWidget content={fullContent} data-testid="icon-widget" />
+const SpreadsheetWidgetComponent = (
+  <SpreadsheetWidget content={fullContent} data-testid="spreadsheet-widget" />
 );
 
-describe("Test IconWidget with all props", () => {
+describe("Test SpreadsheetWidget with all props", () => {
   beforeEach(() => {
-    render(iconWidgetComponent);
+    render(SpreadsheetWidgetComponent);
   });
 
   test("Component is visible", () => {
-    expect(screen.getByTestId("icon-widget")).toBeVisible();
+    expect(screen.getByTestId("spreadsheet-widget")).toBeVisible();
   });
 });
 
-describe("Test IconWidget accessibility", () => {
+describe("Test SpreadsheetWidget accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(iconWidgetComponent);
+    const { container } = render(SpreadsheetWidgetComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
