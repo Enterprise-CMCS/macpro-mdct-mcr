@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { formFieldFactory, makeMediaQueryClasses } from "utils";
-import { AnyObject, FieldChoice } from "types";
+import { AnyObject, FieldChoice, InputChangeEvent } from "types";
 
 export const ChoiceListField = ({
   name,
@@ -12,12 +13,15 @@ export const ChoiceListField = ({
   label,
   choices,
   nested,
-  onChangeHandler,
   errorMessage,
   sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+
+  const [fieldValues, setFieldValues] = useState<string[] | null>(
+    props.hydrate || null
+  );
 
   const form = useFormContext();
   form.register(name);
@@ -33,6 +37,32 @@ export const ChoiceListField = ({
       delete choiceObject.children;
       return choiceObject;
     });
+
+  // update local state
+  const onChangeHandler = (event: InputChangeEvent) => {
+    const checked = event.target.checked;
+    const clickedChoice = event.target.value;
+    if (type === "radio") {
+      setFieldValues([clickedChoice]);
+    } else {
+      const currentFieldValues = fieldValues || [];
+      const newFieldValues = checked
+        ? [...currentFieldValues, clickedChoice]
+        : currentFieldValues.filter((value) => value !== clickedChoice);
+      setFieldValues(newFieldValues);
+    }
+  };
+
+  useEffect(() => {
+    // update form data
+    if (fieldValues) {
+      form.setValue(name, fieldValues, { shouldValidate: true });
+      // update choice checked status
+      choices.forEach((choice: FieldChoice) => {
+        choice.checked = fieldValues.includes(choice.value);
+      });
+    }
+  }, [fieldValues]);
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
@@ -60,7 +90,6 @@ interface Props {
   label: string;
   choices: FieldChoice[];
   nested?: boolean;
-  onChangeHandler: Function;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
