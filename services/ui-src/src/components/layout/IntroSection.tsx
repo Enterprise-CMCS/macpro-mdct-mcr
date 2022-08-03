@@ -2,12 +2,12 @@ import React, { ReactChild } from "react";
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-export const IntroSection = ({ index, content, children, ...props }: Props) => {
+export const IntroSection = ({ content, children, ...props }: Props) => {
   return (
     <Flex sx={sx.sectionContainer} {...props}>
       <Box>
         <Box sx={sx.numberContainer}>
-          <Box sx={sx.number}>{index}</Box>
+          <Box sx={sx.number}>{content.sectionNumber}</Box>
         </Box>
       </Box>
       <Box>
@@ -22,8 +22,8 @@ export const IntroSection = ({ index, content, children, ...props }: Props) => {
 };
 
 interface Props {
-  index: number;
   content: {
+    sectionNumber: number;
     header: string;
     body: string;
   };

@@ -3,13 +3,14 @@ import { axe } from "jest-axe";
 import { IntroSection } from "components";
 
 const content = {
+  sectionNumber: 1,
   header: "Header Text",
   body: "Section Body",
-  widgets: [],
+  widget: {},
 };
 
 const introSectionComponent = (
-  <IntroSection data-testid="section-component" index={1} content={content} />
+  <IntroSection data-testid="section-component" content={content} />
 );
 
 describe("Test IntroSection", () => {

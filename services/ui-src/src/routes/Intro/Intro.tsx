@@ -7,6 +7,8 @@ import { makeMediaQueryClasses } from "utils";
 import verbiage from "verbiage/pages/mcpar/mcpar-intro";
 // assets
 import nextIcon from "assets/icons/icon_next.png";
+import NavigationSectionsImage from "../../assets/images/NavigationSections_2x.png";
+import NavigationSectionsSubmissionImage from "../../assets/images/NavigationSectionsSubmission_2x.png";
 
 export const Intro = () => {
   const { intro, body, pageLink } = verbiage;
@@ -23,23 +25,23 @@ export const Intro = () => {
         </Heading>
       </Box>
       <div>
-        <IntroSection index={1} content={section1} key={`section-1`}>
-          <Flex sx={sx.widgetsContainer} className={mqClasses}>
+        <IntroSection content={section1}>
+          <Flex sx={sx.sectionContent} className={mqClasses}>
             <Box sx={sx.imagelessWidgetContainer}>
               <Text sx={sx.imagelessWidgetTitle}>{section1.widget?.title}</Text>
               <Box>
                 {section1.widget?.descriptionList.map((description, index) => (
-                  <Text key={index}>{description}</Text>
+                  <Text key={`section-1-desc-${index}`}>{description}</Text>
                 ))}
               </Box>
             </Box>
           </Flex>
         </IntroSection>
-        <IntroSection index={2} content={section2} key={`section-2`}>
-          <Flex sx={sx.widgetsContainer} className={mqClasses}>
+        <IntroSection content={section2}>
+          <Flex sx={sx.sectionContent} className={mqClasses}>
             <Box>
               <Image
-                src={section2.img?.src}
+                src={NavigationSectionsImage}
                 alt={section2.img?.alt}
                 sx={sx.image}
               />
@@ -48,11 +50,11 @@ export const Intro = () => {
             <SpreadsheetWidget content={section2.spreadsheetWidget!} />
           </Flex>
         </IntroSection>
-        <IntroSection index={3} content={section3} key={`section-3`}>
-          <Flex sx={sx.widgetsContainer} className={mqClasses}>
+        <IntroSection content={section3}>
+          <Flex sx={sx.sectionContent} className={mqClasses}>
             <Box>
               <Image
-                src={section3.img?.src}
+                src={NavigationSectionsSubmissionImage}
                 alt={section3.img?.alt}
                 sx={sx.image}
               />
@@ -86,10 +88,10 @@ const sx = {
   },
   headerText: {
     marginBottom: "1rem",
-    fontSize: "2rem",
+    fontSize: "xl",
     fontWeight: "normal",
   },
-  widgetsContainer: {
+  sectionContent: {
     marginTop: "1rem",
     gridGap: "2rem",
     flexDirection: "column",
@@ -111,7 +113,7 @@ const sx = {
   },
   additionalInfo: {
     marginTop: "1rem",
-    fontSize: "14",
+    fontSize: "sm",
   },
   pageLinkContainer: {
     textAlign: "right",
