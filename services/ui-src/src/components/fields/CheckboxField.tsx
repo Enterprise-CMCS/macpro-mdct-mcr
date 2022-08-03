@@ -15,14 +15,15 @@ export const CheckboxField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [fieldValues, setFieldValues] = useState<string[] | null>(null);
+  const [fieldValues, setFieldValues] = useState<string[] | null>(
+    props.hydrate || null
+  );
 
   // get the form context
   const form = useFormContext();
 
   // update local state
   const onChangeHandler = (event: InputChangeEvent) => {
-    console.log("event", event);
     const checked = event.target.checked;
     const clickedChoice = event.target.value;
     const currentFieldValues = fieldValues || [];
@@ -30,19 +31,27 @@ export const CheckboxField = ({
       ? [...currentFieldValues, clickedChoice]
       : currentFieldValues.filter((value) => value !== clickedChoice);
     setFieldValues(newFieldValues);
-    if (!checked) {
-      const element: any = document.getElementById(event.target.id)!;
-      element.checked = false;
-      console.log("element", element);
-    }
   };
-
-  console.log("choices", choices);
 
   // update form data
   useEffect(() => {
     if (fieldValues) {
       form.setValue(name, fieldValues, { shouldValidate: true });
+
+      // get all field choice dom elements
+      const allFieldOptions = Array.from(document.getElementsByName(name));
+      // for each field choice, get dom element and check against fieldValues (from state)
+      choices.forEach((choice) => {
+        // get the matching choice
+        const optionElement = allFieldOptions.find(
+          (option: any) => option.value === choice.value
+        );
+
+        // if the choice is in field values, check it; if not, uncheck it
+        if (fieldValues.includes(choice.value)) {
+          optionElement?.setAttribute("checked", "true");
+        }
+      });
     }
   }, [fieldValues]);
 

@@ -67,6 +67,7 @@ export interface FieldChoice {
   type?: string;
   label: string;
   value: string;
+  checked?: boolean;
   children?: FormField[];
   checkedChildren?: React.ReactNode;
 }
