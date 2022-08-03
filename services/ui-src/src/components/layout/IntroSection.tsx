@@ -57,12 +57,4 @@ const sx = {
     color: "palette.gray",
     fontSize: "2xl",
   },
-  widgetsContainer: {
-    marginTop: "1rem",
-    gridGap: "2rem",
-    flexDirection: "column",
-    "&.desktop": {
-      flexDirection: "row",
-    },
-  },
 };

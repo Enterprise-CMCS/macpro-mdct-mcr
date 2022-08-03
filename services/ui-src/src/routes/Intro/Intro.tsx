@@ -27,11 +27,11 @@ export const Intro = () => {
       <div>
         <IntroSection content={section1}>
           <Flex sx={sx.sectionContent} className={mqClasses}>
-            <Box sx={sx.imagelessWidgetContainer}>
-              <Text sx={sx.imagelessWidgetTitle}>{section1.widget?.title}</Text>
+            <Box sx={sx.widgetContainer}>
+              <Text sx={sx.widgetTitle}>{section1.widget?.title}</Text>
               <Box>
                 {section1.widget?.descriptionList.map((description, index) => (
-                  <Text key={`section-1-desc-${index}`}>{description}</Text>
+                  <Text key={index}>{description}</Text>
                 ))}
               </Box>
             </Box>
@@ -99,13 +99,13 @@ const sx = {
       flexDirection: "row",
     },
   },
-  imagelessWidgetContainer: {
+  widgetContainer: {
     marginTop: "1rem",
     paddingLeft: "1rem",
     borderLeft: ".3rem solid",
     borderColor: "palette.main",
   },
-  imagelessWidgetTitle: {
+  widgetTitle: {
     fontWeight: "bold",
   },
   image: {
