@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router";
 import { ErrorBoundary } from "react-error-boundary";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
@@ -11,11 +13,26 @@ import {
   SkipNav,
 } from "components";
 // utils
-import { makeMediaQueryClasses, useUser } from "utils";
+import { fireTealiumPageView, makeMediaQueryClasses, useUser } from "utils";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
+  const { pathname, key } = useLocation();
+
+  // fire tealium page view on route change
+  useEffect(() => {
+    const contentType = pathname.includes("/mcpar") ? "form" : "app";
+    const sectionName = pathname.includes("/mcpar") ? "MCPAR form" : "Main app";
+    fireTealiumPageView(
+      user,
+      window.location.href,
+      contentType,
+      sectionName,
+      pathname
+    );
+  }, [key]);
+
   return (
     <div id="app-wrapper">
       {user && (

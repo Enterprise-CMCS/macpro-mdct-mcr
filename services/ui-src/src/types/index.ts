@@ -1,5 +1,4 @@
 import React from "react";
-
 // USERS
 
 export enum UserRoles {
@@ -60,6 +59,14 @@ export interface FieldChoice {
   value: string;
   children?: FormField[];
   checkedChildren?: React.ReactNode;
+}
+
+export interface ChoiceFieldProps {
+  name: string;
+  label: string;
+  choices: FieldChoice[];
+  sxOverride?: AnyObject;
+  [key: string]: any;
 }
 
 export interface FormValidation {
@@ -137,4 +144,11 @@ export interface TableContentShape {
   caption?: string;
   headRow?: string[];
   bodyRows: string[][];
+}
+
+export interface CustomHtmlElement {
+  type: string;
+  content: string | any;
+  as?: string;
+  props?: AnyObject;
 }

@@ -3,13 +3,14 @@ import { useFormContext } from "react-hook-form";
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
-import { InputChangeEvent, AnyObject } from "types";
+import { makeMediaQueryClasses, parseCustomHtml } from "utils";
+import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const DropdownField = ({
   name,
   label,
   options,
+  hint,
   sxOverride,
   ...props
 }: Props) => {
@@ -26,6 +27,8 @@ export const DropdownField = ({
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
+  const parsedHint = hint && parseCustomHtml(hint);
+
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDropdown
@@ -33,6 +36,7 @@ export const DropdownField = ({
         id={name}
         label={label}
         options={options}
+        hint={parsedHint}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         {...props}
@@ -50,6 +54,7 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
+  hint?: CustomHtmlElement[];
   sxOverride?: AnyObject;
   [key: string]: any;
 }
