@@ -2,12 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { SpreadsheetWidget } from "components";
-import greenSpreadsheetIcon from "../../../assets/icons/icon_spreadsheet_green.png";
 
 const fullContent = {
-  leftBarColor: "#2E8540",
-  icon: greenSpreadsheetIcon,
-  iconDescription: "Excel Workbook Icon",
   title: "Find in the Excel Workbook",
   descriptionList: ["A_Program_Info"],
   additionalInfo:
