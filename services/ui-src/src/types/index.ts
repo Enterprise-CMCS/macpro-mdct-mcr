@@ -132,7 +132,6 @@ export interface TimeShape {
 }
 
 // OTHER
-
 export interface AnyObject {
   [key: string]: any;
 }
