@@ -88,7 +88,7 @@ const sx = {
   },
   headerText: {
     marginBottom: "1rem",
-    fontSize: "xl",
+    fontSize: "4xl",
     fontWeight: "normal",
   },
   sectionContent: {
@@ -122,6 +122,7 @@ const sx = {
   pageLink: {
     justifyContent: "start",
     marginTop: "1rem",
+    marginBottom: "1rem",
     borderRadius: "0.25rem",
     background: "palette.main",
     fontWeight: "bold",
