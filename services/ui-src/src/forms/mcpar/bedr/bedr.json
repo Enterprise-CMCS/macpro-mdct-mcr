@@ -1,18 +1,116 @@
 {
   "path": "/mcpar/state-level-indicators/encounter-data-report",
   "intro": {
-    "section": "B: State-Level Indicators",
-    "subsection": "III: Encounter Data Report"
+    "section": "Section B: State-Level Indicators",
+    "subsection": "Topic III. Encounter Data Report"
   },
   "form": {
     "id": "bedr",
     "fields": [
       {
         "id": "bedr-1",
-        "type": "text",
+        "type": "checkbox",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "B.III.1 Data validation entity",
+          "hint": [
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs."
+            },
+            {
+              "type": "html",
+              "content": "<br/>"
+            },
+            {
+              "type": "text",
+              "as": "span",
+              "content": "Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses."
+            }
+          ],
+          "choices": [
+            {
+              "name": "bedr-1-o1",
+              "type": "choice",
+              "label": "State Medicaid agency staff",
+              "value": "State Medicaid agency staff"
+            },
+            {
+              "name": "bedr-1-o2",
+              "type": "choice",
+              "label": "Other state agency staff",
+              "value": "Other state agency staff"
+            },
+            {
+              "name": "bedr-1-o3",
+              "type": "choice",
+              "label": "State actuaries",
+              "value": "State actuaries"
+            },
+            {
+              "name": "bedr-1-o4",
+              "type": "choice",
+              "label": "EQRO",
+              "value": "EQRO"
+            },
+            {
+              "name": "bedr-1-o5",
+              "type": "choice",
+              "label": "Other third-party vendor",
+              "value": "Other third-party vendor"
+            },
+            {
+              "name": "bedr-1-o6",
+              "type": "choice",
+              "label": "Proprietary system(s)",
+              "value": "Proprietary system(s)",
+              "children": [
+                {
+                  "id": "bedr-2",
+                  "type": "radio",
+                  "props": {
+                    "label": "B.III.2 HIPAA compliance of proprietary system(s) for encounter data validation",
+                    "hint": [
+                      {
+                        "type": "text",
+                        "as": "span",
+                        "content": "Were the system(s) utilized fully HIPAA compliant? Select one."
+                      }
+                    ],
+                    "choices": [
+                      {
+                        "name": "bedr-2-o1",
+                        "type": "choice",
+                        "label": "Yes",
+                        "value": "Yes"
+                      },
+                      {
+                        "name": "bedr-2-o2",
+                        "type": "choice",
+                        "label": "No",
+                        "value": "No"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "bedr-1-o7",
+              "type": "choice",
+              "label": "Other, specify",
+              "value": "Other, specify",
+              "children": [
+                {
+                  "id": "bedr-1-o7-text",
+                  "type": "textarea",
+                  "props": {
+                    "label": ""
+                  }
+                }
+              ]
+            }
+          ]
         }
       }
     ]

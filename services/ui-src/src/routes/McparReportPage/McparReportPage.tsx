@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import {
   Error,
   Form,
@@ -11,7 +11,7 @@ import {
   Sidebar,
 } from "components";
 // utils
-import { findRoute, hydrateFormFields, useUser } from "utils";
+import { findRoute, hydrateFormFields, parseCustomHtml, useUser } from "utils";
 import { AnyObject, UserRoles } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
@@ -99,7 +99,7 @@ const ReportPageIntro = ({ text }: ReportPageIntroI) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {info && <Text sx={sx.infoText}>{info}</Text>}
+      {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );
 };
@@ -108,7 +108,7 @@ interface ReportPageIntroI {
   text: {
     section: string;
     subsection: string;
-    info?: string;
+    info?: CustomHtmlElement[];
   };
 }
 
@@ -168,9 +168,18 @@ const sx = {
     fontWeight: "normal",
     fontSize: "4xl",
   },
-  infoText: {
+  infoTextBox: {
     marginTop: "2rem",
-    color: "palette.gray",
+    // TODO: finalize inline link styles with design and move this to theme.ts
+    "p, span": {
+      color: "palette.gray",
+    },
+    a: {
+      color: "palette.main",
+      "&:hover": {
+        color: "palette.main_darker",
+      },
+    },
   },
   footerBox: {
     marginTop: "3.5rem",

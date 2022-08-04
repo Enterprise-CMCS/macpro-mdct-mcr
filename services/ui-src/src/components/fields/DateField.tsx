@@ -4,10 +4,20 @@ import { useFormContext } from "react-hook-form";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { AnyObject } from "types";
-import { checkDateCompleteness, makeMediaQueryClasses } from "utils";
+import { AnyObject, CustomHtmlElement } from "types";
+import {
+  checkDateCompleteness,
+  makeMediaQueryClasses,
+  parseCustomHtml,
+} from "utils";
 
-export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
+export const DateField = ({
+  name,
+  label,
+  hint,
+  sxOverride,
+  ...props
+}: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   // get the form context and register form field
@@ -32,6 +42,8 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
 
+  const parsedHint = hint && parseCustomHtml(hint);
+
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDateField
@@ -40,6 +52,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue || props.hydrate || ""}
+        hint={parsedHint}
         errorMessage={errorMessage}
         {...props}
       />
@@ -50,6 +63,7 @@ export const DateField = ({ name, label, sxOverride, ...props }: Props) => {
 interface Props {
   name: string;
   label: string;
+  hint?: CustomHtmlElement[];
   timetype?: string;
   sxOverride?: AnyObject;
   [key: string]: any;

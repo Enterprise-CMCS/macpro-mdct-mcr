@@ -2,7 +2,48 @@
   "path": "/mcpar/test",
   "intro": {
     "section": "Test",
-    "subsection": "Test form"
+    "subsection": "Test form",
+    "info": [
+      {
+        "type": "html",
+        "content": "<span><em>whatever</em></span>"
+      },
+      {
+        "type": "text",
+        "as": "span",
+        "content": "Here is an "
+      },
+      {
+        "type": "externalLink",
+        "content": "external link",
+        "props": {
+          "href": "https://www.google.com",
+          "target": "_blank"
+        }
+      },
+      {
+        "type": "text",
+        "as": "em",
+        "content": " italic "
+      },
+      {
+        "type": "text",
+        "as": "span",
+        "content": " and an "
+      },
+      {
+        "type": "internalLink",
+        "content": "internal link",
+        "props": {
+          "to": "/admin"
+        }
+      },
+      {
+        "type": "text",
+        "as": "span",
+        "content": "."
+      }
+    ]
   },
   "form": {
     "id": "test",
@@ -15,7 +56,6 @@
         "type": "checkbox",
         "props": {
           "label": "Top level checkbox with nested fields",
-          "hint": "Pick the first option",
           "choices": [
             {
               "name": "test1-o1",
@@ -28,7 +68,6 @@
                   "type": "checkbox",
                   "props": {
                     "label": "Nested child checkbox",
-                    "hint": "Pick the first option",
                     "choices": [
                       {
                         "name": "test1-o1-c-o1",
@@ -40,8 +79,7 @@
                             "id": "test1-o1-c-o1-c",
                             "type": "text",
                             "props": {
-                              "label": "Nested child text field",
-                              "hint": "Enter some text or whatever"
+                              "label": "Nested child text field"
                             }
                           }
                         ]
@@ -71,7 +109,6 @@
         "type": "radio",
         "props": {
           "label": "Top level radio with nested fields",
-          "hint": "Pick the first option",
           "choices": [
             {
               "name": "test2-o1",
@@ -84,7 +121,6 @@
                   "type": "radio",
                   "props": {
                     "label": "Nested child radio",
-                    "hint": "Pick the first option",
                     "choices": [
                       {
                         "name": "test2-o1-c-o1",
@@ -96,8 +132,7 @@
                             "id": "test2-o1-c-o1-c",
                             "type": "text",
                             "props": {
-                              "label": "Nested child text field",
-                              "hint": "Enter some text or whatever"
+                              "label": "Nested child text field"
                             }
                           }
                         ]

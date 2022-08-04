@@ -42,6 +42,7 @@ export { BasicPage } from "./layout/BasicPage";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { ReportPage } from "./layout/ReportPage";
+export { IntroSection } from "./layout/IntroSection";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
@@ -53,3 +54,5 @@ export { Sidebar } from "./menus/Sidebar";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables
 export { Table } from "./tables/Table";
+// widgets
+export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
