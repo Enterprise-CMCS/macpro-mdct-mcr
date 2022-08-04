@@ -12,8 +12,7 @@ export default object({
         .min(1, "Must make at least one selection"),
   }),
   "bedr-1-o7-text": string().when("bedr-1", {
-    is: (value: any) =>
-      value && value.indexOf("Other, specify (required)") != -1,
+    is: (value: any) => value && value.indexOf("Other, specify") != -1,
     then: (schema: any) => schema.required("Field is required"),
   }),
 });
