@@ -4,14 +4,24 @@ import { useFormContext } from "react-hook-form";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { formFieldFactory, makeMediaQueryClasses } from "utils";
-import { AnyObject, FieldChoice, InputChangeEvent } from "types";
+import {
+  formFieldFactory,
+  makeMediaQueryClasses,
+  parseCustomHtml,
+} from "utils";
+import {
+  AnyObject,
+  CustomHtmlElement,
+  FieldChoice,
+  InputChangeEvent,
+} from "types";
 
 export const ChoiceListField = ({
   name,
   type,
   label,
   choices,
+  hint,
   nested,
   errorMessage,
   sxOverride,
@@ -66,6 +76,8 @@ export const ChoiceListField = ({
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
+  const parsedHint = hint && parseCustomHtml(hint);
+
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
@@ -76,6 +88,7 @@ export const ChoiceListField = ({
         type={type}
         label={label}
         choices={formatChoices(choices)}
+        hint={parsedHint}
         errorMessage={errorMessage}
         onChange={(e) => onChangeHandler(e)}
         {...props}
@@ -89,6 +102,7 @@ interface Props {
   type: "checkbox" | "radio";
   label: string;
   choices: FieldChoice[];
+  hint?: CustomHtmlElement[];
   nested?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
