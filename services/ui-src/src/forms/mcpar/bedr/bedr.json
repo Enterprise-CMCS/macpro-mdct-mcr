@@ -98,8 +98,8 @@
             {
               "name": "bedr-1-o7",
               "type": "choice",
-              "label": "Other, specify (required)",
-              "value": "Other, specify (required)",
+              "label": "Other, specify",
+              "value": "Other, specify",
               "children": [
                 {
                   "id": "bedr-1-o7-text",
