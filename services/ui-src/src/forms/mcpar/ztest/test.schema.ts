@@ -1,5 +1,5 @@
 import { object } from "yup";
-import { checkbox, nested, number, text, radio } from "utils/forms/schemas";
+import { checkbox, nested, number, radio, text } from "utils/forms/schemas";
 
 export default object({
   // nested checkboxes

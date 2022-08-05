@@ -6,12 +6,16 @@ import { SCHEMA_VALIDATION_ERRORS as ERROR } from "verbiage/errors";
 export const text = () =>
   string().required(ERROR.REQUIRED_GENERIC).typeError(ERROR.INVALID_GENERIC);
 
+export const textOptional = () => string().typeError(ERROR.INVALID_GENERIC);
+
 export const number = () =>
   text().matches(numberFormatRegex, ERROR.INVALID_NUMBER);
 
 export const email = () => text().email(ERROR.INVALID_EMAIL);
 
 export const url = () => text().url(ERROR.INVALID_URL);
+
+export const urlOptional = () => textOptional().url(ERROR.INVALID_URL);
 
 // DATES
 
