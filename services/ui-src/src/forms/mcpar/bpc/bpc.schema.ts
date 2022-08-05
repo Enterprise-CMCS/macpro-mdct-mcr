@@ -1,11 +1,7 @@
-import { numberFormatRegex } from "../../../constants";
-import { object, string } from "yup";
+import { object } from "yup";
+import { number } from "utils/forms/schemas";
 
 export default object({
-  "bpc-1": string()
-    .required("Field is required")
-    .matches(numberFormatRegex, "Please input a number"),
-  "bpc-2": string()
-    .required("Field is required")
-    .matches(numberFormatRegex, "Please input a number"),
+  "bpc-1": number(),
+  "bpc-2": number(),
 });

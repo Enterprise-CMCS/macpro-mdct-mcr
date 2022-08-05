@@ -1,11 +1,6 @@
-import { array, object, string } from "yup";
+import { object } from "yup";
+import { dynamic } from "utils/forms/schemas";
 
 export default object({
-  "absse-a8": array()
-    .min(1)
-    .of(
-      string()
-        .required("BSS entity name is required")
-        .typeError("Invalid entity name")
-    ),
+  "absse-a8": dynamic(),
 });
