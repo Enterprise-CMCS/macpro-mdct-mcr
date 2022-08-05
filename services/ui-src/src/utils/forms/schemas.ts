@@ -1,45 +1,41 @@
-import * as Yup from "yup";
+import { array, string } from "yup";
+import { SCHEMA_VALIDATION_ERRORS as ERROR } from "verbiage/errors";
 
 // STRINGS
 
-export const text = (
-  nested?: string | boolean,
-  parentFieldName?: string,
-  parentOptionValue?: any
-) =>
+export const text = (parentFieldName?: string, parentOptionValue?: any) =>
   // if nested, return nested schema
-  nested && parentFieldName && parentOptionValue
-    ? Yup.string().when(parentFieldName, {
+  parentFieldName && parentOptionValue
+    ? string().when(parentFieldName, {
         is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
         then: (schema: any) =>
           schema
-            .required("A response is required")
-            .typeError("Response must be valid"),
+            .required(ERROR.REQUIRED_GENERIC)
+            .typeError(ERROR.INVALID_GENERIC),
       })
     : // else return standard schema
-      Yup.string()
-        .required("A response is required")
-        .typeError("Response must be valid");
+      string()
+        .required(ERROR.REQUIRED_GENERIC)
+        .typeError(ERROR.INVALID_GENERIC);
 
 export const number = () =>
-  text().matches(numberFormatRegex, "Response must be a valid number");
+  text().matches(numberFormatRegex, ERROR.INVALID_NUMBER);
 
-export const email = () =>
-  text().email("Response must be a valid email address");
+export const email = () => text().email(ERROR.INVALID_EMAIL);
 
-export const url = () => text().url("Response must be a valid hyperlink/URL");
+export const url = () => text().url(ERROR.INVALID_URL);
 
 // DATES
 
 export const date = () =>
-  Yup.string()
-    .required("A response is required")
-    .matches(dateFormatRegex, "Response must be a valid date");
+  string()
+    .required(ERROR.REQUIRED_GENERIC)
+    .matches(dateFormatRegex, ERROR.INVALID_DATE);
 
 export const endDate = (startDateField: string) =>
   date().test(
     "is-after-start-date",
-    "End date can't be before start date",
+    ERROR.INVALID_END_DATE,
     (endDateString, context) => {
       const startDateString = context.parent[startDateField];
       const startDate = new Date(startDateString);
@@ -50,36 +46,28 @@ export const endDate = (startDateField: string) =>
 
 // ARRAYS (checkbox, radio, dynamic)
 
-export const checkbox = (
-  nested?: string | boolean,
-  parentFieldName?: string,
-  parentOptionValue?: any
-) =>
+export const checkbox = (parentFieldName?: string, parentOptionValue?: any) =>
   // if nested, return nested schema
-  nested && parentFieldName && parentOptionValue
-    ? Yup.array().when(parentFieldName, {
+  parentFieldName && parentOptionValue
+    ? array().when(parentFieldName, {
         is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
         then: (schema: any) =>
-          schema.min(1, "Select at least one response").of(text()),
+          schema.min(1, ERROR.REQUIRED_CHECKBOX).of(text()),
       })
     : // else return standard schema
-      Yup.array().min(1, "Select at least one response").of(text());
+      array().min(1, ERROR.REQUIRED_CHECKBOX).of(text());
 
-export const radio = (
-  nested?: string | boolean,
-  parentFieldName?: string,
-  parentOptionValue?: any
-) =>
+export const radio = (parentFieldName?: string, parentOptionValue?: any) =>
   // if nested, return nested schema
-  nested && parentFieldName && parentOptionValue
-    ? Yup.array().when(parentFieldName, {
+  parentFieldName && parentOptionValue
+    ? array().when(parentFieldName, {
         is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
         then: (schema: any) => schema.min(1).of(text()),
       })
     : // else return standard schema
-      Yup.array().min(1).of(text());
+      array().min(1).of(text());
 
-export const dynamic = () => Yup.array().min(1).of(text());
+export const dynamic = () => array().min(1).of(text());
 
 // REGEX
 
