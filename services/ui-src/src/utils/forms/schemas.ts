@@ -3,20 +3,8 @@ import { SCHEMA_VALIDATION_ERRORS as ERROR } from "verbiage/errors";
 
 // STRINGS
 
-export const text = (parentFieldName?: string, parentOptionValue?: any) =>
-  // if nested, return nested schema
-  parentFieldName && parentOptionValue
-    ? string().when(parentFieldName, {
-        is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
-        then: (schema: any) =>
-          schema
-            .required(ERROR.REQUIRED_GENERIC)
-            .typeError(ERROR.INVALID_GENERIC),
-      })
-    : // else return standard schema
-      string()
-        .required(ERROR.REQUIRED_GENERIC)
-        .typeError(ERROR.INVALID_GENERIC);
+export const text = () =>
+  string().required(ERROR.REQUIRED_GENERIC).typeError(ERROR.INVALID_GENERIC);
 
 export const number = () =>
   text().matches(numberFormatRegex, ERROR.INVALID_NUMBER);
@@ -46,28 +34,32 @@ export const endDate = (startDateField: string) =>
 
 // ARRAYS (checkbox, radio, dynamic)
 
-export const checkbox = (parentFieldName?: string, parentOptionValue?: any) =>
-  // if nested, return nested schema
-  parentFieldName && parentOptionValue
-    ? array().when(parentFieldName, {
-        is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
-        then: (schema: any) =>
-          schema.min(1, ERROR.REQUIRED_CHECKBOX).of(text()),
-      })
-    : // else return standard schema
-      array().min(1, ERROR.REQUIRED_CHECKBOX).of(text());
+export const checkbox = () =>
+  array().min(1, ERROR.REQUIRED_CHECKBOX).of(text());
 
-export const radio = (parentFieldName?: string, parentOptionValue?: any) =>
-  // if nested, return nested schema
-  parentFieldName && parentOptionValue
-    ? array().when(parentFieldName, {
-        is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
-        then: (schema: any) => schema.min(1).of(text()),
-      })
-    : // else return standard schema
-      array().min(1).of(text());
+export const radio = () => array().min(1).of(text());
 
 export const dynamic = () => array().min(1).of(text());
+
+// NESTED
+
+export const nested = (
+  fieldSchema: Function,
+  parentFieldName: string,
+  parentOptionValue: any
+) => {
+  const fieldTypeMap = {
+    array: array(),
+    number: number(),
+    string: string(),
+  };
+  const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
+  const baseSchema: any = fieldTypeMap[fieldType];
+  return baseSchema.when(parentFieldName, {
+    is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
+    then: () => fieldSchema(),
+  });
+};
 
 // REGEX
 
