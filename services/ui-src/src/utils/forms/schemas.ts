@@ -35,11 +35,16 @@ export const endDate = (startDateField: string) =>
 // ARRAYS (checkbox, radio, dynamic)
 
 export const checkbox = () =>
-  array().min(1, ERROR.REQUIRED_CHECKBOX).of(text());
+  array()
+    .required(ERROR.REQUIRED_CHECKBOX)
+    .min(1, ERROR.REQUIRED_CHECKBOX)
+    .of(text());
 
-export const radio = () => array().min(1).of(text());
+export const radio = () =>
+  array().required(ERROR.REQUIRED_GENERIC).min(1).of(text());
 
-export const dynamic = () => array().min(1).of(text());
+export const dynamic = () =>
+  array().required(ERROR.REQUIRED_GENERIC).min(1).of(text());
 
 // NESTED
 
