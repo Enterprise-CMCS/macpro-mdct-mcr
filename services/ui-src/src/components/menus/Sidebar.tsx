@@ -4,7 +4,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
 // data
 import mcparRouteStructure from "forms/mcpar/reportStructure";
 import { nonSidebarMcparRoutes } from "forms/mcpar";
@@ -17,7 +17,8 @@ interface LinkItemProps {
 
 export const Sidebar = () => {
   const mqClasses = makeMediaQueryClasses();
-  const [isOpen, toggleSidebar] = useState(true);
+  const { isDesktop } = useBreakpoint();
+  const [isOpen, toggleSidebar] = useState(isDesktop);
   const { pathname } = useLocation();
 
   const isMcparReport =

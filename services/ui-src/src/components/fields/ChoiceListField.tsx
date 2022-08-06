@@ -23,18 +23,17 @@ export const ChoiceListField = ({
   choices,
   hint,
   nested,
-  errorMessage,
   sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
-  const [fieldValues, setFieldValues] = useState<string[] | null>(
-    props.hydrate || null
-  );
-
   const form = useFormContext();
   form.register(name);
+
+  const [fieldValues, setFieldValues] = useState<string[] | null>(
+    props.hydrate || form.getValues(name) || null
+  );
 
   const formatChoices = (choices: FieldChoice[]) =>
     choices.map((choice: FieldChoice) => {
@@ -50,16 +49,19 @@ export const ChoiceListField = ({
 
   // update local state
   const onChangeHandler = (event: InputChangeEvent) => {
-    const checked = event.target.checked;
-    const clickedChoice = event.target.value;
+    const clickedOption = event.target.value;
+    const isOptionChecked = event.target.checked;
+    const currentFieldValues = fieldValues || [];
+    // handle radio
     if (type === "radio") {
-      setFieldValues([clickedChoice]);
+      setFieldValues([clickedOption]);
     } else {
-      const currentFieldValues = fieldValues || [];
-      const newFieldValues = checked
-        ? [...currentFieldValues, clickedChoice]
-        : currentFieldValues.filter((value) => value !== clickedChoice);
-      setFieldValues(newFieldValues);
+      // handle checkbox
+      setFieldValues(
+        isOptionChecked
+          ? [...currentFieldValues, clickedOption]
+          : currentFieldValues.filter((value) => value !== clickedOption)
+      );
     }
   };
 
@@ -67,7 +69,7 @@ export const ChoiceListField = ({
     // update form data
     if (fieldValues) {
       form.setValue(name, fieldValues, { shouldValidate: true });
-      // update choice checked status
+      // update DOM choices checked status
       choices.forEach((choice: FieldChoice) => {
         choice.checked = fieldValues.includes(choice.value);
       });
@@ -75,8 +77,8 @@ export const ChoiceListField = ({
   }, [fieldValues]);
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
-
   const parsedHint = hint && parseCustomHtml(hint);
+  const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
     <Box

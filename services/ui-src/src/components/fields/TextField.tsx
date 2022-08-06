@@ -20,6 +20,7 @@ export const TextField = ({
 
   // get the form context
   const form = useFormContext();
+  form.register(name);
 
   // update form data
   const onChangeHandler = async (event: InputChangeEvent) => {
@@ -40,7 +41,6 @@ export const TextField = ({
   }
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
-
   const parsedHint = hint && parseCustomHtml(hint);
 
   return (
@@ -57,7 +57,7 @@ export const TextField = ({
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => dynamic?.inputRef ?? form.register(name)}
-        defaultValue={props?.hydrate}
+        defaultValue={props?.hydrate || form.getValues(name)}
         {...props}
       />
     </Box>
