@@ -8,6 +8,7 @@ jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     register: () => {},
     setValue: () => {},
+    getValues: () => {},
   }),
 }));
 

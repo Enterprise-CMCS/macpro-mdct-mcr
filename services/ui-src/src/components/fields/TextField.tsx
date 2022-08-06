@@ -20,7 +20,6 @@ export const TextField = ({
 
   // get the form context
   const form = useFormContext();
-  form.register(name);
 
   // update form data
   const onChangeHandler = async (event: InputChangeEvent) => {
