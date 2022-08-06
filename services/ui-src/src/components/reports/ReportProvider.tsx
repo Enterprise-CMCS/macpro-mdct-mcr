@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
 // utils
-import { ReportShape, ReportContextShape } from "types";
+import { AnyObject, ReportShape, ReportContextShape } from "types";
 import {
   getReport,
   writeReport,
@@ -9,11 +9,15 @@ import {
 } from "utils";
 // verbiage
 import { reportErrors } from "verbiage/errors";
-import { AnyObject } from "yup/lib/types";
 
 export const ReportContext = createContext<ReportContextShape>({
   reportStatus: "",
-  reportData: {},
+  reportData: {} as AnyObject,
+  fetchReportData: Function,
+  updateReportData: Function,
+  fetchReportStatus: Function,
+  updateReportStatus: Function,
+  errorMessage: undefined,
 });
 
 export const ReportProvider = ({ children }: Props) => {

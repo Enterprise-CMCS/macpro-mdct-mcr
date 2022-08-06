@@ -35,7 +35,6 @@ describe("Test hydrateFormFields", () => {
     {
       id: "mock-field-1",
       type: "text",
-      hydrate: "mockData",
       props: {
         name: "mock-field-1",
         label: "1. First mocked field ",
@@ -44,34 +43,26 @@ describe("Test hydrateFormFields", () => {
     {
       id: "mock-field-2",
       type: "text",
-      hydrate: "unavailableData",
       props: {
         name: "mock-field-2",
         label: "2. Second mocked field ",
       },
     },
   ];
-  const mockHydrationData = { mockData: "the mocked data" };
 
-  it("Correctly hydrates field with provided data", () => {
+  const mockReportData = {
+    "mock-field-1": "mock-field-1-value",
+    "mock-field-2": "mock-field-2-value",
+  };
+
+  it("Correctly hydrates field with report data", () => {
     const hydratedFormFields = hydrateFormFields(
       mockFormFields.filter((field) => field.id === "mock-field-1"),
-      mockHydrationData
+      mockReportData
     );
     const hydratedFieldValue = hydratedFormFields.find(
       (field) => field.id === "mock-field-1"
     )?.props!.hydrate;
-    expect(hydratedFieldValue).toEqual("the mocked data");
-  });
-
-  it("Hydrates with 'ERROR' if data unavailable", () => {
-    const hydratedFormFields = hydrateFormFields(
-      mockFormFields.filter((field) => field.id === "mock-field-2"),
-      mockHydrationData
-    );
-    const hydratedFieldValue = hydratedFormFields.find(
-      (field) => field.id === "mock-field-2"
-    )?.props!.hydrate;
-    expect(hydratedFieldValue).toEqual("ERROR");
+    expect(hydratedFieldValue).toEqual("mock-field-1-value");
   });
 });

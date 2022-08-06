@@ -45,9 +45,16 @@ export interface ReportShape {
   reportData: AnyObject;
 }
 
-export interface ReportContextShape extends ReportShape {
+export interface ReportContextMethods {
+  fetchReportData: Function;
+  updateReportData: Function;
+  fetchReportStatus: Function;
+  updateReportStatus: Function;
+}
+
+export interface ReportContextShape extends ReportShape, ReportContextMethods {
   reportStatus: string;
-  [key: string]: any;
+  errorMessage?: string;
 }
 
 // FORM

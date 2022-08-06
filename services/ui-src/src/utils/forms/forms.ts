@@ -56,22 +56,22 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
 };
 
 export const hydrateFormFields = (
-  formFields: FormField[], // current page form fields
-  data: AnyObject // data from db with which to hydrate
+  formFields: FormField[],
+  reportData: AnyObject
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
     const fieldProps = formFields[fieldFormIndex].props!;
     const choices = fieldProps.choices;
     if (choices) {
-      choices.forEach((choice: any) => {
+      choices.forEach((choice: FieldChoice) => {
         // Recurse if choice has child fields
         if (choice.children) {
-          hydrateFormFields(choice.children, data);
+          hydrateFormFields(choice.children, reportData);
         }
       });
     }
-    formFields[fieldFormIndex].props!.hydrate = data[field.id];
+    formFields[fieldFormIndex].props!.hydrate = reportData[field.id];
   });
   return formFields;
 };
