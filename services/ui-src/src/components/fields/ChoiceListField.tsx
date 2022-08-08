@@ -32,7 +32,7 @@ export const ChoiceListField = ({
   form.register(name);
 
   const [fieldValues, setFieldValues] = useState<string[] | null>(
-    props.hydrate || form.getValues(name) || null
+    form.getValues(name) || props.hydrate || null
   );
 
   const formatChoices = (choices: FieldChoice[]) =>

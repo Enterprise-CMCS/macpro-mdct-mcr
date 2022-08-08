@@ -56,7 +56,7 @@ export const TextField = ({
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => dynamic?.inputRef ?? form.register(name)}
-        defaultValue={props?.hydrate || form.getValues(name)}
+        defaultValue={form.getValues(name) || props?.hydrate}
         {...props}
       />
     </Box>
