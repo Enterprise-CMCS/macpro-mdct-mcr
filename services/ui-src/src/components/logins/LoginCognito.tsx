@@ -66,7 +66,7 @@ export const LoginCognito = () => {
       </label>
       <Button
         sx={sx.button}
-        colorScheme="colorSchemes.main"
+        colorScheme="colorSchemes.primary"
         onClick={handleLogin}
         isFullWidth
         data-testid="cognito-login-button"

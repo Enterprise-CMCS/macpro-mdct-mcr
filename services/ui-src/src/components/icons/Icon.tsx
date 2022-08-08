@@ -58,6 +58,6 @@ interface Props {
 const sx = {
   icon: {
     transition: "all 0.3s ease",
-    _groupHover: { color: "palette.alt_light" },
+    _groupHover: { color: "palette.secondary_light" },
   },
 };

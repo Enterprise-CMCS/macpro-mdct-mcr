@@ -112,7 +112,7 @@ const sx = {
   headerBar: {
     minHeight: "4rem",
     alignItems: "center",
-    bg: "palette.main_darkest",
+    bg: "palette.primary_darkest",
   },
   headerContainer: {
     maxW: "appMax",
@@ -131,7 +131,7 @@ const sx = {
     maxWidth: "200px",
   },
   subnavBar: {
-    bg: "palette.alt_lightest",
+    bg: "palette.secondary_lightest",
   },
   subnavContainer: {
     maxW: "appMax",
@@ -155,13 +155,13 @@ const sx = {
     marginLeft: "2rem",
   },
   subnavButton: {
-    color: "palette.main",
+    color: "palette.primary",
     border: "1px solid",
-    borderColor: "palette.main",
+    borderColor: "palette.primary",
     borderRadius: "0.25rem",
     "&:hover": {
-      bg: "palette.main",
-      color: "white",
+      bg: "palette.primary",
+      color: "palette.white",
     },
   },
 };
