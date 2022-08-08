@@ -85,7 +85,7 @@ const sx = {
     minWidth: "202px",
     minHeight: "42px",
     marginTop: "2rem",
-    border: "1px solid var(--chakra-colors-palette-main)",
+    border: "1px solid var(--chakra-colors-palette-primary)",
     borderRadius: "3px",
     bg: "palette.white",
     fontSize: "1rem",
