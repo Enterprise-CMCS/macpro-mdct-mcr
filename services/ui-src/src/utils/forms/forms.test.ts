@@ -1,29 +1,5 @@
 import { formFieldFactory, hydrateFormFields, sortFormErrors } from "./forms";
 
-/*
-(fields: FormField[], isNested?: boolean) => {
-  // define form field components
-  const fieldToComponentMap: any = {
-    checkbox: CheckboxField,
-    date: DateField,
-    dynamic: DynamicField,
-    number: NumberField,
-    radio: RadioField,
-    text: TextField,
-    textarea: TextAreaField,
-  };
-  fields = initializeChoiceFieldControl(fields);
-  return fields.map((field) => {
-    const componentFieldType = fieldToComponentMap[field.type];
-    return React.createElement(componentFieldType, {
-      key: field.id,
-      name: field.id,
-      nested: isNested,
-      ...field?.props,
-    });
-  });
-*/
-
 describe("Test formFieldFactory", () => {
   const mockFormFields = [
     {

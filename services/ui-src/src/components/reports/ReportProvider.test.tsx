@@ -62,14 +62,16 @@ const testComponent = (
 );
 
 describe("Test ReportProvider fetchReport method", () => {
+  beforeEach(async () => {
+    await act(async () => {
+      await render(testComponent);
+    });
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("fetchReport method calls API getReport method", async () => {
-    await act(async () => {
-      await render(testComponent);
-    });
     await act(async () => {
       const fetchButton = screen.getByTestId("fetch-report-button");
       await userEvent.click(fetchButton);
@@ -79,31 +81,19 @@ describe("Test ReportProvider fetchReport method", () => {
       expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1)
     );
   });
-
-  test("Shows error if fetchReport throws error", async () => {
-    mockReportAPI.getReport.mockImplementation(() => {
-      throw new Error();
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
-    await act(async () => {
-      const fetchButton = screen.getByTestId("fetch-report-button");
-      await userEvent.click(fetchButton);
-    });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
-  });
 });
 
 describe("Test ReportProvider fetchReportStatus method", () => {
+  beforeEach(async () => {
+    await act(async () => {
+      await render(testComponent);
+    });
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("fetchReportStatus method calls API getReportStatus method", async () => {
-    await act(async () => {
-      await render(testComponent);
-    });
     await act(async () => {
       const fetchButton = screen.getByTestId("fetch-report-status-button");
       await userEvent.click(fetchButton);
@@ -112,20 +102,6 @@ describe("Test ReportProvider fetchReportStatus method", () => {
     await waitFor(() =>
       expect(mockReportStatusAPI.getReportStatus).toHaveBeenCalledTimes(1)
     );
-  });
-
-  test("Shows error if fetchReportStatus throws error", async () => {
-    mockReportStatusAPI.getReportStatus.mockImplementation(() => {
-      throw new Error();
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
-    await act(async () => {
-      const fetchButton = screen.getByTestId("fetch-report-status-button");
-      await userEvent.click(fetchButton);
-    });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
   });
 });
 
@@ -190,5 +166,67 @@ describe("Test ReportProvider updateReportStatus method", () => {
 
     // if fetchReportStatus has been called, then so has API getReportStatus
     expect(mockReportStatusAPI.getReportStatus).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Test ReportProvider error states", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Shows error if fetchReport throws error", async () => {
+    mockReportAPI.getReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const fetchButton = screen.getByTestId("fetch-report-button");
+      await userEvent.click(fetchButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if fetchReportStatus throws error", async () => {
+    mockReportStatusAPI.getReportStatus.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const fetchButton = screen.getByTestId("fetch-report-status-button");
+      await userEvent.click(fetchButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if updateReport throws error", async () => {
+    mockReportAPI.writeReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const writeButton = screen.getByTestId("write-report-button");
+      await userEvent.click(writeButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if updateReportStatus throws error", async () => {
+    mockReportStatusAPI.writeReportStatus.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const writeButton = screen.getByTestId("write-report-status-button");
+      await userEvent.click(writeButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
   });
 });
