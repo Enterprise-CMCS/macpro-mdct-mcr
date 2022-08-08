@@ -4,7 +4,7 @@ import { Button, Flex } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId } from "../../constants";
-import { REPLACE_BANNER_FAILED } from "verbiage/errors";
+import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
 // data
 import formJson from "forms/internal/abf/abf.json";
@@ -32,7 +32,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       await writeAdminBanner(newBannerData);
       document.getElementById("AdminHeader")!.focus();
     } catch (error: any) {
-      setError(REPLACE_BANNER_FAILED);
+      setError(bannerErrors.REPLACE_BANNER_FAILED);
     }
     window.scrollTo(0, 0);
   };

@@ -2,7 +2,7 @@ import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
 import { AdminBannerData, AdminBannerShape } from "types";
 import { bannerId } from "../../constants";
-import { GET_BANNER_FAILED } from "verbiage/errors";
+import { bannerErrors } from "verbiage/errors";
 // api
 import { deleteBanner, getBanner, writeBanner } from "utils";
 
@@ -28,7 +28,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
       const newBannerData = currentBanner?.Item || {};
       setBannerData(newBannerData);
     } catch (e: any) {
-      setError(GET_BANNER_FAILED);
+      setError(bannerErrors.GET_BANNER_FAILED);
     }
   };
 

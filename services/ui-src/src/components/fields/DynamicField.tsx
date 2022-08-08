@@ -6,7 +6,7 @@ import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { TextField } from "./TextField";
 
-export const DynamicField = ({ name, label }: Props) => {
+export const DynamicField = ({ name, label, ...props }: Props) => {
   const form = useFormContext();
   form.register(name);
 
@@ -16,7 +16,9 @@ export const DynamicField = ({ name, label }: Props) => {
   });
 
   useEffect(() => {
-    if (fields.length === 0) append("");
+    if (fields.length === 0) {
+      append(props?.hydrate || "");
+    }
   });
 
   return (
@@ -32,6 +34,7 @@ export const DynamicField = ({ name, label }: Props) => {
                 index,
                 inputRef: () => form.register,
               }}
+              hydrate={props?.hydrate?.[index]}
               sxOverride={sx.textFieldOverride}
             />
             {index != 0 && (
@@ -66,6 +69,7 @@ export const DynamicField = ({ name, label }: Props) => {
 interface Props {
   name: string;
   label: string;
+  [key: string]: any;
 }
 
 const sx = {
