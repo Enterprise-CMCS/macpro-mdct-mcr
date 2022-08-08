@@ -12,7 +12,7 @@ import {
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
 
-export const initializeChoiceFieldControl = (fields: FormField[]) => {
+const initializeChoiceFieldControl = (fields: FormField[]) => {
   // find each field that contains choices (checkbox or radio)
   fields.forEach((field: FormField) => {
     if (field.props?.choices) {
