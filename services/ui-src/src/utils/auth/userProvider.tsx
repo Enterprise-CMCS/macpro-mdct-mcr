@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
 import { UserContext } from "./userContext";
+// utils
+import { PRODUCTION_HOST_DOMAIN } from "../../constants";
 // types
 import { MCRUser, UserContextI } from "types";
 
@@ -17,7 +19,7 @@ const authenticateWithIDM = async () => {
 export const UserProvider = ({ children }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isProduction = window.location.origin.includes("mdctmcr.cms.gov");
+  const isProduction = window.location.origin.includes(PRODUCTION_HOST_DOMAIN);
 
   const [user, setUser] = useState<any>(null);
   const [showLocalLogins, setShowLocalLogins] = useState(false);
