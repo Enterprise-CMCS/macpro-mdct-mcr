@@ -58,7 +58,7 @@ describe("Test formFieldFactory", () => {
     expect(topTextField?.type.name).toBe("TextField");
 
     // Radio matches to component
-    const topRadioField = generatedFields.find(
+    const topRadioField: any = generatedFields.find(
       (field) => field.key === "mockField2"
     );
     expect(topRadioField?.type.name).toBe("RadioField");
