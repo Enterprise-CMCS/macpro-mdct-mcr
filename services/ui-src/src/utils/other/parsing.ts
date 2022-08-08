@@ -8,7 +8,7 @@ import { Heading, Link, Text } from "@chakra-ui/react";
 import { CustomHtmlElement } from "types";
 
 // return created elements from custom html array
-export const parseCustomHtml = (elementArray: CustomHtmlElement[]) => {
+export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
   // TODO: consider setting default props here as needed
   const customElementMap: any = {
     externalLink: Link,
@@ -17,22 +17,32 @@ export const parseCustomHtml = (elementArray: CustomHtmlElement[]) => {
     heading: Heading,
     html: React.Fragment,
   };
-  return elementArray.map((element: CustomHtmlElement, index) => {
-    let { type, content, as, props } = element;
-    const elementType: string = customElementMap[type] || type;
-    const elementProps = {
-      key: type + index,
-      as,
-      ...props,
-    };
-    if (type === "html") {
-      // sanitize and parse html
-      content = sanitizeAndParseHtml(content);
-      // delete 'as' prop since React.Fragment can't accept it
-      delete elementProps.as;
-    }
-    return React.createElement(elementType, elementProps, content);
-  });
+  let elementArray: CustomHtmlElement[] = [];
+  // handle single HTML strings
+  if (typeof element == "string") {
+    // sanitize and parse html
+    const content = sanitizeAndParseHtml(element);
+    return React.createElement("span", null, content);
+  } else {
+    elementArray = element;
+    // handle arrays of custom element objects
+    return elementArray.map((element: CustomHtmlElement, index: number) => {
+      let { type, content, as, props } = element;
+      const elementType: string = customElementMap[type] || type;
+      const elementProps = {
+        key: type + index,
+        as,
+        ...props,
+      };
+      if (type === "html") {
+        // sanitize and parse html
+        content = sanitizeAndParseHtml(content);
+        // delete 'as' prop since React.Fragment can't accept it
+        delete elementProps.as;
+      }
+      return React.createElement(elementType, elementProps, content);
+    });
+  }
 };
 
 // sanitize and parse html to react elements
