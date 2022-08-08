@@ -2,6 +2,7 @@
 .infra
 .dynamodb
 .yarn_install
+.vscode/*
 node_modules
 testcafe_results
 .DS_Store
