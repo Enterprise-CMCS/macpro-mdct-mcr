@@ -54,7 +54,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
           form={formJson.id}
           type="submit"
           sx={sx.replaceBannerButton}
-          colorScheme="colorSchemes.main"
+          colorScheme="colorSchemes.primary"
         >
           Replace Current Banner
         </Button>

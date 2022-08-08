@@ -129,7 +129,7 @@ const sx = {
     padding: "0",
     borderRadius: "0.25rem",
     fontWeight: "bold",
-    color: "palette.main",
+    color: "palette.primary",
     textDecoration: "underline",
     span: {
       marginLeft: "0rem",
@@ -147,7 +147,7 @@ const sx = {
     justifyContent: "start",
     marginTop: "1rem",
     borderRadius: "0.25rem",
-    background: "palette.main",
+    background: "palette.primary",
     fontWeight: "bold",
     color: "palette.white",
     span: {
@@ -155,7 +155,7 @@ const sx = {
       marginRight: "-0.25rem",
     },
     _hover: {
-      background: "palette.main_darker",
+      background: "palette.primary_darker",
     },
     "&.mobile": {
       fontSize: "sm",

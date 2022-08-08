@@ -3,7 +3,8 @@ $image-path: "~@cmsgov/design-system/dist/images";
 @import "@cmsgov/design-system/dist/scss/index";
 
 @mixin tabbed-focus {
-  box-shadow: 0 0 4px 6px var(--chakra-colors-palette-focus_dark) !important;
+  box-shadow: 0 0 0 3px #fff,
+    0 0 4px 6px var(--chakra-colors-palette-focus_dark) !important;
   // Add support for Windows High Contrast Mode (WHCM)
   // The transparent color only shows when WHCM is triggered
   outline: 3px solid transparent;

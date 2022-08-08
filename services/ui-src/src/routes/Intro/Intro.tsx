@@ -103,7 +103,7 @@ const sx = {
     marginTop: "1rem",
     paddingLeft: "1rem",
     borderLeft: ".3rem solid",
-    borderColor: "palette.main",
+    borderColor: "palette.primary",
   },
   widgetTitle: {
     fontWeight: "bold",
@@ -124,7 +124,7 @@ const sx = {
     marginTop: "1rem",
     marginBottom: "1rem",
     borderRadius: "0.25rem",
-    background: "palette.main",
+    background: "palette.primary",
     fontWeight: "bold",
     color: "palette.white",
     span: {
@@ -132,7 +132,7 @@ const sx = {
       marginRight: "-0.25rem",
     },
     _hover: {
-      background: "palette.main_darker",
+      background: "palette.primary_darker",
     },
     "&.mobile": {
       fontSize: "sm",

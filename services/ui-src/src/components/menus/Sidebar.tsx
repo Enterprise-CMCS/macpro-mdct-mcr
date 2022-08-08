@@ -225,9 +225,9 @@ const sx = {
       bg: "palette.gray_lightest_highlight",
       borderBottom: "1px solid transparent",
       borderInlineStartWidth: "0.125rem",
-      borderInlineStartColor: "palette.alt",
+      borderInlineStartColor: "palette.secondary",
       ".chakra-text": {
-        color: "palette.alt_darkest",
+        color: "palette.secondary_darkest",
       },
     },
   },
