@@ -126,7 +126,7 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
           <Button
             onClick={() => navigate(previousRoute)}
             variant="outline"
-            colorScheme="colorSchemes.outline"
+            colorScheme="colorSchemes.primary_outline"
             leftIcon={<Icon icon="arrowLeft" />}
           >
             Previous
@@ -134,7 +134,7 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
           <Button
             form={formId}
             type="submit"
-            colorScheme="colorSchemes.main"
+            colorScheme="colorSchemes.primary"
             rightIcon={<Icon icon="arrowRight" />}
           >
             Save & continue
@@ -180,9 +180,9 @@ const sx = {
       color: "palette.gray",
     },
     a: {
-      color: "palette.main",
+      color: "palette.primary",
       "&:hover": {
-        color: "palette.main_darker",
+        color: "palette.primary_darker",
       },
     },
   },

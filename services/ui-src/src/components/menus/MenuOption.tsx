@@ -31,6 +31,6 @@ const sx = {
   text: {
     fontWeight: "bold",
     color: "palette.white",
-    _groupHover: { color: "palette.alt_light" },
+    _groupHover: { color: "palette.secondary_light" },
   },
 };
