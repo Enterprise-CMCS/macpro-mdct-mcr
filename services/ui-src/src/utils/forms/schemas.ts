@@ -1,33 +1,33 @@
 import { array, string } from "yup";
-import { SCHEMA_VALIDATION_ERRORS as ERROR } from "verbiage/errors";
+import { schemaValidationErrors as error } from "verbiage/errors";
 
 // STRINGS
 
 export const text = () =>
-  string().required(ERROR.REQUIRED_GENERIC).typeError(ERROR.INVALID_GENERIC);
+  string().required(error.REQUIRED_GENERIC).typeError(error.INVALID_GENERIC);
 
-export const textOptional = () => string().typeError(ERROR.INVALID_GENERIC);
+export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 
 export const number = () =>
-  text().matches(numberFormatRegex, ERROR.INVALID_NUMBER);
+  text().matches(numberFormatRegex, error.INVALID_NUMBER);
 
-export const email = () => text().email(ERROR.INVALID_EMAIL);
+export const email = () => text().email(error.INVALID_EMAIL);
 
-export const url = () => text().url(ERROR.INVALID_URL);
+export const url = () => text().url(error.INVALID_URL);
 
-export const urlOptional = () => textOptional().url(ERROR.INVALID_URL);
+export const urlOptional = () => textOptional().url(error.INVALID_URL);
 
 // DATES
 
 export const date = () =>
   string()
-    .required(ERROR.REQUIRED_GENERIC)
-    .matches(dateFormatRegex, ERROR.INVALID_DATE);
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateFormatRegex, error.INVALID_DATE);
 
 export const endDate = (startDateField: string) =>
   date().test(
     "is-after-start-date",
-    ERROR.INVALID_END_DATE,
+    error.INVALID_END_DATE,
     (endDateString, context) => {
       const startDateString = context.parent[startDateField];
       const startDate = new Date(startDateString);
@@ -40,15 +40,15 @@ export const endDate = (startDateField: string) =>
 
 export const checkbox = () =>
   array()
-    .required(ERROR.REQUIRED_CHECKBOX)
-    .min(1, ERROR.REQUIRED_CHECKBOX)
+    .required(error.REQUIRED_CHECKBOX)
+    .min(1, error.REQUIRED_CHECKBOX)
     .of(text());
 
 export const radio = () =>
-  array().required(ERROR.REQUIRED_GENERIC).min(1).of(text());
+  array().required(error.REQUIRED_GENERIC).min(1).of(text());
 
 export const dynamic = () =>
-  array().required(ERROR.REQUIRED_GENERIC).min(1).of(text());
+  array().required(error.REQUIRED_GENERIC).min(1).of(text());
 
 // NESTED
 

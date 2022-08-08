@@ -27,12 +27,13 @@ describe("Test Sidebar", () => {
   });
 
   test("Sidebar button click opens and closes sidebar", async () => {
+    // note: tests sidebar nav at non-desktop size, so it is closed to start
     const sidebarNav = screen.getByTestId("sidebar-nav");
-    expect(sidebarNav).toHaveClass("open");
+    expect(sidebarNav).toHaveClass("closed");
 
     const sidebarButton = screen.getByLabelText("Open/Close sidebar menu");
     await userEvent.click(sidebarButton);
-    expect(sidebarNav).toHaveClass("closed");
+    expect(sidebarNav).toHaveClass("open");
   });
 
   test("Sidebar section click opens and closes section", async () => {
