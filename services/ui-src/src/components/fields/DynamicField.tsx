@@ -90,7 +90,7 @@ const sx = {
     bg: "palette.white",
     fontSize: "1rem",
     fontWeight: "bold",
-    color: "palette.main",
+    color: "palette.primary",
   },
   textFieldOverride: {
     width: "32rem",

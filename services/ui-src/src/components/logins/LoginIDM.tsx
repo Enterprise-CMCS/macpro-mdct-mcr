@@ -13,7 +13,7 @@ export const LoginIDM = () => {
       </Heading>
       <Button
         sx={sx.button}
-        colorScheme="colorSchemes.main"
+        colorScheme="colorSchemes.primary"
         onClick={loginWithIDM}
         isFullWidth
       >

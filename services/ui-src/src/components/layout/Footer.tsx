@@ -182,7 +182,7 @@ const sx = {
   },
   footerBottom: {
     minHeight: "3rem",
-    bg: "palette.main_darkest",
+    bg: "palette.primary_darkest",
     fontSize: 14,
   },
   footerBottomContainer: {

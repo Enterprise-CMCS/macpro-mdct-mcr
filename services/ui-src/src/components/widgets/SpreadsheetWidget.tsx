@@ -45,8 +45,8 @@ interface Props {
 const sx = {
   container: {
     paddingLeft: "1rem",
-    borderLeft: ".3rem solid",
-    borderColor: "palette.success",
+    borderLeft: "4px solid",
+    borderColor: "palette.spreadsheet_green",
   },
   iconContainer: {
     maxWidth: "3rem",

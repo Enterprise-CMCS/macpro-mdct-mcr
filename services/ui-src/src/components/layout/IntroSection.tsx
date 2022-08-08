@@ -45,7 +45,7 @@ const sx = {
     marginRight: "1rem",
     background: "#333",
     borderRadius: "100%",
-    color: "white",
+    color: "palette.white",
   },
   number: {
     margin: "auto",

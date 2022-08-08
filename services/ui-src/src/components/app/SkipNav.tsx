@@ -20,7 +20,7 @@ interface Props {
 
 const sx = {
   skipNavLink: {
-    background: "white",
+    background: "palette.white",
     position: "absolute",
     top: -100,
     zIndex: "skipLink",

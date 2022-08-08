@@ -45,7 +45,7 @@ export const Profile = () => {
       <Table content={tableContent} variant="striped" sxOverride={sx.table} />
       {userRole === UserRoles.ADMIN && (
         <Button
-          colorScheme="colorSchemes.main"
+          colorScheme="colorSchemes.primary"
           data-testid="banner-admin-button"
           sx={sx.adminButton}
           onClick={() => navigate("/admin")}
