@@ -7,7 +7,7 @@ import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
 // data
 import mcparRouteStructure from "forms/mcpar/reportStructure";
-import { nonSidebarMcparRoutes } from "forms/mcpar";
+import { isMcparReportPage } from "forms/mcpar";
 
 interface LinkItemProps {
   name: string;
@@ -21,13 +21,9 @@ export const Sidebar = () => {
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { pathname } = useLocation();
 
-  const isMcparReport =
-    pathname.includes("/mcpar/") &&
-    !nonSidebarMcparRoutes.find((route) => route === pathname);
-
   return (
     <>
-      {isMcparReport && (
+      {isMcparReportPage(pathname) && (
         <Box
           id="sidebar"
           sx={sx.root}
