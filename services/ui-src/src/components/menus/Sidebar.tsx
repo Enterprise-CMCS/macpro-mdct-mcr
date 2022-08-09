@@ -84,7 +84,7 @@ const NavSection = ({ section, level }: NavSectionProps) => {
           />
         </Box>
       ) : (
-        <Link as={RouterLink} to={path}>
+        <Link as={RouterLink} to={path} variant="unstyled">
           <NavItem
             name={name}
             level={level}

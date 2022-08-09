@@ -32,13 +32,14 @@ export const Header = ({ handleLogout }: Props) => {
       <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer} className={mqClasses}>
           <Flex sx={sx.headerFlex}>
-            <Link as={RouterLink} to="/">
+            <Link as={RouterLink} to="/" variant="unstyled">
               <Image src={appLogo} alt="MCR logo" sx={sx.appLogo} />
             </Link>
             <Flex sx={sx.menuFlex}>
               <Link
                 as={RouterLink}
                 to="/help"
+                variant="unstyled"
                 aria-label="Get Help"
                 data-testid="header-help-button"
               >
@@ -69,6 +70,7 @@ export const Header = ({ handleLogout }: Props) => {
                     as={RouterLink}
                     to="/mcpar"
                     sx={sx.leaveFormLink}
+                    variant="unstyled"
                     tabIndex={-1}
                   >
                     <Button variant="outline" data-testid="leave-form-button">

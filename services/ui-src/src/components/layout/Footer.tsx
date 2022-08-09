@@ -208,7 +208,6 @@ const sx = {
     },
   },
   link: {
-    textDecoration: "underline !important",
     margin: "0.5rem 0",
     "&.mobile": {
       margin: "0.25rem 0",

@@ -32,16 +32,11 @@ export const Profile = () => {
       </Heading>
       <Text>
         {intro.body}{" "}
-        <Link
-          sx={sx.emailText}
-          href={createEmailLink(intro.email)}
-          target="_blank"
-        >
+        <Link href={createEmailLink(intro.email)} isExternal>
           {intro.email.address}
         </Link>
         .
       </Text>
-
       <Table content={tableContent} variant="striped" sxOverride={sx.table} />
       {userRole === UserRoles.ADMIN && (
         <Button
@@ -67,9 +62,6 @@ const sx = {
     marginBottom: "2rem",
     fontSize: "2rem",
     fontWeight: "normal",
-  },
-  emailText: {
-    fontWeight: "bold",
   },
   table: {
     marginTop: "2rem",

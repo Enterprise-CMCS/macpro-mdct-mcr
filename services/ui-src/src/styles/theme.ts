@@ -221,43 +221,41 @@ const theme = extendTheme({
     },
     Link: {
       baseStyle: {
+        textDecoration: "underline",
         transition: "all 0.3s ease",
       },
       variants: {
-        default: {
+        primary: {
           color: "palette.primary",
-          transition: "all 0.3s ease",
           _visited: {
             color: "palette.primary",
+            textDecorationColor: "palette.primary",
           },
           ":hover, :visited:hover": {
             color: "palette.primary_darker",
-          },
-        },
-        inline: {
-          color: "palette.primary_darker",
-          paddingBottom: "2px",
-          borderBottom: "2px solid",
-          _visited: {
-            color: "palette.primary_darker",
-          },
-          ":hover, :visited:hover": {
-            color: "palette.primary",
+            textDecorationColor: "palette.primary_darker",
           },
         },
         inverse: {
           color: "palette.white",
           _visited: {
             color: "palette.white",
+            textDecorationColor: "palette.white",
           },
           ":hover, :visited:hover": {
-            color: "palette.gray_light",
+            color: "palette.gray_lighter",
+            textDecorationColor: "palette.gray_lighter",
           },
         },
-        button: {},
+        unstyled: {
+          textDecoration: "none",
+          ":focus, :focus-visible, :hover, :visited, :visited:hover": {
+            textDecoration: "none",
+          },
+        },
       },
       defaultProps: {
-        variant: "default",
+        variant: "primary",
       },
     },
     Text: {
