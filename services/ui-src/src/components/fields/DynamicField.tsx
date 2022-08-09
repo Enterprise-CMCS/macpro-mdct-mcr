@@ -55,6 +55,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         );
       })}
       <Button
+        variant="outline"
         sx={sx.appendButton}
         onClick={() => {
           append("");
@@ -82,15 +83,9 @@ const sx = {
     height: "1.25rem",
   },
   appendButton: {
-    minWidth: "202px",
-    minHeight: "42px",
+    width: "202px",
+    height: "42px",
     marginTop: "2rem",
-    border: "1px solid var(--chakra-colors-palette-primary)",
-    borderRadius: "3px",
-    bg: "palette.white",
-    fontSize: "1rem",
-    fontWeight: "bold",
-    color: "palette.primary",
   },
   textFieldOverride: {
     width: "32rem",

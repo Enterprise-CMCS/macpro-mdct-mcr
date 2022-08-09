@@ -1,7 +1,12 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
 import { extendTheme } from "@chakra-ui/react";
 
-export const theme = extendTheme({
+const svgFilters = {
+  primary_darker:
+    "brightness(0) saturate(100%) invert(19%) sepia(43%) saturate(3547%) hue-rotate(185deg) brightness(97%) contrast(101%)",
+};
+
+const theme = extendTheme({
   sizes: {
     appMax: "100vw",
     basicPageWidth: "46rem",
@@ -91,97 +96,7 @@ export const theme = extendTheme({
       muted: "#e9ecf1",
       // custom
       gray_lightest_highlight: "#f8f8f8",
-      spreadsheet_green: "#1D6F42",
-    },
-    colorSchemes: {
-      primary: {
-        100: "#ffffff",
-        200: "#e6f9fd",
-        300: "#b3ecf8",
-        400: "#0071bc",
-        500: "#0071bc",
-        600: "#004f84",
-        700: "#004f84",
-        800: "#00395e",
-        900: "#00395e",
-      },
-      primary_outline: {
-        100: "#ffffff",
-        200: "#e6f9fd",
-        300: "#b3ecf8",
-        400: "#0071bc",
-        500: "#0071bc",
-        600: "#0071bc",
-        700: "#004f84",
-        800: "#00395e",
-        900: "#00395e",
-      },
-      secondary: {
-        100: "#e6f9fd",
-        200: "#b3ecf8",
-        300: "#4ed2ee",
-        400: "#02bfe7",
-        500: "#02bfe7",
-        600: "#0186a2",
-        700: "#0186a2",
-        800: "#016074",
-        900: "#016074",
-      },
-      secondary_outline: {
-        100: "#e6f9fd",
-        200: "#b3ecf8",
-        300: "#4ed2ee",
-        400: "#02bfe7",
-        500: "#02bfe7",
-        600: "#02bfe7",
-        700: "#0186a2",
-        800: "#016074",
-        900: "#016074",
-      },
-      success: {
-        100: "#e7f3e7",
-        200: "#89c487",
-        300: "#2a9526",
-        400: "#12890e",
-        500: "#107b0d",
-        600: "#0d600a",
-        700: "#0d600a",
-        800: "#094507",
-        900: "#094507",
-      },
-      warn: {
-        100: "#fef9e9",
-        200: "#fce28f",
-        300: "#f9ca35",
-        400: "#f8c41f",
-        500: "#dfb01c",
-        600: "#ae8916",
-        700: "#ae8916",
-        800: "#7c6210",
-        900: "#7c6210",
-      },
-      error: {
-        100: "#fce8ec",
-        200: "#f7bbc5",
-        300: "#f18e9e",
-        400: "#e31c3d",
-        500: "#cc1937",
-        600: "#9f142b",
-        700: "#9f142b",
-        800: "#720e1f",
-        900: "#720e1f",
-      },
-      neutral: {
-        100: "#ffffff",
-        200: "#f2f2f2",
-        300: "#d9d9d9",
-        400: "#a6a6a6",
-        500: "#5a5a5a",
-        600: "#404040",
-        700: "#404040",
-        800: "#262626",
-        900: "#000000",
-      },
+      spreadsheet_green: "#1d6f42",
     },
   },
   components: {
@@ -192,8 +107,56 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
-        width: "fit-content",
         transition: "all 0.3s ease",
+        width: "fit-content",
+        borderRadius: "0.25rem",
+        fontWeight: "bold",
+        "&.mobile": {
+          fontSize: "sm",
+        },
+      },
+      variants: {
+        primary: {
+          backgroundColor: "palette.primary",
+          color: "palette.white",
+          _hover: {
+            backgroundColor: "palette.primary_darker",
+          },
+        },
+        transparent: {
+          color: "palette.primary",
+          backgroundColor: "transparent",
+          _hover: {
+            color: "palette.primary_darker",
+            backgroundColor: "transparent",
+          },
+        },
+        outline: () => ({
+          ...theme.components.Button.variants.transparent,
+          border: "1px solid",
+          borderColor: "palette.primary",
+          _hover: {
+            ...theme.components.Button.variants.transparent._hover,
+            borderColor: "palette.primary_darker",
+            span: {
+              filter: svgFilters.primary_darker,
+            },
+          },
+        }),
+        link: () => ({
+          ...theme.components.Button.variants.transparent,
+          textDecoration: "underline",
+        }),
+        danger: {
+          backgroundColor: "palette.error_dark",
+          color: "palette.white",
+          _hover: {
+            backgroundColor: "palette.error_darker",
+          },
+        },
+      },
+      defaultProps: {
+        variant: "primary",
       },
     },
     Heading: {
@@ -250,3 +213,5 @@ export const theme = extendTheme({
     },
   },
 });
+
+export default theme;

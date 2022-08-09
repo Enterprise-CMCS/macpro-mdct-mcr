@@ -71,11 +71,7 @@ export const Header = ({ handleLogout }: Props) => {
                     sx={sx.leaveFormLink}
                     tabIndex={-1}
                   >
-                    <Button
-                      sx={sx.subnavButton}
-                      variant="outline"
-                      data-testid="leave-form-button"
-                    >
+                    <Button variant="outline" data-testid="leave-form-button">
                       Leave form
                     </Button>
                   </Link>
@@ -153,15 +149,5 @@ const sx = {
   },
   leaveFormLink: {
     marginLeft: "2rem",
-  },
-  subnavButton: {
-    color: "palette.primary",
-    border: "1px solid",
-    borderColor: "palette.primary",
-    borderRadius: "0.25rem",
-    "&:hover": {
-      bg: "palette.primary",
-      color: "palette.white",
-    },
   },
 };
