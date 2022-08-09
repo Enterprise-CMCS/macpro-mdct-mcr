@@ -7,8 +7,8 @@ import { makeMediaQueryClasses } from "utils";
 import verbiage from "verbiage/pages/mcpar/mcpar-intro";
 // assets
 import nextIcon from "assets/icons/icon_next.png";
-import NavigationSectionsImage from "../../assets/images/NavigationSections_2x.png";
-import NavigationSectionsSubmissionImage from "../../assets/images/NavigationSectionsSubmission_2x.png";
+import NavigationSectionsImage from "assets/other/nav-sections.png";
+import NavigationSectionsSubmissionImage from "assets/other/nav-sections-review-submit.png";
 
 export const Intro = () => {
   const { intro, body, pageLink } = verbiage;

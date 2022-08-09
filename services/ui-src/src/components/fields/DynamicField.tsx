@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { svgFilters } from "styles/theme";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { TextField } from "./TextField";
@@ -81,6 +82,9 @@ const sx = {
   removeImage: {
     width: "1.25rem",
     height: "1.25rem",
+    _hover: {
+      filter: svgFilters.primary_darker,
+    },
   },
   appendButton: {
     width: "202px",
