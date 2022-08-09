@@ -12,22 +12,7 @@
         "type": "checkbox",
         "props": {
           "label": "B.III.1 Data validation entity",
-          "hint": [
-            {
-              "type": "text",
-              "as": "span",
-              "content": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs."
-            },
-            {
-              "type": "html",
-              "content": "<br/>"
-            },
-            {
-              "type": "text",
-              "as": "span",
-              "content": "Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses."
-            }
-          ],
+          "hint": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs.</br>Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses.",
           "choices": [
             {
               "name": "bedr-1-o1",
@@ -70,13 +55,7 @@
                   "type": "radio",
                   "props": {
                     "label": "B.III.2 HIPAA compliance of proprietary system(s) for encounter data validation",
-                    "hint": [
-                      {
-                        "type": "text",
-                        "as": "span",
-                        "content": "Were the system(s) utilized fully HIPAA compliant? Select one."
-                      }
-                    ],
+                    "hint": "Were the system(s) utilized fully HIPAA compliant? Select one.",
                     "choices": [
                       {
                         "name": "bedr-2-o1",
@@ -103,10 +82,7 @@
               "children": [
                 {
                   "id": "bedr-1-o7-text",
-                  "type": "textarea",
-                  "props": {
-                    "label": ""
-                  }
+                  "type": "textarea"
                 }
               ]
             }

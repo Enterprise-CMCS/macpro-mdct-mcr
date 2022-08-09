@@ -70,7 +70,7 @@ interface dynamicFieldInput {
 }
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   hint?: CustomHtmlElement[];
   placeholder?: string;
   sxOverride?: AnyObject;
