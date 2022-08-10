@@ -8,7 +8,9 @@ export const text = () =>
 
 export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 
-export const number = () =>
+export const number = () => numberOptional().required(error.REQUIRED_GENERIC);
+
+export const numberOptional = () =>
   numberSchema()
     .transform((_value, originalValue) =>
       Number(originalValue.replace(/,/g, ""))
