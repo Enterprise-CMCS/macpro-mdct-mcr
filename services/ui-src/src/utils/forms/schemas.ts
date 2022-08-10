@@ -1,4 +1,4 @@
-import { array, string } from "yup";
+import { array, number as numberSchema, string } from "yup";
 import { schemaValidationErrors as error } from "verbiage/errors";
 
 // STRINGS
@@ -9,7 +9,11 @@ export const text = () =>
 export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 
 export const number = () =>
-  text().matches(numberFormatRegex, error.INVALID_NUMBER);
+  numberSchema()
+    .transform((_value, originalValue) =>
+      Number(originalValue.replace(/,/g, ""))
+    )
+    .typeError(error.INVALID_NUMBER);
 
 export const email = () => text().email(error.INVALID_EMAIL);
 
@@ -71,9 +75,6 @@ export const nested = (
 };
 
 // REGEX
-
-export const numberFormatRegex =
-  /^(?<!\S)(?=.)(0|([0-9,]*|\d{0,2}(,\d{3})*))?((\.\d*[0-9])|\.)?(?!\S)$/;
 
 export const dateFormatRegex =
   /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
