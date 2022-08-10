@@ -76,8 +76,15 @@ export const mcparStructureWithData = addDataToReportStructure(
 
 export const mcparRoutes = makeRouteArray(mcparStructureWithData);
 
-export const nonSidebarMcparRoutes = [
+export const nonReportMcparRoutes = [
   "/mcpar/intro",
   "/mcpar/dashboard",
   "/mcpar/getting-started",
 ];
+
+export const isMcparReportPage = (pathname: string) => {
+  return (
+    pathname.includes("/mcpar/") &&
+    !nonReportMcparRoutes.find((route: string) => route === pathname)
+  );
+};

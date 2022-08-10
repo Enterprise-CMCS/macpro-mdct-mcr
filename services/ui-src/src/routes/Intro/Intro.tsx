@@ -7,8 +7,8 @@ import { makeMediaQueryClasses } from "utils";
 import verbiage from "verbiage/pages/mcpar/mcpar-intro";
 // assets
 import nextIcon from "assets/icons/icon_next.png";
-import NavigationSectionsImage from "../../assets/images/NavigationSections_2x.png";
-import NavigationSectionsSubmissionImage from "../../assets/images/NavigationSectionsSubmission_2x.png";
+import NavigationSectionsImage from "assets/other/nav-sections.png";
+import NavigationSectionsSubmissionImage from "assets/other/nav-sections-review-submit.png";
 
 export const Intro = () => {
   const { intro, body, pageLink } = verbiage;
@@ -64,8 +64,8 @@ export const Intro = () => {
       </div>
       <Box sx={sx.pageLinkContainer}>
         <Button
-          className={mqClasses}
           sx={sx.pageLink}
+          className={mqClasses}
           onClick={() => navigate(pageLink.route)}
           rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
         >
@@ -116,26 +116,17 @@ const sx = {
     fontSize: "sm",
   },
   pageLinkContainer: {
-    textAlign: "right",
+    marginTop: "1rem",
     marginBottom: "2rem",
+    textAlign: "right",
   },
   pageLink: {
     justifyContent: "start",
-    marginTop: "1rem",
     marginBottom: "1rem",
     borderRadius: "0.25rem",
-    background: "palette.primary",
-    fontWeight: "bold",
-    color: "palette.white",
     span: {
       marginLeft: "0.5rem",
       marginRight: "-0.25rem",
-    },
-    _hover: {
-      background: "palette.primary_darker",
-    },
-    "&.mobile": {
-      fontSize: "sm",
     },
   },
 };

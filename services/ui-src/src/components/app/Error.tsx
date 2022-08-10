@@ -31,7 +31,7 @@ export const Error = () => {
       </Heading>
       <Text sx={sx.descriptionText}>
         {preLinkText}
-        <Link href={createEmailLink({ address: helpDeskEmail })}>
+        <Link href={createEmailLink({ address: helpDeskEmail })} isExternal>
           {helpDeskEmail}
         </Link>
         {postLinkText}
