@@ -66,7 +66,6 @@ export interface FormField {
   props?: AnyObject;
   validation?: FormValidation;
   choices?: FieldChoice[];
-  [key: string]: any;
 }
 
 export interface FieldChoice {
@@ -169,4 +168,11 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
+}
+
+export interface SpreadsheetWidgetProps {
+  title: string;
+  descriptionList: string[];
+  additionalInfo?: string;
+  [key: string]: any;
 }

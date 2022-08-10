@@ -2,23 +2,26 @@
   "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
   "intro": {
     "section": "C: Program-Level Indicators",
-    "subsection": "Topic V. Availability/Accessibility: Network Adequacy"
+    "subsection": "Topic V. Availability/Accessibility: Network Adequacy",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["C1_Program_Set"]
+    },
+    "info": [
+      {
+        "type": "heading",
+        "as": "h4",
+        "content": "Network adequacy"
+      },
+      {
+        "type": "text",
+        "content": "[Description needed]"
+      }
+    ]
   },
   "form": {
     "id": "cna",
     "fields": [
-      {
-        "id": "cna-3",
-        "type": "spreadsheetWidget",
-        "props": {
-          "label": "C1.V.2 State response to gaps in network adequacy"
-        },
-        "content": {
-          "iconDescription": "Excel Workbook Icon",
-          "title": "Find in the Excel Workbook",
-          "descriptionList": ["C1_Program_Set"]
-        }
-      },
       {
         "id": "cna-1",
         "type": "textarea",

@@ -6,7 +6,6 @@ import {
   DynamicField,
   NumberField,
   RadioField,
-  SpreadsheetWidget,
   TextField,
   TextAreaField,
 } from "components";
@@ -36,7 +35,6 @@ const initializeChoiceFieldControl = (fields: FormField[]) => {
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
   const fieldToComponentMap: any = {
-    // fields
     checkbox: CheckboxField,
     date: DateField,
     dynamic: DynamicField,
@@ -44,8 +42,6 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     radio: RadioField,
     text: TextField,
     textarea: TextAreaField,
-    // info
-    spreadsheetWidget: SpreadsheetWidget,
   };
   fields = initializeChoiceFieldControl(fields);
   return fields.map((field) => {
@@ -54,7 +50,6 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
       key: field.id,
       name: field.id,
       nested: isNested,
-      content: field?.content,
       ...field?.props,
     });
   });
