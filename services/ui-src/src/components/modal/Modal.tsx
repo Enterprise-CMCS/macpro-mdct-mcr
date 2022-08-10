@@ -19,7 +19,11 @@ import { makeMediaQueryClasses } from "utils";
 export const Modal = ({ actionFunction, content, modalState }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
-    <ChakraModal isOpen={modalState.isOpen} onClose={modalState.onClose}>
+    <ChakraModal
+      data-testid="modal"
+      isOpen={modalState.isOpen}
+      onClose={modalState.onClose}
+    >
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
         <ModalHeader sx={sx.modalHeader}>
@@ -75,7 +79,6 @@ interface Props {
 
 const sx = {
   modalContent: {
-    "-webkit-box-shadow": "2px 2px 4px",
     boxShadow: "2px 2px 4px",
     borderRadius: "0",
     maxWidth: "30rem",
