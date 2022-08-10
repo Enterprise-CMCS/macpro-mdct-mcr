@@ -19,11 +19,7 @@ import { makeMediaQueryClasses } from "utils";
 export const Modal = ({ actionFunction, content, modalState }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
-    <ChakraModal
-      data-testid="modal"
-      isOpen={modalState.isOpen}
-      onClose={modalState.onClose}
-    >
+    <ChakraModal isOpen={modalState.isOpen} onClose={modalState.onClose}>
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
         <ModalHeader sx={sx.modalHeader}>
@@ -32,7 +28,12 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
           </Heading>
         </ModalHeader>
         <Box sx={sx.modalCloseContainer}>
-          <Button sx={sx.modalClose} leftIcon={<CloseIcon />} variant="link">
+          <Button
+            sx={sx.modalClose}
+            leftIcon={<CloseIcon />}
+            variant="link"
+            onClick={modalState.onClose}
+          >
             Close
           </Button>
         </Box>
