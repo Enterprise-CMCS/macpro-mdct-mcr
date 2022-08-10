@@ -33,9 +33,9 @@ export const ReviewSubmit = () => {
         status: ReportStatus.COMPLETED,
       };
       updateReportStatus(reportStatus);
-      navigate(pageLink);
     }
     setShowModal(false);
+    navigate(pageLink);
   };
 
   return (

@@ -1,11 +1,15 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { ReportPage, Sidebar } from "components";
+import { ReportContext, ReportPage, Sidebar } from "components";
+import { useContext } from "react";
+import { useUser } from "utils";
 
 // form data
 import verbiage from "verbiage/pages/mcpar/mcpar-successful-submit";
 
 export const SuccessfullySubmitted = () => {
+  const { reportData } = useContext(ReportContext);
+  const { user } = useUser();
   const { intro } = verbiage;
   return (
     <ReportPage data-testid="success-submit-view">
@@ -18,8 +22,14 @@ export const SuccessfullySubmitted = () => {
             </Heading>
             <Box sx={sx.infoTextBox}>
               <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-              <Text>{intro.info}</Text>
+              <Text>{`MCPAR report for ${reportData?.programName} was submitted on ${reportData?.createdAt} by ${user?.given_name} ${user?.family_name}`}</Text>
             </Box>
+          </Box>
+          <Box>
+            <Text sx={sx.additionalInfoHeader}>
+              {intro.additionalInfoHeader}
+            </Text>
+            <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
           </Box>
         </Flex>
       </Flex>
@@ -56,5 +66,13 @@ const sx = {
   infoHeading: {
     fontWeight: "bold",
     marginBottom: ".5rem",
+  },
+  additionalInfoHeader: {
+    color: "palette.gray",
+    fontWeight: "bold",
+    marginBottom: ".5rem",
+  },
+  additionalInfo: {
+    color: "palette.gray",
   },
 };
