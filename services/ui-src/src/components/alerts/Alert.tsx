@@ -37,7 +37,7 @@ export const Alert = ({
               <Text sx={sx.descriptionText}>{description}</Text>
               {link && (
                 <Text sx={sx.linkText}>
-                  <Link href={link} isExternal variant="inline">
+                  <Link href={link} isExternal>
                     {link}
                   </Link>
                 </Text>

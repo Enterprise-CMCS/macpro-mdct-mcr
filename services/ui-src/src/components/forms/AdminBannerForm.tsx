@@ -50,12 +50,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
         <PreviewBanner />
       </Form>
       <Flex sx={sx.previewFlex}>
-        <Button
-          form={formJson.id}
-          type="submit"
-          sx={sx.replaceBannerButton}
-          colorScheme="colorSchemes.primary"
-        >
+        <Button form={formJson.id} type="submit" sx={sx.replaceBannerButton}>
           Replace Current Banner
         </Button>
       </Flex>

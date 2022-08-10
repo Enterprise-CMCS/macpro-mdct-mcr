@@ -11,12 +11,7 @@ export const LoginIDM = () => {
       <Heading as="h2" size="md" sx={sx.heading}>
         Log In with IDM
       </Heading>
-      <Button
-        sx={sx.button}
-        colorScheme="colorSchemes.primary"
-        onClick={loginWithIDM}
-        isFullWidth
-      >
+      <Button sx={sx.button} onClick={loginWithIDM} isFullWidth>
         Log In with IDM
       </Button>
     </Box>

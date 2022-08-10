@@ -31,11 +31,7 @@ export const Home = () => {
           </Heading>
           <Text>
             {intro.body.preLinkText}
-            <Link
-              sx={sx.bodyLink}
-              href={intro.body.linkLocation}
-              target="_blank"
-            >
+            <Link href={intro.body.linkLocation} isExternal>
               {intro.body.linkText}
             </Link>
             {intro.body.postLinkText}
@@ -75,12 +71,6 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "2rem",
     fontWeight: "normal",
-  },
-  bodyLink: {
-    textDecoration: "underline !important",
-    "&:hover": {
-      textDecoration: "none !important",
-    },
   },
   card: {
     marginBottom: "2rem",
