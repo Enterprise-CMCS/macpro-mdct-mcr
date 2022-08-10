@@ -87,8 +87,8 @@ const sx = {
     },
   },
   appendButton: {
-    width: "202px",
-    height: "42px",
+    width: "12.5rem",
+    height: "2.5rem",
     marginTop: "2rem",
   },
   textFieldOverride: {
