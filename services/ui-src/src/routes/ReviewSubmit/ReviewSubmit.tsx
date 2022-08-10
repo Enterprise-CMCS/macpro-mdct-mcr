@@ -1,22 +1,30 @@
-import { useState } from "react";
+/* eslint-disable no-console */
+import { useContext, useState } from "react";
 
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Icon, ReportPage, Sidebar } from "components";
+import { Error, Icon, ReportContext, ReportPage, Sidebar } from "components";
 
 // form data
 import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import { Dialog } from "@cmsgov/design-system";
 
 export const ReviewSubmit = () => {
+  const { reportData, errorMessage: error } = useContext(ReportContext);
   const [showModal, setShowModal] = useState(false);
   const { intro } = verbiage;
+
+  const submitForm = () => {
+    console.log(reportData);
+    console.log(reportData?.report);
+  };
 
   return (
     <ReportPage data-testid="review-and-submit-view">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reviewContainer}>
+          {error && <Error />}
           <Box sx={sx.leadTextBox}>
             <Heading as="h1" sx={sx.headerText}>
               {intro.header}
@@ -39,12 +47,13 @@ export const ReviewSubmit = () => {
         {showModal && (
           <Dialog
             onExit={() => setShowModal(false)}
-            getApplicationNode={() => document.getElementById("root")}
+            getApplicationNode={() => document.getElementById("app")}
             heading="Dialog heading"
             actions={[
               <button
                 className="ds-c-button ds-c-button--primary ds-u-margin-right--1"
                 key="primary"
+                onClick={() => submitForm()}
               >
                 Dialog action
               </button>,
