@@ -19,6 +19,7 @@ export const Dashboard = () => {
 
 const sx = {
   leadTextBox: {
+    marginTop: "2rem",
     marginBottom: "2.25rem",
   },
   headerText: {

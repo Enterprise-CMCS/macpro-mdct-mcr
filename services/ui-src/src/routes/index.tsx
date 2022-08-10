@@ -5,7 +5,6 @@ export { Home } from "./Home/Home";
 export { NotFound } from "./NotFound/NotFound";
 export { Profile } from "./Profile/Profile";
 // mcpar
-export { Intro } from "./Intro/Intro";
 export { GetStarted } from "./GetStarted/GetStarted";
 export { Dashboard } from "./Dashboard/Dashboard";
 export { McparReportPage } from "./McparReportPage/McparReportPage";
