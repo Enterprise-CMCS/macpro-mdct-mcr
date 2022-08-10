@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 // utils
-import { UserContextI, UserRoles } from "types";
+import { ReportStatus, UserContextI, UserRoles } from "types";
 import { bannerId } from "../../constants";
 
 // GLOBALS
@@ -129,5 +129,5 @@ export const mockReportData = {
 export const mockReportStatusData = {
   key: "AB2022",
   programName: "testProgram",
-  status: "In Progress",
+  status: ReportStatus.IN_PROGRESS,
 };

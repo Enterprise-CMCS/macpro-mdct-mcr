@@ -12,7 +12,7 @@ import {
 } from "components";
 // utils
 import { findRoute, hydrateFormFields, parseCustomHtml, useUser } from "utils";
-import { AnyObject, CustomHtmlElement, UserRoles } from "types";
+import { AnyObject, CustomHtmlElement, ReportStatus, UserRoles } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
@@ -50,7 +50,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
       const reportStatus = {
         key: reportKey,
         programName: programName,
-        status: "In Progress",
+        status: ReportStatus.IN_PROGRESS,
       };
       updateReportData(report);
       updateReportStatus(reportStatus);

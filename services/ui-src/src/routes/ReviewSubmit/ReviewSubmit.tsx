@@ -1,22 +1,41 @@
-/* eslint-disable no-console */
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Error, Icon, ReportContext, ReportPage, Sidebar } from "components";
+import { Dialog } from "@cmsgov/design-system";
+import { Icon, ReportContext, ReportPage, Sidebar } from "components";
 
 // form data
 import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
-import { Dialog } from "@cmsgov/design-system";
+import { useUser } from "utils";
+import { ReportStatus, UserRoles } from "types";
 
 export const ReviewSubmit = () => {
-  const { reportData, errorMessage: error } = useContext(ReportContext);
+  const navigate = useNavigate();
+  const { reportData, updateReportStatus } = useContext(ReportContext);
   const [showModal, setShowModal] = useState(false);
-  const { intro } = verbiage;
+  const { intro, pageLink } = verbiage;
+
+  // get user's state
+  const { user } = useUser();
+  const { userRole } = user ?? {};
 
   const submitForm = () => {
-    console.log(reportData);
-    console.log(reportData?.report);
+    if (
+      reportData?.key &&
+      reportData?.programName &&
+      (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP)
+    ) {
+      const reportStatus = {
+        key: reportData.key,
+        programName: reportData.programName,
+        status: ReportStatus.COMPLETED,
+      };
+      updateReportStatus(reportStatus);
+      navigate(pageLink);
+    }
+    setShowModal(false);
   };
 
   return (
@@ -24,7 +43,6 @@ export const ReviewSubmit = () => {
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reviewContainer}>
-          {error && <Error />}
           <Box sx={sx.leadTextBox}>
             <Heading as="h1" sx={sx.headerText}>
               {intro.header}

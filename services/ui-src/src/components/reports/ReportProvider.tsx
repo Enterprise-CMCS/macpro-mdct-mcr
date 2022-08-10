@@ -1,6 +1,11 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
 // utils
-import { AnyObject, ReportShape, ReportContextShape } from "types";
+import {
+  AnyObject,
+  ReportShape,
+  ReportContextShape,
+  ReportStatus,
+} from "types";
 import {
   getReport,
   writeReport,
@@ -11,7 +16,7 @@ import {
 import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
-  reportStatus: "",
+  reportStatus: ReportStatus.INITIAL,
   reportData: {} as AnyObject,
   fetchReportData: Function,
   updateReportData: Function,

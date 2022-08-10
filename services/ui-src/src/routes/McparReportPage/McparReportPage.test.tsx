@@ -6,6 +6,7 @@ import { McparReportPage } from "routes";
 import { ReportContext } from "components";
 // utils
 import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
+import { ReportStatus } from "types";
 import sectionA_pointofcontact from "forms/mcpar/apoc/apoc.json";
 
 // MOCKS
@@ -19,7 +20,7 @@ const mockReportMethods = {
 
 const mockReportContext = {
   ...mockReportMethods,
-  reportStatus: "",
+  reportStatus: ReportStatus.INITIAL,
   reportData: {},
   errorMessage: "",
 };

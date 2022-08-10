@@ -41,6 +41,11 @@ export interface ReportPath {
   children?: ReportPath[];
 }
 
+export enum ReportStatus {
+  INITIAL = "",
+  IN_PROGRESS = "In Progress",
+  COMPLETED = "Completed",
+}
 export interface ReportShape {
   reportData: AnyObject;
 }
@@ -53,7 +58,7 @@ export interface ReportContextMethods {
 }
 
 export interface ReportContextShape extends ReportShape, ReportContextMethods {
-  reportStatus: string;
+  reportStatus: ReportStatus;
   errorMessage?: string;
 }
 
