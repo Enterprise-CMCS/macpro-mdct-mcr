@@ -65,8 +65,8 @@ export const Admin = () => {
           <Flex sx={sx.currentBannerFlex}>
             <Banner bannerData={bannerData} />
             <Button
+              variant="danger"
               sx={sx.deleteBannerButton}
-              colorScheme="colorSchemes.error"
               onClick={deleteBanner}
             >
               Delete Current Banner
