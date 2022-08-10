@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { svgFilters } from "styles/theme";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { TextField } from "./TextField";
 
-export const DynamicField = ({ name, label }: Props) => {
+export const DynamicField = ({ name, label, ...props }: Props) => {
   const form = useFormContext();
   form.register(name);
 
@@ -16,7 +17,9 @@ export const DynamicField = ({ name, label }: Props) => {
   });
 
   useEffect(() => {
-    if (fields.length === 0) append("");
+    if (fields.length === 0) {
+      append(props?.hydrate || "");
+    }
   });
 
   return (
@@ -32,6 +35,7 @@ export const DynamicField = ({ name, label }: Props) => {
                 index,
                 inputRef: () => form.register,
               }}
+              hydrate={props?.hydrate?.[index]}
               sxOverride={sx.textFieldOverride}
             />
             {index != 0 && (
@@ -52,6 +56,7 @@ export const DynamicField = ({ name, label }: Props) => {
         );
       })}
       <Button
+        variant="outline"
         sx={sx.appendButton}
         onClick={() => {
           append("");
@@ -66,6 +71,7 @@ export const DynamicField = ({ name, label }: Props) => {
 interface Props {
   name: string;
   label: string;
+  [key: string]: any;
 }
 
 const sx = {
@@ -76,17 +82,14 @@ const sx = {
   removeImage: {
     width: "1.25rem",
     height: "1.25rem",
+    _hover: {
+      filter: svgFilters.primary_darker,
+    },
   },
   appendButton: {
-    minWidth: "202px",
-    minHeight: "42px",
+    width: "12.5rem",
+    height: "2.5rem",
     marginTop: "2rem",
-    border: "1px solid var(--chakra-colors-palette-main)",
-    borderRadius: "3px",
-    bg: "palette.white",
-    fontSize: "1rem",
-    fontWeight: "bold",
-    color: "palette.main",
   },
   textFieldOverride: {
     width: "32rem",

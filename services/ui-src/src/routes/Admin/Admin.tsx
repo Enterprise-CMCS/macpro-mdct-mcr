@@ -10,7 +10,7 @@ import {
 } from "components";
 // utils
 import { checkDateRangeStatus, formatDateUtcToEt } from "utils";
-import { DELETE_BANNER_FAILED } from "verbiage/errors";
+import { bannerErrors } from "verbiage/errors";
 import verbiage from "verbiage/pages/admin";
 
 export const Admin = () => {
@@ -29,7 +29,7 @@ export const Admin = () => {
     try {
       await deleteAdminBanner();
     } catch (error: any) {
-      setError(DELETE_BANNER_FAILED);
+      setError(bannerErrors.DELETE_BANNER_FAILED);
     }
   };
 
@@ -65,8 +65,8 @@ export const Admin = () => {
           <Flex sx={sx.currentBannerFlex}>
             <Banner bannerData={bannerData} />
             <Button
+              variant="danger"
               sx={sx.deleteBannerButton}
-              colorScheme="colorSchemes.error"
               onClick={deleteBanner}
             >
               Delete Current Banner

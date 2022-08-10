@@ -4,10 +4,10 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
 // data
 import mcparRouteStructure from "forms/mcpar/reportStructure";
-import { nonSidebarMcparRoutes } from "forms/mcpar";
+import { isMcparReportPage } from "forms/mcpar";
 
 interface LinkItemProps {
   name: string;
@@ -17,16 +17,13 @@ interface LinkItemProps {
 
 export const Sidebar = () => {
   const mqClasses = makeMediaQueryClasses();
-  const [isOpen, toggleSidebar] = useState(true);
+  const { isDesktop } = useBreakpoint();
+  const [isOpen, toggleSidebar] = useState(isDesktop);
   const { pathname } = useLocation();
-
-  const isMcparReport =
-    pathname.includes("/mcpar/") &&
-    !nonSidebarMcparRoutes.find((route) => route === pathname);
 
   return (
     <>
-      {isMcparReport && (
+      {isMcparReportPage(pathname) && (
         <Box
           id="sidebar"
           sx={sx.root}
@@ -87,7 +84,7 @@ const NavSection = ({ section, level }: NavSectionProps) => {
           />
         </Box>
       ) : (
-        <Link as={RouterLink} to={path}>
+        <Link as={RouterLink} to={path} variant="unstyled">
           <NavItem
             name={name}
             level={level}
@@ -225,9 +222,9 @@ const sx = {
       bg: "palette.gray_lightest_highlight",
       borderBottom: "1px solid transparent",
       borderInlineStartWidth: "0.125rem",
-      borderInlineStartColor: "palette.alt",
+      borderInlineStartColor: "palette.secondary",
       ".chakra-text": {
-        color: "palette.alt_darkest",
+        color: "palette.secondary_darkest",
       },
     },
   },

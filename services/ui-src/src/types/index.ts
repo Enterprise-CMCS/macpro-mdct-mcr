@@ -41,6 +41,22 @@ export interface ReportPath {
   children?: ReportPath[];
 }
 
+export interface ReportShape {
+  reportData: AnyObject;
+}
+
+export interface ReportContextMethods {
+  fetchReportData: Function;
+  updateReportData: Function;
+  fetchReportStatus: Function;
+  updateReportStatus: Function;
+}
+
+export interface ReportContextShape extends ReportShape, ReportContextMethods {
+  reportStatus: string;
+  errorMessage?: string;
+}
+
 // FORM
 
 export interface FormField {
@@ -57,6 +73,7 @@ export interface FieldChoice {
   type?: string;
   label: string;
   value: string;
+  checked?: boolean;
   children?: FormField[];
   checkedChildren?: React.ReactNode;
 }

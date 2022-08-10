@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -8,7 +9,12 @@ import {
   makeMediaQueryClasses,
   parseCustomHtml,
 } from "utils";
-import { AnyObject, CustomHtmlElement, FieldChoice } from "types";
+import {
+  AnyObject,
+  CustomHtmlElement,
+  FieldChoice,
+  InputChangeEvent,
+} from "types";
 
 export const ChoiceListField = ({
   name,
@@ -17,8 +23,6 @@ export const ChoiceListField = ({
   choices,
   hint,
   nested,
-  onChangeHandler,
-  errorMessage,
   sxOverride,
   ...props
 }: Props) => {
@@ -27,22 +31,54 @@ export const ChoiceListField = ({
   const form = useFormContext();
   form.register(name);
 
+  const [fieldValues, setFieldValues] = useState<string[] | null>(
+    form.getValues(name) || props.hydrate || null
+  );
+
   const formatChoices = (choices: FieldChoice[]) =>
     choices.map((choice: FieldChoice) => {
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
-        const isNested = true;
-        const formattedChildren = formFieldFactory(choiceChildren, isNested);
+        const formattedChildren = formFieldFactory(choiceChildren, true);
         choiceObject.checkedChildren = formattedChildren;
       }
       delete choiceObject.children;
       return choiceObject;
     });
 
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  // update local state
+  const onChangeHandler = (event: InputChangeEvent) => {
+    const clickedOption = event.target.value;
+    const isOptionChecked = event.target.checked;
+    const currentFieldValues = fieldValues || [];
+    // handle radio
+    if (type === "radio") {
+      setFieldValues([clickedOption]);
+    } else {
+      // handle checkbox
+      setFieldValues(
+        isOptionChecked
+          ? [...currentFieldValues, clickedOption]
+          : currentFieldValues.filter((value) => value !== clickedOption)
+      );
+    }
+  };
 
+  useEffect(() => {
+    // update form data
+    if (fieldValues) {
+      form.setValue(name, fieldValues, { shouldValidate: true });
+      // update DOM choices checked status
+      choices.forEach((choice: FieldChoice) => {
+        choice.checked = fieldValues.includes(choice.value);
+      });
+    }
+  }, [fieldValues]);
+
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const parsedHint = hint && parseCustomHtml(hint);
+  const errorMessage = form?.formState?.errors?.[name]?.message;
 
   return (
     <Box
@@ -70,7 +106,6 @@ interface Props {
   choices: FieldChoice[];
   hint?: CustomHtmlElement[];
   nested?: boolean;
-  onChangeHandler: Function;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

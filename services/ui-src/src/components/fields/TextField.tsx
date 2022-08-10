@@ -40,7 +40,6 @@ export const TextField = ({
   }
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
-
   const parsedHint = hint && parseCustomHtml(hint);
 
   return (
@@ -57,7 +56,7 @@ export const TextField = ({
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => dynamic?.inputRef ?? form.register(name)}
-        defaultValue={props?.hydrate}
+        defaultValue={form.getValues(name) || props?.hydrate}
         {...props}
       />
     </Box>
@@ -71,7 +70,7 @@ interface dynamicFieldInput {
 }
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   hint?: CustomHtmlElement[];
   placeholder?: string;
   sxOverride?: AnyObject;

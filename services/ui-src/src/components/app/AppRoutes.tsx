@@ -6,14 +6,13 @@ import {
   GetStarted,
   Help,
   Home,
-  Intro,
   McparReportPage,
   NotFound,
   Profile,
   ReviewSubmit,
 } from "routes";
 import { mcparRoutes } from "forms/mcpar";
-import { AdminBannerProvider } from "components";
+import { AdminBannerProvider, ReportProvider } from "components";
 // utils
 import { UserRoles } from "types";
 import { ScrollToTopComponent } from "utils";
@@ -25,35 +24,39 @@ export const AppRoutes = ({ userRole }: Props) => {
     <main id="main-content" tabIndex={-1}>
       <ScrollToTopComponent />
       <AdminBannerProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/admin"
-            element={!isAdmin ? <Navigate to="/profile" /> : <Admin />}
-          />
-          <Route path="/help" element={<Help />} />
+        <ReportProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/admin"
+              element={!isAdmin ? <Navigate to="/profile" /> : <Admin />}
+            />
+            <Route path="/help" element={<Help />} />
 
-          {/* MCPAR ROUTES */}
-          <Route path="/mcpar/dashboard" element={<Dashboard />} />
-          <Route path="/mcpar/intro" element={<Intro />} />
-          <Route path="/mcpar/get-started" element={<GetStarted />} />
-          {mcparRoutes.map(
-            (route: any) =>
-              !route.isNonFormPage && (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<McparReportPage pageJson={route.pageJson} />}
-                />
-              )
-          )}
-          <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
-          <Route path="/mcpar" element={<Navigate to="/mcpar/dashboard" />} />
-          <Route path="/mcpar/*" element={<Navigate to="/mcpar/dashboard" />} />
+            {/* MCPAR ROUTES */}
+            <Route path="/mcpar/dashboard" element={<Dashboard />} />
+            <Route path="/mcpar/get-started" element={<GetStarted />} />
+            {mcparRoutes.map(
+              (route: any) =>
+                !route.isNonFormPage && (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<McparReportPage pageJson={route.pageJson} />}
+                  />
+                )
+            )}
+            <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
+            <Route path="/mcpar" element={<Navigate to="/mcpar/dashboard" />} />
+            <Route
+              path="/mcpar/*"
+              element={<Navigate to="/mcpar/dashboard" />}
+            />
 
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ReportProvider>
       </AdminBannerProvider>
     </main>
   );

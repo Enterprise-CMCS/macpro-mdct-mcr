@@ -37,7 +37,7 @@ export const Alert = ({
               <Text sx={sx.descriptionText}>{description}</Text>
               {link && (
                 <Text sx={sx.linkText}>
-                  <Link href={link} isExternal variant="inline">
+                  <Link href={link} isExternal>
                     {link}
                   </Link>
                 </Text>
@@ -67,8 +67,8 @@ const sx = {
     marginTop: "1.25rem",
     padding: "1rem",
     "&.info": {
-      backgroundColor: "palette.alt_lightest",
-      borderInlineStartColor: "palette.alt",
+      backgroundColor: "palette.secondary_lightest",
+      borderInlineStartColor: "palette.secondary",
     },
     "&.success": {
       bgColor: "palette.success_lightest",
@@ -92,7 +92,7 @@ const sx = {
   },
   icon: {
     position: "absolute",
-    color: "palette.gray_darkest",
+    color: "palette.base",
     marginBottom: "1.75rem",
   },
   contentBox: {

@@ -1,7 +1,18 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
 import { extendTheme } from "@chakra-ui/react";
 
-export const theme = extendTheme({
+export const svgFilters = {
+  primary:
+    "brightness(0) saturate(100%) invert(30%) sepia(93%) saturate(1282%) hue-rotate(181deg) brightness(91%) contrast(101%)",
+  primary_darker:
+    "brightness(0) saturate(100%) invert(19%) sepia(43%) saturate(3547%) hue-rotate(185deg) brightness(97%) contrast(101%)",
+  white:
+    "brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7500%) hue-rotate(142deg) brightness(115%) contrast(115%);",
+  gray_lighter:
+    "brightness(0) saturate(100%) invert(91%) sepia(0%) saturate(89%) hue-rotate(162deg) brightness(97%) contrast(93%);",
+};
+
+const theme = extendTheme({
   sizes: {
     appMax: "100vw",
     basicPageWidth: "46rem",
@@ -41,120 +52,57 @@ export const theme = extendTheme({
   colors: {
     palette: {
       // primary
-      main: "#0071bc",
-      main_darker: "#205493",
-      main_darkest: "#112e51",
-      alt_lightest: "#e1f3f8",
-      alt_light: "#9bdaf1",
-      alt: "#02bfe7",
-      alt_dark: "#00a6d2",
-      alt_darkest: "#046b99",
+      primary: "#0071bc",
+      primary_darker: "#004f84",
+      primary_darkest: "#00395e",
+      // secondary
+      secondary_lightest: "#e6f9fd",
+      secondary_lighter: "#b3ecf8",
+      secondary_light: "#4ed2ee",
+      secondary: "#02bfe7",
+      secondary_dark: "#02acd0",
+      secondary_darker: "#0186a2",
+      secondary_darkest: "#016074",
       // status: success
-      success_lightest: "#e7f4e4",
-      success_lighter: "#94bfa2",
-      success_light: "#4aa564",
-      success: "#2e8540",
-      success_dark: "#2a7a3b",
-      success_darker: "#266e35",
-      success_darkest: "#174320",
+      success_lightest: "#e7f3e7",
+      success_lighter: "#89c487",
+      success_light: "#2a9526",
+      success: "#12890e",
+      success_dark: "#107b0d",
+      success_darker: "#0d600a",
+      success_darkest: "#094507",
       // status: warn
-      warn_lightest: "#fff1d2",
-      warn_lighter: "#fad980",
-      warn_light: "#f9c642",
-      warn: "#fdb81e",
-      warn_dark: "#e4a61b",
-      warn_darker: "#ca9318",
-      warn_darkest: "#b18115",
+      warn_lightest: "#fef9e9",
+      warn_lighter: "#fce28f",
+      warn_light: "#f9ca35",
+      warn: "#f8c41f",
+      warn_dark: "#dfb01c",
+      warn_darker: "#ae8916",
+      warn_darkest: "#7c6210",
       // status: error
-      error_lightest: "#f9dede",
-      error_lighter: "#f5adb9",
-      error_light: "#e59393",
+      error_lightest: "#fce8ec",
+      error_lighter: "#f7bbc5",
+      error_light: "#f18e9e",
       error: "#e31c3d",
-      error_dark: "#cd2026",
-      error_darker: "#b31e22",
-      error_darkest: "#981b1e",
+      error_dark: "#cc1937",
+      error_darker: "#9f142b",
+      error_darkest: "#720e1f",
       // neutrals
       white: "#ffffff",
-      gray_lightest_highlight: "#f8f8f8",
-      gray_lightest: "#f1f1f1",
-      gray_lighter: "#d6d7d9",
-      gray_light: "#aeb0b5",
-      gray: "#5b616b",
-      gray_dark: "#323a45",
-      gray_darkest: "#212121",
+      gray_lightest: "#f2f2f2",
+      gray_lighter: "#d9d9d9",
+      gray_light: "#a6a6a6",
+      gray: "#5a5a5a",
+      gray_dark: "#404040",
+      base: "#262626",
       black: "#000000",
       // other
       focus_light: "#ffffff",
       focus_dark: "#bd13b8",
-      muted: "#bac5cf",
-    },
-    colorSchemes: {
-      main: {
-        100: "#ffffff",
-        200: "#e1f3f8",
-        300: "#9bdaf1",
-        400: "#0071bc",
-        500: "#0071bc",
-        600: "#205493",
-        700: "#205493",
-        800: "#112e51",
-        900: "#112e51",
-      },
-      outline: {
-        100: "#ffffff",
-        200: "#e1f3f8",
-        300: "#9bdaf1",
-        400: "#0071bc",
-        500: "#0071bc",
-        600: "#0071bc",
-        700: "#205493",
-        800: "#112e51",
-        900: "#112e51",
-      },
-      success: {
-        100: "#e7f4e4",
-        200: "#94bfa2",
-        300: "#4aa564",
-        400: "#2e8540",
-        500: "#2a7a3b",
-        600: "#266e35",
-        700: "#266e35",
-        800: "#174320",
-        900: "#174320",
-      },
-      warn: {
-        100: "#fff1d2",
-        200: "#fad980",
-        300: "#f9c642",
-        400: "#fdb81e",
-        500: "#e4a61b",
-        600: "#ca9318",
-        700: "#ca9318",
-        800: "#b18115",
-        900: "#b18115",
-      },
-      error: {
-        100: "#f9dede",
-        200: "#f5adb9",
-        300: "#e59393",
-        400: "#e31c3d",
-        500: "#cd2026",
-        600: "#b31e22",
-        700: "#b31e22",
-        800: "#981b1e",
-        900: "#981b1e",
-      },
-      neutral: {
-        100: "#ffffff",
-        200: "#f1f1f1",
-        300: "#d6d7d9",
-        400: "#aeb0b5",
-        500: "#5b616b",
-        600: "#323a45",
-        700: "#323a45",
-        800: "#212121",
-        900: "#000000",
-      },
+      muted: "#e9ecf1",
+      // custom
+      gray_lightest_highlight: "#f8f8f8",
+      spreadsheet_green: "#1d6f42",
     },
   },
   components: {
@@ -165,61 +113,158 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
-        width: "fit-content",
         transition: "all 0.3s ease",
+        width: "fit-content",
+        borderRadius: "0.25rem",
+        fontWeight: "bold",
+        "&.mobile": {
+          fontSize: "sm",
+        },
+      },
+      variants: {
+        // primary variants
+        primary: {
+          backgroundColor: "palette.primary",
+          color: "palette.white",
+          _hover: {
+            backgroundColor: "palette.primary_darker",
+          },
+        },
+        transparent: {
+          color: "palette.primary",
+          backgroundColor: "transparent",
+          _hover: {
+            color: "palette.primary_darker",
+            backgroundColor: "transparent",
+            span: {
+              filter: svgFilters.primary_darker,
+            },
+          },
+        },
+        outline: () => ({
+          ...theme.components.Button.variants.transparent,
+          border: "1px solid",
+          borderColor: "palette.primary",
+          _hover: {
+            ...theme.components.Button.variants.transparent._hover,
+            borderColor: "palette.primary_darker",
+            span: {
+              filter: svgFilters.primary_darker,
+            },
+          },
+        }),
+        link: () => ({
+          ...theme.components.Button.variants.transparent,
+          textDecoration: "underline",
+        }),
+        // inverse variants
+        inverse: {
+          backgroundColor: "palette.white",
+          color: "palette.primary",
+          _hover: {
+            color: "palette.primary_darker",
+            span: {
+              filter: svgFilters.primary_darker,
+            },
+          },
+        },
+        inverse_transparent: {
+          color: "palette.white",
+          backgroundColor: "transparent",
+          span: {
+            filter: svgFilters.white,
+          },
+          _hover: {
+            color: "palette.gray_lighter",
+            backgroundColor: "transparent",
+            span: {
+              filter: svgFilters.gray_lighter,
+            },
+          },
+        },
+        inverse_outline: () => ({
+          ...theme.components.Button.variants.inverse_transparent,
+          border: "1px solid",
+          borderColor: "palette.white",
+          span: {
+            filter: svgFilters.white,
+          },
+          _hover: {
+            ...theme.components.Button.variants.transparent._hover,
+            borderColor: "palette.gray_lighter",
+            span: {
+              filter: svgFilters.gray_lighter,
+            },
+          },
+        }),
+        inverse_link: () => ({
+          ...theme.components.Button.variants.inverse_transparent,
+          textDecoration: "underline",
+        }),
+        // other
+        danger: {
+          backgroundColor: "palette.error_dark",
+          color: "palette.white",
+          _hover: {
+            backgroundColor: "palette.error_darker",
+          },
+        },
+      },
+      defaultProps: {
+        variant: "primary",
       },
     },
     Heading: {
       baseStyle: {
-        color: "palette.gray_darkest",
+        color: "palette.base",
       },
     },
     Link: {
       baseStyle: {
+        textDecoration: "underline",
         transition: "all 0.3s ease",
       },
       variants: {
-        default: {
-          color: "palette.main",
-          transition: "all 0.3s ease",
+        primary: {
+          color: "palette.primary",
           _visited: {
-            color: "palette.main",
+            color: "palette.primary",
+            textDecorationColor: "palette.primary",
           },
           ":hover, :visited:hover": {
-            color: "palette.main_darker",
-          },
-        },
-        inline: {
-          color: "palette.main_darker",
-          paddingBottom: "2px",
-          borderBottom: "2px solid",
-          _visited: {
-            color: "palette.main_darker",
-          },
-          ":hover, :visited:hover": {
-            color: "palette.main",
+            color: "palette.primary_darker",
+            textDecorationColor: "palette.primary_darker",
           },
         },
         inverse: {
           color: "palette.white",
           _visited: {
             color: "palette.white",
+            textDecorationColor: "palette.white",
           },
           ":hover, :visited:hover": {
-            color: "palette.gray_light",
+            color: "palette.gray_lighter",
+            textDecorationColor: "palette.gray_lighter",
           },
         },
-        button: {},
+        unstyled: {
+          textDecoration: "none",
+          ":focus, :focus-visible, :hover, :visited, :visited:hover": {
+            textDecoration: "none",
+          },
+        },
       },
       defaultProps: {
-        variant: "default",
+        variant: "primary",
       },
     },
     Text: {
       baseStyle: {
-        color: "palette.gray_darkest",
+        color: "palette.base",
         transition: "all 0.3s ease",
       },
     },
   },
 });
+
+export default theme;
