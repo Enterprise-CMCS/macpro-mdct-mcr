@@ -2,15 +2,18 @@ import React from "react";
 
 // components
 import {
+  Box,
   Button,
+  Heading,
   Modal as ChakraModal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
+import { CloseIcon } from "@cmsgov/design-system";
 import { makeMediaQueryClasses } from "utils";
 
 export const Modal = ({ actionFunction, content, modalState }: Props) => {
@@ -19,11 +22,21 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
     <ChakraModal isOpen={modalState.isOpen} onClose={modalState.onClose}>
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
-        <ModalHeader>{content.heading}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>{content.body}</ModalBody>
+        <ModalHeader sx={sx.modalHeader}>
+          <Heading as="h1" sx={sx.modalHeaderText}>
+            {content.heading}
+          </Heading>
+        </ModalHeader>
+        <Box sx={sx.modalCloseContainer}>
+          <Button sx={sx.modalClose} leftIcon={<CloseIcon />} variant="link">
+            Close
+          </Button>
+        </Box>
+        <ModalBody sx={sx.modalBody}>
+          <Text>{content.body}</Text>
+        </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter sx={sx.modalFooter}>
           <Button
             className={mqClasses}
             sx={sx.action}
@@ -33,11 +46,11 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
           </Button>
           <Button
             className={mqClasses}
-            sx={sx.dismiss}
+            sx={sx.close}
             variant="link"
             onClick={modalState.onClose}
           >
-            {content.dismiss}
+            {content.close}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -54,7 +67,7 @@ interface Props {
   content: {
     action: string;
     body: string;
-    dismiss: string;
+    close: string;
     heading: string;
   };
   [key: string]: any;
@@ -62,13 +75,59 @@ interface Props {
 
 const sx = {
   modalContent: {
-    maxWidth: "500px",
+    "-webkit-box-shadow": "2px 2px 4px",
+    boxShadow: "2px 2px 4px",
+    borderRadius: "0",
+    maxWidth: "30rem",
     marginX: "4rem",
+    padding: "2rem",
+  },
+  modalHeader: {
+    padding: "0",
+  },
+  modalHeaderText: {
+    padding: "0",
+    fontSize: "2xl",
+    fontWeight: "bold",
+  },
+  modalCloseContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifycontent: "center",
+    flexShrink: "0",
+    position: "absolute",
+    top: "2rem",
+    right: "2rem",
+  },
+  modalClose: {
+    color: "palette.primary",
+    fontWeight: "bold",
+    textDecoration: "underline",
+    _hover: {
+      textDecoration: "none",
+      color: "palette.primary_darker",
+    },
+    span: {
+      margin: "0 4px",
+      svg: {
+        fontSize: "xs",
+        width: "xs",
+        height: "xs",
+      },
+    },
+  },
+  modalBody: {
+    paddingX: "0",
+    paddingY: "1rem",
+  },
+  modalFooter: {
+    justifyContent: "flex-start",
+    padding: "0",
+    paddingTop: "2rem",
   },
   action: {
     justifyContent: "start",
     marginTop: "1rem",
-    marginBottom: "1rem",
     borderRadius: "0.25rem",
     background: "palette.primary",
     fontWeight: "bold",
@@ -85,11 +144,12 @@ const sx = {
       fontSize: "sm",
     },
   },
-  dismiss: {
+  close: {
     justifyContent: "start",
+    paddingY: ".5rem",
+    paddingLeft: "1rem",
+    paddingRight: "1rem",
     marginTop: "1rem",
-    marginRight: "1rem",
-    padding: "0",
     borderRadius: "0.25rem",
     fontWeight: "bold",
     color: "palette.primary",

@@ -4,9 +4,9 @@ export default {
     body: "Placeholder page",
   },
   modal: {
-    action: "Submit MCPAR",
-    body: "If you click submit this modal will fire",
-    dismiss: "Cancel",
-    heading: "Are you sure you want to modal?",
+    action: "Dialog Action",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam vitae metus lacinia, eget tempor purus placerat.",
+    close: "Cancel",
+    heading: "Dialog Heading",
   },
 };
