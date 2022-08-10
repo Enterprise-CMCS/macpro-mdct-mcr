@@ -79,7 +79,7 @@ interface Props {
 
 const sx = {
   modalContent: {
-    boxShadow: "2px 2px 4px",
+    boxShadow: ".125rem .125rem .25rem",
     borderRadius: "0",
     maxWidth: "30rem",
     marginX: "4rem",
@@ -111,7 +111,7 @@ const sx = {
       color: "palette.primary_darker",
     },
     span: {
-      margin: "0 4px",
+      margin: "0 .25rem",
       svg: {
         fontSize: "xs",
         width: "xs",
