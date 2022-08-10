@@ -5,11 +5,7 @@ import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { AnyObject, CustomHtmlElement } from "types";
-import {
-  checkDateCompleteness,
-  makeMediaQueryClasses,
-  parseCustomHtml,
-} from "utils";
+import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const DateField = ({
   name,
@@ -25,19 +21,10 @@ export const DateField = ({
   form.register(name);
 
   const [displayValue, setDisplayValue] = useState<string>("");
-  const [formattedValue, setFormattedValue] = useState<string>("");
 
-  const onChangeHandler = (rawValue: string, formattedValue: string) => {
+  const onChangeHandler = (rawValue: string) => {
     setDisplayValue(rawValue);
-    setFormattedValue(formattedValue);
-    const completeDate = checkDateCompleteness(formattedValue);
-    if (completeDate) {
-      form.setValue(name, formattedValue, { shouldValidate: true });
-    }
-  };
-
-  const onBlurHandler = () => {
-    form.setValue(name, formattedValue, { shouldValidate: true });
+    form.setValue(name, rawValue, { shouldValidate: true });
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
@@ -50,7 +37,6 @@ export const DateField = ({
         name={name}
         label={label}
         onChange={onChangeHandler}
-        onBlur={onBlurHandler}
         value={displayValue || props.hydrate || ""}
         hint={parsedHint}
         errorMessage={errorMessage}

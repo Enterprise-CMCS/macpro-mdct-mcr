@@ -60,16 +60,16 @@ export const formatDateUtcToEt = (date: number): string => {
   return `${month + 1}/${day}/${year}`;
 };
 
-export const checkDateCompleteness = (date: string) => {
-  const month = parseInt(date.split("/")?.[0]);
-  const day = parseInt(date.split("/")?.[1]);
-  const year = parseInt(date.split("/")?.[2]);
+export const checkDateCompleteness = (date: Date) => {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
   const dateIsComplete = month && day && year.toString().length === 4;
   return dateIsComplete ? { year, month, day } : null;
 };
 
 export const convertDatetimeStringToNumber = (
-  date: string,
+  date: Date,
   timeType: string | undefined
 ): number | undefined => {
   const completeDate = checkDateCompleteness(date);

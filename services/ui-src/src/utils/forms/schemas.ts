@@ -1,4 +1,4 @@
-import { array, number as numberSchema, string } from "yup";
+import { array, date as dateSchema, number as numberSchema, string } from "yup";
 import { schemaValidationErrors as error } from "verbiage/errors";
 
 // STRINGS
@@ -8,7 +8,9 @@ export const text = () =>
 
 export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 
-export const number = () =>
+export const number = () => numberOptional().required(error.REQUIRED_GENERIC);
+
+export const numberOptional = () =>
   numberSchema()
     .transform((_value, originalValue) =>
       Number(originalValue.replace(/,/g, ""))
@@ -24,9 +26,12 @@ export const urlOptional = () => textOptional().url(error.INVALID_URL);
 // DATES
 
 export const date = () =>
-  string()
+  dateSchema()
     .required(error.REQUIRED_GENERIC)
-    .matches(dateFormatRegex, error.INVALID_DATE);
+    .transform((value) => {
+      return value ? new Date(value) : value;
+    })
+    .typeError(error.INVALID_DATE);
 
 export const endDate = (startDateField: string) =>
   date().test(
