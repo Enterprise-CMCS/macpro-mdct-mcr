@@ -66,6 +66,7 @@ export interface FormField {
   props?: AnyObject;
   validation?: FormValidation;
   choices?: FieldChoice[];
+  [key: string]: any;
 }
 
 export interface FieldChoice {
