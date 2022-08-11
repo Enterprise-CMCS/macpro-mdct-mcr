@@ -50,6 +50,8 @@ export { LoginIDM } from "./logins/LoginIDM";
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
+// modals
+export { Modal } from "./modal/Modal";
 // reports
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables
