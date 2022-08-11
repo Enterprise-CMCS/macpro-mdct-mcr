@@ -21,7 +21,7 @@ export const writeReportStatus = handler(async (event, context) => {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
 
-  const body = JSON.parse(event!.body!);
+  const { body } = event;
   const stateYear: string = event.pathParameters.stateYear;
   const programName: string = event.pathParameters.programName;
 
@@ -33,21 +33,21 @@ export const writeReportStatus = handler(async (event, context) => {
       createdAt: Date.now(),
       lastAltered: Date.now(),
       lastAlteredBy: event?.headers["cognito-identity-id"],
-      status: body.status,
+      status: body,
     },
   };
   const getCurrentReport = await getReportStatus(event, context);
-  const currentBody = JSON.parse(getCurrentReport.body);
-  if (currentBody.createdAt) {
+  const currentReport = JSON.parse(getCurrentReport.body);
+  if (currentReport.createdAt) {
     statusParams = {
       TableName: process.env.REPORT_STATUS_TABLE_NAME!,
       Item: {
         key: stateYear,
         programName: programName,
-        createdAt: currentBody.createdAt,
+        createdAt: currentReport.createdAt,
         lastAltered: Date.now(),
         lastAlteredBy: event?.headers["cognito-identity-id"],
-        status: body.status,
+        status: body,
       },
     };
   }

@@ -41,8 +41,13 @@ export interface ReportPath {
   children?: ReportPath[];
 }
 
-export interface ReportShape {
-  reportData: AnyObject;
+export interface ReportDataShape {
+  [key: string]: any;
+}
+
+export interface ReportDetails {
+  key: string;
+  programName: string;
 }
 
 export interface ReportContextMethods {
@@ -52,7 +57,9 @@ export interface ReportContextMethods {
   updateReportStatus: Function;
 }
 
-export interface ReportContextShape extends ReportShape, ReportContextMethods {
+export interface ReportContextShape
+  extends ReportDataShape,
+    ReportContextMethods {
   reportStatus: string;
   errorMessage?: string;
 }
