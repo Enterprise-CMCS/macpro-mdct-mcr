@@ -5,7 +5,6 @@ import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
 export const ReviewSubmit = () => {
   const { intro } = verbiage;
-
   return (
     <ReportPage data-testid="review-and-submit-view">
       <Box sx={sx.leadTextBox}>
