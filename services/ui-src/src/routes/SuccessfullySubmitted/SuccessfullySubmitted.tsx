@@ -33,7 +33,7 @@ export const SuccessfullySubmitted = () => {
             </Heading>
             <Box sx={sx.infoTextBox}>
               <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-              <Text>{`MCPAR report for ${reportData?.programName} was submitted on ${reportData?.createdAt} by ${user?.given_name} ${user?.family_name}`}</Text>
+              <Text>{`MCPAR report for ${reportData?.programName} was submitted by ${user?.given_name} ${user?.family_name}`}</Text>
             </Box>
           </Box>
           <Box>

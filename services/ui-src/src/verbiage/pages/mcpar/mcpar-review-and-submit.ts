@@ -5,10 +5,10 @@ export default {
     info: "Double check that everything in your MCPAR Report is accurate. You will be able to make edits after submitting, and resubmit. Once you’ve reviewed your report, certify that it’s in compliance with 42 CFR § 438.66(e).",
   },
   modal: {
-    action: "Dialog Action",
-    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam vitae metus lacinia, eget tempor purus placerat.",
+    action: "Submit MCPAR",
+    body: "You will be able to make edits to this MCPAR after submitting, and resubmit.",
     close: "Cancel",
-    heading: "Dialog Heading",
+    heading: "Are you sure you want to submit MCPAR?",
   },
   pageLink: "/mcpar/successfully-submitted",
 };
