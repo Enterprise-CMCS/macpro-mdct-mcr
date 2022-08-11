@@ -169,3 +169,10 @@ export interface CustomHtmlElement {
   as?: string;
   props?: AnyObject;
 }
+
+export interface SpreadsheetWidgetProps {
+  title: string;
+  descriptionList: string[];
+  additionalInfo?: string;
+  [key: string]: any;
+}
