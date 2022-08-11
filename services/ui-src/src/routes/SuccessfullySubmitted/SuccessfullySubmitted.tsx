@@ -1,16 +1,20 @@
-// components
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { ReportContext, ReportPage, Sidebar } from "components";
 import { useContext } from "react";
+// components
+import { Box, Image, Flex, Heading, Text } from "@chakra-ui/react";
+import { ReportContext, ReportPage, Sidebar } from "components";
+//utils
 import { useUser } from "utils";
-
 // form data
 import verbiage from "verbiage/pages/mcpar/mcpar-successful-submit";
+// assets
+import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const SuccessfullySubmitted = () => {
   const { reportData } = useContext(ReportContext);
   const { user } = useUser();
+
   const { intro } = verbiage;
+
   return (
     <ReportPage data-testid="success-submit-view">
       <Flex sx={sx.pageContainer}>
@@ -18,6 +22,13 @@ export const SuccessfullySubmitted = () => {
         <Flex sx={sx.reviewContainer}>
           <Box sx={sx.leadTextBox}>
             <Heading as="h1" sx={sx.headerText}>
+              <span>
+                <Image
+                  src={checkIcon}
+                  alt="Checkmark Icon"
+                  sx={sx.headerImage}
+                />
+              </span>
               {intro.header}
             </Heading>
             <Box sx={sx.infoTextBox}>
@@ -59,6 +70,11 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "4xl",
     fontWeight: "normal",
+  },
+  headerImage: {
+    display: "inline-block",
+    marginRight: "1rem",
+    height: "1.72rem",
   },
   infoTextBox: {
     marginTop: "2rem",
