@@ -1,11 +1,10 @@
 // components
-import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
-import { Modal, ReportPage } from "components";
+import { Box, Heading, Text } from "@chakra-ui/react";
+import { ReportPage } from "components";
 import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
 export const ReviewSubmit = () => {
-  const { intro, modal } = verbiage;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { intro } = verbiage;
 
   return (
     <ReportPage data-testid="review-and-submit-view">
@@ -14,15 +13,6 @@ export const ReviewSubmit = () => {
           {intro.header}
         </Heading>
         <Text>{intro.body}</Text>
-        <Button onClick={onOpen}>Open Modal</Button>
-        <Modal
-          actionFunction={() => alert("Hello there!. General Kenobi...")}
-          modalState={{
-            isOpen,
-            onClose,
-          }}
-          content={modal}
-        />
       </Box>
     </ReportPage>
   );
