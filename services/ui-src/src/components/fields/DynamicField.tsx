@@ -20,7 +20,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // render form field values as individual inputs
   useEffect(() => {
     if (fields.length === 0) {
-      append(props.hydrate || "");
+      append(props?.hydrate || "");
     }
   }, []);
 
@@ -34,14 +34,11 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             <TextField
               name={`${name}[${index}]`}
               label={label}
-              dynamic={{
-                parentName: name,
-                index,
-                inputRef: () => form.register,
-              }}
-              defaultValue={props.hydrate?.[index] || ""}
-              sxOverride={sx.textFieldOverride}
+              defaultValue={
+                form.getValues(name[index]) || props?.hydrate?.[index] || ""
+              }
               errorMessage={formErrorState?.[name]?.[index]?.message}
+              sxOverride={sx.textFieldOverride}
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>

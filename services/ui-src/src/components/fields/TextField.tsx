@@ -13,7 +13,6 @@ export const TextField = ({
   placeholder,
   sxOverride,
   nested,
-  dynamic,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -46,7 +45,7 @@ export const TextField = ({
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
-        inputRef={() => dynamic?.inputRef ?? form.register(name)}
+        inputRef={() => form.register(name)}
         defaultValue={form.getValues(name) || props?.hydrate}
         {...props}
       />
@@ -54,11 +53,6 @@ export const TextField = ({
   );
 };
 
-interface dynamicFieldInput {
-  parentName: string;
-  index: number;
-  inputRef: Function;
-}
 interface Props {
   name: string;
   label?: string;
@@ -66,7 +60,6 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
-  dynamic?: dynamicFieldInput;
   [key: string]: any;
 }
 
