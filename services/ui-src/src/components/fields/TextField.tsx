@@ -27,17 +27,8 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  let errorMessage = "";
-  const dynamicCheck = dynamic?.parentName && dynamic?.index;
-
   const formErrorState = form?.formState?.errors;
-
-  if (dynamicCheck) {
-    errorMessage =
-      formErrorState?.[dynamic.parentName]?.[dynamic.index]?.message;
-  } else {
-    errorMessage = formErrorState?.[name]?.message;
-  }
+  const errorMessage = formErrorState?.[name]?.message;
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const parsedHint = hint && parseCustomHtml(hint);
