@@ -6,7 +6,6 @@ import {
   GetStarted,
   Help,
   Home,
-  Intro,
   McparReportPage,
   NotFound,
   Profile,
@@ -37,7 +36,6 @@ export const AppRoutes = ({ userRole }: Props) => {
 
             {/* MCPAR ROUTES */}
             <Route path="/mcpar/dashboard" element={<Dashboard />} />
-            <Route path="/mcpar/intro" element={<Intro />} />
             <Route path="/mcpar/get-started" element={<GetStarted />} />
             {mcparRoutes.map(
               (route: any) =>

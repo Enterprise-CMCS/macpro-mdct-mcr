@@ -22,7 +22,7 @@ export default {
       downloadText: "Download MCPAR Excel Workbook",
       link: {
         text: "Enter MCPAR online",
-        route: "mcpar/intro",
+        route: "mcpar/get-started",
       },
       accordion: {
         buttonLabel: "When is the MCPAR due?",
