@@ -9,10 +9,16 @@ import {
   ReportContext,
   ReportPage,
   Sidebar,
+  SpreadsheetWidget,
 } from "components";
 // utils
 import { findRoute, hydrateFormFields, parseCustomHtml, useUser } from "utils";
-import { AnyObject, CustomHtmlElement, UserRoles } from "types";
+import {
+  AnyObject,
+  CustomHtmlElement,
+  SpreadsheetWidgetProps,
+  UserRoles,
+} from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
@@ -90,7 +96,7 @@ interface Props {
 }
 
 const ReportPageIntro = ({ text }: ReportPageIntroI) => {
-  const { section, subsection, info } = text;
+  const { section, subsection, info, spreadsheet } = text;
   return (
     <Box sx={sx.introBox}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -99,6 +105,11 @@ const ReportPageIntro = ({ text }: ReportPageIntroI) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
+      {spreadsheet && (
+        <Box sx={sx.spreadsheetWidgetBox}>
+          <SpreadsheetWidget content={spreadsheet} />
+        </Box>
+      )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );
@@ -109,6 +120,7 @@ interface ReportPageIntroI {
     section: string;
     subsection: string;
     info?: CustomHtmlElement[];
+    spreadsheet?: SpreadsheetWidgetProps;
   };
 }
 
@@ -168,7 +180,10 @@ const sx = {
   },
   infoTextBox: {
     marginTop: "2rem",
-    // TODO: finalize inline link styles with design and move this to theme.ts
+    h4: {
+      fontSize: "lg",
+      marginBottom: "0.75rem",
+    },
     "p, span": {
       color: "palette.gray",
     },
@@ -178,6 +193,9 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+  },
+  spreadsheetWidgetBox: {
+    marginTop: "2rem",
   },
   footerBox: {
     marginTop: "3.5rem",
