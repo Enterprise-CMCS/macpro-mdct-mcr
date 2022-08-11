@@ -8,7 +8,7 @@ import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,
-  label,
+  label = "",
   hint,
   placeholder,
   sxOverride,
