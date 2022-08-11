@@ -5,7 +5,11 @@ import { act } from "react-dom/test-utils";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
 // utils
-import { mockReportData, mockReportStatusData } from "utils/testing/setupJest";
+import {
+  mockReportData,
+  mockReportDetails,
+  mockReportStatus,
+} from "utils/testing/setupJest";
 
 jest.mock("utils/api/requestMethods/report", () => ({
   getReport: jest.fn(() => {}),
@@ -25,25 +29,29 @@ const TestComponent = () => {
   return (
     <div data-testid="testdiv">
       <button
-        onClick={() => context.fetchReportData(mockReportData)}
+        onClick={() => context.fetchReportData(mockReportDetails)}
         data-testid="fetch-report-button"
       >
         Fetch Report
       </button>
       <button
-        onClick={() => context.fetchReportStatus(mockReportStatusData)}
+        onClick={() => context.fetchReportStatus(mockReportDetails)}
         data-testid="fetch-report-status-button"
       >
         Fetch Report Status
       </button>
       <button
-        onClick={() => context.updateReportData(mockReportData)}
+        onClick={() =>
+          context.updateReportData(mockReportDetails, mockReportData)
+        }
         data-testid="write-report-button"
       >
         Write Report
       </button>
       <button
-        onClick={() => context.updateReportStatus(mockReportStatusData)}
+        onClick={() =>
+          context.updateReportStatus(mockReportDetails, mockReportStatus)
+        }
         data-testid="write-report-status-button"
       >
         Write Report Status
@@ -122,7 +130,10 @@ describe("Test ReportProvider updateReport method", () => {
       await userEvent.click(writeButton);
     });
     expect(mockReportAPI.writeReport).toHaveBeenCalledTimes(1);
-    expect(mockReportAPI.writeReport).toHaveBeenCalledWith(mockReportData);
+    expect(mockReportAPI.writeReport).toHaveBeenCalledWith(
+      mockReportDetails,
+      mockReportData
+    );
   });
 
   test("updateReport method calls fetchReport method", async () => {
@@ -154,7 +165,8 @@ describe("Test ReportProvider updateReportStatus method", () => {
     });
     expect(mockReportStatusAPI.writeReportStatus).toHaveBeenCalledTimes(1);
     expect(mockReportStatusAPI.writeReportStatus).toHaveBeenCalledWith(
-      mockReportStatusData
+      mockReportDetails,
+      mockReportStatus
     );
   });
 
