@@ -2,8 +2,8 @@ import React from "react";
 
 // components
 import {
-  Box,
   Button,
+  Flex,
   Heading,
   Modal as ChakraModal,
   ModalBody,
@@ -27,7 +27,7 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
             {content.heading}
           </Heading>
         </ModalHeader>
-        <Box sx={sx.modalCloseContainer}>
+        <Flex sx={sx.modalCloseContainer}>
           <Button
             sx={sx.modalClose}
             leftIcon={<CloseIcon />}
@@ -36,7 +36,7 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
           >
             Close
           </Button>
-        </Box>
+        </Flex>
         <ModalBody sx={sx.modalBody}>
           <Text>{content.body}</Text>
         </ModalBody>
@@ -90,12 +90,11 @@ const sx = {
     padding: "0",
   },
   modalHeaderText: {
-    padding: "0",
+    padding: "0 4rem 0 0",
     fontSize: "2xl",
     fontWeight: "bold",
   },
   modalCloseContainer: {
-    display: "flex",
     alignItems: "center",
     justifycontent: "center",
     flexShrink: "0",
@@ -104,13 +103,6 @@ const sx = {
     right: "2rem",
   },
   modalClose: {
-    color: "palette.primary",
-    fontWeight: "bold",
-    textDecoration: "underline",
-    _hover: {
-      textDecoration: "none",
-      color: "palette.primary_darker",
-    },
     span: {
       margin: "0 .25rem",
       svg: {
@@ -132,17 +124,10 @@ const sx = {
   action: {
     justifyContent: "start",
     marginTop: "1rem",
-    borderRadius: "0.25rem",
-    background: "palette.primary",
-    fontWeight: "bold",
-    color: "palette.white",
     marginRight: "2rem",
     span: {
       marginLeft: "0.5rem",
       marginRight: "-0.25rem",
-    },
-    _hover: {
-      background: "palette.primary_darker",
     },
     "&.mobile": {
       fontSize: "sm",
@@ -150,20 +135,11 @@ const sx = {
   },
   close: {
     justifyContent: "start",
-    paddingY: ".5rem",
-    paddingLeft: "1rem",
-    paddingRight: "1rem",
+    padding: ".5rem 1rem",
     marginTop: "1rem",
-    borderRadius: "0.25rem",
-    fontWeight: "bold",
-    color: "palette.primary",
-    textDecoration: "underline",
     span: {
       marginLeft: "0rem",
       marginRight: "0.5rem",
-    },
-    _hover: {
-      textDecoration: "none",
     },
     "&.mobile": {
       fontSize: "sm",
