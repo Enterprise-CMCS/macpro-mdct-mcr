@@ -41,7 +41,7 @@ export const ReviewSubmit = () => {
         status: ReportStatus.COMPLETED,
       };
       updateReportStatus(reportStatus);
-      navigate(pageLink);
+      navigate(pageLink.location);
     }
     onClose();
   };
@@ -60,14 +60,16 @@ export const ReviewSubmit = () => {
               <Text>{intro.info}</Text>
             </Box>
           </Box>
-          <Button
-            type="submit"
-            colorScheme="colorSchemes.primary"
-            rightIcon={<Icon icon="arrowRight" />}
-            onClick={onOpen}
-          >
-            Save & continue
-          </Button>
+          <Flex sx={sx.submitContainer}>
+            <Button
+              type="submit"
+              colorScheme="colorSchemes.primary"
+              rightIcon={<Icon icon="arrowRight" />}
+              onClick={onOpen}
+            >
+              {pageLink.text}
+            </Button>
+          </Flex>
           <Modal
             actionFunction={() => submitForm()}
             modalState={{
@@ -111,5 +113,8 @@ const sx = {
   infoHeading: {
     fontWeight: "bold",
     marginBottom: ".5rem",
+  },
+  submitContainer: {
+    justifyContent: "flex-end",
   },
 };

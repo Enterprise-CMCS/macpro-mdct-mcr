@@ -10,5 +10,8 @@ export default {
     close: "Cancel",
     heading: "Are you sure you want to submit MCPAR?",
   },
-  pageLink: "/mcpar/successfully-submitted",
+  pageLink: {
+    text: "Submit MCPAR",
+    location: "/mcpar/successfully-submitted",
+  },
 };
