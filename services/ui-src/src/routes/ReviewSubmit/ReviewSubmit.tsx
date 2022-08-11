@@ -1,10 +1,17 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 // components
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Dialog } from "@cmsgov/design-system";
-import { Icon, ReportContext, ReportPage, Sidebar } from "components";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+
+import { Icon, Modal, ReportContext, ReportPage, Sidebar } from "components";
 
 // form data
 import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
@@ -13,9 +20,10 @@ import { ReportStatus, UserRoles } from "types";
 
 export const ReviewSubmit = () => {
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { reportData, updateReportStatus } = useContext(ReportContext);
-  const [showModal, setShowModal] = useState(false);
-  const { intro, pageLink } = verbiage;
+
+  const { intro, modal, pageLink } = verbiage;
 
   // get user's state
   const { user } = useUser();
@@ -33,9 +41,9 @@ export const ReviewSubmit = () => {
         status: ReportStatus.COMPLETED,
       };
       updateReportStatus(reportStatus);
+      navigate(pageLink);
     }
-    setShowModal(false);
-    navigate(pageLink);
+    onClose();
   };
 
   return (
@@ -56,38 +64,19 @@ export const ReviewSubmit = () => {
             type="submit"
             colorScheme="colorSchemes.primary"
             rightIcon={<Icon icon="arrowRight" />}
-            onClick={() => setShowModal(true)}
+            onClick={onOpen}
           >
             Save & continue
           </Button>
+          <Modal
+            actionFunction={() => submitForm()}
+            modalState={{
+              isOpen,
+              onClose,
+            }}
+            content={modal}
+          />
         </Flex>
-
-        {showModal && (
-          <Dialog
-            onExit={() => setShowModal(false)}
-            getApplicationNode={() => document.getElementById("app")}
-            heading="Dialog heading"
-            actions={[
-              <button
-                className="ds-c-button ds-c-button--primary ds-u-margin-right--1"
-                key="primary"
-                onClick={() => submitForm()}
-              >
-                Dialog action
-              </button>,
-              <button
-                className="ds-c-button ds-c-button--transparent"
-                key="cancel"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>,
-            ]}
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            accumsan diam vitae metus lacinia, eget tempor purus placerat.
-          </Dialog>
-        )}
       </Flex>
     </ReportPage>
   );

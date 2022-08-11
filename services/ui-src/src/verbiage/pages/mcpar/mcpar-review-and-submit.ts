@@ -4,5 +4,11 @@ export default {
     infoHeader: "Ready to Submit?",
     info: "Double check that everything in your MCPAR Report is accurate. You will be able to make edits after submitting, and resubmit. Once you’ve reviewed your report, certify that it’s in compliance with 42 CFR § 438.66(e).",
   },
+  modal: {
+    action: "Dialog Action",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam vitae metus lacinia, eget tempor purus placerat.",
+    close: "Cancel",
+    heading: "Dialog Heading",
+  },
   pageLink: "/mcpar/successfully-submitted",
 };
