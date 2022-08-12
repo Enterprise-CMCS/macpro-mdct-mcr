@@ -9,4 +9,3 @@ export { GetStarted } from "./GetStarted/GetStarted";
 export { Dashboard } from "./Dashboard/Dashboard";
 export { McparReportPage } from "./McparReportPage/McparReportPage";
 export { ReviewSubmit } from "./ReviewSubmit/ReviewSubmit";
-export { SuccessfullySubmitted } from "./SuccessfullySubmitted/SuccessfullySubmitted";

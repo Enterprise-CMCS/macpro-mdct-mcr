@@ -57,7 +57,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportStatus = async (reportDetails: ReportDetails) => {
     try {
       const result = await getReportStatus(reportDetails);
-      setReportStatus(result);
+      setReportStatus(result?.status);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_STATUS_FAILED);
     }

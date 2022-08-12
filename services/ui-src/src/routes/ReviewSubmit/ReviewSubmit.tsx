@@ -1,47 +1,52 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useContext, useEffect } from "react";
 // components
 import {
   Box,
   Button,
   Flex,
+  Image,
   Heading,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import { Icon, Modal, ReportContext, ReportPage, Sidebar } from "components";
-
-// form data
-import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
-import { useUser } from "utils";
+// types
 import { ReportStatus, UserRoles } from "types";
+// utils
+import { useUser } from "utils";
+// form data
+import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import successVerbiage from "verbiage/pages/mcpar/mcpar-successful-submit";
+// assets
+import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const navigate = useNavigate();
+  const { reportStatus, fetchReportStatus, updateReportStatus } =
+    useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { reportData, updateReportStatus } = useContext(ReportContext);
-
-  const { intro, modal, pageLink } = verbiage;
 
   // get user's state
   const { user } = useUser();
-  const { userRole } = user ?? {};
+  const { state, userRole } = user ?? {};
+  const reportYear = "2022";
+  const reportKey = `${state}${reportYear}`;
+
+  // TODO: get real program name per report
+  const programName = "tempName";
+
+  const reportDetails = {
+    key: reportKey,
+    programName: programName,
+  };
+
+  useEffect(() => {
+    fetchReportStatus(reportDetails);
+  }, []);
 
   const submitForm = () => {
-    if (
-      reportData?.key &&
-      reportData?.programName &&
-      (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP)
-    ) {
-      const reportStatus = {
-        key: reportData.key,
-        programName: reportData.programName,
-        status: ReportStatus.COMPLETED,
-      };
-      updateReportStatus(reportStatus);
-      navigate(pageLink.location);
+    // TODO: Add check to make sure user filled out the form
+    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+      updateReportStatus(reportDetails, ReportStatus.COMPLETED);
     }
     onClose();
   };
@@ -50,45 +55,114 @@ export const ReviewSubmit = () => {
     <ReportPage data-testid="review-and-submit-view">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        <Flex sx={sx.reviewContainer}>
-          <Box sx={sx.leadTextBox}>
-            <Heading as="h1" sx={sx.headerText}>
-              {intro.header}
-            </Heading>
-            <Box sx={sx.infoTextBox}>
-              <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-              <Text>{intro.info}</Text>
-            </Box>
-          </Box>
-          <Flex sx={sx.submitContainer}>
-            <Button
-              type="submit"
-              colorScheme="colorSchemes.primary"
-              rightIcon={<Icon icon="arrowRight" />}
-              onClick={onOpen}
-            >
-              {pageLink.text}
-            </Button>
-          </Flex>
-          <Modal
-            actionFunction={() => submitForm()}
-            modalState={{
-              isOpen,
-              onClose,
-            }}
-            content={modal}
+        {reportStatus == ReportStatus.COMPLETED ? (
+          <SuccessMessage
+            programName={programName}
+            givenName={user?.given_name}
+            familyName={user?.family_name}
           />
-        </Flex>
+        ) : (
+          <ReadyToSubmit
+            submitForm={submitForm}
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+          />
+        )}
       </Flex>
     </ReportPage>
   );
 };
 
+const ReadyToSubmit = ({
+  submitForm,
+  isOpen,
+  onOpen,
+  onClose,
+}: ReadyToSubmitProps) => {
+  const { intro, modal, pageLink } = reviewVerbiage;
+
+  return (
+    <Flex sx={sx.contentContainer}>
+      <Box sx={sx.leadTextBox}>
+        <Heading as="h1" sx={sx.headerText}>
+          {intro.header}
+        </Heading>
+        <Box sx={sx.infoTextBox}>
+          <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
+          <Text>{intro.info}</Text>
+        </Box>
+      </Box>
+      <Flex sx={sx.submitContainer}>
+        <Button
+          type="submit"
+          colorScheme="colorSchemes.primary"
+          rightIcon={<Icon icon="arrowRight" />}
+          onClick={() => onOpen()}
+        >
+          {pageLink.text}
+        </Button>
+      </Flex>
+      <Modal
+        actionFunction={() => submitForm()}
+        modalState={{
+          isOpen,
+          onClose,
+        }}
+        content={modal}
+      />
+    </Flex>
+  );
+};
+
+interface ReadyToSubmitProps {
+  submitForm: Function;
+  isOpen: boolean;
+  onOpen: Function;
+  onClose: Function;
+}
+
+export const SuccessMessage = ({
+  programName,
+  givenName,
+  familyName,
+}: SuccessMessageProps) => {
+  const { intro } = successVerbiage;
+  const submittersName =
+    givenName && familyName && ` was submitted by ${givenName} ${familyName}`;
+  return (
+    <Flex sx={sx.contentContainer}>
+      <Box sx={sx.leadTextBox}>
+        <Heading as="h1" sx={sx.headerText}>
+          <span>
+            <Image src={checkIcon} alt="Checkmark Icon" sx={sx.headerImage} />
+          </span>
+          {intro.header}
+        </Heading>
+        <Box sx={sx.infoTextBox}>
+          <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
+          <Text>{`MCPAR report for ${programName} ${submittersName}`}</Text>
+        </Box>
+      </Box>
+      <Box>
+        <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
+        <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
+      </Box>
+    </Flex>
+  );
+};
+
+interface SuccessMessageProps {
+  programName: string;
+  givenName?: string;
+  familyName?: string;
+}
+
 const sx = {
   pageContainer: {
     width: "100%",
   },
-  reviewContainer: {
+  contentContainer: {
     flexDirection: "column",
     width: "100%",
     maxWidth: "reportPageWidth",
@@ -116,5 +190,18 @@ const sx = {
   },
   submitContainer: {
     justifyContent: "flex-end",
+  },
+  headerImage: {
+    display: "inline-block",
+    marginRight: "1rem",
+    height: "1.72rem",
+  },
+  additionalInfoHeader: {
+    color: "palette.gray",
+    fontWeight: "bold",
+    marginBottom: ".5rem",
+  },
+  additionalInfo: {
+    color: "palette.gray",
   },
 };

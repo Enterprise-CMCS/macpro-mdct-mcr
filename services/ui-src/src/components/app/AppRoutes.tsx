@@ -10,7 +10,6 @@ import {
   NotFound,
   Profile,
   ReviewSubmit,
-  SuccessfullySubmitted,
 } from "routes";
 import { mcparRoutes } from "forms/mcpar";
 import { AdminBannerProvider, ReportProvider } from "components";
@@ -48,10 +47,6 @@ export const AppRoutes = ({ userRole }: Props) => {
                 )
             )}
             <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
-            <Route
-              path="/mcpar/successfully-submitted"
-              element={<SuccessfullySubmitted />}
-            />
             <Route path="/mcpar" element={<Navigate to="/mcpar/dashboard" />} />
             <Route
               path="/mcpar/*"
