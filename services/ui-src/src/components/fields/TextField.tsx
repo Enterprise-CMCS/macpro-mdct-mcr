@@ -35,7 +35,9 @@ export const TextField = ({
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${nestedChildClasses}`}
+      className={`${mqClasses} ${nestedChildClasses} ${
+        label === "" ? "no-label" : ""
+      }`}
     >
       <CmsdsTextField
         id={name}
@@ -64,6 +66,11 @@ interface Props {
 }
 
 const sx = {
+  "&.ds-c-choice__checkedChild": {
+    "&.no-label": {
+      paddingY: 0,
+    },
+  },
   "&.nested": {
     label: {
       marginTop: 0,
