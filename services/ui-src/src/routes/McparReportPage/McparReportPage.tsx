@@ -9,10 +9,17 @@ import {
   ReportContext,
   ReportPage,
   Sidebar,
+  SpreadsheetWidget,
 } from "components";
 // utils
 import { findRoute, hydrateFormFields, parseCustomHtml, useUser } from "utils";
-import { AnyObject, CustomHtmlElement, ReportStatus, UserRoles } from "types";
+import {
+  AnyObject,
+  CustomHtmlElement,
+  ReportStatus,
+  SpreadsheetWidgetProps,
+  UserRoles,
+} from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
@@ -42,24 +49,19 @@ export const McparReportPage = ({ pageJson }: Props) => {
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      const report = {
+      const reportDetails = {
         key: reportKey,
         programName: programName,
-        report: formData,
       };
-      const reportStatus = {
-        key: reportKey,
-        programName: programName,
-        status: ReportStatus.IN_PROGRESS,
-      };
-      updateReportData(report);
-      updateReportStatus(reportStatus);
+      const reportStatus = ReportStatus.IN_PROGRESS;
+      updateReportData(reportDetails, formData);
+      updateReportStatus(reportDetails, reportStatus);
     }
     navigate(nextRoute);
   };
 
-  if (reportData?.report) {
-    form.fields = hydrateFormFields(form.fields, reportData.report);
+  if (reportData) {
+    form.fields = hydrateFormFields(form.fields, reportData);
   }
 
   return (
@@ -90,7 +92,7 @@ interface Props {
 }
 
 const ReportPageIntro = ({ text }: ReportPageIntroI) => {
-  const { section, subsection, info } = text;
+  const { section, subsection, info, spreadsheet } = text;
   return (
     <Box sx={sx.introBox}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -99,6 +101,11 @@ const ReportPageIntro = ({ text }: ReportPageIntroI) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
+      {spreadsheet && (
+        <Box sx={sx.spreadsheetWidgetBox}>
+          <SpreadsheetWidget content={spreadsheet} />
+        </Box>
+      )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );
@@ -109,6 +116,7 @@ interface ReportPageIntroI {
     section: string;
     subsection: string;
     info?: CustomHtmlElement[];
+    spreadsheet?: SpreadsheetWidgetProps;
   };
 }
 
@@ -147,6 +155,7 @@ interface ReportPageFooterI {
 const sx = {
   pageContainer: {
     width: "100%",
+    height: "100%",
   },
   reportContainer: {
     flexDirection: "column",
@@ -168,7 +177,10 @@ const sx = {
   },
   infoTextBox: {
     marginTop: "2rem",
-    // TODO: finalize inline link styles with design and move this to theme.ts
+    h4: {
+      fontSize: "lg",
+      marginBottom: "0.75rem",
+    },
     "p, span": {
       color: "palette.gray",
     },
@@ -178,6 +190,9 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+  },
+  spreadsheetWidgetBox: {
+    marginTop: "2rem",
   },
   footerBox: {
     marginTop: "3.5rem",

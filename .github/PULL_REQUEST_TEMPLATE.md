@@ -9,7 +9,7 @@
 
 ## Code author checklist
 - [ ] I have performed a self-review of my code
-- [ ] I have added [thorough](https://qmacbis.atlassian.net/wiki/spaces/CM/pages/2914025525/Test+Suite+and+Testing+Research) tests
+- [ ] I have added [thorough](https://bit.ly/3zPrxuZ) tests
 - [ ] I have added analytics, if necessary
 - [ ] I have updated the documentation, if necessary
 

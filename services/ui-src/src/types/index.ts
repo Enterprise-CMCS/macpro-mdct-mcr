@@ -46,10 +46,15 @@ export enum ReportStatus {
   IN_PROGRESS = "In Progress",
   COMPLETED = "Completed",
 }
-export interface ReportShape {
-  reportData: AnyObject;
+
+export interface ReportDataShape {
+  [key: string]: any;
 }
 
+export interface ReportDetails {
+  key: string;
+  programName: string;
+}
 export interface ReportContextMethods {
   fetchReportData: Function;
   updateReportData: Function;
@@ -57,7 +62,9 @@ export interface ReportContextMethods {
   updateReportStatus: Function;
 }
 
-export interface ReportContextShape extends ReportShape, ReportContextMethods {
+export interface ReportContextShape
+  extends ReportDataShape,
+    ReportContextMethods {
   reportStatus: ReportStatus;
   errorMessage?: string;
 }
@@ -173,4 +180,11 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
+}
+
+export interface SpreadsheetWidgetProps {
+  title: string;
+  descriptionList: string[];
+  additionalInfo?: string;
+  [key: string]: any;
 }
