@@ -12,6 +12,5 @@ export default {
   },
   pageLink: {
     text: "Submit MCPAR",
-    location: "/mcpar/successfully-submitted",
   },
 };

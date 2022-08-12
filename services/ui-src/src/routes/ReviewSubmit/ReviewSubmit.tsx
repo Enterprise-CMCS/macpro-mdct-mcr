@@ -48,6 +48,7 @@ export const ReviewSubmit = () => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       updateReportStatus(reportDetails, ReportStatus.COMPLETED);
     }
+    // TODO: Handle Error for other users coming on to the page
     onClose();
   };
 
