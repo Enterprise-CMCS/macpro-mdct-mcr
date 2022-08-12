@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Icon, Modal, ReportContext, ReportPage, Sidebar } from "components";
+import { Modal, ReportContext, ReportPage, Sidebar } from "components";
 // types
 import { ReportStatus, UserRoles } from "types";
 // utils
@@ -95,12 +95,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        <Button
-          type="submit"
-          colorScheme="colorSchemes.primary"
-          rightIcon={<Icon icon="arrowRight" />}
-          onClick={onOpen as MouseEventHandler}
-        >
+        <Button type="submit" onClick={onOpen as MouseEventHandler}>
           {pageLink.text}
         </Button>
       </Flex>
