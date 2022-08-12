@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { MouseEventHandler, useContext, useEffect } from "react";
 // components
 import {
   Box,
@@ -99,7 +99,7 @@ const ReadyToSubmit = ({
           type="submit"
           colorScheme="colorSchemes.primary"
           rightIcon={<Icon icon="arrowRight" />}
-          onClick={() => onOpen()}
+          onClick={onOpen as MouseEventHandler}
         >
           {pageLink.text}
         </Button>
