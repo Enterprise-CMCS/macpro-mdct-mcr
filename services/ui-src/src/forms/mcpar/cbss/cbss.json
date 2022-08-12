@@ -2,17 +2,45 @@
   "path": "/mcpar/program-level-indicators/bss",
   "intro": {
     "section": "C: Program-Level Indicators",
-    "subsection": "IX: BSS"
+    "subsection": "Topic IX: Beneficiary Support System (BSS)",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["C1_Program_Set"]
+    }
   },
   "form": {
     "id": "cbss",
     "fields": [
       {
         "id": "cbss-1",
-        "type": "text",
+        "type": "textarea",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "C1.IX.1 BSS website",
+          "hint": "List the website(s) and/or email address that beneficiaries use to seek assistance from the BSS through electronic means. Separate entries with commas."
+        }
+      },
+      {
+        "id": "cbss-2",
+        "type": "textarea",
+        "props": {
+          "label": "C1.IX.2 BSS auxiliary aids and services",
+          "hint": "How do BSS entities offer services in a manner that is accessible to all beneficiaries who need their services, including beneficiaries with disabilities, as required by 42 CFR 438.71 (b)(2))?</br>CFR 438.71 requires that the beneficiary support system be accessible in multiple ways including phone, Internet, in-person, and via auxiliary aids and services when requested."
+        }
+      },
+      {
+        "id": "cbss-3",
+        "type": "textarea",
+        "props": {
+          "label": "C1.IX.3 BSS LTSS program data",
+          "hint": "How do BSS entities assist the state with identifying, remediating, and resolving systemic issues based on a review of LTSS program data such as grievances and appeals or critical incident data? Refer to 42 CFR 438.71(d)(4)."
+        }
+      },
+      {
+        "id": "cbss-4",
+        "type": "textarea",
+        "props": {
+          "label": "C1.IX.4 State evaluation of BSS entity performance",
+          "hint": "What are steps taken by the state to evaluate the quality, effectiveness, and efficiency of the BSS entities' performance?"
         }
       }
     ]

@@ -48,24 +48,19 @@ export const McparReportPage = ({ pageJson }: Props) => {
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      const report = {
+      const reportDetails = {
         key: reportKey,
         programName: programName,
-        report: formData,
       };
-      const reportStatus = {
-        key: reportKey,
-        programName: programName,
-        status: "In Progress",
-      };
-      updateReportData(report);
-      updateReportStatus(reportStatus);
+      const reportStatus = "In Progress";
+      updateReportData(reportDetails, formData);
+      updateReportStatus(reportDetails, reportStatus);
     }
     navigate(nextRoute);
   };
 
-  if (reportData?.report) {
-    form.fields = hydrateFormFields(form.fields, reportData.report);
+  if (reportData) {
+    form.fields = hydrateFormFields(form.fields, reportData);
   }
 
   return (

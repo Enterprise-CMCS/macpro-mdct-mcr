@@ -29,22 +29,22 @@ export const writeReport = handler(async (event, context) => {
     Item: {
       key: stateYear,
       programName: programName,
-      report: body.report,
+      reportData: body,
     },
   };
   const getCurrentReport = await getReport(event, context);
-  const currentBody = JSON.parse(getCurrentReport.body);
-  if (currentBody.report) {
+  const currentReport = JSON.parse(getCurrentReport.body);
+  if (currentReport) {
     const newReport = {
-      ...currentBody.report,
-      ...body.report,
+      ...currentReport.reportData,
+      ...body,
     };
     reportParams = {
       TableName: process.env.REPORT_TABLE_NAME!,
       Item: {
         key: stateYear,
         programName: programName,
-        report: { ...newReport },
+        reportData: { ...newReport },
       },
     };
   }

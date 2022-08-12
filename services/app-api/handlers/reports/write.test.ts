@@ -30,14 +30,14 @@ const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"report":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
+  body: `{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { stateYear: "AB2022", programName: "testProgram" },
 };
 
 const secondWriteEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"report":{"newField1":"newValue1","newField2":"newValue2","newNum1":1,"newArray":["newArray1", "newArray2"]}}`,
+  body: `{"newField1":"newValue1","newField2":"newValue2","newNum1":1,"newArray":["newArray1", "newArray2"]}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { stateYear: "AB2022", programName: "testProgram" },
 };
@@ -64,11 +64,10 @@ describe("Test writeReport API method", () => {
       body: "{}",
     });
     const res = await writeReport(testEvent, null);
-
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.report.field1).toContain("value1");
-    expect(body.report.num1).toBeCloseTo(0);
+    expect(body.reportData.field1).toContain("value1");
+    expect(body.reportData.num1).toBeCloseTo(0);
   });
 
   test("Test Successful Run of report update", async () => {
@@ -78,16 +77,16 @@ describe("Test writeReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"report":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
+      body: `{"reportData":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
     });
 
     const secondResponse = await writeReport(secondWriteEvent, null);
     const secondBody = JSON.parse(secondResponse.body);
     expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(secondBody.report.newField1).toContain("newValue1");
-    expect(secondBody.report.newNum1).toBeCloseTo(1);
-    expect(secondBody.report.field1).toContain("value1");
-    expect(secondBody.report.num1).toBeCloseTo(0);
+    expect(secondBody.reportData.newField1).toContain("newValue1");
+    expect(secondBody.reportData.newNum1).toBeCloseTo(1);
+    expect(secondBody.reportData.field1).toContain("value1");
+    expect(secondBody.reportData.num1).toBeCloseTo(0);
   });
 
   test("Test reportKey not provided throws 500 error", async () => {
