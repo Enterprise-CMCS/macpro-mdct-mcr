@@ -61,7 +61,6 @@
               "name": "test1-o1",
               "type": "choice",
               "label": "Option 1, choice with nested child",
-              "value": "option1",
               "children": [
                 {
                   "id": "test1-o1-c",
@@ -73,7 +72,6 @@
                         "name": "test1-o1-c-o1",
                         "type": "choice",
                         "label": "Option 1, choice with nested child",
-                        "value": "option1-1",
                         "children": [
                           {
                             "id": "test1-o1-c-o1-c",
@@ -87,8 +85,7 @@
                       {
                         "name": "test1-o1-c-o2",
                         "type": "choice",
-                        "label": "Option 2, no children",
-                        "value": "option2"
+                        "label": "Option 2, no children"
                       }
                     ]
                   }
@@ -98,8 +95,7 @@
             {
               "name": "test1-o2",
               "type": "choice",
-              "label": "Option 2, no children",
-              "value": "option2"
+              "label": "Option 2, no children"
             }
           ]
         }
@@ -114,7 +110,6 @@
               "name": "test2-o1",
               "type": "choice",
               "label": "Option 1, choice with nested child",
-              "value": "option1",
               "children": [
                 {
                   "id": "test2-o1-c",
@@ -126,7 +121,6 @@
                         "name": "test2-o1-c-o1",
                         "type": "choice",
                         "label": "Option 1, choice with nested child",
-                        "value": "option1-1",
                         "children": [
                           {
                             "id": "test2-o1-c-o1-c",
@@ -140,8 +134,7 @@
                       {
                         "name": "test2-o1-c-o2",
                         "type": "choice",
-                        "label": "Option 2, no children",
-                        "value": "option2"
+                        "label": "Option 2, no children"
                       }
                     ]
                   }
@@ -151,8 +144,7 @@
             {
               "name": "test2-o2",
               "type": "choice",
-              "label": "Option 2, no children",
-              "value": "option2"
+              "label": "Option 2, no children"
             }
           ]
         }
