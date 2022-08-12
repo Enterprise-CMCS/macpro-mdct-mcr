@@ -42,7 +42,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const { state, userRole } = user ?? {};
 
   // TODO: get real program name per report
-  const programName = "tempName2";
+  const programName = "tempName";
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
