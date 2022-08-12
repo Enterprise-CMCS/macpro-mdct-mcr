@@ -7,10 +7,10 @@ const handleClose = jest.fn();
 const handleAction = jest.fn();
 
 const content = {
-  action: "Dialog Action",
-  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam vitae metus lacinia, eget tempor purus placerat.",
-  close: "Cancel",
   heading: "Dialog Heading",
+  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan diam vitae metus lacinia, eget tempor purus placerat.",
+  actionButtonText: "Dialog Action",
+  closeButtonText: "Cancel",
 };
 
 const modalComponent = (
