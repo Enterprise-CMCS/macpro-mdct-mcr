@@ -2,17 +2,161 @@
   "path": "/mcpar/program-level-indicators/encounter-data-report",
   "intro": {
     "section": "C: Program-Level Indicators",
-    "subsection": "III: Encounter Data Report"
+    "subsection": "Topic III: Encounter Data Report",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["C1_Program_Set"]
+    }
   },
   "form": {
     "id": "cedr",
     "fields": [
       {
         "id": "cedr-1",
-        "type": "text",
+        "type": "checkbox",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "C1.III.1 Uses of encounter data",
+          "hint": "For what purposes does the state use encounter data collected from managed care plans (MCPs)? Select one or more.<br/>Federal regulations require that states, through their contracts with MCPs, collect and maintain sufficient enrollee encounter data to identify the provider who delivers any item(s) or service(s) to enrollees (42 CFR 438.242(c)(1)).",
+          "choices": [
+            {
+              "name": "cedr-1-o1",
+              "type": "choice",
+              "label": "Rate setting",
+              "value": "Rate setting"
+            },
+            {
+              "name": "cedr-1-o2",
+              "type": "choice",
+              "label": "Quality/performance measurement",
+              "value": "Quality/performance measurement"
+            },
+            {
+              "name": "cedr-1-o3",
+              "type": "choice",
+              "label": "Monitoring and reporting",
+              "value": "Monitoring and reporting"
+            },
+            {
+              "name": "cedr-1-o4",
+              "type": "choice",
+              "label": "Contract oversight",
+              "value": "Contract oversight"
+            },
+            {
+              "name": "cedr-1-o5",
+              "type": "choice",
+              "label": "Program integrity",
+              "value": "Program integrity"
+            },
+            {
+              "name": "cedr-1-o6",
+              "type": "choice",
+              "label": "Policy making and decision support",
+              "value": "Policy making and decision support"
+            },
+            {
+              "name": "cedr-1-o7",
+              "type": "choice",
+              "label": "Other",
+              "value": "Other",
+              "children": [
+                {
+                  "id": "cedr-1-o7-text",
+                  "type": "textarea"
+                }
+              ]
+            },
+            {
+              "name": "cedr-1-o8",
+              "type": "choice",
+              "label": "Encounter data not used for any purpose",
+              "value": "Encounter data not used for any purpose"
+            }
+          ]
+        }
+      },
+      {
+        "id": "cedr-2",
+        "type": "checkbox",
+        "props": {
+          "label": "C1.III.2 Criteria/measures to evaluate MCP performance",
+          "hint": "What types of measures are used by the state to evaluate managed care plan performance in encounter data submission and correction? Select one or more.<br/>Federal regulations also require that states validate that submitted enrollee encounter data they receive is a complete and accurate representation of the services provided to enrollees under the contract between the state and the MCO, PIHP, or PAHP. 42 CFR 438.242(d).",
+          "choices": [
+            {
+              "name": "cedr-2-o1",
+              "type": "choice",
+              "label": "Timeliness of initial data submissions",
+              "value": "Timeliness of initial data submissions"
+            },
+            {
+              "name": "cedr-2-o2",
+              "type": "choice",
+              "label": "Timeliness of data corrections",
+              "value": "Timeliness of data corrections"
+            },
+            {
+              "name": "cedr-2-o3",
+              "type": "choice",
+              "label": "Use of correct file format",
+              "value": "Use of correct file format"
+            },
+            {
+              "name": "cedr-2-o4",
+              "type": "choice",
+              "label": "Provider ID field complete",
+              "value": "Provider ID field complete"
+            },
+            {
+              "name": "cedr-2-o5",
+              "type": "choice",
+              "label": "Other",
+              "value": "Other",
+              "children": [
+                {
+                  "id": "cedr-2-o5-text",
+                  "type": "textarea"
+                }
+              ]
+            },
+            {
+              "name": "cedr-2-o6",
+              "type": "choice",
+              "label": "None of the above",
+              "value": "None of the above"
+            }
+          ]
+        }
+      },
+      {
+        "id": "cedr-3",
+        "type": "textarea",
+        "props": {
+          "label": "C1.III.3 Encounter data performance criteria contract language",
+          "hint": "Provide reference(s) to the contract section(s) that describe the criteria by which managed care plan performance on encounter data submission and correction will be measured. Use contract section references, not page numbers."
+        }
+      },
+      {
+        "id": "cedr-4",
+        "type": "textarea",
+        "props": {
+          "label": "C1.III.4 Financial penalties contract language",
+          "hint": "Provide reference(s) to the contract section(s) that describes any financial penalties the state may impose on plans for the types of failures to meet encounter data submission and quality standards. Use contract section references, not page numbers."
+        }
+      },
+      {
+        "id": "cedr-5",
+        "type": "textarea",
+        "props": {
+          "label": "C1.III.5 Incentives for encounter data quality",
+          "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality."
+        }
+      },
+      {
+        "id": "cedr-6",
+        "type": "textarea",
+        "props": {
+          "label": "C1.III.6 Barriers to collecting/validating encounter data",
+          "hint": "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting period."
         }
       }
     ]
