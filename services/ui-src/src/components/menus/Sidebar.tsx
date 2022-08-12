@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { ArrowIcon } from "@cmsgov/design-system";
@@ -69,7 +69,15 @@ interface NavSectionProps {
 }
 
 const NavSection = ({ section, level }: NavSectionProps) => {
+  const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (pathname.includes(section.path)) {
+      setIsOpen(true);
+    }
+  }, [pathname]);
+
   const { name, path, children } = section;
   return (
     <React.Fragment key={path}>
