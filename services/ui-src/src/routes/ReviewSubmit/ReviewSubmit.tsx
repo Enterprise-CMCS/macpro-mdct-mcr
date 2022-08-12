@@ -165,6 +165,7 @@ interface SuccessMessageProps {
 
 const sx = {
   pageContainer: {
+    height: "100%",
     width: "100%",
   },
   contentContainer: {
