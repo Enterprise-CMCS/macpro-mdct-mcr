@@ -47,7 +47,7 @@ export interface ReportDataShape {
 
 export interface ReportDetails {
   state: string;
-  reportId?: string;
+  reportId: string;
 }
 
 export interface ReportContextMethods {
