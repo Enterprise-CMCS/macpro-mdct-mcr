@@ -8,6 +8,8 @@ import { ReportStatus } from "types";
 // utils
 import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
+// verbiage
+import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
 // MOCKS
 
@@ -64,23 +66,25 @@ const reviewSubmitCompletedView = (
 describe("Test /mcpar/review-and-submit view", () => {
   test("Check that /mcpar/review-and-submit view renders", () => {
     render(reviewSubmitInitialView);
-    expect(screen.getByTestId("review-and-submit-view")).toBeVisible();
-    expect(screen.getByTestId("ready-view")).toBeVisible();
+    const { review } = reviewVerbiage;
+    const { intro } = review;
+    expect(screen.getByText(intro.header)).toBeVisible();
   });
 
   test("Check that /mcpar/review-and-submit view renders when report status is completed", () => {
     render(reviewSubmitCompletedView);
-    expect(screen.getByTestId("review-and-submit-view")).toBeVisible();
-    expect(screen.getByTestId("submitted-view")).toBeVisible();
+    const { submitted } = reviewVerbiage;
+    const { intro } = submitted;
+    expect(screen.getByText(intro.header)).toBeVisible();
   });
 
   test("should show a modal when clicking initial submit button", async () => {
     render(reviewSubmitInitialView);
-    const submitCheckButton = screen.getByText("Submit MCPAR")!;
+    const { review } = reviewVerbiage;
+    const { modal, pageLink } = review;
+    const submitCheckButton = screen.getByText(pageLink.text)!;
     await userEvent.click(submitCheckButton);
-    const modalTitle = screen.getByText(
-      "Are you sure you want to submit MCPAR?"
-    )!;
+    const modalTitle = screen.getByText(modal.heading)!;
     expect(modalTitle).toBeVisible();
   });
 

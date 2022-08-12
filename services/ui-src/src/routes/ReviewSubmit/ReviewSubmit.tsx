@@ -51,7 +51,7 @@ export const ReviewSubmit = () => {
   };
 
   return (
-    <ReportPage data-testid="review-and-submit-view">
+    <ReportPage>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         {reportStatus?.status == ReportStatus.SUBMITTED ? (
@@ -100,7 +100,6 @@ const ReadyToSubmit = ({
           colorScheme="colorSchemes.primary"
           rightIcon={<Icon icon="arrowRight" />}
           onClick={() => onOpen()}
-          data-testid="submit-button"
         >
           {pageLink.text}
         </Button>
@@ -136,7 +135,7 @@ export const SuccessMessage = ({
   const submittedDate = `was submitted on ${readableDate}`;
   const submittersName = ` by ${givenName} ${familyName}`;
   return (
-    <Flex sx={sx.contentContainer} data-testid="submitted-view">
+    <Flex sx={sx.contentContainer}>
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           <span>
