@@ -13,10 +13,9 @@ import { Icon, Modal, ReportContext, ReportPage, Sidebar } from "components";
 // types
 import { ReportStatus, UserRoles } from "types";
 // utils
-import { useUser } from "utils";
-// form data
+import { useUser, utcDateToReadableDate } from "utils";
+// verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
-import successVerbiage from "verbiage/pages/mcpar/mcpar-successful-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 
@@ -46,9 +45,8 @@ export const ReviewSubmit = () => {
   const submitForm = () => {
     // TODO: Add check to make sure user filled out the form
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      updateReportStatus(reportDetails, ReportStatus.COMPLETED);
+      updateReportStatus(reportDetails, ReportStatus.SUBMITTED);
     }
-    // TODO: Handle Error for other users coming on to the page
     onClose();
   };
 
@@ -56,7 +54,7 @@ export const ReviewSubmit = () => {
     <ReportPage data-testid="review-and-submit-view">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {reportStatus?.status == ReportStatus.COMPLETED ? (
+        {reportStatus?.status == ReportStatus.SUBMITTED ? (
           <SuccessMessage
             programName={programName}
             date={reportStatus?.lastAltered}
@@ -82,7 +80,8 @@ const ReadyToSubmit = ({
   onOpen,
   onClose,
 }: ReadyToSubmitProps) => {
-  const { intro, modal, pageLink } = reviewVerbiage;
+  const { review } = reviewVerbiage;
+  const { intro, modal, pageLink } = review;
 
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
@@ -131,11 +130,10 @@ export const SuccessMessage = ({
   givenName,
   familyName,
 }: SuccessMessageProps) => {
-  const { intro } = successVerbiage;
-  const utcDateToReadableDate = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "full",
-  }).format(date);
-  const submittedDate = `was submitted on ${utcDateToReadableDate}`;
+  const { submitted } = reviewVerbiage;
+  const { intro } = submitted;
+  const readableDate = utcDateToReadableDate(date);
+  const submittedDate = `was submitted on ${readableDate}`;
   const submittersName = ` by ${givenName} ${familyName}`;
   return (
     <Flex sx={sx.contentContainer} data-testid="submitted-view">
@@ -161,7 +159,7 @@ export const SuccessMessage = ({
 
 interface SuccessMessageProps {
   programName: string;
-  date: any;
+  date: number;
   givenName?: string;
   familyName?: string;
 }
@@ -202,7 +200,7 @@ const sx = {
   headerImage: {
     display: "inline-block",
     marginRight: "1rem",
-    height: "1.72rem",
+    height: "27px",
   },
   additionalInfoHeader: {
     color: "palette.gray",

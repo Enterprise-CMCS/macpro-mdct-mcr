@@ -42,9 +42,9 @@ export interface ReportPath {
 }
 
 export enum ReportStatus {
-  INITIAL = "",
+  CREATED = "Created",
   IN_PROGRESS = "In Progress",
-  COMPLETED = "Completed",
+  SUBMITTED = "Submitted",
 }
 
 export interface ReportDataShape {

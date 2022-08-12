@@ -127,4 +127,4 @@ export const mockReportData = {
   array: ["array1, array2"],
 };
 
-export const mockReportStatus = ReportStatus.IN_PROGRESS;
+export const mockReportStatus = ReportStatus.CREATED;

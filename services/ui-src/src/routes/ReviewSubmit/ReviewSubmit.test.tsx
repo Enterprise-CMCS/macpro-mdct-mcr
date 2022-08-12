@@ -32,7 +32,7 @@ const mockReportCompletedContext = {
     key: "CA2022",
     programName: "tempName",
     lastAltered: 1660283571013,
-    status: ReportStatus.COMPLETED,
+    status: ReportStatus.SUBMITTED,
   },
   reportData: {},
   errorMessage: "",

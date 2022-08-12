@@ -48,7 +48,7 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
             onClick={() => actionFunction()}
             data-testid="modal-submit-button"
           >
-            {content.action}
+            {content.actionButtonText}
           </Button>
           <Button
             className={mqClasses}
@@ -56,7 +56,7 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
             variant="link"
             onClick={modalState.onClose}
           >
-            {content.close}
+            {content.closeButtonText}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -71,10 +71,10 @@ interface Props {
     onClose: any;
   };
   content: {
-    action: string;
-    body: string;
-    close: string;
     heading: string;
+    body: string;
+    actionButtonText: string;
+    closeButtonText: string;
   };
   [key: string]: any;
 }
