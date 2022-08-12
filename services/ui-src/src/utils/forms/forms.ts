@@ -12,25 +12,6 @@ import {
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
 
-const initializeChoiceFieldControl = (fields: FormField[]) => {
-  // find each field that contains choices (checkbox or radio)
-  fields.forEach((field: FormField) => {
-    if (field.props?.choices) {
-      // check non true choices as false
-      field.props.choices.forEach((choice: FieldChoice) => {
-        if (choice.checked != true) {
-          choice.checked = false;
-        }
-        // recurse for child choices
-        if (choice.children) {
-          initializeChoiceFieldControl(choice.children);
-        }
-      });
-    }
-  });
-  return fields;
-};
-
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
@@ -43,7 +24,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     text: TextField,
     textarea: TextAreaField,
   };
-  fields = initializeChoiceFieldControl(fields);
+  fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     return React.createElement(componentFieldType, {
@@ -86,6 +67,24 @@ export const hydrateFormFields = (
     }
   });
   return formFields;
+};
+
+// add data to choice fields in preparation for render
+export const initializeChoiceFields = (fields: FormField[]) => {
+  const fieldsWithChoices = fields.filter(
+    (field: FormField) => field.props?.choices
+  );
+  fieldsWithChoices.forEach((field: FormField) => {
+    field?.props?.choices.forEach((choice: FieldChoice) => {
+      // set choice value to choice label string
+      choice.value = choice.label;
+      // initialize choice as controlled component in unchecked state
+      if (choice.checked != true) choice.checked = false;
+      // if choice has children, recurse
+      if (choice.children) initializeChoiceFields(choice.children);
+    });
+  });
+  return fields;
 };
 
 export const sortFormErrors = (form: any, errors: any) => {
