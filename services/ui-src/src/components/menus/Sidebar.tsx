@@ -236,6 +236,8 @@ const sx = {
       color: "palette.gray",
     },
     "&.selected": {
+      position: "relative",
+      zIndex: 1,
       bg: "palette.gray_lightest_highlight",
       borderBottom: "1px solid transparent",
       borderInlineStartWidth: "0.125rem",
@@ -246,12 +248,17 @@ const sx = {
     },
   },
   navLinkWithChildren: {
-    position: "relative",
-    zIndex: 3,
+    _focus: {
+      position: "relative",
+      zIndex: 3,
+    },
   },
   navLinkSansChildren: {
-    position: "relative",
     display: "flex",
+    _focus: {
+      position: "relative",
+      zIndex: 3,
+    },
   },
   navItemTitle: {
     marginRight: "2.5rem",
