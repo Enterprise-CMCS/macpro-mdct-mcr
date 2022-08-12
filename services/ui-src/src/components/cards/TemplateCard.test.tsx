@@ -2,10 +2,12 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { act } from "react-dom/test-utils";
-//components
+// components
 import { TemplateCard } from "components";
-import verbiage from "verbiage/pages/home";
+// utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+// verbiage
+import verbiage from "verbiage/pages/home";
 
 const mockAPI = require("utils/api/requestMethods/getTemplateUrl");
 
@@ -16,15 +18,20 @@ jest.mock("utils/other/useBreakpoint", () => ({
   makeMediaQueryClasses: jest.fn(() => "desktop"),
 }));
 
+const mockUseNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  useNavigate: () => mockUseNavigate,
+  useLocation: jest.fn(() => ({
+    pathname: "mcpar/get-started",
+  })),
+}));
+
 const templateVerbiage = verbiage.cards.MCPAR;
 
 const templateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard
-      templateName="testTemplate"
-      verbiage={templateVerbiage}
-      data-testid="template-download-card"
-    />
+    <TemplateCard templateName="testTemplate" verbiage={templateVerbiage} />
   </RouterWrappedComponent>
 );
 
@@ -34,12 +41,12 @@ describe("Test TemplateCard", () => {
   });
 
   test("TemplateCard is visible", () => {
-    expect(screen.getByTestId("template-download-card")).toBeVisible();
+    expect(screen.getByText(templateVerbiage.title)).toBeVisible();
   });
 
   test("TemplateCard download button is visible and clickable", async () => {
     const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
-    const downloadButton = screen.getByText("Download MCPAR Excel Workbook");
+    const downloadButton = screen.getByText(templateVerbiage.downloadText);
     expect(downloadButton).toBeVisible();
     await act(async () => {
       await userEvent.click(downloadButton);
@@ -53,8 +60,15 @@ describe("Test TemplateCard", () => {
   });
 
   test("TemplateCard link is visible on desktop", () => {
-    const templateCardLink = "Enter MCPAR online";
+    const templateCardLink = templateVerbiage.link.text;
     expect(screen.getByText(templateCardLink)).toBeVisible();
+  });
+
+  test("TemplateCard navigates to next route on link click", async () => {
+    const templateCardLink = screen.getByText(templateVerbiage.link.text)!;
+    await userEvent.click(templateCardLink);
+    const expectedRoute = templateVerbiage.link.route;
+    await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
   });
 });
 

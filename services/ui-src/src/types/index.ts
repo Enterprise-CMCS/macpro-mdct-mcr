@@ -41,6 +41,12 @@ export interface ReportPath {
   children?: ReportPath[];
 }
 
+export enum ReportStatus {
+  CREATED = "Created",
+  IN_PROGRESS = "In Progress",
+  SUBMITTED = "Submitted",
+}
+
 export interface ReportDataShape {
   [key: string]: any;
 }
@@ -50,6 +56,9 @@ export interface ReportDetails {
   programName: string;
 }
 
+export interface ReportStatusShape {
+  [key: string]: any;
+}
 export interface ReportContextMethods {
   fetchReportData: Function;
   updateReportData: Function;
@@ -59,8 +68,8 @@ export interface ReportContextMethods {
 
 export interface ReportContextShape
   extends ReportDataShape,
+    ReportStatusShape,
     ReportContextMethods {
-  reportStatus: string;
   errorMessage?: string;
 }
 
