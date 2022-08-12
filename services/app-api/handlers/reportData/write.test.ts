@@ -1,4 +1,4 @@
-import { writeReportStatus } from "./write";
+import { writeReportData } from "./write";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -6,7 +6,7 @@ import {
   NO_KEY_ERROR_MESSAGE,
   UNAUTHORIZED_MESSAGE,
 } from "../../utils/constants/constants";
-import { getReportStatus } from "./get";
+import { getReportData } from "./get";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -26,38 +26,36 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 }));
 
 jest.mock("./get");
-const mockedGetReport = getReportStatus as jest.MockedFunction<
-  typeof getReportStatus
->;
+const mockedgetReportData = getReportData as jest.MockedFunction<typeof getReportData>;
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"status":"in progress"}`,
+  body: `{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
+  pathParameters: { state: "AB2022", reportId: "testReportId" },
 };
 
 const secondWriteEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"status":"submitted"}`,
+  body: `{"newField1":"newValue1","newField2":"newValue2","newNum1":1,"newArray":["newArray1", "newArray2"]}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
+  pathParameters: { state: "AB2022", reportId: "testReportId" },
 };
 
-describe("Test writeReportStatus API method", () => {
+describe("Test writeReportData API method", () => {
   beforeEach(() => {
-    process.env["REPORT_STATUS_TABLE_NAME"] = "fakeReportStatusTable";
+    process.env["REPORT_DATA_TABLE_NAME"] = "fakeReportDataTable";
   });
 
-  test("Test unauthorized report status creation throws 403 error", async () => {
-    const res = await writeReportStatus(testEvent, null);
+  test("Test unauthorized report creation throws 403 error", async () => {
+    const res = await writeReportData(testEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
   });
 
-  test("Test Successful Run of report status Creation", async () => {
-    mockedGetReport.mockResolvedValue({
+  test("Test Successful Run of report Creation", async () => {
+    mockedgetReportData.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -65,27 +63,30 @@ describe("Test writeReportStatus API method", () => {
       },
       body: "{}",
     });
-    const res = await writeReportStatus(testEvent, null);
-
+    const res = await writeReportData(testEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.status).toContain("in progress");
+    expect(body.reportData.field1).toContain("value1");
+    expect(body.reportData.num1).toBeCloseTo(0);
   });
 
-  test("Test Successful Run of report status update", async () => {
-    mockedGetReport.mockResolvedValue({
+  test("Test Successful Run of report update", async () => {
+    mockedgetReportData.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"createdAt": 1658938375131,"key": "AB2022","lastAltered": 1658938375131,"status": "in progress"}`,
+      body: `{"reportData":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
     });
 
-    const secondResponse = await writeReportStatus(secondWriteEvent, null);
+    const secondResponse = await writeReportData(secondWriteEvent, null);
     const secondBody = JSON.parse(secondResponse.body);
     expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(secondBody.status).toContain("submitted");
+    expect(secondBody.reportData.newField1).toContain("newValue1");
+    expect(secondBody.reportData.newNum1).toBeCloseTo(1);
+    expect(secondBody.reportData.field1).toContain("value1");
+    expect(secondBody.reportData.num1).toBeCloseTo(0);
   });
 
   test("Test reportKey not provided throws 500 error", async () => {
@@ -93,7 +94,7 @@ describe("Test writeReportStatus API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await writeReportStatus(noKeyEvent, null);
+    const res = await writeReportData(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
@@ -102,9 +103,9 @@ describe("Test writeReportStatus API method", () => {
   test("Test reportKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      pathParameters: { stateYear: "", programName: "" },
+      pathParameters: { state: "", reportId: "" },
     };
-    const res = await writeReportStatus(noKeyEvent, null);
+    const res = await writeReportData(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);

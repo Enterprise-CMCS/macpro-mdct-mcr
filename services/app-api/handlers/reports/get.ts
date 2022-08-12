@@ -4,28 +4,49 @@ import { StatusCodes } from "../../utils/types/types";
 import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 
 export const getReport = handler(async (event, _context) => {
-  if (
-    !event?.pathParameters?.stateYear! ||
-    !event?.pathParameters?.programName!
-  ) {
+  if (!event?.pathParameters?.state! || !event?.pathParameters?.reportId!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
-  const reportParams = {
+  const queryParams = {
     TableName: process.env.REPORT_TABLE_NAME!,
-    Key: {
-      key: event.pathParameters.stateYear,
-      programName: event.pathParameters.programName,
+    KeyConditionExpression: "#state = :state AND #reportId = :reportId",
+    ExpressionAttributeValues: {
+      ":state": event.pathParameters.state,
+      ":reportId": event.pathParameters.reportId,
+    },
+    ExpressionAttributeNames: {
+      "#state": "state",
+      "#reportId": "reportId",
     },
   };
-  const reportQueryResponse = await dynamoDb.get(reportParams);
+  const reportQueryResponse = await dynamoDb.query(queryParams);
 
-  const reportItem =
-    typeof reportQueryResponse.Item === "object"
-      ? { ...reportQueryResponse.Item }
-      : {};
+  const responseBody = reportQueryResponse.Items![0] ?? {};
 
   return {
     status: StatusCodes.SUCCESS,
-    body: { ...reportItem },
+    body: responseBody,
+  };
+});
+
+export const getReportsByState = handler(async (event, _context) => {
+  if (!event?.pathParameters?.state!) {
+    throw new Error(NO_KEY_ERROR_MESSAGE);
+  }
+  const queryParams = {
+      TableName: process.env.REPORT_TABLE_NAME!,
+      KeyConditionExpression: "#state = :state",
+      ExpressionAttributeValues: {
+        ":state": event.pathParameters.state,
+      },
+      ExpressionAttributeNames: {
+        "#state": "state",
+      },
+    };
+  const reportQueryResponse = await dynamoDb.query(queryParams);
+
+  return {
+    status: StatusCodes.SUCCESS,
+    body: reportQueryResponse.Items,
   };
 });

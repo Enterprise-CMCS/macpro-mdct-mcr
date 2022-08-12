@@ -1,13 +1,13 @@
 import { getReport, writeReport } from "./report";
 // utils
-import { mockReportDetails, mockReportData } from "utils/testing/setupJest";
+import { mockReportDetails, mockReportStatus } from "utils/testing/setupJest";
 
-describe("Test report methods", () => {
+describe("Test report status methods", () => {
   test("getReport", () => {
     expect(getReport(mockReportDetails)).toBeTruthy();
   });
 
-  test("postReport", () => {
-    expect(writeReport(mockReportDetails, mockReportData)).toBeTruthy();
+  test("postReportStatus", () => {
+    expect(writeReport(mockReportDetails, mockReportStatus)).toBeTruthy();
   });
 });

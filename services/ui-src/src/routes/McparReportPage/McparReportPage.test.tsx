@@ -13,8 +13,8 @@ import sectionA_pointofcontact from "forms/mcpar/apoc/apoc.json";
 const mockReportMethods = {
   fetchReportData: jest.fn(() => {}),
   updateReportData: jest.fn(() => {}),
-  fetchReportStatus: jest.fn(() => {}),
-  updateReportStatus: jest.fn(() => {}),
+  fetchReport: jest.fn(() => {}),
+  updateReport: jest.fn(() => {}),
 };
 
 const mockReportContext = {

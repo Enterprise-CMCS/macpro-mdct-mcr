@@ -26,20 +26,22 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 }));
 
 jest.mock("./get");
-const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
+const mockedGetReport = getReport as jest.MockedFunction<
+  typeof getReport
+>;
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}`,
+  body: `{"status":"in progress"}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
+  pathParameters: { state: "AB2022", reportId: "testReportId" },
 };
 
 const secondWriteEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"newField1":"newValue1","newField2":"newValue2","newNum1":1,"newArray":["newArray1", "newArray2"]}`,
+  body: `{"status":"submitted"}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
+  pathParameters: { state: "AB2022", reportId: "testReportId" },
 };
 
 describe("Test writeReport API method", () => {
@@ -47,14 +49,14 @@ describe("Test writeReport API method", () => {
     process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
   });
 
-  test("Test unauthorized report creation throws 403 error", async () => {
+  test("Test unauthorized report status creation throws 403 error", async () => {
     const res = await writeReport(testEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
   });
 
-  test("Test Successful Run of report Creation", async () => {
+  test("Test Successful Run of report status Creation", async () => {
     mockedGetReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -64,29 +66,26 @@ describe("Test writeReport API method", () => {
       body: "{}",
     });
     const res = await writeReport(testEvent, null);
+
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.reportData.field1).toContain("value1");
-    expect(body.reportData.num1).toBeCloseTo(0);
+    expect(body.status).toContain("in progress");
   });
 
-  test("Test Successful Run of report update", async () => {
+  test("Test Successful Run of report status update", async () => {
     mockedGetReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"reportData":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
+      body: `{"createdAt": 1658938375131,"key": "AB2022","lastAltered": 1658938375131,"status": "in progress"}`,
     });
 
     const secondResponse = await writeReport(secondWriteEvent, null);
     const secondBody = JSON.parse(secondResponse.body);
     expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(secondBody.reportData.newField1).toContain("newValue1");
-    expect(secondBody.reportData.newNum1).toBeCloseTo(1);
-    expect(secondBody.reportData.field1).toContain("value1");
-    expect(secondBody.reportData.num1).toBeCloseTo(0);
+    expect(secondBody.status).toContain("submitted");
   });
 
   test("Test reportKey not provided throws 500 error", async () => {
@@ -103,7 +102,7 @@ describe("Test writeReport API method", () => {
   test("Test reportKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      pathParameters: { stateYear: "", programName: "" },
+      pathParameters: { state: "", reportId: "" },
     };
     const res = await writeReport(noKeyEvent, null);
 
