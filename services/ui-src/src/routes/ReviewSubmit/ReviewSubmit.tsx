@@ -55,9 +55,10 @@ export const ReviewSubmit = () => {
     <ReportPage data-testid="review-and-submit-view">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {reportStatus == ReportStatus.COMPLETED ? (
+        {reportStatus?.status == ReportStatus.COMPLETED ? (
           <SuccessMessage
             programName={programName}
+            date={reportStatus?.lastAltered}
             givenName={user?.given_name}
             familyName={user?.family_name}
           />
@@ -124,12 +125,16 @@ interface ReadyToSubmitProps {
 
 export const SuccessMessage = ({
   programName,
+  date,
   givenName,
   familyName,
 }: SuccessMessageProps) => {
   const { intro } = successVerbiage;
-  const submittersName =
-    givenName && familyName && ` was submitted by ${givenName} ${familyName}`;
+  const utcDateToReadableDate = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "full",
+  }).format(date);
+  const submittedDate = `was submitted on ${utcDateToReadableDate}`;
+  const submittersName = ` by ${givenName} ${familyName}`;
   return (
     <Flex sx={sx.contentContainer}>
       <Box sx={sx.leadTextBox}>
@@ -141,7 +146,7 @@ export const SuccessMessage = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{`MCPAR report for ${programName} ${submittersName}`}</Text>
+          <Text>{`MCPAR report for ${programName} ${submittedDate} ${submittersName}`}</Text>
         </Box>
       </Box>
       <Box>
@@ -154,6 +159,7 @@ export const SuccessMessage = ({
 
 interface SuccessMessageProps {
   programName: string;
+  date: any;
   givenName?: string;
   familyName?: string;
 }

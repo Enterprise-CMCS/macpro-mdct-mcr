@@ -4,8 +4,8 @@ import {
   AnyObject,
   ReportDataShape,
   ReportDetails,
-  ReportStatus,
   ReportContextShape,
+  ReportStatusShape,
 } from "types";
 import {
   getReport,
@@ -17,7 +17,7 @@ import {
 import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
-  reportStatus: ReportStatus.INITIAL,
+  reportStatus: {} as AnyObject,
   reportData: {} as AnyObject,
   fetchReportData: Function,
   updateReportData: Function,
@@ -27,9 +27,7 @@ export const ReportContext = createContext<ReportContextShape>({
 });
 
 export const ReportProvider = ({ children }: Props) => {
-  const [reportStatus, setReportStatus] = useState<ReportStatus>(
-    ReportStatus.INITIAL
-  );
+  const [reportStatus, setReportStatus] = useState<ReportStatusShape>({});
   const [reportData, setReportData] = useState<ReportDataShape>({});
   const [error, setError] = useState<string>();
 
@@ -57,7 +55,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportStatus = async (reportDetails: ReportDetails) => {
     try {
       const result = await getReportStatus(reportDetails);
-      setReportStatus(result?.status);
+      setReportStatus(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_STATUS_FAILED);
     }
