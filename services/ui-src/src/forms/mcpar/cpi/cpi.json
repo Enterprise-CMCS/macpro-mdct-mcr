@@ -21,14 +21,12 @@
             {
               "name": "cpi-1-o1",
               "type": "choice",
-              "label": "Yes",
-              "value": "Yes"
+              "label": "Yes"
             },
             {
               "name": "cpi-1-o2",
               "type": "choice",
-              "label": "No",
-              "value": "No"
+              "label": "No"
             }
           ]
         }
