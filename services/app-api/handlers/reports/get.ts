@@ -34,15 +34,15 @@ export const getReportsByState = handler(async (event, _context) => {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const queryParams = {
-      TableName: process.env.REPORT_TABLE_NAME!,
-      KeyConditionExpression: "#state = :state",
-      ExpressionAttributeValues: {
-        ":state": event.pathParameters.state,
-      },
-      ExpressionAttributeNames: {
-        "#state": "state",
-      },
-    };
+    TableName: process.env.REPORT_TABLE_NAME!,
+    KeyConditionExpression: "#state = :state",
+    ExpressionAttributeValues: {
+      ":state": event.pathParameters.state,
+    },
+    ExpressionAttributeNames: {
+      "#state": "state",
+    },
+  };
   const reportQueryResponse = await dynamoDb.query(queryParams);
 
   return {

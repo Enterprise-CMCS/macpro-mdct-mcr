@@ -4,10 +4,7 @@ import { StatusCodes } from "../../utils/types/types";
 import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 
 export const getReportData = handler(async (event, _context) => {
-  if (
-    !event?.pathParameters?.state! ||
-    !event?.pathParameters?.reportId!
-  ) {
+  if (!event?.pathParameters?.state! || !event?.pathParameters?.reportId!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const queryParams = {

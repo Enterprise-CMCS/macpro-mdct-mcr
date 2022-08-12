@@ -51,7 +51,7 @@ export const writeReport = handler(async (event, context) => {
           status: body,
         },
       };
-    } 
+    }
   }
 
   await dynamoDb.put(statusParams);

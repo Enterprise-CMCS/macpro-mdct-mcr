@@ -26,9 +26,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 }));
 
 jest.mock("./get");
-const mockedGetReport = getReport as jest.MockedFunction<
-  typeof getReport
->;
+const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,

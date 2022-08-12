@@ -21,18 +21,11 @@ async function getReportsByState(state: string) {
   const request = {
     headers: { ...requestHeaders },
   };
-  const response = await API.get(
-    "reports",
-    `/reports/${state}`,
-    request
-  );
+  const response = await API.get("reports", `/reports/${state}`, request);
   return response;
 }
 
-async function writeReport(
-  reportDetails: ReportDetails,
-  reportStatus: string
-) {
+async function writeReport(reportDetails: ReportDetails, reportStatus: string) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },

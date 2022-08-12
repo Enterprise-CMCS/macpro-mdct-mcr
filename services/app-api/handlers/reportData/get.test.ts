@@ -20,7 +20,7 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
             array: ["array1, array2"],
           },
         },
-      ]
+      ],
     }),
   },
 }));

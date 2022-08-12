@@ -16,7 +16,7 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
           key: "AB",
           reportId: "testReportId",
         },
-      ]
+      ],
     }),
   },
 }));
