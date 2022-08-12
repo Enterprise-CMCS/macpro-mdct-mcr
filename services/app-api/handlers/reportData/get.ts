@@ -24,13 +24,10 @@ export const getReportData = handler(async (event, _context) => {
   };
   const reportQueryResponse = await dynamoDb.query(queryParams);
 
-  // const reportItem =
-  //   typeof reportQueryResponse.Item === "object"
-  //     ? { ...reportQueryResponse.Item }
-  //     : {};
+  const responseBody = reportQueryResponse.Items![0] ?? {};
 
   return {
     status: StatusCodes.SUCCESS,
-    // body: { ...reportItem },
+    body: responseBody,
   };
 });
