@@ -121,9 +121,6 @@ describe("Test hydrateFormFields", () => {
               {
                 id: "mock-field-2-o1-text",
                 type: "text",
-                props: {
-                  label: "Nested child mock text field",
-                },
               },
             ],
           },
