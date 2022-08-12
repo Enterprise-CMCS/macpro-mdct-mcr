@@ -21,44 +21,37 @@
             {
               "name": "cedr-1-o1",
               "type": "choice",
-              "label": "Rate setting",
-              "value": "Rate setting"
+              "label": "Rate setting"
             },
             {
               "name": "cedr-1-o2",
               "type": "choice",
-              "label": "Quality/performance measurement",
-              "value": "Quality/performance measurement"
+              "label": "Quality/performance measurement"
             },
             {
               "name": "cedr-1-o3",
               "type": "choice",
-              "label": "Monitoring and reporting",
-              "value": "Monitoring and reporting"
+              "label": "Monitoring and reporting"
             },
             {
               "name": "cedr-1-o4",
               "type": "choice",
-              "label": "Contract oversight",
-              "value": "Contract oversight"
+              "label": "Contract oversight"
             },
             {
               "name": "cedr-1-o5",
               "type": "choice",
-              "label": "Program integrity",
-              "value": "Program integrity"
+              "label": "Program integrity"
             },
             {
               "name": "cedr-1-o6",
               "type": "choice",
-              "label": "Policy making and decision support",
-              "value": "Policy making and decision support"
+              "label": "Policy making and decision support"
             },
             {
               "name": "cedr-1-o7",
               "type": "choice",
               "label": "Other",
-              "value": "Other",
               "children": [
                 {
                   "id": "cedr-1-o7-text",
@@ -69,8 +62,7 @@
             {
               "name": "cedr-1-o8",
               "type": "choice",
-              "label": "Encounter data not used for any purpose",
-              "value": "Encounter data not used for any purpose"
+              "label": "Encounter data not used for any purpose"
             }
           ]
         }
@@ -85,32 +77,27 @@
             {
               "name": "cedr-2-o1",
               "type": "choice",
-              "label": "Timeliness of initial data submissions",
-              "value": "Timeliness of initial data submissions"
+              "label": "Timeliness of initial data submissions"
             },
             {
               "name": "cedr-2-o2",
               "type": "choice",
-              "label": "Timeliness of data corrections",
-              "value": "Timeliness of data corrections"
+              "label": "Timeliness of data corrections"
             },
             {
               "name": "cedr-2-o3",
               "type": "choice",
-              "label": "Use of correct file format",
-              "value": "Use of correct file format"
+              "label": "Use of correct file format"
             },
             {
               "name": "cedr-2-o4",
               "type": "choice",
-              "label": "Provider ID field complete",
-              "value": "Provider ID field complete"
+              "label": "Provider ID field complete"
             },
             {
               "name": "cedr-2-o5",
               "type": "choice",
               "label": "Other",
-              "value": "Other",
               "children": [
                 {
                   "id": "cedr-2-o5-text",
@@ -121,8 +108,7 @@
             {
               "name": "cedr-2-o6",
               "type": "choice",
-              "label": "None of the above",
-              "value": "None of the above"
+              "label": "None of the above"
             }
           ]
         }
