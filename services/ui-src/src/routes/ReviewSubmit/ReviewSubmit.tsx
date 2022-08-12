@@ -84,7 +84,7 @@ const ReadyToSubmit = ({
   const { intro, modal, pageLink } = reviewVerbiage;
 
   return (
-    <Flex sx={sx.contentContainer}>
+    <Flex sx={sx.contentContainer} data-testid="ready-view">
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
@@ -100,6 +100,7 @@ const ReadyToSubmit = ({
           colorScheme="colorSchemes.primary"
           rightIcon={<Icon icon="arrowRight" />}
           onClick={() => onOpen()}
+          data-testid="submit-button"
         >
           {pageLink.text}
         </Button>
@@ -136,7 +137,7 @@ export const SuccessMessage = ({
   const submittedDate = `was submitted on ${utcDateToReadableDate}`;
   const submittersName = ` by ${givenName} ${familyName}`;
   return (
-    <Flex sx={sx.contentContainer}>
+    <Flex sx={sx.contentContainer} data-testid="submitted-view">
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           <span>

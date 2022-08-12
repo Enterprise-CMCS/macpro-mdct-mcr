@@ -46,6 +46,7 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
             className={mqClasses}
             sx={sx.action}
             onClick={() => actionFunction()}
+            data-testid="modal-submit-button"
           >
             {content.action}
           </Button>
