@@ -60,6 +60,17 @@ export const formatDateUtcToEt = (date: number): string => {
   return `${month + 1}/${day}/${year}`;
 };
 
+/*
+ * Converts passed UTC datetime to a local date in the users timezone
+ * returns -> User Timezone date in format Day of Week, Month Day, Year
+ * Ex: Friday, August 12, 2022
+ */
+export const utcDateToReadableDate = (date: number) => {
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "full",
+  }).format(date);
+};
+
 export const checkDateCompleteness = (date: string) => {
   const month = parseInt(date.split("/")?.[0]);
   const day = parseInt(date.split("/")?.[1]);
