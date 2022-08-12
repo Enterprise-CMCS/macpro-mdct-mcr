@@ -82,22 +82,31 @@ const NavSection = ({ section, level }: NavSectionProps) => {
   return (
     <React.Fragment key={path}>
       {children ? (
-        <Box as="button" onClick={() => setIsOpen(!isOpen)}>
+        <Box
+          as="button"
+          onClick={() => setIsOpen(!isOpen)}
+          sx={sx.navLinkWithChildren}
+        >
           <NavItem
             name={name}
             level={level}
             optionPath={path}
-            hasChildren={!!children}
+            hasChildren={true}
             isOpen={isOpen}
           />
         </Box>
       ) : (
-        <Link as={RouterLink} to={path} variant="unstyled">
+        <Link
+          as={RouterLink}
+          to={path}
+          variant="unstyled"
+          sx={sx.navLinkSansChildren}
+        >
           <NavItem
             name={name}
             level={level}
             optionPath={path}
-            hasChildren={!!children}
+            hasChildren={false}
           />
         </Link>
       )}
@@ -232,9 +241,17 @@ const sx = {
       borderInlineStartWidth: "0.125rem",
       borderInlineStartColor: "palette.secondary",
       ".chakra-text": {
-        color: "palette.secondary_darkest",
+        color: "palette.secondary_darker",
       },
     },
+  },
+  navLinkWithChildren: {
+    position: "relative",
+    zIndex: 3,
+  },
+  navLinkSansChildren: {
+    position: "relative",
+    display: "flex",
   },
   navItemTitle: {
     marginRight: "2.5rem",
