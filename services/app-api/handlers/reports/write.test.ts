@@ -34,14 +34,14 @@ const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"status":"in progress"}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB2022", reportId: "testReportId" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 const secondWriteEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"status":"submitted"}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB2022", reportId: "testReportId" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 describe("Test writeReport API method", () => {
@@ -79,7 +79,7 @@ describe("Test writeReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"createdAt": 1658938375131,"key": "AB2022","lastAltered": 1658938375131,"status": "in progress"}`,
+      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
     });
 
     const secondResponse = await writeReport(secondWriteEvent, null);

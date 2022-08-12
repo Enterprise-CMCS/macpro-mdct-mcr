@@ -32,14 +32,14 @@ const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB2022", reportId: "testReportId" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 const secondWriteEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"newField1":"newValue1","newField2":"newValue2","newNum1":1,"newArray":["newArray1", "newArray2"]}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB2022", reportId: "testReportId" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 describe("Test writeReportData API method", () => {

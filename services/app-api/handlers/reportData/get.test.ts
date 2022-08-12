@@ -7,18 +7,20 @@ import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
   default: {
-    get: jest.fn().mockReturnValue({
-      Item: {
-        key: "AB2022",
-        reportId: "testReportId",
-        report: {
-          field1: "value1",
-          field2: "value2",
-          num1: 0,
-          num2: 1,
-          array: ["array1, array2"],
+    query: jest.fn().mockReturnValue({
+      Items: [
+        {
+          state: "AB",
+          reportId: "testReportId",
+          reportData: {
+            field1: "value1",
+            field2: "value2",
+            num1: 0,
+            num2: 1,
+            array: ["array1, array2"],
+          },
         },
-      },
+      ]
     }),
   },
 }));
@@ -36,7 +38,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB2022", reportId: "testReportId" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 describe("Test getReportData API method", () => {
@@ -44,13 +46,13 @@ describe("Test getReportData API method", () => {
     process.env["REPORT_DATA_TABLE_NAME"] = "fakeReportDataTable";
   });
 
-  test("Test Successful Report Fetch with just primary key", async () => {
+  test("Test Successful Report Fetch", async () => {
     const res = await getReportData(testEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.report.field1).toContain("value1");
-    expect(body.report.num1).toBeCloseTo(0);
+    expect(body.reportData.field1).toContain("value1");
+    expect(body.reportData.num1).toBeCloseTo(0);
   });
 
   test("Test reportKey not provided throws 500 error", async () => {
