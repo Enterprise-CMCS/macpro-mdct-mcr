@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { ArrowIcon } from "@cmsgov/design-system";
@@ -69,27 +69,44 @@ interface NavSectionProps {
 }
 
 const NavSection = ({ section, level }: NavSectionProps) => {
+  const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (pathname.includes(section.path)) {
+      setIsOpen(true);
+    }
+  }, [pathname]);
+
   const { name, path, children } = section;
   return (
     <React.Fragment key={path}>
       {children ? (
-        <Box as="button" onClick={() => setIsOpen(!isOpen)}>
+        <Box
+          as="button"
+          onClick={() => setIsOpen(!isOpen)}
+          sx={sx.navLinkWithChildren}
+        >
           <NavItem
             name={name}
             level={level}
             optionPath={path}
-            hasChildren={!!children}
+            hasChildren={true}
             isOpen={isOpen}
           />
         </Box>
       ) : (
-        <Link as={RouterLink} to={path} variant="unstyled">
+        <Link
+          as={RouterLink}
+          to={path}
+          variant="unstyled"
+          sx={sx.navLinkSansChildren}
+        >
           <NavItem
             name={name}
             level={level}
             optionPath={path}
-            hasChildren={!!children}
+            hasChildren={false}
           />
         </Link>
       )}
@@ -219,13 +236,28 @@ const sx = {
       color: "palette.gray",
     },
     "&.selected": {
+      position: "relative",
+      zIndex: 1,
       bg: "palette.gray_lightest_highlight",
       borderBottom: "1px solid transparent",
       borderInlineStartWidth: "0.125rem",
       borderInlineStartColor: "palette.secondary",
       ".chakra-text": {
-        color: "palette.secondary_darkest",
+        color: "palette.secondary_darker",
       },
+    },
+  },
+  navLinkWithChildren: {
+    _focus: {
+      position: "relative",
+      zIndex: 3,
+    },
+  },
+  navLinkSansChildren: {
+    display: "flex",
+    _focus: {
+      position: "relative",
+      zIndex: 3,
     },
   },
   navItemTitle: {

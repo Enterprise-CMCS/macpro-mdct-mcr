@@ -5,6 +5,7 @@ import {
   ReportDataShape,
   ReportDetails,
   ReportContextShape,
+  ReportStatusShape,
 } from "types";
 import {
   getReport,
@@ -16,7 +17,7 @@ import {
 import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
-  reportStatus: "",
+  reportStatus: undefined as AnyObject | undefined,
   reportData: undefined as AnyObject | undefined,
   fetchReportData: Function,
   updateReportData: Function,
@@ -26,7 +27,9 @@ export const ReportContext = createContext<ReportContextShape>({
 });
 
 export const ReportProvider = ({ children }: Props) => {
-  const [reportStatus, setReportStatus] = useState<string>("");
+  const [reportStatus, setReportStatus] = useState<
+    ReportStatusShape | undefined
+  >();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
   const [error, setError] = useState<string>();
 

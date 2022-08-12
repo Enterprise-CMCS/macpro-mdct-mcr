@@ -16,6 +16,7 @@ import { findRoute, hydrateFormFields, parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   CustomHtmlElement,
+  ReportStatus,
   SpreadsheetWidgetProps,
   UserRoles,
 } from "types";
@@ -52,7 +53,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
         key: reportKey,
         programName: programName,
       };
-      const reportStatus = "In Progress";
+      const reportStatus = ReportStatus.IN_PROGRESS;
       updateReportData(reportDetails, formData);
       updateReportStatus(reportDetails, reportStatus);
     }

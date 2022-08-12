@@ -19,7 +19,7 @@ const mockReportMethods = {
 
 const mockReportContext = {
   ...mockReportMethods,
-  reportStatus: "",
+  reportStatus: {},
   reportData: {},
   errorMessage: "",
 };
