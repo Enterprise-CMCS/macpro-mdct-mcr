@@ -17,38 +17,32 @@
             {
               "name": "bedr-1-o1",
               "type": "choice",
-              "label": "State Medicaid agency staff",
-              "value": "State Medicaid agency staff"
+              "label": "State Medicaid agency staff"
             },
             {
               "name": "bedr-1-o2",
               "type": "choice",
-              "label": "Other state agency staff",
-              "value": "Other state agency staff"
+              "label": "Other state agency staff"
             },
             {
               "name": "bedr-1-o3",
               "type": "choice",
-              "label": "State actuaries",
-              "value": "State actuaries"
+              "label": "State actuaries"
             },
             {
               "name": "bedr-1-o4",
               "type": "choice",
-              "label": "EQRO",
-              "value": "EQRO"
+              "label": "EQRO"
             },
             {
               "name": "bedr-1-o5",
               "type": "choice",
-              "label": "Other third-party vendor",
-              "value": "Other third-party vendor"
+              "label": "Other third-party vendor"
             },
             {
               "name": "bedr-1-o6",
               "type": "choice",
               "label": "Proprietary system(s)",
-              "value": "Proprietary system(s)",
               "children": [
                 {
                   "id": "bedr-2",
@@ -60,14 +54,12 @@
                       {
                         "name": "bedr-2-o1",
                         "type": "choice",
-                        "label": "Yes",
-                        "value": "Yes"
+                        "label": "Yes"
                       },
                       {
                         "name": "bedr-2-o2",
                         "type": "choice",
-                        "label": "No",
-                        "value": "No"
+                        "label": "No"
                       }
                     ]
                   }
@@ -78,7 +70,6 @@
               "name": "bedr-1-o7",
               "type": "choice",
               "label": "Other, specify",
-              "value": "Other, specify",
               "children": [
                 {
                   "id": "bedr-1-o7-text",
