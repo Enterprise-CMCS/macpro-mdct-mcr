@@ -20,8 +20,7 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { reportStatus, fetchReport, updateReport } =
-    useContext(ReportContext);
+  const { reportStatus, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user's state
