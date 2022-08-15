@@ -146,19 +146,19 @@ functions:
               paths:
                 state: true
                 reportId: true
-  writeReportData:
-    handler: handlers/reportData/write.writeReportData
-    events:
-      - http:
-          path: reportData/{state}/{reportId}
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                reportId: true
+  # writeReportData:
+  #   handler: handlers/reportData/write.writeReportData
+  #   events:
+  #     - http:
+  #         path: reportData/{state}/{reportId}
+  #         method: post
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         request:
+  #           parameters:
+  #             paths:
+  #               state: true
+  #               reportId: true
   getReport:
     handler: handlers/reports/get.getReport
     events:
@@ -184,19 +184,19 @@ functions:
             parameters:
               paths:
                 state: true
-  writeReport:
-    handler: handlers/reports/write.writeReport
-    events:
-      - http:
-          path: reports/{state}/{reportId}
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                reportId: true
+  # writeReport:
+  #   handler: handlers/reports/write.writeReport
+  #   events:
+  #     - http:
+  #         path: reports/{state}/{reportId}
+  #         method: post
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         request:
+  #           parameters:
+  #             paths:
+  #               state: true
+  #               reportId: true
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:
