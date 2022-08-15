@@ -115,8 +115,8 @@ export const mockBannerDataEmpty = {
 };
 
 export const mockReportDetails = {
-  key: "AB2022",
-  programName: "testProgram",
+  state: "AB",
+  reportId: "testReportId",
 };
 
 export const mockReportData = {

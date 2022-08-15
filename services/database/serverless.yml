@@ -21,8 +21,8 @@ custom:
       - val
       - production
   bannerTableName: ${self:custom.stage}-banners
-  reportTableName: ${self:custom.stage}-reports
-  reportStatusTableName: ${self:custom.stage}-reports-status
+  reportDataTableName: ${self:custom.stage}-mcpar-reports-data
+  reportTableName: ${self:custom.stage}-mcpar-reports
   dynamodb:
     stages:
       - local
@@ -53,6 +53,25 @@ resources:
           - AttributeName: key
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    ReportDataTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.reportDataTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: state
+            AttributeType: S
+          - AttributeName: reportId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: state
+            KeyType: HASH
+          - AttributeName: reportId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     ReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -62,33 +81,14 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: key
+          - AttributeName: state
             AttributeType: S
-          - AttributeName: programName
-            AttributeType: S
-        KeySchema:
-          - AttributeName: key
-            KeyType: HASH
-          - AttributeName: programName
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    ReportStatusTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.reportStatusTableName}
-        PointInTimeRecoverySpecification:
-          PointInTimeRecoveryEnabled: true
-        StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
-        AttributeDefinitions:
-          - AttributeName: key
-            AttributeType: S
-          - AttributeName: programName
+          - AttributeName: reportId
             AttributeType: S
         KeySchema:
-          - AttributeName: key
+          - AttributeName: state
             KeyType: HASH
-          - AttributeName: programName
+          - AttributeName: reportId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
@@ -98,17 +98,17 @@ resources:
       Value: !GetAtt BannerTable.Arn
     BannerTableStreamArn:
       Value: !GetAtt BannerTable.StreamArn
+    ReportDataTableName:
+      Value: !Ref ReportDataTable
+    ReportDataTableArn:
+      Value: !GetAtt ReportDataTable.Arn
+    ReportDataTableStreamArn:
+      Value: !GetAtt ReportDataTable.StreamArn
     ReportTableName:
       Value: !Ref ReportTable
     ReportTableArn:
       Value: !GetAtt ReportTable.Arn
     ReportTableStreamArn:
       Value: !GetAtt ReportTable.StreamArn
-    ReportStatusTableName:
-      Value: !Ref ReportStatusTable
-    ReportStatusTableArn:
-      Value: !GetAtt ReportStatusTable.Arn
-    ReportStatusTableStreamArn:
-      Value: !GetAtt ReportStatusTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}

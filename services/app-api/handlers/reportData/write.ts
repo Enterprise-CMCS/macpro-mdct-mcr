@@ -1,5 +1,5 @@
 import handler from "../handler-lib";
-import { getReport } from "./get";
+import { getReportData } from "./get";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
@@ -8,7 +8,7 @@ import {
 } from "../../utils/constants/constants";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
-export const writeReport = handler(async (event, context) => {
+export const writeReportData = handler(async (event, context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
@@ -20,43 +20,39 @@ export const writeReport = handler(async (event, context) => {
   ) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
-
-  const { body } = event;
+  const body = JSON.parse(event!.body!);
   const state: string = event.pathParameters.state;
   const reportId: string = event.pathParameters.reportId;
 
-  let statusParams = {
-    TableName: process.env.REPORT_TABLE_NAME!,
+  let reportParams = {
+    TableName: process.env.REPORT_DATA_TABLE_NAME!,
     Item: {
       state: state,
       reportId: reportId,
-      createdAt: Date.now(),
-      lastAltered: Date.now(),
-      lastAlteredBy: event?.headers["cognito-identity-id"],
-      status: body,
+      reportData: body,
     },
   };
-  const getCurrentReport = await getReport(event, context);
+  const getCurrentReport = await getReportData(event, context);
   if (getCurrentReport.body) {
     const currentBody = JSON.parse(getCurrentReport.body);
-    if (currentBody.createdAt) {
-      statusParams = {
-        TableName: process.env.REPORT_TABLE_NAME!,
+    if (currentBody) {
+      const newReport = {
+        ...currentBody.reportData,
+        ...body,
+      };
+      reportParams = {
+        TableName: process.env.REPORT_DATA_TABLE_NAME!,
         Item: {
           state: state,
           reportId: reportId,
-          createdAt: currentBody.createdAt,
-          lastAltered: Date.now(),
-          lastAlteredBy: event?.headers["cognito-identity-id"],
-          status: body,
+          reportData: { ...newReport },
         },
       };
     }
   }
-
-  await dynamoDb.put(statusParams);
+  await dynamoDb.put(reportParams);
   return {
     status: StatusCodes.SUCCESS,
-    body: { ...statusParams.Item },
+    body: { ...reportParams.Item },
   };
 });
