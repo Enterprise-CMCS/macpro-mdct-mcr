@@ -52,8 +52,8 @@ export interface ReportDataShape {
 }
 
 export interface ReportDetails {
-  key: string;
-  programName: string;
+  state: string;
+  reportId: string;
 }
 
 export interface ReportStatusShape {
@@ -62,8 +62,8 @@ export interface ReportStatusShape {
 export interface ReportContextMethods {
   fetchReportData: Function;
   updateReportData: Function;
-  fetchReportStatus: Function;
-  updateReportStatus: Function;
+  fetchReport: Function;
+  updateReport: Function;
 }
 
 export interface ReportContextShape

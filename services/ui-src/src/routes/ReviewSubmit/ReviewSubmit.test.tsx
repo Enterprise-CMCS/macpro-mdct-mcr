@@ -16,14 +16,15 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 const mockReportMethods = {
   fetchReportData: jest.fn(() => {}),
   updateReportData: jest.fn(() => {}),
-  fetchReportStatus: jest.fn(() => {}),
-  updateReportStatus: jest.fn(() => {}),
+  fetchReport: jest.fn(() => {}),
+  fetchReportsByState: jest.fn(() => {}),
+  updateReport: jest.fn(() => {}),
 };
 
 const mockReportInitialContext = {
   ...mockReportMethods,
-  reportStatus: {},
   reportData: {},
+  reportState: "",
   errorMessage: "",
 };
 
@@ -31,8 +32,8 @@ const mockReportCompletedContext = {
   ...mockReportMethods,
   reportStatus: {
     createdAt: 1660283173744,
-    key: "CA2022",
-    programName: "tempName",
+    state: "CA",
+    reportId: "tempName",
     lastAltered: 1660283571013,
     status: ReportStatus.SUBMITTED,
   },
@@ -94,7 +95,7 @@ describe("Test /mcpar/review-and-submit view", () => {
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
-    await expect(mockReportMethods.updateReportStatus).toHaveBeenCalledTimes(1);
+    await expect(mockReportMethods.updateReport).toHaveBeenCalledTimes(1);
   });
 });
 
