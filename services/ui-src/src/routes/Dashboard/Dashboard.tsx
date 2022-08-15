@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 // components
 import {
   Box,
@@ -9,21 +9,45 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
-import { BasicPage, Modal, Table } from "components";
+import { BasicPage, Form, Modal, Table } from "components";
+// data
+import formJson from "forms/mcpar/dash/dashForm.json";
+import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 
 export const Dashboard = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { returnLink, intro, body, addProgramModal } = verbiage;
-  const tableContent = {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [programs, setPrograms] = useState<Array<Array<string>>>([]);
+  const [tableContent, setTableContent] = useState({
     caption: body.table.caption,
     headRow: body.table.headRow,
-    bodyRows: [[]],
-  };
+    bodyRows: programs,
+  });
 
-  const addProgram = () => {
-    alert("Hello there");
+  useEffect(() => {
+    setTableContent({ ...tableContent, bodyRows: programs });
+  }, [programs]);
+
+  const addProgram = async (formData: any) => {
+    const newBannerData = {
+      key: formJson.id,
+      title: formData["dash-title"],
+      startDate: formData["dash-startDate"],
+      endDate: formData["dash-endDate"],
+    };
+    setPrograms([
+      ...programs,
+      [
+        newBannerData.title,
+        newBannerData.startDate ? newBannerData.startDate : "",
+        newBannerData.endDate ? newBannerData.endDate : "",
+        "-",
+        "-",
+      ],
+    ]);
+    onClose();
   };
 
   return (
@@ -50,7 +74,9 @@ export const Dashboard = () => {
 
       <Box>
         <Table content={tableContent} sxOverride={sx.table} />
-        <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
+        {programs.length == 0 && (
+          <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
+        )}
         <Box sx={sx.callToActionContainer}>
           <Button type="submit" onClick={onOpen as MouseEventHandler}>
             {body.callToAction}
@@ -58,13 +84,21 @@ export const Dashboard = () => {
         </Box>
       </Box>
       <Modal
-        actionFunction={() => addProgram()}
+        actionFunction={addProgram}
+        actionId={formJson.id}
         modalState={{
           isOpen,
           onClose,
         }}
         content={addProgramModal.structure}
-      />
+      >
+        <Form
+          id={formJson.id}
+          formJson={formJson}
+          formSchema={formSchema}
+          onSubmit={addProgram}
+        />
+      </Modal>
     </BasicPage>
   );
 };
@@ -101,6 +135,7 @@ const sx = {
     fontWeight: "bold",
   },
   table: {
+    marginBottom: "2.5rem",
     tr: {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
@@ -112,10 +147,11 @@ const sx = {
   },
   emptyTableContainer: {
     maxWidth: "75%",
-    margin: "2.5rem auto",
+    margin: "0 auto",
     textAlign: "center",
   },
   callToActionContainer: {
+    marginTop: "2.5rem",
     textAlign: "center",
   },
 };
