@@ -84,7 +84,7 @@ describe("Test /mcpar/review-and-submit view", () => {
     const { modal, pageLink } = review;
     const submitCheckButton = screen.getByText(pageLink.text)!;
     await userEvent.click(submitCheckButton);
-    const modalTitle = screen.getByText(modal.heading)!;
+    const modalTitle = screen.getByText(modal.structure.heading)!;
     expect(modalTitle).toBeVisible();
   });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactChild } from "react";
 
 // components
 import {
@@ -11,12 +11,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
 import { makeMediaQueryClasses } from "utils";
 
-export const Modal = ({ actionFunction, content, modalState }: Props) => {
+export const Modal = ({
+  actionFunction,
+  children,
+  content,
+  modalState,
+}: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <ChakraModal isOpen={modalState.isOpen} onClose={modalState.onClose}>
@@ -37,9 +41,7 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
             Close
           </Button>
         </Flex>
-        <ModalBody sx={sx.modalBody}>
-          <Text>{content.body}</Text>
-        </ModalBody>
+        <ModalBody sx={sx.modalBody}>{children}</ModalBody>
 
         <ModalFooter sx={sx.modalFooter}>
           <Button
@@ -70,9 +72,9 @@ interface Props {
     isOpen: boolean;
     onClose: any;
   };
+  children?: ReactChild | ReactChild[];
   content: {
     heading: string;
-    body: string;
     actionButtonText: string;
     closeButtonText: string;
   };

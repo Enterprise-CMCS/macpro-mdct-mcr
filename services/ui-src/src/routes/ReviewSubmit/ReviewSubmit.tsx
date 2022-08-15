@@ -105,8 +105,10 @@ const ReadyToSubmit = ({
           isOpen,
           onClose,
         }}
-        content={modal}
-      />
+        content={modal.structure}
+      >
+        <Text>{modal.body}</Text>
+      </Modal>
     </Flex>
   );
 };
