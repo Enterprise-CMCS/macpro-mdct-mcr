@@ -8,10 +8,11 @@ import {
   ReportStatusShape,
 } from "types";
 import {
+  getReportData,
+  writeReportData,
   getReport,
+  getReportsByState,
   writeReport,
-  getReportStatus,
-  writeReportStatus,
 } from "utils";
 // verbiage
 import { reportErrors } from "verbiage/errors";
@@ -21,8 +22,8 @@ export const ReportContext = createContext<ReportContextShape>({
   reportData: undefined as AnyObject | undefined,
   fetchReportData: Function,
   updateReportData: Function,
-  fetchReportStatus: Function,
-  updateReportStatus: Function,
+  fetchReport: Function,
+  updateReport: Function,
   errorMessage: undefined,
 });
 
@@ -35,7 +36,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
-      const result = await getReport(reportDetails);
+      const result = await getReportData(reportDetails);
       setReportData(result.reportData);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_DATA_FAILED);
@@ -47,29 +48,38 @@ export const ReportProvider = ({ children }: Props) => {
     reportData: ReportDataShape
   ) => {
     try {
-      await writeReport(reportDetails, reportData);
+      await writeReportData(reportDetails, reportData);
       await fetchReportData(reportDetails);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_DATA_FAILED);
     }
   };
 
-  const fetchReportStatus = async (reportDetails: ReportDetails) => {
+  const fetchReport = async (reportDetails: ReportDetails) => {
     try {
-      const result = await getReportStatus(reportDetails);
+      const result = await getReport(reportDetails);
       setReportStatus(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_STATUS_FAILED);
     }
   };
 
-  const updateReportStatus = async (
+  const fetchReportsByState = async (state: string) => {
+    try {
+      const result = await getReportsByState(state);
+      return result;
+    } catch (e: any) {
+      setError(reportErrors.GET_REPORT_STATUS_FAILED);
+    }
+  };
+
+  const updateReport = async (
     reportDetails: ReportDetails,
     reportStatus: string
   ) => {
     try {
-      await writeReportStatus(reportDetails, reportStatus);
-      await fetchReportStatus(reportDetails);
+      await writeReport(reportDetails, reportStatus);
+      await fetchReport(reportDetails);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_STATUS_FAILED);
     }
@@ -81,8 +91,9 @@ export const ReportProvider = ({ children }: Props) => {
       reportData,
       fetchReportData,
       updateReportData,
-      fetchReportStatus,
-      updateReportStatus,
+      fetchReport,
+      fetchReportsByState,
+      updateReport,
       errorMessage: error,
     }),
     [reportData, reportStatus, error]

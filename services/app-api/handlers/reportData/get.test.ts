@@ -1,4 +1,4 @@
-import { getReportStatus } from "./get";
+import { getReportData } from "./get";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -7,14 +7,20 @@ import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
   default: {
-    get: jest.fn().mockReturnValue({
-      Item: {
-        createdAt: 1654198665696,
-        lastAltered: 1654198665696,
-        lastAlteredBy: "testUser",
-        key: "AB2022",
-        programName: "testProgram",
-      },
+    query: jest.fn().mockReturnValue({
+      Items: [
+        {
+          state: "AB",
+          reportId: "testReportId",
+          reportData: {
+            field1: "value1",
+            field2: "value2",
+            num1: 0,
+            num2: 1,
+            array: ["array1, array2"],
+          },
+        },
+      ],
     }),
   },
 }));
@@ -32,20 +38,21 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { stateYear: "AB2022", programName: "testProgram" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
-describe("Test getReportStatus API method", () => {
+describe("Test getReportData API method", () => {
   beforeEach(() => {
-    process.env["REPORT_STATUS_TABLE_NAME"] = "fakeReportStatusTable";
+    process.env["REPORT_DATA_TABLE_NAME"] = "fakeReportDataTable";
   });
 
-  test("Test Successful Report status Fetch", async () => {
-    const res = await getReportStatus(testEvent, null);
+  test("Test Successful Report Fetch", async () => {
+    const res = await getReportData(testEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.lastAlteredBy).toContain("testUser");
+    expect(body.reportData.field1).toContain("value1");
+    expect(body.reportData.num1).toBeCloseTo(0);
   });
 
   test("Test reportKey not provided throws 500 error", async () => {
@@ -53,7 +60,7 @@ describe("Test getReportStatus API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await getReportStatus(noKeyEvent, null);
+    const res = await getReportData(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
@@ -62,9 +69,9 @@ describe("Test getReportStatus API method", () => {
   test("Test reportKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      pathParameters: { stateYear: "", programName: "" },
+      pathParameters: { state: "", reportId: "" },
     };
-    const res = await getReportStatus(noKeyEvent, null);
+    const res = await getReportData(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
