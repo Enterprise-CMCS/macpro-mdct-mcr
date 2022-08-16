@@ -20,10 +20,12 @@ import { reportErrors } from "verbiage/errors";
 export const ReportContext = createContext<ReportContextShape>({
   reportStatus: undefined as AnyObject | undefined,
   reportData: undefined as AnyObject | undefined,
+  reportsByState: undefined as AnyObject | undefined,
   fetchReportData: Function,
   updateReportData: Function,
   fetchReport: Function,
   updateReport: Function,
+  fetchReportsByState: Function,
   errorMessage: undefined,
 });
 
@@ -32,6 +34,7 @@ export const ReportProvider = ({ children }: Props) => {
     ReportStatusShape | undefined
   >();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
+  const [reportsByState, setReportsByState] = useState<any>();
   const [error, setError] = useState<string>();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
@@ -67,7 +70,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportsByState = async (state: string) => {
     try {
       const result = await getReportsByState(state);
-      return result;
+      setReportsByState(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_STATUS_FAILED);
     }
@@ -89,6 +92,7 @@ export const ReportProvider = ({ children }: Props) => {
     () => ({
       reportStatus,
       reportData,
+      reportsByState,
       fetchReportData,
       updateReportData,
       fetchReport,

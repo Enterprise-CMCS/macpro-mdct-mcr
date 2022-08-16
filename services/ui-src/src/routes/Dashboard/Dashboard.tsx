@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useContext, useEffect, useState } from "react";
 // components
 import {
   Box,
@@ -12,8 +12,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
-import { BasicPage, Form, Modal } from "components";
-import { cacluateDueDate } from "utils";
+import { BasicPage, Form, Modal, ReportContext } from "components";
+import { cacluateDueDate, useUser } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
@@ -26,6 +26,7 @@ import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
     verbiage;
+  const { reportsByState, fetchReportsByState } = useContext(ReportContext);
   const {
     isOpen: addProgramIsOpen,
     onOpen: onOpenAddProgram,
@@ -41,6 +42,14 @@ export const Dashboard = () => {
     caption: body.table.caption,
     headRow: body.table.headRow,
   };
+
+  // get user's state
+  const { user } = useUser();
+  const { state } = user ?? {};
+
+  useEffect(() => {
+    fetchReportsByState(state);
+  }, []);
 
   const askToDeleteProgram = async (program: any) => {
     // eslint-disable-next-line no-console
@@ -77,6 +86,7 @@ export const Dashboard = () => {
 
   return (
     <BasicPage sx={sx.layout}>
+      {"Reports by state"} {reportsByState}
       <Box>
         <Link href={returnLink.location} sx={sx.returnLink}>
           <ArrowIcon title="returnHome" direction={"left"} />
@@ -96,7 +106,6 @@ export const Dashboard = () => {
           </Link>
         </Text>
       </Box>
-
       <Box>
         <ActionTable content={tableContent} sxOverride={sx.table}>
           {programs.map((row: string[], index: number) => (
@@ -148,7 +157,6 @@ export const Dashboard = () => {
           onSubmit={addProgram}
         />
       </Modal>
-
       <Modal
         actionFunction={deleteProgram}
         modalState={{
