@@ -24,17 +24,33 @@ import { ActionTable } from "components/tables/ActionTable";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Dashboard = () => {
-  const { returnLink, intro, body, addProgramModal } = verbiage;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
+    verbiage;
+  const {
+    isOpen: addProgramIsOpen,
+    onOpen: onOpenAddProgram,
+    onClose: onCloseAddProgram,
+  } = useDisclosure();
+  const {
+    isOpen: deleteProgramIsOpen,
+    onOpen: onOpenDeleteProgram,
+    onClose: onCloseDeleteProgram,
+  } = useDisclosure();
   const [programs, setPrograms] = useState<Array<Array<any>>>([]);
   const tableContent = {
     caption: body.table.caption,
     headRow: body.table.headRow,
   };
 
-  const deleteProgram = async (program: any) => {
+  const askToDeleteProgram = async (program: any) => {
     // eslint-disable-next-line no-console
     console.log("deleteProgram", program);
+    deleteProgramModal.structure.heading += " " + program[0] + "?";
+    onOpenDeleteProgram();
+  };
+
+  const deleteProgram = async () => {
+    alert("Hello There");
   };
 
   const addProgram = async (formData: any) => {
@@ -51,7 +67,12 @@ export const Dashboard = () => {
         ? newProgramData.contractPeriod
         : cacluateDueDate(newProgramData.endDate);
     setPrograms([...programs, [newProgramData.title, dueDate, "-", "-"]]);
-    onClose();
+    onCloseAddProgram();
+  };
+
+  const startProgram = (program: any) => {
+    // eslint-disable-next-line no-console
+    console.log(program);
   };
 
   return (
@@ -85,8 +106,13 @@ export const Dashboard = () => {
               {row.map((cell: string, index: number) => (
                 <Td key={index}>{cell}</Td>
               ))}
-              <Button variant={"outline"}>Start report</Button>
-              <button onClick={() => deleteProgram(programs[index])}>
+              <Button
+                variant={"outline"}
+                onClick={() => startProgram(programs[index])}
+              >
+                Start report
+              </Button>
+              <button onClick={() => askToDeleteProgram(programs[index])}>
                 <Image
                   src={cancelIcon}
                   alt="Delete Program"
@@ -101,7 +127,7 @@ export const Dashboard = () => {
           <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
         )}
         <Box sx={sx.callToActionContainer}>
-          <Button type="submit" onClick={onOpen as MouseEventHandler}>
+          <Button type="submit" onClick={onOpenAddProgram as MouseEventHandler}>
             {body.callToAction}
           </Button>
         </Box>
@@ -110,8 +136,8 @@ export const Dashboard = () => {
         actionFunction={addProgram}
         actionId={formJson.id}
         modalState={{
-          isOpen,
-          onClose,
+          isOpen: addProgramIsOpen,
+          onClose: onCloseAddProgram,
         }}
         content={addProgramModal.structure}
       >
@@ -121,6 +147,17 @@ export const Dashboard = () => {
           formSchema={formSchema}
           onSubmit={addProgram}
         />
+      </Modal>
+
+      <Modal
+        actionFunction={deleteProgram}
+        modalState={{
+          isOpen: deleteProgramIsOpen,
+          onClose: onCloseDeleteProgram,
+        }}
+        content={deleteProgramModal.structure}
+      >
+        <Text>{deleteProgramModal.body}</Text>
       </Modal>
     </BasicPage>
   );

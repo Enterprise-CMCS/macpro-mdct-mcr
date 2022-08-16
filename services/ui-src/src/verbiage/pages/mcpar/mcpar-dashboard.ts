@@ -34,4 +34,12 @@ export default {
     },
     body: "",
   },
+  deleteProgramModal: {
+    structure: {
+      heading: "Delete",
+      actionButtonText: "Yes, delete program",
+      closeButtonText: "Cancel",
+    },
+    body: "You will lose all information entered for this program. Are you sure you want to proceed?",
+  },
 };
