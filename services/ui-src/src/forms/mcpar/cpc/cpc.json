@@ -20,7 +20,7 @@
         }
       },
       {
-        "id": "cpc-1-b",
+        "id": "cpc-1-sub",
         "type": "date",
         "props": {
           "noLabel": true
@@ -76,39 +76,39 @@
         }
       },
       {
-        "id": "cpc-4",
+        "id": "cpc-4a",
         "type": "checkbox",
         "props": {
           "label": "C1.I.4a Special program benefits",
           "hint": "Are any of the four special benefit types covered by the managed care program: (1) behavioral health, (2) long-term services and supports, (3) dental, and (4) transportation, or (5) none of the above? Select one or more.</br>Only list the benefit type if it is a covered service as specified in a contract between the state and managed care plans participating in the program. Benefits available to eligible program enrollees via fee-for-service should not be listed here.",
           "choices": [
             {
-              "name": "cpc-4-o1",
+              "name": "cpc-4a-o1",
               "type": "choice",
               "label": "Behavioral health"
             },
             {
-              "name": "cpc-4-o2",
+              "name": "cpc-4a-o2",
               "type": "choice",
               "label": "Long-term services and supports"
             },
             {
-              "name": "cpc-4-o3",
+              "name": "cpc-4a-o3",
               "type": "choice",
               "label": "Dental"
             },
             {
-              "name": "cpc-4-o4",
+              "name": "cpc-4a-o4",
               "type": "choice",
               "label": "Transportation"
             },
             {
-              "name": "cpc-4-o5",
+              "name": "cpc-4a-o5",
               "type": "choice",
               "label": "None of the above",
               "children": [
                 {
-                  "id": "cpc-4-o5-text",
+                  "id": "cpc-4a-o5-text",
                   "type": "textarea"
                 }
               ]
@@ -117,7 +117,7 @@
         }
       },
       {
-        "id": "cpc-5",
+        "id": "cpc-4b",
         "type": "textarea",
         "props": {
           "label": "C1.I.4b Variation in special benefits",
@@ -125,15 +125,16 @@
         }
       },
       {
-        "id": "cpc-6",
+        "id": "cpc-5",
         "type": "number",
         "props": {
           "label": "C1.I.5 Program enrollment",
-          "hint": "Enter the total number of individuals enrolled in the managed care program as of the first day of the last month of the reporting year."
+          "hint": "Enter the total number of individuals enrolled in the managed care program as of the first day of the last month of the reporting year.",
+          "mask": "comma-separated"
         }
       },
       {
-        "id": "cpc-7",
+        "id": "cpc-6",
         "type": "textarea",
         "props": {
           "label": "C1.I.6 Changes to enrollment or benefits",
