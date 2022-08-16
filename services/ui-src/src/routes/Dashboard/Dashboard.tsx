@@ -1,35 +1,41 @@
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, useState } from "react";
 // components
 import {
   Box,
   Button,
   Heading,
+  Image,
   Link,
+  Td,
   Text,
+  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
-import { BasicPage, Form, Modal, Table } from "components";
+import { BasicPage, Form, Modal } from "components";
 import { cacluateDueDate } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import { ActionTable } from "components/tables/ActionTable";
+// assets
+import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal } = verbiage;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [programs, setPrograms] = useState<Array<Array<any>>>([]);
-  const [tableContent, setTableContent] = useState({
+  const tableContent = {
     caption: body.table.caption,
     headRow: body.table.headRow,
-    bodyRows: programs,
-  });
+  };
 
-  useEffect(() => {
-    setTableContent({ ...tableContent, bodyRows: programs });
-  }, [programs]);
+  const deleteProgram = async (program: any) => {
+    // eslint-disable-next-line no-console
+    console.log("deleteProgram", program);
+  };
 
   const addProgram = async (formData: any) => {
     const newProgramData = {
@@ -44,7 +50,7 @@ export const Dashboard = () => {
       newProgramData.contractPeriod !== "other"
         ? newProgramData.contractPeriod
         : cacluateDueDate(newProgramData.endDate);
-    setPrograms([...programs, [newProgramData.title, dueDate, "-", "-", "-"]]);
+    setPrograms([...programs, [newProgramData.title, dueDate, "-", "-"]]);
     onClose();
   };
 
@@ -71,7 +77,26 @@ export const Dashboard = () => {
       </Box>
 
       <Box>
-        <Table content={tableContent} sxOverride={sx.table} />
+        <ActionTable content={tableContent} sxOverride={sx.table}>
+          {programs.map((row: string[], index: number) => (
+            // Row
+            <Tr key={index}>
+              {/* Row Cells */}
+              {row.map((cell: string, index: number) => (
+                <Td key={index}>{cell}</Td>
+              ))}
+              <Button variant={"outline"}>Start report</Button>
+              <button onClick={() => deleteProgram(programs[index])}>
+                <Image
+                  src={cancelIcon}
+                  alt="Delete Program"
+                  sx={sx.deleteProgram}
+                />
+              </button>
+              ,
+            </Tr>
+          ))}
+        </ActionTable>
         {programs.length == 0 && (
           <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
         )}
