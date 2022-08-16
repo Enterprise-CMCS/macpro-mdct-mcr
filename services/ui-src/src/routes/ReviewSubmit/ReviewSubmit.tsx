@@ -31,7 +31,7 @@ export const ReviewSubmit = () => {
   const programName = "tempName";
 
   const reportDetails = {
-    key: state,
+    state: state,
     reportId: programName,
   };
 
