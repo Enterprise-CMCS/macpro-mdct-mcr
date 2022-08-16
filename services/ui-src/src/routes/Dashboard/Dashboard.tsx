@@ -3,7 +3,9 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Flex,
   Heading,
+  Image,
   Link,
   Text,
   useDisclosure,
@@ -15,11 +17,13 @@ import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+// assets
+import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal } = verbiage;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [programs, setPrograms] = useState<Array<Array<string>>>([]);
+  const [programs, setPrograms] = useState<Array<Array<any>>>([]);
   const [tableContent, setTableContent] = useState({
     caption: body.table.caption,
     headRow: body.table.headRow,
@@ -30,8 +34,13 @@ export const Dashboard = () => {
     setTableContent({ ...tableContent, bodyRows: programs });
   }, [programs]);
 
+  const deleteProgram = (id: string) => {
+    // eslint-disable-next-line no-console
+    console.log(id);
+  };
+
   const addProgram = async (formData: any) => {
-    const newBannerData = {
+    const newProgramData = {
       key: formJson.id,
       title: formData["dash-title"],
       startDate: formData["dash-startDate"],
@@ -40,11 +49,20 @@ export const Dashboard = () => {
     setPrograms([
       ...programs,
       [
-        newBannerData.title,
-        newBannerData.startDate ? newBannerData.startDate : "",
-        newBannerData.endDate ? newBannerData.endDate : "",
+        newProgramData.title,
+        newProgramData.startDate,
         "-",
         "-",
+        <Flex>
+          <Button variant={"outline"}>Start report</Button>
+          <button onClick={() => deleteProgram(newProgramData.key)}>
+            <Image
+              src={cancelIcon}
+              alt="Delete Program"
+              sx={sx.deleteProgram}
+            />
+          </button>
+        </Flex>,
       ],
     ]);
     onClose();
@@ -144,6 +162,10 @@ const sx = {
       color: "palette.gray_medium",
       fontWeight: "bold",
     },
+  },
+  deleteProgram: {
+    height: "1.75rem",
+    marginLeft: "1rem",
   },
   emptyTableContainer: {
     maxWidth: "75%",
