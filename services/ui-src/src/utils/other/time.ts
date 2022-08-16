@@ -65,9 +65,12 @@ export const formatDateUtcToEt = (date: number): string => {
  * returns -> User Timezone date in format Day of Week, Month Day, Year
  * Ex: Friday, August 12, 2022
  */
-export const utcDateToReadableDate = (date: number) => {
+export const utcDateToReadableDate = (
+  date: number,
+  style?: "full" | "long" | "medium" | "short"
+) => {
   return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "full",
+    dateStyle: style,
   }).format(date);
 };
 
@@ -98,4 +101,14 @@ export const checkDateRangeStatus = (
 ): boolean => {
   const currentTime = new Date().valueOf();
   return currentTime >= startDate && currentTime <= endDate;
+};
+
+/*
+ * Takes a date and adds 180 days to it
+ * Ex: 6/30/22 Becomes 12/27/2022)
+ */
+export const cacluateDueDate = (date: string) => {
+  const givenDate = new Date(date);
+  const dueDate = givenDate.setDate(givenDate.getDate() + 180);
+  return utcDateToReadableDate(dueDate, "short");
 };

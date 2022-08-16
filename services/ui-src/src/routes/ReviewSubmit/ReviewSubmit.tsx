@@ -125,7 +125,7 @@ export const SuccessMessage = ({
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
-  const readableDate = utcDateToReadableDate(date);
+  const readableDate = utcDateToReadableDate(date, "full");
   const submittedDate = `was submitted on ${readableDate}`;
   const submittersName = ` by ${givenName} ${familyName}`;
   return (
