@@ -182,7 +182,7 @@ const sx = {
   },
   footerBottom: {
     minHeight: "3rem",
-    bg: "palette.main_darkest",
+    bg: "palette.primary_darkest",
     fontSize: 14,
   },
   footerBottomContainer: {
@@ -208,7 +208,6 @@ const sx = {
     },
   },
   link: {
-    textDecoration: "underline !important",
     margin: "0.5rem 0",
     "&.mobile": {
       margin: "0.25rem 0",

@@ -8,6 +8,7 @@ jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     register: () => {},
     setValue: () => {},
+    getValues: () => {},
   }),
 }));
 
@@ -39,20 +40,9 @@ describe("Test ChoiceList component", () => {
       ".ds-c-choice-wrapper"
     );
     const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
-    const secondCheckbox = checkboxContainers[1]
-      .children[0] as HTMLInputElement;
     expect(firstCheckbox.checked).toBe(false);
-    expect(secondCheckbox.checked).toBe(false);
     await userEvent.click(firstCheckbox);
     expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(false);
-    await userEvent.click(secondCheckbox);
-    expect(firstCheckbox.checked).toBe(true);
-    expect(secondCheckbox.checked).toBe(true);
-    await userEvent.click(firstCheckbox);
-    await userEvent.click(secondCheckbox);
-    expect(firstCheckbox.checked).toBe(false);
-    expect(secondCheckbox.checked).toBe(false);
   });
 });
 

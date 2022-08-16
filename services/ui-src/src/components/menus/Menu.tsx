@@ -35,7 +35,7 @@ export const Menu = ({ handleLogout }: Props) => {
         </MenuButton>
       </Box>
       <MenuList sx={sx.menuList} data-testid="header-menu-options-list">
-        <Link as={RouterLink} to="/profile">
+        <Link as={RouterLink} to="/profile" variant="unstyled">
           <MenuItem
             sx={sx.menuItem}
             data-testid="header-menu-option-manage-account"
@@ -69,7 +69,7 @@ const sx = {
     background: "none",
     color: "palette.white",
     fontWeight: "bold",
-    _hover: { color: "palette.alt_light" },
+    _hover: { color: "palette.secondary_light" },
     _active: { background: "none" },
     _focus: {
       boxShadow: "none",
@@ -85,11 +85,12 @@ const sx = {
   menuList: {
     padding: "0",
     border: "none",
-    background: "palette.main_darkest",
+    background: "palette.primary_darkest",
     boxShadow: "0px 5px 16px rgba(0, 0, 0, 0.14)",
   },
   menuItem: {
     borderRadius: ".375rem",
-    _focus: { background: "palette.main_darker" },
+    _focus: { background: "palette.primary_darker" },
+    _hover: { background: "palette.primary_darker" },
   },
 };

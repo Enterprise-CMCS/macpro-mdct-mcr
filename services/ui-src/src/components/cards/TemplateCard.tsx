@@ -55,12 +55,12 @@ export const TemplateCard = ({
 
           <Flex className={mqClasses} sx={sx.actionsFlex}>
             <Button
-              className={mqClasses}
+              variant="link"
               sx={sx.templateDownloadButton}
+              className={mqClasses}
               leftIcon={
                 <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
               }
-              variant="link"
               isDisabled={isDisabled}
               onClick={async () => {
                 await downloadTemplate(templateName);
@@ -68,11 +68,10 @@ export const TemplateCard = ({
             >
               {verbiage.downloadText}
             </Button>
-
             {showFormLink && (
               <Button
-                className={mqClasses}
                 sx={sx.formLink}
+                className={mqClasses}
                 onClick={() => navigate(verbiage.link.route)}
                 rightIcon={
                   <Image src={nextIcon} alt="Link Icon" height="1rem" />
@@ -82,7 +81,6 @@ export const TemplateCard = ({
               </Button>
             )}
           </Flex>
-
           <TemplateCardAccordion verbiage={verbiage.accordion} />
         </Flex>
       </Flex>
@@ -116,49 +114,30 @@ const sx = {
     lineHeight: "1.5",
   },
   actionsFlex: {
-    justifyContent: "space-between",
     flexFlow: "wrap",
+    justifyContent: "space-between",
+    marginTop: "1rem",
     "&.mobile": {
       flexDirection: "column",
     },
   },
   templateDownloadButton: {
     justifyContent: "start",
-    marginTop: "1rem",
     marginRight: "1rem",
     padding: "0",
-    borderRadius: "0.25rem",
-    fontWeight: "bold",
-    color: "palette.main",
-    textDecoration: "underline",
     span: {
       marginLeft: "0rem",
       marginRight: "0.5rem",
     },
-    _hover: {
-      textDecoration: "none",
-    },
     "&.mobile": {
-      fontSize: "sm",
       marginRight: "0",
     },
   },
   formLink: {
     justifyContent: "start",
-    marginTop: "1rem",
-    borderRadius: "0.25rem",
-    background: "palette.main",
-    fontWeight: "bold",
-    color: "palette.white",
     span: {
       marginLeft: "0.5rem",
       marginRight: "-0.25rem",
-    },
-    _hover: {
-      background: "palette.main_darker",
-    },
-    "&.mobile": {
-      fontSize: "sm",
     },
   },
 };

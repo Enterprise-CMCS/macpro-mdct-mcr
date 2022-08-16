@@ -81,10 +81,16 @@ const sx = {
     flexDirection: "column",
   },
   appContainer: {
+    display: "flex",
     maxW: "appMax",
     flex: "1 0 auto",
     "&.desktop": {
       padding: "0 2rem",
+    },
+    "#main-content": {
+      section: {
+        flex: "1",
+      },
     },
   },
   loginContainer: {

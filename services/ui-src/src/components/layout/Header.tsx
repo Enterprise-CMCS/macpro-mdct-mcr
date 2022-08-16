@@ -13,6 +13,7 @@ import {
 import { Menu, MenuOption } from "components";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import { isMcparReportPage } from "forms/mcpar";
 // assets
 import appLogo from "assets/logos/logo_mcr_draft.png";
 
@@ -20,7 +21,6 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   const { pathname } = useLocation();
-  const isMcparReportPage = pathname.includes("/mcpar/");
   // TODO: Get current program name
   const currentProgramName = "Current Program Name";
 
@@ -32,13 +32,14 @@ export const Header = ({ handleLogout }: Props) => {
       <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer} className={mqClasses}>
           <Flex sx={sx.headerFlex}>
-            <Link as={RouterLink} to="/">
+            <Link as={RouterLink} to="/" variant="unstyled">
               <Image src={appLogo} alt="MCR logo" sx={sx.appLogo} />
             </Link>
             <Flex sx={sx.menuFlex}>
               <Link
                 as={RouterLink}
                 to="/help"
+                variant="unstyled"
                 aria-label="Get Help"
                 data-testid="header-help-button"
               >
@@ -54,7 +55,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isMcparReportPage && (
+      {isMcparReportPage(pathname) && (
         <Flex sx={sx.subnavBar}>
           <Container sx={sx.subnavContainer} className={mqClasses}>
             <Flex sx={sx.subnavFlex}>
@@ -69,13 +70,10 @@ export const Header = ({ handleLogout }: Props) => {
                     as={RouterLink}
                     to="/mcpar"
                     sx={sx.leaveFormLink}
+                    variant="unstyled"
                     tabIndex={-1}
                   >
-                    <Button
-                      sx={sx.subnavButton}
-                      variant="outline"
-                      data-testid="leave-form-button"
-                    >
+                    <Button variant="outline" data-testid="leave-form-button">
                       Leave form
                     </Button>
                   </Link>
@@ -112,7 +110,7 @@ const sx = {
   headerBar: {
     minHeight: "4rem",
     alignItems: "center",
-    bg: "palette.main_darkest",
+    bg: "palette.primary_darkest",
   },
   headerContainer: {
     maxW: "appMax",
@@ -131,7 +129,7 @@ const sx = {
     maxWidth: "200px",
   },
   subnavBar: {
-    bg: "palette.alt_lightest",
+    bg: "palette.secondary_lightest",
   },
   subnavContainer: {
     maxW: "appMax",
@@ -153,15 +151,5 @@ const sx = {
   },
   leaveFormLink: {
     marginLeft: "2rem",
-  },
-  subnavButton: {
-    color: "palette.main",
-    border: "1px solid",
-    borderColor: "palette.main",
-    borderRadius: "0.25rem",
-    "&:hover": {
-      bg: "palette.main",
-      color: "white",
-    },
   },
 };

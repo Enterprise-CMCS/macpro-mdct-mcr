@@ -1,9 +1,6 @@
-import { array, object, string } from "yup";
+import { object } from "yup";
+import { dynamic } from "utils/forms/schemas";
 
 export default object({
-  "aap-1": array()
-    .min(1)
-    .of(
-      string().required("Plan name is required").typeError("Invalid plan name")
-    ),
+  "aap-1": dynamic(),
 });

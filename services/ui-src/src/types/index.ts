@@ -41,6 +41,38 @@ export interface ReportPath {
   children?: ReportPath[];
 }
 
+export enum ReportStatus {
+  CREATED = "Created",
+  IN_PROGRESS = "In Progress",
+  SUBMITTED = "Submitted",
+}
+
+export interface ReportDataShape {
+  [key: string]: any;
+}
+
+export interface ReportDetails {
+  state: string;
+  reportId: string;
+}
+
+export interface ReportStatusShape {
+  [key: string]: any;
+}
+export interface ReportContextMethods {
+  fetchReportData: Function;
+  updateReportData: Function;
+  fetchReport: Function;
+  updateReport: Function;
+}
+
+export interface ReportContextShape
+  extends ReportDataShape,
+    ReportStatusShape,
+    ReportContextMethods {
+  errorMessage?: string;
+}
+
 // FORM
 
 export interface FormField {
@@ -57,6 +89,7 @@ export interface FieldChoice {
   type?: string;
   label: string;
   value: string;
+  checked?: boolean;
   children?: FormField[];
   checkedChildren?: React.ReactNode;
 }
@@ -151,4 +184,11 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
+}
+
+export interface SpreadsheetWidgetProps {
+  title: string;
+  descriptionList: string[];
+  additionalInfo?: string;
+  [key: string]: any;
 }

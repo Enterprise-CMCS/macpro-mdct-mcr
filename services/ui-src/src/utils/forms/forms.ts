@@ -10,7 +10,7 @@ import {
   TextAreaField,
 } from "components";
 // types
-import { AnyObject, FormField } from "types";
+import { AnyObject, FieldChoice, FormField } from "types";
 
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
@@ -24,9 +24,9 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     text: TextField,
     textarea: TextAreaField,
   };
+  fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    // return created element
     return React.createElement(componentFieldType, {
       key: field.id,
       name: field.id,
@@ -36,20 +36,55 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   });
 };
 
-export const hydrateFormFields = (formFields: FormField[], data: AnyObject) => {
-  // filter to only fields that need hydration
-  const fieldsToHydrate = formFields.filter(
-    (field: FormField) => !!field.hydrate
-  );
-
-  fieldsToHydrate.forEach((field: FormField) => {
-    // get index of field in form
+export const hydrateFormFields = (
+  formFields: FormField[],
+  reportData: AnyObject
+) => {
+  formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
-    // add value attribute with hydration value
-    const hydrationValue = data[field?.hydrate!] || "ERROR";
-    formFields[fieldFormIndex].props!.hydrate = hydrationValue;
+    const fieldProps = formFields[fieldFormIndex].props!;
+
+    // check for children on each choice in field props
+    if (fieldProps) {
+      const choices = fieldProps.choices;
+      if (choices) {
+        choices.forEach((choice: FieldChoice) => {
+          // if a choice has children, recurse
+          if (choice.children) {
+            hydrateFormFields(choice.children, reportData);
+          }
+        });
+      }
+    } else {
+      // if no props on field, initialize props as empty object
+      formFields[fieldFormIndex].props = {};
+    }
+
+    // if reportData has value for field, set props.hydrate
+    const fieldHydrationValue = reportData[field.id];
+    if (fieldHydrationValue) {
+      formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
+    }
   });
   return formFields;
+};
+
+// add data to choice fields in preparation for render
+export const initializeChoiceFields = (fields: FormField[]) => {
+  const fieldsWithChoices = fields.filter(
+    (field: FormField) => field.props?.choices
+  );
+  fieldsWithChoices.forEach((field: FormField) => {
+    field?.props?.choices.forEach((choice: FieldChoice) => {
+      // set choice value to choice label string
+      choice.value = choice.label;
+      // initialize choice as controlled component in unchecked state
+      if (choice.checked != true) choice.checked = false;
+      // if choice has children, recurse
+      if (choice.children) initializeChoiceFields(choice.children);
+    });
+  });
+  return fields;
 };
 
 export const sortFormErrors = (form: any, errors: any) => {

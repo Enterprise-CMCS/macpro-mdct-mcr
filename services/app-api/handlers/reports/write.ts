@@ -15,42 +15,48 @@ export const writeReport = handler(async (event, context) => {
       body: UNAUTHORIZED_MESSAGE,
     };
   } else if (
-    !event?.pathParameters?.stateYear! ||
-    !event?.pathParameters?.programName!
+    !event?.pathParameters?.state! ||
+    !event?.pathParameters?.reportId!
   ) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
-  const body = JSON.parse(event!.body!);
-  const stateYear: string = event.pathParameters.stateYear;
-  const programName: string = event.pathParameters.programName;
 
-  let reportParams = {
+  const { body } = event;
+  const state: string = event.pathParameters.state;
+  const reportId: string = event.pathParameters.reportId;
+
+  let statusParams = {
     TableName: process.env.REPORT_TABLE_NAME!,
     Item: {
-      key: stateYear,
-      programName: programName,
-      report: body.report,
+      state: state,
+      reportId: reportId,
+      createdAt: Date.now(),
+      lastAltered: Date.now(),
+      lastAlteredBy: event?.headers["cognito-identity-id"],
+      status: body,
     },
   };
   const getCurrentReport = await getReport(event, context);
-  const currentBody = JSON.parse(getCurrentReport.body);
-  if (currentBody.report) {
-    const newReport = {
-      ...currentBody.report,
-      ...body.report,
-    };
-    reportParams = {
-      TableName: process.env.REPORT_TABLE_NAME!,
-      Item: {
-        key: stateYear,
-        programName: programName,
-        report: { ...newReport },
-      },
-    };
+  if (getCurrentReport.body) {
+    const currentBody = JSON.parse(getCurrentReport.body);
+    if (currentBody.createdAt) {
+      statusParams = {
+        TableName: process.env.REPORT_TABLE_NAME!,
+        Item: {
+          state: state,
+          reportId: reportId,
+          createdAt: currentBody.createdAt,
+          lastAltered: Date.now(),
+          lastAlteredBy: event?.headers["cognito-identity-id"],
+          status: body,
+        },
+      };
+    }
   }
-  await dynamoDb.put(reportParams);
+
+  await dynamoDb.put(statusParams);
   return {
     status: StatusCodes.SUCCESS,
-    body: { ...reportParams.Item },
+    body: { ...statusParams.Item },
   };
 });

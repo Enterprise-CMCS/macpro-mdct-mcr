@@ -31,9 +31,10 @@ interface Props {
 
 const sx = {
   contentBox: {
-    flexShrink: "0",
+    height: "100%",
   },
   contentFlex: {
+    height: "100%",
     flexDirection: "column",
   },
 };

@@ -8,12 +8,11 @@ import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,
-  label,
+  label = "",
   hint,
   placeholder,
   sxOverride,
   nested,
-  dynamic,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -27,26 +26,18 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  let errorMessage = "";
-  const dynamicCheck = dynamic?.parentName && dynamic?.index;
-
   const formErrorState = form?.formState?.errors;
-
-  if (dynamicCheck) {
-    errorMessage =
-      formErrorState?.[dynamic.parentName]?.[dynamic.index]?.message;
-  } else {
-    errorMessage = formErrorState?.[name]?.message;
-  }
+  const errorMessage = formErrorState?.[name]?.message;
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
-
   const parsedHint = hint && parseCustomHtml(hint);
 
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${nestedChildClasses}`}
+      className={`${mqClasses} ${nestedChildClasses} ${
+        label === "" ? "no-label" : ""
+      }`}
     >
       <CmsdsTextField
         id={name}
@@ -56,31 +47,30 @@ export const TextField = ({
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
-        inputRef={() => dynamic?.inputRef ?? form.register(name)}
-        defaultValue={props?.hydrate}
+        inputRef={() => form.register(name)}
+        defaultValue={form.getValues(name) || props?.hydrate}
         {...props}
       />
     </Box>
   );
 };
 
-interface dynamicFieldInput {
-  parentName: string;
-  index: number;
-  inputRef: Function;
-}
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   hint?: CustomHtmlElement[];
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
-  dynamic?: dynamicFieldInput;
   [key: string]: any;
 }
 
 const sx = {
+  "&.ds-c-choice__checkedChild": {
+    "&.no-label": {
+      paddingY: 0,
+    },
+  },
   "&.nested": {
     label: {
       marginTop: 0,

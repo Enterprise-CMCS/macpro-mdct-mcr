@@ -1,6 +1,8 @@
 import React from "react";
 // components
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
+// utils
+import { SpreadsheetWidgetProps } from "types";
 // assets
 import greenSpreadsheetIcon from "../../assets/icons/icon_spreadsheet_green.png";
 
@@ -16,7 +18,7 @@ export const SpreadsheetWidget = ({ content, ...props }: Props) => {
           />
         </Flex>
         <Box>
-          <Text>{content.title}</Text>
+          <Text sx={sx.title}>{content.title}</Text>
           <Box>
             {content.descriptionList.map((description: any, index: any) => (
               <Text key={index} sx={sx.description}>
@@ -34,19 +36,15 @@ export const SpreadsheetWidget = ({ content, ...props }: Props) => {
 };
 
 interface Props {
-  content: {
-    title: string;
-    descriptionList: string[];
-    additionalInfo?: string;
-  };
+  content: SpreadsheetWidgetProps;
   [key: string]: any;
 }
 
 const sx = {
   container: {
     paddingLeft: "1rem",
-    borderLeft: ".3rem solid",
-    borderColor: "palette.success",
+    borderLeft: "4px solid",
+    borderColor: "palette.spreadsheet",
   },
   iconContainer: {
     maxWidth: "3rem",
@@ -58,8 +56,12 @@ const sx = {
     maxHeight: "2.5rem",
     margin: "auto",
   },
+  title: {
+    color: "palette.spreadsheet_dark",
+  },
   description: {
     fontWeight: "bold",
+    color: "palette.spreadsheet_dark",
   },
   additionalInfo: {
     marginTop: "1rem",

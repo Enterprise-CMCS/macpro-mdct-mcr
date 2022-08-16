@@ -3,12 +3,26 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
 import { McparReportPage } from "routes";
+import { ReportContext } from "components";
 // utils
-import { writeReport, writeReportStatus } from "utils";
 import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
 import sectionA_pointofcontact from "forms/mcpar/apoc/apoc.json";
 
 // MOCKS
+
+const mockReportMethods = {
+  fetchReportData: jest.fn(() => {}),
+  updateReportData: jest.fn(() => {}),
+  fetchReport: jest.fn(() => {}),
+  updateReport: jest.fn(() => {}),
+};
+
+const mockReportContext = {
+  ...mockReportMethods,
+  reportStatus: {},
+  reportData: {},
+  errorMessage: "",
+};
 
 const mockUseNavigate = jest.fn();
 
@@ -21,8 +35,6 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
-  writeReport: jest.fn(),
-  writeReportStatus: jest.fn(),
   useUser: () => {
     return mockStateUser;
   },
@@ -30,7 +42,9 @@ jest.mock("utils", () => ({
 
 const mcparReportPageComponent = (
   <RouterWrappedComponent>
-    <McparReportPage pageJson={sectionA_pointofcontact} />
+    <ReportContext.Provider value={mockReportContext}>
+      <McparReportPage pageJson={sectionA_pointofcontact} />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -68,8 +82,7 @@ describe("Test McparReportPage next navigation", () => {
     await userEvent.click(submitButton);
     const expectedRoute = "/mcpar/program-information/reporting-period";
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
-    await expect(writeReport).toHaveBeenCalledTimes(1);
-    await expect(writeReportStatus).toHaveBeenCalledTimes(1);
+    await expect(mockReportMethods.updateReportData).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -78,7 +91,7 @@ describe("Test McparReportPage previous navigation", () => {
     render(mcparReportPageComponent);
     const previousButton = screen.getByText("Previous")!;
     await userEvent.click(previousButton);
-    const expectedRoute = "/mcpar/program-information/reporting-period";
+    const expectedRoute = "/mcpar/get-started";
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
   });
 });

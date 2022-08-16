@@ -1,14 +1,11 @@
-import { object, string } from "yup";
+import { object } from "yup";
+import { email, text, textOptional } from "utils/forms/schemas";
 
 export default object({
-  "apoc-a1": string(),
-  "apoc-a2a": string().required("Contact name is required"),
-  "apoc-a2b": string()
-    .required("Contact email address is required")
-    .email("Email address must be valid"),
-  "apoc-a3a": string().required("Submitter name is required"),
-  "apoc-a3b": string()
-    .required("Submitter email address is required")
-    .email("Email address must be valid"),
-  "apoc-a4": string(),
+  "apoc-a1": textOptional(),
+  "apoc-a2a": text(),
+  "apoc-a2b": email(),
+  "apoc-a3a": text(),
+  "apoc-a3b": email(),
+  "apoc-a4": textOptional(),
 });

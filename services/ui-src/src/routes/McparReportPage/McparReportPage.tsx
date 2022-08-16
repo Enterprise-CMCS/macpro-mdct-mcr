@@ -1,34 +1,38 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { Error, Form, Icon, ReportPage, Sidebar } from "components";
-// utils
 import {
-  findRoute,
-  hydrateFormFields,
-  useUser,
-  writeReport,
-  writeReportStatus,
-  parseCustomHtml,
-} from "utils";
-import { AnyObject, CustomHtmlElement, UserRoles } from "types";
+  Error,
+  Form,
+  Icon,
+  ReportContext,
+  ReportPage,
+  Sidebar,
+  SpreadsheetWidget,
+} from "components";
+// utils
+import { findRoute, hydrateFormFields, parseCustomHtml, useUser } from "utils";
+import {
+  AnyObject,
+  CustomHtmlElement,
+  ReportStatus,
+  SpreadsheetWidgetProps,
+  UserRoles,
+} from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  const {
+    reportData,
+    updateReportData,
+    updateReport,
+    errorMessage: error,
+  } = useContext(ReportContext);
   const { path, intro, form } = pageJson;
-
-  const temporaryHydrationData = {
-    stateName: "Temporary state name",
-    programName: "Temporary program name",
-    reportingPeriodStartDate: "xx/xx/xxxx",
-    reportingPeriodEndDate: "xx/xx/xxxx",
-    reportSubmissionDate: "xx/xx/xxxx",
-  };
 
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
@@ -37,35 +41,26 @@ export const McparReportPage = ({ pageJson }: Props) => {
   // get user's state
   const { user } = useUser();
   const { state, userRole } = user ?? {};
-  const reportYear = "2022";
-  const reportKey = `${state}${reportYear}`;
 
   // TODO: get real program name per report
   const programName = "tempName";
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      const report = {
-        key: reportKey,
-        programName: programName,
-        report: formData,
+      const reportDetails = {
+        state: state,
+        reportId: programName,
       };
-      const reportStatus = {
-        key: reportKey,
-        programName: programName,
-        status: "In Progress",
-      };
-      try {
-        await writeReport(report);
-        await writeReportStatus(reportStatus);
-      } catch (error: any) {
-        setError(true);
-      }
+      const reportStatus = ReportStatus.IN_PROGRESS;
+      updateReportData(reportDetails, formData);
+      updateReport(reportDetails, reportStatus);
     }
     navigate(nextRoute);
   };
-  // TODO: HYDRATION
-  form.fields = hydrateFormFields(form.fields, temporaryHydrationData);
+
+  if (reportData) {
+    form.fields = hydrateFormFields(form.fields, reportData);
+  }
 
   return (
     <ReportPage data-testid={form.id}>
@@ -95,7 +90,7 @@ interface Props {
 }
 
 const ReportPageIntro = ({ text }: ReportPageIntroI) => {
-  const { section, subsection, info } = text;
+  const { section, subsection, info, spreadsheet } = text;
   return (
     <Box sx={sx.introBox}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -104,6 +99,11 @@ const ReportPageIntro = ({ text }: ReportPageIntroI) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
+      {spreadsheet && (
+        <Box sx={sx.spreadsheetWidgetBox}>
+          <SpreadsheetWidget content={spreadsheet} />
+        </Box>
+      )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );
@@ -114,6 +114,7 @@ interface ReportPageIntroI {
     section: string;
     subsection: string;
     info?: CustomHtmlElement[];
+    spreadsheet?: SpreadsheetWidgetProps;
   };
 }
 
@@ -126,7 +127,6 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
           <Button
             onClick={() => navigate(previousRoute)}
             variant="outline"
-            colorScheme="colorSchemes.outline"
             leftIcon={<Icon icon="arrowLeft" />}
           >
             Previous
@@ -134,7 +134,6 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
           <Button
             form={formId}
             type="submit"
-            colorScheme="colorSchemes.main"
             rightIcon={<Icon icon="arrowRight" />}
           >
             Save & continue
@@ -154,6 +153,7 @@ interface ReportPageFooterI {
 const sx = {
   pageContainer: {
     width: "100%",
+    height: "100%",
   },
   reportContainer: {
     flexDirection: "column",
@@ -175,16 +175,22 @@ const sx = {
   },
   infoTextBox: {
     marginTop: "2rem",
-    // TODO: finalize inline link styles with design and move this to theme.ts
+    h4: {
+      fontSize: "lg",
+      marginBottom: "0.75rem",
+    },
     "p, span": {
       color: "palette.gray",
     },
     a: {
-      color: "palette.main",
+      color: "palette.primary",
       "&:hover": {
-        color: "palette.main_darker",
+        color: "palette.primary_darker",
       },
     },
+  },
+  spreadsheetWidgetBox: {
+    marginTop: "2rem",
   },
   footerBox: {
     marginTop: "3.5rem",

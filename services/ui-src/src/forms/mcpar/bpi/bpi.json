@@ -2,17 +2,194 @@
   "path": "/mcpar/state-level-indicators/program-integrity",
   "intro": {
     "section": "B: State-Level Indicators",
-    "subsection": "X: Program Integrity"
+    "subsection": "Topic X: Program Integrity"
   },
   "form": {
     "id": "bpi",
     "fields": [
       {
         "id": "bpi-1",
-        "type": "text",
+        "type": "textarea",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "B.X.1 Payment risks between the state and plans",
+          "hint": "Describe service-specific or other focused PI activities that the state conducted during the past year in this managed care program.</br>Examples include analyses focused on use of long-term services and supports (LTSS) or prescription drugs or activities that focused on specific payment issues to identify, address, and prevent fraud, waste or abuse. Consider data analytics, reviews of under/overutilization, and other activities."
+        }
+      },
+      {
+        "id": "bpi-2",
+        "type": "radio",
+        "props": {
+          "label": "B.X.2 Contract standard for overpayments",
+          "hint": "Does the state allow plans to retain overpayments, require the return of overpayments, or has established a hybrid system? Select one.",
+          "choices": [
+            {
+              "name": "bpi-2-o1",
+              "type": "choice",
+              "label": "Allow plans to retain overpayments"
+            },
+            {
+              "name": "bpi-2-o2",
+              "type": "choice",
+              "label": "State requires the return of overpayments"
+            },
+            {
+              "name": "bpi-2-o3",
+              "type": "choice",
+              "label": "State has established a hybrid system"
+            }
+          ]
+        }
+      },
+      {
+        "id": "bpi-3",
+        "type": "textarea",
+        "props": {
+          "label": "B.X.3 Contract locations of overpayment standard",
+          "hint": "Describe where the overpayment standard in the previous indicator is located in plan contracts, as required by 42 CFR 438.608(d)(1)(i)."
+        }
+      },
+      {
+        "id": "bpi-4",
+        "type": "textarea",
+        "props": {
+          "label": "B.X.4 Description of overpayment contract standard",
+          "hint": "Briefly describe the overpayment standard (for example, details on whether the state allows plans to retain overpayments, requires the plans to return overpayments, or administers a hybrid system) selected in indicator B.X.2."
+        }
+      },
+      {
+        "id": "bpi-5",
+        "type": "textarea",
+        "props": {
+          "label": "B.X.5 State overpayment reporting monitoring",
+          "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment pieces (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
+        }
+      },
+      {
+        "id": "bpi-6",
+        "type": "textarea",
+        "props": {
+          "label": "B.X.6 Changes in beneficiary circumstances",
+          "hint": "Describe how the state ensures timely and accurate reconciliation of enrollment files between the state and plans to ensure appropriate payments for enrollees experiencing a change in status (e.g., incarcerated, deceased, switching plans)."
+        }
+      },
+      {
+        "id": "bpi-7a",
+        "type": "radio",
+        "props": {
+          "label": "B.X.7a Changes in provider circumstances: Monitoring plans",
+          "hint": "Does the state monitor whether plans report provider “for cause” terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
+          "choices": [
+            {
+              "name": "bpi-7a-o1",
+              "type": "choice",
+              "label": "Yes",
+              "children": [
+                {
+                  "id": "bpi-7b",
+                  "type": "radio",
+                  "props": {
+                    "label": "B.X.7b Changes in provider circumstances: Metrics",
+                    "hint": "Does the state use a metric or indicator to assess plan reporting performance? Select one.",
+                    "choices": [
+                      {
+                        "name": "bpi-7b-o1",
+                        "type": "choice",
+                        "label": "Yes",
+                        "children": [
+                          {
+                            "id": "bpi-7c",
+                            "type": "textarea",
+                            "props": {
+                              "label": "B.X.7c Changes in provider circumstances: Describe metric",
+                              "hint": "Describe the metric or indicator that the state uses."
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "bpi-7b-o2",
+                        "type": "choice",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "bpi-7a-o2",
+              "type": "choice",
+              "label": "No"
+            }
+          ]
+        }
+      },
+      {
+        "id": "bpi-8a",
+        "type": "radio",
+        "props": {
+          "label": "B.X.8a Federal database checks: Excluded person or entities",
+          "hint": "During the state's federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
+          "choices": [
+            {
+              "name": "bpi-8a-o1",
+              "type": "choice",
+              "label": "Yes",
+              "children": [
+                {
+                  "id": "bpi-8b",
+                  "type": "textarea",
+                  "props": {
+                    "label": "B.X.8b Federal database checks: Summarize instances of exclusion",
+                    "hint": "Summarize the instances and whether the entity was notified as required in 438.602(d). Report actions taken, such as plan-level sanctions and corrective actions."
+                  }
+                }
+              ]
+            },
+            {
+              "name": "bpi-8a-o2",
+              "type": "choice",
+              "label": "No"
+            }
+          ]
+        }
+      },
+      {
+        "id": "bpi-9a",
+        "type": "radio",
+        "props": {
+          "label": "B.X.9a Website posting of 5 percent or more ownership control",
+          "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3)",
+          "choices": [
+            {
+              "name": "bpi-9a-o1",
+              "type": "choice",
+              "label": "Yes",
+              "children": [
+                {
+                  "id": "bpi-9b",
+                  "type": "textarea",
+                  "props": {
+                    "label": "B.X.9b Website posting of 5 percent or more ownership control: Link",
+                    "hint": "What is the link to the website? Refer to 42 CFR 602(g)(3)."
+                  }
+                }
+              ]
+            },
+            {
+              "name": "bpi-9a-o2",
+              "type": "choice",
+              "label": "No"
+            }
+          ]
+        }
+      },
+      {
+        "id": "bpi-10",
+        "type": "textarea",
+        "props": {
+          "label": "B.X.10 Periodic audits",
+          "hint": "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, what is the link(s) to the audit results? Refer to 42 CFR 438.602(e)"
         }
       }
     ]
