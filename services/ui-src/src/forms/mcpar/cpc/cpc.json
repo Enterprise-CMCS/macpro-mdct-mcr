@@ -21,7 +21,10 @@
       },
       {
         "id": "cpc-1-b",
-        "type": "date"
+        "type": "date",
+        "props": {
+          "noLabel": true
+        }
       },
       {
         "id": "cpc-2",
