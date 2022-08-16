@@ -12,11 +12,14 @@ export interface DynamoWrite {
   Item: { [key: string]: any };
 }
 
+export interface CompositeKey {
+  partitionKey: string;
+  sortKey: string;
+}
+
 export interface DynamoDelete {
   TableName: string;
-  Key: {
-    key: string;
-  };
+  Key: { key: string } | CompositeKey;
 }
 
 export interface DynamoUpdate {
