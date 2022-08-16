@@ -29,7 +29,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const {
     reportData,
     updateReportData,
-    updateReportStatus,
+    updateReport,
     errorMessage: error,
   } = useContext(ReportContext);
   const { path, intro, form } = pageJson;
@@ -41,8 +41,6 @@ export const McparReportPage = ({ pageJson }: Props) => {
   // get user's state
   const { user } = useUser();
   const { state, userRole } = user ?? {};
-  const reportYear = "2022";
-  const reportKey = `${state}${reportYear}`;
 
   // TODO: get real program name per report
   const programName = "tempName";
@@ -50,12 +48,12 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const reportDetails = {
-        key: reportKey,
-        programName: programName,
+        state: state,
+        reportId: programName,
       };
       const reportStatus = ReportStatus.IN_PROGRESS;
       updateReportData(reportDetails, formData);
-      updateReportStatus(reportDetails, reportStatus);
+      updateReport(reportDetails, reportStatus);
     }
     navigate(nextRoute);
   };

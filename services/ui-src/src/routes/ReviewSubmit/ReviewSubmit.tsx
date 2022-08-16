@@ -20,32 +20,29 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { reportStatus, fetchReportStatus, updateReportStatus } =
-    useContext(ReportContext);
+  const { reportStatus, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user's state
   const { user } = useUser();
   const { state, userRole } = user ?? {};
-  const reportYear = "2022";
-  const reportKey = `${state}${reportYear}`;
 
   // TODO: get real program name per report
   const programName = "tempName";
 
   const reportDetails = {
-    key: reportKey,
-    programName: programName,
+    key: state,
+    reportId: programName,
   };
 
   useEffect(() => {
-    fetchReportStatus(reportDetails);
+    fetchReport(reportDetails);
   }, []);
 
   const submitForm = () => {
     // TODO: Add check to make sure user filled out the form
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      updateReportStatus(reportDetails, ReportStatus.SUBMITTED);
+      updateReport(reportDetails, ReportStatus.SUBMITTED);
     }
     onClose();
   };
