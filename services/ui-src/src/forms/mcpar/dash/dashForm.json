@@ -12,6 +12,44 @@
       }
     },
     {
+      "id": "dash-contractPeriod",
+      "type": "dropdown",
+      "props": {
+        "name": "dash-contractPeriodName",
+        "label": "dash-contractPeriodLabel",
+        "options": [
+          {
+            "label": "7/1/21 to 6/30/22",
+            "value": "12/27/2022"
+          },
+          {
+            "label": "9/1/21 to 8/21/22",
+            "value": "2/27/2023"
+          },
+          {
+            "label": "10/1/21 to 9/30/22 ",
+            "value": "3/29/2023"
+          },
+          {
+            "label": "1/1/22 to 12/31/22",
+            "value": "6/29/2023"
+          },
+          {
+            "label": "2/1/22 to 1/31/23",
+            "value": "7/30/2023"
+          },
+          {
+            "label": "4/1/22 to 3/31/23 ",
+            "value": "9/27/2023"
+          },
+          {
+            "label": "Other",
+            "value": "other"
+          }
+        ]
+      }
+    },
+    {
       "id": "dash-startDate",
       "type": "date",
       "props": {
@@ -27,6 +65,21 @@
         "label": "A.5b Reporting period  (i.e. contract period) end date",
         "timetype": "endDate",
         "hint": "Enter end date of the reporting period represented in the report."
+      }
+    },
+    {
+      "id": "dash-check",
+      "type": "checkbox",
+      "props": {
+        "label": "TBD Label",
+        "hint": "May or may not need this hint",
+        "choices": [
+          {
+            "name": "dash-check-01",
+            "type": "choice",
+            "label": "TBD Choice"
+          }
+        ]
       }
     }
   ]

@@ -3,6 +3,7 @@ import React from "react";
 import {
   CheckboxField,
   DateField,
+  DropdownField,
   DynamicField,
   NumberField,
   RadioField,
@@ -18,6 +19,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   const fieldToComponentMap: any = {
     checkbox: CheckboxField,
     date: DateField,
+    dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
     radio: RadioField,
