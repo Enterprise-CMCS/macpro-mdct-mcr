@@ -1,32 +1,37 @@
 import { API } from "aws-amplify";
-import { AnyObject } from "types";
+import { ReportDetails, ReportDataShape } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 
-async function getReportStatus(reportKey: string, programName: string) {
+async function getReportData(reportDetails: ReportDetails) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
   };
+  const { state, reportId } = reportDetails;
   const response = await API.get(
-    "reportStatus",
-    `/reportStatus/${reportKey}/${programName}`,
+    "reportData",
+    `/reportData/${state}/${reportId}`,
     request
   );
   return response;
 }
 
-async function writeReportStatus(reportData: AnyObject) {
+async function writeReportData(
+  reportDetails: ReportDetails,
+  reportData: ReportDataShape
+) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
     body: reportData,
   };
+  const { state, reportId } = reportDetails;
   const response = await API.post(
-    "reportStatus",
-    `/reportStatus/${reportData.key}/${reportData.programName}`,
+    "reportData",
+    `/reportData/${state}/${reportId}`,
     request
   );
   return response;
 }
 
-export { getReportStatus, writeReportStatus };
+export { getReportData, writeReportData };

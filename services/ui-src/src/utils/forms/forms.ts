@@ -12,25 +12,6 @@ import {
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
 
-const initializeChoiceFieldControl = (fields: FormField[]) => {
-  // find each field that contains choices (checkbox or radio)
-  fields.forEach((field: FormField) => {
-    if (field.props?.choices) {
-      // check non true choices as false
-      field.props.choices.forEach((choice: FieldChoice) => {
-        if (choice.checked != true) {
-          choice.checked = false;
-        }
-        // recurse for child choices
-        if (choice.children) {
-          initializeChoiceFieldControl(choice.children);
-        }
-      });
-    }
-  });
-  return fields;
-};
-
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
@@ -43,7 +24,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     text: TextField,
     textarea: TextAreaField,
   };
-  fields = initializeChoiceFieldControl(fields);
+  fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     return React.createElement(componentFieldType, {
@@ -62,18 +43,48 @@ export const hydrateFormFields = (
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
     const fieldProps = formFields[fieldFormIndex].props!;
-    const choices = fieldProps.choices;
-    if (choices) {
-      choices.forEach((choice: FieldChoice) => {
-        // Recurse if choice has child fields
-        if (choice.children) {
-          hydrateFormFields(choice.children, reportData);
-        }
-      });
+
+    // check for children on each choice in field props
+    if (fieldProps) {
+      const choices = fieldProps.choices;
+      if (choices) {
+        choices.forEach((choice: FieldChoice) => {
+          // if a choice has children, recurse
+          if (choice.children) {
+            hydrateFormFields(choice.children, reportData);
+          }
+        });
+      }
+    } else {
+      // if no props on field, initialize props as empty object
+      formFields[fieldFormIndex].props = {};
     }
-    formFields[fieldFormIndex].props!.hydrate = reportData[field.id];
+
+    // if reportData has value for field, set props.hydrate
+    const fieldHydrationValue = reportData[field.id];
+    if (fieldHydrationValue) {
+      formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
+    }
   });
   return formFields;
+};
+
+// add data to choice fields in preparation for render
+export const initializeChoiceFields = (fields: FormField[]) => {
+  const fieldsWithChoices = fields.filter(
+    (field: FormField) => field.props?.choices
+  );
+  fieldsWithChoices.forEach((field: FormField) => {
+    field?.props?.choices.forEach((choice: FieldChoice) => {
+      // set choice value to choice label string
+      choice.value = choice.label;
+      // initialize choice as controlled component in unchecked state
+      if (choice.checked != true) choice.checked = false;
+      // if choice has children, recurse
+      if (choice.children) initializeChoiceFields(choice.children);
+    });
+  });
+  return fields;
 };
 
 export const sortFormErrors = (form: any, errors: any) => {

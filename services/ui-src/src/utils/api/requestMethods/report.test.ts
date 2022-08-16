@@ -1,13 +1,17 @@
-import { getReport, writeReport } from "./report";
+import { getReport, getReportsByState, writeReport } from "./report";
 // utils
-import { mockReportData } from "utils/testing/setupJest";
+import { mockReportDetails, mockReportStatus } from "utils/testing/setupJest";
 
-describe("Test report methods", () => {
+describe("Test report status methods", () => {
   test("getReport", () => {
-    expect(getReport("AB2022", "testProgram")).toBeTruthy();
+    expect(getReport(mockReportDetails)).toBeTruthy();
   });
 
-  test("postReport", () => {
-    expect(writeReport(mockReportData)).toBeTruthy();
+  test("getReportsByState", () => {
+    expect(getReportsByState("AB")).toBeTruthy();
+  });
+
+  test("postReportStatus", () => {
+    expect(writeReport(mockReportDetails, mockReportStatus)).toBeTruthy();
   });
 });

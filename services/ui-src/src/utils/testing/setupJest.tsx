@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 // utils
-import { UserContextI, UserRoles } from "types";
+import { ReportStatus, UserContextI, UserRoles } from "types";
 import { bannerId } from "../../constants";
 
 // GLOBALS
@@ -114,20 +114,17 @@ export const mockBannerDataEmpty = {
   endDate: "",
 };
 
-export const mockReportData = {
-  key: "AB2022",
-  programName: "testProgram",
-  report: {
-    field1: "value1",
-    field2: "value2",
-    num1: 0,
-    num2: 1,
-    array: ["array1, array2"],
-  },
+export const mockReportDetails = {
+  state: "AB",
+  reportId: "testReportId",
 };
 
-export const mockReportStatusData = {
-  key: "AB2022",
-  programName: "testProgram",
-  status: "In Progress",
+export const mockReportData = {
+  field1: "value1",
+  field2: "value2",
+  num1: 0,
+  num2: 1,
+  array: ["array1, array2"],
 };
+
+export const mockReportStatus = ReportStatus.CREATED;

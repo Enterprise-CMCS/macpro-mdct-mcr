@@ -11,16 +11,20 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const form = useFormContext();
   form.register(name);
 
+  // make formfield dynamic array with config options
   const { fields, append, remove } = useFieldArray({
     name: name,
     shouldUnregister: true,
   });
 
+  // render form field values as individual inputs
   useEffect(() => {
     if (fields.length === 0) {
       append(props?.hydrate || "");
     }
-  });
+  }, []);
+
+  const formErrorState = form?.formState?.errors;
 
   return (
     <Box>
@@ -30,12 +34,10 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             <TextField
               name={`${name}[${index}]`}
               label={label}
-              dynamic={{
-                parentName: name,
-                index,
-                inputRef: () => form.register,
-              }}
-              hydrate={props?.hydrate?.[index]}
+              defaultValue={
+                form.getValues(name[index]) || props?.hydrate?.[index] || ""
+              }
+              errorMessage={formErrorState?.[name]?.[index]?.message}
               sxOverride={sx.textFieldOverride}
             />
             {index != 0 && (

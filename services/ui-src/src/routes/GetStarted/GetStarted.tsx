@@ -4,6 +4,7 @@ import { BasicPage, IntroSection, SpreadsheetWidget } from "components";
 import { useNavigate } from "react-router-dom";
 // utils
 import { makeMediaQueryClasses } from "utils";
+// verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 // assets
 import nextIcon from "assets/icons/icon_next.png";
@@ -18,7 +19,7 @@ export const GetStarted = () => {
   const [section1, section2, section3] = body.sections;
 
   return (
-    <BasicPage sx={sx.layout} data-testid="get-started-view">
+    <BasicPage sx={sx.layout}>
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}

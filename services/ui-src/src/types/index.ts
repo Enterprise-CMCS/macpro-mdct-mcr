@@ -41,19 +41,35 @@ export interface ReportPath {
   children?: ReportPath[];
 }
 
-export interface ReportShape {
-  reportData: AnyObject;
+export enum ReportStatus {
+  CREATED = "Created",
+  IN_PROGRESS = "In Progress",
+  SUBMITTED = "Submitted",
 }
 
+export interface ReportDataShape {
+  [key: string]: any;
+}
+
+export interface ReportDetails {
+  state: string;
+  reportId: string;
+}
+
+export interface ReportStatusShape {
+  [key: string]: any;
+}
 export interface ReportContextMethods {
   fetchReportData: Function;
   updateReportData: Function;
-  fetchReportStatus: Function;
-  updateReportStatus: Function;
+  fetchReport: Function;
+  updateReport: Function;
 }
 
-export interface ReportContextShape extends ReportShape, ReportContextMethods {
-  reportStatus: string;
+export interface ReportContextShape
+  extends ReportDataShape,
+    ReportStatusShape,
+    ReportContextMethods {
   errorMessage?: string;
 }
 
@@ -168,4 +184,11 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
+}
+
+export interface SpreadsheetWidgetProps {
+  title: string;
+  descriptionList: string[];
+  additionalInfo?: string;
+  [key: string]: any;
 }
