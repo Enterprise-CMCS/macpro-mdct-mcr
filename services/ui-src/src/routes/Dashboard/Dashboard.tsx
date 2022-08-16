@@ -3,22 +3,19 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Flex,
   Heading,
-  Image,
   Link,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
 import { BasicPage, Form, Modal, Table } from "components";
+import { cacluateDueDate } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
-// assets
-import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal } = verbiage;
@@ -34,11 +31,6 @@ export const Dashboard = () => {
     setTableContent({ ...tableContent, bodyRows: programs });
   }, [programs]);
 
-  const deleteProgram = (id: string) => {
-    // eslint-disable-next-line no-console
-    console.log(id);
-  };
-
   const addProgram = async (formData: any) => {
     const newProgramData = {
       key: formJson.id,
@@ -46,25 +38,8 @@ export const Dashboard = () => {
       startDate: formData["dash-startDate"],
       endDate: formData["dash-endDate"],
     };
-    setPrograms([
-      ...programs,
-      [
-        newProgramData.title,
-        newProgramData.startDate,
-        "-",
-        "-",
-        <Flex>
-          <Button variant={"outline"}>Start report</Button>
-          <button onClick={() => deleteProgram(newProgramData.key)}>
-            <Image
-              src={cancelIcon}
-              alt="Delete Program"
-              sx={sx.deleteProgram}
-            />
-          </button>
-        </Flex>,
-      ],
-    ]);
+    const dueDate = cacluateDueDate(newProgramData.endDate);
+    setPrograms([...programs, [newProgramData.title, dueDate, "-", "-", "-"]]);
     onClose();
   };
 
