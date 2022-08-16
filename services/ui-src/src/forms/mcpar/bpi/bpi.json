@@ -82,7 +82,39 @@
             {
               "name": "bpi-7a-o1",
               "type": "choice",
-              "label": "Yes"
+              "label": "Yes",
+              "children": [
+                {
+                  "id": "bpi-7b",
+                  "type": "radio",
+                  "props": {
+                    "label": "B.X.7b Changes in provider circumstances: Metrics",
+                    "hint": "Does the state use a metric or indicator to assess plan reporting performance? Select one.",
+                    "choices": [
+                      {
+                        "name": "bpi-7b-o1",
+                        "type": "choice",
+                        "label": "Yes",
+                        "children": [
+                          {
+                            "id": "bpi-7c",
+                            "type": "textarea",
+                            "props": {
+                              "label": "B.X.7c Changes in provider circumstances: Describe metric",
+                              "hint": "Describe the metric or indicator that the state uses."
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "bpi-7b-o2",
+                        "type": "choice",
+                        "label": "No"
+                      }
+                    ]
+                  }
+                }
+              ]
             },
             {
               "name": "bpi-7a-o2",
@@ -102,7 +134,17 @@
             {
               "name": "bpi-8a-o1",
               "type": "choice",
-              "label": "Yes"
+              "label": "Yes",
+              "children": [
+                {
+                  "id": "bpi-8b",
+                  "type": "textarea",
+                  "props": {
+                    "label": "B.X.8b Federal database checks: Summarize instances of exclusion",
+                    "hint": "Summarize the instances and whether the entity was notified as required in 438.602(d). Report actions taken, such as plan-level sanctions and corrective actions."
+                  }
+                }
+              ]
             },
             {
               "name": "bpi-8a-o2",
@@ -122,7 +164,17 @@
             {
               "name": "bpi-9a-o1",
               "type": "choice",
-              "label": "Yes"
+              "label": "Yes",
+              "children": [
+                {
+                  "id": "bpi-9b",
+                  "type": "textarea",
+                  "props": {
+                    "label": "B.X.9b Website posting of 5 percent or more ownership control: Link",
+                    "hint": "What is the link to the website? Refer to 42 CFR 602(g)(3)."
+                  }
+                }
+              ]
             },
             {
               "name": "bpi-9a-o2",
