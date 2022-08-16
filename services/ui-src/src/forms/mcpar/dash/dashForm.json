@@ -15,9 +15,12 @@
       "id": "dash-contractPeriod",
       "type": "dropdown",
       "props": {
-        "name": "dash-contractPeriodName",
         "label": "dash-contractPeriodLabel",
         "options": [
+          {
+            "label": "- Select an option -",
+            "value": ""
+          },
           {
             "label": "7/1/21 to 6/30/22",
             "value": "12/27/2022"

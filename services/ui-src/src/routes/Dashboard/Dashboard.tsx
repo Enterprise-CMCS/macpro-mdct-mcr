@@ -35,10 +35,15 @@ export const Dashboard = () => {
     const newProgramData = {
       key: formJson.id,
       title: formData["dash-title"],
+      contractPeriod: formData["dash-contractPeriod"],
       startDate: formData["dash-startDate"],
       endDate: formData["dash-endDate"],
+      check: formData["dash-check"],
     };
-    const dueDate = cacluateDueDate(newProgramData.endDate);
+    const dueDate =
+      newProgramData.contractPeriod !== "other"
+        ? newProgramData.contractPeriod
+        : cacluateDueDate(newProgramData.endDate);
     setPrograms([...programs, [newProgramData.title, dueDate, "-", "-", "-"]]);
     onClose();
   };
