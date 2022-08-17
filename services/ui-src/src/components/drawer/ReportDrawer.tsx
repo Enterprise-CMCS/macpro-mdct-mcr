@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "components";
 import { reportSchema } from "forms/mcpar/reportSchema";
 
@@ -16,11 +16,17 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
 
-export const ReportDrawer = ({ drawerState, form, onSubmit }: Props) => {
+export const ReportDrawer = ({ isOpen, form, onSubmit }: Props) => {
+  const [drawerState, setDrawerState] = useState(isOpen);
+
+  const closeDrawer = () => {
+    setDrawerState(false);
+  };
+
   return (
     <ChakraDrawer
-      isOpen={drawerState.isOpen}
-      onClose={drawerState.onClose}
+      isOpen={drawerState}
+      onClose={() => {}}
       size="full"
       placement="right"
     >
@@ -31,7 +37,7 @@ export const ReportDrawer = ({ drawerState, form, onSubmit }: Props) => {
             sx={sx.drawerClose}
             leftIcon={<CloseIcon />}
             variant="link"
-            onClick={drawerState.onClose}
+            onClick={closeDrawer}
           >
             Close
           </Button>
@@ -48,7 +54,7 @@ export const ReportDrawer = ({ drawerState, form, onSubmit }: Props) => {
           />
           <Box sx={sx.footerBox}>
             <Flex sx={sx.buttonFlex}>
-              <Button variant="outline" type="submit">
+              <Button variant="outline" type="submit" onClick={closeDrawer}>
                 Cancel
               </Button>
               <Button>Save & Close</Button>
@@ -61,10 +67,7 @@ export const ReportDrawer = ({ drawerState, form, onSubmit }: Props) => {
 };
 
 interface Props {
-  drawerState: {
-    isOpen: boolean;
-    onClose?: any;
-  };
+  isOpen: boolean;
   [key: string]: any;
 }
 
