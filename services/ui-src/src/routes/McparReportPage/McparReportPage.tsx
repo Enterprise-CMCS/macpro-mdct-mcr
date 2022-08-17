@@ -72,6 +72,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
         ) : (
           <Flex sx={sx.reportContainer}>
             <ReportPageIntro text={intro} />
+            //eslint-disable-next-lines /*{" "}
             <Drawer
               drawerState={{
                 isOpen: true,
@@ -83,6 +84,29 @@ export const McparReportPage = ({ pageJson }: Props) => {
                 formSchema={reportSchema[form.id as keyof typeof reportSchema]}
                 onSubmit={onSubmit}
               />
+              <Flex
+              //sx={sx.drawerFooter}
+              >
+                <Button
+                  //className={mqClasses}
+
+                  //form={children.formId}
+                  type="submit"
+
+                  //sx={sx.action}
+                >
+                  Cancel
+                </Button>
+                <Button
+                //className={mqClasses}
+
+                //sx={sx.close}
+
+                //onClick={drawerState.onClose}
+                >
+                  Save & Close
+                </Button>
+              </Flex>
             </Drawer>
             <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
           </Flex>

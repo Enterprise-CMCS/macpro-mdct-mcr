@@ -5,7 +5,6 @@ import {
   Button,
   Drawer as ChakraDrawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -13,10 +12,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
-import { makeMediaQueryClasses } from "utils";
 
-export const Drawer = ({ drawerState, children, content }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
+export const Drawer = ({ drawerState, children }: Props) => {
   return (
     <ChakraDrawer
       isOpen={drawerState.isOpen}
@@ -37,21 +34,9 @@ export const Drawer = ({ drawerState, children, content }: Props) => {
           </Button>
         </Flex>
         <DrawerHeader sx={sx.drawerHeader}>
-          <Text sx={sx.drawerHeaderText}>{content.heading}</Text>
+          <Text sx={sx.drawerHeaderText}>Example</Text>
         </DrawerHeader>
         <DrawerBody sx={sx.drawerBody}>{children}</DrawerBody>
-        <DrawerFooter sx={sx.drawerFooter}>
-          <Button className={mqClasses} sx={sx.action}>
-            Save
-          </Button>
-          <Button
-            className={mqClasses}
-            sx={sx.close}
-            onClick={drawerState.onClose}
-          >
-            Close
-          </Button>
-        </DrawerFooter>
       </DrawerContent>
     </ChakraDrawer>
   );
