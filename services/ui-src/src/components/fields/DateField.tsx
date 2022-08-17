@@ -45,7 +45,10 @@ export const DateField = ({
   const parsedHint = hint && parseCustomHtml(hint);
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box
+      sx={{ ...sx, ...sxOverride }}
+      className={`${mqClasses} ${props.noLabel ? "no-label" : ""}`}
+    >
       <CmsdsDateField
         name={name}
         label={label}
@@ -72,5 +75,10 @@ interface Props {
 const sx = {
   ".ds-c-field": {
     maxWidth: "7rem",
+  },
+  "&.no-label": {
+    ".ds-c-label": {
+      marginTop: "0.5rem",
+    },
   },
 };
