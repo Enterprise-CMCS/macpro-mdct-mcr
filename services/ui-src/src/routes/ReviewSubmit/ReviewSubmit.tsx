@@ -51,7 +51,7 @@ export const ReviewSubmit = () => {
     <ReportPage>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {reportStatus?.status == ReportStatus.SUBMITTED ? (
+        {reportStatus?.status?.includes(ReportStatus.SUBMITTED) ? (
           <SuccessMessage
             programName={programName}
             date={reportStatus?.lastAltered}
