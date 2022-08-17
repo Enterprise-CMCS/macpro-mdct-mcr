@@ -21,6 +21,8 @@ export { PreviewBanner } from "./banners/PreviewBanner";
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
+// drawers
+export { Drawer } from "./drawer/Drawer";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";

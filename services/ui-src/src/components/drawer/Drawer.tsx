@@ -12,13 +12,11 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-//import { Form } from "components";
 import { CloseIcon } from "@cmsgov/design-system";
+import { makeMediaQueryClasses } from "utils";
 
-//import { makeMediaQueryClasses } from "utils";
-
-export const Drawer = ({ drawerState }: Props) => {
-  //   const mqClasses = makeMediaQueryClasses();
+export const Drawer = ({ drawerState, children }: Props) => {
+  const mqClasses = makeMediaQueryClasses();
   return (
     <ChakraDrawer
       isOpen={drawerState.isOpen}
@@ -43,14 +41,16 @@ export const Drawer = ({ drawerState }: Props) => {
             Add a quality & performance measure
           </Text>
         </DrawerHeader>
-        <DrawerBody sx={sx.drawerBody}>
-          {/* TODO: Get Form details somehow */}
-          {/* <Form /> */}
-          <form>Placeholder</form>
-        </DrawerBody>
+        <DrawerBody sx={sx.drawerBody}>{children}</DrawerBody>
         <DrawerFooter sx={sx.drawerFooter}>
-          <Button sx={sx.action}>Save</Button>
-          <Button sx={sx.close} onClick={drawerState.onClose}>
+          <Button className={mqClasses} sx={sx.action}>
+            Save
+          </Button>
+          <Button
+            className={mqClasses}
+            sx={sx.close}
+            onClick={drawerState.onClose}
+          >
             Close
           </Button>
         </DrawerFooter>

@@ -23,6 +23,7 @@ import {
 // form data
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
+import { Drawer } from "components/drawer/Drawer";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
@@ -71,12 +72,18 @@ export const McparReportPage = ({ pageJson }: Props) => {
         ) : (
           <Flex sx={sx.reportContainer}>
             <ReportPageIntro text={intro} />
-            <Form
-              id={form.id}
-              formJson={form}
-              formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-              onSubmit={onSubmit}
-            />
+            <Drawer
+              drawerState={{
+                isOpen: true,
+              }}
+            >
+              <Form
+                id={form.id}
+                formJson={form}
+                formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+                onSubmit={onSubmit}
+              />
+            </Drawer>
             <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
           </Flex>
         )}
