@@ -22,8 +22,8 @@ export const deleteReport = handler(async (event, _context) => {
     const params = {
       TableName: process.env.REPORT_TABLE_NAME!,
       Key: {
-        partitionKey: event?.pathParameters?.state!,
-        sortKey: event?.pathParameters?.reportId!,
+        state: event?.pathParameters?.state!,
+        reportId: event?.pathParameters?.reportId!,
       },
     };
     await dynamoDb.delete(params);

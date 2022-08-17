@@ -13,8 +13,8 @@ export interface DynamoWrite {
 }
 
 export interface CompositeKey {
-  partitionKey: string;
-  sortKey: string;
+  state: string;
+  reportId: string;
 }
 
 export interface DynamoDelete {
