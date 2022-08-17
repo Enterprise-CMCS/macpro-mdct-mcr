@@ -15,7 +15,7 @@ import {
 import { CloseIcon } from "@cmsgov/design-system";
 import { makeMediaQueryClasses } from "utils";
 
-export const Drawer = ({ drawerState, children }: Props) => {
+export const Drawer = ({ drawerState, children, content }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <ChakraDrawer
@@ -37,9 +37,7 @@ export const Drawer = ({ drawerState, children }: Props) => {
           </Button>
         </Flex>
         <DrawerHeader sx={sx.drawerHeader}>
-          <Text sx={sx.drawerHeaderText}>
-            Add a quality & performance measure
-          </Text>
+          <Text sx={sx.drawerHeaderText}>{content.heading}</Text>
         </DrawerHeader>
         <DrawerBody sx={sx.drawerBody}>{children}</DrawerBody>
         <DrawerFooter sx={sx.drawerFooter}>
