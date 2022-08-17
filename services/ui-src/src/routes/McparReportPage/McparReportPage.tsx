@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import {
   Error,
-  Form,
   Icon,
   ReportContext,
   ReportPage,
@@ -22,8 +21,7 @@ import {
 } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
-import { reportSchema } from "forms/mcpar/reportSchema";
-import { Drawer } from "components/drawer/Drawer";
+import { ReportDrawer } from "components/drawer/ReportDrawer";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
@@ -73,41 +71,13 @@ export const McparReportPage = ({ pageJson }: Props) => {
           <Flex sx={sx.reportContainer}>
             <ReportPageIntro text={intro} />
             //eslint-disable-next-lines /*{" "}
-            <Drawer
+            <ReportDrawer
+              form={form}
+              onSubmit={onSubmit}
               drawerState={{
                 isOpen: true,
               }}
-            >
-              <Form
-                id={form.id}
-                formJson={form}
-                formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-                onSubmit={onSubmit}
-              />
-              <Flex
-              //sx={sx.drawerFooter}
-              >
-                <Button
-                  //className={mqClasses}
-
-                  //form={children.formId}
-                  type="submit"
-
-                  //sx={sx.action}
-                >
-                  Cancel
-                </Button>
-                <Button
-                //className={mqClasses}
-
-                //sx={sx.close}
-
-                //onClick={drawerState.onClose}
-                >
-                  Save & Close
-                </Button>
-              </Flex>
-            </Drawer>
+            />
             <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
           </Flex>
         )}
