@@ -27,6 +27,4 @@ export const reportErrors = {
     "Reports could not be loaded. Please contact support.",
   SET_REPORT_FAILED: "Report could not be updated. Please contact support.",
   DELETE_REPORT_FAILED: "Report could not be deleted. Please contact support.",
-  DELETE_REPORT_DATA_FAILED:
-    "Report data could not be deleted. Please contact support.",
 };

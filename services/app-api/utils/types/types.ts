@@ -19,7 +19,7 @@ export interface CompositeKey {
 
 export interface DynamoDelete {
   TableName: string;
-  Key: { key: string } | CompositeKey;
+  Key: { [key: string]: any };
 }
 
 export interface DynamoUpdate {

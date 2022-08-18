@@ -34,6 +34,7 @@ const testEvent: APIGatewayProxyEvent = {
 describe("Test deleteReport API method", () => {
   beforeEach(() => {
     process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_DATA_TABLE_NAME"] = "fakeReportDataTable";
   });
 
   test("Test not authorized to delete report throws 403 error", async () => {
@@ -47,6 +48,7 @@ describe("Test deleteReport API method", () => {
     const res = await deleteReport(testEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("fakeReportTable");
+    expect(res.body).toContain("fakeReportDataTable");
     expect(res.body).toContain("AB");
     expect(res.body).toContain("testReportId");
   });

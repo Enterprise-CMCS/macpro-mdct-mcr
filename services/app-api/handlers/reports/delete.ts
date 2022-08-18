@@ -19,14 +19,29 @@ export const deleteReport = handler(async (event, _context) => {
   ) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   } else {
-    const params = {
-      TableName: process.env.REPORT_TABLE_NAME!,
+    const paramKeys = {
       Key: {
         state: event?.pathParameters?.state!,
         reportId: event?.pathParameters?.reportId!,
       },
     };
-    await dynamoDb.delete(params);
-    return { status: StatusCodes.SUCCESS, body: params };
+    // delete report from report table
+    const deleteReportParams = {
+      TableName: process.env.REPORT_TABLE_NAME!,
+      ...paramKeys,
+    };
+    await dynamoDb.delete(deleteReportParams);
+
+    // delete report data from report data table
+    const deleteReportDataParams = {
+      TableName: process.env.REPORT_DATA_TABLE_NAME!,
+      ...paramKeys,
+    };
+    await dynamoDb.delete(deleteReportDataParams);
+
+    return {
+      status: StatusCodes.SUCCESS,
+      body: { deleteReportParams, deleteReportDataParams },
+    };
   }
 });
