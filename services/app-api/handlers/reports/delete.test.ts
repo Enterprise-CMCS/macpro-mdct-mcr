@@ -2,6 +2,7 @@ import { deleteReport } from "./delete";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
+import { hasPermissions } from "../../utils/auth/authorization";
 import {
   NO_KEY_ERROR_MESSAGE,
   UNAUTHORIZED_MESSAGE,
@@ -15,8 +16,8 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
 }));
 
 jest.mock("../../utils/auth/authorization", () => ({
-  isAuthorized: jest.fn().mockReturnValue(true),
-  hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
+  isAuthorized: jest.fn().mockImplementation(() => true),
+  hasPermissions: jest.fn().mockImplementation(() => true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
@@ -36,6 +37,7 @@ describe("Test deleteReport API method", () => {
   });
 
   test("Test not authorized to delete report throws 403 error", async () => {
+    (hasPermissions as jest.Mock).mockReturnValueOnce(false);
     const res = await deleteReport(testEvent, null);
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
