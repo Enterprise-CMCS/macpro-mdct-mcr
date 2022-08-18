@@ -34,4 +34,18 @@ async function writeReportData(
   return response;
 }
 
-export { getReportData, writeReportData };
+async function deleteReportData(reportDetails: ReportDetails) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+  };
+  const { state, reportId } = reportDetails;
+  const response = await API.del(
+    "reportData",
+    `/reportData/${state}/${reportId}`,
+    request
+  );
+  return response;
+}
+
+export { getReportData, writeReportData, deleteReportData };

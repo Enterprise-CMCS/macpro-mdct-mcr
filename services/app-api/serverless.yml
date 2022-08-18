@@ -159,6 +159,19 @@ functions:
               paths:
                 state: true
                 reportId: true
+  deleteReportData:
+    handler: handlers/banners/delete.deleteReportData
+    events:
+      - http:
+          path: reportData/{state}/{reportId}
+          method: delete
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                state: true
+                reportId: true
   getReport:
     handler: handlers/reports/get.getReport
     events:
