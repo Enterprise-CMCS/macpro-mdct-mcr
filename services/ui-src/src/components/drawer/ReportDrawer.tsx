@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Form } from "components";
-import { reportSchema } from "forms/mcpar/reportSchema";
 
 // Components
 import {
@@ -15,6 +13,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
+import { Form } from "components";
+// form data
+import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const ReportDrawer = ({ isOpen, form, onSubmit }: Props) => {
   const [drawerState, setDrawerState] = useState(isOpen);

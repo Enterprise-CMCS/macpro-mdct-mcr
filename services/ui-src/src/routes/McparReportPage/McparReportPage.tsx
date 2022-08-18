@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import {
   Error,
+  Form,
   Icon,
   ReportContext,
   ReportPage,
@@ -21,7 +22,7 @@ import {
 } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
-import { ReportDrawer } from "components/drawer/ReportDrawer";
+import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
   }
 
   return (
+    // TODO: Handle ReportDrawer component
     <ReportPage data-testid={form.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
@@ -70,7 +72,12 @@ export const McparReportPage = ({ pageJson }: Props) => {
         ) : (
           <Flex sx={sx.reportContainer}>
             <ReportPageIntro text={intro} />
-            <ReportDrawer form={form} onSubmit={onSubmit} isOpen={true} />
+            <Form
+              id={form.id}
+              formJson={form}
+              formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+              onSubmit={onSubmit}
+            />
             <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
           </Flex>
         )}

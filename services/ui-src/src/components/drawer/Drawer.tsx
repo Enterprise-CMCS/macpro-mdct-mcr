@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Components
 import {
@@ -13,11 +13,17 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
 
-export const Drawer = ({ drawerState, children }: Props) => {
+export const Drawer = ({ isOpen, heading, children }: Props) => {
+  const [drawerState, setDrawerState] = useState(isOpen);
+
+  const closeDrawer = () => {
+    setDrawerState(false);
+  };
+
   return (
     <ChakraDrawer
-      isOpen={drawerState.isOpen}
-      onClose={drawerState.onClose}
+      isOpen={drawerState}
+      onClose={() => {}}
       size="full"
       placement="right"
     >
@@ -28,13 +34,13 @@ export const Drawer = ({ drawerState, children }: Props) => {
             sx={sx.drawerClose}
             leftIcon={<CloseIcon />}
             variant="link"
-            onClick={drawerState.onClose}
+            onClick={closeDrawer}
           >
             Close
           </Button>
         </Flex>
         <DrawerHeader sx={sx.drawerHeader}>
-          <Text sx={sx.drawerHeaderText}>Example</Text>
+          <Text sx={sx.drawerHeaderText}>{heading}</Text>
         </DrawerHeader>
         <DrawerBody sx={sx.drawerBody}>{children}</DrawerBody>
       </DrawerContent>
@@ -43,10 +49,7 @@ export const Drawer = ({ drawerState, children }: Props) => {
 };
 
 interface Props {
-  drawerState: {
-    isOpen: boolean;
-    onClose?: any;
-  };
+  isOpen: boolean;
   [key: string]: any;
 }
 
