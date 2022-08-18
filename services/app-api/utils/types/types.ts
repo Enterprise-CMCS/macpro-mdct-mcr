@@ -12,11 +12,6 @@ export interface DynamoWrite {
   Item: { [key: string]: any };
 }
 
-export interface CompositeKey {
-  state: string;
-  reportId: string;
-}
-
 export interface DynamoDelete {
   TableName: string;
   Key: { [key: string]: any };
