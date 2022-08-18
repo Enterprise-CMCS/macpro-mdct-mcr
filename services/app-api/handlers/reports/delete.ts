@@ -8,6 +8,7 @@ import {
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
 export const deleteReport = handler(async (event, _context) => {
+  // TODO: restrict to only admin role
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
