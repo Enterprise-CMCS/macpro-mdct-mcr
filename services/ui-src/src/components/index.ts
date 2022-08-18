@@ -55,6 +55,7 @@ export { Modal } from "./modal/Modal";
 // reports
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables
+export { ActionTable } from "./tables/ActionTable";
 export { Table } from "./tables/Table";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";

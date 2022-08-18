@@ -1,4 +1,4 @@
-import { MouseEventHandler, useContext, useEffect, useState } from "react";
+import { MouseEventHandler, useState } from "react";
 // components
 import {
   Box,
@@ -12,55 +12,73 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
-import { BasicPage, Form, Modal, ReportContext } from "components";
-import { cacluateDueDate, useUser } from "utils";
+import { ActionTable, BasicPage, Form, Modal } from "components";
+import { cacluateDueDate } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
-import { ActionTable } from "components/tables/ActionTable";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Dashboard = () => {
+  // Verbiage
   const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
     verbiage;
-  const { reportsByState, fetchReportsByState } = useContext(ReportContext);
-  const {
-    isOpen: addProgramIsOpen,
-    onOpen: onOpenAddProgram,
-    onClose: onCloseAddProgram,
-  } = useDisclosure();
-  const {
-    isOpen: deleteProgramIsOpen,
-    onOpen: onOpenDeleteProgram,
-    onClose: onCloseDeleteProgram,
-  } = useDisclosure();
+
+  /*
+   * NEXT STEPS TO COMPLETE THE DASHBOARD
+   *
+   * You will want to add code for fetching the reports by a given state or, in the future, all states if the
+   * user is an admin. For now we're just doing state users. The code would look something like this:
+   */
+
+  /*
+   *  Get the reportsByState for state users
+   * const { reportsByState, fetchReportsByState } = useContext(ReportContext);
+   *
+   * On page load since the user is a state user grab all the reports for that state.
+   * This is where in the future you might change this code for admin users
+   * useEffect(() => {
+   *   const { user } = useUser();
+   *   const { state } = user ?? {};
+   *   fetchReportsByState(state);
+   * }, []);
+   *
+   * Once you've grabbed the reports you can use the reportsByState from the ReportContext
+   * instead the the internal programs useState below to decide what is in the table
+   */
+
+  /*
+   * Table Content
+   * Will want to convert this internal state list of programs over to the ReportProvider context
+   */
   const [programs, setPrograms] = useState<Array<Array<any>>>([]);
   const tableContent = {
     caption: body.table.caption,
     headRow: body.table.headRow,
   };
 
-  // get user's state
-  const { user } = useUser();
-  const { state } = user ?? {};
+  // Delete Modal Functions
+  const {
+    isOpen: deleteProgramIsOpen,
+    onOpen: onOpenDeleteProgram,
+    onClose: onCloseDeleteProgram,
+  } = useDisclosure();
 
-  useEffect(() => {
-    fetchReportsByState(state);
-  }, []);
-
-  const askToDeleteProgram = async (program: any) => {
-    // eslint-disable-next-line no-console
-    console.log("deleteProgram", program);
-    deleteProgramModal.structure.heading += " " + program[0] + "?";
+  const askToDeleteProgram = async () => {
     onOpenDeleteProgram();
   };
 
-  const deleteProgram = async () => {
-    alert("Hello There");
-  };
+  const deleteProgram = async () => {};
+
+  // Add Modal Functions
+  const {
+    isOpen: addProgramIsOpen,
+    onOpen: onOpenAddProgram,
+    onClose: onCloseAddProgram,
+  } = useDisclosure();
 
   const addProgram = async (formData: any) => {
     const newProgramData = {
@@ -79,14 +97,15 @@ export const Dashboard = () => {
     onCloseAddProgram();
   };
 
-  const startProgram = (program: any) => {
-    // eslint-disable-next-line no-console
-    console.log(program);
-  };
+  /*
+   * This function is where you'll want to navigate to the program you've selected and
+   * open its mcpar form pages. You'll want to utilize McparReportPage and navigate()
+   * here.
+   */
+  const startProgram = () => {};
 
   return (
     <BasicPage sx={sx.layout}>
-      {"Reports by state"} {reportsByState}
       <Box>
         <Link href={returnLink.location} sx={sx.returnLink}>
           <ArrowIcon title="returnHome" direction={"left"} />
@@ -115,20 +134,18 @@ export const Dashboard = () => {
               {row.map((cell: string, index: number) => (
                 <Td key={index}>{cell}</Td>
               ))}
-              <Button
-                variant={"outline"}
-                onClick={() => startProgram(programs[index])}
-              >
+              {/* While this works React will throw an error in the console about having a link/button
+               * in a Table Row. I didn't notice this until I was wrapping up */}
+              <Button variant={"outline"} onClick={() => startProgram()}>
                 Start report
               </Button>
-              <button onClick={() => askToDeleteProgram(programs[index])}>
+              <button onClick={() => askToDeleteProgram()}>
                 <Image
                   src={cancelIcon}
                   alt="Delete Program"
                   sx={sx.deleteProgram}
                 />
               </button>
-              ,
             </Tr>
           ))}
         </ActionTable>
@@ -141,6 +158,8 @@ export const Dashboard = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* Add Program Modal */}
       <Modal
         actionFunction={addProgram}
         actionId={formJson.id}
@@ -157,6 +176,8 @@ export const Dashboard = () => {
           onSubmit={addProgram}
         />
       </Modal>
+
+      {/* Delete Program Modal */}
       <Modal
         actionFunction={deleteProgram}
         modalState={{
