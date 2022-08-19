@@ -8,7 +8,7 @@ import { PageJson } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 
-export const ReportPageEntitySection = ({ pageJson, onSubmit }: Props) => {
+export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
   const { reportData } = useContext(ReportContext);
   const { path, form, drawer } = pageJson;
   const { isOpen, onClose, onOpen } = useDisclosure();

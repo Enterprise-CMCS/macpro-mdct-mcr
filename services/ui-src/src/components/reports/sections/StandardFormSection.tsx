@@ -9,7 +9,7 @@ import { PageJson } from "types";
 import { mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
 
-export const ReportPageFormSection = ({ pageJson, onSubmit }: Props) => {
+export const StandardFormSection = ({ pageJson, onSubmit }: Props) => {
   const { reportData } = useContext(ReportContext);
   const { path, form } = pageJson;
 

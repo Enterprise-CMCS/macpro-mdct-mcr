@@ -22,8 +22,8 @@ export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // drawers
-export { Drawer } from "./drawer/Drawer";
-export { ReportDrawer } from "./drawer/ReportDrawer";
+export { Drawer } from "./drawers/Drawer";
+export { ReportDrawer } from "./drawers/ReportDrawer";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";
@@ -53,14 +53,14 @@ export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // modals
-export { Modal } from "./modal/Modal";
+export { Modal } from "./modals/Modal";
 // reports
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
-export { ReportPageFormSection } from "./reports/ReportPageFormSection";
 export { ReportPage } from "./reports/ReportPage";
-export { ReportPageEntitySection } from "./reports/ReportPageEntitySection";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
+export { StandardFormSection } from "./reports/sections/StandardFormSection";
+export { EntityDrawerSection } from "./reports/sections/EntityDrawerSection";
 // tables
 export { Table } from "./tables/Table";
 // widgets

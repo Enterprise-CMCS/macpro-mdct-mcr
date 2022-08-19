@@ -5,8 +5,8 @@ import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
   ReportPage,
-  ReportPageEntitySection,
-  ReportPageFormSection,
+  EntityDrawerSection,
+  StandardFormSection,
   ReportPageIntro,
   Sidebar,
 } from "components";
@@ -45,13 +45,9 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const renderPageSection = (pageType: string) => {
     switch (pageType) {
       case "drawer":
-        return (
-          <ReportPageEntitySection pageJson={pageJson} onSubmit={onSubmit} />
-        );
+        return <EntityDrawerSection pageJson={pageJson} onSubmit={onSubmit} />;
       default:
-        return (
-          <ReportPageFormSection pageJson={pageJson} onSubmit={onSubmit} />
-        );
+        return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
     }
   };
 
