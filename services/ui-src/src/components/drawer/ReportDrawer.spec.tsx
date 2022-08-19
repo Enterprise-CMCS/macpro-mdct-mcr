@@ -3,7 +3,25 @@ import { axe } from "jest-axe";
 //components
 import { ReportDrawer } from "components";
 
-const drawerComponent = <ReportDrawer isOpen={true} form={{ fields: [] }} />;
+const mockDrawerDisclosure = {
+  isOpen: true,
+  onClose: () => {},
+};
+
+const mockFormJson = {
+  id: "mockid",
+  options: {},
+  fields: [],
+};
+
+const drawerComponent = (
+  <ReportDrawer
+    drawerDisclosure={mockDrawerDisclosure}
+    drawerTitle="mock title"
+    form={mockFormJson}
+    onSubmit={() => {}}
+  />
+);
 
 // TODO: Test ReportDrawer rendering, opening, closing functionalities
 

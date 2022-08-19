@@ -1,118 +1,59 @@
-import React, { useState } from "react";
-
+import { MouseEventHandler } from "react";
 // Components
-import {
-  Box,
-  Button,
-  Drawer as ChakraDrawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  Flex,
-  Text,
-} from "@chakra-ui/react";
-import { CloseIcon } from "@cmsgov/design-system";
-import { Form } from "components";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { Drawer, Form } from "components";
+// types
+import { FormJson } from "types";
 // form data
 import { reportSchema } from "forms/mcpar/reportSchema";
 
-export const ReportDrawer = ({ isOpen, form, onSubmit }: Props) => {
-  const [drawerState, setDrawerState] = useState(isOpen);
-
-  const closeDrawer = () => {
-    setDrawerState(false);
-  };
-
+export const ReportDrawer = ({
+  drawerDisclosure,
+  drawerTitle,
+  form,
+  onSubmit,
+  ...props
+}: Props) => {
   return (
-    <ChakraDrawer
-      isOpen={drawerState}
-      onClose={() => {}}
-      size="full"
-      placement="right"
+    <Drawer
+      drawerDisclosure={drawerDisclosure}
+      drawerTitle={drawerTitle}
+      {...props}
     >
-      <DrawerOverlay />
-      <DrawerContent sx={sx.drawerContent}>
-        <Flex sx={sx.drawerCloseContainer}>
+      <Form
+        id={form.id}
+        formJson={form}
+        formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+        onSubmit={onSubmit}
+      />
+      <Box sx={sx.footerBox}>
+        <Flex sx={sx.buttonFlex}>
           <Button
-            sx={sx.drawerClose}
-            leftIcon={<CloseIcon />}
-            variant="link"
-            onClick={closeDrawer}
+            variant="outline"
+            type="submit"
+            onClick={drawerDisclosure.onClose as MouseEventHandler}
           >
-            Close
+            Cancel
           </Button>
+          <Button>Save & Close</Button>
         </Flex>
-        <DrawerHeader sx={sx.drawerHeader}>
-          <Text sx={sx.drawerHeaderText}>Example</Text>
-        </DrawerHeader>
-        <DrawerBody sx={sx.drawerBody}>
-          <Form
-            id={form.id}
-            formJson={form}
-            formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-            onSubmit={onSubmit}
-          />
-          <Box sx={sx.footerBox}>
-            <Flex sx={sx.buttonFlex}>
-              <Button variant="outline" type="submit" onClick={closeDrawer}>
-                Cancel
-              </Button>
-              <Button>Save & Close</Button>
-            </Flex>
-          </Box>
-        </DrawerBody>
-      </DrawerContent>
-    </ChakraDrawer>
+      </Box>
+    </Drawer>
   );
 };
 
 interface Props {
-  isOpen: boolean;
+  drawerDisclosure: {
+    isOpen: boolean;
+    onClose: Function;
+  };
+  drawerTitle: string;
+  form: FormJson;
+  onSubmit: Function;
   [key: string]: any;
 }
 
 const sx = {
-  drawerContent: {
-    maxWidth: "35vw",
-    padding: "2rem",
-    overflow: "scroll",
-  },
-  drawerHeader: {
-    padding: "0",
-  },
-  drawerHeaderText: {
-    padding: "0 4rem 0 0",
-    fontSize: "2xl",
-    fontWeight: "bold",
-  },
-  drawerCloseContainer: {
-    alignItems: "center",
-    justifycontent: "center",
-    flexShrink: "0",
-    position: "absolute",
-    top: "2rem",
-    right: "2rem",
-  },
-  drawerClose: {
-    span: {
-      margin: "0 .25rem",
-      svg: {
-        fontSize: "xs",
-        width: "xs",
-        height: "xs",
-      },
-    },
-  },
-  drawerBody: {
-    paddingX: "0.5rem",
-    paddingY: "1rem",
-  },
-  drawerFooter: {
-    justifyContent: "flex-start",
-    padding: "0",
-    paddingTop: "2rem",
-  },
   footerBox: {
     marginTop: "2rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
@@ -120,30 +61,5 @@ const sx = {
   buttonFlex: {
     justifyContent: "space-between",
     marginY: "1.5rem",
-  },
-  action: {
-    justifyContent: "start",
-    marginTop: "1rem",
-    marginRight: "2rem",
-    span: {
-      marginLeft: "0.5rem",
-      marginRight: "-0.25rem",
-    },
-    "&.mobile": {
-      fontSize: "sm",
-    },
-  },
-  close: {
-    justifyContent: "start",
-    padding: ".5rem 1rem",
-    marginTop: "1rem",
-    span: {
-      marginLeft: "0rem",
-      marginRight: "0.5rem",
-    },
-    "&.mobile": {
-      fontSize: "sm",
-      marginRight: "0",
-    },
   },
 };

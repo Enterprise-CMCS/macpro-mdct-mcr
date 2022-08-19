@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import { MouseEventHandler } from "react";
 // Components
 import {
   Button,
@@ -8,39 +7,40 @@ import {
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
-  Flex,
   Text,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
+import { makeMediaQueryClasses } from "utils";
 
-export const Drawer = ({ isOpen, heading, children }: Props) => {
-  const [drawerState, setDrawerState] = useState(isOpen);
-
-  const closeDrawer = () => {
-    setDrawerState(false);
-  };
+export const Drawer = ({
+  drawerDisclosure,
+  drawerTitle,
+  children,
+  ...props
+}: Props) => {
+  const mqClasses = makeMediaQueryClasses();
+  const { isOpen, onClose } = drawerDisclosure;
 
   return (
     <ChakraDrawer
-      isOpen={drawerState}
+      isOpen={isOpen}
       onClose={() => {}}
       size="full"
       placement="right"
+      {...props}
     >
       <DrawerOverlay />
-      <DrawerContent sx={sx.drawerContent}>
-        <Flex sx={sx.drawerCloseContainer}>
+      <DrawerContent sx={sx.drawerContent} className={mqClasses}>
+        <DrawerHeader sx={sx.drawerHeader}>
+          <Text sx={sx.drawerHeaderText}>{drawerTitle}</Text>
           <Button
-            sx={sx.drawerClose}
+            sx={sx.drawerCloseButton}
             leftIcon={<CloseIcon />}
             variant="link"
-            onClick={closeDrawer}
+            onClick={onClose as MouseEventHandler}
           >
             Close
           </Button>
-        </Flex>
-        <DrawerHeader sx={sx.drawerHeader}>
-          <Text sx={sx.drawerHeaderText}>{heading}</Text>
         </DrawerHeader>
         <DrawerBody sx={sx.drawerBody}>{children}</DrawerBody>
       </DrawerContent>
@@ -49,33 +49,38 @@ export const Drawer = ({ isOpen, heading, children }: Props) => {
 };
 
 interface Props {
-  isOpen: boolean;
+  drawerDisclosure: {
+    isOpen: boolean;
+    onClose: Function;
+  };
+  drawerTitle: string;
   [key: string]: any;
 }
 
 const sx = {
   drawerContent: {
-    maxWidth: "35vw",
+    maxWidth: "90vw",
     padding: "2rem",
-    overflow: "scroll",
+    overflowY: "scroll",
+    "&.tablet": {
+      maxWidth: "32rem",
+    },
+    "&.desktop": {
+      maxWidth: "36rem",
+    },
   },
   drawerHeader: {
     padding: "0",
   },
   drawerHeaderText: {
-    padding: "0 4rem 0 0",
+    paddingRight: "4rem",
     fontSize: "2xl",
     fontWeight: "bold",
   },
-  drawerCloseContainer: {
-    alignItems: "center",
-    justifycontent: "center",
-    flexShrink: "0",
+  drawerCloseButton: {
     position: "absolute",
     top: "2rem",
     right: "2rem",
-  },
-  drawerClose: {
     span: {
       margin: "0 .25rem",
       svg: {
@@ -86,37 +91,6 @@ const sx = {
     },
   },
   drawerBody: {
-    paddingX: "0",
-    paddingY: "1rem",
-  },
-  drawerFooter: {
-    justifyContent: "flex-start",
-    padding: "0",
-    paddingTop: "2rem",
-  },
-  action: {
-    justifyContent: "start",
-    marginTop: "1rem",
-    marginRight: "2rem",
-    span: {
-      marginLeft: "0.5rem",
-      marginRight: "-0.25rem",
-    },
-    "&.mobile": {
-      fontSize: "sm",
-    },
-  },
-  close: {
-    justifyContent: "start",
-    padding: ".5rem 1rem",
-    marginTop: "1rem",
-    span: {
-      marginLeft: "0rem",
-      marginRight: "0.5rem",
-    },
-    "&.mobile": {
-      fontSize: "sm",
-      marginRight: "0",
-    },
+    padding: "1rem 0",
   },
 };

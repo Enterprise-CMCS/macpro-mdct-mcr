@@ -3,7 +3,14 @@ import { axe } from "jest-axe";
 //components
 import { Drawer } from "components";
 
-const drawerComponent = <Drawer isOpen={true} />;
+const mockDrawerDisclosure = {
+  isOpen: true,
+  onClose: () => {},
+};
+
+const drawerComponent = (
+  <Drawer drawerDisclosure={mockDrawerDisclosure} drawerTitle="mock title" />
+);
 
 // TODO: Test Drawer rendering, opening, closing functionalities
 

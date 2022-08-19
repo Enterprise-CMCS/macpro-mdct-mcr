@@ -1,12 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import {
   Error,
   Form,
   Icon,
   ReportContext,
+  ReportDrawer,
   ReportPage,
   Sidebar,
   SpreadsheetWidget,
@@ -33,6 +34,11 @@ export const McparReportPage = ({ pageJson }: Props) => {
     errorMessage: error,
   } = useContext(ReportContext);
   const { path, intro, form } = pageJson;
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  useEffect(() => {
+    onOpen();
+  }, []);
 
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
@@ -65,6 +71,15 @@ export const McparReportPage = ({ pageJson }: Props) => {
   return (
     // TODO: Handle ReportDrawer component
     <ReportPage data-testid={form.id}>
+      <ReportDrawer
+        drawerDisclosure={{
+          isOpen,
+          onClose,
+        }}
+        drawerTitle="whatever"
+        form={form}
+        onSubmit={onSubmit}
+      />
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         {error ? (
