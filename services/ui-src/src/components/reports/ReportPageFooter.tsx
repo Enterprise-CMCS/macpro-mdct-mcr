@@ -7,10 +7,11 @@ export const ReportPageFooter = ({
   formId,
   previousRoute,
   nextRoute,
+  ...props
 }: Props) => {
   const navigate = useNavigate();
   return (
-    <Box sx={sx.footerBox}>
+    <Box sx={sx.footerBox} {...props}>
       <Box>
         <Flex sx={sx.buttonFlex}>
           <Button
@@ -47,6 +48,7 @@ interface Props {
   formId?: string;
   previousRoute: string;
   nextRoute: string;
+  [key: string]: any;
 }
 
 const sx = {

@@ -5,10 +5,10 @@ import { SpreadsheetWidget } from "components";
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
 
-export const ReportPageIntro = ({ text }: Props) => {
+export const ReportPageIntro = ({ text, ...props }: Props) => {
   const { section, subsection, info, spreadsheet } = text;
   return (
-    <Box sx={sx.introBox}>
+    <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
         {section}
       </Heading>
@@ -27,6 +27,7 @@ export const ReportPageIntro = ({ text }: Props) => {
 
 interface Props {
   text: AnyObject;
+  [key: string]: any;
 }
 
 const sx = {
