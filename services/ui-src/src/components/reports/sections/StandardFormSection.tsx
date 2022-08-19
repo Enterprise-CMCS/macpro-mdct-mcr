@@ -22,7 +22,7 @@ export const StandardFormSection = ({ pageJson, onSubmit }: Props) => {
   }
 
   return (
-    <Box data-testid="form-section">
+    <Box data-testid="standard-form-section">
       <Form
         id={form.id}
         formJson={form}

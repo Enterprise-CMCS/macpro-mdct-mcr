@@ -74,7 +74,7 @@ const fillOutStandardPageForm = async (form: any) => {
 describe("Test McparReportPage view", () => {
   test("Standard McparReportPage view renders", () => {
     render(standardReportPageComponent);
-    expect(screen.getByTestId("form-section")).toBeVisible();
+    expect(screen.getByTestId("standard-form-section")).toBeVisible();
   });
 
   test("Drawer McparReportPage view renders", () => {
@@ -95,7 +95,7 @@ describe("Test McparReportPage next navigation", () => {
     await expect(mockReportMethods.updateReportData).toHaveBeenCalledTimes(1);
   });
 
-  test("Drawer page navigates to next route on successful submission", async () => {
+  test("Drawer page navigates to next route at any time", async () => {
     const result = render(drawerReportPageComponent);
     const continueButton = result.getByText("Continue");
     await userEvent.click(continueButton);
