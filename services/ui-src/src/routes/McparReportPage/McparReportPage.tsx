@@ -71,7 +71,6 @@ export const McparReportPage = ({ pageJson }: Props) => {
     plans: ["United Healthcare", "Care 1st", "Aetna Family Care"],
   };
 
-  const { dashboard, drawerTitle } = drawer;
   return (
     <ReportPage data-testid={form.id}>
       <Flex sx={sx.pageContainer}>
@@ -81,7 +80,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
           {pageType === "drawer" ? (
             <>
               <Box>
-                <Heading as="h3">{dashboard.title}</Heading>
+                <Heading as="h3">{drawer.dashboard.title}</Heading>
                 {tempEntityMap.plans.map((entity) => {
                   return (
                     <Flex key={entity} sx={sx.entityRow}>
@@ -102,13 +101,13 @@ export const McparReportPage = ({ pageJson }: Props) => {
                   isOpen,
                   onClose,
                 }}
-                drawerTitle={`${drawerTitle} ${currentEntity}`}
+                drawerTitle={`${drawer.drawerTitle} ${currentEntity}`}
                 form={form}
                 onSubmit={onSubmit}
               />
               <ReportPageFooter
-                formId={form.id}
                 previousRoute={previousRoute}
+                nextRoute={nextRoute}
               />
             </>
           ) : (
@@ -122,6 +121,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
               <ReportPageFooter
                 formId={form.id}
                 previousRoute={previousRoute}
+                nextRoute={nextRoute}
               />
             </>
           )}
@@ -164,7 +164,11 @@ interface ReportPageIntroI {
   };
 }
 
-const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
+const ReportPageFooter = ({
+  formId,
+  previousRoute,
+  nextRoute,
+}: ReportPageFooterI) => {
   const navigate = useNavigate();
   return (
     <Box sx={sx.footerBox}>
@@ -177,13 +181,22 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
           >
             Previous
           </Button>
-          <Button
-            form={formId}
-            type="submit"
-            rightIcon={<Icon icon="arrowRight" />}
-          >
-            Save & continue
-          </Button>
+          {formId ? (
+            <Button
+              form={formId}
+              type="submit"
+              rightIcon={<Icon icon="arrowRight" />}
+            >
+              Save & continue
+            </Button>
+          ) : (
+            <Button
+              onClick={() => navigate(nextRoute)}
+              rightIcon={<Icon icon="arrowRight" />}
+            >
+              Continue
+            </Button>
+          )}
         </Flex>
         {/* TODO: Add Prince Print Button */}
       </Box>
@@ -192,8 +205,9 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
 };
 
 interface ReportPageFooterI {
-  formId: string;
+  formId?: string;
   previousRoute: string;
+  nextRoute: string;
 }
 
 const sx = {
