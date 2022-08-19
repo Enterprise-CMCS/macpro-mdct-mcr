@@ -30,28 +30,26 @@ export const ReportPageEntitySection = ({ pageJson, onSubmit }: Props) => {
   }
 
   const tempEntityMap = {
-    plans: ["United Healthcare", "Care 1st", "Aetna Family Care"],
+    plans: ["Plan A", "Plan B", "Plan C"],
   };
 
   return (
-    <>
-      <Box>
-        <Heading as="h3">{drawer.dashboard.title}</Heading>
-        {tempEntityMap.plans.map((entity) => {
-          return (
-            <Flex key={entity} sx={sx.entityRow}>
-              <Heading as="h4">{entity}</Heading>
-              <Button
-                sx={sx.enterButton}
-                onClick={() => openRowDrawer(entity)}
-                variant="outline"
-              >
-                Enter
-              </Button>
-            </Flex>
-          );
-        })}
-      </Box>
+    <Box data-testid="entity-drawer-section">
+      <Heading as="h3">{drawer.dashboard.title}</Heading>
+      {tempEntityMap.plans.map((entity) => {
+        return (
+          <Flex key={entity} sx={sx.entityRow}>
+            <Heading as="h4">{entity}</Heading>
+            <Button
+              sx={sx.enterButton}
+              onClick={() => openRowDrawer(entity)}
+              variant="outline"
+            >
+              Enter
+            </Button>
+          </Flex>
+        );
+      })}
       <ReportDrawer
         drawerDisclosure={{
           isOpen,
@@ -62,7 +60,7 @@ export const ReportPageEntitySection = ({ pageJson, onSubmit }: Props) => {
         onSubmit={onSubmit}
       />
       <ReportPageFooter previousRoute={previousRoute} nextRoute={nextRoute} />
-    </>
+    </Box>
   );
 };
 

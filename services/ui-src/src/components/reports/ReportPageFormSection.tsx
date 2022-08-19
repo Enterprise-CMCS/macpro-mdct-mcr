@@ -1,5 +1,6 @@
 import { useContext } from "react";
 // components
+import { Box } from "@chakra-ui/react";
 import { Form, ReportContext, ReportPageFooter } from "components";
 // utils
 import { findRoute, hydrateFormFields } from "utils";
@@ -21,7 +22,7 @@ export const ReportPageFormSection = ({ pageJson, onSubmit }: Props) => {
   }
 
   return (
-    <>
+    <Box data-testid="form-section">
       <Form
         id={form.id}
         formJson={form}
@@ -33,7 +34,7 @@ export const ReportPageFormSection = ({ pageJson, onSubmit }: Props) => {
         previousRoute={previousRoute}
         nextRoute={nextRoute}
       />
-    </>
+    </Box>
   );
 };
 
