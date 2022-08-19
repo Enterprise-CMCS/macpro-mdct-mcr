@@ -15,9 +15,12 @@
       }
     ]
   },
-  "drawerDashboard": {
-    "title": "Report program characteristics & enrollment for each plan",
-    "entityType": "plans"
+  "drawer": {
+    "dashboard": {
+      "title": "Report program characteristics & enrollment for each plan",
+      "entityType": "plans"
+    },
+    "drawerTitle": "Report program characteristics & enrollment for"
   },
   "form": {
     "id": "dpc",

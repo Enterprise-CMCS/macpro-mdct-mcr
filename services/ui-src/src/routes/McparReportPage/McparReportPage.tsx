@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
@@ -28,8 +28,11 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { reportData, updateReportData, updateReport } =
     useContext(ReportContext);
-  const { path, pageType, intro, form, drawerDashboard } = pageJson;
+  const { path, pageType, intro, form, drawer } = pageJson;
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  // make state
+  const [currentEntity, setCurrentEntity] = useState("");
 
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
@@ -55,7 +58,8 @@ export const McparReportPage = ({ pageJson }: Props) => {
     navigate(nextRoute);
   };
 
-  const openRowDrawer = () => {
+  const openRowDrawer = (entity: string) => {
+    setCurrentEntity(entity);
     onOpen();
   };
 
@@ -67,6 +71,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
     plans: ["United Healthcare", "Care 1st", "Aetna Family Care"],
   };
 
+  const { dashboard, drawerTitle } = drawer;
   return (
     <ReportPage data-testid={form.id}>
       <Flex sx={sx.pageContainer}>
@@ -76,14 +81,14 @@ export const McparReportPage = ({ pageJson }: Props) => {
           {pageType === "drawer" ? (
             <>
               <Box>
-                <Heading as="h3">{drawerDashboard.title}</Heading>
+                <Heading as="h3">{dashboard.title}</Heading>
                 {tempEntityMap.plans.map((entity) => {
                   return (
                     <Flex key={entity} sx={sx.entityRow}>
                       <Heading as="h4">{entity}</Heading>
                       <Button
                         sx={sx.enterButton}
-                        onClick={() => openRowDrawer()}
+                        onClick={() => openRowDrawer(entity)}
                         variant="outline"
                       >
                         Enter
@@ -97,7 +102,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
                   isOpen,
                   onClose,
                 }}
-                drawerTitle={drawerDashboard.title}
+                drawerTitle={`${drawerTitle} ${currentEntity}`}
                 form={form}
                 onSubmit={onSubmit}
               />
