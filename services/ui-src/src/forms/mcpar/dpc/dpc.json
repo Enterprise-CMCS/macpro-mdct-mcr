@@ -1,18 +1,34 @@
 {
   "path": "/mcpar/plan-level-indicators/program-characteristics",
+  "pageType": "drawer",
   "intro": {
-    "section": "D: Plan-Level Indicators",
-    "subsection": "I: Program Characteristics"
+    "section": "Section D: Plan-Level Indicators",
+    "subsection": "Topic I. Program Characteristics & Enrollment",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["D1_Plan_Set"]
+    },
+    "info": [
+      {
+        "type": "html",
+        "content": "Need instructions from David"
+      }
+    ]
+  },
+  "drawerDashboard": {
+    "title": "Report program characteristics & enrollment for each plan",
+    "entityType": "plans"
   },
   "form": {
     "id": "dpc",
     "fields": [
       {
         "id": "dpc-1",
-        "type": "text",
+        "type": "number",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "D1.I.1 Plan enrollment",
+          "hint": "What is the total number of individuals enrolled in each plan as of the first day of the last month of the reporting year?",
+          "mask": "comma-separated"
         }
       }
     ]

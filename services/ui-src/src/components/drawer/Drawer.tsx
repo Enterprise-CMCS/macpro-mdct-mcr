@@ -60,7 +60,7 @@ interface Props {
 const sx = {
   drawerContent: {
     maxWidth: "90vw",
-    padding: "2rem",
+    padding: "1rem",
     overflowY: "scroll",
     "&.tablet": {
       maxWidth: "32rem",
@@ -70,7 +70,7 @@ const sx = {
     },
   },
   drawerHeader: {
-    padding: "0",
+    padding: "1rem",
   },
   drawerHeaderText: {
     paddingRight: "4rem",
@@ -91,6 +91,6 @@ const sx = {
     },
   },
   drawerBody: {
-    padding: "1rem 0",
+    padding: "1rem",
   },
 };

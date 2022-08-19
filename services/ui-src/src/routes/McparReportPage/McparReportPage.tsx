@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import {
-  Error,
   Form,
   Icon,
   ReportContext,
@@ -27,13 +26,9 @@ import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
-  const {
-    reportData,
-    updateReportData,
-    updateReport,
-    errorMessage: error,
-  } = useContext(ReportContext);
-  const { path, intro, form } = pageJson;
+  const { reportData, updateReportData, updateReport } =
+    useContext(ReportContext);
+  const { path, pageType, intro, form } = pageJson;
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
@@ -68,34 +63,50 @@ export const McparReportPage = ({ pageJson }: Props) => {
     form.fields = hydrateFormFields(form.fields, reportData);
   }
 
+  /*
+   * const tempEntityMap = {
+   *   plans: ["plan a", "plan b", "plan c"],
+   * };
+   */
+
   return (
-    // TODO: Handle ReportDrawer component
     <ReportPage data-testid={form.id}>
-      <ReportDrawer
-        drawerDisclosure={{
-          isOpen,
-          onClose,
-        }}
-        drawerTitle="whatever"
-        form={form}
-        onSubmit={onSubmit}
-      />
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {error ? (
-          <Error />
-        ) : (
-          <Flex sx={sx.reportContainer}>
-            <ReportPageIntro text={intro} />
-            <Form
-              id={form.id}
-              formJson={form}
-              formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-              onSubmit={onSubmit}
-            />
-            <ReportPageFooter formId={form.id} previousRoute={previousRoute} />
-          </Flex>
-        )}
+        <Flex sx={sx.reportContainer}>
+          <ReportPageIntro text={intro} />
+          {pageType === "drawer" ? (
+            <>
+              <Box></Box>
+              <ReportDrawer
+                drawerDisclosure={{
+                  isOpen,
+                  onClose,
+                }}
+                drawerTitle="whatever"
+                form={form}
+                onSubmit={onSubmit}
+              />
+              <ReportPageFooter
+                formId={form.id}
+                previousRoute={previousRoute}
+              />
+            </>
+          ) : (
+            <>
+              <Form
+                id={form.id}
+                formJson={form}
+                formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+                onSubmit={onSubmit}
+              />
+              <ReportPageFooter
+                formId={form.id}
+                previousRoute={previousRoute}
+              />
+            </>
+          )}
+        </Flex>
       </Flex>
     </ReportPage>
   );
