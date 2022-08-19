@@ -13,6 +13,7 @@ import {
   getReport,
   getReportsByState,
   writeReport,
+  deleteReport,
 } from "utils";
 // verbiage
 import { reportErrors } from "verbiage/errors";
@@ -24,6 +25,7 @@ export const ReportContext = createContext<ReportContextShape>({
   updateReportData: Function,
   fetchReport: Function,
   updateReport: Function,
+  removeReport: Function,
   errorMessage: undefined,
 });
 
@@ -60,7 +62,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await getReport(reportDetails);
       setReportStatus(result);
     } catch (e: any) {
-      setError(reportErrors.GET_REPORT_STATUS_FAILED);
+      setError(reportErrors.GET_REPORT_FAILED);
     }
   };
 
@@ -69,7 +71,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await getReportsByState(state);
       return result;
     } catch (e: any) {
-      setError(reportErrors.GET_REPORT_STATUS_FAILED);
+      setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
 
@@ -81,7 +83,15 @@ export const ReportProvider = ({ children }: Props) => {
       await writeReport(reportDetails, reportStatus);
       await fetchReport(reportDetails);
     } catch (e: any) {
-      setError(reportErrors.SET_REPORT_STATUS_FAILED);
+      setError(reportErrors.SET_REPORT_FAILED);
+    }
+  };
+
+  const removeReport = async (reportDetails: ReportDetails) => {
+    try {
+      await deleteReport(reportDetails);
+    } catch (e: any) {
+      setError(reportErrors.DELETE_REPORT_FAILED);
     }
   };
 
@@ -94,6 +104,7 @@ export const ReportProvider = ({ children }: Props) => {
       fetchReport,
       fetchReportsByState,
       updateReport,
+      removeReport,
       errorMessage: error,
     }),
     [reportData, reportStatus, error]
