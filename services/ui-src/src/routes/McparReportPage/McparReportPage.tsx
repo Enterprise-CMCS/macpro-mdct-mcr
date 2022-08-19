@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
@@ -28,12 +28,11 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { reportData, updateReportData, updateReport } =
     useContext(ReportContext);
-  const { path, pageType, intro, form } = pageJson;
+  const { path, pageType, intro, form, drawer } = pageJson;
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  useEffect(() => {
-    onOpen();
-  }, []);
+  // make state
+  const [currentEntity, setCurrentEntity] = useState("");
 
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
@@ -59,15 +58,18 @@ export const McparReportPage = ({ pageJson }: Props) => {
     navigate(nextRoute);
   };
 
+  const openRowDrawer = (entity: string) => {
+    setCurrentEntity(entity);
+    onOpen();
+  };
+
   if (reportData) {
     form.fields = hydrateFormFields(form.fields, reportData);
   }
 
-  /*
-   * const tempEntityMap = {
-   *   plans: ["plan a", "plan b", "plan c"],
-   * };
-   */
+  const tempEntityMap = {
+    plans: ["United Healthcare", "Care 1st", "Aetna Family Care"],
+  };
 
   return (
     <ReportPage data-testid={form.id}>
@@ -77,19 +79,35 @@ export const McparReportPage = ({ pageJson }: Props) => {
           <ReportPageIntro text={intro} />
           {pageType === "drawer" ? (
             <>
-              <Box></Box>
+              <Box>
+                <Heading as="h3">{drawer.dashboard.title}</Heading>
+                {tempEntityMap.plans.map((entity) => {
+                  return (
+                    <Flex key={entity} sx={sx.entityRow}>
+                      <Heading as="h4">{entity}</Heading>
+                      <Button
+                        sx={sx.enterButton}
+                        onClick={() => openRowDrawer(entity)}
+                        variant="outline"
+                      >
+                        Enter
+                      </Button>
+                    </Flex>
+                  );
+                })}
+              </Box>
               <ReportDrawer
                 drawerDisclosure={{
                   isOpen,
                   onClose,
                 }}
-                drawerTitle="whatever"
+                drawerTitle={`${drawer.drawerTitle} ${currentEntity}`}
                 form={form}
                 onSubmit={onSubmit}
               />
               <ReportPageFooter
-                formId={form.id}
                 previousRoute={previousRoute}
+                nextRoute={nextRoute}
               />
             </>
           ) : (
@@ -103,6 +121,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
               <ReportPageFooter
                 formId={form.id}
                 previousRoute={previousRoute}
+                nextRoute={nextRoute}
               />
             </>
           )}
@@ -145,7 +164,11 @@ interface ReportPageIntroI {
   };
 }
 
-const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
+const ReportPageFooter = ({
+  formId,
+  previousRoute,
+  nextRoute,
+}: ReportPageFooterI) => {
   const navigate = useNavigate();
   return (
     <Box sx={sx.footerBox}>
@@ -158,13 +181,22 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
           >
             Previous
           </Button>
-          <Button
-            form={formId}
-            type="submit"
-            rightIcon={<Icon icon="arrowRight" />}
-          >
-            Save & continue
-          </Button>
+          {formId ? (
+            <Button
+              form={formId}
+              type="submit"
+              rightIcon={<Icon icon="arrowRight" />}
+            >
+              Save & continue
+            </Button>
+          ) : (
+            <Button
+              onClick={() => navigate(nextRoute)}
+              rightIcon={<Icon icon="arrowRight" />}
+            >
+              Continue
+            </Button>
+          )}
         </Flex>
         {/* TODO: Add Prince Print Button */}
       </Box>
@@ -173,8 +205,9 @@ const ReportPageFooter = ({ formId, previousRoute }: ReportPageFooterI) => {
 };
 
 interface ReportPageFooterI {
-  formId: string;
+  formId?: string;
   previousRoute: string;
+  nextRoute: string;
 }
 
 const sx = {
@@ -188,6 +221,17 @@ const sx = {
     maxWidth: "reportPageWidth",
     marginY: "3.5rem",
     marginLeft: "3.5rem",
+    h4: {
+      fontSize: "lg",
+      fontWeight: "bold",
+    },
+    h3: {
+      fontSize: "lg",
+      color: "palette.gray_medium",
+      fontWeight: "bold",
+      paddingBottom: "0.75rem",
+      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    },
   },
   introBox: {
     marginBottom: "2rem",
@@ -215,6 +259,20 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+  },
+  enterButton: {
+    fontSize: "sm",
+    fontWeight: "normal",
+    height: "1.75rem",
+    width: "4.25rem",
+  },
+  entityRow: {
+    justifyContent: "space-between",
+    height: "3.25rem",
+    padding: "0.5rem",
+    paddingLeft: "0.75rem",
+    alignItems: "center",
+    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
   },
   spreadsheetWidgetBox: {
     marginTop: "2rem",
