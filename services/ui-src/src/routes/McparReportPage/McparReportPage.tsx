@@ -28,7 +28,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { reportData, updateReportData, updateReport } =
     useContext(ReportContext);
-  const { path, pageType, intro, form } = pageJson;
+  const { path, pageType, intro, form, drawerDashboard } = pageJson;
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
@@ -63,11 +63,9 @@ export const McparReportPage = ({ pageJson }: Props) => {
     form.fields = hydrateFormFields(form.fields, reportData);
   }
 
-  /*
-   * const tempEntityMap = {
-   *   plans: ["plan a", "plan b", "plan c"],
-   * };
-   */
+  const tempEntityMap = {
+    plans: ["United Healthcare", "Care 1st", "Aetna Family Care"],
+  };
 
   return (
     <ReportPage data-testid={form.id}>
@@ -77,13 +75,18 @@ export const McparReportPage = ({ pageJson }: Props) => {
           <ReportPageIntro text={intro} />
           {pageType === "drawer" ? (
             <>
-              <Box></Box>
+              <Box>
+                <h5>{drawerDashboard.title}</h5>
+                {tempEntityMap.plans.map((plan) => {
+                  return <h4>{plan}</h4>;
+                })}
+              </Box>
               <ReportDrawer
                 drawerDisclosure={{
                   isOpen,
                   onClose,
                 }}
-                drawerTitle="whatever"
+                drawerTitle={drawerDashboard.title}
                 form={form}
                 onSubmit={onSubmit}
               />
@@ -188,6 +191,19 @@ const sx = {
     maxWidth: "reportPageWidth",
     marginY: "3.5rem",
     marginLeft: "3.5rem",
+    h4: {
+      fontSize: "lg",
+      fontWeight: "bold",
+      padding: "0.5rem 0 0.5rem 0",
+      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_light)",
+    },
+    h5: {
+      fontSize: "lg",
+      color: "palette.gray_light",
+      fontWeight: "bold",
+      paddingBottom: "0.5rem",
+      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_light)",
+    },
   },
   introBox: {
     marginBottom: "2rem",
