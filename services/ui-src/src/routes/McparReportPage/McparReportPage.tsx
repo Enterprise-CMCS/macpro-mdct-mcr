@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
@@ -31,10 +31,6 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const { path, pageType, intro, form, drawerDashboard } = pageJson;
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  useEffect(() => {
-    onOpen();
-  }, []);
-
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
@@ -59,6 +55,10 @@ export const McparReportPage = ({ pageJson }: Props) => {
     navigate(nextRoute);
   };
 
+  const openRowDrawer = () => {
+    onOpen();
+  };
+
   if (reportData) {
     form.fields = hydrateFormFields(form.fields, reportData);
   }
@@ -76,9 +76,20 @@ export const McparReportPage = ({ pageJson }: Props) => {
           {pageType === "drawer" ? (
             <>
               <Box>
-                <h5>{drawerDashboard.title}</h5>
-                {tempEntityMap.plans.map((plan) => {
-                  return <h4>{plan}</h4>;
+                <Heading as="h3">{drawerDashboard.title}</Heading>
+                {tempEntityMap.plans.map((entity) => {
+                  return (
+                    <Flex key={entity} sx={sx.entityRow}>
+                      <Heading as="h4">{entity}</Heading>
+                      <Button
+                        sx={sx.enterButton}
+                        onClick={() => openRowDrawer()}
+                        variant="outline"
+                      >
+                        Enter
+                      </Button>
+                    </Flex>
+                  );
                 })}
               </Box>
               <ReportDrawer
@@ -194,15 +205,13 @@ const sx = {
     h4: {
       fontSize: "lg",
       fontWeight: "bold",
-      padding: "0.5rem 0 0.5rem 0",
-      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_light)",
     },
-    h5: {
+    h3: {
       fontSize: "lg",
-      color: "palette.gray_light",
+      color: "palette.gray_medium",
       fontWeight: "bold",
-      paddingBottom: "0.5rem",
-      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_light)",
+      paddingBottom: "0.75rem",
+      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
     },
   },
   introBox: {
@@ -231,6 +240,20 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+  },
+  enterButton: {
+    fontSize: "sm",
+    fontWeight: "normal",
+    height: "1.75rem",
+    width: "4.25rem",
+  },
+  entityRow: {
+    justifyContent: "space-between",
+    height: "3.25rem",
+    padding: "0.5rem",
+    paddingLeft: "0.75rem",
+    alignItems: "center",
+    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
   },
   spreadsheetWidgetBox: {
     marginTop: "2rem",
