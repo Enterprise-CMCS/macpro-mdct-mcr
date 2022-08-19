@@ -30,6 +30,7 @@ export interface PageJson {
   path: string;
   intro?: AnyObject;
   form: FormJson;
+  [key: string]: any;
 }
 
 export interface ReportPath {
@@ -59,6 +60,7 @@ export interface ReportDetails {
 export interface ReportStatusShape {
   [key: string]: any;
 }
+
 export interface ReportContextMethods {
   fetchReportData: Function;
   updateReportData: Function;
