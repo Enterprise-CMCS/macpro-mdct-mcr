@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
 import { ReportContext, StandardFormSection } from "components";
@@ -46,34 +45,10 @@ const standardFormSectionComponent = (
   </RouterWrappedComponent>
 );
 
-const fillOutForm = async (form: any) => {
-  // selectors for all the required fields
-  const a2aInput = form.querySelector("[name='apoc-a2a']")!;
-  const a2bInput = form.querySelector("[name='apoc-a2b']")!;
-  const a3aInput = form.querySelector("[name='apoc-a3a']")!;
-  const a3bInput = form.querySelector("[name='apoc-a3b']")!;
-  // fill out form fields
-  await userEvent.type(a2aInput, "mock name");
-  await userEvent.type(a2bInput, "mock@mock.com");
-  await userEvent.type(a3aInput, "mock name");
-  await userEvent.type(a3bInput, "mock@mock.com");
-};
-
 describe("Test StandardFormSection view", () => {
   test("StandardFormSection view renders", () => {
     render(standardFormSectionComponent);
     expect(screen.getByTestId("standard-form-section")).toBeVisible();
-  });
-});
-
-describe("Test StandardFormSection next navigation", () => {
-  it("Navigates to next route on successful submission", async () => {
-    const result = render(standardFormSectionComponent);
-    const form = result.container;
-    await fillOutForm(form);
-    const submitButton = form.querySelector("[type='submit']")!;
-    await userEvent.click(submitButton);
-    await expect(mockOnSubmit).toHaveBeenCalled();
   });
 });
 

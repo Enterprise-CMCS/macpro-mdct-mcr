@@ -20,6 +20,7 @@ jest.mock("utils/api/requestMethods/report", () => ({
   getReport: jest.fn(() => {}),
   getReportsByState: jest.fn(() => {}),
   writeReport: jest.fn(() => {}),
+  deleteReport: jest.fn(() => {}),
 }));
 
 const mockReportDataAPI = require("utils/api/requestMethods/reportData");
@@ -60,6 +61,12 @@ const TestComponent = () => {
           context.updateReport(mockReportDetails, mockReportStatus)
         }
         data-testid="write-report-status-button"
+      >
+        Write Report
+      </button>
+      <button
+        onClick={() => context.removeReport(mockReportDetails)}
+        data-testid="delete-report-button"
       >
         Write Report
       </button>
@@ -120,7 +127,7 @@ describe("Test fetch methods", () => {
   });
 });
 
-describe("Test ReportProvider updateReport method", () => {
+describe("Test ReportProvider updateReportData method", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(testComponent);
@@ -185,6 +192,27 @@ describe("Test ReportProvider updateReport method", () => {
 
     // if fetchReport has been called, then so has API getReport
     expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Test ReportProvider removeReport method", () => {
+  beforeEach(async () => {
+    await act(async () => {
+      await render(testComponent);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("removeReport method calls API deleteReport method", async () => {
+    await act(async () => {
+      const deleteButton = screen.getByTestId("delete-report-button");
+      await userEvent.click(deleteButton);
+    });
+    expect(mockReportAPI.deleteReport).toHaveBeenCalled();
+    expect(mockReportAPI.deleteReport).toHaveBeenCalledWith(mockReportDetails);
   });
 });
 
@@ -259,6 +287,20 @@ describe("Test ReportProvider error states", () => {
     await act(async () => {
       const writeButton = screen.getByTestId("write-report-status-button");
       await userEvent.click(writeButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if removeReport throws error", async () => {
+    mockReportAPI.deleteReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const deleteButton = screen.getByTestId("delete-report-button");
+      await userEvent.click(deleteButton);
     });
     expect(screen.queryByTestId("error-message")).toBeVisible();
   });

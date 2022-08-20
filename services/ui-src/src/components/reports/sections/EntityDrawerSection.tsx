@@ -58,6 +58,7 @@ export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
         drawerTitle={`${drawer.drawerTitle} ${currentEntity}`}
         form={form}
         onSubmit={onSubmit}
+        data-testid="report-drawer"
       />
       <ReportPageFooter previousRoute={previousRoute} nextRoute={nextRoute} />
     </Box>
