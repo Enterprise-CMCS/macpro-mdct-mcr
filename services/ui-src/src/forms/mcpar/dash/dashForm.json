@@ -5,7 +5,7 @@
   },
   "fields": [
     {
-      "id": "dash-title",
+      "id": "dash-program-name",
       "type": "text",
       "props": {
         "label": "Program name"
@@ -15,7 +15,6 @@
       "id": "dash-contractPeriod",
       "type": "dropdown",
       "props": {
-        "id": "dash-contractPeriodLabel",
         "label": "Contract period of first report",
         "options": [
           {

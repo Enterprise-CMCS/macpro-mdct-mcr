@@ -84,7 +84,7 @@ export const Dashboard = () => {
   const addProgram = async (formData: any) => {
     const newProgramData = {
       key: formJson.id,
-      title: formData["dash-title"],
+      title: formData["dash-program-name"],
       contractPeriod: formData["dash-contractPeriod"],
       startDate: formData["dash-startDate"],
       endDate: formData["dash-endDate"],
@@ -143,16 +143,20 @@ export const Dashboard = () => {
               ))}
               {/* While this works React will throw an error in the console about having a link/button
                * in a Table Row. I didn't notice this until I was wrapping up */}
-              <Button variant={"outline"} onClick={() => startProgram()}>
-                Start report
-              </Button>
-              <button onClick={() => askToDeleteProgram()}>
-                <Image
-                  src={cancelIcon}
-                  alt="Delete Program"
-                  sx={sx.deleteProgram}
-                />
-              </button>
+              <Td>
+                <Button variant={"outline"} onClick={() => startProgram()}>
+                  Start report
+                </Button>
+              </Td>
+              <Td>
+                <button onClick={() => askToDeleteProgram()}>
+                  <Image
+                    src={cancelIcon}
+                    alt="Delete Program"
+                    sx={sx.deleteProgram}
+                  />
+                </button>
+              </Td>
             </Tr>
           ))}
         </ActionTable>
@@ -202,16 +206,17 @@ export const Dashboard = () => {
 const sx = {
   layout: {
     ".contentFlex": {
+      maxWidth: "appMax",
       marginTop: "1rem",
       marginBottom: "3.5rem",
     },
   },
   returnLink: {
     svg: {
-      marginTop: "-2px",
+      height: "1.375rem",
+      width: "1.375rem",
+      marginTop: "-0.125rem",
       marginRight: ".5rem",
-      height: "22px",
-      width: "22px",
     },
     textDecoration: "none",
     _hover: {

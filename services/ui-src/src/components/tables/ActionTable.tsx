@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 // components
 import {
   Table as TableRoot,
@@ -11,7 +12,6 @@ import {
 // utils
 import { makeMediaQueryClasses } from "utils";
 import { AnyObject, ActionTableContentShape } from "types";
-import { ReactChild } from "react";
 
 /*
  * This was a component I was experimenting with to see how we could add dynamic buttons to the table going forward.
@@ -65,7 +65,7 @@ export const ActionTable = ({
 
 interface Props {
   content: ActionTableContentShape;
-  children: ReactChild | ReactChild[];
+  children: ReactNode;
   variant?: string;
   sxOverride?: AnyObject;
   [key: string]: any;
