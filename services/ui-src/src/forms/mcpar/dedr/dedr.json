@@ -4,6 +4,7 @@
     "section": "D: Plan-Level Indicators",
     "subsection": "III: Encounter Data Report"
   },
+  "pageType": "drawer",
   "form": {
     "id": "dedr",
     "fields": [

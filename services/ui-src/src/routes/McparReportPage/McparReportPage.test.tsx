@@ -6,7 +6,9 @@ import { McparReportPage } from "routes";
 import { ReportContext } from "components";
 // utils
 import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
-import sectionA_pointofcontact from "forms/mcpar/apoc/apoc.json";
+// form json
+import * as standardPageJson from "forms/mcpar/apoc/apoc.json";
+import * as drawerPageJson from "forms/mcpar/dpc/dpc.json";
 
 // MOCKS
 
@@ -40,17 +42,23 @@ jest.mock("utils", () => ({
   },
 }));
 
-const mcparReportPageComponent = (
+const standardReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <McparReportPage pageJson={sectionA_pointofcontact} />
+      <McparReportPage pageJson={standardPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const testFormId = "apoc";
+const drawerReportPageComponent = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <McparReportPage pageJson={drawerPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
 
-const fillOutForm = async (form: any) => {
+const fillOutStandardPageForm = async (form: any) => {
   // selectors for all the required fields
   const a2aInput = form.querySelector("[name='apoc-a2a']")!;
   const a2bInput = form.querySelector("[name='apoc-a2b']")!;
@@ -64,31 +72,41 @@ const fillOutForm = async (form: any) => {
 };
 
 describe("Test McparReportPage view", () => {
-  beforeEach(() => {
-    render(mcparReportPageComponent);
+  test("Standard McparReportPage view renders", () => {
+    render(standardReportPageComponent);
+    expect(screen.getByTestId("standard-form-section")).toBeVisible();
   });
 
-  test("McparReportPage view renders", () => {
-    expect(screen.getByTestId(testFormId)).toBeVisible();
+  test("Drawer McparReportPage view renders", () => {
+    render(drawerReportPageComponent);
+    expect(screen.getByTestId("entity-drawer-section")).toBeVisible();
   });
 });
 
 describe("Test McparReportPage next navigation", () => {
-  it("Navigates to next route on successful submission", async () => {
-    const result = render(mcparReportPageComponent);
+  test("Standard page navigates to next route on successful submission", async () => {
+    const result = render(standardReportPageComponent);
     const form = result.container;
-    await fillOutForm(form);
+    await fillOutStandardPageForm(form);
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
     const expectedRoute = "/mcpar/program-information/reporting-period";
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     await expect(mockReportMethods.updateReportData).toHaveBeenCalledTimes(1);
   });
+
+  test("Drawer page navigates to next route at any time", async () => {
+    const result = render(drawerReportPageComponent);
+    const continueButton = result.getByText("Continue");
+    await userEvent.click(continueButton);
+    const expectedRoute = "/mcpar/plan-level-indicators/financial-performance";
+    await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
+  });
 });
 
 describe("Test McparReportPage previous navigation", () => {
   it("Navigates to previous route on previous button click", async () => {
-    render(mcparReportPageComponent);
+    render(standardReportPageComponent);
     const previousButton = screen.getByText("Previous")!;
     await userEvent.click(previousButton);
     const expectedRoute = "/mcpar/get-started";
@@ -96,9 +114,15 @@ describe("Test McparReportPage previous navigation", () => {
   });
 });
 
-describe("Test McparReportPage view accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(mcparReportPageComponent);
+describe("Test McparReportPage accessibility", () => {
+  test("Standard page should not have basic accessibility issues", async () => {
+    const { container } = render(standardReportPageComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  test("Drawer page should not have basic accessibility issues", async () => {
+    const { container } = render(standardReportPageComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
