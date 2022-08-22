@@ -1,4 +1,4 @@
-import { MouseEventHandler, useContext, useState } from "react";
+import { MouseEventHandler, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import {
@@ -14,7 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
 import { ActionTable, BasicPage, Form, Modal, ReportContext } from "components";
-import { calculateDueDate } from "utils";
+// utils
+import { ReportStatus } from "types";
+import { calculateDueDate, formatDateUtcToEt, useUser } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
@@ -29,34 +31,40 @@ export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
     verbiage;
 
-  /*
-   * NEXT STEPS TO COMPLETE THE DASHBOARD
-   *
-   * You will want to add code for fetching the reports by a given state or, in the future, all states if the
-   * user is an admin. For now we're just doing state users. The code would look something like this:
-   */
+  const { fetchReportsByState, reportsByState, setProgramName, updateReport } =
+    useContext(ReportContext);
 
-  /*
-   *  Get the reportsByState for state users
-   * const { reportsByState, fetchReportsByState } = useContext(ReportContext);
-   *
-   * On page load since the user is a state user grab all the reports for that state.
-   * This is where in the future you might change this code for admin users
-   * useEffect(() => {
-   *   const { user } = useUser();
-   *   const { state } = user ?? {};
-   *   fetchReportsByState(state);
-   * }, []);
-   *
-   * Once you've grabbed the reports you can use the reportsByState from the ReportContext
-   * instead the the internal programs useState below to decide what is in the table
-   */
+  const { user } = useUser();
+  const { state } = user ?? {};
 
-  /*
-   * Table Content
-   * Will want to convert this internal state list of programs over to the ReportProvider context
-   */
-  const [programs, setPrograms] = useState<Array<Array<any>>>([]);
+  useEffect(() => {
+    fetchReportsByState(state);
+  }, []);
+
+  const [programs, setPrograms] = useState<Array<Array<any>>>(
+    reportsByState || []
+  );
+
+  useEffect(() => {
+    // update form data
+    if (reportsByState) {
+      let loadedPrograms: any = [];
+      reportsByState.forEach((report: any) => {
+        loadedPrograms = [
+          ...loadedPrograms,
+          [
+            report.reportId,
+            // TODO send Due Date to DB and fetch here
+            "",
+            formatDateUtcToEt(report.lastAltered),
+            "-",
+          ],
+        ];
+      });
+      setPrograms(loadedPrograms);
+    }
+  }, [reportsByState]);
+
   const tableContent = {
     caption: body.table.caption,
     headRow: body.table.headRow,
@@ -95,17 +103,18 @@ export const Dashboard = () => {
       newProgramData.contractPeriod !== "other"
         ? newProgramData.contractPeriod
         : calculateDueDate(newProgramData.endDate);
-    setPrograms([...programs, [newProgramData.title, dueDate, "-", "-"]]);
+    setPrograms([
+      ...programs,
+      [newProgramData.title, dueDate, formatDateUtcToEt(Date.now()), "-"],
+    ]);
     onCloseAddProgram();
+    updateReport(
+      { state: state, reportId: newProgramData.title },
+      ReportStatus.CREATED
+    );
   };
 
-  /*
-   * This function is where you'll want to navigate to the program you've selected and
-   * open its mcpar form pages. You'll want to utilize McparReportPage and navigate()
-   * here.
-   */
   const navigate = useNavigate();
-  const { setProgramName } = useContext(ReportContext);
   const mcparFormBeginning = "../../mcpar/program-information/point-of-contact";
   const startProgram = (programName: string) => {
     setProgramName(programName);

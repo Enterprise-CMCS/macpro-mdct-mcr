@@ -116,7 +116,7 @@ export const ReportProvider = ({ children }: Props) => {
       setProgramName,
       errorMessage: error,
     }),
-    [reportData, reportStatus, error, programName]
+    [reportData, reportStatus, reportsByState, error, programName]
   );
 
   return (
