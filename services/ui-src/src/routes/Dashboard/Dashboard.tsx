@@ -21,6 +21,7 @@ import formSchema from "forms/mcpar/dash/dashForm.schema";
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import editIcon from "assets/icons/icon_edit.png";
 
 export const Dashboard = () => {
   // Verbiage
@@ -130,13 +131,12 @@ export const Dashboard = () => {
           {programs.map((row: string[], index: number) => (
             // Row
             <Tr key={index}>
-              <button onClick={() => askToDeleteProgram()}>
-                <Image
-                  src={cancelIcon}
-                  alt="Delete Program"
-                  sx={sx.deleteProgram}
-                />
-              </button>
+              <Td sx={sx.editProgram}>
+                {/* TODO: Pass existing data to populate modal */}
+                <button onClick={onOpenAddProgram as MouseEventHandler}>
+                  <Image src={editIcon} alt="Edit Program" />
+                </button>
+              </Td>
               {/* Row Cells */}
               {row.map((cell: string, index: number) => (
                 <Td key={index}>{cell}</Td>
@@ -244,6 +244,13 @@ const sx = {
   deleteProgram: {
     height: "1.75rem",
     marginLeft: "1rem",
+  },
+  editProgram: {
+    padding: "0",
+    img: {
+      height: "1.5rem",
+      marginLeft: "0.5rem",
+    },
   },
   emptyTableContainer: {
     maxWidth: "75%",

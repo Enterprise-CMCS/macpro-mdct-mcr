@@ -19,7 +19,7 @@ export default {
   body: {
     table: {
       caption: "MCPAR Programs",
-      headRow: ["Program Name", "Due Date", "Last Edited", "Edited By", ""],
+      headRow: ["", "Program Name", "Due Date", "Last Edited", "Edited By", ""],
       empty:
         "For this report, a managed care program is defined by a set of distinct benefits and eligibility criteria articulated in a contract between states and the state’s managed care plans",
     },
