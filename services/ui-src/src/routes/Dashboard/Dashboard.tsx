@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
 import { ActionTable, BasicPage, Form, Modal } from "components";
-import { cacluateDueDate } from "utils";
+import { calculateDueDate } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
@@ -92,7 +92,7 @@ export const Dashboard = () => {
     const dueDate =
       newProgramData.contractPeriod !== "other"
         ? newProgramData.contractPeriod
-        : cacluateDueDate(newProgramData.endDate);
+        : calculateDueDate(newProgramData.endDate);
     setPrograms([...programs, [newProgramData.title, dueDate, "-", "-"]]);
     onCloseAddProgram();
   };
@@ -130,6 +130,13 @@ export const Dashboard = () => {
           {programs.map((row: string[], index: number) => (
             // Row
             <Tr key={index}>
+              <button onClick={() => askToDeleteProgram()}>
+                <Image
+                  src={cancelIcon}
+                  alt="Delete Program"
+                  sx={sx.deleteProgram}
+                />
+              </button>
               {/* Row Cells */}
               {row.map((cell: string, index: number) => (
                 <Td key={index}>{cell}</Td>

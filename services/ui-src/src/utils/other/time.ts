@@ -108,7 +108,7 @@ const allottedTime = 180; // days
  * Takes a date and adds 180 days to it
  * Ex: 6/30/22 Becomes 12/27/2022)
  */
-export const cacluateDueDate = (date: string) => {
+export const calculateDueDate = (date: string) => {
   const givenDate = new Date(date);
   const dueDate = givenDate.setDate(givenDate.getDate() + allottedTime);
   return utcDateToReadableDate(dueDate, "short");
