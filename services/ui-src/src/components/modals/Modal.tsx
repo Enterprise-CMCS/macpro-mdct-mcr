@@ -1,5 +1,4 @@
-import React, { ReactChild } from "react";
-
+import { ReactNode } from "react";
 // components
 import {
   Button,
@@ -13,6 +12,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
+// utils
 import { makeMediaQueryClasses } from "utils";
 
 export const Modal = ({
@@ -71,17 +71,17 @@ export const Modal = ({
 
 interface Props {
   actionFunction: Function;
-  actionId?: string;
   modalState: {
     isOpen: boolean;
     onClose: any;
   };
-  children?: ReactChild | ReactChild[];
   content: {
     heading: string;
     actionButtonText: string;
     closeButtonText: string;
   };
+  actionId?: string;
+  children?: ReactNode;
   [key: string]: any;
 }
 

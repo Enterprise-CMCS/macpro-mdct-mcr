@@ -5,7 +5,7 @@
   },
   "fields": [
     {
-      "id": "dash-title",
+      "id": "dash-program-name",
       "type": "text",
       "props": {
         "label": "Program name"

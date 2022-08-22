@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
 import { ActionTable, BasicPage, Form, Modal } from "components";
-import { cacluateDueDate } from "utils";
+import { calculateDueDate } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
@@ -83,7 +83,7 @@ export const Dashboard = () => {
   const addProgram = async (formData: any) => {
     const newProgramData = {
       key: formJson.id,
-      title: formData["dash-title"],
+      title: formData["dash-program-name"],
       contractPeriod: formData["dash-contractPeriod"],
       startDate: formData["dash-startDate"],
       endDate: formData["dash-endDate"],
@@ -92,7 +92,7 @@ export const Dashboard = () => {
     const dueDate =
       newProgramData.contractPeriod !== "other"
         ? newProgramData.contractPeriod
-        : cacluateDueDate(newProgramData.endDate);
+        : calculateDueDate(newProgramData.endDate);
     setPrograms([...programs, [newProgramData.title, dueDate, "-", "-"]]);
     onCloseAddProgram();
   };
@@ -136,16 +136,20 @@ export const Dashboard = () => {
               ))}
               {/* While this works React will throw an error in the console about having a link/button
                * in a Table Row. I didn't notice this until I was wrapping up */}
-              <Button variant={"outline"} onClick={() => startProgram()}>
-                Start report
-              </Button>
-              <button onClick={() => askToDeleteProgram()}>
-                <Image
-                  src={cancelIcon}
-                  alt="Delete Program"
-                  sx={sx.deleteProgram}
-                />
-              </button>
+              <Td>
+                <Button variant={"outline"} onClick={() => startProgram()}>
+                  Start report
+                </Button>
+              </Td>
+              <Td>
+                <button onClick={() => askToDeleteProgram()}>
+                  <Image
+                    src={cancelIcon}
+                    alt="Delete Program"
+                    sx={sx.deleteProgram}
+                  />
+                </button>
+              </Td>
             </Tr>
           ))}
         </ActionTable>
