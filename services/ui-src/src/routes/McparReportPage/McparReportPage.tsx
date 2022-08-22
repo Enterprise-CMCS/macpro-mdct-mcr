@@ -18,16 +18,14 @@ import { mcparRoutes } from "forms/mcpar";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
-  const { updateReportData, updateReport } = useContext(ReportContext);
+  const { updateReportData, updateReport, programName } =
+    useContext(ReportContext);
   const { path, pageType, intro, form } = pageJson;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
   // get user's state
   const { user } = useUser();
   const { state, userRole } = user ?? {};
-
-  // TODO: get real program name per report
-  const programName = "tempName";
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {

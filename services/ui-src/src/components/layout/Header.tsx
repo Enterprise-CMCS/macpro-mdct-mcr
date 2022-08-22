@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { UsaBanner } from "@cmsgov/design-system";
@@ -10,7 +11,7 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { Menu, MenuOption } from "components";
+import { Menu, MenuOption, ReportContext } from "components";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
 import { isMcparReportPage } from "forms/mcpar";
@@ -21,8 +22,7 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   const { pathname } = useLocation();
-  // TODO: Get current program name
-  const currentProgramName = "Current Program Name";
+  const { programName } = useContext(ReportContext);
 
   return (
     <Box sx={sx.root} id="header">
@@ -60,9 +60,7 @@ export const Header = ({ handleLogout }: Props) => {
           <Container sx={sx.subnavContainer} className={mqClasses}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
-                <Text sx={sx.programNameText}>
-                  Program: {currentProgramName}
-                </Text>
+                <Text sx={sx.programNameText}>Program: {programName}</Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
                 {!isMobile && (

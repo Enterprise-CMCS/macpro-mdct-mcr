@@ -1,4 +1,5 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -12,7 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
-import { ActionTable, BasicPage, Form, Modal } from "components";
+import { ActionTable, BasicPage, Form, Modal, ReportContext } from "components";
 import { calculateDueDate } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
@@ -103,7 +104,13 @@ export const Dashboard = () => {
    * open its mcpar form pages. You'll want to utilize McparReportPage and navigate()
    * here.
    */
-  const startProgram = () => {};
+  const navigate = useNavigate();
+  const { setProgramName } = useContext(ReportContext);
+  const mcparFormBeginning = "../../mcpar/program-information/point-of-contact";
+  const startProgram = (programName: string) => {
+    setProgramName(programName);
+    navigate(mcparFormBeginning);
+  };
 
   return (
     <BasicPage sx={sx.layout}>
@@ -141,10 +148,11 @@ export const Dashboard = () => {
               {row.map((cell: string, index: number) => (
                 <Td key={index}>{cell}</Td>
               ))}
-              {/* While this works React will throw an error in the console about having a link/button
-               * in a Table Row. I didn't notice this until I was wrapping up */}
               <Td>
-                <Button variant={"outline"} onClick={() => startProgram()}>
+                <Button
+                  variant={"outline"}
+                  onClick={() => startProgram(row[0])}
+                >
                   Start report
                 </Button>
               </Td>

@@ -20,15 +20,13 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { reportStatus, fetchReport, updateReport } = useContext(ReportContext);
+  const { reportStatus, fetchReport, updateReport, programName } =
+    useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user's state
   const { user } = useUser();
   const { state, userRole } = user ?? {};
-
-  // TODO: get real program name per report
-  const programName = "tempName";
 
   const reportDetails = {
     state: state,

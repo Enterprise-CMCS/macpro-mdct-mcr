@@ -28,6 +28,8 @@ export const ReportContext = createContext<ReportContextShape>({
   updateReport: Function,
   fetchReportsByState: Function,
   removeReport: Function,
+  programName: undefined,
+  setProgramName: Function,
   errorMessage: undefined,
 });
 
@@ -38,6 +40,7 @@ export const ReportProvider = ({ children }: Props) => {
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
   const [reportsByState, setReportsByState] = useState<any>();
   const [error, setError] = useState<string>();
+  const [programName, setProgramName] = useState<string>();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
@@ -109,9 +112,11 @@ export const ReportProvider = ({ children }: Props) => {
       fetchReportsByState,
       updateReport,
       removeReport,
+      programName,
+      setProgramName,
       errorMessage: error,
     }),
-    [reportData, reportStatus, error]
+    [reportData, reportStatus, error, programName]
   );
 
   return (
