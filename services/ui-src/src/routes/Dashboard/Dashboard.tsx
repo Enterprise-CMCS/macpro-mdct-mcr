@@ -199,16 +199,17 @@ export const Dashboard = () => {
 const sx = {
   layout: {
     ".contentFlex": {
+      maxWidth: "appMax",
       marginTop: "1rem",
       marginBottom: "3.5rem",
     },
   },
   returnLink: {
     svg: {
-      marginTop: "-2px",
+      height: "1.375rem",
+      width: "1.375rem",
+      marginTop: "-0.125rem",
       marginRight: ".5rem",
-      height: "22px",
-      width: "22px",
     },
     textDecoration: "none",
     _hover: {
