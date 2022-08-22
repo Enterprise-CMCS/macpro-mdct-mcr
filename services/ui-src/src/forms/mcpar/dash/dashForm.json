@@ -15,7 +15,8 @@
       "id": "dash-contractPeriod",
       "type": "dropdown",
       "props": {
-        "label": "dash-contractPeriodLabel",
+        "id": "dash-contractPeriodLabel",
+        "label": "Contract period of first report",
         "options": [
           {
             "label": "- Select an option -",
