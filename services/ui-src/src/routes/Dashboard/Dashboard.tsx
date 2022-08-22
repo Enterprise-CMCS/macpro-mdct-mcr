@@ -130,13 +130,6 @@ export const Dashboard = () => {
           {programs.map((row: string[], index: number) => (
             // Row
             <Tr key={index}>
-              <button onClick={() => askToDeleteProgram()}>
-                <Image
-                  src={cancelIcon}
-                  alt="Delete Program"
-                  sx={sx.deleteProgram}
-                />
-              </button>
               {/* Row Cells */}
               {row.map((cell: string, index: number) => (
                 <Td key={index}>{cell}</Td>
