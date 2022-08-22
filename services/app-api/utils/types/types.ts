@@ -14,9 +14,7 @@ export interface DynamoWrite {
 
 export interface DynamoDelete {
   TableName: string;
-  Key: {
-    key: string;
-  };
+  Key: { [key: string]: any };
 }
 
 export interface DynamoUpdate {
