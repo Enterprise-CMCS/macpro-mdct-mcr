@@ -110,6 +110,6 @@ const allottedTime = 180; // days
  */
 export const calculateDueDate = (date: string) => {
   const givenDate = new Date(date);
-  const dueDate = givenDate.setDate(givenDate.getDate() + allottedTime);
+  const dueDate = givenDate.setUTCDate(givenDate.getUTCDate() + allottedTime);
   return formatDateUtcToEt(dueDate);
 };
