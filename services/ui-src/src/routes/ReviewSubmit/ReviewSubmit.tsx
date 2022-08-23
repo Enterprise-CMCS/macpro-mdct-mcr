@@ -26,7 +26,7 @@ export const ReviewSubmit = () => {
 
   // get user's state
   const { user } = useUser();
-  const { state, userRole } = user ?? {};
+  const { full_name, state, userRole } = user ?? {};
 
   const reportDetails = {
     state: state,
@@ -40,7 +40,10 @@ export const ReviewSubmit = () => {
   const submitForm = () => {
     // TODO: Add check to make sure user filled out the form
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      updateReport(reportDetails, ReportStatus.SUBMITTED);
+      updateReport(reportDetails, {
+        status: ReportStatus.SUBMITTED,
+        lastAlteredBy: full_name,
+      });
     }
     onClose();
   };

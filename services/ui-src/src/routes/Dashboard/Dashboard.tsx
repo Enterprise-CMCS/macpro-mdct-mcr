@@ -35,15 +35,13 @@ export const Dashboard = () => {
     useContext(ReportContext);
 
   const { user } = useUser();
-  const { state } = user ?? {};
+  const { full_name, state } = user ?? {};
 
   useEffect(() => {
     fetchReportsByState(state);
   }, []);
 
-  const [programs, setPrograms] = useState<Array<Array<any>>>(
-    reportsByState || []
-  );
+  const [programs, setPrograms] = useState<Array<Array<any>>>([]);
 
   useEffect(() => {
     // update form data
@@ -54,10 +52,9 @@ export const Dashboard = () => {
           ...loadedPrograms,
           [
             report.reportId,
-            // TODO send Due Date to DB and fetch here
-            "",
+            report?.dueDate || "",
             formatDateUtcToEt(report.lastAltered),
-            "-",
+            report?.lastAlteredBy || "",
           ],
         ];
       });
@@ -105,12 +102,16 @@ export const Dashboard = () => {
         : calculateDueDate(newProgramData.endDate);
     setPrograms([
       ...programs,
-      [newProgramData.title, dueDate, formatDateUtcToEt(Date.now()), "-"],
+      [newProgramData.title, dueDate, formatDateUtcToEt(Date.now()), full_name],
     ]);
     onCloseAddProgram();
     updateReport(
       { state: state, reportId: newProgramData.title },
-      ReportStatus.CREATED
+      {
+        status: ReportStatus.CREATED,
+        dueDate: dueDate,
+        lastAlteredBy: full_name,
+      }
     );
   };
 
@@ -130,6 +131,7 @@ export const Dashboard = () => {
         </Link>
       </Box>
       <Box sx={sx.leadTextBox}>
+        <Text sx={sx.reportingYearText}>{intro.eyebrow}</Text>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
         </Heading>
@@ -243,6 +245,11 @@ const sx = {
   leadTextBox: {
     width: "100%",
     margin: "2.5rem 0 2.25rem 0",
+  },
+  reportingYearText: {
+    marginBottom: "0.25rem",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
   },
   headerText: {
     marginBottom: "1rem",

@@ -49,6 +49,7 @@ export const mockStateUser: UserContextI = {
     email: "stateuser@test.com",
     given_name: "Thelonious",
     family_name: "States",
+    full_name: "Thelonious States",
     state: "MN",
   },
   showLocalLogins: true,
@@ -62,6 +63,7 @@ export const mockAdminUser: UserContextI = {
     email: "adminuser@test.com",
     given_name: "Adam",
     family_name: "Admin",
+    full_name: "Adam Admin",
     state: undefined,
   },
   showLocalLogins: false,
@@ -127,4 +129,4 @@ export const mockReportData = {
   array: ["array1, array2"],
 };
 
-export const mockReportStatus = ReportStatus.CREATED;
+export const mockReportStatus = { status: ReportStatus.CREATED };

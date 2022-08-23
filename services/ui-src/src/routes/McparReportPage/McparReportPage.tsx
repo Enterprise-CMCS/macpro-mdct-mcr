@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Flex } from "@chakra-ui/react";
@@ -25,7 +25,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
 
   // get user's state
   const { user } = useUser();
-  const { state, userRole } = user ?? {};
+  const { full_name, state, userRole } = user ?? {};
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
@@ -33,7 +33,10 @@ export const McparReportPage = ({ pageJson }: Props) => {
         state: state,
         reportId: programName,
       };
-      const reportStatus = ReportStatus.IN_PROGRESS;
+      const reportStatus = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      };
       updateReportData(reportDetails, formData);
       updateReport(reportDetails, reportStatus);
     }
@@ -47,6 +50,12 @@ export const McparReportPage = ({ pageJson }: Props) => {
       return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
     }
   };
+
+  useEffect(() => {
+    if (!programName) {
+      navigate("/mcpar/dashboard");
+    }
+  }, [programName]);
 
   return (
     <ReportPage data-testid={form.id}>

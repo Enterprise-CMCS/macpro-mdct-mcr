@@ -83,7 +83,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReport = async (
     reportDetails: ReportDetails,
-    reportStatus: string
+    reportStatus: ReportStatusShape
   ) => {
     try {
       await writeReport(reportDetails, reportStatus);

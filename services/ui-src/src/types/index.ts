@@ -13,6 +13,7 @@ export interface MCRUser {
   email: string;
   given_name: string;
   family_name: string;
+  full_name: string;
   userRole?: string;
   state?: string;
 }

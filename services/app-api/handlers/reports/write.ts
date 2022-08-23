@@ -21,7 +21,7 @@ export const writeReport = handler(async (event, context) => {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
 
-  const { body } = event;
+  const body = JSON.parse(event!.body!);
   const state: string = event.pathParameters.state;
   const reportId: string = event.pathParameters.reportId;
 
@@ -32,8 +32,9 @@ export const writeReport = handler(async (event, context) => {
       reportId: reportId,
       createdAt: Date.now(),
       lastAltered: Date.now(),
-      lastAlteredBy: event?.headers["cognito-identity-id"],
-      status: body,
+      lastAlteredBy: body?.lastAlteredBy,
+      status: body?.status,
+      dueDate: body?.dueDate,
     },
   };
   const getCurrentReport = await getReport(event, context);
@@ -47,8 +48,9 @@ export const writeReport = handler(async (event, context) => {
           reportId: reportId,
           createdAt: currentBody.createdAt,
           lastAltered: Date.now(),
-          lastAlteredBy: event?.headers["cognito-identity-id"],
-          status: body,
+          lastAlteredBy: body?.lastAlteredBy,
+          status: body?.status,
+          dueDate: currentBody?.dueDate,
         },
       };
     }
