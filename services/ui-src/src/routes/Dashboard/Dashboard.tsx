@@ -15,7 +15,7 @@ import {
 import { ArrowIcon } from "@cmsgov/design-system";
 import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 // utils
-import { ReportDetails, ReportStatus } from "types";
+import { ReportDetails, ReportShape, ReportStatus } from "types";
 import { calculateDueDate, formatDateUtcToEt, useUser } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
@@ -122,16 +122,43 @@ export const Dashboard = () => {
 
   const navigate = useNavigate();
   const mcparFormBeginning = "../../mcpar/program-information/point-of-contact";
-  const startProgram = (programName: string) => {
+  const startProgram = (reportId: string) => {
     const reportDetails: ReportDetails = {
       state: state!,
-      reportId: programName,
+      reportId: reportId,
     };
     // Set report to selected program
     setReport(reportDetails);
     // Fetch full report info in background
     fetchReport(reportDetails);
     navigate(mcparFormBeginning);
+  };
+
+  const { created, inProgress, submitted } = body.table.editReportButtonText;
+  const statusTextMap = [
+    { status: ReportStatus.CREATED, text: created },
+    {
+      status: ReportStatus.IN_PROGRESS,
+      text: inProgress,
+    },
+    {
+      status: ReportStatus.SUBMITTED,
+      text: submitted,
+    },
+  ];
+
+  const getStatus = (rowReportId: string) => {
+    return reportsByState.filter(
+      (report: ReportShape) => report.reportId === rowReportId
+    )[0].status;
+  };
+
+  const getEditTextByStatus = (rowReportId: string) => {
+    const reportStatus = getStatus(rowReportId);
+    const editReportButtonText = statusTextMap.filter(
+      (map) => map.status === reportStatus
+    )[0].text;
+    return editReportButtonText || created;
   };
 
   return (
@@ -171,12 +198,12 @@ export const Dashboard = () => {
               {row.map((cell: string, index: number) => (
                 <Td key={index}>{cell}</Td>
               ))}
-              <Td>
+              <Td sx={sx.editReportButtonCell}>
                 <Button
                   variant={"outline"}
                   onClick={() => startProgram(row[0])}
                 >
-                  Start report
+                  {getEditTextByStatus(row[0])}
                 </Button>
               </Td>
               <Td>
@@ -282,9 +309,21 @@ const sx = {
       fontWeight: "bold",
     },
   },
+  editReportButtonCell: {
+    width: "110px",
+    padding: 0,
+    button: {
+      width: "6.875rem",
+      height: "1.75rem",
+      borderRadius: "0.25rem",
+      textAlign: "center",
+      fontSize: "sm",
+      fontWeight: "normal",
+      color: "palette.primary",
+    },
+  },
   deleteProgram: {
     height: "1.75rem",
-    marginLeft: "1rem",
   },
   editProgram: {
     padding: "0",

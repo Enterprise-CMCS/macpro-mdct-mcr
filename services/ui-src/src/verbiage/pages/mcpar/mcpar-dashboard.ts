@@ -23,6 +23,11 @@ export default {
       headRow: ["", "Program Name", "Due Date", "Last Edited", "Edited By", ""],
       empty:
         "For this report, a managed care program is defined by a set of distinct benefits and eligibility criteria articulated in a contract between states and the state’s managed care plans",
+      editReportButtonText: {
+        created: "Start report",
+        inProgress: "Edit",
+        submitted: "Submitted",
+      },
     },
     callToAction: "Add managed care program",
   },
