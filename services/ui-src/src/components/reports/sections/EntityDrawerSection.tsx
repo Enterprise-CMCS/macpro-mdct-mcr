@@ -35,7 +35,7 @@ export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
 
   return (
     <Box data-testid="entity-drawer-section">
-      <Heading as="h3">{drawer.dashboard.title}</Heading>
+      <Heading as="h3">{drawer!.dashboard.title}</Heading>
       {tempEntityMap.plans.map((entity) => {
         return (
           <Flex key={entity} sx={sx.entityRow}>
@@ -55,7 +55,7 @@ export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.drawerTitle} ${currentEntity}`}
+        drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
         form={form}
         onSubmit={onSubmit}
         data-testid="report-drawer"
