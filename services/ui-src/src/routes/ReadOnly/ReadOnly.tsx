@@ -1,21 +1,33 @@
 // components
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { BasicPage } from "components";
+import { BasicPage, DropdownField } from "components";
 // utils
-import verbiage from "verbiage/pages/read-only";
+import { States } from "types";
+import verbiage from "verbiage/pages/home";
 
 export const ReadOnly = () => {
-  const { intro, buttonLabel } = verbiage;
+  const dropdownOptions = Object.keys(States).map((label) => {
+    return {
+      label,
+      value: States[label as keyof typeof States],
+    };
+  });
+  const { readOnly } = verbiage;
   return (
     <>
       <BasicPage data-testid="read-only-view">
         <Box>
-          <Heading as="h1">{intro.header}</Heading>
-          <Text>{intro.body}</Text>
+          <Heading as="h1">{readOnly.header}</Heading>
+          <Text>{readOnly.body}</Text>
         </Box>
-        {/* <Form><DropdownField></DropdownField></Form> */}
+        <DropdownField
+          name="States"
+          label=""
+          ariaLabel={readOnly.ariaLabel}
+          options={dropdownOptions}
+        />
         <Flex>
-          <Button type="submit">{buttonLabel}</Button>
+          <Button type="submit">{readOnly.buttonLabel}</Button>
         </Flex>
       </BasicPage>
     </>

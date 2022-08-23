@@ -74,4 +74,10 @@ export default {
       },
     },
   },
+  readOnly: {
+    header: "View State Reports",
+    body: "Select state to view reports",
+    ariaLabel: "List of states, including District of Columbia and Puerto Rico",
+    buttonLabel: "Go to Report Dashboard",
+  },
 };
