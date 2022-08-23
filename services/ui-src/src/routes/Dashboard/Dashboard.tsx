@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
-import { ActionTable, BasicPage, Form, Modal, ReportContext } from "components";
+import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 // utils
 import { ReportStatus } from "types";
 import { calculateDueDate, formatDateUtcToEt, useUser } from "utils";
@@ -145,7 +145,7 @@ export const Dashboard = () => {
         </Text>
       </Box>
       <Box>
-        <ActionTable content={tableContent} sxOverride={sx.table}>
+        <Table content={tableContent} sxOverride={sx.table}>
           {programs.map((row: string[], index: number) => (
             // Row
             <Tr key={index}>
@@ -178,7 +178,7 @@ export const Dashboard = () => {
               </Td>
             </Tr>
           ))}
-        </ActionTable>
+        </Table>
         {programs.length == 0 && (
           <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
         )}

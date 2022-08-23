@@ -62,7 +62,6 @@ export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { StandardFormSection } from "./reports/sections/StandardFormSection";
 export { EntityDrawerSection } from "./reports/sections/EntityDrawerSection";
 // tables
-export { ActionTable } from "./tables/ActionTable";
 export { Table } from "./tables/Table";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
