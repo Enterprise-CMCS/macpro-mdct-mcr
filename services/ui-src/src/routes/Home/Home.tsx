@@ -24,15 +24,12 @@ export const Home = () => {
   // determine if landing page should be read-only
   const { user } = useUser();
   const { userRole } = user ?? {};
-  const isReadOnly =
-    userRole === UserRoles.HELP_DESK ||
-    UserRoles.APPROVER ||
-    UserRoles.STATE_REP;
-
   const { intro, cards } = verbiage;
   return (
     <>
-      {isReadOnly ? (
+      {userRole === UserRoles.HELP_DESK ||
+      userRole === UserRoles.APPROVER ||
+      userRole === UserRoles.STATE_REP ? (
         <>
           <ReadOnly />
         </>
