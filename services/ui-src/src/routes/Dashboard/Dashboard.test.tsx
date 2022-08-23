@@ -4,6 +4,8 @@ import { axe } from "jest-axe";
 import { Dashboard } from "routes";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+// verbiage
+import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 
 const dashboardView = (
   <RouterWrappedComponent>
@@ -17,7 +19,7 @@ describe("Test /mcpar dashboard view", () => {
   });
 
   test("Check that /mcpar dashboard view renders", () => {
-    expect(screen.getByTestId("dashboard-view")).toBeVisible();
+    expect(screen.getByText(verbiage.intro.header)).toBeVisible();
   });
 });
 

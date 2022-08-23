@@ -24,13 +24,13 @@ const mockReportMethods = {
 const mockReportInitialContext = {
   ...mockReportMethods,
   reportData: {},
-  reportState: "",
+  report: {},
   errorMessage: "",
 };
 
 const mockReportCompletedContext = {
   ...mockReportMethods,
-  reportStatus: {
+  report: {
     createdAt: 1660283173744,
     state: "CA",
     reportId: "tempName",

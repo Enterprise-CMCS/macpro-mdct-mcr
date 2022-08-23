@@ -129,4 +129,8 @@ export const mockReportData = {
   array: ["array1, array2"],
 };
 
-export const mockReportStatus = { status: ReportStatus.CREATED };
+export const mockReportStatus = {
+  state: "AB",
+  reportId: "testReportId",
+  status: ReportStatus.CREATED,
+};
