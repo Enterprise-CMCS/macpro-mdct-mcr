@@ -92,5 +92,8 @@ const sx = {
   },
   drawerBody: {
     padding: "1rem",
+    ul: {
+      paddingLeft: "1rem",
+    },
   },
 };
