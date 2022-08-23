@@ -13,6 +13,7 @@ export const TextField = ({
   placeholder,
   sxOverride,
   nested,
+  controlled,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -32,6 +33,8 @@ export const TextField = ({
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const parsedHint = hint && parseCustomHtml(hint);
 
+  const fieldValue = form.getValues(name) || props?.hydrate;
+
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
@@ -48,7 +51,8 @@ export const TextField = ({
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => form.register(name)}
-        defaultValue={form.getValues(name) || props?.hydrate}
+        value={controlled ? fieldValue : undefined}
+        defaultValue={controlled ? undefined : fieldValue}
         {...props}
       />
     </Box>
@@ -62,6 +66,7 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
+  controlled?: string;
   [key: string]: any;
 }
 
