@@ -1,18 +1,47 @@
 {
   "path": "/mcpar/plan-level-indicators/encounter-data-report",
   "intro": {
-    "section": "D: Plan-Level Indicators",
-    "subsection": "III: Encounter Data Report"
+    "section": "Section D: Plan-Level Indicators",
+    "subsection": "Topic III. Encounter Data",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["D1_Plan_Set"]
+    }
+  },
+  "drawer": {
+    "dashboard": {
+      "title": "Report on encounter data for each plan",
+      "entityType": "plans"
+    },
+    "drawerTitle": "Report encounter data for"
   },
   "form": {
     "id": "dedr",
     "fields": [
       {
         "id": "dedr-1",
-        "type": "text",
+        "type": "textarea",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "D1.III.1 Definition of timely encounter data submissions",
+          "hint": "Describe the state's standard for timely encounter data submissions used in this program.</br>If reporting frequencies and standards differ by type of encounter within this program, please explain."
+        }
+      },
+      {
+        "id": "dedr-2",
+        "type": "number",
+        "props": {
+          "label": "D1.III.2 Share of encounter data submissions that met state’s timely submission requirements",
+          "hint": "What percent of the plan’s encounter data file submissions (submitted during the reporting period) met state requirements for timely submission?</br>If the state has not yet received any encounter data file submissions for the entire contract period when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting period.",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dedr-3",
+        "type": "number",
+        "props": {
+          "label": "D1.III.3 Share of encounter data submissions that were HIPAA compliant",
+          "hint": "What percent of the plan’s encounter data submissions (submitted during the reporting period) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting period.",
+          "mask": "comma-separated"
         }
       }
     ]
