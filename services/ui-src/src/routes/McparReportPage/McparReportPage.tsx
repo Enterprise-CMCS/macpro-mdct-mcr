@@ -18,10 +18,10 @@ import { mcparRoutes } from "forms/mcpar";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
-  const { updateReportData, updateReport, programName } =
-    useContext(ReportContext);
+  const { report, updateReportData, updateReport } = useContext(ReportContext);
   const { path, intro, form } = pageJson;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
+  const reportId = report.reportId;
 
   // get user's state
   const { user } = useUser();
@@ -31,7 +31,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const reportDetails = {
         state: state,
-        reportId: programName,
+        reportId: reportId,
       };
       const reportStatus = {
         status: ReportStatus.IN_PROGRESS,
@@ -52,10 +52,10 @@ export const McparReportPage = ({ pageJson }: Props) => {
   };
 
   useEffect(() => {
-    if (!programName) {
+    if (!reportId) {
       navigate("/mcpar/dashboard");
     }
-  }, [programName]);
+  }, [reportId]);
 
   return (
     <ReportPage data-testid={form.id}>

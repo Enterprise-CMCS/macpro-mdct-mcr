@@ -5,7 +5,7 @@ import {
   ReportDataShape,
   ReportDetails,
   ReportContextShape,
-  ReportStatusShape,
+  ReportShape,
 } from "types";
 import {
   getReportData,
@@ -19,28 +19,24 @@ import {
 import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
-  reportStatus: undefined as AnyObject | undefined,
+  report: undefined as AnyObject | undefined,
   reportData: undefined as AnyObject | undefined,
   reportsByState: undefined as AnyObject | undefined,
+  setReport: Function,
   fetchReportData: Function,
   updateReportData: Function,
   fetchReport: Function,
   updateReport: Function,
   fetchReportsByState: Function,
   removeReport: Function,
-  programName: undefined,
-  setProgramName: Function,
   errorMessage: undefined,
 });
 
 export const ReportProvider = ({ children }: Props) => {
-  const [reportStatus, setReportStatus] = useState<
-    ReportStatusShape | undefined
-  >();
+  const [report, setReport] = useState<ReportShape | undefined>();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
   const [reportsByState, setReportsByState] = useState<any>();
   const [error, setError] = useState<string>();
-  const [programName, setProgramName] = useState<string>();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
@@ -66,7 +62,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReport = async (reportDetails: ReportDetails) => {
     try {
       const result = await getReport(reportDetails);
-      setReportStatus(result);
+      setReport(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }
@@ -83,7 +79,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReport = async (
     reportDetails: ReportDetails,
-    reportStatus: ReportStatusShape
+    reportStatus: ReportShape
   ) => {
     try {
       await writeReport(reportDetails, reportStatus);
@@ -103,20 +99,19 @@ export const ReportProvider = ({ children }: Props) => {
 
   const providerValue = useMemo(
     () => ({
-      reportStatus,
+      report,
       reportData,
       reportsByState,
+      setReport,
       fetchReportData,
       updateReportData,
       fetchReport,
       fetchReportsByState,
       updateReport,
       removeReport,
-      programName,
-      setProgramName,
       errorMessage: error,
     }),
-    [reportData, reportStatus, reportsByState, error, programName]
+    [report, reportData, reportsByState, error]
   );
 
   return (

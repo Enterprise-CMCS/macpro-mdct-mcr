@@ -59,7 +59,7 @@ export interface ReportDetails {
   reportId: string;
 }
 
-export interface ReportStatusShape {
+export interface ReportShape {
   [key: string]: any;
 }
 
@@ -73,7 +73,7 @@ export interface ReportContextMethods {
 
 export interface ReportContextShape
   extends ReportDataShape,
-    ReportStatusShape,
+    ReportShape,
     ReportContextMethods {
   errorMessage?: string;
 }

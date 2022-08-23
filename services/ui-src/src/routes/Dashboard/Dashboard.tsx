@@ -15,7 +15,7 @@ import {
 import { ArrowIcon } from "@cmsgov/design-system";
 import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 // utils
-import { ReportStatus } from "types";
+import { ReportDetails, ReportStatus } from "types";
 import { calculateDueDate, formatDateUtcToEt, useUser } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
@@ -31,8 +31,13 @@ export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
     verbiage;
 
-  const { fetchReportsByState, reportsByState, setProgramName, updateReport } =
-    useContext(ReportContext);
+  const {
+    fetchReport,
+    fetchReportsByState,
+    reportsByState,
+    setReport,
+    updateReport,
+  } = useContext(ReportContext);
 
   const { user } = useUser();
   const { full_name, state } = user ?? {};
@@ -118,7 +123,14 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const mcparFormBeginning = "../../mcpar/program-information/point-of-contact";
   const startProgram = (programName: string) => {
-    setProgramName(programName);
+    const reportDetails: ReportDetails = {
+      state: state!,
+      reportId: programName,
+    };
+    // Set report to selected program
+    setReport(reportDetails);
+    // Fetch full report info in background
+    fetchReport(reportDetails);
     navigate(mcparFormBeginning);
   };
 

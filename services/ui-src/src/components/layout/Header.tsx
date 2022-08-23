@@ -22,7 +22,7 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
   const { pathname } = useLocation();
-  const { programName } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
 
   return (
     <Box sx={sx.root} id="header">
@@ -60,7 +60,7 @@ export const Header = ({ handleLogout }: Props) => {
           <Container sx={sx.subnavContainer} className={mqClasses}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
-                <Text sx={sx.programNameText}>Program: {programName}</Text>
+                <Text sx={sx.programNameText}>Program: {report.reportId}</Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
                 {!isMobile && (

@@ -1,5 +1,5 @@
 import { API } from "aws-amplify";
-import { ReportDetails, ReportStatusShape } from "types";
+import { ReportDetails, ReportShape } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 
 async function getReport(reportDetails: ReportDetails) {
@@ -27,7 +27,7 @@ async function getReportsByState(state: string) {
 
 async function writeReport(
   reportDetails: ReportDetails,
-  reportStatus: ReportStatusShape
+  reportStatus: ReportShape
 ) {
   const requestHeaders = await getRequestHeaders();
   const request = {

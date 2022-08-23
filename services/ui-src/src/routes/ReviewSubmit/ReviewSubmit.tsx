@@ -20,9 +20,9 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { reportStatus, fetchReport, updateReport, programName } =
-    useContext(ReportContext);
+  const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const reportId = report.reportId;
 
   // get user's state
   const { user } = useUser();
@@ -30,7 +30,7 @@ export const ReviewSubmit = () => {
 
   const reportDetails = {
     state: state,
-    reportId: programName,
+    reportId: reportId,
   };
 
   useEffect(() => {
@@ -52,10 +52,10 @@ export const ReviewSubmit = () => {
     <ReportPage>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {reportStatus?.status?.includes(ReportStatus.SUBMITTED) ? (
+        {report.status?.includes(ReportStatus.SUBMITTED) ? (
           <SuccessMessage
-            programName={programName}
-            date={reportStatus?.lastAltered}
+            reportId={reportId}
+            date={report?.lastAltered}
             givenName={user?.given_name}
             familyName={user?.family_name}
           />
@@ -119,7 +119,7 @@ interface ReadyToSubmitProps {
 }
 
 export const SuccessMessage = ({
-  programName,
+  reportId,
   date,
   givenName,
   familyName,
@@ -140,7 +140,7 @@ export const SuccessMessage = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{`MCPAR report for ${programName} ${submittedDate} ${submittersName}`}</Text>
+          <Text>{`MCPAR report for ${reportId} ${submittedDate} ${submittersName}`}</Text>
         </Box>
       </Box>
       <Box>
@@ -152,7 +152,7 @@ export const SuccessMessage = ({
 };
 
 interface SuccessMessageProps {
-  programName: string;
+  reportId: string;
   date: number;
   givenName?: string;
   familyName?: string;

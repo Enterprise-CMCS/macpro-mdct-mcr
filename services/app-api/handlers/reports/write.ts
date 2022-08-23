@@ -32,9 +32,7 @@ export const writeReport = handler(async (event, context) => {
       reportId: reportId,
       createdAt: Date.now(),
       lastAltered: Date.now(),
-      lastAlteredBy: body?.lastAlteredBy,
-      status: body?.status,
-      dueDate: body?.dueDate,
+      ...body,
     },
   };
   const getCurrentReport = await getReport(event, context);
@@ -44,12 +42,8 @@ export const writeReport = handler(async (event, context) => {
       statusParams = {
         TableName: process.env.REPORT_TABLE_NAME!,
         Item: {
-          state: state,
-          reportId: reportId,
+          ...statusParams.Item,
           createdAt: currentBody.createdAt,
-          lastAltered: Date.now(),
-          lastAlteredBy: body?.lastAlteredBy,
-          status: body?.status,
           dueDate: currentBody?.dueDate,
         },
       };
