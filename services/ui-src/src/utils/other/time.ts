@@ -54,7 +54,7 @@ export const formatDateUtcToEt = (date: number): string => {
   );
   const month = new Date(easternDatetime).getMonth();
   const day = new Date(easternDatetime).getDate();
-  const year = new Date(easternDatetime).getFullYear().toString().slice(-2);
+  const year = new Date(easternDatetime).getFullYear();
 
   // month + 1 because Date object months are zero-indexed
   return `${month + 1}/${day}/${year}`;
@@ -111,5 +111,5 @@ const allottedTime = 180; // days
 export const calculateDueDate = (date: string) => {
   const givenDate = new Date(date);
   const dueDate = givenDate.setDate(givenDate.getDate() + allottedTime);
-  return utcDateToReadableDate(dueDate, "short");
+  return formatDateUtcToEt(dueDate);
 };

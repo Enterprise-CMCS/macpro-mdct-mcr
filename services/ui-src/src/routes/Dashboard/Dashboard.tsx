@@ -148,16 +148,18 @@ export const Dashboard = () => {
   ];
 
   const getStatus = (rowReportId: string) => {
-    return reportsByState.filter(
-      (report: ReportShape) => report.reportId === rowReportId
-    )[0].status;
+    return (
+      reportsByState.filter(
+        (report: ReportShape) => report.reportId === rowReportId
+      )[0]?.status || ReportStatus.CREATED
+    );
   };
 
   const getEditTextByStatus = (rowReportId: string) => {
     const reportStatus = getStatus(rowReportId);
     const editReportButtonText = statusTextMap.filter(
       (map) => map.status === reportStatus
-    )[0].text;
+    )[0]?.text;
     return editReportButtonText || created;
   };
 

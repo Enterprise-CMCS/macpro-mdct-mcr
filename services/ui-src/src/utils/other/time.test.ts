@@ -1,4 +1,5 @@
 import {
+  calculateDueDate,
   calculateTimeByType,
   checkDateRangeStatus,
   convertDateEtToUtc,
@@ -12,7 +13,7 @@ import {
 const testDate = {
   utcMS: 1641013200000,
   utcString: "Sat, 01 Jan 2022 05:00:00 GMT",
-  etFormattedString: "1/1/22",
+  etFormattedString: "1/1/2022",
 };
 
 describe("Test calculateTimeByType", () => {
@@ -72,5 +73,19 @@ describe("Test checkDateRangeStatus", () => {
     const endDate = currentTime + oneDay;
     const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
     expect(dateRangeStatus).toBeTruthy();
+  });
+});
+
+describe("Test calculateDueDate", () => {
+  it("calculateDueDate for 01/01/2022 for single year", () => {
+    const startDate = "01/01/2022";
+    const dueDate = calculateDueDate(startDate);
+    expect(dueDate).toBe("6/30/2022");
+  });
+
+  it("calculateDueDate for 08/08/2022 for rollover year", () => {
+    const startDate = "08/08/2022";
+    const dueDate = calculateDueDate(startDate);
+    expect(dueDate).toBe("2/4/2023");
   });
 });
