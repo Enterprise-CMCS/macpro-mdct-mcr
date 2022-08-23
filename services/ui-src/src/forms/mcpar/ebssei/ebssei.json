@@ -1,18 +1,159 @@
 {
   "path": "/mcpar/bss-entity-indicators",
   "intro": {
-    "section": "E: BSS Entity Indicators",
-    "subsection": "X: Program Integrity"
+    "section": "Section E: BSS Entity Indicators",
+    "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["E_BSS_Entities"]
+    },
+    "info": [
+      {
+        "type": "html",
+        "content": "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the <a href=\"/mcpar/program-information/add-bss-entities\">Program-Level BSS</a> page."
+      }
+    ]
+  },
+  "drawer": {
+    "dashboard": {
+      "title": "Report on role and type for each BSS entity",
+      "entityType": "entities"
+    },
+    "drawerTitle": "Report on"
   },
   "form": {
     "id": "ebssei",
     "fields": [
       {
         "id": "ebssei-1",
-        "type": "text",
+        "type": "checkbox",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "E.IX.1 BSS entity type",
+          "hint": "What type of entity was contracted to perform each BSS activity? Check all that apply. Refer to 42 CFR 438.71(b).",
+          "choices": [
+            {
+              "name": "ebssei-1-o1",
+              "type": "choice",
+              "label": "State Government Entity"
+            },
+            {
+              "name": "ebssei-1-o2",
+              "type": "choice",
+              "label": "Local Government Entity"
+            },
+            {
+              "name": "ebssei-1-o3",
+              "type": "choice",
+              "label": "Ombudsman Program"
+            },
+            {
+              "name": "ebssei-1-o4",
+              "type": "choice",
+              "label": "State Health Insurance Assistance Program (SHIP)"
+            },
+            {
+              "name": "ebssei-1-o5",
+              "type": "choice",
+              "label": "Aging and Disability Resource Network (ADRN)"
+            },
+            {
+              "name": "ebssei-1-o6",
+              "type": "choice",
+              "label": "Center for Independent Living (CIL)"
+            },
+            {
+              "name": "ebssei-1-o7",
+              "type": "choice",
+              "label": "Legal Assistance Organization"
+            },
+            {
+              "name": "ebssei-1-o8",
+              "type": "choice",
+              "label": "Other Community-Based Organization"
+            },
+            {
+              "name": "ebssei-1-o9",
+              "type": "choice",
+              "label": "Subcontractor"
+            },
+            {
+              "name": "ebssei-1-o10",
+              "type": "choice",
+              "label": "Enrollment Broker"
+            },
+            {
+              "name": "ebssei-1-o11",
+              "type": "choice",
+              "label": "Consultant"
+            },
+            {
+              "name": "ebssei-1-o12",
+              "type": "choice",
+              "label": "Academic/Research Organization"
+            },
+            {
+              "name": "ebssei-1-o13",
+              "type": "choice",
+              "label": "Other",
+              "children": [
+                {
+                  "id": "ebssei-1-o13-text",
+                  "type": "textarea"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "ebssei-1",
+        "type": "checkbox",
+        "props": {
+          "label": "E.IX.2 BSS entity role",
+          "hint": "What are the roles performed by the BSS entity? Check all that apply. Refer to 42 CFR 438.71(b).",
+          "choices": [
+            {
+              "name": "ebssei-2-o1",
+              "type": "choice",
+              "label": "Enrollment Broker/Choice Counseling"
+            },
+            {
+              "name": "ebssei-2-o2",
+              "type": "choice",
+              "label": "Beneficiary Outreach"
+            },
+            {
+              "name": "ebssei-2-o3",
+              "type": "choice",
+              "label": "LTSS Complaint Access Point"
+            },
+            {
+              "name": "ebssei-2-o4",
+              "type": "choice",
+              "label": "LTSS Grievance/Appeals Education"
+            },
+            {
+              "name": "ebssei-2-o5",
+              "type": "choice",
+              "label": "LTSS Grievance/Appeals Assistance"
+            },
+            {
+              "name": "ebssei-2-o6",
+              "type": "choice",
+              "label": "Review/Oversight of LTSS Data"
+            },
+            {
+              "name": "ebssei-2-o7",
+              "type": "choice",
+              "label": "Other",
+              "children": [
+                {
+                  "id": "ebssei-2-o7-text",
+                  "type": "textarea"
+                }
+              ]
+            }
+          ]
         }
       }
     ]
