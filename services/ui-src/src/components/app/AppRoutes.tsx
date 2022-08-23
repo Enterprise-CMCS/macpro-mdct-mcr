@@ -9,6 +9,7 @@ import {
   McparReportPage,
   NotFound,
   Profile,
+  ReadOnly,
   ReviewSubmit,
 } from "routes";
 import { mcparRoutes } from "forms/mcpar";
@@ -51,6 +52,7 @@ export const AppRoutes = ({ userRole }: Props) => {
 
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/read-only" element={<ReadOnly />} />
         </Routes>
       </AdminBannerProvider>
     </main>
