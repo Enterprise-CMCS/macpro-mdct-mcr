@@ -83,9 +83,9 @@ describe("Test calculateDueDate", () => {
     expect(dueDate).toBe("6/30/2022");
   });
 
-  it("calculateDueDate for 08/08/2022 for rollover year", () => {
-    const startDate = "08/08/2022";
+  it("calculateDueDate for 08/01/2022 for rollover year", () => {
+    const startDate = "08/01/2022";
     const dueDate = calculateDueDate(startDate);
-    expect(dueDate).toBe("2/4/2023");
+    expect(dueDate).toBe("1/28/2023");
   });
 });
