@@ -20,7 +20,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { updateReportData, updateReport, programName } =
     useContext(ReportContext);
-  const { path, pageType, intro, form } = pageJson;
+  const { path, intro, form } = pageJson;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
   // get user's state
@@ -40,12 +40,11 @@ export const McparReportPage = ({ pageJson }: Props) => {
     navigate(nextRoute);
   };
 
-  const renderPageSection = (pageType: string) => {
-    switch (pageType) {
-      case "drawer":
-        return <EntityDrawerSection pageJson={pageJson} onSubmit={onSubmit} />;
-      default:
-        return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
+  const renderPageSection = (pageJson: PageJson) => {
+    if (pageJson.drawer) {
+      return <EntityDrawerSection pageJson={pageJson} onSubmit={onSubmit} />;
+    } else {
+      return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
     }
   };
 
@@ -55,7 +54,7 @@ export const McparReportPage = ({ pageJson }: Props) => {
         <Sidebar />
         <Flex sx={sx.reportContainer}>
           {intro && <ReportPageIntro text={intro} />}
-          {renderPageSection(pageType)}
+          {renderPageSection(pageJson)}
         </Flex>
       </Flex>
     </ReportPage>

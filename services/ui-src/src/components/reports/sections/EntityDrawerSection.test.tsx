@@ -8,7 +8,6 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 
 const mockDrawerPageJson = {
   path: "/mock-route",
-  pageType: "drawer",
   intro: {
     section: "mock section",
     subsection: "mock subsection",

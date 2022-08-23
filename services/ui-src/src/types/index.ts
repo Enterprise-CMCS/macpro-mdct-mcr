@@ -30,6 +30,7 @@ export interface PageJson {
   path: string;
   intro?: AnyObject;
   form: FormJson;
+  drawer?: AnyObject;
   [key: string]: any;
 }
 
