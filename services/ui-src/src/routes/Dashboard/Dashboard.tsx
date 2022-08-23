@@ -57,7 +57,7 @@ export const Dashboard = () => {
           ...loadedPrograms,
           [
             report.reportId,
-            report?.dueDate || "",
+            formatDateUtcToEt(report?.dueDate) || "",
             formatDateUtcToEt(report.lastAltered),
             report?.lastAlteredBy || "",
           ],
@@ -107,7 +107,12 @@ export const Dashboard = () => {
         : calculateDueDate(newProgramData.endDate);
     setPrograms([
       ...programs,
-      [newProgramData.title, dueDate, formatDateUtcToEt(Date.now()), full_name],
+      [
+        newProgramData.title,
+        formatDateUtcToEt(dueDate),
+        formatDateUtcToEt(Date.now()),
+        full_name,
+      ],
     ]);
     onCloseAddProgram();
     updateReport(

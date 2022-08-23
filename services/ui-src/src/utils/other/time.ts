@@ -103,13 +103,18 @@ export const checkDateRangeStatus = (
   return currentTime >= startDate && currentTime <= endDate;
 };
 
-const allottedTime = 180; // days
 /*
- * Takes a date and adds 180 days to it
- * Ex: 6/30/22 Becomes 12/27/2022)
+ * Adds 180 days date string
+ * returns -> UTC datetime in format 'ms since Unix epoch'
+ * Ex: 6/30/22 Becomes 1483603200000
  */
+// Converts a date string to UTC + 180 days
 export const calculateDueDate = (date: string) => {
-  const givenDate = new Date(date);
-  const dueDate = givenDate.setUTCDate(givenDate.getUTCDate() + allottedTime);
-  return formatDateUtcToEt(dueDate);
+  const gracePeriod = 1000 * 60 * 60 * 24 * 180; // 180 days in ms
+  const [month, day, year] = date.split("/");
+  const reportingPeriodEndDate = convertDateEtToUtc(
+    { year: parseInt(year), month: parseInt(month), day: parseInt(day) },
+    noon
+  );
+  return reportingPeriodEndDate + gracePeriod;
 };

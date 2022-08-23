@@ -80,12 +80,12 @@ describe("Test calculateDueDate", () => {
   it("calculateDueDate for 01/01/2022 for single year", () => {
     const startDate = "01/01/2022";
     const dueDate = calculateDueDate(startDate);
-    expect(dueDate).toBe("6/30/2022");
+    expect(formatDateUtcToEt(dueDate)).toBe("6/30/2022");
   });
 
   it("calculateDueDate for 08/01/2022 for rollover year", () => {
     const startDate = "08/01/2022";
     const dueDate = calculateDueDate(startDate);
-    expect(dueDate).toBe("1/28/2023");
+    expect(formatDateUtcToEt(dueDate)).toBe("1/28/2023");
   });
 });
