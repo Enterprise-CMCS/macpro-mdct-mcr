@@ -4,7 +4,7 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
-import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { InputChangeEvent, AnyObject } from "types";
 
 export const DropdownField = ({
   name,
@@ -54,7 +54,7 @@ interface Props {
   name: string;
   label: string;
   options: DropdownOptions[];
-  hint?: CustomHtmlElement[];
+  hint?: any;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
