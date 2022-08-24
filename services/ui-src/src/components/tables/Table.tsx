@@ -54,16 +54,17 @@ export const Table = ({
       ) : (
         <Tbody>
           {/* Body Rows */}
-          {content.bodyRows!.map((row: string[], index: number) => (
-            <Tr key={index}>
-              {/* Row Cells */}
-              {row.map((cell: string, index: number) => (
-                <Td key={index} sx={sx.tableCell} className={mqClasses}>
-                  {cell}
-                </Td>
-              ))}
-            </Tr>
-          ))}
+          {content.bodyRows &&
+            content.bodyRows!.map((row: string[], index: number) => (
+              <Tr key={index}>
+                {/* Row Cells */}
+                {row.map((cell: string, index: number) => (
+                  <Td key={index} sx={sx.tableCell} className={mqClasses}>
+                    {cell}
+                  </Td>
+                ))}
+              </Tr>
+            ))}
         </Tbody>
       )}
     </TableRoot>

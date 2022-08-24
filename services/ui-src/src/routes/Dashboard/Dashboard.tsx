@@ -15,7 +15,7 @@ import {
 import { ArrowIcon } from "@cmsgov/design-system";
 import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 // utils
-import { ReportDetails, ReportStatus } from "types";
+import { AnyObject, ReportDetails, ReportStatus } from "types";
 import { calculateDueDate, getReportsByState, useUser } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
@@ -26,7 +26,6 @@ import { reportErrors } from "verbiage/errors";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
-import { AnyObject } from "yup/lib/types";
 
 export const Dashboard = () => {
   // Verbiage
@@ -35,7 +34,7 @@ export const Dashboard = () => {
 
   const { fetchReport, setReport, updateReport } = useContext(ReportContext);
 
-  const [reports, setReports] = useState();
+  const [reports, setReports] = useState<AnyObject | undefined>(undefined);
 
   const { user } = useUser();
   const { full_name, state } = user ?? {};
@@ -96,6 +95,7 @@ export const Dashboard = () => {
         lastAlteredBy: full_name,
       }
     );
+    fetchReportsByState(state!);
     onCloseAddProgram();
   };
 
@@ -145,7 +145,7 @@ export const Dashboard = () => {
       <Box>
         <Table content={tableContent} sxOverride={sx.table}>
           {reports &&
-            reports.forEach((report: AnyObject) => (
+            reports.map((report: AnyObject) => (
               // Row
               <Tr key={report.reportId}>
                 <Td sx={sx.editProgram}>
@@ -192,8 +192,7 @@ export const Dashboard = () => {
 
       {/* Add Program Modal */}
       <Modal
-        actionFunction={addProgram}
-        actionId={formJson.id}
+        formId={formJson.id}
         modalState={{
           isOpen: addProgramIsOpen,
           onClose: onCloseAddProgram,
