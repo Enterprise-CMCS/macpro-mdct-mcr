@@ -15,7 +15,7 @@ import { CloseIcon } from "@cmsgov/design-system";
 // utils
 import { makeMediaQueryClasses } from "utils";
 
-export const Modal = ({ children, content, modalState, ...props }: Props) => {
+export const Modal = ({ children, content, formId, modalState }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <ChakraModal isOpen={modalState.isOpen} onClose={modalState.onClose}>
@@ -42,8 +42,8 @@ export const Modal = ({ children, content, modalState, ...props }: Props) => {
           <Button
             className={mqClasses}
             sx={sx.action}
-            form={props?.formId}
-            type="submit"
+            form={formId}
+            type={formId ? "submit" : undefined}
             data-testid="modal-submit-button"
           >
             {content.actionButtonText}
@@ -72,6 +72,7 @@ interface Props {
     actionButtonText: string;
     closeButtonText: string;
   };
+  formId?: string;
   children?: ReactNode;
   [key: string]: any;
 }

@@ -1,4 +1,4 @@
-import { MouseEventHandler, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import {
@@ -16,7 +16,12 @@ import { ArrowIcon } from "@cmsgov/design-system";
 import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 // utils
 import { AnyObject, ReportDetails, ReportStatus } from "types";
-import { calculateDueDate, getReportsByState, useUser } from "utils";
+import {
+  calculateDueDate,
+  formatDateUtcToEt,
+  getReportsByState,
+  useUser,
+} from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
@@ -32,7 +37,7 @@ export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
     verbiage;
 
-  const { fetchReport, setReport, updateReport } = useContext(ReportContext);
+  const { setReport, setReportData, updateReport } = useContext(ReportContext);
 
   const [reports, setReports] = useState<AnyObject | undefined>(undefined);
 
@@ -51,6 +56,8 @@ export const Dashboard = () => {
     if (state) {
       fetchReportsByState(state);
     }
+    setReport(undefined);
+    setReportData(undefined);
   }, []);
 
   // Add Modal Functions
@@ -67,13 +74,6 @@ export const Dashboard = () => {
     onClose: onCloseDeleteProgram,
   } = useDisclosure();
 
-  const tableContent = {
-    caption: body.table.caption,
-    headRow: body.table.headRow,
-  };
-
-  const deleteProgram = async () => {};
-
   const addProgram = async (formData: any) => {
     const newProgramData = {
       key: formJson.id,
@@ -87,7 +87,7 @@ export const Dashboard = () => {
       newProgramData.contractPeriod !== "other"
         ? newProgramData.contractPeriod
         : calculateDueDate(newProgramData.endDate);
-    updateReport(
+    await updateReport(
       { state: state, reportId: newProgramData.title },
       {
         status: ReportStatus.CREATED,
@@ -95,7 +95,7 @@ export const Dashboard = () => {
         lastAlteredBy: full_name,
       }
     );
-    fetchReportsByState(state!);
+    await fetchReportsByState(state!);
     onCloseAddProgram();
   };
 
@@ -108,12 +108,10 @@ export const Dashboard = () => {
     };
     // Set report to selected program
     setReport(reportDetails);
-    // Fetch full report info in background
-    fetchReport(reportDetails);
     navigate(mcparFormBeginning);
   };
 
-  const { created, inProgress, submitted } = body.table.editReportButtonText;
+  const { created, inProgress, submitted } = body.editReportButtonText;
   const statusTextMap: { [key in ReportStatus]: string } = {
     [ReportStatus.CREATED]: created,
     [ReportStatus.IN_PROGRESS]: inProgress,
@@ -143,20 +141,20 @@ export const Dashboard = () => {
         </Text>
       </Box>
       <Box>
-        <Table content={tableContent} sxOverride={sx.table}>
+        <Table content={body.table} sxOverride={sx.table}>
           {reports &&
             reports.map((report: AnyObject) => (
               // Row
               <Tr key={report.reportId}>
                 <Td sx={sx.editProgram}>
                   {/* TODO: Pass existing data to populate modal */}
-                  <button onClick={onOpenAddProgram as MouseEventHandler}>
+                  <button onClick={onOpenAddProgram}>
                     <Image src={editIcon} alt="Edit Program" />
                   </button>
                 </Td>
                 <Td>{report.reportId}</Td>
                 <Td>{report.dueDate}</Td>
-                <Td>{report.lastAltered}</Td>
+                <Td>{formatDateUtcToEt(report.lastAltered)}</Td>
                 <Td>{report.lastAlteredBy}</Td>
                 <Td sx={sx.editReportButtonCell}>
                   <Button
@@ -169,7 +167,7 @@ export const Dashboard = () => {
                   </Button>
                 </Td>
                 <Td>
-                  <button onClick={onOpenDeleteProgram as MouseEventHandler}>
+                  <button onClick={onOpenDeleteProgram}>
                     <Image
                       src={cancelIcon}
                       alt="Delete Program"
@@ -180,11 +178,11 @@ export const Dashboard = () => {
               </Tr>
             ))}
         </Table>
-        {!reports && (
-          <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
+        {!reports?.length && (
+          <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         <Box sx={sx.callToActionContainer}>
-          <Button type="submit" onClick={onOpenAddProgram as MouseEventHandler}>
+          <Button type="submit" onClick={onOpenAddProgram}>
             {body.callToAction}
           </Button>
         </Box>
@@ -209,7 +207,6 @@ export const Dashboard = () => {
 
       {/* Delete Program Modal */}
       <Modal
-        actionFunction={deleteProgram}
         modalState={{
           isOpen: deleteProgramIsOpen,
           onClose: onCloseDeleteProgram,

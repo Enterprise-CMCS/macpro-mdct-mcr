@@ -1,8 +1,9 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
 import { focusElement, formFieldFactory, sortFormErrors } from "utils";
 import { FormJson } from "types";
@@ -24,6 +25,10 @@ export const Form = ({
     ...(options as any),
   });
 
+  const { report, reportData } = useContext(ReportContext);
+
+  // console.log("form.getvalues", form.getValues());
+
   const onErrorHandler = (errors: any) => {
     const sortedErrors: any[] = sortFormErrors(form, errors);
     const fieldToFocus = document.querySelector(
@@ -31,6 +36,14 @@ export const Form = ({
     )! as HTMLElement;
     focusElement(fieldToFocus);
   };
+
+  useEffect(() => {
+    console.log("reportData before", reportData);
+    console.log("id before", form);
+    form.reset();
+    console.log("reportData after", reportData);
+    console.log("id after", form);
+  }, [report?.reportId]);
 
   return (
     <FormProvider {...form}>

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 // utils
 import {
   AnyObject,
@@ -21,6 +21,7 @@ export const ReportContext = createContext<ReportContextShape>({
   report: undefined as AnyObject | undefined,
   reportData: undefined as AnyObject | undefined,
   setReport: Function,
+  setReportData: Function,
   fetchReportData: Function,
   updateReportData: Function,
   fetchReport: Function,
@@ -84,11 +85,23 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (report) {
+      const reportDetails = {
+        state: report.state,
+        reportId: report.reportId,
+      };
+      fetchReportData(reportDetails);
+      // fetchReport(reportDetails);
+    }
+  }, [report?.reportId]);
+
   const providerValue = useMemo(
     () => ({
       report,
       reportData,
       setReport,
+      setReportData,
       fetchReportData,
       updateReportData,
       fetchReport,

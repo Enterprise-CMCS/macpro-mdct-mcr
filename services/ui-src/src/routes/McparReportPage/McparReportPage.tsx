@@ -22,6 +22,10 @@ export const McparReportPage = ({ pageJson }: Props) => {
   const { path, intro, form } = pageJson;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
   const reportId = report?.reportId;
+  console.log("reportId", reportId);
+  console.log("pageJson.form.id", pageJson.form.id);
+  console.log("form.id", form.id);
+  pageJson.form.id = form.id + "_" + reportId;
 
   // get user's state
   const { user } = useUser();
