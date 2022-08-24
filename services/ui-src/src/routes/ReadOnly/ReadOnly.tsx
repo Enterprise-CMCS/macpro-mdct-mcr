@@ -1,11 +1,14 @@
 // components
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { BasicPage, DropdownField } from "components";
+import { BasicPage, DropdownField, Form } from "components";
+// types
+import { FormJson, States } from "types";
 // utils
-import { States } from "types";
 import verbiage from "verbiage/pages/home";
+// form data
+import { reportSchema } from "forms/mcpar/reportSchema";
 
-export const ReadOnly = () => {
+export const ReadOnly = ({ form, onSubmit }: Props) => {
   const dropdownOptions = Object.keys(States).map((value) => {
     return {
       value,
@@ -22,21 +25,34 @@ export const ReadOnly = () => {
             {readOnly.header}
           </Heading>
         </Box>
-        <DropdownField
-          name="States"
-          label=""
-          labelClassName={labelStyle}
-          hint={readOnly.body}
-          ariaLabel={readOnly.ariaLabel}
-          options={dropdownOptions}
-        />
-        <Flex sx={sx.navigationButton}>
-          <Button type="submit">{readOnly.buttonLabel}</Button>
-        </Flex>
+        <Form
+          id={form.id}
+          formJson={form}
+          formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+          onSubmit={onSubmit}
+        >
+          <DropdownField
+            name="States"
+            label=""
+            labelClassName={labelStyle}
+            hint={readOnly.body}
+            ariaLabel={readOnly.ariaLabel}
+            options={dropdownOptions}
+          />
+          <Flex sx={sx.navigationButton}>
+            <Button type="submit">{readOnly.buttonLabel}</Button>
+          </Flex>
+        </Form>
       </BasicPage>
     </>
   );
 };
+
+interface Props {
+  form: FormJson;
+  onSubmit: Function;
+  [key: string]: any;
+}
 
 const sx = {
   headerText: {
