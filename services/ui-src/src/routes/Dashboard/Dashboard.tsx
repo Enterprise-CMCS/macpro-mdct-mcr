@@ -191,6 +191,7 @@ export const Dashboard = () => {
 
       {/* Add Program Modal */}
       <Modal
+        actionFunction={() => {}}
         formId={formJson.id}
         modalState={{
           isOpen: addProgramIsOpen,
@@ -208,6 +209,7 @@ export const Dashboard = () => {
 
       {/* Delete Program Modal */}
       <Modal
+        actionFunction={() => {}}
         modalState={{
           isOpen: deleteProgramIsOpen,
           onClose: onCloseDeleteProgram,
