@@ -79,7 +79,7 @@ interface Props {
     actionButtonText: string;
     closeButtonText: string;
   };
-  actionFunction: Function;
+  actionFunction?: Function;
   formId?: string;
   children?: ReactNode;
   [key: string]: any;
