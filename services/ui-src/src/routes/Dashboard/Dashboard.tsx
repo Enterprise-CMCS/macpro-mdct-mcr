@@ -52,6 +52,7 @@ export const Dashboard = () => {
       throw new Error(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
+
   useEffect(() => {
     if (state) {
       fetchReportsByState(state);

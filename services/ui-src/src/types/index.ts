@@ -64,8 +64,6 @@ export interface ReportShape {
 }
 
 export interface ReportContextMethods {
-  // setReport: Function;
-  // setReportData: Function;
   fetchReportData: Function;
   updateReportData: Function;
   fetchReport: Function;
