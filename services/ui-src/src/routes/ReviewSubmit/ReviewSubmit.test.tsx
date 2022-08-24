@@ -17,7 +17,6 @@ const mockReportMethods = {
   fetchReportData: jest.fn(() => {}),
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
   updateReport: jest.fn(() => {}),
 };
 

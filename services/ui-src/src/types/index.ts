@@ -68,7 +68,6 @@ export interface ReportContextMethods {
   updateReportData: Function;
   fetchReport: Function;
   updateReport: Function;
-  fetchReportsByState: Function;
 }
 
 export interface ReportContextShape

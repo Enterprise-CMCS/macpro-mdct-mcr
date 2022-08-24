@@ -17,7 +17,6 @@ import { makeMediaQueryClasses } from "utils";
 
 export const Modal = ({
   actionFunction,
-  actionId,
   children,
   content,
   modalState,
@@ -48,9 +47,7 @@ export const Modal = ({
           <Button
             className={mqClasses}
             sx={sx.action}
-            onClick={!actionId ? () => actionFunction() : undefined}
-            form={actionId}
-            type="submit"
+            onClick={() => actionFunction()}
             data-testid="modal-submit-button"
           >
             {content.actionButtonText}
@@ -80,7 +77,6 @@ interface Props {
     actionButtonText: string;
     closeButtonText: string;
   };
-  actionId?: string;
   children?: ReactNode;
   [key: string]: any;
 }

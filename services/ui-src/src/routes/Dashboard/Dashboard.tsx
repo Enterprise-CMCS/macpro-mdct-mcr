@@ -15,62 +15,51 @@ import {
 import { ArrowIcon } from "@cmsgov/design-system";
 import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 // utils
-import { ReportDetails, ReportShape, ReportStatus } from "types";
-import { calculateDueDate, formatDateUtcToEt, useUser } from "utils";
+import { ReportDetails, ReportStatus } from "types";
+import { calculateDueDate, getReportsByState, useUser } from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import { reportErrors } from "verbiage/errors";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
+import { AnyObject } from "yup/lib/types";
 
 export const Dashboard = () => {
   // Verbiage
   const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
     verbiage;
 
-  const {
-    fetchReport,
-    fetchReportsByState,
-    reportsByState,
-    setReport,
-    updateReport,
-  } = useContext(ReportContext);
+  const { fetchReport, setReport, updateReport } = useContext(ReportContext);
+
+  const [reports, setReports] = useState();
 
   const { user } = useUser();
   const { full_name, state } = user ?? {};
 
+  const fetchReportsByState = async (state: string) => {
+    try {
+      const result = await getReportsByState(state);
+      setReports(result);
+    } catch (e: any) {
+      throw new Error(reportErrors.GET_REPORTS_BY_STATE_FAILED);
+    }
+  };
   useEffect(() => {
-    fetchReportsByState(state);
+    if (state) {
+      fetchReportsByState(state);
+    }
   }, []);
 
-  const [programs, setPrograms] = useState<Array<Array<any>>>([]);
-
-  useEffect(() => {
-    // update form data
-    if (reportsByState) {
-      let loadedPrograms: any = [];
-      reportsByState.forEach((report: any) => {
-        loadedPrograms = [
-          ...loadedPrograms,
-          [
-            report.reportId,
-            formatDateUtcToEt(report?.dueDate) || "",
-            formatDateUtcToEt(report.lastAltered),
-            report?.lastAlteredBy || "",
-          ],
-        ];
-      });
-      setPrograms(loadedPrograms);
-    }
-  }, [reportsByState]);
-
-  const tableContent = {
-    caption: body.table.caption,
-    headRow: body.table.headRow,
-  };
+  // Add Modal Functions
+  const {
+    isOpen: addProgramIsOpen,
+    onOpen: onOpenAddProgram,
+    onClose: onCloseAddProgram,
+  } = useDisclosure();
 
   // Delete Modal Functions
   const {
@@ -79,18 +68,12 @@ export const Dashboard = () => {
     onClose: onCloseDeleteProgram,
   } = useDisclosure();
 
-  const askToDeleteProgram = async () => {
-    onOpenDeleteProgram();
+  const tableContent = {
+    caption: body.table.caption,
+    headRow: body.table.headRow,
   };
 
   const deleteProgram = async () => {};
-
-  // Add Modal Functions
-  const {
-    isOpen: addProgramIsOpen,
-    onOpen: onOpenAddProgram,
-    onClose: onCloseAddProgram,
-  } = useDisclosure();
 
   const addProgram = async (formData: any) => {
     const newProgramData = {
@@ -105,16 +88,6 @@ export const Dashboard = () => {
       newProgramData.contractPeriod !== "other"
         ? newProgramData.contractPeriod
         : calculateDueDate(newProgramData.endDate);
-    setPrograms([
-      ...programs,
-      [
-        newProgramData.title,
-        formatDateUtcToEt(dueDate),
-        formatDateUtcToEt(Date.now()),
-        full_name,
-      ],
-    ]);
-    onCloseAddProgram();
     updateReport(
       { state: state, reportId: newProgramData.title },
       {
@@ -123,6 +96,7 @@ export const Dashboard = () => {
         lastAlteredBy: full_name,
       }
     );
+    onCloseAddProgram();
   };
 
   const navigate = useNavigate();
@@ -140,32 +114,10 @@ export const Dashboard = () => {
   };
 
   const { created, inProgress, submitted } = body.table.editReportButtonText;
-  const statusTextMap = [
-    { status: ReportStatus.CREATED, text: created },
-    {
-      status: ReportStatus.IN_PROGRESS,
-      text: inProgress,
-    },
-    {
-      status: ReportStatus.SUBMITTED,
-      text: submitted,
-    },
-  ];
-
-  const getStatus = (rowReportId: string) => {
-    return (
-      reportsByState.filter(
-        (report: ReportShape) => report.reportId === rowReportId
-      )[0]?.status || ReportStatus.CREATED
-    );
-  };
-
-  const getEditTextByStatus = (rowReportId: string) => {
-    const reportStatus = getStatus(rowReportId);
-    const editReportButtonText = statusTextMap.filter(
-      (map) => map.status === reportStatus
-    )[0]?.text;
-    return editReportButtonText || created;
+  const statusTextMap: { [key in ReportStatus]: string } = {
+    [ReportStatus.CREATED]: created,
+    [ReportStatus.IN_PROGRESS]: inProgress,
+    [ReportStatus.SUBMITTED]: submitted,
   };
 
   return (
@@ -192,40 +144,43 @@ export const Dashboard = () => {
       </Box>
       <Box>
         <Table content={tableContent} sxOverride={sx.table}>
-          {programs.map((row: string[], index: number) => (
-            // Row
-            <Tr key={index}>
-              <Td sx={sx.editProgram}>
-                {/* TODO: Pass existing data to populate modal */}
-                <button onClick={onOpenAddProgram as MouseEventHandler}>
-                  <Image src={editIcon} alt="Edit Program" />
-                </button>
-              </Td>
-              {/* Row Cells */}
-              {row.map((cell: string, index: number) => (
-                <Td key={index}>{cell}</Td>
-              ))}
-              <Td sx={sx.editReportButtonCell}>
-                <Button
-                  variant={"outline"}
-                  onClick={() => startProgram(row[0])}
-                >
-                  {getEditTextByStatus(row[0])}
-                </Button>
-              </Td>
-              <Td>
-                <button onClick={() => askToDeleteProgram()}>
-                  <Image
-                    src={cancelIcon}
-                    alt="Delete Program"
-                    sx={sx.deleteProgram}
-                  />
-                </button>
-              </Td>
-            </Tr>
-          ))}
+          {reports &&
+            reports.forEach((report: AnyObject) => (
+              // Row
+              <Tr key={report.reportId}>
+                <Td sx={sx.editProgram}>
+                  {/* TODO: Pass existing data to populate modal */}
+                  <button onClick={onOpenAddProgram as MouseEventHandler}>
+                    <Image src={editIcon} alt="Edit Program" />
+                  </button>
+                </Td>
+                <Td>{report.reportId}</Td>
+                <Td>{report.dueDate}</Td>
+                <Td>{report.lastAltered}</Td>
+                <Td>{report.lastAlteredBy}</Td>
+                <Td sx={sx.editReportButtonCell}>
+                  <Button
+                    variant={"outline"}
+                    onClick={() => startProgram(report.reportId)}
+                  >
+                    {statusTextMap[
+                      report.status as keyof typeof statusTextMap
+                    ] || created}
+                  </Button>
+                </Td>
+                <Td>
+                  <button onClick={onOpenDeleteProgram as MouseEventHandler}>
+                    <Image
+                      src={cancelIcon}
+                      alt="Delete Program"
+                      sx={sx.deleteProgram}
+                    />
+                  </button>
+                </Td>
+              </Tr>
+            ))}
         </Table>
-        {programs.length == 0 && (
+        {!reports && (
           <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
         )}
         <Box sx={sx.callToActionContainer}>
