@@ -64,5 +64,8 @@ const sx = {
   },
   ".ds-c-field__hint, .ds-c-field__error-message ": {
     fontSize: "sm",
+    ul: {
+      paddingLeft: "2rem",
+    },
   },
 };

@@ -3,4 +3,6 @@ import { number } from "utils/forms/schemas";
 
 export default object({
   "dpc-1": number(),
+  "dpc-2": number(),
+  "dpc-3": number(),
 });
