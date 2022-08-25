@@ -60,7 +60,9 @@ export const Header = ({ handleLogout }: Props) => {
           <Container sx={sx.subnavContainer} className={mqClasses}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
-                <Text sx={sx.programNameText}>Program: {report?.reportId}</Text>
+                <Text sx={sx.programNameText}>
+                  Program: {report?.programName}
+                </Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
                 {!isMobile && (

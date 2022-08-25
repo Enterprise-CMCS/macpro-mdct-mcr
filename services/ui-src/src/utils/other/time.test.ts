@@ -3,7 +3,8 @@ import {
   calculateTimeByType,
   checkDateRangeStatus,
   convertDateEtToUtc,
-  formatDateUtcToEt,
+  convertDateTimeEtToUtc,
+  convertDateUtcToEt,
   midnight,
   noon,
   oneSecondToMidnight,
@@ -31,9 +32,9 @@ describe("Test calculateTimeByType", () => {
   });
 });
 
-describe("Test convertDateEtToUtc", () => {
+describe("Test convertDateTimeEtToUtc", () => {
   test("Valid ET datetime converts to UTC correctly", () => {
-    const result = convertDateEtToUtc(
+    const result = convertDateTimeEtToUtc(
       { year: 2022, month: 1, day: 1 },
       { hour: 0, minute: 0, second: 0 }
     );
@@ -42,9 +43,17 @@ describe("Test convertDateEtToUtc", () => {
   });
 });
 
-describe("Test formatDateUtcToEt", () => {
+describe("Test convertDateEtToUtc", () => {
+  test("Valid ET datetime converts to UTC correctly", () => {
+    const result = convertDateEtToUtc(testDate.etFormattedString);
+    expect(result).toBe(testDate.utcMS);
+    expect(new Date(result).toUTCString()).toBe(testDate.utcString);
+  });
+});
+
+describe("Test convertDateUtcToEt", () => {
   test("Valid UTC datetime converts to ET correctly", () => {
-    const result = formatDateUtcToEt(testDate.utcMS);
+    const result = convertDateUtcToEt(testDate.utcMS);
     expect(result).toBe(testDate.etFormattedString);
   });
 });
@@ -80,12 +89,12 @@ describe("Test calculateDueDate", () => {
   it("calculateDueDate for 01/01/2022 for single year", () => {
     const startDate = "01/01/2022";
     const dueDate = calculateDueDate(startDate);
-    expect(formatDateUtcToEt(dueDate)).toBe("6/30/2022");
+    expect(convertDateUtcToEt(dueDate)).toBe("6/30/2022");
   });
 
   it("calculateDueDate for 08/01/2022 for rollover year", () => {
     const startDate = "08/01/2022";
     const dueDate = calculateDueDate(startDate);
-    expect(formatDateUtcToEt(dueDate)).toBe("1/28/2023");
+    expect(convertDateUtcToEt(dueDate)).toBe("1/28/2023");
   });
 });

@@ -18,7 +18,8 @@ import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 import { AnyObject, ReportDetails, ReportStatus } from "types";
 import {
   calculateDueDate,
-  formatDateUtcToEt,
+  convertDateEtToUtc,
+  convertDateUtcToEt,
   getReportsByState,
   useUser,
 } from "utils";
@@ -75,25 +76,33 @@ export const Dashboard = () => {
     onClose: onCloseDeleteProgram,
   } = useDisclosure();
 
+  const reportType = "MCPAR";
+
   const addProgram = async (formData: any) => {
     const newProgramData = {
       key: formJson.id,
-      title: formData["dash-program-name"],
-      contractPeriod: formData["dash-contractPeriod"],
+      programName: formData["dash-program-name"],
       startDate: formData["dash-startDate"],
       endDate: formData["dash-endDate"],
       check: formData["dash-check"],
     };
-    const dueDate =
-      newProgramData.contractPeriod !== "other"
-        ? newProgramData.contractPeriod
-        : calculateDueDate(newProgramData.endDate);
+    const dueDate = calculateDueDate(newProgramData.endDate);
+    const programName = newProgramData.programName;
+    const dashedDueDate = convertDateUtcToEt(dueDate)
+      .toString()
+      .replace(/\//g, "-");
+    const reportId = [state, programName, dashedDueDate].join("_");
+
     await updateReport(
-      { state: state, reportId: newProgramData.title },
+      { state: state, reportId: reportId },
       {
         status: ReportStatus.CREATED,
+        programName: programName,
         dueDate: dueDate,
+        reportType: reportType,
         lastAlteredBy: full_name,
+        reportingPeriodStartDate: convertDateEtToUtc(newProgramData?.startDate),
+        reportingPeriodEndDate: convertDateEtToUtc(newProgramData?.endDate),
       }
     );
     await fetchReportsByState(state!);
@@ -153,9 +162,9 @@ export const Dashboard = () => {
                     <Image src={editIcon} alt="Edit Program" />
                   </button>
                 </Td>
-                <Td sx={sx.programNameText}>{report.reportId}</Td>
-                <Td>{report.dueDate}</Td>
-                <Td>{formatDateUtcToEt(report.lastAltered)}</Td>
+                <Td sx={sx.programNameText}>{report.programName}</Td>
+                <Td>{convertDateUtcToEt(report.dueDate)}</Td>
+                <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
                 <Td>{report?.lastAlteredBy || "-"}</Td>
                 <Td sx={sx.editReportButtonCell}>
                   <Button

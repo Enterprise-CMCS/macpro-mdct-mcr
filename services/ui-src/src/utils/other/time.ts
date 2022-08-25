@@ -13,9 +13,7 @@ export const noon: TimeShape = {
   second: 0,
 };
 
-export const calculateTimeByType = (
-  timeType: string | undefined
-): TimeShape => {
+export const calculateTimeByType = (timeType?: string): TimeShape => {
   const timeMap: any = {
     startDate: midnight,
     endDate: oneSecondToMidnight,
@@ -27,7 +25,7 @@ export const calculateTimeByType = (
  * Converts passed ET datetime to UTC
  * returns -> UTC datetime in format 'ms since Unix epoch'
  */
-export const convertDateEtToUtc = (
+export const convertDateTimeEtToUtc = (
   etDate: DateShape,
   etTime: TimeShape
 ): number => {
@@ -43,10 +41,25 @@ export const convertDateEtToUtc = (
 };
 
 /*
+ * Converts passed ET datetime to UTC
+ * returns -> UTC datetime in format 'ms since Unix epoch'
+ */
+export const convertDateEtToUtc = (date: string): number => {
+  const [month, day, year] = date.split("/");
+
+  // month - 1 because Date object months are zero-indexed
+  const utcDatetime = zonedTimeToUtc(
+    new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
+    "America/New_York"
+  );
+  return utcDatetime.getTime();
+};
+
+/*
  * Converts passed UTC datetime to ET date
  * returns -> ET date in format mm/dd/yyyy
  */
-export const formatDateUtcToEt = (date: number): string => {
+export const convertDateUtcToEt = (date: number): string => {
   const convertedDate = date;
   const easternDatetime = utcToZonedTime(
     new Date(convertedDate),
@@ -90,7 +103,7 @@ export const convertDatetimeStringToNumber = (
   let convertedTime;
   if (completeDate) {
     const time = calculateTimeByType(timeType);
-    convertedTime = convertDateEtToUtc(completeDate, time);
+    convertedTime = convertDateTimeEtToUtc(completeDate, time);
   }
   return convertedTime || undefined;
 };
@@ -112,7 +125,7 @@ export const checkDateRangeStatus = (
 export const calculateDueDate = (date: string) => {
   const gracePeriod = 1000 * 60 * 60 * 24 * 180; // 180 days in ms
   const [month, day, year] = date.split("/");
-  const reportingPeriodEndDate = convertDateEtToUtc(
+  const reportingPeriodEndDate = convertDateTimeEtToUtc(
     { year: parseInt(year), month: parseInt(month), day: parseInt(day) },
     noon
   );

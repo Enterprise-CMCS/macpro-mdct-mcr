@@ -22,7 +22,6 @@ import checkIcon from "assets/icons/icon_check_circle.png";
 export const ReviewSubmit = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const reportId = report.reportId;
 
   // get user's state
   const { user } = useUser();
@@ -30,7 +29,7 @@ export const ReviewSubmit = () => {
 
   const reportDetails = {
     state: state,
-    reportId: reportId,
+    reportId: report.reportId,
   };
 
   useEffect(() => {
@@ -38,11 +37,11 @@ export const ReviewSubmit = () => {
   }, []);
 
   const submitForm = () => {
-    // TODO: Add check to make sure user filled out the form
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       updateReport(reportDetails, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
+        submissionDate: Date.now(),
       });
     }
     onClose();
@@ -54,7 +53,7 @@ export const ReviewSubmit = () => {
         <Sidebar />
         {report.status?.includes(ReportStatus.SUBMITTED) ? (
           <SuccessMessage
-            reportId={reportId}
+            programName={report.programName}
             date={report?.lastAltered}
             givenName={user?.given_name}
             familyName={user?.family_name}
@@ -119,7 +118,7 @@ interface ReadyToSubmitProps {
 }
 
 export const SuccessMessage = ({
-  reportId,
+  programName,
   date,
   givenName,
   familyName,
@@ -140,7 +139,7 @@ export const SuccessMessage = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{`MCPAR report for ${reportId} ${submittedDate} ${submittersName}`}</Text>
+          <Text>{`MCPAR report for ${programName} ${submittedDate} ${submittersName}`}</Text>
         </Box>
       </Box>
       <Box>
@@ -152,7 +151,7 @@ export const SuccessMessage = ({
 };
 
 interface SuccessMessageProps {
-  reportId: string;
+  programName: string;
   date: number;
   givenName?: string;
   familyName?: string;
