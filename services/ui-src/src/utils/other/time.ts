@@ -41,7 +41,7 @@ export const convertDateTimeEtToUtc = (
 };
 
 /*
- * Converts passed ET datetime to UTC
+ * Converts passed ET date to UTC
  * returns -> UTC datetime in format 'ms since Unix epoch'
  */
 export const convertDateEtToUtc = (date: string): number => {

@@ -42,9 +42,9 @@ export const writeReport = handler(async (event, context) => {
       statusParams = {
         TableName: process.env.REPORT_TABLE_NAME!,
         Item: {
+          ...currentBody,
           ...statusParams.Item,
           createdAt: currentBody.createdAt,
-          dueDate: currentBody?.dueDate,
         },
       };
     }

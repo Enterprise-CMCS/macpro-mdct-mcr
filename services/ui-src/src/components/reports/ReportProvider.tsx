@@ -92,7 +92,6 @@ export const ReportProvider = ({ children }: Props) => {
         reportId: report.reportId,
       };
       fetchReportData(reportDetails);
-      // fetchReport(reportDetails);
     }
   }, [report?.reportId]);
 
