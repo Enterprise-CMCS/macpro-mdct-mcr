@@ -133,4 +133,8 @@ export const mockReportStatus = {
   state: "AB",
   reportId: "testReportId",
   status: ReportStatus.CREATED,
+  programName: "testProgram",
+  dueDate: "168515200000",
+  lastAltered: "162515200000",
+  lastAlteredBy: "Thelonious States",
 };
