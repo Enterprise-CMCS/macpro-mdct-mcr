@@ -141,7 +141,7 @@ export const Dashboard = () => {
           </Link>
         </Text>
       </Box>
-      <Box>
+      <Box sx={sx.bodyBox}>
         <Table content={body.table} sxOverride={sx.table}>
           {reports &&
             reports.map((report: AnyObject) => (
@@ -153,10 +153,10 @@ export const Dashboard = () => {
                     <Image src={editIcon} alt="Edit Program" />
                   </button>
                 </Td>
-                <Td>{report.reportId}</Td>
+                <Td sx={sx.programNameText}>{report.reportId}</Td>
                 <Td>{report.dueDate}</Td>
                 <Td>{formatDateUtcToEt(report.lastAltered)}</Td>
-                <Td>{report.lastAlteredBy}</Td>
+                <Td>{report?.lastAlteredBy || "-"}</Td>
                 <Td sx={sx.editReportButtonCell}>
                   <Button
                     variant={"outline"}
@@ -167,7 +167,7 @@ export const Dashboard = () => {
                     ] || created}
                   </Button>
                 </Td>
-                <Td>
+                <Td sx={sx.deleteProgramCell}>
                   <button onClick={onOpenDeleteProgram}>
                     <Image
                       src={cancelIcon}
@@ -243,8 +243,7 @@ const sx = {
     },
   },
   leadTextBox: {
-    width: "100%",
-    margin: "2.5rem 0 2.25rem 0",
+    margin: "2.5rem 0 2.25rem 2.25rem",
   },
   reportingYearText: {
     marginBottom: "0.25rem",
@@ -259,15 +258,28 @@ const sx = {
   headerLink: {
     fontWeight: "bold",
   },
+  bodyBox: {
+    margin: "0 2.25rem 0 2.25rem",
+  },
   table: {
     marginBottom: "2.5rem",
+    th: {
+      padding: "0.5rem 0 0.5rem 0",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_light",
+      color: "palette.gray_medium",
+      fontWeight: "bold",
+    },
     tr: {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
     },
-    th: {
-      color: "palette.gray_medium",
-      fontWeight: "bold",
+    td: {
+      padding: "0.5rem 0.75rem 0.5rem 0",
+      borderTop: "1px solid",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_light",
+      textAlign: "left",
     },
   },
   editReportButtonCell: {
@@ -283,15 +295,24 @@ const sx = {
       color: "palette.primary",
     },
   },
-  deleteProgram: {
-    height: "1.75rem",
-  },
   editProgram: {
     padding: "0",
+    width: "2.5rem",
     img: {
       height: "1.5rem",
       marginLeft: "0.5rem",
     },
+  },
+  programNameText: {
+    fontSize: "md",
+    fontWeight: "bold",
+  },
+  deleteProgramCell: {
+    width: "2.5rem",
+  },
+  deleteProgram: {
+    height: "1.75rem",
+    width: "1.75rem",
   },
   emptyTableContainer: {
     maxWidth: "75%",
