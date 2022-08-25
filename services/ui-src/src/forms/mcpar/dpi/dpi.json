@@ -76,7 +76,7 @@
               "label": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
               "children": [
                 {
-                  "id": "dpi-6-o1-sub",
+                  "id": "dpi-7-o1",
                   "type": "number",
                   "props": {
                     "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -92,7 +92,7 @@
               "label": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently",
               "children": [
                 {
-                  "id": "dpi-6-o2-sub",
+                  "id": "dpi-7-o2",
                   "type": "number",
                   "props": {
                     "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -108,7 +108,7 @@
               "label": "Makes some referrals to the SMA and others directly to the MFCU",
               "children": [
                 {
-                  "id": "dpi-6-o3-sub",
+                  "id": "dpi-7-o3",
                   "type": "number",
                   "props": {
                     "label": "D1.X.7 Count of program integrity referrals to the state",

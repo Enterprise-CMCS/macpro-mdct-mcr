@@ -8,17 +8,17 @@ export default object({
   "dpi-4": number(),
   "dpi-5": number(),
   "dpi-6": radio(),
-  "dpi-6-o1-sub": nested(
+  "dpi-7-o1": nested(
     number,
     "dpi-6",
     "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only"
   ),
-  "dpi-6-o2-sub": nested(
+  "dpi-7-o2": nested(
     number,
     "dpi-6",
     "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently"
   ),
-  "dpi-6-o3-sub": nested(
+  "dpi-7-o3": nested(
     number,
     "dpi-6",
     "Makes some referrals to the SMA and others directly to the MFCU"
