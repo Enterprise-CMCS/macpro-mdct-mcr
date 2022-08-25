@@ -9,8 +9,8 @@
     },
     "info": [
       {
-        "type": "html",
-        "content": "<p>Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the </p>"
+        "type": "span",
+        "content": "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the "
       },
       {
         "type": "internalLink",
