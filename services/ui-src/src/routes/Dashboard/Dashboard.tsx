@@ -191,7 +191,6 @@ export const Dashboard = () => {
 
       {/* Add Program Modal */}
       <Modal
-        actionFunction={() => {}}
         formId={formJson.id}
         modalState={{
           isOpen: addProgramIsOpen,

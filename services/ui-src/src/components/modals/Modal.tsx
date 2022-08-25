@@ -45,16 +45,27 @@ export const Modal = ({
         <ModalBody sx={sx.modalBody}>{children}</ModalBody>
 
         <ModalFooter sx={sx.modalFooter}>
-          <Button
-            className={mqClasses}
-            sx={sx.action}
-            onClick={formId ? undefined : () => actionFunction()}
-            form={formId}
-            type={formId ? "submit" : undefined}
-            data-testid="modal-submit-button"
-          >
-            {content.actionButtonText}
-          </Button>
+          {formId && (
+            <Button
+              className={mqClasses}
+              sx={sx.action}
+              form={formId}
+              type="submit"
+              data-testid="modal-submit-button"
+            >
+              {content.actionButtonText}
+            </Button>
+          )}
+          {actionFunction && (
+            <Button
+              className={mqClasses}
+              sx={sx.action}
+              onClick={() => actionFunction()}
+              data-testid="modal-submit-button"
+            >
+              {content.actionButtonText}
+            </Button>
+          )}
           <Button
             className={mqClasses}
             sx={sx.close}
@@ -79,7 +90,7 @@ interface Props {
     actionButtonText: string;
     closeButtonText: string;
   };
-  actionFunction: Function;
+  actionFunction?: Function;
   formId?: string;
   children?: ReactNode;
   [key: string]: any;
