@@ -29,12 +29,14 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    return React.createElement(componentFieldType, {
+    const fieldPropsDeux = {
       key: field.id,
       name: field.id,
       nested: isNested,
+      hydrate: field.props?.hydrate,
       ...field?.props,
-    });
+    };
+    return React.createElement(componentFieldType, fieldPropsDeux);
   });
 };
 

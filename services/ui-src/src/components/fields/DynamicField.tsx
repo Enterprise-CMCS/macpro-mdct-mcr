@@ -34,9 +34,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             <TextField
               name={`${name}[${index}]`}
               label={label}
-              defaultValue={
-                form.getValues(name[index]) || props?.hydrate?.[index] || ""
-              }
               errorMessage={formErrorState?.[name]?.[index]?.message}
               sxOverride={sx.textFieldOverride}
             />

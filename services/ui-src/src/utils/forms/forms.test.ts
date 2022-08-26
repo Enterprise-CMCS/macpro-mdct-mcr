@@ -52,7 +52,7 @@ describe("Test formFieldFactory", () => {
     const generatedFields = formFieldFactory(mockFormFields, true);
 
     // Text field matches to component
-    const topTextField = generatedFields.find(
+    const topTextField: any = generatedFields.find(
       (field) => field.key === "mockField1"
     );
     expect(topTextField?.type.name).toBe("TextField");
@@ -70,7 +70,7 @@ describe("Test formFieldFactory", () => {
     expect(nestedTextField.id).toBe("mockField2-o1-text");
 
     // Number field matches to component
-    const topNumberField = generatedFields.find(
+    const topNumberField: any = generatedFields.find(
       (field) => field.key === "mockField3"
     );
     expect(topNumberField?.type.name).toBe("NumberField");

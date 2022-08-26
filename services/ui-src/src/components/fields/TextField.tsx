@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
@@ -13,7 +14,6 @@ export const TextField = ({
   placeholder,
   sxOverride,
   nested,
-  controlled,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -21,9 +21,20 @@ export const TextField = ({
   // get the form context
   const form = useFormContext();
 
+  const [fieldValue, setFieldValue] = useState<string>(
+    form.getValues(name) || props?.hydrate
+  );
+
+  useEffect(() => {
+    if (props?.hydrate) {
+      setFieldValue(props?.hydrate);
+    }
+  }, [props?.hydrate]);
+
   // update form data
   const onChangeHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
+    setFieldValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
 
@@ -32,8 +43,6 @@ export const TextField = ({
 
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const parsedHint = hint && parseCustomHtml(hint);
-
-  const fieldValue = form.getValues(name) || props?.hydrate;
 
   return (
     <Box
@@ -51,8 +60,7 @@ export const TextField = ({
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => form.register(name)}
-        value={controlled ? fieldValue : undefined}
-        defaultValue={controlled ? undefined : fieldValue}
+        value={fieldValue || ""}
         {...props}
       />
     </Box>
