@@ -56,6 +56,7 @@ export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
           onClose,
         }}
         drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
+        drawerInfo={drawer!.drawerInfo}
         form={form}
         onSubmit={onSubmit}
         data-testid="report-drawer"

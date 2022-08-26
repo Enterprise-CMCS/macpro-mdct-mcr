@@ -24,7 +24,13 @@
       "title": "Report on grievances by reason for each plan",
       "entityType": "plans"
     },
-    "drawerTitle": "Report on grievances by reason for"
+    "drawerTitle": "Report on grievances by reason for",
+    "drawerInfo": [
+      {
+        "type": "p",
+        "content": "A single grievance may be related to multiple reasons and may therefore be counted in multiple categories."
+      }
+    ]
   },
   "form": {
     "id": "dgbr",
