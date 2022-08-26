@@ -29,7 +29,7 @@ export const writeReportData = handler(async (event, context) => {
     Item: {
       state: state,
       reportId: reportId,
-      reportData: body,
+      fieldData: body,
     },
   };
   const getCurrentReport = await getReportData(event, context);
@@ -37,7 +37,7 @@ export const writeReportData = handler(async (event, context) => {
     const currentBody = JSON.parse(getCurrentReport.body);
     if (currentBody) {
       const newReport = {
-        ...currentBody.reportData,
+        ...currentBody.fieldData,
         ...body,
       };
       reportParams = {
@@ -45,7 +45,7 @@ export const writeReportData = handler(async (event, context) => {
         Item: {
           state: state,
           reportId: reportId,
-          reportData: { ...newReport },
+          fieldData: { ...newReport },
         },
       };
     }

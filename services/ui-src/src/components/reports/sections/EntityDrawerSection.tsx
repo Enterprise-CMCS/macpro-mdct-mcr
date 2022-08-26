@@ -1,15 +1,14 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import { ReportContext, ReportDrawer, ReportPageFooter } from "components";
+import { ReportDrawer, ReportPageFooter } from "components";
 // utils
-import { findRoute, hydrateFormFields } from "utils";
+import { findRoute } from "utils";
 import { PageJson } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 
 export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
-  const { reportData } = useContext(ReportContext);
   const { path, form, drawer } = pageJson;
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -24,10 +23,6 @@ export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
     setCurrentEntity(entity);
     onOpen();
   };
-
-  if (reportData) {
-    form.fields = hydrateFormFields(form.fields, reportData);
-  }
 
   const tempEntityMap = {
     plans: ["Plan A", "Plan B", "Plan C"],
