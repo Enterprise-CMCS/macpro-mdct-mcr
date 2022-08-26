@@ -1,11 +1,18 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
 // utils
-import { focusElement, formFieldFactory, sortFormErrors } from "utils";
-import { FormJson } from "types";
+import { ReportContext } from "components";
+
+import {
+  focusElement,
+  formFieldFactory,
+  hydrateFormFields,
+  sortFormErrors,
+} from "utils";
+import { FormJson, FormField } from "types";
 
 export const Form = ({
   id,
@@ -16,6 +23,7 @@ export const Form = ({
   ...props
 }: Props) => {
   const { fields, options } = formJson;
+  const { reportData } = useContext(ReportContext);
 
   // make form context
   const form = useForm({
@@ -32,6 +40,11 @@ export const Form = ({
     focusElement(fieldToFocus);
   };
 
+  const formFieldsToRender = (fields: FormField[]) => {
+    const hydratedFields = hydrateFormFields(fields, reportData);
+    return formFieldFactory(hydratedFields);
+  };
+
   return (
     <FormProvider {...form}>
       <form
@@ -39,7 +52,7 @@ export const Form = ({
         onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
         {...props}
       >
-        <Box sx={sx}>{formFieldFactory(fields)}</Box>
+        <Box sx={sx}>{formFieldsToRender(fields)}</Box>
         {children}
       </form>
     </FormProvider>

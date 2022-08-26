@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 // utils
 import {
   AnyObject,
+  FieldDataShape,
   ReportDataShape,
   ReportDetails,
   ReportContextShape,
@@ -38,7 +39,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
       const result = await getReportData(reportDetails);
-      setReportData(result.reportData);
+      setReportData(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_DATA_FAILED);
     }
@@ -46,10 +47,10 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReportData = async (
     reportDetails: ReportDetails,
-    reportData: ReportDataShape
+    fieldData: FieldDataShape
   ) => {
     try {
-      await writeReportData(reportDetails, reportData);
+      await writeReportData(reportDetails, fieldData);
       await fetchReportData(reportDetails);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_DATA_FAILED);
