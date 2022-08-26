@@ -68,8 +68,8 @@ describe("Test writeReportData API method", () => {
     const res = await writeReportData(testEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.reportData.field1).toContain("value1");
-    expect(body.reportData.num1).toBeCloseTo(0);
+    expect(body.fieldData.field1).toContain("value1");
+    expect(body.fieldData.num1).toBeCloseTo(0);
   });
 
   test("Test Successful Run of report update", async () => {
@@ -79,16 +79,16 @@ describe("Test writeReportData API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"reportData":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
+      body: `{"fieldData":{"field1":"value1","field2":"value2","num1":0,"array":["array1", "array2"]}}`,
     });
 
     const secondResponse = await writeReportData(secondWriteEvent, null);
     const secondBody = JSON.parse(secondResponse.body);
     expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(secondBody.reportData.newField1).toContain("newValue1");
-    expect(secondBody.reportData.newNum1).toBeCloseTo(1);
-    expect(secondBody.reportData.field1).toContain("value1");
-    expect(secondBody.reportData.num1).toBeCloseTo(0);
+    expect(secondBody.fieldData.newField1).toContain("newValue1");
+    expect(secondBody.fieldData.newNum1).toBeCloseTo(1);
+    expect(secondBody.fieldData.field1).toContain("value1");
+    expect(secondBody.fieldData.num1).toBeCloseTo(0);
   });
 
   test("Test reportKey not provided throws 500 error", async () => {

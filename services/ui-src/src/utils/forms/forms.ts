@@ -29,12 +29,14 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    return React.createElement(componentFieldType, {
+    const fieldProps = {
       key: field.id,
       name: field.id,
       nested: isNested,
+      hydrate: field.props?.hydrate,
       ...field?.props,
-    });
+    };
+    return React.createElement(componentFieldType, fieldProps);
   });
 };
 
@@ -64,9 +66,9 @@ export const hydrateFormFields = (
       }
 
       // if reportData has value for field, set props.hydrate
-      const fieldHydrationValue = reportData[field.id];
+      const fieldHydrationValue = reportData.fieldData?.[field.id];
       if (fieldHydrationValue) {
-        formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
+        formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue || "";
       }
     });
   }

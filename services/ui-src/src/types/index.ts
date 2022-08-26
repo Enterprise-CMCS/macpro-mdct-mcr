@@ -54,6 +54,10 @@ export interface ReportDataShape {
   [key: string]: any;
 }
 
+export interface FieldDataShape {
+  [key: string]: any;
+}
+
 export interface ReportDetails {
   state: string;
   reportId: string;
