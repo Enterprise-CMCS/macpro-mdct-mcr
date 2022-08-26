@@ -21,6 +21,7 @@ import {
   convertDateEtToUtc,
   convertDateUtcToEt,
   getReportsByState,
+  parseCustomHtml,
   useUser,
 } from "utils";
 // data
@@ -81,7 +82,7 @@ export const Dashboard = () => {
   const addProgram = async (formData: any) => {
     const newProgramData = {
       key: formJson.id,
-      programName: formData["dash-program-name"],
+      programName: formData["dash-programName"],
       startDate: formData["dash-startDate"],
       endDate: formData["dash-endDate"],
       check: formData["dash-check"],
@@ -137,18 +138,10 @@ export const Dashboard = () => {
         </Link>
       </Box>
       <Box sx={sx.leadTextBox}>
-        <Text sx={sx.reportingYearText}>{intro.eyebrow}</Text>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
         </Heading>
-        <Text>
-          {intro.body.line1}
-          <br />
-          {intro.body.line2}
-          <Link href={intro.link.location} isExternal sx={sx.headerLink}>
-            {intro.link.text}
-          </Link>
-        </Text>
+        <Box>{parseCustomHtml(intro.body)}</Box>
       </Box>
       <Box sx={sx.bodyBox}>
         <Table content={body.table} sxOverride={sx.table}>
@@ -181,7 +174,7 @@ export const Dashboard = () => {
                     <Image
                       src={cancelIcon}
                       alt="Delete Program"
-                      sx={sx.deleteProgram}
+                      sx={sx.deleteProgramButtonImage}
                     />
                   </button>
                 </Td>
@@ -253,21 +246,13 @@ const sx = {
   leadTextBox: {
     margin: "2.5rem 0 2.25rem 2.25rem",
   },
-  reportingYearText: {
-    marginBottom: "0.25rem",
-    fontWeight: "bold",
-    color: "palette.gray_medium",
-  },
   headerText: {
     marginBottom: "1rem",
     fontSize: "4xl",
     fontWeight: "normal",
   },
-  headerLink: {
-    fontWeight: "bold",
-  },
   bodyBox: {
-    margin: "0 2.25rem 0 2.25rem",
+    margin: "0 2.25rem",
   },
   table: {
     marginBottom: "2.5rem",
@@ -283,7 +268,8 @@ const sx = {
       borderColor: "palette.gray_light",
     },
     td: {
-      padding: "0.5rem 0.75rem 0.5rem 0",
+      padding: "0.5rem 0.75rem",
+      paddingLeft: 0,
       borderTop: "1px solid",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
@@ -291,7 +277,7 @@ const sx = {
     },
   },
   editReportButtonCell: {
-    width: "110px",
+    width: "6.875rem",
     padding: 0,
     button: {
       width: "6.875rem",
@@ -318,7 +304,7 @@ const sx = {
   deleteProgramCell: {
     width: "2.5rem",
   },
-  deleteProgram: {
+  deleteProgramButtonImage: {
     height: "1.75rem",
     width: "1.75rem",
   },

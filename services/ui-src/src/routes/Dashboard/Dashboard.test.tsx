@@ -92,8 +92,10 @@ describe("Test /mcpar dashboard view", () => {
 
 describe("Test /mcpar dashboard view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dashboardView);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    await act(async () => {
+      const { container } = render(dashboardView);
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
   });
 });

@@ -97,7 +97,7 @@ const ReadyToSubmit = ({
         </Button>
       </Flex>
       <Modal
-        actionFunction={() => submitForm()}
+        onConfirmHandler={submitForm}
         modalState={{
           isOpen,
           onClose,

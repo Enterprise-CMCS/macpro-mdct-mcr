@@ -16,7 +16,7 @@ const content = {
 
 const modalComponent = (
   <Modal
-    actionFunction={handleAction}
+    onConfirmHandler={handleAction}
     modalState={{
       isOpen: true,
       onClose: handleClose,

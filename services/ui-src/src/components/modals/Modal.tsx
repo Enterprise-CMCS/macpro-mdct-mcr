@@ -16,11 +16,11 @@ import { CloseIcon } from "@cmsgov/design-system";
 import { makeMediaQueryClasses } from "utils";
 
 export const Modal = ({
-  actionFunction,
-  children,
-  content,
-  formId,
   modalState,
+  content,
+  onConfirmHandler,
+  formId,
+  children,
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
@@ -43,7 +43,6 @@ export const Modal = ({
           </Button>
         </Flex>
         <ModalBody sx={sx.modalBody}>{children}</ModalBody>
-
         <ModalFooter sx={sx.modalFooter}>
           {formId && (
             <Button
@@ -56,11 +55,11 @@ export const Modal = ({
               {content.actionButtonText}
             </Button>
           )}
-          {actionFunction && (
+          {onConfirmHandler && (
             <Button
               className={mqClasses}
               sx={sx.action}
-              onClick={() => actionFunction()}
+              onClick={() => onConfirmHandler()}
               data-testid="modal-submit-button"
             >
               {content.actionButtonText}
@@ -90,7 +89,7 @@ interface Props {
     actionButtonText: string;
     closeButtonText: string;
   };
-  actionFunction?: Function;
+  onConfirmHandler?: Function;
   formId?: string;
   children?: ReactNode;
   [key: string]: any;

@@ -16,9 +16,9 @@ import { AnyObject, TableContentShape } from "types";
 
 export const Table = ({
   content,
-  children,
   variant,
   sxOverride,
+  children,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -49,33 +49,30 @@ export const Table = ({
           </Tr>
         </Thead>
       )}
-      {children ? (
-        <Tbody>{children}</Tbody>
-      ) : (
-        <Tbody>
-          {/* Body Rows */}
-          {content.bodyRows &&
-            content.bodyRows!.map((row: string[], index: number) => (
-              <Tr key={index}>
-                {/* Row Cells */}
-                {row.map((cell: string, index: number) => (
-                  <Td key={index} sx={sx.tableCell} className={mqClasses}>
-                    {cell}
-                  </Td>
-                ))}
-              </Tr>
-            ))}
-        </Tbody>
-      )}
+      <Tbody>
+        {/* if children prop is passed, just render the children */}
+        {children && children}
+        {/* if content prop is passed, parse and render rows and cells */}
+        {content.bodyRows &&
+          content.bodyRows!.map((row: string[], index: number) => (
+            <Tr key={row[0] + index}>
+              {row.map((cell: string, index: number) => (
+                <Td key={cell + index} sx={sx.tableCell} className={mqClasses}>
+                  {cell}
+                </Td>
+              ))}
+            </Tr>
+          ))}
+      </Tbody>
     </TableRoot>
   );
 };
 
 interface Props {
   content: TableContentShape;
-  children?: ReactNode;
   variant?: string;
   sxOverride?: AnyObject;
+  children?: ReactNode;
   [key: string]: any;
 }
 
