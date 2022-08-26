@@ -43,10 +43,12 @@ export const UserProvider = ({ children }: Props) => {
       const cms_role = payload["custom:cms_roles"] as string;
       const userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
       const state = payload["custom:cms_state"] as string | undefined;
+      const full_name = [given_name, " ", family_name].join("");
       const currentUser: MCRUser = {
         email,
         given_name,
         family_name,
+        full_name,
         userRole,
         state,
       };

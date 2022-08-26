@@ -37,9 +37,9 @@ describe("Admin banner integration tests", () => {
     const submitButton = "[type='submit']";
     cy.get(submitButton).focus().click();
 
-    const startDateText = "7/14/22";
+    const startDateText = "7/14/2022";
     cy.contains(startDateText).should("be.visible");
-    const endDateText = "7/14/26";
+    const endDateText = "7/14/2026";
     cy.contains(endDateText).should("be.visible");
 
     cy.contains(bannerWriteErrorMessage).should("not.exist");

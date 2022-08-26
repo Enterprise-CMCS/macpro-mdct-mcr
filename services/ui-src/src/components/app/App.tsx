@@ -10,6 +10,7 @@ import {
   Header,
   LoginCognito,
   LoginIDM,
+  ReportProvider,
   SkipNav,
 } from "components";
 // utils
@@ -42,17 +43,19 @@ export const App = () => {
             href="#main-content"
             text="Skip to main content"
           />
-          <Header handleLogout={logout} />
-          <Container
-            sx={sx.appContainer}
-            className={mqClasses}
-            data-testid="app-container"
-          >
-            <ErrorBoundary FallbackComponent={Error}>
-              <AppRoutes userRole={user?.userRole} />
-            </ErrorBoundary>
-          </Container>
-          <Footer />
+          <ReportProvider>
+            <Header handleLogout={logout} />
+            <Container
+              sx={sx.appContainer}
+              className={mqClasses}
+              data-testid="app-container"
+            >
+              <ErrorBoundary FallbackComponent={Error}>
+                <AppRoutes userRole={user?.userRole} />
+              </ErrorBoundary>
+            </Container>
+            <Footer />
+          </ReportProvider>
         </Flex>
       )}
       {!user && showLocalLogins && (

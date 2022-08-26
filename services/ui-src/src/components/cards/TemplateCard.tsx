@@ -115,6 +115,7 @@ const sx = {
   },
   actionsFlex: {
     flexFlow: "wrap",
+    gridGap: "1rem",
     justifyContent: "space-between",
     marginTop: "1rem",
     "&.mobile": {
