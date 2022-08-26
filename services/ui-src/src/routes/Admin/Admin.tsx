@@ -9,7 +9,7 @@ import {
   ErrorAlert,
 } from "components";
 // utils
-import { checkDateRangeStatus, formatDateUtcToEt } from "utils";
+import { checkDateRangeStatus, convertDateUtcToEt } from "utils";
 import { bannerErrors } from "verbiage/errors";
 import verbiage from "verbiage/pages/admin";
 
@@ -55,10 +55,10 @@ export const Admin = () => {
               </Text>
               <Text sx={sx.currentBannerDate}>
                 Start Date:{" "}
-                <span>{formatDateUtcToEt(bannerData?.startDate)}</span>
+                <span>{convertDateUtcToEt(bannerData?.startDate)}</span>
               </Text>
               <Text sx={sx.currentBannerDate}>
-                End Date: <span>{formatDateUtcToEt(bannerData?.endDate)}</span>
+                End Date: <span>{convertDateUtcToEt(bannerData?.endDate)}</span>
               </Text>
             </Flex>
           )}
