@@ -1,0 +1,48 @@
+{
+  "id": "dash",
+  "options": {
+    "mode": "onChange"
+  },
+  "fields": [
+    {
+      "id": "dash-programName",
+      "type": "text",
+      "props": {
+        "label": "Program name"
+      }
+    },
+    {
+      "id": "dash-startDate",
+      "type": "date",
+      "props": {
+        "label": "A.5a Reporting period (i.e. contract period) start date",
+        "timetype": "startDate",
+        "hint": "Enter start date of the reporting period represented in the report."
+      }
+    },
+    {
+      "id": "dash-endDate",
+      "type": "date",
+      "props": {
+        "label": "A.5b Reporting period  (i.e. contract period) end date",
+        "timetype": "endDate",
+        "hint": "Enter end date of the reporting period represented in the report."
+      }
+    },
+    {
+      "id": "dash-check",
+      "type": "checkbox",
+      "props": {
+        "label": "TBD Label",
+        "hint": "May or may not need this hint",
+        "choices": [
+          {
+            "name": "dash-check-01",
+            "type": "choice",
+            "label": "TBD Choice"
+          }
+        ]
+      }
+    }
+  ]
+}

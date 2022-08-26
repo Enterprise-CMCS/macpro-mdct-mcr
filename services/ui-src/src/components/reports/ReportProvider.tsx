@@ -1,17 +1,16 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 // utils
 import {
   AnyObject,
   ReportDataShape,
   ReportDetails,
   ReportContextShape,
-  ReportStatusShape,
+  ReportShape,
 } from "types";
 import {
   getReportData,
   writeReportData,
   getReport,
-  getReportsByState,
   writeReport,
   deleteReport,
 } from "utils";
@@ -19,8 +18,10 @@ import {
 import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
-  reportStatus: undefined as AnyObject | undefined,
+  report: undefined as AnyObject | undefined,
   reportData: undefined as AnyObject | undefined,
+  setReport: Function,
+  setReportData: Function,
   fetchReportData: Function,
   updateReportData: Function,
   fetchReport: Function,
@@ -30,9 +31,7 @@ export const ReportContext = createContext<ReportContextShape>({
 });
 
 export const ReportProvider = ({ children }: Props) => {
-  const [reportStatus, setReportStatus] = useState<
-    ReportStatusShape | undefined
-  >();
+  const [report, setReport] = useState<ReportShape | undefined>();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
   const [error, setError] = useState<string>();
 
@@ -60,24 +59,15 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReport = async (reportDetails: ReportDetails) => {
     try {
       const result = await getReport(reportDetails);
-      setReportStatus(result);
+      setReport(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }
   };
 
-  const fetchReportsByState = async (state: string) => {
-    try {
-      const result = await getReportsByState(state);
-      return result;
-    } catch (e: any) {
-      setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
-    }
-  };
-
   const updateReport = async (
     reportDetails: ReportDetails,
-    reportStatus: string
+    reportStatus: ReportShape
   ) => {
     try {
       await writeReport(reportDetails, reportStatus);
@@ -95,19 +85,30 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (report) {
+      const reportDetails = {
+        state: report.state,
+        reportId: report.reportId,
+      };
+      fetchReportData(reportDetails);
+    }
+  }, [report?.reportId]);
+
   const providerValue = useMemo(
     () => ({
-      reportStatus,
+      report,
       reportData,
+      setReport,
+      setReportData,
       fetchReportData,
       updateReportData,
       fetchReport,
-      fetchReportsByState,
       updateReport,
       removeReport,
       errorMessage: error,
     }),
-    [reportData, reportStatus, error]
+    [report, reportData, error]
   );
 
   return (
