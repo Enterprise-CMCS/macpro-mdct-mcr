@@ -61,27 +61,16 @@ export const McparReportPage = () => {
     }
   }, [reportId]);
 
-  let loading = true;
-  useEffect(() => {
-    if (formView) {
-      loading = false;
-    }
-  }, [formView]);
-
   return (
-    <>
-      {!loading && (
-        <ReportPage data-testid={form.id}>
-          <Flex sx={sx.pageContainer}>
-            <Sidebar />
-            <Flex sx={sx.reportContainer}>
-              {intro && <ReportPageIntro text={intro} />}
-              {renderPageSection(formView)}
-            </Flex>
-          </Flex>
-        </ReportPage>
-      )}
-    </>
+    <ReportPage data-testid={form.id}>
+      <Flex sx={sx.pageContainer}>
+        <Sidebar />
+        <Flex sx={sx.reportContainer}>
+          {intro && <ReportPageIntro text={intro} />}
+          {renderPageSection(formView)}
+        </Flex>
+      </Flex>
+    </ReportPage>
   );
 };
 
