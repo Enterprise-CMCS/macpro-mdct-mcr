@@ -13,9 +13,7 @@ export const noon: TimeShape = {
   second: 0,
 };
 
-export const calculateTimeByType = (
-  timeType: string | undefined
-): TimeShape => {
+export const calculateTimeByType = (timeType?: string): TimeShape => {
   const timeMap: any = {
     startDate: midnight,
     endDate: oneSecondToMidnight,
@@ -27,7 +25,7 @@ export const calculateTimeByType = (
  * Converts passed ET datetime to UTC
  * returns -> UTC datetime in format 'ms since Unix epoch'
  */
-export const convertDateEtToUtc = (
+export const convertDateTimeEtToUtc = (
   etDate: DateShape,
   etTime: TimeShape
 ): number => {
@@ -43,10 +41,25 @@ export const convertDateEtToUtc = (
 };
 
 /*
+ * Converts passed ET date to UTC
+ * returns -> UTC datetime in format 'ms since Unix epoch'
+ */
+export const convertDateEtToUtc = (date: string): number => {
+  const [month, day, year] = date.split("/");
+
+  // month - 1 because Date object months are zero-indexed
+  const utcDatetime = zonedTimeToUtc(
+    new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
+    "America/New_York"
+  );
+  return utcDatetime.getTime();
+};
+
+/*
  * Converts passed UTC datetime to ET date
  * returns -> ET date in format mm/dd/yyyy
  */
-export const formatDateUtcToEt = (date: number): string => {
+export const convertDateUtcToEt = (date: number): string => {
   const convertedDate = date;
   const easternDatetime = utcToZonedTime(
     new Date(convertedDate),
@@ -54,7 +67,7 @@ export const formatDateUtcToEt = (date: number): string => {
   );
   const month = new Date(easternDatetime).getMonth();
   const day = new Date(easternDatetime).getDate();
-  const year = new Date(easternDatetime).getFullYear().toString().slice(-2);
+  const year = new Date(easternDatetime).getFullYear();
 
   // month + 1 because Date object months are zero-indexed
   return `${month + 1}/${day}/${year}`;
@@ -65,9 +78,12 @@ export const formatDateUtcToEt = (date: number): string => {
  * returns -> User Timezone date in format Day of Week, Month Day, Year
  * Ex: Friday, August 12, 2022
  */
-export const utcDateToReadableDate = (date: number) => {
+export const utcDateToReadableDate = (
+  date: number,
+  style?: "full" | "long" | "medium" | "short"
+) => {
   return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "full",
+    dateStyle: style,
   }).format(date);
 };
 
@@ -87,7 +103,7 @@ export const convertDatetimeStringToNumber = (
   let convertedTime;
   if (completeDate) {
     const time = calculateTimeByType(timeType);
-    convertedTime = convertDateEtToUtc(completeDate, time);
+    convertedTime = convertDateTimeEtToUtc(completeDate, time);
   }
   return convertedTime || undefined;
 };
@@ -98,4 +114,19 @@ export const checkDateRangeStatus = (
 ): boolean => {
   const currentTime = new Date().valueOf();
   return currentTime >= startDate && currentTime <= endDate;
+};
+
+/*
+ * Converts a date string to UTC + 180 days
+ * returns -> UTC datetime in format 'ms since Unix epoch'
+ * Ex: 6/30/22 Becomes 1483603200000
+ */
+export const calculateDueDate = (date: string) => {
+  const gracePeriod = 1000 * 60 * 60 * 24 * 180; // 180 days in ms
+  const [month, day, year] = date.split("/");
+  const reportingPeriodEndDate = convertDateTimeEtToUtc(
+    { year: parseInt(year), month: parseInt(month), day: parseInt(day) },
+    noon
+  );
+  return reportingPeriodEndDate + gracePeriod;
 };

@@ -14,23 +14,24 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // MOCKS
 
 const mockReportMethods = {
+  setReport: jest.fn(() => {}),
+  setReportData: jest.fn(() => {}),
   fetchReportData: jest.fn(() => {}),
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
   updateReport: jest.fn(() => {}),
 };
 
 const mockReportInitialContext = {
   ...mockReportMethods,
   reportData: {},
-  reportState: "",
+  report: {},
   errorMessage: "",
 };
 
 const mockReportCompletedContext = {
   ...mockReportMethods,
-  reportStatus: {
+  report: {
     createdAt: 1660283173744,
     state: "CA",
     reportId: "tempName",
@@ -85,7 +86,7 @@ describe("Test /mcpar/review-and-submit view", () => {
     const { modal, pageLink } = review;
     const submitCheckButton = screen.getByText(pageLink.text)!;
     await userEvent.click(submitCheckButton);
-    const modalTitle = screen.getByText(modal.heading)!;
+    const modalTitle = screen.getByText(modal.structure.heading)!;
     expect(modalTitle).toBeVisible();
   });
 

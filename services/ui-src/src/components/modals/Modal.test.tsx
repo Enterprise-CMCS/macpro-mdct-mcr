@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
+import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
 
 const handleClose = jest.fn();
@@ -15,13 +16,15 @@ const content = {
 
 const modalComponent = (
   <Modal
-    actionFunction={handleAction}
+    onConfirmHandler={handleAction}
     modalState={{
       isOpen: true,
       onClose: handleClose,
     }}
     content={content}
-  />
+  >
+    <Text>{content.body}</Text>
+  </Modal>
 );
 
 describe("Test Modal", () => {
