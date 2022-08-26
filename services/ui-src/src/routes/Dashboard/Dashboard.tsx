@@ -59,7 +59,6 @@ export const Dashboard = () => {
     if (state) {
       fetchReportsByState(state);
     }
-    console.log("Dashboard.tsx -- report & reportData set to undefined");
     setReport(undefined);
     setReportData(undefined);
   }, []);
@@ -120,7 +119,6 @@ export const Dashboard = () => {
     };
     // Set report to selected program
     setReport(reportDetails);
-    console.log("Dashboard.tsx -- report set to:", reportDetails.reportId);
     navigate(mcparFormBeginning);
   };
 
