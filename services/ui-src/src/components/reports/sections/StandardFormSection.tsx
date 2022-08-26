@@ -17,7 +17,6 @@ export const StandardFormSection = ({ pageJson, onSubmit }: Props) => {
 
   return (
     <Box data-testid="standard-form-section">
-      Identical blocks of code found in 2 locations. Consider refactoring. …
       <Form
         id={form.id}
         formJson={form}

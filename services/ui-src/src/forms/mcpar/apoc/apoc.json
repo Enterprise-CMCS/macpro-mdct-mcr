@@ -25,7 +25,6 @@
         "id": "apoc-a2a",
         "type": "text",
         "props": {
-          "something": "garrett2",
           "label": "A.2a Contact name",
           "hint": "First and last name of the contact person."
         }
