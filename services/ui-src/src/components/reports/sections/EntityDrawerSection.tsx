@@ -35,11 +35,11 @@ export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
 
   return (
     <Box data-testid="entity-drawer-section">
-      <Heading as="h3">{drawer!.dashboard.title}</Heading>
+      <Heading as="h4">{drawer!.dashboard.title}</Heading>
       {tempEntityMap.plans.map((entity) => {
         return (
           <Flex key={entity} sx={sx.entityRow}>
-            <Heading as="h4">{entity}</Heading>
+            <Heading as="h5">{entity}</Heading>
             <Button
               sx={sx.enterButton}
               onClick={() => openRowDrawer(entity)}
@@ -82,7 +82,7 @@ const sx = {
   enterButton: {
     width: "4.25rem",
     height: "1.75rem",
-    fontSize: "sm",
+    fontSize: "md",
     fontWeight: "normal",
   },
 };

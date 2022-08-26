@@ -87,12 +87,18 @@ const sx = {
     marginLeft: "3.5rem",
     h3: {
       paddingBottom: "0.75rem",
-      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
       color: "palette.gray_medium",
       fontSize: "lg",
       fontWeight: "bold",
     },
     h4: {
+      paddingBottom: "0.75rem",
+      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+      color: "palette.gray_medium",
+      fontSize: "lg",
+      fontWeight: "bold",
+    },
+    h5: {
       fontSize: "lg",
       fontWeight: "bold",
     },
