@@ -47,7 +47,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReportData = async (
     reportDetails: ReportDetails,
-    fieldData: FieldDataShape,
+    fieldData: FieldDataShape
   ) => {
     try {
       await writeReportData(reportDetails, fieldData);
