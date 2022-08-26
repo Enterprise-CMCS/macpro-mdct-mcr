@@ -13,6 +13,8 @@ import * as drawerPageJson from "forms/mcpar/dpc/dpc.json";
 // MOCKS
 
 const mockReportMethods = {
+  setReport: jest.fn(() => {}),
+  setReportData: jest.fn(() => {}),
   fetchReportData: jest.fn(() => {}),
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
@@ -21,7 +23,7 @@ const mockReportMethods = {
 
 const mockReportContext = {
   ...mockReportMethods,
-  reportStatus: {},
+  report: {},
   reportData: {},
   errorMessage: "",
 };

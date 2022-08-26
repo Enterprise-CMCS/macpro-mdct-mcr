@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 // components
 import {
   Table as TableRoot,
@@ -13,7 +14,13 @@ import {
 import { makeMediaQueryClasses } from "utils";
 import { AnyObject, TableContentShape } from "types";
 
-export const Table = ({ content, variant, sxOverride, ...props }: Props) => {
+export const Table = ({
+  content,
+  variant,
+  sxOverride,
+  children,
+  ...props
+}: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
     <TableRoot
@@ -43,17 +50,19 @@ export const Table = ({ content, variant, sxOverride, ...props }: Props) => {
         </Thead>
       )}
       <Tbody>
-        {/* Body Rows */}
-        {content.bodyRows.map((row: string[], index: number) => (
-          <Tr key={index}>
-            {/* Row Cells */}
-            {row.map((cell: string, index: number) => (
-              <Td key={index} sx={sx.tableCell} className={mqClasses}>
-                {cell}
-              </Td>
-            ))}
-          </Tr>
-        ))}
+        {/* if children prop is passed, just render the children */}
+        {children && children}
+        {/* if content prop is passed, parse and render rows and cells */}
+        {content.bodyRows &&
+          content.bodyRows!.map((row: string[], index: number) => (
+            <Tr key={row[0] + index}>
+              {row.map((cell: string, index: number) => (
+                <Td key={cell + index} sx={sx.tableCell} className={mqClasses}>
+                  {cell}
+                </Td>
+              ))}
+            </Tr>
+          ))}
       </Tbody>
     </TableRoot>
   );
@@ -63,6 +72,7 @@ interface Props {
   content: TableContentShape;
   variant?: string;
   sxOverride?: AnyObject;
+  children?: ReactNode;
   [key: string]: any;
 }
 

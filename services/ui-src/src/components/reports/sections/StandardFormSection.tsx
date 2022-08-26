@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 // components
 import { Box } from "@chakra-ui/react";
 import { Form, ReportContext, ReportPageFooter } from "components";
@@ -17,9 +17,9 @@ export const StandardFormSection = ({ pageJson, onSubmit }: Props) => {
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
-  if (reportData) {
+  useEffect(() => {
     form.fields = hydrateFormFields(form.fields, reportData);
-  }
+  }, [reportData]);
 
   return (
     <Box data-testid="standard-form-section">
