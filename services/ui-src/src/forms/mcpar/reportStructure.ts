@@ -1,9 +1,9 @@
 export default [
-  {
-    name: "Test", // uncomment for testing new components
-    formId: "test",
-    path: "/mcpar/test",
-  },
+  // {
+  //   name: "Test", // uncomment for testing new components
+  //   formId: "test",
+  //   path: "/mcpar/test",
+  // },
   {
     name: "Get Started",
     path: "/mcpar/get-started",

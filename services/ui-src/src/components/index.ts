@@ -38,6 +38,7 @@ export { TextAreaField } from "./fields/TextAreaField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { Form } from "./forms/Form";
+export { FormViewContext, FormViewProvider } from "./forms/FormViewProvider";
 // icons
 export { Icon } from "./icons/Icon";
 // layout

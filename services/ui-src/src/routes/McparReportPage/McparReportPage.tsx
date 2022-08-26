@@ -8,6 +8,7 @@ import {
   EntityDrawerSection,
   StandardFormSection,
   ReportPageIntro,
+  FormViewContext,
   Sidebar,
 } from "components";
 // utils
@@ -16,10 +17,13 @@ import { PageJson, ReportStatus, UserRoles } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 
-export const McparReportPage = ({ pageJson }: Props) => {
+export const McparReportPage = () => {
   const navigate = useNavigate();
   const { report, updateReportData, updateReport } = useContext(ReportContext);
-  const { path, intro, form } = pageJson;
+  const { formView } = useContext(FormViewContext);
+
+  console.log("formView", formView);
+  const { path, intro, form } = formView;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
   const reportId = report?.reportId;
 
@@ -43,11 +47,11 @@ export const McparReportPage = ({ pageJson }: Props) => {
     navigate(nextRoute);
   };
 
-  const renderPageSection = (pageJson: PageJson) => {
-    if (pageJson.drawer) {
-      return <EntityDrawerSection pageJson={pageJson} onSubmit={onSubmit} />;
+  const renderPageSection = (formView: PageJson) => {
+    if (formView.drawer) {
+      return <EntityDrawerSection pageJson={formView} onSubmit={onSubmit} />;
     } else {
-      return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
+      return <StandardFormSection pageJson={formView} onSubmit={onSubmit} />;
     }
   };
 
@@ -57,22 +61,29 @@ export const McparReportPage = ({ pageJson }: Props) => {
     }
   }, [reportId]);
 
+  let loading = true;
+  useEffect(() => {
+    if (formView) {
+      loading = false;
+    }
+  }, [formView]);
+
   return (
-    <ReportPage data-testid={form.id}>
-      <Flex sx={sx.pageContainer}>
-        <Sidebar />
-        <Flex sx={sx.reportContainer}>
-          {intro && <ReportPageIntro text={intro} />}
-          {renderPageSection(pageJson)}
-        </Flex>
-      </Flex>
-    </ReportPage>
+    <>
+      {!loading && (
+        <ReportPage data-testid={form.id}>
+          <Flex sx={sx.pageContainer}>
+            <Sidebar />
+            <Flex sx={sx.reportContainer}>
+              {intro && <ReportPageIntro text={intro} />}
+              {renderPageSection(formView)}
+            </Flex>
+          </Flex>
+        </ReportPage>
+      )}
+    </>
   );
 };
-
-interface Props {
-  pageJson: PageJson;
-}
 
 const sx = {
   pageContainer: {
