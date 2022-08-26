@@ -15,6 +15,7 @@ import { AnyObject, FieldChoice, FormField } from "types";
 
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
+  console.log("formFieldFactory -- running with fields:", fields);
   // define form field components
   const fieldToComponentMap: any = {
     checkbox: CheckboxField,
@@ -29,14 +30,14 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    const fieldPropsDeux = {
+    const fieldProps = {
       key: field.id,
       name: field.id,
       nested: isNested,
       hydrate: field.props?.hydrate,
       ...field?.props,
     };
-    return React.createElement(componentFieldType, fieldPropsDeux);
+    return React.createElement(componentFieldType, fieldProps);
   });
 };
 
@@ -44,7 +45,9 @@ export const hydrateFormFields = (
   formFields: FormField[],
   reportData: AnyObject
 ) => {
+  console.log("hydrator -- checking for reportData");
   if (reportData) {
+    console.log("hydrator -- active reportData:", reportData);
     formFields.forEach((field: FormField) => {
       const fieldFormIndex = formFields.indexOf(field!);
       const fieldProps = formFields[fieldFormIndex].props!;
@@ -66,9 +69,9 @@ export const hydrateFormFields = (
       }
 
       // if reportData has value for field, set props.hydrate
-      const fieldHydrationValue = reportData[field.id];
+      const fieldHydrationValue = reportData.fieldData?.[field.id];
       if (fieldHydrationValue) {
-        formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
+        formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue || "";
       }
     });
   }

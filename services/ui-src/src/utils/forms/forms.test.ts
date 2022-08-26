@@ -130,9 +130,11 @@ describe("Test hydrateFormFields", () => {
   ];
 
   const mockReportData = {
-    "mock-field-1": "mock-field-1-value",
-    "mock-field-2": ["mock-option1"],
-    "mock-field-2-o1-text": "mock nested text",
+    fieldData: {
+      "mock-field-1": "mock-field-1-value",
+      "mock-field-2": ["mock-option1"],
+      "mock-field-2-o1-text": "mock nested text",
+    },
   };
 
   it("Correctly hydrates field with report data", () => {

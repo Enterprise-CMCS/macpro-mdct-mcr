@@ -21,6 +21,11 @@ export const TextField = ({
   // get the form context
   const form = useFormContext();
 
+  if (name === "apoc-a2a") {
+    console.log("TextField -- apoc-a2a form.getValues:", form.getValues(name));
+    console.log("TextField -- apoc-a2a props.hydrate:", props?.hydrate);
+  }
+
   const [fieldValue, setFieldValue] = useState<string>(
     form.getValues(name) || props?.hydrate
   );

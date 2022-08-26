@@ -12,7 +12,7 @@ import {
   hydrateFormFields,
   sortFormErrors,
 } from "utils";
-import { FormJson } from "types";
+import { FormJson, FormField } from "types";
 
 export const Form = ({
   id,
@@ -23,7 +23,7 @@ export const Form = ({
   ...props
 }: Props) => {
   const { fields, options } = formJson;
-  const { reportData } = useContext(ReportContext);
+  const { report, reportData } = useContext(ReportContext);
 
   // make form context
   const form = useForm({
@@ -40,10 +40,15 @@ export const Form = ({
     focusElement(fieldToFocus);
   };
 
-  const formFieldsToRender = () => {
+  const formFieldsToRender = (fields: FormField[]) => {
+    console.log("Form.tsx -- calling formFieldsToRender with:");
+    console.log("Form.tsx -- current report:", report?.reportId || null);
+    console.log("Form.tsx -- current reportData", reportData?.reportId || null);
     const hydratedFields = hydrateFormFields(fields, reportData);
     return formFieldFactory(hydratedFields);
   };
+
+  console.log("Form.tsx -- FORM IS LOADING");
 
   return (
     <FormProvider {...form}>
@@ -52,7 +57,7 @@ export const Form = ({
         onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
         {...props}
       >
-        <Box sx={sx}>{formFieldsToRender()}</Box>
+        <Box sx={sx}>{formFieldsToRender(fields)}</Box>
         {children}
       </form>
     </FormProvider>
