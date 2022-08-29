@@ -29,6 +29,11 @@ export const DropdownField = ({
 
   const parsedHint = hint && parseCustomHtml(hint);
 
+  // insert the default option
+  options.splice(0, 0, { value: "", label: "- Select an option -" });
+
+  // TODO: handle options mapping in this component
+
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <CmsdsDropdown

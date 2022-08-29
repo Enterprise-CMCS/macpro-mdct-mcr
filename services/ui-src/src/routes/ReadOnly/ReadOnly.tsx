@@ -1,14 +1,13 @@
 // components
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { BasicPage, DropdownField, Form } from "components";
+import { BasicPage, DropdownField } from "components";
 // types
-import { FormJson, States } from "types";
+import { InputChangeEvent, States } from "types";
 // utils
 import verbiage from "verbiage/pages/home";
-// form data
-import { reportSchema } from "forms/mcpar/reportSchema";
 
-export const ReadOnly = ({ form, onSubmit }: Props) => {
+export const ReadOnly = () => {
+  // const options = Object.values(States);
   const dropdownOptions = Object.keys(States).map((value) => {
     return {
       value,
@@ -17,6 +16,13 @@ export const ReadOnly = ({ form, onSubmit }: Props) => {
   });
   const { readOnly } = verbiage;
   const labelStyle = "margin-top: 0";
+
+  const setState = (event: InputChangeEvent) => {
+    localStorage.setItem("state", event.target.value);
+  };
+
+  // TODO: route to /mcpar/dashboard?state="state"
+
   return (
     <>
       <BasicPage data-testid="read-only-view">
@@ -25,34 +31,22 @@ export const ReadOnly = ({ form, onSubmit }: Props) => {
             {readOnly.header}
           </Heading>
         </Box>
-        <Form
-          id={form.id}
-          formJson={form}
-          formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-          onSubmit={onSubmit}
-        >
-          <DropdownField
-            name="States"
-            label=""
-            labelClassName={labelStyle}
-            hint={readOnly.body}
-            ariaLabel={readOnly.ariaLabel}
-            options={dropdownOptions}
-          />
-          <Flex sx={sx.navigationButton}>
-            <Button type="submit">{readOnly.buttonLabel}</Button>
-          </Flex>
-        </Form>
+        <DropdownField
+          name="States"
+          label=""
+          labelClassName={labelStyle}
+          hint={readOnly.body}
+          ariaLabel={readOnly.ariaLabel}
+          options={dropdownOptions}
+          onChange={setState}
+        />
+        <Flex sx={sx.navigationButton}>
+          <Button type="submit">{readOnly.buttonLabel}</Button>
+        </Flex>
       </BasicPage>
     </>
   );
 };
-
-interface Props {
-  form: FormJson;
-  onSubmit: Function;
-  [key: string]: any;
-}
 
 const sx = {
   headerText: {

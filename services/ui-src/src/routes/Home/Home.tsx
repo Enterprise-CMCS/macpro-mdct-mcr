@@ -7,7 +7,7 @@ import {
   BasicPage,
   TemplateCard,
 } from "components";
-//import { ReadOnly } from "routes";
+import { ReadOnly } from "routes";
 
 // utils
 import { checkDateRangeStatus, useUser } from "utils";
@@ -26,12 +26,15 @@ export const Home = () => {
   const { user } = useUser();
   const { userRole } = user ?? {};
   const { intro, cards } = verbiage;
+
   return (
     <>
       {userRole === UserRoles.HELP_DESK ||
       userRole === UserRoles.APPROVER ||
-      userRole === UserRoles.STATE_REP ? (
-        <>{/* <ReadOnly form={} onSubmit={} /> */}</>
+      userRole === UserRoles.ADMIN ? (
+        <>
+          <ReadOnly />
+        </>
       ) : (
         <>
           <Collapse in={showBanner}>
