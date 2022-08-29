@@ -133,12 +133,12 @@ export default [
           },
           {
             name: "Appeals by Service",
-            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-service",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
             formId: "dabs",
           },
           {
             name: "State Fair Hearings",
-            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/state-fair-hearings",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
             formId: "dsfh",
           },
           {
