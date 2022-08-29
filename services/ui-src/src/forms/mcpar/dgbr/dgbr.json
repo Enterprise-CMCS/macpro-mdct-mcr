@@ -58,7 +58,7 @@
         "type": "number",
         "props": {
           "label": "D1.IV.16c Resolved grievances related to access to care/services from plan or provider",
-          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care. Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
           "mask": "comma-separated"
         }
       },
@@ -67,7 +67,7 @@
         "type": "number",
         "props": {
           "label": "D1.IV.16d Resolved grievances related to quality of care",
-          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to quality of care.Quality of care grievances include complaints about the effectiveness, efficiency, equity, patient-centeredness, safety, and/or acceptability of care provided by a provider or the plan.",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to quality of care. Quality of care grievances include complaints about the effectiveness, efficiency, equity, patient-centeredness, safety, and/or acceptability of care provided by a provider or the plan.",
           "mask": "comma-separated"
         }
       },
@@ -94,7 +94,7 @@
         "type": "number",
         "props": {
           "label": "D1.IV.16g Resolved grievances related to suspected fraud",
-          "hint": "Enter the total number of grievances resolved during the reporting year that were related to suspected fraud.Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.",
+          "hint": "Enter the total number of grievances resolved during the reporting year that were related to suspected fraud. Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.",
           "mask": "comma-separated"
         }
       },
