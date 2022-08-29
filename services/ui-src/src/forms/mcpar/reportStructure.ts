@@ -148,7 +148,7 @@ export default [
           },
           {
             name: "Grievances by Reason",
-            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-by-reason",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
             formId: "dgbr",
           },
         ],
