@@ -138,7 +138,7 @@ export default [
           },
           {
             name: "State Fair Hearings",
-            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/state-fair-hearings",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
             formId: "dsfh",
           },
           {

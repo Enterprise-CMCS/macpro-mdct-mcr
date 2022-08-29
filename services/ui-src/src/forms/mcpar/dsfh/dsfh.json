@@ -1,18 +1,82 @@
 {
-  "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/state-fair-hearings",
+  "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
   "intro": {
-    "section": "D: Plan-Level Indicators > IV: Appeals, State Fair Hearings & Grievances",
-    "subsection": "State Fair Hearings"
+    "section": "Section D: Plan-Level Indicators",
+    "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["D1_Plan_Set"]
+    },
+    "info": [
+      {
+        "type": "heading",
+        "as": "h3",
+        "content": "State Fair Hearings"
+      }
+    ]
+  },
+  "drawer": {
+    "dashboard": {
+      "title": "Report state fair hearings and external medical reviews for each plan",
+      "entityType": "plans"
+    },
+    "drawerTitle": "Report state fair hearings and external medical reviews for"
   },
   "form": {
     "id": "dsfh",
     "fields": [
       {
         "id": "dsfh-1",
-        "type": "text",
+        "type": "number",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "D1.IV.8a State Fair Hearing requests",
+          "hint": "Enter the total number of requests for a State Fair Hearing filed during the reporting year by plan that issued the adverse benefit determination.",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dsfh-2",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.8b State Fair Hearings resulting in a favorable decision for the enrollee",
+          "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were partially or fully favorable to the enrollee.",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dsfh-3",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.8c State Fair Hearings resulting in an adverse decision for the enrollee",
+          "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were adverse for the enrollee.",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dsfh-4",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.8d State Fair Hearings retracted prior to reaching a decision",
+          "hint": "Enter the total number of State Fair Hearing decisions retracted (by the enrollee or the representative who filed a State Fair Hearing request on behalf of the enrollee) prior to reaching a decision.",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dsfh-5",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
+          "hint": "If your state does offers an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dsfh-6",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.9b External Medical Reviews resulting in an adverse decision for the enrollee",
+          "hint": "<p>If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).</p>",
+          "mask": "comma-separated"
         }
       }
     ]
