@@ -9,11 +9,11 @@ import {
 } from "utils/forms/schemas";
 
 export default object({
-  "dfp-1": number(),
-  "dfp-2": radio(),
-  "dfp-2-o5-text": nested(text, "dfp-2", "Other"),
-  "dfp-3": text(),
-  "dfp-4": radio(),
-  "dfp-5-start": nested(date, "dfp-4", "Yes"),
-  "dfp-5-end": nested(() => endDate("dfp-5-start"), "dfp-4", "Yes"),
+  "dfp-1a": number(),
+  "dfp-1b": radio(),
+  "dfp-1b-o5-text": nested(text, "dfp-1b", "Other"),
+  "dfp-2": text(),
+  "dfp-3": radio(),
+  "dfp-4-start": nested(date, "dfp-3", "Yes"),
+  "dfp-4-end": nested(() => endDate("dfp-4-start"), "dfp-3", "Yes"),
 });
