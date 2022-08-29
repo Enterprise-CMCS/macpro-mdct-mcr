@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { BasicPage, DropdownField } from "components";
@@ -8,6 +9,7 @@ import verbiage from "verbiage/pages/home";
 
 export const ReadOnly = () => {
   // const options = Object.values(States);
+  const navigate = useNavigate();
   const dropdownOptions = Object.keys(States).map((value) => {
     return {
       value,
@@ -21,7 +23,10 @@ export const ReadOnly = () => {
     localStorage.setItem("state", event.target.value);
   };
 
-  // TODO: route to /mcpar/dashboard?state="state"
+  const onSubmit = () => {
+    const dashboard = "/mcpar/dashboard?state=" + localStorage.getItem("state");
+    navigate(dashboard);
+  };
 
   return (
     <>
@@ -41,7 +46,9 @@ export const ReadOnly = () => {
           onChange={setState}
         />
         <Flex sx={sx.navigationButton}>
-          <Button type="submit">{readOnly.buttonLabel}</Button>
+          <Button type="submit" onClick={onSubmit}>
+            {readOnly.buttonLabel}
+          </Button>
         </Flex>
       </BasicPage>
     </>
