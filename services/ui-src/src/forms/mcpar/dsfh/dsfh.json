@@ -66,7 +66,7 @@
         "type": "number",
         "props": {
           "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
-          "hint": "If your state does offers an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+          "hint": "If your state does offers an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
           "mask": "comma-separated"
         }
       },
