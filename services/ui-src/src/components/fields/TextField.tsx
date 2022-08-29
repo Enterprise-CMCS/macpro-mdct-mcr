@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
@@ -20,9 +21,20 @@ export const TextField = ({
   // get the form context
   const form = useFormContext();
 
+  const [fieldValue, setFieldValue] = useState<string>(
+    form.getValues(name) || props?.hydrate
+  );
+
+  useEffect(() => {
+    if (props?.hydrate) {
+      setFieldValue(props?.hydrate);
+    }
+  }, [props?.hydrate]);
+
   // update form data
   const onChangeHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
+    setFieldValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
 
@@ -48,7 +60,7 @@ export const TextField = ({
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         inputRef={() => form.register(name)}
-        defaultValue={form.getValues(name) || props?.hydrate}
+        value={fieldValue || ""}
         {...props}
       />
     </Box>
@@ -62,6 +74,7 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
+  controlled?: string;
   [key: string]: any;
 }
 

@@ -13,6 +13,7 @@ export interface MCRUser {
   email: string;
   given_name: string;
   family_name: string;
+  full_name: string;
   userRole?: string;
   state?: string;
 }
@@ -110,26 +111,32 @@ export interface ReportDataShape {
   [key: string]: any;
 }
 
+export interface FieldDataShape {
+  [key: string]: any;
+}
+
 export interface ReportDetails {
   state: string;
   reportId: string;
 }
 
-export interface ReportStatusShape {
+export interface ReportShape {
   [key: string]: any;
 }
 
 export interface ReportContextMethods {
+  setReport: Function;
+  setReportData: Function;
   fetchReportData: Function;
   updateReportData: Function;
   fetchReport: Function;
   updateReport: Function;
-  fetchReportsByState: Function;
+  removeReport: Function;
 }
 
 export interface ReportContextShape
   extends ReportDataShape,
-    ReportStatusShape,
+    ReportShape,
     ReportContextMethods {
   errorMessage?: string;
 }
@@ -242,7 +249,7 @@ export type { IconType } from "react-icons";
 export interface TableContentShape {
   caption?: string;
   headRow?: string[];
-  bodyRows: string[][];
+  bodyRows?: string[][];
 }
 
 export interface CustomHtmlElement {

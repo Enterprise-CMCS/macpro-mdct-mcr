@@ -1,17 +1,17 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 // utils
 import {
   AnyObject,
+  FieldDataShape,
   ReportDataShape,
   ReportDetails,
   ReportContextShape,
-  ReportStatusShape,
+  ReportShape,
 } from "types";
 import {
   getReportData,
   writeReportData,
   getReport,
-  getReportsByState,
   writeReport,
   deleteReport,
 } from "utils";
@@ -19,33 +19,28 @@ import {
 import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
-  reportStatus: undefined as AnyObject | undefined,
+  report: undefined as AnyObject | undefined,
   reportData: undefined as AnyObject | undefined,
-  reportsByState: undefined as AnyObject | undefined,
+  setReport: Function,
+  setReportData: Function,
   fetchReportData: Function,
   updateReportData: Function,
   fetchReport: Function,
   updateReport: Function,
-  fetchReportsByState: Function,
   removeReport: Function,
-  programName: undefined,
-  setProgramName: Function,
   errorMessage: undefined,
 });
 
 export const ReportProvider = ({ children }: Props) => {
-  const [reportStatus, setReportStatus] = useState<
-    ReportStatusShape | undefined
-  >();
+  const [report, setReport] = useState<ReportShape | undefined>();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
-  const [reportsByState, setReportsByState] = useState<any>();
   const [error, setError] = useState<string>();
   const [programName, setProgramName] = useState<string>();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
       const result = await getReportData(reportDetails);
-      setReportData(result.reportData);
+      setReportData(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_DATA_FAILED);
     }
@@ -53,10 +48,10 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReportData = async (
     reportDetails: ReportDetails,
-    reportData: ReportDataShape
+    fieldData: FieldDataShape
   ) => {
     try {
-      await writeReportData(reportDetails, reportData);
+      await writeReportData(reportDetails, fieldData);
       await fetchReportData(reportDetails);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_DATA_FAILED);
@@ -66,24 +61,15 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReport = async (reportDetails: ReportDetails) => {
     try {
       const result = await getReport(reportDetails);
-      setReportStatus(result);
+      setReport(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }
   };
 
-  const fetchReportsByState = async (state: string) => {
-    try {
-      const result = await getReportsByState(state);
-      setReportsByState(result);
-    } catch (e: any) {
-      setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
-    }
-  };
-
   const updateReport = async (
     reportDetails: ReportDetails,
-    reportStatus: string
+    reportStatus: ReportShape
   ) => {
     try {
       await writeReport(reportDetails, reportStatus);
@@ -101,22 +87,32 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (report) {
+      const reportDetails = {
+        state: report.state,
+        reportId: report.reportId,
+      };
+      fetchReportData(reportDetails);
+    }
+  }, [report?.reportId]);
+
   const providerValue = useMemo(
     () => ({
-      reportStatus,
+      report,
       reportData,
-      reportsByState,
+      setReport,
+      setReportData,
       fetchReportData,
       updateReportData,
       fetchReport,
-      fetchReportsByState,
       updateReport,
       removeReport,
       programName,
       setProgramName,
       errorMessage: error,
     }),
-    [reportData, reportStatus, reportsByState, error, programName]
+    [report, reportData, error]
   );
 
   return (

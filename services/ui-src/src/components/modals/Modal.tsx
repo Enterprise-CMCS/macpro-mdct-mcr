@@ -16,11 +16,11 @@ import { CloseIcon } from "@cmsgov/design-system";
 import { makeMediaQueryClasses } from "utils";
 
 export const Modal = ({
-  actionFunction,
-  actionId,
-  children,
-  content,
   modalState,
+  content,
+  onConfirmHandler,
+  formId,
+  children,
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
@@ -43,18 +43,28 @@ export const Modal = ({
           </Button>
         </Flex>
         <ModalBody sx={sx.modalBody}>{children}</ModalBody>
-
         <ModalFooter sx={sx.modalFooter}>
-          <Button
-            className={mqClasses}
-            sx={sx.action}
-            onClick={!actionId ? () => actionFunction() : undefined}
-            form={actionId}
-            type="submit"
-            data-testid="modal-submit-button"
-          >
-            {content.actionButtonText}
-          </Button>
+          {formId && (
+            <Button
+              className={mqClasses}
+              sx={sx.action}
+              form={formId}
+              type="submit"
+              data-testid="modal-submit-button"
+            >
+              {content.actionButtonText}
+            </Button>
+          )}
+          {onConfirmHandler && (
+            <Button
+              className={mqClasses}
+              sx={sx.action}
+              onClick={() => onConfirmHandler()}
+              data-testid="modal-submit-button"
+            >
+              {content.actionButtonText}
+            </Button>
+          )}
           <Button
             className={mqClasses}
             sx={sx.close}
@@ -70,7 +80,6 @@ export const Modal = ({
 };
 
 interface Props {
-  actionFunction: Function;
   modalState: {
     isOpen: boolean;
     onClose: any;
@@ -80,7 +89,8 @@ interface Props {
     actionButtonText: string;
     closeButtonText: string;
   };
-  actionId?: string;
+  onConfirmHandler?: Function;
+  formId?: string;
   children?: ReactNode;
   [key: string]: any;
 }

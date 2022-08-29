@@ -43,12 +43,6 @@ const TestComponent = () => {
         Fetch Report
       </button>
       <button
-        onClick={() => context.fetchReportsByState("AB")}
-        data-testid="fetch-reports-by-state-button"
-      >
-        Fetch Reports By State
-      </button>
-      <button
         onClick={() =>
           context.updateReportData(mockReportDetails, mockReportData)
         }
@@ -112,17 +106,6 @@ describe("Test fetch methods", () => {
     // 1 call on render + 1 call on button click
     await waitFor(() =>
       expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1)
-    );
-  });
-
-  test("fetchReportsByState method calls API getReportsByState method", async () => {
-    await act(async () => {
-      const fetchButton = screen.getByTestId("fetch-reports-by-state-button");
-      await userEvent.click(fetchButton);
-    });
-    // 1 call on render + 1 call on button click
-    await waitFor(() =>
-      expect(mockReportAPI.getReportsByState).toHaveBeenCalledTimes(1)
     );
   });
 });
@@ -244,20 +227,6 @@ describe("Test ReportProvider error states", () => {
     });
     await act(async () => {
       const fetchButton = screen.getByTestId("fetch-report-button");
-      await userEvent.click(fetchButton);
-    });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
-  });
-
-  test("Shows error if fetchReportsByState throws error", async () => {
-    mockReportAPI.getReportsByState.mockImplementation(() => {
-      throw new Error();
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
-    await act(async () => {
-      const fetchButton = screen.getByTestId("fetch-reports-by-state-button");
       await userEvent.click(fetchButton);
     });
     expect(screen.queryByTestId("error-message")).toBeVisible();

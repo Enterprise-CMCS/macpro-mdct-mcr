@@ -5,51 +5,10 @@
   },
   "fields": [
     {
-      "id": "dash-program-name",
+      "id": "dash-programName",
       "type": "text",
       "props": {
         "label": "Program name"
-      }
-    },
-    {
-      "id": "dash-contractPeriod",
-      "type": "dropdown",
-      "props": {
-        "label": "Contract period of first report",
-        "options": [
-          {
-            "label": "- Select an option -",
-            "value": ""
-          },
-          {
-            "label": "7/1/21 to 6/30/22",
-            "value": "12/27/2022"
-          },
-          {
-            "label": "9/1/21 to 8/21/22",
-            "value": "2/27/2023"
-          },
-          {
-            "label": "10/1/21 to 9/30/22 ",
-            "value": "3/29/2023"
-          },
-          {
-            "label": "1/1/22 to 12/31/22",
-            "value": "6/29/2023"
-          },
-          {
-            "label": "2/1/22 to 1/31/23",
-            "value": "7/30/2023"
-          },
-          {
-            "label": "4/1/22 to 3/31/23 ",
-            "value": "9/27/2023"
-          },
-          {
-            "label": "Other",
-            "value": "other"
-          }
-        ]
       }
     },
     {

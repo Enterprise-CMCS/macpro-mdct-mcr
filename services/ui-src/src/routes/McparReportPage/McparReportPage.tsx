@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Flex } from "@chakra-ui/react";
@@ -18,22 +18,25 @@ import { mcparRoutes } from "forms/mcpar";
 
 export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
-  const { updateReportData, updateReport, programName } =
-    useContext(ReportContext);
+  const { report, updateReportData, updateReport } = useContext(ReportContext);
   const { path, intro, form } = pageJson;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
+  const reportId = report?.reportId;
 
   // get user's state
   const { user } = useUser();
-  const { state, userRole } = user ?? {};
+  const { full_name, state, userRole } = user ?? {};
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const reportDetails = {
         state: state,
-        reportId: programName,
+        reportId: reportId,
       };
-      const reportStatus = ReportStatus.IN_PROGRESS;
+      const reportStatus = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      };
       updateReportData(reportDetails, formData);
       updateReport(reportDetails, reportStatus);
     }
@@ -47,6 +50,12 @@ export const McparReportPage = ({ pageJson }: Props) => {
       return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
     }
   };
+
+  useEffect(() => {
+    if (!reportId) {
+      navigate("/mcpar/dashboard");
+    }
+  }, [reportId]);
 
   return (
     <ReportPage data-testid={form.id}>

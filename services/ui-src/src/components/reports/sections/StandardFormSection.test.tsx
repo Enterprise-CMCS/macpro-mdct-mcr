@@ -10,16 +10,18 @@ import * as standardPageJson from "forms/mcpar/apoc/apoc.json";
 // MOCKS
 
 const mockReportMethods = {
+  setReport: jest.fn(() => {}),
+  setReportData: jest.fn(() => {}),
   fetchReportData: jest.fn(() => {}),
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
   updateReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
+  removeReport: jest.fn(() => {}),
 };
 
 const mockReportContext = {
   ...mockReportMethods,
-  reportStatus: {},
+  report: {},
   reportData: {},
   errorMessage: "",
 };

@@ -20,17 +20,16 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { reportStatus, fetchReport, updateReport, programName } =
-    useContext(ReportContext);
+  const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user's state
   const { user } = useUser();
-  const { state, userRole } = user ?? {};
+  const { full_name, state, userRole } = user ?? {};
 
   const reportDetails = {
     state: state,
-    reportId: programName,
+    reportId: report.reportId,
   };
 
   useEffect(() => {
@@ -38,9 +37,12 @@ export const ReviewSubmit = () => {
   }, []);
 
   const submitForm = () => {
-    // TODO: Add check to make sure user filled out the form
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      updateReport(reportDetails, ReportStatus.SUBMITTED);
+      updateReport(reportDetails, {
+        status: ReportStatus.SUBMITTED,
+        lastAlteredBy: full_name,
+        submissionDate: Date.now(),
+      });
     }
     onClose();
   };
@@ -49,10 +51,10 @@ export const ReviewSubmit = () => {
     <ReportPage>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {reportStatus?.status?.includes(ReportStatus.SUBMITTED) ? (
+        {report.status?.includes(ReportStatus.SUBMITTED) ? (
           <SuccessMessage
-            programName={programName}
-            date={reportStatus?.lastAltered}
+            programName={report.programName}
+            date={report?.lastAltered}
             givenName={user?.given_name}
             familyName={user?.family_name}
           />
@@ -95,7 +97,7 @@ const ReadyToSubmit = ({
         </Button>
       </Flex>
       <Modal
-        actionFunction={() => submitForm()}
+        onConfirmHandler={submitForm}
         modalState={{
           isOpen,
           onClose,

@@ -12,7 +12,7 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
         {
           state: "AB",
           reportId: "testReportId",
-          reportData: {
+          fieldData: {
             field1: "value1",
             field2: "value2",
             num1: 0,
@@ -51,8 +51,8 @@ describe("Test getReportData API method", () => {
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.reportData.field1).toContain("value1");
-    expect(body.reportData.num1).toBeCloseTo(0);
+    expect(body.fieldData.field1).toContain("value1");
+    expect(body.fieldData.num1).toBeCloseTo(0);
   });
 
   test("Test reportKey not provided throws 500 error", async () => {

@@ -29,12 +29,14 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    return React.createElement(componentFieldType, {
+    const fieldProps = {
       key: field.id,
       name: field.id,
       nested: isNested,
+      hydrate: field.props?.hydrate,
       ...field?.props,
-    });
+    };
+    return React.createElement(componentFieldType, fieldProps);
   });
 };
 
@@ -42,32 +44,34 @@ export const hydrateFormFields = (
   formFields: FormField[],
   reportData: AnyObject
 ) => {
-  formFields.forEach((field: FormField) => {
-    const fieldFormIndex = formFields.indexOf(field!);
-    const fieldProps = formFields[fieldFormIndex].props!;
+  if (reportData) {
+    formFields.forEach((field: FormField) => {
+      const fieldFormIndex = formFields.indexOf(field!);
+      const fieldProps = formFields[fieldFormIndex].props!;
 
-    // check for children on each choice in field props
-    if (fieldProps) {
-      const choices = fieldProps.choices;
-      if (choices) {
-        choices.forEach((choice: FieldChoice) => {
-          // if a choice has children, recurse
-          if (choice.children) {
-            hydrateFormFields(choice.children, reportData);
-          }
-        });
+      // check for children on each choice in field props
+      if (fieldProps) {
+        const choices = fieldProps.choices;
+        if (choices) {
+          choices.forEach((choice: FieldChoice) => {
+            // if a choice has children, recurse
+            if (choice.children) {
+              hydrateFormFields(choice.children, reportData);
+            }
+          });
+        }
+      } else {
+        // if no props on field, initialize props as empty object
+        formFields[fieldFormIndex].props = {};
       }
-    } else {
-      // if no props on field, initialize props as empty object
-      formFields[fieldFormIndex].props = {};
-    }
 
-    // if reportData has value for field, set props.hydrate
-    const fieldHydrationValue = reportData[field.id];
-    if (fieldHydrationValue) {
-      formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
-    }
-  });
+      // if reportData has value for field, set props.hydrate
+      const fieldHydrationValue = reportData.fieldData?.[field.id];
+      if (fieldHydrationValue) {
+        formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue || "";
+      }
+    });
+  }
   return formFields;
 };
 

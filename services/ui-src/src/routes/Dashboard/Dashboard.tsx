@@ -1,4 +1,4 @@
-import { MouseEventHandler, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import {
@@ -13,15 +13,23 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowIcon } from "@cmsgov/design-system";
-import { ActionTable, BasicPage, Form, Modal, ReportContext } from "components";
+import { BasicPage, Form, Modal, ReportContext, Table } from "components";
 // utils
-import { ReportStatus } from "types";
-import { calculateDueDate, formatDateUtcToEt, useUser } from "utils";
+import { AnyObject, ReportDetails, ReportStatus } from "types";
+import {
+  calculateDueDate,
+  convertDateEtToUtc,
+  convertDateUtcToEt,
+  getReportsByState,
+  parseCustomHtml,
+  useUser,
+} from "utils";
 // data
 import formJson from "forms/mcpar/dash/dashForm.json";
 import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import { reportErrors } from "verbiage/errors";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
@@ -31,57 +39,29 @@ export const Dashboard = () => {
   const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
     verbiage;
 
-  const { fetchReportsByState, reportsByState, setProgramName, updateReport } =
-    useContext(ReportContext);
+  const { setReport, setReportData, updateReport } = useContext(ReportContext);
+
+  const [reports, setReports] = useState<AnyObject | undefined>(undefined);
 
   const { user } = useUser();
-  const { state } = user ?? {};
+  const { full_name, state } = user ?? {};
 
-  useEffect(() => {
-    fetchReportsByState(state);
-  }, []);
-
-  const [programs, setPrograms] = useState<Array<Array<any>>>(
-    reportsByState || []
-  );
-
-  useEffect(() => {
-    // update form data
-    if (reportsByState) {
-      let loadedPrograms: any = [];
-      reportsByState.forEach((report: any) => {
-        loadedPrograms = [
-          ...loadedPrograms,
-          [
-            report.reportId,
-            // TODO send Due Date to DB and fetch here
-            "",
-            formatDateUtcToEt(report.lastAltered),
-            "-",
-          ],
-        ];
-      });
-      setPrograms(loadedPrograms);
+  const fetchReportsByState = async (state: string) => {
+    try {
+      const result = await getReportsByState(state);
+      setReports(result);
+    } catch (e: any) {
+      throw new Error(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
-  }, [reportsByState]);
-
-  const tableContent = {
-    caption: body.table.caption,
-    headRow: body.table.headRow,
   };
 
-  // Delete Modal Functions
-  const {
-    isOpen: deleteProgramIsOpen,
-    onOpen: onOpenDeleteProgram,
-    onClose: onCloseDeleteProgram,
-  } = useDisclosure();
-
-  const askToDeleteProgram = async () => {
-    onOpenDeleteProgram();
-  };
-
-  const deleteProgram = async () => {};
+  useEffect(() => {
+    if (state) {
+      fetchReportsByState(state);
+    }
+    setReport(undefined);
+    setReportData(undefined);
+  }, []);
 
   // Add Modal Functions
   const {
@@ -90,35 +70,63 @@ export const Dashboard = () => {
     onClose: onCloseAddProgram,
   } = useDisclosure();
 
+  // Delete Modal Functions
+  const {
+    isOpen: deleteProgramIsOpen,
+    onOpen: onOpenDeleteProgram,
+    onClose: onCloseDeleteProgram,
+  } = useDisclosure();
+
+  const reportType = "MCPAR";
+
   const addProgram = async (formData: any) => {
     const newProgramData = {
       key: formJson.id,
-      title: formData["dash-program-name"],
-      contractPeriod: formData["dash-contractPeriod"],
+      programName: formData["dash-programName"],
       startDate: formData["dash-startDate"],
       endDate: formData["dash-endDate"],
       check: formData["dash-check"],
     };
-    const dueDate =
-      newProgramData.contractPeriod !== "other"
-        ? newProgramData.contractPeriod
-        : calculateDueDate(newProgramData.endDate);
-    setPrograms([
-      ...programs,
-      [newProgramData.title, dueDate, formatDateUtcToEt(Date.now()), "-"],
-    ]);
-    onCloseAddProgram();
-    updateReport(
-      { state: state, reportId: newProgramData.title },
-      ReportStatus.CREATED
+    const dueDate = calculateDueDate(newProgramData.endDate);
+    const programName = newProgramData.programName;
+    const dashedDueDate = convertDateUtcToEt(dueDate)
+      .toString()
+      .replace(/\//g, "-");
+    const reportId = [state, programName, dashedDueDate].join("_");
+
+    await updateReport(
+      { state: state, reportId: reportId },
+      {
+        status: ReportStatus.CREATED,
+        programName: programName,
+        dueDate: dueDate,
+        reportType: reportType,
+        lastAlteredBy: full_name,
+        reportingPeriodStartDate: convertDateEtToUtc(newProgramData?.startDate),
+        reportingPeriodEndDate: convertDateEtToUtc(newProgramData?.endDate),
+      }
     );
+    await fetchReportsByState(state!);
+    onCloseAddProgram();
   };
 
   const navigate = useNavigate();
   const mcparFormBeginning = "../../mcpar/program-information/point-of-contact";
-  const startProgram = (programName: string) => {
-    setProgramName(programName);
+  const startProgram = (reportId: string) => {
+    const reportDetails: ReportDetails = {
+      state: state!,
+      reportId: reportId,
+    };
+    // Set report to selected program
+    setReport(reportDetails);
     navigate(mcparFormBeginning);
+  };
+
+  const { created, inProgress, submitted } = body.editReportButtonText;
+  const statusTextMap: { [key in ReportStatus]: string } = {
+    [ReportStatus.CREATED]: created,
+    [ReportStatus.IN_PROGRESS]: inProgress,
+    [ReportStatus.SUBMITTED]: submitted,
   };
 
   return (
@@ -133,55 +141,51 @@ export const Dashboard = () => {
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
         </Heading>
-        <Text>
-          {intro.body.line1}
-          <br />
-          {intro.body.line2}
-          <Link href={intro.link.location} isExternal sx={sx.headerLink}>
-            {intro.link.text}
-          </Link>
-        </Text>
+        <Box>{parseCustomHtml(intro.body)}</Box>
       </Box>
-      <Box>
-        <ActionTable content={tableContent} sxOverride={sx.table}>
-          {programs.map((row: string[], index: number) => (
-            // Row
-            <Tr key={index}>
-              <Td sx={sx.editProgram}>
-                {/* TODO: Pass existing data to populate modal */}
-                <button onClick={onOpenAddProgram as MouseEventHandler}>
-                  <Image src={editIcon} alt="Edit Program" />
-                </button>
-              </Td>
-              {/* Row Cells */}
-              {row.map((cell: string, index: number) => (
-                <Td key={index}>{cell}</Td>
-              ))}
-              <Td>
-                <Button
-                  variant={"outline"}
-                  onClick={() => startProgram(row[0])}
-                >
-                  Start report
-                </Button>
-              </Td>
-              <Td>
-                <button onClick={() => askToDeleteProgram()}>
-                  <Image
-                    src={cancelIcon}
-                    alt="Delete Program"
-                    sx={sx.deleteProgram}
-                  />
-                </button>
-              </Td>
-            </Tr>
-          ))}
-        </ActionTable>
-        {programs.length == 0 && (
-          <Text sx={sx.emptyTableContainer}>{body.table.empty}</Text>
+      <Box sx={sx.bodyBox}>
+        <Table content={body.table} sxOverride={sx.table}>
+          {reports &&
+            reports.map((report: AnyObject) => (
+              // Row
+              <Tr key={report.reportId}>
+                <Td sx={sx.editProgram}>
+                  {/* TODO: Pass existing data to populate modal */}
+                  <button onClick={onOpenAddProgram}>
+                    <Image src={editIcon} alt="Edit Program" />
+                  </button>
+                </Td>
+                <Td sx={sx.programNameText}>{report.programName}</Td>
+                <Td>{convertDateUtcToEt(report.dueDate)}</Td>
+                <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
+                <Td>{report?.lastAlteredBy || "-"}</Td>
+                <Td sx={sx.editReportButtonCell}>
+                  <Button
+                    variant={"outline"}
+                    onClick={() => startProgram(report.reportId)}
+                  >
+                    {statusTextMap[
+                      report.status as keyof typeof statusTextMap
+                    ] || created}
+                  </Button>
+                </Td>
+                <Td sx={sx.deleteProgramCell}>
+                  <button onClick={onOpenDeleteProgram}>
+                    <Image
+                      src={cancelIcon}
+                      alt="Delete Program"
+                      sx={sx.deleteProgramButtonImage}
+                    />
+                  </button>
+                </Td>
+              </Tr>
+            ))}
+        </Table>
+        {!reports?.length && (
+          <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         <Box sx={sx.callToActionContainer}>
-          <Button type="submit" onClick={onOpenAddProgram as MouseEventHandler}>
+          <Button type="submit" onClick={onOpenAddProgram}>
             {body.callToAction}
           </Button>
         </Box>
@@ -189,8 +193,7 @@ export const Dashboard = () => {
 
       {/* Add Program Modal */}
       <Modal
-        actionFunction={addProgram}
-        actionId={formJson.id}
+        formId={formJson.id}
         modalState={{
           isOpen: addProgramIsOpen,
           onClose: onCloseAddProgram,
@@ -207,7 +210,7 @@ export const Dashboard = () => {
 
       {/* Delete Program Modal */}
       <Modal
-        actionFunction={deleteProgram}
+        actionFunction={() => {}}
         modalState={{
           isOpen: deleteProgramIsOpen,
           onClose: onCloseDeleteProgram,
@@ -241,38 +244,69 @@ const sx = {
     },
   },
   leadTextBox: {
-    width: "100%",
-    margin: "2.5rem 0 2.25rem 0",
+    margin: "2.5rem 0 2.25rem 2.25rem",
   },
   headerText: {
     marginBottom: "1rem",
     fontSize: "4xl",
     fontWeight: "normal",
   },
-  headerLink: {
-    fontWeight: "bold",
+  bodyBox: {
+    margin: "0 2.25rem",
   },
   table: {
     marginBottom: "2.5rem",
+    th: {
+      padding: "0.5rem 0 0.5rem 0",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_light",
+      color: "palette.gray_medium",
+      fontWeight: "bold",
+    },
     tr: {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
     },
-    th: {
-      color: "palette.gray_medium",
-      fontWeight: "bold",
+    td: {
+      padding: "0.5rem 0.75rem",
+      paddingLeft: 0,
+      borderTop: "1px solid",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_light",
+      textAlign: "left",
     },
   },
-  deleteProgram: {
-    height: "1.75rem",
-    marginLeft: "1rem",
+  editReportButtonCell: {
+    width: "6.875rem",
+    padding: 0,
+    button: {
+      width: "6.875rem",
+      height: "1.75rem",
+      borderRadius: "0.25rem",
+      textAlign: "center",
+      fontSize: "sm",
+      fontWeight: "normal",
+      color: "palette.primary",
+    },
   },
   editProgram: {
     padding: "0",
+    width: "2.5rem",
     img: {
       height: "1.5rem",
       marginLeft: "0.5rem",
     },
+  },
+  programNameText: {
+    fontSize: "md",
+    fontWeight: "bold",
+  },
+  deleteProgramCell: {
+    width: "2.5rem",
+  },
+  deleteProgramButtonImage: {
+    height: "1.75rem",
+    width: "1.75rem",
   },
   emptyTableContainer: {
     maxWidth: "75%",
