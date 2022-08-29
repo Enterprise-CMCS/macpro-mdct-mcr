@@ -35,7 +35,6 @@ export const ReportProvider = ({ children }: Props) => {
   const [report, setReport] = useState<ReportShape | undefined>();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
   const [error, setError] = useState<string>();
-  const [programName, setProgramName] = useState<string>();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
@@ -108,8 +107,6 @@ export const ReportProvider = ({ children }: Props) => {
       fetchReport,
       updateReport,
       removeReport,
-      programName,
-      setProgramName,
       errorMessage: error,
     }),
     [report, reportData, error]
