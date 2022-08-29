@@ -1,18 +1,123 @@
 {
   "path": "/mcpar/plan-level-indicators/financial-performance",
   "intro": {
-    "section": "D: Plan-Level Indicators",
-    "subsection": "II: Financial Performance"
+    "section": "Section D: Plan-Level Indicators",
+    "subsection": "Topic II. Financial Performance",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["E_BSS_Entities"]
+    }
+  },
+  "drawer": {
+    "dashboard": {
+      "title": "Report financial performance for each plan",
+      "entityType": "plans"
+    },
+    "drawerTitle": "Report financial performance for"
   },
   "form": {
     "id": "dfp",
     "fields": [
       {
         "id": "dfp-1",
-        "type": "text",
+        "type": "number",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "D1.II.1a Medical Loss Ratio (MLR)",
+          "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR.",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dfp-2",
+        "type": "radio",
+        "props": {
+          "label": "D1.II.1b Level of aggregation",
+          "hint": "What is the aggregation level that best describes the MLR being reported in the previous indicator? Select one.</br>As permitted under 42 CFR 438.8(i), states are allowed to aggregate data for reporting purposes across programs and populations.",
+          "choices": [
+            {
+              "name": "dfp-2-o1",
+              "type": "choice",
+              "label": "Program-specific statewide"
+            },
+            {
+              "name": "dfp-2-o2",
+              "type": "choice",
+              "label": "Program-specific regional"
+            },
+            {
+              "name": "dfp-2-o3",
+              "type": "choice",
+              "label": "Statewide all programs & populations"
+            },
+            {
+              "name": "dfp-2-o4",
+              "type": "choice",
+              "label": "Regional all programs & populations"
+            },
+            {
+              "name": "dfp-2-o5",
+              "type": "choice",
+              "label": "Other",
+              "children": [
+                {
+                  "id": "dfp-2-o5-text",
+                  "type": "textarea",
+                  "props": {
+                    "label": "",
+                    "hint": ""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "dfp-3",
+        "type": "textarea",
+        "props": {
+          "label": "D1.II.2 Population specific MLR description",
+          "hint": "Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter \"N/A\" if not applicable.</br>See glossary for the regulatory definition of MLR."
+        }
+      },
+      {
+        "id": "dfp-4",
+        "type": "radio",
+        "props": {
+          "label": "D1.II.3 MLR reporting period discrepancies",
+          "hint": "Does the data reported in item D1.II.1a cover a different time period than the MCPAR report?",
+          "choices": [
+            {
+              "name": "dfp-4-o1",
+              "type": "choice",
+              "label": "Yes",
+              "children": [
+                {
+                  "id": "dfp-5-start",
+                  "type": "date",
+                  "props": {
+                    "hint": "Enter the start date.",
+                    "timetype": "startDate",
+                    "nolabel": true
+                  }
+                },
+                {
+                  "id": "dfp-5-end",
+                  "type": "date",
+                  "props": {
+                    "hint": "Enter the end date.",
+                    "timetype": "endDate",
+                    "nolabel": true
+                  }
+                }
+              ]
+            },
+            {
+              "name": "dfp-4-o2",
+              "type": "choice",
+              "label": "No"
+            }
+          ]
         }
       }
     ]
