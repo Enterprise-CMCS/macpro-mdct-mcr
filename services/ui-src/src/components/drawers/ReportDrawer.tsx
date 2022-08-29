@@ -10,6 +10,7 @@ import { reportSchema } from "forms/mcpar/reportSchema";
 export const ReportDrawer = ({
   drawerDisclosure,
   drawerTitle,
+  drawerInfo,
   form,
   onSubmit,
   ...props
@@ -18,6 +19,7 @@ export const ReportDrawer = ({
     <Drawer
       drawerDisclosure={drawerDisclosure}
       drawerTitle={drawerTitle}
+      drawerInfo={drawerInfo}
       {...props}
     >
       <Form
@@ -48,6 +50,7 @@ interface Props {
     onClose: Function;
   };
   drawerTitle: string;
+  drawerInfo?: any[];
   form: FormJson;
   onSubmit: Function;
   [key: string]: any;
