@@ -30,11 +30,10 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     };
     try {
       await writeAdminBanner(newBannerData);
-      document.getElementById("AdminHeader")!.focus();
+      window.scrollTo(0, 0);
     } catch (error: any) {
       setError(bannerErrors.REPLACE_BANNER_FAILED);
     }
-    window.scrollTo(0, 0);
   };
 
   return (
