@@ -28,11 +28,11 @@ export const Form = ({
   });
 
   const onErrorHandler = (errors: any) => {
-    const sortedErrors: any[] = sortFormErrors(form, errors);
+    const sortedErrors: any[] = sortFormErrors(formSchema.fields, errors);
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`
     )! as HTMLElement;
-    fieldToFocus.scrollIntoView({ behavior: "smooth", block: "center" });
+    fieldToFocus?.scrollIntoView({ behavior: "smooth", block: "center" });
     fieldToFocus?.focus({ preventScroll: true });
   };
 
