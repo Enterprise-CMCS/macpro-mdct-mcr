@@ -24,7 +24,7 @@
         "props": {
           "label": "D1.II.1a Medical Loss Ratio (MLR)",
           "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR.",
-          "mask": "comma-separated"
+          "mask": "percentage"
         }
       },
       {
