@@ -60,5 +60,8 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+    p: {
+      color: "palette.base",
+    },
   },
 };
