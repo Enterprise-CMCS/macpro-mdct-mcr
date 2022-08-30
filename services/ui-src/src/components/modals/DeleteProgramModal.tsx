@@ -7,9 +7,8 @@ export const DeleteProgramModal = ({
   activeState,
   selectedReportId,
   modalDisclosure,
-  fetchReportsByState,
 }: Props) => {
-  const { removeReport } = useContext(ReportContext);
+  const { fetchReportsByState, removeReport } = useContext(ReportContext);
 
   const deleteProgramHandler = async () => {
     // guard against no active state
@@ -49,5 +48,4 @@ interface Props {
     isOpen: boolean;
     onClose: any;
   };
-  fetchReportsByState: Function;
 }

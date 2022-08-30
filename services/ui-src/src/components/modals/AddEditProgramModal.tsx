@@ -17,9 +17,8 @@ export const AddEditProgramModal = ({
   activeState,
   selectedReportId,
   modalDisclosure,
-  fetchReportsByState,
 }: Props) => {
-  const { updateReport } = useContext(ReportContext);
+  const { fetchReportsByState, updateReport } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
   const createReportId = (
@@ -105,5 +104,4 @@ interface Props {
     isOpen: boolean;
     onClose: any;
   };
-  fetchReportsByState: Function;
 }

@@ -16,48 +16,39 @@ import {
   AddEditProgramModal,
   BasicPage,
   DeleteProgramModal,
+  ErrorAlert,
   ReportContext,
   Table,
 } from "components";
 // utils
 import { AnyObject, ReportDetails, UserRoles } from "types";
-import {
-  convertDateUtcToEt,
-  getReportsByState,
-  parseCustomHtml,
-  useUser,
-} from "utils";
+import { convertDateUtcToEt, parseCustomHtml, useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
-import { reportErrors } from "verbiage/errors";
 // assets
 import { ArrowIcon } from "@cmsgov/design-system";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 
 export const Dashboard = () => {
-  const { setReport, setReportData } = useContext(ReportContext);
+  const {
+    errorMessage,
+    fetchReportsByState,
+    reportsByState,
+    setReport,
+    setReportData,
+  } = useContext(ReportContext);
   const navigate = useNavigate();
   const { state: userState, userRole } = useUser().user ?? {};
   const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
     undefined
   );
-  const [reports, setReports] = useState<AnyObject | undefined>(undefined);
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
   const activeState = userState || adminSelectedState;
 
   const { intro, body } = verbiage;
-
-  const fetchReportsByState = async (state: string) => {
-    try {
-      const result = await getReportsByState(state);
-      setReports(result);
-    } catch (e: any) {
-      throw new Error(reportErrors.GET_REPORTS_BY_STATE_FAILED);
-    }
-  };
 
   useEffect(() => {
     // fetch reports on load
@@ -118,6 +109,7 @@ export const Dashboard = () => {
           Return Home
         </Link>
       </Box>
+      {errorMessage && <ErrorAlert error={errorMessage} />}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
@@ -126,8 +118,8 @@ export const Dashboard = () => {
       </Box>
       <Box sx={sx.bodyBox}>
         <Table content={body.table} sxOverride={sx.table}>
-          {reports &&
-            reports.map((report: AnyObject) => (
+          {reportsByState &&
+            reportsByState.map((report: AnyObject) => (
               // Row
               <Tr key={report.reportId}>
                 <Td sx={sx.editProgram}>
@@ -173,7 +165,7 @@ export const Dashboard = () => {
               </Tr>
             ))}
         </Table>
-        {!reports?.length && (
+        {!reportsByState?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         {/* only show add program button to state users */}
@@ -193,7 +185,6 @@ export const Dashboard = () => {
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
         }}
-        fetchReportsByState={fetchReportsByState}
       />
       <DeleteProgramModal
         activeState={activeState}
@@ -202,7 +193,6 @@ export const Dashboard = () => {
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,
         }}
-        fetchReportsByState={fetchReportsByState}
       />
     </BasicPage>
   );
