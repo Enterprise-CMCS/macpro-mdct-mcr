@@ -8,7 +8,6 @@ import {
   EntityDrawerSection,
   StandardFormSection,
   ReportPageIntro,
-  FormViewContext,
   Sidebar,
 } from "components";
 // utils
@@ -17,12 +16,10 @@ import { PageJson, ReportStatus, UserRoles } from "types";
 // form data
 import { mcparRoutes } from "forms/mcpar";
 
-export const McparReportPage = () => {
+export const McparReportPage = ({ pageJson }: Props) => {
   const navigate = useNavigate();
   const { report, updateReportData, updateReport } = useContext(ReportContext);
-  const { formView } = useContext(FormViewContext);
-
-  const { path, intro, form } = formView;
+  const { path, intro, form } = pageJson;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
   const reportId = report?.reportId;
 
@@ -46,11 +43,11 @@ export const McparReportPage = () => {
     navigate(nextRoute);
   };
 
-  const renderPageSection = (formView: PageJson) => {
-    if (formView.drawer) {
-      return <EntityDrawerSection pageJson={formView} onSubmit={onSubmit} />;
+  const renderPageSection = (pageJson: PageJson) => {
+    if (pageJson.drawer) {
+      return <EntityDrawerSection pageJson={pageJson} onSubmit={onSubmit} />;
     } else {
-      return <StandardFormSection pageJson={formView} onSubmit={onSubmit} />;
+      return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
     }
   };
 
@@ -66,12 +63,16 @@ export const McparReportPage = () => {
         <Sidebar />
         <Flex sx={sx.reportContainer}>
           {intro && <ReportPageIntro text={intro} />}
-          {renderPageSection(formView)}
+          {renderPageSection(pageJson)}
         </Flex>
       </Flex>
     </ReportPage>
   );
 };
+
+interface Props {
+  pageJson: PageJson;
+}
 
 const sx = {
   pageContainer: {

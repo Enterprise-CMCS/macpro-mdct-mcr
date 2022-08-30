@@ -5,7 +5,7 @@ import { Modal, ReportContext } from "components";
 
 export const DeleteProgramModal = ({
   activeState,
-  selectedProgramId,
+  selectedReportId,
   modalDisclosure,
   fetchReportsByState,
 }: Props) => {
@@ -16,7 +16,7 @@ export const DeleteProgramModal = ({
     if (activeState) {
       const reportDetails = {
         state: activeState,
-        reportId: selectedProgramId,
+        reportId: selectedReportId,
       };
       await removeReport(reportDetails);
       await fetchReportsByState(activeState);
@@ -44,7 +44,7 @@ export const DeleteProgramModal = ({
 
 interface Props {
   activeState: string | undefined;
-  selectedProgramId: string | undefined;
+  selectedReportId: string | undefined;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

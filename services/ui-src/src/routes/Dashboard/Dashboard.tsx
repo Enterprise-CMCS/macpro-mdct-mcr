@@ -39,9 +39,9 @@ export const Dashboard = () => {
   const { setReport, setReportData } = useContext(ReportContext);
   const navigate = useNavigate();
   const { state: userState, userRole } = useUser().user ?? {};
-  const [selectedProgramId, setSelectedProgramId] = useState<
-    string | undefined
-  >(undefined);
+  const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
+    undefined
+  );
   const [reports, setReports] = useState<AnyObject | undefined>(undefined);
 
   // get active state
@@ -92,7 +92,7 @@ export const Dashboard = () => {
 
   const openAddEditProgramModal = (reportId?: string) => {
     // if reportId provided, set as selected program
-    setSelectedProgramId(reportId);
+    setSelectedReportId(reportId);
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };
@@ -105,7 +105,7 @@ export const Dashboard = () => {
   } = useDisclosure();
 
   const openDeleteProgramModal = (reportId?: string) => {
-    setSelectedProgramId(reportId);
+    setSelectedReportId(reportId);
     // use disclosure to open modal
     deleteProgramModalOnOpenHandler();
   };
@@ -188,7 +188,7 @@ export const Dashboard = () => {
       </Box>
       <AddEditProgramModal
         activeState={activeState}
-        selectedProgramId={selectedProgramId}
+        selectedReportId={selectedReportId}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
@@ -197,7 +197,7 @@ export const Dashboard = () => {
       />
       <DeleteProgramModal
         activeState={activeState}
-        selectedProgramId={selectedProgramId}
+        selectedReportId={selectedReportId}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,

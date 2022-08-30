@@ -15,7 +15,7 @@ import formSchema from "forms/internal/aep/addEditProgram.schema";
 
 export const AddEditProgramModal = ({
   activeState,
-  selectedProgramId,
+  selectedReportId,
   modalDisclosure,
   fetchReportsByState,
 }: Props) => {
@@ -52,8 +52,8 @@ export const AddEditProgramModal = ({
         lastAlteredBy: full_name,
       };
       // if an existing program was selected, use that report id
-      if (selectedProgramId) {
-        reportDetails.reportId = selectedProgramId;
+      if (selectedReportId) {
+        reportDetails.reportId = selectedReportId;
         // edit existing report
         await updateReport(reportDetails, {
           ...dataToWrite,
@@ -100,7 +100,7 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string | undefined;
-  selectedProgramId: string | undefined;
+  selectedReportId: string | undefined;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

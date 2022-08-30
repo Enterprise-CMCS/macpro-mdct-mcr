@@ -47,7 +47,7 @@ jest.mock("utils", () => ({
 const standardReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <McparReportPage />
+      <McparReportPage pageJson={standardPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -55,7 +55,7 @@ const standardReportPageComponent = (
 const drawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <McparReportPage />
+      <McparReportPage pageJson={drawerPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
