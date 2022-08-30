@@ -65,28 +65,21 @@ describe("Test /mcpar dashboard view", () => {
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
   });
 
-  test("Clicking start report navigates to /mcpar/program-information/point-of-contact", async () => {
-    const startReportButton = screen.getByText(
-      verbiage.body.editReportButtonText.created
-    );
-    expect(startReportButton).toBeVisible();
-    await userEvent.click(startReportButton);
+  test("Clicking 'Enter' button navigates to /mcpar/program-information/point-of-contact", async () => {
+    const enterReportButton = screen.getByText("Enter");
+    expect(enterReportButton).toBeVisible();
+    await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith(
       "../../mcpar/program-information/point-of-contact"
     );
   });
 
-  test("Clicking action button opens modal to add program", async () => {
+  test("Clicking new program button opens add/edit program modal", async () => {
     const newProgramButton = screen.getByText(verbiage.body.callToAction);
     expect(newProgramButton).toBeVisible();
     await userEvent.click(newProgramButton);
-    expect(
-      screen.getByText(verbiage.addProgramModal.structure.heading)
-    ).toBeVisible();
-    expect(
-      screen.getByText(verbiage.addProgramModal.structure.actionButtonText)
-    ).toBeVisible();
+    expect(screen.getByTestId("add-edit-program-modal")).toBeVisible();
   });
 });
 

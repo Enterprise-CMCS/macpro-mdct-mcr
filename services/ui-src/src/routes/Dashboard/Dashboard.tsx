@@ -12,39 +12,40 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ArrowIcon } from "@cmsgov/design-system";
-import { BasicPage, Form, Modal, ReportContext, Table } from "components";
-// utils
-import { AnyObject, ReportDetails, ReportStatus } from "types";
 import {
-  calculateDueDate,
-  convertDateEtToUtc,
+  AddEditProgramModal,
+  BasicPage,
+  DeleteProgramModal,
+  ReportContext,
+  Table,
+} from "components";
+// utils
+import { AnyObject, ReportDetails } from "types";
+import {
   convertDateUtcToEt,
   getReportsByState,
   parseCustomHtml,
   useUser,
 } from "utils";
-// data
-import formJson from "forms/mcpar/dash/dashForm.json";
-import formSchema from "forms/mcpar/dash/dashForm.schema";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import { reportErrors } from "verbiage/errors";
 // assets
+import { ArrowIcon } from "@cmsgov/design-system";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 
 export const Dashboard = () => {
-  // Verbiage
-  const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
-    verbiage;
-
-  const { setReport, setReportData, updateReport } = useContext(ReportContext);
-
+  const { setReport, setReportData } = useContext(ReportContext);
+  const navigate = useNavigate();
+  const { state: userState } = useUser().user ?? {};
   const [reports, setReports] = useState<AnyObject | undefined>(undefined);
 
-  const { user } = useUser();
-  const { full_name, state } = user ?? {};
+  // get active state
+  const adminSelectedState = localStorage.getItem("selectedState") || undefined;
+  const activeState = userState || adminSelectedState;
+
+  const { intro, body } = verbiage;
 
   const fetchReportsByState = async (state: string) => {
     try {
@@ -56,85 +57,49 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (state) {
-      fetchReportsByState(state);
+    // fetch reports on load
+    if (activeState) {
+      fetchReportsByState(activeState);
+    } else {
+      // if no activeState, go to homepage
+      navigate("/");
     }
+    // unset active report & reportData
     setReport(undefined);
     setReportData(undefined);
   }, []);
 
-  // Add Modal Functions
-  const {
-    isOpen: addProgramIsOpen,
-    onOpen: onOpenAddProgram,
-    onClose: onCloseAddProgram,
-  } = useDisclosure();
-
-  // Delete Modal Functions
-  const {
-    isOpen: deleteProgramIsOpen,
-    onOpen: onOpenDeleteProgram,
-    onClose: onCloseDeleteProgram,
-  } = useDisclosure();
-
-  const reportType = "MCPAR";
-
-  const addProgram = async (formData: any) => {
-    const newProgramData = {
-      key: formJson.id,
-      programName: formData["dash-programName"],
-      startDate: formData["dash-startDate"],
-      endDate: formData["dash-endDate"],
-      check: formData["dash-check"],
-    };
-    const dueDate = calculateDueDate(newProgramData.endDate);
-    const programName = newProgramData.programName;
-    const dashedDueDate = convertDateUtcToEt(dueDate)
-      .toString()
-      .replace(/\//g, "-");
-    const reportId = [state, programName, dashedDueDate].join("_");
-
-    await updateReport(
-      { state: state, reportId: reportId },
-      {
-        status: ReportStatus.CREATED,
-        programName: programName,
-        dueDate: dueDate,
-        reportType: reportType,
-        lastAlteredBy: full_name,
-        reportingPeriodStartDate: convertDateEtToUtc(newProgramData?.startDate),
-        reportingPeriodEndDate: convertDateEtToUtc(newProgramData?.endDate),
-      }
-    );
-    await fetchReportsByState(state!);
-    onCloseAddProgram();
-  };
-
-  const navigate = useNavigate();
-  const mcparFormBeginning = "../../mcpar/program-information/point-of-contact";
-  const startProgram = (reportId: string) => {
+  const enterSelectedReport = (reportId: string) => {
+    // set active report to selected report
     const reportDetails: ReportDetails = {
-      state: state!,
+      state: activeState!,
       reportId: reportId,
     };
-    // Set report to selected program
     setReport(reportDetails);
-    navigate(mcparFormBeginning);
+    const reportFirstPage = "../../mcpar/program-information/point-of-contact";
+    navigate(reportFirstPage);
   };
 
-  const { created, inProgress, submitted } = body.editReportButtonText;
-  const statusTextMap: { [key in ReportStatus]: string } = {
-    [ReportStatus.CREATED]: created,
-    [ReportStatus.IN_PROGRESS]: inProgress,
-    [ReportStatus.SUBMITTED]: submitted,
-  };
+  // add/edit program modal disclosure
+  const {
+    isOpen: addEditProgramModalIsOpen,
+    onOpen: addEditProgramOnOpenHandler,
+    onClose: addEditProgramOnCloseHandler,
+  } = useDisclosure();
+
+  // delete program modal disclosure
+  const {
+    isOpen: deleteProgramModalIsOpen,
+    onOpen: deleteProgramModalOnOpenHandler,
+    onClose: deleteProgramModalOnCloseHandler,
+  } = useDisclosure();
 
   return (
     <BasicPage sx={sx.layout}>
       <Box>
-        <Link href={returnLink.location} sx={sx.returnLink}>
-          <ArrowIcon title="returnHome" direction={"left"} />
-          {returnLink.text}
+        <Link href="/" sx={sx.returnLink}>
+          <ArrowIcon title="returnHome" direction="left" />
+          Return Home
         </Link>
       </Box>
       <Box sx={sx.leadTextBox}>
@@ -151,7 +116,7 @@ export const Dashboard = () => {
               <Tr key={report.reportId}>
                 <Td sx={sx.editProgram}>
                   {/* TODO: Pass existing data to populate modal */}
-                  <button onClick={onOpenAddProgram}>
+                  <button onClick={addEditProgramOnOpenHandler}>
                     <Image src={editIcon} alt="Edit Program" />
                   </button>
                 </Td>
@@ -159,18 +124,17 @@ export const Dashboard = () => {
                 <Td>{convertDateUtcToEt(report.dueDate)}</Td>
                 <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
                 <Td>{report?.lastAlteredBy || "-"}</Td>
+                <Td>{report?.status}</Td>
                 <Td sx={sx.editReportButtonCell}>
                   <Button
-                    variant={"outline"}
-                    onClick={() => startProgram(report.reportId)}
+                    variant="outline"
+                    onClick={() => enterSelectedReport(report.reportId)}
                   >
-                    {statusTextMap[
-                      report.status as keyof typeof statusTextMap
-                    ] || created}
+                    Enter
                   </Button>
                 </Td>
                 <Td sx={sx.deleteProgramCell}>
-                  <button onClick={onOpenDeleteProgram}>
+                  <button onClick={deleteProgramModalOnOpenHandler}>
                     <Image
                       src={cancelIcon}
                       alt="Delete Program"
@@ -185,40 +149,25 @@ export const Dashboard = () => {
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         <Box sx={sx.callToActionContainer}>
-          <Button type="submit" onClick={onOpenAddProgram}>
+          <Button type="submit" onClick={addEditProgramOnOpenHandler}>
             {body.callToAction}
           </Button>
         </Box>
       </Box>
-
-      {/* Add Program Modal */}
-      <Modal
-        formId={formJson.id}
-        modalState={{
-          isOpen: addProgramIsOpen,
-          onClose: onCloseAddProgram,
+      <AddEditProgramModal
+        activeState={activeState}
+        modalDisclosure={{
+          isOpen: addEditProgramModalIsOpen,
+          onClose: addEditProgramOnCloseHandler,
         }}
-        content={addProgramModal.structure}
-      >
-        <Form
-          id={formJson.id}
-          formJson={formJson}
-          formSchema={formSchema}
-          onSubmit={addProgram}
-        />
-      </Modal>
-
-      {/* Delete Program Modal */}
-      <Modal
-        actionFunction={() => {}}
-        modalState={{
-          isOpen: deleteProgramIsOpen,
-          onClose: onCloseDeleteProgram,
+        fetchReportsByState={fetchReportsByState}
+      />
+      <DeleteProgramModal
+        modalDisclosure={{
+          isOpen: deleteProgramModalIsOpen,
+          onClose: deleteProgramModalOnCloseHandler,
         }}
-        content={deleteProgramModal.structure}
-      >
-        <Text>{deleteProgramModal.body}</Text>
-      </Modal>
+      />
     </BasicPage>
   );
 };
