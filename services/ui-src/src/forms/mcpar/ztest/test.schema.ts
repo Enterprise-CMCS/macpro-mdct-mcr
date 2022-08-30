@@ -14,4 +14,5 @@ export default object({
   test3: number(),
   test4: number(),
   test5: number(),
+  test6: number(),
 });
