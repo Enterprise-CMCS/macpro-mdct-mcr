@@ -61,7 +61,7 @@ export const App = () => {
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>
-            <Heading as="h1" size="xl" sx={{ my: "6rem", textAlign: "center" }}>
+            <Heading as="h1" size="xl" sx={sx.loginHeading}>
               Managed Care Reporting
             </Heading>
           </Container>
@@ -100,5 +100,10 @@ const sx = {
     maxWidth: "25rem",
     height: "full",
     marginY: "auto",
+  },
+  loginHeading: {
+    my: "6rem",
+    textAlign: "center",
+    width: "100%",
   },
 };
