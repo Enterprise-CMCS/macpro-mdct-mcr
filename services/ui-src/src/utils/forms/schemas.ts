@@ -22,7 +22,7 @@ export const numberOrNA = () =>
     .transform(validateNA)
     .required()
     .nullable()
-    .typeError("Please input a Number OR 'N/A'");
+    .typeError(error.INVALID_NUMBER_OR_NA);
 
 function validateNA(value: any, originalValue: string) {
   if (typeof originalValue === "string" && originalValue === "N/A") {
