@@ -73,13 +73,6 @@ describe("Test /mcpar dashboard view", () => {
       "../../mcpar/program-information/point-of-contact"
     );
   });
-
-  test("Clicking new program button opens add/edit program modal", async () => {
-    const newProgramButton = screen.getByText(verbiage.body.callToAction);
-    expect(newProgramButton).toBeVisible();
-    await userEvent.click(newProgramButton);
-    expect(screen.getByTestId("add-edit-program-modal")).toBeVisible();
-  });
 });
 
 describe("Test /mcpar dashboard view accessibility", () => {
