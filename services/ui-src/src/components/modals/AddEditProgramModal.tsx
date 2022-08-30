@@ -2,7 +2,7 @@ import { useContext } from "react";
 // components
 import { Form, Modal, ReportContext } from "components";
 // utils
-import { AnyObject, ReportStatus } from "types";
+import { ReportStatus } from "types";
 import {
   calculateDueDate,
   convertDateEtToUtc,
@@ -15,15 +15,12 @@ import formSchema from "forms/internal/aep/addEditProgram.schema";
 
 export const AddEditProgramModal = ({
   activeState,
+  selectedProgramId,
   modalDisclosure,
   fetchReportsByState,
 }: Props) => {
   const { updateReport } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
-  const {
-    addEditProgramModalIsOpen: isOpen,
-    addEditProgramOnCloseHandler: onCloseHandler,
-  } = modalDisclosure;
 
   const createReportId = (
     activeState: string,
@@ -40,38 +37,51 @@ export const AddEditProgramModal = ({
   const addEditProgram = async (formData: any) => {
     // guard against no activeState
     if (activeState) {
-      // gather new program details
-      const programName = formData["dash-programName"];
-      const dueDate = calculateDueDate(formData["dash-endDate"]);
+      // prepare payload
+      const programName = formData["aep-programName"];
+      const dueDate = calculateDueDate(formData["aep-endDate"]);
       const reportDetails = {
         state: activeState,
-        reportId: createReportId(activeState, programName, dueDate),
+        reportId: "",
       };
-      // write report details
-      await updateReport(reportDetails, {
-        status: ReportStatus.NOT_STARTED,
+      const dataToWrite = {
         programName,
-        reportType: "MCPAR",
-        reportingPeriodStartDate: convertDateEtToUtc(
-          formData["dash-startDate"]
-        ),
-        reportingPeriodEndDate: convertDateEtToUtc(formData["dash-endDate"]),
-        dueDate: dueDate,
+        reportingPeriodStartDate: convertDateEtToUtc(formData["aep-startDate"]),
+        reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
+        dueDate,
         lastAlteredBy: full_name,
-      });
-      await fetchReportsByState(activeState!);
+      };
+      // if an existing program was selected, use that report id
+      if (selectedProgramId) {
+        reportDetails.reportId = selectedProgramId;
+        // edit existing report
+        await updateReport(reportDetails, {
+          ...dataToWrite,
+        });
+      } else {
+        // if no program was selected, create new report id
+        reportDetails.reportId = createReportId(
+          activeState,
+          programName,
+          dueDate
+        );
+        // create new report
+        await updateReport(reportDetails, {
+          ...dataToWrite,
+          reportType: "MCPAR",
+          status: ReportStatus.NOT_STARTED,
+        });
+      }
+      await fetchReportsByState(activeState);
     }
-    onCloseHandler();
+    modalDisclosure.onClose();
   };
 
   return (
     <Modal
       data-testid="add-edit-program-modal"
       formId={formJson.id}
-      modalState={{
-        isOpen: isOpen,
-        onClose: onCloseHandler,
-      }}
+      modalDisclosure={modalDisclosure}
       content={{
         heading: "Add a Program",
         actionButtonText: "Save",
@@ -90,6 +100,10 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string | undefined;
-  modalDisclosure: AnyObject;
+  selectedProgramId: string | undefined;
+  modalDisclosure: {
+    isOpen: boolean;
+    onClose: any;
+  };
   fetchReportsByState: Function;
 }

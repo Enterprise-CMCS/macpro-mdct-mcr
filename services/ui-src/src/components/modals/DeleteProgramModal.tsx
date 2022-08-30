@@ -1,22 +1,33 @@
+import { useContext } from "react";
 // components
 import { Text } from "@chakra-ui/react";
-import { Modal } from "components";
-// utils
-import { AnyObject } from "types";
+import { Modal, ReportContext } from "components";
 
-export const DeleteProgramModal = ({ modalDisclosure }: Props) => {
-  const {
-    deleteProgramModalIsOpen: isOpen,
-    deleteProgramOnCloseHandler: onCloseHandler,
-  } = modalDisclosure;
+export const DeleteProgramModal = ({
+  activeState,
+  selectedProgramId,
+  modalDisclosure,
+  fetchReportsByState,
+}: Props) => {
+  const { removeReport } = useContext(ReportContext);
+
+  const deleteProgramHandler = async () => {
+    // guard against no active state
+    if (activeState) {
+      const reportDetails = {
+        state: activeState,
+        reportId: selectedProgramId,
+      };
+      await removeReport(reportDetails);
+      await fetchReportsByState(activeState);
+    }
+    modalDisclosure.onClose();
+  };
 
   return (
     <Modal
-      // actionFunction={() => {}}
-      modalState={{
-        isOpen: isOpen,
-        onClose: onCloseHandler,
-      }}
+      onConfirmHandler={deleteProgramHandler}
+      modalDisclosure={modalDisclosure}
       content={{
         heading: "Delete",
         actionButtonText: "Yes, delete program",
@@ -32,5 +43,11 @@ export const DeleteProgramModal = ({ modalDisclosure }: Props) => {
 };
 
 interface Props {
-  modalDisclosure: AnyObject;
+  activeState: string | undefined;
+  selectedProgramId: string | undefined;
+  modalDisclosure: {
+    isOpen: boolean;
+    onClose: any;
+  };
+  fetchReportsByState: Function;
 }

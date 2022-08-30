@@ -20,7 +20,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportDetails } from "types";
+import { AnyObject, ReportDetails, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   getReportsByState,
@@ -38,7 +38,10 @@ import editIcon from "assets/icons/icon_edit.png";
 export const Dashboard = () => {
   const { setReport, setReportData } = useContext(ReportContext);
   const navigate = useNavigate();
-  const { state: userState } = useUser().user ?? {};
+  const { state: userState, userRole } = useUser().user ?? {};
+  const [selectedProgramId, setSelectedProgramId] = useState<
+    string | undefined
+  >(undefined);
   const [reports, setReports] = useState<AnyObject | undefined>(undefined);
 
   // get active state
@@ -83,9 +86,16 @@ export const Dashboard = () => {
   // add/edit program modal disclosure
   const {
     isOpen: addEditProgramModalIsOpen,
-    onOpen: addEditProgramOnOpenHandler,
-    onClose: addEditProgramOnCloseHandler,
+    onOpen: addEditProgramModalOnOpenHandler,
+    onClose: addEditProgramModalOnCloseHandler,
   } = useDisclosure();
+
+  const openAddEditProgramModal = (reportId?: string) => {
+    // if reportId provided, set as selected program
+    setSelectedProgramId(reportId);
+    // use disclosure to open modal
+    addEditProgramModalOnOpenHandler();
+  };
 
   // delete program modal disclosure
   const {
@@ -93,6 +103,12 @@ export const Dashboard = () => {
     onOpen: deleteProgramModalOnOpenHandler,
     onClose: deleteProgramModalOnCloseHandler,
   } = useDisclosure();
+
+  const openDeleteProgramModal = (reportId?: string) => {
+    setSelectedProgramId(reportId);
+    // use disclosure to open modal
+    deleteProgramModalOnOpenHandler();
+  };
 
   return (
     <BasicPage sx={sx.layout}>
@@ -115,10 +131,15 @@ export const Dashboard = () => {
               // Row
               <Tr key={report.reportId}>
                 <Td sx={sx.editProgram}>
-                  {/* TODO: Pass existing data to populate modal */}
-                  <button onClick={addEditProgramOnOpenHandler}>
-                    <Image src={editIcon} alt="Edit Program" />
-                  </button>
+                  {/* only show edit button to state users */}
+                  {(userRole === UserRoles.STATE_REP ||
+                    userRole === UserRoles.STATE_USER) && (
+                    <button
+                      onClick={() => openAddEditProgramModal(report.reportId)}
+                    >
+                      <Image src={editIcon} alt="Edit Program" />
+                    </button>
+                  )}
                 </Td>
                 <Td sx={sx.programNameText}>{report.programName}</Td>
                 <Td>{convertDateUtcToEt(report.dueDate)}</Td>
@@ -134,13 +155,20 @@ export const Dashboard = () => {
                   </Button>
                 </Td>
                 <Td sx={sx.deleteProgramCell}>
-                  <button onClick={deleteProgramModalOnOpenHandler}>
-                    <Image
-                      src={cancelIcon}
-                      alt="Delete Program"
-                      sx={sx.deleteProgramButtonImage}
-                    />
-                  </button>
+                  {/* only show delete button if non-state user */}
+                  {(userRole === UserRoles.ADMIN ||
+                    userRole === UserRoles.APPROVER ||
+                    userRole === UserRoles.HELP_DESK) && (
+                    <button
+                      onClick={() => openDeleteProgramModal(report.reportId)}
+                    >
+                      <Image
+                        src={cancelIcon}
+                        alt="Delete Program"
+                        sx={sx.deleteProgramButtonImage}
+                      />
+                    </button>
+                  )}
                 </Td>
               </Tr>
             ))}
@@ -148,25 +176,33 @@ export const Dashboard = () => {
         {!reports?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
-        <Box sx={sx.callToActionContainer}>
-          <Button type="submit" onClick={addEditProgramOnOpenHandler}>
-            {body.callToAction}
-          </Button>
-        </Box>
+        {/* only show add program button to state users */}
+        {(userRole === UserRoles.STATE_REP ||
+          userRole === UserRoles.STATE_USER) && (
+          <Box sx={sx.callToActionContainer}>
+            <Button type="submit" onClick={() => openAddEditProgramModal()}>
+              {body.callToAction}
+            </Button>
+          </Box>
+        )}
       </Box>
       <AddEditProgramModal
         activeState={activeState}
+        selectedProgramId={selectedProgramId}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
-          onClose: addEditProgramOnCloseHandler,
+          onClose: addEditProgramModalOnCloseHandler,
         }}
         fetchReportsByState={fetchReportsByState}
       />
       <DeleteProgramModal
+        activeState={activeState}
+        selectedProgramId={selectedProgramId}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,
         }}
+        fetchReportsByState={fetchReportsByState}
       />
     </BasicPage>
   );
