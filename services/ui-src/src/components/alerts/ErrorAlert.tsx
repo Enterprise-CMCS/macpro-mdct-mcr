@@ -1,8 +1,10 @@
 // components
 import { Box, Collapse } from "@chakra-ui/react";
 import { Alert } from "components";
+import { useRef } from "react";
 // utils
 import { AlertTypes, AnyObject } from "types";
+import { focusElement } from "utils";
 
 export const ErrorAlert = ({
   error,
@@ -10,8 +12,14 @@ export const ErrorAlert = ({
   sxOverride,
   ...props
 }: Props) => {
+  // Focus the alert when an error is given
+  const ref = useRef<HTMLDivElement>(null);
+  if (error && ref.current) {
+    focusElement(ref.current);
+  }
+
   return (
-    <Box sx={sxOverride}>
+    <Box ref={ref} sx={sxOverride}>
       <Collapse in={!!error}>
         {error && (
           <Alert
