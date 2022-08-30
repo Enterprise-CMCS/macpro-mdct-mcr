@@ -15,7 +15,6 @@ import { AnyObject, FieldChoice, FormField } from "types";
 
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
-  console.log("formFieldFactory -- running with fields:", fields);
   // define form field components
   const fieldToComponentMap: any = {
     checkbox: CheckboxField,
@@ -45,9 +44,7 @@ export const hydrateFormFields = (
   formFields: FormField[],
   reportData: AnyObject
 ) => {
-  console.log("hydrator -- checking for reportData");
   if (reportData) {
-    console.log("hydrator -- active reportData:", reportData);
     formFields.forEach((field: FormField) => {
       const fieldFormIndex = formFields.indexOf(field!);
       const fieldProps = formFields[fieldFormIndex].props!;

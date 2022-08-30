@@ -22,7 +22,7 @@ export const Form = ({
   ...props
 }: Props) => {
   const { fields, options } = formJson;
-  const { report, reportData } = useContext(ReportContext);
+  const { reportData } = useContext(ReportContext);
 
   // make form context
   const form = useForm({
@@ -40,14 +40,9 @@ export const Form = ({
   };
 
   const formFieldsToRender = (fields: FormField[]) => {
-    console.log("Form.tsx -- calling formFieldsToRender with:");
-    console.log("Form.tsx -- current report:", report?.reportId || null);
-    console.log("Form.tsx -- current reportData", reportData?.reportId || null);
     const hydratedFields = hydrateFormFields(fields, reportData);
     return formFieldFactory(hydratedFields);
   };
-
-  console.log("Form.tsx -- FORM IS LOADING");
 
   return (
     <FormProvider {...form}>

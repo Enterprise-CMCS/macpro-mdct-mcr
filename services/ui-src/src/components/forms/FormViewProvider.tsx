@@ -11,10 +11,7 @@ export const FormViewProvider = ({ children }: Props) => {
   const [formView, setFormView] = useState<any>();
 
   const fetchFormView = async (path: string) => {
-    console.log("path", path);
     const form = mcparRoutes.filter((report: any) => report.path === path)[0];
-    console.log("form", form);
-    console.log("form.pageJson", form.pageJson);
     setFormView(form);
   };
 
@@ -27,7 +24,6 @@ export const FormViewProvider = ({ children }: Props) => {
       pathname !== "/mcpar/dashboard"
     ) {
       fetchFormView(pathname);
-      console.log("formView", formView);
     }
   }, [pathname]);
 

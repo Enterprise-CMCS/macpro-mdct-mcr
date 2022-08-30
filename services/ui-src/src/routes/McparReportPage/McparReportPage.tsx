@@ -22,7 +22,6 @@ export const McparReportPage = () => {
   const { report, updateReportData, updateReport } = useContext(ReportContext);
   const { formView } = useContext(FormViewContext);
 
-  console.log("formView", formView);
   const { path, intro, form } = formView;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
   const reportId = report?.reportId;
