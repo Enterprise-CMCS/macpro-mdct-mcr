@@ -95,6 +95,11 @@ export interface FormField {
   choices?: FieldChoice[];
 }
 
+export interface DropdownOptions {
+  label: string;
+  value: string;
+}
+
 export interface FieldChoice {
   name: string;
   type?: string;
