@@ -8,13 +8,15 @@ import {
   DrawerOverlay,
   DrawerContent,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
-import { makeMediaQueryClasses } from "utils";
+import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
   drawerDisclosure,
   drawerTitle,
+  drawerInfo,
   children,
   ...props
 }: Props) => {
@@ -33,6 +35,9 @@ export const Drawer = ({
       <DrawerContent sx={sx.drawerContent} className={mqClasses}>
         <DrawerHeader sx={sx.drawerHeader}>
           <Text sx={sx.drawerHeaderText}>{drawerTitle}</Text>
+          {drawerInfo && (
+            <Box sx={sx.infoTextBox}>{parseCustomHtml(drawerInfo)}</Box>
+          )}
           <Button
             sx={sx.drawerCloseButton}
             leftIcon={<CloseIcon />}
@@ -54,6 +59,7 @@ interface Props {
     onClose: Function;
   };
   drawerTitle: string;
+  drawerInfo?: any[];
   [key: string]: any;
 }
 
@@ -92,5 +98,18 @@ const sx = {
   },
   drawerBody: {
     padding: "1rem",
+  },
+  infoTextBox: {
+    marginTop: "2rem",
+    "p, span": {
+      color: "palette.gray",
+      fontSize: "16px",
+    },
+    a: {
+      color: "palette.primary",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
   },
 };
