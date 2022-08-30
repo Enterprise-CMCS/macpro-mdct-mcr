@@ -19,9 +19,6 @@ jest.mock("utils", () => ({
   useUser: () => {
     return mockStateUser;
   },
-  getReportsByState: () => {
-    return [{ ...mockReportStatus }];
-  },
 }));
 
 const mockUseNavigate = jest.fn();
@@ -37,12 +34,14 @@ const mockReportMethods = {
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
   updateReport: jest.fn(() => {}),
+  fetchReportsByState: jest.fn(() => {}),
 };
 
 const mockReportContext = {
   ...mockReportMethods,
   report: {},
   reportData: {},
+  reportsByState: [mockReportStatus],
   errorMessage: "",
 };
 
