@@ -4,7 +4,9 @@ import { axe } from "jest-axe";
 //components
 import { DeleteProgramModal, ReportContext } from "components";
 
-const closeHandler = jest.fn();
+const mockCloseHandler = jest.fn();
+const mockRemoveReport = jest.fn();
+const mockFetchReportsByState = jest.fn();
 
 const activeState = "AL";
 const selectedReportId = "reportId";
@@ -16,8 +18,8 @@ const mockReportMethods = {
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
   updateReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
-  removeReport: jest.fn(() => {}),
+  fetchReportsByState: mockFetchReportsByState,
+  removeReport: mockRemoveReport,
 };
 
 const mockReportContext = {
@@ -35,7 +37,7 @@ const modalComponent = (
       selectedReportId={selectedReportId}
       modalDisclosure={{
         isOpen: true,
-        onClose: closeHandler,
+        onClose: mockCloseHandler,
       }}
     />
   </ReportContext.Provider>
@@ -60,12 +62,19 @@ describe("Test DeleteProgramModal", () => {
 
   test("DeleteProgramModals close button can be clicked", () => {
     fireEvent.click(screen.getByText("Close"));
-    expect(closeHandler).toHaveBeenCalledTimes(1);
+    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
   test("DeleteProgramModals close button can be clicked", () => {
     fireEvent.click(screen.getByText("Cancel"));
-    expect(closeHandler).toHaveBeenCalledTimes(1);
+    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
+
+  test("DeleteProgramModals close button can be clicked", async () => {
+    fireEvent.click(screen.getByText("Yes, delete program"));
+    await expect(mockRemoveReport).toHaveBeenCalledTimes(1);
+    await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });
 

@@ -6,7 +6,7 @@ import { ReportStatus } from "types";
 import {
   calculateDueDate,
   convertDateEtToUtc,
-  convertDateUtcToEt,
+  createReportId,
   useUser,
 } from "utils";
 // form
@@ -21,58 +21,43 @@ export const AddEditProgramModal = ({
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
-  const createReportId = (
-    activeState: string,
-    programName: string,
-    dueDate: number
-  ) => {
-    const dueDateString = convertDateUtcToEt(dueDate)
-      .toString()
-      .replace(/\//g, "-");
-    const reportId = [activeState, programName, dueDateString].join("_");
-    return reportId;
-  };
-
   const addEditProgram = async (formData: any) => {
-    // guard against no activeState
-    if (activeState) {
-      // prepare payload
-      const programName = formData["aep-programName"];
-      const dueDate = calculateDueDate(formData["aep-endDate"]);
-      const reportDetails = {
-        state: activeState,
-        reportId: "",
-      };
-      const dataToWrite = {
+    // prepare payload
+    const programName = formData["aep-programName"];
+    const dueDate = calculateDueDate(formData["aep-endDate"]);
+    const reportDetails = {
+      state: activeState,
+      reportId: "",
+    };
+    const dataToWrite = {
+      programName,
+      reportingPeriodStartDate: convertDateEtToUtc(formData["aep-startDate"]),
+      reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
+      dueDate,
+      lastAlteredBy: full_name,
+    };
+    // if an existing program was selected, use that report id
+    if (selectedReportId) {
+      reportDetails.reportId = selectedReportId;
+      // edit existing report
+      await updateReport(reportDetails, {
+        ...dataToWrite,
+      });
+    } else {
+      // if no program was selected, create new report id
+      reportDetails.reportId = createReportId(
+        activeState,
         programName,
-        reportingPeriodStartDate: convertDateEtToUtc(formData["aep-startDate"]),
-        reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
-        dueDate,
-        lastAlteredBy: full_name,
-      };
-      // if an existing program was selected, use that report id
-      if (selectedReportId) {
-        reportDetails.reportId = selectedReportId;
-        // edit existing report
-        await updateReport(reportDetails, {
-          ...dataToWrite,
-        });
-      } else {
-        // if no program was selected, create new report id
-        reportDetails.reportId = createReportId(
-          activeState,
-          programName,
-          dueDate
-        );
-        // create new report
-        await updateReport(reportDetails, {
-          ...dataToWrite,
-          reportType: "MCPAR",
-          status: ReportStatus.NOT_STARTED,
-        });
-      }
-      await fetchReportsByState(activeState);
+        dueDate
+      );
+      // create new report
+      await updateReport(reportDetails, {
+        ...dataToWrite,
+        reportType: "MCPAR",
+        status: ReportStatus.NOT_STARTED,
+      });
     }
+    await fetchReportsByState(activeState);
     modalDisclosure.onClose();
   };
 
@@ -88,6 +73,7 @@ export const AddEditProgramModal = ({
       }}
     >
       <Form
+        data-testid="add-edit-program-form"
         id={formJson.id}
         formJson={formJson}
         formSchema={formSchema}
@@ -98,7 +84,7 @@ export const AddEditProgramModal = ({
 };
 
 interface Props {
-  activeState: string | undefined;
+  activeState: string;
   selectedReportId: string | undefined;
   modalDisclosure: {
     isOpen: boolean;

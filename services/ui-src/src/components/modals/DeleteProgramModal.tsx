@@ -11,15 +11,12 @@ export const DeleteProgramModal = ({
   const { fetchReportsByState, removeReport } = useContext(ReportContext);
 
   const deleteProgramHandler = async () => {
-    // guard against no active state
-    if (activeState) {
-      const reportDetails = {
-        state: activeState,
-        reportId: selectedReportId,
-      };
-      await removeReport(reportDetails);
-      await fetchReportsByState(activeState);
-    }
+    const reportDetails = {
+      state: activeState,
+      reportId: selectedReportId,
+    };
+    await removeReport(reportDetails);
+    await fetchReportsByState(activeState);
     modalDisclosure.onClose();
   };
 
@@ -42,8 +39,8 @@ export const DeleteProgramModal = ({
 };
 
 interface Props {
-  activeState: string | undefined;
-  selectedReportId: string | undefined;
+  activeState: string;
+  selectedReportId: string;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
