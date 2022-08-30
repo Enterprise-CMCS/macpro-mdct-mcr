@@ -8,7 +8,7 @@ import { InputChangeEvent, AnyObject } from "types";
 
 export const DropdownField = ({
   name,
-  label,
+  label = "",
   options,
   hint,
   sxOverride,
@@ -31,8 +31,6 @@ export const DropdownField = ({
 
   // insert the default option
   options.splice(0, 0, { value: "", label: "- Select an option -" });
-
-  // TODO: handle options mapping in this component
 
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
@@ -57,7 +55,7 @@ interface DropdownOptions {
 
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   options: DropdownOptions[];
   hint?: any;
   sxOverride?: AnyObject;

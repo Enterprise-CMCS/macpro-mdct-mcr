@@ -3,21 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { BasicPage, DropdownField } from "components";
 // types
-import { InputChangeEvent, States } from "types";
-// utils
-import verbiage from "verbiage/pages/home";
+import { AnyObject, InputChangeEvent } from "types";
+import { States } from "../../constants";
 
-export const ReadOnly = () => {
-  // const options = Object.values(States);
+export const ReadOnly = ({ verbiage }: Props) => {
   const navigate = useNavigate();
+
+  // create dropdown options
   const dropdownOptions = Object.keys(States).map((value) => {
     return {
       value,
       label: States[value as keyof typeof States],
     };
   });
-  const { readOnly } = verbiage;
-  const labelStyle = "margin-top: 0";
 
   const setState = (event: InputChangeEvent) => {
     localStorage.setItem("state", event.target.value);
@@ -29,31 +27,31 @@ export const ReadOnly = () => {
   };
 
   return (
-    <>
-      <BasicPage data-testid="read-only-view">
-        <Box>
-          <Heading as="h1" sx={sx.headerText}>
-            {readOnly.header}
-          </Heading>
-        </Box>
-        <DropdownField
-          name="States"
-          label=""
-          labelClassName={labelStyle}
-          hint={readOnly.body}
-          ariaLabel={readOnly.ariaLabel}
-          options={dropdownOptions}
-          onChange={setState}
-        />
-        <Flex sx={sx.navigationButton}>
-          <Button type="submit" onClick={onSubmit}>
-            {readOnly.buttonLabel}
-          </Button>
-        </Flex>
-      </BasicPage>
-    </>
+    <BasicPage data-testid="read-only-view">
+      <Box>
+        <Heading as="h1" sx={sx.headerText}>
+          {verbiage.header}
+        </Heading>
+      </Box>
+      <DropdownField
+        name="States"
+        hint={verbiage.body}
+        ariaLabel={verbiage.ariaLabel}
+        options={dropdownOptions}
+        onChange={setState}
+      />
+      <Flex sx={sx.navigationButton}>
+        <Button type="submit" onClick={onSubmit}>
+          {verbiage.buttonLabel}
+        </Button>
+      </Flex>
+    </BasicPage>
   );
 };
+
+interface Props {
+  verbiage: AnyObject;
+}
 
 const sx = {
   headerText: {
