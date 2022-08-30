@@ -18,7 +18,7 @@ export const ReadOnly = ({ verbiage }: Props) => {
   };
 
   return (
-    <Box sx={sx.root}>
+    <Box sx={sx.root} data-testid="read-only-view">
       <Heading as="h1" sx={sx.headerText}>
         {verbiage.header}
       </Heading>
