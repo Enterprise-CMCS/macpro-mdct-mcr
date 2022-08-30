@@ -23,7 +23,7 @@
         "id": "cpc-1-sub",
         "type": "date",
         "props": {
-          "noLabel": true
+          "nolabel": true
         }
       },
       {
