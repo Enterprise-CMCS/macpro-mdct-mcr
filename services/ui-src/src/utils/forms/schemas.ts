@@ -16,6 +16,21 @@ export const number = () =>
     .required(error.REQUIRED_GENERIC);
 export const numberOptional = () => number().notRequired();
 
+// Mixed
+export const numberOrNA = () =>
+  numberSchema()
+    .transform(validateNA)
+    .required()
+    .nullable()
+    .typeError("Please input a Number OR 'N/A'");
+
+function validateNA(value: any, originalValue: string) {
+  if (typeof originalValue === "string" && originalValue === "N/A") {
+    return null;
+  }
+  return value;
+}
+
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
 export const emailOptional = () => email().notRequired();

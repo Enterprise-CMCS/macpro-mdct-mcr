@@ -15,6 +15,7 @@ export const schemaValidationErrors = {
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
+  INVALID_PERCENTAGE: "Please input a Number OR 'N/A'",
 };
 
 export const reportErrors = {
