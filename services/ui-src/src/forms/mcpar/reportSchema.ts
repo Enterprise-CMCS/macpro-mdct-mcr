@@ -23,6 +23,7 @@ import daoSchema from "./dao/dao.schema";
 import dabsSchema from "./dabs/dabs.schema";
 import dsfhSchema from "./dsfh/dsfh.schema";
 import dgoSchema from "./dgo/dgo.schema";
+import dgbsSchema from "./dgbs/dgbs.schema";
 import dgbrSchema from "./dgbr/dgbr.schema";
 import dqmSchema from "./dqm/dqm.schema";
 import dsSchema from "./ds/ds.schema";
@@ -52,6 +53,7 @@ export const reportSchema = {
   dabs: dabsSchema,
   dsfh: dsfhSchema,
   dgo: dgoSchema,
+  dgbs: dgbsSchema,
   dgbr: dgbrSchema,
   dqm: dqmSchema,
   ds: dsSchema,
