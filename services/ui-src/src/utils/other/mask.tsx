@@ -9,6 +9,7 @@ export const isValidCustomMask = (x: any): x is CustomMasks =>
 
 export const customMaskMap: any = {
   "comma-separated": convertToCommaSeparatedString,
+  percentage: convertToCommaSeparatedString,
 };
 
 /**
