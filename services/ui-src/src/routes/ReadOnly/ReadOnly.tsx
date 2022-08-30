@@ -11,7 +11,9 @@ import formSchema from "forms/internal/adminDashSelector/adminDashSelector.schem
 export const ReadOnly = ({ verbiage }: Props) => {
   const navigate = useNavigate();
 
-  const onSubmit = () => {
+  const onSubmit = (formData: AnyObject) => {
+    const selectedState = formData["ads-state"];
+    localStorage.setItem("selectedState", selectedState);
     navigate("/mcpar/dashboard");
   };
 
@@ -27,7 +29,7 @@ export const ReadOnly = ({ verbiage }: Props) => {
         onSubmit={onSubmit}
       />
       <Flex sx={sx.navigationButton}>
-        <Button type="submit" onClick={onSubmit}>
+        <Button type="submit" form={formJson.id}>
           {verbiage.buttonLabel}
         </Button>
       </Flex>

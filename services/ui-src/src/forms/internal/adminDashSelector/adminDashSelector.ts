@@ -4,13 +4,13 @@ import { DropdownOptions } from "types";
 // create dropdown options
 const dropdownOptions: DropdownOptions[] = Object.keys(States).map((value) => {
   return {
-    value,
     label: States[value as keyof typeof States],
+    value,
   };
 });
 
 // insert the default option
-dropdownOptions.splice(0, 0, { value: "", label: "- Select an option -" });
+dropdownOptions.splice(0, 0, { label: "- Select an option -", value: "" });
 
 export default {
   id: "adminDashSelector",
