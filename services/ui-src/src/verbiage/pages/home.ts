@@ -74,4 +74,8 @@ export default {
       },
     },
   },
+  readOnly: {
+    header: "View State Reports",
+    buttonLabel: "Go to Report Dashboard",
+  },
 };
