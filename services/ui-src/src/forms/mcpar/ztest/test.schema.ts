@@ -20,6 +20,5 @@ export default object({
   // masked number fields
   test3: number(),
   test4: number(),
-  test5: number(),
-  test6: numberNA(),
+  test5: numberNA(),
 });

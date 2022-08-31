@@ -28,6 +28,10 @@ const currencyMaskedNumberFieldComponent = (
   <NumberField name="testNumberField" label="test-label" mask="currency" />
 );
 
+const percentageMaskedNumberFieldComponent = (
+  <NumberField name="testNumberField" label="test-label" mask="percentage" />
+);
+
 describe("Test Maskless NumberField", () => {
   test("NumberField is visible", () => {
     const result = render(numberFieldComponent);
@@ -87,6 +91,27 @@ describe("Test Currency Masked NumberField", () => {
     await userEvent.type(numberFieldInput, "1234.00");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("1,234");
+  });
+});
+
+describe("Test Percentage Masked NumberField", () => {
+  test("onChangeHandler updates masked field value", async () => {
+    const result = render(percentageMaskedNumberFieldComponent);
+    const numberFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    await userEvent.type(numberFieldInput, "123");
+    expect(numberFieldInput.value).toEqual("123");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("123");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "12055");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("12,055");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "12055.99");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("12,055.99");
   });
 });
 

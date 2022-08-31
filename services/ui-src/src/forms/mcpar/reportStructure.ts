@@ -147,6 +147,11 @@ export default [
             formId: "dgo",
           },
           {
+            name: "Grievances by Service",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
+            formId: "dgbs",
+          },
+          {
             name: "Grievances by Reason",
             path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
             formId: "dgbr",
