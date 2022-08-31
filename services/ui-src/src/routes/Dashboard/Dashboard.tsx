@@ -179,7 +179,7 @@ export const Dashboard = () => {
         )}
       </Box>
       <AddEditProgramModal
-        activeState={activeState}
+        activeState={activeState!}
         selectedReportId={selectedReportId}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
@@ -187,8 +187,8 @@ export const Dashboard = () => {
         }}
       />
       <DeleteProgramModal
-        activeState={activeState}
-        selectedReportId={selectedReportId}
+        activeState={activeState!}
+        selectedReportId={selectedReportId!}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,

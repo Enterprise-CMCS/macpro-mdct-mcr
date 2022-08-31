@@ -60,17 +60,17 @@ describe("Test DeleteProgramModal", () => {
     expect(screen.getByText("Cancel")).toBeTruthy();
   });
 
-  test("DeleteProgramModals close button can be clicked", () => {
+  test("DeleteProgramModals top close button can be clicked", () => {
     fireEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("DeleteProgramModals close button can be clicked", () => {
+  test("DeleteProgramModals bottom cancel button can be clicked", () => {
     fireEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("DeleteProgramModals close button can be clicked", async () => {
+  test("DeleteProgramModals delete program button can be clicked", async () => {
     fireEvent.click(screen.getByText("Yes, delete program"));
     await expect(mockRemoveReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
