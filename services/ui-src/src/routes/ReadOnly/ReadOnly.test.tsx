@@ -23,13 +23,6 @@ const readOnlyView = (
   </RouterWrappedComponent>
 );
 
-const fillOutForm = async (form: any) => {
-  // selectors for all the required fields
-  const dropdownInput = form.querySelector("[name='ads-state']")!;
-  // fill out form fields
-  fireEvent.change(dropdownInput, { target: { value: "CA" } });
-};
-
 // TESTS
 
 describe("Test Read Only view", () => {
@@ -45,8 +38,9 @@ describe("Test Read Only view", () => {
   test("Form submits correctly", async () => {
     const result = render(readOnlyView);
     const form = result.container;
-    await fillOutForm(form);
-    const submitButton = screen.getByTestId("go-to-report-btn");
+    const dropdownInput = form.querySelector("[name='ads-state']")!;
+    await fireEvent.change(dropdownInput, { target: { value: "CA" } });
+    const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     expect(window.location.pathname).toEqual("/mcpar/dashboard");
   });

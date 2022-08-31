@@ -29,7 +29,7 @@ export const ReadOnly = ({ verbiage }: Props) => {
         onSubmit={onSubmit}
       />
       <Flex sx={sx.navigationButton}>
-        <Button type="submit" form={formJson.id} data-testid="go-to-report-btn">
+        <Button type="submit" form={formJson.id}>
           {verbiage.buttonLabel}
         </Button>
       </Flex>
