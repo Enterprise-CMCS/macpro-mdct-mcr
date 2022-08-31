@@ -4,7 +4,6 @@ import { Alert } from "components";
 import { useRef } from "react";
 // utils
 import { AlertTypes, AnyObject } from "types";
-import { focusElement } from "utils";
 
 export const ErrorAlert = ({
   error,
@@ -15,7 +14,8 @@ export const ErrorAlert = ({
   // Focus the alert when an error is given
   const ref = useRef<HTMLDivElement>(null);
   if (error && ref.current) {
-    focusElement(ref.current);
+    ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    ref.current.focus({ preventScroll: true });
   }
 
   return (
