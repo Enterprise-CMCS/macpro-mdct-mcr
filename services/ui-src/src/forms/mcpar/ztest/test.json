@@ -171,6 +171,14 @@
           "label": "Currency Numberfield",
           "mask": "currency"
         }
+      },
+      {
+        "id": "test6",
+        "type": "number",
+        "props": {
+          "label": "Percentage Numberfield",
+          "mask": "percentage"
+        }
       }
     ]
   }

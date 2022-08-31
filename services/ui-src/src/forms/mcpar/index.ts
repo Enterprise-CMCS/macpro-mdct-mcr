@@ -30,6 +30,7 @@ import dao from "./dao/dao.json";
 import dabs from "./dabs/dabs.json";
 import dsfh from "./dsfh/dsfh.json";
 import dgo from "./dgo/dgo.json";
+import dgbs from "./dgbs/dgbs.json";
 import dgbr from "./dgbr/dgbr.json";
 import dqm from "./dqm/dqm.json";
 import ds from "./ds/ds.json";
@@ -61,6 +62,7 @@ const combinedMcparForms = [
   dabs,
   dsfh,
   dgo,
+  dgbs,
   dgbr,
   dqm,
   ds,
