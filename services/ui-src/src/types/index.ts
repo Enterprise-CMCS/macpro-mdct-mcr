@@ -185,11 +185,6 @@ export interface AnyObject {
   [key: string]: any;
 }
 
-export interface ActionTableContentShape {
-  caption?: string;
-  headRow?: string[];
-}
-
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
 export type { IconType } from "react-icons";
