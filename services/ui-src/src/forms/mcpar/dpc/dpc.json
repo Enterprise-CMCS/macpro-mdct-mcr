@@ -32,9 +32,8 @@
         "type": "number",
         "props": {
           "label": "D1.I.2 Plan share of Medicaid",
-          "hint": "<p>Automatically calculated. Sum of plan enrollment (within the specific program) as a percentage of the state's total Medicaid enrollment.</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
-          "mask": "percentage",
-          "disabled": true
+          "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state's total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
+          "mask": "percentage"
         }
       },
       {
@@ -42,9 +41,8 @@
         "type": "number",
         "props": {
           "label": "D1.I.3 Plan share of any Medicaid managed care",
-          "hint": "<p>Automatically calculated. Sum of plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care.</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
-          "mask": "percentage",
-          "disabled": true
+          "hint": "<p>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
+          "mask": "percentage"
         }
       }
     ]

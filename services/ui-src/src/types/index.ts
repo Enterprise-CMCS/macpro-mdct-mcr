@@ -74,6 +74,7 @@ export interface ReportContextMethods {
   updateReportData: Function;
   fetchReport: Function;
   updateReport: Function;
+  removeReport: Function;
 }
 
 export interface ReportContextShape
@@ -92,6 +93,11 @@ export interface FormField {
   props?: AnyObject;
   validation?: FormValidation;
   choices?: FieldChoice[];
+}
+
+export interface DropdownOptions {
+  label: string;
+  value: string;
 }
 
 export interface FieldChoice {
