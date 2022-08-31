@@ -52,7 +52,6 @@ export const TextField = ({
       }`}
     >
       <CmsdsTextField
-        data-testid={name}
         id={name}
         name={name}
         label={label}

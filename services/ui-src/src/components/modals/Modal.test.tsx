@@ -4,8 +4,8 @@ import { axe } from "jest-axe";
 import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
 
-const closeHandler = jest.fn();
-const confirmationHandler = jest.fn();
+const mockCloseHandler = jest.fn();
+const mockConfirmationHandler = jest.fn();
 
 const content = {
   heading: "Dialog Heading",
@@ -16,10 +16,10 @@ const content = {
 
 const modalComponent = (
   <Modal
-    onConfirmHandler={confirmationHandler}
+    onConfirmHandler={mockConfirmationHandler}
     modalDisclosure={{
       isOpen: true,
-      onClose: closeHandler,
+      onClose: mockCloseHandler,
     }}
     content={content}
   >
@@ -39,12 +39,12 @@ describe("Test Modal", () => {
 
   test("Modals action button can be clicked", () => {
     fireEvent.click(screen.getByText(/Dialog Action/i));
-    expect(confirmationHandler).toHaveBeenCalledTimes(1);
+    expect(mockConfirmationHandler).toHaveBeenCalledTimes(1);
   });
 
   test("Modals close button can be clicked", () => {
     fireEvent.click(screen.getByText(/Cancel/i));
-    expect(closeHandler).toHaveBeenCalledTimes(1);
+    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });
 
