@@ -151,6 +151,7 @@ describe("Test /mcpar/dashboard with no reports", () => {
 
 describe("Test /mcpar/dashboard with error", () => {
   test("Error alert shows when there is an error", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(dashboardViewWithError);
