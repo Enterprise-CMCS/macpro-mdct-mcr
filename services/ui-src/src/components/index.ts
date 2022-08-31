@@ -21,6 +21,9 @@ export { PreviewBanner } from "./banners/PreviewBanner";
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
+// drawers
+export { Drawer } from "./drawers/Drawer";
+export { ReportDrawer } from "./drawers/ReportDrawer";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";
@@ -41,7 +44,6 @@ export { Icon } from "./icons/Icon";
 export { BasicPage } from "./layout/BasicPage";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
-export { ReportPage } from "./layout/ReportPage";
 export { IntroSection } from "./layout/IntroSection";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
@@ -51,9 +53,16 @@ export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // modals
-export { Modal } from "./modal/Modal";
+export { Modal } from "./modals/Modal";
+export { AddEditProgramModal } from "./modals/AddEditProgramModal";
+export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 // reports
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
+export { ReportPage } from "./reports/ReportPage";
+export { ReportPageIntro } from "./reports/ReportPageIntro";
+export { ReportPageFooter } from "./reports/ReportPageFooter";
+export { StandardFormSection } from "./reports/sections/StandardFormSection";
+export { EntityDrawerSection } from "./reports/sections/EntityDrawerSection";
 // tables
 export { Table } from "./tables/Table";
 // widgets

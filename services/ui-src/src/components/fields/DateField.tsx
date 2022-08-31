@@ -16,6 +16,8 @@ export const DateField = ({
   label,
   hint,
   sxOverride,
+  nested,
+  nolabel,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
@@ -41,13 +43,15 @@ export const DateField = ({
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
-
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const parsedHint = hint && parseCustomHtml(hint);
 
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${props.noLabel ? "no-label" : ""}`}
+      className={`${mqClasses} ${
+        nolabel ? "no-label" : ""
+      } ${nestedChildClasses}`}
     >
       <CmsdsDateField
         name={name}
@@ -68,6 +72,8 @@ interface Props {
   label: string;
   hint?: CustomHtmlElement[];
   timetype?: string;
+  nested?: boolean;
+  nolabel?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
@@ -79,6 +85,16 @@ const sx = {
   "&.no-label": {
     ".ds-c-label": {
       marginTop: "0.5rem",
+    },
+  },
+  "&.ds-c-choice__checkedChild": {
+    "&.no-label": {
+      paddingY: 0,
+    },
+  },
+  "&.nested": {
+    label: {
+      marginTop: 0,
     },
   },
 };

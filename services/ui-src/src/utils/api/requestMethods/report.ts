@@ -1,5 +1,5 @@
 import { API } from "aws-amplify";
-import { ReportDetails } from "types";
+import { ReportDetails, ReportShape } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 
 async function getReport(reportDetails: ReportDetails) {
@@ -25,11 +25,14 @@ async function getReportsByState(state: string) {
   return response;
 }
 
-async function writeReport(reportDetails: ReportDetails, reportStatus: string) {
+async function writeReport(
+  reportDetails: ReportDetails,
+  reportStatus: ReportShape
+) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
-    body: reportStatus,
+    body: { ...reportStatus },
   };
   const { state, reportId } = reportDetails;
   const response = await API.post(
@@ -40,4 +43,18 @@ async function writeReport(reportDetails: ReportDetails, reportStatus: string) {
   return response;
 }
 
-export { getReport, getReportsByState, writeReport };
+async function deleteReport(reportDetails: ReportDetails) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+  };
+  const { state, reportId } = reportDetails;
+  const response = await API.del(
+    "reports",
+    `/reports/${state}/${reportId}`,
+    request
+  );
+  return response;
+}
+
+export { getReport, getReportsByState, writeReport, deleteReport };

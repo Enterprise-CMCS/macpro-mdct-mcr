@@ -1,18 +1,48 @@
 {
   "path": "/mcpar/plan-level-indicators/program-characteristics",
   "intro": {
-    "section": "D: Plan-Level Indicators",
-    "subsection": "I: Program Characteristics"
+    "section": "Section D: Plan-Level Indicators",
+    "subsection": "Topic I. Program Characteristics & Enrollment",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["D1_Plan_Set"]
+    }
+  },
+  "drawer": {
+    "dashboard": {
+      "title": "Report program characteristics & enrollment for each plan",
+      "entityType": "plans"
+    },
+    "drawerTitle": "Report program characteristics & enrollment for"
   },
   "form": {
     "id": "dpc",
     "fields": [
       {
         "id": "dpc-1",
-        "type": "text",
+        "type": "number",
         "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
+          "label": "D1.I.1 Plan enrollment",
+          "hint": "What is the total number of individuals enrolled in each plan as of the first day of the last month of the reporting year?",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dpc-2",
+        "type": "number",
+        "props": {
+          "label": "D1.I.2 Plan share of Medicaid",
+          "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state's total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
+          "mask": "percentage"
+        }
+      },
+      {
+        "id": "dpc-3",
+        "type": "number",
+        "props": {
+          "label": "D1.I.3 Plan share of any Medicaid managed care",
+          "hint": "<p>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
+          "mask": "percentage"
         }
       }
     ]

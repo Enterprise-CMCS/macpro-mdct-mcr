@@ -1,5 +1,4 @@
-import React from "react";
-
+import { ReactNode } from "react";
 // components
 import {
   Button,
@@ -11,15 +10,24 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
+// utils
 import { makeMediaQueryClasses } from "utils";
 
-export const Modal = ({ actionFunction, content, modalState }: Props) => {
+export const Modal = ({
+  modalDisclosure,
+  content,
+  onConfirmHandler,
+  formId,
+  children,
+}: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
-    <ChakraModal isOpen={modalState.isOpen} onClose={modalState.onClose}>
+    <ChakraModal
+      isOpen={modalDisclosure.isOpen}
+      onClose={modalDisclosure.onClose}
+    >
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
         <ModalHeader sx={sx.modalHeader}>
@@ -32,29 +40,39 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
             sx={sx.modalClose}
             leftIcon={<CloseIcon />}
             variant="link"
-            onClick={modalState.onClose}
+            onClick={modalDisclosure.onClose}
           >
             Close
           </Button>
         </Flex>
-        <ModalBody sx={sx.modalBody}>
-          <Text>{content.body}</Text>
-        </ModalBody>
-
+        <ModalBody sx={sx.modalBody}>{children}</ModalBody>
         <ModalFooter sx={sx.modalFooter}>
-          <Button
-            className={mqClasses}
-            sx={sx.action}
-            onClick={() => actionFunction()}
-            data-testid="modal-submit-button"
-          >
-            {content.actionButtonText}
-          </Button>
+          {formId && (
+            <Button
+              className={mqClasses}
+              sx={sx.action}
+              form={formId}
+              type="submit"
+              data-testid="modal-submit-button"
+            >
+              {content.actionButtonText}
+            </Button>
+          )}
+          {onConfirmHandler && (
+            <Button
+              className={mqClasses}
+              sx={sx.action}
+              onClick={() => onConfirmHandler()}
+              data-testid="modal-submit-button"
+            >
+              {content.actionButtonText}
+            </Button>
+          )}
           <Button
             className={mqClasses}
             sx={sx.close}
             variant="link"
-            onClick={modalState.onClose}
+            onClick={modalDisclosure.onClose}
           >
             {content.closeButtonText}
           </Button>
@@ -65,17 +83,18 @@ export const Modal = ({ actionFunction, content, modalState }: Props) => {
 };
 
 interface Props {
-  actionFunction: Function;
-  modalState: {
+  modalDisclosure: {
     isOpen: boolean;
     onClose: any;
   };
   content: {
     heading: string;
-    body: string;
     actionButtonText: string;
     closeButtonText: string;
   };
+  onConfirmHandler?: Function;
+  formId?: string;
+  children?: ReactNode;
   [key: string]: any;
 }
 
@@ -123,9 +142,10 @@ const sx = {
     paddingTop: "2rem",
   },
   action: {
-    justifyContent: "start",
+    justifyContent: "center",
     marginTop: "1rem",
     marginRight: "2rem",
+    minWidth: "7.5rem",
     span: {
       marginLeft: "0.5rem",
       marginRight: "-0.25rem",

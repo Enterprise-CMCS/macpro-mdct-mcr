@@ -52,7 +52,7 @@ describe("Test formFieldFactory", () => {
     const generatedFields = formFieldFactory(mockFormFields, true);
 
     // Text field matches to component
-    const topTextField = generatedFields.find(
+    const topTextField: any = generatedFields.find(
       (field) => field.key === "mockField1"
     );
     expect(topTextField?.type.name).toBe("TextField");
@@ -70,7 +70,7 @@ describe("Test formFieldFactory", () => {
     expect(nestedTextField.id).toBe("mockField2-o1-text");
 
     // Number field matches to component
-    const topNumberField = generatedFields.find(
+    const topNumberField: any = generatedFields.find(
       (field) => field.key === "mockField3"
     );
     expect(topNumberField?.type.name).toBe("NumberField");
@@ -130,9 +130,11 @@ describe("Test hydrateFormFields", () => {
   ];
 
   const mockReportData = {
-    "mock-field-1": "mock-field-1-value",
-    "mock-field-2": ["mock-option1"],
-    "mock-field-2-o1-text": "mock nested text",
+    fieldData: {
+      "mock-field-1": "mock-field-1-value",
+      "mock-field-2": ["mock-option1"],
+      "mock-field-2-o1-text": "mock nested text",
+    },
   };
 
   it("Correctly hydrates field with report data", () => {
@@ -163,30 +165,28 @@ describe("Test hydrateFormFields", () => {
 
 describe("Test sortFormErrors", () => {
   const mockFormObject = {
-    getValues: jest.fn(() => ({
-      field1: "",
-      field2: "",
-      field3: "",
-    })),
+    "apoc-a1": {},
+    "apoc-a2a": {},
+    "apoc-a2b": {},
   };
 
   const mockErrorsObject = {
-    field3: {
-      message: "field 3 is required",
+    "apoc-a2a": {
+      message: "field 2a is required",
       type: "required",
       ref: undefined,
     },
-    field2: {
-      message: "field 2 is required",
+    "apoc-a2b": {
+      message: "field 2b is required",
       type: "required",
       ref: undefined,
     },
   };
 
-  const sortedArray = ["field2", "field3"];
+  const sortedArray = ["apoc-a2a", "apoc-a2b"];
   it("Correctly sorts only fields with errors", () => {
     const sortedErrors = sortFormErrors(mockFormObject, mockErrorsObject);
-    expect(sortedErrors.indexOf("field1")).toEqual(-1);
+    expect(sortedErrors.indexOf("apoc-a1")).toEqual(-1);
     expect(sortedErrors).toEqual(sortedArray);
   });
 });
