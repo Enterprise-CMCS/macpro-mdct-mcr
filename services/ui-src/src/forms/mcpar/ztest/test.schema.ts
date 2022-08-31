@@ -1,12 +1,5 @@
 import { object } from "yup";
-import {
-  checkbox,
-  nested,
-  number,
-  numberNA,
-  radio,
-  text,
-} from "utils/forms/schemas";
+import { checkbox, nested, number, radio, text } from "utils/forms/schemas";
 
 export default object({
   // nested checkboxes
@@ -20,5 +13,6 @@ export default object({
   // masked number fields
   test3: number(),
   test4: number(),
-  test5: numberNA(),
+  test5: number(),
+  test6: number(),
 });

@@ -10,26 +10,18 @@ export const textOptional = () => text().notRequired();
 const validNAValues = ["N/A", "Data not available"];
 
 export const number = () =>
-  numberSchema()
-    .transform((_value, originalValue) =>
-      Number(originalValue.replace(/,/g, ""))
-    )
-    .typeError(error.INVALID_NUMBER)
-    .required(error.REQUIRED_GENERIC);
-export const numberOptional = () => number().notRequired();
-
-export const numberNA = () =>
   mixed()
-    .test(
-      (val) =>
+    .test({
+      message: error.INVALID_NUMBER_OR_NA,
+      test: (val) =>
         numberSchema()
           .transform((_value, originalValue) => {
             return Number(originalValue.replace(/,/g, ""));
           })
-          .isValidSync(val) || validNAValues.includes(val)
-    )
-    .required(error.REQUIRED_GENERIC)
-    .typeError(error.INVALID_NUMBER_OR_NA);
+          .isValidSync(val) || validNAValues.includes(val),
+    })
+    .required(error.REQUIRED_GENERIC);
+export const numberOptional = () => number().notRequired();
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
@@ -83,12 +75,13 @@ export const nested = (
 ) => {
   const fieldTypeMap = {
     array: array(),
-    number: number(),
+    mixed: number(),
     string: string(),
     date: date(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
+
   return baseSchema.when(parentFieldName, {
     is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
     then: () => fieldSchema(),
