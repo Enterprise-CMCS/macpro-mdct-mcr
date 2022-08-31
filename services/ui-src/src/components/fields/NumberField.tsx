@@ -60,18 +60,21 @@ export const NumberField = ({
 
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
-      <TextField
-        id={name}
-        name={name}
-        label={label}
-        placeholder={placeholder}
-        onChange={onChangeHandler}
-        onBlur={onBlurHandler}
-        mask={validNonCustomMask}
-        value={displayValue}
-        controlled="true"
-        {...props}
-      />
+      <Box sx={sx.numberFieldContainer}>
+        <TextField
+          id={name}
+          name={name}
+          label={label}
+          placeholder={placeholder}
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          mask={validNonCustomMask}
+          value={displayValue}
+          controlled="true"
+          {...props}
+        />
+        {mask === "percentage" && <Box sx={sx.percentage}> % </Box>}
+      </Box>
     </Box>
   );
 };
@@ -89,5 +92,17 @@ interface Props {
 const sx = {
   ".ds-c-field": {
     maxWidth: "15rem",
+    paddingRight: "1.75rem",
+  },
+  numberFieldContainer: {
+    position: "relative",
+  },
+  percentage: {
+    fontSize: "lg",
+    fontWeight: "700",
+    paddingTop: "1px",
+    bottom: "11px",
+    left: "213px",
+    position: "absolute",
   },
 };

@@ -5,7 +5,9 @@
     "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
     "spreadsheet": {
       "title": "Find in the Excel Workbook",
-      "descriptionList": ["E_BSS_Entities"]
+      "descriptionList": [
+        "E_BSS_Entities"
+      ]
     },
     "info": [
       {
