@@ -58,6 +58,7 @@ describe("Test Form component", () => {
   });
 
   test("Submission fails on invalid fill; focuses first errored field", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const result = render(formComponent);
     const form = result.container;
     const submitButton = screen.getByRole("button");

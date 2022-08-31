@@ -12,131 +12,104 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ArrowIcon } from "@cmsgov/design-system";
-import { BasicPage, Form, Modal, ReportContext, Table } from "components";
-// utils
-import { AnyObject, ReportDetails, ReportStatus } from "types";
 import {
-  calculateDueDate,
-  convertDateEtToUtc,
-  convertDateUtcToEt,
-  getReportsByState,
-  parseCustomHtml,
-  useUser,
-} from "utils";
-// data
-import formJson from "forms/mcpar/dash/dashForm.json";
-import formSchema from "forms/mcpar/dash/dashForm.schema";
+  AddEditProgramModal,
+  BasicPage,
+  DeleteProgramModal,
+  ErrorAlert,
+  ReportContext,
+  Table,
+} from "components";
+// utils
+import { AnyObject, ReportDetails, UserRoles } from "types";
+import { convertDateUtcToEt, parseCustomHtml, useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
-import { reportErrors } from "verbiage/errors";
 // assets
+import { ArrowIcon } from "@cmsgov/design-system";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 
 export const Dashboard = () => {
-  // Verbiage
-  const { returnLink, intro, body, addProgramModal, deleteProgramModal } =
-    verbiage;
+  const {
+    errorMessage,
+    fetchReportsByState,
+    reportsByState,
+    setReport,
+    setReportData,
+  } = useContext(ReportContext);
+  const navigate = useNavigate();
+  const { state: userState, userRole } = useUser().user ?? {};
+  const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
+    undefined
+  );
 
-  const { setReport, setReportData, updateReport } = useContext(ReportContext);
+  // get active state
+  const adminSelectedState = localStorage.getItem("selectedState") || undefined;
+  const activeState = userState || adminSelectedState;
 
-  const [reports, setReports] = useState<AnyObject | undefined>(undefined);
-
-  const { user } = useUser();
-  const { full_name, state } = user ?? {};
-
-  const fetchReportsByState = async (state: string) => {
-    try {
-      const result = await getReportsByState(state);
-      setReports(result);
-    } catch (e: any) {
-      throw new Error(reportErrors.GET_REPORTS_BY_STATE_FAILED);
-    }
-  };
+  const { intro, body } = verbiage;
 
   useEffect(() => {
-    if (state) {
-      fetchReportsByState(state);
+    // fetch reports on load
+    if (activeState) {
+      fetchReportsByState(activeState);
+    } else {
+      // if no activeState, go to homepage
+      navigate("/");
     }
+    // unset active report & reportData
     setReport(undefined);
     setReportData(undefined);
   }, []);
 
-  // Add Modal Functions
-  const {
-    isOpen: addProgramIsOpen,
-    onOpen: onOpenAddProgram,
-    onClose: onCloseAddProgram,
-  } = useDisclosure();
-
-  // Delete Modal Functions
-  const {
-    isOpen: deleteProgramIsOpen,
-    onOpen: onOpenDeleteProgram,
-    onClose: onCloseDeleteProgram,
-  } = useDisclosure();
-
-  const reportType = "MCPAR";
-
-  const addProgram = async (formData: any) => {
-    const newProgramData = {
-      key: formJson.id,
-      programName: formData["dash-programName"],
-      startDate: formData["dash-startDate"],
-      endDate: formData["dash-endDate"],
-      check: formData["dash-check"],
-    };
-    const dueDate = calculateDueDate(newProgramData.endDate);
-    const programName = newProgramData.programName;
-    const dashedDueDate = convertDateUtcToEt(dueDate)
-      .toString()
-      .replace(/\//g, "-");
-    const reportId = [state, programName, dashedDueDate].join("_");
-
-    await updateReport(
-      { state: state, reportId: reportId },
-      {
-        status: ReportStatus.CREATED,
-        programName: programName,
-        dueDate: dueDate,
-        reportType: reportType,
-        lastAlteredBy: full_name,
-        reportingPeriodStartDate: convertDateEtToUtc(newProgramData?.startDate),
-        reportingPeriodEndDate: convertDateEtToUtc(newProgramData?.endDate),
-      }
-    );
-    await fetchReportsByState(state!);
-    onCloseAddProgram();
-  };
-
-  const navigate = useNavigate();
-  const mcparFormBeginning = "../../mcpar/program-information/point-of-contact";
-  const startProgram = (reportId: string) => {
+  const enterSelectedReport = (reportId: string) => {
+    // set active report to selected report
     const reportDetails: ReportDetails = {
-      state: state!,
+      state: activeState!,
       reportId: reportId,
     };
-    // Set report to selected program
     setReport(reportDetails);
-    navigate(mcparFormBeginning);
+    const reportFirstPage = "../../mcpar/program-information/point-of-contact";
+    navigate(reportFirstPage);
   };
 
-  const { created, inProgress, submitted } = body.editReportButtonText;
-  const statusTextMap: { [key in ReportStatus]: string } = {
-    [ReportStatus.CREATED]: created,
-    [ReportStatus.IN_PROGRESS]: inProgress,
-    [ReportStatus.SUBMITTED]: submitted,
+  // add/edit program modal disclosure
+  const {
+    isOpen: addEditProgramModalIsOpen,
+    onOpen: addEditProgramModalOnOpenHandler,
+    onClose: addEditProgramModalOnCloseHandler,
+  } = useDisclosure();
+
+  const openAddEditProgramModal = (reportId?: string) => {
+    // if reportId provided, set as selected program
+    setSelectedReportId(reportId);
+    // use disclosure to open modal
+    addEditProgramModalOnOpenHandler();
+  };
+
+  // delete program modal disclosure
+  const {
+    isOpen: deleteProgramModalIsOpen,
+    onOpen: deleteProgramModalOnOpenHandler,
+    onClose: deleteProgramModalOnCloseHandler,
+  } = useDisclosure();
+
+  const openDeleteProgramModal = (reportId?: string) => {
+    setSelectedReportId(reportId);
+    // use disclosure to open modal
+    deleteProgramModalOnOpenHandler();
   };
 
   return (
     <BasicPage sx={sx.layout}>
       <Box>
-        <Link href={returnLink.location} sx={sx.returnLink}>
-          <ArrowIcon title="returnHome" direction={"left"} />
-          {returnLink.text}
+        <Link href="/" sx={sx.returnLink}>
+          <ArrowIcon title="returnHome" direction="left" />
+          Return Home
         </Link>
       </Box>
+      {errorMessage && <ErrorAlert error={errorMessage} />}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
@@ -145,80 +118,82 @@ export const Dashboard = () => {
       </Box>
       <Box sx={sx.bodyBox}>
         <Table content={body.table} sxOverride={sx.table}>
-          {reports &&
-            reports.map((report: AnyObject) => (
+          {reportsByState &&
+            reportsByState.map((report: AnyObject) => (
               // Row
               <Tr key={report.reportId}>
                 <Td sx={sx.editProgram}>
-                  {/* TODO: Pass existing data to populate modal */}
-                  <button onClick={onOpenAddProgram}>
-                    <Image src={editIcon} alt="Edit Program" />
-                  </button>
+                  {/* only show edit button to state users */}
+                  {(userRole === UserRoles.STATE_REP ||
+                    userRole === UserRoles.STATE_USER) && (
+                    <button
+                      onClick={() => openAddEditProgramModal(report.reportId)}
+                    >
+                      <Image src={editIcon} alt="Edit Program" />
+                    </button>
+                  )}
                 </Td>
                 <Td sx={sx.programNameText}>{report.programName}</Td>
                 <Td>{convertDateUtcToEt(report.dueDate)}</Td>
                 <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
                 <Td>{report?.lastAlteredBy || "-"}</Td>
+                <Td>{report?.status}</Td>
                 <Td sx={sx.editReportButtonCell}>
                   <Button
-                    variant={"outline"}
-                    onClick={() => startProgram(report.reportId)}
+                    variant="outline"
+                    onClick={() => enterSelectedReport(report.reportId)}
                   >
-                    {statusTextMap[
-                      report.status as keyof typeof statusTextMap
-                    ] || created}
+                    Enter
                   </Button>
                 </Td>
                 <Td sx={sx.deleteProgramCell}>
-                  <button onClick={onOpenDeleteProgram}>
-                    <Image
-                      src={cancelIcon}
-                      alt="Delete Program"
-                      sx={sx.deleteProgramButtonImage}
-                    />
-                  </button>
+                  {/* only show delete button if non-state user */}
+                  {(userRole === UserRoles.ADMIN ||
+                    userRole === UserRoles.APPROVER ||
+                    userRole === UserRoles.HELP_DESK) && (
+                    <button
+                      onClick={() => openDeleteProgramModal(report.reportId)}
+                    >
+                      <Image
+                        src={cancelIcon}
+                        alt="Delete Program"
+                        sx={sx.deleteProgramButtonImage}
+                      />
+                    </button>
+                  )}
                 </Td>
               </Tr>
             ))}
         </Table>
-        {!reports?.length && (
+        {!reportsByState?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
-        <Box sx={sx.callToActionContainer}>
-          <Button type="submit" onClick={onOpenAddProgram}>
-            {body.callToAction}
-          </Button>
-        </Box>
+        {/* only show add program button to state users */}
+        {(userRole === UserRoles.STATE_REP ||
+          userRole === UserRoles.STATE_USER) && (
+          <Box sx={sx.callToActionContainer}>
+            <Button type="submit" onClick={() => openAddEditProgramModal()}>
+              {body.callToAction}
+            </Button>
+          </Box>
+        )}
       </Box>
-
-      {/* Add Program Modal */}
-      <Modal
-        formId={formJson.id}
-        modalState={{
-          isOpen: addProgramIsOpen,
-          onClose: onCloseAddProgram,
+      <AddEditProgramModal
+        activeState={activeState!}
+        selectedReportId={selectedReportId}
+        modalDisclosure={{
+          isOpen: addEditProgramModalIsOpen,
+          onClose: addEditProgramModalOnCloseHandler,
         }}
-        content={addProgramModal.structure}
-      >
-        <Form
-          id={formJson.id}
-          formJson={formJson}
-          formSchema={formSchema}
-          onSubmit={addProgram}
-        />
-      </Modal>
-
-      {/* Delete Program Modal */}
-      <Modal
-        actionFunction={() => {}}
-        modalState={{
-          isOpen: deleteProgramIsOpen,
-          onClose: onCloseDeleteProgram,
+      />
+      <DeleteProgramModal
+        activeState={activeState!}
+        selectedReportId={selectedReportId!}
+        modalDisclosure={{
+          isOpen: deleteProgramModalIsOpen,
+          onClose: deleteProgramModalOnCloseHandler,
         }}
-        content={deleteProgramModal.structure}
-      >
-        <Text>{deleteProgramModal.body}</Text>
-      </Modal>
+      />
     </BasicPage>
   );
 };

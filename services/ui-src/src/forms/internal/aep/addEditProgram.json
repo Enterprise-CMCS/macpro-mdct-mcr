@@ -1,18 +1,18 @@
 {
-  "id": "dash",
+  "id": "aep",
   "options": {
     "mode": "onChange"
   },
   "fields": [
     {
-      "id": "dash-programName",
+      "id": "aep-programName",
       "type": "text",
       "props": {
         "label": "Program name"
       }
     },
     {
-      "id": "dash-startDate",
+      "id": "aep-startDate",
       "type": "date",
       "props": {
         "label": "A.5a Reporting period (i.e. contract period) start date",
@@ -21,7 +21,7 @@
       }
     },
     {
-      "id": "dash-endDate",
+      "id": "aep-endDate",
       "type": "date",
       "props": {
         "label": "A.5b Reporting period  (i.e. contract period) end date",
@@ -30,14 +30,14 @@
       }
     },
     {
-      "id": "dash-check",
+      "id": "aep-check",
       "type": "checkbox",
       "props": {
         "label": "TBD Label",
         "hint": "May or may not need this hint",
         "choices": [
           {
-            "name": "dash-check-01",
+            "name": "aep-check-01",
             "type": "choice",
             "label": "TBD Choice"
           }

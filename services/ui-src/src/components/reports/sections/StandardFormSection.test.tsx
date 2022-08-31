@@ -16,6 +16,8 @@ const mockReportMethods = {
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
   updateReport: jest.fn(() => {}),
+  removeReport: jest.fn(() => {}),
+  fetchReportsByState: jest.fn(() => {}),
 };
 
 const mockReportContext = {

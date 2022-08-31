@@ -132,7 +132,7 @@ export const mockReportData = {
 export const mockReportStatus = {
   state: "AB",
   reportId: "testReportId",
-  status: ReportStatus.CREATED,
+  status: ReportStatus.NOT_STARTED,
   programName: "testProgram",
   dueDate: "168515200000",
   lastAltered: "162515200000",

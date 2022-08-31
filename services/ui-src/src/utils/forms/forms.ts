@@ -44,34 +44,30 @@ export const hydrateFormFields = (
   formFields: FormField[],
   reportData: AnyObject
 ) => {
-  if (reportData) {
-    formFields.forEach((field: FormField) => {
-      const fieldFormIndex = formFields.indexOf(field!);
-      const fieldProps = formFields[fieldFormIndex].props!;
+  formFields.forEach((field: FormField) => {
+    const fieldFormIndex = formFields.indexOf(field!);
+    const fieldProps = formFields[fieldFormIndex].props!;
 
-      // check for children on each choice in field props
-      if (fieldProps) {
-        const choices = fieldProps.choices;
-        if (choices) {
-          choices.forEach((choice: FieldChoice) => {
-            // if a choice has children, recurse
-            if (choice.children) {
-              hydrateFormFields(choice.children, reportData);
-            }
-          });
-        }
-      } else {
-        // if no props on field, initialize props as empty object
-        formFields[fieldFormIndex].props = {};
+    // check for children on each choice in field props
+    if (fieldProps) {
+      const choices = fieldProps.choices;
+      if (choices) {
+        choices.forEach((choice: FieldChoice) => {
+          // if a choice has children, recurse
+          if (choice.children) {
+            hydrateFormFields(choice.children, reportData);
+          }
+        });
       }
+    } else {
+      // if no props on field, initialize props as empty object
+      formFields[fieldFormIndex].props = {};
+    }
 
-      // if reportData has value for field, set props.hydrate
-      const fieldHydrationValue = reportData.fieldData?.[field.id];
-      if (fieldHydrationValue) {
-        formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue || "";
-      }
-    });
-  }
+    // set props.hydrate
+    const fieldHydrationValue = reportData?.fieldData?.[field.id];
+    formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
+  });
   return formFields;
 };
 
@@ -94,14 +90,12 @@ export const initializeChoiceFields = (fields: FormField[]) => {
 };
 
 export const sortFormErrors = (form: any, errors: any) => {
-  // get correct registration order of form fields
-  const orderedFields = Object.keys(form.getValues());
   // sort errors into new array
   const sortedErrorArray: any = [];
-  orderedFields.forEach((fieldName: any) => {
+  for (let fieldName in form) {
     if (errors[fieldName]) {
       sortedErrorArray.push(fieldName);
     }
-  });
+  }
   return sortedErrorArray;
 };

@@ -19,7 +19,6 @@ export * from "./reports/routing";
 export * from "./tracking/tealium";
 // other
 export * from "./other/email";
-export * from "./other/focusElement";
 export * from "./other/mask";
 export * from "./other/parsing";
 export * from "./other/scrollToTop";
