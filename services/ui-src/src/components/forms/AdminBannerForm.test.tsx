@@ -63,6 +63,7 @@ describe("Test AdminBannerForm component", () => {
   });
 
   test("Shows error if writeBanner throws error", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const result = render(
       adminBannerFormComponent(mockWriteAdminBannerWithError)
     );
