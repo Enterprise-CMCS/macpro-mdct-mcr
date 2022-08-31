@@ -3,9 +3,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
-// utils
 import { ReportContext } from "components";
-
+// utils
 import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
 import { FormJson, FormField } from "types";
 

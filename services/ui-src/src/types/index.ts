@@ -45,8 +45,8 @@ export interface ReportPath {
 }
 
 export enum ReportStatus {
-  CREATED = "Created",
-  IN_PROGRESS = "In Progress",
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
   SUBMITTED = "Submitted",
 }
 
@@ -74,6 +74,7 @@ export interface ReportContextMethods {
   updateReportData: Function;
   fetchReport: Function;
   updateReport: Function;
+  fetchReportsByState: Function;
   removeReport: Function;
 }
 
