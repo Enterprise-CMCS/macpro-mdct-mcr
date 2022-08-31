@@ -3,7 +3,7 @@ import {
   checkbox,
   nested,
   number,
-  numberOrNA,
+  numberNA,
   radio,
   text,
 } from "utils/forms/schemas";
@@ -21,5 +21,5 @@ export default object({
   test3: number(),
   test4: number(),
   test5: number(),
-  test6: numberOrNA(),
+  test6: numberNA(),
 });

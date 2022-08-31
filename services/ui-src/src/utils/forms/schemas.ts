@@ -1,4 +1,4 @@
-import { array, number as numberSchema, string } from "yup";
+import { array, mixed, number as numberSchema, string } from "yup";
 import { schemaValidationErrors as error } from "verbiage/errors";
 
 // TEXT
@@ -7,6 +7,8 @@ export const text = () =>
 export const textOptional = () => text().notRequired();
 
 // NUMBER
+const validNAValues = ["N/A", "Data not available"];
+
 export const number = () =>
   numberSchema()
     .transform((_value, originalValue) =>
@@ -16,20 +18,18 @@ export const number = () =>
     .required(error.REQUIRED_GENERIC);
 export const numberOptional = () => number().notRequired();
 
-// Mixed
-export const numberOrNA = () =>
-  numberSchema()
-    .transform(validateNA)
-    .required()
-    .nullable()
+export const numberNA = () =>
+  mixed()
+    .test(
+      (val) =>
+        numberSchema()
+          .transform((_value, originalValue) => {
+            return Number(originalValue.replace(/,/g, ""));
+          })
+          .isValidSync(val) || validNAValues.includes(val)
+    )
+    .required(error.REQUIRED_GENERIC)
     .typeError(error.INVALID_NUMBER_OR_NA);
-
-function validateNA(value: any, originalValue: string) {
-  if (typeof originalValue === "string" && originalValue === "N/A") {
-    return null;
-  }
-  return value;
-}
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
