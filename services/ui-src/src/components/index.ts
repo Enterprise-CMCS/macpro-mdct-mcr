@@ -54,6 +54,8 @@ export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // modals
 export { Modal } from "./modals/Modal";
+export { AddEditProgramModal } from "./modals/AddEditProgramModal";
+export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 // reports
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 export { ReportPage } from "./reports/ReportPage";

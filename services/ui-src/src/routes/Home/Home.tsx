@@ -7,8 +7,11 @@ import {
   BasicPage,
   TemplateCard,
 } from "components";
+import { ReadOnly } from "routes";
+
 // utils
-import { checkDateRangeStatus } from "utils";
+import { checkDateRangeStatus, useUser } from "utils";
+import { UserRoles } from "types";
 import verbiage from "verbiage/pages/home";
 
 export const Home = () => {
@@ -18,40 +21,53 @@ export const Home = () => {
     bannerData?.endDate
   );
   const showBanner = !!bannerData.key && bannerIsActive;
+
+  // determine if landing page should be read-only
+  const { userRole } = useUser().user ?? {};
   const { intro, cards } = verbiage;
+
   return (
     <>
       <Collapse in={showBanner}>
         <Banner bannerData={bannerData} />
       </Collapse>
       <BasicPage sx={sx.layout} data-testid="home-view">
-        <Box sx={sx.introTextBox}>
-          <Heading as="h1" sx={sx.headerText}>
-            {intro.header}
-          </Heading>
-          <Text>
-            {intro.body.preLinkText}
-            <Link href={intro.body.linkLocation} isExternal>
-              {intro.body.linkText}
-            </Link>
-            {intro.body.postLinkText}
-          </Text>
-        </Box>
-        <TemplateCard
-          templateName="MCPAR"
-          verbiage={cards.MCPAR}
-          cardprops={sx.card}
-        />
-        <TemplateCard
-          templateName="MLR"
-          verbiage={cards.MLR}
-          cardprops={sx.card}
-        />
-        <TemplateCard
-          templateName="NAAAR"
-          verbiage={cards.NAAAR}
-          cardprops={sx.card}
-        />
+        {/* show standard view to state users */}
+        {userRole === UserRoles.STATE_USER ||
+        userRole === UserRoles.STATE_REP ? (
+          <>
+            <Box sx={sx.introTextBox}>
+              <Heading as="h1" sx={sx.headerText}>
+                {intro.header}
+              </Heading>
+              <Text>
+                {intro.body.preLinkText}
+                <Link href={intro.body.linkLocation} isExternal>
+                  {intro.body.linkText}
+                </Link>
+                {intro.body.postLinkText}
+              </Text>
+            </Box>
+            <TemplateCard
+              templateName="MCPAR"
+              verbiage={cards.MCPAR}
+              cardprops={sx.card}
+            />
+            <TemplateCard
+              templateName="MLR"
+              verbiage={cards.MLR}
+              cardprops={sx.card}
+            />
+            <TemplateCard
+              templateName="NAAAR"
+              verbiage={cards.NAAAR}
+              cardprops={sx.card}
+            />
+          </>
+        ) : (
+          // show read-only view to non-state users
+          <ReadOnly verbiage={verbiage.readOnly} />
+        )}
       </BasicPage>
     </>
   );

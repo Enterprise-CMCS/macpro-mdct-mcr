@@ -3,15 +3,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
-// utils
 import { ReportContext } from "components";
-
-import {
-  focusElement,
-  formFieldFactory,
-  hydrateFormFields,
-  sortFormErrors,
-} from "utils";
+// utils
+import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
 import { FormJson, FormField } from "types";
 
 export const Form = ({
@@ -33,11 +27,12 @@ export const Form = ({
   });
 
   const onErrorHandler = (errors: any) => {
-    const sortedErrors: any[] = sortFormErrors(form, errors);
+    const sortedErrors: any[] = sortFormErrors(formSchema.fields, errors);
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`
     )! as HTMLElement;
-    focusElement(fieldToFocus);
+    fieldToFocus?.scrollIntoView({ behavior: "smooth", block: "center" });
+    fieldToFocus?.focus({ preventScroll: true });
   };
 
   const formFieldsToRender = (fields: FormField[]) => {

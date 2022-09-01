@@ -130,6 +130,7 @@ describe("Test /admin view with active/inactive banner", () => {
 
 describe("Test /admin delete banner error handling", () => {
   it("Displays error if deleteBanner throws error", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const context = mockContextWithBanner;
     context.deleteAdminBanner = jest.fn(() => {
       throw new Error();

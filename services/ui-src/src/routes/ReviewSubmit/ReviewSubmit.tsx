@@ -98,7 +98,7 @@ const ReadyToSubmit = ({
       </Flex>
       <Modal
         onConfirmHandler={submitForm}
-        modalState={{
+        modalDisclosure={{
           isOpen,
           onClose,
         }}
