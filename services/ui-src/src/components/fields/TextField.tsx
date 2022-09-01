@@ -54,7 +54,7 @@ export const TextField = ({
       <CmsdsTextField
         id={name}
         name={name}
-        label={label}
+        label={label || ""}
         hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
