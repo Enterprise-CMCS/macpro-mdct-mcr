@@ -27,8 +27,8 @@ export const urlOptional = () => url().notRequired();
 // DATE
 export const date = () =>
   string()
-    .matches(dateFormatRegex, error.INVALID_DATE)
-    .required(error.REQUIRED_GENERIC);
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateFormatRegex, error.INVALID_DATE);
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
   date().test(

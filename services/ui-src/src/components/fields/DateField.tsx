@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { AnyObject, CustomHtmlElement } from "types";
+import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
 import {
   checkDateCompleteness,
   makeMediaQueryClasses,
@@ -17,48 +17,57 @@ export const DateField = ({
   hint,
   sxOverride,
   nested,
-  nolabel,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [displayValue, setDisplayValue] = useState<string>("");
 
-  // get the form context and register form field
+  // get form context and register form field
   const form = useFormContext();
   form.register(name);
 
-  const [displayValue, setDisplayValue] = useState<string>("");
-  const [formattedValue, setFormattedValue] = useState<string>("");
+  // hydrate and set initial field value
+  const hydrationValue = props?.hydrate;
+  useEffect(() => {
+    if (hydrationValue) {
+      setDisplayValue(hydrationValue);
+      form.setValue(name, hydrationValue, { shouldValidate: true });
+    }
+  }, [hydrationValue]);
 
-  const onChangeHandler = (rawValue: string, formattedValue: string) => {
+  // update field display value and form field data on change
+  const onChangeHandler = (rawValue: string, maskedValue: string) => {
     setDisplayValue(rawValue);
-    setFormattedValue(formattedValue);
-    const completeDate = checkDateCompleteness(formattedValue);
-    if (completeDate) {
-      form.setValue(name, formattedValue, { shouldValidate: true });
+    const isValidDate = checkDateCompleteness(maskedValue);
+    if (isValidDate || maskedValue === "") {
+      form.setValue(name, maskedValue, { shouldValidate: true });
     }
   };
 
-  const onBlurHandler = () => {
-    form.setValue(name, formattedValue, { shouldValidate: true });
+  // update form field data on blur
+  const onBlurHandler = (event: InputChangeEvent) => {
+    const fieldValue = event.target.value;
+    form.setValue(name, fieldValue, { shouldValidate: true });
   };
 
-  const errorMessage = form?.formState?.errors?.[name]?.message;
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  // prepare error message, hint, and classes
+  const formErrorState = form?.formState?.errors;
+  const errorMessage = formErrorState?.[name]?.message;
   const parsedHint = hint && parseCustomHtml(hint);
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  const labelClass = !label ? "no-label" : "";
 
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${
-        nolabel ? "no-label" : ""
-      } ${nestedChildClasses}`}
+      className={`${mqClasses} ${labelClass} ${nestedChildClasses}`}
     >
       <CmsdsDateField
         name={name}
-        label={label}
+        label={(label = "")}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        value={displayValue || props.hydrate || ""}
+        value={displayValue}
         hint={parsedHint}
         errorMessage={errorMessage}
         {...props}
@@ -69,11 +78,10 @@ export const DateField = ({
 
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   hint?: CustomHtmlElement[];
   timetype?: string;
   nested?: boolean;
-  nolabel?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

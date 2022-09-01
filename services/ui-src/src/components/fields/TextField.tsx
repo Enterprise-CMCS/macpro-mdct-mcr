@@ -19,7 +19,7 @@ export const TextField = ({
   const mqClasses = makeMediaQueryClasses();
   const [fieldValue, setFieldValue] = useState<string>("");
 
-  // get the form context and register field
+  // get form context and register field
   const form = useFormContext();
   form.register(name);
 
