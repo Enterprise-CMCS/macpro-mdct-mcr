@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  Flex,
   Heading,
   Image,
   Link,
@@ -117,6 +118,86 @@ export const Dashboard = () => {
         <Box>{parseCustomHtml(intro.body)}</Box>
       </Box>
       <Box sx={sx.bodyBox}>
+        {/* Mobile Table Rows Start */}
+        {reportsByState &&
+          reportsByState.map((report: AnyObject) => (
+            // Row
+            <Box sx={sx.mobileTable}>
+              <Box key={report.reportId}>
+                <Box sx={sx.labelGroup}>
+                  {/* Program name */}
+                  <Text sx={sx.label}>Program name</Text>
+                  <Flex alignContent="flex-start">
+                    {/* only show edit button to state users */}
+                    {(userRole === UserRoles.STATE_REP ||
+                      userRole === UserRoles.STATE_USER) && (
+                      <Box sx={sx.editProgram}>
+                        <button
+                          onClick={() =>
+                            openAddEditProgramModal(report.reportId)
+                          }
+                        >
+                          <Image src={editIcon} alt="Edit Program" />
+                        </button>
+                      </Box>
+                    )}
+                    <Box sx={sx.programNameText}>{report.programName}</Box>
+                  </Flex>
+                </Box>
+                {/* Dates */}
+                <Box sx={sx.labelGroup}>
+                  <Flex alignContent="flex-start">
+                    <Box sx={sx.editDate}>
+                      <Text sx={sx.label}>Due date</Text>
+                      {convertDateUtcToEt(report.dueDate)}
+                    </Box>
+                    <Box>
+                      <Text sx={sx.label}>Last edited</Text>
+                      {convertDateUtcToEt(report.lastAltered)}
+                    </Box>
+                  </Flex>
+                </Box>
+                {/* Edited */}
+                <Box sx={sx.labelGroup}>
+                  <Text sx={sx.label}>Edited by</Text>
+                  <Box>{report?.lastAlteredBy || "-"}</Box>
+                </Box>
+                {/* Status */}
+                <Box sx={sx.labelGroup}>
+                  <Text sx={sx.label}>Status</Text>
+                  <Box>{report?.status}</Box>
+                </Box>
+                {/* Enter or Erase */}
+                <Flex alignContent="flex-start" gap={2}>
+                  <Box sx={sx.editReportButtonCell}>
+                    <Button
+                      variant="outline"
+                      onClick={() => enterSelectedReport(report.reportId)}
+                    >
+                      Enter
+                    </Button>
+                  </Box>
+                  <Box sx={sx.deleteProgramCell}>
+                    {/* only show delete button if non-state user */}
+                    {(userRole === UserRoles.ADMIN ||
+                      userRole === UserRoles.APPROVER ||
+                      userRole === UserRoles.HELP_DESK) && (
+                      <button
+                        onClick={() => openDeleteProgramModal(report.reportId)}
+                      >
+                        <Image
+                          src={cancelIcon}
+                          alt="Delete Program"
+                          sx={sx.deleteProgramButtonImage}
+                        />
+                      </button>
+                    )}
+                  </Box>
+                </Flex>
+              </Box>
+            </Box>
+          ))}
+        {/* Mobile Table Rows End */}
         <Table content={body.table} sxOverride={sx.table}>
           {reportsByState &&
             reportsByState.map((report: AnyObject) => (
@@ -134,10 +215,12 @@ export const Dashboard = () => {
                   )}
                 </Td>
                 <Td sx={sx.programNameText}>{report.programName}</Td>
-                <Td>{convertDateUtcToEt(report.dueDate)}</Td>
-                <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
-                <Td>{report?.lastAlteredBy || "-"}</Td>
-                <Td>{report?.status}</Td>
+                <Td sx={sx.tableCell}>{convertDateUtcToEt(report.dueDate)}</Td>
+                <Td sx={sx.tableCell}>
+                  {convertDateUtcToEt(report.lastAltered)}
+                </Td>
+                <Td sx={sx.editCell}>{report?.lastAlteredBy || "-"}</Td>
+                <Td sx={sx.tableCell}>{report?.status}</Td>
                 <Td sx={sx.editReportButtonCell}>
                   <Button
                     variant="outline"
@@ -219,7 +302,15 @@ const sx = {
     },
   },
   leadTextBox: {
-    margin: "2.5rem 0 2.25rem 2.25rem",
+    width: "100%",
+    maxWidth: "884px",
+    margin: "2.5rem auto",
+    ".tablet &": {
+      margin: "2.5rem 0 2.25rem 1rem",
+    },
+    ".mobile &": {
+      margin: "2.5rem 0 1rem",
+    },
   },
   headerText: {
     marginBottom: "1rem",
@@ -227,9 +318,35 @@ const sx = {
     fontWeight: "normal",
   },
   bodyBox: {
-    margin: "0 2.25rem",
+    maxWidth: "884px",
+    margin: "0 auto",
+
+    ".desktop &": {
+      width: "100%",
+    },
+
+    ".tablet &": {
+      margin: "0 1rem",
+    },
+    ".mobile &": {
+      margin: "0",
+    },
+  },
+  mobileTable: {
+    ".tablet &, .desktop &": {
+      display: "none",
+    },
+    borderBottom: "1px solid",
+    borderColor: "palette.gray_light",
+    padding: "1rem 0",
+  },
+  labelGroup: {
+    marginBottom: "0.5rem",
   },
   table: {
+    ".mobile &": {
+      display: "none",
+    },
     marginBottom: "2.5rem",
     th: {
       padding: "0.5rem 0 0.5rem 0",
@@ -237,6 +354,10 @@ const sx = {
       borderColor: "palette.gray_light",
       color: "palette.gray_medium",
       fontWeight: "bold",
+      "&.tablet": {
+        padding: "0.5rem 0 0.5rem 0.8rem",
+        whiteSpace: "nowrap",
+      },
     },
     tr: {
       borderBottom: "1px solid",
@@ -249,6 +370,19 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       textAlign: "left",
+      ".tablet &": {
+        padding: "0.9rem 0 0.9rem 0.75rem",
+      },
+    },
+  },
+  editCell: {
+    ".tablet &": {
+      width: "115px",
+    },
+  },
+  tableCell: {
+    ".tablet &": {
+      width: "105px",
     },
   },
   editReportButtonCell: {
@@ -262,26 +396,60 @@ const sx = {
       fontSize: "sm",
       fontWeight: "normal",
       color: "palette.primary",
+      ".tablet &": {
+        width: "6rem",
+      },
     },
   },
   editProgram: {
     padding: "0",
     width: "2.5rem",
+
+    ".mobile &": {
+      width: "2rem",
+    },
+
     img: {
       height: "1.5rem",
+      minWidth: "21px",
       marginLeft: "0.5rem",
+      ".tablet &": {
+        marginLeft: 0,
+        minWidth: "18px",
+        width: "18px",
+        height: "auto",
+      },
+      ".mobile &": {
+        marginLeft: 0,
+      },
     },
   },
   programNameText: {
     fontSize: "md",
     fontWeight: "bold",
+    width: "13rem",
+    ".tablet &": {
+      width: "131px",
+    },
   },
   deleteProgramCell: {
     width: "2.5rem",
+    ".tablet &": {
+      minWidth: "2rem",
+    },
+    img: {
+      ".tablet &": {
+        marginLeft: 0,
+        minWidth: "20px",
+        width: "20px",
+        height: "auto",
+      },
+    },
   },
   deleteProgramButtonImage: {
     height: "1.75rem",
     width: "1.75rem",
+    minWidth: "28px",
   },
   emptyTableContainer: {
     maxWidth: "75%",
@@ -291,5 +459,13 @@ const sx = {
   callToActionContainer: {
     marginTop: "2.5rem",
     textAlign: "center",
+  },
+  label: {
+    fontSize: "sm",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
+  },
+  editDate: {
+    marginRight: "3rem",
   },
 };
