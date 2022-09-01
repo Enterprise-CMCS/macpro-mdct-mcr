@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
 import {
   formFieldFactory,
+  hydrateFormFields,
   makeMediaQueryClasses,
   parseCustomHtml,
 } from "utils";
@@ -27,6 +29,7 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const { reportData } = useContext(ReportContext);
   const [fieldValues, setFieldValues] = useState<string[] | null>(null);
 
   // get form context and register field
@@ -47,8 +50,9 @@ export const ChoiceListField = ({
     const choiceObject = choice;
     const choiceChildren = choice?.children;
     if (choiceChildren) {
-      // if children exist, render
-      const formattedChildren = formFieldFactory(choiceChildren, true);
+      // // if children exist, render
+      const hydratedChildren = hydrateFormFields(choiceChildren, reportData);
+      const formattedChildren = formFieldFactory(hydratedChildren, true);
       // set rendered children to checkedChildren prop
       choiceObject.checkedChildren = formattedChildren;
       // delete disallowed children prop

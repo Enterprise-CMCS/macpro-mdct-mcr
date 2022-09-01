@@ -16,7 +16,8 @@
         "hydrate": "reportingPeriodStartDate",
         "props": {
           "label": "A.5a Reporting period start date",
-          "hint": "Auto-populated from report dashboard."
+          "hint": "Auto-populated from report dashboard.",
+          "disabled": true
         }
       },
       {
@@ -25,7 +26,8 @@
         "hydrate": "reportingPeriodEndDate",
         "props": {
           "label": "A.5b Reporting period end date",
-          "hint": "Auto-populated from report dashboard."
+          "hint": "Auto-populated from report dashboard.",
+          "disabled": true
         }
       },
       {

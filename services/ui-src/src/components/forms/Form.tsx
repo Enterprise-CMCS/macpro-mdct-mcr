@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
@@ -43,6 +43,11 @@ export const Form = ({
     const hydratedFields = hydrateFormFields(fields, reportData);
     return formFieldFactory(hydratedFields);
   };
+
+  const formValues = form.getValues();
+  useEffect(() => {
+    console.log(form.getValues());
+  }, [formValues]);
 
   return (
     <FormProvider {...form}>

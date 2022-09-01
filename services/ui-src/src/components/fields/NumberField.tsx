@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
@@ -32,9 +32,9 @@ export const NumberField = ({
   // mask value; update field display value and form field data on blur
   const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const eventValue = applyCustomMaskToValue(value, mask);
-    setDisplayValue(eventValue);
-    form.setValue(name, eventValue, { shouldValidate: true });
+    const maskedValue = applyCustomMaskToValue(value, mask);
+    setDisplayValue(maskedValue);
+    form.setValue(name, value, { shouldValidate: true });
   };
 
   // update field display value and form field data on change
@@ -59,7 +59,6 @@ export const NumberField = ({
           onBlur={onBlurHandler}
           mask={validNonCustomMask}
           value={displayValue}
-          controlled="true"
           {...props}
         />
         {mask === "percentage" && <Box sx={sx.percentage}> % </Box>}
