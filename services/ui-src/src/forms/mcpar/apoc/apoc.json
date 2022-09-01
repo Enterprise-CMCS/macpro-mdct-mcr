@@ -12,15 +12,6 @@
     },
     "fields": [
       {
-        "id": "apoc-number",
-        "type": "number",
-        "props": {
-          "label": "test number",
-          "hint": "test number",
-          "mask": "comma-separated"
-        }
-      },
-      {
         "id": "apoc-a1",
         "type": "text",
         "prefill": "stateName",

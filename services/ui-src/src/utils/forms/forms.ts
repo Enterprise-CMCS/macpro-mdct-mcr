@@ -27,6 +27,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     textarea: TextAreaField,
   };
   fields = initializeChoiceFields(fields);
+  fields = initializeDropdownFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     const fieldProps = {
@@ -47,7 +48,6 @@ export const hydrateFormFields = (
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
     const fieldProps = formFields[fieldFormIndex].props!;
-
     // check for children on each choice in field props
     if (fieldProps) {
       const choices = fieldProps.choices;
@@ -63,7 +63,6 @@ export const hydrateFormFields = (
       // if no props on field, initialize props as empty object
       formFields[fieldFormIndex].props = {};
     }
-
     // set props.hydrate
     const fieldHydrationValue = reportData?.fieldData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
@@ -85,6 +84,21 @@ export const initializeChoiceFields = (fields: FormField[]) => {
       // if choice has children, recurse
       if (choice.children) initializeChoiceFields(choice.children);
     });
+  });
+  return fields;
+};
+
+// add initial blank option to dropdown fields if needed
+export const initializeDropdownFields = (fields: FormField[]) => {
+  const dropdownFields = fields.filter(
+    (field: FormField) => field.type === "dropdown"
+  );
+  dropdownFields.forEach((field: FormField) => {
+    // if first option is not already a blank default value
+    if (field?.props?.options[0].value !== "") {
+      // add initial blank option
+      field?.props?.options.splice(0, 0, { label: "", value: "" });
+    }
   });
   return fields;
 };
