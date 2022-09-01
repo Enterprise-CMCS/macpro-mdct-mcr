@@ -6,9 +6,9 @@ import { TextField } from "./TextField";
 // utils
 import {
   CustomMasks,
-  isValidCustomMask,
+  applyCustomMaskToValue,
+  isValidNonCustomMask,
   makeMediaQueryClasses,
-  maskValue,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { TextFieldMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
@@ -22,28 +22,14 @@ export const NumberField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-
-  const hydrationValue = props?.hydrate;
-
-  // check for value and valid custom mask; return masked value or original value
-  const applyCustomMaskToValue = (value: any, mask: any) => {
-    if (value && isValidCustomMask(mask)) {
-      return maskValue(value, mask);
-    } else return value;
-  };
-
-  // if mask specified, but not a custom mask, return mask as assumed CMSDS mask
-  const validNonCustomMask =
-    mask && !isValidCustomMask(mask) ? mask : undefined;
-
   const [displayValue, setDisplayValue] = useState(
-    applyCustomMaskToValue(hydrationValue, mask) || ""
+    applyCustomMaskToValue(props?.hydrate, mask) || ""
   );
 
-  // get the form context
+  // get form context
   const form = useFormContext();
 
-  // update form data and masked display value on blur
+  // mask value; update field display value and form field data on blur
   const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const eventValue = applyCustomMaskToValue(value, mask);
@@ -51,12 +37,15 @@ export const NumberField = ({
     form.setValue(name, eventValue, { shouldValidate: true });
   };
 
-  // update form data on change
+  // update field display value and form field data on change
   const onChangeHandler = async (e: InputChangeEvent) => {
     const { name, value } = e.target;
     setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
+
+  // prepare mask for passing to field
+  const validNonCustomMask = isValidNonCustomMask(mask);
 
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>

@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
-import { svgFilters } from "styles/theme";
+import { TextField } from "components";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import { TextField } from "./TextField";
+import { svgFilters } from "styles/theme";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
+  // get form context and register field
   const form = useFormContext();
   form.register(name);
 
@@ -24,7 +25,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     }
   }, []);
 
-  const formErrorState = form?.formState?.errors;
+  const fieldErrorState = form?.formState?.errors?.[name];
 
   return (
     <Box>
@@ -34,7 +35,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             <TextField
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={formErrorState?.[name]?.[index]?.message}
+              errorMessage={fieldErrorState?.[index]?.message}
               sxOverride={sx.textFieldOverride}
             />
             {index != 0 && (

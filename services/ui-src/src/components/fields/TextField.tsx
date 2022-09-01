@@ -9,7 +9,7 @@ import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,
-  label = "",
+  label,
   hint,
   placeholder,
   sxOverride,
@@ -17,50 +17,49 @@ export const TextField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [fieldValue, setFieldValue] = useState<string>("");
 
-  // get the form context
+  // get form context and register field
   const form = useFormContext();
+  form.register(name);
 
-  const [fieldValue, setFieldValue] = useState<string>(
-    form.getValues(name) || props?.hydrate
-  );
-
+  // hydrate and set initial field value
+  const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (props?.hydrate) {
-      setFieldValue(props?.hydrate);
+    if (hydrationValue) {
+      setFieldValue(hydrationValue);
+      form.setValue(name, hydrationValue, { shouldValidate: true });
     }
-  }, [props?.hydrate]);
+  }, [hydrationValue]);
 
-  // update form data
+  // update field display value and form field data on change
   const onChangeHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
     setFieldValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
 
+  // prepare error message (if any), hint text, classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
-
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const parsedHint = hint && parseCustomHtml(hint);
+  const nestedChildClass = nested ? "nested ds-c-choice__checkedChild" : "";
+  const labelClass = !label ? "no-label" : "";
 
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${nestedChildClasses} ${
-        label === "" ? "no-label" : ""
-      }`}
+      className={`${mqClasses} ${nestedChildClass} ${labelClass}`}
     >
       <CmsdsTextField
         id={name}
         name={name}
-        label={label}
+        label={label || ""}
         hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
-        inputRef={() => form.register(name)}
-        value={fieldValue || ""}
+        value={fieldValue}
         {...props}
       />
     </Box>

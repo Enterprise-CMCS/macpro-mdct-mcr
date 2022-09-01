@@ -7,6 +7,10 @@ export type CustomMasks = typeof customMaskMap;
 export const isValidCustomMask = (x: any): x is CustomMasks =>
   Object.keys(customMaskMap).includes(x);
 
+// if mask specified, but not a custom mask, return mask as assumed CMSDS mask
+export const isValidNonCustomMask = (mask: any) =>
+  mask && !isValidCustomMask(mask) ? mask : undefined;
+
 export const customMaskMap: any = {
   "comma-separated": convertToCommaSeparatedString,
   percentage: convertToCommaSeparatedString,
@@ -58,3 +62,10 @@ export function maskValue(value: string, mask: CustomMasks): string {
     return maskToUse(value);
   } else return value;
 }
+
+// check for value and valid custom mask; return masked value or original value
+export const applyCustomMaskToValue = (value: any, mask: any) => {
+  if (value && isValidCustomMask(mask)) {
+    return maskValue(value, mask);
+  } else return value;
+};
