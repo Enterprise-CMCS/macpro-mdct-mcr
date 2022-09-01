@@ -45,7 +45,6 @@ export const ChoiceListField = ({
     }
   }, [hydrationValue]);
 
-  // TODO: should this be moved to forms.ts?
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) =>
     choices.map((choice: FieldChoice) => {
