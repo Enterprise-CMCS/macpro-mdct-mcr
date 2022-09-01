@@ -18,7 +18,7 @@ export const CheckboxField = ({
     <Box sx={sxOverride} className={mqClasses}>
       <ChoiceListField
         name={name}
-        type={"checkbox"}
+        type="checkbox"
         label={label}
         choices={choices}
         {...props}

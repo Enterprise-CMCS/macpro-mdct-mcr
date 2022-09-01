@@ -26,8 +26,11 @@ export const Form = ({
     ...(options as any),
   });
 
+  // will run if any validation errors exist on form submission
   const onErrorHandler = (errors: any) => {
+    // sort errors in order of registration/page display
     const sortedErrors: any[] = sortFormErrors(formSchema.fields, errors);
+    // focus the first error on the page and scroll to it
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`
     )! as HTMLElement;
@@ -35,6 +38,7 @@ export const Form = ({
     fieldToFocus?.focus({ preventScroll: true });
   };
 
+  // hydrate and create form fields using formFieldFactory
   const formFieldsToRender = (fields: FormField[]) => {
     const hydratedFields = hydrateFormFields(fields, reportData);
     return formFieldFactory(hydratedFields);
