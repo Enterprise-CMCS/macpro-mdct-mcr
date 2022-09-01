@@ -67,7 +67,6 @@ const sx = {
   drawerContent: {
     maxWidth: "90vw",
     padding: "1rem",
-    overflowY: "scroll",
     "&.tablet": {
       maxWidth: "32rem",
     },
