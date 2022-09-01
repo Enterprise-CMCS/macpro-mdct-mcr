@@ -13,6 +13,7 @@ export const number = () =>
       Number(originalValue.replace(/,/g, ""))
     )
     .typeError(error.INVALID_NUMBER)
+    .min(1, error.REQUIRED_GENERIC)
     .required(error.REQUIRED_GENERIC);
 export const numberOptional = () => number().notRequired();
 

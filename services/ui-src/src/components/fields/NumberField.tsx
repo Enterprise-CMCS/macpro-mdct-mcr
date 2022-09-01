@@ -22,7 +22,6 @@ export const NumberField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-
   const hydrationValue = props?.hydrate;
 
   // check for value and valid custom mask; return masked value or original value

@@ -36,6 +36,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               label={label}
               errorMessage={formErrorState?.[name]?.[index]?.message}
               sxOverride={sx.textFieldOverride}
+              value={props?.hydrate?.[index]}
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>
