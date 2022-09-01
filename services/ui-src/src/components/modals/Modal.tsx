@@ -88,7 +88,7 @@ interface Props {
     onClose: any;
   };
   content: {
-    heading: string;
+    heading: any;
     actionButtonText: string;
     closeButtonText: string;
   };

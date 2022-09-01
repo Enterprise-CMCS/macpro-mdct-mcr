@@ -21,6 +21,8 @@ export const AddEditProgramModal = ({
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
+  const headerText = selectedReportId ? "Edit Program" : "Add a Program";
+
   const addEditProgram = async (formData: any) => {
     // prepare payload
     const programName = formData["aep-programName"];
@@ -67,7 +69,7 @@ export const AddEditProgramModal = ({
       formId={formJson.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: "Add a Program",
+        heading: headerText,
         actionButtonText: "Save",
         closeButtonText: "Close",
       }}
