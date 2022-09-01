@@ -28,6 +28,7 @@ export const ChoiceListField = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
+  // get form context and register field
   const form = useFormContext();
   form.register(name);
 
@@ -35,6 +36,17 @@ export const ChoiceListField = ({
     form.getValues(name) || props.hydrate || null
   );
 
+  // hydrate and set initial field value
+  const hydrationValue = props?.hydrate;
+  useEffect(() => {
+    if (hydrationValue) {
+      setFieldValues(hydrationValue);
+      form.setValue(name, hydrationValue, { shouldValidate: true });
+    }
+  }, [hydrationValue]);
+
+  // TODO: should this be moved to forms.ts?
+  // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) =>
     choices.map((choice: FieldChoice) => {
       const choiceObject: FieldChoice = { ...choice };
@@ -47,26 +59,29 @@ export const ChoiceListField = ({
       return choiceObject;
     });
 
-  // update local state
+  // update field values
   const onChangeHandler = (event: InputChangeEvent) => {
     const clickedOption = event.target.value;
     const isOptionChecked = event.target.checked;
-    const currentFieldValues = fieldValues || [];
+    const preChangeFieldValues = fieldValues || [];
     // handle radio
     if (type === "radio") {
       setFieldValues([clickedOption]);
-    } else {
-      // handle checkbox
+    }
+    // handle checkbox
+    if (type === "checkbox") {
+      const checkedOptionValues = [...preChangeFieldValues, clickedOption];
+      const uncheckedOptionValues = preChangeFieldValues.filter(
+        (value) => value !== clickedOption
+      );
       setFieldValues(
-        isOptionChecked
-          ? [...currentFieldValues, clickedOption]
-          : currentFieldValues.filter((value) => value !== clickedOption)
+        isOptionChecked ? checkedOptionValues : uncheckedOptionValues
       );
     }
   };
 
+  // update form field data and DOM display checked attribute
   useEffect(() => {
-    // update form data
     if (fieldValues) {
       form.setValue(name, fieldValues, { shouldValidate: true });
       // update DOM choices checked status
@@ -76,23 +91,26 @@ export const ChoiceListField = ({
     }
   }, [fieldValues]);
 
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  // prepare error message, hint, and classes
+  const formErrorState = form?.formState?.errors;
+  const errorMessage = formErrorState?.[name]?.message;
   const parsedHint = hint && parseCustomHtml(hint);
-  const errorMessage = form?.formState?.errors?.[name]?.message;
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  const labelClass = !label ? "no-label" : "";
 
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${nestedChildClasses} ${mqClasses}`}
+      className={`${nestedChildClasses} ${labelClass} ${mqClasses}`}
     >
       <CmsdsChoiceList
         name={name}
         type={type}
-        label={label}
+        label={label || ""}
         choices={formatChoices(choices)}
         hint={parsedHint}
         errorMessage={errorMessage}
-        onChange={(e) => onChangeHandler(e)}
+        onChange={onChangeHandler}
         {...props}
       />
     </Box>
@@ -102,7 +120,7 @@ export const ChoiceListField = ({
 interface Props {
   name: string;
   type: "checkbox" | "radio";
-  label: string;
+  label?: string;
   choices: FieldChoice[];
   hint?: CustomHtmlElement[];
   nested?: boolean;
