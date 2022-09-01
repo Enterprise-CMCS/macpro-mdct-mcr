@@ -58,7 +58,7 @@ export const NumberField = ({
         <TextField
           id={name}
           name={name}
-          label={label}
+          label={label || ""}
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
@@ -74,7 +74,7 @@ export const NumberField = ({
 
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
   mask?: ValidCmsdsMask | keyof typeof customMaskMap;
   nested?: boolean;
