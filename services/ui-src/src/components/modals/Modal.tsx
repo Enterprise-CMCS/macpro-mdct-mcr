@@ -16,7 +16,7 @@ import { CloseIcon } from "@cmsgov/design-system";
 import { makeMediaQueryClasses } from "utils";
 
 export const Modal = ({
-  modalState,
+  modalDisclosure,
   content,
   onConfirmHandler,
   formId,
@@ -24,7 +24,10 @@ export const Modal = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   return (
-    <ChakraModal isOpen={modalState.isOpen} onClose={modalState.onClose}>
+    <ChakraModal
+      isOpen={modalDisclosure.isOpen}
+      onClose={modalDisclosure.onClose}
+    >
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
         <ModalHeader sx={sx.modalHeader}>
@@ -37,7 +40,7 @@ export const Modal = ({
             sx={sx.modalClose}
             leftIcon={<CloseIcon />}
             variant="link"
-            onClick={modalState.onClose}
+            onClick={modalDisclosure.onClose}
           >
             Close
           </Button>
@@ -69,7 +72,7 @@ export const Modal = ({
             className={mqClasses}
             sx={sx.close}
             variant="link"
-            onClick={modalState.onClose}
+            onClick={modalDisclosure.onClose}
           >
             {content.closeButtonText}
           </Button>
@@ -80,7 +83,7 @@ export const Modal = ({
 };
 
 interface Props {
-  modalState: {
+  modalDisclosure: {
     isOpen: boolean;
     onClose: any;
   };

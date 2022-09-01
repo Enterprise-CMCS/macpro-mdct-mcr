@@ -12,6 +12,7 @@ import {
   getReportData,
   writeReportData,
   getReport,
+  getReportsByState,
   writeReport,
   deleteReport,
 } from "utils";
@@ -20,20 +21,25 @@ import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
   report: undefined as AnyObject | undefined,
-  reportData: undefined as AnyObject | undefined,
   setReport: Function,
-  setReportData: Function,
-  fetchReportData: Function,
-  updateReportData: Function,
   fetchReport: Function,
   updateReport: Function,
   removeReport: Function,
+  reportData: undefined as AnyObject | undefined,
+  setReportData: Function,
+  fetchReportData: Function,
+  updateReportData: Function,
+  reportsByState: undefined as AnyObject | undefined,
+  fetchReportsByState: Function,
   errorMessage: undefined,
 });
 
 export const ReportProvider = ({ children }: Props) => {
   const [report, setReport] = useState<ReportShape | undefined>();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
+  const [reportsByState, setReportsByState] = useState<AnyObject | undefined>(
+    undefined
+  );
   const [error, setError] = useState<string>();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
@@ -86,6 +92,15 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
+  const fetchReportsByState = async (state: string) => {
+    try {
+      const result = await getReportsByState(state);
+      setReportsByState(result);
+    } catch (e: any) {
+      setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
+    }
+  };
+
   useEffect(() => {
     if (report) {
       const reportDetails = {
@@ -99,17 +114,19 @@ export const ReportProvider = ({ children }: Props) => {
   const providerValue = useMemo(
     () => ({
       report,
-      reportData,
       setReport,
-      setReportData,
-      fetchReportData,
-      updateReportData,
       fetchReport,
       updateReport,
       removeReport,
+      reportData,
+      setReportData,
+      fetchReportData,
+      updateReportData,
+      reportsByState,
+      fetchReportsByState,
       errorMessage: error,
     }),
-    [report, reportData, error]
+    [report, reportData, reportsByState, error]
   );
 
   return (

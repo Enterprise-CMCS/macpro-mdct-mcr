@@ -7,22 +7,18 @@ import { Dashboard } from "routes";
 import { ReportContext } from "components";
 // utils
 import {
+  mockAdminUser,
+  mockNoUser,
   mockReportStatus,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 
-jest.mock("utils", () => ({
-  ...jest.requireActual("utils"),
-  useUser: () => {
-    return mockStateUser;
-  },
-  getReportsByState: () => {
-    return [{ ...mockReportStatus }];
-  },
-}));
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const mockUseNavigate = jest.fn();
 
@@ -37,16 +33,29 @@ const mockReportMethods = {
   updateReportData: jest.fn(() => {}),
   fetchReport: jest.fn(() => {}),
   updateReport: jest.fn(() => {}),
+  removeReport: jest.fn(() => {}),
+  fetchReportsByState: jest.fn(() => {}),
 };
 
 const mockReportContext = {
   ...mockReportMethods,
   report: {},
   reportData: {},
-  errorMessage: "",
+  reportsByState: [mockReportStatus],
+  errorMessage: undefined,
 };
 
-const dashboardView = (
+const mockReportContextNoReports = {
+  ...mockReportContext,
+  reportsByState: undefined!,
+};
+
+const mockReportContextWithError = {
+  ...mockReportContext,
+  errorMessage: "test error",
+};
+
+const dashboardViewWithReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <Dashboard />
@@ -54,46 +63,107 @@ const dashboardView = (
   </RouterWrappedComponent>
 );
 
-describe("Test /mcpar dashboard view", () => {
+const dashboardViewNoReports = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContextNoReports}>
+      <Dashboard />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const dashboardViewWithError = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContextWithError}>
+      <Dashboard />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+describe("Test /mcpar/dashboard view with reports", () => {
   beforeEach(async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
-      await render(dashboardView);
+      await render(dashboardViewWithReports);
     });
   });
 
-  test("Check that /mcpar dashboard view renders", () => {
+  test("Check that /mcpar/dashboard view renders", () => {
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
+    expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
   });
 
-  test("Clicking start report navigates to /mcpar/program-information/point-of-contact", async () => {
-    const startReportButton = screen.getByText(
-      verbiage.body.editReportButtonText.created
-    );
-    expect(startReportButton).toBeVisible();
-    await userEvent.click(startReportButton);
+  test("Clicking 'Enter' button on a report navigates to /mcpar/program-information/point-of-contact", async () => {
+    const enterReportButton = screen.getByText("Enter");
+    expect(enterReportButton).toBeVisible();
+    await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith(
       "../../mcpar/program-information/point-of-contact"
     );
   });
 
-  test("Clicking action button opens modal to add program", async () => {
-    const newProgramButton = screen.getByText(verbiage.body.callToAction);
-    expect(newProgramButton).toBeVisible();
-    await userEvent.click(newProgramButton);
-    expect(
-      screen.getByText(verbiage.addProgramModal.structure.heading)
-    ).toBeVisible();
-    expect(
-      screen.getByText(verbiage.addProgramModal.structure.actionButtonText)
-    ).toBeVisible();
+  test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {
+    const addProgramButton = screen.getByText(verbiage.body.callToAction);
+    expect(addProgramButton).toBeVisible();
+    await userEvent.click(addProgramButton);
+    await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
+  });
+
+  test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
+    const addProgramButton = screen.getByAltText("Edit Program");
+    expect(addProgramButton).toBeVisible();
+    await userEvent.click(addProgramButton);
+    await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with admin user", () => {
+  test("Admin user can delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    const deleteProgramButton = screen.getByAltText("Delete Program");
+    expect(deleteProgramButton).toBeVisible();
+    await userEvent.click(deleteProgramButton);
+  });
+});
+
+describe("Test /mcpar/dashboard with no activeState", () => {
+  test("dashboard reroutes to / with no active state", async () => {
+    mockedUseUser.mockReturnValue(mockNoUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(mockUseNavigate).toBeCalledWith("/");
+  });
+});
+
+describe("Test /mcpar/dashboard with no reports", () => {
+  test("dashboard renders table with empty text", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewNoReports);
+    });
+    expect(screen.getByText(verbiage.body.empty)).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with error", () => {
+  test("Error alert shows when there is an error", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithError);
+    });
+    expect(screen.getByText("test error")).toBeVisible();
   });
 });
 
 describe("Test /mcpar dashboard view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     await act(async () => {
-      const { container } = render(dashboardView);
+      const { container } = render(dashboardViewWithReports);
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });

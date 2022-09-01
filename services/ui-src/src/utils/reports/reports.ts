@@ -1,4 +1,5 @@
 import { ReportPath, PageJson } from "types";
+import { convertDateUtcToEt } from "utils/other/time";
 
 export const addDataToReportStructure = (
   structure: ReportPath[],
@@ -31,4 +32,17 @@ export const makeRouteArray = (routeStructure: ReportPath[]): ReportPath[] => {
   };
   mapRoutesToArray(routeStructure);
   return reportNavigationOrder;
+};
+
+export const createReportId = (
+  state: string,
+  programName: string,
+  dueDate: number
+) => {
+  const programNameWithDashes = programName.replace(/\s/g, "-");
+  const dueDateString = convertDateUtcToEt(dueDate)
+    .toString()
+    .replace(/\//g, "-");
+  const reportId = [state, programNameWithDashes, dueDateString].join("_");
+  return reportId;
 };
