@@ -20,6 +20,10 @@ export const number = () =>
           })
           .isValidSync(val) || validNAValues.includes(val),
     })
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (val) => val != "",
+    })
     .required(error.REQUIRED_GENERIC);
 export const numberOptional = () => number().notRequired();
 
