@@ -73,7 +73,6 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
-  controlled?: string;
   [key: string]: any;
 }
 

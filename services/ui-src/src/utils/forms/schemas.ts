@@ -10,7 +10,7 @@ export const textOptional = () => text().notRequired();
 export const number = () =>
   numberSchema()
     .transform((_value, originalValue) =>
-      Number(originalValue.replace(/,/g, ""))
+      Number(originalValue.toString().replace(/,/g, ""))
     )
     .typeError(error.INVALID_NUMBER)
     .min(1, error.REQUIRED_GENERIC)

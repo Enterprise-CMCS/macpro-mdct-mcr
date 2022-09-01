@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
 import { TextField } from "./TextField";
 // utils
 import {
-  CustomMasks,
-  isValidCustomMask,
+  applyCustomMask,
+  customMaskMap,
   makeMediaQueryClasses,
-  maskValue,
+  validCmsdsMask,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
-import { TextFieldMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
+import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 
 export const NumberField = ({
   name,
@@ -22,39 +22,34 @@ export const NumberField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const hydrationValue = props?.hydrate;
+  const [displayValue, setDisplayValue] = useState("");
 
-  // check for value and valid custom mask; return masked value or original value
-  const applyCustomMaskToValue = (value: any, mask: any) => {
-    if (value && isValidCustomMask(mask)) {
-      return maskValue(value, mask);
-    } else return value;
-  };
-
-  // if mask specified, but not a custom mask, return mask as assumed CMSDS mask
-  const validNonCustomMask =
-    mask && !isValidCustomMask(mask) ? mask : undefined;
-
-  const [displayValue, setDisplayValue] = useState(
-    applyCustomMaskToValue(hydrationValue, mask) || ""
-  );
-
-  // get the form context
+  // get form context
   const form = useFormContext();
 
-  // update form data and masked display value on blur
-  const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const eventValue = applyCustomMaskToValue(value, mask);
-    setDisplayValue(eventValue);
-    form.setValue(name, eventValue, { shouldValidate: true });
-  };
+  // hydrate and set initial field value
+  const hydrationValue = props?.hydrate;
+  useEffect(() => {
+    if (hydrationValue) {
+      const maskedValue = applyCustomMask(hydrationValue, mask);
+      setDisplayValue(maskedValue);
+      form.setValue(name, maskedValue, { shouldValidate: true });
+    }
+  }, [hydrationValue]);
 
-  // update form data on change
+  // update form data on change, but do not mask
   const onChangeHandler = async (e: InputChangeEvent) => {
     const { name, value } = e.target;
     setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
+  };
+
+  // update form data and display value on blur, using masked value
+  const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const maskedFieldValue = applyCustomMask(value, mask);
+    setDisplayValue(maskedFieldValue);
+    form.setValue(name, maskedFieldValue, { shouldValidate: true });
   };
 
   return (
@@ -67,9 +62,8 @@ export const NumberField = ({
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
-          mask={validNonCustomMask}
+          mask={validCmsdsMask(mask)}
           value={displayValue}
-          controlled="true"
           {...props}
         />
         {mask === "percentage" && <Box sx={sx.percentage}> % </Box>}
@@ -82,7 +76,7 @@ interface Props {
   name: string;
   label: string;
   placeholder?: string;
-  mask?: TextFieldMask | CustomMasks;
+  mask?: ValidCmsdsMask | keyof typeof customMaskMap;
   nested?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
