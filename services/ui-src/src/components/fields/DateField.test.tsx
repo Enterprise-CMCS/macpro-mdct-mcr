@@ -2,22 +2,26 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
-import { DateField } from "components";
 import { useFormContext } from "react-hook-form";
+import { DateField } from "components";
 
 const mockRhfMethods = {
   register: () => {},
   setValue: () => {},
   getValues: jest.fn(),
 };
-
+const mockUseFormContext = useFormContext as unknown as jest.Mock<
+  typeof useFormContext
+>;
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => mockRhfMethods),
 }));
 
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
+const mockGetValues = (returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest.fn().mockReturnValue(returnValue),
+  }));
 
 const dateFieldComponent = (
   <DateField
@@ -60,10 +64,7 @@ describe("Test DateField component hydration functionality", () => {
   );
 
   test("If only formFieldValue exists, displayValue is set to it", () => {
-    mockUseFormContext.mockImplementation((): any => ({
-      ...mockRhfMethods,
-      getValues: jest.fn().mockReturnValue(mockFormFieldValue),
-    }));
+    mockGetValues(mockFormFieldValue);
     const result = render(dateFieldComponent);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateField']"
@@ -73,10 +74,7 @@ describe("Test DateField component hydration functionality", () => {
   });
 
   test("If only hydrationValue exists, displayValue is set to it", () => {
-    mockUseFormContext.mockImplementation((): any => ({
-      ...mockRhfMethods,
-      getValues: jest.fn().mockReturnValue(undefined),
-    }));
+    mockGetValues(undefined);
     const result = render(dateFieldComponentWithHydrationValue);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateFieldWithHydrationValue']"
@@ -86,10 +84,7 @@ describe("Test DateField component hydration functionality", () => {
   });
 
   test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
-    mockUseFormContext.mockImplementation((): any => ({
-      ...mockRhfMethods,
-      getValues: jest.fn().mockReturnValue(mockFormFieldValue),
-    }));
+    mockGetValues(mockFormFieldValue);
     const result = render(dateFieldComponentWithHydrationValue);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateFieldWithHydrationValue']"

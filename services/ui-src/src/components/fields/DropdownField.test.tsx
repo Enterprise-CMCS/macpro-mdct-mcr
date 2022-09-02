@@ -1,14 +1,20 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
+import { useFormContext } from "react-hook-form";
 import { DropdownField } from "components";
-import userEvent from "@testing-library/user-event";
 
+const mockRhfMethods = {
+  register: () => {},
+  setValue: () => {},
+  getValues: jest.fn(),
+};
+const mockUseFormContext = useFormContext as unknown as jest.Mock<
+  typeof useFormContext
+>;
 jest.mock("react-hook-form", () => ({
-  useFormContext: () => ({
-    register: () => {},
-    setValue: () => {},
-  }),
+  useFormContext: jest.fn(() => mockRhfMethods),
 }));
 
 const dropdownComponent = (
