@@ -93,7 +93,7 @@ describe("Test /mcpar/dashboard view with reports", () => {
   });
 
   test("Clicking 'Enter' button on a report navigates to /mcpar/program-information/point-of-contact", async () => {
-    const enterReportButton = screen.getByText("Enter");
+    const enterReportButton = screen.getByTestId("enter-program");
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
@@ -110,7 +110,7 @@ describe("Test /mcpar/dashboard view with reports", () => {
   });
 
   test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
-    const addProgramButton = screen.getByAltText("Edit Program");
+    const addProgramButton = screen.getByTestId("edit-program");
     expect(addProgramButton).toBeVisible();
     await userEvent.click(addProgramButton);
     await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
@@ -123,7 +123,7 @@ describe("Test /mcpar/dashboard with admin user", () => {
     await act(async () => {
       await render(dashboardViewWithReports);
     });
-    const deleteProgramButton = screen.getByAltText("Delete Program");
+    const deleteProgramButton = screen.getByTestId("delete-program");
     expect(deleteProgramButton).toBeVisible();
     await userEvent.click(deleteProgramButton);
   });

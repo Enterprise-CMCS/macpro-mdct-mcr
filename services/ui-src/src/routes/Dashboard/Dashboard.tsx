@@ -137,7 +137,11 @@ export const Dashboard = () => {
                             openAddEditProgramModal(report.reportId)
                           }
                         >
-                          <Image src={editIcon} alt="Edit Program" />
+                          <Image
+                            src={editIcon}
+                            data-testid="mobile-edit-program"
+                            alt="Edit Program"
+                          />
                         </button>
                       </Box>
                     )}
@@ -172,6 +176,7 @@ export const Dashboard = () => {
                   <Box sx={sx.editReportButtonCell}>
                     <Button
                       variant="outline"
+                      data-testid="mobile-enter-program"
                       onClick={() => enterSelectedReport(report.reportId)}
                     >
                       Enter
@@ -187,6 +192,7 @@ export const Dashboard = () => {
                       >
                         <Image
                           src={cancelIcon}
+                          data-testid="mobile-delete-program"
                           alt="Delete Program"
                           sx={sx.deleteProgramButtonImage}
                         />
@@ -210,7 +216,11 @@ export const Dashboard = () => {
                     <button
                       onClick={() => openAddEditProgramModal(report.reportId)}
                     >
-                      <Image src={editIcon} alt="Edit Program" />
+                      <Image
+                        src={editIcon}
+                        data-testid="edit-program"
+                        alt="Edit Program"
+                      />
                     </button>
                   )}
                 </Td>
@@ -224,6 +234,7 @@ export const Dashboard = () => {
                 <Td sx={sx.editReportButtonCell}>
                   <Button
                     variant="outline"
+                    data-testid="enter-program"
                     onClick={() => enterSelectedReport(report.reportId)}
                   >
                     Enter
@@ -239,6 +250,7 @@ export const Dashboard = () => {
                     >
                       <Image
                         src={cancelIcon}
+                        data-testid="delete-program"
                         alt="Delete Program"
                         sx={sx.deleteProgramButtonImage}
                       />
