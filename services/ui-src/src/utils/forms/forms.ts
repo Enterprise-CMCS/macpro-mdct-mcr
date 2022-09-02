@@ -79,8 +79,6 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     field?.props?.choices.forEach((choice: FieldChoice) => {
       // set choice value to choice label string
       choice.value = choice.label;
-      // set choice id to choice name string
-      choice.id = choice.name;
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
       // if choice has children, recurse
