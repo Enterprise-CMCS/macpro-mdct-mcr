@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
+    register: () => {},
     setValue: () => {},
   }),
 }));

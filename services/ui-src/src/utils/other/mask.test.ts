@@ -30,8 +30,8 @@ describe("Test validCustomMask", () => {
   test("Check if good and bad mask values return accurately", () => {
     const commaSeparated = validCustomMask("comma-separated");
     const badMask = validCustomMask("cherry-tree");
-    expect(commaSeparated).toEqual(true);
-    expect(badMask).toEqual(false);
+    expect(commaSeparated).toEqual("comma-separated");
+    expect(badMask).toBeFalsy();
   });
 });
 
