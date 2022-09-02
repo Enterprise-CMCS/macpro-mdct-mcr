@@ -27,15 +27,22 @@ export const NumberField = ({
   // get form context
   const form = useFormContext();
 
-  // hydrate and set initial field value
+  // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (hydrationValue) {
-      const maskedValue = applyCustomMask(hydrationValue, mask);
-      setDisplayValue(maskedValue);
-      form.setValue(name, maskedValue, { shouldValidate: true });
+    // if form state has value for field, set as display value
+    const fieldValue = form.getValues(name);
+    if (fieldValue) {
+      const maskedFieldValue = applyCustomMask(fieldValue, mask);
+      setDisplayValue(maskedFieldValue);
     }
-  }, [hydrationValue]);
+    // else if hydration value exists, set as display value
+    else if (hydrationValue) {
+      const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
+      setDisplayValue(maskedHydrationValue);
+      form.setValue(name, maskedHydrationValue, { shouldValidate: true });
+    }
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // update form data on change, but do not mask
   const onChangeHandler = async (e: InputChangeEvent) => {

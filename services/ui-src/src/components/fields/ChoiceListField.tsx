@@ -27,38 +27,37 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [displayValue, setDisplayValue] = useState<string[] | null>(null);
 
   // get form context and register field
   const form = useFormContext();
   form.register(name);
 
-  const [fieldValues, setFieldValues] = useState<string[] | null>(null);
-
-  // hydrate and set initial field value
+  // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (hydrationValue) {
-      console.log("hydrationValue: ", name, ":", hydrationValue);
-      setFieldValues(hydrationValue);
+    // if form state has value for field, set as display value
+    const fieldValue = form.getValues(name);
+    if (fieldValue) {
+      setDisplayValue(fieldValue);
+    }
+    // else if hydration value exists, set as display value
+    else if (hydrationValue) {
+      setDisplayValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
-  }, [hydrationValue]);
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // update form field data and DOM display checked attribute
   useEffect(() => {
-    if (fieldValues) {
-      form.setValue(name, fieldValues, { shouldValidate: true });
+    if (displayValue) {
+      form.setValue(name, displayValue, { shouldValidate: true });
     }
     // update DOM choices checked status
     choices.forEach((choice: FieldChoice) => {
-      choice.checked = fieldValues?.includes(choice.value) || false;
+      choice.checked = displayValue?.includes(choice.value) || false;
     });
-  }, [fieldValues]);
-
-  const formFieldValues = form.getValues(name);
-  useEffect(() => {
-    console.log("formFieldValues: ", name, ":", formFieldValues);
-  }, [formFieldValues]);
+  }, [displayValue]);
 
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) =>
@@ -77,10 +76,10 @@ export const ChoiceListField = ({
   const onChangeHandler = (event: InputChangeEvent) => {
     const clickedOption = event.target.value;
     const isOptionChecked = event.target.checked;
-    const preChangeFieldValues = fieldValues || [];
+    const preChangeFieldValues = displayValue || [];
     // handle radio
     if (type === "radio") {
-      setFieldValues([clickedOption]);
+      setDisplayValue([clickedOption]);
     }
     // handle checkbox
     if (type === "checkbox") {
@@ -88,7 +87,7 @@ export const ChoiceListField = ({
       const uncheckedOptionValues = preChangeFieldValues.filter(
         (value) => value !== clickedOption
       );
-      setFieldValues(
+      setDisplayValue(
         isOptionChecked ? checkedOptionValues : uncheckedOptionValues
       );
     }

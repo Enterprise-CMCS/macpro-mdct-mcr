@@ -26,14 +26,20 @@ export const DateField = ({
   const form = useFormContext();
   form.register(name);
 
-  // hydrate and set initial field value
+  // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (hydrationValue) {
+    // if form state has value for field, set as display value
+    const fieldValue = form.getValues(name);
+    if (fieldValue) {
+      setDisplayValue(fieldValue);
+    }
+    // else if hydration value exists, set as display value
+    else if (hydrationValue) {
       setDisplayValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
-  }, [hydrationValue]);
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // update field display value and form field data on change
   const onChangeHandler = (rawValue: string, maskedValue: string) => {

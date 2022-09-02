@@ -17,25 +17,31 @@ export const TextField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [fieldValue, setFieldValue] = useState<string>("");
+  const [displayValue, setDisplayValue] = useState<string>("");
 
   // get form context and register field
   const form = useFormContext();
   form.register(name);
 
-  // hydrate and set initial field value
+  // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (hydrationValue) {
-      setFieldValue(hydrationValue);
+    // if form state has value for field, set as display value
+    const fieldValue = form.getValues(name);
+    if (fieldValue) {
+      setDisplayValue(fieldValue);
+    }
+    // else if hydration value exists, set as display value
+    else if (hydrationValue) {
+      setDisplayValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
-  }, [hydrationValue]);
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
-  // update field display value and form field data on change
+  // update display value and form field data on change
   const onChangeHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
-    setFieldValue(value);
+    setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
 
@@ -59,7 +65,7 @@ export const TextField = ({
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
-        value={fieldValue}
+        value={displayValue}
         {...props}
       />
     </Box>
