@@ -31,7 +31,7 @@ const dateFieldComponent = (
   />
 );
 
-describe("Test DateField component basic functionality", () => {
+describe("Test DateField basic functionality", () => {
   test("DateField is visible", () => {
     const result = render(dateFieldComponent);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
@@ -51,7 +51,7 @@ describe("Test DateField component basic functionality", () => {
   });
 });
 
-describe("Test DateField component hydration functionality", () => {
+describe("Test DateField hydration functionality", () => {
   const mockFormFieldValue = "7/1/2022";
   const mockHydrationValue = "1/1/2022";
 
