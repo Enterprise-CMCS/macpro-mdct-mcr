@@ -37,8 +37,8 @@ export const McparReportPage = ({ pageJson }: Props) => {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
       };
-      updateReportData(reportDetails, formData);
-      updateReport(reportDetails, reportStatus);
+      await updateReportData(reportDetails, formData);
+      await updateReport(reportDetails, reportStatus);
     }
     navigate(nextRoute);
   };
