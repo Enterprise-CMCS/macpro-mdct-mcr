@@ -16,7 +16,7 @@ export const number = () =>
       test: (val) =>
         numberSchema()
           .transform((_value, originalValue) => {
-            return Number(originalValue.replace(/,/g, "").replace(/./g, ""));
+            return Number(originalValue.replace(/[,.]/g, ""));
           })
           .isValidSync(val) || validNAValues.includes(val),
     })
