@@ -4,12 +4,13 @@ import { axe } from "jest-axe";
 import { CheckboxField } from "components";
 import userEvent from "@testing-library/user-event";
 
+const mockSetValue = jest.fn();
 jest.mock("react-hook-form", () => ({
-  useFormContext: () => ({
+  useFormContext: jest.fn(() => ({
     register: () => {},
-    setValue: () => {},
+    setValue: mockSetValue,
     getValues: () => {},
-  }),
+  })),
 }));
 
 const CheckboxFieldComponent = (
@@ -27,26 +28,27 @@ const CheckboxFieldComponent = (
   </div>
 );
 
-describe("Test ChoiceList component", () => {
-  test("ChoiceList renders as Checkbox", () => {
+describe("Test CheckboxField component", () => {
+  test("CheckboxField renders as Checkbox", () => {
     render(CheckboxFieldComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByTestId("test-checkbox-list")).toBeVisible();
   });
 
-  test("ChoiceList allows checking checkbox choices", async () => {
+  test("CheckboxField allows checking checkbox choices", async () => {
     const wrapper = render(CheckboxFieldComponent);
     const checkboxContainers = wrapper.container.querySelectorAll(
       ".ds-c-choice-wrapper"
     );
     const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
-    expect(firstCheckbox.checked).toBe(false);
     await userEvent.click(firstCheckbox);
-    expect(firstCheckbox.checked).toBe(true);
+    expect(mockSetValue).toHaveBeenCalledWith("checkbox_choices", ["A"], {
+      shouldValidate: true,
+    });
   });
 });
 
-describe("Test ChoiceList accessibility", () => {
+describe("Test CheckboxField accessibility", () => {
   it("Should not have basic accessibility issues when given checkbox", async () => {
     const { container } = render(CheckboxFieldComponent);
     const results = await axe(container);
