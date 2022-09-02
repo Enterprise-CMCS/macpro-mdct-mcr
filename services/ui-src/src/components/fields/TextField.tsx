@@ -28,6 +28,7 @@ export const TextField = ({
   useEffect(() => {
     if (props?.hydrate) {
       setFieldValue(props?.hydrate);
+      form.setValue(name, props?.hydrate, { shouldValidate: true });
     }
   }, [props?.hydrate]);
 
