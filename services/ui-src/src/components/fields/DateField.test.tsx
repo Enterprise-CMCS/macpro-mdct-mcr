@@ -22,6 +22,15 @@ const dateFieldComponent = (
   />
 );
 
+const dateFieldComponentToHydrate = (
+  <DateField
+    name="testDateFieldToHydrate"
+    label="test-date-field"
+    data-testid="test-date-field-to-hydrate"
+    hydrate="1/1/2022"
+  />
+);
+
 describe("Test DateField component", () => {
   test("DateField is visible", () => {
     const result = render(dateFieldComponent);
@@ -30,6 +39,14 @@ describe("Test DateField component", () => {
     )!;
     expect(dateFieldInput).toBeVisible();
     expect(dateFieldInput.value).toEqual("");
+  });
+
+  test("If hydration prop exists it is set as input value", () => {
+    const result = render(dateFieldComponentToHydrate);
+    const dateField: HTMLInputElement = result.container.querySelector(
+      "[name='testDateFieldToHydrate']"
+    )!;
+    expect(dateField.value).toEqual("1/1/2022");
   });
 
   test("onChange event fires handler when typing and stays even after blurred", async () => {

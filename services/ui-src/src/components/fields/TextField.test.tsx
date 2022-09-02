@@ -16,6 +16,7 @@ const textFieldComponent = (
     name="testTextField"
     label="test-label"
     placeholder="test-placeholder"
+    hydrate="test-input-value"
     data-testid="test-text-field"
   />
 );
@@ -25,6 +26,12 @@ describe("Test TextField component", () => {
     render(textFieldComponent);
     const textField = screen.getByTestId("test-text-field");
     expect(textField).toBeVisible();
+  });
+
+  test("If hydration prop exists it is set as input value", () => {
+    render(textFieldComponent);
+    const textField: HTMLInputElement = screen.getByTestId("test-text-field");
+    expect(textField.value).toEqual("test-input-value");
   });
 });
 

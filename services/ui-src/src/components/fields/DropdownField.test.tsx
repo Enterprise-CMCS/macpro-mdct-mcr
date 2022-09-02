@@ -25,14 +25,37 @@ const dropdownComponent = (
   />
 );
 
-describe("Test Dropdown component", () => {
+const dropdownComponentToHydrate = (
+  <DropdownField
+    name="testDropdown"
+    label="test label"
+    data-testid="test-dropdown-field-to-hydrate"
+    hydrate="c"
+    options={[
+      { label: "- Select an option -", value: "" },
+      { label: "Option 1", value: "a" },
+      { label: "Option 2", value: "b" },
+      { label: "Option 3", value: "c" },
+    ]}
+  />
+);
+
+describe("Test DropdownField component", () => {
   test("Dropdown renders", () => {
     render(dropdownComponent);
     const dropdown = screen.getByTestId("test-dropdown-field");
     expect(dropdown).toBeVisible();
   });
 
-  test("Dropdown calls onChange function successfully", async () => {
+  test("If hydration prop exists it is set as input value", () => {
+    render(dropdownComponentToHydrate);
+    const dropdownField: HTMLSelectElement = screen.getByTestId(
+      "test-dropdown-field-to-hydrate"
+    );
+    expect(dropdownField.value).toEqual("c");
+  });
+
+  test("DropdownField calls onChange function successfully", async () => {
     render(dropdownComponent);
     const dropdown = screen.getByTestId("test-dropdown-field");
     const option0 = dropdown.children.item(0) as HTMLOptionElement;
@@ -45,7 +68,7 @@ describe("Test Dropdown component", () => {
   });
 });
 
-describe("Test Dropdown accessibility", () => {
+describe("Test DropdownField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(dropdownComponent);
     const results = await axe(container);

@@ -18,8 +18,8 @@ jest.mock("utils", () => ({
 }));
 
 const mockChoices = [
-  { name: "Choice 1", label: "Choice 1", value: "A" },
-  { name: "Choice 2", label: "Choice 2", value: "B" },
+  { name: "Choice 1", label: "Choice 1", value: "Choice 1" },
+  { name: "Choice 2", label: "Choice 2", value: "Choice 2" },
 ];
 
 const mockNestedChildren = [
@@ -32,7 +32,7 @@ const mockNestedChildren = [
 const mockChoiceWithChild = {
   name: "Choice 3",
   label: "Choice 3",
-  value: "C",
+  value: "Choice 3",
   children: mockNestedChildren,
 };
 
@@ -43,6 +43,19 @@ const ChoiceListFieldCheckboxComponent = (
       label="Checkbox example"
       name="checkbox_choices"
       type="checkbox"
+      onChangeHandler={() => jest.fn()}
+    />
+  </div>
+);
+
+const ChoiceListFieldComponentToHydrate = (
+  <div data-testid="test-choice-list-hydrate">
+    <ChoiceListField
+      choices={mockChoices}
+      label="Checkbox example"
+      name="choicelist-hydrate"
+      type="checkbox"
+      hydrate="Choice 1"
       onChangeHandler={() => jest.fn()}
     />
   </div>
@@ -72,10 +85,18 @@ const ChoiceListFieldWithNestedChildren = (
   </div>
 );
 
-describe("Test ChoiceList component choice rendering", () => {
+describe("Test ChoiceList component", () => {
   it("Should render nested child fields for choices with children", () => {
     render(ChoiceListFieldWithNestedChildren);
     expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, true);
+  });
+
+  test("If hydration prop exists it is set as value", () => {
+    const result = render(ChoiceListFieldComponentToHydrate);
+    const field: HTMLInputElement = result.container.querySelector(
+      "[name='choicelist-hydrate']"
+    )!;
+    expect(field.value).toEqual("Choice 1");
   });
 });
 

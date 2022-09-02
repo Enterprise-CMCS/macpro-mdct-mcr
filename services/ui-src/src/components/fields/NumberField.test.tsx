@@ -16,6 +16,15 @@ const numberFieldComponent = (
   <NumberField name="testNumberField" label="test-label" />
 );
 
+const numberFieldComponentToHydrate = (
+  <NumberField
+    name="testNumberField"
+    label="test-label"
+    hydrate="12345"
+    data-testid="test-id"
+  />
+);
+
 const commaMaskedNumberFieldComponent = (
   <NumberField
     name="testNumberField"
@@ -39,6 +48,14 @@ describe("Test Maskless NumberField", () => {
       "[name='testNumberField']"
     )!;
     expect(numberFieldInput).toBeVisible();
+  });
+
+  test("If hydration prop exists it is set as input value", () => {
+    const result = render(numberFieldComponentToHydrate);
+    const numberField: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    expect(numberField.value).toEqual("12345");
   });
 
   test("onChangeHandler updates unmasked field value", async () => {
