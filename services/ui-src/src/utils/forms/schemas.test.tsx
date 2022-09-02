@@ -12,7 +12,7 @@ describe("Schemas", () => {
     "N/A",
     "Data not available",
   ];
-  const badNumberTestCases = ["abc", "N", ""];
+  const badNumberTestCases = ["abc", "N", "", "123:123", "!@#!@%"];
 
   const testCase = (testCases: Array<string>, expectedReturn: boolean) => {
     for (let testCase of testCases) {
@@ -21,7 +21,7 @@ describe("Schemas", () => {
     }
   };
 
-  test("Number Schema", () => {
+  test("Evalulate Number Schema accepting good and bad input", () => {
     testCase(goodNumberTestCases, true);
     testCase(badNumberTestCases, false);
   });
