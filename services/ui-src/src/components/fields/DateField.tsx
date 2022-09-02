@@ -60,7 +60,7 @@ export const DateField = ({
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${labelClass} ${nestedChildClasses}`}
+      className={`${mqClasses} ${labelClass} ${nestedChildClasses} date-field`}
     >
       <CmsdsDateField
         name={name}
@@ -87,22 +87,14 @@ interface Props {
 }
 
 const sx = {
-  ".ds-c-field": {
+  // input box
+  ".ds-c-single-input-date-field__field-wrapper": {
     maxWidth: "7rem",
   },
-  "&.no-label": {
-    ".ds-c-label": {
-      marginTop: "0.5rem",
-    },
-  },
-  "&.ds-c-choice__checkedChild": {
-    "&.no-label": {
-      paddingY: 0,
-    },
-  },
-  "&.nested": {
-    label: {
-      marginTop: 0,
+  // unlabelled child field hints
+  "&.ds-c-choice__checkedChild.no-label": {
+    ".ds-c-field__hint": {
+      marginBottom: "0.25rem",
     },
   },
 };

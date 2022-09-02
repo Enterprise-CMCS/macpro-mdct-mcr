@@ -68,16 +68,31 @@ interface Props {
 }
 
 const sx = {
+  // default
   ".ds-c-field, .ds-c-label": {
     maxWidth: "32rem",
   },
+  // disabled field
   ".ds-c-field[disabled]": {
     color: "palette.gray",
   },
+  // field hint
+  ".ds-c-field__hint": {
+    marginBottom: "0.25rem",
+  },
+  // field hint and error message
   ".ds-c-field__hint, .ds-c-field__error-message ": {
     fontSize: "sm",
     ul: {
       paddingLeft: "2rem",
+    },
+  },
+  // nested child fields
+  ".ds-c-choice__checkedChild.nested": {
+    paddingY: "0.25rem",
+    paddingTop: 0,
+    ".ds-c-fieldset, label": {
+      marginTop: 0,
     },
   },
 };

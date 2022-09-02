@@ -91,11 +91,11 @@ const sx = {
     position: "relative",
   },
   percentage: {
-    fontSize: "lg",
-    fontWeight: "700",
-    paddingTop: "1px",
+    position: "absolute",
     bottom: "11px",
     left: "213px",
-    position: "absolute",
+    paddingTop: "1px",
+    fontSize: "lg",
+    fontWeight: "700",
   },
 };

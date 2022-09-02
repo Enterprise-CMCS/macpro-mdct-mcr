@@ -128,12 +128,8 @@ interface Props {
 }
 
 const sx = {
+  // checkboxes
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
-  },
-  "&.nested": {
-    fieldset: {
-      marginTop: 0,
-    },
   },
 };
