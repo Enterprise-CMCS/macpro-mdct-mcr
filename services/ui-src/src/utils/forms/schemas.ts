@@ -54,6 +54,7 @@ export const checkbox = () =>
     .of(text())
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () => checkbox().notRequired();
+export const checkboxSingle = () => array();
 
 // RADIO
 export const radio = () =>

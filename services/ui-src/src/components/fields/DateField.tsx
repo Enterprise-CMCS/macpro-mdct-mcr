@@ -64,7 +64,7 @@ export const DateField = ({
     >
       <CmsdsDateField
         name={name}
-        label={(label = "")}
+        label={label || ""}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue}

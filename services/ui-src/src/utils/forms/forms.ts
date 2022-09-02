@@ -26,7 +26,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     text: TextField,
     textarea: TextAreaField,
   };
-  fields = initializeChoiceFields(fields);
+  fields = initializeChoiceListFields(fields);
   fields = initializeDropdownFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
@@ -71,7 +71,7 @@ export const hydrateFormFields = (
 };
 
 // add data to choice fields in preparation for render
-export const initializeChoiceFields = (fields: FormField[]) => {
+export const initializeChoiceListFields = (fields: FormField[]) => {
   const fieldsWithChoices = fields.filter(
     (field: FormField) => field.props?.choices
   );
@@ -82,7 +82,7 @@ export const initializeChoiceFields = (fields: FormField[]) => {
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
       // if choice has children, recurse
-      if (choice.children) initializeChoiceFields(choice.children);
+      if (choice.children) initializeChoiceListFields(choice.children);
     });
   });
   return fields;
