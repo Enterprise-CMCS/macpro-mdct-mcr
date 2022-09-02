@@ -32,18 +32,33 @@ export const ChoiceListField = ({
   const form = useFormContext();
   form.register(name);
 
-  const [fieldValues, setFieldValues] = useState<string[] | null>(
-    form.getValues(name) || props.hydrate || null
-  );
+  const [fieldValues, setFieldValues] = useState<string[] | null>(null);
 
   // hydrate and set initial field value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue) {
+      console.log("hydrationValue: ", name, ":", hydrationValue);
       setFieldValues(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]);
+
+  // update form field data and DOM display checked attribute
+  useEffect(() => {
+    if (fieldValues) {
+      form.setValue(name, fieldValues, { shouldValidate: true });
+    }
+    // update DOM choices checked status
+    choices.forEach((choice: FieldChoice) => {
+      choice.checked = fieldValues?.includes(choice.value) || false;
+    });
+  }, [fieldValues]);
+
+  const formFieldValues = form.getValues(name);
+  useEffect(() => {
+    console.log("formFieldValues: ", name, ":", formFieldValues);
+  }, [formFieldValues]);
 
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) =>
@@ -78,17 +93,6 @@ export const ChoiceListField = ({
       );
     }
   };
-
-  // update form field data and DOM display checked attribute
-  useEffect(() => {
-    if (fieldValues) {
-      form.setValue(name, fieldValues, { shouldValidate: true });
-      // update DOM choices checked status
-      choices.forEach((choice: FieldChoice) => {
-        choice.checked = fieldValues.includes(choice.value);
-      });
-    }
-  }, [fieldValues]);
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
