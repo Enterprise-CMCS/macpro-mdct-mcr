@@ -1,28 +1,3 @@
 {
-  "path": "/mcpar/program-information/add-bss-entities",
-  "intro": {
-    "section": "Section A: Program Information",
-    "subsection": "Add BSS entities (A.8)",
-    "info": [
-      {
-        "type": "text",
-        "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data."
-      }
-    ]
-  },
-  "form": {
-    "id": "absse",
-    "options": {
-      "mode": "onChange"
-    },
-    "fields": [
-      {
-        "id": "absse-a8",
-        "type": "dynamic",
-        "props": {
-          "label": "BSS entity name"
-        }
-      }
-    ]
-  }
+  "path": "/mcpar/program-information/add-bss-entities"
 }

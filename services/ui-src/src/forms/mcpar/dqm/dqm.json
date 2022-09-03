@@ -1,20 +1,3 @@
 {
-  "path": "/mcpar/plan-level-indicators/quality-measures",
-  "intro": {
-    "section": "D: Plan-Level Indicators",
-    "subsection": "VII: Quality Measures"
-  },
-  "form": {
-    "id": "dqm",
-    "fields": [
-      {
-        "id": "dqm-1",
-        "type": "text",
-        "props": {
-          "label": "Temporary placeholder field",
-          "disabled": true
-        }
-      }
-    ]
-  }
+  "path": "/mcpar/plan-level-indicators/quality-measures"
 }

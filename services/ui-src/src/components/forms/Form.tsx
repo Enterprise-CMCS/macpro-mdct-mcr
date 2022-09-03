@@ -23,6 +23,7 @@ export const Form = ({
   const form = useForm({
     resolver: yupResolver(formSchema),
     shouldFocusError: false,
+    mode: "onChange",
     ...(options as any),
   });
 

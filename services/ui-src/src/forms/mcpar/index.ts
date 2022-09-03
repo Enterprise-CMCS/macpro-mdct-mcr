@@ -76,6 +76,8 @@ export const mcparStructureWithData = addDataToReportStructure(
   combinedMcparForms
 );
 
+console.log("mcparStructureWithData", mcparStructureWithData);
+
 export const mcparRoutes = makeRouteArray(mcparStructureWithData);
 
 export const nonReportMcparRoutes = ["/mcpar/dashboard", "/mcpar/get-started"];
