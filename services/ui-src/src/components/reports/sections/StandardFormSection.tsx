@@ -15,23 +15,27 @@ export const StandardFormSection = ({ path, form, onSubmit }: Props) => {
 
   return (
     <Box data-testid="standard-form-section">
-      <Form
-        id={form.id}
-        formJson={form}
-        formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-        onSubmit={onSubmit}
-      />
-      <ReportPageFooter
-        formId={form.id}
-        previousRoute={previousRoute}
-        nextRoute={nextRoute}
-      />
+      {form && (
+        <>
+          <Form
+            id={form.id}
+            formJson={form}
+            formSchema={reportSchema[form.id as keyof typeof reportSchema]}
+            onSubmit={onSubmit}
+          />
+          <ReportPageFooter
+            formId={form.id}
+            previousRoute={previousRoute}
+            nextRoute={nextRoute}
+          />
+        </>
+      )}
     </Box>
   );
 };
 
 interface Props {
   path: string;
-  form: FormJson;
+  form?: FormJson;
   onSubmit: Function;
 }

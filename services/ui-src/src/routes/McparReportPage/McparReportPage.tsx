@@ -42,8 +42,8 @@ export const McparReportPage = ({ path, page, form }: Props) => {
     navigate(nextRoute);
   };
 
-  const renderPageSection = (page: PageJson) => {
-    if (page.drawer) {
+  const renderPageSection = (page?: PageJson) => {
+    if (page?.drawer) {
       return (
         <EntityDrawerSection
           path={path}
@@ -64,13 +64,12 @@ export const McparReportPage = ({ path, page, form }: Props) => {
       navigate("/mcpar/dashboard");
     }
   }, [reportId]);
-
   return (
-    <ReportPage data-testid={form.id}>
+    <ReportPage data-testid={form?.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>
-          {page.intro && <ReportPageIntro text={page.intro} />}
+          {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(page)}
         </Flex>
       </Flex>
@@ -80,8 +79,8 @@ export const McparReportPage = ({ path, page, form }: Props) => {
 
 interface Props {
   path: string;
-  page: PageJson;
-  form: FormJson;
+  page?: PageJson;
+  form?: FormJson;
 }
 
 const sx = {

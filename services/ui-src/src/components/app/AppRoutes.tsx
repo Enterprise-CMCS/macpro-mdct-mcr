@@ -13,6 +13,7 @@ import {
 } from "routes";
 import { AdminBannerProvider } from "components";
 import { mcparRoutesFlatArray as mcparRoutes } from "forms/mcpar";
+
 // utils
 import { ReportRoute, UserRoles } from "types";
 import { ScrollToTopComponent } from "utils";
@@ -35,23 +36,21 @@ export const AppRoutes = ({ userRole }: Props) => {
           {/* MCPAR ROUTES */}
           <Route path="/mcpar/dashboard" element={<Dashboard />} />
           <Route path="/mcpar/get-started" element={<GetStarted />} />
-          {mcparRoutes.map(
-            (route: ReportRoute) =>
-              route.form &&
-              route.page && (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={
-                    <McparReportPage
-                      path={route.path}
-                      page={route.page}
-                      form={route.form}
-                    />
-                  }
-                />
-              )
-          )}
+          {mcparRoutes.map((route: ReportRoute) => {
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  <McparReportPage
+                    path={route.path}
+                    page={route.page || undefined}
+                    form={route.form || undefined}
+                  />
+                }
+              />
+            );
+          })}
           <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
           <Route path="/mcpar" element={<Navigate to="/mcpar/dashboard" />} />
           <Route path="/mcpar/*" element={<Navigate to="/mcpar/dashboard" />} />

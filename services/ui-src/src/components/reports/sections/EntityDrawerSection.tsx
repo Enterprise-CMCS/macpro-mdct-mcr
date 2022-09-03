@@ -49,17 +49,19 @@ export const EntityDrawerSection = ({
           </Flex>
         );
       })}
-      <ReportDrawer
-        drawerDisclosure={{
-          isOpen,
-          onClose,
-        }}
-        drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
-        drawerInfo={drawer!.drawerInfo}
-        form={form}
-        onSubmit={onSubmit}
-        data-testid="report-drawer"
-      />
+      {form && (
+        <ReportDrawer
+          drawerDisclosure={{
+            isOpen,
+            onClose,
+          }}
+          drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
+          drawerInfo={drawer!.drawerInfo}
+          form={form}
+          onSubmit={onSubmit}
+          data-testid="report-drawer"
+        />
+      )}
       <ReportPageFooter previousRoute={previousRoute} nextRoute={nextRoute} />
     </Box>
   );
@@ -67,7 +69,7 @@ export const EntityDrawerSection = ({
 
 interface Props {
   path: string;
-  form: FormJson;
+  form?: FormJson;
   drawer: AnyObject;
   onSubmit: Function;
 }

@@ -2,14 +2,18 @@ import { ReportJson, ReportRoute } from "types";
 import { convertDateUtcToEt } from "utils/other/time";
 
 // returns flattened array of valid routes for given reportJson
-export const makeReportRoutesArray = (reportJson: ReportJson): ReportJson => {
+export const makeReportRoutesFlatArray = (
+  reportJson: ReportJson
+): ReportJson => {
   const routesArray: ReportJson = [];
   const mapRoutesToArray = (reportRoutes: ReportJson) => {
     reportRoutes.map((route: ReportRoute) => {
-      // if children, recurse; if none, push route to array
-      route?.children
-        ? mapRoutesToArray(route.children)
-        : routesArray.push(route);
+      // if children, recurse; if none, push to routes array
+      if (route?.children) {
+        mapRoutesToArray(route.children);
+      } else {
+        routesArray.push(route);
+      }
     });
   };
   mapRoutesToArray(reportJson);
