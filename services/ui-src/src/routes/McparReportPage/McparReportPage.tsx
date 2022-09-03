@@ -12,14 +12,13 @@ import {
 } from "components";
 // utils
 import { findRoute, useUser } from "utils";
-import { PageJson, ReportStatus, UserRoles } from "types";
+import { FormJson, PageJson, ReportStatus, UserRoles } from "types";
 // form data
-import { mcparRoutes } from "forms/mcpar";
+import { mcparRoutesFlatArray as mcparRoutes } from "forms/mcpar";
 
-export const McparReportPage = ({ pageJson }: Props) => {
+export const McparReportPage = ({ path, page, form }: Props) => {
   const navigate = useNavigate();
   const { report, updateReportData, updateReport } = useContext(ReportContext);
-  const { path, intro, form } = pageJson;
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
   const reportId = report?.reportId;
 
@@ -43,11 +42,20 @@ export const McparReportPage = ({ pageJson }: Props) => {
     navigate(nextRoute);
   };
 
-  const renderPageSection = (pageJson: PageJson) => {
-    if (pageJson.drawer) {
-      return <EntityDrawerSection pageJson={pageJson} onSubmit={onSubmit} />;
+  const renderPageSection = (page: PageJson) => {
+    if (page.drawer) {
+      return (
+        <EntityDrawerSection
+          path={path}
+          form={form}
+          drawer={page.drawer}
+          onSubmit={onSubmit}
+        />
+      );
     } else {
-      return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
+      return (
+        <StandardFormSection path={path} form={form} onSubmit={onSubmit} />
+      );
     }
   };
 
@@ -62,8 +70,8 @@ export const McparReportPage = ({ pageJson }: Props) => {
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>
-          {intro && <ReportPageIntro text={intro} />}
-          {renderPageSection(pageJson)}
+          {page.intro && <ReportPageIntro text={page.intro} />}
+          {renderPageSection(page)}
         </Flex>
       </Flex>
     </ReportPage>
@@ -71,7 +79,9 @@ export const McparReportPage = ({ pageJson }: Props) => {
 };
 
 interface Props {
-  pageJson: PageJson;
+  path: string;
+  page: PageJson;
+  form: FormJson;
 }
 
 const sx = {

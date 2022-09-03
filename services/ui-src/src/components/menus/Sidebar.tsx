@@ -6,7 +6,7 @@ import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
 // data
-import mcparRouteStructure from "forms/mcpar/reportStructure";
+import mcparReportJson from "forms/mcpar/mcpar.json";
 import { isMcparReportPage } from "forms/mcpar";
 
 interface LinkItemProps {
@@ -52,7 +52,7 @@ export const Sidebar = () => {
             sx={sx.navSectionsBox}
             className={`${mqClasses} nav-sections-box`}
           >
-            {mcparRouteStructure.map((section) => (
+            {mcparReportJson.map((section) => (
               <NavSection key={section.name} section={section} level={1} />
             ))}
           </Box>

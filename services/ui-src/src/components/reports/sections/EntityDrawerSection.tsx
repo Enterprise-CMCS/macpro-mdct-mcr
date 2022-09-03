@@ -4,12 +4,16 @@ import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { ReportDrawer, ReportPageFooter } from "components";
 // utils
 import { findRoute } from "utils";
-import { PageJson } from "types";
+import { FormJson, AnyObject } from "types";
 // form data
-import { mcparRoutes } from "forms/mcpar";
+import { mcparRoutesFlatArray as mcparRoutes } from "forms/mcpar";
 
-export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
-  const { path, form, drawer } = pageJson;
+export const EntityDrawerSection = ({
+  path,
+  form,
+  drawer,
+  onSubmit,
+}: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   // make state
@@ -62,7 +66,9 @@ export const EntityDrawerSection = ({ pageJson, onSubmit }: Props) => {
 };
 
 interface Props {
-  pageJson: PageJson;
+  path: string;
+  form: FormJson;
+  drawer: AnyObject;
   onSubmit: Function;
 }
 

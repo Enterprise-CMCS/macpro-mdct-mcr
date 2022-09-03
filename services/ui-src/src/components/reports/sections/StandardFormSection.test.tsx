@@ -3,9 +3,7 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext, StandardFormSection } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
-// form json
-import * as standardPageJson from "forms/mcpar/apoc/apoc.json";
+import { mockPageJson, RouterWrappedComponent } from "utils/testing/setupJest";
 
 // MOCKS
 
@@ -42,7 +40,8 @@ const standardFormSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <StandardFormSection
-        pageJson={standardPageJson}
+        path={mockPageJson.path}
+        form={mockPageJson.form}
         onSubmit={mockOnSubmit}
       />
     </ReportContext.Provider>

@@ -5,10 +5,11 @@ import { axe } from "jest-axe";
 import { McparReportPage } from "routes";
 import { ReportContext } from "components";
 // utils
-import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
-// form json
-import * as standardPageJson from "forms/mcpar/apoc/apoc.json";
-import * as drawerPageJson from "forms/mcpar/dpc/dpc.json";
+import {
+  mockPageJson,
+  mockStateUser,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 
 // MOCKS
 
@@ -49,7 +50,12 @@ jest.mock("utils", () => ({
 const standardReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <McparReportPage pageJson={standardPageJson} />
+      <McparReportPage
+        path={mockPageJson.path}
+        page={mockPageJson.page}
+        form={mockPageJson.form}
+      />
+      <div></div>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -57,7 +63,12 @@ const standardReportPageComponent = (
 const drawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <McparReportPage pageJson={drawerPageJson} />
+      <McparReportPage
+        path={mockPageJson.path}
+        page={mockPageJson.page}
+        form={mockPageJson.form}
+      />
+      <div></div>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );

@@ -25,24 +25,71 @@ export interface UserContextI {
   loginWithIDM: () => void;
 }
 
-// REPORT
+// REPORT STRUCTURE
+
+export type ReportJson = ReportRoute[];
+
+export interface ReportRoute {
+  name: string;
+  path: string;
+  page?: PageJson;
+  form?: FormJson;
+  children?: ReportRoute[];
+  [key: string]: any;
+}
 
 export interface PageJson {
-  path: string;
   intro?: AnyObject;
-  form: FormJson;
   drawer?: AnyObject;
   [key: string]: any;
 }
 
-export interface ReportPath {
-  name: string;
-  path: string;
-  formId?: string;
-  element?: string;
-  pageJson?: PageJson;
-  children?: ReportPath[];
+export interface FormValidation {
+  type: string;
+  options?: AnyObject;
+  errorMessages?: AnyObject;
 }
+
+// FORM & FIELD STRUCTURE
+
+export interface FormJson {
+  id: string;
+  options?: AnyObject;
+  fields: FormField[];
+}
+
+export interface FormField {
+  id: string;
+  type: string;
+  hydrate?: string;
+  props?: AnyObject;
+  choices?: FieldChoice[];
+}
+
+export interface DropdownOptions {
+  label: string;
+  value: string;
+}
+
+export interface FieldChoice {
+  name: string;
+  type?: string;
+  label: string;
+  value: string;
+  checked?: boolean;
+  children?: FormField[];
+  checkedChildren?: React.ReactNode;
+}
+
+export interface ChoiceFieldProps {
+  name: string;
+  label: string;
+  choices: FieldChoice[];
+  sxOverride?: AnyObject;
+  [key: string]: any;
+}
+
+// REPORT PROVIDER/CONTEXT
 
 export enum ReportStatus {
   NOT_STARTED = "Not started",
@@ -83,52 +130,6 @@ export interface ReportContextShape
     ReportShape,
     ReportContextMethods {
   errorMessage?: string;
-}
-
-// FORM
-
-export interface FormField {
-  id: string;
-  type: string;
-  hydrate?: string;
-  props?: AnyObject;
-  validation?: FormValidation;
-  choices?: FieldChoice[];
-}
-
-export interface DropdownOptions {
-  label: string;
-  value: string;
-}
-
-export interface FieldChoice {
-  name: string;
-  type?: string;
-  label: string;
-  value: string;
-  checked?: boolean;
-  children?: FormField[];
-  checkedChildren?: React.ReactNode;
-}
-
-export interface ChoiceFieldProps {
-  name: string;
-  label: string;
-  choices: FieldChoice[];
-  sxOverride?: AnyObject;
-  [key: string]: any;
-}
-
-export interface FormValidation {
-  type: string;
-  options?: AnyObject;
-  errorMessages?: AnyObject;
-}
-
-export interface FormJson {
-  id: string;
-  options?: AnyObject;
-  fields: FormField[];
 }
 
 // BANNER
@@ -201,11 +202,4 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
-}
-
-export interface SpreadsheetWidgetProps {
-  title: string;
-  descriptionList: string[];
-  additionalInfo?: string;
-  [key: string]: any;
 }

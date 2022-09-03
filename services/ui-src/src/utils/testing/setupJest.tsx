@@ -138,3 +138,38 @@ export const mockReportStatus = {
   lastAltered: "162515200000",
   lastAlteredBy: "Thelonious States",
 };
+
+export const mockPageJson = {
+  path: "/mock-route",
+  page: {
+    intro: {
+      section: "mock section",
+      subsection: "mock subsection",
+    },
+  },
+  form: {
+    id: "mock-form-id",
+    fields: [],
+  },
+};
+
+export const mockPageJsonWithDrawer = {
+  path: "/mock-route",
+  page: {
+    intro: {
+      section: "mock section",
+      subsection: "mock subsection",
+    },
+    drawer: {
+      dashboard: {
+        title: "Mock dashboard title",
+        entityType: "plans",
+      },
+      drawerTitle: "Mock drawer title",
+    },
+  },
+  form: {
+    id: "mock-form-id",
+    fields: [],
+  },
+};

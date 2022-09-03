@@ -3,14 +3,12 @@ import { Box } from "@chakra-ui/react";
 import { Form, ReportPageFooter } from "components";
 // utils
 import { findRoute } from "utils";
-import { PageJson } from "types";
+import { FormJson } from "types";
 // form data
-import { mcparRoutes } from "forms/mcpar";
+import { mcparRoutesFlatArray as mcparRoutes } from "forms/mcpar";
 import { reportSchema } from "forms/mcpar/reportSchema";
 
-export const StandardFormSection = ({ pageJson, onSubmit }: Props) => {
-  const { path, form } = pageJson;
-
+export const StandardFormSection = ({ path, form, onSubmit }: Props) => {
   // make routes
   const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
   const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
@@ -33,6 +31,7 @@ export const StandardFormSection = ({ pageJson, onSubmit }: Props) => {
 };
 
 interface Props {
-  pageJson: PageJson;
+  path: string;
+  form: FormJson;
   onSubmit: Function;
 }
