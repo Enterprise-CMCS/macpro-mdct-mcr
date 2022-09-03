@@ -10,8 +10,8 @@ import {
   useUser,
 } from "utils";
 // form
-import formJson from "forms/internal/aep/addEditProgram.json";
-import formSchema from "forms/internal/aep/addEditProgram.schema";
+import formJson from "forms/internal/addEditProgram/addEditProgram.json";
+import formSchema from "forms/internal/addEditProgram/addEditProgram.schema";
 
 export const AddEditProgramModal = ({
   activeState,
