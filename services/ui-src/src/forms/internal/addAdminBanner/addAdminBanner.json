@@ -1,11 +1,11 @@
 {
-  "id": "adminBannerForm",
+  "id": "addAdminBanner",
   "options": {
     "mode": "onChange"
   },
   "fields": [
     {
-      "id": "abf-title",
+      "id": "aab-title",
       "type": "text",
       "props": {
         "label": "Title text",
@@ -13,7 +13,7 @@
       }
     },
     {
-      "id": "abf-description",
+      "id": "aab-description",
       "type": "textarea",
       "props": {
         "label": "Description text",
@@ -21,7 +21,7 @@
       }
     },
     {
-      "id": "abf-link",
+      "id": "aab-link",
       "type": "text",
       "props": {
         "label": "Link",
@@ -29,7 +29,7 @@
       }
     },
     {
-      "id": "abf-startDate",
+      "id": "aab-startDate",
       "type": "date",
       "props": {
         "label": "Start date",
@@ -37,7 +37,7 @@
       }
     },
     {
-      "id": "abf-endDate",
+      "id": "aab-endDate",
       "type": "date",
       "props": {
         "label": "End date",

@@ -7,8 +7,8 @@ import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
 // data
-import formJson from "forms/internal/abf/abf.json";
-import formSchema from "forms/internal/abf/abf.schema";
+import formJson from "forms/internal/addAdminBanner/addAdminBanner.json";
+import formSchema from "forms/internal/addAdminBanner/addAdminBanner.schema";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
@@ -16,15 +16,15 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const onSubmit = async (formData: any) => {
     const newBannerData = {
       key: bannerId,
-      title: formData["abf-title"],
-      description: formData["abf-description"],
-      link: formData["abf-link"],
+      title: formData["aab-title"],
+      description: formData["aab-description"],
+      link: formData["aab-link"],
       startDate: convertDatetimeStringToNumber(
-        formData["abf-startDate"],
+        formData["aab-startDate"],
         "startDate"
       ),
       endDate: convertDatetimeStringToNumber(
-        formData["abf-endDate"],
+        formData["aab-endDate"],
         "endDate"
       ),
     };
