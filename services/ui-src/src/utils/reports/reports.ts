@@ -20,7 +20,7 @@ export const flattenReportRoutesArray = (
   return routesArray;
 };
 
-export const addValidationToFormJson = (
+export const addValidationToReportJson = (
   reportJson: ReportJson,
   validationSchema: AnyObject
 ): ReportJson => {

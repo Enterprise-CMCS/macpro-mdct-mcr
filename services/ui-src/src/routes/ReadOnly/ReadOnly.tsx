@@ -3,13 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Form } from "components";
 // types
-import { AnyObject } from "types";
+import { AnyObject, FormJson } from "types";
 // form
 import formJson from "forms/internal/adminDashSelector/adminDashSelector";
 import formSchema from "forms/internal/adminDashSelector/adminDashSelector.schema";
 
 export const ReadOnly = ({ verbiage }: Props) => {
   const navigate = useNavigate();
+
+  // add validation to formJson
+  const form: FormJson = formJson;
+  form.validation = formSchema;
 
   const onSubmit = (formData: AnyObject) => {
     const selectedState = formData["ads-state"];
@@ -22,7 +26,7 @@ export const ReadOnly = ({ verbiage }: Props) => {
       <Heading as="h1" sx={sx.headerText}>
         {verbiage.header}
       </Heading>
-      <Form id={formJson.id} formJson={formJson} onSubmit={onSubmit} />
+      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
       <Flex sx={sx.navigationButton}>
         <Button type="submit" form={formJson.id}>
           {verbiage.buttonLabel}

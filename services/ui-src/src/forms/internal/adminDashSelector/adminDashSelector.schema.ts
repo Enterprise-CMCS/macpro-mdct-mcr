@@ -1,6 +1,5 @@
-import { object } from "yup";
 import { dropdown } from "utils/forms/schemas";
 
-export default object({
+export default {
   "ads-state": dropdown(),
-});
+};

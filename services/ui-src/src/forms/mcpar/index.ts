@@ -2,13 +2,13 @@ import mcparReportJson from "./mcpar.json";
 import mcparReportSchema from "./mcpar.schema";
 // utils
 import {
-  addValidationToFormJson,
+  addValidationToReportJson,
   flattenReportRoutesArray,
 } from "utils/reports/reports";
 import { ReportRoute } from "types";
 
 // update the formJson of each report route with appropriate validation schema
-const mcparReportJsonWithValidation = addValidationToFormJson(
+const mcparReportJsonWithValidation = addValidationToReportJson(
   mcparReportJson,
   mcparReportSchema
 );

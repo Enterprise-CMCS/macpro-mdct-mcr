@@ -2,7 +2,7 @@ import { useContext } from "react";
 // components
 import { Form, Modal, ReportContext } from "components";
 // utils
-import { ReportStatus } from "types";
+import { FormJson, ReportStatus } from "types";
 import {
   calculateDueDate,
   convertDateEtToUtc,
@@ -21,9 +21,11 @@ export const AddEditProgramModal = ({
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
-  const headerText = selectedReportId ? "Edit Program" : "Add a Program";
+  // add validation to formJson
+  const form: FormJson = formJson;
+  form.validation = formSchema;
 
-  const addEditProgram = async (formData: any) => {
+  const writeProgram = async (formData: any) => {
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
@@ -66,19 +68,19 @@ export const AddEditProgramModal = ({
   return (
     <Modal
       data-testid="add-edit-program-modal"
-      formId={formJson.id}
+      formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: headerText,
+        heading: selectedReportId ? "Edit Program" : "Add a Program",
         actionButtonText: "Save",
         closeButtonText: "Cancel",
       }}
     >
       <Form
         data-testid="add-edit-program-form"
-        id={formJson.id}
-        formJson={formJson}
-        onSubmit={addEditProgram}
+        id={form.id}
+        formJson={form}
+        onSubmit={writeProgram}
       />
     </Modal>
   );

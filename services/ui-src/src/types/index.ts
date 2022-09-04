@@ -61,7 +61,7 @@ export interface FormJson {
   id: string;
   fields: FormField[];
   options?: AnyObject;
-  validation?: StringSchema | ArraySchema<any>;
+  validation?: StringSchema | ArraySchema<any> | AnyObject;
 }
 
 export interface FormField {
