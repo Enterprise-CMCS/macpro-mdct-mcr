@@ -1,4 +1,6 @@
 import React from "react";
+import { ArraySchema, StringSchema } from "yup";
+
 // USERS
 
 export enum UserRoles {
@@ -29,13 +31,22 @@ export interface UserContextI {
 
 export type ReportJson = ReportRoute[];
 
-export interface ReportRoute {
+export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
+
+export interface ReportRouteBase {
   name: string;
   path: string;
-  page?: PageJson;
-  form?: FormJson;
-  children?: ReportRoute[];
   [key: string]: any;
+  page?: PageJson;
+}
+
+export interface ReportRouteWithForm extends ReportRouteBase {
+  children?: never;
+}
+
+export interface ReportRouteWithChildren extends ReportRouteBase {
+  children?: ReportRoute[];
+  form?: never;
 }
 
 export interface PageJson {
@@ -44,18 +55,13 @@ export interface PageJson {
   [key: string]: any;
 }
 
-export interface FormValidation {
-  type: string;
-  options?: AnyObject;
-  errorMessages?: AnyObject;
-}
-
 // FORM & FIELD STRUCTURE
 
 export interface FormJson {
   id: string;
-  options?: AnyObject;
   fields: FormField[];
+  options?: AnyObject;
+  validation?: StringSchema | ArraySchema<any>;
 }
 
 export interface FormField {

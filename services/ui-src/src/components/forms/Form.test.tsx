@@ -29,7 +29,6 @@ const formComponent = (
     <Form
       id={mockFormJson.id}
       formJson={mockFormJson}
-      formSchema={mockValidationSchema}
       onSubmit={mockOnSubmit}
       data-testid="test-form"
     />

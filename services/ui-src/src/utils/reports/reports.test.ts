@@ -1,4 +1,4 @@
-import { createReportId, makeReportRoutesFlatArray } from "./reports";
+import { createReportId, flattenReportRoutesArray } from "./reports";
 
 const mockFormField = {
   id: "mockId",
@@ -44,7 +44,7 @@ const mockReportJson = [
   },
 ];
 
-describe("Test makeReportRoutesFlatArray", () => {
+describe("Test flattenReportRoutesArray", () => {
   const mockExpectedResult = [
     {
       name: "mock1",
@@ -65,8 +65,8 @@ describe("Test makeReportRoutesFlatArray", () => {
       pageJson: mockReportJson[2],
     },
   ];
-  it("makeReportRoutesFlatArray", () => {
-    const result = makeReportRoutesFlatArray(mockReportJson);
+  it("flattenReportRoutesArray", () => {
+    const result = flattenReportRoutesArray(mockReportJson);
     expect(result).toEqual(mockExpectedResult);
   });
 });

@@ -22,12 +22,7 @@ export const ReadOnly = ({ verbiage }: Props) => {
       <Heading as="h1" sx={sx.headerText}>
         {verbiage.header}
       </Heading>
-      <Form
-        id={formJson.id}
-        formJson={formJson}
-        formSchema={formSchema}
-        onSubmit={onSubmit}
-      />
+      <Form id={formJson.id} formJson={formJson} onSubmit={onSubmit} />
       <Flex sx={sx.navigationButton}>
         <Button type="submit" form={formJson.id}>
           {verbiage.buttonLabel}

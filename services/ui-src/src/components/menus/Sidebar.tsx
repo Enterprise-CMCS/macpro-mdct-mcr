@@ -5,7 +5,7 @@ import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
-import { isReportFormPage, mcparRoutesArray } from "forms/mcpar";
+import { isMcparReportFormPage, mcparRoutesArray } from "forms/mcpar";
 
 interface LinkItemProps {
   name: string;
@@ -21,7 +21,7 @@ export const Sidebar = () => {
 
   return (
     <>
-      {isReportFormPage(pathname) && (
+      {isMcparReportFormPage(pathname) && (
         <Box
           id="sidebar"
           sx={sx.root}

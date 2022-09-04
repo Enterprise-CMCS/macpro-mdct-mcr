@@ -1,8 +1,8 @@
-import { ReportJson, ReportRoute } from "types";
+import { AnyObject, ReportJson, ReportRoute } from "types";
 import { convertDateUtcToEt } from "utils/other/time";
 
 // returns flattened array of valid routes for given reportJson
-export const makeReportRoutesFlatArray = (
+export const flattenReportRoutesArray = (
   reportJson: ReportJson
 ): ReportJson => {
   const routesArray: ReportJson = [];
@@ -18,6 +18,27 @@ export const makeReportRoutesFlatArray = (
   };
   mapRoutesToArray(reportJson);
   return routesArray;
+};
+
+export const addValidationToFormJson = (
+  reportJson: ReportJson,
+  validationSchema: AnyObject
+): ReportJson => {
+  const mapSchemaToForms = (routes: ReportJson, schema: AnyObject) => {
+    routes.map((route: ReportRoute) => {
+      // if children, recurse; if none, push to routes array
+      if (route?.children) {
+        mapSchemaToForms(route.children, validationSchema);
+      }
+      // else if form (children & form are always mutually exclusive)
+      else if (route?.form) {
+        const correspondingValidationSchema = schema[route.form.id];
+        route.form.validation = correspondingValidationSchema || {};
+      }
+    });
+  };
+  mapSchemaToForms(reportJson, validationSchema);
+  return reportJson;
 };
 
 export const createReportId = (

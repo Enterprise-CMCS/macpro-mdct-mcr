@@ -78,7 +78,6 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={formJson.id}
         formJson={formJson}
-        formSchema={formSchema}
         onSubmit={addEditProgram}
       />
     </Modal>

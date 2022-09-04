@@ -17,12 +17,7 @@ export const StandardFormSection = ({ path, form, onSubmit }: Props) => {
     <Box data-testid="standard-form-section">
       {form && (
         <>
-          <Form
-            id={form.id}
-            formJson={form}
-            formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-            onSubmit={onSubmit}
-          />
+          <Form id={form.id} formJson={form} onSubmit={onSubmit} />
           <ReportPageFooter
             formId={form.id}
             previousRoute={previousRoute}
