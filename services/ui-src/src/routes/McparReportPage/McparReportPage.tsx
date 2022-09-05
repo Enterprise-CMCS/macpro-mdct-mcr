@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router";
 // components
 import { Flex } from "@chakra-ui/react";
 import {
@@ -13,7 +12,7 @@ import {
   Sidebar,
 } from "components";
 // utils
-import { findRoute, useUser } from "utils";
+import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
   PageJson,
@@ -26,15 +25,8 @@ export const McparReportPage = ({ reportRouteArray, page, form }: Props) => {
   const { report, updateReportData, updateReport } = useContext(ReportContext);
   const reportId = report?.reportId;
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
-  const nextRoute = findRoute(reportRouteArray, pathname, "next", "/mcpar");
-  const previousRoute = findRoute(
-    reportRouteArray,
-    pathname,
-    "previous",
-    "/mcpar"
-  );
+  const { previousRoute, nextRoute } = useFindRoute(reportRouteArray, "/mcpar");
 
   useEffect(() => {
     if (!reportId) {
