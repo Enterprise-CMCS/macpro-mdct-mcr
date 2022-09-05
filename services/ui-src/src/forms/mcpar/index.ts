@@ -20,6 +20,6 @@ export const mcparReportJsonFlat: ReportJson = {
   routes: flattenReportRoutesArray(mcparReportJsonNested.routes),
 };
 
-export const nonFormPages = ["/mcpar/dashboard", "/mcpar/get-started"];
+export const nonFormPages = ["/mcpar/get-started"];
 export const isMcparReportFormPage = (pathname: string): boolean =>
   pathname.includes("/mcpar/") && !nonFormPages.includes(pathname);

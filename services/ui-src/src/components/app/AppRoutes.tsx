@@ -34,7 +34,7 @@ export const AppRoutes = ({ userRole }: Props) => {
           <Route path="/help" element={<Help />} />
 
           {/* MCPAR ROUTES */}
-          <Route path="/mcpar/dashboard" element={<Dashboard />} />
+          <Route path="/mcpar" element={<Dashboard />} />
           <Route path="/mcpar/get-started" element={<GetStarted />} />
           {mcparReportJson.routes.map((route: ReportRoute) => {
             return (
@@ -54,8 +54,7 @@ export const AppRoutes = ({ userRole }: Props) => {
             );
           })}
           <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
-          <Route path="/mcpar" element={<Navigate to="/mcpar/dashboard" />} />
-          <Route path="/mcpar/*" element={<Navigate to="/mcpar/dashboard" />} />
+          <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />

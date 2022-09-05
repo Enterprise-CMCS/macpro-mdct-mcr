@@ -18,7 +18,7 @@ export const ReadOnly = ({ verbiage }: Props) => {
   const onSubmit = (formData: AnyObject) => {
     const selectedState = formData["ads-state"];
     localStorage.setItem("selectedState", selectedState);
-    navigate("/mcpar/dashboard");
+    navigate("/mcpar");
   };
 
   return (

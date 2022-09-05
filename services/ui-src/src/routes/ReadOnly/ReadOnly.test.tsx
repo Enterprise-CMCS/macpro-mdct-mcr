@@ -42,7 +42,7 @@ describe("Test Read Only view", () => {
     await fireEvent.change(dropdownInput, { target: { value: "CA" } });
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
-    expect(window.location.pathname).toEqual("/mcpar/dashboard");
+    expect(window.location.pathname).toEqual("/mcpar");
   });
 });
 

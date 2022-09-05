@@ -39,7 +39,7 @@ export const McparReportPage = ({ reportJson, route }: Props) => {
 
   useEffect(() => {
     if (!reportId) {
-      navigate("/mcpar/dashboard");
+      navigate(basePath);
     }
   }, [reportId]);
 

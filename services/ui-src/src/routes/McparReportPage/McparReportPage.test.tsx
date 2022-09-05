@@ -105,7 +105,7 @@ describe("Test McparReportPage view", () => {
 describe("Test McparReportPage functionality", () => {
   test("McparReportPage navigates to dashboard if no reportId", () => {
     render(mcparReportPageWithoutReportId);
-    expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar/dashboard");
+    expect(mockUseNavigate).toHaveBeenCalledWith("/mock");
   });
 
   test("McparReportPage navigates on successful fill", async () => {
