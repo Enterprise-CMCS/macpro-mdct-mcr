@@ -6,7 +6,10 @@ import { McparReportPage } from "routes";
 import { ReportContext } from "components";
 // utils
 import {
+  mockForm,
   mockPageJson,
+  mockPageJsonWithDrawer,
+  mockReportRoutes,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -26,17 +29,27 @@ const mockReportMethods = {
 
 const mockReportContext = {
   ...mockReportMethods,
-  report: {},
+  report: {
+    reportId: "mock-report-id",
+  },
   reportData: {},
   errorMessage: "",
+};
+
+const mockReportContextWithoutReport = {
+  ...mockReportContext,
+  report: {},
 };
 
 const mockUseNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
+}));
+
+jest.mock("react-router", () => ({
   useLocation: jest.fn(() => ({
-    pathname: "/mcpar/program-information/point-of-contact",
+    pathname: "/mcpar/mock-route-2",
   })),
 }));
 
@@ -51,11 +64,10 @@ const standardReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <McparReportPage
-        path={mockPageJson.path}
-        page={mockPageJson.page}
-        form={mockPageJson.form}
+        reportRouteArray={mockReportRoutes}
+        page={mockPageJson}
+        form={mockForm}
       />
-      <div></div>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -64,68 +76,52 @@ const drawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <McparReportPage
-        path={mockPageJson.path}
-        page={mockPageJson.page}
-        form={mockPageJson.form}
+        reportRouteArray={mockReportRoutes}
+        page={mockPageJsonWithDrawer}
+        form={mockForm}
       />
-      <div></div>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const fillOutStandardPageForm = async (form: any) => {
-  // selectors for all the required fields
-  const a2aInput = form.querySelector("[name='apoc-a2a']")!;
-  const a2bInput = form.querySelector("[name='apoc-a2b']")!;
-  const a3aInput = form.querySelector("[name='apoc-a3a']")!;
-  const a3bInput = form.querySelector("[name='apoc-a3b']")!;
-  // fill out form fields
-  await userEvent.type(a2aInput, "mock name");
-  await userEvent.type(a2bInput, "mock@mock.com");
-  await userEvent.type(a3aInput, "mock name");
-  await userEvent.type(a3bInput, "mock@mock.com");
-};
+const mcparReportPageWithoutReportId = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContextWithoutReport}>
+      <McparReportPage
+        reportRouteArray={mockReportRoutes}
+        page={mockPageJson}
+        form={mockForm}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
 
 describe("Test McparReportPage view", () => {
-  test("Standard McparReportPage view renders", () => {
+  test("McparReportPage StandardFormSection view renders", () => {
     render(standardReportPageComponent);
     expect(screen.getByTestId("standard-form-section")).toBeVisible();
   });
 
-  test("Drawer McparReportPage view renders", () => {
+  test("McparReportPage EntityDrawerSection view renders", () => {
     render(drawerReportPageComponent);
     expect(screen.getByTestId("entity-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test McparReportPage next navigation", () => {
-  test("Standard page navigates to next route on successful submission", async () => {
+describe("Test McparReportPage functionality", () => {
+  test("McparReportPage navigates to dashboard if no reportId", () => {
+    render(mcparReportPageWithoutReportId);
+    expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar/dashboard");
+  });
+
+  test("McparReportPage navigates on successful fill", async () => {
     const result = render(standardReportPageComponent);
     const form = result.container;
-    await fillOutStandardPageForm(form);
+    const mockField = form.querySelector("[name='mock-1']")!;
+    await userEvent.type(mockField, "mock input");
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
-    const expectedRoute = "/mcpar/program-information/reporting-period";
-    await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
-    await expect(mockReportMethods.updateReportData).toHaveBeenCalledTimes(1);
-  });
-
-  test("Drawer page navigates to next route at any time", async () => {
-    const result = render(drawerReportPageComponent);
-    const continueButton = result.getByText("Continue");
-    await userEvent.click(continueButton);
-    const expectedRoute = "/mcpar/plan-level-indicators/financial-performance";
-    await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
-  });
-});
-
-describe("Test McparReportPage previous navigation", () => {
-  it("Navigates to previous route on previous button click", async () => {
-    render(standardReportPageComponent);
-    const previousButton = screen.getByText("Previous")!;
-    await userEvent.click(previousButton);
-    const expectedRoute = "/mcpar/get-started";
-    await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
+    expect(mockUseNavigate).toHaveBeenLastCalledWith("/mcpar/mock-route-3");
   });
 });
 

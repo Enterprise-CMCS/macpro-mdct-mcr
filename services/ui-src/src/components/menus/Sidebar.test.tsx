@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 //components
 import { Sidebar } from "components";
 
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useLocation: jest.fn(() => ({
     pathname: "/mcpar/review-and-submit",
   })),

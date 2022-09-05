@@ -5,6 +5,7 @@ import { axe } from "jest-axe";
 import { ReportContext, EntityDrawerSection } from "components";
 // utils
 import {
+  mockForm,
   mockPageJsonWithDrawer,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -44,9 +45,8 @@ const entityDrawerSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <EntityDrawerSection
-        path={mockPageJsonWithDrawer.path}
-        form={mockPageJsonWithDrawer.form}
-        drawer={mockPageJsonWithDrawer.page.drawer}
+        form={mockForm}
+        drawer={mockPageJsonWithDrawer.drawer}
         onSubmit={mockOnSubmit}
       />
     </ReportContext.Provider>
@@ -63,7 +63,6 @@ describe("Test EntityDrawerSection view", () => {
 describe("Test EntityDrawerSection drawer operation", () => {
   test("Drawer opens correctly", async () => {
     render(entityDrawerSectionComponent);
-
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
     await expect(screen.getByRole("dialog")).toBeVisible();

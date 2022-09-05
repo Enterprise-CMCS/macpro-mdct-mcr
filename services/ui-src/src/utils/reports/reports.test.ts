@@ -45,24 +45,30 @@ const mockReportJson = [
 ];
 
 describe("Test flattenReportRoutesArray", () => {
-  const mockExpectedResult = [
+  const mockExpectedResult: any = [
     {
       name: "mock1",
-      formId: "mockId1",
       path: "/base/mock1",
-      pageJson: mockReportJson[0],
+      form: {
+        id: "mockId1",
+        fields: [mockFormField],
+      },
     },
     {
       name: "mock2a",
-      formId: "mockId2a",
       path: "/base/mock2/mock2a",
-      pageJson: mockReportJson[1],
+      form: {
+        id: "mockId2a",
+        fields: [mockFormField],
+      },
     },
     {
       name: "mock2bi",
-      formId: "mockId2bi",
       path: "/base/mock2/mock2b/mock2bi",
-      pageJson: mockReportJson[2],
+      form: {
+        id: "mockId2bi",
+        fields: [mockFormField],
+      },
     },
   ];
   it("flattenReportRoutesArray", () => {

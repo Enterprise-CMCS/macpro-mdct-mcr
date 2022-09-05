@@ -1,11 +1,14 @@
-import { object, string } from "yup";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { Form } from "components";
+import { text } from "utils/forms/schemas";
 
 const mockOnSubmit = jest.fn();
 
+const mockValidationSchema = {
+  testfield: text(),
+};
 const mockFormJson = {
   id: "mockForm",
   fields: [
@@ -18,11 +21,8 @@ const mockFormJson = {
       },
     },
   ],
+  validation: mockValidationSchema,
 };
-
-const mockValidationSchema = object({
-  testfield: string().required("Test field is required"),
-});
 
 const formComponent = (
   <>

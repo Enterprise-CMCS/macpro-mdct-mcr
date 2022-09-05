@@ -98,7 +98,7 @@ describe("Test /mcpar/dashboard view with reports", () => {
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith(
-      "../../mcpar/program-information/point-of-contact"
+      "/mcpar/program-information/point-of-contact"
     );
   });
 

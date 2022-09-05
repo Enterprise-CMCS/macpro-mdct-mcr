@@ -1,9 +1,5 @@
 [
   {
-    "name": "Get Started",
-    "path": "/mcpar/get-started"
-  },
-  {
     "name": "A: Program Information",
     "path": "/mcpar/program-information",
     "children": [

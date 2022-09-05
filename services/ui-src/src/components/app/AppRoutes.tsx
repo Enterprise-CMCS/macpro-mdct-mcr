@@ -43,7 +43,7 @@ export const AppRoutes = ({ userRole }: Props) => {
                 path={route.path}
                 element={
                   <McparReportPage
-                    path={route.path}
+                    reportRouteArray={mcparRoutes}
                     page={route.page || undefined}
                     form={route.form || undefined}
                   />

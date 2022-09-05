@@ -116,6 +116,44 @@ export const mockBannerDataEmpty = {
   endDate: "",
 };
 
+// FORM
+
+export const mockFormField = {
+  id: "mock-1",
+  type: "text",
+  props: {
+    label: "mock field",
+  },
+};
+
+export const mockForm = {
+  id: "mock-form-id",
+  fields: [mockFormField],
+};
+
+export const mockPageJson = {
+  intro: {
+    section: "mock section",
+    subsection: "mock subsection",
+  },
+};
+
+export const mockPageJsonWithDrawer = {
+  intro: {
+    section: "mock section",
+    subsection: "mock subsection",
+  },
+  drawer: {
+    dashboard: {
+      title: "Mock dashboard title",
+      entityType: "plans",
+    },
+    drawerTitle: "Mock drawer title",
+  },
+};
+
+// REPORT
+
 export const mockReportDetails = {
   state: "AB",
   reportId: "testReportId",
@@ -139,37 +177,23 @@ export const mockReportStatus = {
   lastAlteredBy: "Thelonious States",
 };
 
-export const mockPageJson = {
-  path: "/mock-route",
-  page: {
-    intro: {
-      section: "mock section",
-      subsection: "mock subsection",
-    },
+export const mockReportRoutes = [
+  {
+    name: "mock-route-1",
+    path: "/mcpar/mock-route-1",
+    page: mockPageJson,
+    form: mockForm,
   },
-  form: {
-    id: "mock-form-id",
-    fields: [],
+  {
+    name: "mock-route-2",
+    path: "/mcpar/mock-route-2",
+    page: mockPageJson,
+    form: mockForm,
   },
-};
-
-export const mockPageJsonWithDrawer = {
-  path: "/mock-route",
-  page: {
-    intro: {
-      section: "mock section",
-      subsection: "mock subsection",
-    },
-    drawer: {
-      dashboard: {
-        title: "Mock dashboard title",
-        entityType: "plans",
-      },
-      drawerTitle: "Mock drawer title",
-    },
+  {
+    name: "mock-route-3",
+    path: "/mcpar/mock-route-3",
+    page: mockPageJson,
+    form: mockForm,
   },
-  form: {
-    id: "mock-form-id",
-    fields: [],
-  },
-};
+];

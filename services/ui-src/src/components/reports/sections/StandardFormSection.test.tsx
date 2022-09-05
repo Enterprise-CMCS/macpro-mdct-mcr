@@ -3,7 +3,7 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext, StandardFormSection } from "components";
 // utils
-import { mockPageJson, RouterWrappedComponent } from "utils/testing/setupJest";
+import { mockForm, RouterWrappedComponent } from "utils/testing/setupJest";
 
 // MOCKS
 
@@ -39,11 +39,7 @@ const mockOnSubmit = jest.fn();
 const standardFormSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <StandardFormSection
-        path={mockPageJson.path}
-        form={mockPageJson.form}
-        onSubmit={mockOnSubmit}
-      />
+      <StandardFormSection form={mockForm} onSubmit={mockOnSubmit} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );

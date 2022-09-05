@@ -1,27 +1,15 @@
 import { useState } from "react";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import { ReportDrawer, ReportPageFooter } from "components";
+import { ReportDrawer } from "components";
 // utils
-import { findRoute } from "utils";
 import { FormJson, AnyObject } from "types";
-// form data
-import { mcparRoutesFlatArray as mcparRoutes } from "forms/mcpar";
 
-export const EntityDrawerSection = ({
-  path,
-  form,
-  drawer,
-  onSubmit,
-}: Props) => {
+export const EntityDrawerSection = ({ form, drawer, onSubmit }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
-
-  // make routes
-  const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
-  const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
 
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
@@ -62,13 +50,11 @@ export const EntityDrawerSection = ({
           data-testid="report-drawer"
         />
       )}
-      <ReportPageFooter previousRoute={previousRoute} nextRoute={nextRoute} />
     </Box>
   );
 };
 
 interface Props {
-  path: string;
   form?: FormJson;
   drawer: AnyObject;
   onSubmit: Function;
