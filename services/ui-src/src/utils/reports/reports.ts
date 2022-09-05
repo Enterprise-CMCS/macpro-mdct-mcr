@@ -1,12 +1,12 @@
-import { AnyObject, ReportJson, ReportRoute } from "types";
+import { AnyObject, ReportRoute } from "types";
 import { convertDateUtcToEt } from "utils/other/time";
 
 // returns flattened array of valid routes for given reportJson
 export const flattenReportRoutesArray = (
-  reportJson: ReportJson
-): ReportJson => {
-  const routesArray: ReportJson = [];
-  const mapRoutesToArray = (reportRoutes: ReportJson) => {
+  reportJson: ReportRoute[]
+): ReportRoute[] => {
+  const routesArray: ReportRoute[] = [];
+  const mapRoutesToArray = (reportRoutes: ReportRoute[]) => {
     reportRoutes.map((route: ReportRoute) => {
       // if children, recurse; if none, push to routes array
       if (route?.children) {
@@ -21,10 +21,10 @@ export const flattenReportRoutesArray = (
 };
 
 export const addValidationToReportJson = (
-  reportJson: ReportJson,
+  reportJson: ReportRoute[],
   validationSchema: AnyObject
-): ReportJson => {
-  const mapSchemaToForms = (routes: ReportJson, schema: AnyObject) => {
+): ReportRoute[] => {
+  const mapSchemaToForms = (routes: ReportRoute[], schema: AnyObject) => {
     routes.map((route: ReportRoute) => {
       // if children, recurse; if none, push to routes array
       if (route?.children) {

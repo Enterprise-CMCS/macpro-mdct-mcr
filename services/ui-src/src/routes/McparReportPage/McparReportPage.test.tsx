@@ -6,10 +6,7 @@ import { McparReportPage } from "routes";
 import { ReportContext } from "components";
 // utils
 import {
-  mockForm,
-  mockPageJson,
-  mockPageJsonWithDrawer,
-  mockReportRoutes,
+  mockReportJson,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -49,7 +46,7 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("react-router", () => ({
   useLocation: jest.fn(() => ({
-    pathname: "/mcpar/mock-route-2",
+    pathname: "/mock/mock-route-2",
   })),
 }));
 
@@ -64,9 +61,8 @@ const standardReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <McparReportPage
-        reportRouteArray={mockReportRoutes}
-        page={mockPageJson}
-        form={mockForm}
+        reportJson={mockReportJson}
+        route={mockReportJson.routes[0]}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -76,9 +72,8 @@ const drawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <McparReportPage
-        reportRouteArray={mockReportRoutes}
-        page={mockPageJsonWithDrawer}
-        form={mockForm}
+        reportJson={mockReportJson}
+        route={mockReportJson.routes[1]}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -88,9 +83,8 @@ const mcparReportPageWithoutReportId = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
       <McparReportPage
-        reportRouteArray={mockReportRoutes}
-        page={mockPageJson}
-        form={mockForm}
+        reportJson={mockReportJson}
+        route={mockReportJson.routes[0]}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -121,7 +115,7 @@ describe("Test McparReportPage functionality", () => {
     await userEvent.type(mockField, "mock input");
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
-    expect(mockUseNavigate).toHaveBeenLastCalledWith("/mcpar/mock-route-3");
+    expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock/mock-route-3");
   });
 });
 

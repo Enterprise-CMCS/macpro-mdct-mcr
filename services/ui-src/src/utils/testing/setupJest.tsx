@@ -154,6 +154,34 @@ export const mockPageJsonWithDrawer = {
 
 // REPORT
 
+export const mockReportRoutes = [
+  {
+    name: "mock-route-1",
+    path: "/mock/mock-route-1",
+    page: mockPageJson,
+    form: mockForm,
+  },
+  {
+    name: "mock-route-2",
+    path: "/mock/mock-route-2",
+    page: mockPageJsonWithDrawer,
+    form: mockForm,
+  },
+  {
+    name: "mock-route-3",
+    path: "/mock/mock-route-3",
+    page: mockPageJson,
+    form: mockForm,
+  },
+];
+
+export const mockReportJson = {
+  name: "mock-report",
+  basePath: "/mock",
+  version: "0.0.0",
+  routes: mockReportRoutes,
+};
+
 export const mockReportDetails = {
   state: "AB",
   reportId: "testReportId",
@@ -176,24 +204,3 @@ export const mockReportStatus = {
   lastAltered: "162515200000",
   lastAlteredBy: "Thelonious States",
 };
-
-export const mockReportRoutes = [
-  {
-    name: "mock-route-1",
-    path: "/mcpar/mock-route-1",
-    page: mockPageJson,
-    form: mockForm,
-  },
-  {
-    name: "mock-route-2",
-    path: "/mcpar/mock-route-2",
-    page: mockPageJson,
-    form: mockForm,
-  },
-  {
-    name: "mock-route-3",
-    path: "/mcpar/mock-route-3",
-    page: mockPageJson,
-    form: mockForm,
-  },
-];

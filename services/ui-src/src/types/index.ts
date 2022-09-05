@@ -29,7 +29,13 @@ export interface UserContextI {
 
 // REPORT STRUCTURE
 
-export type ReportJson = ReportRoute[];
+export interface ReportJson {
+  id?: string;
+  name: string;
+  basePath: string;
+  version: string;
+  routes: ReportRoute[];
+}
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 

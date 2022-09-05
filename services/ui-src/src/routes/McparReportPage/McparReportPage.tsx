@@ -16,27 +16,32 @@ import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
   PageJson,
+  ReportJson,
   ReportRoute,
   ReportStatus,
   UserRoles,
 } from "types";
 
-export const McparReportPage = ({ reportRouteArray, page, form }: Props) => {
+export const McparReportPage = ({ reportJson, route }: Props) => {
+  // get report, form, and page related-data
   const { report, updateReportData, updateReport } = useContext(ReportContext);
   const reportId = report?.reportId;
-  const navigate = useNavigate();
+  const { basePath, routes } = reportJson;
+  const { form, page } = route;
 
-  const { previousRoute, nextRoute } = useFindRoute(reportRouteArray, "/mcpar");
+  // get user state, name, role
+  const { user } = useUser();
+  const { full_name, state, userRole } = user ?? {};
+
+  // get next and previous routes
+  const navigate = useNavigate();
+  const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
 
   useEffect(() => {
     if (!reportId) {
       navigate("/mcpar/dashboard");
     }
   }, [reportId]);
-
-  // get user's state
-  const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
@@ -71,14 +76,14 @@ export const McparReportPage = ({ reportRouteArray, page, form }: Props) => {
   };
 
   return (
-    <ReportPage data-testid={form?.id}>
+    <ReportPage data-testid={form.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(page, form)}
           <ReportPageFooter
-            formId={form?.id}
+            formId={form.id}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
           />
@@ -89,9 +94,8 @@ export const McparReportPage = ({ reportRouteArray, page, form }: Props) => {
 };
 
 interface Props {
-  reportRouteArray: ReportRoute[];
-  page?: PageJson;
-  form?: FormJson;
+  reportJson: ReportJson;
+  route: ReportRoute;
 }
 
 const sx = {
