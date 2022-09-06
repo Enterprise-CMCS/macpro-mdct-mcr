@@ -4,8 +4,10 @@ export const bannerId = "admin-banner-id";
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 
-// STATES
+// FIELDS
+export const dropdownDefaultOptionText = "- Select an option -";
 
+// STATES
 export enum States {
   AL = "Alabama",
   AK = "Alaska",

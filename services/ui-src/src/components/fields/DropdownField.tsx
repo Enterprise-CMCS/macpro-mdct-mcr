@@ -6,6 +6,7 @@ import { Box } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 import { InputChangeEvent, AnyObject, DropdownOptions } from "types";
+import { dropdownDefaultOptionText } from "../../constants";
 
 export const DropdownField = ({
   name,
@@ -16,7 +17,9 @@ export const DropdownField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [displayValue, setDisplayValue] = useState<string>("");
+  const [displayValue, setDisplayValue] = useState<string>(
+    dropdownDefaultOptionText
+  );
 
   // get form context and register field
   const form = useFormContext();

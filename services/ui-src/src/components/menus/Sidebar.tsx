@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { useLocation } from "react-router";
 // components
 import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
-// data
-import mcparRouteStructure from "forms/mcpar/reportStructure";
-import { isMcparReportPage } from "forms/mcpar";
+import { isMcparReportFormPage, mcparReportJsonNested } from "forms/mcpar";
 
 interface LinkItemProps {
   name: string;
@@ -23,7 +22,7 @@ export const Sidebar = () => {
 
   return (
     <>
-      {isMcparReportPage(pathname) && (
+      {isMcparReportFormPage(pathname) && (
         <Box
           id="sidebar"
           sx={sx.root}
@@ -52,7 +51,7 @@ export const Sidebar = () => {
             sx={sx.navSectionsBox}
             className={`${mqClasses} nav-sections-box`}
           >
-            {mcparRouteStructure.map((section) => (
+            {mcparReportJsonNested.routes.map((section) => (
               <NavSection key={section.name} section={section} level={1} />
             ))}
           </Box>

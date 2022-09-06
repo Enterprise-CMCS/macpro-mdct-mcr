@@ -12,6 +12,7 @@ import {
 } from "components";
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
+import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
@@ -97,7 +98,10 @@ export const initializeDropdownFields = (fields: FormField[]) => {
     // if first option is not already a blank default value
     if (field?.props?.options[0].value !== "") {
       // add initial blank option
-      field?.props?.options.splice(0, 0, { label: "", value: "" });
+      field?.props?.options.splice(0, 0, {
+        label: dropdownDefaultOptionText,
+        value: "",
+      });
     }
   });
   return fields;
