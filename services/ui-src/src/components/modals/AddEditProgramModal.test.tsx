@@ -73,12 +73,12 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditProgramModals top close button can be clicked", () => {
-    fireEvent.click(screen.queryAllByText("Close")[0]);
+    fireEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("AddEditProgramModals bottom close button can be clicked", () => {
-    fireEvent.click(screen.queryAllByText("Close")[1]);
+  test("AddEditProgramModals bottom cancel button can be clicked", () => {
+    fireEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });

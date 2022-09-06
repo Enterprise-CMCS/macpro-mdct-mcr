@@ -23,10 +23,10 @@ beforeEach(() => {
 describe("Admin banner integration tests", () => {
   it("Fills out form and writes banner without error", () => {
     // selectors for all the required fields
-    const titleInput = "[name='abf-title']";
-    const descriptionInput = "[name='abf-description']";
-    const startDateInput = "[name='abf-startDate']";
-    const endDateInput = "[name='abf-endDate']";
+    const titleInput = "[name='aab-title']";
+    const descriptionInput = "[name='aab-description']";
+    const startDateInput = "[name='aab-startDate']";
+    const endDateInput = "[name='aab-endDate']";
 
     // fill out form fields
     cy.get(titleInput).type("test-title");

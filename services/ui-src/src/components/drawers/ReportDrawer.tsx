@@ -4,8 +4,6 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { Drawer, Form } from "components";
 // types
 import { FormJson } from "types";
-// form data
-import { reportSchema } from "forms/mcpar/reportSchema";
 
 export const ReportDrawer = ({
   drawerDisclosure,
@@ -22,12 +20,7 @@ export const ReportDrawer = ({
       drawerInfo={drawerInfo}
       {...props}
     >
-      <Form
-        id={form.id}
-        formJson={form}
-        formSchema={reportSchema[form.id as keyof typeof reportSchema]}
-        onSubmit={onSubmit}
-      />
+      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
           <Button

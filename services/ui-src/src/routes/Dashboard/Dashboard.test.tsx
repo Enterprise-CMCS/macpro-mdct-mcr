@@ -125,7 +125,7 @@ describe("Test /mcpar/dashboard view with reports (desktop view)", () => {
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith(
-      "../../mcpar/program-information/point-of-contact"
+      "/mcpar/program-information/point-of-contact"
     );
   });
 
@@ -240,7 +240,7 @@ describe("Test /mcpar/dashboard view with reports (mobile view)", () => {
   });
 });
 
-describe("Test /mcpar/dashboard with admin user", () => {
+describe("Test dashboard with admin user", () => {
   test("Admin user can delete reports", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     await act(async () => {
@@ -252,7 +252,7 @@ describe("Test /mcpar/dashboard with admin user", () => {
   });
 });
 
-describe("Test /mcpar/dashboard with no activeState", () => {
+describe("Test dashboard with no activeState", () => {
   test("dashboard reroutes to / with no active state", async () => {
     mockedUseUser.mockReturnValue(mockNoUser);
     await act(async () => {
@@ -394,7 +394,7 @@ describe("Test /mcpar/dashboard with no reports (mobile)", () => {
   });
 });
 
-describe("Test /mcpar/dashboard with error", () => {
+describe("Test dashboard with error", () => {
   test("Error alert shows when there is an error", async () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     mockedUseUser.mockReturnValue(mockStateUser);

@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import {
   AddEditProgramModal,
-  BasicPage,
   DeleteProgramModal,
   ErrorAlert,
+  PageTemplate,
   ReportContext,
   Table,
 } from "components";
@@ -78,8 +78,8 @@ export const Dashboard = () => {
       reportId: reportId,
     };
     setReport(reportDetails);
-    const reportFirstPage = "../../mcpar/program-information/point-of-contact";
-    navigate(reportFirstPage);
+    const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
+    navigate(reportFirstPagePath);
   };
 
   // add/edit program modal disclosure
@@ -110,7 +110,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <BasicPage sx={sx.layout}>
+    <PageTemplate type="report" sx={sx.layout}>
       <Box>
         <Link href="/" sx={sx.returnLink}>
           <ArrowIcon title="returnHome" direction="left" />
@@ -297,7 +297,7 @@ export const Dashboard = () => {
           onClose: deleteProgramModalOnCloseHandler,
         }}
       />
-    </BasicPage>
+    </PageTemplate>
   );
 };
 
