@@ -1,14 +1,28 @@
 import React from "react";
 // components
 import { Box, Flex } from "@chakra-ui/react";
-// types
+// utils
+import { makeMediaQueryClasses } from "utils";
 import { AnyObject } from "types";
 
-export const PageTemplate = ({ children, sxOverride, ...props }: Props) => {
+export const PageTemplate = ({
+  type = "standard",
+  children,
+  sxOverride,
+  ...props
+}: Props) => {
+  const mqClasses = makeMediaQueryClasses();
   return (
     <section>
-      <Box sx={{ ...sx.contentBox, ...sxOverride }} {...props}>
-        <Flex sx={sx.contentFlex} className="contentFlex">
+      <Box
+        sx={{ ...sx.contentBox, ...sxOverride }}
+        className={`${type} ${mqClasses}`}
+        {...props}
+      >
+        <Flex
+          sx={sx.contentFlex}
+          className={`contentFlex ${type} ${mqClasses}`}
+        >
           {children}
         </Flex>
       </Box>
@@ -17,6 +31,7 @@ export const PageTemplate = ({ children, sxOverride, ...props }: Props) => {
 };
 
 interface Props {
+  type?: "standard" | "report";
   children: React.ReactNode;
   sxOverride?: AnyObject;
   [key: string]: any;
@@ -24,12 +39,22 @@ interface Props {
 
 const sx = {
   contentBox: {
-    flexShrink: "0",
-    paddingTop: "2rem",
+    "&.standard": {
+      flexShrink: "0",
+      paddingTop: "2rem",
+    },
+    "&.report": {
+      height: "100%",
+    },
   },
   contentFlex: {
     flexDirection: "column",
-    margin: "5.5rem auto 0",
-    maxWidth: "basicPageWidth",
+    "&.standard": {
+      maxWidth: "basicPageWidth",
+      margin: "5.5rem auto 0",
+    },
+    "&.report": {
+      height: "100%",
+    },
   },
 };

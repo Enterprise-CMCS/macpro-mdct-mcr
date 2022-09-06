@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  ReportPage,
   EntityDrawerSection,
-  StandardFormSection,
+  PageTemplate,
   ReportPageIntro,
   ReportPageFooter,
   Sidebar,
+  StandardFormSection,
 } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
@@ -76,7 +76,7 @@ export const McparReportPage = ({ reportJson, route }: Props) => {
   };
 
   return (
-    <ReportPage data-testid={form.id}>
+    <PageTemplate type="report" data-testid={form.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>
@@ -89,7 +89,7 @@ export const McparReportPage = ({ reportJson, route }: Props) => {
           />
         </Flex>
       </Flex>
-    </ReportPage>
+    </PageTemplate>
   );
 };
 

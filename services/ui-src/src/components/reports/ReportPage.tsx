@@ -2,13 +2,11 @@ import React from "react";
 // components
 import { Box, Flex } from "@chakra-ui/react";
 // utils
-
 import { makeMediaQueryClasses } from "utils";
 import { AnyObject } from "types";
 
 export const ReportPage = ({ children, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-
   return (
     <section>
       <Box
@@ -31,9 +29,7 @@ interface Props {
 }
 
 const sx = {
-  contentBox: {
-    height: "100%",
-  },
+  contentBox: {},
   contentFlex: {
     height: "100%",
     flexDirection: "column",
