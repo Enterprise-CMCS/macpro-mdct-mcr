@@ -22,7 +22,7 @@ import {
   UserRoles,
 } from "types";
 
-export const McparReportPage = ({ reportJson, route }: Props) => {
+export const ReportPage = ({ reportJson, route }: Props) => {
   // get report, form, and page related-data
   const { report, updateReportData, updateReport } = useContext(ReportContext);
   const reportId = report?.reportId;

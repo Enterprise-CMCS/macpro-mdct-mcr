@@ -8,5 +8,5 @@ export { Profile } from "./Profile/Profile";
 // mcpar
 export { GetStarted } from "./GetStarted/GetStarted";
 export { Dashboard } from "./Dashboard/Dashboard";
-export { McparReportPage } from "./McparReportPage/McparReportPage";
+export { ReportPage } from "./ReportPage/ReportPage";
 export { ReviewSubmit } from "./ReviewSubmit/ReviewSubmit";

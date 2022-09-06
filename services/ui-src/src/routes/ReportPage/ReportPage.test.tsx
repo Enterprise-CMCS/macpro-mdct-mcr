@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { McparReportPage } from "routes";
+import { ReportPage } from "routes";
 import { ReportContext } from "components";
 // utils
 import {
@@ -60,7 +60,7 @@ jest.mock("utils", () => ({
 const standardReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <McparReportPage
+      <ReportPage
         reportJson={mockReportJson}
         route={mockReportJson.routes[0]}
       />
@@ -71,7 +71,7 @@ const standardReportPageComponent = (
 const drawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <McparReportPage
+      <ReportPage
         reportJson={mockReportJson}
         route={mockReportJson.routes[1]}
       />
@@ -79,10 +79,10 @@ const drawerReportPageComponent = (
   </RouterWrappedComponent>
 );
 
-const mcparReportPageWithoutReportId = (
+const reportPageWithoutReportId = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
-      <McparReportPage
+      <ReportPage
         reportJson={mockReportJson}
         route={mockReportJson.routes[0]}
       />
@@ -90,25 +90,25 @@ const mcparReportPageWithoutReportId = (
   </RouterWrappedComponent>
 );
 
-describe("Test McparReportPage view", () => {
-  test("McparReportPage StandardFormSection view renders", () => {
+describe("Test ReportPage view", () => {
+  test("ReportPage StandardFormSection view renders", () => {
     render(standardReportPageComponent);
     expect(screen.getByTestId("standard-form-section")).toBeVisible();
   });
 
-  test("McparReportPage EntityDrawerSection view renders", () => {
+  test("ReportPage EntityDrawerSection view renders", () => {
     render(drawerReportPageComponent);
     expect(screen.getByTestId("entity-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test McparReportPage functionality", () => {
-  test("McparReportPage navigates to dashboard if no reportId", () => {
-    render(mcparReportPageWithoutReportId);
+describe("Test ReportPage functionality", () => {
+  test("ReportPage navigates to dashboard if no reportId", () => {
+    render(reportPageWithoutReportId);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mock");
   });
 
-  test("McparReportPage navigates on successful fill", async () => {
+  test("ReportPage navigates on successful fill", async () => {
     const result = render(standardReportPageComponent);
     const form = result.container;
     const mockField = form.querySelector("[name='mock-1']")!;
@@ -119,7 +119,7 @@ describe("Test McparReportPage functionality", () => {
   });
 });
 
-describe("Test McparReportPage accessibility", () => {
+describe("Test ReportPage accessibility", () => {
   test("Standard page should not have basic accessibility issues", async () => {
     const { container } = render(standardReportPageComponent);
     const results = await axe(container);
