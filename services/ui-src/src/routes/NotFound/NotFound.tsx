@@ -1,6 +1,6 @@
 // components
 import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
-import { BasicPage } from "components";
+import { PageTemplate } from "components";
 // utils
 import { createEmailLink } from "utils/other/email";
 import { makeMediaQueryClasses } from "utils";
@@ -14,7 +14,7 @@ export const NotFound = () => {
   const { preLinkText, cmsEmail, postLinkText } = emailText;
 
   return (
-    <BasicPage data-testid="404-view" sxOverride={sx.layout}>
+    <PageTemplate data-testid="404-view" sxOverride={sx.layout}>
       <Flex sx={sx.heading}>
         <Image
           src={warningIcon}
@@ -35,7 +35,7 @@ export const NotFound = () => {
         {postLinkText}
       </Text>
       <Text>{body}</Text>
-    </BasicPage>
+    </PageTemplate>
   );
 };
 

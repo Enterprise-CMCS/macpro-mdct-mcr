@@ -4,6 +4,7 @@ import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
 import { DropdownField } from "components";
+import { dropdownDefaultOptionText } from "../../constants";
 
 const mockRhfMethods = {
   register: () => {},
@@ -28,6 +29,7 @@ const dropdownComponent = (
     label="test-label"
     data-testid="test-dropdown-field"
     options={[
+      { label: dropdownDefaultOptionText, value: "" },
       { label: "Option 1", value: "a" },
       { label: "Option 2", value: "b" },
       { label: "Option 3", value: "c" },
@@ -51,10 +53,10 @@ describe("Test DropdownField basic functionality", () => {
     render(dropdownComponent);
     const dropdown = screen.getByTestId("test-dropdown-field");
     const option0 = dropdown.children.item(0) as HTMLOptionElement;
-    const option1 = dropdown.children.item(1) as HTMLOptionElement;
+    const option2 = dropdown.children.item(2) as HTMLOptionElement;
     expect(option0.selected).toBe(true);
     await userEvent.selectOptions(dropdown, "b");
-    expect(option1.selected).toBe(true);
+    expect(option2.selected).toBe(true);
   });
 });
 

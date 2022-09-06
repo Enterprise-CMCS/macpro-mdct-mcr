@@ -4,7 +4,7 @@ import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminBannerContext,
   Banner,
-  BasicPage,
+  PageTemplate,
   TemplateCard,
 } from "components";
 import { AdminDashSelector } from "routes";
@@ -31,7 +31,7 @@ export const Home = () => {
       <Collapse in={showBanner}>
         <Banner bannerData={bannerData} />
       </Collapse>
-      <BasicPage sx={sx.layout} data-testid="home-view">
+      <PageTemplate sx={sx.layout} data-testid="home-view">
         {/* show standard view to state users */}
         {userRole === UserRoles.STATE_USER ||
         userRole === UserRoles.STATE_REP ? (
@@ -68,7 +68,7 @@ export const Home = () => {
           // show read-only view to non-state users
           <AdminDashSelector verbiage={verbiage.readOnly} />
         )}
-      </BasicPage>
+      </PageTemplate>
     </>
   );
 };

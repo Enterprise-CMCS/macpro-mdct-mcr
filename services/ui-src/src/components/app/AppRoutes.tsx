@@ -6,12 +6,11 @@ import {
   GetStarted,
   Help,
   Home,
-  McparReportPage,
   NotFound,
   Profile,
   ReviewSubmit,
 } from "routes";
-import { AdminBannerProvider } from "components";
+import { AdminBannerProvider, ReportPage } from "components";
 import { mcparReportJsonFlat as mcparReportJson } from "forms/mcpar";
 
 // utils
@@ -44,10 +43,7 @@ export const AppRoutes = ({ userRole }: Props) => {
                   key={route.path}
                   path={route.path}
                   element={
-                    <McparReportPage
-                      reportJson={mcparReportJson}
-                      route={route}
-                    />
+                    <ReportPage reportJson={mcparReportJson} route={route} />
                   }
                 />
               )

@@ -41,10 +41,10 @@ export { Form } from "./forms/Form";
 // icons
 export { Icon } from "./icons/Icon";
 // layout
-export { BasicPage } from "./layout/BasicPage";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { IntroSection } from "./layout/IntroSection";
+export { PageTemplate } from "./layout/PageTemplate";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";

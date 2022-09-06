@@ -1,12 +1,12 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { BasicPage, EmailCard, FaqAccordion } from "components";
+import { EmailCard, FaqAccordion, PageTemplate } from "components";
 import verbiage from "verbiage/pages/help";
 
 export const Help = () => {
   const { intro, cards, accordionItems } = verbiage;
   return (
-    <BasicPage data-testid="help-view">
+    <PageTemplate data-testid="help-view">
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
@@ -28,7 +28,7 @@ export const Help = () => {
       <Box sx={sx.faqAccordionBox}>
         <FaqAccordion accordionItems={accordionItems} />
       </Box>
-    </BasicPage>
+    </PageTemplate>
   );
 };
 
