@@ -8,8 +8,8 @@ import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
 import { FormJson } from "types";
 // data
-import formJson from "forms/internal/addAdminBanner/addAdminBanner.json";
-import formSchema from "forms/internal/addAdminBanner/addAdminBanner.schema";
+import formJson from "forms/addAdminBanner/addAdminBanner.json";
+import formSchema from "forms/addAdminBanner/addAdminBanner.schema";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();

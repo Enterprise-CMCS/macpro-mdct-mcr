@@ -5,10 +5,10 @@ import { Form } from "components";
 // types
 import { AnyObject, FormJson } from "types";
 // form
-import formJson from "forms/internal/adminDashSelector/adminDashSelector";
-import formSchema from "forms/internal/adminDashSelector/adminDashSelector.schema";
+import formJson from "forms/adminDashSelector/adminDashSelector";
+import formSchema from "forms/adminDashSelector/adminDashSelector.schema";
 
-export const ReadOnly = ({ verbiage }: Props) => {
+export const AdminDashSelector = ({ verbiage }: Props) => {
   const navigate = useNavigate();
 
   // add validation to formJson

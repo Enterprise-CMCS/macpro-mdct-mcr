@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
-import { ReadOnly } from "routes";
+import { AdminDashSelector } from "routes";
 // utils
 import { mockAdminUser, RouterWrappedComponent } from "utils/testing/setupJest";
 import { useUser } from "utils";
@@ -17,26 +17,26 @@ const mockVerbiage = {
   buttonLabel: "mock button label",
 };
 
-const readOnlyView = (
+const adminDashSelectorView = (
   <RouterWrappedComponent>
-    <ReadOnly verbiage={mockVerbiage} />
+    <AdminDashSelector verbiage={mockVerbiage} />
   </RouterWrappedComponent>
 );
 
 // TESTS
 
-describe("Test Read Only view", () => {
+describe("Test AdminDashSelector view", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockAdminUser);
   });
 
-  test("Check that Read Only view renders", () => {
-    render(readOnlyView);
+  test("Check that AdminDashSelector view renders", () => {
+    render(adminDashSelectorView);
     expect(screen.getByTestId("read-only-view")).toBeVisible();
   });
 
   test("Form submits correctly", async () => {
-    const result = render(readOnlyView);
+    const result = render(adminDashSelectorView);
     const form = result.container;
     const dropdownInput = form.querySelector("[name='ads-state']")!;
     await fireEvent.change(dropdownInput, { target: { value: "CA" } });
@@ -46,9 +46,9 @@ describe("Test Read Only view", () => {
   });
 });
 
-describe("Test Read Only view accessibility", () => {
+describe("Test AdminDashSelector view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(readOnlyView);
+    const { container } = render(adminDashSelectorView);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

@@ -1,4 +1,4 @@
-import { States } from "../../../constants";
+import { States } from "../../constants";
 import { DropdownOptions } from "types";
 
 // create dropdown options
