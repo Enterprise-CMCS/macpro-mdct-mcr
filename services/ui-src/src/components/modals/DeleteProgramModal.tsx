@@ -30,7 +30,7 @@ export const DeleteProgramModal = ({
         closeButtonText: "Cancel",
       }}
     >
-      <Text>
+      <Text data-testid="delete-program-modal-text">
         You will lose all information entered for this program. Are you sure you
         want to proceed?
       </Text>
