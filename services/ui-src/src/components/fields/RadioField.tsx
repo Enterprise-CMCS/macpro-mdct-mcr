@@ -18,7 +18,7 @@ export const RadioField = ({
     <Box sx={sxOverride} className={mqClasses}>
       <ChoiceListField
         name={name}
-        type={"radio"}
+        type="radio"
         label={label}
         choices={choices}
         {...props}

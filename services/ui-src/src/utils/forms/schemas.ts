@@ -16,7 +16,7 @@ export const number = () =>
       test: (val) =>
         numberSchema()
           .transform((_value, originalValue) => {
-            return Number(originalValue.replace(/[,.]/g, ""));
+            return Number(originalValue.toString().replace(/[,.]/g, ""));
           })
           .isValidSync(val) || validNAValues.includes(val),
     })
@@ -38,8 +38,8 @@ export const urlOptional = () => url().notRequired();
 // DATE
 export const date = () =>
   string()
-    .matches(dateFormatRegex, error.INVALID_DATE)
-    .required(error.REQUIRED_GENERIC);
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateFormatRegex, error.INVALID_DATE);
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
   date().test(
@@ -64,6 +64,7 @@ export const checkbox = () =>
     .of(text())
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () => checkbox().notRequired();
+export const checkboxSingle = () => array();
 
 // RADIO
 export const radio = () =>
