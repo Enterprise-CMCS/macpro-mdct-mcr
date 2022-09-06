@@ -37,25 +37,23 @@ export const EntityDrawerSection = ({ form, drawer, onSubmit }: Props) => {
           </Flex>
         );
       })}
-      {form && (
-        <ReportDrawer
-          drawerDisclosure={{
-            isOpen,
-            onClose,
-          }}
-          drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
-          drawerInfo={drawer!.drawerInfo}
-          form={form}
-          onSubmit={onSubmit}
-          data-testid="report-drawer"
-        />
-      )}
+      <ReportDrawer
+        drawerDisclosure={{
+          isOpen,
+          onClose,
+        }}
+        drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
+        drawerInfo={drawer!.drawerInfo}
+        form={form}
+        onSubmit={onSubmit}
+        data-testid="report-drawer"
+      />
     </Box>
   );
 };
 
 interface Props {
-  form?: FormJson;
+  form: FormJson;
   drawer: AnyObject;
   onSubmit: Function;
 }

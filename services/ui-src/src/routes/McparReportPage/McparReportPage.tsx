@@ -61,7 +61,7 @@ export const McparReportPage = ({ reportJson, route }: Props) => {
     }
   };
 
-  const renderPageSection = (page?: PageJson, form?: FormJson) => {
+  const renderPageSection = (form: FormJson, page?: PageJson) => {
     if (page?.drawer) {
       return (
         <EntityDrawerSection
@@ -81,7 +81,7 @@ export const McparReportPage = ({ reportJson, route }: Props) => {
         <Sidebar />
         <Flex sx={sx.reportContainer}>
           {page?.intro && <ReportPageIntro text={page.intro} />}
-          {renderPageSection(page, form)}
+          {renderPageSection(form, page)}
           <ReportPageFooter
             formId={form.id}
             previousRoute={previousRoute}
