@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 import { AdminBannerForm } from "components";
 import { bannerId } from "../../constants";
 // utils
-import { convertDateEtToUtc } from "utils";
+import { convertDateTimeEtToUtc } from "utils";
 
 const mockWriteAdminBanner = jest.fn();
 const mockWriteAdminBannerWithError = jest.fn(() => {
@@ -51,11 +51,11 @@ describe("Test AdminBannerForm component", () => {
       title: "this is the title text",
       description: "this is the description text",
       link: undefined,
-      startDate: convertDateEtToUtc(
+      startDate: convertDateTimeEtToUtc(
         { year: 2021, month: 7, day: 11 },
         { hour: 0, minute: 0, second: 0 }
       ),
-      endDate: convertDateEtToUtc(
+      endDate: convertDateTimeEtToUtc(
         { year: 2021, month: 8, day: 12 },
         { hour: 23, minute: 59, second: 59 }
       ),
@@ -63,6 +63,7 @@ describe("Test AdminBannerForm component", () => {
   });
 
   test("Shows error if writeBanner throws error", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const result = render(
       adminBannerFormComponent(mockWriteAdminBannerWithError)
     );

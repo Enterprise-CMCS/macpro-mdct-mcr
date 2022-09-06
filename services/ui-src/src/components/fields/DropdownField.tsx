@@ -4,11 +4,11 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
-import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { InputChangeEvent, AnyObject, DropdownOptions } from "types";
 
 export const DropdownField = ({
   name,
-  label,
+  label = "",
   options,
   hint,
   sxOverride,
@@ -26,11 +26,10 @@ export const DropdownField = ({
   };
 
   const errorMessage = form?.formState?.errors?.[name]?.message;
-
   const parsedHint = hint && parseCustomHtml(hint);
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box sx={sxOverride} className={mqClasses}>
       <CmsdsDropdown
         name={name}
         id={name}
@@ -45,18 +44,11 @@ export const DropdownField = ({
   );
 };
 
-interface DropdownOptions {
-  label: string;
-  value: string;
-}
-
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   options: DropdownOptions[];
-  hint?: CustomHtmlElement[];
+  hint?: any;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
-
-const sx = {};

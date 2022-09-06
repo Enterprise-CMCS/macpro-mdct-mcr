@@ -7,7 +7,7 @@ describe("Test report methods", () => {
     expect(getReportData(mockReportDetails)).toBeTruthy();
   });
 
-  test("postReport", () => {
+  test("writeReport", () => {
     expect(writeReportData(mockReportDetails, mockReportData)).toBeTruthy();
   });
 });

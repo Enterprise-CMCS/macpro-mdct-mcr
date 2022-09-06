@@ -3,6 +3,7 @@ import React from "react";
 import {
   CheckboxField,
   DateField,
+  DropdownField,
   DynamicField,
   NumberField,
   RadioField,
@@ -18,6 +19,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   const fieldToComponentMap: any = {
     checkbox: CheckboxField,
     date: DateField,
+    dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
     radio: RadioField,
@@ -27,12 +29,14 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   fields = initializeChoiceFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
-    return React.createElement(componentFieldType, {
+    const fieldProps = {
       key: field.id,
       name: field.id,
       nested: isNested,
+      hydrate: field.props?.hydrate,
       ...field?.props,
-    });
+    };
+    return React.createElement(componentFieldType, fieldProps);
   });
 };
 
@@ -60,11 +64,9 @@ export const hydrateFormFields = (
       formFields[fieldFormIndex].props = {};
     }
 
-    // if reportData has value for field, set props.hydrate
-    const fieldHydrationValue = reportData[field.id];
-    if (fieldHydrationValue) {
-      formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
-    }
+    // set props.hydrate
+    const fieldHydrationValue = reportData?.fieldData?.[field.id];
+    formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
   return formFields;
 };
@@ -88,14 +90,12 @@ export const initializeChoiceFields = (fields: FormField[]) => {
 };
 
 export const sortFormErrors = (form: any, errors: any) => {
-  // get correct registration order of form fields
-  const orderedFields = Object.keys(form.getValues());
   // sort errors into new array
   const sortedErrorArray: any = [];
-  orderedFields.forEach((fieldName: any) => {
+  for (let fieldName in form) {
     if (errors[fieldName]) {
       sortedErrorArray.push(fieldName);
     }
-  });
+  }
   return sortedErrorArray;
 };

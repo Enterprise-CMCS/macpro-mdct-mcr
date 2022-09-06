@@ -1,10 +1,5 @@
 export default [
   {
-    name: "Test", // uncomment for testing new components
-    formId: "test",
-    path: "/mcpar/test",
-  },
-  {
     name: "Get Started",
     path: "/mcpar/get-started",
     isNonFormPage: true,
@@ -133,12 +128,12 @@ export default [
           },
           {
             name: "Appeals by Service",
-            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-service",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
             formId: "dabs",
           },
           {
             name: "State Fair Hearings",
-            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/state-fair-hearings",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
             formId: "dsfh",
           },
           {
@@ -147,8 +142,13 @@ export default [
             formId: "dgo",
           },
           {
+            name: "Grievances by Service",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
+            formId: "dgbs",
+          },
+          {
             name: "Grievances by Reason",
-            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-by-reason",
+            path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
             formId: "dgbr",
           },
         ],

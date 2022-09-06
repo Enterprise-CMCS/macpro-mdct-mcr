@@ -23,14 +23,13 @@ import daoSchema from "./dao/dao.schema";
 import dabsSchema from "./dabs/dabs.schema";
 import dsfhSchema from "./dsfh/dsfh.schema";
 import dgoSchema from "./dgo/dgo.schema";
+import dgbsSchema from "./dgbs/dgbs.schema";
 import dgbrSchema from "./dgbr/dgbr.schema";
 import dqmSchema from "./dqm/dqm.schema";
 import dsSchema from "./ds/ds.schema";
 import dpiSchema from "./dpi/dpi.schema";
 // section e schema
 import ebsseiSchema from "./ebssei/ebssei.schema";
-// test schema
-import testSchema from "./ztest/test.schema";
 
 export const reportSchema = {
   apoc: apocSchema,
@@ -54,10 +53,10 @@ export const reportSchema = {
   dabs: dabsSchema,
   dsfh: dsfhSchema,
   dgo: dgoSchema,
+  dgbs: dgbsSchema,
   dgbr: dgbrSchema,
   dqm: dqmSchema,
   ds: dsSchema,
   dpi: dpiSchema,
   ebssei: ebsseiSchema,
-  test: testSchema,
 };

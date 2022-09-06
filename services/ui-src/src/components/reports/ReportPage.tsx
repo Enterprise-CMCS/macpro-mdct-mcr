@@ -2,6 +2,7 @@ import React from "react";
 // components
 import { Box, Flex } from "@chakra-ui/react";
 // utils
+
 import { makeMediaQueryClasses } from "utils";
 import { AnyObject } from "types";
 

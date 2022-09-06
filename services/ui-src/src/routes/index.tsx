@@ -4,6 +4,7 @@ export { Help } from "./Help/Help";
 export { Home } from "./Home/Home";
 export { NotFound } from "./NotFound/NotFound";
 export { Profile } from "./Profile/Profile";
+export { ReadOnly } from "./ReadOnly/ReadOnly";
 // mcpar
 export { GetStarted } from "./GetStarted/GetStarted";
 export { Dashboard } from "./Dashboard/Dashboard";

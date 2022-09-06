@@ -1,0 +1,126 @@
+{
+  "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
+  "intro": {
+    "section": "Section D: Plan-Level Indicators",
+    "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+    "spreadsheet": {
+      "title": "Find in the Excel Workbook",
+      "descriptionList": ["D1_Plan_Set"]
+    },
+    "info": [
+      {
+        "type": "heading",
+        "as": "h3",
+        "content": "Grievances by Service"
+      },
+      {
+        "type": "p",
+        "content": "Report the number of grievances resolved by plan during the reporting period by service."
+      }
+    ]
+  },
+  "drawer": {
+    "dashboard": {
+      "title": "Report on grievances by service for each plan",
+      "type": "heading",
+      "as": "h4",
+      "entityType": "plans"
+    },
+    "drawerTitle": "Report encounter data for"
+  },
+  "form": {
+    "id": "dgbs",
+    "fields": [
+      {
+        "id": "dgbs-1",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15a Resolved grievances related to general inpatient services",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services. Do not include grievances related to inpatient behavioral health services — those should be included in indicator D1.IV.15c. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-2",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15b Resolved grievances related to general outpatient services",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Do not include grievances related to outpatient behavioral health services — those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-3",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15c Resolved grievances related to inpatient behavioral health services",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-4",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15d Resolved grievances related to outpatient behavioral health services",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-5",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15e Resolved grievances related to coverage of outpatient prescription drugs",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-6",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15f Resolved grievances related to skilled nursing facility (SNF) services",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-7",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15g Resolved grievances related to long-term services and supports (LTSS)",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-8",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15h Resolved grievances related to dental services",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-9",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15i Resolved grievances related to non-emergency medical transportation (NEMT)",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover this type of service, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      },
+      {
+        "id": "dgbs-10",
+        "type": "number",
+        "props": {
+          "label": "D1.IV.15j Resolved grievances related to other service types",
+          "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i, enter \"N/A\".",
+          "mask": "comma-separated"
+        }
+      }
+    ]
+  }
+}
