@@ -26,8 +26,11 @@ export const Form = ({
     ...(options as any),
   });
 
+  // will run if any validation errors exist on form submission
   const onErrorHandler = (errors: any) => {
+    // sort errors in order of registration/page display
     const sortedErrors: any[] = sortFormErrors(formSchema.fields, errors);
+    // focus the first error on the page and scroll to it
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`
     )! as HTMLElement;
@@ -35,6 +38,7 @@ export const Form = ({
     fieldToFocus?.focus({ preventScroll: true });
   };
 
+  // hydrate and create form fields using formFieldFactory
   const formFieldsToRender = (fields: FormField[]) => {
     const hydratedFields = hydrateFormFields(fields, reportData);
     return formFieldFactory(hydratedFields);
@@ -64,16 +68,31 @@ interface Props {
 }
 
 const sx = {
+  // default
   ".ds-c-field, .ds-c-label": {
     maxWidth: "32rem",
   },
+  // disabled field
   ".ds-c-field[disabled]": {
     color: "palette.gray",
   },
+  // field hint
+  ".ds-c-field__hint": {
+    marginBottom: "0.25rem",
+  },
+  // field hint and error message
   ".ds-c-field__hint, .ds-c-field__error-message ": {
     fontSize: "sm",
     ul: {
       paddingLeft: "2rem",
+    },
+  },
+  // nested child fields
+  ".ds-c-choice__checkedChild.nested": {
+    paddingY: "0.25rem",
+    paddingTop: 0,
+    ".ds-c-fieldset, label": {
+      marginTop: 0,
     },
   },
 };

@@ -9,9 +9,6 @@ const dropdownOptions: DropdownOptions[] = Object.keys(States).map((value) => {
   };
 });
 
-// insert the default option
-dropdownOptions.splice(0, 0, { label: "- Select an option -", value: "" });
-
 export default {
   id: "adminDashSelector",
   options: {

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
@@ -8,36 +9,58 @@ import { InputChangeEvent, AnyObject, DropdownOptions } from "types";
 
 export const DropdownField = ({
   name,
-  label = "",
+  label,
   options,
   hint,
   sxOverride,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [displayValue, setDisplayValue] = useState<string>("");
 
-  // get the form context
+  // get form context and register field
   const form = useFormContext();
+  form.register(name);
+
+  // set initial display value to form state field value or hydration value
+  const hydrationValue = props?.hydrate;
+  useEffect(() => {
+    // if form state has value for field, set as display value
+    const fieldValue = form.getValues(name);
+    if (fieldValue) {
+      setDisplayValue(fieldValue);
+    }
+    // else if hydration value exists, set as display value
+    else if (hydrationValue) {
+      setDisplayValue(hydrationValue);
+      form.setValue(name, hydrationValue, { shouldValidate: true });
+    }
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // update form data
   const onChangeHandler = async (event: InputChangeEvent) => {
-    const { name: dropdownName, value: dropdownValue } = event.target;
-    form.setValue(dropdownName, dropdownValue, { shouldValidate: true });
+    const { name, value } = event.target;
+    setDisplayValue(value);
+    form.setValue(name, value, { shouldValidate: true });
   };
 
-  const errorMessage = form?.formState?.errors?.[name]?.message;
+  // prepare error message, hint, and classes
+  const formErrorState = form?.formState?.errors;
+  const errorMessage = formErrorState?.[name]?.message;
   const parsedHint = hint && parseCustomHtml(hint);
+  const labelClass = !label ? "no-label" : "";
 
   return (
-    <Box sx={sxOverride} className={mqClasses}>
+    <Box sx={sxOverride} className={`${mqClasses} ${labelClass}`}>
       <CmsdsDropdown
         name={name}
         id={name}
-        label={label}
+        label={label || ""}
         options={options}
         hint={parsedHint}
-        onChange={(e) => onChangeHandler(e)}
+        onChange={onChangeHandler}
         errorMessage={errorMessage}
+        value={displayValue}
         {...props}
       />
     </Box>
@@ -47,8 +70,8 @@ export const DropdownField = ({
 interface Props {
   name: string;
   label?: string;
-  options: DropdownOptions[];
   hint?: any;
+  options: DropdownOptions[];
   sxOverride?: AnyObject;
   [key: string]: any;
 }

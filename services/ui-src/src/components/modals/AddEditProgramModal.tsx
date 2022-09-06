@@ -71,7 +71,7 @@ export const AddEditProgramModal = ({
       content={{
         heading: headerText,
         actionButtonText: "Save",
-        closeButtonText: "Close",
+        closeButtonText: "Cancel",
       }}
     >
       <Form

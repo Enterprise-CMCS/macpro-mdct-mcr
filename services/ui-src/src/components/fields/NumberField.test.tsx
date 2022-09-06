@@ -2,15 +2,25 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
+import { useFormContext } from "react-hook-form";
 import { NumberField } from "components";
 
+const mockRhfMethods = {
+  register: () => {},
+  setValue: () => {},
+  getValues: jest.fn(),
+};
+const mockUseFormContext = useFormContext as unknown as jest.Mock<
+  typeof useFormContext
+>;
 jest.mock("react-hook-form", () => ({
-  useFormContext: () => ({
-    setValue: () => {},
-    register: () => {},
-    getValues: () => {},
-  }),
+  useFormContext: jest.fn(() => mockRhfMethods),
 }));
+const mockGetValues = (returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest.fn().mockReturnValue(returnValue),
+  }));
 
 const numberFieldComponent = (
   <NumberField name="testNumberField" label="test-label" />
@@ -112,6 +122,50 @@ describe("Test Percentage Masked NumberField", () => {
     await userEvent.type(numberFieldInput, "12055.99");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("12,055.99");
+  });
+});
+
+describe("Test NumberField hydration functionality", () => {
+  const mockFormFieldValue = "54321";
+  const mockHydrationValue = "12345";
+
+  const numberFieldComponentWithHydrationValue = (
+    <NumberField
+      name="testNumberFieldWithHydrationValue"
+      label="test-label"
+      hydrate={mockHydrationValue}
+      data-testid="test-id"
+    />
+  );
+
+  test("If only formFieldValue exists, displayValue is set to it", () => {
+    mockGetValues(mockFormFieldValue);
+    const result = render(numberFieldComponent);
+    const numberField: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    const displayValue = numberField.value;
+    expect(displayValue).toEqual(mockFormFieldValue);
+  });
+
+  test("If only hydrationValue exists, displayValue is set to it", () => {
+    mockGetValues(undefined);
+    const result = render(numberFieldComponentWithHydrationValue);
+    const numberField: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberFieldWithHydrationValue']"
+    )!;
+    const displayValue = numberField.value;
+    expect(displayValue).toEqual(mockHydrationValue);
+  });
+
+  test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
+    mockGetValues(mockFormFieldValue);
+    const result = render(numberFieldComponentWithHydrationValue);
+    const numberField: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberFieldWithHydrationValue']"
+    )!;
+    const displayValue = numberField.value;
+    expect(displayValue).toEqual(mockFormFieldValue);
   });
 });
 

@@ -1,19 +1,24 @@
-/*
- * Custom Masks Type Guard
- * Add any future custom masks here!
- */
-export type CustomMasks = typeof customMaskMap;
-
-export const isValidCustomMask = (x: any): x is CustomMasks =>
-  Object.keys(customMaskMap).includes(x);
-
-export const customMaskMap: any = {
+export const customMaskMap = {
   "comma-separated": convertToCommaSeparatedString,
   percentage: convertToCommaSeparatedString,
 };
 
+// returns whether a given mask is a valid custom mask
+export const validCustomMask = (maskName: string | undefined) => {
+  const result = Object.keys(customMaskMap).includes(maskName!)
+    ? maskName
+    : undefined;
+  return result;
+};
+
+// if mask specified, but not a custom mask, return mask as assumed CMSDS mask
+export const validCmsdsMask = (maskName: string | undefined) => {
+  const result = validCustomMask(maskName) ? undefined : maskName;
+  return result;
+};
+
 /**
- * Checks if the provided string is contains numbers to mask
+ * checks if provided string contains only numbers
  * @param {String} value
  * @returns {Boolean}
  */
@@ -49,12 +54,23 @@ export function convertToCommaSeparatedString(value: string): string {
 /**
  * Converts string to the appropriate custom masked format
  * @param {String} value
- * @param {CustomMasks} mask
  * @returns {String}
  */
-export function maskValue(value: string, mask: CustomMasks): string {
-  const maskToUse = customMaskMap[mask];
-  if (isValidNumericalString(value) && maskToUse) {
-    return maskToUse(value);
+export function maskValue(
+  value: string,
+  mask: keyof typeof customMaskMap
+): string {
+  const selectedCustomMask = customMaskMap[mask];
+  if (isValidNumericalString(value) && selectedCustomMask) {
+    return selectedCustomMask(value);
   } else return value;
 }
+
+// if valid custom mask, return masked value; else return value
+export const applyCustomMask = (value: any, maskName: any): string => {
+  let formattedValue: string;
+  if (value && validCustomMask(maskName)) {
+    formattedValue = maskValue(value, maskName);
+  } else formattedValue = value;
+  return formattedValue.toString();
+};
