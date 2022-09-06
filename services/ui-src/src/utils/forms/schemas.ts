@@ -10,9 +10,10 @@ export const textOptional = () => text().notRequired();
 export const number = () =>
   numberSchema()
     .transform((_value, originalValue) =>
-      Number(originalValue.replace(/,/g, ""))
+      Number(originalValue.toString().replace(/,/g, ""))
     )
     .typeError(error.INVALID_NUMBER)
+    .min(1, error.REQUIRED_GENERIC)
     .required(error.REQUIRED_GENERIC);
 export const numberOptional = () => number().notRequired();
 
@@ -27,8 +28,8 @@ export const urlOptional = () => url().notRequired();
 // DATE
 export const date = () =>
   string()
-    .matches(dateFormatRegex, error.INVALID_DATE)
-    .required(error.REQUIRED_GENERIC);
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateFormatRegex, error.INVALID_DATE);
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
   date().test(
@@ -53,6 +54,7 @@ export const checkbox = () =>
     .of(text())
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () => checkbox().notRequired();
+export const checkboxSingle = () => array();
 
 // RADIO
 export const radio = () =>

@@ -21,10 +21,10 @@ const adminBannerFormComponent = (writeAdminBanner: Function) => (
 
 const fillOutForm = async (form: any) => {
   // selectors for all the required fields
-  const titleInput = form.querySelector("[name='abf-title']")!;
-  const descriptionInput = form.querySelector("[name='abf-description']")!;
-  const startDateInput = form.querySelector("[name='abf-startDate']")!;
-  const endDateInput = form.querySelector("[name='abf-endDate']")!;
+  const titleInput = form.querySelector("[name='aab-title']")!;
+  const descriptionInput = form.querySelector("[name='aab-description']")!;
+  const startDateInput = form.querySelector("[name='aab-startDate']")!;
+  const endDateInput = form.querySelector("[name='aab-endDate']")!;
   // fill out form fields
   await userEvent.type(titleInput, "this is the title text");
   await userEvent.type(descriptionInput, "this is the description text");

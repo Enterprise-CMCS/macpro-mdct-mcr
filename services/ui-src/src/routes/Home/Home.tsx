@@ -7,7 +7,7 @@ import {
   BasicPage,
   TemplateCard,
 } from "components";
-import { ReadOnly } from "routes";
+import { AdminDashSelector } from "routes";
 
 // utils
 import { checkDateRangeStatus, useUser } from "utils";
@@ -66,7 +66,7 @@ export const Home = () => {
           </>
         ) : (
           // show read-only view to non-state users
-          <ReadOnly verbiage={verbiage.readOnly} />
+          <AdminDashSelector verbiage={verbiage.readOnly} />
         )}
       </BasicPage>
     </>

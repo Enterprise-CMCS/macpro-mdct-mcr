@@ -8,24 +8,40 @@ import {
   EntityDrawerSection,
   StandardFormSection,
   ReportPageIntro,
+  ReportPageFooter,
   Sidebar,
 } from "components";
 // utils
-import { findRoute, useUser } from "utils";
-import { PageJson, ReportStatus, UserRoles } from "types";
-// form data
-import { mcparRoutes } from "forms/mcpar";
+import { useFindRoute, useUser } from "utils";
+import {
+  FormJson,
+  PageJson,
+  ReportJson,
+  ReportRoute,
+  ReportStatus,
+  UserRoles,
+} from "types";
 
-export const McparReportPage = ({ pageJson }: Props) => {
-  const navigate = useNavigate();
+export const McparReportPage = ({ reportJson, route }: Props) => {
+  // get report, form, and page related-data
   const { report, updateReportData, updateReport } = useContext(ReportContext);
-  const { path, intro, form } = pageJson;
-  const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
   const reportId = report?.reportId;
+  const { basePath, routes } = reportJson;
+  const { form, page } = route;
 
-  // get user's state
+  // get user state, name, role
   const { user } = useUser();
   const { full_name, state, userRole } = user ?? {};
+
+  // get next and previous routes
+  const navigate = useNavigate();
+  const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
+
+  useEffect(() => {
+    if (!reportId) {
+      navigate(basePath);
+    }
+  }, [reportId]);
 
   const onSubmit = async (formData: any) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
@@ -37,33 +53,40 @@ export const McparReportPage = ({ pageJson }: Props) => {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
       };
-      updateReportData(reportDetails, formData);
-      updateReport(reportDetails, reportStatus);
+      await updateReportData(reportDetails, formData);
+      await updateReport(reportDetails, reportStatus);
     }
-    navigate(nextRoute);
+    if (!page?.drawer) {
+      navigate(nextRoute);
+    }
   };
 
-  const renderPageSection = (pageJson: PageJson) => {
-    if (pageJson.drawer) {
-      return <EntityDrawerSection pageJson={pageJson} onSubmit={onSubmit} />;
+  const renderPageSection = (form: FormJson, page?: PageJson) => {
+    if (page?.drawer) {
+      return (
+        <EntityDrawerSection
+          form={form}
+          drawer={page.drawer}
+          onSubmit={onSubmit}
+        />
+      );
     } else {
-      return <StandardFormSection pageJson={pageJson} onSubmit={onSubmit} />;
+      return <StandardFormSection form={form} onSubmit={onSubmit} />;
     }
   };
-
-  useEffect(() => {
-    if (!reportId) {
-      navigate("/mcpar/dashboard");
-    }
-  }, [reportId]);
 
   return (
     <ReportPage data-testid={form.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>
-          {intro && <ReportPageIntro text={intro} />}
-          {renderPageSection(pageJson)}
+          {page?.intro && <ReportPageIntro text={page.intro} />}
+          {renderPageSection(form, page)}
+          <ReportPageFooter
+            formId={form.id}
+            previousRoute={previousRoute}
+            nextRoute={nextRoute}
+          />
         </Flex>
       </Flex>
     </ReportPage>
@@ -71,7 +94,8 @@ export const McparReportPage = ({ pageJson }: Props) => {
 };
 
 interface Props {
-  pageJson: PageJson;
+  reportJson: ReportJson;
+  route: ReportRoute;
 }
 
 const sx = {
