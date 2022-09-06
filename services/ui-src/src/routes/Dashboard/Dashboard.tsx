@@ -102,7 +102,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <PageTemplate sx={sx.layout}>
+    <PageTemplate type="report" sx={sx.layout}>
       <Box>
         <Link href="/" sx={sx.returnLink}>
           <ArrowIcon title="returnHome" direction="left" />

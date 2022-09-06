@@ -8,10 +8,9 @@ import {
   Home,
   NotFound,
   Profile,
-  ReportPage,
   ReviewSubmit,
 } from "routes";
-import { AdminBannerProvider } from "components";
+import { AdminBannerProvider, ReportPage } from "components";
 import { mcparReportJsonFlat as mcparReportJson } from "forms/mcpar";
 
 // utils

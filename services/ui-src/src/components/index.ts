@@ -58,6 +58,7 @@ export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 // reports
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
+export { ReportPage } from "./reports/ReportPage";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { StandardFormSection } from "./reports/sections/StandardFormSection";
