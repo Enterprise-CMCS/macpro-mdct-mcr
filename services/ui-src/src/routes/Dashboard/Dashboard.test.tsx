@@ -22,6 +22,14 @@ const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const mockUseNavigate = jest.fn();
 
+const mockUseBreakpoint = jest.fn();
+const mockMakeMediaQueryClasses = jest.fn();
+
+jest.mock("utils/other/useBreakpoint", () => ({
+  useBreakpoint: () => mockUseBreakpoint,
+  makeMediaQueryClasses: () => mockMakeMediaQueryClasses,
+}));
+
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
@@ -79,12 +87,23 @@ const dashboardViewWithError = (
   </RouterWrappedComponent>
 );
 
-describe("Test /mcpar/dashboard view with reports", () => {
+/* TODO */
+describe("Test /mcpar/dashboard view with reports (desktop view)", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: true,
+      isTablet: false,
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     await act(async () => {
       await render(dashboardViewWithReports);
     });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   test("Check that /mcpar/dashboard view renders", () => {
@@ -93,7 +112,7 @@ describe("Test /mcpar/dashboard view with reports", () => {
   });
 
   test("Clicking 'Enter' button on a report navigates to /mcpar/program-information/point-of-contact", async () => {
-    const enterReportButton = screen.getByTestId("enter-program");
+    const enterReportButton = screen.getByText("Enter");
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
@@ -109,8 +128,8 @@ describe("Test /mcpar/dashboard view with reports", () => {
     await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
   });
 
-  test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
-    const addProgramButton = screen.getByTestId("edit-program");
+  test.only("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
+    const addProgramButton = screen.getByAltText("Edit Program");
     expect(addProgramButton).toBeVisible();
     await userEvent.click(addProgramButton);
     await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
@@ -123,7 +142,7 @@ describe("Test /mcpar/dashboard with admin user", () => {
     await act(async () => {
       await render(dashboardViewWithReports);
     });
-    const deleteProgramButton = screen.getByTestId("delete-program");
+    const deleteProgramButton = screen.getByAltText("Delete Program");
     expect(deleteProgramButton).toBeVisible();
     await userEvent.click(deleteProgramButton);
   });
@@ -139,12 +158,25 @@ describe("Test /mcpar/dashboard with no activeState", () => {
   });
 });
 
-describe("Test /mcpar/dashboard with no reports", () => {
-  test("dashboard renders table with empty text", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+/* TODO */
+describe("Test /mcpar/dashboard with no reports (desktop)", () => {
+  beforeEach(async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: true,
+      isTablet: false,
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     await act(async () => {
       await render(dashboardViewNoReports);
     });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("dashboard renders table with empty text", async () => {
     expect(screen.getByText(verbiage.body.empty)).toBeVisible();
   });
 });
@@ -160,8 +192,20 @@ describe("Test /mcpar/dashboard with error", () => {
   });
 });
 
+/* TODO */
 describe("Test /mcpar dashboard view accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("Should not have basic accessibility issues (desktop)", async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: true,
+      isTablet: false,
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+
     await act(async () => {
       const { container } = render(dashboardViewWithReports);
       const results = await axe(container);

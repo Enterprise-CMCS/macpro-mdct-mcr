@@ -23,7 +23,12 @@ import {
 } from "components";
 // utils
 import { AnyObject, ReportDetails, UserRoles } from "types";
-import { convertDateUtcToEt, parseCustomHtml, useUser } from "utils";
+import {
+  convertDateUtcToEt,
+  parseCustomHtml,
+  useBreakpoint,
+  useUser,
+} from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
@@ -48,6 +53,8 @@ export const Dashboard = () => {
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
   const activeState = userState || adminSelectedState;
+
+  const { isDesktop, isTablet, isMobile } = useBreakpoint();
 
   const { intro, body } = verbiage;
 
@@ -119,10 +126,11 @@ export const Dashboard = () => {
       </Box>
       <Box sx={sx.bodyBox}>
         {/* Mobile Table Rows Start */}
-        {reportsByState &&
+        {isMobile &&
+          reportsByState &&
           reportsByState.map((report: AnyObject) => (
             // Row
-            <Box sx={sx.mobileTable}>
+            <Box data-testid="mobile-row" sx={sx.mobileTable}>
               <Box key={report.reportId}>
                 <Box sx={sx.labelGroup}>
                   {/* Program name */}
@@ -205,7 +213,8 @@ export const Dashboard = () => {
           ))}
         {/* Mobile Table Rows End */}
         <Table content={body.table} sxOverride={sx.table}>
-          {reportsByState &&
+          {(isDesktop || isTablet) &&
+            reportsByState &&
             reportsByState.map((report: AnyObject) => (
               // Row
               <Tr key={report.reportId}>
