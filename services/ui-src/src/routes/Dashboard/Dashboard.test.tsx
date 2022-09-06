@@ -96,7 +96,6 @@ const dashboardViewWithError = (
   </RouterWrappedComponent>
 );
 
-/* TODO */
 describe("Test /mcpar/dashboard view with reports (desktop view)", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
@@ -263,7 +262,6 @@ describe("Test /mcpar/dashboard with no activeState", () => {
   });
 });
 
-/* TODO */
 describe("Test /mcpar/dashboard with no reports (desktop)", () => {
   beforeEach(async () => {
     mockUseBreakpoint.mockReturnValue({
@@ -407,7 +405,6 @@ describe("Test /mcpar/dashboard with error", () => {
   });
 });
 
-/* TODO */
 describe("Test /mcpar dashboard view accessibility", () => {
   afterEach(() => {
     jest.clearAllMocks();
