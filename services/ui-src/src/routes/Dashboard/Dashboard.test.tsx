@@ -22,12 +22,21 @@ const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const mockUseNavigate = jest.fn();
 
-const mockUseBreakpoint = jest.fn();
-const mockMakeMediaQueryClasses = jest.fn();
+const mockUseBreakpoint = jest.fn(() => ({
+  isDesktop: true,
+  isTablet: false,
+  isMobile: false,
+}));
+
+const mockMakeMediaQueryClasses = jest.fn(() => "desktop");
 
 jest.mock("utils/other/useBreakpoint", () => ({
-  useBreakpoint: () => mockUseBreakpoint,
-  makeMediaQueryClasses: () => mockMakeMediaQueryClasses,
+  useBreakpoint: jest.fn(() => ({
+    isDesktop: true,
+    isTablet: false,
+    isMobile: false,
+  })),
+  makeMediaQueryClasses: jest.fn(() => "desktop"),
 }));
 
 jest.mock("react-router-dom", () => ({
@@ -136,6 +145,102 @@ describe("Test /mcpar/dashboard view with reports (desktop view)", () => {
   });
 });
 
+describe("Test /mcpar/dashboard view with reports (tablet view)", () => {
+  beforeEach(async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: false,
+      isTablet: true,
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("tablet");
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Check that /mcpar/dashboard view renders", () => {
+    expect(screen.getByText(verbiage.intro.header)).toBeVisible();
+    expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
+  });
+
+  test("Clicking 'Enter' button on a report navigates to /mcpar/program-information/point-of-contact", async () => {
+    const enterReportButton = screen.getByText("Enter");
+    expect(enterReportButton).toBeVisible();
+    await userEvent.click(enterReportButton);
+    expect(mockUseNavigate).toBeCalledTimes(1);
+    expect(mockUseNavigate).toBeCalledWith(
+      "../../mcpar/program-information/point-of-contact"
+    );
+  });
+
+  test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {
+    const addProgramButton = screen.getByText(verbiage.body.callToAction);
+    expect(addProgramButton).toBeVisible();
+    await userEvent.click(addProgramButton);
+    await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
+  });
+
+  test.only("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
+    const addProgramButton = screen.getByAltText("Edit Program");
+    expect(addProgramButton).toBeVisible();
+    await userEvent.click(addProgramButton);
+    await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard view with reports (mobile view)", () => {
+  beforeEach(async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: false,
+      isTablet: false,
+      isMobile: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Check that /mcpar/dashboard view renders", () => {
+    expect(screen.getByText(verbiage.intro.header)).toBeVisible();
+    expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
+  });
+
+  test("Clicking 'Enter' button on a report navigates to /mcpar/program-information/point-of-contact", async () => {
+    const enterReportButton = screen.getByText("Enter");
+    expect(enterReportButton).toBeVisible();
+    await userEvent.click(enterReportButton);
+    expect(mockUseNavigate).toBeCalledTimes(1);
+    expect(mockUseNavigate).toBeCalledWith(
+      "../../mcpar/program-information/point-of-contact"
+    );
+  });
+
+  test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {
+    const addProgramButton = screen.getByText(verbiage.body.callToAction);
+    expect(addProgramButton).toBeVisible();
+    await userEvent.click(addProgramButton);
+    await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
+  });
+
+  test.only("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
+    const addProgramButton = screen.getByAltText("Edit Program");
+    expect(addProgramButton).toBeVisible();
+    await userEvent.click(addProgramButton);
+    await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
+  });
+});
+
 describe("Test /mcpar/dashboard with admin user", () => {
   test("Admin user can delete reports", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
@@ -167,6 +272,116 @@ describe("Test /mcpar/dashboard with no reports (desktop)", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
+    await act(async () => {
+      await render(dashboardViewNoReports);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("dashboard renders table with empty text", async () => {
+    expect(screen.getByText(verbiage.body.empty)).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with no reports (tablet)", () => {
+  beforeEach(async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: false,
+      isTablet: true,
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("tablet");
+    await act(async () => {
+      await render(dashboardViewNoReports);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("dashboard renders table with empty text", async () => {
+    expect(screen.getByText(verbiage.body.empty)).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with no reports (mobile)", () => {
+  beforeEach(async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: false,
+      isTablet: false,
+      isMobile: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
+    await act(async () => {
+      await render(dashboardViewNoReports);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("dashboard renders table with empty text", async () => {
+    expect(screen.getByText(verbiage.body.empty)).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with error", () => {
+  test("Error alert shows when there is an error", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithError);
+    });
+    expect(screen.getByText("test error")).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with no reports (tablet)", () => {
+  beforeEach(async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: false,
+      isTablet: true,
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("tablet");
+    await act(async () => {
+      await render(dashboardViewNoReports);
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("dashboard renders table with empty text", async () => {
+    expect(screen.getByText(verbiage.body.empty)).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with error", () => {
+  test("Error alert shows when there is an error", async () => {
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithError);
+    });
+    expect(screen.getByText("test error")).toBeVisible();
+  });
+});
+
+describe("Test /mcpar/dashboard with no reports (mobile)", () => {
+  beforeEach(async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isDesktop: false,
+      isTablet: false,
+      isMobile: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
     await act(async () => {
       await render(dashboardViewNoReports);
     });

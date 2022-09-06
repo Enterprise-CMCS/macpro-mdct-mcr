@@ -212,63 +212,62 @@ export const Dashboard = () => {
             </Box>
           ))}
         {/* Mobile Table Rows End */}
-        <Table content={body.table} sxOverride={sx.table}>
-          {(isDesktop || isTablet) &&
-            reportsByState &&
-            reportsByState.map((report: AnyObject) => (
-              // Row
-              <Tr key={report.reportId}>
-                <Td sx={sx.editProgram}>
-                  {/* only show edit button to state users */}
-                  {(userRole === UserRoles.STATE_REP ||
-                    userRole === UserRoles.STATE_USER) && (
-                    <button
-                      onClick={() => openAddEditProgramModal(report.reportId)}
+        {(isDesktop || isTablet) && (
+          <Table content={body.table} sxOverride={sx.table}>
+            {reportsByState &&
+              reportsByState.map((report: AnyObject) => (
+                // Row
+                <Tr key={report.reportId}>
+                  <Td sx={sx.editProgram}>
+                    {/* only show edit button to state users */}
+                    {(userRole === UserRoles.STATE_REP ||
+                      userRole === UserRoles.STATE_USER) && (
+                      <button
+                        onClick={() => openAddEditProgramModal(report.reportId)}
+                      >
+                        <Image src={editIcon} alt="Edit Program" />
+                      </button>
+                    )}
+                  </Td>
+                  <Td sx={sx.programNameText}>{report.programName}</Td>
+                  <Td sx={sx.tableCell}>
+                    {convertDateUtcToEt(report.dueDate)}
+                  </Td>
+                  <Td sx={sx.tableCell}>
+                    {convertDateUtcToEt(report.lastAltered)}
+                  </Td>
+                  <Td sx={sx.editCell}>{report?.lastAlteredBy || "-"}</Td>
+                  <Td sx={sx.tableCell}>{report?.status}</Td>
+                  <Td sx={sx.editReportButtonCell}>
+                    <Button
+                      variant="outline"
+                      data-testid="enter-program"
+                      onClick={() => enterSelectedReport(report.reportId)}
                     >
-                      <Image
-                        src={editIcon}
-                        data-testid="edit-program"
-                        alt="Edit Program"
-                      />
-                    </button>
-                  )}
-                </Td>
-                <Td sx={sx.programNameText}>{report.programName}</Td>
-                <Td sx={sx.tableCell}>{convertDateUtcToEt(report.dueDate)}</Td>
-                <Td sx={sx.tableCell}>
-                  {convertDateUtcToEt(report.lastAltered)}
-                </Td>
-                <Td sx={sx.editCell}>{report?.lastAlteredBy || "-"}</Td>
-                <Td sx={sx.tableCell}>{report?.status}</Td>
-                <Td sx={sx.editReportButtonCell}>
-                  <Button
-                    variant="outline"
-                    data-testid="enter-program"
-                    onClick={() => enterSelectedReport(report.reportId)}
-                  >
-                    Enter
-                  </Button>
-                </Td>
-                <Td sx={sx.deleteProgramCell}>
-                  {/* only show delete button if non-state user */}
-                  {(userRole === UserRoles.ADMIN ||
-                    userRole === UserRoles.APPROVER ||
-                    userRole === UserRoles.HELP_DESK) && (
-                    <button
-                      onClick={() => openDeleteProgramModal(report.reportId)}
-                    >
-                      <Image
-                        src={cancelIcon}
-                        data-testid="delete-program"
-                        alt="Delete Program"
-                        sx={sx.deleteProgramButtonImage}
-                      />
-                    </button>
-                  )}
-                </Td>
-              </Tr>
-            ))}
-        </Table>
+                      Enter
+                    </Button>
+                  </Td>
+                  <Td sx={sx.deleteProgramCell}>
+                    {/* only show delete button if non-state user */}
+                    {(userRole === UserRoles.ADMIN ||
+                      userRole === UserRoles.APPROVER ||
+                      userRole === UserRoles.HELP_DESK) && (
+                      <button
+                        onClick={() => openDeleteProgramModal(report.reportId)}
+                      >
+                        <Image
+                          src={cancelIcon}
+                          data-testid="delete-program"
+                          alt="Delete Program"
+                          sx={sx.deleteProgramButtonImage}
+                        />
+                      </button>
+                    )}
+                  </Td>
+                </Tr>
+              ))}
+          </Table>
+        )}
         {!reportsByState?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
@@ -354,9 +353,6 @@ const sx = {
     },
   },
   mobileTable: {
-    ".tablet &, .desktop &": {
-      display: "none",
-    },
     borderBottom: "1px solid",
     borderColor: "palette.gray_light",
     padding: "1rem 0",
@@ -365,9 +361,6 @@ const sx = {
     marginBottom: "0.5rem",
   },
   table: {
-    ".mobile &": {
-      display: "none",
-    },
     marginBottom: "2.5rem",
     th: {
       padding: "0.5rem 0 0.5rem 0",
