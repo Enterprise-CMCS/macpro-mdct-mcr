@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, ReportContext, ReportPage, Sidebar } from "components";
+import { Modal, ReportContext, PageTemplate, Sidebar } from "components";
 // types
 import { ReportStatus, UserRoles } from "types";
 // utils
@@ -48,7 +48,7 @@ export const ReviewSubmit = () => {
   };
 
   return (
-    <ReportPage>
+    <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         {report.status?.includes(ReportStatus.SUBMITTED) ? (
@@ -67,7 +67,7 @@ export const ReviewSubmit = () => {
           />
         )}
       </Flex>
-    </ReportPage>
+    </PageTemplate>
   );
 };
 

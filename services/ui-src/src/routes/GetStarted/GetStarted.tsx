@@ -1,6 +1,6 @@
 // components
 import { Box, Button, Image, Heading, Text, Flex } from "@chakra-ui/react";
-import { BasicPage, IntroSection, SpreadsheetWidget } from "components";
+import { IntroSection, PageTemplate, SpreadsheetWidget } from "components";
 import { useNavigate } from "react-router-dom";
 // utils
 import { makeMediaQueryClasses } from "utils";
@@ -19,7 +19,7 @@ export const GetStarted = () => {
   const [section1, section2, section3] = body.sections;
 
   return (
-    <BasicPage sx={sx.layout}>
+    <PageTemplate sx={sx.layout}>
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
@@ -73,7 +73,7 @@ export const GetStarted = () => {
           {pageLink.text}
         </Button>
       </Box>
-    </BasicPage>
+    </PageTemplate>
   );
 };
 
