@@ -9,6 +9,7 @@ import { ReportContext } from "components";
 import {
   mockAdminUser,
   mockNoUser,
+  mockHelpDeskUser,
   mockReportStatus,
   mockStateUser,
   RouterWrappedComponent,
@@ -126,6 +127,16 @@ describe("Test dashboard with admin user", () => {
     const deleteProgramButton = screen.getByAltText("Delete Program");
     expect(deleteProgramButton).toBeVisible();
     await userEvent.click(deleteProgramButton);
+  });
+});
+
+describe("Test dashboard with help desk user", () => {
+  test("Help desk user cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
   });
 });
 
