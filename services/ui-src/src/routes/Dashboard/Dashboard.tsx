@@ -14,9 +14,9 @@ import {
 } from "@chakra-ui/react";
 import {
   AddEditProgramModal,
-  BasicPage,
   DeleteProgramModal,
   ErrorAlert,
+  PageTemplate,
   ReportContext,
   Table,
 } from "components";
@@ -102,7 +102,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <BasicPage sx={sx.layout}>
+    <PageTemplate sx={sx.layout}>
       <Box>
         <Link href="/" sx={sx.returnLink}>
           <ArrowIcon title="returnHome" direction="left" />
@@ -194,7 +194,7 @@ export const Dashboard = () => {
           onClose: deleteProgramModalOnCloseHandler,
         }}
       />
-    </BasicPage>
+    </PageTemplate>
   );
 };
 

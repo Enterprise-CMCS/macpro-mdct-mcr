@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 // components
 import { Button, Heading, Link, Text } from "@chakra-ui/react";
-import { BasicPage, Table } from "components";
+import { PageTemplate, Table } from "components";
 //utils
 import { createEmailLink, useUser } from "utils";
 import { UserRoles } from "types";
@@ -26,7 +26,7 @@ export const Profile = () => {
   };
 
   return (
-    <BasicPage sx={sx.layout} data-testid="profile-view">
+    <PageTemplate sx={sx.layout} data-testid="profile-view">
       <Heading as="h1" sx={sx.headerText}>
         {intro.header}
       </Heading>
@@ -47,7 +47,7 @@ export const Profile = () => {
           Banner Editor
         </Button>
       )}
-    </BasicPage>
+    </PageTemplate>
   );
 };
 

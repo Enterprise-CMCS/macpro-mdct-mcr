@@ -4,7 +4,7 @@ import { Box, Flex } from "@chakra-ui/react";
 // types
 import { AnyObject } from "types";
 
-export const BasicPage = ({ children, sxOverride, ...props }: Props) => {
+export const PageTemplate = ({ children, sxOverride, ...props }: Props) => {
   return (
     <section>
       <Box sx={{ ...sx.contentBox, ...sxOverride }} {...props}>
