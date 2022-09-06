@@ -1,37 +1,44 @@
-import { ReportPath, PageJson } from "types";
+import { AnyObject, ReportRoute } from "types";
 import { convertDateUtcToEt } from "utils/other/time";
 
-export const addDataToReportStructure = (
-  structure: ReportPath[],
-  reportPageArray: PageJson[]
-): ReportPath[] =>
-  structure.map((route: ReportPath) => {
-    if (route.children) {
-      // if there are children, call recursively
-      addDataToReportStructure(route.children, reportPageArray);
-    } else {
-      // if no children (is a visitable page), set pagejson if available
-      const respectivePageJson = reportPageArray.find(
-        (page: PageJson) => page.form.id === route.formId
-      );
-      route.pageJson = respectivePageJson;
-    }
-    return route;
-  });
-
-export const makeRouteArray = (routeStructure: ReportPath[]): ReportPath[] => {
-  const reportNavigationOrder: ReportPath[] = [];
-  const mapRoutesToArray = (structure: ReportPath[]) => {
-    structure.map((route: ReportPath) => {
-      route?.children
-        ? // if children, map through them
-          mapRoutesToArray(route.children)
-        : // if none, push to array
-          reportNavigationOrder.push(route);
+// returns flattened array of valid routes for given reportJson
+export const flattenReportRoutesArray = (
+  reportJson: ReportRoute[]
+): ReportRoute[] => {
+  const routesArray: ReportRoute[] = [];
+  const mapRoutesToArray = (reportRoutes: ReportRoute[]) => {
+    reportRoutes.map((route: ReportRoute) => {
+      // if children, recurse; if none, push to routes array
+      if (route?.children) {
+        mapRoutesToArray(route.children);
+      } else {
+        routesArray.push(route);
+      }
     });
   };
-  mapRoutesToArray(routeStructure);
-  return reportNavigationOrder;
+  mapRoutesToArray(reportJson);
+  return routesArray;
+};
+
+export const addValidationToReportJson = (
+  reportJson: ReportRoute[],
+  validationSchema: AnyObject
+): ReportRoute[] => {
+  const mapSchemaToForms = (routes: ReportRoute[], schema: AnyObject) => {
+    routes.map((route: ReportRoute) => {
+      // if children, recurse; if none, push to routes array
+      if (route?.children) {
+        mapSchemaToForms(route.children, validationSchema);
+      }
+      // else if form (children & form are always mutually exclusive)
+      else if (route?.form) {
+        const correspondingValidationSchema = schema[route.form.id];
+        route.form.validation = correspondingValidationSchema || {};
+      }
+    });
+  };
+  mapSchemaToForms(reportJson, validationSchema);
+  return reportJson;
 };
 
 export const createReportId = (

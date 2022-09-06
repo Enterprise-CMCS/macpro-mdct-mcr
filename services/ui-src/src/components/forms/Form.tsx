@@ -1,5 +1,6 @@
 import { ReactNode, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
@@ -8,21 +9,17 @@ import { ReportContext } from "components";
 import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
 import { FormJson, FormField } from "types";
 
-export const Form = ({
-  id,
-  formJson,
-  formSchema,
-  onSubmit,
-  children,
-  ...props
-}: Props) => {
+export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
   const { reportData } = useContext(ReportContext);
+
+  const formSchema = yupSchema(formJson.validation || {});
 
   // make form context
   const form = useForm({
     resolver: yupResolver(formSchema),
     shouldFocusError: false,
+    mode: "onChange",
     ...(options as any),
   });
 
@@ -61,7 +58,6 @@ export const Form = ({
 interface Props {
   id: string;
   formJson: FormJson;
-  formSchema: any;
   onSubmit: Function;
   children?: ReactNode;
   [key: string]: any;

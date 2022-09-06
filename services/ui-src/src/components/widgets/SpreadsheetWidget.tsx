@@ -1,8 +1,6 @@
 import React from "react";
 // components
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-// utils
-import { SpreadsheetWidgetProps } from "types";
 // assets
 import greenSpreadsheetIcon from "../../assets/icons/icon_spreadsheet_green.png";
 
@@ -36,7 +34,12 @@ export const SpreadsheetWidget = ({ content, ...props }: Props) => {
 };
 
 interface Props {
-  content: SpreadsheetWidgetProps;
+  content: {
+    title: string;
+    descriptionList: string[];
+    additionalInfo?: string;
+    [key: string]: any;
+  };
   [key: string]: any;
 }
 

@@ -1,0 +1,48 @@
+{
+  "id": "addAdminBanner",
+  "options": {
+    "mode": "onChange"
+  },
+  "fields": [
+    {
+      "id": "aab-title",
+      "type": "text",
+      "props": {
+        "label": "Title text",
+        "placeholder": "New banner title"
+      }
+    },
+    {
+      "id": "aab-description",
+      "type": "textarea",
+      "props": {
+        "label": "Description text",
+        "placeholder": "New banner description"
+      }
+    },
+    {
+      "id": "aab-link",
+      "type": "text",
+      "props": {
+        "label": "Link",
+        "requirementLabel": "Optional"
+      }
+    },
+    {
+      "id": "aab-startDate",
+      "type": "date",
+      "props": {
+        "label": "Start date",
+        "timetype": "startDate"
+      }
+    },
+    {
+      "id": "aab-endDate",
+      "type": "date",
+      "props": {
+        "label": "End date",
+        "timetype": "endDate"
+      }
+    }
+  ]
+}

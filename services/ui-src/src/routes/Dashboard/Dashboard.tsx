@@ -70,8 +70,8 @@ export const Dashboard = () => {
       reportId: reportId,
     };
     setReport(reportDetails);
-    const reportFirstPage = "../../mcpar/program-information/point-of-contact";
-    navigate(reportFirstPage);
+    const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
+    navigate(reportFirstPagePath);
   };
 
   // add/edit program modal disclosure

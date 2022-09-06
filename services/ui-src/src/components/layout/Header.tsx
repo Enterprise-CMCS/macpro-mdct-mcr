@@ -14,7 +14,7 @@ import {
 import { Menu, MenuOption, ReportContext } from "components";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
-import { isMcparReportPage } from "forms/mcpar";
+import { isMcparReportFormPage } from "forms/mcpar";
 // assets
 import appLogo from "assets/logos/logo_mcr_draft.png";
 
@@ -55,7 +55,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isMcparReportPage(pathname) && (
+      {isMcparReportFormPage(pathname) && (
         <Flex sx={sx.subnavBar}>
           <Container sx={sx.subnavContainer} className={mqClasses}>
             <Flex sx={sx.subnavFlex}>
