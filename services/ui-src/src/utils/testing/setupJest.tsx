@@ -57,6 +57,20 @@ export const mockStateUser: UserContextI = {
   loginWithIDM: () => {},
 };
 
+export const mockHelpDeskUser: UserContextI = {
+  user: {
+    userRole: UserRoles.HELP_DESK,
+    email: "helpdeskuser@test.com",
+    given_name: "Clippy",
+    family_name: "Helperson",
+    full_name: "Clippy Helperson",
+    state: undefined,
+  },
+  showLocalLogins: false,
+  logout: async () => {},
+  loginWithIDM: () => {},
+};
+
 export const mockAdminUser: UserContextI = {
   user: {
     userRole: UserRoles.ADMIN,

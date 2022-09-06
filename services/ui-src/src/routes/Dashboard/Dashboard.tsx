@@ -147,10 +147,8 @@ export const Dashboard = () => {
                   </Button>
                 </Td>
                 <Td sx={sx.deleteProgramCell}>
-                  {/* only show delete button if non-state user */}
-                  {(userRole === UserRoles.ADMIN ||
-                    userRole === UserRoles.APPROVER ||
-                    userRole === UserRoles.HELP_DESK) && (
+                  {/* only show delete button if admin user */}
+                  {userRole === UserRoles.ADMIN && (
                     <button
                       onClick={() => openDeleteProgramModal(report.reportId)}
                     >
