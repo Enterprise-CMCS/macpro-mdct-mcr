@@ -34,7 +34,6 @@ export const isValidNumericalString = (value: string): boolean => {
  */
 export function convertToCommaSeparatedString(value: string): string {
   // Remove all characters except digits and decimal points.
-  value = value.toString();
   value = value.replace(/[^\d.]/g, "");
   // Remove all but the first decimal point.
   const firstDecimalPointIndex = value.indexOf(".");
@@ -53,13 +52,12 @@ export function convertToCommaSeparatedString(value: string): string {
 }
 
 /**
- * Converts a number-like string to a comma seperated value
+ * Splits a string with a : and converts each side to a comma-separated string
  * @param {String} value
  * @returns {String}
  */
 export function convertToCommaSeparatedRatioString(value: string): string {
   // Remove all characters except digits and decimal points.
-  value = value.toString();
   value = value.replace(/[^\d.:]/g, "");
 
   const values = value.split(":");
