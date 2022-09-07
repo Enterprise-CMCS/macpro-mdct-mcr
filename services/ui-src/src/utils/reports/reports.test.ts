@@ -1,8 +1,4 @@
-import { createReportId, flattenReportRoutesArray } from "./reports";
-
-jest.mock("createReportId", () => ({
-  createReportId: jest.fn(),
-}));
+import { flattenReportRoutesArray } from "./reports";
 
 const mockFormField = {
   id: "mockId",
@@ -78,11 +74,5 @@ describe("Test flattenReportRoutesArray", () => {
   it("flattenReportRoutesArray", () => {
     const result = flattenReportRoutesArray(mockReportJson);
     expect(result).toEqual(mockExpectedResult);
-  });
-});
-
-describe("Test createReportId", () => {
-  test("createReportId correctly creates a reportId", () => {
-    expect(createReportId).toHaveBeenCalled();
   });
 });

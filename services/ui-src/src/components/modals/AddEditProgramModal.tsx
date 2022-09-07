@@ -3,15 +3,11 @@ import { useContext } from "react";
 import { Form, Modal, ReportContext } from "components";
 // utils
 import { FormJson, ReportStatus } from "types";
-import {
-  calculateDueDate,
-  convertDateEtToUtc,
-  createReportId,
-  useUser,
-} from "utils";
+import { calculateDueDate, convertDateEtToUtc, useUser } from "utils";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
 import formSchema from "forms/addEditProgram/addEditProgram.schema";
+import uuid from "react-uuid";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -49,7 +45,7 @@ export const AddEditProgramModal = ({
       });
     } else {
       // if no program was selected, create new report id
-      reportDetails.reportId = createReportId();
+      reportDetails.reportId = uuid();
       // create new report
       await updateReport(reportDetails, {
         ...dataToWrite,

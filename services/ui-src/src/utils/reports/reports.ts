@@ -1,4 +1,3 @@
-import uuid from "react-uuid";
 import { AnyObject, ReportRoute } from "types";
 
 // returns flattened array of valid routes for given reportJson
@@ -39,8 +38,4 @@ export const addValidationToReportJson = (
   };
   mapSchemaToForms(reportJson, validationSchema);
   return reportJson;
-};
-
-export const createReportId = () => {
-  return uuid();
 };
