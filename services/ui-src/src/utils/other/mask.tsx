@@ -66,13 +66,12 @@ export function convertToCommaSeparatedRatioString(value: string): string {
 
   let cleanedValue = "";
 
-  if (values[0].replace(/\s+/g, "") != "")
-    cleanedValue += convertToCommaSeparatedString(values[0]);
+  if (values[0] != "") cleanedValue += convertToCommaSeparatedString(values[0]);
   else cleanedValue += "";
 
   cleanedValue += ":";
 
-  if (values.length >= 2 && values[1].replace(/\s+/g, "") != "")
+  if (values.length >= 2 && values[1] != "")
     cleanedValue += convertToCommaSeparatedString(values[1]);
   else cleanedValue += "";
 
