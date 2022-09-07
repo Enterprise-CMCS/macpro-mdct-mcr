@@ -43,7 +43,7 @@ describe("Schemas", () => {
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
-      let test = number().isValidSync(testCase);
+      let test = schemaToUse.isValidSync(testCase);
       expect(test).toEqual(expectedReturn);
     }
   };
