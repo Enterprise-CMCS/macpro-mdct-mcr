@@ -23,6 +23,7 @@ custom:
   bannerTableName: ${self:custom.stage}-banners
   reportDataTableName: ${self:custom.stage}-mcpar-reports-data
   reportTableName: ${self:custom.stage}-mcpar-reports
+  formTableName: ${self:custom.stage}-forms
   dynamodb:
     stages:
       - local
@@ -91,6 +92,25 @@ resources:
           - AttributeName: reportId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    FormTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.formTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: formName
+            AttributeType: S
+          - AttributeName: formId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: formName
+            KeyType: HASH
+          - AttributeName: formId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
@@ -110,5 +130,11 @@ resources:
       Value: !GetAtt ReportTable.Arn
     ReportTableStreamArn:
       Value: !GetAtt ReportTable.StreamArn
+    FormTableName:
+      Value: !Ref FormTable
+    FormTableArn:
+      Value: !GetAtt FormTable.Arn
+    FormTableStreamArn:
+      Value: !GetAtt FormTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}

@@ -36,6 +36,7 @@ custom:
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   reportDataTableName: ${env:REPORT_DATA_TABLE_NAME, cf:database-${self:custom.stage}.ReportDataTableName}
   reportTableName: ${env:REPORT_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
+  formTableName: ${env:FORM_TABLE_NAME, cf:database-${self:custom.stage}.FormTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
@@ -93,6 +94,7 @@ provider:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     REPORT_DATA_TABLE_NAME: ${self:custom.reportDataTableName}
     REPORT_TABLE_NAME: ${self:custom.reportTableName}
+    FORM_TABLE_NAME: ${self:custom.formTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
 
@@ -210,6 +212,27 @@ functions:
               paths:
                 state: true
                 reportId: true
+  getForm:
+    handler: handlers/forms/get.getForm
+    events:
+      - http:
+          path: forms/{formName}/{formId}
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                formName: true
+                formId: true
+  getLatestForm:
+    handler: handlers/forms/get.getLatestForm
+    events:
+      - http:
+          path: forms
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:
