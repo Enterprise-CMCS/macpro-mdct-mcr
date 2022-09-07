@@ -913,8 +913,41 @@
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
               "page": {
                 "intro": {
-                  "section": "C: Program-Level Indicators > V: Availability & Accessibility",
-                  "subsection": "Access Measures"
+                  "section": "Section C: Program-Level Indicators",
+                  "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["C2_Program_State"]
+                  },
+                  "info": [
+                    {
+                      "type": "html",
+                      "content": "<p><b>Access Measures</b></p>"
+                    },
+                    {
+                      "type": "html",
+                      "content": "<p>Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level.</p>"
+                    },
+                    {
+                      "type": "html",
+                      "content": "</br><p>Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p>"
+                    },
+                    {
+                      "type": "html",
+                      "content": "<p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program.</p>"
+                    }
+                  ]
+                },
+                "dynamic": {
+                  "tableHeading": "Add measures for monitoring access standards",
+                  "buttonText": "Add access measure"
+                },
+                "drawer": {
+                  "dashboard": {
+                    "title": "Add measures for monitoring access standards",
+                    "entityType": "access measure"
+                  },
+                  "drawerTitle": "Add access measure"
                 }
               },
               "form": {
@@ -922,10 +955,9 @@
                 "fields": [
                   {
                     "id": "cam-1",
-                    "type": "text",
+                    "type": "dynamic",
                     "props": {
-                      "label": "Temporary placeholder field",
-                      "disabled": true
+                      "label": "Temporary placeholder field"
                     }
                   }
                 ]

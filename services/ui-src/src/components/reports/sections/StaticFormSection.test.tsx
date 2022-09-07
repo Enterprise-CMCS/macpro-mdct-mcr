@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, StandardFormSection } from "components";
+import { ReportContext, StaticFormSection } from "components";
 // utils
 import { mockForm, RouterWrappedComponent } from "utils/testing/setupJest";
 
@@ -36,24 +36,24 @@ jest.mock("react-router-dom", () => ({
 
 const mockOnSubmit = jest.fn();
 
-const standardFormSectionComponent = (
+const staticFormSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <StandardFormSection form={mockForm} onSubmit={mockOnSubmit} />
+      <StaticFormSection form={mockForm} onSubmit={mockOnSubmit} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test StandardFormSection view", () => {
-  test("StandardFormSection view renders", () => {
-    render(standardFormSectionComponent);
-    expect(screen.getByTestId("standard-form-section")).toBeVisible();
+describe("Test StaticFormSection view", () => {
+  test("StaticFormSection view renders", () => {
+    render(staticFormSectionComponent);
+    expect(screen.getByTestId("static-form-section")).toBeVisible();
   });
 });
 
-describe("Test StandardFormSection accessibility", () => {
+describe("Test StaticFormSection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(standardFormSectionComponent);
+    const { container } = render(staticFormSectionComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

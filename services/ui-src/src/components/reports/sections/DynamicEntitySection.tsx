@@ -5,38 +5,62 @@ import { ReportDrawer } from "components";
 // utils
 import { FormJson, AnyObject } from "types";
 
-export const EntityDrawerSection = ({ form, drawer, onSubmit }: Props) => {
+export const DynamicEntitySection = ({
+  form,
+  drawer,
+  dynamic,
+  onSubmit,
+}: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
+  const [entities, setEntities] = useState<Array<any>>([
+    {
+      title: "Access to hospitals",
+      formJson: {},
+    },
+  ]);
 
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
+    setEntities([]);
     onOpen();
-  };
-
-  const tempEntityMap = {
-    plans: ["Plan A", "Plan B", "Plan C"],
   };
 
   return (
     <Box data-testid="entity-drawer-section">
       <Heading as="h4">{drawer!.dashboard.title}</Heading>
-      {tempEntityMap.plans.map((entity) => {
+      {entities.map((entity) => {
         return (
-          <Flex key={entity} sx={sx.entityRow}>
-            <Heading as="h5">{entity}</Heading>
-            <Button
-              sx={sx.enterButton}
-              onClick={() => openRowDrawer(entity)}
-              variant="outline"
-            >
-              Enter
-            </Button>
+          <Flex key={entity.title} sx={sx.entityRow}>
+            <Heading as="h5">{entity.title}</Heading>
+            <Flex sx={sx.buttonContainer}>
+              <Button
+                sx={sx.buttonStyle}
+                onClick={() => openRowDrawer(entity.title)}
+                variant="outline"
+              >
+                Edit
+              </Button>
+              <Button
+                sx={sx.buttonStyle}
+                onClick={() => openRowDrawer(entity.title)}
+                variant="outline"
+              >
+                Delete
+              </Button>
+            </Flex>
           </Flex>
         );
       })}
+      <Button
+        onClick={() => openRowDrawer("test")}
+        type="submit"
+        sx={sx.addEntityButton}
+      >
+        {dynamic.buttonText}
+      </Button>
       <ReportDrawer
         drawerDisclosure={{
           isOpen,
@@ -55,6 +79,7 @@ export const EntityDrawerSection = ({ form, drawer, onSubmit }: Props) => {
 interface Props {
   form: FormJson;
   drawer: AnyObject;
+  dynamic: AnyObject;
   onSubmit: Function;
 }
 
@@ -67,10 +92,21 @@ const sx = {
     paddingLeft: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
   },
-  enterButton: {
+  buttonContainer: {
+    justifyContent: "space-between",
+  },
+  removeImage: {
+    width: "1.25rem",
+    height: "1.25rem",
+  },
+  buttonStyle: {
     width: "4.25rem",
     height: "1.75rem",
     fontSize: "md",
     fontWeight: "normal",
+    margin: "0.5rem",
+  },
+  addEntityButton: {
+    marginTop: "2rem",
   },
 };

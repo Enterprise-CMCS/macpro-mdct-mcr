@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  EntityDrawerSection,
+  DynamicEntitySection,
+  StaticDrawerSection,
   PageTemplate,
   ReportPageIntro,
   ReportPageFooter,
   Sidebar,
-  StandardFormSection,
+  StaticFormSection,
 } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
@@ -62,16 +63,25 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   };
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
-    if (page?.drawer) {
+    if (page?.dynamic && page?.drawer) {
       return (
-        <EntityDrawerSection
+        <DynamicEntitySection
+          form={form}
+          drawer={page.drawer}
+          dynamic={page.dynamic}
+          onSubmit={onSubmit}
+        />
+      );
+    } else if (page?.drawer) {
+      return (
+        <StaticDrawerSection
           form={form}
           drawer={page.drawer}
           onSubmit={onSubmit}
         />
       );
     } else {
-      return <StandardFormSection form={form} onSubmit={onSubmit} />;
+      return <StaticFormSection form={form} onSubmit={onSubmit} />;
     }
   };
 

@@ -4,8 +4,8 @@ import { Form } from "components";
 // utils
 import { FormJson } from "types";
 
-export const StandardFormSection = ({ form, onSubmit }: Props) => (
-  <Box data-testid="standard-form-section">
+export const StaticFormSection = ({ form, onSubmit }: Props) => (
+  <Box data-testid="static-form-section">
     <Form id={form.id} formJson={form} onSubmit={onSubmit} />
   </Box>
 );
