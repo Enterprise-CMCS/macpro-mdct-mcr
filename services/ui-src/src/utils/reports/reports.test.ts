@@ -96,30 +96,31 @@ describe("Sort Reports", () => {
     const unsortedReports = [
       {
         createdAt: 1662568556165,
-        programName: "Oldest",
-      },
-      {
-        createdAt: 1662568568589,
         programName: "Second Oldest",
       },
       {
+        createdAt: 1662568568589,
+        programName: "Third Oldest",
+      },
+      // Note this createdAt stamp is less than (older) than the prior 2 programs
+      {
         createdAt: 1652568576322,
-        programName: "Newest",
+        programName: "Oldest",
       },
     ];
 
     const sortedReports = [
       {
         createdAt: 1652568576322,
-        programName: "Newest",
-      },
-      {
-        createdAt: 1662568556165,
         programName: "Oldest",
       },
       {
-        createdAt: 1662568568589,
+        createdAt: 1662568556165,
         programName: "Second Oldest",
+      },
+      {
+        createdAt: 1662568568589,
+        programName: "Third Oldest",
       },
     ];
 
