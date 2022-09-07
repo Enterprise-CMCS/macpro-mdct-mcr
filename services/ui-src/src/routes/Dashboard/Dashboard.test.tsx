@@ -8,8 +8,11 @@ import { ReportContext } from "components";
 // utils
 import {
   mockAdminUser,
+  mockHelpDeskUser,
   mockNoUser,
   mockReportStatus,
+  mockStateApprover,
+  mockStateRep,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -180,38 +183,20 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
   });
 });
 
-describe("Test Dashboard view (with reports, admin user, desktop view)", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Admin user can delete reports", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
+describe("Test Dashboard report deletion privileges (desktop)", () => {
+  beforeEach(() => {
     mockUseBreakpoint.mockReturnValue({
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    await act(async () => {
-      await render(dashboardViewWithReports);
-    });
-    const deleteProgramButton = screen.getByAltText("Delete Program");
-    expect(deleteProgramButton).toBeVisible();
-    await userEvent.click(deleteProgramButton);
-    await expect(screen.getByTestId("delete-program-modal-text")).toBeVisible();
   });
-});
 
-describe("Test Dashboard view (with reports, admin user, mobile view)", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("Admin user can delete reports", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
-    mockUseBreakpoint.mockReturnValue({
-      isMobile: true,
-    });
-    mockMakeMediaQueryClasses.mockReturnValue("mobile");
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -219,6 +204,93 @@ describe("Test Dashboard view (with reports, admin user, mobile view)", () => {
     expect(deleteProgramButton).toBeVisible();
     await userEvent.click(deleteProgramButton);
     await expect(screen.getByTestId("delete-program-modal-text")).toBeVisible();
+  });
+
+  test("Help desk user cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+
+  test("State approver cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateApprover);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+
+  test("State user cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+
+  test("State rep cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+});
+
+describe("Test Dashboard report deletion privileges (mobile)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Admin user can delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    const deleteProgramButton = screen.getByAltText("Delete Program");
+    expect(deleteProgramButton).toBeVisible();
+    await userEvent.click(deleteProgramButton);
+    await expect(screen.getByTestId("delete-program-modal-text")).toBeVisible();
+  });
+
+  test("Help desk user cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+
+  test("State approver cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateApprover);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+
+  test("State user cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+
+  test("State rep cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
   });
 });
 
