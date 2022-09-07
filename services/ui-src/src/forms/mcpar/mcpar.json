@@ -2,6 +2,7 @@
   "name": "MCPAR",
   "basePath": "/mcpar",
   "version": "0.0.0",
+  "adminDisabled": true,
   "routes": [
     {
       "name": "A: Program Information",

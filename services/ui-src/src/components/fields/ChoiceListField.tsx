@@ -33,6 +33,8 @@ export const ChoiceListField = ({
   const form = useFormContext();
   form.register(name);
 
+  const shouldDisableChildFields = !!props?.disabled;
+
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
@@ -65,7 +67,12 @@ export const ChoiceListField = ({
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
-        const formattedChildren = formFieldFactory(choiceChildren, true);
+        const isNested = !!choiceChildren;
+        const formattedChildren = formFieldFactory(
+          choiceChildren,
+          shouldDisableChildFields,
+          isNested
+        );
         choiceObject.checkedChildren = formattedChildren;
       }
       delete choiceObject.children;

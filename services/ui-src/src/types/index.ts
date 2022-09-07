@@ -34,6 +34,7 @@ export interface ReportJson {
   name: string;
   basePath: string;
   version: string;
+  adminDisabled?: boolean;
   routes: ReportRoute[];
 }
 
@@ -68,6 +69,7 @@ export interface FormJson {
   fields: FormField[];
   options?: AnyObject;
   validation?: StringSchema | ArraySchema<any> | AnyObject;
+  adminDisabled?: boolean;
 }
 
 export interface FormField {

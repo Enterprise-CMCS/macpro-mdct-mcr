@@ -6,14 +6,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
-import { FormJson, FormField } from "types";
+import {
+  formFieldFactory,
+  hydrateFormFields,
+  sortFormErrors,
+  useUser,
+} from "utils";
+import { FormJson, FormField, UserRoles } from "types";
 
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
   const { reportData } = useContext(ReportContext);
-
   const formSchema = yupSchema(formJson.validation || {});
+
+  // determine if fields should be disabled (based on admin roles )
+  const { userRole } = useUser().user ?? {};
+  const isAdminUser =
+    userRole === UserRoles.ADMIN ||
+    userRole === UserRoles.APPROVER ||
+    userRole === UserRoles.HELP_DESK;
+  const shouldDisableAllFields = isAdminUser && formJson.adminDisabled;
 
   // make form context
   const form = useForm({
@@ -38,7 +50,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   // hydrate and create form fields using formFieldFactory
   const formFieldsToRender = (fields: FormField[]) => {
     const hydratedFields = hydrateFormFields(fields, reportData);
-    return formFieldFactory(hydratedFields);
+    return formFieldFactory(hydratedFields, shouldDisableAllFields!);
   };
 
   return (
