@@ -32,8 +32,6 @@ export const ReviewSubmit = () => {
     reportId: report.reportId,
   };
 
-  // TODO: handle issue on refreshing page that loses all data
-
   useEffect(() => {
     fetchReport(reportDetails);
   }, []);
