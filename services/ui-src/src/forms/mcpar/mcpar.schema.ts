@@ -17,6 +17,7 @@ import {
 export default {
   apoc: {
     // TODO: change to required fields after prefilled fields are functional
+    test1: number(true),
     "apoc-a1": textOptional(),
     "apoc-a2a": text(),
     "apoc-a2b": email(),

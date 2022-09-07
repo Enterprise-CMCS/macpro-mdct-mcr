@@ -9,16 +9,45 @@ export const textOptional = () => text().notRequired();
 // NUMBER
 const validNAValues = ["N/A", "Data not available"];
 
-export const number = () =>
+export const number = (isRatio = false) =>
   mixed()
     .test({
-      message: error.INVALID_NUMBER_OR_NA,
-      test: (val) =>
-        numberSchema()
-          .transform((_value, originalValue) => {
-            return Number(originalValue.toString().replace(/[,.]/g, ""));
-          })
-          .isValidSync(val) || validNAValues.includes(val),
+      message: error.INVALID_RATIO,
+      test: (val) => {
+        const replaceCharsRegex = isRatio ? /[,.:]/g : /[,.]/g;
+        if (isRatio) {
+          const ratio = val.split(":");
+
+          if (
+            ratio.length != 2 ||
+            ratio[0].trim().length == 0 ||
+            ratio[1].trim().length == 0
+          ) {
+            return false;
+          }
+
+          const firstTest = numberSchema()
+            .transform((_value) => {
+              return Number(ratio[0].replace(replaceCharsRegex, ""));
+            })
+            .isValidSync(val);
+          const secondTest = numberSchema()
+            .transform((_value) => {
+              return Number(ratio[1].replace(replaceCharsRegex, ""));
+            })
+            .isValidSync(val);
+          return firstTest && secondTest;
+        }
+        return (
+          numberSchema()
+            .transform((_value, originalValue) => {
+              return Number(
+                originalValue.toString().replace(replaceCharsRegex, "")
+              );
+            })
+            .isValidSync(val) || validNAValues.includes(val)
+        );
+      },
     })
     .test({
       message: error.REQUIRED_GENERIC,

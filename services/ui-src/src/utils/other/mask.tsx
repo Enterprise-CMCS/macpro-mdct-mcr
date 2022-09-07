@@ -1,6 +1,7 @@
 export const customMaskMap = {
   "comma-separated": convertToCommaSeparatedString,
   percentage: convertToCommaSeparatedString,
+  ratio: convertToCommaSeparatedRatioString,
 };
 
 // returns whether a given mask is a valid custom mask
@@ -49,6 +50,33 @@ export function convertToCommaSeparatedString(value: string): string {
   // Clean up the float value and add in commas to delineate thousands if needed
   const cleanedValue = Number(fixedDecimal).toLocaleString("en");
   return cleanedValue.toString();
+}
+
+/**
+ * Converts a number-like string to a comma seperated value
+ * @param {String} value
+ * @returns {String}
+ */
+export function convertToCommaSeparatedRatioString(value: string): string {
+  // Remove all characters except digits and decimal points.
+  value = value.toString();
+  value = value.replace(/[^\d.:]/g, "");
+
+  const values = value.split(":");
+
+  let cleanedValue = "";
+
+  if (values[0].replace(/\s+/g, "") != "")
+    cleanedValue += convertToCommaSeparatedString(values[0]);
+  else cleanedValue += "";
+
+  cleanedValue += ":";
+
+  if (values.length >= 2 && values[1].replace(/\s+/g, "") != "")
+    cleanedValue += convertToCommaSeparatedString(values[1]);
+  else cleanedValue += "";
+
+  return cleanedValue;
 }
 
 /**

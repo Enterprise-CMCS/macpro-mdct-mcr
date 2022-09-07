@@ -14,15 +14,54 @@ describe("Schemas", () => {
   ];
   const badNumberTestCases = ["abc", "N", "", "123:123", "!@#!@%"];
 
-  const testCase = (testCases: Array<string>, expectedReturn: boolean) => {
+  const goodRatioTestCases = [
+    "1:1",
+    "123:123",
+    "1,234:1.12",
+    "0:1",
+    "1:10,000",
+  ];
+  const badRatioTestCases = [
+    ":",
+    ":1",
+    "1:",
+    "1",
+    "1234",
+    "abc",
+    "N/A",
+    "abc:abc",
+    ":abc",
+    "abc:",
+    "%@#$!ASDF",
+  ];
+
+  const testNumberSchema = (
+    testCases: Array<string>,
+    expectedReturn: boolean
+  ) => {
     for (let testCase of testCases) {
       let test = number().isValidSync(testCase);
       expect(test).toEqual(expectedReturn);
     }
   };
 
-  test("Evalulate Number Schema accepting good and bad input", () => {
-    testCase(goodNumberTestCases, true);
-    testCase(badNumberTestCases, false);
+  const testNumberSchemaWithRatioPassed = (
+    testCases: Array<string>,
+    expectedReturn: boolean
+  ) => {
+    for (let testCase of testCases) {
+      let test = number(true).isValidSync(testCase);
+      expect(test).toEqual(expectedReturn);
+    }
+  };
+
+  test("Evalulate Number Schema", () => {
+    testNumberSchema(goodNumberTestCases, true);
+    testNumberSchema(badNumberTestCases, false);
+  });
+
+  test("Evalulate Number Schema with optional Ratio Param Passed", () => {
+    testNumberSchemaWithRatioPassed(goodRatioTestCases, true);
+    testNumberSchemaWithRatioPassed(badRatioTestCases, false);
   });
 });

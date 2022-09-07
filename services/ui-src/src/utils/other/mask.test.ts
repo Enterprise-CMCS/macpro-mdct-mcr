@@ -3,6 +3,7 @@ import {
   validCustomMask,
   isValidNumericalString,
   maskValue,
+  convertToCommaSeparatedRatioString,
 } from "utils";
 
 const commaSeparatedMaskAcceptableTestCases = [
@@ -24,6 +25,17 @@ const commaSeparatedMaskAcceptableTestCases = [
     test: "Technically a wrong input that validation would pick up but would actually still work with 1 number",
     expected: "1",
   },
+];
+
+const ratioMaskAcceptableTestCases = [
+  { test: "1:1", expected: "1:1" },
+  { test: "1,234:1.12", expected: "1,234:1.12" },
+  { test: "1234:1.12", expected: "1,234:1.12" },
+  { test: "1.23:1234.1", expected: "1.23:1,234.1" },
+  { test: "1,,,234,56....1234:1", expected: "123,456.12:1" },
+  { test: "1:1,,,234,56....1234", expected: "1:123,456.12" },
+  { test: "1:10,000", expected: "1:10,000" },
+  { test: "1:10,00:0", expected: "1:1,000" },
 ];
 
 describe("Test validCustomMask", () => {
@@ -65,6 +77,29 @@ describe("Test convertToCommaSeparatedString", () => {
     ];
     for (let testCase of testCases) {
       expect(convertToCommaSeparatedString(testCase.test)).toEqual(
+        testCase.expected
+      );
+    }
+  });
+});
+
+describe("Test convertToCommaSeparatedRatioString", () => {
+  test("Valid ratio is split and masked on each side individually", () => {
+    for (let testCase of ratioMaskAcceptableTestCases) {
+      expect(convertToCommaSeparatedRatioString(testCase.test)).toEqual(
+        testCase.expected
+      );
+    }
+  });
+  test("Check if non number strings can fail gracefully", () => {
+    const testCases = [
+      { test: "No numbers here me lord", expected: ":" },
+      { test: " :1", expected: ":1" },
+      { test: "1: ", expected: "1:" },
+      { test: "1:::10,000 ", expected: "1:" },
+    ];
+    for (let testCase of testCases) {
+      expect(convertToCommaSeparatedRatioString(testCase.test)).toEqual(
         testCase.expected
       );
     }
