@@ -1971,6 +1971,9 @@
               "subsection": "VII: Quality Measures"
             }
           },
+          "drawer": {
+            "drawerTitle": "Add a quality & performance measure"
+          },
           "form": {
             "id": "dqm",
             "fields": [
