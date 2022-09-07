@@ -1,4 +1,4 @@
-import { array, number as numberSchema, string } from "yup";
+import { array, mixed, number as numberSchema, string } from "yup";
 import { schemaValidationErrors as error } from "verbiage/errors";
 
 // TEXT
@@ -7,13 +7,23 @@ export const text = () =>
 export const textOptional = () => text().notRequired();
 
 // NUMBER
+const validNAValues = ["N/A", "Data not available"];
+
 export const number = () =>
-  numberSchema()
-    .transform((_value, originalValue) =>
-      Number(originalValue.toString().replace(/,/g, ""))
-    )
-    .typeError(error.INVALID_NUMBER)
-    .min(1, error.REQUIRED_GENERIC)
+  mixed()
+    .test({
+      message: error.INVALID_NUMBER_OR_NA,
+      test: (val) =>
+        numberSchema()
+          .transform((_value, originalValue) => {
+            return Number(originalValue.toString().replace(/[,.]/g, ""));
+          })
+          .isValidSync(val) || validNAValues.includes(val),
+    })
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (val) => val != "",
+    })
     .required(error.REQUIRED_GENERIC);
 export const numberOptional = () => number().notRequired();
 
@@ -74,12 +84,13 @@ export const nested = (
 ) => {
   const fieldTypeMap = {
     array: array(),
-    number: number(),
+    mixed: number(),
     string: string(),
     date: date(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
+
   return baseSchema.when(parentFieldName, {
     is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
     then: () => fieldSchema(),
