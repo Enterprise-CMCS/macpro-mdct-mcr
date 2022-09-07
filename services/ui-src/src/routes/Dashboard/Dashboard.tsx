@@ -70,6 +70,7 @@ export const Dashboard = () => {
       reportId: reportId,
     };
     setReport(reportDetails);
+    localStorage.setItem("selectedReport", reportId);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };
