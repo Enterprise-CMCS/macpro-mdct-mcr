@@ -53,3 +53,14 @@ export const createReportId = (
   const reportId = [state, programNameWithDashes, dueDateString].join("_");
   return reportId;
 };
+
+export const sortReportsOldestToNewest = (
+  reportsArray: { createdAt: number }[]
+) => {
+  return reportsArray.sort(function (
+    stateA: { createdAt: number },
+    stateB: { createdAt: number }
+  ) {
+    return stateA.createdAt - stateB.createdAt;
+  });
+};
