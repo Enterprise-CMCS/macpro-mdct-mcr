@@ -21,15 +21,6 @@
             "id": "apoc",
             "fields": [
               {
-                "id": "test1",
-                "type": "number",
-                "props": {
-                  "label": "Ratio Label",
-                  "hint": "Ratio Hint.",
-                  "mask": "ratio"
-                }
-              },
-              {
                 "id": "apoc-a1",
                 "type": "text",
                 "prefill": "stateName",
