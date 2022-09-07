@@ -57,6 +57,48 @@ export const mockStateUser: UserContextI = {
   loginWithIDM: () => {},
 };
 
+export const mockStateRep: UserContextI = {
+  user: {
+    userRole: UserRoles.STATE_REP,
+    email: "staterep@test.com",
+    given_name: "Robert",
+    family_name: "States",
+    full_name: "Robert States",
+    state: "MA",
+  },
+  showLocalLogins: true,
+  logout: async () => {},
+  loginWithIDM: () => {},
+};
+
+export const mockStateApprover: UserContextI = {
+  user: {
+    userRole: UserRoles.APPROVER,
+    email: "stateapprover@test.com",
+    given_name: "Zara",
+    family_name: "Zustimmer",
+    full_name: "Zara Zustimmer",
+    state: "MN",
+  },
+  showLocalLogins: true,
+  logout: async () => {},
+  loginWithIDM: () => {},
+};
+
+export const mockHelpDeskUser: UserContextI = {
+  user: {
+    userRole: UserRoles.HELP_DESK,
+    email: "helpdeskuser@test.com",
+    given_name: "Clippy",
+    family_name: "Helperson",
+    full_name: "Clippy Helperson",
+    state: undefined,
+  },
+  showLocalLogins: false,
+  logout: async () => {},
+  loginWithIDM: () => {},
+};
+
 export const mockAdminUser: UserContextI = {
   user: {
     userRole: UserRoles.ADMIN,

@@ -27,6 +27,7 @@ export const Modal = ({
     <ChakraModal
       isOpen={modalDisclosure.isOpen}
       onClose={modalDisclosure.onClose}
+      preserveScrollBarGap={true}
     >
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
