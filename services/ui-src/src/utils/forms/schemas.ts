@@ -19,6 +19,11 @@ const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
 export const number = () =>
   mixed()
     .test({
+      message: error.REQUIRED_GENERIC,
+      test: (val) => val != "",
+    })
+    .required(error.REQUIRED_GENERIC)
+    .test({
       message: error.INVALID_NUMBER_OR_NA,
       test: (val) => {
         const replaceCharsRegex = /[,.]/g;
@@ -27,17 +32,17 @@ export const number = () =>
           validNAValues.includes(val)
         );
       },
-    })
-    .test({
-      message: error.REQUIRED_GENERIC,
-      test: (val) => val != "",
-    })
-    .required(error.REQUIRED_GENERIC);
+    });
 export const numberOptional = () => number().notRequired();
 
 // Number - Ratio
 export const ratio = () =>
   mixed()
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (val) => val != "",
+    })
+    .required(error.REQUIRED_GENERIC)
     .test({
       message: error.INVALID_RATIO,
       test: (val) => {
@@ -68,12 +73,7 @@ export const ratio = () =>
         // If both sides are valid numbers, return true!
         return firstTest && secondTest;
       },
-    })
-    .test({
-      message: error.REQUIRED_GENERIC,
-      test: (val) => val != "",
-    })
-    .required(error.REQUIRED_GENERIC);
+    });
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
