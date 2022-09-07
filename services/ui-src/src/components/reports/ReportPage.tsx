@@ -24,7 +24,8 @@ import {
 
 export const ReportPage = ({ reportJson, route }: Props) => {
   // get report, form, and page related-data
-  const { report, updateReportData, updateReport } = useContext(ReportContext);
+  const { report, setReport, updateReportData, updateReport } =
+    useContext(ReportContext);
   const reportId = report?.reportId || localStorage.getItem("selectedReport");
   const { basePath, routes } = reportJson;
   const { form, page } = route;
@@ -41,8 +42,8 @@ export const ReportPage = ({ reportJson, route }: Props) => {
     if (!reportId) {
       navigate(basePath);
     } else {
-      localStorage.getItem("selectedState");
-      // setReport({ state, reportId });
+      const selectedState = localStorage.getItem("selectedState");
+      setReport({ selectedState, reportId });
     }
   }, [reportId]);
 
