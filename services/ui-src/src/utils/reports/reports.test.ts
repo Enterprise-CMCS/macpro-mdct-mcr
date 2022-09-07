@@ -102,7 +102,6 @@ describe("Sort Reports", () => {
         createdAt: 1662568568589,
         programName: "Third Oldest",
       },
-      // Note this createdAt stamp is less than (older) than the prior 2 programs
       {
         createdAt: 1652568576322,
         programName: "Oldest",

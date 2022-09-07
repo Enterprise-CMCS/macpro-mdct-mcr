@@ -56,11 +56,4 @@ export const createReportId = (
 
 export const sortReportsOldestToNewest = (
   reportsArray: { createdAt: number }[]
-) => {
-  return reportsArray.sort(function (
-    stateA: { createdAt: number },
-    stateB: { createdAt: number }
-  ) {
-    return stateA.createdAt - stateB.createdAt;
-  });
-};
+) => reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);

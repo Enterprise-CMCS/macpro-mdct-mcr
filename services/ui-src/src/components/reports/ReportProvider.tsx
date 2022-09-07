@@ -96,7 +96,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportsByState = async (state: string) => {
     try {
       const result = await getReportsByState(state);
-      // Sort the states returned by the time they were created (Oldest To Newest)
+      // returned reports by time created
       const sortedResult = sortReportsOldestToNewest(result);
       setReportsByState(sortedResult);
     } catch (e: any) {
