@@ -1,4 +1,6 @@
-import { number } from "./schemas";
+import { MixedSchema } from "yup/lib/mixed";
+import { AnyObject } from "yup/lib/types";
+import { number, ratio } from "./schemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -36,6 +38,7 @@ describe("Schemas", () => {
   ];
 
   const testNumberSchema = (
+    schemaToUse: MixedSchema<any, AnyObject, any>,
     testCases: Array<string>,
     expectedReturn: boolean
   ) => {
@@ -45,23 +48,13 @@ describe("Schemas", () => {
     }
   };
 
-  const testNumberSchemaWithRatioPassed = (
-    testCases: Array<string>,
-    expectedReturn: boolean
-  ) => {
-    for (let testCase of testCases) {
-      let test = number(true).isValidSync(testCase);
-      expect(test).toEqual(expectedReturn);
-    }
-  };
-
-  test("Evalulate Number Schema", () => {
-    testNumberSchema(goodNumberTestCases, true);
-    testNumberSchema(badNumberTestCases, false);
+  test("Evalulate Number Schema using number scheme", () => {
+    testNumberSchema(number(), goodNumberTestCases, true);
+    testNumberSchema(number(), badNumberTestCases, false);
   });
 
-  test("Evalulate Number Schema with optional Ratio Param Passed", () => {
-    testNumberSchemaWithRatioPassed(goodRatioTestCases, true);
-    testNumberSchemaWithRatioPassed(badRatioTestCases, false);
+  test("Evalulate Number Schema using ratio scheme", () => {
+    testNumberSchema(ratio(), goodRatioTestCases, true);
+    testNumberSchema(ratio(), badRatioTestCases, false);
   });
 });
