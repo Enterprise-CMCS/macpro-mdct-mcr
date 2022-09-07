@@ -11,6 +11,8 @@ import {
   mockHelpDeskUser,
   mockNoUser,
   mockReportStatus,
+  mockStateApprover,
+  mockStateRep,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -133,6 +135,36 @@ describe("Test dashboard with admin user", () => {
 describe("Test dashboard with help desk user", () => {
   test("Help desk user cannot delete reports", async () => {
     mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+});
+
+describe("Test dashboard with state user", () => {
+  test("State user cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+});
+
+describe("Test dashboard with state rep", () => {
+  test("State rep cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Delete Program")).toBeNull();
+  });
+});
+
+describe("Test dashboard with state approver", () => {
+  test("State approver cannot delete reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateApprover);
     await act(async () => {
       await render(dashboardViewWithReports);
     });
