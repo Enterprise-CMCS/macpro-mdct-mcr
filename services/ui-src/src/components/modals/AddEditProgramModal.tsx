@@ -49,11 +49,7 @@ export const AddEditProgramModal = ({
       });
     } else {
       // if no program was selected, create new report id
-      reportDetails.reportId = createReportId(
-        activeState,
-        programName,
-        dueDate
-      );
+      reportDetails.reportId = createReportId();
       // create new report
       await updateReport(reportDetails, {
         ...dataToWrite,
