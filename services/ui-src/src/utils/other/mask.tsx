@@ -60,15 +60,20 @@ export function convertToCommaSeparatedRatioString(value: string): string {
   // Remove all characters except digits and decimal points.
   value = value.replace(/[^\d.:]/g, "");
 
+  // Grab the left and right side of the ratio sign
   const values = value.split(":");
 
+  // Begin creating the final output
   let cleanedValue = "";
 
+  // Create the left side of the output and make the number (if provided) pretty
   if (values[0] != "") cleanedValue += convertToCommaSeparatedString(values[0]);
   else cleanedValue += "";
 
+  // Put in the ratio sign in the middle of the two numbers
   cleanedValue += ":";
 
+  // Create the right side of the output and make the number (if provided) pretty
   if (values.length >= 2 && values[1] != "")
     cleanedValue += convertToCommaSeparatedString(values[1]);
   else cleanedValue += "";

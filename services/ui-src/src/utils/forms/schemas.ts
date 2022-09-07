@@ -9,6 +9,12 @@ export const textOptional = () => text().notRequired();
 // NUMBER
 const validNAValues = ["N/A", "Data not available"];
 
+const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
+  return numberSchema().transform((_value) => {
+    return Number(value.replace(charsToReplace, ""));
+  });
+};
+
 export const number = (isRatio = false) =>
   mixed()
     .test({
@@ -18,6 +24,7 @@ export const number = (isRatio = false) =>
         if (isRatio) {
           const ratio = val.split(":");
 
+          // Double check and make sure that a ratio contains numbers on both sides
           if (
             ratio.length != 2 ||
             ratio[0].trim().length == 0 ||
@@ -26,26 +33,29 @@ export const number = (isRatio = false) =>
             return false;
           }
 
-          const firstTest = numberSchema()
-            .transform((_value) => {
-              return Number(ratio[0].replace(replaceCharsRegex, ""));
-            })
-            .isValidSync(val);
-          const secondTest = numberSchema()
-            .transform((_value) => {
-              return Number(ratio[1].replace(replaceCharsRegex, ""));
-            })
-            .isValidSync(val);
+          // Check if the left side of the ratio is a valid number
+          const firstTest = ignoreCharsForSchema(
+            ratio[0],
+            replaceCharsRegex
+          ).isValidSync(val);
+
+          // Check if the right side of the ratio is a valid number
+          const secondTest = ignoreCharsForSchema(
+            ratio[1],
+            replaceCharsRegex
+          ).isValidSync(val);
+
+          // If both sides are valid numbers, return true!
           return firstTest && secondTest;
         }
+
+        /*
+         * Since this isn't a ratio, just check to see if the input is a number OR
+         * if the value in the const validNAValues
+         */
         return (
-          numberSchema()
-            .transform((_value, originalValue) => {
-              return Number(
-                originalValue.toString().replace(replaceCharsRegex, "")
-              );
-            })
-            .isValidSync(val) || validNAValues.includes(val)
+          ignoreCharsForSchema(val, replaceCharsRegex).isValidSync(val) ||
+          validNAValues.includes(val)
         );
       },
     })
