@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -46,6 +46,8 @@ export const Dashboard = () => {
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const { state: userState, userRole } = useUser().user ?? {};
+  const { isMobile } = useBreakpoint();
+  const { intro, body } = verbiage;
   const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
     undefined
   );
@@ -53,10 +55,6 @@ export const Dashboard = () => {
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
   const activeState = userState || adminSelectedState;
-
-  const { isMobile } = useBreakpoint();
-
-  const { intro, body } = verbiage;
 
   useEffect(() => {
     // fetch reports on load
@@ -82,19 +80,25 @@ export const Dashboard = () => {
     navigate(reportFirstPagePath);
   };
 
-  // add/edit program modal disclosure
-  const {
-    isOpen: addEditProgramModalIsOpen,
-    onOpen: addEditProgramModalOnOpenHandler,
-    onClose: addEditProgramModalOnCloseHandler,
-  } = useDisclosure();
-
   const openAddEditProgramModal = (reportId?: string) => {
     // if reportId provided, set as selected program
     setSelectedReportId(reportId);
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };
+
+  const openDeleteProgramModal = (reportId?: string) => {
+    setSelectedReportId(reportId);
+    // use disclosure to open modal
+    deleteProgramModalOnOpenHandler();
+  };
+
+  // add/edit program modal disclosure
+  const {
+    isOpen: addEditProgramModalIsOpen,
+    onOpen: addEditProgramModalOnOpenHandler,
+    onClose: addEditProgramModalOnCloseHandler,
+  } = useDisclosure();
 
   // delete program modal disclosure
   const {
@@ -103,41 +107,33 @@ export const Dashboard = () => {
     onClose: deleteProgramModalOnCloseHandler,
   } = useDisclosure();
 
-  const openDeleteProgramModal = (reportId?: string) => {
-    setSelectedReportId(reportId);
-    // use disclosure to open modal
-    deleteProgramModalOnOpenHandler();
-  };
-
   return (
     <PageTemplate type="report" sx={sx.layout}>
-      <Box>
-        <Link href="/" sx={sx.returnLink}>
-          <ArrowIcon title="returnHome" direction="left" />
-          Return Home
-        </Link>
-      </Box>
+      <Link as={RouterLink} to="/" sx={sx.returnLink}>
+        <ArrowIcon title="returnHome" direction="left" />
+        Return Home
+      </Link>
       {errorMessage && <ErrorAlert error={errorMessage} />}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
         </Heading>
-        <Box>{parseCustomHtml(intro.body)}</Box>
+        {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
         {reportsByState &&
           (isMobile ? (
             <MobileDashboardRow
               reportsByState={reportsByState}
-              userRole={userRole}
+              userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
             />
           ) : (
-            <DesktopDashboardTableRow
+            <DashboardTable
               reportsByState={reportsByState}
-              userRole={userRole}
+              userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
@@ -177,73 +173,60 @@ export const Dashboard = () => {
   );
 };
 
-interface DesktopDashboardTableRowProps {
-  reportsByState: AnyObject[];
-  userRole: any;
-  body: { table: AnyObject };
-  openAddEditProgramModal: Function;
-  enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
-}
-
-export const DesktopDashboardTableRow = ({
+const DashboardTable = ({
   reportsByState,
   userRole,
   body,
   openAddEditProgramModal,
   enterSelectedReport,
   openDeleteProgramModal,
-}: DesktopDashboardTableRowProps) => (
-  <Box data-testid="desktop-table">
-    <Table content={body.table} sxOverride={sx.table}>
-      {reportsByState.map((report: AnyObject) => (
-        // Row
-        <Tr key={report.reportId}>
-          <Td sx={sx.editProgram}>
-            {/* only show edit button to state users */}
-            {(userRole === UserRoles.STATE_REP ||
-              userRole === UserRoles.STATE_USER) && (
-              <button onClick={() => openAddEditProgramModal(report.reportId)}>
-                <Image src={editIcon} alt="Edit Program" />
-              </button>
-            )}
-          </Td>
-          <Td sx={sx.programNameText}>{report.programName}</Td>
-          <Td sx={sx.tableCell}>{convertDateUtcToEt(report.dueDate)}</Td>
-          <Td sx={sx.tableCell}>{convertDateUtcToEt(report.lastAltered)}</Td>
-          <Td sx={sx.editCell}>{report?.lastAlteredBy || "-"}</Td>
-          <Td sx={sx.tableCell}>{report?.status}</Td>
-          <Td sx={sx.editReportButtonCell}>
-            <Button
-              variant="outline"
-              data-testid="enter-program"
-              onClick={() => enterSelectedReport(report.reportId)}
-            >
-              Enter
-            </Button>
-          </Td>
-          <Td sx={sx.deleteProgramCell}>
-            {/* only show delete button if non-state user */}
-            {userRole === UserRoles.ADMIN && (
-              <button onClick={() => openDeleteProgramModal(report.reportId)}>
-                <Image
-                  src={cancelIcon}
-                  data-testid="delete-program"
-                  alt="Delete Program"
-                  sx={sx.deleteProgramButtonImage}
-                />
-              </button>
-            )}
-          </Td>
-        </Tr>
-      ))}
-    </Table>
-  </Box>
+}: DashboardTableProps) => (
+  <Table content={body.table} sxOverride={sx.table} data-testid="desktop-table">
+    {reportsByState.map((report: AnyObject) => (
+      <Tr key={report.reportId}>
+        <Td sx={sx.editProgram}>
+          {(userRole === UserRoles.STATE_REP ||
+            userRole === UserRoles.STATE_USER) && (
+            <button onClick={() => openAddEditProgramModal(report.reportId)}>
+              <Image src={editIcon} alt="Edit Program" />
+            </button>
+          )}
+        </Td>
+        <Td sx={sx.programNameText}>{report.programName}</Td>
+        <Td sx={sx.tableCell}>{convertDateUtcToEt(report.dueDate)}</Td>
+        <Td sx={sx.tableCell}>{convertDateUtcToEt(report.lastAltered)}</Td>
+        <Td sx={sx.editCell}>{report?.lastAlteredBy || "-"}</Td>
+        <Td sx={sx.tableCell}>{report?.status}</Td>
+        <Td sx={sx.editReportButtonCell}>
+          <Button
+            variant="outline"
+            data-testid="enter-program"
+            onClick={() => enterSelectedReport(report.reportId)}
+          >
+            Enter
+          </Button>
+        </Td>
+        <Td sx={sx.deleteProgramCell}>
+          {userRole === UserRoles.ADMIN && (
+            <button onClick={() => openDeleteProgramModal(report.reportId)}>
+              <Image
+                src={cancelIcon}
+                data-testid="delete-program"
+                alt="Delete Program"
+                sx={sx.deleteProgramButtonImage}
+              />
+            </button>
+          )}
+        </Td>
+      </Tr>
+    ))}
+  </Table>
 );
 
-interface MobileDashboardRowProps {
-  reportsByState: any;
-  userRole: any;
+interface DashboardTableProps {
+  reportsByState: AnyObject[];
+  userRole: string;
+  body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
   openDeleteProgramModal: Function;
@@ -260,10 +243,8 @@ export const MobileDashboardRow = ({
     {reportsByState.map((report: AnyObject) => (
       <Box data-testid="mobile-row" sx={sx.mobileTable} key={report.reportId}>
         <Box sx={sx.labelGroup}>
-          {/* Program name */}
           <Text sx={sx.label}>Program name</Text>
           <Flex alignContent="flex-start">
-            {/* only show edit button to state users */}
             {(userRole === UserRoles.STATE_REP ||
               userRole === UserRoles.STATE_USER) && (
               <Box sx={sx.editProgram}>
@@ -278,50 +259,43 @@ export const MobileDashboardRow = ({
                 </button>
               </Box>
             )}
-            <Box sx={sx.programNameText}>{report.programName}</Box>
+            <Text sx={sx.programNameText}>{report.programName}</Text>
           </Flex>
         </Box>
-        {/* Dates */}
         <Box sx={sx.labelGroup}>
           <Flex alignContent="flex-start">
             <Box sx={sx.editDate}>
               <Text sx={sx.label}>Due date</Text>
-              {convertDateUtcToEt(report.dueDate)}
+              <Text>{convertDateUtcToEt(report.dueDate)}</Text>
             </Box>
             <Box>
               <Text sx={sx.label}>Last edited</Text>
-              {convertDateUtcToEt(report.lastAltered)}
+              <Text>{convertDateUtcToEt(report.lastAltered)}</Text>
             </Box>
           </Flex>
         </Box>
-        {/* Edited */}
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>Edited by</Text>
-          <Box>{report?.lastAlteredBy || "-"}</Box>
+          <Text>{report?.lastAlteredBy || "-"}</Text>
         </Box>
-        {/* Status */}
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>Status</Text>
-          <Box>{report?.status}</Box>
+          <Text>{report?.status}</Text>
         </Box>
-        {/* Enter or Erase */}
         <Flex alignContent="flex-start" gap={2}>
           <Box sx={sx.editReportButtonCell}>
             <Button
               variant="outline"
-              data-testid="mobile-enter-program"
               onClick={() => enterSelectedReport(report.reportId)}
             >
               Enter
             </Button>
           </Box>
           <Box sx={sx.deleteProgramCell}>
-            {/* only show delete button if non-state user */}
             {userRole === UserRoles.ADMIN && (
               <button onClick={() => openDeleteProgramModal(report.reportId)}>
                 <Image
                   src={cancelIcon}
-                  data-testid="mobile-delete-program"
                   alt="Delete Program"
                   sx={sx.deleteProgramButtonImage}
                 />
@@ -334,6 +308,14 @@ export const MobileDashboardRow = ({
   </>
 );
 
+interface MobileDashboardRowProps {
+  reportsByState: any;
+  userRole: any;
+  openAddEditProgramModal: Function;
+  enterSelectedReport: Function;
+  openDeleteProgramModal: Function;
+}
+
 const sx = {
   layout: {
     ".contentFlex": {
@@ -343,6 +325,7 @@ const sx = {
     },
   },
   returnLink: {
+    width: "8.5rem",
     svg: {
       height: "1.375rem",
       width: "1.375rem",
@@ -356,7 +339,7 @@ const sx = {
   },
   leadTextBox: {
     width: "100%",
-    maxWidth: "884px",
+    maxWidth: "55.25rem",
     margin: "2.5rem auto",
     ".tablet &": {
       margin: "2.5rem 0 2.25rem 1rem",
@@ -371,13 +354,11 @@ const sx = {
     fontWeight: "normal",
   },
   bodyBox: {
-    maxWidth: "884px",
+    maxWidth: "55.25rem",
     margin: "0 auto",
-
     ".desktop &": {
       width: "100%",
     },
-
     ".tablet &": {
       margin: "0 1rem",
     },
@@ -386,9 +367,9 @@ const sx = {
     },
   },
   mobileTable: {
+    padding: "1rem 0",
     borderBottom: "1px solid",
     borderColor: "palette.gray_light",
-    padding: "1rem 0",
   },
   labelGroup: {
     marginBottom: "0.5rem",
@@ -424,12 +405,12 @@ const sx = {
   },
   editCell: {
     ".tablet &": {
-      width: "115px",
+      width: "7.125rem",
     },
   },
   tableCell: {
     ".tablet &": {
-      width: "105px",
+      width: "6.5rem",
     },
   },
   editReportButtonCell: {
@@ -451,11 +432,9 @@ const sx = {
   editProgram: {
     padding: "0",
     width: "2.5rem",
-
     ".mobile &": {
       width: "2rem",
     },
-
     img: {
       height: "1.5rem",
       minWidth: "21px",
@@ -475,8 +454,8 @@ const sx = {
     fontSize: "md",
     fontWeight: "bold",
     width: "13rem",
-    ".tablet &": {
-      width: "131px",
+    ".mobile &": {
+      width: "100%",
     },
   },
   deleteProgramCell: {
