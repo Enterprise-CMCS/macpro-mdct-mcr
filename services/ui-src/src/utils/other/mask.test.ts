@@ -72,7 +72,7 @@ describe("Test convertToCommaSeparatedString", () => {
   });
   test("Check if non number strings can fail gracefully", () => {
     const testCases = [
-      { test: "No numbers here me lord", expected: "NaN" },
+      { test: "No numbers here, m'lord", expected: "NaN" },
       { test: "", expected: "NaN" },
     ];
     for (let testCase of testCases) {
@@ -93,7 +93,7 @@ describe("Test convertToCommaSeparatedRatioString", () => {
   });
   test("Check if non number strings can fail gracefully", () => {
     const testCases = [
-      { test: "No numbers here me lord", expected: ":" },
+      { test: "No numbers here, m'lord", expected: ":" },
       { test: " :1", expected: ":1" },
       { test: "1: ", expected: "1:" },
       { test: "1:::10,000 ", expected: "1:" },
