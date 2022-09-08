@@ -10,36 +10,36 @@ import {
   ReportPageFooter,
   Sidebar,
   StandardFormSection,
+  TemplateContext,
 } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
   PageJson,
-  ReportJson,
   ReportRoute,
   ReportStatus,
   UserRoles,
 } from "types";
 
-export const ReportPage = ({ reportJson, route }: Props) => {
+export const ReportPage = ({ route }: Props) => {
   // get report, form, and page related-data
   const { report, updateReportData, updateReport } = useContext(ReportContext);
+  const { formTemplate, formRoutes } = useContext(TemplateContext);
   const reportId = report?.reportId;
-  const { basePath, routes } = reportJson;
   const { form, page } = route;
 
   // get user state, name, role
   const { user } = useUser();
   const { full_name, state, userRole } = user ?? {};
 
-  // get next and previous routes
+  // get next route
   const navigate = useNavigate();
-  const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
+  const { nextRoute } = useFindRoute(formRoutes, formTemplate.basePath);
 
   useEffect(() => {
     if (!reportId) {
-      navigate(basePath);
+      navigate(formTemplate.basePath);
     }
   }, [reportId]);
 
@@ -82,11 +82,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
         <Flex sx={sx.reportContainer}>
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
-          <ReportPageFooter
-            formId={form.id}
-            previousRoute={previousRoute}
-            nextRoute={nextRoute}
-          />
+          <ReportPageFooter formId={form.id} />
         </Flex>
       </Flex>
     </PageTemplate>
@@ -94,7 +90,6 @@ export const ReportPage = ({ reportJson, route }: Props) => {
 };
 
 interface Props {
-  reportJson: ReportJson;
   route: ReportRoute;
 }
 

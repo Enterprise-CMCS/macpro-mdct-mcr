@@ -1,4 +1,13 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+// components
+import { ReportContext } from "components";
 // utils
 import { AnyObject } from "types";
 import {
@@ -22,6 +31,8 @@ export const TemplateProvider = ({ children }: Props) => {
   const [formTemplate, setFormTemplate] = useState<AnyObject>();
   const [error, setError] = useState<string>();
 
+  const { report } = useContext(ReportContext);
+
   const fetchFormTemplate = async (formTemplateId: string) => {
     try {
       const result = await getFormTemplate(formTemplateId);
@@ -42,6 +53,12 @@ export const TemplateProvider = ({ children }: Props) => {
       setError(formTemplateErrors.SET_FORM_TEMPLATE_FAILED);
     }
   };
+
+  useEffect(() => {
+    if (report?.formTemplateId) {
+      fetchFormTemplate(report.formTemplateId);
+    }
+  }, [report]);
 
   const providerValue = useMemo(
     () => ({

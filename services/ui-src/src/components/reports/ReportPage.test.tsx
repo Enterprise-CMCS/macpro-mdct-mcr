@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, ReportPage } from "components";
+import { ReportContext, ReportPage, TemplateContext } from "components";
 // utils
 import {
   mockReportJson,
@@ -37,6 +37,20 @@ const mockReportContextWithoutReport = {
   report: {},
 };
 
+const mockTemplateMethods = {
+  fetchFormTemplate: jest.fn(() => {}),
+  saveFormTemplate: jest.fn(() => {}),
+};
+
+const mockTemplateContext = {
+  ...mockTemplateMethods,
+  formTemplate: {
+    basePath: "/test/form",
+  },
+  formRoutes: [],
+  errorMessage: "",
+};
+
 const mockUseNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
@@ -59,10 +73,9 @@ jest.mock("utils", () => ({
 const standardReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPage
-        reportJson={mockReportJson}
-        route={mockReportJson.routes[0]}
-      />
+      <TemplateContext.Provider value={mockTemplateContext}>
+        <ReportPage route={mockReportJson.routes[0]} />
+      </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -70,10 +83,9 @@ const standardReportPageComponent = (
 const drawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPage
-        reportJson={mockReportJson}
-        route={mockReportJson.routes[1]}
-      />
+      <TemplateContext.Provider value={mockTemplateContext}>
+        <ReportPage route={mockReportJson.routes[1]} />
+      </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -81,10 +93,9 @@ const drawerReportPageComponent = (
 const reportPageWithoutReportId = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
-      <ReportPage
-        reportJson={mockReportJson}
-        route={mockReportJson.routes[0]}
-      />
+      <TemplateContext.Provider value={mockTemplateContext}>
+        <ReportPage route={mockReportJson.routes[0]} />
+      </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );

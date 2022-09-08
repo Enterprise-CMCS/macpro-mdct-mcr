@@ -1,15 +1,18 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { Icon } from "components";
+import { Icon, TemplateContext } from "components";
+// utils
+import { useFindRoute } from "utils";
 
-export const ReportPageFooter = ({
-  formId,
-  previousRoute,
-  nextRoute,
-  ...props
-}: Props) => {
+export const ReportPageFooter = ({ formId, ...props }: Props) => {
   const navigate = useNavigate();
+  const { formTemplate, formRoutes } = useContext(TemplateContext);
+  const { previousRoute, nextRoute } = useFindRoute(
+    formRoutes,
+    formTemplate.basePath
+  );
   return (
     <Box sx={sx.footerBox} {...props}>
       <Box>
@@ -46,8 +49,6 @@ export const ReportPageFooter = ({
 
 interface Props {
   formId?: string;
-  previousRoute: string;
-  nextRoute: string;
   [key: string]: any;
 }
 

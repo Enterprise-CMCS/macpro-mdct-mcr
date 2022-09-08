@@ -69,13 +69,8 @@ export const Dashboard = () => {
     setReportData(undefined);
   }, []);
 
-  const enterSelectedReport = (reportId: string) => {
-    // set active report to selected report
-    const reportDetails: ReportDetails = {
-      state: activeState!,
-      reportId: reportId,
-    };
-    setReport(reportDetails);
+  const enterSelectedReport = async (report: AnyObject) => {
+    setReport(report);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };
@@ -201,7 +196,7 @@ const DashboardTable = ({
           <Button
             variant="outline"
             data-testid="enter-program"
-            onClick={() => enterSelectedReport(report.reportId)}
+            onClick={() => enterSelectedReport(report)}
           >
             Enter
           </Button>
