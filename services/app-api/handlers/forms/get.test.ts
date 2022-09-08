@@ -11,24 +11,7 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
       Items: [
         {
           createdAt: 1654198665696,
-          formName: "TEST",
           formId: "TEST_test-1-22",
-          formJson: {},
-        },
-      ],
-    }),
-    scan: jest.fn().mockReturnValue({
-      Items: [
-        {
-          createdAt: 1654198665696,
-          formName: "TEST",
-          formId: "TEST_test-1-22",
-          formJson: {},
-        },
-        {
-          createdAt: 1654198665697,
-          formName: "TEST",
-          formId: "TEST_test-2-22",
           formJson: {},
         },
       ],
@@ -49,13 +32,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { formName: "TEST", formId: "TEST_test-1-22" },
-};
-
-const testEventLatest: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { formName: "TEST" },
+  pathParameters: { formId: "TEST_test-1-22" },
 };
 
 describe("Test getForm API method", () => {
@@ -68,12 +45,11 @@ describe("Test getForm API method", () => {
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.formName).toContain("TEST");
     expect(body.formId).toContain("TEST_test-1-22");
     expect(body.formJson).toEqual({});
   });
 
-  test("Test formName and formId not provided throws 500 error", async () => {
+  test("Test formId not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: {},
@@ -84,10 +60,10 @@ describe("Test getForm API method", () => {
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });
 
-  test("Test formName and formId empty throws 500 error", async () => {
+  test("Test formId empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      pathParameters: { formName: "", formId: "" },
+      pathParameters: { formId: "" },
     };
     const res = await getForm(noKeyEvent, null);
 

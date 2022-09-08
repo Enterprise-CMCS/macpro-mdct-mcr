@@ -101,15 +101,11 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
         AttributeDefinitions:
-          - AttributeName: formName
-            AttributeType: S
           - AttributeName: formId
             AttributeType: S
         KeySchema:
-          - AttributeName: formName
-            KeyType: HASH
           - AttributeName: formId
-            KeyType: RANGE
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     BannerTableName:

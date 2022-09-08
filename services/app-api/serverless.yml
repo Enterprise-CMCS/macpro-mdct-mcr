@@ -216,14 +216,13 @@ functions:
     handler: handlers/forms/get.getForm
     events:
       - http:
-          path: forms/{formName}/{formId}
+          path: forms/{formId}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                formName: true
                 formId: true
   getTemplate:
     handler: handlers/templates/get.getTemplate
