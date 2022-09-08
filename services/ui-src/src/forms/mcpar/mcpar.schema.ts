@@ -3,6 +3,7 @@ import {
   date,
   dateOptional,
   dynamic,
+  dropdown,
   email,
   emailOptional,
   endDate,
@@ -190,7 +191,19 @@ export default {
     "dgbr-11": number(),
   },
   dqm: {}, // pending
-  ds: {}, // pending
+  ds: {
+    "ds-1": radio(),
+    "ds-1-o7": nested(text, "ds-1", "What type of intervention?"),
+    "ds-2": radio(),
+    "ds-2-07": nested(text, "ds-2", "What was the topic of intervention?"),
+    "ds-3": dropdown(),
+    "ds-4": text(),
+    "ds-5": number(),
+    "ds-6": number(),
+    "ds-7": date(),
+    "ds-8": date(),
+    "ds-9": radio(),
+  },
   dpi: {
     "dpi-1": number(),
     "dpi-2": number(),

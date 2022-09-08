@@ -194,6 +194,16 @@ export const mockPageJsonWithDrawer = {
   },
 };
 
+// FORM TEMPLATE
+
+export const mockFormTemplate = {
+  formTemplateId: "mockId",
+  formTemplate: {
+    name: "TEST",
+    routes: [{}, {}],
+  },
+};
+
 // REPORT
 
 export const mockReportRoutes = [

@@ -1,6 +1,5 @@
 import {
   copyAdminDisabledStatusToForms,
-  createReportId,
   flattenReportRoutesArray,
   sortReportsOldestToNewest,
 } from "./reports";
@@ -81,16 +80,6 @@ describe("Test flattenReportRoutesArray", () => {
   it("flattenReportRoutesArray", () => {
     const result = flattenReportRoutesArray(mockReportJson);
     expect(result).toEqual(mockExpectedResult);
-  });
-});
-
-describe("Test createReportId", () => {
-  test("createReportId correctly creates a reportId", () => {
-    const mockState = "AB";
-    const mockProgramName = "Program Number 1";
-    const mockDueDate = 1661894735910;
-    const result = createReportId(mockState, mockProgramName, mockDueDate);
-    expect(result).toEqual("AB_Program-Number-1_8-30-2022");
   });
 });
 

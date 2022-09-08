@@ -1,7 +1,7 @@
 {
   "name": "MCPAR",
   "basePath": "/mcpar",
-  "version": "0.0.0",
+  "version": "MCPAR_2022-09-08",
   "adminDisabled": true,
   "routes": [
     {
@@ -1991,8 +1991,31 @@
           "path": "/mcpar/plan-level-indicators/sanctions",
           "page": {
             "intro": {
-              "section": "D: Plan-Level Indicators",
-              "subsection": "VIII: Sanctions"
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VIII. Sanctions",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D3_Plan_Sanctions"]
+              },
+              "info": [
+                {
+                  "type": "text",
+                  "as": "p",
+                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other."
+                },
+                {
+                  "type": "text",
+                  "as": "p",
+                  "content": "42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance."
+                }
+              ]
+            },
+            "drawer": {
+              "dashboard": {
+                "title": "Intervention Type",
+                "entityType": "plans"
+              },
+              "drawerTitle": "Add a sanction for"
             }
           },
           "form": {
@@ -2000,10 +2023,180 @@
             "fields": [
               {
                 "id": "ds-1",
-                "type": "text",
+                "type": "radio",
                 "props": {
-                  "label": "Temporary placeholder field",
-                  "disabled": true
+                  "label": "D3.VIII.1 Intervention type",
+                  "hint": "What type of intervention? Select one.",
+                  "choices": [
+                    {
+                      "name": "ds-1-o1",
+                      "type": "choice",
+                      "label": "Civil monetary penalty"
+                    },
+                    {
+                      "name": "ds-1-o2",
+                      "type": "choice",
+                      "label": "Suspension of new enrollment"
+                    },
+                    {
+                      "name": "ds-1-o3",
+                      "type": "choice",
+                      "label": "Fine"
+                    },
+                    {
+                      "name": "ds-1-o4",
+                      "type": "choice",
+                      "label": "Corrective action plan"
+                    },
+                    {
+                      "name": "ds-1-o5",
+                      "type": "choice",
+                      "label": "Compliance letter"
+                    },
+                    {
+                      "name": "ds-1-o6",
+                      "type": "choice",
+                      "label": "Liquidated damages"
+                    },
+                    {
+                      "name": "ds-1-o7",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "ds-1-o7-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "ds-2",
+                "type": "radio",
+                "props": {
+                  "label": "D3.VIII.2 Intervention topic",
+                  "hint": "What was the topic of intervention? Select one.",
+                  "choices": [
+                    {
+                      "name": "ds-2-o1",
+                      "type": "choice",
+                      "label": "Discrimination"
+                    },
+                    {
+                      "name": "ds-2-o2",
+                      "type": "choice",
+                      "label": "False information"
+                    },
+                    {
+                      "name": "ds-2-o3",
+                      "type": "choice",
+                      "label": "Excess charges"
+                    },
+                    {
+                      "name": "ds-2-o4",
+                      "type": "choice",
+                      "label": "Reporting"
+                    },
+                    {
+                      "name": "ds-2-o5",
+                      "type": "choice",
+                      "label": "Performance management"
+                    },
+                    {
+                      "name": "ds-2-o6",
+                      "type": "choice",
+                      "label": "Timely access"
+                    },
+                    {
+                      "name": "ds-2-o7",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "ds-2-o7-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "ds-3",
+                "type": "dropdown",
+                "props": {
+                  "label": "D3.VIII.3 Plan name",
+                  "hint": "What is the name of the plan attached to the sanction or corrective action plan? Select plan name.",
+                  "ariaLabel": "List of plan names",
+                  "options": [
+                    { "label": "Option 1", "value": "a" },
+                    { "label": "Option 2", "value": "b" },
+                    { "label": "Option 3", "value": "c" }
+                  ]
+                }
+              },
+              {
+                "id": "ds-4",
+                "type": "textarea",
+                "props": {
+                  "label": "D3.VIII.4 Reason for intervention",
+                  "hint": "What was the reason for intervention? Add a description."
+                }
+              },
+              {
+                "id": "ds-5",
+                "type": "number",
+                "props": {
+                  "label": "D3.VIII.5 Instances of non-compliance",
+                  "hint": "How many instances were there of non-compliance in the reporting year? Add a number.",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "ds-6",
+                "type": "number",
+                "props": {
+                  "label": "D3.VIII.6 Sanction amount",
+                  "hint": "Add a dollar amount. Enter N/A for sanctions that do not carry financial penalties.",
+                  "mask": "currency"
+                }
+              },
+              {
+                "id": "ds-7",
+                "type": "date",
+                "props": {
+                  "label": "D3.VIII.7 Date assessed",
+                  "hint": "When was the plan sanctioned? Select a date."
+                }
+              },
+              {
+                "id": "ds-8",
+                "type": "date",
+                "props": {
+                  "label": "D3.VIII.8 Remediation date non-compliance was corrected",
+                  "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
+                }
+              },
+              {
+                "id": "ds-9",
+                "type": "radio",
+                "props": {
+                  "label": "D3.VIII.9 Corrective action plan",
+                  "hint": "Has the state sanctioned the plan within the previous two years, (e.g. corrective action plans or other informal interventions such as special outreach, focused technical assistance)?",
+                  "choices": [
+                    {
+                      "name": "ds-9-o1",
+                      "type": "choice",
+                      "label": "Yes"
+                    },
+                    {
+                      "name": "ds-9-o2",
+                      "type": "choice",
+                      "label": "No"
+                    }
+                  ]
                 }
               }
             ]

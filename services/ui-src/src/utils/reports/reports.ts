@@ -1,5 +1,4 @@
 import { AnyObject, ReportJson, ReportRoute } from "types";
-import { convertDateUtcToEt } from "utils/other/time";
 
 // returns reportJson with forms that mirror the adminDisabled status of the report
 export const copyAdminDisabledStatusToForms = (
@@ -62,19 +61,6 @@ export const addValidationToReportJson = (
   };
   mapSchemaToForms(reportJson, validationSchema);
   return reportJson;
-};
-
-export const createReportId = (
-  state: string,
-  programName: string,
-  dueDate: number
-) => {
-  const programNameWithDashes = programName.replace(/\s/g, "-");
-  const dueDateString = convertDateUtcToEt(dueDate)
-    .toString()
-    .replace(/\//g, "-");
-  const reportId = [state, programNameWithDashes, dueDateString].join("_");
-  return reportId;
 };
 
 export const sortReportsOldestToNewest = (
