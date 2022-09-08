@@ -15,6 +15,7 @@ import {
   getReportsByState,
   writeReport,
   deleteReport,
+  sortReportsOldestToNewest,
 } from "utils";
 // verbiage
 import { reportErrors } from "verbiage/errors";
@@ -95,7 +96,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportsByState = async (state: string) => {
     try {
       const result = await getReportsByState(state);
-      setReportsByState(result);
+      setReportsByState(sortReportsOldestToNewest(result));
     } catch (e: any) {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
