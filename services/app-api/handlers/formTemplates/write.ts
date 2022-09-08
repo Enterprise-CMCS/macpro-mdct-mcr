@@ -29,6 +29,7 @@ export const writeFormTemplate = handler(async (event, _context) => {
         lastAltered: Date.now(),
         lastAlteredBy: event?.headers["cognito-identity-id"],
         formTemplate: body.formTemplate,
+        ...body,
       },
     };
     await dynamoDb.put(params);
