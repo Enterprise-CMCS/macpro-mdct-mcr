@@ -212,26 +212,26 @@ functions:
               paths:
                 state: true
                 reportId: true
-  getForm:
-    handler: handlers/forms/get.getForm
-    events:
-      - http:
-          path: forms/{formId}
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                formId: true
-  writeForm:
-    handler: handlers/forms/write.writeForm
-    events:
-      - http:
-          path: forms
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  # getForm:
+  #   handler: handlers/forms/get.getForm
+  #   events:
+  #     - http:
+  #         path: forms/{formId}
+  #         method: get
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         request:
+  #           parameters:
+  #             paths:
+  #               formId: true
+  # writeForm:
+  #   handler: handlers/forms/write.writeForm
+  #   events:
+  #     - http:
+  #         path: forms
+  #         method: post
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:
