@@ -26,7 +26,6 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   // get report, form, and page related-data
   const { report, setReport, updateReportData, updateReport } =
     useContext(ReportContext);
-  const reportId = report?.reportId || localStorage.getItem("selectedReport");
   const { basePath, routes } = reportJson;
   const { form, page } = route;
 
@@ -34,16 +33,23 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   const { user } = useUser();
   const { full_name, state, userRole } = user ?? {};
 
+  // get state and reportId from context or storage
+  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
+
   // get next and previous routes
   const navigate = useNavigate();
   const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
 
   useEffect(() => {
-    const reportState = state || localStorage.getItem("selectedState");
     if (!reportId || !reportState) {
       navigate(basePath);
     } else {
-      setReport({ reportState, reportId });
+      const reportDetails = {
+        state: reportState,
+        reportId: reportId,
+      };
+      setReport(reportDetails);
     }
   }, [reportId]);
 

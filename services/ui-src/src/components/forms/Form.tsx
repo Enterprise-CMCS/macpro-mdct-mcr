@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useState, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,7 +11,12 @@ import { FormJson, FormField } from "types";
 
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
+  const [theFields, setTheFields] = useState(fields);
   const { reportData } = useContext(ReportContext);
+
+  useEffect(() => {
+    setTheFields(fields);
+  }, [reportData]);
 
   const formSchema = yupSchema(formJson.validation || {});
 
@@ -48,7 +53,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
         onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
         {...props}
       >
-        <Box sx={sx}>{formFieldsToRender(fields)}</Box>
+        <Box sx={sx}>{formFieldsToRender(theFields)}</Box>
         {children}
       </form>
     </FormProvider>
