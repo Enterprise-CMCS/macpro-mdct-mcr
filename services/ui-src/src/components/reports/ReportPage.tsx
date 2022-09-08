@@ -39,11 +39,11 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
 
   useEffect(() => {
-    if (!reportId) {
+    const reportState = state || localStorage.getItem("selectedState");
+    if (!reportId || !reportState) {
       navigate(basePath);
     } else {
-      const selectedState = localStorage.getItem("selectedState");
-      setReport({ selectedState, reportId });
+      setReport({ reportState, reportId });
     }
   }, [reportId]);
 
