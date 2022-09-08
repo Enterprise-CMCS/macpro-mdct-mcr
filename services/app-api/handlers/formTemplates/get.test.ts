@@ -1,4 +1,4 @@
-import { getForm } from "./get";
+import { getFormTemplate } from "./get";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -11,7 +11,7 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
       Items: [
         {
           createdAt: 1654198665696,
-          formId: "TEST_test-1-22",
+          formTemplateId: "TEST_test-1-22",
           formTemplate: {},
         },
       ],
@@ -32,40 +32,40 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { formId: "TEST_test-1-22" },
+  pathParameters: { formTemplateId: "TEST_test-1-22" },
 };
 
-describe("Test getForm API method", () => {
+describe("Test getFormTemplate API method", () => {
   beforeEach(() => {
-    process.env["FORM_TABLE_NAME"] = "fakeFormTable";
+    process.env["FORM_TEMPLATE_TABLE_NAME"] = "fakeFormTemplateTable";
   });
 
-  test("Test Successful Form Fetch", async () => {
-    const res = await getForm(testEvent, null);
+  test("Test Successful Form Template Fetch", async () => {
+    const res = await getFormTemplate(testEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.formId).toContain("TEST_test-1-22");
+    expect(body.formTemplateId).toContain("TEST_test-1-22");
     expect(body.formTemplate).toEqual({});
   });
 
-  test("Test formId not provided throws 500 error", async () => {
+  test("Test formTemplateId not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await getForm(noKeyEvent, null);
+    const res = await getFormTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });
 
-  test("Test formId empty throws 500 error", async () => {
+  test("Test formTemplateId empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      pathParameters: { formId: "" },
+      pathParameters: { formTemplateId: "" },
     };
-    const res = await getForm(noKeyEvent, null);
+    const res = await getFormTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);

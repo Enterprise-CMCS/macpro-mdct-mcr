@@ -1,4 +1,4 @@
-import { writeForm } from "./write";
+import { writeFormTemplate } from "./write";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -27,36 +27,36 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"formId":"testFormId","formTemplate":{"info":"test","forms":"etc"}}`,
+  body: `{"formTemplateId":"testFormId","formTemplate":{"info":"test","forms":"etc"}}`,
   headers: { "cognito-identity-id": "test" },
 };
 
-describe("Test writeForm API method", () => {
+describe("Test writeFormTemplate API method", () => {
   beforeEach(() => {
-    process.env["FORM_TABLE_NAME"] = "fakeFormTemplateTable";
+    process.env["FORM_TEMPLATE_TABLE_NAME"] = "fakeFormTemplateTable";
   });
 
-  test("Test unauthorized form creation throws 403 error", async () => {
-    const res = await writeForm(testEvent, null);
+  test("Test unauthorized form template creation throws 403 error", async () => {
+    const res = await writeFormTemplate(testEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
   });
 
-  test("Test Successful Run of form Creation", async () => {
-    const res = await writeForm(testEvent, null);
+  test("Test Successful Run of form template Creation", async () => {
+    const res = await writeFormTemplate(testEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("testFormId");
     expect(res.body).toContain("etc");
   });
 
-  test("Test formId not provided throws 500 error", async () => {
+  test("Test formTemplateId not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       body: `{"formTemplate":{"info":"test","forms":"etc"}}`,
     };
-    const res = await writeForm(noKeyEvent, null);
+    const res = await writeFormTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
@@ -65,9 +65,9 @@ describe("Test writeForm API method", () => {
   test("Test formTemplate not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
-      body: `{"formId":"testFormId"}`,
+      body: `{"formTemplateId":"testFormId"}`,
     };
-    const res = await writeForm(noKeyEvent, null);
+    const res = await writeFormTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(MISSING_DATA_ERROR_MESSAGE);

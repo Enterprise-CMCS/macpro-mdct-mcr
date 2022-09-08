@@ -3,18 +3,18 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
 import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 
-export const getForm = handler(async (event, _context) => {
-  if (!event?.pathParameters?.formId!) {
+export const getFormTemplate = handler(async (event, _context) => {
+  if (!event?.pathParameters?.formTemplateId!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const queryParams = {
-    TableName: process.env.FORM_TABLE_NAME!,
-    KeyConditionExpression: "#formId = :formId",
+    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    KeyConditionExpression: "#formTemplateId = :formTemplateId",
     ExpressionAttributeValues: {
-      ":formId": event.pathParameters.formId,
+      ":formTemplateId": event.pathParameters.formTemplateId,
     },
     ExpressionAttributeNames: {
-      "#formId": "formId",
+      "#formTemplateId": "formTemplateId",
     },
   };
   const queryResponse = await dynamoDb.query(queryParams);

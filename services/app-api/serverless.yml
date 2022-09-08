@@ -36,7 +36,7 @@ custom:
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   reportDataTableName: ${env:REPORT_DATA_TABLE_NAME, cf:database-${self:custom.stage}.ReportDataTableName}
   reportTableName: ${env:REPORT_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
-  formTableName: ${env:FORM_TABLE_NAME, cf:database-${self:custom.stage}.FormTableName}
+  formTemplateTableName: ${env:FORM_TEMPLATE_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplateTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
@@ -94,7 +94,7 @@ provider:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     REPORT_DATA_TABLE_NAME: ${self:custom.reportDataTableName}
     REPORT_TABLE_NAME: ${self:custom.reportTableName}
-    FORM_TABLE_NAME: ${self:custom.formTableName}
+    FORM_TEMPLATE_TABLE_NAME: ${self:custom.formTemplateTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
 
@@ -212,26 +212,26 @@ functions:
               paths:
                 state: true
                 reportId: true
-  # getForm:
-  #   handler: handlers/forms/get.getForm
-  #   events:
-  #     - http:
-  #         path: forms/{formId}
-  #         method: get
-  #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-  #         request:
-  #           parameters:
-  #             paths:
-  #               formId: true
-  # writeForm:
-  #   handler: handlers/forms/write.writeForm
-  #   events:
-  #     - http:
-  #         path: forms
-  #         method: post
-  #         cors: true
-  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  getFormTemplate:
+    handler: handlers/formTemplates/get.getFormTemplate
+    events:
+      - http:
+          path: formTemplates/{formTemplateId}
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                formTemplateId: true
+  writeFormTemplate:
+    handler: handlers/formTemplates/write.writeFormTemplate
+    events:
+      - http:
+          path: formTemplates
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:

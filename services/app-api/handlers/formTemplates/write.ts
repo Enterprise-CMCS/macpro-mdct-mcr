@@ -8,7 +8,7 @@ import {
 } from "../../utils/constants/constants";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
-export const writeForm = handler(async (event, _context) => {
+export const writeFormTemplate = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
@@ -16,15 +16,15 @@ export const writeForm = handler(async (event, _context) => {
     };
   }
   const body = JSON.parse(event!.body!);
-  if (!body?.formId) {
+  if (!body?.formTemplateId) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   } else if (!body?.formTemplate) {
     throw new Error(MISSING_DATA_ERROR_MESSAGE);
   } else {
     const params = {
-      TableName: process.env.FORM_TABLE_NAME!,
+      TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
       Item: {
-        formId: body.formId,
+        formTemplateId: body.formTemplateId,
         createdAt: Date.now(),
         lastAltered: Date.now(),
         lastAlteredBy: event?.headers["cognito-identity-id"],
