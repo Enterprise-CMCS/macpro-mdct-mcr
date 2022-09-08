@@ -114,8 +114,8 @@ export default {
     "dfp-1b-o5-text": nested(text, "dfp-1b", "Other"),
     "dfp-2": text(),
     "dfp-3": radio(),
-    "dfp-4-start": nested(date, "dfp-3", "Yes"),
-    "dfp-4-end": nested(() => endDate("dfp-4-start"), "dfp-3", "Yes"),
+    "dfp-4-1": nested(date, "dfp-3", "Yes"),
+    "dfp-4-2": nested(() => endDate("dfp-4-1"), "dfp-3", "Yes"),
   },
   dedr: {
     "dedr-1": text(),
@@ -199,7 +199,8 @@ export default {
     "dqm-6": radio(),
     "dqm-6-o5": nested(text, "dqm-6", "Other"),
     "dqm-7": radio(),
-    "dqm-7b": nested(date, "dqm-7", "No"),
+    "dqm-7b-1": nested(date, "dqm-7", "No"),
+    "dqm-7b-2": nested(() => endDate("dqm-7b-1"), "dqm-7", "No"),
     "dqm-8": text(),
   },
   ds: {}, // pending

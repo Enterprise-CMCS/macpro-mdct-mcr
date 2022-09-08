@@ -1176,7 +1176,7 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "dfp-4-start",
+                          "id": "dfp-4-1",
                           "type": "date",
                           "props": {
                             "hint": "Enter the start date.",
@@ -1184,7 +1184,7 @@
                           }
                         },
                         {
-                          "id": "dfp-4-end",
+                          "id": "dfp-4-2",
                           "type": "date",
                           "props": {
                             "hint": "Enter the end date.",
@@ -2130,11 +2130,20 @@
                       "label": "No",
                       "children": [
                         {
-                          "id": "dqm-7b",
+                          "id": "dqm-7b-1",
                           "type": "date",
                           "props": {
                             "label": "D2.VII.7b Reporting period: Date range",
-                            "hint": "What is the reporting period covered by the measure?"
+                            "hint": "What is the reporting period covered by the measure?<br><br>Start date",
+                            "timetype": "startDate"
+                          }
+                        },
+                        {
+                          "id": "dqm-7b-2",
+                          "type": "date",
+                          "props": {
+                            "hint": "End date",
+                            "timetype": "endDate"
                           }
                         }
                       ]
