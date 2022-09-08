@@ -63,6 +63,7 @@ export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { StandardFormSection } from "./reports/sections/StandardFormSection";
 export { EntityDrawerSection } from "./reports/sections/EntityDrawerSection";
+export { TemplateContext, TemplateProvider } from "./reports/TemplateProvider";
 // tables
 export { Table } from "./tables/Table";
 // widgets

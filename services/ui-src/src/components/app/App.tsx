@@ -12,6 +12,7 @@ import {
   LoginIDM,
   ReportProvider,
   SkipNav,
+  TemplateProvider,
 } from "components";
 // utils
 import { fireTealiumPageView, makeMediaQueryClasses, useUser } from "utils";
@@ -44,17 +45,19 @@ export const App = () => {
             text="Skip to main content"
           />
           <ReportProvider>
-            <Header handleLogout={logout} />
-            <Container
-              sx={sx.appContainer}
-              className={mqClasses}
-              data-testid="app-container"
-            >
-              <ErrorBoundary FallbackComponent={Error}>
-                <AppRoutes userRole={user?.userRole} />
-              </ErrorBoundary>
-            </Container>
-            <Footer />
+            <TemplateProvider>
+              <Header handleLogout={logout} />
+              <Container
+                sx={sx.appContainer}
+                className={mqClasses}
+                data-testid="app-container"
+              >
+                <ErrorBoundary FallbackComponent={Error}>
+                  <AppRoutes userRole={user?.userRole} />
+                </ErrorBoundary>
+              </Container>
+              <Footer />
+            </TemplateProvider>
           </ReportProvider>
         </Flex>
       )}

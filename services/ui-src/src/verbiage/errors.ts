@@ -29,3 +29,10 @@ export const reportErrors = {
   SET_REPORT_FAILED: "Report could not be updated. Please contact support.",
   DELETE_REPORT_FAILED: "Report could not be deleted. Please contact support.",
 };
+
+export const formTemplateErrors = {
+  GET_FORM_TEMPLATE_FAILED:
+    "Form template could not be loaded. Please contact support.",
+  SET_FORM_TEMPLATE_FAILED:
+    "Form template could not be saved. Please contact support.",
+};

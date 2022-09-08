@@ -1,14 +1,9 @@
 import { useContext } from "react";
 // components
-import { Form, Modal, ReportContext } from "components";
+import { Form, Modal, ReportContext, TemplateContext } from "components";
 // utils
 import { FormJson, ReportStatus } from "types";
-import {
-  calculateDueDate,
-  convertDateEtToUtc,
-  useUser,
-  writeFormTemplate,
-} from "utils";
+import { calculateDueDate, convertDateEtToUtc, useUser } from "utils";
 import uuid from "react-uuid";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
@@ -21,6 +16,7 @@ export const AddEditProgramModal = ({
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
+  const { saveFormTemplate } = useContext(TemplateContext);
   const { full_name } = useUser().user ?? {};
 
   // add validation to formJson
@@ -62,7 +58,7 @@ export const AddEditProgramModal = ({
         formTemplateId: formTemplateId,
       });
       // save form template
-      await writeFormTemplate({
+      await saveFormTemplate({
         formTemplateId: formTemplateId,
         formTemplate: mcparReportJsonNested,
         formTemplateVersion: mcparReportJsonNested.version,
