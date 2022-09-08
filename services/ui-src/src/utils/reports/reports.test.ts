@@ -1,4 +1,4 @@
-import { flattenReportRoutesArray } from "./reports";
+import { flattenReportRoutesArray, sortReportsOldestToNewest } from "./reports";
 
 const mockFormField = {
   id: "mockId",
@@ -74,5 +74,41 @@ describe("Test flattenReportRoutesArray", () => {
   it("flattenReportRoutesArray", () => {
     const result = flattenReportRoutesArray(mockReportJson);
     expect(result).toEqual(mockExpectedResult);
+  });
+});
+
+describe("Sort Reports", () => {
+  it("should sort reports by oldest to newest", () => {
+    const unsortedReports = [
+      {
+        createdAt: 1662568556165,
+        programName: "Second Oldest",
+      },
+      {
+        createdAt: 1662568568589,
+        programName: "Third Oldest",
+      },
+      {
+        createdAt: 1652568576322,
+        programName: "Oldest",
+      },
+    ];
+
+    const sortedReports = [
+      {
+        createdAt: 1652568576322,
+        programName: "Oldest",
+      },
+      {
+        createdAt: 1662568556165,
+        programName: "Second Oldest",
+      },
+      {
+        createdAt: 1662568568589,
+        programName: "Third Oldest",
+      },
+    ];
+
+    expect(sortReportsOldestToNewest(unsortedReports)).toEqual(sortedReports);
   });
 });

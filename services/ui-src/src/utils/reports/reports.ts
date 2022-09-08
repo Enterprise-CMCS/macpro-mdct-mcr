@@ -39,3 +39,7 @@ export const addValidationToReportJson = (
   mapSchemaToForms(reportJson, validationSchema);
   return reportJson;
 };
+
+export const sortReportsOldestToNewest = (
+  reportsArray: { createdAt: number }[]
+) => reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
