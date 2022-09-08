@@ -1,7 +1,7 @@
 {
   "name": "MCPAR",
   "basePath": "/mcpar",
-  "version": "MCPAR_2022-09-08", // yyyy-mm-dd
+  "version": "MCPAR_2022-09-08",
   "routes": [
     {
       "name": "A: Program Information",
