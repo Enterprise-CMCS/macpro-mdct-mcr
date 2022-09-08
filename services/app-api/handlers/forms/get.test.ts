@@ -12,7 +12,7 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
         {
           createdAt: 1654198665696,
           formId: "TEST_test-1-22",
-          formJson: {},
+          formTemplate: {},
         },
       ],
     }),
@@ -46,7 +46,7 @@ describe("Test getForm API method", () => {
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.formId).toContain("TEST_test-1-22");
-    expect(body.formJson).toEqual({});
+    expect(body.formTemplate).toEqual({});
   });
 
   test("Test formId not provided throws 500 error", async () => {
