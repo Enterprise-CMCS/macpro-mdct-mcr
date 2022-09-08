@@ -36,12 +36,13 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
+const mockFetchReport = jest.fn();
 const mockReportMethods = {
   setReport: jest.fn(() => {}),
   setReportData: jest.fn(() => {}),
   fetchReportData: jest.fn(() => {}),
   updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
+  fetchReport: mockFetchReport,
   updateReport: jest.fn(() => {}),
   removeReport: jest.fn(() => {}),
   fetchReportsByState: jest.fn(() => {}),
@@ -111,10 +112,11 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
   });
 
-  test("Clicking 'Enter' button on a report navigates to first page of report", async () => {
+  test("Clicking 'Enter' button on a report row fetchs the reportData, then navigates to report", async () => {
     const enterReportButton = screen.getByText("Enter");
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
+    expect(mockFetchReport).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith(
       "/mcpar/program-information/point-of-contact"
