@@ -1,4 +1,4 @@
-import { getForm, getLatestForm } from "./get";
+import { getForm } from "./get";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -93,22 +93,5 @@ describe("Test getForm API method", () => {
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
-  });
-});
-
-describe("Test getFormsByState API method", () => {
-  beforeEach(() => {
-    process.env["FORM_TABLE_NAME"] = "fakeFormTable";
-  });
-
-  test("Test Successful latest form Fetch", async () => {
-    const res = await getLatestForm(testEventLatest, null);
-
-    const body = JSON.parse(res.body);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.createdAt).toBeCloseTo(1654198665697);
-    expect(body.formName).toContain("TEST");
-    expect(body.formId).toContain("TEST_test-2-22");
-    expect(body.formJson).toEqual({});
   });
 });

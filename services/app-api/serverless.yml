@@ -225,14 +225,6 @@ functions:
               paths:
                 formName: true
                 formId: true
-  getLatestForm:
-    handler: handlers/forms/get.getLatestForm
-    events:
-      - http:
-          path: forms
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:

@@ -23,7 +23,7 @@ custom:
   bannerTableName: ${self:custom.stage}-banners
   reportDataTableName: ${self:custom.stage}-mcpar-reports-data
   reportTableName: ${self:custom.stage}-mcpar-reports
-  formTableName: ${self:custom.stage}-forms
+  formTableName: ${self:custom.stage}-mcpar-forms
   dynamodb:
     stages:
       - local
