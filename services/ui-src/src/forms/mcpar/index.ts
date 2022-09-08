@@ -8,13 +8,14 @@ import {
 } from "utils/reports/reports";
 import { ReportJson } from "types";
 
-const temporaryname: ReportJson = copyAdminDisabledStatusToForms(rawReportJson);
+const stateOrAdminVersion: ReportJson =
+  copyAdminDisabledStatusToForms(rawReportJson);
 
 // full reportJson with routes in nested array
 export const mcparReportJsonNested: ReportJson = {
   ...rawReportJson,
   // update the formJson of each report route with appropriate validation schema
-  routes: addValidationToReportJson(temporaryname.routes, reportSchema),
+  routes: addValidationToReportJson(stateOrAdminVersion.routes, reportSchema),
 };
 
 // full reportJson with routes in flattened array

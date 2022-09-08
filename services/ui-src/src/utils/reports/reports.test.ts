@@ -1,8 +1,11 @@
 import {
+  copyAdminDisabledStatusToForms,
   createReportId,
   flattenReportRoutesArray,
   sortReportsOldestToNewest,
 } from "./reports";
+
+import { ReportJson } from "types";
 
 const mockFormField = {
   id: "mockId",
@@ -124,5 +127,41 @@ describe("Sort Reports", () => {
     ];
 
     expect(sortReportsOldestToNewest(unsortedReports)).toEqual(sortedReports);
+  });
+});
+
+describe("Test copyAdminDisabledStatusToForms", () => {
+  const newReportJson: ReportJson = {
+    name: "mockJson",
+    basePath: "/base/mockJson",
+    version: "0.0.0",
+    adminDisabled: true,
+    routes: [
+      {
+        name: "mock-route-1",
+        path: "/mock/mock-route-1",
+        page: {
+          intro: {
+            section: "mock section",
+            subsection: "mock subsection",
+          },
+        },
+        form: {
+          id: "mock-form-id",
+          fields: {
+            id: "mock-1",
+            type: "text",
+            props: {
+              label: "mock field",
+            },
+          },
+        },
+      },
+    ],
+  };
+  it("should be disabled for admin user", () => {
+    const report = copyAdminDisabledStatusToForms(newReportJson);
+    const form = report.routes[0].form;
+    expect(form.adminDisabled).toBeTruthy();
   });
 });
