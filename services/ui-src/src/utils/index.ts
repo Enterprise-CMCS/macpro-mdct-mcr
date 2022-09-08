@@ -2,6 +2,7 @@
 export * from "./api/providers/ApiProvider";
 export * from "./api/providers/QueryProvider";
 export * from "./api/requestMethods/banner";
+export * from "./api/requestMethods/formTemplate";
 export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
 export * from "./api/requestMethods/reportData";

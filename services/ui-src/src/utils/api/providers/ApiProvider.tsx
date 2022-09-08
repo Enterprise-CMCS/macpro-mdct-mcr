@@ -32,6 +32,11 @@ export const ApiProvider = ({ children }: Props) => {
           endpoint: config.apiGateway.URL,
           region: config.apiGateway.REGION,
         },
+        {
+          name: "formTemplates",
+          endpoint: config.apiGateway.URL,
+          region: config.apiGateway.REGION,
+        },
       ],
     });
   }, []);
