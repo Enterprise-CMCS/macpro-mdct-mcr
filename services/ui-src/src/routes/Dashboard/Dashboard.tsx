@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportDetails, UserRoles } from "types";
+import { AnyObject, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
