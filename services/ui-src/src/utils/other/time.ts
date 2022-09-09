@@ -65,12 +65,17 @@ export const convertDateUtcToEt = (date: number): string => {
     new Date(convertedDate),
     "America/New_York"
   );
-  const month = new Date(easternDatetime).getMonth();
+
+  /*
+   * This month code ensures the date comes has a preceeding 0 if the month is a single digit.
+   * Ex: 7 becomes 07 while 10 stays 10
+   */
+  const month = ("0" + (new Date(easternDatetime).getMonth() + 1)).slice(-2);
   const day = new Date(easternDatetime).getDate();
   const year = new Date(easternDatetime).getFullYear();
 
   // month + 1 because Date object months are zero-indexed
-  return `${month + 1}/${day}/${year}`;
+  return `${month}/${day}/${year}`;
 };
 
 /*

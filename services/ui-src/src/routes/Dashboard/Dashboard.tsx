@@ -52,6 +52,9 @@ export const Dashboard = () => {
   const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
     undefined
   );
+  const [selectedReportFormData, setSelectedReportFormData] = useState<
+    any | undefined
+  >(undefined);
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
@@ -84,6 +87,28 @@ export const Dashboard = () => {
   const openAddEditProgramModal = (reportId?: string) => {
     // if reportId provided, set as selected program
     setSelectedReportId(reportId);
+
+    // Check and pre-fill the form if the user is editing an existing program
+    let formData = undefined;
+    if (reportId) {
+      const selectedReport = reportsByState?.find(
+        (o: { reportId: string }) => o.reportId === reportId
+      );
+      formData = {
+        fieldData: {
+          "aep-programName": selectedReport.programName,
+          "aep-endDate": convertDateUtcToEt(
+            selectedReport.reportingPeriodEndDate
+          ),
+          "aep-startDate": convertDateUtcToEt(
+            selectedReport.reportingPeriodStartDate
+          ),
+        },
+        state: activeState,
+        reportId: reportId,
+      };
+    }
+    setSelectedReportFormData(formData);
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };
@@ -157,6 +182,7 @@ export const Dashboard = () => {
       <AddEditProgramModal
         activeState={activeState!}
         selectedReportId={selectedReportId}
+        selectedReportData={selectedReportFormData || undefined}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
