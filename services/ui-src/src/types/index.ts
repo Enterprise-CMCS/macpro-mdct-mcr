@@ -89,6 +89,10 @@ export interface ReportShape extends ReportDetails {
 
 export interface ReportDataShape {
   [key: string]: any;
+  /*
+   * note: report data shape is flexible for a reason
+   * -- any valid object can be valid reportData
+   */
 }
 
 export interface ReportContextMethods {
