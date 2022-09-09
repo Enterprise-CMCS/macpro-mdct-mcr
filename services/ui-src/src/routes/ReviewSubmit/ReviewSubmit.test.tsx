@@ -56,7 +56,7 @@ const ReviewSubmitComponent_Submitted = (
   </RouterWrappedComponent>
 );
 
-describe("brax Test ReviewSubmit functionality", () => {
+describe("Test ReviewSubmit functionality", () => {
   test("ReviewSubmit renders pre-submit state when report status is 'in progress'", () => {
     render(ReviewSubmitComponent_InProgress);
     const { review } = reviewVerbiage;
@@ -91,7 +91,7 @@ describe("brax Test ReviewSubmit functionality", () => {
   });
 });
 
-describe("brax Test ReviewSubmit view accessibility", () => {
+describe("Test ReviewSubmit view accessibility", () => {
   it("Should not have basic accessibility issues when report status is 'in progress", async () => {
     const { container } = render(ReviewSubmitComponent_InProgress);
     const results = await axe(container);

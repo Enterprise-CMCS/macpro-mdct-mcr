@@ -249,9 +249,14 @@ export const mockReportJson = {
   routes: mockReportRoutes,
 };
 
+export const mockReportJsonFlatRoutes = {
+  ...mockReportJson,
+  routes: mockFlattenedReportRoutes,
+};
+
 export const mockReportDetails = {
   state: "AB",
-  reportId: "testReportId",
+  reportId: "mock-report-id",
 };
 
 export const mockReport = {
