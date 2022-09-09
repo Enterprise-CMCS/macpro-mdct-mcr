@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 // utils
 import {
-  AnyObject,
   FieldDataShape,
   ReportDataShape,
   ReportDetails,
@@ -37,7 +36,7 @@ export const ReportContext = createContext<ReportContextShape>({
   // report metadata of all reports for a given state
   reportsByState: undefined as ReportShape[] | undefined,
   fetchReportsByState: Function,
-  errorMessage: undefined,
+  errorMessage: undefined as string | undefined,
 });
 
 // PROVIDER
@@ -45,9 +44,9 @@ export const ReportContext = createContext<ReportContextShape>({
 export const ReportProvider = ({ children }: Props) => {
   const [report, setReport] = useState<ReportShape | undefined>();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
-  const [reportsByState, setReportsByState] = useState<AnyObject | undefined>(
-    undefined
-  );
+  const [reportsByState, setReportsByState] = useState<
+    ReportShape[] | undefined
+  >();
   const [error, setError] = useState<string>();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
@@ -103,7 +102,8 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportsByState = async (state: string) => {
     try {
       const result = await getReportsByState(state);
-      setReportsByState(sortReportsOldestToNewest(result));
+      const sortedReports = sortReportsOldestToNewest(result);
+      setReportsByState(sortedReports);
     } catch (e: any) {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
