@@ -281,7 +281,11 @@ export const mockReportData = {
   dropdown: "dropdown-selection",
 };
 
-export const mockReportsByState = [mockReport, mockReport, mockReport];
+export const mockReportsByState = [
+  { ...mockReport, reportId: "mock-report-id-1" },
+  { ...mockReport, reportId: "mock-report-id-2" },
+  { ...mockReport, reportId: "mock-report-id-3" },
+];
 
 export const mockReportMethods = {
   setReport: jest.fn(),

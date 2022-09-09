@@ -45,7 +45,7 @@ const mockSubmittedReport = {
 
 const mockedReportContext_Submitted = {
   ...mockReportContext,
-  ...mockSubmittedReport,
+  report: mockSubmittedReport,
 };
 
 const ReviewSubmitComponent_Submitted = (

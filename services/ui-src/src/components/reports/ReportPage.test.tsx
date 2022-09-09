@@ -80,7 +80,7 @@ const ReportPageComponent_WithoutReport = (
   </RouterWrappedComponent>
 );
 
-describe("brax Test ReportPage view", () => {
+describe("Test ReportPage view", () => {
   test("ReportPage StandardFormSection view renders", () => {
     render(ReportPageComponent_StandardForm);
     expect(screen.getByTestId("standard-form-section")).toBeVisible();
@@ -92,7 +92,7 @@ describe("brax Test ReportPage view", () => {
   });
 });
 
-describe("brax Test ReportPage functionality", () => {
+describe("Test ReportPage functionality", () => {
   afterEach(() => jest.clearAllMocks());
 
   test("ReportPage navigates to dashboard if no reportId", () => {
@@ -112,7 +112,7 @@ describe("brax Test ReportPage functionality", () => {
   });
 });
 
-describe("brax Test ReportPage accessibility", () => {
+describe("Test ReportPage accessibility", () => {
   test("Standard page should not have basic accessibility issues", async () => {
     const { container } = render(ReportPageComponent_StandardForm);
     const results = await axe(container);
