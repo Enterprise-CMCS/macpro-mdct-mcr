@@ -56,16 +56,17 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           </Flex>
         );
       })}
-      <Button
-        variant="outline"
-        sx={sx.appendButton}
-        onClick={() => {
-          append("");
-        }}
-        disabled={props.disabled}
-      >
-        Add a row
-      </Button>
+      {!props.disabled && (
+        <Button
+          variant="outline"
+          sx={sx.appendButton}
+          onClick={() => {
+            append("");
+          }}
+        >
+          Add a row
+        </Button>
+      )}
     </Box>
   );
 };

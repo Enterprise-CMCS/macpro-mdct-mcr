@@ -33,6 +33,13 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   const { user } = useUser();
   const { full_name, state, userRole } = user ?? {};
 
+  // determine if fields should be disabled (based on admin roles )
+  const isAdminUser =
+    userRole === UserRoles.ADMIN ||
+    userRole === UserRoles.APPROVER ||
+    userRole === UserRoles.HELP_DESK;
+  const fieldInputDisabled = isAdminUser && form.adminDisabled;
+
   // get next and previous routes
   const navigate = useNavigate();
   const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
@@ -86,7 +93,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
             formId={form.id}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
-            shouldDisableAllFields={reportJson.adminDisabled}
+            shouldDisableAllFields={fieldInputDisabled}
           />
         </Flex>
       </Flex>

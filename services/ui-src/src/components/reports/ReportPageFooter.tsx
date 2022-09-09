@@ -23,20 +23,20 @@ export const ReportPageFooter = ({
           >
             Previous
           </Button>
-          {formId && !shouldDisableAllFields ? (
+          {!formId || shouldDisableAllFields ? (
+            <Button
+              onClick={() => navigate(nextRoute)}
+              rightIcon={<Icon icon="arrowRight" />}
+            >
+              Continue
+            </Button>
+          ) : (
             <Button
               form={formId}
               type="submit"
               rightIcon={<Icon icon="arrowRight" />}
             >
               Save & continue
-            </Button>
-          ) : (
-            <Button
-              onClick={() => navigate(nextRoute)}
-              rightIcon={<Icon icon="arrowRight" />}
-            >
-              Continue
             </Button>
           )}
         </Flex>
