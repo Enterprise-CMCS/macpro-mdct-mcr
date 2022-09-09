@@ -24,14 +24,6 @@ export const writeReportData = handler(async (event, context) => {
   const state: string = event.pathParameters.state;
   const reportId: string = event.pathParameters.reportId;
 
-  // fetchFormTemplate
-
-  // match form template validation schema to the current submitted form data
-
-  // validating that the submitted form data is valid data (using the validation schema)
-
-  // if yes, post it. if not, throw error.
-
   let reportParams = {
     TableName: process.env.REPORT_DATA_TABLE_NAME!,
     Item: {

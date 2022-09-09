@@ -107,9 +107,12 @@ export const initializeDropdownFields = (fields: FormField[]) => {
   return fields;
 };
 
-export const sortFormErrors = (form: any, errors: any) => {
+export const sortFormErrors = (
+  form: AnyObject,
+  errors: AnyObject
+): string[] => {
   // sort errors into new array
-  const sortedErrorArray: any = [];
+  const sortedErrorArray: string[] = [];
   for (let fieldName in form) {
     if (errors[fieldName]) {
       sortedErrorArray.push(fieldName);

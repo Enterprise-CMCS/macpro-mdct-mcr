@@ -24,9 +24,9 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   });
 
   // will run if any validation errors exist on form submission
-  const onErrorHandler = (errors: any) => {
+  const onErrorHandler = (errors: AnyObject) => {
     // sort errors in order of registration/page display
-    const sortedErrors: any[] = sortFormErrors(formSchema.fields, errors);
+    const sortedErrors: string[] = sortFormErrors(formSchema.fields, errors);
     // focus the first error on the page and scroll to it
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`
