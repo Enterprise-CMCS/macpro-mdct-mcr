@@ -89,12 +89,11 @@ export const Dashboard = () => {
     setSelectedReportId(reportId);
 
     // Check and pre-fill the form if the user is editing an existing program
-    let formData = undefined;
     if (reportId) {
       const selectedReport = reportsByState?.find(
         (o: { reportId: string }) => o.reportId === reportId
       );
-      formData = {
+      const formData = {
         fieldData: {
           "aep-programName": selectedReport.programName,
           "aep-endDate": convertDateUtcToEt(
@@ -107,8 +106,9 @@ export const Dashboard = () => {
         state: activeState,
         reportId: reportId,
       };
+      setSelectedReportFormData(formData);
     }
-    setSelectedReportFormData(formData);
+
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };

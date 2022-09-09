@@ -67,7 +67,7 @@ export const convertDateUtcToEt = (date: number): string => {
   );
 
   /*
-   * This month code ensures the date comes has a preceeding 0 if the month is a single digit.
+   * This month code ensures the date has a preceeding 0 if the month is a single digit.
    * Ex: 7 becomes 07 while 10 stays 10
    */
   const month = ("0" + (new Date(easternDatetime).getMonth() + 1)).slice(-2);
