@@ -20,12 +20,23 @@ export const DynamicEntitySection = ({
       title: "Access to hospitals",
       formJson: {},
     },
+    {
+      title: "Access to nurse practitioners",
+      formJson: {},
+    },
+    {
+      title: "Access to Primary Care Physicians",
+      formJson: {},
+    },
   ]);
 
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
-    setEntities([]);
     onOpen();
+  };
+
+  const removeEntity = (entityTitle: string) => {
+    setEntities(entities.filter((entity) => entity.title !== entityTitle));
   };
 
   return (
@@ -45,7 +56,7 @@ export const DynamicEntitySection = ({
               </Button>
               <Button
                 sx={sx.buttonStyle}
-                onClick={() => openRowDrawer(entity.title)}
+                onClick={() => removeEntity(entity.title)}
                 variant="outline"
               >
                 Delete
