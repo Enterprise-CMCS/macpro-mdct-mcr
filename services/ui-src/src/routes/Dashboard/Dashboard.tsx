@@ -38,6 +38,7 @@ import editIcon from "assets/icons/icon_edit.png";
 
 export const Dashboard = () => {
   const {
+    report,
     errorMessage,
     fetchReportsByState,
     reportsByState,
@@ -67,6 +68,7 @@ export const Dashboard = () => {
     // unset active report & reportData
     setReport(undefined);
     setReportData(undefined);
+    localStorage.setItem("selectedReport", report);
   }, []);
 
   const enterSelectedReport = (reportId: string) => {

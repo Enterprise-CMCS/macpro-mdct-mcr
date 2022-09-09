@@ -27,7 +27,9 @@ const mockReportMethods = {
 const mockReportInitialContext = {
   ...mockReportMethods,
   reportData: {},
-  report: {},
+  report: {
+    status: ReportStatus.IN_PROGRESS,
+  },
   errorMessage: "",
 };
 
@@ -67,22 +69,22 @@ const reviewSubmitCompletedView = (
   </RouterWrappedComponent>
 );
 
-describe("Test /mcpar/review-and-submit view", () => {
-  test("Check that /mcpar/review-and-submit view renders", () => {
+describe("Test ReviewSubmit view", () => {
+  test("Check that ReviewSubmit view renders", () => {
     render(reviewSubmitInitialView);
     const { review } = reviewVerbiage;
     const { intro } = review;
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
-  test("Check that /mcpar/review-and-submit view renders when report status is completed", () => {
+  test("Check that ReviewSubmit view renders when report status is completed", () => {
     render(reviewSubmitCompletedView);
     const { submitted } = reviewVerbiage;
     const { intro } = submitted;
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
-  test("should show a modal when clicking initial submit button", async () => {
+  test("ReviewSubmit should show a modal when clicking initial submit button", async () => {
     render(reviewSubmitInitialView);
     const { review } = reviewVerbiage;
     const { modal, pageLink } = review;
@@ -92,7 +94,7 @@ describe("Test /mcpar/review-and-submit view", () => {
     expect(modalTitle).toBeVisible();
   });
 
-  test("should fire the submitForm function when confirming the modal", async () => {
+  test("ReviewSubmit should fire the submitForm function when confirming the modal", async () => {
     render(reviewSubmitInitialView);
     const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
     await userEvent.click(reviewSubmitButton);
@@ -102,7 +104,7 @@ describe("Test /mcpar/review-and-submit view", () => {
   });
 });
 
-describe("Test /mcpar/review-and-submit view accessibility", () => {
+describe("Test ReviewSubmit view accessibility", () => {
   it("Should not have basic accessibility issues on the initial state", async () => {
     const { container } = render(reviewSubmitInitialView);
     const results = await axe(container);
