@@ -109,22 +109,12 @@ export interface ChoiceFieldProps {
 
 // REPORT PROVIDER/CONTEXT
 
-export interface ReportDataShape {
-  [key: string]: any;
-}
-
-export interface FieldDataShape {
-  [key: string]: any;
-}
-
 export interface ReportDetails {
   state: string;
   reportId: string;
 }
 
-export interface ReportShape {
-  state: string;
-  reportId: string;
+export interface ReportShape extends ReportDetails {
   reportType: string;
   formTemplateId: string;
   programName: string;
@@ -135,6 +125,10 @@ export interface ReportShape {
   createdAt: number;
   lastAltered: number;
   lastAlteredBy: string;
+}
+
+export interface ReportDataShape {
+  [key: string]: any;
 }
 
 export interface ReportContextMethods {

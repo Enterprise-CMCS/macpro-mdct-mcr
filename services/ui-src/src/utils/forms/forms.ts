@@ -11,13 +11,13 @@ import {
   TextAreaField,
 } from "components";
 // types
-import { FieldChoice, FormField, ReportDataShape } from "types";
+import { AnyObject, FieldChoice, FormField, ReportDataShape } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
 export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
   // define form field components
-  const fieldToComponentMap: any = {
+  const fieldToComponentMap: AnyObject = {
     checkbox: CheckboxField,
     date: DateField,
     dropdown: DropdownField,

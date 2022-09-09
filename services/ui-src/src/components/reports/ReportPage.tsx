@@ -16,6 +16,7 @@ import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
   PageJson,
+  ReportDataShape,
   ReportJson,
   ReportRoute,
   ReportStatus,
@@ -43,7 +44,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
     }
   }, [reportId]);
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: ReportDataShape) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const reportDetails = {
         state: state,

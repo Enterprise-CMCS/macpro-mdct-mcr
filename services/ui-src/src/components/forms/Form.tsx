@@ -7,7 +7,7 @@ import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
 import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
-import { FormJson, FormField } from "types";
+import { AnyObject, FormJson, FormField } from "types";
 
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
@@ -20,7 +20,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
     resolver: yupResolver(formSchema),
     shouldFocusError: false,
     mode: "onChange",
-    ...(options as any),
+    ...(options as AnyObject),
   });
 
   // will run if any validation errors exist on form submission

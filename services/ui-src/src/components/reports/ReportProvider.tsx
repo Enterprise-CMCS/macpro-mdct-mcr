@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 // utils
 import {
-  FieldDataShape,
   ReportDataShape,
   ReportDetails,
   ReportContextShape,
@@ -60,7 +59,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReportData = async (
     reportDetails: ReportDetails,
-    fieldData: FieldDataShape
+    fieldData: ReportDataShape
   ) => {
     try {
       await writeReportData(reportDetails, fieldData);
