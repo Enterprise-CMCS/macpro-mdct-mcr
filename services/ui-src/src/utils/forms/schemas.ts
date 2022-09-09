@@ -6,26 +6,74 @@ export const text = () =>
   string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
 export const textOptional = () => text().notRequired();
 
-// NUMBER
+// NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
 
+const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
+  return numberSchema().transform((_value) => {
+    return Number(value.replace(charsToReplace, ""));
+  });
+};
+
+// NUMBER - Number or Valid Strings
 export const number = () =>
   mixed()
-    .test({
-      message: error.INVALID_NUMBER_OR_NA,
-      test: (val) =>
-        numberSchema()
-          .transform((_value, originalValue) => {
-            return Number(originalValue.toString().replace(/[,.]/g, ""));
-          })
-          .isValidSync(val) || validNAValues.includes(val),
-    })
     .test({
       message: error.REQUIRED_GENERIC,
       test: (val) => val != "",
     })
-    .required(error.REQUIRED_GENERIC);
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      message: error.INVALID_NUMBER_OR_NA,
+      test: (val) => {
+        const replaceCharsRegex = /[,.]/g;
+        return (
+          ignoreCharsForSchema(val, replaceCharsRegex).isValidSync(val) ||
+          validNAValues.includes(val)
+        );
+      },
+    });
 export const numberOptional = () => number().notRequired();
+
+// Number - Ratio
+export const ratio = () =>
+  mixed()
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (val) => val != "",
+    })
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      message: error.INVALID_RATIO,
+      test: (val) => {
+        const replaceCharsRegex = /[,.:]/g;
+        const ratio = val.split(":");
+
+        // Double check and make sure that a ratio contains numbers on both sides
+        if (
+          ratio.length != 2 ||
+          ratio[0].trim().length == 0 ||
+          ratio[1].trim().length == 0
+        ) {
+          return false;
+        }
+
+        // Check if the left side of the ratio is a valid number
+        const firstTest = ignoreCharsForSchema(
+          ratio[0],
+          replaceCharsRegex
+        ).isValidSync(val);
+
+        // Check if the right side of the ratio is a valid number
+        const secondTest = ignoreCharsForSchema(
+          ratio[1],
+          replaceCharsRegex
+        ).isValidSync(val);
+
+        // If both sides are valid numbers, return true!
+        return firstTest && secondTest;
+      },
+    });
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);

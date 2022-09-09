@@ -40,6 +40,7 @@ export const Dashboard = () => {
   const {
     report,
     errorMessage,
+    fetchReport,
     fetchReportsByState,
     reportsByState,
     setReport,
@@ -71,7 +72,7 @@ export const Dashboard = () => {
     localStorage.setItem("selectedReport", report);
   }, []);
 
-  const enterSelectedReport = (reportId: string) => {
+  const enterSelectedReport = async (reportId: string) => {
     // set active report to selected report
     const reportDetails: ReportDetails = {
       state: activeState!,
@@ -79,6 +80,9 @@ export const Dashboard = () => {
     };
     setReport(reportDetails);
     localStorage.setItem("selectedReport", reportId);
+
+    // fetch & set active report to selected report
+    await fetchReport(reportDetails);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };

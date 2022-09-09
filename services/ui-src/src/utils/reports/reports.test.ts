@@ -1,4 +1,4 @@
-import { createReportId, flattenReportRoutesArray } from "./reports";
+import { flattenReportRoutesArray, sortReportsOldestToNewest } from "./reports";
 
 const mockFormField = {
   id: "mockId",
@@ -77,12 +77,38 @@ describe("Test flattenReportRoutesArray", () => {
   });
 });
 
-describe("Test createReportId", () => {
-  test("createReportId correctly creates a reportId", () => {
-    const mockState = "AB";
-    const mockProgramName = "Program Number 1";
-    const mockDueDate = 1661894735910;
-    const result = createReportId(mockState, mockProgramName, mockDueDate);
-    expect(result).toEqual("AB_Program-Number-1_8-30-2022");
+describe("Sort Reports", () => {
+  it("should sort reports by oldest to newest", () => {
+    const unsortedReports = [
+      {
+        createdAt: 1662568556165,
+        programName: "Second Oldest",
+      },
+      {
+        createdAt: 1662568568589,
+        programName: "Third Oldest",
+      },
+      {
+        createdAt: 1652568576322,
+        programName: "Oldest",
+      },
+    ];
+
+    const sortedReports = [
+      {
+        createdAt: 1652568576322,
+        programName: "Oldest",
+      },
+      {
+        createdAt: 1662568556165,
+        programName: "Second Oldest",
+      },
+      {
+        createdAt: 1662568568589,
+        programName: "Third Oldest",
+      },
+    ];
+
+    expect(sortReportsOldestToNewest(unsortedReports)).toEqual(sortedReports);
   });
 });
