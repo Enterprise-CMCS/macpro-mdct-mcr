@@ -67,46 +67,6 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
-// FORM & FIELD STRUCTURE
-
-export interface FormJson {
-  id: string;
-  fields: FormField[];
-  options?: AnyObject;
-  validation?: StringSchema | ArraySchema<any> | AnyObject;
-}
-
-export interface FormField {
-  id: string;
-  type: string;
-  hydrate?: string;
-  props?: AnyObject;
-  choices?: FieldChoice[];
-}
-
-export interface DropdownOptions {
-  label: string;
-  value: string;
-}
-
-export interface FieldChoice {
-  name: string;
-  type?: string;
-  label: string;
-  value: string;
-  checked?: boolean;
-  children?: FormField[];
-  checkedChildren?: React.ReactNode;
-}
-
-export interface ChoiceFieldProps {
-  name: string;
-  label: string;
-  choices: FieldChoice[];
-  sxOverride?: AnyObject;
-  [key: string]: any;
-}
-
 // REPORT PROVIDER/CONTEXT
 
 export interface ReportDetails {
@@ -147,6 +107,46 @@ export interface ReportContextShape extends ReportContextMethods {
   reportData: ReportDataShape | undefined;
   reportsByState: ReportShape[] | undefined;
   errorMessage?: string | undefined;
+}
+
+// FORM & FIELD STRUCTURE
+
+export interface FormJson {
+  id: string;
+  fields: FormField[];
+  options?: AnyObject;
+  validation?: StringSchema | ArraySchema<any> | AnyObject;
+}
+
+export interface FormField {
+  id: string;
+  type: string;
+  hydrate?: string;
+  props?: AnyObject;
+  choices?: FieldChoice[];
+}
+
+export interface DropdownOptions {
+  label: string;
+  value: string;
+}
+
+export interface FieldChoice {
+  name: string;
+  type?: string;
+  label: string;
+  value: string;
+  checked?: boolean;
+  children?: FormField[];
+  checkedChildren?: React.ReactNode;
+}
+
+export interface ChoiceFieldProps {
+  name: string;
+  label: string;
+  choices: FieldChoice[];
+  sxOverride?: AnyObject;
+  [key: string]: any;
 }
 
 // BANNER

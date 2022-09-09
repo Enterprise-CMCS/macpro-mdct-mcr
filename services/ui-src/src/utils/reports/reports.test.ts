@@ -1,114 +1,42 @@
 import { flattenReportRoutesArray, sortReportsOldestToNewest } from "./reports";
-
-const mockFormField = {
-  id: "mockId",
-  type: "mockType",
-};
-
-const mockReportJson = [
-  {
-    name: "mock1",
-    path: "/base/mock1",
-    form: {
-      id: "mockId1",
-      fields: [mockFormField],
-    },
-  },
-  {
-    name: "mock2",
-    path: "/base/mock2",
-    children: [
-      {
-        name: "mock2a",
-        path: "/base/mock2/mock2a",
-        form: {
-          id: "mockId2a",
-          fields: [mockFormField],
-        },
-      },
-      {
-        name: "mock2b",
-        path: "/base/mock2/mock2b",
-        children: [
-          {
-            name: "mock2bi",
-            path: "/base/mock2/mock2b/mock2bi",
-            form: {
-              id: "mockId2bi",
-              fields: [mockFormField],
-            },
-          },
-        ],
-      },
-    ],
-  },
-];
+import {
+  mockFlattenedReportRoutes,
+  mockReportRoutes,
+  mockReport,
+} from "utils/testing/setupJest";
 
 describe("Test flattenReportRoutesArray", () => {
-  const mockExpectedResult: any = [
-    {
-      name: "mock1",
-      path: "/base/mock1",
-      form: {
-        id: "mockId1",
-        fields: [mockFormField],
-      },
-    },
-    {
-      name: "mock2a",
-      path: "/base/mock2/mock2a",
-      form: {
-        id: "mockId2a",
-        fields: [mockFormField],
-      },
-    },
-    {
-      name: "mock2bi",
-      path: "/base/mock2/mock2b/mock2bi",
-      form: {
-        id: "mockId2bi",
-        fields: [mockFormField],
-      },
-    },
-  ];
-  it("flattenReportRoutesArray", () => {
-    const result = flattenReportRoutesArray(mockReportJson);
-    expect(result).toEqual(mockExpectedResult);
+  it("Should flatten report routes", () => {
+    const expectedResult = mockFlattenedReportRoutes;
+    const result = flattenReportRoutesArray(mockReportRoutes);
+    expect(result).toEqual(expectedResult);
   });
 });
 
-describe("Sort Reports", () => {
-  it("should sort reports by oldest to newest", () => {
+describe("Test sortReportsOldestToNewest", () => {
+  it("Should sort reports by oldest to newest", () => {
     const unsortedReports = [
       {
-        createdAt: 1662568556165,
-        programName: "Second Oldest",
-      },
-      {
+        ...mockReport,
         createdAt: 1662568568589,
-        programName: "Third Oldest",
+        programName: "created-today",
       },
       {
+        ...mockReport,
+        createdAt: 1662568556165,
+        programName: "created-yesterday",
+      },
+      {
+        ...mockReport,
         createdAt: 1652568576322,
-        programName: "Oldest",
+        programName: "created-last-month",
       },
     ];
-
     const sortedReports = [
-      {
-        createdAt: 1652568576322,
-        programName: "Oldest",
-      },
-      {
-        createdAt: 1662568556165,
-        programName: "Second Oldest",
-      },
-      {
-        createdAt: 1662568568589,
-        programName: "Third Oldest",
-      },
+      unsortedReports[2],
+      unsortedReports[1],
+      unsortedReports[0],
     ];
-
     expect(sortReportsOldestToNewest(unsortedReports)).toEqual(sortedReports);
   });
 });

@@ -216,13 +216,28 @@ export const mockReportRoutes = [
   {
     name: "mock-route-2",
     path: "/mock/mock-route-2",
-    page: mockPageJsonWithDrawer,
+    children: [
+      {
+        name: "mock-route-2a",
+        path: "/mock/mock-route-2a",
+        page: mockPageJsonWithDrawer,
+        form: mockForm,
+      },
+    ],
+  },
+];
+
+export const mockFlattenedReportRoutes = [
+  {
+    name: "mock-route-1",
+    path: "/mock/mock-route-1",
+    page: mockPageJson,
     form: mockForm,
   },
   {
-    name: "mock-route-3",
-    path: "/mock/mock-route-3",
-    page: mockPageJson,
+    name: "mock-route-2a",
+    path: "/mock/mock-route-2a",
+    page: mockPageJsonWithDrawer,
     form: mockForm,
   },
 ];
@@ -239,20 +254,45 @@ export const mockReportDetails = {
   reportId: "testReportId",
 };
 
-export const mockReportData = {
-  field1: "value1",
-  field2: "value2",
-  num1: 0,
-  num2: 1,
-  array: ["array1, array2"],
+export const mockReport = {
+  ...mockReportDetails,
+  reportType: "mock-type",
+  formTemplateId: "mock-template-id",
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
 };
 
-export const mockReportStatus = {
-  state: "AB",
-  reportId: "testReportId",
-  status: ReportStatus.NOT_STARTED,
-  programName: "testProgram",
-  dueDate: "168515200000",
-  lastAltered: "162515200000",
-  lastAlteredBy: "Thelonious States",
+export const mockReportData = {
+  text: "text-input",
+  number: 0,
+  radio: ["option1"],
+  checkbox: ["option1", "option2"],
+  dropdown: "dropdown-selection",
+};
+
+export const mockReportsByState = [mockReport, mockReport, mockReport];
+
+export const mockReportMethods = {
+  setReport: jest.fn(),
+  fetchReport: jest.fn(),
+  updateReport: jest.fn(),
+  removeReport: jest.fn(),
+  setReportData: jest.fn(),
+  fetchReportData: jest.fn(),
+  updateReportData: jest.fn(),
+  fetchReportsByState: jest.fn(),
+};
+
+export const mockReportContext = {
+  ...mockReportMethods,
+  report: mockReport,
+  reportData: mockReportData,
+  reportsByState: mockReportsByState,
+  errorMessage: "",
 };
