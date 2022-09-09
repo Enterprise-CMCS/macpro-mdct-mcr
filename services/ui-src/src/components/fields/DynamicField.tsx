@@ -62,6 +62,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         onClick={() => {
           append("");
         }}
+        disabled={props.disabled}
       >
         Add a row
       </Button>

@@ -86,6 +86,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
             formId={form.id}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
+            shouldDisableAllFields={reportJson.adminDisabled}
           />
         </Flex>
       </Flex>

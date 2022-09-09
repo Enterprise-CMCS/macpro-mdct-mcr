@@ -7,9 +7,11 @@ export const ReportPageFooter = ({
   formId,
   previousRoute,
   nextRoute,
+  shouldDisableAllFields,
   ...props
 }: Props) => {
   const navigate = useNavigate();
+
   return (
     <Box sx={sx.footerBox} {...props}>
       <Box>
@@ -21,7 +23,7 @@ export const ReportPageFooter = ({
           >
             Previous
           </Button>
-          {formId ? (
+          {formId && !shouldDisableAllFields ? (
             <Button
               form={formId}
               type="submit"
@@ -48,6 +50,7 @@ interface Props {
   formId?: string;
   previousRoute: string;
   nextRoute: string;
+
   [key: string]: any;
 }
 
