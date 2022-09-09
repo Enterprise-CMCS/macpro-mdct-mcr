@@ -61,6 +61,12 @@ export interface PageJson {
   [key: string]: any;
 }
 
+export enum ReportStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  SUBMITTED = "Submitted",
+}
+
 // FORM & FIELD STRUCTURE
 
 export interface FormJson {
@@ -103,12 +109,6 @@ export interface ChoiceFieldProps {
 
 // REPORT PROVIDER/CONTEXT
 
-export enum ReportStatus {
-  NOT_STARTED = "Not started",
-  IN_PROGRESS = "In progress",
-  SUBMITTED = "Submitted",
-}
-
 export interface ReportDataShape {
   [key: string]: any;
 }
@@ -123,24 +123,35 @@ export interface ReportDetails {
 }
 
 export interface ReportShape {
-  [key: string]: any;
+  state: string;
+  reportId: string;
+  reportType: string;
+  formTemplateId: string;
+  programName: string;
+  status: string;
+  reportingPeriodStartDate: number;
+  reportingPeriodEndDate: number;
+  dueDate: number;
+  createdAt: number;
+  lastAltered: number;
+  lastAlteredBy: string;
 }
 
 export interface ReportContextMethods {
   setReport: Function;
+  fetchReport: Function;
+  updateReport: Function;
+  removeReport: Function;
   setReportData: Function;
   fetchReportData: Function;
   updateReportData: Function;
-  fetchReport: Function;
-  updateReport: Function;
   fetchReportsByState: Function;
-  removeReport: Function;
 }
 
-export interface ReportContextShape
-  extends ReportDataShape,
-    ReportShape,
-    ReportContextMethods {
+export interface ReportContextShape extends ReportContextMethods {
+  report: ReportShape | undefined;
+  reportData: ReportDataShape | undefined;
+  reportsByState: ReportShape[] | undefined;
   errorMessage?: string;
 }
 

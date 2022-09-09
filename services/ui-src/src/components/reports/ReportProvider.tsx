@@ -20,20 +20,27 @@ import {
 // verbiage
 import { reportErrors } from "verbiage/errors";
 
+// TYPES AND CONTEXT DECLARATION
+
 export const ReportContext = createContext<ReportContextShape>({
-  report: undefined as AnyObject | undefined,
-  setReport: Function,
+  // report metadata
+  report: undefined as ReportShape | undefined,
+  setReport: Function, // local useState setter
   fetchReport: Function,
   updateReport: Function,
   removeReport: Function,
-  reportData: undefined as AnyObject | undefined,
-  setReportData: Function,
+  // report field data
+  reportData: undefined as ReportDataShape | undefined,
+  setReportData: Function, // local useState setter
   fetchReportData: Function,
   updateReportData: Function,
-  reportsByState: undefined as AnyObject | undefined,
+  // report metadata of all reports for a given state
+  reportsByState: undefined as ReportShape[] | undefined,
   fetchReportsByState: Function,
   errorMessage: undefined,
 });
+
+// PROVIDER
 
 export const ReportProvider = ({ children }: Props) => {
   const [report, setReport] = useState<ReportShape | undefined>();
