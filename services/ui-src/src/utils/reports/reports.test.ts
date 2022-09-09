@@ -4,14 +4,14 @@ import {
   sortReportsOldestToNewest,
 } from "./reports";
 
-import { ReportJson } from "types";
+import { mockReportJson } from "utils/testing/setupJest";
 
 const mockFormField = {
   id: "mockId",
   type: "mockType",
 };
 
-const mockReportJson = [
+const mockReportJsonData = [
   {
     name: "mock1",
     path: "/base/mock1",
@@ -78,7 +78,7 @@ describe("Test flattenReportRoutesArray", () => {
     },
   ];
   it("flattenReportRoutesArray", () => {
-    const result = flattenReportRoutesArray(mockReportJson);
+    const result = flattenReportRoutesArray(mockReportJsonData);
     expect(result).toEqual(mockExpectedResult);
   });
 });
@@ -120,36 +120,8 @@ describe("Sort Reports", () => {
 });
 
 describe("Test copyAdminDisabledStatusToForms", () => {
-  const newReportJson: ReportJson = {
-    name: "mockJson",
-    basePath: "/base/mockJson",
-    version: "0.0.0",
-    adminDisabled: true,
-    routes: [
-      {
-        name: "mock-route-1",
-        path: "/mock/mock-route-1",
-        page: {
-          intro: {
-            section: "mock section",
-            subsection: "mock subsection",
-          },
-        },
-        form: {
-          id: "mock-form-id",
-          fields: {
-            id: "mock-1",
-            type: "text",
-            props: {
-              label: "mock field",
-            },
-          },
-        },
-      },
-    ],
-  };
   it("should be disabled for admin user", () => {
-    const report = copyAdminDisabledStatusToForms(newReportJson);
+    const report = copyAdminDisabledStatusToForms(mockReportJson);
     const form = report.routes[0].form;
     expect(form.adminDisabled).toBeTruthy();
   });

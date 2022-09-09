@@ -25,11 +25,11 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
     userRole === UserRoles.ADMIN ||
     userRole === UserRoles.APPROVER ||
     userRole === UserRoles.HELP_DESK;
-  const shouldDisableAllFields = isAdminUser && formJson.adminDisabled;
+  const fieldInputDisabled = isAdminUser && formJson.adminDisabled;
 
   // make form context
   const form = useForm({
-    resolver: yupResolver(formSchema),
+    resolver: !fieldInputDisabled ? yupResolver(formSchema) : undefined,
     shouldFocusError: false,
     mode: "onChange",
     ...(options as any),
@@ -50,7 +50,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   // hydrate and create form fields using formFieldFactory
   const formFieldsToRender = (fields: FormField[]) => {
     const hydratedFields = hydrateFormFields(fields, reportData);
-    return formFieldFactory(hydratedFields, shouldDisableAllFields!);
+    return formFieldFactory(hydratedFields, fieldInputDisabled!);
   };
 
   return (
