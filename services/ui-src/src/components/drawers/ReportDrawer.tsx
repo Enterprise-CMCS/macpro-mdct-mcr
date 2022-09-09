@@ -1,7 +1,7 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useContext } from "react";
 // Components
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { Drawer, Form } from "components";
+import { Drawer, Form, ReportContext } from "components";
 // types
 import { FormJson } from "types";
 
@@ -13,6 +13,7 @@ export const ReportDrawer = ({
   onSubmit,
   ...props
 }: Props) => {
+  const { reportData } = useContext(ReportContext);
   return (
     <Drawer
       drawerDisclosure={drawerDisclosure}
@@ -20,7 +21,12 @@ export const ReportDrawer = ({
       drawerInfo={drawerInfo}
       {...props}
     >
-      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
+      <Form
+        id={form.id}
+        formJson={form}
+        onSubmit={onSubmit}
+        formData={reportData}
+      />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
           <Button

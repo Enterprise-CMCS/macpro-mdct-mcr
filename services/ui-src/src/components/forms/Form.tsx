@@ -1,17 +1,22 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
-import { ReportContext } from "components";
 // utils
 import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
 import { FormJson, FormField } from "types";
 
-export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
+export const Form = ({
+  id,
+  formJson,
+  onSubmit,
+  formData,
+  children,
+  ...props
+}: Props) => {
   const { fields, options } = formJson;
-  const { reportData } = useContext(ReportContext);
 
   const formSchema = yupSchema(formJson.validation || {});
 
@@ -37,7 +42,9 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
 
   // hydrate and create form fields using formFieldFactory
   const formFieldsToRender = (fields: FormField[]) => {
-    const hydratedFields = hydrateFormFields(fields, reportData);
+    const hydratedFields = formData
+      ? hydrateFormFields(fields, formData)
+      : fields;
     return formFieldFactory(hydratedFields);
   };
 
@@ -59,6 +66,7 @@ interface Props {
   id: string;
   formJson: FormJson;
   onSubmit: Function;
+  formData?: any;
   children?: ReactNode;
   [key: string]: any;
 }
