@@ -13,7 +13,7 @@ const mockRouteArray = [
   },
 ];
 
-jest.mock("react-router", () => ({
+jest.mock("react-router-dom", () => ({
   useLocation: jest
     .fn()
     .mockReturnValueOnce({ pathname: "/base/fake-path-1" })

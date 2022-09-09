@@ -15,9 +15,6 @@ import {
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
-}));
-
-jest.mock("react-router", () => ({
   useLocation: jest.fn(() => ({
     pathname: "/mock/mock-route-2",
   })),
