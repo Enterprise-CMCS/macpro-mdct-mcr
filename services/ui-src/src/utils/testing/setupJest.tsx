@@ -247,6 +247,7 @@ export const mockReportJson = {
   basePath: "/mock",
   version: "0.0.0",
   routes: mockReportRoutes,
+  validationSchema: {},
 };
 
 export const mockReportJsonFlatRoutes = {

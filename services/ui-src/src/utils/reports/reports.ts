@@ -19,7 +19,8 @@ export const flattenReportRoutesArray = (
   return routesArray;
 };
 
-export const addValidationToReportJson = (
+// update formJson of each report route with appropriate validation schema
+export const addValidationSchemaToNestedForms = (
   reportJson: ReportRoute[],
   validationSchema: AnyObject
 ): ReportRoute[] => {
@@ -38,6 +39,18 @@ export const addValidationToReportJson = (
   };
   mapSchemaToForms(reportJson, validationSchema);
   return reportJson;
+};
+
+export const flattenValidationSchema = (
+  nestedValidationSchema: AnyObject
+): AnyObject => {
+  let validationSchema: AnyObject = {};
+  Object.values(nestedValidationSchema).forEach((form: AnyObject) => {
+    Object.keys(form).forEach((fieldKey: string) => {
+      validationSchema[fieldKey] = form[fieldKey];
+    });
+  });
+  return validationSchema;
 };
 
 export const sortReportsOldestToNewest = (

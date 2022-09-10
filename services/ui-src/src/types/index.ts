@@ -1,5 +1,4 @@
 import React from "react";
-import { ArraySchema, StringSchema } from "yup";
 
 // USERS
 
@@ -35,6 +34,7 @@ export interface ReportJson {
   basePath: string;
   version: string;
   routes: ReportRoute[];
+  validationSchema: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
@@ -115,7 +115,7 @@ export interface FormJson {
   id: string;
   fields: FormField[];
   options?: AnyObject;
-  validation?: StringSchema | ArraySchema<any> | AnyObject;
+  validation?: AnyObject;
 }
 
 export interface FormField {
