@@ -12,7 +12,6 @@ import { AnyObject, FormJson, FormField } from "types";
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
   const { reportData } = useContext(ReportContext);
-
   const formSchema = yupSchema(formJson.validation || {});
 
   // make form context
