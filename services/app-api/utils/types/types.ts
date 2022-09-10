@@ -1,5 +1,9 @@
 // GLOBAL
 
+export interface AnyObject {
+  [key: string]: any;
+}
+
 export interface DynamoGet {
   TableName: string;
   Key: {
@@ -41,6 +45,7 @@ export const enum RequestMethods {
 
 export const enum StatusCodes {
   SUCCESS = 200,
+  FAILURE = 400,
   UNAUTHORIZED = 403,
 }
 
