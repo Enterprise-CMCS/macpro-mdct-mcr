@@ -101,8 +101,7 @@ export const ReportProvider = ({ children }: Props) => {
   const fetchReportsByState = async (state: string) => {
     try {
       const result = await getReportsByState(state);
-      const sortedReports = sortReportsOldestToNewest(result);
-      setReportsByState(sortedReports);
+      setReportsByState(sortReportsOldestToNewest(result));
     } catch (e: any) {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
