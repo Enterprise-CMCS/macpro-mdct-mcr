@@ -29,7 +29,7 @@ export const writeReportData = handler(async (event, context) => {
 
   const state: string = event.pathParameters.state;
   const reportId: string = event.pathParameters.reportId;
-  let validationSchema: AnyObject = {};
+  let validationSchema: AnyObject | undefined = undefined;
 
   // get current report (for formTemplateId)
   const reportEvent = {
@@ -51,42 +51,67 @@ export const writeReportData = handler(async (event, context) => {
     const getTemplate = await getFormTemplate(formTemplateEvent, context);
     if (getTemplate.body) {
       const { formTemplate } = JSON.parse(getTemplate.body);
-      validationSchema = formTemplate.validationSchema;
-      console.log("validationSchema", validationSchema);
+      validationSchema = yup
+        .object()
+        .shape({ ...formTemplate.validationSchema });
+      console.log("NEW POST", validationSchema);
     }
   }
-  const newReportData = JSON.parse(event!.body!);
 
-  // create reportData params for pending .put()
-  let reportDataParams = {
-    TableName: process.env.REPORT_DATA_TABLE_NAME!,
-    Item: {
-      state: state,
-      reportId: reportId,
-      fieldData: newReportData,
-    },
+  const validateData = async (validationSchema: any, data: any) => {
+    try {
+      return await validationSchema.validate(data, {
+        stripUnknown: true,
+      });
+    } catch (e: any) {
+      console.log("VALIDATION ERRORS", e);
+      throw new Error(VALIDATION_ERROR_MESSAGE);
+    }
   };
-  // get current reportData
-  const getCurrentReportData = await getReportData(event, context);
-  if (getCurrentReportData.body) {
-    const currentReportData = JSON.parse(getCurrentReportData.body);
-    const combinedReportDataToWrite = {
-      ...currentReportData.fieldData,
-      ...newReportData,
-    };
-    // set report params with new reportData
-    reportDataParams = {
+
+  const unvalidatedPayload = JSON.parse(event!.body!);
+  const newReportData = await validateData(
+    validationSchema,
+    unvalidatedPayload
+  );
+
+  if (newReportData) {
+    // create reportData params for pending .put()
+    let reportDataParams = {
       TableName: process.env.REPORT_DATA_TABLE_NAME!,
       Item: {
         state: state,
         reportId: reportId,
-        fieldData: { ...combinedReportDataToWrite },
+        fieldData: newReportData,
       },
     };
-    await dynamoDb.put(reportDataParams);
+    // get current reportData
+    const getCurrentReportData = await getReportData(event, context);
+    if (getCurrentReportData.body) {
+      const currentReportData = JSON.parse(getCurrentReportData.body);
+      const combinedReportDataToWrite = {
+        ...currentReportData.fieldData,
+        ...newReportData,
+      };
+      // set report params with new reportData
+      reportDataParams = {
+        TableName: process.env.REPORT_DATA_TABLE_NAME!,
+        Item: {
+          state: state,
+          reportId: reportId,
+          fieldData: { ...combinedReportDataToWrite },
+        },
+      };
+      await dynamoDb.put(reportDataParams);
+      return {
+        status: StatusCodes.SUCCESS,
+        body: { ...reportDataParams.Item },
+      };
+    }
+  } else {
     return {
-      status: StatusCodes.SUCCESS,
-      body: { ...reportDataParams.Item },
+      status: StatusCodes.FAILURE,
+      body: {},
     };
   }
 });
