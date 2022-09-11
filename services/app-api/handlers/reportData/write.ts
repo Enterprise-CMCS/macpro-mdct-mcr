@@ -113,8 +113,8 @@ export const writeReportData = handler(async (event, context) => {
       }
     }
   }
-  // catch-all failure
   return {
+    // fallback failure response
     status: StatusCodes.FAILURE,
     body: {},
   };

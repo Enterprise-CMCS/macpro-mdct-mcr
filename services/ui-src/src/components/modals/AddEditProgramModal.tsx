@@ -31,6 +31,10 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
+    const combinedDataArray = formData["aep-combinedData"];
+    const combinedData =
+      combinedDataArray?.[0] ||
+      "No, the report does not contain any items for which the state is unable to remove Separate CHIP information";
     const reportDetails = {
       state: activeState,
       reportId: "",
@@ -41,6 +45,7 @@ export const AddEditProgramModal = ({
       reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
       dueDate,
       lastAlteredBy: full_name,
+      combinedData,
     };
     // if an existing program was selected, use that report id
     if (selectedReportId) {
