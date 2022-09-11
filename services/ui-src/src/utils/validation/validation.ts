@@ -31,7 +31,7 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
 // return created endDate schema
 export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
   const { dependentFieldName } = fieldValidationObject;
-  return () => endDate(dependentFieldName);
+  return endDate(dependentFieldName);
 };
 
 // return created nested field schema
@@ -39,12 +39,12 @@ export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
   const { type, parentFieldName, visibleOptionValue } = fieldValidationObject;
   if (fieldValidationObject.type === "endDate") {
     return nested(
-      makeEndDateFieldSchema(fieldValidationObject),
+      () => makeEndDateFieldSchema(fieldValidationObject),
       parentFieldName,
       visibleOptionValue
     );
   } else {
     const fieldBaseSchema = schemaMap[type];
-    return nested(fieldBaseSchema, parentFieldName, visibleOptionValue);
+    return nested(() => fieldBaseSchema, parentFieldName, visibleOptionValue);
   }
 };

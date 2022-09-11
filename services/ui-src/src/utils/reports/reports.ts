@@ -1,4 +1,5 @@
 import { AnyObject, ReportShape, ReportRoute } from "types";
+import { mapValidationTypesToSchema } from "../../utils/validation/validation";
 
 // returns flattened array of valid routes for given reportJson
 export const flattenReportRoutesArray = (
@@ -32,8 +33,11 @@ export const addValidationSchemaToNestedForms = (
       }
       // else if form (children & form are always mutually exclusive)
       else if (route?.form) {
-        const correspondingValidationSchema = schema[route.form.id];
-        route.form.validation = correspondingValidationSchema || {};
+        console.log("route", route.form);
+        const mappedValidationSchema = mapValidationTypesToSchema(
+          schema[route.form.id]
+        );
+        route.form.validation = mappedValidationSchema || {};
       }
     });
   };

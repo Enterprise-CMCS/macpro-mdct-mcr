@@ -8,7 +8,7 @@ import {
 } from "utils/reports/reports";
 import { ReportJson } from "types";
 
-const flattenedValidationSchema = flattenValidationSchema(rawReportSchema);
+const flattenedRawValidationSchema = flattenValidationSchema(rawReportSchema);
 
 // full reportJson with routes in nested array
 export const mcparReportJsonNested: ReportJson = {
@@ -18,14 +18,14 @@ export const mcparReportJsonNested: ReportJson = {
     rawReportJson.routes,
     rawReportSchema
   ),
-  validationSchema: flattenedValidationSchema,
+  validationSchema: flattenedRawValidationSchema,
 };
 
 // full reportJson with routes in flattened array
 export const mcparReportJsonFlat: ReportJson = {
   ...rawReportJson,
   routes: flattenReportRoutesArray(mcparReportJsonNested.routes),
-  validationSchema: flattenedValidationSchema,
+  validationSchema: flattenedRawValidationSchema,
 };
 
 export const nonFormPages = ["/mcpar/get-started"];
