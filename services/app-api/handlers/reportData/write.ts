@@ -51,10 +51,21 @@ export const writeReportData = handler(async (event, context) => {
     const getTemplate = await getFormTemplate(formTemplateEvent, context);
     if (getTemplate.body) {
       const { formTemplate } = JSON.parse(getTemplate.body);
-      validationSchema = yup
-        .object()
-        .shape({ ...formTemplate.validationSchema });
-      console.log("NEW POST", validationSchema);
+      console.log("RAW VALIDATION SCHEMA", formTemplate.validationSchema);
+      const parsedValidationSchema: any = {};
+      const stringSchema = () =>
+        yup.string().typeError("type error").required("generic error");
+      const schemaMap: any = {
+        text: stringSchema(),
+      };
+      Object.entries(formTemplate.validationSchema).forEach(
+        (fieldSchema: any) => {
+          const [key, value] = fieldSchema;
+          parsedValidationSchema[key] = schemaMap[value];
+        }
+      );
+      validationSchema = yup.object().shape(parsedValidationSchema);
+      console.log("NEW VALIDATION SCHEMA", parsedValidationSchema);
     }
   }
 
