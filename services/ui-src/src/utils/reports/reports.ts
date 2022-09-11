@@ -33,7 +33,6 @@ export const addValidationSchemaToNestedForms = (
       }
       // else if form (children & form are always mutually exclusive)
       else if (route?.form) {
-        console.log("route", route.form);
         const mappedValidationSchema = mapValidationTypesToSchema(
           schema[route.form.id]
         );

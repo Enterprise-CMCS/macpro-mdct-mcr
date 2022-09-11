@@ -21,33 +21,3 @@ export const schemaMap: any = {
   dynamic: schema.dynamic(),
   dynamicOptional: schema.dynamicOptional(),
 };
-
-// const standardValidationObject = {
-//   validation: "text",
-// };
-
-// const nestedValidationObject = {
-//   validation: {
-//     type: "text",
-//     nested: true,
-//     parentFieldName: "string",
-//     visibleOptionValue: "any",
-//   },
-// };
-
-// const endDateValidationObject = {
-//   validation: {
-//     type: "endDate",
-//     dependentFieldName: "string",
-//   },
-// };
-
-// const nestedEndDateValidationObject = {
-//   validation: {
-//     type: "endDate",
-//     nested: true,
-//     parentFieldName: "string",
-//     visibleOptionValue: "any",
-//     dependentFieldName: "string",
-//   },
-// };
