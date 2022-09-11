@@ -4,15 +4,18 @@ import handler from "../handler-lib";
 import { getReportData } from "./get";
 import { getReport } from "../reports/get";
 import { getFormTemplate } from "../formTemplates/get";
-import * as brax from "../../../ui-src/src/utils/forms/schemas";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import { AnyObject, StatusCodes, UserRoles } from "../../utils/types/types";
 import {
+  filterValidationSchema,
+  mapValidationTypesToSchema,
+  validateData,
+} from "../../utils/validation/validation";
+import {
   NO_KEY_ERROR_MESSAGE,
   UNAUTHORIZED_MESSAGE,
-  VALIDATION_ERROR_MESSAGE,
 } from "../../utils/constants/constants";
 
 export const writeReportData = handler(async (event, context) => {
@@ -31,12 +34,15 @@ export const writeReportData = handler(async (event, context) => {
   const state: string = event.pathParameters.state;
   const reportId: string = event.pathParameters.reportId;
   let validationSchema: AnyObject | undefined = undefined;
+  const unvalidatedPayload = JSON.parse(event!.body!);
 
-  // get current report (for formTemplateId)
+  // GET NECESSARY DATA TO VALIDATE PAYLOAD
+
   const reportEvent = {
     ...event,
     body: "",
   };
+  // get current report (for formTemplateId)
   const getCurrentReport = await getReport(reportEvent, context);
   if (getCurrentReport.body) {
     const { formTemplateId } = JSON.parse(getCurrentReport.body);
@@ -52,78 +58,64 @@ export const writeReportData = handler(async (event, context) => {
     const getTemplate = await getFormTemplate(formTemplateEvent, context);
     if (getTemplate.body) {
       const { formTemplate } = JSON.parse(getTemplate.body);
-      const parsedValidationSchema: any = {};
-      const text = () =>
-        yup.string().typeError("type error").required("generic error");
-      const email = () => text().email("email error");
-      const schemaMap: any = {
-        text: text(),
-        email: email(),
-      };
-      Object.entries(formTemplate.validationSchema).forEach(
-        (fieldSchema: any) => {
-          const [key, value] = fieldSchema;
-          parsedValidationSchema[key] = schemaMap[value];
-        }
+      // filter field validation to just what's needed for the passed fields
+      const filteredValidationSchema = filterValidationSchema(
+        formTemplate.validationSchema,
+        unvalidatedPayload
       );
-      validationSchema = yup.object().shape(parsedValidationSchema);
+      // transform field validation instructions to actual validation schema
+      const createdValidationSchema = mapValidationTypesToSchema(
+        filteredValidationSchema
+      );
+      validationSchema = yup.object().shape(createdValidationSchema);
     }
   }
 
-  const validateData = async (validationSchema: any, data: any) => {
-    try {
-      return await validationSchema.validate(data, {
-        stripUnknown: true,
-      });
-    } catch (e: any) {
-      console.log("VALIDATION ERRORS", e);
-      throw new Error(VALIDATION_ERROR_MESSAGE);
-    }
-  };
+  // VALIDATE PAYLOAD & WRITE TO DATABASE
 
-  const unvalidatedPayload = JSON.parse(event!.body!);
-  const newReportData = await validateData(
-    validationSchema,
-    unvalidatedPayload
-  );
-
-  if (newReportData) {
-    // create reportData params for pending .put()
-    let reportDataParams = {
-      TableName: process.env.REPORT_DATA_TABLE_NAME!,
-      Item: {
-        state: state,
-        reportId: reportId,
-        fieldData: newReportData,
-      },
-    };
-    // get current reportData
-    const getCurrentReportData = await getReportData(event, context);
-    if (getCurrentReportData.body) {
-      const currentReportData = JSON.parse(getCurrentReportData.body);
-      const combinedReportDataToWrite = {
-        ...currentReportData.fieldData,
-        ...newReportData,
-      };
-      // set report params with new reportData
-      reportDataParams = {
+  if (validationSchema) {
+    const validatedNewReportData = await validateData(
+      validationSchema,
+      unvalidatedPayload
+    );
+    if (validatedNewReportData) {
+      // create reportData params for pending .put()
+      let reportDataParams = {
         TableName: process.env.REPORT_DATA_TABLE_NAME!,
         Item: {
           state: state,
           reportId: reportId,
-          fieldData: { ...combinedReportDataToWrite },
+          fieldData: validatedNewReportData,
         },
       };
-      await dynamoDb.put(reportDataParams);
-      return {
-        status: StatusCodes.SUCCESS,
-        body: { ...reportDataParams.Item },
-      };
+      // get current reportData
+      const getCurrentReportData = await getReportData(event, context);
+      if (getCurrentReportData.body) {
+        const currentReportData = JSON.parse(getCurrentReportData.body);
+        const combinedReportDataToWrite = {
+          ...currentReportData.fieldData,
+          ...validatedNewReportData,
+        };
+        // set report params with new reportData
+        reportDataParams = {
+          TableName: process.env.REPORT_DATA_TABLE_NAME!,
+          Item: {
+            state: state,
+            reportId: reportId,
+            fieldData: { ...combinedReportDataToWrite },
+          },
+        };
+        await dynamoDb.put(reportDataParams);
+        return {
+          status: StatusCodes.SUCCESS,
+          body: { ...reportDataParams.Item },
+        };
+      }
     }
-  } else {
-    return {
-      status: StatusCodes.FAILURE,
-      body: {},
-    };
   }
+  // catch-all failure
+  return {
+    status: StatusCodes.FAILURE,
+    body: {},
+  };
 });
