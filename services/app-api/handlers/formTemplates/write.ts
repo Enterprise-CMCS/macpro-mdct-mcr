@@ -24,15 +24,18 @@ export const writeFormTemplate = handler(async (event, _context) => {
     throw new Error(MISSING_DATA_ERROR_MESSAGE);
   } else {
     const validationSchema = yup.object().shape({
-      formTemplateId: yup.string(),
-      formTemplateVersion: yup.string(),
-      formTemplate: yup.object().shape({
-        name: yup.string(),
-        basePath: yup.string(),
-        version: yup.string(),
-        routes: yup.array().of(yup.object()),
-        validationSchema: yup.object(),
-      }),
+      formTemplateId: yup.string().required(),
+      formTemplateVersion: yup.string().required(),
+      formTemplate: yup
+        .object()
+        .required()
+        .shape({
+          name: yup.string().required(),
+          basePath: yup.string().required(),
+          version: yup.string().required(),
+          routes: yup.array().of(yup.object()).required(),
+          validationSchema: yup.object().required(),
+        }),
     });
 
     const validatedPayload = await validateData(

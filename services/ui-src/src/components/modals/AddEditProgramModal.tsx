@@ -34,7 +34,7 @@ export const AddEditProgramModal = ({
     const combinedDataArray = formData["aep-combinedData"];
     const combinedData =
       combinedDataArray?.[0] ||
-      "No, the report does not contain any items for which the state is unable to remove Separate CHIP information";
+      "No, the report does not contain items for which the state is unable to remove Separate CHIP information";
     const reportDetails = {
       state: activeState,
       reportId: "",
