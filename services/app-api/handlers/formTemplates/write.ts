@@ -1,6 +1,8 @@
+import * as yup from "yup";
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
+import { validateData } from "../../utils/validation/validation";
 import {
   MISSING_DATA_ERROR_MESSAGE,
   NO_KEY_ERROR_MESSAGE,
@@ -15,24 +17,45 @@ export const writeFormTemplate = handler(async (event, _context) => {
       body: UNAUTHORIZED_MESSAGE,
     };
   }
-  const body = JSON.parse(event!.body!);
-  if (!body?.formTemplateId) {
+  const unvalidatedPayload = JSON.parse(event!.body!);
+  if (!unvalidatedPayload?.formTemplateId) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
-  } else if (!body?.formTemplate) {
+  } else if (!unvalidatedPayload?.formTemplate) {
     throw new Error(MISSING_DATA_ERROR_MESSAGE);
   } else {
-    const params = {
-      TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
-      Item: {
-        formTemplateId: body.formTemplateId,
-        createdAt: Date.now(),
-        lastAltered: Date.now(),
-        lastAlteredBy: event?.headers["cognito-identity-id"],
-        formTemplate: body.formTemplate,
-        ...body,
-      },
-    };
-    await dynamoDb.put(params);
-    return { status: StatusCodes.SUCCESS, body: params };
+    const validationSchema = yup.object().shape({
+      formTemplateId: yup.string(),
+      formTemplateVersion: yup.string(),
+      formTemplate: yup.object().shape({
+        name: yup.string(),
+        basePath: yup.string(),
+        version: yup.string(),
+        routes: yup.array().of(yup.object()),
+        validationSchema: yup.object(),
+      }),
+    });
+
+    const validatedPayload = await validateData(
+      validationSchema,
+      unvalidatedPayload
+    );
+
+    if (validatedPayload) {
+      const params = {
+        TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+        Item: {
+          formTemplateId: unvalidatedPayload.formTemplateId,
+          createdAt: Date.now(),
+          lastAltered: Date.now(),
+          lastAlteredBy: event?.headers["cognito-identity-id"],
+          formTemplate: unvalidatedPayload.formTemplate,
+          ...unvalidatedPayload,
+        },
+      };
+      await dynamoDb.put(params);
+      return { status: StatusCodes.SUCCESS, body: params };
+    }
+    // fallback failure response
+    return { status: StatusCodes.FAILURE, body: {} };
   }
 });
