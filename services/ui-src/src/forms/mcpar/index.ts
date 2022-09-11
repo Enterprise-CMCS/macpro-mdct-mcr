@@ -15,7 +15,7 @@ export const mcparReportJsonNested: ReportJson = {
   ...rawReportJson,
   // update formJson of each report route with appropriate validation schema
   routes: addValidationSchemaToNestedForms(rawReportJson.routes, reportSchema),
-  validationSchema: { "apoc-a2a": "text", "apoc-a2b": "text" },
+  validationSchema: { "apoc-a2a": "text", "apoc-a2b": "email" },
 };
 
 // full reportJson with routes in flattened array

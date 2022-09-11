@@ -4,6 +4,7 @@ import handler from "../handler-lib";
 import { getReportData } from "./get";
 import { getReport } from "../reports/get";
 import { getFormTemplate } from "../formTemplates/get";
+import * as brax from "../../../ui-src/src/utils/forms/schemas";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -51,12 +52,13 @@ export const writeReportData = handler(async (event, context) => {
     const getTemplate = await getFormTemplate(formTemplateEvent, context);
     if (getTemplate.body) {
       const { formTemplate } = JSON.parse(getTemplate.body);
-      console.log("RAW VALIDATION SCHEMA", formTemplate.validationSchema);
       const parsedValidationSchema: any = {};
-      const stringSchema = () =>
+      const text = () =>
         yup.string().typeError("type error").required("generic error");
+      const email = () => text().email("email error");
       const schemaMap: any = {
-        text: stringSchema(),
+        text: text(),
+        email: email(),
       };
       Object.entries(formTemplate.validationSchema).forEach(
         (fieldSchema: any) => {
@@ -65,7 +67,6 @@ export const writeReportData = handler(async (event, context) => {
         }
       );
       validationSchema = yup.object().shape(parsedValidationSchema);
-      console.log("NEW VALIDATION SCHEMA", parsedValidationSchema);
     }
   }
 
