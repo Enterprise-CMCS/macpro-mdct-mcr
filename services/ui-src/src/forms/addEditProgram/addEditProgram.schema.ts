@@ -1,4 +1,4 @@
-import { checkboxSingle, date, endDate, text } from "utils/forms/schemas";
+import { checkboxSingle, date, endDate, text } from "utils/validation/schemas";
 
 export default {
   "aep-programName": text(),

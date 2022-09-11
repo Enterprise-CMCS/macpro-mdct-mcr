@@ -5,7 +5,7 @@ import {
   string,
   StringSchema,
 } from "yup";
-import { schemaValidationErrors as error } from "verbiage/errors";
+import { validationErrors as error } from "verbiage/errors";
 
 // TEXT
 export const text = (): StringSchema =>

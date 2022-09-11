@@ -1,5 +1,5 @@
 import rawReportJson from "./mcpar.json";
-import reportSchema from "./mcpar.schema";
+import rawReportSchema from "./mcpar.schema";
 // utils
 import {
   addValidationSchemaToNestedForms,
@@ -8,21 +8,24 @@ import {
 } from "utils/reports/reports";
 import { ReportJson } from "types";
 
-const fullReportValidationSchema = flattenValidationSchema(reportSchema);
+const flattenedValidationSchema = flattenValidationSchema(rawReportSchema);
 
 // full reportJson with routes in nested array
 export const mcparReportJsonNested: ReportJson = {
   ...rawReportJson,
   // update formJson of each report route with appropriate validation schema
-  routes: addValidationSchemaToNestedForms(rawReportJson.routes, reportSchema),
-  validationSchema: fullReportValidationSchema,
+  routes: addValidationSchemaToNestedForms(
+    rawReportJson.routes,
+    rawReportSchema
+  ),
+  validationSchema: flattenedValidationSchema,
 };
 
 // full reportJson with routes in flattened array
 export const mcparReportJsonFlat: ReportJson = {
   ...rawReportJson,
   routes: flattenReportRoutesArray(mcparReportJsonNested.routes),
-  validationSchema: fullReportValidationSchema,
+  validationSchema: flattenedValidationSchema,
 };
 
 export const nonFormPages = ["/mcpar/get-started"];

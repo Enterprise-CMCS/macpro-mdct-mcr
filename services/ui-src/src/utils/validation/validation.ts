@@ -1,41 +1,6 @@
 import { nested, endDate } from "./schemas";
 import { schemaMap } from "./schemaMap";
-import { AnyObject } from "../types/types";
-import { VALIDATION_ERROR_MESSAGE } from "../constants/constants";
-
-// compare payload data against validation schema
-export const validateData = async (
-  validationSchema: AnyObject,
-  data: AnyObject,
-  options?: AnyObject
-) => {
-  try {
-    // returns valid data to be passed through API
-    return await validationSchema.validate(data, {
-      stripUnknown: true,
-      ...options,
-    });
-  } catch (e: any) {
-    console.log("VALIDATION ERRORS", e); // eslint-disable-line no-console
-    throw new Error(VALIDATION_ERROR_MESSAGE);
-  }
-};
-
-// filter field validation to just what's needed for the passed fields
-export const filterValidationSchema = (
-  validationObject: AnyObject,
-  data: AnyObject
-): AnyObject => {
-  const validationEntries = Object.entries(validationObject);
-  const dataKeys = Object.keys(data);
-  const filteredEntries = validationEntries.filter(
-    (entry: [string, string | AnyObject]) => {
-      const [entryKey] = entry;
-      return dataKeys.includes(entryKey);
-    }
-  );
-  return Object.fromEntries(filteredEntries);
-};
+import { AnyObject } from "types";
 
 // map field validation types to validation schema
 export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {

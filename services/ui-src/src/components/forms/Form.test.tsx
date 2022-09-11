@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { Form } from "components";
-import { text } from "utils/forms/schemas";
+import { text } from "utils/validation/schemas";
 
 const mockOnSubmit = jest.fn();
 

@@ -18,6 +18,9 @@ export * from "./reports/reports";
 export * from "./reports/routing";
 // tracking
 export * from "./tracking/tealium";
+// validation
+export * from "./validation/schemas";
+export * from "./validation/validation";
 // other
 export * from "./other/email";
 export * from "./other/mask";
