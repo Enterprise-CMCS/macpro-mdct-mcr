@@ -42,9 +42,7 @@ export const Form = ({
 
   // hydrate and create form fields using formFieldFactory
   const formFieldsToRender = (fields: FormField[]) => {
-    const hydratedFields = formData
-      ? hydrateFormFields(fields, formData)
-      : fields;
+    const hydratedFields = hydrateFormFields(fields, formData);
     return formFieldFactory(hydratedFields);
   };
 
