@@ -27,11 +27,17 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"formTemplateId":"testFormId","formTemplate":{"info":"test","forms":"etc"}}`,
+  body: `{"formTemplateId":"testFormId","formTemplateVersion":"mock-version","formTemplate":{"name":"mock-name","basePath":"/mock-base-path","version":"mock-version","routes":[{},{}],"validationSchema":{}}}`,
   headers: { "cognito-identity-id": "test" },
 };
 
-describe("Test writeFormTemplate API method", () => {
+const testEventWithInvalidData: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  body: `{}`,
+  headers: { "cognito-identity-id": "test" },
+};
+
+describe("brax Test writeFormTemplate API method", () => {
   beforeEach(() => {
     process.env["FORM_TEMPLATE_TABLE_NAME"] = "fakeFormTemplateTable";
   });
@@ -48,7 +54,11 @@ describe("Test writeFormTemplate API method", () => {
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("testFormId");
-    expect(res.body).toContain("etc");
+  });
+
+  test("Test attempted form creation with invalid data fails", async () => {
+    const res = await writeFormTemplate(testEventWithInvalidData, null);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 
   test("Test formTemplateId not provided throws 500 error", async () => {

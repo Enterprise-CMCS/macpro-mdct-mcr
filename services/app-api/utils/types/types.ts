@@ -47,6 +47,7 @@ export const enum StatusCodes {
   SUCCESS = 200,
   FAILURE = 400,
   UNAUTHORIZED = 403,
+  SERVER_ERROR = 500,
 }
 
 // USERS

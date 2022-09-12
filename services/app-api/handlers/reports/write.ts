@@ -74,6 +74,4 @@ export const writeReport = handler(async (event, context) => {
       body: { ...reportParams.Item },
     };
   }
-  // fallback failure response
-  return { status: StatusCodes.FAILURE, body: {} };
 });
