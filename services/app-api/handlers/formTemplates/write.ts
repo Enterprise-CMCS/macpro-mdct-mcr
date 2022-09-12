@@ -58,7 +58,5 @@ export const writeFormTemplate = handler(async (event, _context) => {
       await dynamoDb.put(params);
       return { status: StatusCodes.SUCCESS, body: params };
     }
-    // fallback failure response
-    return { status: StatusCodes.FAILURE, body: {} };
   }
 });

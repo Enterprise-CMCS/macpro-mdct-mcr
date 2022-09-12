@@ -37,7 +37,7 @@ const testEventWithInvalidData: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test" },
 };
 
-describe("brax Test writeFormTemplate API method", () => {
+describe("Test writeFormTemplate API method", () => {
   beforeEach(() => {
     process.env["FORM_TEMPLATE_TABLE_NAME"] = "fakeFormTemplateTable";
   });

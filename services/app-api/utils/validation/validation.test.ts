@@ -1,4 +1,7 @@
-import { mapValidationTypesToSchema } from "./validation";
+import {
+  filterValidationSchema,
+  mapValidationTypesToSchema,
+} from "./validation";
 import * as schema from "./schemas";
 
 const mockStandardValidationType = {
@@ -74,5 +77,25 @@ describe("Test mapValidationTypesToSchema", () => {
         ),
       })
     );
+  });
+});
+
+const mockValidationObject = {
+  "mock-field-1": "text",
+  "mock-field-2": "email",
+  "mock-field-3": "number",
+};
+const mockDataObject = {
+  "mock-field-1": undefined,
+  "mock-field-3": undefined,
+};
+
+describe("Test filterValidationSchema", () => {
+  it("Filters out validation objects for which there is no field data being passed", () => {
+    const result = filterValidationSchema(mockValidationObject, mockDataObject);
+    expect(result).toEqual({
+      "mock-field-1": "text",
+      "mock-field-3": "number",
+    });
   });
 });

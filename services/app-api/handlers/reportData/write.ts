@@ -113,6 +113,4 @@ export const writeReportData = handler(async (event, context) => {
       }
     }
   }
-  // fallback failure response
-  return { status: StatusCodes.FAILURE, body: {} };
 });
