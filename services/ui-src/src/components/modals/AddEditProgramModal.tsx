@@ -21,7 +21,7 @@ export const AddEditProgramModal = ({
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
-  const { full_name } = useUser().user ?? {};
+  const { email, full_name } = useUser().user ?? {};
 
   // add validation to formJson
   const form: FormJson = formJson;
@@ -31,14 +31,27 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
+    const reportingPeriodStartDate = convertDateEtToUtc(
+      formData["aep-startDate"]
+    );
+    const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
     const reportDetails = {
       state: activeState,
       reportId: "",
+      prefilledFields: {
+        stateName: activeState,
+        submitterName: full_name,
+        submitterEmailAddress: email,
+        reportSubmissionDate: dueDate,
+        reportingPeriodStartDate: reportingPeriodStartDate,
+        reportingPeriodEndDate: reportingPeriodEndDate,
+        programName: programName,
+      },
     };
     const dataToWrite = {
       programName,
-      reportingPeriodStartDate: convertDateEtToUtc(formData["aep-startDate"]),
-      reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
+      reportingPeriodStartDate: reportingPeriodStartDate,
+      reportingPeriodEndDate: reportingPeriodEndDate,
       dueDate,
       lastAlteredBy: full_name,
     };
