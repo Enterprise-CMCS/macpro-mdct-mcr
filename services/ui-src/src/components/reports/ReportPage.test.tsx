@@ -27,17 +27,9 @@ jest.mock("utils", () => ({
   },
 }));
 
-const mockUpdateReport = jest.fn();
-const mockUpdateReportData = jest.fn();
-const mockedReportContext = {
-  ...mockReportContext,
-  updateReport: mockUpdateReport,
-  updateReportData: mockUpdateReportData,
-};
-
 const ReportPageComponent_StandardForm = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={mockReportContext}>
       <ReportPage
         reportJson={mockReportJsonFlatRoutes}
         route={mockReportJsonFlatRoutes.routes[0]}
@@ -48,7 +40,7 @@ const ReportPageComponent_StandardForm = (
 
 const ReportPageComponent_EntityDrawer = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={mockReportContext}>
       <ReportPage
         reportJson={mockReportJsonFlatRoutes}
         route={mockReportJsonFlatRoutes.routes[1]}
@@ -62,7 +54,7 @@ const mockedReportShapeWithoutReport = {
   reportId: "",
 };
 const mockReportContextWithoutReport = {
-  ...mockedReportContext,
+  ...mockReportContext,
   report: mockedReportShapeWithoutReport,
 };
 
@@ -104,8 +96,8 @@ describe("Test ReportPage functionality", () => {
     await userEvent.type(mockField, "mock input");
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
-    expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-    expect(mockUpdateReportData).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReportData).toHaveBeenCalledTimes(1);
   });
 });
 
