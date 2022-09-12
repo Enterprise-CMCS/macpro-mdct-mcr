@@ -2,7 +2,7 @@ import { useContext } from "react";
 // components
 import { Form, Modal, ReportContext } from "components";
 // utils
-import { FormJson, ReportStatus } from "types";
+import { AnyObject, FormJson, ReportStatus } from "types";
 import {
   calculateDueDate,
   convertDateEtToUtc,
@@ -98,7 +98,7 @@ export const AddEditProgramModal = ({
 interface Props {
   activeState: string;
   selectedReportId: string | undefined;
-  selectedReportData?: any;
+  selectedReportData?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

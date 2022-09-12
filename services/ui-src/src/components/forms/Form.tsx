@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box } from "@chakra-ui/react";
 // utils
 import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
-import { FormJson, FormField } from "types";
+import { FormJson, FormField, AnyObject } from "types";
 
 export const Form = ({
   id,
@@ -64,7 +64,7 @@ interface Props {
   id: string;
   formJson: FormJson;
   onSubmit: Function;
-  formData?: any;
+  formData?: AnyObject;
   children?: ReactNode;
   [key: string]: any;
 }

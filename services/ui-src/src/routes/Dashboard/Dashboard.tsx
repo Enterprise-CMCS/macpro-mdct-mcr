@@ -53,7 +53,7 @@ export const Dashboard = () => {
     undefined
   );
   const [selectedReportFormData, setSelectedReportFormData] = useState<
-    any | undefined
+    AnyObject | undefined
   >(undefined);
 
   // get active state
