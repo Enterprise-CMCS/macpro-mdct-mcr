@@ -12,7 +12,7 @@ export const Form = ({
   id,
   formJson,
   onSubmit,
-  formData,
+  formData = {},
   children,
   ...props
 }: Props) => {
