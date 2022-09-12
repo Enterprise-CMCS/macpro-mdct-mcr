@@ -7,7 +7,7 @@ import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
 import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
-import { FormJson, FormField } from "types";
+import { AnyObject, FormJson, FormField } from "types";
 
 export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   const { fields, options } = formJson;
@@ -20,13 +20,13 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
     resolver: yupResolver(formSchema),
     shouldFocusError: false,
     mode: "onChange",
-    ...(options as any),
+    ...(options as AnyObject),
   });
 
   // will run if any validation errors exist on form submission
-  const onErrorHandler = (errors: any) => {
+  const onErrorHandler = (errors: AnyObject) => {
     // sort errors in order of registration/page display
-    const sortedErrors: any[] = sortFormErrors(formSchema.fields, errors);
+    const sortedErrors: string[] = sortFormErrors(formSchema.fields, errors);
     // focus the first error on the page and scroll to it
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`
@@ -36,9 +36,9 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
   };
 
   // hydrate and create form fields using formFieldFactory
-  const formFieldsToRender = (fields: FormField[]) => {
-    const hydratedFields = hydrateFormFields(fields, reportData);
-    return formFieldFactory(hydratedFields);
+  const renderFormFields = (fields: FormField[]) => {
+    const fieldsToRender = hydrateFormFields(fields, reportData);
+    return formFieldFactory(fieldsToRender);
   };
 
   return (
@@ -48,7 +48,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
         onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
         {...props}
       >
-        <Box sx={sx}>{formFieldsToRender(fields)}</Box>
+        <Box sx={sx}>{renderFormFields(fields)}</Box>
         {children}
       </form>
     </FormProvider>
