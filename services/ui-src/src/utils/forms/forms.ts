@@ -44,7 +44,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
 
 export const hydrateFormFields = (
   formFields: FormField[],
-  reportData: ReportDataShape
+  reportData: ReportDataShape | undefined
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);

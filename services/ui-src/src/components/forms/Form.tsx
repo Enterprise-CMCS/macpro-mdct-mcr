@@ -37,10 +37,7 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
 
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: FormField[]) => {
-    let fieldsToRender = fields;
-    if (reportData) {
-      fieldsToRender = hydrateFormFields(fields, reportData);
-    }
+    const fieldsToRender = hydrateFormFields(fields, reportData);
     return formFieldFactory(fieldsToRender);
   };
 
