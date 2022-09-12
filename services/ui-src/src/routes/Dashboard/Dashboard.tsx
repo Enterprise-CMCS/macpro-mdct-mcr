@@ -39,6 +39,7 @@ import editIcon from "assets/icons/icon_edit.png";
 export const Dashboard = () => {
   const {
     errorMessage,
+    fetchReport,
     fetchReportsByState,
     reportsByState,
     setReport,
@@ -69,13 +70,13 @@ export const Dashboard = () => {
     setReportData(undefined);
   }, []);
 
-  const enterSelectedReport = (reportId: string) => {
-    // set active report to selected report
+  const enterSelectedReport = async (reportId: string) => {
     const reportDetails: ReportDetails = {
       state: activeState!,
       reportId: reportId,
     };
-    setReport(reportDetails);
+    // fetch & set active report to selected report
+    await fetchReport(reportDetails);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };
