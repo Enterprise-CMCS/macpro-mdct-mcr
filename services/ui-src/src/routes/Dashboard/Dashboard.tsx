@@ -69,16 +69,18 @@ export const Dashboard = () => {
     setReport(undefined);
     setReportData(undefined);
     localStorage.setItem("selectedReport", "");
+    localStorage.setItem("selectedState", "");
   }, []);
 
-  const enterSelectedReport = async (reportId: string) => {
+  const enterSelectedReport = async (reportMetadata: ReportShape) => {
     // set active report to selected report
     const reportDetails: ReportDetails = {
-      state: activeState!,
-      reportId: reportId,
+      state: reportMetadata.state!,
+      reportId: reportMetadata.reportId,
     };
     setReport(reportDetails);
-    localStorage.setItem("selectedReport", reportId);
+    localStorage.setItem("selectedReport", reportMetadata.reportId);
+    localStorage.setItem("selectedState", reportMetadata.state);
 
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
@@ -177,7 +179,6 @@ export const Dashboard = () => {
         )}
       </Box>
       <AddEditProgramModal
-        activeState={activeState!}
         selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
@@ -185,7 +186,6 @@ export const Dashboard = () => {
         }}
       />
       <DeleteProgramModal
-        activeState={activeState!}
         selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,

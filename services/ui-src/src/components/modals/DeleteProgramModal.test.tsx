@@ -3,7 +3,7 @@ import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 //components
 import { DeleteProgramModal, ReportContext } from "components";
-import { mockReportContext } from "utils/testing/setupJest";
+import { mockReport, mockReportContext } from "utils/testing/setupJest";
 
 const mockCloseHandler = jest.fn();
 const mockRemoveReport = jest.fn();
@@ -18,8 +18,7 @@ const mockedReportContext = {
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <DeleteProgramModal
-      activeState="AB"
-      selectedReportMetadata={{ reportId: "mock-report-id" }}
+      selectedReportMetadata={mockReport}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,

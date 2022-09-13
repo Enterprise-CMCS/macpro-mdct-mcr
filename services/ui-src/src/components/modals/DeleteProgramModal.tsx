@@ -5,7 +5,6 @@ import { Modal, ReportContext } from "components";
 import { AnyObject } from "types";
 
 export const DeleteProgramModal = ({
-  activeState,
   selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
@@ -13,11 +12,11 @@ export const DeleteProgramModal = ({
 
   const deleteProgramHandler = async () => {
     const reportDetails = {
-      state: activeState,
-      reportId: selectedReportMetadata?.reportId,
+      state: selectedReportMetadata.state,
+      reportId: selectedReportMetadata.reportId,
     };
     await removeReport(reportDetails);
-    await fetchReportsByState(activeState);
+    await fetchReportsByState(selectedReportMetadata.state);
     modalDisclosure.onClose();
   };
 
@@ -40,7 +39,6 @@ export const DeleteProgramModal = ({
 };
 
 interface Props {
-  activeState: string;
   selectedReportMetadata: AnyObject;
   modalDisclosure: {
     isOpen: boolean;

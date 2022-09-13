@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { AddEditProgramModal, ReportContext } from "components";
-import { mockReportContext } from "utils/testing/setupJest";
+import { mockReport, mockReportContext } from "utils/testing/setupJest";
 
 const mockUpdateReport = jest.fn();
 const mockFetchReportsByState = jest.fn();
@@ -19,7 +19,6 @@ const mockedReportContext = {
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
-      activeState="AB"
       selectedReportMetadata={undefined}
       modalDisclosure={{
         isOpen: true,
@@ -32,8 +31,7 @@ const modalComponent = (
 const modalComponentWithSelectedReport = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
-      activeState="AB"
-      selectedReportMetadata={{ reportId: "mock-report-id" }}
+      selectedReportMetadata={mockReport}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,

@@ -16,7 +16,6 @@ import formSchema from "forms/addEditProgram/addEditProgram.schema";
 import { mcparReportJsonNested } from "forms/mcpar";
 
 export const AddEditProgramModal = ({
-  activeState,
   selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
@@ -32,7 +31,7 @@ export const AddEditProgramModal = ({
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
     const reportDetails = {
-      state: activeState,
+      state: selectedReportMetadata?.state,
       reportId: "",
     };
     const dataToWrite = {
@@ -68,7 +67,7 @@ export const AddEditProgramModal = ({
         formTemplateVersion: mcparReportJsonNested.version,
       });
     }
-    await fetchReportsByState(activeState);
+    await fetchReportsByState(selectedReportMetadata?.state);
     modalDisclosure.onClose();
   };
 
@@ -97,7 +96,6 @@ export const AddEditProgramModal = ({
 };
 
 interface Props {
-  activeState: string;
   selectedReportMetadata?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
