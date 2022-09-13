@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportDetails, UserRoles } from "types";
+import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -52,7 +52,7 @@ export const Dashboard = () => {
   const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
     undefined
   );
-  const [selectedReportFormData, setSelectedReportFormData] = useState<
+  const [selectedReportMetaData, setSelectedReportMetaData] = useState<
     AnyObject | undefined
   >(undefined);
 
@@ -89,32 +89,28 @@ export const Dashboard = () => {
     navigate(reportFirstPagePath);
   };
 
-  const openAddEditProgramModal = (reportId?: string) => {
+  const openAddEditProgramModal = (selectedReportMetaData?: ReportShape) => {
     // if reportId provided, set as selected program
-    setSelectedReportId(reportId);
+    setSelectedReportId(selectedReportMetaData?.reportId);
 
-    const selectedReport = reportsByState?.find(
-      (o: { reportId: string }) => o.reportId === reportId
-    );
+    let formData = undefined;
     // Check and pre-fill the form if the user is editing an existing program
-    if (reportId && selectedReport) {
-      const formData = {
+    if (selectedReportMetaData) {
+      formData = {
         fieldData: {
-          "aep-programName": selectedReport.programName,
+          "aep-programName": selectedReportMetaData.programName,
           "aep-endDate": convertDateUtcToEt(
-            selectedReport.reportingPeriodEndDate
+            selectedReportMetaData.reportingPeriodEndDate
           ),
           "aep-startDate": convertDateUtcToEt(
-            selectedReport.reportingPeriodStartDate
+            selectedReportMetaData.reportingPeriodStartDate
           ),
         },
-        state: activeState,
-        reportId: reportId,
+        state: selectedReportMetaData.state,
+        reportId: selectedReportMetaData.reportId,
       };
-      setSelectedReportFormData(formData);
-    } else {
-      setSelectedReportFormData(undefined);
     }
+    setSelectedReportMetaData(formData);
 
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
@@ -189,7 +185,7 @@ export const Dashboard = () => {
       <AddEditProgramModal
         activeState={activeState!}
         selectedReportId={selectedReportId}
-        selectedReportData={selectedReportFormData || undefined}
+        selectedReportMetaData={selectedReportMetaData || undefined}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
@@ -221,7 +217,7 @@ const DashboardTable = ({
         <Td sx={sx.editProgram}>
           {(userRole === UserRoles.STATE_REP ||
             userRole === UserRoles.STATE_USER) && (
-            <button onClick={() => openAddEditProgramModal(report.reportId)}>
+            <button onClick={() => openAddEditProgramModal(report)}>
               <Image src={editIcon} alt="Edit Program" />
             </button>
           )}
@@ -242,7 +238,9 @@ const DashboardTable = ({
         </Td>
         <Td sx={sx.deleteProgramCell}>
           {userRole === UserRoles.ADMIN && (
-            <button onClick={() => openDeleteProgramModal(report.reportId)}>
+            <button
+              onClick={() => openDeleteProgramModal(report.reportId, report)}
+            >
               <Image
                 src={cancelIcon}
                 data-testid="delete-program"
@@ -282,9 +280,7 @@ export const MobileDashboardRow = ({
             {(userRole === UserRoles.STATE_REP ||
               userRole === UserRoles.STATE_USER) && (
               <Box sx={sx.editProgram}>
-                <button
-                  onClick={() => openAddEditProgramModal(report.reportId)}
-                >
+                <button onClick={() => openAddEditProgramModal(report)}>
                   <Image
                     src={editIcon}
                     data-testid="mobile-edit-program"

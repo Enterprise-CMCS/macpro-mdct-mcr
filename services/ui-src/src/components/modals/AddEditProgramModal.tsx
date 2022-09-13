@@ -18,7 +18,7 @@ import { mcparReportJsonNested } from "forms/mcpar";
 export const AddEditProgramModal = ({
   activeState,
   selectedReportId,
-  selectedReportData,
+  selectedReportMetaData,
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
@@ -88,7 +88,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
-        formData={selectedReportData}
+        formData={selectedReportMetaData}
         onSubmit={writeProgram}
       />
     </Modal>
@@ -98,7 +98,7 @@ export const AddEditProgramModal = ({
 interface Props {
   activeState: string;
   selectedReportId: string | undefined;
-  selectedReportData?: AnyObject;
+  selectedReportMetaData?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
