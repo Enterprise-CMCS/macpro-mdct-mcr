@@ -8,6 +8,7 @@ import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { TextField } from "./TextField";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
+  // get form context and register field
   const form = useFormContext();
   form.register(name);
 
@@ -24,7 +25,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     }
   }, []);
 
-  const formErrorState = form?.formState?.errors;
+  // render hydrated values on refresh
+  useEffect(() => {
+    form.reset();
+    append(props?.hydrate);
+  }, [props?.hydrate]);
+
+  const fieldErrorState = form?.formState?.errors?.[name];
 
   return (
     <Box>
@@ -34,8 +41,9 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             <TextField
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={formErrorState?.[name]?.[index]?.message}
+              errorMessage={fieldErrorState?.[index]?.message}
               sxOverride={sx.textFieldOverride}
+              {...props}
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>
@@ -43,26 +51,30 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                   onClick={() => remove(index)}
                   data-testid="removeButton"
                 >
-                  <Image
-                    sx={sx.removeImage}
-                    src={cancelIcon}
-                    alt="Remove item"
-                  />
+                  {!props?.disabled && (
+                    <Image
+                      sx={sx.removeImage}
+                      src={cancelIcon}
+                      alt="Remove item"
+                    />
+                  )}
                 </button>
               </Box>
             )}
           </Flex>
         );
       })}
-      <Button
-        variant="outline"
-        sx={sx.appendButton}
-        onClick={() => {
-          append("");
-        }}
-      >
-        Add a row
-      </Button>
+      {!props.disabled && (
+        <Button
+          variant="outline"
+          sx={sx.appendButton}
+          onClick={() => {
+            append("");
+          }}
+        >
+          Add a row
+        </Button>
+      )}
     </Box>
   );
 };

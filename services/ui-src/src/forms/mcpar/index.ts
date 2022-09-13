@@ -1,88 +1,32 @@
-// structure
-import mcparRouteStructure from "./reportStructure";
+import rawReportJson from "./mcpar.json";
+import reportSchema from "./mcpar.schema";
 // utils
 import {
-  addDataToReportStructure,
-  makeRouteArray,
+  addValidationToReportJson,
+  copyAdminDisabledStatusToForms,
+  flattenReportRoutesArray,
 } from "utils/reports/reports";
-// section a forms
-import apoc from "./apoc/apoc.json";
-import arp from "./arp/arp.json";
-import aap from "./aap/aap.json";
-import absse from "./absse/absse.json";
-// section b forms
-import bpc from "./bpc/bpc.json";
-import bedr from "./bedr/bedr.json";
-import bpi from "./bpi/bpi.json";
-// section c forms
-import cpc from "./cpc/cpc.json";
-import cedr from "./cedr/cedr.json";
-import casfhag from "./casfhag/casfhag.json";
-import cna from "./cna/cna.json";
-import cam from "./cam/cam.json";
-import cbss from "./cbss/cbss.json";
-import cpi from "./cpi/cpi.json";
-// section d forms
-import dpc from "./dpc/dpc.json";
-import dfp from "./dfp/dfp.json";
-import dedr from "./dedr/dedr.json";
-import dao from "./dao/dao.json";
-import dabs from "./dabs/dabs.json";
-import dsfh from "./dsfh/dsfh.json";
-import dgo from "./dgo/dgo.json";
-import dgbs from "./dgbs/dgbs.json";
-import dgbr from "./dgbr/dgbr.json";
-import dqm from "./dqm/dqm.json";
-import ds from "./ds/ds.json";
-import dpi from "./dpi/dpi.json";
-// section e forms
-import ebssei from "./ebssei/ebssei.json";
-// test forms
-import test from "./ztest/test.json";
+import { ReportJson } from "types";
 
-const combinedMcparForms = [
-  apoc,
-  arp,
-  aap,
-  absse,
-  bpc,
-  bedr,
-  bpi,
-  cpc,
-  cedr,
-  casfhag,
-  cna,
-  cam,
-  cbss,
-  cpi,
-  dpc,
-  dfp,
-  dedr,
-  dao,
-  dabs,
-  dsfh,
-  dgo,
-  dgbs,
-  dgbr,
-  dqm,
-  ds,
-  dpi,
-  ebssei,
-  test,
-];
+const reportJsonWithDisabledStatus: ReportJson =
+  copyAdminDisabledStatusToForms(rawReportJson);
 
-export const mcparStructureWithData = addDataToReportStructure(
-  mcparRouteStructure,
-  combinedMcparForms
-);
-
-export const mcparRoutes = makeRouteArray(mcparStructureWithData);
-
-export const nonReportMcparRoutes = ["/mcpar/dashboard", "/mcpar/get-started"];
-
-export const isMcparReportPage = (pathname: string) => {
-  return (
-    pathname.includes("/mcpar/") &&
-    !nonReportMcparRoutes.find((route: string) => route === pathname)
-  );
+// full reportJson with routes in nested array
+export const mcparReportJsonNested: ReportJson = {
+  ...rawReportJson,
+  // update the formJson of each report route with appropriate validation schema
+  routes: addValidationToReportJson(
+    reportJsonWithDisabledStatus.routes,
+    reportSchema
+  ),
 };
+
+// full reportJson with routes in flattened array
+export const mcparReportJsonFlat: ReportJson = {
+  ...rawReportJson,
+  routes: flattenReportRoutesArray(mcparReportJsonNested.routes),
+};
+
+export const nonFormPages = ["/mcpar/get-started"];
+export const isMcparReportFormPage = (pathname: string): boolean =>
+  pathname.includes("/mcpar/") && !nonFormPages.includes(pathname);

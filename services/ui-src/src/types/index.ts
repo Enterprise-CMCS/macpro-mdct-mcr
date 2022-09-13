@@ -1,9 +1,11 @@
 import React from "react";
+import { ArraySchema, StringSchema } from "yup";
+
 // USERS
 
 export enum UserRoles {
   ADMIN = "mdctmcr-bor", // "MDCT MCR Business Owner Representative"
-  HELP_DESK = "mdctmcr-help-desk", // "MDCTMCR Help Desk"
+  HELP_DESK = "mdctmcr-help-desk", // "MDCT MCR Help Desk"
   APPROVER = "mdctmcr-approver", // "MDCT MCR Approver"
   STATE_REP = "mdctmcr-state-rep", // "MDCT MCR State Representative"
   STATE_USER = "mdctmcr-state-user", // "MDCT MCR State User"
@@ -25,23 +27,39 @@ export interface UserContextI {
   loginWithIDM: () => void;
 }
 
-// REPORT
+// REPORT STRUCTURE
 
-export interface PageJson {
-  path: string;
-  intro?: AnyObject;
-  form: FormJson;
-  drawer?: AnyObject;
-  [key: string]: any;
+export interface ReportJson {
+  id?: string;
+  name: string;
+  basePath: string;
+  version: string;
+  adminDisabled?: boolean;
+  routes: ReportRoute[];
 }
 
-export interface ReportPath {
+export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
+
+export interface ReportRouteBase {
   name: string;
   path: string;
-  formId?: string;
-  element?: string;
-  pageJson?: PageJson;
-  children?: ReportPath[];
+  [key: string]: any;
+  page?: PageJson;
+}
+
+export interface ReportRouteWithForm extends ReportRouteBase {
+  children?: never;
+}
+
+export interface ReportRouteWithChildren extends ReportRouteBase {
+  children?: ReportRoute[];
+  form?: never;
+}
+
+export interface PageJson {
+  intro?: AnyObject;
+  drawer?: AnyObject;
+  [key: string]: any;
 }
 
 export enum ReportStatus {
@@ -50,49 +68,63 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
-export interface ReportDataShape {
-  [key: string]: any;
-}
-
-export interface FieldDataShape {
-  [key: string]: any;
-}
+// REPORT PROVIDER/CONTEXT
 
 export interface ReportDetails {
   state: string;
   reportId: string;
 }
 
-export interface ReportShape {
-  [key: string]: any;
+export interface ReportShape extends ReportDetails {
+  reportType: string;
+  formTemplateId: string;
+  programName: string;
+  status: string;
+  reportingPeriodStartDate: number;
+  reportingPeriodEndDate: number;
+  dueDate: number;
+  createdAt: number;
+  lastAltered: number;
+  lastAlteredBy: string;
+}
+
+export interface ReportDataShape {
+  [key: string]: any; // any valid object can be valid reportData
 }
 
 export interface ReportContextMethods {
   setReport: Function;
+  fetchReport: Function;
+  updateReport: Function;
+  removeReport: Function;
   setReportData: Function;
   fetchReportData: Function;
   updateReportData: Function;
-  fetchReport: Function;
-  updateReport: Function;
   fetchReportsByState: Function;
-  removeReport: Function;
 }
 
-export interface ReportContextShape
-  extends ReportDataShape,
-    ReportShape,
-    ReportContextMethods {
-  errorMessage?: string;
+export interface ReportContextShape extends ReportContextMethods {
+  report: ReportShape | undefined;
+  reportData: ReportDataShape | undefined;
+  reportsByState: ReportShape[] | undefined;
+  errorMessage?: string | undefined;
 }
 
-// FORM
+// FORM & FIELD STRUCTURE
+
+export interface FormJson {
+  id: string;
+  fields: FormField[];
+  options?: AnyObject;
+  validation?: StringSchema | ArraySchema<any> | AnyObject;
+  adminDisabled?: boolean;
+}
 
 export interface FormField {
   id: string;
   type: string;
   hydrate?: string;
   props?: AnyObject;
-  validation?: FormValidation;
   choices?: FieldChoice[];
 }
 
@@ -117,18 +149,6 @@ export interface ChoiceFieldProps {
   choices: FieldChoice[];
   sxOverride?: AnyObject;
   [key: string]: any;
-}
-
-export interface FormValidation {
-  type: string;
-  options?: AnyObject;
-  errorMessages?: AnyObject;
-}
-
-export interface FormJson {
-  id: string;
-  options?: AnyObject;
-  fields: FormField[];
 }
 
 // BANNER
@@ -201,11 +221,4 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
-}
-
-export interface SpreadsheetWidgetProps {
-  title: string;
-  descriptionList: string[];
-  additionalInfo?: string;
-  [key: string]: any;
 }

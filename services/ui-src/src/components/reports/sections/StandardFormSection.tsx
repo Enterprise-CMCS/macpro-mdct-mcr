@@ -1,38 +1,25 @@
 // components
 import { Box } from "@chakra-ui/react";
-import { Form, ReportPageFooter } from "components";
+import { Form, ReportContext } from "components";
+import { useContext } from "react";
 // utils
-import { findRoute } from "utils";
-import { PageJson } from "types";
-// form data
-import { mcparRoutes } from "forms/mcpar";
-import { reportSchema } from "forms/mcpar/reportSchema";
+import { FormJson } from "types";
 
-export const StandardFormSection = ({ pageJson, onSubmit }: Props) => {
-  const { path, form } = pageJson;
-
-  // make routes
-  const previousRoute = findRoute(mcparRoutes, path, "previous", "/mcpar");
-  const nextRoute = findRoute(mcparRoutes, path, "next", "/mcpar");
-
+export const StandardFormSection = ({ form, onSubmit }: Props) => {
+  const { reportData } = useContext(ReportContext);
   return (
     <Box data-testid="standard-form-section">
       <Form
         id={form.id}
         formJson={form}
-        formSchema={reportSchema[form.id as keyof typeof reportSchema]}
         onSubmit={onSubmit}
-      />
-      <ReportPageFooter
-        formId={form.id}
-        previousRoute={previousRoute}
-        nextRoute={nextRoute}
+        formData={reportData}
       />
     </Box>
   );
 };
 
 interface Props {
-  pageJson: PageJson;
+  form: FormJson;
   onSubmit: Function;
 }

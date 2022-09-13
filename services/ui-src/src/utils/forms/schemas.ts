@@ -1,4 +1,4 @@
-import { array, number as numberSchema, string } from "yup";
+import { array, mixed, number as numberSchema, string } from "yup";
 import { schemaValidationErrors as error } from "verbiage/errors";
 
 // TEXT
@@ -6,15 +6,74 @@ export const text = () =>
   string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
 export const textOptional = () => text().notRequired();
 
-// NUMBER
+// NUMBER - Helpers
+const validNAValues = ["N/A", "Data not available"];
+
+const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
+  return numberSchema().transform((_value) => {
+    return Number(value.replace(charsToReplace, ""));
+  });
+};
+
+// NUMBER - Number or Valid Strings
 export const number = () =>
-  numberSchema()
-    .transform((_value, originalValue) =>
-      Number(originalValue.replace(/,/g, ""))
-    )
-    .typeError(error.INVALID_NUMBER)
-    .required(error.REQUIRED_GENERIC);
+  mixed()
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (val) => val != "",
+    })
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      message: error.INVALID_NUMBER_OR_NA,
+      test: (val) => {
+        const replaceCharsRegex = /[,.]/g;
+        return (
+          ignoreCharsForSchema(val, replaceCharsRegex).isValidSync(val) ||
+          validNAValues.includes(val)
+        );
+      },
+    });
 export const numberOptional = () => number().notRequired();
+
+// Number - Ratio
+export const ratio = () =>
+  mixed()
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (val) => val != "",
+    })
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      message: error.INVALID_RATIO,
+      test: (val) => {
+        const replaceCharsRegex = /[,.:]/g;
+        const ratio = val.split(":");
+
+        // Double check and make sure that a ratio contains numbers on both sides
+        if (
+          ratio.length != 2 ||
+          ratio[0].trim().length == 0 ||
+          ratio[1].trim().length == 0
+        ) {
+          return false;
+        }
+
+        // Check if the left side of the ratio is a valid number
+        const firstTest = ignoreCharsForSchema(
+          ratio[0],
+          replaceCharsRegex
+        ).isValidSync(val);
+
+        // Check if the right side of the ratio is a valid number
+        const secondTest = ignoreCharsForSchema(
+          ratio[1],
+          replaceCharsRegex
+        ).isValidSync(val);
+
+        // If both sides are valid numbers, return true!
+        return firstTest && secondTest;
+      },
+    });
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
@@ -27,8 +86,8 @@ export const urlOptional = () => url().notRequired();
 // DATE
 export const date = () =>
   string()
-    .matches(dateFormatRegex, error.INVALID_DATE)
-    .required(error.REQUIRED_GENERIC);
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateFormatRegex, error.INVALID_DATE);
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
   date().test(
@@ -53,6 +112,7 @@ export const checkbox = () =>
     .of(text())
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () => checkbox().notRequired();
+export const checkboxSingle = () => array();
 
 // RADIO
 export const radio = () =>
@@ -72,12 +132,13 @@ export const nested = (
 ) => {
   const fieldTypeMap = {
     array: array(),
-    number: number(),
+    mixed: number(),
     string: string(),
     date: date(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
+
   return baseSchema.when(parentFieldName, {
     is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
     then: () => fieldSchema(),

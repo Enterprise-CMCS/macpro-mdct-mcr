@@ -128,7 +128,7 @@ const theme = extendTheme({
         primary: {
           backgroundColor: "palette.primary",
           color: "palette.white",
-          _hover: {
+          "&:hover, &:hover:disabled": {
             backgroundColor: "palette.primary_darker",
           },
         },

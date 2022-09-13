@@ -9,7 +9,7 @@ import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,
-  label = "",
+  label,
   hint,
   placeholder,
   sxOverride,
@@ -17,50 +17,55 @@ export const TextField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [displayValue, setDisplayValue] = useState<string>("");
 
-  // get the form context
+  // get form context and register field
   const form = useFormContext();
+  form.register(name);
 
-  const [fieldValue, setFieldValue] = useState<string>(
-    form.getValues(name) || props?.hydrate
-  );
-
+  // set initial display value to form state field value or hydration value
+  const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (props?.hydrate) {
-      setFieldValue(props?.hydrate);
+    // if form state has value for field, set as display value
+    const fieldValue = form.getValues(name);
+    if (fieldValue) {
+      setDisplayValue(fieldValue);
     }
-  }, [props?.hydrate]);
+    // else if hydration value exists, set as display value
+    else if (hydrationValue) {
+      setDisplayValue(hydrationValue);
+      form.setValue(name, hydrationValue, { shouldValidate: true });
+    }
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
-  // update form data
+  // update display value and form field data on change
   const onChangeHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
-    setFieldValue(value);
+    setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
   };
 
+  // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
-
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const parsedHint = hint && parseCustomHtml(hint);
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  const labelClass = !label ? "no-label" : "";
 
   return (
     <Box
-      sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${nestedChildClasses} ${
-        label === "" ? "no-label" : ""
-      }`}
+      sx={sxOverride}
+      className={`${mqClasses} ${nestedChildClasses} ${labelClass}`}
     >
       <CmsdsTextField
         id={name}
         name={name}
-        label={label}
+        label={label || ""}
         hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
-        inputRef={() => form.register(name)}
-        value={fieldValue || ""}
+        value={displayValue}
         {...props}
       />
     </Box>
@@ -74,19 +79,5 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
-  controlled?: string;
   [key: string]: any;
 }
-
-const sx = {
-  "&.ds-c-choice__checkedChild": {
-    "&.no-label": {
-      paddingY: 0,
-    },
-  },
-  "&.nested": {
-    label: {
-      marginTop: 0,
-    },
-  },
-};

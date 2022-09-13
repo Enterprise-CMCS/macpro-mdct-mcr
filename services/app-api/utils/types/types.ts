@@ -29,9 +29,7 @@ export interface DynamoUpdate {
 
 export interface DynamoScan {
   TableName: string;
-  FilterExpression?: string;
-  ExpressionAttributeNames: { [key: string]: string };
-  ExpressionAttributeValues: { [key: string]: any };
+  [key: string]: any;
 }
 
 export const enum RequestMethods {

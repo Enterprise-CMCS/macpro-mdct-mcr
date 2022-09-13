@@ -93,8 +93,7 @@
                   "type": "date",
                   "props": {
                     "hint": "Enter the start date.",
-                    "timetype": "startDate",
-                    "nolabel": true
+                    "timetype": "startDate"
                   }
                 },
                 {
@@ -102,8 +101,7 @@
                   "type": "date",
                   "props": {
                     "hint": "Enter the end date.",
-                    "timetype": "endDate",
-                    "nolabel": true
+                    "timetype": "endDate"
                   }
                 }
               ]

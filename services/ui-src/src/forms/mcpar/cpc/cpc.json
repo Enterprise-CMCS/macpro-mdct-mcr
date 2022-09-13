@@ -21,10 +21,7 @@
       },
       {
         "id": "cpc-1-sub",
-        "type": "date",
-        "props": {
-          "nolabel": true
-        }
+        "type": "date"
       },
       {
         "id": "cpc-2",

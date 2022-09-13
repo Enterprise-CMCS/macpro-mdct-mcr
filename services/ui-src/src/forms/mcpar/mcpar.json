@@ -1,0 +1,2750 @@
+{
+  "name": "MCPAR",
+  "basePath": "/mcpar",
+  "version": "MCPAR_2022-09-08",
+  "adminDisabled": true,
+  "routes": [
+    {
+      "name": "A: Program Information",
+      "path": "/mcpar/program-information",
+      "children": [
+        {
+          "name": "Point of Contact",
+          "path": "/mcpar/program-information/point-of-contact",
+          "page": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Point of Contact",
+              "info": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
+            }
+          },
+          "form": {
+            "id": "apoc",
+            "fields": [
+              {
+                "id": "apoc-a1",
+                "type": "text",
+                "prefill": "stateName",
+                "props": {
+                  "label": "A.1 State name",
+                  "hint": "Auto-populated from your account profile.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "apoc-a2a",
+                "type": "text",
+                "props": {
+                  "label": "A.2a Contact name",
+                  "hint": "First and last name of the contact person."
+                }
+              },
+              {
+                "id": "apoc-a2b",
+                "type": "text",
+                "props": {
+                  "label": "A.2b Contact email address",
+                  "hint": "Enter email address."
+                }
+              },
+              {
+                "id": "apoc-a3a",
+                "type": "text",
+                "hydrate": "submitterName",
+                "props": {
+                  "label": "A.3a Submitter name",
+                  "hint": "CMS receives this data upon submission of this MCPAR report.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "apoc-a3b",
+                "type": "text",
+                "hydrate": "submitterEmailAddress",
+                "props": {
+                  "label": "A.3b Submitter email address",
+                  "hint": "CMS receives this data upon submission of this MCPAR report.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "apoc-a4",
+                "type": "date",
+                "prefill": "reportSubmissionDate",
+                "props": {
+                  "label": "A.4 Date of report submission",
+                  "hint": "CMS receives this date upon submission of this MCPAR report.",
+                  "disabled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Reporting Period",
+          "path": "/mcpar/program-information/reporting-period",
+          "page": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Reporting Period"
+            }
+          },
+          "form": {
+            "id": "arp",
+            "fields": [
+              {
+                "id": "arp-a5a",
+                "type": "date",
+                "hydrate": "reportingPeriodStartDate",
+                "props": {
+                  "label": "A.5a Reporting period start date",
+                  "hint": "Auto-populated from report dashboard.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "arp-a5b",
+                "type": "date",
+                "hydrate": "reportingPeriodEndDate",
+                "props": {
+                  "label": "A.5b Reporting period end date",
+                  "hint": "Auto-populated from report dashboard.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "arp-a6",
+                "type": "text",
+                "hydrate": "programName",
+                "props": {
+                  "label": "A.6 Program name",
+                  "hint": "Auto-populated from report dashboard.",
+                  "disabled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add Plans",
+          "path": "/mcpar/program-information/add-plans",
+          "page": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Add plans (A.7)",
+              "info": "Enter the name of each plan that participates in the program for which the state is reporting data."
+            }
+          },
+          "form": {
+            "id": "aap",
+            "fields": [
+              {
+                "id": "aap-1",
+                "type": "dynamic",
+                "props": {
+                  "label": "Plan name"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add BSS Entities",
+          "path": "/mcpar/program-information/add-bss-entities",
+          "page": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Add BSS entities (A.8)",
+              "info": [
+                {
+                  "type": "text",
+                  "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data."
+                }
+              ]
+            }
+          },
+          "form": {
+            "id": "absse",
+            "fields": [
+              {
+                "id": "absse-a8",
+                "type": "dynamic",
+                "props": {
+                  "label": "BSS entity name"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "B: State-Level Indicators",
+      "path": "/mcpar/state-level-indicators",
+      "children": [
+        {
+          "name": "I: Program Characteristics",
+          "path": "/mcpar/state-level-indicators/program-characteristics",
+          "page": {
+            "intro": {
+              "section": "Section B: State-Level Indicators",
+              "subsection": "I. Program Characteristics and Enrollment"
+            }
+          },
+          "form": {
+            "id": "bpc",
+            "fields": [
+              {
+                "id": "bpc-1",
+                "type": "number",
+                "props": {
+                  "label": "B.I.1 Statewide medicaid enrollment",
+                  "hint": "Enter the total number of individuals enrolled in Medicaid as of the first day of the last month of the reporting year.</br>Include all FFS and managed care enrollees, and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "bpc-2",
+                "type": "number",
+                "props": {
+                  "label": "B.I.2 Statewide Medicaid managed care enrollment",
+                  "hint": "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year.</br>Include enrollees in all programs, and count each person only once, even if they are enrolled in more than one managed care program or more than one managed care plan.",
+                  "mask": "comma-separated"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "III: Encounter Data Report",
+          "path": "/mcpar/state-level-indicators/encounter-data-report",
+          "page": {
+            "intro": {
+              "section": "Section B: State-Level Indicators",
+              "subsection": "Topic III. Encounter Data Report"
+            }
+          },
+          "form": {
+            "id": "bedr",
+            "fields": [
+              {
+                "id": "bedr-1",
+                "type": "checkbox",
+                "props": {
+                  "label": "B.III.1 Data validation entity",
+                  "hint": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs.</br>Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses.",
+                  "choices": [
+                    {
+                      "name": "bedr-1-o1",
+                      "type": "choice",
+                      "label": "State Medicaid agency staff"
+                    },
+                    {
+                      "name": "bedr-1-o2",
+                      "type": "choice",
+                      "label": "Other state agency staff"
+                    },
+                    {
+                      "name": "bedr-1-o3",
+                      "type": "choice",
+                      "label": "State actuaries"
+                    },
+                    {
+                      "name": "bedr-1-o4",
+                      "type": "choice",
+                      "label": "EQRO"
+                    },
+                    {
+                      "name": "bedr-1-o5",
+                      "type": "choice",
+                      "label": "Other third-party vendor"
+                    },
+                    {
+                      "name": "bedr-1-o6",
+                      "type": "choice",
+                      "label": "Proprietary system(s)",
+                      "children": [
+                        {
+                          "id": "bedr-2",
+                          "type": "radio",
+                          "props": {
+                            "label": "B.III.2 HIPAA compliance of proprietary system(s) for encounter data validation",
+                            "hint": "Were the system(s) utilized fully HIPAA compliant? Select one.",
+                            "choices": [
+                              {
+                                "name": "bedr-2-o1",
+                                "type": "choice",
+                                "label": "Yes"
+                              },
+                              {
+                                "name": "bedr-2-o2",
+                                "type": "choice",
+                                "label": "No"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "bedr-1-o7",
+                      "type": "choice",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "bedr-1-o7-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "X: Program Integrity",
+          "path": "/mcpar/state-level-indicators/program-integrity",
+          "page": {
+            "intro": {
+              "section": "B: State-Level Indicators",
+              "subsection": "Topic X: Program Integrity"
+            }
+          },
+          "form": {
+            "id": "bpi",
+            "fields": [
+              {
+                "id": "bpi-1",
+                "type": "textarea",
+                "props": {
+                  "label": "B.X.1 Payment risks between the state and plans",
+                  "hint": "Describe service-specific or other focused PI activities that the state conducted during the past year in this managed care program.</br>Examples include analyses focused on use of long-term services and supports (LTSS) or prescription drugs or activities that focused on specific payment issues to identify, address, and prevent fraud, waste or abuse. Consider data analytics, reviews of under/overutilization, and other activities."
+                }
+              },
+              {
+                "id": "bpi-2",
+                "type": "radio",
+                "props": {
+                  "label": "B.X.2 Contract standard for overpayments",
+                  "hint": "Does the state allow plans to retain overpayments, require the return of overpayments, or has established a hybrid system? Select one.",
+                  "choices": [
+                    {
+                      "name": "bpi-2-o1",
+                      "type": "choice",
+                      "label": "Allow plans to retain overpayments"
+                    },
+                    {
+                      "name": "bpi-2-o2",
+                      "type": "choice",
+                      "label": "State requires the return of overpayments"
+                    },
+                    {
+                      "name": "bpi-2-o3",
+                      "type": "choice",
+                      "label": "State has established a hybrid system"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "bpi-3",
+                "type": "textarea",
+                "props": {
+                  "label": "B.X.3 Contract locations of overpayment standard",
+                  "hint": "Describe where the overpayment standard in the previous indicator is located in plan contracts, as required by 42 CFR 438.608(d)(1)(i)."
+                }
+              },
+              {
+                "id": "bpi-4",
+                "type": "textarea",
+                "props": {
+                  "label": "B.X.4 Description of overpayment contract standard",
+                  "hint": "Briefly describe the overpayment standard (for example, details on whether the state allows plans to retain overpayments, requires the plans to return overpayments, or administers a hybrid system) selected in indicator B.X.2."
+                }
+              },
+              {
+                "id": "bpi-5",
+                "type": "textarea",
+                "props": {
+                  "label": "B.X.5 State overpayment reporting monitoring",
+                  "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment pieces (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
+                }
+              },
+              {
+                "id": "bpi-6",
+                "type": "textarea",
+                "props": {
+                  "label": "B.X.6 Changes in beneficiary circumstances",
+                  "hint": "Describe how the state ensures timely and accurate reconciliation of enrollment files between the state and plans to ensure appropriate payments for enrollees experiencing a change in status (e.g., incarcerated, deceased, switching plans)."
+                }
+              },
+              {
+                "id": "bpi-7a",
+                "type": "radio",
+                "props": {
+                  "label": "B.X.7a Changes in provider circumstances: Monitoring plans",
+                  "hint": "Does the state monitor whether plans report provider “for cause” terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
+                  "choices": [
+                    {
+                      "name": "bpi-7a-o1",
+                      "type": "choice",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "bpi-7b",
+                          "type": "radio",
+                          "props": {
+                            "label": "B.X.7b Changes in provider circumstances: Metrics",
+                            "hint": "Does the state use a metric or indicator to assess plan reporting performance? Select one.",
+                            "choices": [
+                              {
+                                "name": "bpi-7b-o1",
+                                "type": "choice",
+                                "label": "Yes",
+                                "children": [
+                                  {
+                                    "id": "bpi-7c",
+                                    "type": "textarea",
+                                    "props": {
+                                      "label": "B.X.7c Changes in provider circumstances: Describe metric",
+                                      "hint": "Describe the metric or indicator that the state uses."
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "bpi-7b-o2",
+                                "type": "choice",
+                                "label": "No"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "bpi-7a-o2",
+                      "type": "choice",
+                      "label": "No"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "bpi-8a",
+                "type": "radio",
+                "props": {
+                  "label": "B.X.8a Federal database checks: Excluded person or entities",
+                  "hint": "During the state's federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
+                  "choices": [
+                    {
+                      "name": "bpi-8a-o1",
+                      "type": "choice",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "bpi-8b",
+                          "type": "textarea",
+                          "props": {
+                            "label": "B.X.8b Federal database checks: Summarize instances of exclusion",
+                            "hint": "Summarize the instances and whether the entity was notified as required in 438.602(d). Report actions taken, such as plan-level sanctions and corrective actions."
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "bpi-8a-o2",
+                      "type": "choice",
+                      "label": "No"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "bpi-9a",
+                "type": "radio",
+                "props": {
+                  "label": "B.X.9a Website posting of 5 percent or more ownership control",
+                  "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3)",
+                  "choices": [
+                    {
+                      "name": "bpi-9a-o1",
+                      "type": "choice",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "bpi-9b",
+                          "type": "textarea",
+                          "props": {
+                            "label": "B.X.9b Website posting of 5 percent or more ownership control: Link",
+                            "hint": "What is the link to the website? Refer to 42 CFR 602(g)(3)."
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "bpi-9a-o2",
+                      "type": "choice",
+                      "label": "No"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "bpi-10",
+                "type": "textarea",
+                "props": {
+                  "label": "B.X.10 Periodic audits",
+                  "hint": "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, what is the link(s) to the audit results? Refer to 42 CFR 438.602(e)"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "C: Program-Level Indicators",
+      "path": "/mcpar/program-level-indicators",
+      "children": [
+        {
+          "name": "I: Program Characteristics",
+          "path": "/mcpar/program-level-indicators/program-characteristics",
+          "page": {
+            "intro": {
+              "section": "C: Program-Level Indicators",
+              "subsection": "Topic I: Program Characteristics",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["C1_Program_Set"]
+              }
+            }
+          },
+          "form": {
+            "id": "cpc",
+            "fields": [
+              {
+                "id": "cpc-1",
+                "type": "text",
+                "props": {
+                  "label": "C1.I.1 Program contract",
+                  "hint": "Enter the title and date of the contract between the state and plans participating in the managed care program."
+                }
+              },
+              {
+                "id": "cpc-1-sub",
+                "type": "date"
+              },
+              {
+                "id": "cpc-2",
+                "type": "text",
+                "props": {
+                  "label": "C1.I.2 Contract URL",
+                  "hint": "Provide the hyperlink to the model contract or landing page for executed contracts for the program reported in this program."
+                }
+              },
+              {
+                "id": "cpc-3",
+                "type": "radio",
+                "props": {
+                  "label": "C1.I.3 Program type",
+                  "hint": "What is the type of MCPs that contract with the state to provide the services covered under the program? Select one.",
+                  "choices": [
+                    {
+                      "name": "cpc-3-o1",
+                      "type": "choice",
+                      "label": "Managed Care Organization (MCO)"
+                    },
+                    {
+                      "name": "cpc-3-o2",
+                      "type": "choice",
+                      "label": "Prepaid Inpatient Health Plan (PIHP)"
+                    },
+                    {
+                      "name": "cpc-3-o3",
+                      "type": "choice",
+                      "label": "Prepaid Ambulatory Health Plan (PAHP)"
+                    },
+                    {
+                      "name": "cpc-3-o4",
+                      "type": "choice",
+                      "label": "Primary Care Case Management (PCCM) Entity"
+                    },
+                    {
+                      "name": "cpc-3-o5",
+                      "type": "choice",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "cpc-3-o5-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "cpc-4a",
+                "type": "checkbox",
+                "props": {
+                  "label": "C1.I.4a Special program benefits",
+                  "hint": "Are any of the four special benefit types covered by the managed care program: (1) behavioral health, (2) long-term services and supports, (3) dental, and (4) transportation, or (5) none of the above? Select one or more.</br>Only list the benefit type if it is a covered service as specified in a contract between the state and managed care plans participating in the program. Benefits available to eligible program enrollees via fee-for-service should not be listed here.",
+                  "choices": [
+                    {
+                      "name": "cpc-4a-o1",
+                      "type": "choice",
+                      "label": "Behavioral health"
+                    },
+                    {
+                      "name": "cpc-4a-o2",
+                      "type": "choice",
+                      "label": "Long-term services and supports"
+                    },
+                    {
+                      "name": "cpc-4a-o3",
+                      "type": "choice",
+                      "label": "Dental"
+                    },
+                    {
+                      "name": "cpc-4a-o4",
+                      "type": "choice",
+                      "label": "Transportation"
+                    },
+                    {
+                      "name": "cpc-4a-o5",
+                      "type": "choice",
+                      "label": "None of the above",
+                      "children": [
+                        {
+                          "id": "cpc-4a-o5-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "cpc-4b",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.I.4b Variation in special benefits",
+                  "hint": "What are any variations in the availability of special benefits within the program (e.g. by service area or population)?"
+                }
+              },
+              {
+                "id": "cpc-5",
+                "type": "number",
+                "props": {
+                  "label": "C1.I.5 Program enrollment",
+                  "hint": "Enter the total number of individuals enrolled in the managed care program as of the first day of the last month of the reporting year.",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "cpc-6",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.I.6 Changes to enrollment or benefits",
+                  "hint": "Briefly explain of any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "III: Encounter Data Report",
+          "path": "/mcpar/program-level-indicators/encounter-data-report",
+          "page": {
+            "intro": {
+              "section": "C: Program-Level Indicators",
+              "subsection": "Topic III: Encounter Data Report",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["C1_Program_Set"]
+              }
+            }
+          },
+          "form": {
+            "id": "cedr",
+            "fields": [
+              {
+                "id": "cedr-1",
+                "type": "checkbox",
+                "props": {
+                  "label": "C1.III.1 Uses of encounter data",
+                  "hint": "For what purposes does the state use encounter data collected from managed care plans (MCPs)? Select one or more.<br/>Federal regulations require that states, through their contracts with MCPs, collect and maintain sufficient enrollee encounter data to identify the provider who delivers any item(s) or service(s) to enrollees (42 CFR 438.242(c)(1)).",
+                  "choices": [
+                    {
+                      "name": "cedr-1-o1",
+                      "type": "choice",
+                      "label": "Rate setting"
+                    },
+                    {
+                      "name": "cedr-1-o2",
+                      "type": "choice",
+                      "label": "Quality/performance measurement"
+                    },
+                    {
+                      "name": "cedr-1-o3",
+                      "type": "choice",
+                      "label": "Monitoring and reporting"
+                    },
+                    {
+                      "name": "cedr-1-o4",
+                      "type": "choice",
+                      "label": "Contract oversight"
+                    },
+                    {
+                      "name": "cedr-1-o5",
+                      "type": "choice",
+                      "label": "Program integrity"
+                    },
+                    {
+                      "name": "cedr-1-o6",
+                      "type": "choice",
+                      "label": "Policy making and decision support"
+                    },
+                    {
+                      "name": "cedr-1-o7",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "cedr-1-o7-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "cedr-1-o8",
+                      "type": "choice",
+                      "label": "Encounter data not used for any purpose"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "cedr-2",
+                "type": "checkbox",
+                "props": {
+                  "label": "C1.III.2 Criteria/measures to evaluate MCP performance",
+                  "hint": "What types of measures are used by the state to evaluate managed care plan performance in encounter data submission and correction? Select one or more.<br/>Federal regulations also require that states validate that submitted enrollee encounter data they receive is a complete and accurate representation of the services provided to enrollees under the contract between the state and the MCO, PIHP, or PAHP. 42 CFR 438.242(d).",
+                  "choices": [
+                    {
+                      "name": "cedr-2-o1",
+                      "type": "choice",
+                      "label": "Timeliness of initial data submissions"
+                    },
+                    {
+                      "name": "cedr-2-o2",
+                      "type": "choice",
+                      "label": "Timeliness of data corrections"
+                    },
+                    {
+                      "name": "cedr-2-o3",
+                      "type": "choice",
+                      "label": "Use of correct file format"
+                    },
+                    {
+                      "name": "cedr-2-o4",
+                      "type": "choice",
+                      "label": "Provider ID field complete"
+                    },
+                    {
+                      "name": "cedr-2-o5",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "cedr-2-o5-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "cedr-2-o6",
+                      "type": "choice",
+                      "label": "None of the above"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "cedr-3",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.III.3 Encounter data performance criteria contract language",
+                  "hint": "Provide reference(s) to the contract section(s) that describe the criteria by which managed care plan performance on encounter data submission and correction will be measured. Use contract section references, not page numbers."
+                }
+              },
+              {
+                "id": "cedr-4",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.III.4 Financial penalties contract language",
+                  "hint": "Provide reference(s) to the contract section(s) that describes any financial penalties the state may impose on plans for the types of failures to meet encounter data submission and quality standards. Use contract section references, not page numbers."
+                }
+              },
+              {
+                "id": "cedr-5",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.III.5 Incentives for encounter data quality",
+                  "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality."
+                }
+              },
+              {
+                "id": "cedr-6",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.III.6 Barriers to collecting/validating encounter data",
+                  "hint": "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting period."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "IV: Appeals, State Fair Hearings & Grievances",
+          "path": "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances",
+          "page": {
+            "intro": {
+              "section": "C: Program-Level Indicators",
+              "subsection": "Topic IV. Grievances, Appeals & State Fair Hearings",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["C1_Program_Set"]
+              }
+            }
+          },
+          "form": {
+            "id": "casfhag",
+            "fields": [
+              {
+                "id": "casfhag-1",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IV.1 State's definition of \"critical incident,\" as used for reporting purposes in its MLTSS program",
+                  "hint": "If this report is being completed for a managed care program that covers LTSS, what is the definition that the state uses for \"critical incidents\" within the managed care program? Respond with \"N/A\" if the managed care program does not cover LTSS."
+                }
+              },
+              {
+                "id": "casfhag-2",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IV.2 State definition of \"timely\" resolution for standard appeals",
+                  "hint": "Provide the state's definition of timely resolution for standard appeals in the managed care program.</br>Per 42 CFR §438.408(b)(2), states must establish a timeframe for timely resolution of standard appeals that is no longer than 30 calendar days from the day the MCO, PIHP or PAHP receives the appeal."
+                }
+              },
+              {
+                "id": "casfhag-3",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IV.3 State definition of \"timely\" resolution for expedited appeals",
+                  "hint": "Provide the state's definition of timely resolution for expedited appeals in the managed care program.</br>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal."
+                }
+              },
+              {
+                "id": "casfhag-4",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IV.4 State definition of \"timely\" resolution for grievances",
+                  "hint": "Provide the state's definition of timely resolution for grievances in the managed care program.</br>Per 42 CFR §438.408(b)(1), states must establish a timeframe for timely resolution of grievances that is no longer than 90 calendar days from the day the MCO, PIHP or PAHP receives the grievance."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "V: Availability & Accessibility",
+          "path": "/mcpar/program-level-indicators/availability-and-accessibility",
+          "children": [
+            {
+              "name": "Network Adequacy",
+              "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
+              "page": {
+                "intro": {
+                  "section": "C: Program-Level Indicators",
+                  "subsection": "Topic V. Availability/Accessibility: Network Adequacy",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["C1_Program_Set"]
+                  },
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Network adequacy"
+                    },
+                    {
+                      "type": "text",
+                      "content": "[Description needed]"
+                    }
+                  ]
+                }
+              },
+              "form": {
+                "id": "cna",
+                "fields": [
+                  {
+                    "id": "cna-1",
+                    "type": "textarea",
+                    "props": {
+                      "label": "C1.V.1 Gaps/challenges in network adequacy",
+                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPS have maintaining adequate networks and meeting standards."
+                    }
+                  },
+                  {
+                    "id": "cna-2",
+                    "type": "textarea",
+                    "props": {
+                      "label": "C1.V.2 State response to gaps in network adequacy",
+                      "hint": "How does the state work with MCPs to address gaps in network adequacy?"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Access Measures",
+              "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
+              "page": {
+                "intro": {
+                  "section": "C: Program-Level Indicators > V: Availability & Accessibility",
+                  "subsection": "Access Measures"
+                }
+              },
+              "form": {
+                "id": "cam",
+                "fields": [
+                  {
+                    "id": "cam-1",
+                    "type": "text",
+                    "props": {
+                      "label": "Temporary placeholder field",
+                      "disabled": true
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "IX: BSS",
+          "path": "/mcpar/program-level-indicators/bss",
+          "page": {
+            "intro": {
+              "section": "C: Program-Level Indicators",
+              "subsection": "Topic IX: Beneficiary Support System (BSS)",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["C1_Program_Set"]
+              }
+            }
+          },
+          "form": {
+            "id": "cbss",
+            "fields": [
+              {
+                "id": "cbss-1",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IX.1 BSS website",
+                  "hint": "List the website(s) and/or email address that beneficiaries use to seek assistance from the BSS through electronic means. Separate entries with commas."
+                }
+              },
+              {
+                "id": "cbss-2",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IX.2 BSS auxiliary aids and services",
+                  "hint": "How do BSS entities offer services in a manner that is accessible to all beneficiaries who need their services, including beneficiaries with disabilities, as required by 42 CFR 438.71 (b)(2))?</br>CFR 438.71 requires that the beneficiary support system be accessible in multiple ways including phone, Internet, in-person, and via auxiliary aids and services when requested."
+                }
+              },
+              {
+                "id": "cbss-3",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IX.3 BSS LTSS program data",
+                  "hint": "How do BSS entities assist the state with identifying, remediating, and resolving systemic issues based on a review of LTSS program data such as grievances and appeals or critical incident data? Refer to 42 CFR 438.71(d)(4)."
+                }
+              },
+              {
+                "id": "cbss-4",
+                "type": "textarea",
+                "props": {
+                  "label": "C1.IX.4 State evaluation of BSS entity performance",
+                  "hint": "What are steps taken by the state to evaluate the quality, effectiveness, and efficiency of the BSS entities' performance?"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "X: Program Integrity",
+          "path": "/mcpar/program-level-indicators/program-integrity",
+          "page": {
+            "intro": {
+              "section": "C: Program-Level Indicators",
+              "subsection": "Topic X: Program Integrity",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["C1_Program_Set"]
+              }
+            }
+          },
+          "form": {
+            "id": "cpi",
+            "fields": [
+              {
+                "id": "cpi-1",
+                "type": "radio",
+                "props": {
+                  "label": "C1.X.3 Prohibited affiliation disclosure",
+                  "hint": "Did any plans disclose prohibited affiliations? If the state took action, enter those actions under D: Plan-level Indicators, Section VIII - Sanctions (Corresponds with Tab D3 in the Excel Workbook). Refer to 42 CFR 438.610(d).",
+                  "choices": [
+                    {
+                      "name": "cpi-1-o1",
+                      "type": "choice",
+                      "label": "Yes"
+                    },
+                    {
+                      "name": "cpi-1-o2",
+                      "type": "choice",
+                      "label": "No"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "D: Plan-Level Indicators",
+      "path": "/mcpar/plan-level-indicators",
+      "children": [
+        {
+          "name": "I: Program Characteristics",
+          "path": "/mcpar/plan-level-indicators/program-characteristics",
+          "page": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic I. Program Characteristics & Enrollment",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D1_Plan_Set"]
+              }
+            },
+            "drawer": {
+              "dashboard": {
+                "title": "Report program characteristics & enrollment for each plan",
+                "entityType": "plans"
+              },
+              "drawerTitle": "Report program characteristics & enrollment for"
+            }
+          },
+          "form": {
+            "id": "dpc",
+            "fields": [
+              {
+                "id": "dpc-1",
+                "type": "number",
+                "props": {
+                  "label": "D1.I.1 Plan enrollment",
+                  "hint": "What is the total number of individuals enrolled in each plan as of the first day of the last month of the reporting year?",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "dpc-2",
+                "type": "number",
+                "props": {
+                  "label": "D1.I.2 Plan share of Medicaid",
+                  "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state's total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "dpc-3",
+                "type": "number",
+                "props": {
+                  "label": "D1.I.3 Plan share of any Medicaid managed care",
+                  "hint": "<p>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
+                  "mask": "percentage"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "II: Financial Performance",
+          "path": "/mcpar/plan-level-indicators/financial-performance",
+          "page": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic II. Financial Performance",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D1_Plan_Set"]
+              }
+            },
+            "drawer": {
+              "dashboard": {
+                "title": "Report financial performance for each plan",
+                "entityType": "plans"
+              },
+              "drawerTitle": "Report financial performance for"
+            }
+          },
+          "form": {
+            "id": "dfp",
+            "fields": [
+              {
+                "id": "dfp-1a",
+                "type": "number",
+                "props": {
+                  "label": "D1.II.1a Medical Loss Ratio (MLR)",
+                  "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR.",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "dfp-1b",
+                "type": "radio",
+                "props": {
+                  "label": "D1.II.1b Level of aggregation",
+                  "hint": "What is the aggregation level that best describes the MLR being reported in the previous indicator? Select one.</br>As permitted under 42 CFR 438.8(i), states are allowed to aggregate data for reporting purposes across programs and populations.",
+                  "choices": [
+                    {
+                      "name": "dfp-1b-o1",
+                      "type": "choice",
+                      "label": "Program-specific statewide"
+                    },
+                    {
+                      "name": "dfp-1b-o2",
+                      "type": "choice",
+                      "label": "Program-specific regional"
+                    },
+                    {
+                      "name": "dfp-1b-o3",
+                      "type": "choice",
+                      "label": "Statewide all programs & populations"
+                    },
+                    {
+                      "name": "dfp-1b-o4",
+                      "type": "choice",
+                      "label": "Regional all programs & populations"
+                    },
+                    {
+                      "name": "dfp-1b-o5",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "dfp-1b-o5-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dfp-2",
+                "type": "textarea",
+                "props": {
+                  "label": "D1.II.2 Population specific MLR description",
+                  "hint": "Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter \"N/A\" if not applicable.</br>See glossary for the regulatory definition of MLR."
+                }
+              },
+              {
+                "id": "dfp-3",
+                "type": "radio",
+                "props": {
+                  "label": "D1.II.3 MLR reporting period discrepancies",
+                  "hint": "Does the data reported in item D1.II.1a cover a different time period than the MCPAR report?",
+                  "choices": [
+                    {
+                      "name": "dfp-3-o1",
+                      "type": "choice",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "dfp-4-1",
+                          "type": "date",
+                          "props": {
+                            "hint": "Enter the start date.",
+                            "timetype": "startDate"
+                          }
+                        },
+                        {
+                          "id": "dfp-4-2",
+                          "type": "date",
+                          "props": {
+                            "hint": "Enter the end date.",
+                            "timetype": "endDate"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dfp-3-o2",
+                      "type": "choice",
+                      "label": "No"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "III: Encounter Data Report",
+          "path": "/mcpar/plan-level-indicators/encounter-data-report",
+          "page": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic III. Encounter Data",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D1_Plan_Set"]
+              }
+            },
+            "drawer": {
+              "dashboard": {
+                "title": "Report on encounter data for each plan",
+                "entityType": "plans"
+              },
+              "drawerTitle": "Report encounter data for"
+            }
+          },
+          "form": {
+            "id": "dedr",
+            "fields": [
+              {
+                "id": "dedr-1",
+                "type": "textarea",
+                "props": {
+                  "label": "D1.III.1 Definition of timely encounter data submissions",
+                  "hint": "Describe the state's standard for timely encounter data submissions used in this program.</br>If reporting frequencies and standards differ by type of encounter within this program, please explain."
+                }
+              },
+              {
+                "id": "dedr-2",
+                "type": "number",
+                "props": {
+                  "label": "D1.III.2 Share of encounter data submissions that met state’s timely submission requirements",
+                  "hint": "What percent of the plan’s encounter data file submissions (submitted during the reporting period) met state requirements for timely submission?</br>If the state has not yet received any encounter data file submissions for the entire contract period when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting period.",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "dedr-3",
+                "type": "number",
+                "props": {
+                  "label": "D1.III.3 Share of encounter data submissions that were HIPAA compliant",
+                  "hint": "What percent of the plan’s encounter data submissions (submitted during the reporting period) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting period.",
+                  "mask": "percentage"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "IV: Appeals, State Fair Hearings & Grievances",
+          "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances",
+          "children": [
+            {
+              "name": "Appeals Overview",
+              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
+              "page": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["D1_Plan_Set"]
+                  }
+                },
+                "drawer": {
+                  "dashboard": {
+                    "title": "Report on appeals for each plan",
+                    "entityType": "plans"
+                  },
+                  "drawerTitle": "Report on appeals for"
+                }
+              },
+              "form": {
+                "id": "dao",
+                "fields": [
+                  {
+                    "id": "dao-1",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.1 Appeals resolved (at the plan level)",
+                      "hint": "Enter the total number of appeals resolved as of the first day of the last month of the reporting year.</p>An appeal is \"resolved\" at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary's representative) chooses to file a request for a State Fair Hearing or External Medical Review.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-2",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.2 Active appeals",
+                      "hint": "Enter the total number of appeals still pending or in process (not yet resolved) as of the first day of the last month of the reporting year.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-3",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.3 Appeals filed on behalf of LTSS users",
+                      "hint": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter “N/A” if not applicable.</p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-4",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.4 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed an appeal",
+                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-5a",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.5a Standard appeals for which timely resolution was provided",
+                      "hint": "Enter the total number of standard appeals for which timely resolution was provided by plan during the reporting period.</p>See 42 CFR §438.408(b)(2) for requirements related to timely resolution of standard appeals.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-5b",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.5b Expedited appeals for which timely resolution was provided",
+                      "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan during the reporting period.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-6a",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.6a Resolved appeals related to denial of authorization or limited authorization of a service",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of authorization for a service not yet rendered or limited authorization of a service.</p>(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-6b",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.6b Resolved appeals related to reduction, suspension, or termination of a previously authorized service",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's reduction, suspension, or termination of a previously authorized service.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-6c",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.6c Resolved appeals related to payment denial",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial, in whole or in part, of payment for a service that was already rendered.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-6d",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.6d Resolved appeals related to service timeliness",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to provide services in a timely manner (as defined by the state).",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-6e",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.6e Resolved appeals related to lack of timely plan response to an appeal or grievance",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to act within the timeframes provided at 42 CFR §438.408(b)(1) and (2) regarding the standard resolution of grievances and appeals.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-6f",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.6f Resolved appeals related to plan denial of an enrollee's right to request out-of-network care",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO).",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dao-6g",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.6g Resolved appeals related to denial of an enrollee's request to dispute financial liability",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to dispute a financial liability.",
+                      "mask": "comma-separated"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Appeals by Service",
+              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
+              "page": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["D1_Plan_Set"]
+                  },
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Appeals by Service"
+                    },
+                    {
+                      "type": "p",
+                      "content": "Number of appeals resolved during the reporting period related to various services. Note: A single appeal may be related to multiple service types and may therefore be counted in multiple categories."
+                    }
+                  ]
+                },
+                "drawer": {
+                  "dashboard": {
+                    "title": "Report on appeals by service for each plan",
+                    "entityType": "plans"
+                  },
+                  "drawerTitle": "Report appeals by service for"
+                }
+              },
+              "form": {
+                "id": "dabs",
+                "fields": [
+                  {
+                    "id": "dabs-1",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7a Resolved appeals related to general inpatient services",
+                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services.</p><p>Do not include appeals related to inpatient behavioral health services – those should be included in indicator D1.IV.7c. If the managed care plan does not cover general inpatient services, enter \"N/A\".</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-2",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7b Resolved appeals related to general outpatient services",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-3",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7c Resolved appeals related to inpatient behavioral health services",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover inpatient behavioral health services, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-4",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7d Resolved appeals related to outpatient behavioral health services",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover outpatient behavioral health services, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-5",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7e Resolved appeals related to covered outpatient prescription drugs",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover outpatient prescription drugs, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-6",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7f Resolved appeals related to skilled nursing facility (SNF) services",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover skilled nursing services, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-7",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7g Resolved appeals related to long-term services and supports (LTSS)",
+                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover LTSS services, enter \"N/A\".</p><p(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-8",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7h Resolved appeals related to dental services",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover dental services, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-9",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7i Resolved appeals related to non-emergency medical transportation (NEMT)",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover NEMT, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dabs-10",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.7j Resolved appeals related to other service types",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "State Fair Hearings",
+              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
+              "page": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["D1_Plan_Set"]
+                  },
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "State Fair Hearings"
+                    }
+                  ]
+                },
+                "drawer": {
+                  "dashboard": {
+                    "title": "Report state fair hearings and external medical reviews for each plan",
+                    "entityType": "plans"
+                  },
+                  "drawerTitle": "Report state fair hearings and external medical reviews for"
+                }
+              },
+              "form": {
+                "id": "dsfh",
+                "fields": [
+                  {
+                    "id": "dsfh-1",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.8a State Fair Hearing requests",
+                      "hint": "Enter the total number of requests for a State Fair Hearing filed during the reporting year by plan that issued the adverse benefit determination.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dsfh-2",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.8b State Fair Hearings resulting in a favorable decision for the enrollee",
+                      "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were partially or fully favorable to the enrollee.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dsfh-3",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.8c State Fair Hearings resulting in an adverse decision for the enrollee",
+                      "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were adverse for the enrollee.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dsfh-4",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.8d State Fair Hearings retracted prior to reaching a decision",
+                      "hint": "Enter the total number of State Fair Hearing decisions retracted (by the enrollee or the representative who filed a State Fair Hearing request on behalf of the enrollee) prior to reaching a decision.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dsfh-5",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
+                      "hint": "If your state does offers an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dsfh-6",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.9b External Medical Reviews resulting in an adverse decision for the enrollee",
+                      "hint": "<p>If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).</p>",
+                      "mask": "comma-separated"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Grievances Overview",
+              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
+              "page": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["D1_Plan_Set"]
+                  }
+                },
+                "drawer": {
+                  "dashboard": {
+                    "title": "Report on grievances for each plan",
+                    "entityType": "plans"
+                  },
+                  "drawerTitle": "Report on grievances for"
+                }
+              },
+
+              "form": {
+                "id": "dgo",
+                "fields": [
+                  {
+                    "id": "dgo-1",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.10 Grievances resolved",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year.</p><p>A grievance is \"resolved\" when it has reached completion and been closed by the plan.</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgo-2",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.11 Active grievances",
+                      "hint": "Enter the total number of grievances still pending or in process (not yet resolved) as of the first day of the last month of the reporting year.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgo-3",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
+                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed).</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgo-4",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
+                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed grievances in the reporting year.</p><p>If the managed care plan does not cover LTSS, enter \"N/A\". Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p><p>The grievance and critical incident do not have to have been \"related\" to the same issue — they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgo-5",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.14 Number of grievances for which timely resolution was provided",
+                      "hint": "<p>Enter the number of grievances for which timely resolution was provided by plan during the reporting period.</p><p>See 42 CFR §438.408(b)(1) for requirements related to the timely resolution of grievances.</p>",
+                      "mask": "comma-separated"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Grievances by Service",
+              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
+              "page": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["D1_Plan_Set"]
+                  },
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Grievances by Service"
+                    },
+                    {
+                      "type": "p",
+                      "content": "Report the number of grievances resolved by plan during the reporting period by service."
+                    }
+                  ]
+                },
+                "drawer": {
+                  "dashboard": {
+                    "title": "Report on grievances by service for each plan",
+                    "type": "heading",
+                    "as": "h4",
+                    "entityType": "plans"
+                  },
+                  "drawerTitle": "Report encounter data for"
+                }
+              },
+              "form": {
+                "id": "dgbs",
+                "fields": [
+                  {
+                    "id": "dgbs-1",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15a Resolved grievances related to general inpatient services",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services. Do not include grievances related to inpatient behavioral health services — those should be included in indicator D1.IV.15c. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-2",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15b Resolved grievances related to general outpatient services",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Do not include grievances related to outpatient behavioral health services — those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-3",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15c Resolved grievances related to inpatient behavioral health services",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-4",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15d Resolved grievances related to outpatient behavioral health services",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-5",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15e Resolved grievances related to coverage of outpatient prescription drugs",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-6",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15f Resolved grievances related to skilled nursing facility (SNF) services",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-7",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15g Resolved grievances related to long-term services and supports (LTSS)",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-8",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15h Resolved grievances related to dental services",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-9",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15i Resolved grievances related to non-emergency medical transportation (NEMT)",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbs-10",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.15j Resolved grievances related to other service types",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i, enter \"N/A\".",
+                      "mask": "comma-separated"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Grievances by Reason",
+              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
+              "page": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["D1_Plan_Set"]
+                  },
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Grievances by Reason"
+                    },
+                    {
+                      "type": "p",
+                      "content": "Report the number of grievances resolved by plan during the reporting period by reason."
+                    }
+                  ]
+                },
+                "drawer": {
+                  "dashboard": {
+                    "title": "Report on grievances by reason for each plan",
+                    "entityType": "plans"
+                  },
+                  "drawerTitle": "Report on grievances by reason for",
+                  "drawerInfo": [
+                    {
+                      "type": "p",
+                      "content": "A single grievance may be related to multiple reasons and may therefore be counted in multiple categories."
+                    }
+                  ]
+                }
+              },
+              "form": {
+                "id": "dgbr",
+                "fields": [
+                  {
+                    "id": "dgbr-1",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16a Resolved grievances related to plan or provider customer service",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider customer service.</p><p>Customer service grievances include complaints about interactions with the plan's Member Services department, provider offices or facilities, plan marketing agents, or any other plan or provider representatives.</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-2",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16b Resolved grievances related to plan or provider care management/case management",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider care management/case management.</p><p>Care management/case management grievances include complaints about the timeliness of an assessment or complaints about the plan or provider care or case management process.</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-3",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16c Resolved grievances related to access to care/services from plan or provider",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.</p><p>Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-4",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16d Resolved grievances related to quality of care",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to quality of care.</p><p>Quality of care grievances include complaints about the effectiveness, efficiency, equity, patient-centeredness, safety, and/or acceptability of care provided by a provider or the plan.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-5",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16e Resolved grievances related to plan communications",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan communications.</p><p>Plan communication grievances include grievances related to the clarity or accuracy of enrollee materials or other plan communications or to an enrollee's access to or the accessibility of enrollee materials or plan communications.</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-6",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16f Resolved grievances related to payment or billing issues",
+                      "hint": "Enter the total number of grievances resolved during the reporting period that were filed for a reason related to payment or billing issues.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-7",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16g Resolved grievances related to suspected fraud",
+                      "hint": "Enter the total number of grievances resolved during the reporting year that were related to suspected fraud.</p><p>Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-8",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16h Resolved grievances related to abuse, neglect or exploitation",
+                      "hint": "<p>Enter the total number of grievances resolved during the reporting year that were related to abuse, neglect or exploitation.</p><p>Abuse/neglect/exploitation grievances include cases involving potential or actual patient harm.</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-9",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16i Resolved grievances related to lack of timely plan response to a service authorization or appeal (including requests to expedite or extend appeals)",
+                      "hint": "Enter the total number of grievances resolved during the reporting year that were filed due to a lack of timely plan response to a service authorization or appeal request (including requests to expedite or extend appeals).",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-10",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16j Resolved grievances related to plan denial of expedited appeal",
+                      "hint": "<p>Enter the total number of grievances resolved during the reporting year that were related to the plan's denial of an enrollee's request for an expedited appeal.</p><p>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.</p>",
+                      "mask": "comma-separated"
+                    }
+                  },
+                  {
+                    "id": "dgbr-11",
+                    "type": "number",
+                    "props": {
+                      "label": "D1.IV.16k Resolved grievances filed for other reasons",
+                      "hint": "Enter the total number of grievances resolved during the reporting period that were filed for a reason other than the reasons listed above.",
+                      "mask": "comma-separated"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "VII: Quality Measures",
+          "path": "/mcpar/plan-level-indicators/quality-measures",
+          "page": {
+            "intro": {
+              "section": "D: Plan-Level Indicators",
+              "subsection": "VII: Quality Measures"
+            }
+          },
+          "drawer": {
+            "drawerTitle": "Add a quality & performance measure"
+          },
+          "form": {
+            "id": "dqm",
+            "fields": [
+              {
+                "id": "dqm-1",
+                "type": "radio",
+                "props": {
+                  "label": "D2.VII.1 Measure domain",
+                  "hint": "Select domain or add your own as needed.",
+                  "choices": [
+                    {
+                      "name": "dqm-1-o1",
+                      "type": "choice",
+                      "label": "Primary care access and preventative care"
+                    },
+                    {
+                      "name": "dqm-1-o2",
+                      "type": "choice",
+                      "label": "Maternal and perinatal health"
+                    },
+                    {
+                      "name": "dqm-1-o3",
+                      "type": "choice",
+                      "label": "Care of acute and chronic conditions"
+                    },
+                    {
+                      "name": "dqm-1-o4",
+                      "type": "choice",
+                      "label": "Behavioral health care"
+                    },
+                    {
+                      "name": "dqm-1-o5",
+                      "type": "choice",
+                      "label": "Dental and oral health services"
+                    },
+                    {
+                      "name": "dqm-1-o6",
+                      "type": "choice",
+                      "label": "Health plan enrollee experience of care"
+                    },
+                    {
+                      "name": "dqm-1-o7",
+                      "type": "choice",
+                      "label": "Long-term services and supports"
+                    },
+                    {
+                      "name": "dqm-1-o8",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "dqm-1-o8-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-2",
+                "type": "textarea",
+                "props": {
+                  "label": "D2.VII.2 Measure name",
+                  "hint": "What is the measure name?"
+                }
+              },
+              {
+                "id": "dqm-3",
+                "type": "number",
+                "props": {
+                  "label": "D2.VII.3 National Quality Forum (NQF) number",
+                  "hint": "What is the NQF number?"
+                }
+              },
+              {
+                "id": "dqm-4",
+                "type": "radio",
+                "props": {
+                  "label": "D2.VII.4 Measure reporting",
+                  "hint": "Is measure reporting program-specific or cross-program? Select one.",
+                  "choices": [
+                    {
+                      "name": "dqm-4-o1",
+                      "label": "Program-specific rate"
+                    },
+                    {
+                      "name": "dqm-4-o2",
+                      "label": "Cross-program rate",
+                      "children": [
+                        {
+                          "id": "dqm-5a",
+                          "type": "textarea",
+                          "props": {
+                            "label": "D2.VII.5 Measure reporting: List programs",
+                            "hint": "What are the programs? Separate program names with a comma.",
+                            "mask": "comma-separated"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-6",
+                "type": "radio",
+                "props": {
+                  "label": "D2.VII.6 Measure set",
+                  "hint": "What is the measure set? Select one.",
+                  "choices": [
+                    {
+                      "name": "dqm-6-o1",
+                      "label": "Medicaid Child Core Set"
+                    },
+                    {
+                      "name": "dqm-6-o2",
+                      "label": "Medicaid Adult Core Set"
+                    },
+                    {
+                      "name": "dqm-6-o3",
+                      "label": "State-specific"
+                    },
+                    {
+                      "name": "dqm-6-o4",
+                      "label": "HEDIS"
+                    },
+                    {
+                      "name": "dqm-6-o5",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "dqm-6-o5-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-7",
+                "type": "radio",
+                "props": {
+                  "label": "D2.VII.7a Reporting period",
+                  "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
+                  "choices": [
+                    {
+                      "name": "dqm-7-o1",
+                      "label": "Yes"
+                    },
+                    {
+                      "name": "dqm-7-o2",
+                      "label": "No",
+                      "children": [
+                        {
+                          "id": "dqm-7b-1",
+                          "type": "date",
+                          "props": {
+                            "label": "D2.VII.7b Reporting period: Date range",
+                            "hint": "What is the reporting period covered by the measure?<br><br>Start date",
+                            "timetype": "startDate"
+                          }
+                        },
+                        {
+                          "id": "dqm-7b-2",
+                          "type": "date",
+                          "props": {
+                            "hint": "End date",
+                            "timetype": "endDate"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-8",
+                "type": "textarea",
+                "props": {
+                  "label": "D2.VII.8 Measure description",
+                  "hint": "For measures that are not part of standardized national measure sets (i.e. state-specific measures), states should provide a description of the measure (for example, numerator and denominator)."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "VIII: Sanctions",
+          "path": "/mcpar/plan-level-indicators/sanctions",
+          "page": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VIII. Sanctions",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D3_Plan_Sanctions"]
+              },
+              "info": [
+                {
+                  "type": "text",
+                  "as": "p",
+                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other."
+                },
+                {
+                  "type": "text",
+                  "as": "p",
+                  "content": "42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance."
+                }
+              ]
+            },
+            "drawer": {
+              "dashboard": {
+                "title": "Intervention Type",
+                "entityType": "plans"
+              },
+              "drawerTitle": "Add a sanction for"
+            }
+          },
+          "form": {
+            "id": "ds",
+            "fields": [
+              {
+                "id": "ds-1",
+                "type": "radio",
+                "props": {
+                  "label": "D3.VIII.1 Intervention type",
+                  "hint": "What type of intervention? Select one.",
+                  "choices": [
+                    {
+                      "name": "ds-1-o1",
+                      "type": "choice",
+                      "label": "Civil monetary penalty"
+                    },
+                    {
+                      "name": "ds-1-o2",
+                      "type": "choice",
+                      "label": "Suspension of new enrollment"
+                    },
+                    {
+                      "name": "ds-1-o3",
+                      "type": "choice",
+                      "label": "Fine"
+                    },
+                    {
+                      "name": "ds-1-o4",
+                      "type": "choice",
+                      "label": "Corrective action plan"
+                    },
+                    {
+                      "name": "ds-1-o5",
+                      "type": "choice",
+                      "label": "Compliance letter"
+                    },
+                    {
+                      "name": "ds-1-o6",
+                      "type": "choice",
+                      "label": "Liquidated damages"
+                    },
+                    {
+                      "name": "ds-1-o7",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "ds-1-o7-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "ds-2",
+                "type": "radio",
+                "props": {
+                  "label": "D3.VIII.2 Intervention topic",
+                  "hint": "What was the topic of intervention? Select one.",
+                  "choices": [
+                    {
+                      "name": "ds-2-o1",
+                      "type": "choice",
+                      "label": "Discrimination"
+                    },
+                    {
+                      "name": "ds-2-o2",
+                      "type": "choice",
+                      "label": "False information"
+                    },
+                    {
+                      "name": "ds-2-o3",
+                      "type": "choice",
+                      "label": "Excess charges"
+                    },
+                    {
+                      "name": "ds-2-o4",
+                      "type": "choice",
+                      "label": "Reporting"
+                    },
+                    {
+                      "name": "ds-2-o5",
+                      "type": "choice",
+                      "label": "Performance management"
+                    },
+                    {
+                      "name": "ds-2-o6",
+                      "type": "choice",
+                      "label": "Timely access"
+                    },
+                    {
+                      "name": "ds-2-o7",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "ds-2-o7-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "ds-3",
+                "type": "dropdown",
+                "props": {
+                  "label": "D3.VIII.3 Plan name",
+                  "hint": "What is the name of the plan attached to the sanction or corrective action plan? Select plan name.",
+                  "ariaLabel": "List of plan names",
+                  "options": [
+                    { "label": "Option 1", "value": "a" },
+                    { "label": "Option 2", "value": "b" },
+                    { "label": "Option 3", "value": "c" }
+                  ]
+                }
+              },
+              {
+                "id": "ds-4",
+                "type": "textarea",
+                "props": {
+                  "label": "D3.VIII.4 Reason for intervention",
+                  "hint": "What was the reason for intervention? Add a description."
+                }
+              },
+              {
+                "id": "ds-5",
+                "type": "number",
+                "props": {
+                  "label": "D3.VIII.5 Instances of non-compliance",
+                  "hint": "How many instances were there of non-compliance in the reporting year? Add a number.",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "ds-6",
+                "type": "number",
+                "props": {
+                  "label": "D3.VIII.6 Sanction amount",
+                  "hint": "Add a dollar amount. Enter N/A for sanctions that do not carry financial penalties.",
+                  "mask": "currency"
+                }
+              },
+              {
+                "id": "ds-7",
+                "type": "date",
+                "props": {
+                  "label": "D3.VIII.7 Date assessed",
+                  "hint": "When was the plan sanctioned? Select a date."
+                }
+              },
+              {
+                "id": "ds-8",
+                "type": "date",
+                "props": {
+                  "label": "D3.VIII.8 Remediation date non-compliance was corrected",
+                  "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
+                }
+              },
+              {
+                "id": "ds-9",
+                "type": "radio",
+                "props": {
+                  "label": "D3.VIII.9 Corrective action plan",
+                  "hint": "Has the state sanctioned the plan within the previous two years, (e.g. corrective action plans or other informal interventions such as special outreach, focused technical assistance)?",
+                  "choices": [
+                    {
+                      "name": "ds-9-o1",
+                      "type": "choice",
+                      "label": "Yes"
+                    },
+                    {
+                      "name": "ds-9-o2",
+                      "type": "choice",
+                      "label": "No"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "X: Program Integrity",
+          "path": "/mcpar/plan-level-indicators/program-integrity",
+          "page": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic X. Program Integrity",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D1_Plan_Set"]
+              }
+            },
+            "drawer": {
+              "dashboard": {
+                "title": "Report on program integrity for each plan",
+                "entityType": "plans"
+              },
+              "drawerTitle": "Program integrity for"
+            }
+          },
+          "form": {
+            "id": "dpi",
+            "fields": [
+              {
+                "id": "dpi-1",
+                "type": "number",
+                "props": {
+                  "label": "D1.X.1 Dedicated program integrity staff",
+                  "hint": "Report or enter the number of dedicated program integrity staff for routine internal monitoring and compliance risks. Refer to 42 CFR 438.608(a)(1)(vii).",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "dpi-2",
+                "type": "number",
+                "props": {
+                  "label": "D1.X.2 Count of opened program integrity investigations",
+                  "hint": "How many program integrity investigations have been opened by the plan in the past year?",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "dpi-3",
+                "type": "number",
+                "props": {
+                  "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
+                  "hint": "What is the ratio of program integrity investigations opened by the plan in the past year per 1,000 beneficiaries enrolled in the plan on the first day of the last month of the reporting year?",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "dpi-4",
+                "type": "number",
+                "props": {
+                  "label": "D1.X.4 Count of resolved program integrity investigations",
+                  "hint": "How many program integrity investigations have been resolved by the plan in the past year?",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "dpi-5",
+                "type": "number",
+                "props": {
+                  "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
+                  "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year per 1,000 beneficiaries enrolled in the plan at the beginning of the reporting year?",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "dpi-6",
+                "type": "radio",
+                "props": {
+                  "label": "D1.X.6 Referral path for program integrity referrals to the state",
+                  "hint": "What is the referral path that the plan uses to make program integrity referrals to the state? Select one.",
+                  "choices": [
+                    {
+                      "name": "dpi-6-o1",
+                      "type": "choice",
+                      "label": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
+                      "children": [
+                        {
+                          "id": "dpi-7a",
+                          "type": "number",
+                          "props": {
+                            "label": "D1.X.7 Count of program integrity referrals to the state",
+                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made.",
+                            "mask": "comma-separated"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dpi-6-o2",
+                      "type": "choice",
+                      "label": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently",
+                      "children": [
+                        {
+                          "id": "dpi-7b",
+                          "type": "number",
+                          "props": {
+                            "label": "D1.X.7 Count of program integrity referrals to the state",
+                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of unduplicated referrals",
+                            "mask": "comma-separated"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "dpi-6-o3",
+                      "type": "choice",
+                      "label": "Makes some referrals to the SMA and others directly to the MFCU",
+                      "children": [
+                        {
+                          "id": "dpi-7c",
+                          "type": "number",
+                          "props": {
+                            "label": "D1.X.7 Count of program integrity referrals to the state",
+                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made to the SMA and the MFCU in aggregate.",
+                            "mask": "comma-separated"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dpi-8",
+                "type": "number",
+                "props": {
+                  "label": "D1.X.8 Ratio of program integrity referrals to the state",
+                  "hint": "What is the ratio of program integrity referrals listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
+                  "mask": "comma-separated"
+                }
+              },
+              {
+                "id": "dpi-9",
+                "type": "textarea",
+                "props": {
+                  "label": "D1.X.9 Plan overpayment reporting to the state",
+                  "hint": "Describe the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3).</br>Include, for example, the following information:<ul><li>The date of the report (rating period or calendar year).</li><li>The dollar amount of overpayments recovered.</li><li>The ratio of the dollar amount of overpayments recovered as a percent of premium revenue as defined in MLR reporting under 438.8(f)(2).</li></ul>"
+                }
+              },
+              {
+                "id": "dpi-10",
+                "type": "radio",
+                "props": {
+                  "label": "D1.X.10 Changes in beneficiary circumstances",
+                  "hint": "Select the frequency the plan reports changes in beneficiary circumstances to the state.",
+                  "choices": [
+                    {
+                      "name": "dpi-10-o1",
+                      "type": "choice",
+                      "label": "Daily"
+                    },
+                    {
+                      "name": "dpi-10-o2",
+                      "type": "choice",
+                      "label": "Weekly"
+                    },
+                    {
+                      "name": "dpi-10-o3",
+                      "type": "choice",
+                      "label": "Bi-weekly"
+                    },
+                    {
+                      "name": "dpi-10-o4",
+                      "type": "choice",
+                      "label": "Monthly"
+                    },
+                    {
+                      "name": "dpi-10-o5",
+                      "type": "choice",
+                      "label": "Bi-monthly"
+                    },
+                    {
+                      "name": "dpi-10-o6",
+                      "type": "choice",
+                      "label": "Quarterly"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "E: BSS Entity Indicators",
+      "path": "/mcpar/bss-entity-indicators",
+      "page": {
+        "intro": {
+          "section": "Section E: BSS Entity Indicators",
+          "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
+          "spreadsheet": {
+            "title": "Find in the Excel Workbook",
+            "descriptionList": ["E_BSS_Entities"]
+          },
+          "info": [
+            {
+              "type": "span",
+              "content": "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the "
+            },
+            {
+              "type": "internalLink",
+              "content": "Program-Level BSS",
+              "props": {
+                "to": "/mcpar/program-information/add-bss-entities"
+              }
+            },
+            {
+              "type": "span",
+              "content": " page."
+            }
+          ]
+        },
+        "drawer": {
+          "dashboard": {
+            "title": "Report on role and type for each BSS entity",
+            "entityType": "entities"
+          },
+          "drawerTitle": "Report on"
+        }
+      },
+      "form": {
+        "id": "ebssei",
+        "fields": [
+          {
+            "id": "ebssei-1",
+            "type": "checkbox",
+            "props": {
+              "label": "E.IX.1 BSS entity type",
+              "hint": "What type of entity was contracted to perform each BSS activity? Check all that apply. Refer to 42 CFR 438.71(b).",
+              "choices": [
+                {
+                  "name": "ebssei-1-o1",
+                  "type": "choice",
+                  "label": "State Government Entity"
+                },
+                {
+                  "name": "ebssei-1-o2",
+                  "type": "choice",
+                  "label": "Local Government Entity"
+                },
+                {
+                  "name": "ebssei-1-o3",
+                  "type": "choice",
+                  "label": "Ombudsman Program"
+                },
+                {
+                  "name": "ebssei-1-o4",
+                  "type": "choice",
+                  "label": "State Health Insurance Assistance Program (SHIP)"
+                },
+                {
+                  "name": "ebssei-1-o5",
+                  "type": "choice",
+                  "label": "Aging and Disability Resource Network (ADRN)"
+                },
+                {
+                  "name": "ebssei-1-o6",
+                  "type": "choice",
+                  "label": "Center for Independent Living (CIL)"
+                },
+                {
+                  "name": "ebssei-1-o7",
+                  "type": "choice",
+                  "label": "Legal Assistance Organization"
+                },
+                {
+                  "name": "ebssei-1-o8",
+                  "type": "choice",
+                  "label": "Other Community-Based Organization"
+                },
+                {
+                  "name": "ebssei-1-o9",
+                  "type": "choice",
+                  "label": "Subcontractor"
+                },
+                {
+                  "name": "ebssei-1-o10",
+                  "type": "choice",
+                  "label": "Enrollment Broker"
+                },
+                {
+                  "name": "ebssei-1-o11",
+                  "type": "choice",
+                  "label": "Consultant"
+                },
+                {
+                  "name": "ebssei-1-o12",
+                  "type": "choice",
+                  "label": "Academic/Research Organization"
+                },
+                {
+                  "name": "ebssei-1-o13",
+                  "type": "choice",
+                  "label": "Other",
+                  "children": [
+                    {
+                      "id": "ebssei-1-o13-text",
+                      "type": "textarea"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "ebssei-2",
+            "type": "checkbox",
+            "props": {
+              "label": "E.IX.2 BSS entity role",
+              "hint": "What are the roles performed by the BSS entity? Check all that apply. Refer to 42 CFR 438.71(b).",
+              "choices": [
+                {
+                  "name": "ebssei-2-o1",
+                  "type": "choice",
+                  "label": "Enrollment Broker/Choice Counseling"
+                },
+                {
+                  "name": "ebssei-2-o2",
+                  "type": "choice",
+                  "label": "Beneficiary Outreach"
+                },
+                {
+                  "name": "ebssei-2-o3",
+                  "type": "choice",
+                  "label": "LTSS Complaint Access Point"
+                },
+                {
+                  "name": "ebssei-2-o4",
+                  "type": "choice",
+                  "label": "LTSS Grievance/Appeals Education"
+                },
+                {
+                  "name": "ebssei-2-o5",
+                  "type": "choice",
+                  "label": "LTSS Grievance/Appeals Assistance"
+                },
+                {
+                  "name": "ebssei-2-o6",
+                  "type": "choice",
+                  "label": "Review/Oversight of LTSS Data"
+                },
+                {
+                  "name": "ebssei-2-o7",
+                  "type": "choice",
+                  "label": "Other",
+                  "children": [
+                    {
+                      "id": "ebssei-2-o7-text",
+                      "type": "textarea"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Review & Submit",
+      "path": "/mcpar/review-and-submit"
+    }
+  ]
+}
