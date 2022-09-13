@@ -1,4 +1,4 @@
-import { AnyObject, ReportJson, ReportRoute } from "types";
+import { AnyObject, ReportShape, ReportJson, ReportRoute } from "types";
 
 // returns reportJson with forms that mirror the adminDisabled status of the report
 export const copyAdminDisabledStatusToForms = (
@@ -64,5 +64,6 @@ export const addValidationToReportJson = (
 };
 
 export const sortReportsOldestToNewest = (
-  reportsArray: { createdAt: number }[]
-) => reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
+  reportsArray: ReportShape[]
+): ReportShape[] =>
+  reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
