@@ -69,7 +69,6 @@ export const Dashboard = () => {
     setReport(undefined);
     setReportData(undefined);
     localStorage.setItem("selectedReport", "");
-    localStorage.setItem("selectedState", "");
   }, []);
 
   const enterSelectedReport = async (reportMetadata: ReportShape) => {
@@ -102,7 +101,7 @@ export const Dashboard = () => {
             reportMetadata.reportingPeriodStartDate
           ),
         },
-        state: reportMetadata.state,
+        state: activeState,
         reportId: reportMetadata.reportId,
       };
     }
