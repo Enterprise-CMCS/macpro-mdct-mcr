@@ -82,7 +82,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
         return (
           <StaticDrawerSection
             form={form}
-            drawer={page.drawer || {}}
+            drawer={page.drawer!}
             onSubmit={onSubmit}
           />
         );

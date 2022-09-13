@@ -174,7 +174,6 @@ export const mockForm = {
 };
 
 export const mockPageJson = {
-  pageType: "staticPage",
   intro: {
     section: "mock section",
     subsection: "mock subsection",

@@ -7,39 +7,18 @@ import { ReportContext, DynamicDrawerSection } from "components";
 import {
   mockForm,
   mockPageJsonDynamicDrawer,
+  mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
-// MOCKS
-
-const mockReportMethods = {
-  setReport: jest.fn(() => {}),
-  setReportData: jest.fn(() => {}),
-  fetchReportData: jest.fn(() => {}),
-  updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
-  updateReport: jest.fn(() => {}),
-  removeReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
-};
-
-const mockReportContext = {
-  ...mockReportMethods,
-  report: {},
-  reportData: {},
-  errorMessage: "",
-};
-
+const mockOnSubmit = jest.fn();
 const mockUseNavigate = jest.fn();
-
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mock-route",
   })),
 }));
-
-const mockOnSubmit = jest.fn();
 
 const dynamicDrawerSectionComponent = (
   <RouterWrappedComponent>
@@ -54,13 +33,13 @@ const dynamicDrawerSectionComponent = (
 );
 
 describe("Test DynamicDrawerSection view", () => {
-  test("DynamicEntitySection view renders", () => {
+  test("DynamicDrawerSection view renders", () => {
     render(dynamicDrawerSectionComponent);
     expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test DynamicDrawerSection drawer operation", () => {
+describe("Test DynamicDrawerSection add entity operation", () => {
   test("Drawer opens correctly", async () => {
     render(dynamicDrawerSectionComponent);
     const launchDrawerButton = screen.getAllByText("Add access measure")[0];
