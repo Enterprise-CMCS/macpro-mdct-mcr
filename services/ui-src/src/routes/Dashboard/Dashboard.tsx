@@ -71,14 +71,13 @@ export const Dashboard = () => {
     localStorage.setItem("selectedReport", "");
   }, []);
 
-  const enterSelectedReport = async (reportId: string) => {
+  const enterSelectedReport = async (report: AnyObject) => {
     // set active report to selected report
     const reportDetails: ReportDetails = {
-      state: activeState!,
-      reportId: reportId,
+      state: report.state!,
+      reportId: report.reportId,
     };
     setReport(reportDetails);
-    localStorage.setItem("selectedReport", reportId);
 
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
