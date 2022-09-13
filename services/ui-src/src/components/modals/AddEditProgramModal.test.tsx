@@ -20,7 +20,7 @@ const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
       activeState="AB"
-      selectedReportId={undefined}
+      selectedReportMetadata={undefined}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -33,7 +33,7 @@ const modalComponentWithSelectedReport = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
       activeState="AB"
-      selectedReportId="mock-report-id"
+      selectedReportMetadata={{ reportId: "mock-report-id" }}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,

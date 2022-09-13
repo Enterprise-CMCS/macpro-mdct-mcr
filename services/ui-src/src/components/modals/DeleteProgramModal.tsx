@@ -2,10 +2,11 @@ import { useContext } from "react";
 // components
 import { Text } from "@chakra-ui/react";
 import { Modal, ReportContext } from "components";
+import { AnyObject } from "types";
 
 export const DeleteProgramModal = ({
   activeState,
-  selectedReportId,
+  selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, removeReport } = useContext(ReportContext);
@@ -13,7 +14,7 @@ export const DeleteProgramModal = ({
   const deleteProgramHandler = async () => {
     const reportDetails = {
       state: activeState,
-      reportId: selectedReportId,
+      reportId: selectedReportMetadata?.reportId,
     };
     await removeReport(reportDetails);
     await fetchReportsByState(activeState);
@@ -40,7 +41,7 @@ export const DeleteProgramModal = ({
 
 interface Props {
   activeState: string;
-  selectedReportId: string;
+  selectedReportMetadata: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

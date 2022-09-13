@@ -19,7 +19,7 @@ const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <DeleteProgramModal
       activeState="AB"
-      selectedReportId="mock-report-id"
+      selectedReportMetadata={{ reportId: "mock-report-id" }}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,

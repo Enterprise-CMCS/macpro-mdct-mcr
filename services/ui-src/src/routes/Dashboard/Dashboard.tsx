@@ -49,10 +49,7 @@ export const Dashboard = () => {
   const { state: userState, userRole } = useUser().user ?? {};
   const { isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
-  const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedReportMetaData, setSelectedReportMetaData] = useState<
+  const [selectedReportMetadata, setSelectedReportMetadata] = useState<
     AnyObject | undefined
   >(undefined);
 
@@ -89,35 +86,32 @@ export const Dashboard = () => {
     navigate(reportFirstPagePath);
   };
 
-  const openAddEditProgramModal = (selectedReportMetaData?: ReportShape) => {
-    // if reportId provided, set as selected program
-    setSelectedReportId(selectedReportMetaData?.reportId);
-
+  const openAddEditProgramModal = (reportMetadata?: ReportShape) => {
     let formData = undefined;
     // Check and pre-fill the form if the user is editing an existing program
-    if (selectedReportMetaData) {
+    if (reportMetadata) {
       formData = {
         fieldData: {
-          "aep-programName": selectedReportMetaData.programName,
+          "aep-programName": reportMetadata.programName,
           "aep-endDate": convertDateUtcToEt(
-            selectedReportMetaData.reportingPeriodEndDate
+            reportMetadata.reportingPeriodEndDate
           ),
           "aep-startDate": convertDateUtcToEt(
-            selectedReportMetaData.reportingPeriodStartDate
+            reportMetadata.reportingPeriodStartDate
           ),
         },
-        state: selectedReportMetaData.state,
-        reportId: selectedReportMetaData.reportId,
+        state: reportMetadata.state,
+        reportId: reportMetadata.reportId,
       };
     }
-    setSelectedReportMetaData(formData);
+    setSelectedReportMetadata(formData);
 
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (reportId?: string) => {
-    setSelectedReportId(reportId);
+  const openDeleteProgramModal = (reportMetadata?: ReportShape) => {
+    setSelectedReportMetadata(reportMetadata);
     // use disclosure to open modal
     deleteProgramModalOnOpenHandler();
   };
@@ -184,8 +178,7 @@ export const Dashboard = () => {
       </Box>
       <AddEditProgramModal
         activeState={activeState!}
-        selectedReportId={selectedReportId}
-        selectedReportMetaData={selectedReportMetaData || undefined}
+        selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
@@ -193,7 +186,7 @@ export const Dashboard = () => {
       />
       <DeleteProgramModal
         activeState={activeState!}
-        selectedReportId={selectedReportId!}
+        selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,
@@ -231,16 +224,14 @@ const DashboardTable = ({
           <Button
             variant="outline"
             data-testid="enter-program"
-            onClick={() => enterSelectedReport(report.reportId)}
+            onClick={() => enterSelectedReport(report)}
           >
             Enter
           </Button>
         </Td>
         <Td sx={sx.deleteProgramCell}>
           {userRole === UserRoles.ADMIN && (
-            <button
-              onClick={() => openDeleteProgramModal(report.reportId, report)}
-            >
+            <button onClick={() => openDeleteProgramModal(report)}>
               <Image
                 src={cancelIcon}
                 data-testid="delete-program"
@@ -316,14 +307,14 @@ export const MobileDashboardRow = ({
           <Box sx={sx.editReportButtonCell}>
             <Button
               variant="outline"
-              onClick={() => enterSelectedReport(report.reportId)}
+              onClick={() => enterSelectedReport(report)}
             >
               Enter
             </Button>
           </Box>
           <Box sx={sx.deleteProgramCell}>
             {userRole === UserRoles.ADMIN && (
-              <button onClick={() => openDeleteProgramModal(report.reportId)}>
+              <button onClick={() => openDeleteProgramModal(report)}>
                 <Image
                   src={cancelIcon}
                   alt="Delete Program"
