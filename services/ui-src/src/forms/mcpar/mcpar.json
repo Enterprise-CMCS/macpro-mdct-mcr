@@ -950,7 +950,7 @@
                     }
                   ]
                 },
-                "dynamic": {
+                "dynamicTable": {
                   "tableHeading": "Add measures for monitoring access standards",
                   "addEntityText": "Add access measure"
                 }
@@ -2360,14 +2360,29 @@
           "name": "VII: Quality Measures",
           "path": "/mcpar/plan-level-indicators/quality-measures",
           "page": {
-            "pageType": "staticDrawer",
+            "pageType": "dynamicDrawer",
             "intro": {
-              "section": "D: Plan-Level Indicators",
-              "subsection": "VII: Quality Measures"
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VII: Quality Measures",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D2_Plan_Measures"]
+              },
+              "info": [
+                {
+                  "type": "html",
+                  "content": "<p><b>Add Quality & Performance Measures</b></p>"
+                },
+                {
+                  "type": "html",
+                  "content": "</br><p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
+                }
+              ]
+            },
+            "dynamicTable": {
+              "tableHeading": "Add quality & performance measure",
+              "addEntityText": "Add quality & performance measure"
             }
-          },
-          "drawer": {
-            "drawerTitle": "Add a quality & performance measure"
           },
           "form": {
             "id": "dqm",
@@ -2561,7 +2576,7 @@
           "name": "VIII: Sanctions",
           "path": "/mcpar/plan-level-indicators/sanctions",
           "page": {
-            "pageType": "staticDrawer",
+            "pageType": "dynamicDrawer",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic VIII. Sanctions",
@@ -2571,23 +2586,18 @@
               },
               "info": [
                 {
-                  "type": "text",
-                  "as": "p",
-                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other."
+                  "type": "html",
+                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p>"
                 },
                 {
-                  "type": "text",
-                  "as": "p",
-                  "content": "42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance."
+                  "type": "html",
+                  "content": "</br><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
                 }
               ]
             },
-            "drawer": {
-              "dashboard": {
-                "title": "Intervention Type",
-                "entityType": "plans"
-              },
-              "drawerTitle": "Add a sanction for"
+            "dynamicTable": {
+              "tableHeading": "Intervention Type",
+              "addEntityText": "Add a sanction"
             }
           },
           "form": {

@@ -5,7 +5,11 @@ import { ReportDrawer } from "components";
 // utils
 import { FormJson, AnyObject } from "types";
 
-export const DynamicDrawerSection = ({ form, dynamic, onSubmit }: Props) => {
+export const DynamicDrawerSection = ({
+  form,
+  dynamicTable,
+  onSubmit,
+}: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   // make state
@@ -38,7 +42,7 @@ export const DynamicDrawerSection = ({ form, dynamic, onSubmit }: Props) => {
     <Box data-testid="dynamic-drawer-section">
       {entities.length > 0 && (
         <Box style={sx.entityTable}>
-          <Heading as="h4">{dynamic.tableHeading}</Heading>
+          <Heading as="h4">{dynamicTable.tableHeading}</Heading>
           {entities.map((entity) => {
             return (
               <Flex key={entity.title} sx={sx.entityRow}>
@@ -65,7 +69,7 @@ export const DynamicDrawerSection = ({ form, dynamic, onSubmit }: Props) => {
         </Box>
       )}
       <Button onClick={() => openRowDrawer("")} type="submit">
-        {dynamic.addEntityText}
+        {dynamicTable.addEntityText}
       </Button>
       <ReportDrawer
         drawerDisclosure={{
@@ -73,7 +77,7 @@ export const DynamicDrawerSection = ({ form, dynamic, onSubmit }: Props) => {
           onClose,
         }}
         drawerTitle={
-          currentEntity === "" ? dynamic.addEntityText : currentEntity
+          currentEntity === "" ? dynamicTable.addEntityText : currentEntity
         }
         form={form}
         onSubmit={onSubmit}
@@ -85,7 +89,7 @@ export const DynamicDrawerSection = ({ form, dynamic, onSubmit }: Props) => {
 
 interface Props {
   form: FormJson;
-  dynamic: AnyObject;
+  dynamicTable: AnyObject;
   onSubmit: Function;
 }
 

@@ -71,7 +71,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
         return (
           <StaticDrawerSection
             form={form}
-            drawer={page?.drawer || {}}
+            drawer={page.drawer || {}}
             onSubmit={onSubmit}
           />
         );
@@ -79,7 +79,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
         return (
           <DynamicDrawerSection
             form={form}
-            dynamic={page?.dynamic}
+            dynamicTable={page.dynamicTable}
             onSubmit={onSubmit}
           />
         );

@@ -174,6 +174,7 @@ export const mockForm = {
 };
 
 export const mockPageJson = {
+  pageType: "staticPage",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -181,6 +182,7 @@ export const mockPageJson = {
 };
 
 export const mockPageJsonStaticDrawer = {
+  pageType: "staticDrawer",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -195,11 +197,12 @@ export const mockPageJsonStaticDrawer = {
 };
 
 export const mockPageJsonDynamicDrawer = {
+  pageType: "dynamicDrawer",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
-  dynamic: {
+  dynamicTable: {
     tableHeading: "Add measures for monitoring access standards",
     addEntityText: "Add access measure",
   },
@@ -237,8 +240,8 @@ export const mockReportRoutes = [
     form: mockForm,
   },
   {
-    name: "mock-route-2",
-    path: "/mock/mock-route-2",
+    name: "mock-route-4",
+    path: "/mock/mock-route-4",
     page: mockPageJsonDynamicDrawer,
     form: mockForm,
   },

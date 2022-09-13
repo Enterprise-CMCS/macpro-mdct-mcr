@@ -46,7 +46,7 @@ const dynamicDrawerSectionComponent = (
     <ReportContext.Provider value={mockReportContext}>
       <DynamicDrawerSection
         form={mockForm}
-        dynamic={mockPageJsonDynamicDrawer.dynamic}
+        dynamicTable={mockPageJsonDynamicDrawer.dynamicTable}
         onSubmit={mockOnSubmit}
       />
     </ReportContext.Provider>

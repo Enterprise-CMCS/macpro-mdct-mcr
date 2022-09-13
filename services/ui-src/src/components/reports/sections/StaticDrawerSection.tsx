@@ -22,7 +22,7 @@ export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
 
   return (
     <Box data-testid="static-drawer-section">
-      <Heading as="h4">{drawer!.dashboard.title}</Heading>
+      <Heading as="h4">{drawer.dashboard.title}</Heading>
       {tempEntityMap.plans.map((entity) => {
         return (
           <Flex key={entity} sx={sx.entityRow}>
@@ -42,8 +42,8 @@ export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
-        drawerInfo={drawer!.drawerInfo}
+        drawerTitle={`${drawer.drawerTitle} ${currentEntity}`}
+        drawerInfo={drawer.drawerInfo}
         form={form}
         onSubmit={onSubmit}
         data-testid="report-drawer"
