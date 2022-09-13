@@ -120,6 +120,7 @@ export interface FieldDataShape {
 export interface ReportDetails {
   state: string;
   reportId: string;
+  prefilledFields?: AnyObject;
 }
 
 export interface ReportShape {

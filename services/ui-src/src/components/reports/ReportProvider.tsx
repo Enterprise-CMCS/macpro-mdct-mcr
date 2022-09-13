@@ -107,6 +107,7 @@ export const ReportProvider = ({ children }: Props) => {
       const reportDetails = {
         state: report.state,
         reportId: report.reportId,
+        prefilledFields: report.prefilledFields,
       };
       fetchReportData(reportDetails);
     }
