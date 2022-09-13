@@ -25,6 +25,12 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     }
   }, []);
 
+  // render hydrated values on refresh
+  useEffect(() => {
+    form.reset();
+    append(props?.hydrate);
+  }, [props?.hydrate]);
+
   const fieldErrorState = form?.formState?.errors?.[name];
 
   return (
