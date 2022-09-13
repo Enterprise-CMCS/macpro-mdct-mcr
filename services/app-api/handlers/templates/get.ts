@@ -5,7 +5,7 @@ import {
   INVALID_TEMPLATE_NAME_ERROR_MESSAGE,
   NO_TEMPLATE_NAME_ERROR_MESSAGE,
 } from "../../utils/constants/constants";
-import { sanitize } from "../../utils/sanitize";
+import { sanitizeString } from "../../utils/sanitizeString";
 
 export const getTemplate = handler(async (event, _context) => {
   if (!event?.pathParameters?.templateName!) {
@@ -30,5 +30,5 @@ export const getTemplate = handler(async (event, _context) => {
   };
   const url = s3.getSignedUrl("getObject", params);
 
-  return { status: StatusCodes.SUCCESS, body: sanitize(url) };
+  return { status: StatusCodes.SUCCESS, body: sanitizeString(url) };
 });

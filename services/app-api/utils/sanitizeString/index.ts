@@ -1,8 +1,8 @@
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 
-// sanitize and parse html to react elements
-export const sanitize = (string: string) => {
+// sanitize and parse a string
+export const sanitizeString = (string: string) => {
   const windowEmulator: any = new JSDOM("").window;
   const DOMPurify = createDOMPurify(windowEmulator);
 

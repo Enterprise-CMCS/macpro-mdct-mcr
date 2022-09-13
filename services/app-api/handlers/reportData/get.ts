@@ -2,7 +2,7 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
 import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
-import { sanitize } from "../../utils/sanitize";
+import { sanitizeObject } from "../../utils/sanitizeObject";
 
 export const getReportData = handler(async (event, _context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.reportId!) {
@@ -24,27 +24,7 @@ export const getReportData = handler(async (event, _context) => {
 
   const responseBody = reportQueryResponse.Items![0] ?? {};
 
-  const entries = Object.entries(responseBody.fieldData);
-  const newFieldData: any = {};
-
-  for (let index = 0; index < entries.length; index++) {
-    const entry: any = entries[index];
-
-    if (typeof entry[1] !== "string") {
-      const entryValueArray = [];
-
-      for (let ind = 0; ind < entry[1].length; ind++) {
-        const item = entry[1][ind];
-        entryValueArray.push(sanitize(item));
-      }
-
-      newFieldData[`${entry[0]}`] = entryValueArray;
-    } else {
-      newFieldData[`${entry[0]}`] = sanitize(entry[1]);
-    }
-  }
-
-  responseBody.fieldData = newFieldData;
+  responseBody.fieldData = sanitizeObject(responseBody.fieldData);
 
   return {
     status: StatusCodes.SUCCESS,

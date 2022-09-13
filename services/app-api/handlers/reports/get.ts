@@ -2,7 +2,7 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
 import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
-import { sanitize } from "../../utils/sanitize";
+import { sanitizeObject } from "../../utils/sanitizeObject";
 
 export const getReport = handler(async (event, _context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.reportId!) {
@@ -52,9 +52,7 @@ export const getReportsByState = handler(async (event, _context) => {
     for (let index = 0; index < reportQueryResponse.Items.length; index++) {
       const item = reportQueryResponse.Items[index];
 
-      item.programName = sanitize(item.programName);
-
-      newReportQueryResponse.push(item);
+      newReportQueryResponse.push(sanitizeObject(item));
     }
 
     reportQueryResponse.Items = newReportQueryResponse;
