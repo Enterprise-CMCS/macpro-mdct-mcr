@@ -8,13 +8,14 @@ import {
   midnight,
   noon,
   oneSecondToMidnight,
+  twoDigitCalendarDate,
 } from "./time";
 
 // 1/1/2022 @ 00:00:00
 const testDate = {
   utcMS: 1641013200000,
   utcString: "Sat, 01 Jan 2022 05:00:00 GMT",
-  etFormattedString: "01/1/2022",
+  etFormattedString: "01/01/2022",
 };
 
 describe("Test calculateTimeByType", () => {
@@ -96,5 +97,17 @@ describe("Test calculateDueDate", () => {
     const startDate = "08/01/2022";
     const dueDate = calculateDueDate(startDate);
     expect(convertDateUtcToEt(dueDate)).toBe("01/28/2023");
+  });
+});
+
+describe("Test twoDigitCalendarDate", () => {
+  it("should set 1 to 01", () => {
+    const startDay = 1;
+    expect(twoDigitCalendarDate(startDay)).toBe("01");
+  });
+
+  it("should set 12 to 12", () => {
+    const startMonth = 12;
+    expect(twoDigitCalendarDate(startMonth)).toBe("12");
   });
 });
