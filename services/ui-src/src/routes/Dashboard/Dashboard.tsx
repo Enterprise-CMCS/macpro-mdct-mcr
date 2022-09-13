@@ -82,8 +82,9 @@ export const Dashboard = () => {
   };
 
   const openAddEditProgramModal = (reportId?: string) => {
-    // if reportId provided, set as selected program
-    setSelectedReportId(reportId);
+    if (reportId)
+      // if reportId provided, set as selected program
+      setSelectedReportId(reportId);
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };

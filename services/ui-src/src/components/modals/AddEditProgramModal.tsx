@@ -20,7 +20,8 @@ export const AddEditProgramModal = ({
   selectedReportId,
   modalDisclosure,
 }: Props) => {
-  const { fetchReportsByState, updateReport } = useContext(ReportContext);
+  const { fetchReportsByState, updateReport, updateReportData } =
+    useContext(ReportContext);
   const { email, full_name } = useUser().user ?? {};
 
   // add validation to formJson
@@ -38,15 +39,6 @@ export const AddEditProgramModal = ({
     const reportDetails = {
       state: activeState,
       reportId: "",
-      prefilledFields: {
-        stateName: activeState,
-        submitterName: full_name,
-        submitterEmailAddress: email,
-        reportSubmissionDate: dueDate,
-        reportingPeriodStartDate: reportingPeriodStartDate,
-        reportingPeriodEndDate: reportingPeriodEndDate,
-        programName: programName,
-      },
     };
     const dataToWrite = {
       programName,
@@ -73,6 +65,15 @@ export const AddEditProgramModal = ({
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
         formTemplateId: formTemplateId,
+      });
+      // set pre-filled fields for report
+      await updateReportData(reportDetails, {
+        a1: activeState,
+        submitterEmailAddress: email,
+        reportSubmissionDate: dueDate,
+        reportingPeriodStartDate: reportingPeriodStartDate,
+        reportingPeriodEndDate: reportingPeriodEndDate,
+        programName: programName,
       });
       // save form template
       await writeFormTemplate({
