@@ -79,7 +79,6 @@ export const Dashboard = () => {
     };
     setReport(reportDetails);
     localStorage.setItem("selectedReport", reportMetadata.reportId);
-    localStorage.setItem("selectedState", reportMetadata.state);
 
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
@@ -178,6 +177,7 @@ export const Dashboard = () => {
         )}
       </Box>
       <AddEditProgramModal
+        activeState={activeState!}
         selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,

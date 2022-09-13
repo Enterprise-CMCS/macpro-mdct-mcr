@@ -19,6 +19,7 @@ const mockedReportContext = {
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
+      activeState="AB"
       selectedReportMetadata={undefined}
       modalDisclosure={{
         isOpen: true,
@@ -31,6 +32,7 @@ const modalComponent = (
 const modalComponentWithSelectedReport = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
+      activeState="AB"
       selectedReportMetadata={mockReport}
       modalDisclosure={{
         isOpen: true,
