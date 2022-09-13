@@ -28,6 +28,8 @@ export const AddEditProgramModal = ({
   form.validation = formSchema;
 
   const writeProgram = async (formData: any) => {
+    const submitButton = document.querySelector("[form=" + form.id + "]");
+    submitButton?.setAttribute("disabled", "true");
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
