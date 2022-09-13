@@ -61,8 +61,8 @@ export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 export { ReportPage } from "./reports/ReportPage";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
-export { StaticFormSection } from "./reports/sections/StaticFormSection";
-export { DynamicEntitySection } from "./reports/sections/DynamicEntitySection";
+export { StaticPageSection } from "./reports/sections/StaticPageSection";
+export { DynamicDrawerSection } from "./reports/sections/DynamicDrawerSection";
 export { StaticDrawerSection } from "./reports/sections/StaticDrawerSection";
 // tables
 export { Table } from "./tables/Table";

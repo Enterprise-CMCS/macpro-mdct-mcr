@@ -2,11 +2,11 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, DynamicEntitySection } from "components";
+import { ReportContext, DynamicDrawerSection } from "components";
 // utils
 import {
   mockForm,
-  mockPageJsonDynamicEntity,
+  mockPageJsonDynamicDrawer,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
@@ -41,38 +41,37 @@ jest.mock("react-router-dom", () => ({
 
 const mockOnSubmit = jest.fn();
 
-const dynamicEntitySectionComponent = (
+const dynamicDrawerSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DynamicEntitySection
+      <DynamicDrawerSection
         form={mockForm}
-        drawer={mockPageJsonDynamicEntity.drawer}
-        dynamic={mockPageJsonDynamicEntity.dynamic}
+        dynamic={mockPageJsonDynamicDrawer.dynamic}
         onSubmit={mockOnSubmit}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test DynamicEntitySection view", () => {
+describe("Test DynamicDrawerSection view", () => {
   test("DynamicEntitySection view renders", () => {
-    render(dynamicEntitySectionComponent);
-    expect(screen.getByTestId("dynamic-entity-section")).toBeVisible();
+    render(dynamicDrawerSectionComponent);
+    expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test DynamicEntitySection drawer operation", () => {
+describe("Test DynamicDrawerSection drawer operation", () => {
   test("Drawer opens correctly", async () => {
-    render(dynamicEntitySectionComponent);
+    render(dynamicDrawerSectionComponent);
     const launchDrawerButton = screen.getAllByText("Add access measure")[0];
     await userEvent.click(launchDrawerButton);
     await expect(screen.getByRole("dialog")).toBeVisible();
   });
 });
 
-describe("Test DynamicEntitySection accessibility", () => {
+describe("Test DynamicDrawerSection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dynamicEntitySectionComponent);
+    const { container } = render(dynamicDrawerSectionComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

@@ -144,6 +144,12 @@ export interface ReportContextShape
   errorMessage?: string;
 }
 
+export enum PageTypes {
+  STATIC_PAGE = "staticPage",
+  STATIC_DRAWER = "staticDrawer",
+  DYNAMIC_DRAWER = "dynamicDrawer",
+}
+
 // BANNER
 
 export interface BannerData {

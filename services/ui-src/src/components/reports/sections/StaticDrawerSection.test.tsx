@@ -6,7 +6,7 @@ import { ReportContext, StaticDrawerSection } from "components";
 // utils
 import {
   mockForm,
-  mockPageJsonWithDrawer,
+  mockPageJsonStaticDrawer,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
@@ -46,7 +46,7 @@ const staticDrawerSectionComponent = (
     <ReportContext.Provider value={mockReportContext}>
       <StaticDrawerSection
         form={mockForm}
-        drawer={mockPageJsonWithDrawer.drawer}
+        drawer={mockPageJsonStaticDrawer.drawer}
         onSubmit={mockOnSubmit}
       />
     </ReportContext.Provider>

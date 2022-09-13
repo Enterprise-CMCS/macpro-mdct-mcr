@@ -78,6 +78,17 @@ const staticDrawerReportPageComponent = (
   </RouterWrappedComponent>
 );
 
+const dynamicDrawerReportPageComponent = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <ReportPage
+        reportJson={mockReportJson}
+        route={mockReportJson.routes[3]}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 const reportPageWithoutReportId = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
@@ -92,13 +103,18 @@ const reportPageWithoutReportId = (
 describe("Test ReportPage view", () => {
   test("ReportPage StaticFormSection view renders", () => {
     render(staticReportPageComponent);
-    expect(screen.getByTestId("static-form-section")).toBeVisible();
+    expect(screen.getByTestId("static-page-section")).toBeVisible();
   });
 
   test("ReportPage StaticDrawerSection view renders", () => {
     render(staticDrawerReportPageComponent);
     expect(screen.getByTestId("static-drawer-section")).toBeVisible();
   });
+});
+
+test("ReportPage DynamicDrawerSection view renders", () => {
+  render(dynamicDrawerReportPageComponent);
+  expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
 });
 
 describe("Test ReportPage functionality", () => {

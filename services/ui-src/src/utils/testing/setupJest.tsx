@@ -180,7 +180,7 @@ export const mockPageJson = {
   },
 };
 
-export const mockPageJsonWithDrawer = {
+export const mockPageJsonStaticDrawer = {
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -194,21 +194,14 @@ export const mockPageJsonWithDrawer = {
   },
 };
 
-export const mockPageJsonDynamicEntity = {
+export const mockPageJsonDynamicDrawer = {
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
   dynamic: {
     tableHeading: "Add measures for monitoring access standards",
-    buttonText: "Add access measure",
-  },
-  drawer: {
-    dashboard: {
-      title: "Mock dashboard title",
-      entityType: "plans",
-    },
-    drawerTitle: "Mock drawer title",
+    addEntityText: "Add access measure",
   },
 };
 
@@ -234,13 +227,19 @@ export const mockReportRoutes = [
   {
     name: "mock-route-2",
     path: "/mock/mock-route-2",
-    page: mockPageJsonWithDrawer,
+    page: mockPageJsonStaticDrawer,
     form: mockForm,
   },
   {
     name: "mock-route-3",
     path: "/mock/mock-route-3",
     page: mockPageJson,
+    form: mockForm,
+  },
+  {
+    name: "mock-route-2",
+    path: "/mock/mock-route-2",
+    page: mockPageJsonDynamicDrawer,
     form: mockForm,
   },
 ];

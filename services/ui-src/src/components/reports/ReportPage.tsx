@@ -4,19 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  DynamicEntitySection,
+  DynamicDrawerSection,
   StaticDrawerSection,
   PageTemplate,
   ReportPageIntro,
   ReportPageFooter,
   Sidebar,
-  StaticFormSection,
+  StaticPageSection,
 } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
   PageJson,
+  PageTypes,
   ReportJson,
   ReportRoute,
   ReportStatus,
@@ -63,25 +64,27 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   };
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
-    if (page?.dynamic && page?.drawer) {
-      return (
-        <DynamicEntitySection
-          form={form}
-          drawer={page.drawer}
-          dynamic={page.dynamic}
-          onSubmit={onSubmit}
-        />
-      );
-    } else if (page?.drawer) {
-      return (
-        <StaticDrawerSection
-          form={form}
-          drawer={page.drawer}
-          onSubmit={onSubmit}
-        />
-      );
-    } else {
-      return <StaticFormSection form={form} onSubmit={onSubmit} />;
+    switch (page?.pageType) {
+      case PageTypes.STATIC_PAGE:
+        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+      case PageTypes.STATIC_DRAWER:
+        return (
+          <StaticDrawerSection
+            form={form}
+            drawer={page?.drawer || {}}
+            onSubmit={onSubmit}
+          />
+        );
+      case PageTypes.DYNAMIC_DRAWER:
+        return (
+          <DynamicDrawerSection
+            form={form}
+            dynamic={page?.dynamic}
+            onSubmit={onSubmit}
+          />
+        );
+      default:
+        return <StaticPageSection form={form} onSubmit={onSubmit} />;
     }
   };
 
