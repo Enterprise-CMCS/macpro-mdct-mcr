@@ -1,4 +1,26 @@
-import { AnyObject, ReportRoute } from "types";
+import { AnyObject, ReportShape, ReportJson, ReportRoute } from "types";
+
+// returns reportJson with forms that mirror the adminDisabled status of the report
+export const copyAdminDisabledStatusToForms = (
+  reportJson: ReportJson
+): ReportJson => {
+  const reportAdminDisabledStatus = !!reportJson.adminDisabled;
+  const writeAdminDisabledStatus = (routes: ReportRoute[]) => {
+    routes.forEach((route: ReportRoute) => {
+      // if children, recurse
+      if (route?.children) {
+        writeAdminDisabledStatus(route.children);
+      }
+      // else if form (children & form are always mutually exclusive)
+      else if (route?.form) {
+        // copy adminDisabled status to form
+        route.form.adminDisabled = reportAdminDisabledStatus;
+      }
+    });
+  };
+  writeAdminDisabledStatus(reportJson.routes);
+  return reportJson;
+};
 
 // returns flattened array of valid routes for given reportJson
 export const flattenReportRoutesArray = (
@@ -31,6 +53,7 @@ export const addValidationToReportJson = (
       }
       // else if form (children & form are always mutually exclusive)
       else if (route?.form) {
+        // add corresponding validation schema to form
         const correspondingValidationSchema = schema[route.form.id];
         route.form.validation = correspondingValidationSchema || {};
       }
@@ -41,5 +64,6 @@ export const addValidationToReportJson = (
 };
 
 export const sortReportsOldestToNewest = (
-  reportsArray: { createdAt: number }[]
-) => reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
+  reportsArray: ReportShape[]
+): ReportShape[] =>
+  reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);

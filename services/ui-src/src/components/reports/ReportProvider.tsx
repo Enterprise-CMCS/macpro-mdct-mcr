@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+// forms
+import { isMcparReportFormPage } from "forms/mcpar";
 // utils
 import {
-  AnyObject,
-  FieldDataShape,
   ReportDataShape,
   ReportDetails,
   ReportContextShape,
@@ -20,28 +21,37 @@ import {
 // verbiage
 import { reportErrors } from "verbiage/errors";
 
+// TYPES AND CONTEXT DECLARATION
+
 export const ReportContext = createContext<ReportContextShape>({
-  report: undefined as AnyObject | undefined,
-  setReport: Function,
+  // report metadata
+  report: undefined as ReportShape | undefined,
+  setReport: Function, // local useState setter
   fetchReport: Function,
   updateReport: Function,
   removeReport: Function,
-  reportData: undefined as AnyObject | undefined,
-  setReportData: Function,
+  // report field data
+  reportData: undefined as ReportDataShape | undefined,
+  setReportData: Function, // local useState setter
   fetchReportData: Function,
   updateReportData: Function,
-  reportsByState: undefined as AnyObject | undefined,
+  // report metadata of all reports for a given state
+  reportsByState: undefined as ReportShape[] | undefined,
   fetchReportsByState: Function,
-  errorMessage: undefined,
+  errorMessage: undefined as string | undefined,
 });
+
+// PROVIDER
 
 export const ReportProvider = ({ children }: Props) => {
   const [report, setReport] = useState<ReportShape | undefined>();
   const [reportData, setReportData] = useState<ReportDataShape | undefined>();
-  const [reportsByState, setReportsByState] = useState<AnyObject | undefined>(
-    undefined
-  );
+  const [reportsByState, setReportsByState] = useState<
+    ReportShape[] | undefined
+  >();
   const [error, setError] = useState<string>();
+
+  const { pathname } = useLocation();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
@@ -54,7 +64,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReportData = async (
     reportDetails: ReportDetails,
-    fieldData: FieldDataShape
+    fieldData: ReportDataShape
   ) => {
     try {
       await writeReportData(reportDetails, fieldData);
@@ -111,6 +121,19 @@ export const ReportProvider = ({ children }: Props) => {
       fetchReportData(reportDetails);
     }
   }, [report?.reportId]);
+
+  useEffect(() => {
+    const selectedState = localStorage.getItem("selectedState");
+    const selectedReport = localStorage.getItem("selectedReport");
+    if (isMcparReportFormPage(pathname) && selectedState && selectedReport) {
+      const reportDetails = {
+        state: selectedState,
+        reportId: selectedReport,
+      };
+      fetchReport(reportDetails);
+      fetchReportData(reportDetails);
+    }
+  }, []);
 
   const providerValue = useMemo(
     () => ({
