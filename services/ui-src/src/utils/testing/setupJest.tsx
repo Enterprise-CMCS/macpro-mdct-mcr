@@ -194,6 +194,24 @@ export const mockPageJsonWithDrawer = {
   },
 };
 
+export const mockPageJsonDynamicEntity = {
+  intro: {
+    section: "mock section",
+    subsection: "mock subsection",
+  },
+  dynamic: {
+    tableHeading: "Add measures for monitoring access standards",
+    buttonText: "Add access measure",
+  },
+  drawer: {
+    dashboard: {
+      title: "Mock dashboard title",
+      entityType: "plans",
+    },
+    drawerTitle: "Mock drawer title",
+  },
+};
+
 // FORM TEMPLATE
 
 export const mockFormTemplate = {

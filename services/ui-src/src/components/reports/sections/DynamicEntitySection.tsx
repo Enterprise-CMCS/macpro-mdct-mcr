@@ -40,36 +40,36 @@ export const DynamicEntitySection = ({
   };
 
   return (
-    <Box data-testid="entity-drawer-section">
-      <Heading as="h4">{drawer!.dashboard.title}</Heading>
-      {entities.map((entity) => {
-        return (
-          <Flex key={entity.title} sx={sx.entityRow}>
-            <Heading as="h5">{entity.title}</Heading>
-            <Flex sx={sx.buttonContainer}>
-              <Button
-                sx={sx.buttonStyle}
-                onClick={() => openRowDrawer(entity.title)}
-                variant="outline"
-              >
-                Edit
-              </Button>
-              <Button
-                sx={sx.buttonStyle}
-                onClick={() => removeEntity(entity.title)}
-                variant="outline"
-              >
-                Delete
-              </Button>
-            </Flex>
-          </Flex>
-        );
-      })}
-      <Button
-        onClick={() => openRowDrawer("test")}
-        type="submit"
-        sx={sx.addEntityButton}
-      >
+    <Box data-testid="dynamic-entity-section">
+      {entities.length > 0 && (
+        <Box style={sx.entityTable}>
+          <Heading as="h4">{drawer!.dashboard.title}</Heading>
+          {entities.map((entity) => {
+            return (
+              <Flex key={entity.title} sx={sx.entityRow}>
+                <Heading as="h5">{entity.title}</Heading>
+                <Flex key={entity.title} sx={sx.buttonContainer}>
+                  <Button
+                    sx={sx.buttonStyle}
+                    onClick={() => openRowDrawer(entity.title)}
+                    variant="outline"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    sx={sx.buttonStyle}
+                    onClick={() => removeEntity(entity.title)}
+                    variant="outline"
+                  >
+                    Delete
+                  </Button>
+                </Flex>
+              </Flex>
+            );
+          })}
+        </Box>
+      )}
+      <Button onClick={() => openRowDrawer("")} type="submit">
         {dynamic.buttonText}
       </Button>
       <ReportDrawer
@@ -77,7 +77,7 @@ export const DynamicEntitySection = ({
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
+        drawerTitle={currentEntity === "" ? drawer!.drawerTitle : currentEntity}
         drawerInfo={drawer!.drawerInfo}
         form={form}
         onSubmit={onSubmit}
@@ -103,6 +103,9 @@ const sx = {
     paddingLeft: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
   },
+  entityTable: {
+    marginBottom: "2rem",
+  },
   buttonContainer: {
     justifyContent: "space-between",
   },
@@ -116,8 +119,5 @@ const sx = {
     fontSize: "md",
     fontWeight: "normal",
     margin: "0.5rem",
-  },
-  addEntityButton: {
-    marginTop: "2rem",
   },
 };
