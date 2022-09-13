@@ -40,6 +40,7 @@ export const writeReportData = handler(async (event, context) => {
         ...currentBody.fieldData,
         ...body,
       };
+
       reportParams = {
         TableName: process.env.REPORT_DATA_TABLE_NAME!,
         Item: {
