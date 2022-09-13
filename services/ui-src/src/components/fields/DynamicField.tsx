@@ -43,6 +43,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               label={label}
               errorMessage={fieldErrorState?.[index]?.message}
               sxOverride={sx.textFieldOverride}
+              {...props}
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>
@@ -50,26 +51,30 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                   onClick={() => remove(index)}
                   data-testid="removeButton"
                 >
-                  <Image
-                    sx={sx.removeImage}
-                    src={cancelIcon}
-                    alt="Remove item"
-                  />
+                  {!props?.disabled && (
+                    <Image
+                      sx={sx.removeImage}
+                      src={cancelIcon}
+                      alt="Remove item"
+                    />
+                  )}
                 </button>
               </Box>
             )}
           </Flex>
         );
       })}
-      <Button
-        variant="outline"
-        sx={sx.appendButton}
-        onClick={() => {
-          append("");
-        }}
-      >
-        Add a row
-      </Button>
+      {!props.disabled && (
+        <Button
+          variant="outline"
+          sx={sx.appendButton}
+          onClick={() => {
+            append("");
+          }}
+        >
+          Add a row
+        </Button>
+      )}
     </Box>
   );
 };
