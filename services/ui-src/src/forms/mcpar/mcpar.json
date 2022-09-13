@@ -23,7 +23,6 @@
               {
                 "id": "apoc-a1",
                 "type": "text",
-                "prefill": "stateName",
                 "props": {
                   "label": "A.1 State name",
                   "hint": "Auto-populated from your account profile.",
@@ -69,7 +68,6 @@
               {
                 "id": "apoc-a4",
                 "type": "date",
-                "prefill": "reportSubmissionDate",
                 "props": {
                   "label": "A.4 Date of report submission",
                   "hint": "CMS receives this date upon submission of this MCPAR report.",
