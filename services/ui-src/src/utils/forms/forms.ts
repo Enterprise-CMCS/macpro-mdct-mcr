@@ -15,7 +15,11 @@ import { AnyObject, FieldChoice, FormField, ReportDataShape } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
-export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
+export const formFieldFactory = (
+  fields: FormField[],
+  shouldDisableAllFields: boolean,
+  isNested?: boolean
+) => {
   // define form field components
   const fieldToComponentMap: AnyObject = {
     checkbox: CheckboxField,
@@ -36,6 +40,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
       name: field.id,
       nested: isNested,
       hydrate: field.props?.hydrate,
+      disabled: shouldDisableAllFields,
       ...field?.props,
     };
     return React.createElement(componentFieldType, fieldProps);
