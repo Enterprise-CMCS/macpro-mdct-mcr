@@ -28,6 +28,7 @@ export const UserProvider = ({ children }: Props) => {
     try {
       setUser(null);
       await Auth.signOut();
+      localStorage.clear();
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
     }

@@ -71,13 +71,18 @@ export const Dashboard = () => {
     // unset active report & reportData
     setReport(undefined);
     setReportData(undefined);
+    localStorage.setItem("selectedReport", "");
   }, []);
 
   const enterSelectedReport = async (reportId: string) => {
+    // set active report to selected report
     const reportDetails: ReportDetails = {
       state: activeState!,
       reportId: reportId,
     };
+    setReport(reportDetails);
+    localStorage.setItem("selectedReport", reportId);
+
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
