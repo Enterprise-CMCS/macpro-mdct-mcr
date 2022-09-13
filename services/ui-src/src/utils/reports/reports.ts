@@ -1,4 +1,4 @@
-import { AnyObject, ReportRoute } from "types";
+import { AnyObject, ReportShape, ReportRoute } from "types";
 
 // returns flattened array of valid routes for given reportJson
 export const flattenReportRoutesArray = (
@@ -41,5 +41,6 @@ export const addValidationToReportJson = (
 };
 
 export const sortReportsOldestToNewest = (
-  reportsArray: { createdAt: number }[]
-) => reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
+  reportsArray: ReportShape[]
+): ReportShape[] =>
+  reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);

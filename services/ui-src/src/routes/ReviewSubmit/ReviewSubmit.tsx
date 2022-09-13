@@ -37,7 +37,9 @@ export const ReviewSubmit = () => {
   };
 
   useEffect(() => {
-    fetchReport(reportDetails);
+    if (report?.reportId) {
+      fetchReport(reportDetails);
+    }
   }, []);
 
   const submitForm = () => {
@@ -55,23 +57,22 @@ export const ReviewSubmit = () => {
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {report?.status === ReportStatus.SUBMITTED && (
-          <SuccessMessage
-            programName={report.programName}
-            date={report?.lastAltered}
-            givenName={user?.given_name}
-            familyName={user?.family_name}
-          />
-        )}
-        {(report?.status === ReportStatus.IN_PROGRESS ||
-          report?.status === ReportStatus.NOT_STARTED) && (
-          <ReadyToSubmit
-            submitForm={submitForm}
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-          />
-        )}
+        {report &&
+          (report?.status?.includes(ReportStatus.SUBMITTED) ? (
+            <SuccessMessage
+              programName={report.programName}
+              date={report?.lastAltered}
+              givenName={user?.given_name}
+              familyName={user?.family_name}
+            />
+          ) : (
+            <ReadyToSubmit
+              submitForm={submitForm}
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            />
+          ))}
       </Flex>
     </PageTemplate>
   );

@@ -5,7 +5,7 @@ import {
   deleteReport,
 } from "./report";
 // utils
-import { mockReportDetails, mockReportStatus } from "utils/testing/setupJest";
+import { mockReportDetails, mockReport } from "utils/testing/setupJest";
 
 describe("Test report status methods", () => {
   test("getReport", () => {
@@ -17,7 +17,7 @@ describe("Test report status methods", () => {
   });
 
   test("writeReport", () => {
-    expect(writeReport(mockReportDetails, mockReportStatus)).toBeTruthy();
+    expect(writeReport(mockReportDetails, mockReport)).toBeTruthy();
   });
 
   test("deleteReport", () => {
