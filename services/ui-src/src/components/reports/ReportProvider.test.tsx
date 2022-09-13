@@ -8,6 +8,7 @@ import {
   mockReportDetails,
   mockReport,
   mockReportData,
+  RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
 const mockReportAPI = require("utils/api/requestMethods/report");
@@ -74,9 +75,11 @@ const TestComponent = () => {
 };
 
 const testComponent = (
-  <ReportProvider>
-    <TestComponent />
-  </ReportProvider>
+  <RouterWrappedComponent>
+    <ReportProvider>
+      <TestComponent />
+    </ReportProvider>
+  </RouterWrappedComponent>
 );
 
 describe("Test ReportProvider fetch methods", () => {
