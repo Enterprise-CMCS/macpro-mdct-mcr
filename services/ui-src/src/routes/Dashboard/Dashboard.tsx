@@ -87,7 +87,6 @@ export const Dashboard = () => {
   const openAddEditProgramModal = (reportId?: string) => {
     // if reportId provided, set as selected program
     setSelectedReportId(reportId);
-
     // Check and pre-fill the form if the user is editing an existing program
     if (reportId) {
       const selectedReport = reportsByState?.find(
@@ -107,6 +106,8 @@ export const Dashboard = () => {
         reportId: reportId,
       };
       setSelectedReportFormData(formData);
+    } else {
+      setSelectedReportFormData(undefined);
     }
 
     // use disclosure to open modal
