@@ -87,11 +87,12 @@ export const Dashboard = () => {
   const openAddEditProgramModal = (reportId?: string) => {
     // if reportId provided, set as selected program
     setSelectedReportId(reportId);
+
+    const selectedReport = reportsByState?.find(
+      (o: { reportId: string }) => o.reportId === reportId
+    );
     // Check and pre-fill the form if the user is editing an existing program
-    if (reportId) {
-      const selectedReport = reportsByState?.find(
-        (o: { reportId: string }) => o.reportId === reportId
-      );
+    if (reportId && selectedReport) {
       const formData = {
         fieldData: {
           "aep-programName": selectedReport.programName,
