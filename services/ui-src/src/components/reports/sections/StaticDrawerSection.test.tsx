@@ -7,39 +7,18 @@ import { ReportContext, StaticDrawerSection } from "components";
 import {
   mockForm,
   mockPageJsonStaticDrawer,
+  mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
-// MOCKS
-
-const mockReportMethods = {
-  setReport: jest.fn(() => {}),
-  setReportData: jest.fn(() => {}),
-  fetchReportData: jest.fn(() => {}),
-  updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
-  updateReport: jest.fn(() => {}),
-  removeReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
-};
-
-const mockReportContext = {
-  ...mockReportMethods,
-  report: {},
-  reportData: {},
-  errorMessage: "",
-};
-
+const mockOnSubmit = jest.fn();
 const mockUseNavigate = jest.fn();
-
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mock-route",
   })),
 }));
-
-const mockOnSubmit = jest.fn();
 
 const staticDrawerSectionComponent = (
   <RouterWrappedComponent>

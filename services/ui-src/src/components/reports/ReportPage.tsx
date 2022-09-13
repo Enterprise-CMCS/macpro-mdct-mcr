@@ -18,6 +18,7 @@ import {
   FormJson,
   PageJson,
   PageTypes,
+  ReportDataShape,
   ReportJson,
   ReportRoute,
   ReportStatus,
@@ -27,7 +28,6 @@ import {
 export const ReportPage = ({ reportJson, route }: Props) => {
   // get report, form, and page related-data
   const { report, updateReportData, updateReport } = useContext(ReportContext);
-  const reportId = report?.reportId;
   const { basePath, routes } = reportJson;
   const { form, page } = route;
 
@@ -35,17 +35,28 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   const { user } = useUser();
   const { full_name, state, userRole } = user ?? {};
 
+  // determine if fields should be disabled (based on admin roles )
+  const isAdminUser =
+    userRole === UserRoles.ADMIN ||
+    userRole === UserRoles.APPROVER ||
+    userRole === UserRoles.HELP_DESK;
+  const fieldInputDisabled = isAdminUser && form.adminDisabled;
+
+  // get state and reportId from context or storage
+  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
+
   // get next and previous routes
   const navigate = useNavigate();
   const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
 
   useEffect(() => {
-    if (!reportId) {
+    if (!reportId || !reportState) {
       navigate(basePath);
     }
-  }, [reportId]);
+  }, [reportId, reportState]);
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: ReportDataShape) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const reportDetails = {
         state: state,
@@ -99,6 +110,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
             formId={form.id}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
+            shouldDisableAllFields={fieldInputDisabled}
           />
         </Flex>
       </Flex>

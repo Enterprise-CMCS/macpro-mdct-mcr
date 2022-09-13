@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { useLocation } from "react-router";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";

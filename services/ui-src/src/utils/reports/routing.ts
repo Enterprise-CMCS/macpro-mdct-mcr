@@ -1,4 +1,4 @@
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 
 export const useFindRoute = (routeArray: any[], fallbackRoute: string) => {
   const { pathname } = useLocation();

@@ -23,17 +23,23 @@ export const ReviewSubmit = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // get user's state
+  // get user information
   const { user } = useUser();
   const { full_name, state, userRole } = user ?? {};
 
+  // get state and reportId from context or storage
+  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
+
   const reportDetails = {
-    state: state,
-    reportId: report.reportId,
+    state: reportState,
+    reportId: reportId,
   };
 
   useEffect(() => {
-    fetchReport(reportDetails);
+    if (report?.reportId) {
+      fetchReport(reportDetails);
+    }
   }, []);
 
   const submitForm = () => {
@@ -51,21 +57,22 @@ export const ReviewSubmit = () => {
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {report.status?.includes(ReportStatus.SUBMITTED) ? (
-          <SuccessMessage
-            programName={report.programName}
-            date={report?.lastAltered}
-            givenName={user?.given_name}
-            familyName={user?.family_name}
-          />
-        ) : (
-          <ReadyToSubmit
-            submitForm={submitForm}
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-          />
-        )}
+        {report &&
+          (report?.status?.includes(ReportStatus.SUBMITTED) ? (
+            <SuccessMessage
+              programName={report.programName}
+              date={report?.lastAltered}
+              givenName={user?.given_name}
+              familyName={user?.family_name}
+            />
+          ) : (
+            <ReadyToSubmit
+              submitForm={submitForm}
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            />
+          ))}
       </Flex>
     </PageTemplate>
   );

@@ -2,7 +2,7 @@ import { useContext } from "react";
 // components
 import { Form, Modal, ReportContext } from "components";
 // utils
-import { FormJson, ReportStatus } from "types";
+import { AnyObject, FormJson, ReportStatus } from "types";
 import {
   calculateDueDate,
   convertDateEtToUtc,
@@ -18,6 +18,7 @@ import { mcparReportJsonNested } from "forms/mcpar";
 export const AddEditProgramModal = ({
   activeState,
   selectedReportId,
+  selectedReportData,
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
@@ -28,6 +29,8 @@ export const AddEditProgramModal = ({
   form.validation = formSchema;
 
   const writeProgram = async (formData: any) => {
+    const submitButton = document.querySelector("[form=" + form.id + "]");
+    submitButton?.setAttribute("disabled", "true");
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
@@ -87,6 +90,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
+        formData={selectedReportData}
         onSubmit={writeProgram}
       />
     </Modal>
@@ -96,6 +100,7 @@ export const AddEditProgramModal = ({
 interface Props {
   activeState: string;
   selectedReportId: string | undefined;
+  selectedReportData?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
