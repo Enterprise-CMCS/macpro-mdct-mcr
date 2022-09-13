@@ -236,6 +236,12 @@ export const mockReportRoutes = [
         page: mockPageJsonStaticDrawer,
         form: mockForm,
       },
+      {
+        name: "mock-route-2b",
+        path: "/mock/mock-route-2b",
+        page: mockPageJsonDynamicDrawer,
+        form: mockForm,
+      },
     ],
   },
 ];
@@ -251,6 +257,12 @@ export const mockFlattenedReportRoutes = [
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
     page: mockPageJsonStaticDrawer,
+    form: mockForm,
+  },
+  {
+    name: "mock-route-2b",
+    path: "/mock/mock-route-2b",
+    page: mockPageJsonDynamicDrawer,
     form: mockForm,
   },
 ];
