@@ -25,8 +25,7 @@ import {
 
 export const ReportPage = ({ reportJson, route }: Props) => {
   // get report, form, and page related-data
-  const { report, setReport, updateReportData, updateReport } =
-    useContext(ReportContext);
+  const { report, updateReportData, updateReport } = useContext(ReportContext);
   const { basePath, routes } = reportJson;
   const { form, page } = route;
 
@@ -45,14 +44,8 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   useEffect(() => {
     if (!reportId || !reportState) {
       navigate(basePath);
-    } else {
-      const reportDetails = {
-        state: reportState,
-        reportId: reportId,
-      };
-      setReport(reportDetails);
     }
-  }, [reportId]);
+  }, [reportId, reportState]);
 
   const onSubmit = async (formData: ReportDataShape) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
