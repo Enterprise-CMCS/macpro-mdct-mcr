@@ -1,22 +1,41 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
-import { ReportContext } from "components";
 // utils
-import { formFieldFactory, hydrateFormFields, sortFormErrors } from "utils";
-import { AnyObject, FormJson, FormField } from "types";
 
-export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
+import {
+  formFieldFactory,
+  hydrateFormFields,
+  sortFormErrors,
+  useUser,
+} from "utils";
+import { AnyObject, FormJson, FormField, UserRoles } from "types";
+
+export const Form = ({
+  id,
+  formJson,
+  onSubmit,
+  formData = {},
+  children,
+  ...props
+}: Props) => {
   const { fields, options } = formJson;
-  const { reportData } = useContext(ReportContext);
   const formSchema = yupSchema(formJson.validation || {});
+
+  // determine if fields should be disabled (based on admin roles )
+  const { userRole } = useUser().user ?? {};
+  const isAdminUser =
+    userRole === UserRoles.ADMIN ||
+    userRole === UserRoles.APPROVER ||
+    userRole === UserRoles.HELP_DESK;
+  const fieldInputDisabled = isAdminUser && formJson.adminDisabled;
 
   // make form context
   const form = useForm({
-    resolver: yupResolver(formSchema),
+    resolver: !fieldInputDisabled ? yupResolver(formSchema) : undefined,
     shouldFocusError: false,
     mode: "onChange",
     ...(options as AnyObject),
@@ -36,11 +55,8 @@ export const Form = ({ id, formJson, onSubmit, children, ...props }: Props) => {
 
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: FormField[]) => {
-    let fieldsToRender = fields;
-    if (reportData) {
-      fieldsToRender = hydrateFormFields(fields, reportData);
-    }
-    return formFieldFactory(fieldsToRender);
+    const fieldsToRender = hydrateFormFields(fields, formData);
+    return formFieldFactory(fieldsToRender, fieldInputDisabled || false);
   };
 
   return (
@@ -61,6 +77,7 @@ interface Props {
   id: string;
   formJson: FormJson;
   onSubmit: Function;
+  formData?: AnyObject;
   children?: ReactNode;
   [key: string]: any;
 }

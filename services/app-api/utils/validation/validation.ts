@@ -16,7 +16,6 @@ export const validateData = async (
       ...options,
     });
   } catch (e: any) {
-    console.log("VALIDATION ERRORS", e); // eslint-disable-line no-console
     throw new Error(VALIDATION_ERROR_MESSAGE);
   }
 };

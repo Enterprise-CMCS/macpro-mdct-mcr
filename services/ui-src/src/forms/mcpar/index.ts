@@ -3,6 +3,7 @@ import rawReportSchema from "./mcpar.schema";
 // utils
 import {
   addValidationSchemaToNestedForms,
+  copyAdminDisabledStatusToForms,
   flattenReportRoutesArray,
   flattenValidationSchema,
 } from "utils/reports/reports";
@@ -10,12 +11,15 @@ import { ReportJson } from "types";
 
 const flattenedRawValidationSchema = flattenValidationSchema(rawReportSchema);
 
+const reportJsonWithDisabledStatus: ReportJson =
+  copyAdminDisabledStatusToForms(rawReportJson);
+
 // full reportJson with routes in nested array
 export const mcparReportJsonNested: ReportJson = {
   ...rawReportJson,
   // update formJson of each report route with appropriate validation schema
   routes: addValidationSchemaToNestedForms(
-    rawReportJson.routes,
+    reportJsonWithDisabledStatus.routes,
     rawReportSchema
   ),
   validationSchema: flattenedRawValidationSchema,

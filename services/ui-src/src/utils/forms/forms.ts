@@ -15,7 +15,11 @@ import { AnyObject, FieldChoice, FormField, ReportDataShape } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
-export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
+export const formFieldFactory = (
+  fields: FormField[],
+  shouldDisableAllFields: boolean,
+  isNested?: boolean
+) => {
   // define form field components
   const fieldToComponentMap: AnyObject = {
     checkbox: CheckboxField,
@@ -36,6 +40,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
       name: field.id,
       nested: isNested,
       hydrate: field.props?.hydrate,
+      disabled: shouldDisableAllFields,
       ...field?.props,
     };
     return React.createElement(componentFieldType, fieldProps);
@@ -44,7 +49,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
 
 export const hydrateFormFields = (
   formFields: FormField[],
-  reportData: ReportDataShape
+  formData: ReportDataShape | undefined
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
@@ -56,7 +61,7 @@ export const hydrateFormFields = (
         choices.forEach((choice: FieldChoice) => {
           // if a choice has children, recurse
           if (choice.children) {
-            hydrateFormFields(choice.children, reportData);
+            hydrateFormFields(choice.children, formData);
           }
         });
       }
@@ -65,7 +70,7 @@ export const hydrateFormFields = (
       formFields[fieldFormIndex].props = {};
     }
     // set props.hydrate
-    const fieldHydrationValue = reportData?.fieldData?.[field.id];
+    const fieldHydrationValue = formData?.fieldData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
   return formFields;

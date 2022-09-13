@@ -1,4 +1,7 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+// forms
+import { isMcparReportFormPage } from "forms/mcpar";
 // utils
 import {
   ReportDataShape,
@@ -47,6 +50,8 @@ export const ReportProvider = ({ children }: Props) => {
     ReportShape[] | undefined
   >();
   const [error, setError] = useState<string>();
+
+  const { pathname } = useLocation();
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
@@ -116,6 +121,19 @@ export const ReportProvider = ({ children }: Props) => {
       fetchReportData(reportDetails);
     }
   }, [report?.reportId]);
+
+  useEffect(() => {
+    const selectedState = localStorage.getItem("selectedState");
+    const selectedReport = localStorage.getItem("selectedReport");
+    if (isMcparReportFormPage(pathname) && selectedState && selectedReport) {
+      const reportDetails = {
+        state: selectedState,
+        reportId: selectedReport,
+      };
+      fetchReport(reportDetails);
+      fetchReportData(reportDetails);
+    }
+  }, []);
 
   const providerValue = useMemo(
     () => ({

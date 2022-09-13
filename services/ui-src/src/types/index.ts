@@ -33,8 +33,9 @@ export interface ReportJson {
   name: string;
   basePath: string;
   version: string;
+  adminDisabled?: boolean;
   routes: ReportRoute[];
-  validationSchema: AnyObject;
+  validationSchema?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
@@ -117,6 +118,7 @@ export interface FormJson {
   fields: FormField[];
   options?: AnyObject;
   validation?: AnyObject;
+  adminDisabled?: boolean;
 }
 
 export interface FormField {

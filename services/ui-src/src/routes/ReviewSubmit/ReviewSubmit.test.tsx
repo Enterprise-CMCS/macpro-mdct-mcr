@@ -23,16 +23,9 @@ jest.mock("utils", () => ({
   },
 }));
 
-const mockUpdateReport = jest.fn();
-
-const mockedReportContext_InProgress = {
-  ...mockReportContext,
-  updateReport: mockUpdateReport,
-};
-
 const ReviewSubmitComponent_InProgress = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_InProgress}>
+    <ReportContext.Provider value={mockReportContext}>
       <ReviewSubmit />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -87,7 +80,7 @@ describe("Test ReviewSubmit functionality", () => {
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
-    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 });
 
