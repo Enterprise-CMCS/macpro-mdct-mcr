@@ -386,6 +386,11 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "4xl",
     fontWeight: "normal",
+    ".mobile &": {
+      fontSize: "21px",
+      lineHeight: "27.3px",
+      fontWeight: "bold",
+    },
   },
   bodyBox: {
     maxWidth: "55.25rem",
