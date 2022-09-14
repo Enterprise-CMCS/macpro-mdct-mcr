@@ -388,7 +388,7 @@ const sx = {
     fontWeight: "normal",
     ".mobile &": {
       fontSize: "xl",
-      lineHeight: "27.3px",
+      lineHeight: "1.75rem",
       fontWeight: "bold",
     },
   },
