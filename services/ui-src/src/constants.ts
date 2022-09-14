@@ -62,3 +62,6 @@ export enum States {
   WI = "Wisconsin",
   WY = "Wyoming",
 }
+
+export const noCombinedDataInput =
+  "No, the report does not contain items for which the state is unable to remove Separate CHIP information";

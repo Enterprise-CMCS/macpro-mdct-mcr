@@ -36,18 +36,18 @@ export const writeReport = handler(async (event, context) => {
   });
 
   const unvalidatedPayload = JSON.parse(event!.body!);
-  const validatedNewReportInfo = await validateData(
+  const validatedPayload = await validateData(
     validationSchema,
     unvalidatedPayload
   );
 
-  if (validatedNewReportInfo) {
+  if (validatedPayload) {
     const state: string = event.pathParameters.state;
     const reportId: string = event.pathParameters.reportId;
     let reportParams = {
       TableName: process.env.REPORT_TABLE_NAME!,
       Item: {
-        ...validatedNewReportInfo,
+        ...validatedPayload,
         state: state,
         reportId: reportId,
         createdAt: Date.now(),

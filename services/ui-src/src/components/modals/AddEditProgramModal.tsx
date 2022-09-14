@@ -1,6 +1,11 @@
 import { useContext } from "react";
+import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
+// form
+import formJson from "forms/addEditProgram/addEditProgram.json";
+import formSchema from "forms/addEditProgram/addEditProgram.schema";
+import { mcparReportJsonNested } from "forms/mcpar";
 // utils
 import { AnyObject, FormJson, ReportStatus } from "types";
 import {
@@ -9,11 +14,7 @@ import {
   useUser,
   writeFormTemplate,
 } from "utils";
-import uuid from "react-uuid";
-// form
-import formJson from "forms/addEditProgram/addEditProgram.json";
-import formSchema from "forms/addEditProgram/addEditProgram.schema";
-import { mcparReportJsonNested } from "forms/mcpar";
+import { noCombinedDataInput } from "../../constants";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -35,9 +36,7 @@ export const AddEditProgramModal = ({
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
     const combinedDataArray = formData["aep-combinedData"];
-    const combinedData =
-      combinedDataArray?.[0] ||
-      "No, the report does not contain items for which the state is unable to remove Separate CHIP information";
+    const combinedData = combinedDataArray?.[0] || noCombinedDataInput;
     const reportDetails = {
       state: activeState,
       reportId: "",

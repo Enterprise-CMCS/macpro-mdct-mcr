@@ -42,11 +42,11 @@ export const writeBanner = handler(async (event, _context) => {
           createdAt: Date.now(),
           lastAltered: Date.now(),
           lastAlteredBy: event?.headers["cognito-identity-id"],
-          title: unvalidatedPayload.title,
-          description: unvalidatedPayload.description,
-          link: unvalidatedPayload.link,
-          startDate: unvalidatedPayload.startDate,
-          endDate: unvalidatedPayload.endDate,
+          title: validatedPayload.title,
+          description: validatedPayload.description,
+          link: validatedPayload.link,
+          startDate: validatedPayload.startDate,
+          endDate: validatedPayload.endDate,
         },
       };
       await dynamoDb.put(params);

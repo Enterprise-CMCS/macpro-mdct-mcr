@@ -47,12 +47,12 @@ export const writeFormTemplate = handler(async (event, _context) => {
       const params = {
         TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
         Item: {
-          formTemplateId: unvalidatedPayload.formTemplateId,
+          formTemplateId: validatedPayload.formTemplateId,
           createdAt: Date.now(),
           lastAltered: Date.now(),
           lastAlteredBy: event?.headers["cognito-identity-id"],
-          formTemplate: unvalidatedPayload.formTemplate,
-          ...unvalidatedPayload,
+          formTemplate: validatedPayload.formTemplate,
+          ...validatedPayload,
         },
       };
       await dynamoDb.put(params);
