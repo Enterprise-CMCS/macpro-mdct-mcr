@@ -47,7 +47,7 @@ export const Dashboard = () => {
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const { state: userState, userRole } = useUser().user ?? {};
-  const { isMobile } = useBreakpoint();
+  const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
   const [selectedReportMetadata, setSelectedReportMetadata] = useState<
     AnyObject | undefined
@@ -152,7 +152,7 @@ export const Dashboard = () => {
       </Box>
       <Box sx={sx.bodyBox}>
         {reportsByState &&
-          (isMobile ? (
+          (isTablet || isMobile ? (
             <MobileDashboardRow
               reportsByState={reportsByState}
               userRole={userRole!}
@@ -222,10 +222,10 @@ const DashboardTable = ({
           )}
         </Td>
         <Td sx={sx.programNameText}>{report.programName}</Td>
-        <Td sx={sx.tableCell}>{convertDateUtcToEt(report.dueDate)}</Td>
-        <Td sx={sx.tableCell}>{convertDateUtcToEt(report.lastAltered)}</Td>
-        <Td sx={sx.editCell}>{report?.lastAlteredBy || "-"}</Td>
-        <Td sx={sx.tableCell}>{report?.status}</Td>
+        <Td>{convertDateUtcToEt(report.dueDate)}</Td>
+        <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
+        <Td>{report?.lastAlteredBy || "-"}</Td>
+        <Td>{report?.status}</Td>
         <Td sx={sx.editReportButtonCell}>
           <Button
             variant="outline"
@@ -368,10 +368,7 @@ const sx = {
     width: "100%",
     maxWidth: "55.25rem",
     margin: "2.5rem auto",
-    ".tablet &": {
-      margin: "2.5rem 0 2.25rem 1rem",
-    },
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       margin: "2.5rem 0 1rem",
     },
   },
@@ -379,6 +376,11 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "4xl",
     fontWeight: "normal",
+    ".tablet &, .mobile &": {
+      fontSize: "xl",
+      lineHeight: "1.75rem",
+      fontWeight: "bold",
+    },
   },
   bodyBox: {
     maxWidth: "55.25rem",
@@ -386,10 +388,7 @@ const sx = {
     ".desktop &": {
       width: "100%",
     },
-    ".tablet &": {
-      margin: "0 1rem",
-    },
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       margin: "0",
     },
   },
@@ -409,10 +408,6 @@ const sx = {
       borderColor: "palette.gray_light",
       color: "palette.gray_medium",
       fontWeight: "bold",
-      "&.tablet": {
-        padding: "0.5rem 0 0.5rem 0.8rem",
-        whiteSpace: "nowrap",
-      },
     },
     tr: {
       borderBottom: "1px solid",
@@ -425,19 +420,6 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       textAlign: "left",
-      ".tablet &": {
-        padding: "0.9rem 0 0.9rem 0.75rem",
-      },
-    },
-  },
-  editCell: {
-    ".tablet &": {
-      width: "7.125rem",
-    },
-  },
-  tableCell: {
-    ".tablet &": {
-      width: "6.5rem",
     },
   },
   editReportButtonCell: {
@@ -451,28 +433,19 @@ const sx = {
       fontSize: "sm",
       fontWeight: "normal",
       color: "palette.primary",
-      ".tablet &": {
-        width: "6rem",
-      },
     },
   },
   editProgram: {
     padding: "0",
     width: "2.5rem",
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       width: "2rem",
     },
     img: {
       height: "1.5rem",
       minWidth: "21px",
       marginLeft: "0.5rem",
-      ".tablet &": {
-        marginLeft: 0,
-        minWidth: "18px",
-        width: "18px",
-        height: "auto",
-      },
-      ".mobile &": {
+      ".tablet &, .mobile &": {
         marginLeft: 0,
       },
     },
@@ -481,23 +454,12 @@ const sx = {
     fontSize: "md",
     fontWeight: "bold",
     width: "13rem",
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       width: "100%",
     },
   },
   deleteProgramCell: {
     width: "2.5rem",
-    ".tablet &": {
-      minWidth: "2rem",
-    },
-    img: {
-      ".tablet &": {
-        marginLeft: 0,
-        minWidth: "20px",
-        width: "20px",
-        height: "auto",
-      },
-    },
   },
   deleteProgramButtonImage: {
     height: "1.75rem",
