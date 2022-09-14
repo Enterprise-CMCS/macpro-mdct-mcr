@@ -133,7 +133,7 @@ export const SuccessMessageGenerator = (
   if (submissionDate && submittedBy) {
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
-    const submittersName = ` by ${submittedBy}`;
+    const submittersName = `by ${submittedBy}`;
     return `MCPAR report for ${programName} ${submittedDate} ${submittersName}`;
   }
 
