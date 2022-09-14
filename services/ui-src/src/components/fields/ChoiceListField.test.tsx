@@ -91,12 +91,20 @@ const RadioComponentWithNestedChildren = (
 describe("Test ChoiceListField component rendering", () => {
   it("RadioField should render nested child fields for choices with children", () => {
     render(RadioComponentWithNestedChildren);
-    expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, true);
+    expect(formFieldFactory).toHaveBeenCalledWith(
+      mockNestedChildren,
+      false,
+      true
+    );
   });
 
   it("CheckboxField should render nested child fields for choices with children", () => {
     render(CheckboxComponentWithNestedChildren);
-    expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, true);
+    expect(formFieldFactory).toHaveBeenCalledWith(
+      mockNestedChildren,
+      false,
+      true
+    );
   });
 });
 

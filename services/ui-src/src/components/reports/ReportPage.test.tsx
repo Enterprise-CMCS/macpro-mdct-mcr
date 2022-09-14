@@ -5,37 +5,14 @@ import { axe } from "jest-axe";
 import { ReportContext, ReportPage, TemplateContext } from "components";
 // utils
 import {
-  mockReportJson,
+  mockReport,
+  mockReportContext,
+  mockReportJsonFlatRoutes,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
 // MOCKS
-
-const mockReportMethods = {
-  setReport: jest.fn(() => {}),
-  setReportData: jest.fn(() => {}),
-  fetchReportData: jest.fn(() => {}),
-  updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
-  updateReport: jest.fn(() => {}),
-  removeReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
-};
-
-const mockReportContext = {
-  ...mockReportMethods,
-  report: {
-    reportId: "mock-report-id",
-  },
-  reportData: {},
-  errorMessage: "",
-};
-
-const mockReportContextWithoutReport = {
-  ...mockReportContext,
-  report: {},
-};
 
 const mockTemplateMethods = {
   fetchFormTemplate: jest.fn(() => {}),
@@ -52,12 +29,8 @@ const mockTemplateContext = {
 };
 
 const mockUseNavigate = jest.fn();
-
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
-}));
-
-jest.mock("react-router", () => ({
   useLocation: jest.fn(() => ({
     pathname: "/mock/mock-route-2",
   })),
@@ -70,31 +43,40 @@ jest.mock("utils", () => ({
   },
 }));
 
-const standardReportPageComponent = (
+const ReportPageComponent_StandardForm = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <TemplateContext.Provider value={mockTemplateContext}>
-        <ReportPage route={mockReportJson.routes[0]} />
+        <ReportPage route={mockReportJsonFlatRoutes.routes[0]} />
       </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const drawerReportPageComponent = (
+const ReportPageComponent_EntityDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <TemplateContext.Provider value={mockTemplateContext}>
-        <ReportPage route={mockReportJson.routes[1]} />
+        <ReportPage route={mockReportJsonFlatRoutes.routes[1]} />
       </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const reportPageWithoutReportId = (
+const mockedReportShapeWithoutReport = {
+  ...mockReport,
+  reportId: "",
+};
+const mockReportContextWithoutReport = {
+  ...mockReportContext,
+  report: mockedReportShapeWithoutReport,
+};
+
+const ReportPageComponent_WithoutReport = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
       <TemplateContext.Provider value={mockTemplateContext}>
-        <ReportPage route={mockReportJson.routes[0]} />
+        <ReportPage route={mockReportJsonFlatRoutes.routes[0]} />
       </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -102,42 +84,45 @@ const reportPageWithoutReportId = (
 
 describe("Test ReportPage view", () => {
   test("ReportPage StandardFormSection view renders", () => {
-    render(standardReportPageComponent);
+    render(ReportPageComponent_StandardForm);
     expect(screen.getByTestId("standard-form-section")).toBeVisible();
   });
 
   test("ReportPage EntityDrawerSection view renders", () => {
-    render(drawerReportPageComponent);
+    render(ReportPageComponent_EntityDrawer);
     expect(screen.getByTestId("entity-drawer-section")).toBeVisible();
   });
 });
 
 describe("Test ReportPage functionality", () => {
+  afterEach(() => jest.clearAllMocks());
+
   test("ReportPage navigates to dashboard if no reportId", () => {
-    render(reportPageWithoutReportId);
+    render(ReportPageComponent_WithoutReport);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mock");
   });
 
-  test("ReportPage navigates on successful fill", async () => {
-    const result = render(standardReportPageComponent);
+  test("ReportPage updates reportData on successful fill", async () => {
+    const result = render(ReportPageComponent_StandardForm);
     const form = result.container;
     const mockField = form.querySelector("[name='mock-1']")!;
     await userEvent.type(mockField, "mock input");
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
-    expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock/mock-route-3");
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReportData).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("Test ReportPage accessibility", () => {
   test("Standard page should not have basic accessibility issues", async () => {
-    const { container } = render(standardReportPageComponent);
+    const { container } = render(ReportPageComponent_StandardForm);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   test("Drawer page should not have basic accessibility issues", async () => {
-    const { container } = render(standardReportPageComponent);
+    const { container } = render(ReportPageComponent_StandardForm);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

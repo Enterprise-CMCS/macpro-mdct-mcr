@@ -2,7 +2,7 @@ import { useContext } from "react";
 // components
 import { Form, Modal, ReportContext, TemplateContext } from "components";
 // utils
-import { FormJson, ReportStatus } from "types";
+import { AnyObject, FormJson, ReportStatus } from "types";
 import { calculateDueDate, convertDateEtToUtc, useUser } from "utils";
 import uuid from "react-uuid";
 // form
@@ -12,7 +12,7 @@ import { mcparReportJsonNested } from "forms/mcpar";
 
 export const AddEditProgramModal = ({
   activeState,
-  selectedReportId,
+  selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
@@ -24,6 +24,8 @@ export const AddEditProgramModal = ({
   form.validation = formSchema;
 
   const writeProgram = async (formData: any) => {
+    const submitButton = document.querySelector("[form=" + form.id + "]");
+    submitButton?.setAttribute("disabled", "true");
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
@@ -39,8 +41,8 @@ export const AddEditProgramModal = ({
       lastAlteredBy: full_name,
     };
     // if an existing program was selected, use that report id
-    if (selectedReportId) {
-      reportDetails.reportId = selectedReportId;
+    if (selectedReportMetadata?.reportId) {
+      reportDetails.reportId = selectedReportMetadata.reportId;
       // edit existing report
       await updateReport(reportDetails, {
         ...dataToWrite,
@@ -74,7 +76,9 @@ export const AddEditProgramModal = ({
       formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedReportId ? "Edit Program" : "Add a Program",
+        heading: selectedReportMetadata?.reportId
+          ? "Edit Program"
+          : "Add a Program",
         actionButtonText: "Save",
         closeButtonText: "Cancel",
       }}
@@ -83,6 +87,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
+        formData={selectedReportMetadata}
         onSubmit={writeProgram}
       />
     </Modal>
@@ -91,7 +96,7 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
-  selectedReportId: string | undefined;
+  selectedReportMetadata?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

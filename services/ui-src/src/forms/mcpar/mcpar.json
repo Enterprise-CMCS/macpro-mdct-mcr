@@ -2,6 +2,7 @@
   "name": "MCPAR",
   "basePath": "/mcpar",
   "version": "MCPAR_2022-09-08",
+  "adminDisabled": true,
   "routes": [
     {
       "name": "A: Program Information",
@@ -1176,7 +1177,7 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "dfp-4-start",
+                          "id": "dfp-4-1",
                           "type": "date",
                           "props": {
                             "hint": "Enter the start date.",
@@ -1184,7 +1185,7 @@
                           }
                         },
                         {
-                          "id": "dfp-4-end",
+                          "id": "dfp-4-2",
                           "type": "date",
                           "props": {
                             "hint": "Enter the end date.",
@@ -1971,15 +1972,192 @@
               "subsection": "VII: Quality Measures"
             }
           },
+          "drawer": {
+            "drawerTitle": "Add a quality & performance measure"
+          },
           "form": {
             "id": "dqm",
             "fields": [
               {
                 "id": "dqm-1",
-                "type": "text",
+                "type": "radio",
                 "props": {
-                  "label": "Temporary placeholder field",
-                  "disabled": true
+                  "label": "D2.VII.1 Measure domain",
+                  "hint": "Select domain or add your own as needed.",
+                  "choices": [
+                    {
+                      "name": "dqm-1-o1",
+                      "type": "choice",
+                      "label": "Primary care access and preventative care"
+                    },
+                    {
+                      "name": "dqm-1-o2",
+                      "type": "choice",
+                      "label": "Maternal and perinatal health"
+                    },
+                    {
+                      "name": "dqm-1-o3",
+                      "type": "choice",
+                      "label": "Care of acute and chronic conditions"
+                    },
+                    {
+                      "name": "dqm-1-o4",
+                      "type": "choice",
+                      "label": "Behavioral health care"
+                    },
+                    {
+                      "name": "dqm-1-o5",
+                      "type": "choice",
+                      "label": "Dental and oral health services"
+                    },
+                    {
+                      "name": "dqm-1-o6",
+                      "type": "choice",
+                      "label": "Health plan enrollee experience of care"
+                    },
+                    {
+                      "name": "dqm-1-o7",
+                      "type": "choice",
+                      "label": "Long-term services and supports"
+                    },
+                    {
+                      "name": "dqm-1-o8",
+                      "type": "choice",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "dqm-1-o8-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-2",
+                "type": "textarea",
+                "props": {
+                  "label": "D2.VII.2 Measure name",
+                  "hint": "What is the measure name?"
+                }
+              },
+              {
+                "id": "dqm-3",
+                "type": "number",
+                "props": {
+                  "label": "D2.VII.3 National Quality Forum (NQF) number",
+                  "hint": "What is the NQF number?"
+                }
+              },
+              {
+                "id": "dqm-4",
+                "type": "radio",
+                "props": {
+                  "label": "D2.VII.4 Measure reporting",
+                  "hint": "Is measure reporting program-specific or cross-program? Select one.",
+                  "choices": [
+                    {
+                      "name": "dqm-4-o1",
+                      "label": "Program-specific rate"
+                    },
+                    {
+                      "name": "dqm-4-o2",
+                      "label": "Cross-program rate",
+                      "children": [
+                        {
+                          "id": "dqm-5a",
+                          "type": "textarea",
+                          "props": {
+                            "label": "D2.VII.5 Measure reporting: List programs",
+                            "hint": "What are the programs? Separate program names with a comma.",
+                            "mask": "comma-separated"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-6",
+                "type": "radio",
+                "props": {
+                  "label": "D2.VII.6 Measure set",
+                  "hint": "What is the measure set? Select one.",
+                  "choices": [
+                    {
+                      "name": "dqm-6-o1",
+                      "label": "Medicaid Child Core Set"
+                    },
+                    {
+                      "name": "dqm-6-o2",
+                      "label": "Medicaid Adult Core Set"
+                    },
+                    {
+                      "name": "dqm-6-o3",
+                      "label": "State-specific"
+                    },
+                    {
+                      "name": "dqm-6-o4",
+                      "label": "HEDIS"
+                    },
+                    {
+                      "name": "dqm-6-o5",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "dqm-6-o5-text",
+                          "type": "textarea"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-7",
+                "type": "radio",
+                "props": {
+                  "label": "D2.VII.7a Reporting period",
+                  "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
+                  "choices": [
+                    {
+                      "name": "dqm-7-o1",
+                      "label": "Yes"
+                    },
+                    {
+                      "name": "dqm-7-o2",
+                      "label": "No",
+                      "children": [
+                        {
+                          "id": "dqm-7b-1",
+                          "type": "date",
+                          "props": {
+                            "label": "D2.VII.7b Reporting period: Date range",
+                            "hint": "What is the reporting period covered by the measure?<br><br>Start date",
+                            "timetype": "startDate"
+                          }
+                        },
+                        {
+                          "id": "dqm-7b-2",
+                          "type": "date",
+                          "props": {
+                            "hint": "End date",
+                            "timetype": "endDate"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "dqm-8",
+                "type": "textarea",
+                "props": {
+                  "label": "D2.VII.8 Measure description",
+                  "hint": "For measures that are not part of standardized national measure sets (i.e. state-specific measures), states should provide a description of the measure (for example, numerator and denominator)."
                 }
               }
             ]

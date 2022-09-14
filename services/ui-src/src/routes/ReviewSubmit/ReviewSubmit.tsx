@@ -23,25 +23,33 @@ export const ReviewSubmit = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // get user's state
+  // get user information
   const { user } = useUser();
   const { full_name, state, userRole } = user ?? {};
 
+  // get state and reportId from context or storage
+  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
+
   const reportDetails = {
-    state: state,
-    reportId: report.reportId,
+    state: reportState,
+    reportId: reportId,
   };
 
   useEffect(() => {
-    fetchReport(reportDetails);
+    if (report?.reportId) {
+      fetchReport(reportDetails);
+    }
   }, []);
 
   const submitForm = () => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+      const submissionDate = Date.now();
       updateReport(reportDetails, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
-        submissionDate: Date.now(),
+        submittedBy: full_name,
+        submittedOnDate: submissionDate,
       });
     }
     onClose();
@@ -51,21 +59,21 @@ export const ReviewSubmit = () => {
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {report.status?.includes(ReportStatus.SUBMITTED) ? (
-          <SuccessMessage
-            programName={report.programName}
-            date={report?.lastAltered}
-            givenName={user?.given_name}
-            familyName={user?.family_name}
-          />
-        ) : (
-          <ReadyToSubmit
-            submitForm={submitForm}
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-          />
-        )}
+        {report &&
+          (report?.status?.includes(ReportStatus.SUBMITTED) ? (
+            <SuccessMessage
+              programName={report.programName}
+              date={report?.submittedOnDate}
+              submittedBy={report?.submittedBy}
+            />
+          ) : (
+            <ReadyToSubmit
+              submitForm={submitForm}
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            />
+          ))}
       </Flex>
     </PageTemplate>
   );
@@ -117,17 +125,33 @@ interface ReadyToSubmitProps {
   onClose: Function;
 }
 
+export const SuccessMessageGenerator = (
+  programName: string,
+  submissionDate?: number,
+  submittedBy?: string
+) => {
+  if (submissionDate && submittedBy) {
+    const readableDate = utcDateToReadableDate(submissionDate, "full");
+    const submittedDate = `was submitted on ${readableDate}`;
+    const submittersName = `by ${submittedBy}`;
+    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}`;
+  }
+
+  return `MCPAR report for ${programName} was submitted.`;
+};
+
 export const SuccessMessage = ({
   programName,
   date,
-  givenName,
-  familyName,
+  submittedBy,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
-  const readableDate = utcDateToReadableDate(date, "full");
-  const submittedDate = `was submitted on ${readableDate}`;
-  const submittersName = ` by ${givenName} ${familyName}`;
+  const submissionMessage = SuccessMessageGenerator(
+    programName,
+    date,
+    submittedBy
+  );
   return (
     <Flex sx={sx.contentContainer}>
       <Box sx={sx.leadTextBox}>
@@ -139,7 +163,7 @@ export const SuccessMessage = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{`MCPAR report for ${programName} ${submittedDate} ${submittersName}`}</Text>
+          <Text>{submissionMessage}</Text>
         </Box>
       </Box>
       <Box>
@@ -152,9 +176,8 @@ export const SuccessMessage = ({
 
 interface SuccessMessageProps {
   programName: string;
-  date: number;
-  givenName?: string;
-  familyName?: string;
+  date?: number;
+  submittedBy?: string;
 }
 
 const sx = {

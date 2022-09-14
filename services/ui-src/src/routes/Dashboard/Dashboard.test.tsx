@@ -10,10 +10,10 @@ import {
   mockAdminUser,
   mockHelpDeskUser,
   mockNoUser,
-  mockReportStatus,
   mockStateApprover,
   mockStateRep,
   mockStateUser,
+  mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
@@ -36,38 +36,26 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const mockReportMethods = {
-  setReport: jest.fn(() => {}),
-  setReportData: jest.fn(() => {}),
-  fetchReportData: jest.fn(() => {}),
-  updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
-  updateReport: jest.fn(() => {}),
-  removeReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
-};
+const mockFetchReport = jest.fn();
 
-const mockReportContext = {
-  ...mockReportMethods,
-  report: {},
-  reportData: {},
-  reportsByState: [mockReportStatus],
-  errorMessage: undefined,
-};
-
-const mockReportContextNoReports = {
+const mockedReportContext = {
   ...mockReportContext,
-  reportsByState: undefined!,
+  fetchReport: mockFetchReport,
 };
 
-const mockReportContextWithError = {
-  ...mockReportContext,
+const mockedReportContextNoReports = {
+  ...mockedReportContext,
+  reportsByState: undefined,
+};
+
+const mockedReportContextWithError = {
+  ...mockedReportContext,
   errorMessage: "test error",
 };
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockedReportContext}>
       <Dashboard />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -75,7 +63,7 @@ const dashboardViewWithReports = (
 
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContextNoReports}>
+    <ReportContext.Provider value={mockedReportContextNoReports}>
       <Dashboard />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -83,7 +71,7 @@ const dashboardViewNoReports = (
 
 const dashboardViewWithError = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContextWithError}>
+    <ReportContext.Provider value={mockedReportContextWithError}>
       <Dashboard />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -111,10 +99,11 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
   });
 
-  test("Clicking 'Enter' button on a report navigates to first page of report", async () => {
-    const enterReportButton = screen.getByText("Enter");
+  test("Clicking 'Enter' button on a report row fetches the reportData, then navigates to report", async () => {
+    const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
+    expect(mockFetchReport).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith(
       "/mcpar/program-information/point-of-contact"
@@ -129,7 +118,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
-    const addProgramButton = screen.getByAltText("Edit Program");
+    const addProgramButton = screen.getAllByAltText("Edit Program")[0];
     expect(addProgramButton).toBeVisible();
     await userEvent.click(addProgramButton);
     await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
@@ -152,14 +141,14 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
     jest.clearAllMocks();
   });
 
-  test("Check that Dashboard view renders", () => {
+  test("Dashboard view renders", () => {
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
-    expect(screen.getByTestId("mobile-row")).toBeVisible();
+    expect(screen.getAllByTestId("mobile-row")[0]).toBeVisible();
     expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
   });
 
   test("Clicking 'Enter' button on a report navigates to first page of report", async () => {
-    const enterReportButton = screen.getByText("Enter");
+    const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
@@ -176,7 +165,7 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
   });
 
   test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
-    const addProgramButton = screen.getByAltText("Edit Program");
+    const addProgramButton = screen.getAllByAltText("Edit Program")[0];
     expect(addProgramButton).toBeVisible();
     await userEvent.click(addProgramButton);
     await expect(screen.getByTestId("add-edit-program-form")).toBeVisible();
@@ -200,7 +189,7 @@ describe("Test Dashboard report deletion privileges (desktop)", () => {
     await act(async () => {
       await render(dashboardViewWithReports);
     });
-    const deleteProgramButton = screen.getByAltText("Delete Program");
+    const deleteProgramButton = screen.getAllByAltText("Delete Program")[0];
     expect(deleteProgramButton).toBeVisible();
     await userEvent.click(deleteProgramButton);
     await expect(screen.getByTestId("delete-program-modal-text")).toBeVisible();
@@ -255,7 +244,7 @@ describe("Test Dashboard report deletion privileges (mobile)", () => {
     await act(async () => {
       await render(dashboardViewWithReports);
     });
-    const deleteProgramButton = screen.getByAltText("Delete Program");
+    const deleteProgramButton = screen.getAllByAltText("Delete Program")[0];
     expect(deleteProgramButton).toBeVisible();
     await userEvent.click(deleteProgramButton);
     await expect(screen.getByTestId("delete-program-modal-text")).toBeVisible();

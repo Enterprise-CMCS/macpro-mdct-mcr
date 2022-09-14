@@ -6,7 +6,11 @@ import { Icon, TemplateContext } from "components";
 // utils
 import { useFindRoute } from "utils";
 
-export const ReportPageFooter = ({ formId, ...props }: Props) => {
+export const ReportPageFooter = ({
+  formId,
+  shouldDisableAllFields,
+  ...props
+}: Props) => {
   const navigate = useNavigate();
   const { formTemplate, formRoutes } = useContext(TemplateContext);
   const { previousRoute, nextRoute } = useFindRoute(
@@ -24,20 +28,20 @@ export const ReportPageFooter = ({ formId, ...props }: Props) => {
           >
             Previous
           </Button>
-          {formId ? (
+          {!formId || shouldDisableAllFields ? (
+            <Button
+              onClick={() => navigate(nextRoute)}
+              rightIcon={<Icon icon="arrowRight" />}
+            >
+              Continue
+            </Button>
+          ) : (
             <Button
               form={formId}
               type="submit"
               rightIcon={<Icon icon="arrowRight" />}
             >
               Save & continue
-            </Button>
-          ) : (
-            <Button
-              onClick={() => navigate(nextRoute)}
-              rightIcon={<Icon icon="arrowRight" />}
-            >
-              Continue
             </Button>
           )}
         </Flex>
