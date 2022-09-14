@@ -12,6 +12,7 @@
           "name": "Point of Contact",
           "path": "/mcpar/program-information/point-of-contact",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "Section A: Program Information",
               "subsection": "Point of Contact",
@@ -84,6 +85,7 @@
           "name": "Reporting Period",
           "path": "/mcpar/program-information/reporting-period",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "Section A: Program Information",
               "subsection": "Reporting Period"
@@ -129,6 +131,7 @@
           "name": "Add Plans",
           "path": "/mcpar/program-information/add-plans",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "Section A: Program Information",
               "subsection": "Add plans (A.7)",
@@ -152,6 +155,7 @@
           "name": "Add BSS Entities",
           "path": "/mcpar/program-information/add-bss-entities",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "Section A: Program Information",
               "subsection": "Add BSS entities (A.8)",
@@ -186,6 +190,7 @@
           "name": "I: Program Characteristics",
           "path": "/mcpar/state-level-indicators/program-characteristics",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "Section B: State-Level Indicators",
               "subsection": "I. Program Characteristics and Enrollment"
@@ -219,6 +224,7 @@
           "name": "III: Encounter Data Report",
           "path": "/mcpar/state-level-indicators/encounter-data-report",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "Section B: State-Level Indicators",
               "subsection": "Topic III. Encounter Data Report"
@@ -307,6 +313,7 @@
           "name": "X: Program Integrity",
           "path": "/mcpar/state-level-indicators/program-integrity",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "B: State-Level Indicators",
               "subsection": "Topic X: Program Integrity"
@@ -513,6 +520,7 @@
           "name": "I: Program Characteristics",
           "path": "/mcpar/program-level-indicators/program-characteristics",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "C: Program-Level Indicators",
               "subsection": "Topic I: Program Characteristics",
@@ -659,6 +667,7 @@
           "name": "III: Encounter Data Report",
           "path": "/mcpar/program-level-indicators/encounter-data-report",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "C: Program-Level Indicators",
               "subsection": "Topic III: Encounter Data Report",
@@ -812,6 +821,7 @@
           "name": "IV: Appeals, State Fair Hearings & Grievances",
           "path": "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "C: Program-Level Indicators",
               "subsection": "Topic IV. Grievances, Appeals & State Fair Hearings",
@@ -867,6 +877,7 @@
               "name": "Network Adequacy",
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
               "page": {
+                "pageType": "staticPage",
                 "intro": {
                   "section": "C: Program-Level Indicators",
                   "subsection": "Topic V. Availability/Accessibility: Network Adequacy",
@@ -913,9 +924,36 @@
               "name": "Access Measures",
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
               "page": {
+                "pageType": "dynamicDrawer",
                 "intro": {
-                  "section": "C: Program-Level Indicators > V: Availability & Accessibility",
-                  "subsection": "Access Measures"
+                  "section": "Section C: Program-Level Indicators",
+                  "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
+                  "spreadsheet": {
+                    "title": "Find in the Excel Workbook",
+                    "descriptionList": ["C2_Program_State"]
+                  },
+                  "info": [
+                    {
+                      "type": "html",
+                      "content": "<p><b>Access Measures</b></p>"
+                    },
+                    {
+                      "type": "html",
+                      "content": "<p>Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level.</p>"
+                    },
+                    {
+                      "type": "html",
+                      "content": "</br><p>Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p>"
+                    },
+                    {
+                      "type": "html",
+                      "content": "</br><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program.</p>"
+                    }
+                  ]
+                },
+                "dynamicTable": {
+                  "tableHeading": "Add measures for monitoring access standards",
+                  "addEntityText": "Add access measure"
                 }
               },
               "form": {
@@ -923,10 +961,355 @@
                 "fields": [
                   {
                     "id": "cam-1",
-                    "type": "text",
+                    "type": "radio",
                     "props": {
-                      "label": "Temporary placeholder field",
-                      "disabled": true
+                      "label": "C2.V.1 General category",
+                      "hint": "Select one.",
+                      "choices": [
+                        {
+                          "name": "cam-1-o1",
+                          "type": "choice",
+                          "label": "General quantitative availability and accessibility standard"
+                        },
+                        {
+                          "name": "cam-1-o2",
+                          "type": "choice",
+                          "label": "LTSS-related standard: provider travels to the enrollee"
+                        },
+                        {
+                          "name": "cam-1-o3",
+                          "type": "choice",
+                          "label": "LTSS-related standard: enrollee travels to the provider"
+                        },
+                        {
+                          "name": "cam-1-o4",
+                          "type": "choice",
+                          "label": "Exceptions to time and distance standards"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "cam-2",
+                    "type": "textarea",
+                    "props": {
+                      "label": "C2.V.2 Measure standard",
+                      "hint": "What is the standard for your program-level indicators? Add a description."
+                    }
+                  },
+                  {
+                    "id": "cam-3",
+                    "type": "radio",
+                    "props": {
+                      "label": "C2.V.3 Standard type",
+                      "hint": "What is the standard type? Select one or add free text if you select \"Other\".",
+                      "choices": [
+                        {
+                          "name": "cam-3-o1",
+                          "type": "choice",
+                          "label": "Maximum time to travel; Maximum distance to travel"
+                        },
+                        {
+                          "name": "cam-3-o2",
+                          "type": "choice",
+                          "label": "Maximum time or distance"
+                        },
+                        {
+                          "name": "cam-3-o3",
+                          "type": "choice",
+                          "label": "Ease of getting a timely appointment"
+                        },
+                        {
+                          "name": "cam-3-o4",
+                          "type": "choice",
+                          "label": "Appointment wait time"
+                        },
+                        {
+                          "name": "cam-3-o5",
+                          "type": "choice",
+                          "label": "Hours of operation"
+                        },
+                        {
+                          "name": "cam-3-o6",
+                          "type": "choice",
+                          "label": "Provider to enrollee ratios"
+                        },
+                        {
+                          "name": "cam-3-o7",
+                          "type": "choice",
+                          "label": "Minimum number of network providers"
+                        },
+                        {
+                          "name": "cam-3-o8",
+                          "type": "choice",
+                          "label": "Service fulfillment"
+                        },
+                        {
+                          "name": "cam-3-o9",
+                          "type": "choice",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "cam-3-o9-text",
+                              "type": "textarea",
+                              "props": {
+                                "label": "",
+                                "hint": ""
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "cam-4",
+                    "type": "radio",
+                    "props": {
+                      "label": "C2.V.4 Provider type",
+                      "hint": "What is the provider type? Select one or add free text if you select \"Other\"",
+                      "choices": [
+                        {
+                          "name": "cam-4-o1",
+                          "type": "choice",
+                          "label": "Primary care;"
+                        },
+                        {
+                          "name": "cam-4-o1",
+                          "type": "choice",
+                          "label": "Behavioral health"
+                        },
+                        {
+                          "name": "cam-4-o1",
+                          "type": "choice",
+                          "label": "Hospital"
+                        },
+                        {
+                          "name": "cam-4-o1",
+                          "type": "choice",
+                          "label": "LTSS-personal care assistant"
+                        },
+                        {
+                          "name": "cam-4-o1",
+                          "type": "choice",
+                          "label": "LTSS assistive technology"
+                        },
+                        {
+                          "name": "cam-4-o1",
+                          "type": "choice",
+                          "label": "LTSS-adult day care"
+                        },
+                        {
+                          "name": "cam-4-o1",
+                          "type": "choice",
+                          "label": "LTSS-SNF"
+                        },
+                        {
+                          "name": "cam-4-o8",
+                          "type": "choice",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "cam-4-o8-text",
+                              "type": "textarea",
+                              "props": {
+                                "label": "",
+                                "hint": ""
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "cam-5",
+                    "type": "radio",
+                    "props": {
+                      "label": "C2.V.5 Applicable region(s)",
+                      "hint": "What is the applicable region? Select one or add free text if you select \"Other\"",
+                      "choices": [
+                        {
+                          "name": "cam-5-o1",
+                          "type": "choice",
+                          "label": "Urban"
+                        },
+                        {
+                          "name": "cam-5-o2",
+                          "type": "choice",
+                          "label": "Rural"
+                        },
+                        {
+                          "name": "cam-5-o3",
+                          "type": "choice",
+                          "label": "Large counties"
+                        },
+                        {
+                          "name": "cam-5-o4",
+                          "type": "choice",
+                          "label": "Small counties"
+                        },
+                        {
+                          "name": "cam-5-o5",
+                          "type": "choice",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "cam-5-o5-text",
+                              "type": "textarea",
+                              "props": {
+                                "label": "",
+                                "hint": ""
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "cam-6",
+                    "type": "radio",
+                    "props": {
+                      "label": "C2.V.6 Population",
+                      "hint": "What is the population? Select one or add free text if you select \"Other\"",
+                      "choices": [
+                        {
+                          "name": "cam-6-o1",
+                          "type": "choice",
+                          "label": "Adult"
+                        },
+                        {
+                          "name": "cam-6-o2",
+                          "type": "choice",
+                          "label": "Pediatric"
+                        },
+                        {
+                          "name": "cam-6-o3",
+                          "type": "choice",
+                          "label": "Adult and pediatric"
+                        },
+                        {
+                          "name": "cam-6-o4",
+                          "type": "choice",
+                          "label": "MLTSS"
+                        },
+                        {
+                          "name": "cam-6-o5",
+                          "type": "choice",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "cam-6-o5-text",
+                              "type": "textarea",
+                              "props": {
+                                "label": "",
+                                "hint": ""
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "cam-7",
+                    "type": "checkbox",
+                    "props": {
+                      "label": "C2.V.7 Monitoring methods",
+                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select \"Other\"",
+                      "choices": [
+                        {
+                          "name": "cam-7-o1",
+                          "type": "choice",
+                          "label": "Geomapping"
+                        },
+                        {
+                          "name": "cam-7-o2",
+                          "type": "choice",
+                          "label": "Plan provider roster review"
+                        },
+                        {
+                          "name": "cam-7-o3",
+                          "type": "choice",
+                          "label": "Secret shopper calls"
+                        },
+                        {
+                          "name": "cam-7-o4",
+                          "type": "choice",
+                          "label": "EVV data analysis"
+                        },
+                        {
+                          "name": "cam-7-o5",
+                          "type": "choice",
+                          "label": "Review of grievances related to access"
+                        },
+                        {
+                          "name": "cam-7-o6",
+                          "type": "choice",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "cam-7-o6-text",
+                              "type": "textarea",
+                              "props": {
+                                "label": "",
+                                "hint": ""
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "cam-8",
+                    "type": "radio",
+                    "props": {
+                      "label": "C2.V.8 Frequency of oversight methods",
+                      "hint": "What is the frequency of oversight methods? Select one or add free text if you select \"Other\"",
+                      "choices": [
+                        {
+                          "name": "cam-8-o1",
+                          "type": "choice",
+                          "label": "At procurement"
+                        },
+                        {
+                          "name": "cam-8-o2",
+                          "type": "choice",
+                          "label": "Monthly"
+                        },
+                        {
+                          "name": "cam-8-o3",
+                          "type": "choice",
+                          "label": "Quarterly"
+                        },
+                        {
+                          "name": "cam-8-o4",
+                          "type": "choice",
+                          "label": "Annually"
+                        },
+                        {
+                          "name": "cam-8-o5",
+                          "type": "choice",
+                          "label": "Less than annually"
+                        },
+                        {
+                          "name": "cam-8-o6",
+                          "type": "choice",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "cam-8-o6-text",
+                              "type": "textarea",
+                              "props": {
+                                "label": "",
+                                "hint": ""
+                              }
+                            }
+                          ]
+                        }
+                      ]
                     }
                   }
                 ]
@@ -938,6 +1321,7 @@
           "name": "IX: BSS",
           "path": "/mcpar/program-level-indicators/bss",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "C: Program-Level Indicators",
               "subsection": "Topic IX: Beneficiary Support System (BSS)",
@@ -989,6 +1373,7 @@
           "name": "X: Program Integrity",
           "path": "/mcpar/program-level-indicators/program-integrity",
           "page": {
+            "pageType": "staticPage",
             "intro": {
               "section": "C: Program-Level Indicators",
               "subsection": "Topic X: Program Integrity",
@@ -1034,6 +1419,7 @@
           "name": "I: Program Characteristics",
           "path": "/mcpar/plan-level-indicators/program-characteristics",
           "page": {
+            "pageType": "staticDrawer",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic I. Program Characteristics & Enrollment",
@@ -1087,6 +1473,7 @@
           "name": "II: Financial Performance",
           "path": "/mcpar/plan-level-indicators/financial-performance",
           "page": {
+            "pageType": "staticDrawer",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic II. Financial Performance",
@@ -1209,6 +1596,7 @@
           "name": "III: Encounter Data Report",
           "path": "/mcpar/plan-level-indicators/encounter-data-report",
           "page": {
+            "pageType": "staticDrawer",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic III. Encounter Data",
@@ -1265,6 +1653,7 @@
               "name": "Appeals Overview",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
               "page": {
+                "pageType": "staticDrawer",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1408,6 +1797,7 @@
               "name": "Appeals by Service",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
               "page": {
+                "pageType": "staticDrawer",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1535,6 +1925,7 @@
               "name": "State Fair Hearings",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
               "page": {
+                "pageType": "staticDrawer",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1622,6 +2013,7 @@
               "name": "Grievances Overview",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
               "page": {
+                "pageType": "staticDrawer",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1694,6 +2086,7 @@
               "name": "Grievances by Service",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
               "page": {
+                "pageType": "staticDrawer",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1823,6 +2216,7 @@
               "name": "Grievances by Reason",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
               "page": {
+                "pageType": "staticDrawer",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1967,13 +2361,29 @@
           "name": "VII: Quality Measures",
           "path": "/mcpar/plan-level-indicators/quality-measures",
           "page": {
+            "pageType": "dynamicDrawer",
             "intro": {
-              "section": "D: Plan-Level Indicators",
-              "subsection": "VII: Quality Measures"
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VII: Quality Measures",
+              "spreadsheet": {
+                "title": "Find in the Excel Workbook",
+                "descriptionList": ["D2_Plan_Measures"]
+              },
+              "info": [
+                {
+                  "type": "html",
+                  "content": "<p><b>Add Quality & Performance Measures</b></p>"
+                },
+                {
+                  "type": "html",
+                  "content": "</br><p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
+                }
+              ]
+            },
+            "dynamicTable": {
+              "tableHeading": "Add quality & performance measure",
+              "addEntityText": "Add quality & performance measure"
             }
-          },
-          "drawer": {
-            "drawerTitle": "Add a quality & performance measure"
           },
           "form": {
             "id": "dqm",
@@ -2167,6 +2577,7 @@
           "name": "VIII: Sanctions",
           "path": "/mcpar/plan-level-indicators/sanctions",
           "page": {
+            "pageType": "dynamicDrawer",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic VIII. Sanctions",
@@ -2176,23 +2587,18 @@
               },
               "info": [
                 {
-                  "type": "text",
-                  "as": "p",
-                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other."
+                  "type": "html",
+                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p>"
                 },
                 {
-                  "type": "text",
-                  "as": "p",
-                  "content": "42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance."
+                  "type": "html",
+                  "content": "</br><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
                 }
               ]
             },
-            "drawer": {
-              "dashboard": {
-                "title": "Intervention Type",
-                "entityType": "plans"
-              },
-              "drawerTitle": "Add a sanction for"
+            "dynamicTable": {
+              "tableHeading": "Intervention Type",
+              "addEntityText": "Add a sanction"
             }
           },
           "form": {
@@ -2383,6 +2789,7 @@
           "name": "X: Program Integrity",
           "path": "/mcpar/plan-level-indicators/program-integrity",
           "page": {
+            "pageType": "staticDrawer",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic X. Program Integrity",
@@ -2571,6 +2978,7 @@
       "name": "E: BSS Entity Indicators",
       "path": "/mcpar/bss-entity-indicators",
       "page": {
+        "pageType": "staticDrawer",
         "intro": {
           "section": "Section E: BSS Entity Indicators",
           "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",

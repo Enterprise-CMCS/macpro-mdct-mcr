@@ -153,6 +153,12 @@ export interface ChoiceFieldProps {
   [key: string]: any;
 }
 
+export enum PageTypes {
+  STATIC_PAGE = "staticPage",
+  STATIC_DRAWER = "staticDrawer",
+  DYNAMIC_DRAWER = "dynamicDrawer",
+}
+
 // BANNER
 
 export interface BannerData {
