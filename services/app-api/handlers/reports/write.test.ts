@@ -44,7 +44,7 @@ const submissionEvent: APIGatewayProxyEvent = {
 
 const creationEventWithInvalidData: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{}`,
+  body: `{"programName":{}}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB", reportId: "testReportId" },
 };
