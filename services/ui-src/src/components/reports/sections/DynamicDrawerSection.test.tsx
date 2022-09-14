@@ -42,9 +42,28 @@ describe("Test DynamicDrawerSection view", () => {
 describe("Test DynamicDrawerSection add entity operation", () => {
   test("Drawer opens correctly", async () => {
     render(dynamicDrawerSectionComponent);
-    const launchDrawerButton = screen.getAllByText("Add access measure")[0];
-    await userEvent.click(launchDrawerButton);
-    await expect(screen.getByRole("dialog")).toBeVisible();
+    const addEntityButton = screen.getAllByText("Add access measure")[0];
+    await userEvent.click(addEntityButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+  });
+});
+
+describe("Test DynamicDrawerSection edit entity operation", () => {
+  test("Drawer opens correctly", async () => {
+    render(dynamicDrawerSectionComponent);
+    const editEntityButton = screen.getAllByText("Edit")[0];
+    await userEvent.click(editEntityButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+  });
+});
+
+describe("Test DynamicDrawerSection delete entity operation", () => {
+  test("Drawer opens correctly", async () => {
+    render(dynamicDrawerSectionComponent);
+    const deleteEntityButton = screen.getAllByText("Delete")[0];
+    expect(screen.getAllByText("Delete").length).toBe(3);
+    await userEvent.click(deleteEntityButton);
+    expect(screen.getAllByText("Delete").length).toBe(2);
   });
 });
 

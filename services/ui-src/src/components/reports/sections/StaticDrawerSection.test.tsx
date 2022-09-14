@@ -44,7 +44,7 @@ describe("Test StaticDrawerSection add entity operation", () => {
     render(staticDrawerSectionComponent);
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
-    await expect(screen.getByRole("dialog")).toBeVisible();
+    expect(screen.getByRole("dialog")).toBeVisible();
   });
 });
 
