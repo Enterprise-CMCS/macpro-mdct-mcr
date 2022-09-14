@@ -100,7 +100,7 @@ export const Dashboard = () => {
             reportMetadata.reportingPeriodStartDate
           ),
         },
-        state: activeState,
+        state: reportMetadata.state,
         reportId: reportMetadata.reportId,
       };
     }
