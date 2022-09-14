@@ -4,18 +4,14 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
-// utils
 import {
-  mockReportData,
   mockReportDetails,
-  mockReportStatus,
+  mockReport,
+  mockReportData,
+  RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
-jest.mock("utils/api/requestMethods/reportData", () => ({
-  getReportData: jest.fn(() => {}),
-  writeReportData: jest.fn(() => {}),
-}));
-
+const mockReportAPI = require("utils/api/requestMethods/report");
 jest.mock("utils/api/requestMethods/report", () => ({
   getReport: jest.fn(() => {}),
   getReportsByState: jest.fn(() => {}),
@@ -24,7 +20,10 @@ jest.mock("utils/api/requestMethods/report", () => ({
 }));
 
 const mockReportDataAPI = require("utils/api/requestMethods/reportData");
-const mockReportAPI = require("utils/api/requestMethods/report");
+jest.mock("utils/api/requestMethods/reportData", () => ({
+  getReportData: jest.fn(() => {}),
+  writeReportData: jest.fn(() => {}),
+}));
 
 const TestComponent = () => {
   const { ...context } = useContext(ReportContext);
@@ -51,9 +50,7 @@ const TestComponent = () => {
         Write Report Data
       </button>
       <button
-        onClick={() =>
-          context.updateReport(mockReportDetails, mockReportStatus)
-        }
+        onClick={() => context.updateReport(mockReportDetails, mockReport)}
         data-testid="write-report-status-button"
       >
         Write Report
@@ -78,12 +75,14 @@ const TestComponent = () => {
 };
 
 const testComponent = (
-  <ReportProvider>
-    <TestComponent />
-  </ReportProvider>
+  <RouterWrappedComponent>
+    <ReportProvider>
+      <TestComponent />
+    </ReportProvider>
+  </RouterWrappedComponent>
 );
 
-describe("Test fetch methods", () => {
+describe("Test ReportProvider fetch methods", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(testComponent);
@@ -180,7 +179,7 @@ describe("Test ReportProvider updateReport method", () => {
     expect(mockReportAPI.writeReport).toHaveBeenCalledTimes(1);
     expect(mockReportAPI.writeReport).toHaveBeenCalledWith(
       mockReportDetails,
-      mockReportStatus
+      mockReport
     );
   });
 

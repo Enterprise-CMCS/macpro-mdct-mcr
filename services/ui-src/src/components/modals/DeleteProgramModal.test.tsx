@@ -3,38 +3,22 @@ import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 //components
 import { DeleteProgramModal, ReportContext } from "components";
+import { mockReport, mockReportContext } from "utils/testing/setupJest";
 
 const mockCloseHandler = jest.fn();
 const mockRemoveReport = jest.fn();
 const mockFetchReportsByState = jest.fn();
 
-const activeState = "AL";
-const selectedReportId = "reportId";
-
-const mockReportMethods = {
-  setReport: jest.fn(() => {}),
-  setReportData: jest.fn(() => {}),
-  fetchReportData: jest.fn(() => {}),
-  updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
-  updateReport: jest.fn(() => {}),
+const mockedReportContext = {
+  ...mockReportContext,
   removeReport: mockRemoveReport,
   fetchReportsByState: mockFetchReportsByState,
 };
 
-const mockReportContext = {
-  ...mockReportMethods,
-  report: {},
-  reportData: {},
-  reportsByState: [],
-  errorMessage: "",
-};
-
 const modalComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockedReportContext}>
     <DeleteProgramModal
-      activeState={activeState}
-      selectedReportId={selectedReportId}
+      selectedReportMetadata={mockReport}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -78,7 +62,7 @@ describe("Test DeleteProgramModal", () => {
   });
 });
 
-describe("Test DeleteProgramModal accessibility", () => {
+describe("Test deleteProgramModal accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(modalComponent);
     const results = await axe(container);

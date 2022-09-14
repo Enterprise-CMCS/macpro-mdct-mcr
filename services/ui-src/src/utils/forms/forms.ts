@@ -11,13 +11,17 @@ import {
   TextAreaField,
 } from "components";
 // types
-import { AnyObject, FieldChoice, FormField } from "types";
+import { AnyObject, FieldChoice, FormField, ReportDataShape } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
-export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
+export const formFieldFactory = (
+  fields: FormField[],
+  shouldDisableAllFields: boolean,
+  isNested?: boolean
+) => {
   // define form field components
-  const fieldToComponentMap: any = {
+  const fieldToComponentMap: AnyObject = {
     checkbox: CheckboxField,
     date: DateField,
     dropdown: DropdownField,
@@ -36,6 +40,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
       name: field.id,
       nested: isNested,
       hydrate: field.props?.hydrate,
+      disabled: shouldDisableAllFields,
       ...field?.props,
     };
     return React.createElement(componentFieldType, fieldProps);
@@ -44,7 +49,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
 
 export const hydrateFormFields = (
   formFields: FormField[],
-  reportData: AnyObject
+  reportData: ReportDataShape | undefined
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
@@ -107,9 +112,12 @@ export const initializeDropdownFields = (fields: FormField[]) => {
   return fields;
 };
 
-export const sortFormErrors = (form: any, errors: any) => {
+export const sortFormErrors = (
+  form: AnyObject,
+  errors: AnyObject
+): string[] => {
   // sort errors into new array
-  const sortedErrorArray: any = [];
+  const sortedErrorArray: string[] = [];
   for (let fieldName in form) {
     if (errors[fieldName]) {
       sortedErrorArray.push(fieldName);
