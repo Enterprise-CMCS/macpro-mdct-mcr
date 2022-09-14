@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
@@ -11,16 +10,14 @@ import {
   Profile,
   ReviewSubmit,
 } from "routes";
-import { AdminBannerProvider, ReportPage, TemplateContext } from "components";
+import { AdminBannerProvider, ReportPage } from "components";
 
 // utils
-import { ReportRoute, UserRoles } from "types";
+import { UserRoles } from "types";
 import { ScrollToTopComponent } from "utils";
 
 export const AppRoutes = ({ userRole }: Props) => {
   const isAdmin = userRole === UserRoles.ADMIN;
-
-  const { formRoutes } = useContext(TemplateContext);
 
   return (
     <main id="main-content" tabIndex={-1}>
@@ -37,19 +34,7 @@ export const AppRoutes = ({ userRole }: Props) => {
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<Dashboard />} />
           <Route path="/mcpar/get-started" element={<GetStarted />} />
-          {formRoutes &&
-            formRoutes.map((route: ReportRoute) => {
-              return (
-                route.form &&
-                route.page && (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<ReportPage route={route} />}
-                  />
-                )
-              );
-            })}
+          <Route path="/mcpar/report/:state/:reportId/*" element={<ReportPage />} />
           <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 

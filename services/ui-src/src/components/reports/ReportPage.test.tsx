@@ -47,7 +47,7 @@ const ReportPageComponent_StandardForm = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <TemplateContext.Provider value={mockTemplateContext}>
-        <ReportPage route={mockReportJsonFlatRoutes.routes[0]} />
+        <ReportPage />
       </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -57,7 +57,7 @@ const ReportPageComponent_EntityDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <TemplateContext.Provider value={mockTemplateContext}>
-        <ReportPage route={mockReportJsonFlatRoutes.routes[1]} />
+        <ReportPage />
       </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -76,7 +76,7 @@ const ReportPageComponent_WithoutReport = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
       <TemplateContext.Provider value={mockTemplateContext}>
-        <ReportPage route={mockReportJsonFlatRoutes.routes[0]} />
+        <ReportPage />
       </TemplateContext.Provider>
     </ReportContext.Provider>
   </RouterWrappedComponent>

@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useLocation } from "react-router-dom"
 // components
 import { ReportContext } from "components";
 // utils
@@ -14,6 +15,7 @@ import {
   flattenReportRoutesArray,
   getFormTemplate,
   writeFormTemplate,
+  findRoutes,
 } from "utils";
 // verbiage
 import { formTemplateErrors } from "verbiage/errors";
@@ -23,6 +25,9 @@ export const TemplateContext = createContext<AnyObject>({
   formTemplate: undefined,
   fetchFormTemplate: Function,
   saveFormTemplate: Function,
+  routesLoaded: undefined,
+  previousRoute: undefined,
+  nextRoute: undefined,
   errorMessage: undefined,
 });
 
@@ -30,6 +35,9 @@ export const TemplateProvider = ({ children }: Props) => {
   const [formRoutes, setFormRoutes] = useState<AnyObject>();
   const [formTemplate, setFormTemplate] = useState<AnyObject>();
   const [error, setError] = useState<string>();
+  const [routesLoaded, setRoutesLoaded] = useState<boolean>(false);
+  const [previousRoute, setPreviousRoute] = useState<string>();
+  const [nextRoute, setNextRoute] = useState<string>();
 
   const { report } = useContext(ReportContext);
 
@@ -41,6 +49,7 @@ export const TemplateProvider = ({ children }: Props) => {
       // flatten and set routes
       const routes = flattenReportRoutesArray(formTemplate.routes);
       setFormRoutes(routes);
+      setRoutesLoaded(true);
     } catch (e: any) {
       setError(formTemplateErrors.GET_FORM_TEMPLATE_FAILED);
     }
@@ -60,15 +69,32 @@ export const TemplateProvider = ({ children }: Props) => {
     }
   }, [report]);
 
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (formRoutes && formTemplate?.basePath) {
+      const { previousRoute: foundPreviousRoute, nextRoute: foundNextRoute } = findRoutes(
+        pathname,
+        formRoutes,
+        formTemplate.basePath
+      );
+      setPreviousRoute(foundPreviousRoute);
+      setNextRoute(foundNextRoute);
+    }
+  }, [formRoutes, formTemplate])
+
   const providerValue = useMemo(
     () => ({
       formRoutes,
       formTemplate,
       fetchFormTemplate,
       saveFormTemplate,
+      routesLoaded,
+      previousRoute,
+      nextRoute,
       errorMessage: error,
     }),
-    [formRoutes, formTemplate, error]
+    [formRoutes, formTemplate, error, routesLoaded, previousRoute, nextRoute]
   );
 
   return (

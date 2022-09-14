@@ -82,7 +82,7 @@ export const Dashboard = () => {
 
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
-    const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
+    const reportFirstPagePath = `/mcpar/report/${reportDetails.state}/${reportDetails.reportId}/program-information/point-of-contact`;
     navigate(reportFirstPagePath);
   };
 

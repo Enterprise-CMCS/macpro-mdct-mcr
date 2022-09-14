@@ -96,7 +96,7 @@ const NavSection = ({ section, level }: NavSectionProps) => {
       ) : (
         <Link
           as={RouterLink}
-          to={path}
+          to={pathname.split("/").slice(0,5).join("/") + path}
           variant="unstyled"
           sx={sx.navLinkSansChildren}
         >

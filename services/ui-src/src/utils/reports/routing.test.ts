@@ -1,4 +1,4 @@
-import { useFindRoute } from "./routing";
+import { findRoutes } from "./routing";
 
 const mockFallbackRoute = "/fallback-route";
 const mockRouteArray = [
@@ -21,16 +21,17 @@ jest.mock("react-router-dom", () => ({
     .mockReturnValueOnce({ pathname: "/base/fake-path-3" }),
 }));
 
-describe("Test useFindRoute behavior at first route in array (with no previous routes)", () => {
+describe("Test findRoutes behavior at first route in array (with no previous routes)", () => {
   it("Returns fallback as previousRoute when there are no preceding routes", () => {
-    const { previousRoute } = useFindRoute(mockRouteArray, mockFallbackRoute);
+    const { previousRoute } = findRoutes("/base/fake-path-1", mockRouteArray, mockFallbackRoute);
     expect(previousRoute).toEqual(mockFallbackRoute);
   });
 });
 
-describe("Test useFindRoute behavior at middle route in array (with both previous and next routes)", () => {
+describe("Test findRoutes behavior at middle route in array (with both previous and next routes)", () => {
   it("Returns previous path when there are preceding routes and next path when there are subsequent routes", () => {
-    const { previousRoute, nextRoute } = useFindRoute(
+    const { previousRoute, nextRoute } = findRoutes(
+      "/base/fake-path-2",
       mockRouteArray,
       mockFallbackRoute
     );
@@ -39,9 +40,9 @@ describe("Test useFindRoute behavior at middle route in array (with both previou
   });
 });
 
-describe("Test useFindRoute behavior at last route in array (with no subsequent routes)", () => {
+describe("Test findRoutes behavior at last route in array (with no subsequent routes)", () => {
   it("Returns fallback if there are no subsequent routes", () => {
-    const { nextRoute } = useFindRoute(mockRouteArray, mockFallbackRoute);
+    const { nextRoute } = findRoutes("/base/fake-path-3", mockRouteArray, mockFallbackRoute);
     expect(nextRoute).toEqual(mockFallbackRoute);
   });
 });

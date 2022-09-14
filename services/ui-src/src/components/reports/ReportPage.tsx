@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 // components
 import { Flex } from "@chakra-ui/react";
 import {
@@ -13,46 +13,59 @@ import {
   TemplateContext,
 } from "components";
 // utils
-import { useFindRoute, useUser } from "utils";
+import { findRoutes, useUser } from "utils";
 import {
+  AnyObject,
   FormJson,
   PageJson,
   ReportDataShape,
-  ReportRoute,
   ReportStatus,
   UserRoles,
 } from "types";
 
-export const ReportPage = ({ route }: Props) => {
+export const ReportPage = () => {
   // get report, form, and page related-data
-  const { report, updateReportData, updateReport } = useContext(ReportContext);
-  const { formTemplate, formRoutes } = useContext(TemplateContext);
-  const { form, page } = route;
+  const { updateReportData, updateReport } = useContext(ReportContext);
+  const { routesLoaded, formTemplate, formRoutes } =
+    useContext(TemplateContext);
+  const [formView, setFormView] = useState<FormJson | undefined>(undefined);
+  const [page, setPage] = useState<AnyObject>({});
+  const { state, reportId } = useParams();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (routesLoaded) {
+      const matchingRoute = formRoutes.filter((route: any) =>
+        pathname.includes(route.path)
+      );
+      if (matchingRoute[0]) {
+        setFormView(matchingRoute.form);
+        setPage(matchingRoute.page);
+      } else {
+        navigate(formTemplate.basePath);
+      }
+    }
+  }, [pathname, routesLoaded]);
 
   // get user state, name, role
   const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
+  const { full_name, userRole } = user ?? {};
 
   // determine if fields should be disabled (based on admin roles )
   const isAdminUser =
     userRole === UserRoles.ADMIN ||
     userRole === UserRoles.APPROVER ||
     userRole === UserRoles.HELP_DESK;
-  const fieldInputDisabled = isAdminUser && form.adminDisabled;
-
-  // get state and reportId from context or storage
-  const reportId = report?.reportId || localStorage.getItem("selectedReport");
-  const reportState = state || localStorage.getItem("selectedState");
+  const fieldInputDisabled = isAdminUser && formView?.adminDisabled;
 
   // get next route
   const navigate = useNavigate();
-  const { nextRoute } = useFindRoute(formRoutes, formTemplate.basePath);
 
   useEffect(() => {
-    if (!reportId || !reportState) {
+    if (!reportId || !state) {
       navigate(formTemplate.basePath);
     }
-  }, [reportId, reportState]);
+  }, [reportId, state]);
 
   const onSubmit = async (formData: ReportDataShape) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
@@ -68,6 +81,11 @@ export const ReportPage = ({ route }: Props) => {
       await updateReport(reportDetails, reportStatus);
     }
     if (!page?.drawer) {
+      const { nextRoute } = findRoutes(
+        pathname,
+        formRoutes,
+        formTemplate.basePath
+      );
       navigate(nextRoute);
     }
   };
@@ -87,25 +105,25 @@ export const ReportPage = ({ route }: Props) => {
   };
 
   return (
-    <PageTemplate type="report" data-testid={form.id}>
+    <PageTemplate type="report" data-testid={formView?.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>
           {page?.intro && <ReportPageIntro text={page.intro} />}
-          {renderPageSection(form, page)}
-          <ReportPageFooter
-            formId={form.id}
-            shouldDisableAllFields={fieldInputDisabled}
-          />
+          {formView && (
+            <>
+              {renderPageSection(formView, page)}
+              <ReportPageFooter
+                formId={formView.id}
+                shouldDisableAllFields={fieldInputDisabled}
+              />
+            </>
+          )}
         </Flex>
       </Flex>
     </PageTemplate>
   );
 };
-
-interface Props {
-  route: ReportRoute;
-}
 
 const sx = {
   pageContainer: {

@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
+// utils
+import { AnyObject } from "types"
 
-export const useFindRoute = (routeArray: any[], fallbackRoute: string) => {
-  const { pathname } = useLocation();
+export const findRoutes = (pathname: string, routeArray: AnyObject, fallbackRoute: string) => {
   let calculatedRoutes = {
     previousRoute: fallbackRoute,
     nextRoute: fallbackRoute,

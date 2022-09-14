@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Icon, TemplateContext } from "components";
-// utils
-import { useFindRoute } from "utils";
 
 export const ReportPageFooter = ({
   formId,
@@ -12,11 +10,8 @@ export const ReportPageFooter = ({
   ...props
 }: Props) => {
   const navigate = useNavigate();
-  const { formTemplate, formRoutes } = useContext(TemplateContext);
-  const { previousRoute, nextRoute } = useFindRoute(
-    formRoutes,
-    formTemplate.basePath
-  );
+  const { previousRoute, nextRoute } = useContext(TemplateContext);
+
   return (
     <Box sx={sx.footerBox} {...props}>
       <Box>

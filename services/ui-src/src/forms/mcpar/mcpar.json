@@ -6,11 +6,11 @@
   "routes": [
     {
       "name": "A: Program Information",
-      "path": "/mcpar/program-information",
+      "path": "/program-information",
       "children": [
         {
           "name": "Point of Contact",
-          "path": "/mcpar/program-information/point-of-contact",
+          "path": "/program-information/point-of-contact",
           "page": {
             "intro": {
               "section": "Section A: Program Information",
@@ -82,7 +82,7 @@
         },
         {
           "name": "Reporting Period",
-          "path": "/mcpar/program-information/reporting-period",
+          "path": "/program-information/reporting-period",
           "page": {
             "intro": {
               "section": "Section A: Program Information",
@@ -127,7 +127,7 @@
         },
         {
           "name": "Add Plans",
-          "path": "/mcpar/program-information/add-plans",
+          "path": "/program-information/add-plans",
           "page": {
             "intro": {
               "section": "Section A: Program Information",
@@ -150,7 +150,7 @@
         },
         {
           "name": "Add BSS Entities",
-          "path": "/mcpar/program-information/add-bss-entities",
+          "path": "/program-information/add-bss-entities",
           "page": {
             "intro": {
               "section": "Section A: Program Information",
@@ -180,11 +180,11 @@
     },
     {
       "name": "B: State-Level Indicators",
-      "path": "/mcpar/state-level-indicators",
+      "path": "/state-level-indicators",
       "children": [
         {
           "name": "I: Program Characteristics",
-          "path": "/mcpar/state-level-indicators/program-characteristics",
+          "path": "/state-level-indicators/program-characteristics",
           "page": {
             "intro": {
               "section": "Section B: State-Level Indicators",
@@ -217,7 +217,7 @@
         },
         {
           "name": "III: Encounter Data Report",
-          "path": "/mcpar/state-level-indicators/encounter-data-report",
+          "path": "/state-level-indicators/encounter-data-report",
           "page": {
             "intro": {
               "section": "Section B: State-Level Indicators",
@@ -305,7 +305,7 @@
         },
         {
           "name": "X: Program Integrity",
-          "path": "/mcpar/state-level-indicators/program-integrity",
+          "path": "/state-level-indicators/program-integrity",
           "page": {
             "intro": {
               "section": "B: State-Level Indicators",
@@ -507,11 +507,11 @@
     },
     {
       "name": "C: Program-Level Indicators",
-      "path": "/mcpar/program-level-indicators",
+      "path": "/program-level-indicators",
       "children": [
         {
           "name": "I: Program Characteristics",
-          "path": "/mcpar/program-level-indicators/program-characteristics",
+          "path": "/program-level-indicators/program-characteristics",
           "page": {
             "intro": {
               "section": "C: Program-Level Indicators",
@@ -657,7 +657,7 @@
         },
         {
           "name": "III: Encounter Data Report",
-          "path": "/mcpar/program-level-indicators/encounter-data-report",
+          "path": "/program-level-indicators/encounter-data-report",
           "page": {
             "intro": {
               "section": "C: Program-Level Indicators",
@@ -810,7 +810,7 @@
         },
         {
           "name": "IV: Appeals, State Fair Hearings & Grievances",
-          "path": "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances",
+          "path": "/program-level-indicators/appeals-state-fair-hearings-and-grievances",
           "page": {
             "intro": {
               "section": "C: Program-Level Indicators",
@@ -861,11 +861,11 @@
         },
         {
           "name": "V: Availability & Accessibility",
-          "path": "/mcpar/program-level-indicators/availability-and-accessibility",
+          "path": "/program-level-indicators/availability-and-accessibility",
           "children": [
             {
               "name": "Network Adequacy",
-              "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
+              "path": "/program-level-indicators/availability-and-accessibility/network-adequacy",
               "page": {
                 "intro": {
                   "section": "C: Program-Level Indicators",
@@ -911,7 +911,7 @@
             },
             {
               "name": "Access Measures",
-              "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
+              "path": "/program-level-indicators/availability-and-accessibility/access-measures",
               "page": {
                 "intro": {
                   "section": "C: Program-Level Indicators > V: Availability & Accessibility",
@@ -936,7 +936,7 @@
         },
         {
           "name": "IX: BSS",
-          "path": "/mcpar/program-level-indicators/bss",
+          "path": "/program-level-indicators/bss",
           "page": {
             "intro": {
               "section": "C: Program-Level Indicators",
@@ -987,7 +987,7 @@
         },
         {
           "name": "X: Program Integrity",
-          "path": "/mcpar/program-level-indicators/program-integrity",
+          "path": "/program-level-indicators/program-integrity",
           "page": {
             "intro": {
               "section": "C: Program-Level Indicators",
@@ -1028,11 +1028,11 @@
     },
     {
       "name": "D: Plan-Level Indicators",
-      "path": "/mcpar/plan-level-indicators",
+      "path": "/plan-level-indicators",
       "children": [
         {
           "name": "I: Program Characteristics",
-          "path": "/mcpar/plan-level-indicators/program-characteristics",
+          "path": "/plan-level-indicators/program-characteristics",
           "page": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
@@ -1085,7 +1085,7 @@
         },
         {
           "name": "II: Financial Performance",
-          "path": "/mcpar/plan-level-indicators/financial-performance",
+          "path": "/plan-level-indicators/financial-performance",
           "page": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
@@ -1207,7 +1207,7 @@
         },
         {
           "name": "III: Encounter Data Report",
-          "path": "/mcpar/plan-level-indicators/encounter-data-report",
+          "path": "/plan-level-indicators/encounter-data-report",
           "page": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
@@ -1259,11 +1259,11 @@
         },
         {
           "name": "IV: Appeals, State Fair Hearings & Grievances",
-          "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances",
+          "path": "/plan-level-indicators/appeals-state-fair-hearings-and-grievances",
           "children": [
             {
               "name": "Appeals Overview",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
+              "path": "/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
               "page": {
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
@@ -1406,7 +1406,7 @@
             },
             {
               "name": "Appeals by Service",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
+              "path": "/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
               "page": {
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
@@ -1533,7 +1533,7 @@
             },
             {
               "name": "State Fair Hearings",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
+              "path": "/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
               "page": {
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
@@ -1620,7 +1620,7 @@
             },
             {
               "name": "Grievances Overview",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
+              "path": "/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
               "page": {
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
@@ -1692,7 +1692,7 @@
             },
             {
               "name": "Grievances by Service",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
+              "path": "/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
               "page": {
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
@@ -1821,7 +1821,7 @@
             },
             {
               "name": "Grievances by Reason",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
+              "path": "/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
               "page": {
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
@@ -1965,7 +1965,7 @@
         },
         {
           "name": "VII: Quality Measures",
-          "path": "/mcpar/plan-level-indicators/quality-measures",
+          "path": "/plan-level-indicators/quality-measures",
           "page": {
             "intro": {
               "section": "D: Plan-Level Indicators",
@@ -2165,7 +2165,7 @@
         },
         {
           "name": "VIII: Sanctions",
-          "path": "/mcpar/plan-level-indicators/sanctions",
+          "path": "/plan-level-indicators/sanctions",
           "page": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
@@ -2381,7 +2381,7 @@
         },
         {
           "name": "X: Program Integrity",
-          "path": "/mcpar/plan-level-indicators/program-integrity",
+          "path": "/plan-level-indicators/program-integrity",
           "page": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
@@ -2569,7 +2569,7 @@
     },
     {
       "name": "E: BSS Entity Indicators",
-      "path": "/mcpar/bss-entity-indicators",
+      "path": "/bss-entity-indicators",
       "page": {
         "intro": {
           "section": "Section E: BSS Entity Indicators",
@@ -2587,7 +2587,7 @@
               "type": "internalLink",
               "content": "Program-Level BSS",
               "props": {
-                "to": "/mcpar/program-information/add-bss-entities"
+                "to": "/program-information/add-bss-entities"
               }
             },
             {
@@ -2744,7 +2744,7 @@
     },
     {
       "name": "Review & Submit",
-      "path": "/mcpar/review-and-submit"
+      "path": "/review-and-submit"
     }
   ]
 }
