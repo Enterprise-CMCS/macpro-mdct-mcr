@@ -13,14 +13,15 @@ import { Modal, ReportContext, PageTemplate, Sidebar } from "components";
 // types
 import { ReportStatus, UserRoles } from "types";
 // utils
-import { useUser, utcDateToReadableDate } from "utils";
+import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { report, fetchReport, updateReport } = useContext(ReportContext);
+  const { report, fetchReport, updateReport, updateReportData } =
+    useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user information
@@ -51,6 +52,11 @@ export const ReviewSubmit = () => {
         submittedBy: full_name,
         submitterEmail: email,
         submittedOnDate: submissionDate,
+      });
+      updateReportData(reportDetails, {
+        "apoc-a3a": full_name,
+        "apoc-a3b": email,
+        "apoc-a4": convertDateUtcToEt(submissionDate),
       });
     }
     onClose();
