@@ -18,8 +18,7 @@ import { noCombinedDataInput } from "../../constants";
 
 export const AddEditProgramModal = ({
   activeState,
-  selectedReportId,
-  selectedReportData,
+  selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, updateReport } = useContext(ReportContext);
@@ -50,8 +49,8 @@ export const AddEditProgramModal = ({
       combinedData,
     };
     // if an existing program was selected, use that report id
-    if (selectedReportId) {
-      reportDetails.reportId = selectedReportId;
+    if (selectedReportMetadata?.reportId) {
+      reportDetails.reportId = selectedReportMetadata.reportId;
       // edit existing report
       await updateReport(reportDetails, {
         ...dataToWrite,
@@ -85,7 +84,9 @@ export const AddEditProgramModal = ({
       formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedReportId ? "Edit Program" : "Add a Program",
+        heading: selectedReportMetadata?.reportId
+          ? "Edit Program"
+          : "Add a Program",
         actionButtonText: "Save",
         closeButtonText: "Cancel",
       }}
@@ -94,7 +95,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
-        formData={selectedReportData}
+        formData={selectedReportMetadata}
         onSubmit={writeProgram}
       />
     </Modal>
@@ -103,8 +104,7 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
-  selectedReportId: string | undefined;
-  selectedReportData?: AnyObject;
+  selectedReportMetadata?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

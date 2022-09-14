@@ -18,7 +18,7 @@ export const Form = ({
   id,
   formJson,
   onSubmit,
-  formData = {},
+  formData,
   children,
   ...props
 }: Props) => {
@@ -56,7 +56,7 @@ export const Form = ({
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: FormField[]) => {
     const fieldsToRender = hydrateFormFields(fields, formData);
-    return formFieldFactory(fieldsToRender, fieldInputDisabled || false);
+    return formFieldFactory(fieldsToRender, !!fieldInputDisabled);
   };
 
   return (

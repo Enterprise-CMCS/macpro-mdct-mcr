@@ -87,6 +87,8 @@ export interface ReportShape extends ReportDetails {
   lastAltered: number;
   lastAlteredBy: string;
   combinedData: string;
+  submittedBy?: string;
+  submittedOnDate?: number;
 }
 
 export interface ReportDataShape {

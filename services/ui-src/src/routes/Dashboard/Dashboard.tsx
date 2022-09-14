@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportDetails, UserRoles } from "types";
+import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -49,10 +49,7 @@ export const Dashboard = () => {
   const { state: userState, userRole } = useUser().user ?? {};
   const { isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
-  const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedReportFormData, setSelectedReportFormData] = useState<
+  const [selectedReportMetadata, setSelectedReportMetadata] = useState<
     AnyObject | undefined
   >(undefined);
 
@@ -74,14 +71,14 @@ export const Dashboard = () => {
     localStorage.setItem("selectedReport", "");
   }, []);
 
-  const enterSelectedReport = async (reportId: string) => {
+  const enterSelectedReport = async (reportMetadata: ReportShape) => {
     // set active report to selected report
     const reportDetails: ReportDetails = {
-      state: activeState!,
-      reportId: reportId,
+      state: reportMetadata.state!,
+      reportId: reportMetadata.reportId,
     };
     setReport(reportDetails);
-    localStorage.setItem("selectedReport", reportId);
+    localStorage.setItem("selectedReport", reportMetadata.reportId);
 
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
@@ -89,39 +86,32 @@ export const Dashboard = () => {
     navigate(reportFirstPagePath);
   };
 
-  const openAddEditProgramModal = (reportId?: string) => {
-    // if reportId provided, set as selected program
-    setSelectedReportId(reportId);
-
-    const selectedReport = reportsByState?.find(
-      (o: { reportId: string }) => o.reportId === reportId
-    );
+  const openAddEditProgramModal = (reportMetadata?: ReportShape) => {
+    let formData = undefined;
     // Check and pre-fill the form if the user is editing an existing program
-    if (reportId && selectedReport) {
-      const formData = {
+    if (reportMetadata) {
+      formData = {
         fieldData: {
-          "aep-programName": selectedReport.programName,
+          "aep-programName": reportMetadata.programName,
           "aep-endDate": convertDateUtcToEt(
-            selectedReport.reportingPeriodEndDate
+            reportMetadata.reportingPeriodEndDate
           ),
           "aep-startDate": convertDateUtcToEt(
-            selectedReport.reportingPeriodStartDate
+            reportMetadata.reportingPeriodStartDate
           ),
         },
-        state: activeState,
-        reportId: reportId,
+        state: reportMetadata.state,
+        reportId: reportMetadata.reportId,
       };
-      setSelectedReportFormData(formData);
-    } else {
-      setSelectedReportFormData(undefined);
     }
+    setSelectedReportMetadata(formData);
 
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (reportId?: string) => {
-    setSelectedReportId(reportId);
+  const openDeleteProgramModal = (reportMetadata?: ReportShape) => {
+    setSelectedReportMetadata(reportMetadata);
     // use disclosure to open modal
     deleteProgramModalOnOpenHandler();
   };
@@ -188,16 +178,14 @@ export const Dashboard = () => {
       </Box>
       <AddEditProgramModal
         activeState={activeState!}
-        selectedReportId={selectedReportId}
-        selectedReportData={selectedReportFormData || undefined}
+        selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
         }}
       />
       <DeleteProgramModal
-        activeState={activeState!}
-        selectedReportId={selectedReportId!}
+        selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,
@@ -221,7 +209,7 @@ const DashboardTable = ({
         <Td sx={sx.editProgram}>
           {(userRole === UserRoles.STATE_REP ||
             userRole === UserRoles.STATE_USER) && (
-            <button onClick={() => openAddEditProgramModal(report.reportId)}>
+            <button onClick={() => openAddEditProgramModal(report)}>
               <Image src={editIcon} alt="Edit Program" />
             </button>
           )}
@@ -235,14 +223,14 @@ const DashboardTable = ({
           <Button
             variant="outline"
             data-testid="enter-program"
-            onClick={() => enterSelectedReport(report.reportId)}
+            onClick={() => enterSelectedReport(report)}
           >
             Enter
           </Button>
         </Td>
         <Td sx={sx.deleteProgramCell}>
           {userRole === UserRoles.ADMIN && (
-            <button onClick={() => openDeleteProgramModal(report.reportId)}>
+            <button onClick={() => openDeleteProgramModal(report)}>
               <Image
                 src={cancelIcon}
                 data-testid="delete-program"
@@ -282,9 +270,7 @@ export const MobileDashboardRow = ({
             {(userRole === UserRoles.STATE_REP ||
               userRole === UserRoles.STATE_USER) && (
               <Box sx={sx.editProgram}>
-                <button
-                  onClick={() => openAddEditProgramModal(report.reportId)}
-                >
+                <button onClick={() => openAddEditProgramModal(report)}>
                   <Image
                     src={editIcon}
                     data-testid="mobile-edit-program"
@@ -320,14 +306,14 @@ export const MobileDashboardRow = ({
           <Box sx={sx.editReportButtonCell}>
             <Button
               variant="outline"
-              onClick={() => enterSelectedReport(report.reportId)}
+              onClick={() => enterSelectedReport(report)}
             >
               Enter
             </Button>
           </Box>
           <Box sx={sx.deleteProgramCell}>
             {userRole === UserRoles.ADMIN && (
-              <button onClick={() => openDeleteProgramModal(report.reportId)}>
+              <button onClick={() => openDeleteProgramModal(report)}>
                 <Image
                   src={cancelIcon}
                   alt="Delete Program"
