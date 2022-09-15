@@ -17,6 +17,7 @@ import {
   writeReport,
   deleteReport,
   sortReportsOldestToNewest,
+  useUser,
 } from "utils";
 // verbiage
 import { reportErrors } from "verbiage/errors";
@@ -52,6 +53,10 @@ export const ReportProvider = ({ children }: Props) => {
   const [error, setError] = useState<string>();
 
   const { pathname } = useLocation();
+
+  // get user state, name, role
+  const { user } = useUser();
+  const { state } = user ?? {};
 
   const fetchReportData = async (reportDetails: ReportDetails) => {
     try {
@@ -123,12 +128,14 @@ export const ReportProvider = ({ children }: Props) => {
   }, [report?.reportId]);
 
   useEffect(() => {
-    const selectedState = localStorage.getItem("selectedState");
-    const selectedReport = localStorage.getItem("selectedReport");
-    if (isMcparReportFormPage(pathname) && selectedState && selectedReport) {
+    // get state and reportId from context or storage
+    const reportId = report?.reportId || localStorage.getItem("selectedReport");
+    const reportState = state || localStorage.getItem("selectedState");
+
+    if (isMcparReportFormPage(pathname) && reportState && reportId) {
       const reportDetails = {
-        state: selectedState,
-        reportId: selectedReport,
+        state: reportState,
+        reportId: reportId,
       };
       fetchReport(reportDetails);
       fetchReportData(reportDetails);

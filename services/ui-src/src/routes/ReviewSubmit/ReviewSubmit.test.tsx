@@ -3,6 +3,7 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext } from "components";
 import { ReviewSubmit } from "routes";
+import { SuccessMessageGenerator } from "./ReviewSubmit";
 // types
 import { ReportStatus } from "types";
 // utils
@@ -81,6 +82,27 @@ describe("Test ReviewSubmit functionality", () => {
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
     await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Success Message Generator", () => {
+  it("should give the full success date if given all params", () => {
+    const programName = "test-program";
+    const submittedDate = 1663163109045;
+    const submittersName = "Carol California";
+    expect(
+      SuccessMessageGenerator(programName, submittedDate, submittersName)
+    ).toBe(
+      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}`
+    );
+  });
+  it("should give a reduced version if not given all params", () => {
+    const programName = "test-program";
+    const submittedDate = undefined;
+    const submittersName = "Carol California";
+    expect(
+      SuccessMessageGenerator(programName, submittedDate, submittersName)
+    ).toBe(`MCPAR report for ${programName} was submitted.`);
   });
 });
 
