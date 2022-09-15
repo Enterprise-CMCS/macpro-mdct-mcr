@@ -13,19 +13,20 @@ import { Modal, ReportContext, PageTemplate, Sidebar } from "components";
 // types
 import { ReportStatus, UserRoles } from "types";
 // utils
-import { useUser, utcDateToReadableDate } from "utils";
+import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { report, fetchReport, updateReport } = useContext(ReportContext);
+  const { report, fetchReport, updateReport, updateReportData } =
+    useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user information
   const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
+  const { email, full_name, state, userRole } = user ?? {};
 
   // get state and reportId from context or storage
   const reportId = report?.reportId || localStorage.getItem("selectedReport");
@@ -44,10 +45,18 @@ export const ReviewSubmit = () => {
 
   const submitForm = () => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+      const submissionDate = Date.now();
       updateReport(reportDetails, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
-        submissionDate: Date.now(),
+        submittedBy: full_name,
+        submitterEmail: email,
+        submittedOnDate: submissionDate,
+      });
+      updateReportData(reportDetails, {
+        "apoc-a3a": full_name,
+        "apoc-a3b": email,
+        "apoc-a4": convertDateUtcToEt(submissionDate),
       });
     }
     onClose();
@@ -61,9 +70,8 @@ export const ReviewSubmit = () => {
           (report?.status?.includes(ReportStatus.SUBMITTED) ? (
             <SuccessMessage
               programName={report.programName}
-              date={report?.lastAltered}
-              givenName={user?.given_name}
-              familyName={user?.family_name}
+              date={report?.submittedOnDate}
+              submittedBy={report?.submittedBy}
             />
           ) : (
             <ReadyToSubmit
@@ -124,17 +132,33 @@ interface ReadyToSubmitProps {
   onClose: Function;
 }
 
+export const SuccessMessageGenerator = (
+  programName: string,
+  submissionDate?: number,
+  submittedBy?: string
+) => {
+  if (submissionDate && submittedBy) {
+    const readableDate = utcDateToReadableDate(submissionDate, "full");
+    const submittedDate = `was submitted on ${readableDate}`;
+    const submittersName = `by ${submittedBy}`;
+    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}`;
+  }
+
+  return `MCPAR report for ${programName} was submitted.`;
+};
+
 export const SuccessMessage = ({
   programName,
   date,
-  givenName,
-  familyName,
+  submittedBy,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
-  const readableDate = utcDateToReadableDate(date, "full");
-  const submittedDate = `was submitted on ${readableDate}`;
-  const submittersName = ` by ${givenName} ${familyName}`;
+  const submissionMessage = SuccessMessageGenerator(
+    programName,
+    date,
+    submittedBy
+  );
   return (
     <Flex sx={sx.contentContainer}>
       <Box sx={sx.leadTextBox}>
@@ -146,7 +170,7 @@ export const SuccessMessage = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{`MCPAR report for ${programName} ${submittedDate} ${submittersName}`}</Text>
+          <Text>{submissionMessage}</Text>
         </Box>
       </Box>
       <Box>
@@ -159,9 +183,8 @@ export const SuccessMessage = ({
 
 interface SuccessMessageProps {
   programName: string;
-  date: number;
-  givenName?: string;
-  familyName?: string;
+  date?: number;
+  submittedBy?: string;
 }
 
 const sx = {

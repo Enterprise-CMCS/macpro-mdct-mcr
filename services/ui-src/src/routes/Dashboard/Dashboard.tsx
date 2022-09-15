@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportDetails, UserRoles } from "types";
+import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -47,12 +47,9 @@ export const Dashboard = () => {
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const { state: userState, userRole } = useUser().user ?? {};
-  const { isMobile } = useBreakpoint();
+  const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
-  const [selectedReportId, setSelectedReportId] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedReportFormData, setSelectedReportFormData] = useState<
+  const [selectedReportMetadata, setSelectedReportMetadata] = useState<
     AnyObject | undefined
   >(undefined);
 
@@ -74,14 +71,14 @@ export const Dashboard = () => {
     localStorage.setItem("selectedReport", "");
   }, []);
 
-  const enterSelectedReport = async (reportId: string) => {
+  const enterSelectedReport = async (reportMetadata: ReportShape) => {
     // set active report to selected report
     const reportDetails: ReportDetails = {
-      state: activeState!,
-      reportId: reportId,
+      state: reportMetadata.state!,
+      reportId: reportMetadata.reportId,
     };
     setReport(reportDetails);
-    localStorage.setItem("selectedReport", reportId);
+    localStorage.setItem("selectedReport", reportMetadata.reportId);
 
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
@@ -89,39 +86,39 @@ export const Dashboard = () => {
     navigate(reportFirstPagePath);
   };
 
-  const openAddEditProgramModal = (reportId?: string) => {
-    // if reportId provided, set as selected program
-    setSelectedReportId(reportId);
-
-    const selectedReport = reportsByState?.find(
-      (o: { reportId: string }) => o.reportId === reportId
-    );
+  const openAddEditProgramModal = (reportMetadata?: ReportShape) => {
+    let formData = undefined;
+    let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
-    if (reportId && selectedReport) {
-      const formData = {
+    if (reportMetadata) {
+      if (reportMetadata.submittedOnDate) {
+        submittedOnDate = convertDateUtcToEt(reportMetadata.submittedOnDate);
+      }
+      formData = {
         fieldData: {
-          "aep-programName": selectedReport.programName,
+          "aep-programName": reportMetadata.programName,
           "aep-endDate": convertDateUtcToEt(
-            selectedReport.reportingPeriodEndDate
+            reportMetadata.reportingPeriodEndDate
           ),
           "aep-startDate": convertDateUtcToEt(
-            selectedReport.reportingPeriodStartDate
+            reportMetadata.reportingPeriodStartDate
           ),
         },
-        state: activeState,
-        reportId: reportId,
+        state: reportMetadata.state,
+        reportId: reportMetadata.reportId,
+        submittedBy: reportMetadata.submittedBy,
+        submitterEmail: reportMetadata.submitterEmail,
+        submittedOnDate: submittedOnDate,
       };
-      setSelectedReportFormData(formData);
-    } else {
-      setSelectedReportFormData(undefined);
     }
+    setSelectedReportMetadata(formData);
 
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (reportId?: string) => {
-    setSelectedReportId(reportId);
+  const openDeleteProgramModal = (reportMetadata?: ReportShape) => {
+    setSelectedReportMetadata(reportMetadata);
     // use disclosure to open modal
     deleteProgramModalOnOpenHandler();
   };
@@ -155,7 +152,7 @@ export const Dashboard = () => {
       </Box>
       <Box sx={sx.bodyBox}>
         {reportsByState &&
-          (isMobile ? (
+          (isTablet || isMobile ? (
             <MobileDashboardRow
               reportsByState={reportsByState}
               userRole={userRole!}
@@ -188,16 +185,14 @@ export const Dashboard = () => {
       </Box>
       <AddEditProgramModal
         activeState={activeState!}
-        selectedReportId={selectedReportId}
-        selectedReportData={selectedReportFormData || undefined}
+        selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
         }}
       />
       <DeleteProgramModal
-        activeState={activeState!}
-        selectedReportId={selectedReportId!}
+        selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,
@@ -221,28 +216,28 @@ const DashboardTable = ({
         <Td sx={sx.editProgram}>
           {(userRole === UserRoles.STATE_REP ||
             userRole === UserRoles.STATE_USER) && (
-            <button onClick={() => openAddEditProgramModal(report.reportId)}>
+            <button onClick={() => openAddEditProgramModal(report)}>
               <Image src={editIcon} alt="Edit Program" />
             </button>
           )}
         </Td>
         <Td sx={sx.programNameText}>{report.programName}</Td>
-        <Td sx={sx.tableCell}>{convertDateUtcToEt(report.dueDate)}</Td>
-        <Td sx={sx.tableCell}>{convertDateUtcToEt(report.lastAltered)}</Td>
-        <Td sx={sx.editCell}>{report?.lastAlteredBy || "-"}</Td>
-        <Td sx={sx.tableCell}>{report?.status}</Td>
+        <Td>{convertDateUtcToEt(report.dueDate)}</Td>
+        <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
+        <Td>{report?.lastAlteredBy || "-"}</Td>
+        <Td>{report?.status}</Td>
         <Td sx={sx.editReportButtonCell}>
           <Button
             variant="outline"
             data-testid="enter-program"
-            onClick={() => enterSelectedReport(report.reportId)}
+            onClick={() => enterSelectedReport(report)}
           >
             Enter
           </Button>
         </Td>
         <Td sx={sx.deleteProgramCell}>
           {userRole === UserRoles.ADMIN && (
-            <button onClick={() => openDeleteProgramModal(report.reportId)}>
+            <button onClick={() => openDeleteProgramModal(report)}>
               <Image
                 src={cancelIcon}
                 data-testid="delete-program"
@@ -282,9 +277,7 @@ export const MobileDashboardRow = ({
             {(userRole === UserRoles.STATE_REP ||
               userRole === UserRoles.STATE_USER) && (
               <Box sx={sx.editProgram}>
-                <button
-                  onClick={() => openAddEditProgramModal(report.reportId)}
-                >
+                <button onClick={() => openAddEditProgramModal(report)}>
                   <Image
                     src={editIcon}
                     data-testid="mobile-edit-program"
@@ -320,14 +313,14 @@ export const MobileDashboardRow = ({
           <Box sx={sx.editReportButtonCell}>
             <Button
               variant="outline"
-              onClick={() => enterSelectedReport(report.reportId)}
+              onClick={() => enterSelectedReport(report)}
             >
               Enter
             </Button>
           </Box>
           <Box sx={sx.deleteProgramCell}>
             {userRole === UserRoles.ADMIN && (
-              <button onClick={() => openDeleteProgramModal(report.reportId)}>
+              <button onClick={() => openDeleteProgramModal(report)}>
                 <Image
                   src={cancelIcon}
                   alt="Delete Program"
@@ -375,10 +368,7 @@ const sx = {
     width: "100%",
     maxWidth: "55.25rem",
     margin: "2.5rem auto",
-    ".tablet &": {
-      margin: "2.5rem 0 2.25rem 1rem",
-    },
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       margin: "2.5rem 0 1rem",
     },
   },
@@ -386,6 +376,11 @@ const sx = {
     marginBottom: "1rem",
     fontSize: "4xl",
     fontWeight: "normal",
+    ".tablet &, .mobile &": {
+      fontSize: "xl",
+      lineHeight: "1.75rem",
+      fontWeight: "bold",
+    },
   },
   bodyBox: {
     maxWidth: "55.25rem",
@@ -393,10 +388,7 @@ const sx = {
     ".desktop &": {
       width: "100%",
     },
-    ".tablet &": {
-      margin: "0 1rem",
-    },
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       margin: "0",
     },
   },
@@ -416,10 +408,6 @@ const sx = {
       borderColor: "palette.gray_light",
       color: "palette.gray_medium",
       fontWeight: "bold",
-      "&.tablet": {
-        padding: "0.5rem 0 0.5rem 0.8rem",
-        whiteSpace: "nowrap",
-      },
     },
     tr: {
       borderBottom: "1px solid",
@@ -432,19 +420,6 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       textAlign: "left",
-      ".tablet &": {
-        padding: "0.9rem 0 0.9rem 0.75rem",
-      },
-    },
-  },
-  editCell: {
-    ".tablet &": {
-      width: "7.125rem",
-    },
-  },
-  tableCell: {
-    ".tablet &": {
-      width: "6.5rem",
     },
   },
   editReportButtonCell: {
@@ -458,28 +433,19 @@ const sx = {
       fontSize: "sm",
       fontWeight: "normal",
       color: "palette.primary",
-      ".tablet &": {
-        width: "6rem",
-      },
     },
   },
   editProgram: {
     padding: "0",
     width: "2.5rem",
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       width: "2rem",
     },
     img: {
       height: "1.5rem",
       minWidth: "21px",
       marginLeft: "0.5rem",
-      ".tablet &": {
-        marginLeft: 0,
-        minWidth: "18px",
-        width: "18px",
-        height: "auto",
-      },
-      ".mobile &": {
+      ".tablet &, .mobile &": {
         marginLeft: 0,
       },
     },
@@ -488,23 +454,12 @@ const sx = {
     fontSize: "md",
     fontWeight: "bold",
     width: "13rem",
-    ".mobile &": {
+    ".tablet &, .mobile &": {
       width: "100%",
     },
   },
   deleteProgramCell: {
     width: "2.5rem",
-    ".tablet &": {
-      minWidth: "2rem",
-    },
-    img: {
-      ".tablet &": {
-        marginLeft: 0,
-        minWidth: "20px",
-        width: "20px",
-        height: "auto",
-      },
-    },
   },
   deleteProgramButtonImage: {
     height: "1.75rem",

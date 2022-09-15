@@ -3,9 +3,11 @@ import { useContext } from "react";
 import { Form, Modal, ReportContext } from "components";
 // utils
 import { AnyObject, FormJson, ReportStatus } from "types";
+import { States } from "../../constants";
 import {
   calculateDueDate,
   convertDateEtToUtc,
+  convertDateUtcToEt,
   useUser,
   writeFormTemplate,
 } from "utils";
@@ -17,12 +19,15 @@ import { mcparReportJsonNested } from "forms/mcpar";
 
 export const AddEditProgramModal = ({
   activeState,
-  selectedReportId,
-  selectedReportData,
+  selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
-  const { fetchReportsByState, updateReport } = useContext(ReportContext);
+  const { fetchReportsByState, updateReport, updateReportData } =
+    useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
+
+  // get full state name from selected state
+  const stateName = States[activeState as keyof typeof States];
 
   // add validation to formJson
   const form: FormJson = formJson;
@@ -34,23 +39,35 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
+    const reportingPeriodStartDate = convertDateEtToUtc(
+      formData["aep-startDate"]
+    );
+    const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
     const reportDetails = {
       state: activeState,
       reportId: "",
     };
     const dataToWrite = {
       programName,
-      reportingPeriodStartDate: convertDateEtToUtc(formData["aep-startDate"]),
-      reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
+      reportingPeriodStartDate: reportingPeriodStartDate,
+      reportingPeriodEndDate: reportingPeriodEndDate,
       dueDate,
       lastAlteredBy: full_name,
     };
     // if an existing program was selected, use that report id
-    if (selectedReportId) {
-      reportDetails.reportId = selectedReportId;
+    if (selectedReportMetadata?.reportId) {
+      reportDetails.reportId = selectedReportMetadata.reportId;
       // edit existing report
       await updateReport(reportDetails, {
         ...dataToWrite,
+      });
+      await updateReportData(reportDetails, {
+        "apoc-a3a": selectedReportMetadata?.submittedBy,
+        "apoc-a3b": selectedReportMetadata?.submitterEmail,
+        "apoc-a4": selectedReportMetadata?.submittedOnDate,
+        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
+        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
+        "arp-a6": programName,
       });
     } else {
       // if no program was selected, create new report id
@@ -63,6 +80,12 @@ export const AddEditProgramModal = ({
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
         formTemplateId: formTemplateId,
+      });
+      await updateReportData(reportDetails, {
+        "apoc-a1": stateName,
+        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
+        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
+        "arp-a6": programName,
       });
       // save form template
       await writeFormTemplate({
@@ -81,7 +104,9 @@ export const AddEditProgramModal = ({
       formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedReportId ? "Edit Program" : "Add a Program",
+        heading: selectedReportMetadata?.reportId
+          ? "Edit Program"
+          : "Add a Program",
         actionButtonText: "Save",
         closeButtonText: "Cancel",
       }}
@@ -90,7 +115,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
-        formData={selectedReportData}
+        formData={selectedReportMetadata}
         onSubmit={writeProgram}
       />
     </Modal>
@@ -99,8 +124,7 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
-  selectedReportId: string | undefined;
-  selectedReportData?: AnyObject;
+  selectedReportMetadata?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
