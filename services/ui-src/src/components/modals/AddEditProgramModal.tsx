@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { Form, Modal, ReportContext } from "components";
 // utils
 import { AnyObject, FormJson, ReportStatus } from "types";
+import { States } from "../../constants";
 import {
   calculateDueDate,
   convertDateEtToUtc,
@@ -24,6 +25,9 @@ export const AddEditProgramModal = ({
   const { fetchReportsByState, updateReport, updateReportData } =
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
+
+  // get full state name from selected state
+  const stateName = States[activeState as keyof typeof States];
 
   // add validation to formJson
   const form: FormJson = formJson;
@@ -78,7 +82,7 @@ export const AddEditProgramModal = ({
         formTemplateId: formTemplateId,
       });
       await updateReportData(reportDetails, {
-        "apoc-a1": activeState,
+        "apoc-a1": stateName,
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,
