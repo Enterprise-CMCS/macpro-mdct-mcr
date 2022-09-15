@@ -2,11 +2,11 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, EntityDrawerSection } from "components";
+import { ReportContext, StaticDrawerSection } from "components";
 // utils
 import {
   mockForm,
-  mockPageJsonWithDrawer,
+  mockPageJsonStaticDrawer,
   mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -20,37 +20,37 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const entityDrawerSectionComponent = (
+const staticDrawerSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <EntityDrawerSection
+      <StaticDrawerSection
         form={mockForm}
-        drawer={mockPageJsonWithDrawer.drawer}
+        drawer={mockPageJsonStaticDrawer.drawer}
         onSubmit={mockOnSubmit}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test EntityDrawerSection view", () => {
-  test("EntityDrawerSection view renders", () => {
-    render(entityDrawerSectionComponent);
-    expect(screen.getByTestId("entity-drawer-section")).toBeVisible();
+describe("Test StaticDrawerSection view", () => {
+  test("StaticDrawerSection view renders", () => {
+    render(staticDrawerSectionComponent);
+    expect(screen.getByTestId("static-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test EntityDrawerSection drawer operation", () => {
+describe("Test StaticDrawerSection add entity operation", () => {
   test("Drawer opens correctly", async () => {
-    render(entityDrawerSectionComponent);
+    render(staticDrawerSectionComponent);
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
-    await expect(screen.getByRole("dialog")).toBeVisible();
+    expect(screen.getByRole("dialog")).toBeVisible();
   });
 });
 
-describe("Test EntityDrawerSection accessibility", () => {
+describe("Test StaticDrawerSection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(entityDrawerSectionComponent);
+    const { container } = render(staticDrawerSectionComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

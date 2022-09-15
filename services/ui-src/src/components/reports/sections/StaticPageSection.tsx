@@ -5,10 +5,10 @@ import { useContext } from "react";
 // utils
 import { FormJson } from "types";
 
-export const StandardFormSection = ({ form, onSubmit }: Props) => {
+export const StaticPageSection = ({ form, onSubmit }: Props) => {
   const { reportData } = useContext(ReportContext);
   return (
-    <Box data-testid="standard-form-section">
+    <Box data-testid="static-page-section">
       <Form
         id={form.id}
         formJson={form}

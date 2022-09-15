@@ -4,13 +4,14 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  EntityDrawerSection,
+  DynamicDrawerSection,
+  StaticDrawerSection,
   PageTemplate,
   ReportPageIntro,
   ReportPageFooter,
   Sidebar,
-  StandardFormSection,
   TemplateContext,
+  StaticPageSection,
 } from "components";
 // utils
 import { findRoutes, useUser } from "utils";
@@ -18,6 +19,7 @@ import {
   AnyObject,
   FormJson,
   PageJson,
+  PageTypes,
   ReportDataShape,
   ReportStatus,
   UserRoles,
@@ -91,16 +93,27 @@ export const ReportPage = () => {
   };
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
-    if (page?.drawer) {
-      return (
-        <EntityDrawerSection
-          form={form}
-          drawer={page.drawer}
-          onSubmit={onSubmit}
-        />
-      );
-    } else {
-      return <StandardFormSection form={form} onSubmit={onSubmit} />;
+    switch (page?.pageType) {
+      case PageTypes.STATIC_PAGE:
+        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+      case PageTypes.STATIC_DRAWER:
+        return (
+          <StaticDrawerSection
+            form={form}
+            drawer={page.drawer!}
+            onSubmit={onSubmit}
+          />
+        );
+      case PageTypes.DYNAMIC_DRAWER:
+        return (
+          <DynamicDrawerSection
+            form={form}
+            dynamicTable={page.dynamicTable}
+            onSubmit={onSubmit}
+          />
+        );
+      default:
+        return <StaticPageSection form={form} onSubmit={onSubmit} />;
     }
   };
 

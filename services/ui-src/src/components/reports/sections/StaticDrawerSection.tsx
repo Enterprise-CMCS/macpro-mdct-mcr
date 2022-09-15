@@ -5,7 +5,7 @@ import { ReportDrawer } from "components";
 // utils
 import { FormJson, AnyObject } from "types";
 
-export const EntityDrawerSection = ({ form, drawer, onSubmit }: Props) => {
+export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   // make state
@@ -21,8 +21,8 @@ export const EntityDrawerSection = ({ form, drawer, onSubmit }: Props) => {
   };
 
   return (
-    <Box data-testid="entity-drawer-section">
-      <Heading as="h4">{drawer!.dashboard.title}</Heading>
+    <Box data-testid="static-drawer-section">
+      <Heading as="h4">{drawer.dashboard.title}</Heading>
       {tempEntityMap.plans.map((entity) => {
         return (
           <Flex key={entity} sx={sx.entityRow}>
@@ -42,8 +42,8 @@ export const EntityDrawerSection = ({ form, drawer, onSubmit }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer!.drawerTitle} ${currentEntity}`}
-        drawerInfo={drawer!.drawerInfo}
+        drawerTitle={`${drawer.drawerTitle} ${currentEntity}`}
+        drawerInfo={drawer.drawerInfo}
         form={form}
         onSubmit={onSubmit}
         data-testid="report-drawer"

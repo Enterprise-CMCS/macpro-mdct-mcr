@@ -43,7 +43,7 @@ jest.mock("utils", () => ({
   },
 }));
 
-const ReportPageComponent_StandardForm = (
+const ReportPageComponent_StaticPage = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <TemplateContext.Provider value={mockTemplateContext}>
@@ -53,12 +53,23 @@ const ReportPageComponent_StandardForm = (
   </RouterWrappedComponent>
 );
 
-const ReportPageComponent_EntityDrawer = (
+const ReportPageComponent_StaticDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <TemplateContext.Provider value={mockTemplateContext}>
         <ReportPage />
       </TemplateContext.Provider>
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const ReportPageComponent_DynamicDrawer = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <ReportPage
+        reportJson={mockReportJsonFlatRoutes}
+        route={mockReportJsonFlatRoutes.routes[2]}
+      />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -84,14 +95,19 @@ const ReportPageComponent_WithoutReport = (
 
 describe("Test ReportPage view", () => {
   test("ReportPage StandardFormSection view renders", () => {
-    render(ReportPageComponent_StandardForm);
-    expect(screen.getByTestId("standard-form-section")).toBeVisible();
+    render(ReportPageComponent_StaticPage);
+    expect(screen.getByTestId("static-page-section")).toBeVisible();
   });
 
   test("ReportPage EntityDrawerSection view renders", () => {
-    render(ReportPageComponent_EntityDrawer);
-    expect(screen.getByTestId("entity-drawer-section")).toBeVisible();
+    render(ReportPageComponent_StaticDrawer);
+    expect(screen.getByTestId("static-drawer-section")).toBeVisible();
   });
+});
+
+test("ReportPage DynamicDrawerSection view renders", () => {
+  render(ReportPageComponent_DynamicDrawer);
+  expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
 });
 
 describe("Test ReportPage functionality", () => {
@@ -103,7 +119,7 @@ describe("Test ReportPage functionality", () => {
   });
 
   test("ReportPage updates reportData on successful fill", async () => {
-    const result = render(ReportPageComponent_StandardForm);
+    const result = render(ReportPageComponent_StaticPage);
     const form = result.container;
     const mockField = form.querySelector("[name='mock-1']")!;
     await userEvent.type(mockField, "mock input");
@@ -116,13 +132,13 @@ describe("Test ReportPage functionality", () => {
 
 describe("Test ReportPage accessibility", () => {
   test("Standard page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageComponent_StandardForm);
+    const { container } = render(ReportPageComponent_StaticPage);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   test("Drawer page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageComponent_StandardForm);
+    const { container } = render(ReportPageComponent_StaticPage);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
