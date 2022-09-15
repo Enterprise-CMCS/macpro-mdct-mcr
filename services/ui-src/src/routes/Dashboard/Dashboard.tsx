@@ -88,8 +88,12 @@ export const Dashboard = () => {
 
   const openAddEditProgramModal = (reportMetadata?: ReportShape) => {
     let formData = undefined;
+    let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
     if (reportMetadata) {
+      if (reportMetadata.submittedOnDate) {
+        submittedOnDate = convertDateUtcToEt(reportMetadata.submittedOnDate);
+      }
       formData = {
         fieldData: {
           "aep-programName": reportMetadata.programName,
@@ -102,6 +106,9 @@ export const Dashboard = () => {
         },
         state: reportMetadata.state,
         reportId: reportMetadata.reportId,
+        submittedBy: reportMetadata.submittedBy,
+        submitterEmail: reportMetadata.submitterEmail,
+        submittedOnDate: submittedOnDate,
       };
     }
     setSelectedReportMetadata(formData);

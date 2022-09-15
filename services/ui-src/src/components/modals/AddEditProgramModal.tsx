@@ -6,6 +6,7 @@ import { AnyObject, FormJson, ReportStatus } from "types";
 import {
   calculateDueDate,
   convertDateEtToUtc,
+  convertDateUtcToEt,
   useUser,
   writeFormTemplate,
 } from "utils";
@@ -20,7 +21,8 @@ export const AddEditProgramModal = ({
   selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
-  const { fetchReportsByState, updateReport } = useContext(ReportContext);
+  const { fetchReportsByState, updateReport, updateReportData } =
+    useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
   // add validation to formJson
@@ -33,14 +35,18 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
+    const reportingPeriodStartDate = convertDateEtToUtc(
+      formData["aep-startDate"]
+    );
+    const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
     const reportDetails = {
       state: activeState,
       reportId: "",
     };
     const dataToWrite = {
       programName,
-      reportingPeriodStartDate: convertDateEtToUtc(formData["aep-startDate"]),
-      reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
+      reportingPeriodStartDate: reportingPeriodStartDate,
+      reportingPeriodEndDate: reportingPeriodEndDate,
       dueDate,
       lastAlteredBy: full_name,
     };
@@ -50,6 +56,14 @@ export const AddEditProgramModal = ({
       // edit existing report
       await updateReport(reportDetails, {
         ...dataToWrite,
+      });
+      await updateReportData(reportDetails, {
+        "apoc-a3a": selectedReportMetadata?.submittedBy,
+        "apoc-a3b": selectedReportMetadata?.submitterEmail,
+        "apoc-a4": selectedReportMetadata?.submittedOnDate,
+        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
+        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
+        "arp-a6": programName,
       });
     } else {
       // if no program was selected, create new report id
@@ -62,6 +76,12 @@ export const AddEditProgramModal = ({
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
         formTemplateId: formTemplateId,
+      });
+      await updateReportData(reportDetails, {
+        "apoc-a1": activeState,
+        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
+        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
+        "arp-a6": programName,
       });
       // save form template
       await writeFormTemplate({
