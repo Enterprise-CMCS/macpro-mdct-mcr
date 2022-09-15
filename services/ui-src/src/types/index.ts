@@ -88,6 +88,7 @@ export interface ReportShape extends ReportDetails {
   lastAlteredBy: string;
   combinedData: string;
   submittedBy?: string;
+  submitterEmail?: string;
   submittedOnDate?: number;
 }
 
@@ -152,6 +153,12 @@ export interface ChoiceFieldProps {
   choices: FieldChoice[];
   sxOverride?: AnyObject;
   [key: string]: any;
+}
+
+export enum PageTypes {
+  STATIC_PAGE = "staticPage",
+  STATIC_DRAWER = "staticDrawer",
+  DYNAMIC_DRAWER = "dynamicDrawer",
 }
 
 // BANNER

@@ -127,7 +127,53 @@ export default {
     "cna-1": "text",
     "cna-2": "text",
   },
-  cam: {}, // pending
+  cam: {
+    "cam-1": "radio",
+    "cam-2": "text",
+    "cam-3": "radio",
+    "cam-3-o9-text": {
+      type: "radio",
+      nested: true,
+      parentFieldName: "cam-3",
+      visibleOptionValue: "Other, specify",
+    },
+    "cam-4": "radio",
+    "cam-4-o8-text": {
+      type: "radio",
+      nested: true,
+      parentFieldName: "cam-4",
+      visibleOptionValue: "Other, specify",
+    },
+    "cam-5": "radio",
+    "cam-5-o5-text": {
+      type: "radio",
+      nested: true,
+      parentFieldName: "cam-5",
+      visibleOptionValue: "Other, specify",
+    },
+    "cam-6": "radio",
+    "cam-6-o5-text": {
+      type: "radio",
+      nested: true,
+      parentFieldName: "cam-6",
+      visibleOptionValue: "Other, specify",
+    },
+    "cam-7": "checkbox",
+
+    "cam-7-o6-text": {
+      type: "radio",
+      nested: true,
+      parentFieldName: "cam-7",
+      visibleOptionValue: "Other, specify",
+    },
+    "cam-8": "radio",
+    "cam-8-o6-text": {
+      type: "radio",
+      nested: true,
+      parentFieldName: "cam-6",
+      visibleOptionValue: "Other, specify",
+    },
+  },
   cbss: {
     "cbss-1": "text",
     "cbss-2": "text",
