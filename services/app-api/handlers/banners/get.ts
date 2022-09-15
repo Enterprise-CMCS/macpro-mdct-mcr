@@ -13,6 +13,6 @@ export const getBanner = handler(async (event, _context) => {
       key: event?.pathParameters?.bannerId!,
     },
   };
-  const queryResponse: any = await dynamoDb.get(params);
+  const queryResponse = await dynamoDb.get(params);
   return { status: StatusCodes.SUCCESS, body: queryResponse };
 });

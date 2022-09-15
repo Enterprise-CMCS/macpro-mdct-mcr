@@ -28,6 +28,5 @@ export const getTemplate = handler(async (event, _context) => {
     Key: key,
   };
   const url = s3.getSignedUrl("getObject", params);
-
   return { status: StatusCodes.SUCCESS, body: url };
 });
