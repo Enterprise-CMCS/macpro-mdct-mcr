@@ -208,16 +208,6 @@ export const mockPageJsonDynamicDrawer = {
   },
 };
 
-// FORM TEMPLATE
-
-export const mockFormTemplate = {
-  formTemplateId: "mockId",
-  formTemplate: {
-    name: "TEST",
-    routes: [{}, {}],
-  },
-};
-
 // REPORT
 
 export const mockReportRoutes = [
@@ -271,7 +261,6 @@ export const mockFlattenedReportRoutes = [
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
-  version: "0.0.0",
   routes: mockReportRoutes,
 };
 
@@ -288,7 +277,7 @@ export const mockReportDetails = {
 export const mockReport = {
   ...mockReportDetails,
   reportType: "mock-type",
-  formTemplateId: "mock-template-id",
+  formTemplate: mockReportJson,
   programName: "testProgram",
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,

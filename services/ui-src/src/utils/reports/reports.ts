@@ -54,14 +54,14 @@ export const compileValidationJson = (routeArray: ReportRoute[]): AnyObject => {
     fieldArray.forEach((field: FormField) => {
       // compile field's validation schema
       validationSchema[field.id] = field.validation;
-      // if field has choices/options
+      // if field has choices/options (ie could have nested children)
       const fieldChoices = field.props?.choices;
       if (fieldChoices) {
         fieldChoices.forEach((choice: FieldChoice) => {
           // if given field choice has nested children
-          const nestedChildren = choice.children;
-          if (nestedChildren) {
-            getValidationFromFields(nestedChildren);
+          const nestedChildFields = choice.children;
+          if (nestedChildFields) {
+            getValidationFromFields(nestedChildFields);
           }
         });
       }

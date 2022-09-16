@@ -32,7 +32,6 @@ export interface ReportJson {
   id?: string;
   name: string;
   basePath: string;
-  version: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
 }
@@ -76,7 +75,6 @@ export interface ReportDetails {
 
 export interface ReportShape extends ReportDetails {
   reportType: string;
-  formTemplateId: string;
   programName: string;
   status: string;
   reportingPeriodStartDate: number;
@@ -88,6 +86,7 @@ export interface ReportShape extends ReportDetails {
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
+  formTemplate: ReportJson;
 }
 
 export interface ReportDataShape {
