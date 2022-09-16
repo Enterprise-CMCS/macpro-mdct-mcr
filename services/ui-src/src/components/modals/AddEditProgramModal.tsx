@@ -62,9 +62,6 @@ export const AddEditProgramModal = ({
         ...dataToWrite,
       });
       await updateReportData(reportDetails, {
-        "apoc-a3a": selectedReportMetadata?.submittedBy,
-        "apoc-a3b": selectedReportMetadata?.submitterEmail,
-        "apoc-a4": selectedReportMetadata?.submittedOnDate,
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,
@@ -79,12 +76,12 @@ export const AddEditProgramModal = ({
         status: ReportStatus.NOT_STARTED,
         formTemplate: mcparReportJson,
       });
-      // await updateReportData(reportDetails, {
-      //   "apoc-a1": stateName,
-      //   "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
-      //   "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
-      //   "arp-a6": programName,
-      // });
+      await updateReportData(reportDetails, {
+        "apoc-a1": stateName,
+        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
+        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
+        "arp-a6": programName,
+      });
     }
     await fetchReportsByState(activeState);
     modalDisclosure.onClose();

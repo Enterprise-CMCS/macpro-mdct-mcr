@@ -81,7 +81,7 @@ describe("Test writeReportData API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"formTemplateId":"mock-form-template-id"}`,
+      body: `{"formTemplate":{"validationJson":{"field1":"text"}}}`,
     });
     mockedgetReportData.mockResolvedValue({
       statusCode: 200,
@@ -104,7 +104,7 @@ describe("Test writeReportData API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"formTemplateId":"mock-form-template-id"}`,
+      body: `{"formTemplate":{"validationJson":{"field1":"number","field2":"text"}}}`,
     });
     mockedgetReportData.mockResolvedValue({
       statusCode: 200,
@@ -133,7 +133,7 @@ describe("Test writeReportData API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"formTemplateId":"mock-form-template-id"}`,
+      body: `{"formTemplate":{"validationJson":{"field1":"text","newField1":"text"}}}`,
     });
     const response = await writeReportData(updateEvent, null);
     const body = JSON.parse(response.body);
@@ -157,7 +157,7 @@ describe("Test writeReportData API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"formTemplateId":"mock-form-template-id"}`,
+      body: `{"formTemplate":{"validationJson":{"newField1":"number","newField2":"text"}}}`,
     });
     const response = await writeReportData(updateEventWithInvalidData, null);
     expect(response.statusCode).toBe(StatusCodes.SERVER_ERROR);

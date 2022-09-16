@@ -75,7 +75,7 @@
               {
                 "id": "apoc-a4",
                 "type": "date",
-                "validation": "dateOptional",
+                "validation": "textOptional",
                 "props": {
                   "label": "A.4 Date of report submission",
                   "hint": "CMS receives this date upon submission of this MCPAR report.",
@@ -113,7 +113,7 @@
                 "id": "arp-a5b",
                 "type": "date",
                 "hydrate": "reportingPeriodEndDate",
-                "validation": "dateOptional",
+                "validation": "textOptional",
                 "props": {
                   "label": "A.5b Reporting period end date",
                   "hint": "Auto-populated from report dashboard.",

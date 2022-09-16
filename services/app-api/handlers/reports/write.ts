@@ -25,16 +25,17 @@ export const writeReport = handler(async (event, context) => {
 
   const validationSchema = yup.object().shape({
     programName: yup.string(),
+    reportType: yup.string(),
+    status: yup.string(),
     reportingPeriodStartDate: yup.number(),
     reportingPeriodEndDate: yup.number(),
     dueDate: yup.number(),
-    lastAlteredBy: yup.string(),
-    reportType: yup.string(),
-    status: yup.string(),
     combinedData: yup.string(),
-    formTemplate: yup.object(),
+    lastAlteredBy: yup.string(),
+    submittedBy: yup.string(),
+    submittedOnDate: yup.string(),
+    formTemplate: yup.mixed(),
   });
-
   const unvalidatedPayload = JSON.parse(event!.body!);
   const validatedPayload = await validateData(
     validationSchema,

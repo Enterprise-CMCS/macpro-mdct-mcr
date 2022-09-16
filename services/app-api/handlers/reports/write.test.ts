@@ -30,14 +30,14 @@ const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
 
 const creationEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"in progress","formTemplateId":"mock-id","combinedData":"yes"}`,
+  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"in progress","combinedData":"yes"}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 const submissionEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"submitted","formTemplateId":"mock-id","combinedData":"yes"}`,
+  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"submitted","combinedData":"yes"}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB", reportId: "testReportId" },
 };

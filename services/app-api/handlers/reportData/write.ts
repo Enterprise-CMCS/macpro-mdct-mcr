@@ -35,21 +35,18 @@ export const writeReportData = handler(async (event, context) => {
   let validationSchema: AnyObject | undefined = undefined;
   const unvalidatedPayload = JSON.parse(event!.body!);
 
-  // GET NECESSARY DATA TO VALIDATE PAYLOAD
-
   const reportEvent = {
     ...event,
     body: "",
   };
+
   // get current report (for formTemplate/validationJson)
   const getCurrentReport = await getReport(reportEvent, context);
   if (getCurrentReport.body) {
-    const {
-      formTemplate: { validationJson },
-    } = JSON.parse(getCurrentReport.body);
+    const { formTemplate } = JSON.parse(getCurrentReport.body);
     // filter field validation to just what's needed for the passed fields
     const filteredValidationJson = filterValidationSchema(
-      validationJson,
+      formTemplate.validationJson,
       unvalidatedPayload
     );
     // transform field validation instructions to yup validation schema
@@ -58,8 +55,7 @@ export const writeReportData = handler(async (event, context) => {
       .shape(mapValidationTypesToSchema(filteredValidationJson));
   }
 
-  // VALIDATE PAYLOAD & WRITE TO DATABASE
-
+  // validate payload
   if (validationSchema) {
     const validatedNewReportData = await validateData(
       validationSchema,
