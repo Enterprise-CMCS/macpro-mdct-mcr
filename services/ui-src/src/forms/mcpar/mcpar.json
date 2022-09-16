@@ -2466,6 +2466,7 @@
                   {
                     "id": "dgbr-2",
                     "type": "number",
+                    "validation": "number",
                     "props": {
                       "label": "D1.IV.16b Resolved grievances related to plan or provider care management/case management",
                       "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider care management/case management.</p><p>Care management/case management grievances include complaints about the timeliness of an assessment or complaints about the plan or provider care or case management process.</p>",

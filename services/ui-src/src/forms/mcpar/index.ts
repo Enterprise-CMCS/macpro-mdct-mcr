@@ -1,7 +1,7 @@
 import rawReportJson from "./mcpar.json";
 // utils
 import {
-  compileValidationJson,
+  compileValidationJsonFromRoutes,
   copyAdminDisabledStatusToForms,
   flattenReportRoutesArray,
 } from "utils/reports/reports";
@@ -24,7 +24,7 @@ export const mcparReportRoutesFlat = flattenReportRoutesArray(
  */
 export const mcparReportJson = {
   ...reportJsonBase,
-  validationJson: compileValidationJson(mcparReportRoutesFlat),
+  validationJson: compileValidationJsonFromRoutes(mcparReportRoutesFlat),
 };
 
 export const nonFormPages = ["/mcpar/get-started"];

@@ -48,29 +48,42 @@ export const flattenReportRoutesArray = (
   return routesArray;
 };
 
-export const compileValidationJson = (routeArray: ReportRoute[]): AnyObject => {
+export const compileValidationJsonFromFields = (
+  fieldArray: FormField[]
+): AnyObject => {
   const validationSchema: AnyObject = {};
-  const getValidationFromFields = (fieldArray: FormField[]) => {
-    fieldArray.forEach((field: FormField) => {
-      // compile field's validation schema
-      validationSchema[field.id] = field.validation;
-      // if field has choices/options (ie could have nested children)
-      const fieldChoices = field.props?.choices;
-      if (fieldChoices) {
-        fieldChoices.forEach((choice: FieldChoice) => {
-          // if given field choice has nested children
-          const nestedChildFields = choice.children;
-          if (nestedChildFields) {
-            getValidationFromFields(nestedChildFields);
-          }
-        });
-      }
-    });
-  };
+  fieldArray.forEach((field: FormField) => {
+    // compile field's validation schema
+    validationSchema[field.id] = field.validation;
+    // if field has choices/options (ie could have nested children)
+    const fieldChoices = field.props?.choices;
+    if (fieldChoices) {
+      fieldChoices.forEach((choice: FieldChoice) => {
+        // if given field choice has nested children
+        const nestedChildFields = choice.children;
+        if (nestedChildFields) {
+          Object.assign(
+            validationSchema,
+            compileValidationJsonFromFields(nestedChildFields)
+          );
+        }
+      });
+    }
+  });
+  return validationSchema;
+};
+
+export const compileValidationJsonFromRoutes = (
+  routeArray: ReportRoute[]
+): AnyObject => {
+  const validationSchema: AnyObject = {};
   routeArray.forEach((route: ReportRoute) => {
     const routeFormFields = route.form?.fields;
     if (routeFormFields) {
-      getValidationFromFields(routeFormFields);
+      Object.assign(
+        validationSchema,
+        compileValidationJsonFromFields(routeFormFields)
+      );
     }
   });
   return validationSchema;
