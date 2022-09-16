@@ -123,9 +123,18 @@ export interface FormJson {
   adminDisabled?: boolean;
 }
 
+export interface FieldValidationObject {
+  type: string;
+  nested: boolean;
+  parentFieldName: string;
+  visibleOptionValue: string;
+  dependentFieldName?: string;
+}
+
 export interface FormField {
   id: string;
   type: string;
+  validation: string | FieldValidationObject;
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];
