@@ -11,9 +11,11 @@ export const sanitizeString = (string: string) => {
   }
 };
 
+// receives array and iterates over objects or values and sanitizes each
 export const sanitizeArray = (array: any[] = []) => {
   const newArray: any[] = [];
 
+  // checks if array is not empty
   if (array.length > 0) {
     for (let num = 0; num < array.length; num++) {
       const entry = array[num];
@@ -24,7 +26,9 @@ export const sanitizeArray = (array: any[] = []) => {
           break;
         case "object":
           if (Array.isArray(entry)) {
+            // checks if array is not empty
             if (entry.length > 0) {
+              // reruns function for an array
               newArray.push(sanitizeArray(entry));
             } else {
               newArray.push(entry);
@@ -42,6 +46,7 @@ export const sanitizeArray = (array: any[] = []) => {
     return newArray;
   }
 
+  // returns empty array if empty
   return newArray;
 };
 
@@ -60,12 +65,14 @@ export const sanitizeObject = (object: any) => {
           break;
         case "object":
           if (Array.isArray(entry[1])) {
+            // checks if array is not empty
             if (entry[1].length > 0) {
               newObject[`${entry[0]}`] = sanitizeArray(entry[1]);
             } else {
               newObject[`${entry[0]}`] = entry[1];
             }
           } else {
+            // reruns function for an object
             newObject[`${entry[0]}`] = sanitizeObject(entry[1]);
           }
           break;
@@ -78,5 +85,6 @@ export const sanitizeObject = (object: any) => {
     return newObject;
   }
 
+  // returns unaltered if not present
   return object;
 };
