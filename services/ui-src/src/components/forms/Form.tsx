@@ -9,6 +9,7 @@ import {
   compileValidationJsonFromFields,
   formFieldFactory,
   hydrateFormFields,
+  mapValidationTypesToSchema,
   sortFormErrors,
   useUser,
 } from "utils";
@@ -23,9 +24,6 @@ export const Form = ({
   ...props
 }: Props) => {
   const { fields, options } = formJson;
-  const formValidationSchema = yupSchema(
-    compileValidationJsonFromFields(formJson.fields) || {}
-  );
 
   // determine if fields should be disabled (based on admin roles )
   const { userRole } = useUser().user ?? {};
@@ -35,11 +33,15 @@ export const Form = ({
     userRole === UserRoles.HELP_DESK;
   const fieldInputDisabled = isAdminUser && formJson.adminDisabled;
 
+  // create validation schema
+  const formValidationJson = compileValidationJsonFromFields(formJson.fields);
+  const formValidationSchema = mapValidationTypesToSchema(formValidationJson);
+  const formResolverSchema = yupSchema(formValidationSchema || {});
+  mapValidationTypesToSchema;
+
   // make form context
   const form = useForm({
-    resolver: !fieldInputDisabled
-      ? yupResolver(formValidationSchema)
-      : undefined,
+    resolver: !fieldInputDisabled ? yupResolver(formResolverSchema) : undefined,
     shouldFocusError: false,
     mode: "onChange",
     ...(options as AnyObject),
