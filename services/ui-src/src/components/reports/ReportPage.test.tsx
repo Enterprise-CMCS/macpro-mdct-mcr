@@ -90,7 +90,7 @@ describe("Test ReportPage functionality", () => {
 
   test("ReportPage navigates to dashboard if no reportId", () => {
     render(ReportPageComponent_WithoutReport);
-    expect(mockUseNavigate).toHaveBeenCalledWith("/mock");
+    expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar");
   });
 
   test("ReportPage updates reportData on successful fill", async () => {
