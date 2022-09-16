@@ -1,30 +1,27 @@
 import rawReportJson from "./mcpar.json";
-import reportSchema from "./mcpar.schema";
 // utils
 import {
-  addValidationToReportJson,
+  compileValidationJson,
   copyAdminDisabledStatusToForms,
   flattenReportRoutesArray,
 } from "utils/reports/reports";
 import { ReportJson } from "types";
 
-const reportJsonWithDisabledStatus: ReportJson =
+const reportJsonBase: ReportJson =
   copyAdminDisabledStatusToForms(rawReportJson);
 
-// full reportJson with routes in nested array
-export const mcparReportJsonNested: ReportJson = {
-  ...rawReportJson,
-  // update the formJson of each report route with appropriate validation schema
-  routes: addValidationToReportJson(
-    reportJsonWithDisabledStatus.routes,
-    reportSchema
-  ),
-};
+// export routes in flattened array for use in creating app routes
+export const mcparReportRoutesFlat = flattenReportRoutesArray(
+  reportJsonBase.routes
+);
 
-// full reportJson with routes in flattened array
-export const mcparReportJsonFlat: ReportJson = {
-  ...rawReportJson,
-  routes: flattenReportRoutesArray(mcparReportJsonNested.routes),
+/*
+ * export full reportJson with routes in nested array
+ * for storage and use in creating form and sidebar
+ */
+export const mcparReportJson = {
+  ...reportJsonBase,
+  validationJson: compileValidationJson(mcparReportRoutesFlat),
 };
 
 export const nonFormPages = ["/mcpar/get-started"];

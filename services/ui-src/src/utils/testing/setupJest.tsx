@@ -163,6 +163,7 @@ export const mockBannerDataEmpty = {
 export const mockFormField = {
   id: "mock-1",
   type: "text",
+  validation: "text",
   props: {
     label: "mock field",
   },

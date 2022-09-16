@@ -11,7 +11,7 @@ import {
   ReviewSubmit,
 } from "routes";
 import { AdminBannerProvider, ReportPage } from "components";
-import { mcparReportJsonFlat as mcparReportJson } from "forms/mcpar";
+import { mcparReportRoutesFlat } from "forms/mcpar";
 
 // utils
 import { ReportRoute, UserRoles } from "types";
@@ -35,16 +35,14 @@ export const AppRoutes = ({ userRole }: Props) => {
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<Dashboard />} />
           <Route path="/mcpar/get-started" element={<GetStarted />} />
-          {mcparReportJson.routes.map((route: ReportRoute) => {
+          {mcparReportRoutesFlat.map((route: ReportRoute) => {
             return (
               route.form &&
               route.page && (
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={
-                    <ReportPage reportJson={mcparReportJson} route={route} />
-                  }
+                  element={<ReportPage route={route} />}
                 />
               )
             );

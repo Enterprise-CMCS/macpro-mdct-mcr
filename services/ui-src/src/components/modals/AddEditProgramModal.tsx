@@ -15,7 +15,7 @@ import uuid from "react-uuid";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
 import formSchema from "forms/addEditProgram/addEditProgram.schema";
-import { mcparReportJsonNested } from "forms/mcpar";
+import { mcparReportJson } from "forms/mcpar";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -90,8 +90,8 @@ export const AddEditProgramModal = ({
       // save form template
       await writeFormTemplate({
         formTemplateId: formTemplateId,
-        formTemplate: mcparReportJsonNested,
-        formTemplateVersion: mcparReportJsonNested.version,
+        formTemplate: mcparReportJson,
+        formTemplateVersion: mcparReportJson.version,
       });
     }
     await fetchReportsByState(activeState);
