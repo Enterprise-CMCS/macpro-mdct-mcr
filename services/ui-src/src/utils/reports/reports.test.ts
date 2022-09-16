@@ -1,5 +1,4 @@
 import { ReportJson } from "types";
-
 import {
   flattenReportRoutesArray,
   sortReportsOldestToNewest,

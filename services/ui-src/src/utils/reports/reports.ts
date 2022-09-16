@@ -7,6 +7,11 @@ import {
   ReportRoute,
 } from "types";
 
+export const sortReportsOldestToNewest = (
+  reportsArray: ReportShape[]
+): ReportShape[] =>
+  reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
+
 // returns reportJson with forms that mirror the adminDisabled status of the report
 export const copyAdminDisabledStatusToForms = (
   reportJson: ReportJson
@@ -88,30 +93,3 @@ export const compileValidationJsonFromRoutes = (
   });
   return validationSchema;
 };
-
-export const addValidationToReportJson = (
-  reportJson: ReportRoute[],
-  validationSchema: AnyObject
-): ReportRoute[] => {
-  const mapSchemaToForms = (routes: ReportRoute[], schema: AnyObject) => {
-    routes.map((route: ReportRoute) => {
-      // if children, recurse; if none, push to routes array
-      if (route?.children) {
-        mapSchemaToForms(route.children, validationSchema);
-      }
-      // else if form (children & form are always mutually exclusive)
-      else if (route?.form) {
-        // add corresponding validation schema to form
-        const correspondingValidationSchema = schema[route.form.id];
-        route.form.validation = correspondingValidationSchema || {};
-      }
-    });
-  };
-  mapSchemaToForms(reportJson, validationSchema);
-  return reportJson;
-};
-
-export const sortReportsOldestToNewest = (
-  reportsArray: ReportShape[]
-): ReportShape[] =>
-  reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
