@@ -14,7 +14,6 @@ import {
 import uuid from "react-uuid";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
-import formSchema from "forms/addEditProgram/addEditProgram.schema";
 import { mcparReportJson } from "forms/mcpar";
 
 export const AddEditProgramModal = ({
@@ -31,7 +30,6 @@ export const AddEditProgramModal = ({
 
   // add validation to formJson
   const form: FormJson = formJson;
-  form.validation = formSchema;
 
   const writeProgram = async (formData: any) => {
     const submitButton = document.querySelector("[form=" + form.id + "]");

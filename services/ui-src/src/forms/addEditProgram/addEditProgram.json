@@ -7,6 +7,7 @@
     {
       "id": "aep-programName",
       "type": "text",
+      "validation": "text",
       "props": {
         "label": "Program name"
       }
@@ -14,6 +15,7 @@
     {
       "id": "aep-startDate",
       "type": "date",
+      "validation": "date",
       "props": {
         "label": "A.5a Reporting period (i.e. contract period) start date",
         "hint": "Enter start date of the reporting period represented in the report.",
@@ -23,6 +25,10 @@
     {
       "id": "aep-endDate",
       "type": "date",
+      "validation": {
+        "type": "endDate",
+        "dependentFieldName": "aep-startDate"
+      },
       "props": {
         "label": "A.5b Reporting period  (i.e. contract period) end date",
         "hint": "Enter end date of the reporting period represented in the report.",
@@ -32,6 +38,7 @@
     {
       "id": "aep-combinedData",
       "type": "checkbox",
+      "validation": "checkboxSingle",
       "props": {
         "label": "Exclusion of CHIP from MCPAR",
         "hint": "For Medicaid-only or Medicaid Expansion CHIP programs, select this checkbox if there are reporting items for which the state is unable to remove Separate CHIP information.",

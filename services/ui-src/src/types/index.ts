@@ -1,5 +1,4 @@
 import React from "react";
-import { ArraySchema, StringSchema } from "yup";
 
 // USERS
 
@@ -119,17 +118,34 @@ export interface FormJson {
   id: string;
   fields: FormField[];
   options?: AnyObject;
-  validation?: StringSchema | ArraySchema<any> | AnyObject;
+  validation?: AnyObject;
   adminDisabled?: boolean;
 }
 
-export interface FieldValidationObject {
+export interface DependentFieldValidation {
   type: string;
-  nested: boolean;
+  dependentFieldName: string;
+}
+
+export interface NestedFieldValidation {
+  type: string;
+  nested: true;
   parentFieldName: string;
   visibleOptionValue: string;
-  dependentFieldName?: string;
 }
+
+export interface NestedDependentFieldValidation {
+  type: string;
+  dependentFieldName: string;
+  nested: true;
+  parentFieldName: string;
+  visibleOptionValue: string;
+}
+
+export type FieldValidationObject =
+  | DependentFieldValidation
+  | NestedFieldValidation
+  | NestedDependentFieldValidation;
 
 export interface FormField {
   id: string;
