@@ -8,7 +8,6 @@ import {
 } from "../../utils/constants/constants";
 import { getReportData } from "./get";
 import { getReport } from "../reports/get";
-import { getFormTemplate } from "../formTemplates/get";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -34,11 +33,6 @@ const mockedgetReportData = getReportData as jest.MockedFunction<
 
 jest.mock("../reports/get");
 const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
-
-jest.mock("../formTemplates/get");
-const mockedGetFormTemplate = getFormTemplate as jest.MockedFunction<
-  typeof getFormTemplate
->;
 
 const creationEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -89,16 +83,6 @@ describe("Test writeReportData API method", () => {
       },
       body: `{"formTemplateId":"mock-form-template-id"}`,
     });
-    mockedGetFormTemplate.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"formTemplate":{"validationSchema":{
-        "field1":"text","field2":"text"
-      }}}`,
-    });
     mockedgetReportData.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -121,16 +105,6 @@ describe("Test writeReportData API method", () => {
         "Access-Control-Allow-Credentials": true,
       },
       body: `{"formTemplateId":"mock-form-template-id"}`,
-    });
-    mockedGetFormTemplate.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"formTemplate":{"validationSchema":{
-        "field1":"text","field2":"text"
-      }}}`,
     });
     mockedgetReportData.mockResolvedValue({
       statusCode: 200,
@@ -161,16 +135,6 @@ describe("Test writeReportData API method", () => {
       },
       body: `{"formTemplateId":"mock-form-template-id"}`,
     });
-    mockedGetFormTemplate.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"formTemplate":{"validationSchema":{
-        "newField1":"text","newField2":"text","newNum1":"number"
-      }}}`,
-    });
     const response = await writeReportData(updateEvent, null);
     const body = JSON.parse(response.body);
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
@@ -194,16 +158,6 @@ describe("Test writeReportData API method", () => {
         "Access-Control-Allow-Credentials": true,
       },
       body: `{"formTemplateId":"mock-form-template-id"}`,
-    });
-    mockedGetFormTemplate.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"formTemplate":{"validationSchema":{
-        "newField1":"text","newField2":"text","newNum1":"number"
-      }}}`,
     });
     const response = await writeReportData(updateEventWithInvalidData, null);
     expect(response.statusCode).toBe(StatusCodes.SERVER_ERROR);

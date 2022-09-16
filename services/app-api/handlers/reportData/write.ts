@@ -3,7 +3,6 @@ import * as yup from "yup";
 import handler from "../handler-lib";
 import { getReportData } from "./get";
 import { getReport } from "../reports/get";
-import { getFormTemplate } from "../formTemplates/get";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -42,33 +41,21 @@ export const writeReportData = handler(async (event, context) => {
     ...event,
     body: "",
   };
-  // get current report (for formTemplateId)
+  // get current report (for formTemplate/validationJson)
   const getCurrentReport = await getReport(reportEvent, context);
   if (getCurrentReport.body) {
-    const { formTemplateId } = JSON.parse(getCurrentReport.body);
-
-    // get formTemplate (for validationSchema)
-    const formTemplateEvent = {
-      ...event,
-      body: "",
-      pathParameters: {
-        formTemplateId: formTemplateId,
-      },
-    };
-    const getTemplate = await getFormTemplate(formTemplateEvent, context);
-    if (getTemplate.body) {
-      const { formTemplate } = JSON.parse(getTemplate.body);
-      // filter field validation to just what's needed for the passed fields
-      const filteredValidationSchema = filterValidationSchema(
-        formTemplate.validationSchema,
-        unvalidatedPayload
-      );
-      // transform field validation instructions to actual validation schema
-      const createdValidationSchema = mapValidationTypesToSchema(
-        filteredValidationSchema
-      );
-      validationSchema = yup.object().shape(createdValidationSchema);
-    }
+    const {
+      formTemplate: { validationJson },
+    } = JSON.parse(getCurrentReport.body);
+    // filter field validation to just what's needed for the passed fields
+    const filteredValidationJson = filterValidationSchema(
+      validationJson,
+      unvalidatedPayload
+    );
+    // transform field validation instructions to yup validation schema
+    validationSchema = yup
+      .object()
+      .shape(mapValidationTypesToSchema(filteredValidationJson));
   }
 
   // VALIDATE PAYLOAD & WRITE TO DATABASE

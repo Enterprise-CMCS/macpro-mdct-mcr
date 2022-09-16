@@ -31,8 +31,8 @@ export const writeReport = handler(async (event, context) => {
     lastAlteredBy: yup.string(),
     reportType: yup.string(),
     status: yup.string(),
-    formTemplateId: yup.string(),
     combinedData: yup.string(),
+    formTemplate: yup.object(),
   });
 
   const unvalidatedPayload = JSON.parse(event!.body!);
