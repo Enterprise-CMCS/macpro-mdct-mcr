@@ -50,7 +50,6 @@ describe("Test copyAdminDisabledStatusToForms", () => {
   const newReportJson: ReportJson = {
     name: "mockJson",
     basePath: "/base/mockJson",
-    version: "0.0.0",
     adminDisabled: true,
     routes: [
       {

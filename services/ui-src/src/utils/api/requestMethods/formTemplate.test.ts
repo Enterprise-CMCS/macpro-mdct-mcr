@@ -1,6 +1,6 @@
 import { getFormTemplate, writeFormTemplate } from "./formTemplate";
 // utils
-import { mockFormTemplate } from "utils/testing/setupJest";
+import { mockReportJson } from "utils/testing/setupJest";
 
 describe("Test form template methods", () => {
   test("getFormTemplate", () => {
@@ -8,6 +8,6 @@ describe("Test form template methods", () => {
   });
 
   test("writeFormTemplate", () => {
-    expect(writeFormTemplate(mockFormTemplate)).toBeTruthy();
+    expect(writeFormTemplate(mockReportJson)).toBeTruthy();
   });
 });

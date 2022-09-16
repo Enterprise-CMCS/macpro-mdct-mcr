@@ -4,18 +4,16 @@ import uuid from "react-uuid";
 import { Form, Modal, ReportContext } from "components";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
-import formSchema from "forms/addEditProgram/addEditProgram.schema";
-import { mcparReportJsonNested } from "forms/mcpar";
+import { mcparReportJson } from "forms/mcpar";
 // utils
 import { AnyObject, FormJson, ReportStatus } from "types";
+import { noCombinedDataInput, States } from "../../constants";
 import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
   useUser,
-  writeFormTemplate,
 } from "utils";
-import { noCombinedDataInput } from "../../constants";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -26,9 +24,11 @@ export const AddEditProgramModal = ({
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
+  // get full state name from selected state
+  const stateName = States[activeState as keyof typeof States];
+
   // add validation to formJson
   const form: FormJson = formJson;
-  form.validation = formSchema;
 
   const writeProgram = async (formData: any) => {
     const submitButton = document.querySelector("[form=" + form.id + "]");
@@ -72,26 +72,18 @@ export const AddEditProgramModal = ({
     } else {
       // if no program was selected, create new report id
       reportDetails.reportId = uuid();
-      // create unique form template id
-      const formTemplateId = uuid();
       // create new report
       await updateReport(reportDetails, {
         ...dataToWrite,
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
-        formTemplateId: formTemplateId,
+        formTemplate: mcparReportJson,
       });
       await updateReportData(reportDetails, {
-        "apoc-a1": activeState,
+        "apoc-a1": stateName,
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,
-      });
-      // save form template
-      await writeFormTemplate({
-        formTemplateId: formTemplateId,
-        formTemplate: mcparReportJsonNested,
-        formTemplateVersion: mcparReportJsonNested.version,
       });
     }
     await fetchReportsByState(activeState);

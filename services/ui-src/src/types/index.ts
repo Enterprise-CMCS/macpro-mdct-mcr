@@ -32,7 +32,6 @@ export interface ReportJson {
   id?: string;
   name: string;
   basePath: string;
-  version: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
   validationSchema?: AnyObject;
@@ -77,7 +76,6 @@ export interface ReportDetails {
 
 export interface ReportShape extends ReportDetails {
   reportType: string;
-  formTemplateId: string;
   programName: string;
   status: string;
   reportingPeriodStartDate: number;
@@ -90,6 +88,7 @@ export interface ReportShape extends ReportDetails {
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
+  formTemplate: ReportJson;
 }
 
 export interface ReportDataShape {
@@ -124,9 +123,35 @@ export interface FormJson {
   adminDisabled?: boolean;
 }
 
+export interface DependentFieldValidation {
+  type: string;
+  dependentFieldName: string;
+}
+
+export interface NestedFieldValidation {
+  type: string;
+  nested: true;
+  parentFieldName: string;
+  visibleOptionValue: string;
+}
+
+export interface NestedDependentFieldValidation {
+  type: string;
+  dependentFieldName: string;
+  nested: true;
+  parentFieldName: string;
+  visibleOptionValue: string;
+}
+
+export type FieldValidationObject =
+  | DependentFieldValidation
+  | NestedFieldValidation
+  | NestedDependentFieldValidation;
+
 export interface FormField {
   id: string;
   type: string;
+  validation: string | FieldValidationObject;
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];

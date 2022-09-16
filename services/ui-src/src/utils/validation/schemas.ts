@@ -1,14 +1,8 @@
-import {
-  array,
-  mixed,
-  number as numberSchema,
-  string,
-  StringSchema,
-} from "yup";
+import { array, mixed, number as numberSchema, string } from "yup";
 import { validationErrors as error } from "verbiage/errors";
 
 // TEXT
-export const text = (): StringSchema =>
+export const text = () =>
   string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
 export const textOptional = () => text().notRequired();
 
