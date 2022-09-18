@@ -1436,6 +1436,7 @@
           },
           "form": {
             "id": "dpc",
+            "pageEntityType": "plan",
             "fields": [
               {
                 "id": "dpc-1",

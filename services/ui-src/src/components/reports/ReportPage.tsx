@@ -27,9 +27,17 @@ import {
 
 export const ReportPage = ({ reportJson, route }: Props) => {
   // get report, form, and page related-data
-  const { report, updateReportData, updateReport } = useContext(ReportContext);
+  const { report, reportData, updateReportData, updateReport } =
+    useContext(ReportContext);
   const { basePath, routes } = reportJson;
   const { form, page } = route;
+
+  const entityTypeMap = {
+    plan: "aap-1", // reportData fieldId of the entity array
+    bssEntity: "apoc-2", // same ^^
+    qualityMeasures: "apoc-3", // same ^^
+    someOtherEntity: "apoc-4", // same ^^
+  };
 
   // get user state, name, role
   const { user } = useUser();
@@ -75,6 +83,12 @@ export const ReportPage = ({ reportJson, route }: Props) => {
   };
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
+    let entities: string[] | undefined;
+    if (form?.pageEntityType) {
+      const pageEntityType: keyof typeof entityTypeMap = form.pageEntityType;
+      const entitiesToFetch = entityTypeMap[pageEntityType];
+      entities = reportData?.fieldData[entitiesToFetch];
+    }
     switch (page?.pageType) {
       case PageTypes.STATIC_PAGE:
         return <StaticPageSection form={form} onSubmit={onSubmit} />;
@@ -82,6 +96,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
         return (
           <StaticDrawerSection
             form={form}
+            entities={entities}
             drawer={page.drawer!}
             onSubmit={onSubmit}
           />

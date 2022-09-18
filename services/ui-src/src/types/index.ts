@@ -121,8 +121,8 @@ export interface FormJson {
   options?: AnyObject;
   validation?: StringSchema | ArraySchema<any> | AnyObject;
   adminDisabled?: boolean;
+  pageEntityType?: "plan" | "bssEntity" | "qualityMeasures" | "someOtherEntity";
 }
-
 export interface FormField {
   id: string;
   type: string;

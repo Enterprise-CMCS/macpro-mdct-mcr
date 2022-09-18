@@ -1,11 +1,23 @@
 import { useState } from "react";
 // components
-import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { ReportDrawer } from "components";
 // utils
 import { FormJson, AnyObject } from "types";
 
-export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
+export const StaticDrawerSection = ({
+  form,
+  entities,
+  drawer,
+  onSubmit,
+}: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   // make state
@@ -16,14 +28,10 @@ export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
     onOpen();
   };
 
-  const tempEntityMap = {
-    plans: ["Plan A", "Plan B", "Plan C"],
-  };
-
   return (
     <Box data-testid="static-drawer-section">
       <Heading as="h4">{drawer.dashboard.title}</Heading>
-      {tempEntityMap.plans.map((entity) => {
+      {entities?.map((entity) => {
         return (
           <Flex key={entity} sx={sx.entityRow}>
             <Heading as="h5">{entity}</Heading>
@@ -37,6 +45,7 @@ export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
           </Flex>
         );
       })}
+      {!entities && <Text sx={sx.emptyEntityMessage}>Please enter a plan</Text>}
       <ReportDrawer
         drawerDisclosure={{
           isOpen,
@@ -54,6 +63,7 @@ export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
 
 interface Props {
   form: FormJson;
+  entities?: string[];
   drawer: AnyObject;
   onSubmit: Function;
 }
@@ -66,6 +76,9 @@ const sx = {
     padding: "0.5rem",
     paddingLeft: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+  },
+  emptyEntityMessage: {
+    paddingTop: "1rem",
   },
   enterButton: {
     width: "4.25rem",
