@@ -50,7 +50,6 @@ interface Props {
   formId?: string;
   previousRoute: string;
   nextRoute: string;
-
   [key: string]: any;
 }
 

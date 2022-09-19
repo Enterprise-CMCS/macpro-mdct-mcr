@@ -27,12 +27,12 @@ async function getReportsByState(state: string) {
 
 async function writeReport(
   reportDetails: ReportDetails,
-  reportStatus: ReportShape
+  reportMetadata: ReportShape
 ) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
-    body: { ...reportStatus },
+    body: { ...reportMetadata },
   };
   const { state, reportId } = reportDetails;
   const response = await API.post(
