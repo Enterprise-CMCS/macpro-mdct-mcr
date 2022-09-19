@@ -28,24 +28,28 @@ export const StaticDrawerSection = ({
     onOpen();
   };
 
+  const emptyEntitiesMessage = (
+    <Text sx={sx.emptyEntityMessage}>Please enter a plan</Text>
+  );
+
+  const entityRows = (entities: string[]) =>
+    entities.map((entity) => (
+      <Flex key={entity} sx={sx.entityRow}>
+        <Heading as="h5">{entity}</Heading>
+        <Button
+          sx={sx.enterButton}
+          onClick={() => openRowDrawer(entity)}
+          variant="outline"
+        >
+          Enter
+        </Button>
+      </Flex>
+    ));
+
   return (
     <Box data-testid="static-drawer-section">
       <Heading as="h4">{drawer.dashboard.title}</Heading>
-      {entities?.map((entity) => {
-        return (
-          <Flex key={entity} sx={sx.entityRow}>
-            <Heading as="h5">{entity}</Heading>
-            <Button
-              sx={sx.enterButton}
-              onClick={() => openRowDrawer(entity)}
-              variant="outline"
-            >
-              Enter
-            </Button>
-          </Flex>
-        );
-      })}
-      {!entities && <Text sx={sx.emptyEntityMessage}>Please enter a plan</Text>}
+      {entities ? entityRows(entities) : emptyEntitiesMessage}
       <ReportDrawer
         drawerDisclosure={{
           isOpen,
