@@ -11,6 +11,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
+const entities = ["exampleEntity"];
 const mockOnSubmit = jest.fn();
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -32,16 +33,50 @@ const staticDrawerSectionComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test StaticDrawerSection view", () => {
-  test("StaticDrawerSection view renders", () => {
+const staticDrawerSectionWithEntitiesComponent = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <StaticDrawerSection
+        form={mockForm}
+        entities={entities}
+        drawer={mockPageJsonStaticDrawer.drawer}
+        onSubmit={mockOnSubmit}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+describe("Test StaticDrawerSection without Entities Passed", () => {
+  beforeEach(() => {
     render(staticDrawerSectionComponent);
+  });
+
+  it("should render the view", () => {
     expect(screen.getByTestId("static-drawer-section")).toBeVisible();
+  });
+
+  it("should display an error message if not passed entities", () => {
+    expect(screen.getByText("Please enter a plan")).toBeVisible();
+  });
+
+  it("should not have any way to open the side drawer", () => {
+    const drawerButtons = screen.queryAllByText("Enter");
+    expect(drawerButtons).toEqual([]);
   });
 });
 
-describe("Test StaticDrawerSection add entity operation", () => {
-  test("Drawer opens correctly", async () => {
-    render(staticDrawerSectionComponent);
+describe("Test StaticDrawerSection with Entities Passed", () => {
+  beforeEach(() => {
+    render(staticDrawerSectionWithEntitiesComponent);
+  });
+
+  it("should render the view", () => {
+    expect(screen.getByTestId("static-drawer-section")).toBeVisible();
+  });
+
+  it("Opens the sidedrawer correctly", async () => {
+    render(staticDrawerSectionWithEntitiesComponent);
+    expect(screen.getAllByText(entities[0])[0]).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
