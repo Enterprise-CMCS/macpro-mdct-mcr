@@ -277,6 +277,7 @@ export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
   routes: mockReportRoutes,
+  validationSchema: {},
 };
 
 export const mockReportJsonFlatRoutes = {
@@ -301,6 +302,7 @@ export const mockReport = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
+  combinedData: "Yes...",
 };
 
 export const mockReportData = {

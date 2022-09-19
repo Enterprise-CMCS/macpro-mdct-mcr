@@ -28,7 +28,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // render hydrated values on refresh
   useEffect(() => {
     form.reset();
-    append(props?.hydrate);
+    append(props?.hydrate || "");
   }, [props?.hydrate]);
 
   const fieldErrorState = form?.formState?.errors?.[name];
@@ -43,7 +43,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               label={label}
               errorMessage={fieldErrorState?.[index]?.message}
               sxOverride={sx.textFieldOverride}
-              {...props}
+              disabled={props?.disabled}
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>

@@ -50,7 +50,6 @@ export const ReviewSubmit = () => {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
         submittedBy: full_name,
-        submitterEmail: email,
         submittedOnDate: submissionDate,
       });
       updateReportData(reportDetails, {

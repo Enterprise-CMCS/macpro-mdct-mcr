@@ -1,7 +1,9 @@
+import * as yup from "yup";
 import handler from "../handler-lib";
 import { getReport } from "./get";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
+import { validateData } from "../../utils/validation/validation";
 import {
   NO_KEY_ERROR_MESSAGE,
   UNAUTHORIZED_MESSAGE,
@@ -21,38 +23,56 @@ export const writeReport = handler(async (event, context) => {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
 
-  const body = JSON.parse(event!.body!);
-  const state: string = event.pathParameters.state;
-  const reportId: string = event.pathParameters.reportId;
+  const validationSchema = yup.object().shape({
+    programName: yup.string(),
+    reportType: yup.string(),
+    status: yup.string(),
+    reportingPeriodStartDate: yup.number(),
+    reportingPeriodEndDate: yup.number(),
+    dueDate: yup.number(),
+    combinedData: yup.string(),
+    lastAlteredBy: yup.string(),
+    submittedBy: yup.string(),
+    submittedOnDate: yup.string(),
+    formTemplate: yup.mixed(),
+  });
+  const unvalidatedPayload = JSON.parse(event!.body!);
+  const validatedPayload = await validateData(
+    validationSchema,
+    unvalidatedPayload
+  );
 
-  let statusParams = {
-    TableName: process.env.REPORT_TABLE_NAME!,
-    Item: {
-      state: state,
-      reportId: reportId,
-      createdAt: Date.now(),
-      lastAltered: Date.now(),
-      ...body,
-    },
-  };
-  const getCurrentReport = await getReport(event, context);
-  if (getCurrentReport.body) {
-    const currentBody = JSON.parse(getCurrentReport.body);
-    if (currentBody.createdAt) {
-      statusParams = {
-        TableName: process.env.REPORT_TABLE_NAME!,
-        Item: {
-          ...currentBody,
-          ...statusParams.Item,
-          createdAt: currentBody.createdAt,
-        },
-      };
+  if (validatedPayload) {
+    const state: string = event.pathParameters.state;
+    const reportId: string = event.pathParameters.reportId;
+    let reportParams = {
+      TableName: process.env.REPORT_TABLE_NAME!,
+      Item: {
+        ...validatedPayload,
+        state: state,
+        reportId: reportId,
+        createdAt: Date.now(),
+        lastAltered: Date.now(),
+      },
+    };
+    const getCurrentReport = await getReport(event, context);
+    if (getCurrentReport.body) {
+      const currentReportInfo = JSON.parse(getCurrentReport.body);
+      if (currentReportInfo.createdAt) {
+        reportParams = {
+          TableName: process.env.REPORT_TABLE_NAME!,
+          Item: {
+            ...currentReportInfo,
+            ...reportParams.Item,
+            createdAt: currentReportInfo.createdAt,
+          },
+        };
+      }
     }
+    await dynamoDb.put(reportParams);
+    return {
+      status: StatusCodes.SUCCESS,
+      body: { ...reportParams.Item },
+    };
   }
-
-  await dynamoDb.put(statusParams);
-  return {
-    status: StatusCodes.SUCCESS,
-    body: { ...statusParams.Item },
-  };
 });
