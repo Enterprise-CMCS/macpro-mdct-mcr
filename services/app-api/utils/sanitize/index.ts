@@ -11,6 +11,19 @@ export const sanitizeString = (string: string) => {
   }
 };
 
+// creates a custom "type"
+const entryType = (entry: any) => {
+  // checks if is an array
+  const type = Array.isArray(entry)
+    ? "array"
+    : // checks if is an array and is not empty
+    Array.isArray(entry) && entry.length > 0
+    ? "emptyArray"
+    : // otherwise it's the default type
+      typeof entry;
+  return type;
+};
+
 // receives array and iterates over objects or values and sanitizes each
 export const sanitizeArray = (array: any[] = []) => {
   const newArray: any[] = [];
@@ -19,23 +32,20 @@ export const sanitizeArray = (array: any[] = []) => {
   if (array.length > 0) {
     for (let num = 0; num < array.length; num++) {
       const entry = array[num];
+      const type = entryType(entry);
 
-      switch (typeof entry) {
+      switch (type) {
         case "string":
           newArray.push(sanitizeString(entry));
           break;
+        case "array":
+          newArray.push(sanitizeArray(entry));
+          break;
+        case "emptyArray":
+          newArray.push(entry);
+          break;
         case "object":
-          if (Array.isArray(entry)) {
-            // checks if array is not empty
-            if (entry.length > 0) {
-              // reruns function for an array
-              newArray.push(sanitizeArray(entry));
-            } else {
-              newArray.push(entry);
-            }
-          } else {
-            newArray.push(sanitizeObject(entry));
-          }
+          newArray.push(sanitizeObject(entry));
           break;
         default:
           newArray.push(entry);
@@ -57,24 +67,21 @@ export const sanitizeObject = (object: any) => {
     const newObject: any = {};
 
     for (let num = 0; num < entries.length; num++) {
-      const entry = entries[num];
+      const entry: any = entries[num];
+      const type = entryType(entry[1]);
 
-      switch (typeof entry[1]) {
+      switch (type) {
         case "string":
           newObject[`${entry[0]}`] = sanitizeString(entry[1]);
           break;
+        case "array":
+          newObject[`${entry[0]}`] = sanitizeArray(entry[1]);
+          break;
+        case "emptyArray":
+          newObject[`${entry[0]}`] = entry[1];
+          break;
         case "object":
-          if (Array.isArray(entry[1])) {
-            // checks if array is not empty
-            if (entry[1].length > 0) {
-              newObject[`${entry[0]}`] = sanitizeArray(entry[1]);
-            } else {
-              newObject[`${entry[0]}`] = entry[1];
-            }
-          } else {
-            // reruns function for an object
-            newObject[`${entry[0]}`] = sanitizeObject(entry[1]);
-          }
+          newObject[`${entry[0]}`] = sanitizeObject(entry[1]);
           break;
         default:
           newObject[`${entry[0]}`] = entry[1];
