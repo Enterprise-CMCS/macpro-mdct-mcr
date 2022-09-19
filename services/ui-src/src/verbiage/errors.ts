@@ -6,7 +6,7 @@ export const bannerErrors = {
     "Current banner could not be deleted. Please contact support.",
 };
 
-export const schemaValidationErrors = {
+export const validationErrors = {
   REQUIRED_GENERIC: "A response is required",
   REQUIRED_CHECKBOX: "Select at least one response",
   INVALID_GENERIC: "Response must be valid",

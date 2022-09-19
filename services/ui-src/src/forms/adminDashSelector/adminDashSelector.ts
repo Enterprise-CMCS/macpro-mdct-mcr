@@ -18,6 +18,7 @@ export default {
     {
       id: "ads-state",
       type: "dropdown",
+      validation: "dropdown",
       props: {
         hint: "Select state to view reports:",
         options: dropdownOptions,

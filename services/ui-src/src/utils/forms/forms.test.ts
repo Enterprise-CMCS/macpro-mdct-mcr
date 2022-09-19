@@ -5,6 +5,7 @@ describe("Test formFieldFactory", () => {
     {
       id: "mockField1",
       type: "text",
+      validation: "text",
       props: {
         label: "Mock Text Field",
       },
@@ -12,6 +13,7 @@ describe("Test formFieldFactory", () => {
     {
       id: "mockField2",
       type: "radio",
+      validation: "radio",
       props: {
         label: "Mock Radio Field",
         choices: [
@@ -24,6 +26,7 @@ describe("Test formFieldFactory", () => {
               {
                 id: "mockField2-o1-text",
                 type: "text",
+                validation: "text",
                 props: {
                   label: "Mock nested child text field",
                 },
@@ -42,6 +45,7 @@ describe("Test formFieldFactory", () => {
     {
       id: "mockField3",
       type: "number",
+      validation: "number",
       props: {
         label: "Mock Number Field",
       },
@@ -82,6 +86,7 @@ describe("Test hydrateFormFields", () => {
     {
       id: "mock-field-1",
       type: "text",
+      validation: "text",
       props: {
         name: "mock-field-1",
         label: "1. First mocked field ",
@@ -90,6 +95,7 @@ describe("Test hydrateFormFields", () => {
     {
       id: "mock-field-2",
       type: "text",
+      validation: "text",
       props: {
         name: "mock-field-2",
         label: "2. Second mocked field ",
@@ -101,6 +107,7 @@ describe("Test hydrateFormFields", () => {
     {
       id: "mock-field-1",
       type: "text",
+      validation: "text",
       props: {
         name: "mock-field-1",
         label: "1. First mocked field ",
@@ -109,6 +116,7 @@ describe("Test hydrateFormFields", () => {
     {
       id: "mock-field-2",
       type: "checkbox",
+      validation: "checkbox",
       props: {
         label: "2. Second mocked field ",
         choices: [
@@ -121,6 +129,7 @@ describe("Test hydrateFormFields", () => {
               {
                 id: "mock-field-2-o1-text",
                 type: "text",
+                validation: "text",
               },
             ],
           },

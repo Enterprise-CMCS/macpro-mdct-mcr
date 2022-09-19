@@ -19,16 +19,15 @@ import {
   PageJson,
   PageTypes,
   ReportDataShape,
-  ReportJson,
   ReportRoute,
   ReportStatus,
   UserRoles,
 } from "types";
+import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const ReportPage = ({ reportJson, route }: Props) => {
+export const ReportPage = ({ route }: Props) => {
   // get report, form, and page related-data
   const { report, updateReportData, updateReport } = useContext(ReportContext);
-  const { basePath, routes } = reportJson;
   const { form, page } = route;
 
   // get user state, name, role
@@ -48,11 +47,14 @@ export const ReportPage = ({ reportJson, route }: Props) => {
 
   // get next and previous routes
   const navigate = useNavigate();
-  const { previousRoute, nextRoute } = useFindRoute(routes, basePath);
+  const { previousRoute, nextRoute } = useFindRoute(
+    mcparReportRoutesFlat,
+    "/mcpar"
+  );
 
   useEffect(() => {
     if (!reportId || !reportState) {
-      navigate(basePath);
+      navigate("/mcpar");
     }
   }, [reportId, reportState]);
 
@@ -119,7 +121,6 @@ export const ReportPage = ({ reportJson, route }: Props) => {
 };
 
 interface Props {
-  reportJson: ReportJson;
   route: ReportRoute;
 }
 

@@ -9,13 +9,11 @@ import {
   convertDateEtToUtc,
   convertDateUtcToEt,
   useUser,
-  writeFormTemplate,
 } from "utils";
 import uuid from "react-uuid";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
-import formSchema from "forms/addEditProgram/addEditProgram.schema";
-import { mcparReportJsonNested } from "forms/mcpar";
+import { mcparReportJson } from "forms/mcpar";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -31,7 +29,6 @@ export const AddEditProgramModal = ({
 
   // add validation to formJson
   const form: FormJson = formJson;
-  form.validation = formSchema;
 
   const writeProgram = async (formData: any) => {
     const submitButton = document.querySelector("[form=" + form.id + "]");
@@ -72,26 +69,18 @@ export const AddEditProgramModal = ({
     } else {
       // if no program was selected, create new report id
       reportDetails.reportId = uuid();
-      // create unique form template id
-      const formTemplateId = uuid();
       // create new report
       await updateReport(reportDetails, {
         ...dataToWrite,
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
-        formTemplateId: formTemplateId,
+        formTemplate: mcparReportJson,
       });
       await updateReportData(reportDetails, {
         "apoc-a1": stateName,
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,
-      });
-      // save form template
-      await writeFormTemplate({
-        formTemplateId: formTemplateId,
-        formTemplate: mcparReportJsonNested,
-        formTemplateVersion: mcparReportJsonNested.version,
       });
     }
     await fetchReportsByState(activeState);
