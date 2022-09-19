@@ -16,6 +16,7 @@ import {
 import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
+  PageEntityType,
   PageJson,
   PageTypes,
   ReportDataShape,
@@ -31,13 +32,6 @@ export const ReportPage = ({ reportJson, route }: Props) => {
     useContext(ReportContext);
   const { basePath, routes } = reportJson;
   const { form, page } = route;
-
-  const entityTypeMap = {
-    plan: "aap-1", // reportData fieldId of the entity array
-    bssEntity: "apoc-2", // same ^^
-    qualityMeasures: "apoc-3", // same ^^
-    someOtherEntity: "apoc-4", // same ^^
-  };
 
   // get user state, name, role
   const { user } = useUser();
@@ -82,13 +76,21 @@ export const ReportPage = ({ reportJson, route }: Props) => {
     }
   };
 
+  const getEntities = (formEntityType: PageEntityType) => {
+    const entityTypeMap = {
+      plan: "aap-1", // reportData fieldId of the entity array
+      bssEntity: "apoc-2", // same ^^
+      qualityMeasures: "apoc-3", // same ^^
+      someOtherEntity: "apoc-4", // same ^^
+    };
+    const pageEntityType: keyof typeof entityTypeMap = formEntityType;
+    const entitiesToFetch = entityTypeMap[pageEntityType];
+    const entities: string[] | undefined =
+      reportData?.fieldData[entitiesToFetch];
+    return entities;
+  };
+
   const renderPageSection = (form: FormJson, page?: PageJson) => {
-    let entities: string[] | undefined;
-    if (form?.pageEntityType) {
-      const pageEntityType: keyof typeof entityTypeMap = form.pageEntityType;
-      const entitiesToFetch = entityTypeMap[pageEntityType];
-      entities = reportData?.fieldData[entitiesToFetch];
-    }
     switch (page?.pageType) {
       case PageTypes.STATIC_PAGE:
         return <StaticPageSection form={form} onSubmit={onSubmit} />;
@@ -96,7 +98,7 @@ export const ReportPage = ({ reportJson, route }: Props) => {
         return (
           <StaticDrawerSection
             form={form}
-            entities={entities}
+            entities={form?.pageEntityType && getEntities(form.pageEntityType)}
             drawer={page.drawer!}
             onSubmit={onSubmit}
           />

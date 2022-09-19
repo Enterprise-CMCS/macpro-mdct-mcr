@@ -115,13 +115,19 @@ export interface ReportContextShape extends ReportContextMethods {
 
 // FORM & FIELD STRUCTURE
 
+export declare type PageEntityType =
+  | "plan"
+  | "bssEntity"
+  | "qualityMeasures"
+  | "someOtherEntity";
+
 export interface FormJson {
   id: string;
   fields: FormField[];
   options?: AnyObject;
   validation?: StringSchema | ArraySchema<any> | AnyObject;
   adminDisabled?: boolean;
-  pageEntityType?: "plan" | "bssEntity" | "qualityMeasures" | "someOtherEntity";
+  pageEntityType?: PageEntityType;
 }
 export interface FormField {
   id: string;
