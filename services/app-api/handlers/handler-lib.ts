@@ -7,7 +7,7 @@ import {
 } from "../utils/responses/response-lib";
 import { UNAUTHORIZED_MESSAGE } from "../utils/constants/constants";
 import { StatusCodes } from "../utils/types/types";
-import { sanitizeObject } from "../utils/sanitize";
+import { sanitizeObject } from "../utils/sanitize/sanitize";
 
 type LambdaFunction = (
   event: APIGatewayProxyEvent, // eslint-disable-line no-unused-vars

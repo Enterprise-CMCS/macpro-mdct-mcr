@@ -1,4 +1,4 @@
-import { sanitizeArray, sanitizeObject, sanitizeString } from "./index";
+import { sanitizeArray, sanitizeObject, sanitizeString } from "./sanitize";
 const string = '<img id="img1" src="foo.png" onload="alert("Hello!")" />';
 const object = {
   string,
