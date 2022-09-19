@@ -169,9 +169,24 @@ export const mockFormField = {
   },
 };
 
+export const mockPlanField = {
+  id: "aap-1",
+  type: "dynamic",
+  validation: "dynamic",
+  props: {
+    label: "Plan name",
+  },
+};
+
 export const mockForm = {
   id: "mock-form-id",
   fields: [mockFormField],
+};
+
+export const mockPlanFilledForm = {
+  id: "mock-form-id",
+  pageEntityType: "plan",
+  fields: [mockPlanField],
 };
 
 export const mockPageJson = {
@@ -225,7 +240,7 @@ export const mockReportRoutes = [
         name: "mock-route-2a",
         path: "/mock/mock-route-2a",
         page: mockPageJsonStaticDrawer,
-        form: mockForm,
+        form: mockPlanFilledForm,
       },
       {
         name: "mock-route-2b",
@@ -248,7 +263,7 @@ export const mockFlattenedReportRoutes = [
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
     page: mockPageJsonStaticDrawer,
-    form: mockForm,
+    form: mockPlanFilledForm,
   },
   {
     name: "mock-route-2b",
@@ -289,6 +304,9 @@ export const mockReport = {
 };
 
 export const mockReportData = {
+  fieldData: {
+    "aap-1": ["example-plan"],
+  },
   text: "text-input",
   number: 0,
   radio: ["option1"],
