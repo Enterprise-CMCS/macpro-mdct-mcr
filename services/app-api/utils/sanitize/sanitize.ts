@@ -12,17 +12,17 @@ export const sanitizeString = (string: string) => {
 };
 
 // creates a custom "type"
-const entryType = (entry: any) => {
+const entryType = (entry: unknown) => {
   // checks if is an array
-  const type =
-    Array.isArray(entry) && entry.length > 0
-      ? "array"
-      : // checks if is an array and is not empty
-      Array.isArray(entry) && entry.length === 0
-      ? "emptyArray"
-      : // otherwise it's the default type
-        typeof entry;
-  return type;
+  if (Array.isArray(entry) && entry.length > 0) {
+    return "array";
+  }
+  // checks if is an array and is not empty
+  if (Array.isArray(entry) && entry.length === 0) {
+    return "emptyArray";
+  }
+  // otherwise it's the default type
+  return typeof entry;
 };
 
 // receives array and iterates over objects or values and sanitizes each
@@ -31,8 +31,7 @@ export const sanitizeArray = (array: any[] = []) => {
 
   // checks if array is not empty
   if (array.length > 0) {
-    for (let num = 0; num < array.length; num++) {
-      const entry = array[num];
+    array.forEach((entry: any) => {
       const type = entryType(entry);
 
       switch (type) {
@@ -42,9 +41,7 @@ export const sanitizeArray = (array: any[] = []) => {
         case "array":
           newArray.push(sanitizeArray(entry));
           break;
-        case "emptyArray":
-          newArray.push(entry);
-          break;
+
         case "object":
           newArray.push(sanitizeObject(entry));
           break;
@@ -52,7 +49,7 @@ export const sanitizeArray = (array: any[] = []) => {
           newArray.push(entry);
           break;
       }
-    }
+    });
 
     return newArray;
   }
@@ -67,8 +64,7 @@ export const sanitizeObject = (object: any) => {
     const entries = Object.entries(object);
     const newObject: any = {};
 
-    for (let num = 0; num < entries.length; num++) {
-      const entry: any = entries[num];
+    entries.forEach((entry: any) => {
       const type = entryType(entry[1]);
 
       switch (type) {
@@ -78,9 +74,6 @@ export const sanitizeObject = (object: any) => {
         case "array":
           newObject[`${entry[0]}`] = sanitizeArray(entry[1]);
           break;
-        case "emptyArray":
-          newObject[`${entry[0]}`] = entry[1];
-          break;
         case "object":
           newObject[`${entry[0]}`] = sanitizeObject(entry[1]);
           break;
@@ -88,7 +81,7 @@ export const sanitizeObject = (object: any) => {
           newObject[`${entry[0]}`] = entry[1];
           break;
       }
-    }
+    });
 
     return newObject;
   }
