@@ -21,7 +21,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // render form field values as individual inputs
   useEffect(() => {
     if (fields.length === 0) {
-      append("");
+      append(props?.hydrate || "");
     }
   }, []);
 
@@ -43,7 +43,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               label={label}
               errorMessage={fieldErrorState?.[index]?.message}
               sxOverride={sx.textFieldOverride}
-              {...props}
+              disabled={props?.disabled}
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>
@@ -69,7 +69,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           variant="outline"
           sx={sx.appendButton}
           onClick={() => {
-            append(" ");
+            append("");
           }}
         >
           Add a row
