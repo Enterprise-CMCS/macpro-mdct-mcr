@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import { ReportDrawer } from "components";
+import { ReportContext, ReportDrawer } from "components";
 // utils
-import { FormJson, AnyObject } from "types";
+import { useUser } from "utils";
+import {
+  AnyObject,
+  FormJson,
+  ReportDataShape,
+  ReportStatus,
+  UserRoles,
+} from "types";
 
-export const DynamicDrawerSection = ({
-  form,
-  dynamicTable,
-  onSubmit,
-}: Props) => {
+export const DynamicDrawerSection = ({ form, dynamicTable }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const { report, updateReportData, updateReport } = useContext(ReportContext);
 
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
@@ -29,6 +34,14 @@ export const DynamicDrawerSection = ({
     },
   ]);
 
+  // get user state, name, role
+  const { user } = useUser();
+  const { full_name, state, userRole } = user ?? {};
+
+  // get state and reportId from context or storage
+  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
+
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
     onOpen();
@@ -36,6 +49,21 @@ export const DynamicDrawerSection = ({
 
   const removeEntity = (entityTitle: string) => {
     setEntities(entities.filter((entity) => entity.title !== entityTitle));
+  };
+
+  const onSubmit = async (formData: ReportDataShape) => {
+    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+      const reportKeys = {
+        state: reportState,
+        reportId: reportId,
+      };
+      const reportMetadata = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      };
+      await updateReportData(reportKeys, formData);
+      await updateReport(reportKeys, reportMetadata);
+    }
   };
 
   return (
@@ -90,7 +118,6 @@ export const DynamicDrawerSection = ({
 interface Props {
   form: FormJson;
   dynamicTable: AnyObject;
-  onSubmit: Function;
 }
 
 const sx = {

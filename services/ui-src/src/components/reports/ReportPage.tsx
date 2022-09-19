@@ -14,25 +14,17 @@ import {
 } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
-import {
-  FormJson,
-  PageJson,
-  PageTypes,
-  ReportDataShape,
-  ReportRoute,
-  ReportStatus,
-  UserRoles,
-} from "types";
+import { FormJson, PageJson, PageTypes, ReportRoute, UserRoles } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const ReportPage = ({ route }: Props) => {
   // get report, form, and page related-data
-  const { report, updateReportData, updateReport } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   const { form, page } = route;
 
   // get user state, name, role
   const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
+  const { state, userRole } = user ?? {};
 
   // determine if fields should be disabled (based on admin roles )
   const isAdminUser =
@@ -58,46 +50,18 @@ export const ReportPage = ({ route }: Props) => {
     }
   }, [reportId, reportState]);
 
-  const onSubmit = async (formData: ReportDataShape) => {
-    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      const reportKeys = {
-        state: state,
-        reportId: reportId,
-      };
-      const reportMetadata = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-      };
-      await updateReportData(reportKeys, formData);
-      await updateReport(reportKeys, reportMetadata);
-    }
-    if (!page?.drawer) {
-      navigate(nextRoute);
-    }
-  };
-
   const renderPageSection = (form: FormJson, page?: PageJson) => {
     switch (page?.pageType) {
       case PageTypes.STATIC_PAGE:
-        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+        return <StaticPageSection form={form} />;
       case PageTypes.STATIC_DRAWER:
-        return (
-          <StaticDrawerSection
-            form={form}
-            drawer={page.drawer!}
-            onSubmit={onSubmit}
-          />
-        );
+        return <StaticDrawerSection form={form} drawer={page.drawer!} />;
       case PageTypes.DYNAMIC_DRAWER:
         return (
-          <DynamicDrawerSection
-            form={form}
-            dynamicTable={page.dynamicTable}
-            onSubmit={onSubmit}
-          />
+          <DynamicDrawerSection form={form} dynamicTable={page.dynamicTable} />
         );
       default:
-        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+        return <StaticPageSection form={form} />;
     }
   };
 

@@ -1,15 +1,32 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import { ReportDrawer } from "components";
+import { ReportContext, ReportDrawer } from "components";
 // utils
-import { FormJson, AnyObject } from "types";
+import { useUser } from "utils";
+import {
+  AnyObject,
+  FormJson,
+  ReportDataShape,
+  ReportStatus,
+  UserRoles,
+} from "types";
 
-export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
+export const StaticDrawerSection = ({ form, drawer }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const { report, updateReportData, updateReport } = useContext(ReportContext);
 
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
+
+  // get user state, name, role
+  const { user } = useUser();
+  const { full_name, state, userRole } = user ?? {};
+
+  // get state and reportId from context or storage
+  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
 
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
@@ -18,6 +35,21 @@ export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
 
   const tempEntityMap = {
     plans: ["Plan A", "Plan B", "Plan C"],
+  };
+
+  const onSubmit = async (formData: ReportDataShape) => {
+    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+      const reportKeys = {
+        state: reportState,
+        reportId: reportId,
+      };
+      const reportMetadata = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      };
+      await updateReportData(reportKeys, formData);
+      await updateReport(reportKeys, reportMetadata);
+    }
   };
 
   return (
@@ -55,7 +87,6 @@ export const StaticDrawerSection = ({ form, drawer, onSubmit }: Props) => {
 interface Props {
   form: FormJson;
   drawer: AnyObject;
-  onSubmit: Function;
 }
 
 const sx = {
