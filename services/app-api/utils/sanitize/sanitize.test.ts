@@ -22,6 +22,24 @@ const object = {
   },
 };
 
+const sanitizedObject = {
+  string: '<img src="foo.png" id="img1">',
+  numbers: 2349872,
+  array: [234234, "test", "<math><mi></mi></math>", "<svg><g></g></svg>"],
+  object: {
+    string: '<img src="foo.png" id="img1">',
+    numbers: 2349872,
+    array: [
+      '<ul><li><a href="//google.com">click</a></li></ul>',
+      "test2",
+      234234,
+
+      "<svg><g></g></svg>",
+    ],
+    array2: [],
+  },
+};
+
 const array = [object, object];
 const arrays = [[object], ["<svg><g/onload=alert(2)//<p>", "test2"], []];
 
@@ -30,77 +48,10 @@ test("Should remove code injection from string", () => {
 });
 
 test("Should remove code injection from strings in objects", () => {
-  expect(sanitizeObject(object)).toEqual({
-    string: '<img src="foo.png" id="img1">',
-    numbers: 2349872,
-    array: [234234, "test", "<math><mi></mi></math>", "<svg><g></g></svg>"],
-    object: {
-      string: '<img src="foo.png" id="img1">',
-      numbers: 2349872,
-      array: [
-        '<ul><li><a href="//google.com">click</a></li></ul>',
-        "test2",
-        234234,
-
-        "<svg><g></g></svg>",
-      ],
-      array2: [],
-    },
-  });
-  expect(sanitizeArray(array)).toEqual([
-    {
-      string: '<img src="foo.png" id="img1">',
-      numbers: 2349872,
-      array: [234234, "test", "<math><mi></mi></math>", "<svg><g></g></svg>"],
-
-      object: {
-        string: '<img src="foo.png" id="img1">',
-        numbers: 2349872,
-        array: [
-          '<ul><li><a href="//google.com">click</a></li></ul>',
-          "test2",
-          234234,
-          "<svg><g></g></svg>",
-        ],
-        array2: [],
-      },
-    },
-    {
-      string: '<img src="foo.png" id="img1">',
-      numbers: 2349872,
-      array: [234234, "test", "<math><mi></mi></math>", "<svg><g></g></svg>"],
-      object: {
-        string: '<img src="foo.png" id="img1">',
-        numbers: 2349872,
-        array: [
-          '<ul><li><a href="//google.com">click</a></li></ul>',
-          "test2",
-          234234,
-          "<svg><g></g></svg>",
-        ],
-        array2: [],
-      },
-    },
-  ]);
+  expect(sanitizeObject(object)).toEqual(sanitizedObject);
+  expect(sanitizeArray(array)).toEqual([sanitizedObject, sanitizedObject]);
   expect(sanitizeArray(arrays)).toEqual([
-    [
-      {
-        string: '<img src="foo.png" id="img1">',
-        numbers: 2349872,
-        array: [234234, "test", "<math><mi></mi></math>", "<svg><g></g></svg>"],
-        object: {
-          string: '<img src="foo.png" id="img1">',
-          numbers: 2349872,
-          array: [
-            '<ul><li><a href="//google.com">click</a></li></ul>',
-            "test2",
-            234234,
-            "<svg><g></g></svg>",
-          ],
-          array2: [],
-        },
-      },
-    ],
+    [sanitizedObject],
     ["<svg><g></g></svg>", "test2"],
     [],
   ]);

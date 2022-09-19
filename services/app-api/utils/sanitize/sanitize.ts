@@ -14,13 +14,14 @@ export const sanitizeString = (string: string) => {
 // creates a custom "type"
 const entryType = (entry: any) => {
   // checks if is an array
-  const type = Array.isArray(entry)
-    ? "array"
-    : // checks if is an array and is not empty
+  const type =
     Array.isArray(entry) && entry.length > 0
-    ? "emptyArray"
-    : // otherwise it's the default type
-      typeof entry;
+      ? "array"
+      : // checks if is an array and is not empty
+      Array.isArray(entry) && entry.length === 0
+      ? "emptyArray"
+      : // otherwise it's the default type
+        typeof entry;
   return type;
 };
 
