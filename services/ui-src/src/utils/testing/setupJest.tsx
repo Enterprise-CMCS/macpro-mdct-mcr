@@ -170,7 +170,7 @@ export const mockFormField = {
 };
 
 export const mockPlanField = {
-  id: "aap-1",
+  id: "plans",
   type: "dynamic",
   validation: "dynamic",
   props: {
@@ -185,7 +185,7 @@ export const mockForm = {
 
 export const mockPlanFilledForm = {
   id: "mock-form-id",
-  pageEntityType: "plan",
+  mappedEntity: "plan",
   fields: [mockPlanField],
 };
 
@@ -305,7 +305,7 @@ export const mockReport = {
 
 export const mockReportData = {
   fieldData: {
-    "aap-1": ["example-plan"],
+    plans: ["example-plan"],
   },
   text: "text-input",
   number: 0,
