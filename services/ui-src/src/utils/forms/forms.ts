@@ -49,7 +49,7 @@ export const formFieldFactory = (
 
 export const hydrateFormFields = (
   formFields: FormField[],
-  reportData: ReportDataShape | undefined
+  formData: ReportDataShape | undefined
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
@@ -61,7 +61,7 @@ export const hydrateFormFields = (
         choices.forEach((choice: FieldChoice) => {
           // if a choice has children, recurse
           if (choice.children) {
-            hydrateFormFields(choice.children, reportData);
+            hydrateFormFields(choice.children, formData);
           }
         });
       }
@@ -70,7 +70,7 @@ export const hydrateFormFields = (
       formFields[fieldFormIndex].props = {};
     }
     // set props.hydrate
-    const fieldHydrationValue = reportData?.fieldData?.[field.id];
+    const fieldHydrationValue = formData?.fieldData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
   return formFields;
