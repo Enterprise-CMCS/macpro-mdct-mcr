@@ -5,7 +5,7 @@ import { isMcparReportFormPage } from "forms/mcpar";
 // utils
 import {
   ReportDataShape,
-  ReportDetails,
+  ReportKeys,
   ReportContextShape,
   ReportShape,
 } from "types";
@@ -58,9 +58,9 @@ export const ReportProvider = ({ children }: Props) => {
   const { user } = useUser();
   const { state } = user ?? {};
 
-  const fetchReportData = async (reportDetails: ReportDetails) => {
+  const fetchReportData = async (reportKeys: ReportKeys) => {
     try {
-      const result = await getReportData(reportDetails);
+      const result = await getReportData(reportKeys);
       setReportData(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_DATA_FAILED);
@@ -68,20 +68,20 @@ export const ReportProvider = ({ children }: Props) => {
   };
 
   const updateReportData = async (
-    reportDetails: ReportDetails,
+    reportKeys: ReportKeys,
     fieldData: ReportDataShape
   ) => {
     try {
-      await writeReportData(reportDetails, fieldData);
-      await fetchReportData(reportDetails);
+      await writeReportData(reportKeys, fieldData);
+      await fetchReportData(reportKeys);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_DATA_FAILED);
     }
   };
 
-  const fetchReport = async (reportDetails: ReportDetails) => {
+  const fetchReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await getReport(reportDetails);
+      const result = await getReport(reportKeys);
       setReport(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
@@ -89,20 +89,20 @@ export const ReportProvider = ({ children }: Props) => {
   };
 
   const updateReport = async (
-    reportDetails: ReportDetails,
+    reportKeys: ReportKeys,
     reportMetadata: ReportShape
   ) => {
     try {
-      await writeReport(reportDetails, reportMetadata);
-      await fetchReport(reportDetails);
+      await writeReport(reportKeys, reportMetadata);
+      await fetchReport(reportKeys);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
 
-  const removeReport = async (reportDetails: ReportDetails) => {
+  const removeReport = async (reportKeys: ReportKeys) => {
     try {
-      await deleteReport(reportDetails);
+      await deleteReport(reportKeys);
     } catch (e: any) {
       setError(reportErrors.DELETE_REPORT_FAILED);
     }
@@ -119,11 +119,11 @@ export const ReportProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (report) {
-      const reportDetails = {
+      const reportKeys = {
         state: report.state,
         reportId: report.reportId,
       };
-      fetchReportData(reportDetails);
+      fetchReportData(reportKeys);
     }
   }, [report?.reportId]);
 
@@ -133,12 +133,12 @@ export const ReportProvider = ({ children }: Props) => {
     const reportState = state || localStorage.getItem("selectedState");
 
     if (isMcparReportFormPage(pathname) && reportState && reportId) {
-      const reportDetails = {
+      const reportKeys = {
         state: reportState,
         reportId: reportId,
       };
-      fetchReport(reportDetails);
-      fetchReportData(reportDetails);
+      fetchReport(reportKeys);
+      fetchReportData(reportKeys);
     }
   }, []);
 

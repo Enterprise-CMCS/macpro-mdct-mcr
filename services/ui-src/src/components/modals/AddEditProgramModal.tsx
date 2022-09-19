@@ -40,25 +40,24 @@ export const AddEditProgramModal = ({
       formData["aep-startDate"]
     );
     const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
-    const reportDetails = {
-      state: activeState,
-      reportId: "",
-    };
     const dataToWrite = {
       programName,
-      reportingPeriodStartDate: reportingPeriodStartDate,
-      reportingPeriodEndDate: reportingPeriodEndDate,
+      reportingPeriodStartDate,
+      reportingPeriodEndDate,
       dueDate,
       lastAlteredBy: full_name,
     };
     // if an existing program was selected, use that report id
     if (selectedReportMetadata?.reportId) {
-      reportDetails.reportId = selectedReportMetadata.reportId;
+      const reportKeys = {
+        state: activeState,
+        reportId: selectedReportMetadata.reportId,
+      };
       // edit existing report
-      await updateReport(reportDetails, {
+      await updateReport(reportKeys, {
         ...dataToWrite,
       });
-      await updateReportData(reportDetails, {
+      await updateReportData(reportKeys, {
         "apoc-a3a": selectedReportMetadata?.submittedBy,
         "apoc-a3b": selectedReportMetadata?.submitterEmail,
         "apoc-a4": selectedReportMetadata?.submittedOnDate,
@@ -68,15 +67,18 @@ export const AddEditProgramModal = ({
       });
     } else {
       // if no program was selected, create new report id
-      reportDetails.reportId = uuid();
+      const reportKeys = {
+        state: activeState,
+        reportId: uuid(),
+      };
       // create new report
-      await updateReport(reportDetails, {
+      await updateReport(reportKeys, {
         ...dataToWrite,
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
         formTemplate: mcparReportJson,
       });
-      await updateReportData(reportDetails, {
+      await updateReportData(reportKeys, {
         "apoc-a1": stateName,
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),

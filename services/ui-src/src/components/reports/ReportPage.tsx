@@ -60,7 +60,7 @@ export const ReportPage = ({ route }: Props) => {
 
   const onSubmit = async (formData: ReportDataShape) => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      const reportDetails = {
+      const reportKeys = {
         state: state,
         reportId: reportId,
       };
@@ -68,8 +68,8 @@ export const ReportPage = ({ route }: Props) => {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
       };
-      await updateReportData(reportDetails, formData);
-      await updateReport(reportDetails, reportStatus);
+      await updateReportData(reportKeys, formData);
+      await updateReport(reportKeys, reportStatus);
     }
     if (!page?.drawer) {
       navigate(nextRoute);

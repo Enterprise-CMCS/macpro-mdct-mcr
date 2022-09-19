@@ -32,28 +32,28 @@ export const ReviewSubmit = () => {
   const reportId = report?.reportId || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
-  const reportDetails = {
+  const reportKeys = {
     state: reportState,
     reportId: reportId,
   };
 
   useEffect(() => {
     if (report?.reportId) {
-      fetchReport(reportDetails);
+      fetchReport(reportKeys);
     }
   }, []);
 
   const submitForm = () => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const submissionDate = Date.now();
-      updateReport(reportDetails, {
+      updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
         submittedBy: full_name,
         submitterEmail: email,
         submittedOnDate: submissionDate,
       });
-      updateReportData(reportDetails, {
+      updateReportData(reportKeys, {
         "apoc-a3a": full_name,
         "apoc-a3b": email,
         "apoc-a4": convertDateUtcToEt(submissionDate),
