@@ -149,7 +149,7 @@
             "id": "aap",
             "fields": [
               {
-                "id": "aap-1",
+                "id": "plans",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -179,7 +179,7 @@
             "id": "absse",
             "fields": [
               {
-                "id": "absse-a8",
+                "id": "bssEntities",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -1565,7 +1565,7 @@
           },
           "form": {
             "id": "dpc",
-            "pageEntityType": "plan",
+            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dpc-1",
@@ -1623,7 +1623,7 @@
           },
           "form": {
             "id": "dfp",
-            "pageEntityType": "plan",
+            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dfp-1a",
@@ -1770,7 +1770,7 @@
           },
           "form": {
             "id": "dedr",
-            "pageEntityType": "plan",
+            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dedr-1",
@@ -1831,7 +1831,7 @@
               },
               "form": {
                 "id": "dao",
-                "pageEntityType": "plan",
+                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dao-1",
@@ -2000,7 +2000,7 @@
               },
               "form": {
                 "id": "dabs",
-                "pageEntityType": "plan",
+                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dabs-1",
@@ -2135,7 +2135,7 @@
               },
               "form": {
                 "id": "dsfh",
-                "pageEntityType": "plan",
+                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dsfh-1",
@@ -2224,7 +2224,7 @@
 
               "form": {
                 "id": "dgo",
-                "pageEntityType": "plan",
+                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dgo-1",
@@ -2315,7 +2315,7 @@
               },
               "form": {
                 "id": "dgbs",
-                "pageEntityType": "plan",
+                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dgbs-1",
@@ -2460,7 +2460,7 @@
               },
               "form": {
                 "id": "dgbr",
-                "pageEntityType": "plan",
+                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dgbr-1",
@@ -3087,7 +3087,7 @@
           },
           "form": {
             "id": "dpi",
-            "pageEntityType": "plan",
+            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dpi-1",
@@ -3321,7 +3321,7 @@
       },
       "form": {
         "id": "ebssei",
-        "pageEntityType": "bssEntity",
+        "mappedEntity": "bssEntity",
         "fields": [
           {
             "id": "ebssei-1",

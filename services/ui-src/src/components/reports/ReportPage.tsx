@@ -16,7 +16,7 @@ import {
 import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
-  PageEntityType,
+  MappedEntityType,
   PageJson,
   PageTypes,
   ReportDataShape,
@@ -78,15 +78,13 @@ export const ReportPage = ({ route }: Props) => {
     }
   };
 
-  const getEntities = (formEntityType: PageEntityType) => {
+  const getEntities = (formEntityType: MappedEntityType) => {
     const entityTypeMap = {
-      plan: "aap-1", // reportData fieldId of the entity array
-      bssEntity: "absse-a8",
-      qualityMeasures: "apoc-3", // To Be Added
-      someOtherEntity: "apoc-4", // To Be Added
+      plan: "plans", // reportData fieldId of the entity array
+      bssEntity: "bssEntities",
     };
-    const pageEntityType: keyof typeof entityTypeMap = formEntityType;
-    const entitiesToFetch = entityTypeMap[pageEntityType];
+    const mappedEntityType: keyof typeof entityTypeMap = formEntityType;
+    const entitiesToFetch = entityTypeMap[mappedEntityType];
     const entities: string[] | undefined =
       reportData?.fieldData[entitiesToFetch];
     return entities;
@@ -100,7 +98,7 @@ export const ReportPage = ({ route }: Props) => {
         return (
           <StaticDrawerSection
             form={form}
-            entities={form?.pageEntityType && getEntities(form.pageEntityType)}
+            entities={form?.mappedEntity && getEntities(form.mappedEntity)}
             drawer={page.drawer!}
             onSubmit={onSubmit}
           />

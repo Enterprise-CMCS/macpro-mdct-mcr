@@ -113,11 +113,7 @@ export interface ReportContextShape extends ReportContextMethods {
 
 // FORM & FIELD STRUCTURE
 
-export declare type PageEntityType =
-  | "plan"
-  | "bssEntity"
-  | "qualityMeasures"
-  | "someOtherEntity";
+export declare type MappedEntityType = "plan" | "bssEntity";
 
 export interface FormJson {
   id: string;
@@ -125,7 +121,7 @@ export interface FormJson {
   options?: AnyObject;
   validation?: AnyObject;
   adminDisabled?: boolean;
-  pageEntityType?: PageEntityType;
+  mappedEntity?: MappedEntityType;
 }
 
 export interface DependentFieldValidation {
