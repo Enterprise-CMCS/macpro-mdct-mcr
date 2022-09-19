@@ -163,6 +163,7 @@ export const mockBannerDataEmpty = {
 export const mockFormField = {
   id: "mock-1",
   type: "text",
+  validation: "text",
   props: {
     label: "mock field",
   },
@@ -204,16 +205,6 @@ export const mockPageJsonDynamicDrawer = {
   dynamicTable: {
     tableHeading: "Add measures for monitoring access standards",
     addEntityText: "Add access measure",
-  },
-};
-
-// FORM TEMPLATE
-
-export const mockFormTemplate = {
-  formTemplateId: "mockId",
-  formTemplate: {
-    name: "TEST",
-    routes: [{}, {}],
   },
 };
 
@@ -270,7 +261,6 @@ export const mockFlattenedReportRoutes = [
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
-  version: "0.0.0",
   routes: mockReportRoutes,
 };
 
@@ -287,7 +277,7 @@ export const mockReportDetails = {
 export const mockReport = {
   ...mockReportDetails,
   reportType: "mock-type",
-  formTemplateId: "mock-template-id",
+  formTemplate: mockReportJson,
   programName: "testProgram",
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,

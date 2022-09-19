@@ -5,10 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
 // utils
-
 import {
+  compileValidationJsonFromFields,
   formFieldFactory,
   hydrateFormFields,
+  mapValidationTypesToSchema,
   sortFormErrors,
   useUser,
 } from "utils";
@@ -24,8 +25,6 @@ export const Form = ({
 }: Props) => {
   const { fields, options } = formJson;
 
-  const formSchema = yupSchema(formJson.validation || {});
-
   // determine if fields should be disabled (based on admin roles )
   const { userRole } = useUser().user ?? {};
   const isAdminUser =
@@ -34,9 +33,15 @@ export const Form = ({
     userRole === UserRoles.HELP_DESK;
   const fieldInputDisabled = isAdminUser && formJson.adminDisabled;
 
+  // create validation schema
+  const formValidationJson = compileValidationJsonFromFields(formJson.fields);
+  const formValidationSchema = mapValidationTypesToSchema(formValidationJson);
+  const formResolverSchema = yupSchema(formValidationSchema || {});
+  mapValidationTypesToSchema;
+
   // make form context
   const form = useForm({
-    resolver: !fieldInputDisabled ? yupResolver(formSchema) : undefined,
+    resolver: !fieldInputDisabled ? yupResolver(formResolverSchema) : undefined,
     shouldFocusError: false,
     mode: "onChange",
     ...(options as AnyObject),
@@ -45,7 +50,7 @@ export const Form = ({
   // will run if any validation errors exist on form submission
   const onErrorHandler = (errors: AnyObject) => {
     // sort errors in order of registration/page display
-    const sortedErrors: string[] = sortFormErrors(formSchema.fields, errors);
+    const sortedErrors: string[] = sortFormErrors(formValidationSchema, errors);
     // focus the first error on the page and scroll to it
     const fieldToFocus = document.querySelector(
       `[name='${sortedErrors[0]}']`

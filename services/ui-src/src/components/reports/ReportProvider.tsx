@@ -90,10 +90,10 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReport = async (
     reportDetails: ReportDetails,
-    reportStatus: ReportShape
+    reportMetadata: ReportShape
   ) => {
     try {
-      await writeReport(reportDetails, reportStatus);
+      await writeReport(reportDetails, reportMetadata);
       await fetchReport(reportDetails);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);

@@ -5,7 +5,7 @@ import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
-import { isMcparReportFormPage, mcparReportJsonNested } from "forms/mcpar";
+import { isMcparReportFormPage, mcparReportJson } from "forms/mcpar";
 
 interface LinkItemProps {
   name: string;
@@ -50,7 +50,7 @@ export const Sidebar = () => {
             sx={sx.navSectionsBox}
             className={`${mqClasses} nav-sections-box`}
           >
-            {mcparReportJsonNested.routes.map((section) => (
+            {mcparReportJson.routes.map((section) => (
               <NavSection key={section.name} section={section} level={1} />
             ))}
           </Box>
