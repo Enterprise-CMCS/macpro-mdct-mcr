@@ -51,13 +51,13 @@ const ReportPageComponent_DynamicDrawer = (
   </RouterWrappedComponent>
 );
 
-const mockedReportShapeWithoutReport = {
+const mockedReportMetadataShapeWithoutReport = {
   ...mockReport,
   reportId: "",
 };
 const mockReportContextWithoutReport = {
   ...mockReportContext,
-  report: mockedReportShapeWithoutReport,
+  report: mockedReportMetadataShapeWithoutReport,
 };
 
 const ReportPageComponent_WithoutReport = (

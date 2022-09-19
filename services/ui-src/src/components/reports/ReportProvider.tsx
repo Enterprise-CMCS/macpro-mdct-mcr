@@ -3,7 +3,12 @@ import { useLocation } from "react-router-dom";
 // forms
 import { isMcparReportFormPage } from "forms/mcpar";
 // utils
-import { AnyObject, ReportKeys, ReportContextShape, ReportShape } from "types";
+import {
+  AnyObject,
+  ReportKeys,
+  ReportContextShape,
+  ReportMetadataShape,
+} from "types";
 import {
   getReportData,
   writeReportData,
@@ -21,7 +26,7 @@ import { reportErrors } from "verbiage/errors";
 
 export const ReportContext = createContext<ReportContextShape>({
   // report metadata
-  report: undefined as ReportShape | undefined,
+  report: undefined as ReportMetadataShape | undefined,
   setReport: Function, // local useState setter
   fetchReport: Function,
   updateReport: Function,
@@ -32,7 +37,7 @@ export const ReportContext = createContext<ReportContextShape>({
   fetchReportData: Function,
   updateReportData: Function,
   // report metadata of all reports for a given state
-  reportsByState: undefined as ReportShape[] | undefined,
+  reportsByState: undefined as ReportMetadataShape[] | undefined,
   fetchReportsByState: Function,
   errorMessage: undefined as string | undefined,
 });
@@ -40,10 +45,10 @@ export const ReportContext = createContext<ReportContextShape>({
 // PROVIDER
 
 export const ReportProvider = ({ children }: Props) => {
-  const [report, setReport] = useState<ReportShape | undefined>();
+  const [report, setReport] = useState<ReportMetadataShape | undefined>();
   const [reportData, setReportData] = useState<AnyObject | undefined>();
   const [reportsByState, setReportsByState] = useState<
-    ReportShape[] | undefined
+    ReportMetadataShape[] | undefined
   >();
   const [error, setError] = useState<string>();
 
@@ -85,7 +90,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReport = async (
     reportKeys: ReportKeys,
-    reportMetadata: ReportShape
+    reportMetadata: ReportMetadataShape
   ) => {
     try {
       await writeReport(reportKeys, reportMetadata);

@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportKeys, ReportShape, UserRoles } from "types";
+import { AnyObject, ReportKeys, ReportMetadataShape, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -71,7 +71,7 @@ export const Dashboard = () => {
     localStorage.setItem("selectedReport", "");
   }, []);
 
-  const enterSelectedReport = async (reportMetadata: ReportShape) => {
+  const enterSelectedReport = async (reportMetadata: ReportMetadataShape) => {
     // set active report to selected report
     const reportKeys: ReportKeys = {
       state: reportMetadata.state!,
@@ -86,7 +86,7 @@ export const Dashboard = () => {
     navigate(reportFirstPagePath);
   };
 
-  const openAddEditProgramModal = (reportMetadata?: ReportShape) => {
+  const openAddEditProgramModal = (reportMetadata?: ReportMetadataShape) => {
     let formData = undefined;
     let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
@@ -117,7 +117,7 @@ export const Dashboard = () => {
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (reportMetadata?: ReportShape) => {
+  const openDeleteProgramModal = (reportMetadata?: ReportMetadataShape) => {
     setSelectedReportMetadata(reportMetadata);
     // use disclosure to open modal
     deleteProgramModalOnOpenHandler();

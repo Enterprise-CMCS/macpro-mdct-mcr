@@ -74,7 +74,7 @@ export interface ReportKeys {
   reportId: string;
 }
 
-export interface ReportShape extends ReportKeys {
+export interface ReportMetadataShape extends ReportKeys {
   reportType: string;
   programName: string;
   status: string;
@@ -103,9 +103,9 @@ export interface ReportContextMethods {
 }
 
 export interface ReportContextShape extends ReportContextMethods {
-  report: ReportShape | undefined;
+  report: ReportMetadataShape | undefined;
   reportData: AnyObject | undefined;
-  reportsByState: ReportShape[] | undefined;
+  reportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
 }
 
