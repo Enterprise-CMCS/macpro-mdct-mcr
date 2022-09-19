@@ -28,16 +28,30 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 jest.mock("./get");
 const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
 
-const testEvent: APIGatewayProxyEvent = {
+const creationEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"status":"in progress"}`,
+  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"in progress","combinedData":"yes"}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
-const secondWriteEvent: APIGatewayProxyEvent = {
+const submissionEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"status":"submitted"}`,
+  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"submitted","combinedData":"yes"}`,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
+};
+
+const creationEventWithInvalidData: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  body: `{"programName":{}}`,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { state: "AB", reportId: "testReportId" },
+};
+
+const submissionEventWithInvalidData: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  body: ``,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB", reportId: "testReportId" },
 };
@@ -48,7 +62,7 @@ describe("Test writeReport API method", () => {
   });
 
   test("Test unauthorized report status creation throws 403 error", async () => {
-    const res = await writeReport(testEvent, null);
+    const res = await writeReport(creationEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
@@ -63,11 +77,24 @@ describe("Test writeReport API method", () => {
       },
       body: "{}",
     });
-    const res = await writeReport(testEvent, null);
+    const res = await writeReport(creationEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.status).toContain("in progress");
+  });
+
+  test("Test attempted report creation with invalid data fails", async () => {
+    mockedGetReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: "{}",
+    });
+    const res = await writeReport(creationEventWithInvalidData, null);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 
   test("Test Successful Run of report status update", async () => {
@@ -80,15 +107,32 @@ describe("Test writeReport API method", () => {
       body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
     });
 
-    const secondResponse = await writeReport(secondWriteEvent, null);
+    const secondResponse = await writeReport(submissionEvent, null);
     const secondBody = JSON.parse(secondResponse.body);
     expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
     expect(secondBody.status).toContain("submitted");
   });
 
+  test("Test attempted report creation with invalid data fails", async () => {
+    mockedGetReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
+    });
+
+    const secondResponse = await writeReport(
+      submissionEventWithInvalidData,
+      null
+    );
+    expect(secondResponse.statusCode).toBe(StatusCodes.SERVER_ERROR);
+  });
+
   test("Test reportKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
-      ...testEvent,
+      ...creationEvent,
       pathParameters: {},
     };
     const res = await writeReport(noKeyEvent, null);
@@ -99,7 +143,7 @@ describe("Test writeReport API method", () => {
 
   test("Test reportKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
-      ...testEvent,
+      ...creationEvent,
       pathParameters: { state: "", reportId: "" },
     };
     const res = await writeReport(noKeyEvent, null);

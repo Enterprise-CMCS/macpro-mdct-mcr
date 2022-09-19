@@ -7,6 +7,8 @@ export const NO_KEY_ERROR_MESSAGE = "Must provide key for table";
 
 export const MISSING_DATA_ERROR_MESSAGE = "Missing required data";
 
+export const VALIDATION_ERROR_MESSAGE = "Provided data is not valid";
+
 // TEMPLATES
 
 export const NO_TEMPLATE_NAME_ERROR_MESSAGE =

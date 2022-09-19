@@ -34,6 +34,7 @@ export interface ReportJson {
   basePath: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
+  validationSchema?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
@@ -83,6 +84,7 @@ export interface ReportShape extends ReportDetails {
   createdAt: number;
   lastAltered: number;
   lastAlteredBy: string;
+  combinedData: string;
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;

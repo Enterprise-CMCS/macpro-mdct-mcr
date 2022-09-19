@@ -28,7 +28,8 @@
   "dependencies": {
     "aws-jwt-verify": "^3.1.0",
     "jwt-decode": "^3.1.2",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "yup": "^0.32.11"
   },
   "jest": {
     "verbose": true,

@@ -21,7 +21,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       key: bannerId,
       title: formData["aab-title"],
       description: formData["aab-description"],
-      link: formData["aab-link"],
+      link: formData["aab-link"] || undefined,
       startDate: convertDatetimeStringToNumber(
         formData["aab-startDate"],
         "startDate"
