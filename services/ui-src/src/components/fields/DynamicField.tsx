@@ -21,14 +21,14 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // render form field values as individual inputs
   useEffect(() => {
     if (fields.length === 0) {
-      append(props?.hydrate || "");
+      append(" ");
     }
   }, []);
 
   // render hydrated values on refresh
   useEffect(() => {
     form.reset();
-    append(props?.hydrate);
+    append(props?.hydrate || "");
   }, [props?.hydrate]);
 
   const fieldErrorState = form?.formState?.errors?.[name];
@@ -69,7 +69,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           variant="outline"
           sx={sx.appendButton}
           onClick={() => {
-            append("");
+            append(" ");
           }}
         >
           Add a row
