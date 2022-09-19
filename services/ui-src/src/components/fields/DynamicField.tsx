@@ -21,7 +21,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // render form field values as individual inputs
   useEffect(() => {
     if (fields.length === 0) {
-      append(" ");
+      append("");
     }
   }, []);
 
