@@ -25,7 +25,7 @@
               {
                 "id": "apoc-a1",
                 "type": "text",
-                "validation": "textOptional",
+                "validation": "text",
                 "props": {
                   "label": "A.1 State name",
                   "hint": "Auto-populated from your account profile.",
@@ -102,7 +102,7 @@
                 "id": "arp-a5a",
                 "type": "date",
                 "hydrate": "reportingPeriodStartDate",
-                "validation": "textOptional",
+                "validation": "date",
                 "props": {
                   "label": "A.5a Reporting period start date",
                   "hint": "Auto-populated from report dashboard.",
@@ -113,7 +113,7 @@
                 "id": "arp-a5b",
                 "type": "date",
                 "hydrate": "reportingPeriodEndDate",
-                "validation": "textOptional",
+                "validation": "date",
                 "props": {
                   "label": "A.5b Reporting period end date",
                   "hint": "Auto-populated from report dashboard.",
@@ -124,7 +124,7 @@
                 "id": "arp-a6",
                 "type": "text",
                 "hydrate": "programName",
-                "validation": "textOptional",
+                "validation": "text",
                 "props": {
                   "label": "A.6 Program name",
                   "hint": "Auto-populated from report dashboard.",
