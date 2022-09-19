@@ -3,12 +3,7 @@ import { useLocation } from "react-router-dom";
 // forms
 import { isMcparReportFormPage } from "forms/mcpar";
 // utils
-import {
-  ReportDataShape,
-  ReportKeys,
-  ReportContextShape,
-  ReportShape,
-} from "types";
+import { AnyObject, ReportKeys, ReportContextShape, ReportShape } from "types";
 import {
   getReportData,
   writeReportData,
@@ -32,7 +27,7 @@ export const ReportContext = createContext<ReportContextShape>({
   updateReport: Function,
   removeReport: Function,
   // report field data
-  reportData: undefined as ReportDataShape | undefined,
+  reportData: undefined as AnyObject | undefined,
   setReportData: Function, // local useState setter
   fetchReportData: Function,
   updateReportData: Function,
@@ -46,7 +41,7 @@ export const ReportContext = createContext<ReportContextShape>({
 
 export const ReportProvider = ({ children }: Props) => {
   const [report, setReport] = useState<ReportShape | undefined>();
-  const [reportData, setReportData] = useState<ReportDataShape | undefined>();
+  const [reportData, setReportData] = useState<AnyObject | undefined>();
   const [reportsByState, setReportsByState] = useState<
     ReportShape[] | undefined
   >();
@@ -69,7 +64,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const updateReportData = async (
     reportKeys: ReportKeys,
-    fieldData: ReportDataShape
+    fieldData: AnyObject
   ) => {
     try {
       await writeReportData(reportKeys, fieldData);

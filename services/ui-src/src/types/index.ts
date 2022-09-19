@@ -91,10 +91,6 @@ export interface ReportShape extends ReportKeys {
   formTemplate: ReportJson;
 }
 
-export interface ReportDataShape {
-  [key: string]: any; // any valid object can be valid reportData
-}
-
 export interface ReportContextMethods {
   setReport: Function;
   fetchReport: Function;
@@ -108,7 +104,7 @@ export interface ReportContextMethods {
 
 export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
-  reportData: ReportDataShape | undefined;
+  reportData: AnyObject | undefined;
   reportsByState: ReportShape[] | undefined;
   errorMessage?: string | undefined;
 }
