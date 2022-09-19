@@ -1623,6 +1623,7 @@
           },
           "form": {
             "id": "dfp",
+            "pageEntityType": "plan",
             "fields": [
               {
                 "id": "dfp-1a",
@@ -1769,6 +1770,7 @@
           },
           "form": {
             "id": "dedr",
+            "pageEntityType": "plan",
             "fields": [
               {
                 "id": "dedr-1",
@@ -1829,6 +1831,7 @@
               },
               "form": {
                 "id": "dao",
+                "pageEntityType": "plan",
                 "fields": [
                   {
                     "id": "dao-1",
@@ -1997,6 +2000,7 @@
               },
               "form": {
                 "id": "dabs",
+                "pageEntityType": "plan",
                 "fields": [
                   {
                     "id": "dabs-1",
@@ -2131,6 +2135,7 @@
               },
               "form": {
                 "id": "dsfh",
+                "pageEntityType": "plan",
                 "fields": [
                   {
                     "id": "dsfh-1",
@@ -2219,6 +2224,7 @@
 
               "form": {
                 "id": "dgo",
+                "pageEntityType": "plan",
                 "fields": [
                   {
                     "id": "dgo-1",
@@ -2309,6 +2315,7 @@
               },
               "form": {
                 "id": "dgbs",
+                "pageEntityType": "plan",
                 "fields": [
                   {
                     "id": "dgbs-1",
@@ -2453,6 +2460,7 @@
               },
               "form": {
                 "id": "dgbr",
+                "pageEntityType": "plan",
                 "fields": [
                   {
                     "id": "dgbr-1",
@@ -3079,6 +3087,7 @@
           },
           "form": {
             "id": "dpi",
+            "pageEntityType": "plan",
             "fields": [
               {
                 "id": "dpi-1",
@@ -3312,6 +3321,7 @@
       },
       "form": {
         "id": "ebssei",
+        "pageEntityType": "bssEntity",
         "fields": [
           {
             "id": "ebssei-1",
