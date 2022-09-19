@@ -81,9 +81,9 @@ export const ReportPage = ({ route }: Props) => {
   const getEntities = (formEntityType: PageEntityType) => {
     const entityTypeMap = {
       plan: "aap-1", // reportData fieldId of the entity array
-      bssEntity: "apoc-2", // same ^^
-      qualityMeasures: "apoc-3", // same ^^
-      someOtherEntity: "apoc-4", // same ^^
+      bssEntity: "absse-a8",
+      qualityMeasures: "apoc-3", // To Be Added
+      someOtherEntity: "apoc-4", // To Be Added
     };
     const pageEntityType: keyof typeof entityTypeMap = formEntityType;
     const entitiesToFetch = entityTypeMap[pageEntityType];
