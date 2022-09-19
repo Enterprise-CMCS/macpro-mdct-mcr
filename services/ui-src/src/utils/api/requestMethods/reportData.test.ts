@@ -1,13 +1,13 @@
 import { getReportData, writeReportData } from "./reportData";
 // utils
-import { mockReportKeys, mockReportData } from "utils/testing/setupJest";
+import { mockReportDetails, mockReportData } from "utils/testing/setupJest";
 
 describe("Test report methods", () => {
   test("getReport", () => {
-    expect(getReportData(mockReportKeys)).toBeTruthy();
+    expect(getReportData(mockReportDetails)).toBeTruthy();
   });
 
   test("writeReport", () => {
-    expect(writeReportData(mockReportKeys, mockReportData)).toBeTruthy();
+    expect(writeReportData(mockReportDetails, mockReportData)).toBeTruthy();
   });
 });

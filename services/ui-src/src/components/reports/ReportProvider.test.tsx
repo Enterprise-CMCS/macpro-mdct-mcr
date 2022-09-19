@@ -5,7 +5,7 @@ import { act } from "react-dom/test-utils";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
 import {
-  mockReportKeys,
+  mockReportDetails,
   mockReport,
   mockReportData,
   RouterWrappedComponent,
@@ -30,31 +30,33 @@ const TestComponent = () => {
   return (
     <div data-testid="testdiv">
       <button
-        onClick={() => context.fetchReportData(mockReportKeys)}
+        onClick={() => context.fetchReportData(mockReportDetails)}
         data-testid="fetch-report-data-button"
       >
         Fetch Report Data
       </button>
       <button
-        onClick={() => context.fetchReport(mockReportKeys)}
+        onClick={() => context.fetchReport(mockReportDetails)}
         data-testid="fetch-report-button"
       >
         Fetch Report
       </button>
       <button
-        onClick={() => context.updateReportData(mockReportKeys, mockReportData)}
+        onClick={() =>
+          context.updateReportData(mockReportDetails, mockReportData)
+        }
         data-testid="write-report-button"
       >
         Write Report Data
       </button>
       <button
-        onClick={() => context.updateReport(mockReportKeys, mockReport)}
+        onClick={() => context.updateReport(mockReportDetails, mockReport)}
         data-testid="write-report-status-button"
       >
         Write Report
       </button>
       <button
-        onClick={() => context.removeReport(mockReportKeys)}
+        onClick={() => context.removeReport(mockReportDetails)}
         data-testid="delete-report-button"
       >
         Write Report
@@ -142,7 +144,7 @@ describe("Test ReportProvider updateReportData method", () => {
     });
     expect(mockReportDataAPI.writeReportData).toHaveBeenCalledTimes(1);
     expect(mockReportDataAPI.writeReportData).toHaveBeenCalledWith(
-      mockReportKeys,
+      mockReportDetails,
       mockReportData
     );
   });
@@ -176,7 +178,7 @@ describe("Test ReportProvider updateReport method", () => {
     });
     expect(mockReportAPI.writeReport).toHaveBeenCalledTimes(1);
     expect(mockReportAPI.writeReport).toHaveBeenCalledWith(
-      mockReportKeys,
+      mockReportDetails,
       mockReport
     );
   });
@@ -209,7 +211,7 @@ describe("Test ReportProvider removeReport method", () => {
       await userEvent.click(deleteButton);
     });
     expect(mockReportAPI.deleteReport).toHaveBeenCalled();
-    expect(mockReportAPI.deleteReport).toHaveBeenCalledWith(mockReportKeys);
+    expect(mockReportAPI.deleteReport).toHaveBeenCalledWith(mockReportDetails);
   });
 });
 

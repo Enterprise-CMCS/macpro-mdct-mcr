@@ -1,13 +1,13 @@
 import { API } from "aws-amplify";
-import { ReportDataShape, ReportKeys } from "types";
+import { ReportDataShape, ReportDetails } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 
-async function getReportData(reportKeys: ReportKeys) {
+async function getReportData(reportDetails: ReportDetails) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
   };
-  const { state, reportId } = reportKeys;
+  const { state, reportId } = reportDetails;
   const response = await API.get(
     "reportData",
     `/reportData/${state}/${reportId}`,
@@ -17,7 +17,7 @@ async function getReportData(reportKeys: ReportKeys) {
 }
 
 async function writeReportData(
-  reportKeys: ReportKeys,
+  reportDetails: ReportDetails,
   fieldData: ReportDataShape
 ) {
   const requestHeaders = await getRequestHeaders();
@@ -25,7 +25,7 @@ async function writeReportData(
     headers: { ...requestHeaders },
     body: fieldData,
   };
-  const { state, reportId } = reportKeys;
+  const { state, reportId } = reportDetails;
   const response = await API.post(
     "reportData",
     `/reportData/${state}/${reportId}`,

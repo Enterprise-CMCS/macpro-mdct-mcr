@@ -11,11 +11,11 @@ export const DeleteProgramModal = ({
   const { fetchReportsByState, removeReport } = useContext(ReportContext);
 
   const deleteProgramHandler = async () => {
-    const reportKeys = {
+    const reportDetails = {
       state: selectedReportMetadata.state,
       reportId: selectedReportMetadata.reportId,
     };
-    await removeReport(reportKeys);
+    await removeReport(reportDetails);
     await fetchReportsByState(selectedReportMetadata.state);
     modalDisclosure.onClose();
   };

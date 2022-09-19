@@ -5,11 +5,11 @@ import {
   deleteReport,
 } from "./report";
 // utils
-import { mockReportKeys, mockReport } from "utils/testing/setupJest";
+import { mockReportDetails, mockReport } from "utils/testing/setupJest";
 
 describe("Test report status methods", () => {
   test("getReport", () => {
-    expect(getReport(mockReportKeys)).toBeTruthy();
+    expect(getReport(mockReportDetails)).toBeTruthy();
   });
 
   test("getReportsByState", () => {
@@ -17,10 +17,10 @@ describe("Test report status methods", () => {
   });
 
   test("writeReport", () => {
-    expect(writeReport(mockReportKeys, mockReport)).toBeTruthy();
+    expect(writeReport(mockReportDetails, mockReport)).toBeTruthy();
   });
 
   test("deleteReport", () => {
-    expect(deleteReport(mockReportKeys)).toBeTruthy();
+    expect(deleteReport(mockReportDetails)).toBeTruthy();
   });
 });

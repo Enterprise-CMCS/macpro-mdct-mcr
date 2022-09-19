@@ -1,13 +1,13 @@
 import { API } from "aws-amplify";
-import { ReportKeys, ReportShape } from "types";
+import { ReportDetails, ReportShape } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 
-async function getReport(reportKeys: ReportKeys) {
+async function getReport(reportDetails: ReportDetails) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
   };
-  const { state, reportId } = reportKeys;
+  const { state, reportId } = reportDetails;
   const response = await API.get(
     "reports",
     `/reports/${state}/${reportId}`,
@@ -26,7 +26,7 @@ async function getReportsByState(state: string) {
 }
 
 async function writeReport(
-  reportKeys: ReportKeys,
+  reportDetails: ReportDetails,
   reportMetadata: ReportShape
 ) {
   const requestHeaders = await getRequestHeaders();
@@ -34,7 +34,7 @@ async function writeReport(
     headers: { ...requestHeaders },
     body: { ...reportMetadata },
   };
-  const { state, reportId } = reportKeys;
+  const { state, reportId } = reportDetails;
   const response = await API.post(
     "reports",
     `/reports/${state}/${reportId}`,
@@ -43,12 +43,12 @@ async function writeReport(
   return response;
 }
 
-async function deleteReport(reportKeys: ReportKeys) {
+async function deleteReport(reportDetails: ReportDetails) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
   };
-  const { state, reportId } = reportKeys;
+  const { state, reportId } = reportDetails;
   const response = await API.del(
     "reports",
     `/reports/${state}/${reportId}`,

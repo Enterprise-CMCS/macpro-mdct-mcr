@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportKeys, ReportShape, UserRoles } from "types";
+import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -73,15 +73,15 @@ export const Dashboard = () => {
 
   const enterSelectedReport = async (reportMetadata: ReportShape) => {
     // set active report to selected report
-    const ReportKeys: ReportKeys = {
+    const reportDetails: ReportDetails = {
       state: reportMetadata.state!,
       reportId: reportMetadata.reportId,
     };
-    setReport(ReportKeys);
+    setReport(reportDetails);
     localStorage.setItem("selectedReport", reportMetadata.reportId);
 
     // fetch & set active report to selected report
-    await fetchReport(ReportKeys);
+    await fetchReport(reportDetails);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };

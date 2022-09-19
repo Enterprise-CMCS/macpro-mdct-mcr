@@ -68,12 +68,12 @@ export enum ReportStatus {
 
 // REPORT PROVIDER/CONTEXT
 
-export interface ReportKeys {
+export interface ReportDetails {
   state: string;
   reportId: string;
 }
 
-export interface ReportShape extends ReportKeys {
+export interface ReportShape extends ReportDetails {
   reportType: string;
   programName: string;
   status: string;
