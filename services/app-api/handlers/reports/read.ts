@@ -3,20 +3,20 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
 import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 
-export const getReportMetadata = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.reportId!) {
+export const readReport = handler(async (event, _context) => {
+  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const queryParams = {
-    TableName: process.env.REPORT_METADATA_TABLE_NAME!,
-    KeyConditionExpression: "#state = :state AND #reportId = :reportId",
+    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    KeyConditionExpression: "#state = :state AND #id = :id",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,
-      ":reportId": event.pathParameters.reportId,
+      ":id": event.pathParameters.id,
     },
     ExpressionAttributeNames: {
       "#state": "state",
-      "#reportId": "reportId",
+      "#id": "id",
     },
   };
   const reportQueryResponse = await dynamoDb.query(queryParams);
@@ -29,12 +29,12 @@ export const getReportMetadata = handler(async (event, _context) => {
   };
 });
 
-export const getAllReportsByState = handler(async (event, _context) => {
+export const readReportsByState = handler(async (event, _context) => {
   if (!event?.pathParameters?.state!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const queryParams = {
-    TableName: process.env.REPORT_METADATA_TABLE_NAME!,
+    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,

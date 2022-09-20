@@ -34,8 +34,7 @@ custom:
       - val
       - production
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
-  reportDataTableName: ${env:REPORT_DATA_TABLE_NAME, cf:database-${self:custom.stage}.ReportDataTableName}
-  reportMetadataTableName: ${env:REPORT_METADATA_TABLE_NAME, cf:database-${self:custom.stage}.ReportMetadataTableName}
+  mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
@@ -91,8 +90,7 @@ provider:
             - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
-    REPORT_DATA_TABLE_NAME: ${self:custom.reportDataTableName}
-    REPORT_METADATA_TABLE_NAME: ${self:custom.reportMetadataTableName}
+    MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
 
@@ -133,11 +131,11 @@ functions:
             parameters:
               paths:
                 bannerId: true
-  getReportData:
-    handler: handlers/reportData/get.getReportData
+  readReport:
+    handler: handlers/reports/read.readReport
     events:
       - http:
-          path: reportData/{state}/{reportId}
+          path: reports/{state}/{id}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -145,12 +143,24 @@ functions:
             parameters:
               paths:
                 state: true
-                reportId: true
-  writeReportData:
-    handler: handlers/reportData/write.writeReportData
+                id: true
+  readReportsByState:
+    handler: handlers/reports/read.readReportsByState
     events:
       - http:
-          path: reportData/{state}/{reportId}
+          path: reports/{state}
+          method: get
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                state: true
+  createReport:
+    handler: handlers/reports/create.createReport
+    events:
+      - http:
+          path: reports/{state}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -158,58 +168,19 @@ functions:
             parameters:
               paths:
                 state: true
-                reportId: true
-  getReportMetadata:
-    handler: handlers/reportMetadata/get.getReportMetadata
+  updateReport:
+    handler: handlers/reports/update.updateReport
     events:
       - http:
-          path: reportMetadata/{state}/{reportId}
-          method: get
+          path: reports/{state}/{id}
+          method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
                 state: true
-                reportId: true
-  getAllReportsByState:
-    handler: handlers/reportMetadata/get.getAllReportsByState
-    events:
-      - http:
-          path: reportMetadata/{state}
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-  writeReportMetadata:
-    handler: handlers/reportMetadata/write.writeReportMetadata
-    events:
-      - http:
-          path: reportMetadata/{state}/{reportId}
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                reportId: true
-  deleteReport:
-    handler: handlers/reportMetadata/delete.deleteReport
-    events:
-      - http:
-          path: reportMetadata/{state}/{reportId}
-          method: delete
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                reportId: true
+                id: true
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:

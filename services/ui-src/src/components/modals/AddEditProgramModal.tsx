@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
 // form
@@ -68,7 +67,7 @@ export const AddEditProgramModal = ({
       // if no program was selected, create new report id
       const reportKeys = {
         state: activeState,
-        reportId: uuid(),
+        // reportId: uuid(),
       };
       // create new report
       await updateReportMetadata(reportKeys, {

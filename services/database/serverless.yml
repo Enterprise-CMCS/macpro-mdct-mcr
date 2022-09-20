@@ -21,8 +21,7 @@ custom:
       - val
       - production
   bannerTableName: ${self:custom.stage}-banners
-  reportMetadataTableName: ${self:custom.stage}-mcpar-reports-metadata
-  reportDataTableName: ${self:custom.stage}-mcpar-reports-data
+  mcparReportTableName: ${self:custom.stage}-mcpar-reports
   dynamodb:
     stages:
       - local
@@ -53,10 +52,10 @@ resources:
           - AttributeName: key
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    ReportDataTable:
+    McparReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.reportDataTableName}
+        TableName: ${self:custom.mcparReportTableName}
         PointInTimeRecoverySpecification:
           PointInTimeRecoveryEnabled: true
         StreamSpecification:
@@ -64,31 +63,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: state
             AttributeType: S
-          - AttributeName: reportId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
           - AttributeName: state
             KeyType: HASH
-          - AttributeName: reportId
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    ReportTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.reportMetadataTableName}
-        PointInTimeRecoverySpecification:
-          PointInTimeRecoveryEnabled: true
-        StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
-        AttributeDefinitions:
-          - AttributeName: state
-            AttributeType: S
-          - AttributeName: reportId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: state
-            KeyType: HASH
-          - AttributeName: reportId
+          - AttributeName: id
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
@@ -98,17 +78,11 @@ resources:
       Value: !GetAtt BannerTable.Arn
     BannerTableStreamArn:
       Value: !GetAtt BannerTable.StreamArn
-    ReportDataTableName:
-      Value: !Ref ReportDataTable
-    ReportDataTableArn:
-      Value: !GetAtt ReportDataTable.Arn
-    ReportDataTableStreamArn:
-      Value: !GetAtt ReportDataTable.StreamArn
-    ReportTableName:
-      Value: !Ref ReportTable
-    ReportTableArn:
-      Value: !GetAtt ReportTable.Arn
-    ReportTableStreamArn:
-      Value: !GetAtt ReportTable.StreamArn
+    McparReportTableName:
+      Value: !Ref McparReportTable
+    McparReportTableArn:
+      Value: !GetAtt McparReportTable.Arn
+    McparReportTableStreamArn:
+      Value: !GetAtt McparReportTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}
