@@ -12,6 +12,7 @@ import {
 } from "utils/testing/setupJest";
 
 const entities = ["exampleEntity"];
+const entityType = "plans";
 const mockOnSubmit = jest.fn();
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -39,6 +40,7 @@ const staticDrawerSectionWithEntitiesComponent = (
       <StaticDrawerSection
         form={mockForm}
         entities={entities}
+        entityType={entityType}
         drawer={mockPageJsonStaticDrawer.drawer}
         onSubmit={mockOnSubmit}
       />
@@ -53,10 +55,6 @@ describe("Test StaticDrawerSection without Entities Passed", () => {
 
   it("should render the view", () => {
     expect(screen.getByTestId("static-drawer-section")).toBeVisible();
-  });
-
-  it("should display an error message if not passed entities", () => {
-    expect(screen.getByText("Please enter a plan")).toBeVisible();
   });
 
   it("should not have any way to open the side drawer", () => {

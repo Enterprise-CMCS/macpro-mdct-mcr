@@ -185,7 +185,6 @@ export const mockForm = {
 
 export const mockPlanFilledForm = {
   id: "mock-form-id",
-  mappedEntity: "plan",
   fields: [mockPlanField],
 };
 
@@ -198,6 +197,7 @@ export const mockPageJson = {
 
 export const mockPageJsonStaticDrawer = {
   pageType: "staticDrawer",
+  mappedEntity: "plans",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
