@@ -10,6 +10,7 @@ import {
   mapValidationTypesToSchema,
   validateData,
 } from "../../utils/validation/validation";
+import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import {
   NO_KEY_ERROR_MESSAGE,
@@ -25,21 +26,6 @@ export const createReport = handler(async (event, _context) => {
   } else if (!event?.pathParameters?.state!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
-
-  const metadataValidationSchema = yup.object().shape({
-    programName: yup.string(),
-    reportType: yup.string(),
-    status: yup.string(),
-    reportingPeriodStartDate: yup.number(),
-    reportingPeriodEndDate: yup.number(),
-    dueDate: yup.number(),
-    combinedData: yup.string(),
-    lastAlteredBy: yup.string(),
-    submittedBy: yup.string(),
-    submittedOnDate: yup.string(),
-    formTemplate: yup.mixed(),
-    fieldData: yup.mixed(),
-  });
 
   const unvalidatedPayload = JSON.parse(event!.body!);
 

@@ -2,7 +2,7 @@ import {
   filterValidationSchema,
   mapValidationTypesToSchema,
 } from "./validation";
-import * as schema from "./schemas";
+import * as schema from "./schemaMap";
 
 const mockStandardValidationType = {
   key: "text",
