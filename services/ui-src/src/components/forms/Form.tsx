@@ -38,7 +38,6 @@ export const Form = ({
   const formValidationSchema = mapValidationTypesToSchema(formValidationJson);
   const formResolverSchema = yupSchema(formValidationSchema || {});
   mapValidationTypesToSchema;
-
   // make form context
   const form = useForm({
     resolver: !fieldInputDisabled ? yupResolver(formResolverSchema) : undefined,

@@ -179,6 +179,10 @@ export interface ChoiceFieldProps {
   sxOverride?: AnyObject;
   [key: string]: any;
 }
+export interface Choice {
+  key: string; // choice.name
+  value: string; // choice.value
+}
 
 export enum PageTypes {
   STATIC_PAGE = "staticPage",

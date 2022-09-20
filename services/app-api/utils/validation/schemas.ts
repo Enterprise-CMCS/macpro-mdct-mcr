@@ -2,6 +2,7 @@ import {
   array,
   mixed,
   number as numberSchema,
+  object,
   string,
   StringSchema,
 } from "yup";
@@ -126,14 +127,17 @@ export const dropdown = () =>
 export const checkbox = () =>
   array()
     .min(1, error.REQUIRED_CHECKBOX)
-    .of(text())
+    .of(object({ key: text(), value: text() }))
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () => checkbox().notRequired();
 export const checkboxSingle = () => array();
 
 // RADIO
 export const radio = () =>
-  array().min(1).of(text()).required(error.REQUIRED_GENERIC);
+  array()
+    .min(1)
+    .of(object({ key: text(), value: text() }))
+    .required(error.REQUIRED_GENERIC);
 export const radioOptional = () => radio().notRequired();
 
 // DYNAMIC
