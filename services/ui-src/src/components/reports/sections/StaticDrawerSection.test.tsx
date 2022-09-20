@@ -27,19 +27,6 @@ const staticDrawerSectionComponent = (
     <ReportContext.Provider value={mockReportContext}>
       <StaticDrawerSection
         form={mockForm}
-        drawer={mockPageJsonStaticDrawer.drawer}
-        onSubmit={mockOnSubmit}
-      />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const staticDrawerSectionWithEntitiesComponent = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
-      <StaticDrawerSection
-        form={mockForm}
-        entities={entities}
         entityType={entityType}
         drawer={mockPageJsonStaticDrawer.drawer}
         onSubmit={mockOnSubmit}
@@ -65,7 +52,7 @@ describe("Test StaticDrawerSection without Entities Passed", () => {
 
 describe("Test StaticDrawerSection with Entities Passed", () => {
   beforeEach(() => {
-    render(staticDrawerSectionWithEntitiesComponent);
+    render(staticDrawerSectionComponent);
   });
 
   it("should render the view", () => {
@@ -73,7 +60,7 @@ describe("Test StaticDrawerSection with Entities Passed", () => {
   });
 
   it("Opens the sidedrawer correctly", async () => {
-    render(staticDrawerSectionWithEntitiesComponent);
+    render(staticDrawerSectionComponent);
     expect(screen.getAllByText(entities[0])[0]).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);

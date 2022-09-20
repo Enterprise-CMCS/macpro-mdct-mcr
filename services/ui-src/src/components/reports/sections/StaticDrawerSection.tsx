@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // components
 import {
   Box,
@@ -9,59 +9,46 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ReportDrawer } from "components";
+import { ReportDrawer, ReportContext } from "components";
 // utils
 import { FormJson, AnyObject, MappedEntityType } from "types";
 import { Link as RouterLink } from "react-router-dom";
 
 export const StaticDrawerSection = ({
   form,
-  entities,
   entityType,
   drawer,
   onSubmit,
 }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-
+  const { reportData } = useContext(ReportContext);
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
+
+  const entities = reportData?.fieldData[entityType];
 
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
     onOpen();
   };
 
-  const emptyEntitiesMessage = (entityType?: MappedEntityType) => {
-    const MISSING_PLANS =
-      "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7.";
-    const MISSING_BSS =
-      "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the ";
-    switch (entityType) {
-      case "plans":
-        return (
-          <Text sx={sx.emptyEntityMessage}>
-            {MISSING_PLANS}{" "}
-            <Link as={RouterLink} to="/mcpar/program-information/add-plans">
-              Add Plans
-            </Link>
-          </Text>
-        );
-      case "bssEntities":
-        return (
-          <Text sx={sx.emptyEntityMessage}>
-            {MISSING_BSS}{" "}
-            <Link
-              as={RouterLink}
-              to="/mcpar/program-information/add-bss-entities"
-            >
-              Program-Level BSS
-            </Link>{" "}
-            page
-          </Text>
-        );
-      default:
-        return <span></span>;
-    }
+  const emptyMessagesMap: any = {
+    plans: {
+      message:
+        "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7.",
+      link: {
+        text: "Add Plans.",
+        href: "/mcpar/program-information/add-plans",
+      },
+    },
+    bssEntities: {
+      message:
+        "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program.",
+      link: {
+        text: "Add BSS entities.",
+        href: "/mcpar/program-information/add-bss-entities",
+      },
+    },
   };
 
   const entityRows = (entities: string[]) =>
@@ -78,10 +65,21 @@ export const StaticDrawerSection = ({
       </Flex>
     ));
 
+  const emptyVerbiage = emptyMessagesMap[entityType];
+
   return (
     <Box data-testid="static-drawer-section">
       <Heading as="h4">{drawer.dashboard.title}</Heading>
-      {entities ? entityRows(entities) : emptyEntitiesMessage(entityType)}
+      {entities ? (
+        entityRows(entities)
+      ) : (
+        <Text sx={sx.emptyEntityMessage}>
+          {emptyVerbiage.message}{" "}
+          <Link as={RouterLink} to={emptyVerbiage.link.href}>
+            {emptyVerbiage.link.text}
+          </Link>
+        </Text>
+      )}
       <ReportDrawer
         drawerDisclosure={{
           isOpen,
@@ -99,8 +97,7 @@ export const StaticDrawerSection = ({
 
 interface Props {
   form: FormJson;
-  entities?: string[];
-  entityType?: MappedEntityType;
+  entityType: MappedEntityType;
   drawer: AnyObject;
   onSubmit: Function;
 }

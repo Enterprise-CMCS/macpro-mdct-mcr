@@ -16,7 +16,6 @@ import {
 import { useFindRoute, useUser } from "utils";
 import {
   FormJson,
-  MappedEntityType,
   PageJson,
   PageTypes,
   ReportDataShape,
@@ -28,8 +27,7 @@ import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const ReportPage = ({ route }: Props) => {
   // get report, form, and page related-data
-  const { report, reportData, updateReportData, updateReport } =
-    useContext(ReportContext);
+  const { report, updateReportData, updateReport } = useContext(ReportContext);
   const { form, page } = route;
 
   // get user state, name, role
@@ -73,15 +71,9 @@ export const ReportPage = ({ route }: Props) => {
       await updateReportData(reportKeys, formData);
       await updateReport(reportKeys, reportMetadata);
     }
-    if (!page?.drawer) {
+    if (page?.pageType === PageTypes.STATIC_PAGE) {
       navigate(nextRoute);
     }
-  };
-
-  const getEntities = (formEntityType: MappedEntityType) => {
-    const entities: string[] | undefined =
-      reportData?.fieldData[formEntityType];
-    return entities;
   };
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
@@ -92,8 +84,7 @@ export const ReportPage = ({ route }: Props) => {
         return (
           <StaticDrawerSection
             form={form}
-            entities={page?.mappedEntity && getEntities(page.mappedEntity)}
-            entityType={page?.mappedEntity}
+            entityType={page.mappedEntity}
             drawer={page.drawer!}
             onSubmit={onSubmit}
           />
