@@ -308,12 +308,12 @@ export const mockReport = {
 export const mockReportData = {
   fieldData: {
     plans: ["example-plan"],
+    text: "text-input",
+    number: 0,
+    radio: ["option1"],
+    checkbox: ["option1", "option2"],
+    dropdown: "dropdown-selection",
   },
-  text: "text-input",
-  number: 0,
-  radio: ["option1"],
-  checkbox: ["option1", "option2"],
-  dropdown: "dropdown-selection",
 };
 
 export const mockReportsByState = [

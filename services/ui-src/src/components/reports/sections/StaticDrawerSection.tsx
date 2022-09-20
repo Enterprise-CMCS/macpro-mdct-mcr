@@ -22,7 +22,7 @@ export const StaticDrawerSection = ({ form, page, onSubmit }: Props) => {
   const [currentEntity, setCurrentEntity] = useState<string>("");
 
   const { entityType, dashboard, drawer } = page;
-  const entities = reportData?.fieldData[entityType];
+  const entities = reportData?.fieldData?.[entityType];
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
