@@ -20,47 +20,41 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const {
-    reportMetadata,
-    fetchReportMetadata,
-    updateReportMetadata,
-    updateReportData,
-  } = useContext(ReportContext);
+  const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user information
   const { user } = useUser();
   const { email, full_name, state, userRole } = user ?? {};
 
-  // get state and reportId from context or storage
-  const reportId =
-    reportMetadata?.reportId || localStorage.getItem("selectedReport");
+  // get state and id from context or storage
+  const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
   const reportKeys = {
     state: reportState,
-    reportId: reportId,
+    id: reportId,
   };
 
   useEffect(() => {
-    if (reportMetadata?.reportId) {
-      fetchReportMetadata(reportKeys);
+    if (report?.id) {
+      fetchReport(reportKeys);
     }
   }, []);
 
   const submitForm = () => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const submissionDate = Date.now();
-      updateReportMetadata(reportKeys, {
+      updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
         submittedBy: full_name,
         submittedOnDate: submissionDate,
-      });
-      updateReportData(reportKeys, {
-        "apoc-a3a": full_name,
-        "apoc-a3b": email,
-        "apoc-a4": convertDateUtcToEt(submissionDate),
+        fieldData: {
+          "apoc-a3a": full_name,
+          "apoc-a3b": email,
+          "apoc-a4": convertDateUtcToEt(submissionDate),
+        },
       });
     }
     onClose();
@@ -70,12 +64,12 @@ export const ReviewSubmit = () => {
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {reportMetadata &&
-          (reportMetadata?.status?.includes(ReportStatus.SUBMITTED) ? (
+        {report &&
+          (report?.status?.includes(ReportStatus.SUBMITTED) ? (
             <SuccessMessage
-              programName={reportMetadata.programName}
-              date={reportMetadata?.submittedOnDate}
-              submittedBy={reportMetadata?.submittedBy}
+              programName={report.programName}
+              date={report?.submittedOnDate}
+              submittedBy={report?.submittedBy}
             />
           ) : (
             <ReadyToSubmit

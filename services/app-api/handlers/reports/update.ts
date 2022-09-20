@@ -42,12 +42,12 @@ export const updateReport = handler(async (event, context) => {
     // validate report field data
     const currentReport = JSON.parse(getCurrentReport.body);
     const { formTemplate } = currentReport;
-    const validatedFieldData = validateFieldData(
+    const validatedFieldData = await validateFieldData(
       formTemplate.validationJson,
       unvalidatedFieldData
     );
 
-    if (validatedMetadata && validatedFieldData) {
+    if (validatedMetadata) {
       const { state, id } = event.pathParameters;
       const reportParams = {
         TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
@@ -57,7 +57,10 @@ export const updateReport = handler(async (event, context) => {
           state,
           id,
           lastAltered: Date.now(),
-          fieldData: validatedFieldData,
+          fieldData: {
+            ...currentReport.fieldData,
+            ...validatedFieldData,
+          },
         },
       };
       await dynamoDb.put(reportParams);

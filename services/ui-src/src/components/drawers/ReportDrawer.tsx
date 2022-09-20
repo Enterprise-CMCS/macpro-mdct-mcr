@@ -13,7 +13,7 @@ export const ReportDrawer = ({
   onSubmit,
   ...props
 }: Props) => {
-  const { reportData } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   return (
     <Drawer
       drawerDisclosure={drawerDisclosure}
@@ -25,7 +25,7 @@ export const ReportDrawer = ({
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={reportData}
+        formData={report?.fieldData}
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>

@@ -38,7 +38,7 @@ jest.mock("react-router-dom", () => ({
 
 const mockReportContextNoReports = {
   ...mockReportContext,
-  reportsByState: undefined,
+  report: undefined,
 };
 
 const mockReportContextWithError = {
@@ -92,7 +92,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
   });
 
-  test("Clicking 'Enter' button on a report row fetches the reportData, then navigates to report", async () => {
+  test("Clicking 'Enter' button on a report row fetches the field data, then navigates to report", async () => {
     const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);

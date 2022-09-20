@@ -29,9 +29,7 @@ export const createReport = handler(async (event, _context) => {
 
   const unvalidatedPayload = JSON.parse(event!.body!);
 
-  const { fieldData: unvalidatedFieldData, formTemplate } = JSON.parse(
-    unvalidatedPayload.body
-  );
+  const { fieldData: unvalidatedFieldData, formTemplate } = unvalidatedPayload;
   // filter field validation to just what's needed for the passed fields
   const filteredFieldDataValidationJson = filterValidationSchema(
     formTemplate.validationJson,

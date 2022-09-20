@@ -6,14 +6,14 @@ import { useContext } from "react";
 import { FormJson } from "types";
 
 export const StaticPageSection = ({ form, onSubmit }: Props) => {
-  const { reportData } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   return (
     <Box data-testid="static-page-section">
       <Form
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={reportData}
+        formData={report?.fieldData}
       />
     </Box>
   );
