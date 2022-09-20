@@ -54,6 +54,5 @@ test("Should remove code injection from strings in objects", () => {
     ["<svg><g></g></svg>", "test2"],
     [],
   ]);
-  expect(sanitizeObject(null)).toEqual(null);
   expect(sanitizeArray([])).toEqual([]);
 });
