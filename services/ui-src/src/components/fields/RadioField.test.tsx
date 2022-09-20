@@ -42,9 +42,13 @@ describe("Test RadioField component", () => {
     );
     const firstRadio = radioContainers[0].children[0] as HTMLInputElement;
     await userEvent.click(firstRadio);
-    expect(mockSetValue).toHaveBeenCalledWith("radio_choices", ["A"], {
-      shouldValidate: true,
-    });
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "radio_choices",
+      [{ key: "radio_choices", value: "A" }],
+      {
+        shouldValidate: true,
+      }
+    );
   });
 });
 

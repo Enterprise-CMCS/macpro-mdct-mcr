@@ -109,8 +109,10 @@ describe("Test ChoiceListField component rendering", () => {
 });
 
 describe("Test ChoiceListField hydration functionality", () => {
-  const mockFormFieldValue = "Choice 2";
-  const mockHydrationValue = "Choice 1";
+  const mockFormFieldValue = [{ key: "checkbox-field", value: "Choice 2" }];
+  const mockHydrationValue = [
+    { key: "checkbox-field-with-hydration-value", value: "Choice 1" },
+  ];
 
   const RadioComponentWithHydrationValue = (
     <ChoiceListField

@@ -42,9 +42,13 @@ describe("Test CheckboxField component", () => {
     );
     const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
     await userEvent.click(firstCheckbox);
-    expect(mockSetValue).toHaveBeenCalledWith("checkbox_choices", ["A"], {
-      shouldValidate: true,
-    });
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "checkbox_choices",
+      [{ key: "checkbox_choices", value: "A" }],
+      {
+        shouldValidate: true,
+      }
+    );
   });
 });
 
