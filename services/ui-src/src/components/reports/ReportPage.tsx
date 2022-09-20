@@ -93,6 +93,7 @@ export const ReportPage = ({ route }: Props) => {
           <StaticDrawerSection
             form={form}
             entities={page?.mappedEntity && getEntities(page.mappedEntity)}
+            entityType={page?.mappedEntity}
             drawer={page.drawer!}
             onSubmit={onSubmit}
           />
