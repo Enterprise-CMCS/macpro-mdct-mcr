@@ -1547,6 +1547,7 @@
           "path": "/mcpar/plan-level-indicators/program-characteristics",
           "page": {
             "pageType": "staticDrawer",
+            "mappedEntity": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic I. Program Characteristics & Enrollment",
@@ -1565,7 +1566,6 @@
           },
           "form": {
             "id": "dpc",
-            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dpc-1",
@@ -1605,6 +1605,7 @@
           "path": "/mcpar/plan-level-indicators/financial-performance",
           "page": {
             "pageType": "staticDrawer",
+            "mappedEntity": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic II. Financial Performance",
@@ -1623,7 +1624,6 @@
           },
           "form": {
             "id": "dfp",
-            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dfp-1a",
@@ -1752,6 +1752,7 @@
           "path": "/mcpar/plan-level-indicators/encounter-data-report",
           "page": {
             "pageType": "staticDrawer",
+            "mappedEntity": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic III. Encounter Data",
@@ -1770,7 +1771,6 @@
           },
           "form": {
             "id": "dedr",
-            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dedr-1",
@@ -1813,6 +1813,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
               "page": {
                 "pageType": "staticDrawer",
+                "mappedEntity": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1831,7 +1832,6 @@
               },
               "form": {
                 "id": "dao",
-                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dao-1",
@@ -1971,6 +1971,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
               "page": {
                 "pageType": "staticDrawer",
+                "mappedEntity": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2000,7 +2001,6 @@
               },
               "form": {
                 "id": "dabs",
-                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dabs-1",
@@ -2110,6 +2110,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
               "page": {
                 "pageType": "staticDrawer",
+                "mappedEntity": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2135,7 +2136,6 @@
               },
               "form": {
                 "id": "dsfh",
-                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dsfh-1",
@@ -2205,6 +2205,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
               "page": {
                 "pageType": "staticDrawer",
+                "mappedEntity": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2224,7 +2225,6 @@
 
               "form": {
                 "id": "dgo",
-                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dgo-1",
@@ -2284,6 +2284,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
               "page": {
                 "pageType": "staticDrawer",
+                "mappedEntity": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2315,7 +2316,6 @@
               },
               "form": {
                 "id": "dgbs",
-                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dgbs-1",
@@ -2425,6 +2425,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
               "page": {
                 "pageType": "staticDrawer",
+                "mappedEntity": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2460,7 +2461,6 @@
               },
               "form": {
                 "id": "dgbr",
-                "mappedEntity": "plan",
                 "fields": [
                   {
                     "id": "dgbr-1",
@@ -3069,6 +3069,7 @@
           "path": "/mcpar/plan-level-indicators/program-integrity",
           "page": {
             "pageType": "staticDrawer",
+            "mappedEntity": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic X. Program Integrity",
@@ -3087,7 +3088,6 @@
           },
           "form": {
             "id": "dpi",
-            "mappedEntity": "plan",
             "fields": [
               {
                 "id": "dpi-1",
@@ -3286,6 +3286,7 @@
       "path": "/mcpar/bss-entity-indicators",
       "page": {
         "pageType": "staticDrawer",
+        "mappedEntity": "bssEntities",
         "intro": {
           "section": "Section E: BSS Entity Indicators",
           "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
@@ -3321,7 +3322,6 @@
       },
       "form": {
         "id": "ebssei",
-        "mappedEntity": "bssEntity",
         "fields": [
           {
             "id": "ebssei-1",

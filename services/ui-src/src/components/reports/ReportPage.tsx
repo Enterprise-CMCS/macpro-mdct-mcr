@@ -79,14 +79,8 @@ export const ReportPage = ({ route }: Props) => {
   };
 
   const getEntities = (formEntityType: MappedEntityType) => {
-    const entityTypeMap = {
-      plan: "plans", // reportData fieldId of the entity array
-      bssEntity: "bssEntities",
-    };
-    const mappedEntityType: keyof typeof entityTypeMap = formEntityType;
-    const entitiesToFetch = entityTypeMap[mappedEntityType];
     const entities: string[] | undefined =
-      reportData?.fieldData[entitiesToFetch];
+      reportData?.fieldData[formEntityType];
     return entities;
   };
 
@@ -98,7 +92,7 @@ export const ReportPage = ({ route }: Props) => {
         return (
           <StaticDrawerSection
             form={form}
-            entities={form?.mappedEntity && getEntities(form.mappedEntity)}
+            entities={page?.mappedEntity && getEntities(page.mappedEntity)}
             drawer={page.drawer!}
             onSubmit={onSubmit}
           />
