@@ -179,7 +179,7 @@
             "id": "absse",
             "fields": [
               {
-                "id": "bssEntityTypeName",
+                "id": "bssEntityName",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -316,7 +316,7 @@
                       "label": "Other, specify",
                       "children": [
                         {
-                          "id": "encounterDataValidationEntity-otherSpecify",
+                          "id": "encounterDataValidationEntity-o7-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
@@ -364,17 +364,17 @@
                   "hint": "Does the state allow plans to retain overpayments, require the return of overpayments, or has established a hybrid system? Select one.",
                   "choices": [
                     {
-                      "name": "bpi-2-o1",
+                      "name": "contractStandardForOverpayments-o1",
                       "type": "choice",
                       "label": "Allow plans to retain overpayments"
                     },
                     {
-                      "name": "bpi-2-o2",
+                      "name": "contractStandardForOverpayments-o2",
                       "type": "choice",
                       "label": "State requires the return of overpayments"
                     },
                     {
-                      "name": "bpi-2-o3",
+                      "name": "contractStandardForOverpayments-o3",
                       "type": "choice",
                       "label": "State has established a hybrid system"
                     }
@@ -449,7 +449,7 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "changesInProviderCircumstancesMetrics-Describe",
+                                    "id": "changesInProviderCircumstancesMetricsText",
                                     "type": "textarea",
                                     "validation": {
                                       "type": "text",
@@ -496,7 +496,7 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "bpi-8b",
+                          "id": "instancesOfExclusionSummary",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
@@ -520,7 +520,7 @@
                 }
               },
               {
-                "id": "websitePostingOfFivePercentOrMoreOwnership",
+                "id": "websitePostingOfFivePercentOrMoreOwnershipControl",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -528,7 +528,7 @@
                   "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3)",
                   "choices": [
                     {
-                      "name": "websitePostingOfFivePercentOrMoreOwnership-o1",
+                      "name": "websitePostingOfFivePercentOrMoreOwnershipControl-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
@@ -538,7 +538,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "websitePostingOfFivePercentOrMoreOwnership",
+                            "parentFieldName": "websitePostingOfFivePercentOrMoreOwnershipControl",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -549,7 +549,7 @@
                       ]
                     },
                     {
-                      "name": "websitePostingOfFivePercentOrMoreOwnership-o2",
+                      "name": "websitePostingOfFivePercentOrMoreOwnershipControl-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -601,7 +601,7 @@
                 }
               },
               {
-                "id": "programContract-sub",
+                "id": "programContractDate",
                 "type": "date",
                 "validation": "date"
               },
@@ -623,32 +623,32 @@
                   "hint": "What is the type of MCPs that contract with the state to provide the services covered under the program? Select one.",
                   "choices": [
                     {
-                      "name": "programType-mco",
+                      "name": "programType-o1",
                       "type": "choice",
                       "label": "Managed Care Organization (MCO)"
                     },
                     {
-                      "name": "programType-pihp",
+                      "name": "programType-o2",
                       "type": "choice",
                       "label": "Prepaid Inpatient Health Plan (PIHP)"
                     },
                     {
-                      "name": "programType-pahp",
+                      "name": "programType-o3",
                       "type": "choice",
                       "label": "Prepaid Ambulatory Health Plan (PAHP)"
                     },
                     {
-                      "name": "programType-pccm",
+                      "name": "programType-o4",
                       "type": "choice",
                       "label": "Primary Care Case Management (PCCM) Entity"
                     },
                     {
-                      "name": "programType-other",
+                      "name": "programType-o5",
                       "type": "choice",
                       "label": "Other, specify",
                       "children": [
                         {
-                          "id": "programType-otherSpecify",
+                          "id": "programType-o5-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
@@ -767,42 +767,42 @@
                   "hint": "For what purposes does the state use encounter data collected from managed care plans (MCPs)? Select one or more.<br/>Federal regulations require that states, through their contracts with MCPs, collect and maintain sufficient enrollee encounter data to identify the provider who delivers any item(s) or service(s) to enrollees (42 CFR 438.242(c)(1)).",
                   "choices": [
                     {
-                      "name": "encounterDataUses-rateSetting",
+                      "name": "encounterDataUses-o1",
                       "type": "choice",
                       "label": "Rate setting"
                     },
                     {
-                      "name": "encounterDataUses-qualityAndPerformanceMeasurement",
+                      "name": "encounterDataUses-o2",
                       "type": "choice",
                       "label": "Quality/performance measurement"
                     },
                     {
-                      "name": "encounterDataUses-monitoringAndReporting",
+                      "name": "encounterDataUses-o3",
                       "type": "choice",
                       "label": "Monitoring and reporting"
                     },
                     {
-                      "name": "encounterDataUses-contractOversight",
+                      "name": "encounterDataUses-o4",
                       "type": "choice",
                       "label": "Contract oversight"
                     },
                     {
-                      "name": "encounterDataUses-programIntegrity",
+                      "name": "encounterDataUses-o5",
                       "type": "choice",
                       "label": "Program integrity"
                     },
                     {
-                      "name": "encounterDataUses-policyMakingAndDecisionSupport",
+                      "name": "encounterDataUses-o6",
                       "type": "choice",
                       "label": "Policy making and decision support"
                     },
                     {
-                      "name": "encounterDataUses-other",
+                      "name": "encounterDataUses-o7",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "encounterDataUses-other-text",
+                          "id": "encounterDataUses-o7-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
@@ -830,32 +830,32 @@
                   "hint": "What types of measures are used by the state to evaluate managed care plan performance in encounter data submission and correction? Select one or more.<br/>Federal regulations also require that states validate that submitted enrollee encounter data they receive is a complete and accurate representation of the services provided to enrollees under the contract between the state and the MCO, PIHP, or PAHP. 42 CFR 438.242(d).",
                   "choices": [
                     {
-                      "name": "criteriaToEvaluateMcpPerformance-timelinessOfInitialDataSubmissions",
+                      "name": "criteriaToEvaluateMcpPerformance-o1",
                       "type": "choice",
                       "label": "Timeliness of initial data submissions"
                     },
                     {
-                      "name": "criteriaToEvaluateMcpPerformance-timelinessOfDataCorrections",
+                      "name": "criteriaToEvaluateMcpPerformance-o2",
                       "type": "choice",
                       "label": "Timeliness of data corrections"
                     },
                     {
-                      "name": "criteriaToEvaluateMcpPerformance-useOfCorrectFileFormat",
+                      "name": "criteriaToEvaluateMcpPerformance-o3",
                       "type": "choice",
                       "label": "Use of correct file format"
                     },
                     {
-                      "name": "criteriaToEvaluateMcpPerformance-providerIdFieldComplete",
+                      "name": "criteriaToEvaluateMcpPerformance-o4",
                       "type": "choice",
                       "label": "Provider ID field complete"
                     },
                     {
-                      "name": "criteriaToEvaluateMcpPerformance-other",
+                      "name": "criteriaToEvaluateMcpPerformance-o5",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "criteriaToEvaluateMcpPerformance-other-text",
+                          "id": "criteriaToEvaluateMcpPerformance-o5-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
@@ -867,7 +867,7 @@
                       ]
                     },
                     {
-                      "name": "criteriaToEvaluateMcpPerformance-noneOfTheAbove",
+                      "name": "criteriaToEvaluateMcpPerformance-o6",
                       "type": "choice",
                       "label": "None of the above"
                     }
@@ -931,7 +931,7 @@
             "id": "casfhag",
             "fields": [
               {
-                "id": "statesDefinition-criticalIncident",
+                "id": "statesDefinitionOfCriticalIncident",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -940,7 +940,7 @@
                 }
               },
               {
-                "id": "statesDefinition-timelyResolutionForStandardAppeals",
+                "id": "statesDefinitionOfTimelyResolutionForStandardAppeals",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -949,7 +949,7 @@
                 }
               },
               {
-                "id": "statesDefinition-timelyResolutionForExpeditedAppeals",
+                "id": "statesDefinitionOfTimelyResolutionForExpeditedAppeals",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -958,7 +958,7 @@
                 }
               },
               {
-                "id": "statesDefinition-timelyResolutionForGrievances",
+                "id": "statesDefinitionOfTimelyResolutionForGrievances",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1011,7 +1011,7 @@
                     }
                   },
                   {
-                    "id": "stateREsponseToGapsInAdequateCoverage",
+                    "id": "stateResponseToGapsInAdequateCoverage",
                     "type": "textarea",
                     "validation": "text",
                     "props": {
@@ -1900,7 +1900,7 @@
                     }
                   },
                   {
-                    "id": "reductionSuspensionOrTerminationOfAPreviouslyAuthorizedService",
+                    "id": "reductionSuspensionOrTerminationOfPreviouslyAuthorizedService",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1940,7 +1940,7 @@
                     }
                   },
                   {
-                    "id": "denialOfAnEnrolleesRightToRequestOutOfNetworkCare",
+                    "id": "denialOfAnEnrolleeRightToRequestOutOfNetworkCare",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1950,7 +1950,7 @@
                     }
                   },
                   {
-                    "id": "denialOfEnrolleesRequestToDisputeFinancialLiability",
+                    "id": "denialOfEnrolleeRequestToDisputeFinancialLiability",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1998,7 +1998,7 @@
                 "id": "dabs",
                 "fields": [
                   {
-                    "id": "generalInpatientServices",
+                    "id": "resolvedAppealsGeneralInpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2008,7 +2008,7 @@
                     }
                   },
                   {
-                    "id": "generalOutpatientServices",
+                    "id": "resolvedAppealsGeneralOutpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2018,7 +2018,7 @@
                     }
                   },
                   {
-                    "id": "inpatientBehavioralHealthServices",
+                    "id": "resolvedAppealsInpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2028,7 +2028,7 @@
                     }
                   },
                   {
-                    "id": "outpatientBehavioralHealthServices",
+                    "id": "resolvedAppealsOutpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2038,7 +2038,7 @@
                     }
                   },
                   {
-                    "id": "coveredOutpatientPrescriptionDrugs",
+                    "id": "resolvedAppealsCoveredOutpatientPrescriptionDrugs",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2048,7 +2048,7 @@
                     }
                   },
                   {
-                    "id": "skilledNursingFacilityServices",
+                    "id": "resolvedAppealsSkilledNursingFacilityServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2058,7 +2058,7 @@
                     }
                   },
                   {
-                    "id": "longtermServicesAndSupports",
+                    "id": "resolvedAppealsLongtermServicesAndSupports",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2068,7 +2068,7 @@
                     }
                   },
                   {
-                    "id": "dentalServices",
+                    "id": "resolvedAppealsDentalServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2078,7 +2078,7 @@
                     }
                   },
                   {
-                    "id": "nonEmergencyMedicalTransportation",
+                    "id": "resolvedAppealsNonEmergencyMedicalTransportation",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2088,7 +2088,7 @@
                     }
                   },
                   {
-                    "id": "otherServiceTypes",
+                    "id": "resolvedAppealsOtherServiceTypes",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2142,7 +2142,7 @@
                     }
                   },
                   {
-                    "id": "stateFairHearingRequests-favorableDescision",
+                    "id": "stateFairHearingRequestsFavorableDescision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2152,7 +2152,7 @@
                     }
                   },
                   {
-                    "id": "stateFairHearingRequests-adverseDecision",
+                    "id": "stateFairHearingRequestsAdverseDecision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2162,7 +2162,7 @@
                     }
                   },
                   {
-                    "id": "stateFairHearingRequests-retracted",
+                    "id": "stateFairHearingRequestsRetracted",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2172,7 +2172,7 @@
                     }
                   },
                   {
-                    "id": "stateFairHearingRequests-externalMedicalReviewFavorableDecision",
+                    "id": "stateFairHearingRequestsExternalMedicalReviewFavorableDecision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2182,7 +2182,7 @@
                     }
                   },
                   {
-                    "id": "stateFairHearingRequests-externalMedicalReviewAdverseDecision",
+                    "id": "stateFairHearingRequestsExternalMedicalReviewAdverseDecision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2310,7 +2310,7 @@
                 "id": "dgbs",
                 "fields": [
                   {
-                    "id": "dgbs-1",
+                    "id": "resolvedGrievancesInGeneralInpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2320,7 +2320,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-2",
+                    "id": "resolvedGrievancesInGeneralOutpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2330,7 +2330,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-3",
+                    "id": "resolvedGrievancesInInpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2340,7 +2340,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-4",
+                    "id": "resolvedGrievancesInOutpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2350,7 +2350,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-5",
+                    "id": "resolvedGrievancesInCoverageOfOutpatientPrescriptionDrugs",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2360,7 +2360,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-6",
+                    "id": "resolvedGrievancesInSnf",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2370,7 +2370,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-7",
+                    "id": "resolvedGrievancesInLtss",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2380,7 +2380,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-8",
+                    "id": "resolvedGrievancesInDentalServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2390,7 +2390,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-9",
+                    "id": "resolvedGrievancesInNemt",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2400,7 +2400,7 @@
                     }
                   },
                   {
-                    "id": "dgbs-10",
+                    "id": "resolvedGrievancesInOtherServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2454,7 +2454,7 @@
                 "id": "dgbr",
                 "fields": [
                   {
-                    "id": "grievanceByReason-1",
+                    "id": "resolvedGrievancesInPlanOrProviderCustomerService",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2464,7 +2464,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-2",
+                    "id": "resolvedGrievancesInPlanOrProviderCareOrCaseMgmt",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2474,7 +2474,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-3",
+                    "id": "resolvedGrievancesInAcessToCareServicesFromPlanOrProvider",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2484,7 +2484,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-4",
+                    "id": "resolvedGrievancesInQualityOfCare",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2494,7 +2494,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-5",
+                    "id": "resolvedGrievancesPlanCommunications",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2504,7 +2504,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-6",
+                    "id": "resolvedGrievancesInPaymentOrBilling",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2514,7 +2514,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-7",
+                    "id": "resolvedGrievancesInSuspectedFraud",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2524,7 +2524,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-8",
+                    "id": "resolvedGrievancesInAbuseNeglectOrExploitation",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2534,7 +2534,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-9",
+                    "id": "resolvedGrievancesInLackOfTimelyPlanResponseToServiceAuthOrAppeal",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2544,7 +2544,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-10",
+                    "id": "resolvedGrievancesInPlanDenialOfExpeditedAppeal",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2554,7 +2554,7 @@
                     }
                   },
                   {
-                    "id": "grievanceByReason-11",
+                    "id": "resolvedGrievancesOtherReasons",
                     "type": "number",
                     "validation": "number",
                     "props": {
