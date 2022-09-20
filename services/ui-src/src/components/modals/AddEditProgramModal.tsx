@@ -62,9 +62,9 @@ export const AddEditProgramModal = ({
         ...dataToWrite,
       });
       await updateReportData(reportDetails, {
-        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
-        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
-        "arp-a6": programName,
+        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
+        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
+        programName: programName,
       });
     } else {
       // if no program was selected, create new report id
@@ -77,10 +77,10 @@ export const AddEditProgramModal = ({
         formTemplate: mcparReportJson,
       });
       await updateReportData(reportDetails, {
-        "apoc-a1": stateName,
-        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
-        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
-        "arp-a6": programName,
+        stateName: stateName,
+        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
+        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
+        programName: programName,
       });
     }
     await fetchReportsByState(activeState);

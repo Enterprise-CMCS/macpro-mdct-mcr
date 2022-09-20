@@ -23,7 +23,7 @@
             "id": "apoc",
             "fields": [
               {
-                "id": "apoc-a1",
+                "id": "stateName",
                 "type": "text",
                 "validation": "text",
                 "props": {
@@ -33,7 +33,7 @@
                 }
               },
               {
-                "id": "apoc-a2a",
+                "id": "contactName",
                 "type": "text",
                 "validation": "text",
                 "props": {
@@ -42,7 +42,7 @@
                 }
               },
               {
-                "id": "apoc-a2b",
+                "id": "contactEmailAddress",
                 "type": "text",
                 "validation": "email",
                 "props": {
@@ -51,7 +51,7 @@
                 }
               },
               {
-                "id": "apoc-a3a",
+                "id": "submitterName",
                 "type": "text",
                 "hydrate": "submitterName",
                 "validation": "textOptional",
@@ -62,7 +62,7 @@
                 }
               },
               {
-                "id": "apoc-a3b",
+                "id": "submitterEmailAddress",
                 "type": "text",
                 "hydrate": "submitterEmailAddress",
                 "validation": "emailOptional",
@@ -73,7 +73,7 @@
                 }
               },
               {
-                "id": "apoc-a4",
+                "id": "reportSubmissionDate",
                 "type": "date",
                 "validation": "textOptional",
                 "props": {
@@ -99,9 +99,9 @@
             "id": "arp",
             "fields": [
               {
-                "id": "arp-a5a",
+                "id": "mlrReportingPeriodStartDate",
                 "type": "date",
-                "hydrate": "reportingPeriodStartDate",
+                "hydrate": "mlrReportingPeriodStartDate",
                 "validation": "date",
                 "props": {
                   "label": "A.5a Reporting period start date",
@@ -110,9 +110,9 @@
                 }
               },
               {
-                "id": "arp-a5b",
+                "id": "mlrReportingPeriodEndDate",
                 "type": "date",
-                "hydrate": "reportingPeriodEndDate",
+                "hydrate": "mlrReportingPeriodEndDate",
                 "validation": "date",
                 "props": {
                   "label": "A.5b Reporting period end date",
@@ -121,7 +121,7 @@
                 }
               },
               {
-                "id": "arp-a6",
+                "id": "programName",
                 "type": "text",
                 "hydrate": "programName",
                 "validation": "text",
@@ -149,7 +149,7 @@
             "id": "aap",
             "fields": [
               {
-                "id": "aap-1",
+                "id": "planName",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -179,7 +179,7 @@
             "id": "absse",
             "fields": [
               {
-                "id": "absse-a8",
+                "id": "bssEntityName",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -209,7 +209,7 @@
             "id": "bpc",
             "fields": [
               {
-                "id": "bpc-1",
+                "id": "medicaidEnrollment",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -219,7 +219,7 @@
                 }
               },
               {
-                "id": "bpc-2",
+                "id": "managedCareEnrollment",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -245,7 +245,7 @@
             "id": "bedr",
             "fields": [
               {
-                "id": "bedr-1",
+                "id": "encounterDataValidationEntity",
                 "type": "checkbox",
                 "validation": "checkbox",
                 "props": {
@@ -253,42 +253,42 @@
                   "hint": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs.</br>Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses.",
                   "choices": [
                     {
-                      "name": "bedr-1-o1",
+                      "name": "encounterDataValidationEntity-o1",
                       "type": "choice",
                       "label": "State Medicaid agency staff"
                     },
                     {
-                      "name": "bedr-1-o2",
+                      "name": "encounterDataValidationEntity-o2",
                       "type": "choice",
                       "label": "Other state agency staff"
                     },
                     {
-                      "name": "bedr-1-o3",
+                      "name": "encounterDataValidationEntity-o3",
                       "type": "choice",
                       "label": "State actuaries"
                     },
                     {
-                      "name": "bedr-1-o4",
+                      "name": "encounterDataValidationEntity-o4",
                       "type": "choice",
                       "label": "EQRO"
                     },
                     {
-                      "name": "bedr-1-o5",
+                      "name": "encounterDataValidationEntity-o5",
                       "type": "choice",
                       "label": "Other third-party vendor"
                     },
                     {
-                      "name": "bedr-1-o6",
+                      "name": "encounterDataValidationEntity-o6",
                       "type": "choice",
                       "label": "Proprietary system(s)",
                       "children": [
                         {
-                          "id": "bedr-2",
+                          "id": "encounterDataHippaCompliance",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "bedr-1",
+                            "parentFieldName": "encounterDataValidationEntity",
                             "visibleOptionValue": "Proprietary system(s)"
                           },
                           "props": {
@@ -296,12 +296,12 @@
                             "hint": "Were the system(s) utilized fully HIPAA compliant? Select one.",
                             "choices": [
                               {
-                                "name": "bedr-2-o1",
+                                "name": "encounterDataHippaCompliance-o1",
                                 "type": "choice",
                                 "label": "Yes"
                               },
                               {
-                                "name": "bedr-2-o2",
+                                "name": "encounterDataHippaCompliance-o2",
                                 "type": "choice",
                                 "label": "No"
                               }
@@ -311,17 +311,17 @@
                       ]
                     },
                     {
-                      "name": "bedr-1-o7",
+                      "name": "encounterDataValidationEntity-o7",
                       "type": "choice",
                       "label": "Other, specify",
                       "children": [
                         {
-                          "id": "bedr-1-o7-text",
+                          "id": "encounterDataValidationEntity-otherSpecify",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "bedr-1",
+                            "parentFieldName": "encounterDataValidationEntity",
                             "visibleOptionValue": "Other, specify"
                           }
                         }
@@ -347,7 +347,7 @@
             "id": "bpi",
             "fields": [
               {
-                "id": "bpi-1",
+                "id": "paymentRisksBetweenStateAndPlans",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -356,7 +356,7 @@
                 }
               },
               {
-                "id": "bpi-2",
+                "id": "contractStandardForOverpayments",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -382,7 +382,7 @@
                 }
               },
               {
-                "id": "bpi-3",
+                "id": "contractLocationsOfOverpaymentStandard",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -391,7 +391,7 @@
                 }
               },
               {
-                "id": "bpi-4",
+                "id": "descriptionOfOerpaymentContractStandard",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -400,7 +400,7 @@
                 }
               },
               {
-                "id": "bpi-5",
+                "id": "stateOverpaymentReportingMonitoring",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -409,7 +409,7 @@
                 }
               },
               {
-                "id": "bpi-6",
+                "id": "changesInBeneficiaryCircumstances",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -418,7 +418,7 @@
                 }
               },
               {
-                "id": "bpi-7a",
+                "id": "changesInProviderCircumstancesMonitoring",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -426,17 +426,17 @@
                   "hint": "Does the state monitor whether plans report provider “for cause” terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
                   "choices": [
                     {
-                      "name": "bpi-7a-o1",
+                      "name": "changesInProviderCircumstancesMonitoring-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "bpi-7b",
+                          "id": "changesInProviderCircumstancesMetrics",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "bpi-7a",
+                            "parentFieldName": "changesInProviderCircumstancesMonitoring",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -444,17 +444,17 @@
                             "hint": "Does the state use a metric or indicator to assess plan reporting performance? Select one.",
                             "choices": [
                               {
-                                "name": "bpi-7b-o1",
+                                "name": "changesInProviderCircumstancesMetrics-o1",
                                 "type": "choice",
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "bpi-7c",
+                                    "id": "changesInProviderCircumstancesMetrics-Describe",
                                     "type": "textarea",
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
-                                      "parentFieldName": "bpi-7b",
+                                      "parentFieldName": "changesInProviderCircumstancesMetrics",
                                       "visibleOptionValue": "Yes"
                                     },
                                     "props": {
@@ -465,7 +465,7 @@
                                 ]
                               },
                               {
-                                "name": "bpi-7b-o2",
+                                "name": "changesInProviderCircumstancesMetrics-o2",
                                 "type": "choice",
                                 "label": "No"
                               }
@@ -475,7 +475,7 @@
                       ]
                     },
                     {
-                      "name": "bpi-7a-o2",
+                      "name": "changesInProviderCircumstancesMonitoring-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -483,7 +483,7 @@
                 }
               },
               {
-                "id": "bpi-8a",
+                "id": "excludedPersonsOrEntitiesInFederalDatabaseChecks",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -491,7 +491,7 @@
                   "hint": "During the state's federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
                   "choices": [
                     {
-                      "name": "bpi-8a-o1",
+                      "name": "excludedPersonsOrEntitiesInFederalDatabaseChecks-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
@@ -501,7 +501,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "bpi-8a",
+                            "parentFieldName": "excludedPersonsOrEntitiesInFederalDatabaseChecks",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -512,7 +512,7 @@
                       ]
                     },
                     {
-                      "name": "bpi-8a-o2",
+                      "name": "excludedPersonsOrEntitiesInFederalDatabaseChecks-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -520,7 +520,7 @@
                 }
               },
               {
-                "id": "bpi-9a",
+                "id": "websitePostingOfFivePercentOrMoreOwnership",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -528,7 +528,7 @@
                   "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3)",
                   "choices": [
                     {
-                      "name": "bpi-9a-o1",
+                      "name": "websitePostingOfFivePercentOrMoreOwnership-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
@@ -538,7 +538,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "bpi-9a",
+                            "parentFieldName": "websitePostingOfFivePercentOrMoreOwnership",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -549,7 +549,7 @@
                       ]
                     },
                     {
-                      "name": "bpi-9a-o2",
+                      "name": "websitePostingOfFivePercentOrMoreOwnership-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -557,7 +557,7 @@
                 }
               },
               {
-                "id": "bpi-10",
+                "id": "periodicAudits",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -592,7 +592,7 @@
             "id": "cpc",
             "fields": [
               {
-                "id": "cpc-1",
+                "id": "programContract",
                 "type": "text",
                 "validation": "text",
                 "props": {
@@ -601,12 +601,12 @@
                 }
               },
               {
-                "id": "cpc-1-sub",
+                "id": "programContract-sub",
                 "type": "date",
                 "validation": "date"
               },
               {
-                "id": "cpc-2",
+                "id": "contractUrl",
                 "type": "text",
                 "validation": "url",
                 "props": {
@@ -615,7 +615,7 @@
                 }
               },
               {
-                "id": "cpc-3",
+                "id": "programType",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -623,37 +623,37 @@
                   "hint": "What is the type of MCPs that contract with the state to provide the services covered under the program? Select one.",
                   "choices": [
                     {
-                      "name": "cpc-3-o1",
+                      "name": "programType-mco",
                       "type": "choice",
                       "label": "Managed Care Organization (MCO)"
                     },
                     {
-                      "name": "cpc-3-o2",
+                      "name": "programType-pihp",
                       "type": "choice",
                       "label": "Prepaid Inpatient Health Plan (PIHP)"
                     },
                     {
-                      "name": "cpc-3-o3",
+                      "name": "programType-pahp",
                       "type": "choice",
                       "label": "Prepaid Ambulatory Health Plan (PAHP)"
                     },
                     {
-                      "name": "cpc-3-o4",
+                      "name": "programType-pccm",
                       "type": "choice",
                       "label": "Primary Care Case Management (PCCM) Entity"
                     },
                     {
-                      "name": "cpc-3-o5",
+                      "name": "programType-other",
                       "type": "choice",
                       "label": "Other, specify",
                       "children": [
                         {
-                          "id": "cpc-3-o5-text",
+                          "id": "programType-otherSpecify",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "cpc-3",
+                            "parentFieldName": "programType",
                             "visibleOptionValue": "Other, specify"
                           }
                         }
@@ -663,7 +663,7 @@
                 }
               },
               {
-                "id": "cpc-4a",
+                "id": "specialProgramBenefits",
                 "type": "checkbox",
                 "validation": "checkbox",
                 "props": {
@@ -671,37 +671,37 @@
                   "hint": "Are any of the four special benefit types covered by the managed care program: (1) behavioral health, (2) long-term services and supports, (3) dental, and (4) transportation, or (5) none of the above? Select one or more.</br>Only list the benefit type if it is a covered service as specified in a contract between the state and managed care plans participating in the program. Benefits available to eligible program enrollees via fee-for-service should not be listed here.",
                   "choices": [
                     {
-                      "name": "cpc-4a-o1",
+                      "name": "specialProgramBenefits-behavioralHealth",
                       "type": "choice",
                       "label": "Behavioral health"
                     },
                     {
-                      "name": "cpc-4a-o2",
+                      "name": "specialProgramBenefits-longTermServicesAndSupports",
                       "type": "choice",
                       "label": "Long-term services and supports"
                     },
                     {
-                      "name": "cpc-4a-o3",
+                      "name": "specialProgramBenefits-dental",
                       "type": "choice",
                       "label": "Dental"
                     },
                     {
-                      "name": "cpc-4a-o4",
+                      "name": "specialProgramBenefits-transportation",
                       "type": "choice",
                       "label": "Transportation"
                     },
                     {
-                      "name": "cpc-4a-o5",
+                      "name": "specialProgramBenefits-none",
                       "type": "choice",
                       "label": "None of the above",
                       "children": [
                         {
-                          "id": "cpc-4a-o5-text",
+                          "id": "specialProgramBenefits-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "cpc-4a",
+                            "parentFieldName": "specialProgramBenefits",
                             "visibleOptionValue": "None of the above"
                           }
                         }
@@ -711,7 +711,7 @@
                 }
               },
               {
-                "id": "cpc-4b",
+                "id": "variationInSpecialBenefits",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -720,7 +720,7 @@
                 }
               },
               {
-                "id": "cpc-5",
+                "id": "totalNumberEnrolledInManagedCareProgram",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -730,7 +730,7 @@
                 }
               },
               {
-                "id": "cpc-6",
+                "id": "changesToEnrollmentOrBenefits",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -759,7 +759,7 @@
             "id": "cedr",
             "fields": [
               {
-                "id": "cedr-1",
+                "id": "encounterDataUses",
                 "type": "checkbox",
                 "validation": "checkbox",
                 "props": {
@@ -767,54 +767,54 @@
                   "hint": "For what purposes does the state use encounter data collected from managed care plans (MCPs)? Select one or more.<br/>Federal regulations require that states, through their contracts with MCPs, collect and maintain sufficient enrollee encounter data to identify the provider who delivers any item(s) or service(s) to enrollees (42 CFR 438.242(c)(1)).",
                   "choices": [
                     {
-                      "name": "cedr-1-o1",
+                      "name": "encounterDataUses-rateSetting",
                       "type": "choice",
                       "label": "Rate setting"
                     },
                     {
-                      "name": "cedr-1-o2",
+                      "name": "encounterDataUses-qualityAndPerformanceMeasurement",
                       "type": "choice",
                       "label": "Quality/performance measurement"
                     },
                     {
-                      "name": "cedr-1-o3",
+                      "name": "encounterDataUses-monitoringAndReporting",
                       "type": "choice",
                       "label": "Monitoring and reporting"
                     },
                     {
-                      "name": "cedr-1-o4",
+                      "name": "encounterDataUses-contractOversight",
                       "type": "choice",
                       "label": "Contract oversight"
                     },
                     {
-                      "name": "cedr-1-o5",
+                      "name": "encounterDataUses-programIntegrity",
                       "type": "choice",
                       "label": "Program integrity"
                     },
                     {
-                      "name": "cedr-1-o6",
+                      "name": "encounterDataUses-policyMakingAndDecisionSupport",
                       "type": "choice",
                       "label": "Policy making and decision support"
                     },
                     {
-                      "name": "cedr-1-o7",
+                      "name": "encounterDataUses-other",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "cedr-1-o7-text",
+                          "id": "encounterDataUses-other-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "cedr-1",
+                            "parentFieldName": "encounterDataUses",
                             "visibleOptionValue": "Other"
                           }
                         }
                       ]
                     },
                     {
-                      "name": "cedr-1-o8",
+                      "name": "encounterDataUses-notUsedForAnyPurpose",
                       "type": "choice",
                       "label": "Encounter data not used for any purpose"
                     }
@@ -822,7 +822,7 @@
                 }
               },
               {
-                "id": "cedr-2",
+                "id": "criteriaToEvaluateMcpPerformance",
                 "type": "checkbox",
                 "validation": "checkbox",
                 "props": {
@@ -830,44 +830,44 @@
                   "hint": "What types of measures are used by the state to evaluate managed care plan performance in encounter data submission and correction? Select one or more.<br/>Federal regulations also require that states validate that submitted enrollee encounter data they receive is a complete and accurate representation of the services provided to enrollees under the contract between the state and the MCO, PIHP, or PAHP. 42 CFR 438.242(d).",
                   "choices": [
                     {
-                      "name": "cedr-2-o1",
+                      "name": "criteriaToEvaluateMcpPerformance-timelinessOfInitialDataSubmissions",
                       "type": "choice",
                       "label": "Timeliness of initial data submissions"
                     },
                     {
-                      "name": "cedr-2-o2",
+                      "name": "criteriaToEvaluateMcpPerformance-timelinessOfDataCorrections",
                       "type": "choice",
                       "label": "Timeliness of data corrections"
                     },
                     {
-                      "name": "cedr-2-o3",
+                      "name": "criteriaToEvaluateMcpPerformance-useOfCorrectFileFormat",
                       "type": "choice",
                       "label": "Use of correct file format"
                     },
                     {
-                      "name": "cedr-2-o4",
+                      "name": "criteriaToEvaluateMcpPerformance-providerIdFieldComplete",
                       "type": "choice",
                       "label": "Provider ID field complete"
                     },
                     {
-                      "name": "cedr-2-o5",
+                      "name": "criteriaToEvaluateMcpPerformance-other",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "cedr-2-o5-text",
+                          "id": "criteriaToEvaluateMcpPerformance-other-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "cedr-2",
+                            "parentFieldName": "criteriaToEvaluateMcpPerformance",
                             "visibleOptionValue": "Other"
                           }
                         }
                       ]
                     },
                     {
-                      "name": "cedr-2-o6",
+                      "name": "criteriaToEvaluateMcpPerformance-noneOfTheAbove",
                       "type": "choice",
                       "label": "None of the above"
                     }
@@ -875,7 +875,7 @@
                 }
               },
               {
-                "id": "cedr-3",
+                "id": "encounterDataPerformanceCriteriaContractLanguage",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -884,7 +884,7 @@
                 }
               },
               {
-                "id": "cedr-4",
+                "id": "financialPenaltiesContractLanguage",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -893,7 +893,7 @@
                 }
               },
               {
-                "id": "cedr-5",
+                "id": "incentivesForEncounterDataQuality",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -902,7 +902,7 @@
                 }
               },
               {
-                "id": "cedr-6",
+                "id": "barriersToCollectingAndValidatingEncounterData",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -931,7 +931,7 @@
             "id": "casfhag",
             "fields": [
               {
-                "id": "casfhag-1",
+                "id": "statesDefinition-criticalIncident",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -940,7 +940,7 @@
                 }
               },
               {
-                "id": "casfhag-2",
+                "id": "statesDefinition-timelyResolutionForStandardAppeals",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -949,7 +949,7 @@
                 }
               },
               {
-                "id": "casfhag-3",
+                "id": "statesDefinition-timelyResolutionForExpeditedAppeals",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -958,7 +958,7 @@
                 }
               },
               {
-                "id": "casfhag-4",
+                "id": "statesDefinition-timelyResolutionForGrievances",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1002,7 +1002,7 @@
                 "id": "cna",
                 "fields": [
                   {
-                    "id": "cna-1",
+                    "id": "networkAdequacyGapsAndChallenges",
                     "type": "textarea",
                     "validation": "text",
                     "props": {
@@ -1011,7 +1011,7 @@
                     }
                   },
                   {
-                    "id": "cna-2",
+                    "id": "stateREsponseToGapsInAdequateCoverage",
                     "type": "textarea",
                     "validation": "text",
                     "props": {
@@ -1062,7 +1062,7 @@
                 "id": "cam",
                 "fields": [
                   {
-                    "id": "cam-1",
+                    "id": "generalCategory",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -1070,22 +1070,22 @@
                       "hint": "Select one.",
                       "choices": [
                         {
-                          "name": "cam-1-o1",
+                          "name": "generalCategory-o1",
                           "type": "choice",
                           "label": "General quantitative availability and accessibility standard"
                         },
                         {
-                          "name": "cam-1-o2",
+                          "name": "generalCategory-o2",
                           "type": "choice",
                           "label": "LTSS-related standard: provider travels to the enrollee"
                         },
                         {
-                          "name": "cam-1-o3",
+                          "name": "generalCategory-o3",
                           "type": "choice",
                           "label": "LTSS-related standard: enrollee travels to the provider"
                         },
                         {
-                          "name": "cam-1-o4",
+                          "name": "generalCategory-o4",
                           "type": "choice",
                           "label": "Exceptions to time and distance standards"
                         }
@@ -1093,7 +1093,7 @@
                     }
                   },
                   {
-                    "id": "cam-2",
+                    "id": "measureStandard",
                     "type": "textarea",
                     "validation": "text",
                     "props": {
@@ -1102,7 +1102,7 @@
                     }
                   },
                   {
-                    "id": "cam-3",
+                    "id": "standardType",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -1110,57 +1110,57 @@
                       "hint": "What is the standard type? Select one or add free text if you select \"Other\".",
                       "choices": [
                         {
-                          "name": "cam-3-o1",
+                          "name": "standardType-o1",
                           "type": "choice",
                           "label": "Maximum time to travel; Maximum distance to travel"
                         },
                         {
-                          "name": "cam-3-o2",
+                          "name": "standardType-o2",
                           "type": "choice",
                           "label": "Maximum time or distance"
                         },
                         {
-                          "name": "cam-3-o3",
+                          "name": "standardType-o3",
                           "type": "choice",
                           "label": "Ease of getting a timely appointment"
                         },
                         {
-                          "name": "cam-3-o4",
+                          "name": "standardType-o4",
                           "type": "choice",
                           "label": "Appointment wait time"
                         },
                         {
-                          "name": "cam-3-o5",
+                          "name": "standardType-o5",
                           "type": "choice",
                           "label": "Hours of operation"
                         },
                         {
-                          "name": "cam-3-o6",
+                          "name": "standardType-o6",
                           "type": "choice",
                           "label": "Provider to enrollee ratios"
                         },
                         {
-                          "name": "cam-3-o7",
+                          "name": "standardType-o7",
                           "type": "choice",
                           "label": "Minimum number of network providers"
                         },
                         {
-                          "name": "cam-3-o8",
+                          "name": "standardType-o8",
                           "type": "choice",
                           "label": "Service fulfillment"
                         },
                         {
-                          "name": "cam-3-o9",
+                          "name": "standardType-o9",
                           "type": "choice",
                           "label": "Other, specify",
                           "children": [
                             {
-                              "id": "cam-3-o9-text",
+                              "id": "standardType-o9-text",
                               "type": "textarea",
                               "validation": {
                                 "type": "radio",
                                 "nested": true,
-                                "parentFieldName": "cam-3",
+                                "parentFieldName": "standardType",
                                 "visibleOptionValue": "Other, specify"
                               }
                             }
@@ -1170,7 +1170,7 @@
                     }
                   },
                   {
-                    "id": "cam-4",
+                    "id": "providerType",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -1178,52 +1178,52 @@
                       "hint": "What is the provider type? Select one or add free text if you select \"Other\"",
                       "choices": [
                         {
-                          "name": "cam-4-o1",
+                          "name": "providerType-o1",
                           "type": "choice",
                           "label": "Primary care;"
                         },
                         {
-                          "name": "cam-4-o1",
+                          "name": "providerType-o2",
                           "type": "choice",
                           "label": "Behavioral health"
                         },
                         {
-                          "name": "cam-4-o1",
+                          "name": "providerType-o3",
                           "type": "choice",
                           "label": "Hospital"
                         },
                         {
-                          "name": "cam-4-o1",
+                          "name": "providerType-o4",
                           "type": "choice",
                           "label": "LTSS-personal care assistant"
                         },
                         {
-                          "name": "cam-4-o1",
+                          "name": "providerType-o5",
                           "type": "choice",
                           "label": "LTSS assistive technology"
                         },
                         {
-                          "name": "cam-4-o1",
+                          "name": "providerType-o6",
                           "type": "choice",
                           "label": "LTSS-adult day care"
                         },
                         {
-                          "name": "cam-4-o1",
+                          "name": "providerType-o7",
                           "type": "choice",
                           "label": "LTSS-SNF"
                         },
                         {
-                          "name": "cam-4-o8",
+                          "name": "providerType-o8",
                           "type": "choice",
                           "label": "Other, specify",
                           "children": [
                             {
-                              "id": "cam-4-o8-text",
+                              "id": "providerType-o8-text",
                               "type": "textarea",
                               "validation": {
                                 "type": "radio",
                                 "nested": true,
-                                "parentFieldName": "cam-4",
+                                "parentFieldName": "providerType",
                                 "visibleOptionValue": "Other, specify"
                               }
                             }
@@ -1233,7 +1233,7 @@
                     }
                   },
                   {
-                    "id": "cam-5",
+                    "id": "applicableRegions",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -1241,37 +1241,37 @@
                       "hint": "What is the applicable region? Select one or add free text if you select \"Other\"",
                       "choices": [
                         {
-                          "name": "cam-5-o1",
+                          "name": "applicableRegions-o1",
                           "type": "choice",
                           "label": "Urban"
                         },
                         {
-                          "name": "cam-5-o2",
+                          "name": "applicableRegions-o2",
                           "type": "choice",
                           "label": "Rural"
                         },
                         {
-                          "name": "cam-5-o3",
+                          "name": "applicableRegions-o3",
                           "type": "choice",
                           "label": "Large counties"
                         },
                         {
-                          "name": "cam-5-o4",
+                          "name": "applicableRegions-o4",
                           "type": "choice",
                           "label": "Small counties"
                         },
                         {
-                          "name": "cam-5-o5",
+                          "name": "applicableRegions-o5",
                           "type": "choice",
                           "label": "Other, specify",
                           "children": [
                             {
-                              "id": "cam-5-o5-text",
+                              "id": "applicableRegions-o5-text",
                               "type": "textarea",
                               "validation": {
                                 "type": "radio",
                                 "nested": true,
-                                "parentFieldName": "cam-5",
+                                "parentFieldName": "applicableRegions",
                                 "visibleOptionValue": "Other, specify"
                               }
                             }
@@ -1281,7 +1281,7 @@
                     }
                   },
                   {
-                    "id": "cam-6",
+                    "id": "population",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -1289,37 +1289,37 @@
                       "hint": "What is the population? Select one or add free text if you select \"Other\"",
                       "choices": [
                         {
-                          "name": "cam-6-o1",
+                          "name": "population-o1",
                           "type": "choice",
                           "label": "Adult"
                         },
                         {
-                          "name": "cam-6-o2",
+                          "name": "population-o2",
                           "type": "choice",
                           "label": "Pediatric"
                         },
                         {
-                          "name": "cam-6-o3",
+                          "name": "population-o3",
                           "type": "choice",
                           "label": "Adult and pediatric"
                         },
                         {
-                          "name": "cam-6-o4",
+                          "name": "population-o4",
                           "type": "choice",
                           "label": "MLTSS"
                         },
                         {
-                          "name": "cam-6-o5",
+                          "name": "population-o5",
                           "type": "choice",
                           "label": "Other, specify",
                           "children": [
                             {
-                              "id": "cam-6-o5-text",
+                              "id": "population-o5-text",
                               "type": "textarea",
                               "validation": {
                                 "type": "radio",
                                 "nested": true,
-                                "parentFieldName": "cam-6",
+                                "parentFieldName": "population",
                                 "visibleOptionValue": "Other, specify"
                               }
                             }
@@ -1329,7 +1329,7 @@
                     }
                   },
                   {
-                    "id": "cam-7",
+                    "id": "monitoringMethods",
                     "type": "checkbox",
                     "validation": "checkbox",
                     "props": {
@@ -1337,42 +1337,42 @@
                       "hint": "What are the monitoring methods? Check all that apply or add free text if you select \"Other\"",
                       "choices": [
                         {
-                          "name": "cam-7-o1",
+                          "name": "monitoringMethods-o1",
                           "type": "choice",
                           "label": "Geomapping"
                         },
                         {
-                          "name": "cam-7-o2",
+                          "name": "monitoringMethods-o2",
                           "type": "choice",
                           "label": "Plan provider roster review"
                         },
                         {
-                          "name": "cam-7-o3",
+                          "name": "monitoringMethods-o3",
                           "type": "choice",
                           "label": "Secret shopper calls"
                         },
                         {
-                          "name": "cam-7-o4",
+                          "name": "monitoringMethods-o4",
                           "type": "choice",
                           "label": "EVV data analysis"
                         },
                         {
-                          "name": "cam-7-o5",
+                          "name": "monitoringMethods-o5",
                           "type": "choice",
                           "label": "Review of grievances related to access"
                         },
                         {
-                          "name": "cam-7-o6",
+                          "name": "monitoringMethods-o6",
                           "type": "choice",
                           "label": "Other, specify",
                           "children": [
                             {
-                              "id": "cam-7-o6-text",
+                              "id": "monitoringMethods-o6-text",
                               "type": "textarea",
                               "validation": {
                                 "type": "radio",
                                 "nested": true,
-                                "parentFieldName": "cam-7",
+                                "parentFieldName": "monitoringMethods",
                                 "visibleOptionValue": "Other, specify"
                               }
                             }
@@ -1382,7 +1382,7 @@
                     }
                   },
                   {
-                    "id": "cam-8",
+                    "id": "frequencyOfOversightMethods",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -1390,42 +1390,42 @@
                       "hint": "What is the frequency of oversight methods? Select one or add free text if you select \"Other\"",
                       "choices": [
                         {
-                          "name": "cam-8-o1",
+                          "name": "frequencyOfOversightMethods-o1",
                           "type": "choice",
                           "label": "At procurement"
                         },
                         {
-                          "name": "cam-8-o2",
+                          "name": "frequencyOfOversightMethods-o2",
                           "type": "choice",
                           "label": "Monthly"
                         },
                         {
-                          "name": "cam-8-o3",
+                          "name": "frequencyOfOversightMethods-o3",
                           "type": "choice",
                           "label": "Quarterly"
                         },
                         {
-                          "name": "cam-8-o4",
+                          "name": "frequencyOfOversightMethods-o4",
                           "type": "choice",
                           "label": "Annually"
                         },
                         {
-                          "name": "cam-8-o5",
+                          "name": "frequencyOfOversightMethods-o5",
                           "type": "choice",
                           "label": "Less than annually"
                         },
                         {
-                          "name": "cam-8-o6",
+                          "name": "frequencyOfOversightMethods-o6",
                           "type": "choice",
                           "label": "Other, specify",
                           "children": [
                             {
-                              "id": "cam-8-o6-text",
+                              "id": "frequencyOfOversightMethods-o6-text",
                               "type": "textarea",
                               "validation": {
                                 "type": "radio",
                                 "nested": true,
-                                "parentFieldName": "cam-6",
+                                "parentFieldName": "population",
                                 "visibleOptionValue": "Other, specify"
                               }
                             }
@@ -1457,7 +1457,7 @@
             "id": "cbss",
             "fields": [
               {
-                "id": "cbss-1",
+                "id": "bssWebsite",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1466,7 +1466,7 @@
                 }
               },
               {
-                "id": "cbss-2",
+                "id": "bssAuxiliaryAidsAndServices",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1475,7 +1475,7 @@
                 }
               },
               {
-                "id": "cbss-3",
+                "id": "bssLtssProgramData",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1484,7 +1484,7 @@
                 }
               },
               {
-                "id": "cbss-4",
+                "id": "bssStateEvaulationEntityPerformance",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1513,7 +1513,7 @@
             "id": "cpi",
             "fields": [
               {
-                "id": "cpi-1",
+                "id": "prohibitedAffiliationDisclosure",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -1521,12 +1521,12 @@
                   "hint": "Did any plans disclose prohibited affiliations? If the state took action, enter those actions under D: Plan-level Indicators, Section VIII - Sanctions (Corresponds with Tab D3 in the Excel Workbook). Refer to 42 CFR 438.610(d).",
                   "choices": [
                     {
-                      "name": "cpi-1-o1",
+                      "name": "prohibitedAffiliationDisclosure-o1",
                       "type": "choice",
                       "label": "Yes"
                     },
                     {
-                      "name": "cpi-1-o2",
+                      "name": "prohibitedAffiliationDisclosure-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -1567,7 +1567,7 @@
             "id": "dpc",
             "fields": [
               {
-                "id": "dpc-1",
+                "id": "planEnrollment",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -1577,7 +1577,7 @@
                 }
               },
               {
-                "id": "dpc-2",
+                "id": "planShareOfMedicaid",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -1587,7 +1587,7 @@
                 }
               },
               {
-                "id": "dpc-3",
+                "id": "planShareOfMedicaidManagedCare",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -1624,7 +1624,7 @@
             "id": "dfp",
             "fields": [
               {
-                "id": "dfp-1a",
+                "id": "medicalLossRatio",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -1634,7 +1634,7 @@
                 }
               },
               {
-                "id": "dfp-1b",
+                "id": "levelOfAggregation",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -1642,37 +1642,37 @@
                   "hint": "What is the aggregation level that best describes the MLR being reported in the previous indicator? Select one.</br>As permitted under 42 CFR 438.8(i), states are allowed to aggregate data for reporting purposes across programs and populations.",
                   "choices": [
                     {
-                      "name": "dfp-1b-o1",
+                      "name": "levelOfAggregation-o1",
                       "type": "choice",
                       "label": "Program-specific statewide"
                     },
                     {
-                      "name": "dfp-1b-o2",
+                      "name": "levelOfAggregation-o2",
                       "type": "choice",
                       "label": "Program-specific regional"
                     },
                     {
-                      "name": "dfp-1b-o3",
+                      "name": "levelOfAggregation-o3",
                       "type": "choice",
                       "label": "Statewide all programs & populations"
                     },
                     {
-                      "name": "dfp-1b-o4",
+                      "name": "levelOfAggregation-o4",
                       "type": "choice",
                       "label": "Regional all programs & populations"
                     },
                     {
-                      "name": "dfp-1b-o5",
+                      "name": "levelOfAggregation-o5",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "dfp-1b-o5-text",
+                          "id": "levelOfAggregation-o5-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "dfp-1b",
+                            "parentFieldName": "levelOfAggregation",
                             "visibleOptionValue": "Other"
                           }
                         }
@@ -1682,7 +1682,7 @@
                 }
               },
               {
-                "id": "dfp-2",
+                "id": "populationSpecificMlrDescription",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1691,7 +1691,7 @@
                 }
               },
               {
-                "id": "dfp-3",
+                "id": "mlrReportingPeriodDiscrepencies",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -1699,17 +1699,17 @@
                   "hint": "Does the data reported in item D1.II.1a cover a different time period than the MCPAR report?",
                   "choices": [
                     {
-                      "name": "dfp-3-o1",
+                      "name": "mlrReportingPeriodDiscrepencies-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "dfp-4-1",
+                          "id": "mlrReportingPeriodDiscrepenciesStartDate",
                           "type": "date",
                           "validation": {
                             "type": "date",
                             "nested": true,
-                            "parentFieldName": "dfp-3",
+                            "parentFieldName": "mlrReportingPeriodDiscrepencies",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -1718,13 +1718,13 @@
                           }
                         },
                         {
-                          "id": "dfp-4-2",
+                          "id": "mlrReportingPeriodDiscrepenciesEndDate",
                           "type": "date",
                           "validation": {
                             "type": "endDate",
-                            "dependentFieldName": "dfp-4-1",
+                            "dependentFieldName": "mlrReportingPeriodDiscrepenciesStartDate",
                             "nested": true,
-                            "parentFieldName": "dfp-3",
+                            "parentFieldName": "mlrReportingPeriodDiscrepencies",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -1735,7 +1735,7 @@
                       ]
                     },
                     {
-                      "name": "dfp-3-o2",
+                      "name": "mlrReportingPeriodDiscrepencies-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -1770,7 +1770,7 @@
             "id": "dedr",
             "fields": [
               {
-                "id": "dedr-1",
+                "id": "DefinitionOfTimelyEncounterDataSubmissions",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1779,7 +1779,7 @@
                 }
               },
               {
-                "id": "dedr-2",
+                "id": "percentOfEncounterDataSubmissionsThatMetTimelySubmissionRequirements",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -1789,7 +1789,7 @@
                 }
               },
               {
-                "id": "dedr-3",
+                "id": "percentOfEncounterDataSubmissionsThatWereHippaCompliant",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -1830,7 +1830,7 @@
                 "id": "dao",
                 "fields": [
                   {
-                    "id": "dao-1",
+                    "id": "appealsResolved",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1840,7 +1840,7 @@
                     }
                   },
                   {
-                    "id": "dao-2",
+                    "id": "activeAppeals",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1850,7 +1850,7 @@
                     }
                   },
                   {
-                    "id": "dao-3",
+                    "id": "appealsfiledOnBehalfOfLtssUsers",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1860,7 +1860,7 @@
                     }
                   },
                   {
-                    "id": "dao-4",
+                    "id": "criticalIncidentsFiledByLtssUserWhoPreviouslyFiledAnAppeal",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1870,7 +1870,7 @@
                     }
                   },
                   {
-                    "id": "dao-5a",
+                    "id": "standardAppealsWithTimelyResolution",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1880,7 +1880,7 @@
                     }
                   },
                   {
-                    "id": "dao-5b",
+                    "id": "expeditedAppealsWithTimelyResolution",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1890,7 +1890,7 @@
                     }
                   },
                   {
-                    "id": "dao-6a",
+                    "id": "resolvedAppealsRelatedToDenialOfAuthorizationOrLimitedAuthorization",
                     "type": "number",
                     "validation": "number",
                     "props": {

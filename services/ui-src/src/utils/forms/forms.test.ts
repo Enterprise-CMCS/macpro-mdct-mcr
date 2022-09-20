@@ -174,28 +174,28 @@ describe("Test hydrateFormFields", () => {
 
 describe("Test sortFormErrors", () => {
   const mockFormObject = {
-    "apoc-a1": {},
-    "apoc-a2a": {},
-    "apoc-a2b": {},
+    stateName: {},
+    contactName: {},
+    contactEmailAddress: {},
   };
 
   const mockErrorsObject = {
-    "apoc-a2a": {
-      message: "field 2a is required",
+    contactName: {
+      message: "field contactName is required",
       type: "required",
       ref: undefined,
     },
-    "apoc-a2b": {
-      message: "field 2b is required",
+    contactEmailAddress: {
+      message: "field contactEmailAddress is required",
       type: "required",
       ref: undefined,
     },
   };
 
-  const sortedArray = ["apoc-a2a", "apoc-a2b"];
+  const sortedArray = ["contactName", "contactEmailAddress"];
   it("Correctly sorts only fields with errors", () => {
     const sortedErrors = sortFormErrors(mockFormObject, mockErrorsObject);
-    expect(sortedErrors.indexOf("apoc-a1")).toEqual(-1);
+    expect(sortedErrors.indexOf("stateName")).toEqual(-1);
     expect(sortedErrors).toEqual(sortedArray);
   });
 });

@@ -53,9 +53,9 @@ export const ReviewSubmit = () => {
         submittedOnDate: submissionDate,
       });
       updateReportData(reportDetails, {
-        "apoc-a3a": full_name,
-        "apoc-a3b": email,
-        "apoc-a4": convertDateUtcToEt(submissionDate),
+        submitterName: full_name,
+        submitterEmailAddress: email,
+        reportSubmissionDate: convertDateUtcToEt(submissionDate),
       });
     }
     onClose();
