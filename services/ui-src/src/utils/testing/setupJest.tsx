@@ -189,6 +189,7 @@ export const mockPlanFilledForm = {
 };
 
 export const mockPageJson = {
+  pageType: "staticPage",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -197,17 +198,16 @@ export const mockPageJson = {
 
 export const mockPageJsonStaticDrawer = {
   pageType: "staticDrawer",
-  mappedEntity: "plans",
+  entityType: "plans",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
+  dashboard: {
+    title: "Mock dashboard title",
+  },
   drawer: {
-    dashboard: {
-      title: "Mock dashboard title",
-      entityType: "plans",
-    },
-    drawerTitle: "Mock drawer title",
+    title: "Mock drawer title",
   },
 };
 
@@ -308,12 +308,12 @@ export const mockReport = {
 export const mockReportData = {
   fieldData: {
     plans: ["example-plan"],
+    text: "text-input",
+    number: 0,
+    radio: ["option1"],
+    checkbox: ["option1", "option2"],
+    dropdown: "dropdown-selection",
   },
-  text: "text-input",
-  number: 0,
-  radio: ["option1"],
-  checkbox: ["option1", "option2"],
-  dropdown: "dropdown-selection",
 };
 
 export const mockReportsByState = [
