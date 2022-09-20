@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 // components
 import {
   Box,
@@ -11,44 +12,23 @@ import {
 } from "@chakra-ui/react";
 import { ReportDrawer, ReportContext } from "components";
 // utils
-import { FormJson, AnyObject, MappedEntityType } from "types";
-import { Link as RouterLink } from "react-router-dom";
+import { FormJson, PageJson } from "types";
+import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
 
-export const StaticDrawerSection = ({
-  form,
-  entityType,
-  drawer,
-  onSubmit,
-}: Props) => {
+export const StaticDrawerSection = ({ form, page, onSubmit }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { reportData } = useContext(ReportContext);
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
 
+  const { entityType, dashboard, drawer } = page;
   const entities = reportData?.fieldData[entityType];
+  const { message, link } =
+    emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
     onOpen();
-  };
-
-  const emptyMessagesMap: any = {
-    plans: {
-      message:
-        "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7.",
-      link: {
-        text: "Add Plans.",
-        href: "/mcpar/program-information/add-plans",
-      },
-    },
-    bssEntities: {
-      message:
-        "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program.",
-      link: {
-        text: "Add BSS entities.",
-        href: "/mcpar/program-information/add-bss-entities",
-      },
-    },
   };
 
   const entityRows = (entities: string[]) =>
@@ -65,18 +45,16 @@ export const StaticDrawerSection = ({
       </Flex>
     ));
 
-  const emptyVerbiage = emptyMessagesMap[entityType];
-
   return (
     <Box data-testid="static-drawer-section">
-      <Heading as="h4">{drawer.dashboard.title}</Heading>
+      <Heading as="h4">{dashboard.title}</Heading>
       {entities ? (
         entityRows(entities)
       ) : (
         <Text sx={sx.emptyEntityMessage}>
-          {emptyVerbiage.message}{" "}
-          <Link as={RouterLink} to={emptyVerbiage.link.href}>
-            {emptyVerbiage.link.text}
+          {message}{" "}
+          <Link as={RouterLink} to={link.href}>
+            {link.text}
           </Link>
         </Text>
       )}
@@ -85,8 +63,8 @@ export const StaticDrawerSection = ({
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.drawerTitle} ${currentEntity}`}
-        drawerInfo={drawer.drawerInfo}
+        drawerTitle={`${drawer.title} ${currentEntity}`}
+        drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}
         data-testid="report-drawer"
@@ -97,8 +75,7 @@ export const StaticDrawerSection = ({
 
 interface Props {
   form: FormJson;
-  entityType: MappedEntityType;
-  drawer: AnyObject;
+  page: PageJson;
   onSubmit: Function;
 }
 

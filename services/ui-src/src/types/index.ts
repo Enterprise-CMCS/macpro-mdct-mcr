@@ -42,8 +42,8 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  [key: string]: any;
   page?: PageJson;
+  [key: string]: any;
 }
 
 export interface ReportRouteWithForm extends ReportRouteBase {
@@ -56,8 +56,8 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
 }
 
 export interface PageJson {
+  pageType?: string;
   intro?: AnyObject;
-  drawer?: AnyObject;
   [key: string]: any;
 }
 
@@ -115,7 +115,7 @@ export interface ReportContextShape extends ReportContextMethods {
 
 // FORM & FIELD STRUCTURE
 
-export declare type MappedEntityType = "plans" | "bssEntities";
+export declare type EntityType = "plans" | "bssEntities";
 
 export interface FormJson {
   id: string;
@@ -123,7 +123,6 @@ export interface FormJson {
   options?: AnyObject;
   validation?: AnyObject;
   adminDisabled?: boolean;
-  mappedEntity?: MappedEntityType;
 }
 
 export interface DependentFieldValidation {

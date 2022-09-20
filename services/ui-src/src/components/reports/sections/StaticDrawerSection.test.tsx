@@ -12,7 +12,6 @@ import {
 } from "utils/testing/setupJest";
 
 const entities = ["exampleEntity"];
-const entityType = "plans";
 const mockOnSubmit = jest.fn();
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -27,8 +26,7 @@ const staticDrawerSectionComponent = (
     <ReportContext.Provider value={mockReportContext}>
       <StaticDrawerSection
         form={mockForm}
-        entityType={entityType}
-        drawer={mockPageJsonStaticDrawer.drawer}
+        page={mockPageJsonStaticDrawer}
         onSubmit={mockOnSubmit}
       />
     </ReportContext.Provider>

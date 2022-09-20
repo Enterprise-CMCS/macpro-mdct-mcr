@@ -82,12 +82,7 @@ export const ReportPage = ({ route }: Props) => {
         return <StaticPageSection form={form} onSubmit={onSubmit} />;
       case PageTypes.STATIC_DRAWER:
         return (
-          <StaticDrawerSection
-            form={form}
-            entityType={page.mappedEntity}
-            drawer={page.drawer!}
-            onSubmit={onSubmit}
-          />
+          <StaticDrawerSection form={form} page={page} onSubmit={onSubmit} />
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
