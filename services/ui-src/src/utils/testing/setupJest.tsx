@@ -305,19 +305,19 @@ export const mockReportsByState = [
 ];
 
 export const mockReportMethods = {
-  setReport: jest.fn(),
-  fetchReport: jest.fn(),
-  updateReport: jest.fn(),
+  fetchReportMetadata: jest.fn(),
+  updateReportMetadata: jest.fn(),
   removeReport: jest.fn(),
-  setReportData: jest.fn(),
   fetchReportData: jest.fn(),
   updateReportData: jest.fn(),
   fetchReportsByState: jest.fn(),
+  clearReportSelection: jest.fn(),
+  setReportSelection: jest.fn(),
 };
 
 export const mockReportContext = {
   ...mockReportMethods,
-  report: mockReport,
+  reportMetadata: mockReport,
   reportData: mockReportData,
   reportsByState: mockReportsByState,
   errorMessage: "",

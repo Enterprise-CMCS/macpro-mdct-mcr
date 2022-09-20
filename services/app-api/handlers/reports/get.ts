@@ -3,7 +3,7 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
 import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
 
-export const getReport = handler(async (event, _context) => {
+export const getReportMetadata = handler(async (event, _context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.reportId!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
@@ -29,7 +29,7 @@ export const getReport = handler(async (event, _context) => {
   };
 });
 
-export const getReportsByState = handler(async (event, _context) => {
+export const getAllReportsByState = handler(async (event, _context) => {
   if (!event?.pathParameters?.state!) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }

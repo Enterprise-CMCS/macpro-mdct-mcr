@@ -7,7 +7,7 @@ import {
   UNAUTHORIZED_MESSAGE,
 } from "../../utils/constants/constants";
 import { getReportData } from "./get";
-import { getReport } from "../reports/get";
+import { getReportMetadata } from "../reports/get";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -27,12 +27,14 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 }));
 
 jest.mock("./get");
-const mockedgetReportData = getReportData as jest.MockedFunction<
+const mockedGetReportData = getReportData as jest.MockedFunction<
   typeof getReportData
 >;
 
 jest.mock("../reports/get");
-const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
+const mockedGetReportMetadata = getReportMetadata as jest.MockedFunction<
+  typeof getReportMetadata
+>;
 
 const creationEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -75,7 +77,7 @@ describe("Test writeReportData API method", () => {
   });
 
   test("Test Successful Run of report Creation", async () => {
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -83,7 +85,7 @@ describe("Test writeReportData API method", () => {
       },
       body: `{"formTemplate":{"validationJson":{"field1":"text"}}}`,
     });
-    mockedgetReportData.mockResolvedValue({
+    mockedGetReportData.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -98,7 +100,7 @@ describe("Test writeReportData API method", () => {
   });
 
   test("Test report creation fails with invalid data", async () => {
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -106,7 +108,7 @@ describe("Test writeReportData API method", () => {
       },
       body: `{"formTemplate":{"validationJson":{"field1":"number","field2":"text"}}}`,
     });
-    mockedgetReportData.mockResolvedValue({
+    mockedGetReportData.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -119,7 +121,7 @@ describe("Test writeReportData API method", () => {
   });
 
   test("Test Successful Run of report update", async () => {
-    mockedgetReportData.mockResolvedValue({
+    mockedGetReportData.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -127,7 +129,7 @@ describe("Test writeReportData API method", () => {
       },
       body: `{"fieldData":{"field1":"value1","field2":"value2"}}`,
     });
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -143,7 +145,7 @@ describe("Test writeReportData API method", () => {
   });
 
   test("Report update fails with invalid data", async () => {
-    mockedgetReportData.mockResolvedValue({
+    mockedGetReportData.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -151,7 +153,7 @@ describe("Test writeReportData API method", () => {
       },
       body: `{"fieldData":{"field1":"value1","field2":"value2"}}`,
     });
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",

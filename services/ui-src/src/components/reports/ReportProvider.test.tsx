@@ -13,9 +13,9 @@ import {
 
 const mockReportAPI = require("utils/api/requestMethods/report");
 jest.mock("utils/api/requestMethods/report", () => ({
-  getReport: jest.fn(() => {}),
+  getReportMetadata: jest.fn(() => {}),
   getReportsByState: jest.fn(() => {}),
-  writeReport: jest.fn(() => {}),
+  writeReportMetadata: jest.fn(() => {}),
   deleteReport: jest.fn(() => {}),
 }));
 
@@ -36,7 +36,7 @@ const TestComponent = () => {
         Fetch Report Data
       </button>
       <button
-        onClick={() => context.fetchReport(mockReportKeys)}
+        onClick={() => context.fetchReportMetadata(mockReportKeys)}
         data-testid="fetch-report-button"
       >
         Fetch Report
@@ -48,7 +48,7 @@ const TestComponent = () => {
         Write Report Data
       </button>
       <button
-        onClick={() => context.updateReport(mockReportKeys, mockReport)}
+        onClick={() => context.updateReportMetadata(mockReportKeys, mockReport)}
         data-testid="write-report-status-button"
       >
         Write Report
@@ -101,14 +101,14 @@ describe("Test ReportProvider fetch methods", () => {
     );
   });
 
-  test("fetchReport method calls API getReport method", async () => {
+  test("fetchReportMetadata method calls API getReportMetadata method", async () => {
     await act(async () => {
       const fetchButton = screen.getByTestId("fetch-report-button");
       await userEvent.click(fetchButton);
     });
     // 1 call on render + 1 call on button click
     await waitFor(() =>
-      expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1)
+      expect(mockReportAPI.getReportMetadata).toHaveBeenCalledTimes(1)
     );
   });
 
@@ -135,7 +135,7 @@ describe("Test ReportProvider updateReportData method", () => {
     jest.clearAllMocks();
   });
 
-  test("updateReport method calls API writeReportData method", async () => {
+  test("updateReportMetadata method calls API writeReportData method", async () => {
     await act(async () => {
       const writeButton = screen.getByTestId("write-report-button");
       await userEvent.click(writeButton);
@@ -147,18 +147,18 @@ describe("Test ReportProvider updateReportData method", () => {
     );
   });
 
-  test("updateReport method calls fetchReport method", async () => {
+  test("updateReportMetadata method calls fetchReportMetadata method", async () => {
     await act(async () => {
       const writeButton = screen.getByTestId("write-report-button");
       await userEvent.click(writeButton);
     });
 
-    // if fetchReport has been called, then so has API getReportData
+    // if fetchReportMetadata has been called, then so has API getReportData
     expect(mockReportDataAPI.getReportData).toHaveBeenCalledTimes(1);
   });
 });
 
-describe("Test ReportProvider updateReport method", () => {
+describe("Test ReportProvider updateReportMetadata method", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(testComponent);
@@ -169,26 +169,26 @@ describe("Test ReportProvider updateReport method", () => {
     jest.clearAllMocks();
   });
 
-  test("updateReport method calls API writeReport method", async () => {
+  test("updateReportMetadata method calls API writeReportMetadata method", async () => {
     await act(async () => {
       const writeButton = screen.getByTestId("write-report-status-button");
       await userEvent.click(writeButton);
     });
-    expect(mockReportAPI.writeReport).toHaveBeenCalledTimes(1);
-    expect(mockReportAPI.writeReport).toHaveBeenCalledWith(
+    expect(mockReportAPI.writeReportMetadata).toHaveBeenCalledTimes(1);
+    expect(mockReportAPI.writeReportMetadata).toHaveBeenCalledWith(
       mockReportKeys,
       mockReport
     );
   });
 
-  test("updateReport method calls fetchReport method", async () => {
+  test("updateReportMetadata method calls fetchReportMetadata method", async () => {
     await act(async () => {
       const writeButton = screen.getByTestId("write-report-status-button");
       await userEvent.click(writeButton);
     });
 
-    // if fetchReport has been called, then so has API getReport
-    expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1);
+    // if fetchReportMetadata has been called, then so has API getReportMetadata
+    expect(mockReportAPI.getReportMetadata).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -218,7 +218,7 @@ describe("Test ReportProvider error states", () => {
     jest.clearAllMocks();
   });
 
-  test("Shows error if fetchReport throws error", async () => {
+  test("Shows error if fetchReportData throws error", async () => {
     mockReportDataAPI.getReportData.mockImplementation(() => {
       throw new Error();
     });
@@ -232,8 +232,8 @@ describe("Test ReportProvider error states", () => {
     expect(screen.queryByTestId("error-message")).toBeVisible();
   });
 
-  test("Shows error if fetchReport throws error", async () => {
-    mockReportAPI.getReport.mockImplementation(() => {
+  test("Shows error if fetchReportMetadata throws error", async () => {
+    mockReportAPI.getReportMetadata.mockImplementation(() => {
       throw new Error();
     });
     await act(async () => {
@@ -246,7 +246,7 @@ describe("Test ReportProvider error states", () => {
     expect(screen.queryByTestId("error-message")).toBeVisible();
   });
 
-  test("Shows error if updateReport throws error", async () => {
+  test("Shows error if updateReportMetadata throws error", async () => {
     mockReportDataAPI.writeReportData.mockImplementation(() => {
       throw new Error();
     });
@@ -260,8 +260,8 @@ describe("Test ReportProvider error states", () => {
     expect(screen.queryByTestId("error-message")).toBeVisible();
   });
 
-  test("Shows error if updateReport throws error", async () => {
-    mockReportAPI.writeReport.mockImplementation(() => {
+  test("Shows error if updateReportMetadata throws error", async () => {
+    mockReportAPI.writeReportMetadata.mockImplementation(() => {
       throw new Error();
     });
     await act(async () => {

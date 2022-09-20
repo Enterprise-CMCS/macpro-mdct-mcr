@@ -159,8 +159,8 @@ functions:
               paths:
                 state: true
                 reportId: true
-  getReport:
-    handler: handlers/reports/get.getReport
+  getReportMetadata:
+    handler: handlers/reports/get.getReportMetadata
     events:
       - http:
           path: reports/{state}/{reportId}
@@ -172,8 +172,8 @@ functions:
               paths:
                 state: true
                 reportId: true
-  getReportsByState:
-    handler: handlers/reports/get.getReportsByState
+  getAllReportsByState:
+    handler: handlers/reports/get.getAllReportsByState
     events:
       - http:
           path: reports/{state}
@@ -184,8 +184,8 @@ functions:
             parameters:
               paths:
                 state: true
-  writeReport:
-    handler: handlers/reports/write.writeReport
+  writeReportMetadata:
+    handler: handlers/reports/write.writeReportMetadata
     events:
       - http:
           path: reports/{state}/{reportId}

@@ -27,7 +27,8 @@ import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const ReportPage = ({ route }: Props) => {
   // get report, form, and page related-data
-  const { report, updateReportData, updateReport } = useContext(ReportContext);
+  const { reportMetadata, updateReportData, updateReportMetadata } =
+    useContext(ReportContext);
   const { form, page } = route;
 
   // get user state, name, role
@@ -42,7 +43,8 @@ export const ReportPage = ({ route }: Props) => {
   const fieldInputDisabled = isAdminUser && form.adminDisabled;
 
   // get state and reportId from context or storage
-  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportId =
+    reportMetadata?.reportId || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
   // get next and previous routes
@@ -64,12 +66,12 @@ export const ReportPage = ({ route }: Props) => {
         state: state,
         reportId: reportId,
       };
-      const reportMetadata = {
+      const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
       };
       await updateReportData(reportKeys, formData);
-      await updateReport(reportKeys, reportMetadata);
+      await updateReportMetadata(reportKeys, dataToWrite);
     }
     if (!page?.drawer) {
       navigate(nextRoute);

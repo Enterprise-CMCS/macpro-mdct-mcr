@@ -2,7 +2,7 @@ import * as yup from "yup";
 // handlers & methods
 import handler from "../handler-lib";
 import { getReportData } from "./get";
-import { getReport } from "../reports/get";
+import { getReportMetadata } from "../reports/get";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -41,7 +41,7 @@ export const writeReportData = handler(async (event, context) => {
   };
 
   // get current report (for formTemplate/validationJson)
-  const getCurrentReport = await getReport(reportEvent, context);
+  const getCurrentReport = await getReportMetadata(reportEvent, context);
   if (getCurrentReport.body) {
     const { formTemplate } = JSON.parse(getCurrentReport.body);
     // filter field validation to just what's needed for the passed fields

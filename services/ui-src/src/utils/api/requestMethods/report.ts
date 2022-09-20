@@ -1,8 +1,8 @@
 import { API } from "aws-amplify";
-import { ReportKeys, ReportMetadataShape } from "types";
+import { ReportKeys, ReportMetadata } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 
-async function getReport(reportKeys: ReportKeys) {
+async function getReportMetadata(reportKeys: ReportKeys) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -16,18 +16,9 @@ async function getReport(reportKeys: ReportKeys) {
   return response;
 }
 
-async function getReportsByState(state: string) {
-  const requestHeaders = await getRequestHeaders();
-  const request = {
-    headers: { ...requestHeaders },
-  };
-  const response = await API.get("reports", `/reports/${state}`, request);
-  return response;
-}
-
-async function writeReport(
+async function writeReportMetadata(
   reportKeys: ReportKeys,
-  reportMetadata: ReportMetadataShape
+  reportMetadata: ReportMetadata
 ) {
   const requestHeaders = await getRequestHeaders();
   const request = {
@@ -57,4 +48,18 @@ async function deleteReport(reportKeys: ReportKeys) {
   return response;
 }
 
-export { getReport, getReportsByState, writeReport, deleteReport };
+async function getReportsByState(state: string) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+  };
+  const response = await API.get("reports", `/reports/${state}`, request);
+  return response;
+}
+
+export {
+  getReportMetadata,
+  writeReportMetadata,
+  deleteReport,
+  getReportsByState,
+};

@@ -36,26 +36,19 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const mockFetchReport = jest.fn();
-
-const mockedReportContext = {
+const mockReportContextNoReports = {
   ...mockReportContext,
-  fetchReport: mockFetchReport,
-};
-
-const mockedReportContextNoReports = {
-  ...mockedReportContext,
   reportsByState: undefined,
 };
 
-const mockedReportContextWithError = {
-  ...mockedReportContext,
+const mockReportContextWithError = {
+  ...mockReportContext,
   errorMessage: "test error",
 };
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={mockReportContext}>
       <Dashboard />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -63,7 +56,7 @@ const dashboardViewWithReports = (
 
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContextNoReports}>
+    <ReportContext.Provider value={mockReportContextNoReports}>
       <Dashboard />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -71,7 +64,7 @@ const dashboardViewNoReports = (
 
 const dashboardViewWithError = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContextWithError}>
+    <ReportContext.Provider value={mockReportContextWithError}>
       <Dashboard />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -103,7 +96,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
-    expect(mockFetchReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.setReportSelection).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith(
       "/mcpar/program-information/point-of-contact"

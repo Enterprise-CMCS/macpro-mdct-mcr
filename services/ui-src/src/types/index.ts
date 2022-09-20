@@ -74,7 +74,7 @@ export interface ReportKeys {
   reportId: string;
 }
 
-export interface ReportMetadataShape extends ReportKeys {
+export interface ReportMetadata extends ReportKeys {
   reportType: string;
   programName: string;
   status: string;
@@ -92,20 +92,20 @@ export interface ReportMetadataShape extends ReportKeys {
 }
 
 export interface ReportContextMethods {
-  setReport: Function;
-  fetchReport: Function;
-  updateReport: Function;
+  fetchReportMetadata: Function;
+  updateReportMetadata: Function;
   removeReport: Function;
-  setReportData: Function;
   fetchReportData: Function;
   updateReportData: Function;
   fetchReportsByState: Function;
+  clearReportSelection: Function;
+  setReportSelection: Function;
 }
 
 export interface ReportContextShape extends ReportContextMethods {
-  report: ReportMetadataShape | undefined;
+  reportMetadata: ReportMetadata | undefined;
   reportData: AnyObject | undefined;
-  reportsByState: ReportMetadataShape[] | undefined;
+  reportsByState: ReportMetadata[] | undefined;
   errorMessage?: string | undefined;
 }
 

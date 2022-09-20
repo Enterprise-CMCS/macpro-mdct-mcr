@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import handler from "../handler-lib";
-import { getReport } from "./get";
+import { getReportMetadata } from "./get";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import { validateData } from "../../utils/validation/validation";
@@ -10,7 +10,7 @@ import {
 } from "../../utils/constants/constants";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
-export const writeReport = handler(async (event, context) => {
+export const writeReportMetadata = handler(async (event, context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
@@ -55,7 +55,7 @@ export const writeReport = handler(async (event, context) => {
         lastAltered: Date.now(),
       },
     };
-    const getCurrentReport = await getReport(event, context);
+    const getCurrentReport = await getReportMetadata(event, context);
     if (getCurrentReport.body) {
       const currentReportInfo = JSON.parse(getCurrentReport.body);
       if (currentReportInfo.createdAt) {

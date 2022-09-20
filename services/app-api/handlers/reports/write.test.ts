@@ -1,4 +1,4 @@
-import { writeReport } from "./write";
+import { writeReportMetadata } from "./write";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -6,7 +6,7 @@ import {
   NO_KEY_ERROR_MESSAGE,
   UNAUTHORIZED_MESSAGE,
 } from "../../utils/constants/constants";
-import { getReport } from "./get";
+import { getReportMetadata } from "./get";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -26,7 +26,9 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 }));
 
 jest.mock("./get");
-const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
+const mockedGetReportMetadata = getReportMetadata as jest.MockedFunction<
+  typeof getReportMetadata
+>;
 
 const creationEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -56,20 +58,20 @@ const submissionEventWithInvalidData: APIGatewayProxyEvent = {
   pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
-describe("Test writeReport API method", () => {
+describe("Test writeReportMetadata API method", () => {
   beforeEach(() => {
     process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
   });
 
   test("Test unauthorized report status creation throws 403 error", async () => {
-    const res = await writeReport(creationEvent, null);
+    const res = await writeReportMetadata(creationEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
   });
 
   test("Test Successful Run of report status Creation", async () => {
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -77,7 +79,7 @@ describe("Test writeReport API method", () => {
       },
       body: "{}",
     });
-    const res = await writeReport(creationEvent, null);
+    const res = await writeReportMetadata(creationEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
@@ -85,7 +87,7 @@ describe("Test writeReport API method", () => {
   });
 
   test("Test attempted report creation with invalid data fails", async () => {
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -93,12 +95,12 @@ describe("Test writeReport API method", () => {
       },
       body: "{}",
     });
-    const res = await writeReport(creationEventWithInvalidData, null);
+    const res = await writeReportMetadata(creationEventWithInvalidData, null);
     expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 
   test("Test Successful Run of report status update", async () => {
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -107,14 +109,14 @@ describe("Test writeReport API method", () => {
       body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
     });
 
-    const secondResponse = await writeReport(submissionEvent, null);
+    const secondResponse = await writeReportMetadata(submissionEvent, null);
     const secondBody = JSON.parse(secondResponse.body);
     expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
     expect(secondBody.status).toContain("submitted");
   });
 
   test("Test attempted report creation with invalid data fails", async () => {
-    mockedGetReport.mockResolvedValue({
+    mockedGetReportMetadata.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -123,7 +125,7 @@ describe("Test writeReport API method", () => {
       body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
     });
 
-    const secondResponse = await writeReport(
+    const secondResponse = await writeReportMetadata(
       submissionEventWithInvalidData,
       null
     );
@@ -135,7 +137,7 @@ describe("Test writeReport API method", () => {
       ...creationEvent,
       pathParameters: {},
     };
-    const res = await writeReport(noKeyEvent, null);
+    const res = await writeReportMetadata(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
@@ -146,7 +148,7 @@ describe("Test writeReport API method", () => {
       ...creationEvent,
       pathParameters: { state: "", reportId: "" },
     };
-    const res = await writeReport(noKeyEvent, null);
+    const res = await writeReportMetadata(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);

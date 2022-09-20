@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportKeys, ReportMetadataShape, UserRoles } from "types";
+import { AnyObject, ReportMetadata, UserRoles } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -39,11 +39,10 @@ import editIcon from "assets/icons/icon_edit.png";
 export const Dashboard = () => {
   const {
     errorMessage,
-    fetchReport,
     fetchReportsByState,
     reportsByState,
-    setReport,
-    setReportData,
+    clearReportSelection,
+    setReportSelection,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const { state: userState, userRole } = useUser().user ?? {};
@@ -65,28 +64,18 @@ export const Dashboard = () => {
       // if no activeState, go to homepage
       navigate("/");
     }
-    // unset active report & reportData
-    setReport(undefined);
-    setReportData(undefined);
-    localStorage.setItem("selectedReport", "");
+    clearReportSelection();
   }, []);
 
-  const enterSelectedReport = async (reportMetadata: ReportMetadataShape) => {
+  const enterSelectedReport = async (reportMetadata: ReportMetadata) => {
     // set active report to selected report
-    const reportKeys: ReportKeys = {
-      state: reportMetadata.state!,
-      reportId: reportMetadata.reportId,
-    };
-    setReport(reportKeys);
-    localStorage.setItem("selectedReport", reportMetadata.reportId);
+    setReportSelection(reportMetadata);
 
-    // fetch & set active report to selected report
-    await fetchReport(reportKeys);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };
 
-  const openAddEditProgramModal = (reportMetadata?: ReportMetadataShape) => {
+  const openAddEditProgramModal = (reportMetadata?: ReportMetadata) => {
     let formData = undefined;
     let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
@@ -117,7 +106,7 @@ export const Dashboard = () => {
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (reportMetadata?: ReportMetadataShape) => {
+  const openDeleteProgramModal = (reportMetadata?: ReportMetadata) => {
     setSelectedReportMetadata(reportMetadata);
     // use disclosure to open modal
     deleteProgramModalOnOpenHandler();
