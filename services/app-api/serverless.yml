@@ -160,10 +160,10 @@ functions:
                 state: true
                 reportId: true
   getReportMetadata:
-    handler: handlers/reports/get.getReportMetadata
+    handler: handlers/reportMetadata/get.getReportMetadata
     events:
       - http:
-          path: reports/{state}/{reportId}
+          path: reportMetadata/{state}/{reportId}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -173,10 +173,10 @@ functions:
                 state: true
                 reportId: true
   getAllReportsByState:
-    handler: handlers/reports/get.getAllReportsByState
+    handler: handlers/reportMetadata/get.getAllReportsByState
     events:
       - http:
-          path: reports/{state}
+          path: reportMetadata/{state}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -185,10 +185,10 @@ functions:
               paths:
                 state: true
   writeReportMetadata:
-    handler: handlers/reports/write.writeReportMetadata
+    handler: handlers/reportMetadata/write.writeReportMetadata
     events:
       - http:
-          path: reports/{state}/{reportId}
+          path: reportMetadata/{state}/{reportId}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -198,10 +198,10 @@ functions:
                 state: true
                 reportId: true
   deleteReport:
-    handler: handlers/reports/delete.deleteReport
+    handler: handlers/reportMetadata/delete.deleteReport
     events:
       - http:
-          path: reports/{state}/{reportId}
+          path: reportMetadata/{state}/{reportId}
           method: delete
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}

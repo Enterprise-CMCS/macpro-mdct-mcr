@@ -7,7 +7,7 @@ import {
   UNAUTHORIZED_MESSAGE,
 } from "../../utils/constants/constants";
 import { getReportData } from "./get";
-import { getReportMetadata } from "../reports/get";
+import { getReportMetadata } from "../reportMetadata/get";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -31,7 +31,7 @@ const mockedGetReportData = getReportData as jest.MockedFunction<
   typeof getReportData
 >;
 
-jest.mock("../reports/get");
+jest.mock("../reportMetadata/get");
 const mockedGetReportMetadata = getReportMetadata as jest.MockedFunction<
   typeof getReportMetadata
 >;

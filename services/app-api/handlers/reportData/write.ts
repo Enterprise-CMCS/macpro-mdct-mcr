@@ -2,7 +2,7 @@ import * as yup from "yup";
 // handlers & methods
 import handler from "../handler-lib";
 import { getReportData } from "./get";
-import { getReportMetadata } from "../reports/get";
+import { getReportMetadata } from "../reportMetadata/get";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";

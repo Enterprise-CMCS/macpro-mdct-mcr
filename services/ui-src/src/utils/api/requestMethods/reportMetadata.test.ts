@@ -3,7 +3,7 @@ import {
   getReportsByState,
   writeReportMetadata,
   deleteReport,
-} from "./report";
+} from "./reportMetadata";
 // utils
 import { mockReportKeys, mockReport } from "utils/testing/setupJest";
 

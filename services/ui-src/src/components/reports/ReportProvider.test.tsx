@@ -11,8 +11,8 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
-const mockReportAPI = require("utils/api/requestMethods/report");
-jest.mock("utils/api/requestMethods/report", () => ({
+const mockReportAPI = require("utils/api/requestMethods/reportMetadata");
+jest.mock("utils/api/requestMethods/reportMetadata", () => ({
   getReportMetadata: jest.fn(() => {}),
   getReportsByState: jest.fn(() => {}),
   writeReportMetadata: jest.fn(() => {}),

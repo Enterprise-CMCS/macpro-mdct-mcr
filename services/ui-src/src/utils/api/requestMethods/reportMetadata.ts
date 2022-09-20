@@ -9,8 +9,8 @@ async function getReportMetadata(reportKeys: ReportKeys) {
   };
   const { state, reportId } = reportKeys;
   const response = await API.get(
-    "reports",
-    `/reports/${state}/${reportId}`,
+    "reportMetadata",
+    `/reportMetadata/${state}/${reportId}`,
     request
   );
   return response;
