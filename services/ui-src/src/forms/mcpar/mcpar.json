@@ -179,7 +179,7 @@
             "id": "absse",
             "fields": [
               {
-                "id": "bssEntityName",
+                "id": "bssEntityTypeName",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -1890,7 +1890,7 @@
                     }
                   },
                   {
-                    "id": "resolvedAppealsRelatedToDenialOfAuthorizationOrLimitedAuthorization",
+                    "id": "denialOfOrLimitedAuthorization",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1900,7 +1900,7 @@
                     }
                   },
                   {
-                    "id": "dao-6b",
+                    "id": "reductionSuspensionOrTerminationOfAPreviouslyAuthorizedService",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1910,7 +1910,7 @@
                     }
                   },
                   {
-                    "id": "dao-6c",
+                    "id": "paymentDenial",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1920,7 +1920,7 @@
                     }
                   },
                   {
-                    "id": "dao-6d",
+                    "id": "serviceTimliness",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1930,7 +1930,7 @@
                     }
                   },
                   {
-                    "id": "dao-6e",
+                    "id": "lackOfResponseTimlinessToAnAppealOrGrievance",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1940,7 +1940,7 @@
                     }
                   },
                   {
-                    "id": "dao-6f",
+                    "id": "denialOfAnEnrolleesRightToRequestOutOfNetworkCare",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1950,7 +1950,7 @@
                     }
                   },
                   {
-                    "id": "dao-6g",
+                    "id": "denialOfEnrolleesRequestToDisputeFinancialLiability",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1998,7 +1998,7 @@
                 "id": "dabs",
                 "fields": [
                   {
-                    "id": "dabs-1",
+                    "id": "generalInpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2008,7 +2008,7 @@
                     }
                   },
                   {
-                    "id": "dabs-2",
+                    "id": "generalOutpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2018,7 +2018,7 @@
                     }
                   },
                   {
-                    "id": "dabs-3",
+                    "id": "inpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2028,7 +2028,7 @@
                     }
                   },
                   {
-                    "id": "dabs-4",
+                    "id": "outpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2038,7 +2038,7 @@
                     }
                   },
                   {
-                    "id": "dabs-5",
+                    "id": "coveredOutpatientPrescriptionDrugs",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2048,7 +2048,7 @@
                     }
                   },
                   {
-                    "id": "dabs-6",
+                    "id": "skilledNursingFacilityServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2058,7 +2058,7 @@
                     }
                   },
                   {
-                    "id": "dabs-7",
+                    "id": "longtermServicesAndSupports",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2068,7 +2068,7 @@
                     }
                   },
                   {
-                    "id": "dabs-8",
+                    "id": "dentalServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2078,7 +2078,7 @@
                     }
                   },
                   {
-                    "id": "dabs-9",
+                    "id": "nonEmergencyMedicalTransportation",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2088,7 +2088,7 @@
                     }
                   },
                   {
-                    "id": "dabs-10",
+                    "id": "otherServiceTypes",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2132,7 +2132,7 @@
                 "id": "dsfh",
                 "fields": [
                   {
-                    "id": "dsfh-1",
+                    "id": "stateFairHearingRequests",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2142,7 +2142,7 @@
                     }
                   },
                   {
-                    "id": "dsfh-2",
+                    "id": "stateFairHearingRequests-favorableDescision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2152,7 +2152,7 @@
                     }
                   },
                   {
-                    "id": "dsfh-3",
+                    "id": "stateFairHearingRequests-adverseDecision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2162,7 +2162,7 @@
                     }
                   },
                   {
-                    "id": "dsfh-4",
+                    "id": "stateFairHearingRequests-retracted",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2172,7 +2172,7 @@
                     }
                   },
                   {
-                    "id": "dsfh-5",
+                    "id": "stateFairHearingRequests-externalMedicalReviewFavorableDecision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2182,7 +2182,7 @@
                     }
                   },
                   {
-                    "id": "dsfh-6",
+                    "id": "stateFairHearingRequests-externalMedicalReviewAdverseDecision",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2220,7 +2220,7 @@
                 "id": "dgo",
                 "fields": [
                   {
-                    "id": "dgo-1",
+                    "id": "grievancesResolved",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2230,7 +2230,7 @@
                     }
                   },
                   {
-                    "id": "dgo-2",
+                    "id": "activeGievance",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2240,7 +2240,7 @@
                     }
                   },
                   {
-                    "id": "dgo-3",
+                    "id": "grievancesFiledOnBehalfOfLtssUsers",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2250,7 +2250,7 @@
                     }
                   },
                   {
-                    "id": "dgo-4",
+                    "id": "numberOfCriticalIncidentsFiledDuringReportingPeriod",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2260,7 +2260,7 @@
                     }
                   },
                   {
-                    "id": "dgo-5",
+                    "id": "numberOfGrievancesWithTimelyResolutionProvided",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2454,7 +2454,7 @@
                 "id": "dgbr",
                 "fields": [
                   {
-                    "id": "dgbr-1",
+                    "id": "grievanceByReason-1",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2464,7 +2464,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-2",
+                    "id": "grievanceByReason-2",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2474,7 +2474,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-3",
+                    "id": "grievanceByReason-3",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2484,7 +2484,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-4",
+                    "id": "grievanceByReason-4",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2494,7 +2494,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-5",
+                    "id": "grievanceByReason-5",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2504,7 +2504,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-6",
+                    "id": "grievanceByReason-6",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2514,7 +2514,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-7",
+                    "id": "grievanceByReason-7",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2524,7 +2524,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-8",
+                    "id": "grievanceByReason-8",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2534,7 +2534,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-9",
+                    "id": "grievanceByReason-9",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2544,7 +2544,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-10",
+                    "id": "grievanceByReason-10",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2554,7 +2554,7 @@
                     }
                   },
                   {
-                    "id": "dgbr-11",
+                    "id": "grievanceByReason-11",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2600,7 +2600,7 @@
             "id": "dqm",
             "fields": [
               {
-                "id": "dqm-1",
+                "id": "qualityMeasures",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2608,52 +2608,52 @@
                   "hint": "Select domain or add your own as needed.",
                   "choices": [
                     {
-                      "name": "dqm-1-o1",
+                      "name": "qualityMeasures-o1",
                       "type": "choice",
                       "label": "Primary care access and preventative care"
                     },
                     {
-                      "name": "dqm-1-o2",
+                      "name": "qualityMeasures-o2",
                       "type": "choice",
                       "label": "Maternal and perinatal health"
                     },
                     {
-                      "name": "dqm-1-o3",
+                      "name": "qualityMeasures-o3",
                       "type": "choice",
                       "label": "Care of acute and chronic conditions"
                     },
                     {
-                      "name": "dqm-1-o4",
+                      "name": "qualityMeasures-o4",
                       "type": "choice",
                       "label": "Behavioral health care"
                     },
                     {
-                      "name": "dqm-1-o5",
+                      "name": "qualityMeasures-o5",
                       "type": "choice",
                       "label": "Dental and oral health services"
                     },
                     {
-                      "name": "dqm-1-o6",
+                      "name": "qualityMeasures-o6",
                       "type": "choice",
                       "label": "Health plan enrollee experience of care"
                     },
                     {
-                      "name": "dqm-1-o7",
+                      "name": "qualityMeasures-o7",
                       "type": "choice",
                       "label": "Long-term services and supports"
                     },
                     {
-                      "name": "dqm-1-o8",
+                      "name": "qualityMeasures-o8",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "dqm-1-o8-text",
+                          "id": "qualityMeasures-o8-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "dqm-1",
+                            "parentFieldName": "qualityMeasures",
                             "visibleOptionValue": "Other"
                           }
                         }
@@ -2663,7 +2663,7 @@
                 }
               },
               {
-                "id": "dqm-2",
+                "id": "measureName",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -2672,7 +2672,7 @@
                 }
               },
               {
-                "id": "dqm-3",
+                "id": "nqfNumber",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -2681,7 +2681,7 @@
                 }
               },
               {
-                "id": "dqm-4",
+                "id": "measureReporting",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2689,20 +2689,20 @@
                   "hint": "Is measure reporting program-specific or cross-program? Select one.",
                   "choices": [
                     {
-                      "name": "dqm-4-o1",
+                      "name": "measureReporting-o1",
                       "label": "Program-specific rate"
                     },
                     {
-                      "name": "dqm-4-o2",
+                      "name": "measureReporting-o2",
                       "label": "Cross-program rate",
                       "children": [
                         {
-                          "id": "dqm-5a",
+                          "id": "measureReporting-listPrograms",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "dqm-4",
+                            "parentFieldName": "measureReporting",
                             "visibleOptionValue": "Cross-program rate"
                           },
                           "props": {
@@ -2717,7 +2717,7 @@
                 }
               },
               {
-                "id": "dqm-6",
+                "id": "measureSet",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2725,32 +2725,32 @@
                   "hint": "What is the measure set? Select one.",
                   "choices": [
                     {
-                      "name": "dqm-6-o1",
+                      "name": "measureSet-o1",
                       "label": "Medicaid Child Core Set"
                     },
                     {
-                      "name": "dqm-6-o2",
+                      "name": "measureSet-o2",
                       "label": "Medicaid Adult Core Set"
                     },
                     {
-                      "name": "dqm-6-o3",
+                      "name": "measureSet-o3",
                       "label": "State-specific"
                     },
                     {
-                      "name": "dqm-6-o4",
+                      "name": "measureSet-o4",
                       "label": "HEDIS"
                     },
                     {
-                      "name": "dqm-6-o5",
+                      "name": "measureSet-o5",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "dqm-6-o5-text",
+                          "id": "measureSet-o5-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "dqm-6",
+                            "parentFieldName": "measureSet",
                             "visibleOptionValue": "Other"
                           }
                         }
@@ -2760,7 +2760,7 @@
                 }
               },
               {
-                "id": "dqm-7",
+                "id": "reportingPeriod",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2768,20 +2768,20 @@
                   "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
                   "choices": [
                     {
-                      "name": "dqm-7-o1",
+                      "name": "reportingPeriod-o1",
                       "label": "Yes"
                     },
                     {
-                      "name": "dqm-7-o2",
+                      "name": "reportingPeriod-o2",
                       "label": "No",
                       "children": [
                         {
-                          "id": "dqm-7b-1",
+                          "id": "reportingPeriod-startDate",
                           "type": "date",
                           "validation": {
                             "type": "date",
                             "nested": true,
-                            "parentFieldName": "dqm-7",
+                            "parentFieldName": "reportingPeriod",
                             "visibleOptionValue": "No"
                           },
                           "props": {
@@ -2791,13 +2791,13 @@
                           }
                         },
                         {
-                          "id": "dqm-7b-2",
+                          "id": "reportingPeriod-endDate",
                           "type": "date",
                           "validation": {
                             "type": "endDate",
-                            "dependentFieldName": "dqm-7b-1",
+                            "dependentFieldName": "reportingPeriod-startDate",
                             "nested": true,
-                            "parentFieldName": "dqm-7",
+                            "parentFieldName": "reportingPeriod",
                             "visibleOptionValue": "No"
                           },
                           "props": {
@@ -2811,7 +2811,7 @@
                 }
               },
               {
-                "id": "dqm-8",
+                "id": "measureDescription",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -2854,7 +2854,7 @@
             "id": "ds",
             "fields": [
               {
-                "id": "ds-1",
+                "id": "interventionType",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2862,47 +2862,47 @@
                   "hint": "What type of intervention? Select one.",
                   "choices": [
                     {
-                      "name": "ds-1-o1",
+                      "name": "interventionType-o1",
                       "type": "choice",
                       "label": "Civil monetary penalty"
                     },
                     {
-                      "name": "ds-1-o2",
+                      "name": "interventionType-o2",
                       "type": "choice",
                       "label": "Suspension of new enrollment"
                     },
                     {
-                      "name": "ds-1-o3",
+                      "name": "interventionType-o3",
                       "type": "choice",
                       "label": "Fine"
                     },
                     {
-                      "name": "ds-1-o4",
+                      "name": "interventionType-o4",
                       "type": "choice",
                       "label": "Corrective action plan"
                     },
                     {
-                      "name": "ds-1-o5",
+                      "name": "interventionType-o5",
                       "type": "choice",
                       "label": "Compliance letter"
                     },
                     {
-                      "name": "ds-1-o6",
+                      "name": "interventionType-o6",
                       "type": "choice",
                       "label": "Liquidated damages"
                     },
                     {
-                      "name": "ds-1-o7",
+                      "name": "interventionType-o7",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "ds-1-o7-text",
+                          "id": "interventionType-o7-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "ds-1",
+                            "parentFieldName": "interventionType",
                             "visibleOptionValue": "What type of intervention?"
                           }
                         }
@@ -2912,7 +2912,7 @@
                 }
               },
               {
-                "id": "ds-2",
+                "id": "interventionTopic",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2920,47 +2920,47 @@
                   "hint": "What was the topic of intervention? Select one.",
                   "choices": [
                     {
-                      "name": "ds-2-o1",
+                      "name": "interventionTopic-o1",
                       "type": "choice",
                       "label": "Discrimination"
                     },
                     {
-                      "name": "ds-2-o2",
+                      "name": "interventionTopic-o2",
                       "type": "choice",
                       "label": "False information"
                     },
                     {
-                      "name": "ds-2-o3",
+                      "name": "interventionTopic-o3",
                       "type": "choice",
                       "label": "Excess charges"
                     },
                     {
-                      "name": "ds-2-o4",
+                      "name": "interventionTopic-o4",
                       "type": "choice",
                       "label": "Reporting"
                     },
                     {
-                      "name": "ds-2-o5",
+                      "name": "interventionTopic-o5",
                       "type": "choice",
                       "label": "Performance management"
                     },
                     {
-                      "name": "ds-2-o6",
+                      "name": "interventionTopic-o6",
                       "type": "choice",
                       "label": "Timely access"
                     },
                     {
-                      "name": "ds-2-o7",
+                      "name": "interventionTopic-o7",
                       "type": "choice",
                       "label": "Other",
                       "children": [
                         {
-                          "id": "ds-2-o7-text",
+                          "id": "interventionTopic-o7-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "ds-2",
+                            "parentFieldName": "interventionTopic",
                             "visibleOptionValue": "What was the topic of intervention?"
                           }
                         }
@@ -2970,7 +2970,7 @@
                 }
               },
               {
-                "id": "ds-3",
+                "id": "planNameAttachedToSanctionOrCorrectiveActionPlan",
                 "type": "dropdown",
                 "validation": "dropdown",
                 "props": {
@@ -2985,7 +2985,7 @@
                 }
               },
               {
-                "id": "ds-4",
+                "id": "reasonForIntervention",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -2994,7 +2994,7 @@
                 }
               },
               {
-                "id": "ds-5",
+                "id": "instancesOfNonCompliance",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3004,7 +3004,7 @@
                 }
               },
               {
-                "id": "ds-6",
+                "id": "sanctionAmount",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3014,7 +3014,7 @@
                 }
               },
               {
-                "id": "ds-7",
+                "id": "dateOfPlanSanction",
                 "type": "date",
                 "validation": "date",
                 "props": {
@@ -3023,7 +3023,7 @@
                 }
               },
               {
-                "id": "ds-8",
+                "id": "dateOfNoncOmplianceCorrection",
                 "type": "date",
                 "validation": "date",
                 "props": {
@@ -3032,7 +3032,7 @@
                 }
               },
               {
-                "id": "ds-9",
+                "id": "correctiveActionPlan",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -3040,12 +3040,12 @@
                   "hint": "Has the state sanctioned the plan within the previous two years, (e.g. corrective action plans or other informal interventions such as special outreach, focused technical assistance)?",
                   "choices": [
                     {
-                      "name": "ds-9-o1",
+                      "name": "correctiveActionPlan-o1",
                       "type": "choice",
                       "label": "Yes"
                     },
                     {
-                      "name": "ds-9-o2",
+                      "name": "correctiveActionPlan-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -3080,7 +3080,7 @@
             "id": "dpi",
             "fields": [
               {
-                "id": "dpi-1",
+                "id": "numberOfDedicatedProgramIntegrityStaf",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3090,7 +3090,7 @@
                 }
               },
               {
-                "id": "dpi-2",
+                "id": "countOfOpenProgramIntegrityInvestigations",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3100,7 +3100,7 @@
                 }
               },
               {
-                "id": "dpi-3",
+                "id": "programIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3110,7 +3110,7 @@
                 }
               },
               {
-                "id": "dpi-4",
+                "id": "countOfResolvedProgramIntegrityInvestigations",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3120,7 +3120,7 @@
                 }
               },
               {
-                "id": "dpi-5",
+                "id": "resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3130,7 +3130,7 @@
                 }
               },
               {
-                "id": "dpi-6",
+                "id": "pathForProgramIntegrityReferralsToTheState",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -3138,17 +3138,17 @@
                   "hint": "What is the referral path that the plan uses to make program integrity referrals to the state? Select one.",
                   "choices": [
                     {
-                      "name": "dpi-6-o1",
+                      "name": "pathForProgramIntegrityReferralsToTheState-mfcuOnly",
                       "type": "choice",
                       "label": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
                       "children": [
                         {
-                          "id": "dpi-7a",
+                          "id": "countOfMfcuReferrals",
                           "type": "number",
                           "validation": {
                             "type": "number",
                             "nested": true,
-                            "parentFieldName": "dpi-6",
+                            "parentFieldName": "pathForProgramIntegrityReferralsToTheState",
                             "visibleOptionValue": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only"
                           },
                           "props": {
@@ -3160,17 +3160,17 @@
                       ]
                     },
                     {
-                      "name": "dpi-6-o2",
+                      "name": "pathForProgramIntegrityReferralsToTheState-smaAndMfcuConcurrently",
                       "type": "choice",
                       "label": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently",
                       "children": [
                         {
-                          "id": "dpi-7b",
+                          "id": "countOfConcurrentSmaAndMfcuReferrals",
                           "type": "number",
                           "validation": {
                             "type": "number",
                             "nested": true,
-                            "parentFieldName": "dpi-6",
+                            "parentFieldName": "pathForProgramIntegrityReferralsToTheState",
                             "visibleOptionValue": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently"
                           },
                           "props": {
@@ -3182,17 +3182,17 @@
                       ]
                     },
                     {
-                      "name": "dpi-6-o3",
+                      "name": "pathForProgramIntegrityReferralsToTheState-someToSmaAndOthersToMfcu",
                       "type": "choice",
                       "label": "Makes some referrals to the SMA and others directly to the MFCU",
                       "children": [
                         {
-                          "id": "dpi-7c",
+                          "id": "countOfAggregateReferrals",
                           "type": "number",
                           "validation": {
                             "type": "number",
                             "nested": true,
-                            "parentFieldName": "dpi-6",
+                            "parentFieldName": "pathForProgramIntegrityReferralsToTheState",
                             "visibleOptionValue": "Makes some referrals to the SMA and others directly to the MFCU"
                           },
                           "props": {
@@ -3207,7 +3207,7 @@
                 }
               },
               {
-                "id": "dpi-8",
+                "id": "ratioOfProgramIntegrityReferralsToTheState",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3217,7 +3217,7 @@
                 }
               },
               {
-                "id": "dpi-9",
+                "id": "planOverpaymentReportingToTheState",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -3226,7 +3226,7 @@
                 }
               },
               {
-                "id": "dpi-10",
+                "id": "ratio of program integrity referrals",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -3234,32 +3234,32 @@
                   "hint": "Select the frequency the plan reports changes in beneficiary circumstances to the state.",
                   "choices": [
                     {
-                      "name": "dpi-10-o1",
+                      "name": "ratio of program integrity referrals-o1",
                       "type": "choice",
                       "label": "Daily"
                     },
                     {
-                      "name": "dpi-10-o2",
+                      "name": "ratio of program integrity referrals-o2",
                       "type": "choice",
                       "label": "Weekly"
                     },
                     {
-                      "name": "dpi-10-o3",
+                      "name": "ratio of program integrity referrals-o3",
                       "type": "choice",
                       "label": "Bi-weekly"
                     },
                     {
-                      "name": "dpi-10-o4",
+                      "name": "ratio of program integrity referrals-o4",
                       "type": "choice",
                       "label": "Monthly"
                     },
                     {
-                      "name": "dpi-10-o5",
+                      "name": "ratio of program integrity referrals-o5",
                       "type": "choice",
                       "label": "Bi-monthly"
                     },
                     {
-                      "name": "dpi-10-o6",
+                      "name": "ratio of program integrity referrals-o6",
                       "type": "choice",
                       "label": "Quarterly"
                     }
@@ -3313,7 +3313,7 @@
         "id": "ebssei",
         "fields": [
           {
-            "id": "ebssei-1",
+            "id": "bssEntityType",
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
@@ -3321,77 +3321,77 @@
               "hint": "What type of entity was contracted to perform each BSS activity? Check all that apply. Refer to 42 CFR 438.71(b).",
               "choices": [
                 {
-                  "name": "ebssei-1-o1",
+                  "name": "bssEntityType-o1",
                   "type": "choice",
                   "label": "State Government Entity"
                 },
                 {
-                  "name": "ebssei-1-o2",
+                  "name": "bssEntityType-o2",
                   "type": "choice",
                   "label": "Local Government Entity"
                 },
                 {
-                  "name": "ebssei-1-o3",
+                  "name": "bssEntityType-o3",
                   "type": "choice",
                   "label": "Ombudsman Program"
                 },
                 {
-                  "name": "ebssei-1-o4",
+                  "name": "bssEntityType-o4",
                   "type": "choice",
                   "label": "State Health Insurance Assistance Program (SHIP)"
                 },
                 {
-                  "name": "ebssei-1-o5",
+                  "name": "bssEntityType-o5",
                   "type": "choice",
                   "label": "Aging and Disability Resource Network (ADRN)"
                 },
                 {
-                  "name": "ebssei-1-o6",
+                  "name": "bssEntityType-o6",
                   "type": "choice",
                   "label": "Center for Independent Living (CIL)"
                 },
                 {
-                  "name": "ebssei-1-o7",
+                  "name": "bssEntityType-o7",
                   "type": "choice",
                   "label": "Legal Assistance Organization"
                 },
                 {
-                  "name": "ebssei-1-o8",
+                  "name": "bssEntityType-o8",
                   "type": "choice",
                   "label": "Other Community-Based Organization"
                 },
                 {
-                  "name": "ebssei-1-o9",
+                  "name": "bssEntityType-o9",
                   "type": "choice",
                   "label": "Subcontractor"
                 },
                 {
-                  "name": "ebssei-1-o10",
+                  "name": "bssEntityType-o10",
                   "type": "choice",
                   "label": "Enrollment Broker"
                 },
                 {
-                  "name": "ebssei-1-o11",
+                  "name": "bssEntityType-o11",
                   "type": "choice",
                   "label": "Consultant"
                 },
                 {
-                  "name": "ebssei-1-o12",
+                  "name": "bssEntityType-o12",
                   "type": "choice",
                   "label": "Academic/Research Organization"
                 },
                 {
-                  "name": "ebssei-1-o13",
+                  "name": "bssEntityType-o13",
                   "type": "choice",
                   "label": "Other",
                   "children": [
                     {
-                      "id": "ebssei-1-o13-text",
+                      "id": "bssEntityType-o13-text",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "ebssei-1",
+                        "parentFieldName": "bssEntityType",
                         "visibleOptionValue": "Other"
                       }
                     }
@@ -3401,7 +3401,7 @@
             }
           },
           {
-            "id": "ebssei-2",
+            "id": "bssEntityRole",
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
@@ -3409,47 +3409,47 @@
               "hint": "What are the roles performed by the BSS entity? Check all that apply. Refer to 42 CFR 438.71(b).",
               "choices": [
                 {
-                  "name": "ebssei-2-o1",
+                  "name": "bssEntityRole-o1",
                   "type": "choice",
                   "label": "Enrollment Broker/Choice Counseling"
                 },
                 {
-                  "name": "ebssei-2-o2",
+                  "name": "bssEntityRole-o2",
                   "type": "choice",
                   "label": "Beneficiary Outreach"
                 },
                 {
-                  "name": "ebssei-2-o3",
+                  "name": "bssEntityRole-o3",
                   "type": "choice",
                   "label": "LTSS Complaint Access Point"
                 },
                 {
-                  "name": "ebssei-2-o4",
+                  "name": "bssEntityRole-o4",
                   "type": "choice",
                   "label": "LTSS Grievance/Appeals Education"
                 },
                 {
-                  "name": "ebssei-2-o5",
+                  "name": "bssEntityRole-o5",
                   "type": "choice",
                   "label": "LTSS Grievance/Appeals Assistance"
                 },
                 {
-                  "name": "ebssei-2-o6",
+                  "name": "bssEntityRole-o6",
                   "type": "choice",
                   "label": "Review/Oversight of LTSS Data"
                 },
                 {
-                  "name": "ebssei-2-o7",
+                  "name": "bssEntityRole-o7",
                   "type": "choice",
                   "label": "Other",
                   "children": [
                     {
-                      "id": "ebssei-2-o7-text",
+                      "id": "bssEntityRole-o7-text",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "ebssei-2",
+                        "parentFieldName": "bssEntityRole",
                         "visibleOptionValue": "Other"
                       }
                     }
