@@ -26,7 +26,14 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"type":"banner","title":"test banner","description":"test description","link":"test link","startDate":1000,"endDate":2000}`,
+  body: `{"key":"mock-id","title":"test banner","description":"test description","link":"test link","startDate":1000,"endDate":2000}`,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { bannerId: "testKey" },
+};
+
+const testEventWithInvalidData: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  body: `{"description":"test description","link":"test link","startDate":"1000","endDate":2000}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { bannerId: "testKey" },
 };
@@ -38,17 +45,20 @@ describe("Test writeBanner API method", () => {
 
   test("Test unauthorized banner creation throws 403 error", async () => {
     const res = await writeBanner(testEvent, null);
-
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
   });
 
   test("Test Successful Run of Banner Creation", async () => {
     const res = await writeBanner(testEvent, null);
-
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");
+  });
+
+  test("Test invalid data causes failure", async () => {
+    const res = await writeBanner(testEventWithInvalidData, null);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 
   test("Test bannerKey not provided throws 500 error", async () => {
@@ -57,7 +67,6 @@ describe("Test writeBanner API method", () => {
       pathParameters: {},
     };
     const res = await writeBanner(noKeyEvent, null);
-
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });
@@ -68,7 +77,6 @@ describe("Test writeBanner API method", () => {
       pathParameters: { bannerId: "" },
     };
     const res = await writeBanner(noKeyEvent, null);
-
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });

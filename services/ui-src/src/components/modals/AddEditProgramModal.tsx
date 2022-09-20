@@ -1,19 +1,19 @@
 import { useContext } from "react";
+import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
+// form
+import formJson from "forms/addEditProgram/addEditProgram.json";
+import { mcparReportJson } from "forms/mcpar";
 // utils
 import { AnyObject, FormJson, ReportStatus } from "types";
-import { States } from "../../constants";
+import { noCombinedDataInput, States } from "../../constants";
 import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
   useUser,
 } from "utils";
-import uuid from "react-uuid";
-// form
-import formJson from "forms/addEditProgram/addEditProgram.json";
-import { mcparReportJson } from "forms/mcpar";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -36,6 +36,8 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
+    const combinedDataArray = formData["aep-combinedData"];
+    const combinedData = combinedDataArray?.[0] || noCombinedDataInput;
     const reportingPeriodStartDate = convertDateEtToUtc(
       formData["aep-startDate"]
     );
@@ -50,6 +52,7 @@ export const AddEditProgramModal = ({
       reportingPeriodEndDate: reportingPeriodEndDate,
       dueDate,
       lastAlteredBy: full_name,
+      combinedData,
     };
     // if an existing program was selected, use that report id
     if (selectedReportMetadata?.reportId) {
@@ -59,9 +62,6 @@ export const AddEditProgramModal = ({
         ...dataToWrite,
       });
       await updateReportData(reportDetails, {
-        "apoc-a3a": selectedReportMetadata?.submittedBy,
-        "apoc-a3b": selectedReportMetadata?.submitterEmail,
-        "apoc-a4": selectedReportMetadata?.submittedOnDate,
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,
