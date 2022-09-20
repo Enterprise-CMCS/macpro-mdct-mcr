@@ -8,7 +8,7 @@ export const getReportMetadata = handler(async (event, _context) => {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const queryParams = {
-    TableName: process.env.REPORT_TABLE_NAME!,
+    TableName: process.env.REPORT_METADATA_TABLE_NAME!,
     KeyConditionExpression: "#state = :state AND #reportId = :reportId",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,
@@ -34,7 +34,7 @@ export const getAllReportsByState = handler(async (event, _context) => {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
   const queryParams = {
-    TableName: process.env.REPORT_TABLE_NAME!,
+    TableName: process.env.REPORT_METADATA_TABLE_NAME!,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,

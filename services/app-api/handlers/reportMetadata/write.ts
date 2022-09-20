@@ -46,7 +46,7 @@ export const writeReportMetadata = handler(async (event, context) => {
     const state: string = event.pathParameters.state;
     const reportId: string = event.pathParameters.reportId;
     let reportParams = {
-      TableName: process.env.REPORT_TABLE_NAME!,
+      TableName: process.env.REPORT_METADATA_TABLE_NAME!,
       Item: {
         ...validatedPayload,
         state: state,
@@ -60,7 +60,7 @@ export const writeReportMetadata = handler(async (event, context) => {
       const currentReportInfo = JSON.parse(getCurrentReport.body);
       if (currentReportInfo.createdAt) {
         reportParams = {
-          TableName: process.env.REPORT_TABLE_NAME!,
+          TableName: process.env.REPORT_METADATA_TABLE_NAME!,
           Item: {
             ...currentReportInfo,
             ...reportParams.Item,

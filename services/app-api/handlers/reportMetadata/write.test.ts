@@ -60,7 +60,7 @@ const submissionEventWithInvalidData: APIGatewayProxyEvent = {
 
 describe("Test writeReportMetadata API method", () => {
   beforeEach(() => {
-    process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
   });
 
   test("Test unauthorized report status creation throws 403 error", async () => {

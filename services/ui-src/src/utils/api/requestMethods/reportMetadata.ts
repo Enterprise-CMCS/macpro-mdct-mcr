@@ -27,8 +27,8 @@ async function writeReportMetadata(
   };
   const { state, reportId } = reportKeys;
   const response = await API.post(
-    "reports",
-    `/reports/${state}/${reportId}`,
+    "reportMetadata",
+    `/reportMetadata/${state}/${reportId}`,
     request
   );
   return response;
@@ -41,8 +41,8 @@ async function deleteReport(reportKeys: ReportKeys) {
   };
   const { state, reportId } = reportKeys;
   const response = await API.del(
-    "reports",
-    `/reports/${state}/${reportId}`,
+    "reportMetadata",
+    `/reportMetadata/${state}/${reportId}`,
     request
   );
   return response;
@@ -53,7 +53,11 @@ async function getReportsByState(state: string) {
   const request = {
     headers: { ...requestHeaders },
   };
-  const response = await API.get("reports", `/reports/${state}`, request);
+  const response = await API.get(
+    "reportMetadata",
+    `/reportMetadata/${state}`,
+    request
+  );
   return response;
 }
 

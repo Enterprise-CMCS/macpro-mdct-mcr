@@ -25,9 +25,9 @@ export const deleteReport = handler(async (event, _context) => {
         reportId: event?.pathParameters?.reportId!,
       },
     };
-    // delete report from report table
+    // delete report from report metadata table
     const deleteReportParams = {
-      TableName: process.env.REPORT_TABLE_NAME!,
+      TableName: process.env.REPORT_METADATA_TABLE_NAME!,
       ...paramKeys,
     };
     await dynamoDb.delete(deleteReportParams);

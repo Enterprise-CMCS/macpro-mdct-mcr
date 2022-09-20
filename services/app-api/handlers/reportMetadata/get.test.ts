@@ -45,7 +45,7 @@ const testEventByState: APIGatewayProxyEvent = {
 
 describe("Test getReportMetadata API method", () => {
   beforeEach(() => {
-    process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
   });
 
   test("Test Successful Report Fetch", async () => {
@@ -81,7 +81,7 @@ describe("Test getReportMetadata API method", () => {
 
 describe("Test getAllReportsByState API method", () => {
   beforeEach(() => {
-    process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
   });
 
   test("Test Successful Report by state Fetch", async () => {
