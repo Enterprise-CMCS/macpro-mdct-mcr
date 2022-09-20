@@ -33,7 +33,6 @@ const sanitizedObject = {
       '<ul><li><a href="//google.com">click</a></li></ul>',
       "test2",
       234234,
-
       "<svg><g></g></svg>",
     ],
     array2: [],
