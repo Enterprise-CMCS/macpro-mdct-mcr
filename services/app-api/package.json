@@ -63,6 +63,8 @@
       "libs",
       "util"
     ],
-    "setupFilesAfterEnv": []
+    "setupFilesAfterEnv": [
+      "<rootDir>/utils/testing/setupJest.ts"
+    ]
   }
 }
