@@ -4,10 +4,7 @@ import { updateReport } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import {
-  NO_KEY_ERROR_MESSAGE,
-  UNAUTHORIZED_MESSAGE,
-} from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -68,7 +65,7 @@ describe("Test writeReportMetadata API method", () => {
     const res = await writeReportMetadata(creationEvent, null);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test Successful Run of report status Creation", async () => {
@@ -141,7 +138,7 @@ describe("Test writeReportMetadata API method", () => {
     const res = await writeReportMetadata(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test reportKey empty throws 500 error", async () => {
@@ -152,7 +149,7 @@ describe("Test writeReportMetadata API method", () => {
     const res = await writeReportMetadata(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });
 
@@ -220,7 +217,7 @@ describe("Test writeReportData API method", () => {
     const res = await writeReportData(creationEvent, null);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test Successful Run of report Creation", async () => {
@@ -320,7 +317,7 @@ describe("Test writeReportData API method", () => {
     const res = await writeReportData(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test reportKey empty throws 500 error", async () => {
@@ -331,6 +328,6 @@ describe("Test writeReportData API method", () => {
     const res = await writeReportData(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });

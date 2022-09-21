@@ -5,7 +5,7 @@ import {
   internalServerError,
   buildResponse,
 } from "../utils/responses/response-lib";
-import { UNAUTHORIZED_MESSAGE } from "../utils/constants/constants";
+import error from "../utils/constants/constants";
 import { StatusCodes } from "../utils/types/types";
 
 type LambdaFunction = (
@@ -31,7 +31,7 @@ export default function handler(lambda: LambdaFunction) {
         return internalServerError(body);
       }
     } else {
-      const body = { error: UNAUTHORIZED_MESSAGE };
+      const body = { error: error.UNAUTHORIZED };
       return buildResponse(StatusCodes.UNAUTHORIZED, body);
     }
   };

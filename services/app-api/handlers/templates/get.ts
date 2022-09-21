@@ -1,14 +1,11 @@
 import { S3 } from "aws-sdk";
 import handler from "../handler-lib";
 import { StatusCodes, TemplateKeys } from "../../utils/types/types";
-import {
-  INVALID_TEMPLATE_NAME_ERROR_MESSAGE,
-  NO_TEMPLATE_NAME_ERROR_MESSAGE,
-} from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 export const getTemplate = handler(async (event, _context) => {
   if (!event?.pathParameters?.templateName!) {
-    throw new Error(NO_TEMPLATE_NAME_ERROR_MESSAGE);
+    throw new Error(error.NO_TEMPLATE_NAME);
   }
   let key;
   if (event.pathParameters.templateName === "MCPAR") {
@@ -18,7 +15,7 @@ export const getTemplate = handler(async (event, _context) => {
   } else if (event.pathParameters.templateName === "NAAAR") {
     key = TemplateKeys.NAAAR;
   } else {
-    throw new Error(INVALID_TEMPLATE_NAME_ERROR_MESSAGE);
+    throw new Error(error.INVALID_TEMPLATE_NAME);
   }
   // get the signed URL string
   const s3 = new S3();

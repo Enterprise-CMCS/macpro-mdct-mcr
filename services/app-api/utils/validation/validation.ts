@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { nested, endDate, schemaMap } from "./schemaMap";
 import { AnyObject } from "../types/types";
-import { VALIDATION_ERROR_MESSAGE } from "../constants/constants";
+import error from "../constants/constants";
 
 // compare payload data against validation schema
 export const validateData = async (
@@ -16,7 +16,7 @@ export const validateData = async (
       ...options,
     });
   } catch (e: any) {
-    throw new Error(VALIDATION_ERROR_MESSAGE);
+    throw new Error(error.INVALID_DATA);
   }
 };
 

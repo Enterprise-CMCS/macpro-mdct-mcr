@@ -1,11 +1,11 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
-import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 export const readReport = handler(async (event, _context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
-    throw new Error(NO_KEY_ERROR_MESSAGE);
+    throw new Error(error.NO_KEY);
   }
   const queryParams = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
@@ -20,9 +20,7 @@ export const readReport = handler(async (event, _context) => {
     },
   };
   const reportQueryResponse = await dynamoDb.query(queryParams);
-
   const responseBody = reportQueryResponse.Items![0] ?? {};
-
   return {
     status: StatusCodes.SUCCESS,
     body: responseBody,
@@ -31,7 +29,7 @@ export const readReport = handler(async (event, _context) => {
 
 export const readReportsByState = handler(async (event, _context) => {
   if (!event?.pathParameters?.state!) {
-    throw new Error(NO_KEY_ERROR_MESSAGE);
+    throw new Error(error.NO_KEY);
   }
   const queryParams = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
@@ -44,7 +42,6 @@ export const readReportsByState = handler(async (event, _context) => {
     },
   };
   const reportQueryResponse = await dynamoDb.query(queryParams);
-
   return {
     status: StatusCodes.SUCCESS,
     body: reportQueryResponse.Items,

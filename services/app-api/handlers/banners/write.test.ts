@@ -2,10 +2,7 @@ import { writeBanner } from "./write";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import {
-  NO_KEY_ERROR_MESSAGE,
-  UNAUTHORIZED_MESSAGE,
-} from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -46,7 +43,7 @@ describe("Test writeBanner API method", () => {
   test("Test unauthorized banner creation throws 403 error", async () => {
     const res = await writeBanner(testEvent, null);
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test Successful Run of Banner Creation", async () => {
@@ -68,7 +65,7 @@ describe("Test writeBanner API method", () => {
     };
     const res = await writeBanner(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test bannerKey empty throws 500 error", async () => {
@@ -78,6 +75,6 @@ describe("Test writeBanner API method", () => {
     };
     const res = await writeBanner(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });

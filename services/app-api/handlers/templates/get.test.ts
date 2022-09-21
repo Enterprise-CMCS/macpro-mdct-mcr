@@ -2,10 +2,7 @@ import { getTemplate } from "./get";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import {
-  INVALID_TEMPLATE_NAME_ERROR_MESSAGE,
-  NO_TEMPLATE_NAME_ERROR_MESSAGE,
-} from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("aws-sdk", () => ({
   S3: jest.fn().mockImplementation(() => ({
@@ -73,7 +70,7 @@ describe("Test getTemplate API method", () => {
     const res = await getTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_TEMPLATE_NAME_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_TEMPLATE_NAME);
   });
 
   test("Test templateName doesn't match enum throws 500 error", async () => {
@@ -84,6 +81,6 @@ describe("Test getTemplate API method", () => {
     const res = await getTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(INVALID_TEMPLATE_NAME_ERROR_MESSAGE);
+    expect(res.body).toContain(error.INVALID_TEMPLATE_NAME);
   });
 });

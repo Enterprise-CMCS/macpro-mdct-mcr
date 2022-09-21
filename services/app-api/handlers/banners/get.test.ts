@@ -2,7 +2,7 @@ import { getBanner } from "./get";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -58,7 +58,7 @@ describe("Test getBanner API method", () => {
     const res = await getBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test bannerKey empty throws 500 error", async () => {
@@ -69,6 +69,6 @@ describe("Test getBanner API method", () => {
     const res = await getBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });

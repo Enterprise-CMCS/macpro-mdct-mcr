@@ -2,7 +2,7 @@ import { readReport, readReportsByState } from "./read";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -64,7 +64,7 @@ describe("Test readReport API method", () => {
     const res = await readReport(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test reportKeys empty throws 500 error", async () => {
@@ -75,7 +75,7 @@ describe("Test readReport API method", () => {
     const res = await readReport(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });
 
@@ -100,7 +100,7 @@ describe("Test readReportsByState API method", () => {
     const res = await readReportsByState(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test reportKeys empty throws 500 error", async () => {
@@ -111,6 +111,6 @@ describe("Test readReportsByState API method", () => {
     const res = await readReportsByState(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });
