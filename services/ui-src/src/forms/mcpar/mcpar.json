@@ -3308,7 +3308,7 @@
         "id": "ebssei",
         "fields": [
           {
-            "id": "bssEntityType",
+            "id": "bssEntityIndicators_entityType",
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
@@ -3316,77 +3316,77 @@
               "hint": "What type of entity was contracted to perform each BSS activity? Check all that apply. Refer to 42 CFR 438.71(b).",
               "choices": [
                 {
-                  "name": "bssEntityType-o1",
+                  "name": "bssEntityIndicators_entityType-o1",
                   "type": "choice",
                   "label": "State Government Entity"
                 },
                 {
-                  "name": "bssEntityType-o2",
+                  "name": "bssEntityIndicators_entityType-o2",
                   "type": "choice",
                   "label": "Local Government Entity"
                 },
                 {
-                  "name": "bssEntityType-o3",
+                  "name": "bssEntityIndicators_entityType-o3",
                   "type": "choice",
                   "label": "Ombudsman Program"
                 },
                 {
-                  "name": "bssEntityType-o4",
+                  "name": "bssEntityIndicators_entityType-o4",
                   "type": "choice",
                   "label": "State Health Insurance Assistance Program (SHIP)"
                 },
                 {
-                  "name": "bssEntityType-o5",
+                  "name": "bssEntityIndicators_entityType-o5",
                   "type": "choice",
                   "label": "Aging and Disability Resource Network (ADRN)"
                 },
                 {
-                  "name": "bssEntityType-o6",
+                  "name": "bssEntityIndicators_entityType-o6",
                   "type": "choice",
                   "label": "Center for Independent Living (CIL)"
                 },
                 {
-                  "name": "bssEntityType-o7",
+                  "name": "bssEntityIndicators_entityType-o7",
                   "type": "choice",
                   "label": "Legal Assistance Organization"
                 },
                 {
-                  "name": "bssEntityType-o8",
+                  "name": "bssEntityIndicators_entityType-o8",
                   "type": "choice",
                   "label": "Other Community-Based Organization"
                 },
                 {
-                  "name": "bssEntityType-o9",
+                  "name": "bssEntityIndicators_entityType-o9",
                   "type": "choice",
                   "label": "Subcontractor"
                 },
                 {
-                  "name": "bssEntityType-o10",
+                  "name": "bssEntityIndicators_entityType-o10",
                   "type": "choice",
                   "label": "Enrollment Broker"
                 },
                 {
-                  "name": "bssEntityType-o11",
+                  "name": "bssEntityIndicators_entityType-o11",
                   "type": "choice",
                   "label": "Consultant"
                 },
                 {
-                  "name": "bssEntityType-o12",
+                  "name": "bssEntityIndicators_entityType-o12",
                   "type": "choice",
                   "label": "Academic/Research Organization"
                 },
                 {
-                  "name": "bssEntityType-o13",
+                  "name": "bssEntityIndicators_entityType-o13",
                   "type": "choice",
                   "label": "Other",
                   "children": [
                     {
-                      "id": "bssEntityType-o13-text",
+                      "id": "bssEntityIndicators_entityType-o13-text",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "bssEntityType",
+                        "parentFieldName": "bssEntityIndicators_entityType",
                         "visibleOptionValue": "Other"
                       }
                     }
@@ -3396,7 +3396,7 @@
             }
           },
           {
-            "id": "bssEntityRole",
+            "id": "bssEntityIndicators_entityRole",
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
@@ -3404,47 +3404,47 @@
               "hint": "What are the roles performed by the BSS entity? Check all that apply. Refer to 42 CFR 438.71(b).",
               "choices": [
                 {
-                  "name": "bssEntityRole-o1",
+                  "name": "bssEntityIndicators_entityRole-o1",
                   "type": "choice",
                   "label": "Enrollment Broker/Choice Counseling"
                 },
                 {
-                  "name": "bssEntityRole-o2",
+                  "name": "bssEntityIndicators_entityRole-o2",
                   "type": "choice",
                   "label": "Beneficiary Outreach"
                 },
                 {
-                  "name": "bssEntityRole-o3",
+                  "name": "bssEntityIndicators_entityRole-o3",
                   "type": "choice",
                   "label": "LTSS Complaint Access Point"
                 },
                 {
-                  "name": "bssEntityRole-o4",
+                  "name": "bssEntityIndicators_entityRole-o4",
                   "type": "choice",
                   "label": "LTSS Grievance/Appeals Education"
                 },
                 {
-                  "name": "bssEntityRole-o5",
+                  "name": "bssEntityIndicators_entityRole-o5",
                   "type": "choice",
                   "label": "LTSS Grievance/Appeals Assistance"
                 },
                 {
-                  "name": "bssEntityRole-o6",
+                  "name": "bssEntityIndicators_entityRole-o6",
                   "type": "choice",
                   "label": "Review/Oversight of LTSS Data"
                 },
                 {
-                  "name": "bssEntityRole-o7",
+                  "name": "bssEntityIndicators_entityRole-o7",
                   "type": "choice",
                   "label": "Other",
                   "children": [
                     {
-                      "id": "bssEntityRole-o7-text",
+                      "id": "bssEntityIndicators_entityRole-o7-text",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "bssEntityRole",
+                        "parentFieldName": "bssEntityIndicators_entityRole",
                         "visibleOptionValue": "Other"
                       }
                     }
