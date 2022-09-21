@@ -59,10 +59,10 @@ export const ChoiceListField = ({
 
     // update DOM choices checked status
     choices.forEach((choice: FieldChoice) => {
-      const foundValue = displayValue?.find(
-        (value) => value.value === choice.value
+      const checkedState = displayValue?.find(
+        (option) => option.value === choice.value
       );
-      choice.checked = !!foundValue;
+      choice.checked = !!checkedState;
     });
   }, [displayValue]);
 
