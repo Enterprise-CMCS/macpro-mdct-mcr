@@ -90,15 +90,13 @@ export const ReportProvider = ({ children }: Props) => {
     localStorage.setItem("selectedReport", report.id);
   };
 
-  // UPDATERS
-  const state =
-    report?.state || userState || localStorage.getItem("selectedState");
-  const reportId = report?.id || localStorage.getItem("selectedReport");
-
   // on mount, if report page, fetch report
   useEffect(() => {
-    if (isMcparReportFormPage(pathname) && state && reportId) {
-      fetchReport({ state, id: reportId });
+    const state =
+      report?.state || userState || localStorage.getItem("selectedState");
+    const id = report?.id || localStorage.getItem("selectedReport");
+    if (isMcparReportFormPage(pathname) && state && id) {
+      fetchReport({ state, id });
     }
   }, []);
 

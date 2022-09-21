@@ -38,7 +38,7 @@ jest.mock("react-router-dom", () => ({
 
 const mockReportContextNoReports = {
   ...mockReportContext,
-  report: undefined,
+  reportsByState: undefined,
 };
 
 const mockReportContextWithError = {
