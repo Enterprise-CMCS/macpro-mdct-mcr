@@ -43,28 +43,26 @@ export const updateReport = handler(async (event, context) => {
         unvalidatedFieldData
       );
 
-      if (validatedMetadata && validatedFieldData) {
-        const { state, id } = event.pathParameters;
-        const reportParams = {
-          TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-          Item: {
-            ...currentReport,
-            ...validatedMetadata,
-            state,
-            id,
-            lastAltered: Date.now(),
-            fieldData: {
-              ...currentReport.fieldData,
-              ...validatedFieldData,
-            },
+      const { state, id } = event.pathParameters;
+      const reportParams = {
+        TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+        Item: {
+          ...currentReport,
+          ...validatedMetadata,
+          state,
+          id,
+          lastAltered: Date.now(),
+          fieldData: {
+            ...currentReport.fieldData,
+            ...validatedFieldData,
           },
-        };
-        await dynamoDb.put(reportParams);
-        return {
-          status: StatusCodes.SUCCESS,
-          body: { ...reportParams.Item },
-        };
-      } else throw new Error(error.INVALID_DATA);
+        },
+      };
+      await dynamoDb.put(reportParams);
+      return {
+        status: StatusCodes.SUCCESS,
+        body: { ...reportParams.Item },
+      };
     } else throw new Error(error.MISSING_DATA);
   } else throw new Error(error.NO_MATCHING_RECORD);
 });

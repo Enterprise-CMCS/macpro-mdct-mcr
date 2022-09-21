@@ -17,6 +17,11 @@ jest.mock("../../utils/auth/authorization", () => ({
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
+jest.mock("../../utils/debugging/debug-lib", () => ({
+  init: jest.fn(),
+  flush: jest.fn(),
+}));
+
 const mockProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },

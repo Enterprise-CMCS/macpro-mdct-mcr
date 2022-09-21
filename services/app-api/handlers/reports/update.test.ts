@@ -1,9 +1,9 @@
-import { getReport } from "./read";
-import { createReport } from "./create";
+import { readReport } from "./read";
 import { updateReport } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
+import { mockReport } from "../../utils/testing/setupJest";
 import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
@@ -23,119 +23,90 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
   flush: jest.fn(),
 }));
 
-jest.mock("./get");
-const mockedGetReportMetadata = getReportMetadata as jest.MockedFunction<
-  typeof getReportMetadata
->;
+jest.mock("./read");
+const mockedReadReport = readReport as jest.MockedFunction<typeof readReport>;
 
-const creationEvent: APIGatewayProxyEvent = {
+const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"in progress","combinedData":"yes"}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
+  pathParameters: { state: "AB", id: "testReportId" },
+  body: JSON.stringify(mockReport),
+};
+
+const updateEvent: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: JSON.stringify({
+    ...mockReport,
+    status: "in progress",
+    fieldData: {},
+  }),
 };
 
 const submissionEvent: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"submitted","combinedData":"yes"}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
+  ...mockProxyEvent,
+  body: JSON.stringify({
+    ...mockReport,
+    status: "submitted",
+    submittedBy: mockReport.lastAlteredBy,
+    submittedOnDate: Date.now(),
+    fieldData: {},
+  }),
 };
 
-const creationEventWithInvalidData: APIGatewayProxyEvent = {
-  ...proxyEvent,
+const updateEventWithInvalidData: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
   body: `{"programName":{}}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 const submissionEventWithInvalidData: APIGatewayProxyEvent = {
-  ...proxyEvent,
+  ...mockProxyEvent,
   body: ``,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
-describe("Test writeReportMetadata API method", () => {
-  beforeEach(() => {
-    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
-  });
-
+describe("Test updateReport API method", () => {
   test("Test unauthorized report status creation throws 403 error", async () => {
-    const res = await writeReportMetadata(creationEvent, null);
+    const res = await updateReport(updateEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
-  test("Test Successful Run of report status Creation", async () => {
-    mockedGetReportMetadata.mockResolvedValue({
+  test("Test Successful Run of report update", async () => {
+    mockedReadReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: "{}",
+      body: JSON.stringify(mockReport),
     });
-    const res = await writeReportMetadata(creationEvent, null);
+    const res = await updateReport(updateEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.status).toContain("in progress");
+    expect(body.fieldData.text).toContain("text-input");
   });
 
-  test("Test attempted report creation with invalid data fails", async () => {
-    mockedGetReportMetadata.mockResolvedValue({
+  test("Test attempted report update with invalid data fails", async () => {
+    mockedReadReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: "{}",
+      body: JSON.stringify(mockReport),
     });
-    const res = await writeReportMetadata(creationEventWithInvalidData, null);
+    const res = await updateReport(updateEventWithInvalidData, null);
     expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 
-  test("Test Successful Run of report status update", async () => {
-    mockedGetReportMetadata.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
-    });
-
-    const secondResponse = await writeReportMetadata(submissionEvent, null);
-    const secondBody = JSON.parse(secondResponse.body);
-    expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(secondBody.status).toContain("submitted");
-  });
-
-  test("Test attempted report creation with invalid data fails", async () => {
-    mockedGetReportMetadata.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
-    });
-
-    const secondResponse = await writeReportMetadata(
-      submissionEventWithInvalidData,
-      null
-    );
-    expect(secondResponse.statusCode).toBe(StatusCodes.SERVER_ERROR);
-  });
-
   test("Test reportKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
-      ...creationEvent,
+      ...updateEvent,
       pathParameters: {},
     };
-    const res = await writeReportMetadata(noKeyEvent, null);
+    const res = await updateReport(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
@@ -143,191 +114,38 @@ describe("Test writeReportMetadata API method", () => {
 
   test("Test reportKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
-      ...creationEvent,
-      pathParameters: { state: "", reportId: "" },
+      ...updateEvent,
+      pathParameters: { state: "", id: "" },
     };
-    const res = await writeReportMetadata(noKeyEvent, null);
+    const res = await updateReport(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
-});
 
-jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  __esModule: true,
-  default: {
-    put: jest.fn(),
-  },
-}));
-
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthorized: jest.fn().mockResolvedValue(true),
-  hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
-}));
-
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
-
-jest.mock("./get");
-const mockedGetReportData = getReportData as jest.MockedFunction<
-  typeof getReportData
->;
-
-jest.mock("../reportMetadata/get");
-const mockedGetReportMetadata = getReportMetadata as jest.MockedFunction<
-  typeof getReportMetadata
->;
-
-const creationEvent: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"field1":"value1","field2":"value2"}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
-};
-
-const creationEventWithInvalidData: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"field1":"value1","field2":{}}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
-};
-
-const updateEvent: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"newField1":"newValue1","newField2":"newValue2"}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
-};
-
-const updateEventWithInvalidData: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"newField1":"newValue1","newField2":{}}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", reportId: "testReportId" },
-};
-
-describe("Test writeReportData API method", () => {
-  beforeEach(() => {
-    process.env["REPORT_DATA_TABLE_NAME"] = "fakeReportDataTable";
-  });
-
-  test("Test unauthorized report creation throws 403 error", async () => {
-    const res = await writeReportData(creationEvent, null);
-
-    expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(error.UNAUTHORIZED);
-  });
-
-  test("Test Successful Run of report Creation", async () => {
-    mockedGetReportMetadata.mockResolvedValue({
+  test("Test report update submission succeeds", async () => {
+    mockedReadReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"formTemplate":{"validationJson":{"field1":"text"}}}`,
+      body: JSON.stringify(mockReport),
     });
-    mockedGetReportData.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: "{}",
-    });
-    const response = await writeReportData(creationEvent, null);
-    const body = JSON.parse(response.body);
+    const response = await updateReport(submissionEvent, null);
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.fieldData.field1).toContain("value1");
   });
 
-  test("Test report creation fails with invalid data", async () => {
-    mockedGetReportMetadata.mockResolvedValue({
+  test("Report update submission fails with invalid data", async () => {
+    mockedReadReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"formTemplate":{"validationJson":{"field1":"number","field2":"text"}}}`,
+      body: JSON.stringify(mockReport),
     });
-    mockedGetReportData.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: "{}",
-    });
-    const response = await writeReportData(creationEventWithInvalidData, null);
+    const response = await updateReport(submissionEventWithInvalidData, null);
     expect(response.statusCode).toBe(StatusCodes.SERVER_ERROR);
-  });
-
-  test("Test Successful Run of report update", async () => {
-    mockedGetReportData.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"fieldData":{"field1":"value1","field2":"value2"}}`,
-    });
-    mockedGetReportMetadata.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"formTemplate":{"validationJson":{"field1":"text","newField1":"text"}}}`,
-    });
-    const response = await writeReportData(updateEvent, null);
-    const body = JSON.parse(response.body);
-    expect(response.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.fieldData.newField1).toContain("newValue1");
-    expect(body.fieldData.field1).toContain("value1");
-  });
-
-  test("Report update fails with invalid data", async () => {
-    mockedGetReportData.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"fieldData":{"field1":"value1","field2":"value2"}}`,
-    });
-    mockedGetReportMetadata.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: `{"formTemplate":{"validationJson":{"newField1":"number","newField2":"text"}}}`,
-    });
-    const response = await writeReportData(updateEventWithInvalidData, null);
-    expect(response.statusCode).toBe(StatusCodes.SERVER_ERROR);
-  });
-
-  test("Test reportKey not provided throws 500 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...creationEvent,
-      pathParameters: {},
-    };
-    const res = await writeReportData(noKeyEvent, null);
-
-    expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(error.NO_KEY);
-  });
-
-  test("Test reportKey empty throws 500 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...creationEvent,
-      pathParameters: { state: "", reportId: "" },
-    };
-    const res = await writeReportData(noKeyEvent, null);
-
-    expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(error.NO_KEY);
   });
 });

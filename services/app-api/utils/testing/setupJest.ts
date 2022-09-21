@@ -1,8 +1,3 @@
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
-
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
