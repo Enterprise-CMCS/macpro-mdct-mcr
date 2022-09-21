@@ -70,7 +70,7 @@ export const hydrateFormFields = (
       formFields[fieldFormIndex].props = {};
     }
     // set props.hydrate
-    const fieldHydrationValue = formData?.[field.id];
+    const fieldHydrationValue = formData?.fieldData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
   return formFields;

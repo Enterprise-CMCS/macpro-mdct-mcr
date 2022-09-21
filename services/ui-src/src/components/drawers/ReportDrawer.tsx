@@ -25,7 +25,7 @@ export const ReportDrawer = ({
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={report?.fieldData}
+        formData={report}
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>

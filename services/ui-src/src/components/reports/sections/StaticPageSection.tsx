@@ -13,7 +13,7 @@ export const StaticPageSection = ({ form, onSubmit }: Props) => {
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={report?.fieldData}
+        formData={report}
       />
     </Box>
   );
