@@ -23,7 +23,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
   flush: jest.fn(),
 }));
 
-jest.mock("./read");
+jest.mock("./fetch");
 const mockedFetchReport = fetchReport as jest.MockedFunction<
   typeof fetchReport
 >;
