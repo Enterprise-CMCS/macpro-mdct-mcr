@@ -47,7 +47,7 @@ export const updateReport = handler(async (event, context) => {
       unvalidatedFieldData
     );
 
-    if (validatedMetadata) {
+    if (validatedMetadata && validatedFieldData) {
       const { state, id } = event.pathParameters;
       const reportParams = {
         TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
