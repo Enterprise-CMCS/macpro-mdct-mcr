@@ -666,32 +666,32 @@
                   "hint": "Are any of the four special benefit types covered by the managed care program: (1) behavioral health, (2) long-term services and supports, (3) dental, and (4) transportation, or (5) none of the above? Select one or more.</br>Only list the benefit type if it is a covered service as specified in a contract between the state and managed care plans participating in the program. Benefits available to eligible program enrollees via fee-for-service should not be listed here.",
                   "choices": [
                     {
-                      "name": "specialProgramBenefits-behavioralHealth",
+                      "name": "specialProgramBenefits-o1",
                       "type": "choice",
                       "label": "Behavioral health"
                     },
                     {
-                      "name": "specialProgramBenefits-longTermServicesAndSupports",
+                      "name": "specialProgramBenefits-o2",
                       "type": "choice",
                       "label": "Long-term services and supports"
                     },
                     {
-                      "name": "specialProgramBenefits-dental",
+                      "name": "specialProgramBenefits-o3",
                       "type": "choice",
                       "label": "Dental"
                     },
                     {
-                      "name": "specialProgramBenefits-transportation",
+                      "name": "specialProgramBenefits-o4",
                       "type": "choice",
                       "label": "Transportation"
                     },
                     {
-                      "name": "specialProgramBenefits-none",
+                      "name": "specialProgramBenefits-o5",
                       "type": "choice",
                       "label": "None of the above",
                       "children": [
                         {
-                          "id": "specialProgramBenefits-text",
+                          "id": "specialProgramBenefits-o5-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
@@ -997,7 +997,7 @@
                 "id": "cna",
                 "fields": [
                   {
-                    "id": "networkAdequacyGapsAndChallenges",
+                    "id": "GapsChallengesInNetworkAdequacy",
                     "type": "textarea",
                     "validation": "text",
                     "props": {
@@ -1479,7 +1479,7 @@
                 }
               },
               {
-                "id": "bssStateEvaulationEntityPerformance",
+                "id": "stateEvaulationOfBssEntityPerformance",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1885,7 +1885,7 @@
                     }
                   },
                   {
-                    "id": "denialOfOrLimitedAuthorization",
+                    "id": "resolvedAppealsRelatedToDenialOfOrLimitedAuthorization",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1895,7 +1895,7 @@
                     }
                   },
                   {
-                    "id": "reductionSuspensionOrTerminationOfPreviouslyAuthorizedService",
+                    "id": "resolvedAppealsRelatedToReductionSuspensionOrTerminationOfPreviouslyAuthorizedService",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1905,7 +1905,7 @@
                     }
                   },
                   {
-                    "id": "paymentDenial",
+                    "id": "resolvedAppealsRelatedToPaymentDenial",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1915,7 +1915,7 @@
                     }
                   },
                   {
-                    "id": "serviceTimliness",
+                    "id": "resolvedAppealsRelatedToServiceTimliness",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1925,7 +1925,7 @@
                     }
                   },
                   {
-                    "id": "lackOfResponseTimlinessToAnAppealOrGrievance",
+                    "id": "resolvedAppealsRelatedToLackOfResponseTimlinessToAppealOrGrievance",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1935,7 +1935,7 @@
                     }
                   },
                   {
-                    "id": "denialOfAnEnrolleeRightToRequestOutOfNetworkCare",
+                    "id": "resolvedAppealsRelatedToDenialOfEnrolleeRightToRequestOutOfNetworkCare",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -1945,7 +1945,7 @@
                     }
                   },
                   {
-                    "id": "denialOfEnrolleeRequestToDisputeFinancialLiability",
+                    "id": "resolvedAppealsRelatedToDenialOfEnrolleeRequestToDisputeFinancialLiability",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2305,7 +2305,7 @@
                 "id": "dgbs",
                 "fields": [
                   {
-                    "id": "resolvedGrievancesInGeneralInpatientServices",
+                    "id": "resolvedGrievancesRelatedToGeneralInpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2315,7 +2315,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInGeneralOutpatientServices",
+                    "id": "resolvedGrievancesRelatedToGeneralOutpatientServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2325,7 +2325,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInInpatientBehavioralHealthServices",
+                    "id": "resolvedGrievancesRelatedToInpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2335,7 +2335,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInOutpatientBehavioralHealthServices",
+                    "id": "resolvedGrievancesRelatedToOutpatientBehavioralHealthServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2345,7 +2345,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInCoverageOfOutpatientPrescriptionDrugs",
+                    "id": "resolvedGrievancesRelatedToCoverageOfOutpatientPrescriptionDrugs",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2355,7 +2355,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInSnf",
+                    "id": "resolvedGrievancesRelatedToSnf",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2365,7 +2365,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInLtss",
+                    "id": "resolvedGrievancesRelatedToLtss",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2375,7 +2375,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInDentalServices",
+                    "id": "resolvedGrievancesRelatedToDentalServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2385,7 +2385,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInNemt",
+                    "id": "resolvedGrievancesRelatedToNemt",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2395,7 +2395,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInOtherServices",
+                    "id": "resolvedGrievancesRelatedToOtherServices",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2449,7 +2449,7 @@
                 "id": "dgbr",
                 "fields": [
                   {
-                    "id": "resolvedGrievancesInPlanOrProviderCustomerService",
+                    "id": "resolvedGrievancesRelatedToPlanOrProviderCustomerService",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2459,7 +2459,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInPlanOrProviderCareOrCaseMgmt",
+                    "id": "resolvedGrievancesRelatedToPlanOrProviderCareOrCaseMgmt",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2469,7 +2469,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInAcessToCareServicesFromPlanOrProvider",
+                    "id": "resolvedGrievancesRelatedToAcessToCareServicesFromPlanOrProvider",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2479,7 +2479,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInQualityOfCare",
+                    "id": "resolvedGrievancesRelatedToQualityOfCare",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2489,7 +2489,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesPlanCommunications",
+                    "id": "resolvedGrievancesRelatedToPlanCommunications",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2499,7 +2499,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInPaymentOrBilling",
+                    "id": "resolvedGrievancesRelatedToPaymentOrBilling",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2509,7 +2509,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInSuspectedFraud",
+                    "id": "resolvedGrievancesRelatedToSuspectedFraud",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2519,7 +2519,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInAbuseNeglectOrExploitation",
+                    "id": "resolvedGrievancesRelatedToAbuseNeglectOrExploitation",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2529,7 +2529,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInLackOfTimelyPlanResponseToServiceAuthOrAppeal",
+                    "id": "resolvedGrievancesRelatedToLackOfTimelyPlanResponseToServiceAuthOrAppeal",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2539,7 +2539,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesInPlanDenialOfExpeditedAppeal",
+                    "id": "resolvedGrievancesRelatedToPlanDenialOfExpeditedAppeal",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2549,7 +2549,7 @@
                     }
                   },
                   {
-                    "id": "resolvedGrievancesOtherReasons",
+                    "id": "resolvedGrievancesFiledForOtherReasons",
                     "type": "number",
                     "validation": "number",
                     "props": {
@@ -2692,7 +2692,7 @@
                       "label": "Cross-program rate",
                       "children": [
                         {
-                          "id": "measureReporting-listPrograms",
+                          "id": "measureReportingListPrograms",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
@@ -2771,7 +2771,7 @@
                       "label": "No",
                       "children": [
                         {
-                          "id": "reportingPeriod-startDate",
+                          "id": "reportingPeriodStartDate",
                           "type": "date",
                           "validation": {
                             "type": "date",
@@ -2786,11 +2786,11 @@
                           }
                         },
                         {
-                          "id": "reportingPeriod-endDate",
+                          "id": "reportingPeriodEndDate",
                           "type": "date",
                           "validation": {
                             "type": "endDate",
-                            "dependentFieldName": "reportingPeriod-startDate",
+                            "dependentFieldName": "reportingPeriodStartDate",
                             "nested": true,
                             "parentFieldName": "reportingPeriod",
                             "visibleOptionValue": "No"
@@ -3075,7 +3075,7 @@
             "id": "dpi",
             "fields": [
               {
-                "id": "numberOfDedicatedProgramIntegrityStaf",
+                "id": "numberOfDedicatedProgramIntegrityStaff",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -3206,8 +3206,8 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.X.8 Ratio of program integrity referrals to the state",
-                  "hint": "What is the ratio of program integrity referrals listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
+                  "label": "D1.X.8 ratio of program integrity referral to the state",
+                  "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
                   "mask": "comma-separated"
                 }
               },
@@ -3221,7 +3221,7 @@
                 }
               },
               {
-                "id": "ratio of program integrity referrals",
+                "id": "changesInBeneficiaryCircumstancesFrequency",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -3229,32 +3229,32 @@
                   "hint": "Select the frequency the plan reports changes in beneficiary circumstances to the state.",
                   "choices": [
                     {
-                      "name": "ratio of program integrity referrals-o1",
+                      "name": "changesInBeneficiaryCircumstancesFrequency-o1",
                       "type": "choice",
                       "label": "Daily"
                     },
                     {
-                      "name": "ratio of program integrity referrals-o2",
+                      "name": "changesInBeneficiaryCircumstancesFrequency-o2",
                       "type": "choice",
                       "label": "Weekly"
                     },
                     {
-                      "name": "ratio of program integrity referrals-o3",
+                      "name": "changesInBeneficiaryCircumstancesFrequency-o3",
                       "type": "choice",
                       "label": "Bi-weekly"
                     },
                     {
-                      "name": "ratio of program integrity referrals-o4",
+                      "name": "changesInBeneficiaryCircumstancesFrequency-o4",
                       "type": "choice",
                       "label": "Monthly"
                     },
                     {
-                      "name": "ratio of program integrity referrals-o5",
+                      "name": "changesInBeneficiaryCircumstancesFrequency-o5",
                       "type": "choice",
                       "label": "Bi-monthly"
                     },
                     {
-                      "name": "ratio of program integrity referrals-o6",
+                      "name": "changesInBeneficiaryCircumstancesFrequency-o6",
                       "type": "choice",
                       "label": "Quarterly"
                     }
