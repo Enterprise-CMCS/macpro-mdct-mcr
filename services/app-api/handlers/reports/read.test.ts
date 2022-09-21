@@ -44,10 +44,6 @@ const testEventByState: APIGatewayProxyEvent = {
 };
 
 describe("Test readReport API method", () => {
-  beforeEach(() => {
-    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
-  });
-
   test("Test Successful Report Fetch", async () => {
     const res = await readReport(testEvent, null);
 
@@ -62,7 +58,6 @@ describe("Test readReport API method", () => {
       pathParameters: {},
     };
     const res = await readReport(noKeyEvent, null);
-
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -73,22 +68,16 @@ describe("Test readReport API method", () => {
       pathParameters: { state: "", id: "" },
     };
     const res = await readReport(noKeyEvent, null);
-
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
 });
 
 describe("Test readReportsByState API method", () => {
-  beforeEach(() => {
-    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
-  });
-
   test("Test successful call", async () => {
     const res = await readReportsByState(testEventByState, null);
-
-    const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    const body = JSON.parse(res.body);
     expect(body[0].lastAlteredBy).toContain("testUser");
   });
 
@@ -98,7 +87,6 @@ describe("Test readReportsByState API method", () => {
       pathParameters: {},
     };
     const res = await readReportsByState(noKeyEvent, null);
-
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -109,7 +97,6 @@ describe("Test readReportsByState API method", () => {
       pathParameters: { state: "" },
     };
     const res = await readReportsByState(noKeyEvent, null);
-
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
