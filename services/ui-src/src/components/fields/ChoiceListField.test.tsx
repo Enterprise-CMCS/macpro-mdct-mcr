@@ -29,8 +29,20 @@ jest.mock("utils", () => ({
 }));
 
 const mockChoices = [
-  { name: "Choice 1", label: "Choice 1", value: "Choice 1", checked: false },
-  { name: "Choice 2", label: "Choice 2", value: "Choice 2", checked: false },
+  {
+    id: "Choice 1",
+    name: "Choice 1",
+    label: "Choice 1",
+    value: "Choice 1",
+    checked: false,
+  },
+  {
+    id: "Choice 2",
+    name: "Choice 2",
+    label: "Choice 2",
+    value: "Choice 2",
+    checked: false,
+  },
 ];
 
 const mockNestedChildren = [
@@ -41,6 +53,7 @@ const mockNestedChildren = [
 ];
 
 const mockChoiceWithChild = {
+  id: "Choice 3",
   name: "Choice 3",
   label: "Choice 3",
   value: "Choice 3",

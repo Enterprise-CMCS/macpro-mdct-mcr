@@ -86,7 +86,7 @@ export const ChoiceListField = ({
 
   // update field values
   const onChangeHandler = (event: InputChangeEvent) => {
-    const clickedOption = { key: event.target.name, value: event.target.value };
+    const clickedOption = { key: event.target.id, value: event.target.value };
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
     // handle radio
