@@ -8,9 +8,7 @@ import {
   Heading,
   Image,
   Link,
-  Td,
   Text,
-  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -19,8 +17,10 @@ import {
   ErrorAlert,
   PageTemplate,
   ReportContext,
-  Table,
 } from "components";
+import {
+  DashboardList
+} from "../Dashboard"
 // utils
 import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
 import {
@@ -153,7 +153,7 @@ export const Dashboard = () => {
       <Box sx={sx.bodyBox}>
         {reportsByState &&
           (isTablet || isMobile ? (
-            <MobileDashboardRow
+            <MobileDashboardList
               reportsByState={reportsByState}
               userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
@@ -161,7 +161,7 @@ export const Dashboard = () => {
               openDeleteProgramModal={openDeleteProgramModal}
             />
           ) : (
-            <DashboardTable
+            <DashboardList
               reportsByState={reportsByState}
               userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
@@ -202,66 +202,7 @@ export const Dashboard = () => {
   );
 };
 
-const DashboardTable = ({
-  reportsByState,
-  userRole,
-  body,
-  openAddEditProgramModal,
-  enterSelectedReport,
-  openDeleteProgramModal,
-}: DashboardTableProps) => (
-  <Table content={body.table} sxOverride={sx.table} data-testid="desktop-table">
-    {reportsByState.map((report: AnyObject) => (
-      <Tr key={report.reportId}>
-        <Td sx={sx.editProgram}>
-          {(userRole === UserRoles.STATE_REP ||
-            userRole === UserRoles.STATE_USER) && (
-            <button onClick={() => openAddEditProgramModal(report)}>
-              <Image src={editIcon} alt="Edit Program" />
-            </button>
-          )}
-        </Td>
-        <Td sx={sx.programNameText}>{report.programName}</Td>
-        <Td>{convertDateUtcToEt(report.dueDate)}</Td>
-        <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
-        <Td>{report?.lastAlteredBy || "-"}</Td>
-        <Td>{report?.status}</Td>
-        <Td sx={sx.editReportButtonCell}>
-          <Button
-            variant="outline"
-            data-testid="enter-program"
-            onClick={() => enterSelectedReport(report)}
-          >
-            Enter
-          </Button>
-        </Td>
-        <Td sx={sx.deleteProgramCell}>
-          {userRole === UserRoles.ADMIN && (
-            <button onClick={() => openDeleteProgramModal(report)}>
-              <Image
-                src={cancelIcon}
-                data-testid="delete-program"
-                alt="Delete Program"
-                sx={sx.deleteProgramButtonImage}
-              />
-            </button>
-          )}
-        </Td>
-      </Tr>
-    ))}
-  </Table>
-);
-
-interface DashboardTableProps {
-  reportsByState: AnyObject[];
-  userRole: string;
-  body: { table: AnyObject };
-  openAddEditProgramModal: Function;
-  enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
-}
-
-export const MobileDashboardRow = ({
+export const MobileDashboardList = ({
   reportsByState,
   userRole,
   openAddEditProgramModal,
