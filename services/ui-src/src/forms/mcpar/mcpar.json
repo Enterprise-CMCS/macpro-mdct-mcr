@@ -53,7 +53,6 @@
               {
                 "id": "submitterName",
                 "type": "text",
-                "hydrate": "submitterName",
                 "validation": "textOptional",
                 "props": {
                   "label": "A.3a Submitter name",
@@ -64,7 +63,6 @@
               {
                 "id": "submitterEmailAddress",
                 "type": "text",
-                "hydrate": "submitterEmailAddress",
                 "validation": "emailOptional",
                 "props": {
                   "label": "A.3b Submitter email address",
@@ -99,9 +97,8 @@
             "id": "arp",
             "fields": [
               {
-                "id": "mlrReportingPeriodStartDate",
+                "id": "eeportingPeriodStartDate",
                 "type": "date",
-                "hydrate": "mlrReportingPeriodStartDate",
                 "validation": "date",
                 "props": {
                   "label": "A.5a Reporting period start date",
@@ -110,9 +107,8 @@
                 }
               },
               {
-                "id": "mlrReportingPeriodEndDate",
+                "id": "reportingPeriodEndDate",
                 "type": "date",
-                "hydrate": "mlrReportingPeriodEndDate",
                 "validation": "date",
                 "props": {
                   "label": "A.5b Reporting period end date",
@@ -123,7 +119,6 @@
               {
                 "id": "programName",
                 "type": "text",
-                "hydrate": "programName",
                 "validation": "text",
                 "props": {
                   "label": "A.6 Program name",
@@ -483,7 +478,7 @@
                 }
               },
               {
-                "id": "excludedPersonsOrEntitiesInFederalDatabaseChecks",
+                "id": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -491,17 +486,17 @@
                   "hint": "During the state's federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
                   "choices": [
                     {
-                      "name": "excludedPersonsOrEntitiesInFederalDatabaseChecks-o1",
+                      "name": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "instancesOfExclusionSummary",
+                          "id": "exclusionInstancesSummary",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "excludedPersonsOrEntitiesInFederalDatabaseChecks",
+                            "parentFieldName": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -512,7 +507,7 @@
                       ]
                     },
                     {
-                      "name": "excludedPersonsOrEntitiesInFederalDatabaseChecks-o2",
+                      "name": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -520,7 +515,7 @@
                 }
               },
               {
-                "id": "websitePostingOfFivePercentOrMoreOwnershipControl",
+                "id": "ownershipControlDisclosureSite",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -528,17 +523,17 @@
                   "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3)",
                   "choices": [
                     {
-                      "name": "websitePostingOfFivePercentOrMoreOwnershipControl-o1",
+                      "name": "ownershipControlDisclosureSite-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "bpi-9b",
+                          "id": "ownershipControlDisclosureSiteLink",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "websitePostingOfFivePercentOrMoreOwnershipControl",
+                            "parentFieldName": "ownershipControlDisclosureSite",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -549,7 +544,7 @@
                       ]
                     },
                     {
-                      "name": "websitePostingOfFivePercentOrMoreOwnershipControl-o2",
+                      "name": "ownershipControlDisclosureSite-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -557,7 +552,7 @@
                 }
               },
               {
-                "id": "periodicAudits",
+                "id": "periodicPlanSubmittedDataAudits",
                 "type": "textarea",
                 "validation": "text",
                 "props": {

@@ -78,10 +78,8 @@ export const AddEditProgramModal = ({
       });
       await updateReportData(reportDetails, {
         stateName: stateName,
-        mlrReportingPeriodStartDate: convertDateUtcToEt(
-          reportingPeriodStartDate
-        ),
-        mlrReportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
+        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
+        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
         programName: programName,
       });
     }
