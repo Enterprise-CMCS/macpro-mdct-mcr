@@ -62,7 +62,7 @@ describe("Test RadioField component", () => {
     await userEvent.click(firstRadio);
     expect(mockSetValue).toHaveBeenCalledWith(
       "radio_choices",
-      [{ key: "radio_choices", value: "A" }],
+      [{ key: "Choice 1", value: "A" }],
       {
         shouldValidate: true,
       }
