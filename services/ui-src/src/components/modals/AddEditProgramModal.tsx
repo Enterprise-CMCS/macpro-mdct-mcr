@@ -95,7 +95,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
-        formData={selectedReport}
+        formData={selectedReport?.fieldData}
         onSubmit={writeProgram}
       />
     </Modal>
