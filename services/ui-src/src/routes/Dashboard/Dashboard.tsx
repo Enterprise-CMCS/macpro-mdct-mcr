@@ -8,6 +8,7 @@ import {
   Heading,
   Image,
   Link,
+  Spinner,
   Td,
   Text,
   Tr,
@@ -35,6 +36,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import { ArrowIcon } from "@cmsgov/design-system";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
+import theme from "../../styles/theme";
 
 export const Dashboard = () => {
   const {
@@ -52,6 +54,7 @@ export const Dashboard = () => {
   const [selectedReportMetadata, setSelectedReportMetadata] = useState<
     AnyObject | undefined
   >(undefined);
+  const [loadingReport, setLoadingReport] = useState<boolean>(false);
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
@@ -72,6 +75,7 @@ export const Dashboard = () => {
   }, []);
 
   const enterSelectedReport = async (reportMetadata: ReportShape) => {
+    setLoadingReport(true);
     // set active report to selected report
     const reportDetails: ReportDetails = {
       state: reportMetadata.state!,
@@ -82,6 +86,7 @@ export const Dashboard = () => {
 
     // fetch & set active report to selected report
     await fetchReport(reportDetails);
+    setLoadingReport(false);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };
@@ -151,11 +156,12 @@ export const Dashboard = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
-        {reportsByState &&
-          (isTablet || isMobile ? (
+        {reportsByState ? (
+          isTablet || isMobile ? (
             <MobileDashboardRow
               reportsByState={reportsByState}
               userRole={userRole!}
+              loadingReport={loadingReport}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
@@ -164,12 +170,18 @@ export const Dashboard = () => {
             <DashboardTable
               reportsByState={reportsByState}
               userRole={userRole!}
+              loadingReport={loadingReport}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
               body={body}
             />
-          ))}
+          )
+        ) : (
+          <Flex alignItems="center" w="full" justifyContent="center" p="10">
+            <Spinner size="lg" />
+          </Flex>
+        )}
         {!reportsByState?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
@@ -205,6 +217,7 @@ export const Dashboard = () => {
 const DashboardTable = ({
   reportsByState,
   userRole,
+  loadingReport,
   body,
   openAddEditProgramModal,
   enterSelectedReport,
@@ -232,7 +245,11 @@ const DashboardTable = ({
             data-testid="enter-program"
             onClick={() => enterSelectedReport(report)}
           >
-            Enter
+            {loadingReport ? (
+              <Spinner size="xs" color={theme.colors.palette.gray_medium} />
+            ) : (
+              "Enter"
+            )}
           </Button>
         </Td>
         <Td sx={sx.deleteProgramCell}>
@@ -255,6 +272,7 @@ const DashboardTable = ({
 interface DashboardTableProps {
   reportsByState: AnyObject[];
   userRole: string;
+  loadingReport?: boolean;
   body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
@@ -265,6 +283,7 @@ export const MobileDashboardRow = ({
   reportsByState,
   userRole,
   openAddEditProgramModal,
+  loadingReport,
   enterSelectedReport,
   openDeleteProgramModal,
 }: MobileDashboardRowProps) => (
@@ -315,7 +334,7 @@ export const MobileDashboardRow = ({
               variant="outline"
               onClick={() => enterSelectedReport(report)}
             >
-              Enter
+              {loadingReport ? <Spinner size="xs" /> : "Enter"}
             </Button>
           </Box>
           <Box sx={sx.deleteProgramCell}>
@@ -337,6 +356,7 @@ export const MobileDashboardRow = ({
 
 interface MobileDashboardRowProps {
   reportsByState: any;
+  loadingReport?: boolean;
   userRole: any;
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;

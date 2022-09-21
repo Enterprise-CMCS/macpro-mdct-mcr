@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
@@ -14,6 +14,8 @@ import {
   convertDateUtcToEt,
   useUser,
 } from "utils";
+import { Spinner } from "@chakra-ui/react";
+import theme from "styles/theme";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -23,6 +25,7 @@ export const AddEditProgramModal = ({
   const { fetchReportsByState, updateReport, updateReportData } =
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
+  const [loading, setLoading] = useState<boolean>(false);
 
   // get full state name from selected state
   const stateName = States[activeState as keyof typeof States];
@@ -31,6 +34,7 @@ export const AddEditProgramModal = ({
   const form: FormJson = formJson;
 
   const writeProgram = async (formData: any) => {
+    setLoading(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
     // prepare payload
@@ -84,6 +88,7 @@ export const AddEditProgramModal = ({
       });
     }
     await fetchReportsByState(activeState);
+    setLoading(false);
     modalDisclosure.onClose();
   };
 
@@ -96,7 +101,11 @@ export const AddEditProgramModal = ({
         heading: selectedReportMetadata?.reportId
           ? "Edit Program"
           : "Add a Program",
-        actionButtonText: "Save",
+        actionButtonText: loading ? (
+          <Spinner color={theme.colors.white} size="md" />
+        ) : (
+          "Save"
+        ),
         closeButtonText: "Cancel",
       }}
     >

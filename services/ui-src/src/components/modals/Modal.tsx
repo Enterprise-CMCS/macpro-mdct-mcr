@@ -90,7 +90,7 @@ interface Props {
   };
   content: {
     heading: string;
-    actionButtonText: string;
+    actionButtonText: string | ReactNode;
     closeButtonText: string;
   };
   onConfirmHandler?: Function;
