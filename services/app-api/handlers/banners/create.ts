@@ -6,7 +6,7 @@ import { validateData } from "../../utils/validation/validation";
 import error from "../../utils/constants/constants";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
-export const writeBanner = handler(async (event, _context) => {
+export const createBanner = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.ADMIN])) {
     return {
       status: StatusCodes.UNAUTHORIZED,

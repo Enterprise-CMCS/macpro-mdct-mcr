@@ -1,5 +1,5 @@
 import handler from "../handler-lib";
-import { readReport } from "./read";
+import { fetchReport } from "./fetch";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
@@ -24,7 +24,7 @@ export const updateReport = handler(async (event, context) => {
 
   // get current report
   const reportEvent = { ...event, body: "" };
-  const getCurrentReport = await readReport(reportEvent, context);
+  const getCurrentReport = await fetchReport(reportEvent, context);
   const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
 
   if (getCurrentReport?.body) {

@@ -1,4 +1,4 @@
-import { readReport } from "./read";
+import { fetchReport } from "./fetch";
 import { updateReport } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
@@ -24,7 +24,9 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 }));
 
 jest.mock("./read");
-const mockedReadReport = readReport as jest.MockedFunction<typeof readReport>;
+const mockedFetchReport = fetchReport as jest.MockedFunction<
+  typeof fetchReport
+>;
 
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -72,7 +74,7 @@ describe("Test updateReport API method", () => {
   });
 
   test("Test Successful Run of report update", async () => {
-    mockedReadReport.mockResolvedValue({
+    mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -89,7 +91,7 @@ describe("Test updateReport API method", () => {
   });
 
   test("Test attempted report update with invalid data fails", async () => {
-    mockedReadReport.mockResolvedValue({
+    mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -124,7 +126,7 @@ describe("Test updateReport API method", () => {
   });
 
   test("Test report update submission succeeds", async () => {
-    mockedReadReport.mockResolvedValue({
+    mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",
@@ -137,7 +139,7 @@ describe("Test updateReport API method", () => {
   });
 
   test("Report update submission fails with invalid data", async () => {
-    mockedReadReport.mockResolvedValue({
+    mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "string",

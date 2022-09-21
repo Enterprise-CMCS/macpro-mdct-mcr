@@ -3,7 +3,7 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
-export const getBanner = handler(async (event, _context) => {
+export const fetchBanner = handler(async (event, _context) => {
   if (!event?.pathParameters?.bannerId!) {
     throw new Error(error.NO_KEY);
   }

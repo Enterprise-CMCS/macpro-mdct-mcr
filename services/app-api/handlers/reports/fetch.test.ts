@@ -1,4 +1,4 @@
-import { readReport, readReportsByState } from "./read";
+import { fetchReport, fetchReportsByState } from "./fetch";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -34,9 +34,9 @@ const testReadEventByState: APIGatewayProxyEvent = {
   pathParameters: { state: "AB" },
 };
 
-describe("Test readReport API method", () => {
+describe("Test fetchReport API method", () => {
   test("Test Successful Report Fetch", async () => {
-    const res = await readReport(testReadEvent, null);
+    const res = await fetchReport(testReadEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     const body = JSON.parse(res.body);
     expect(body.lastAlteredBy).toContain("Thelonious States");
@@ -48,7 +48,7 @@ describe("Test readReport API method", () => {
       ...testReadEvent,
       pathParameters: {},
     };
-    const res = await readReport(noKeyEvent, null);
+    const res = await fetchReport(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -58,15 +58,15 @@ describe("Test readReport API method", () => {
       ...testReadEvent,
       pathParameters: { state: "", id: "" },
     };
-    const res = await readReport(noKeyEvent, null);
+    const res = await fetchReport(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
 });
 
-describe("Test readReportsByState API method", () => {
+describe("Test fetchReportsByState API method", () => {
   test("Test successful call", async () => {
-    const res = await readReportsByState(testReadEventByState, null);
+    const res = await fetchReportsByState(testReadEventByState, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     const body = JSON.parse(res.body);
     expect(body[0].lastAlteredBy).toContain("Thelonious States");
@@ -78,7 +78,7 @@ describe("Test readReportsByState API method", () => {
       ...testReadEventByState,
       pathParameters: {},
     };
-    const res = await readReportsByState(noKeyEvent, null);
+    const res = await fetchReportsByState(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -88,7 +88,7 @@ describe("Test readReportsByState API method", () => {
       ...testReadEventByState,
       pathParameters: { state: "" },
     };
-    const res = await readReportsByState(noKeyEvent, null);
+    const res = await fetchReportsByState(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });

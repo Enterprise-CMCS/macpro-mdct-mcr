@@ -1,4 +1,4 @@
-import { getBanner } from "./get";
+import { createBanner } from "./create";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -7,23 +7,13 @@ import error from "../../utils/constants/constants";
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
   default: {
-    get: jest.fn().mockReturnValue({
-      Item: {
-        createdAt: 1654198665696,
-        endDate: 1657252799000,
-        lastAltered: 1654198665696,
-        description: "testDesc",
-        title: "testTitle",
-        key: "admin-banner-id",
-        startDate: 1641013200000,
-      },
-    }),
+    put: jest.fn(),
   },
 }));
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
-  hasPermissions: jest.fn().mockReturnValue(true),
+  hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
@@ -33,21 +23,39 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
+  body: `{"key":"mock-id","title":"test banner","description":"test description","link":"test link","startDate":1000,"endDate":2000}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { bannerId: "testKey" },
 };
 
-describe("Test getBanner API method", () => {
+const testEventWithInvalidData: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  body: `{"description":"test description","link":"test link","startDate":"1000","endDate":2000}`,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { bannerId: "testKey" },
+};
+
+describe("Test createBanner API method", () => {
   beforeEach(() => {
     process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
   });
 
-  test("Test Successful Banner Fetch", async () => {
-    const res = await getBanner(testEvent, null);
+  test("Test unauthorized banner creation throws 403 error", async () => {
+    const res = await createBanner(testEvent, null);
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
 
+  test("Test Successful Run of Banner Creation", async () => {
+    const res = await createBanner(testEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(res.body).toContain("testDesc");
-    expect(res.body).toContain("testTitle");
+    expect(res.body).toContain("test banner");
+    expect(res.body).toContain("test description");
+  });
+
+  test("Test invalid data causes failure", async () => {
+    const res = await createBanner(testEventWithInvalidData, null);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 
   test("Test bannerKey not provided throws 500 error", async () => {
@@ -55,8 +63,7 @@ describe("Test getBanner API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await getBanner(noKeyEvent, null);
-
+    const res = await createBanner(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -66,8 +73,7 @@ describe("Test getBanner API method", () => {
       ...testEvent,
       pathParameters: { bannerId: "" },
     };
-    const res = await getBanner(noKeyEvent, null);
-
+    const res = await createBanner(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });

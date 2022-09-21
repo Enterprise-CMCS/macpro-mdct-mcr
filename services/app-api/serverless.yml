@@ -95,8 +95,8 @@ provider:
     STAGE: ${self:custom.stage}
 
 functions:
-  getBanner:
-    handler: handlers/banners/get.getBanner
+  fetchBanner:
+    handler: handlers/banners/fetch.fetchBanner
     events:
       - http:
           path: banners/{bannerId}
@@ -107,8 +107,8 @@ functions:
             parameters:
               paths:
                 bannerId: true
-  writeBanner:
-    handler: handlers/banners/write.writeBanner
+  createBanner:
+    handler: handlers/banners/create.createBanner
     events:
       - http:
           path: banners/{bannerId}
@@ -131,8 +131,8 @@ functions:
             parameters:
               paths:
                 bannerId: true
-  readReport:
-    handler: handlers/reports/read.readReport
+  fetchReport:
+    handler: handlers/reports/fetch.fetchReport
     events:
       - http:
           path: reports/{state}/{id}
@@ -144,8 +144,8 @@ functions:
               paths:
                 state: true
                 id: true
-  readReportsByState:
-    handler: handlers/reports/read.readReportsByState
+  fetchReportsByState:
+    handler: handlers/reports/fetch.fetchReportsByState
     events:
       - http:
           path: reports/{state}
@@ -181,8 +181,8 @@ functions:
               paths:
                 state: true
                 id: true
-  getTemplate:
-    handler: handlers/templates/get.getTemplate
+  fetchTemplate:
+    handler: handlers/templates/fetch.fetchTemplate
     events:
       - http:
           path: templates/{templateName}

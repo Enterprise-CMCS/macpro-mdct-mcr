@@ -3,7 +3,7 @@ import handler from "../handler-lib";
 import { StatusCodes, TemplateKeys } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
-export const getTemplate = handler(async (event, _context) => {
+export const fetchTemplate = handler(async (event, _context) => {
   if (!event?.pathParameters?.templateName!) {
     throw new Error(error.NO_TEMPLATE_NAME);
   }
