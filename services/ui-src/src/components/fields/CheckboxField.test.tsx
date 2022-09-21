@@ -17,9 +17,9 @@ const CheckboxFieldComponent = (
   <div data-testid="test-checkbox-list">
     <CheckboxField
       choices={[
-        { name: "Choice 1", label: "Choice 1", value: "A" },
-        { name: "Choice 2", label: "Choice 2", value: "B" },
-        { name: "Choice 3", label: "Choice 3", value: "C" },
+        { id: "Choice 1", name: "Choice 1", label: "Choice 1", value: "A" },
+        { id: "Choice 2", name: "Choice 2", label: "Choice 2", value: "B" },
+        { id: "Choice 3", name: "Choice 3", label: "Choice 3", value: "C" },
       ]}
       label="Checkbox example"
       name="checkbox_choices"
