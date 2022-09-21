@@ -97,7 +97,7 @@
             "id": "arp",
             "fields": [
               {
-                "id": "eeportingPeriodStartDate",
+                "id": "reportingPeriodStartDate",
                 "type": "date",
                 "validation": "date",
                 "props": {
@@ -144,7 +144,7 @@
             "id": "aap",
             "fields": [
               {
-                "id": "planName",
+                "id": "plans",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -174,7 +174,7 @@
             "id": "absse",
             "fields": [
               {
-                "id": "bssEntityName",
+                "id": "bssEntities",
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
@@ -204,7 +204,7 @@
             "id": "bpc",
             "fields": [
               {
-                "id": "medicaidEnrollment",
+                "id": "programCharacteristics_statewideMedicaidEnrollment",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -214,7 +214,7 @@
                 }
               },
               {
-                "id": "managedCareEnrollment",
+                "id": "programCharacteristics_statewideManagedCareEnrollment",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -240,7 +240,7 @@
             "id": "bedr",
             "fields": [
               {
-                "id": "encounterDataValidationEntity",
+                "id": "encounterData_validationEntity",
                 "type": "checkbox",
                 "validation": "checkbox",
                 "props": {
@@ -248,42 +248,42 @@
                   "hint": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs.</br>Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses.",
                   "choices": [
                     {
-                      "name": "encounterDataValidationEntity-o1",
+                      "name": "encounterData_validationEntity-o1",
                       "type": "choice",
                       "label": "State Medicaid agency staff"
                     },
                     {
-                      "name": "encounterDataValidationEntity-o2",
+                      "name": "encounterData_validationEntity-o2",
                       "type": "choice",
                       "label": "Other state agency staff"
                     },
                     {
-                      "name": "encounterDataValidationEntity-o3",
+                      "name": "encounterData_validationEntity-o3",
                       "type": "choice",
                       "label": "State actuaries"
                     },
                     {
-                      "name": "encounterDataValidationEntity-o4",
+                      "name": "encounterData_validationEntity-o4",
                       "type": "choice",
                       "label": "EQRO"
                     },
                     {
-                      "name": "encounterDataValidationEntity-o5",
+                      "name": "encounterData_validationEntity-o5",
                       "type": "choice",
                       "label": "Other third-party vendor"
                     },
                     {
-                      "name": "encounterDataValidationEntity-o6",
+                      "name": "encounterData_validationEntity-o6",
                       "type": "choice",
                       "label": "Proprietary system(s)",
                       "children": [
                         {
-                          "id": "encounterDataHippaCompliance",
+                          "id": "encounterData_validationSystemHipaaCompliance",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "encounterDataValidationEntity",
+                            "parentFieldName": "encounterData_validationEntity",
                             "visibleOptionValue": "Proprietary system(s)"
                           },
                           "props": {
@@ -291,12 +291,12 @@
                             "hint": "Were the system(s) utilized fully HIPAA compliant? Select one.",
                             "choices": [
                               {
-                                "name": "encounterDataHippaCompliance-o1",
+                                "name": "encounterData_validationSystemHipaaCompliance-o1",
                                 "type": "choice",
                                 "label": "Yes"
                               },
                               {
-                                "name": "encounterDataHippaCompliance-o2",
+                                "name": "encounterData_validationSystemHipaaCompliance-o2",
                                 "type": "choice",
                                 "label": "No"
                               }
@@ -306,17 +306,17 @@
                       ]
                     },
                     {
-                      "name": "encounterDataValidationEntity-o7",
+                      "name": "encounterData_validationEntity-o7",
                       "type": "choice",
                       "label": "Other, specify",
                       "children": [
                         {
-                          "id": "encounterDataValidationEntity-o7-text",
+                          "id": "encounterData_validationEntity-o7-text",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "encounterDataValidationEntity",
+                            "parentFieldName": "encounterData_validationEntity",
                             "visibleOptionValue": "Other, specify"
                           }
                         }
@@ -342,7 +342,7 @@
             "id": "bpi",
             "fields": [
               {
-                "id": "paymentRisksBetweenStateAndPlans",
+                "id": "programIntegrity_focusedActivitiesConducted",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -351,7 +351,7 @@
                 }
               },
               {
-                "id": "contractStandardForOverpayments",
+                "id": "programIntegrity_overpaymentStandard",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -359,17 +359,17 @@
                   "hint": "Does the state allow plans to retain overpayments, require the return of overpayments, or has established a hybrid system? Select one.",
                   "choices": [
                     {
-                      "name": "contractStandardForOverpayments-o1",
+                      "name": "programIntegrity_overpaymentStandard-o1",
                       "type": "choice",
                       "label": "Allow plans to retain overpayments"
                     },
                     {
-                      "name": "contractStandardForOverpayments-o2",
+                      "name": "programIntegrity_overpaymentStandard-o2",
                       "type": "choice",
                       "label": "State requires the return of overpayments"
                     },
                     {
-                      "name": "contractStandardForOverpayments-o3",
+                      "name": "programIntegrity_overpaymentStandard-o3",
                       "type": "choice",
                       "label": "State has established a hybrid system"
                     }
@@ -377,7 +377,7 @@
                 }
               },
               {
-                "id": "contractLocationsOfOverpaymentStandard",
+                "id": "programIntegrity_overpaymentStandardContractLocation",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -386,7 +386,7 @@
                 }
               },
               {
-                "id": "descriptionOfOerpaymentContractStandard",
+                "id": "programIntegrity_overpaymentStandardDescription",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -395,7 +395,7 @@
                 }
               },
               {
-                "id": "stateOverpaymentReportingMonitoring",
+                "id": "programIntegrity_overpaymentReportingMonitoringEfforts",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -404,7 +404,7 @@
                 }
               },
               {
-                "id": "changesInBeneficiaryCircumstances",
+                "id": "programIntegrity_beneficiaryCircumstanceChangeReconciliationEfforts",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -413,7 +413,7 @@
                 }
               },
               {
-                "id": "changesInProviderCircumstancesMonitoring",
+                "id": "programIntegrity_providerTerminationReportingMonitoringEfforts",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -421,17 +421,17 @@
                   "hint": "Does the state monitor whether plans report provider “for cause” terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
                   "choices": [
                     {
-                      "name": "changesInProviderCircumstancesMonitoring-o1",
+                      "name": "programIntegrity_providerTerminationReportingMonitoringEfforts-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "changesInProviderCircumstancesMetrics",
+                          "id": "programIntegrity_providerTerminationReportingMonitoringMetrics",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "changesInProviderCircumstancesMonitoring",
+                            "parentFieldName": "programIntegrity_providerTerminationReportingMonitoringEfforts",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -439,17 +439,17 @@
                             "hint": "Does the state use a metric or indicator to assess plan reporting performance? Select one.",
                             "choices": [
                               {
-                                "name": "changesInProviderCircumstancesMetrics-o1",
+                                "name": "programIntegrity_providerTerminationReportingMonitoringMetrics-o1",
                                 "type": "choice",
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "changesInProviderCircumstancesMetricsText",
+                                    "id": "programIntegrity_providerTerminationReportingMonitoringMetrics-o1-text",
                                     "type": "textarea",
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
-                                      "parentFieldName": "changesInProviderCircumstancesMetrics",
+                                      "parentFieldName": "programIntegrity_providerTerminationReportingMonitoringMetrics",
                                       "visibleOptionValue": "Yes"
                                     },
                                     "props": {
@@ -460,7 +460,7 @@
                                 ]
                               },
                               {
-                                "name": "changesInProviderCircumstancesMetrics-o2",
+                                "name": "programIntegrity_providerTerminationReportingMonitoringMetrics-o2",
                                 "type": "choice",
                                 "label": "No"
                               }
@@ -470,7 +470,7 @@
                       ]
                     },
                     {
-                      "name": "changesInProviderCircumstancesMonitoring-o2",
+                      "name": "programIntegrity_providerTerminationReportingMonitoringEfforts-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -478,7 +478,7 @@
                 }
               },
               {
-                "id": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks",
+                "id": "programIntegrity_excludedEntityIdentifiedInFederalDatabaseCheck",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -486,17 +486,17 @@
                   "hint": "During the state's federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
                   "choices": [
                     {
-                      "name": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks-o1",
+                      "name": "programIntegrity_excludedEntityIdentifiedInFederalDatabaseCheck-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "exclusionInstancesSummary",
+                          "id": "programIntegrity_excludedEntityIdentificationInstancesSummary",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks",
+                            "parentFieldName": "programIntegrity_excludedEntityIdentifiedInFederalDatabaseCheck",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -507,7 +507,7 @@
                       ]
                     },
                     {
-                      "name": "excludedPersonsOrEntitiesIdentifiedInFederalDatabaseChecks-o2",
+                      "name": "programIntegrity_excludedEntityIdentifiedInFederalDatabaseCheck-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -515,7 +515,7 @@
                 }
               },
               {
-                "id": "ownershipControlDisclosureSite",
+                "id": "programIntegrity_ownershipControlDisclosureWebsite",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -523,17 +523,17 @@
                   "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3)",
                   "choices": [
                     {
-                      "name": "ownershipControlDisclosureSite-o1",
+                      "name": "programIntegrity_ownershipControlDisclosureWebsite-o1",
                       "type": "choice",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "ownershipControlDisclosureSiteLink",
+                          "id": "programIntegrity_ownershipControlDisclosureWebsiteLink",
                           "type": "textarea",
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "ownershipControlDisclosureSite",
+                            "parentFieldName": "programIntegrity_ownershipControlDisclosureWebsite",
                             "visibleOptionValue": "Yes"
                           },
                           "props": {
@@ -544,7 +544,7 @@
                       ]
                     },
                     {
-                      "name": "ownershipControlDisclosureSite-o2",
+                      "name": "programIntegrity_ownershipControlDisclosureWebsite-o2",
                       "type": "choice",
                       "label": "No"
                     }
@@ -552,7 +552,7 @@
                 }
               },
               {
-                "id": "periodicPlanSubmittedDataAudits",
+                "id": "programIntegrity_planSubmittedDataAuditResults",
                 "type": "textarea",
                 "validation": "text",
                 "props": {
@@ -1784,7 +1784,7 @@
                 }
               },
               {
-                "id": "percentOfEncounterDataSubmissionsThatWereHippaCompliant",
+                "id": "percentOfEncounterDataSubmissionsThatWereHipaaCompliant",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -2755,7 +2755,7 @@
                 }
               },
               {
-                "id": "reportingPeriod",
+                "id": "measureReportingPeriod",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2763,20 +2763,20 @@
                   "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
                   "choices": [
                     {
-                      "name": "reportingPeriod-o1",
+                      "name": "measureReportingPeriod-o1",
                       "label": "Yes"
                     },
                     {
-                      "name": "reportingPeriod-o2",
+                      "name": "measureReportingPeriod-o2",
                       "label": "No",
                       "children": [
                         {
-                          "id": "reportingPeriodStartDate",
+                          "id": "measureReportingPeriodStartDate",
                           "type": "date",
                           "validation": {
                             "type": "date",
                             "nested": true,
-                            "parentFieldName": "reportingPeriod",
+                            "parentFieldName": "measureReportingPeriod",
                             "visibleOptionValue": "No"
                           },
                           "props": {
@@ -2786,13 +2786,13 @@
                           }
                         },
                         {
-                          "id": "reportingPeriodEndDate",
+                          "id": "measureReportingPeriodEndDate",
                           "type": "date",
                           "validation": {
                             "type": "endDate",
-                            "dependentFieldName": "reportingPeriodStartDate",
+                            "dependentFieldName": "measureReportingPeriodStartDate",
                             "nested": true,
-                            "parentFieldName": "reportingPeriod",
+                            "parentFieldName": "measureReportingPeriod",
                             "visibleOptionValue": "No"
                           },
                           "props": {
