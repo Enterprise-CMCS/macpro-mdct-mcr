@@ -11,7 +11,6 @@ import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
 export const createReport = handler(async (event, _context) => {
-  console.log("got here 1");
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
@@ -21,14 +20,10 @@ export const createReport = handler(async (event, _context) => {
     throw new Error(error.NO_KEY);
   }
 
-  console.log("got here 2");
-
   const unvalidatedPayload = JSON.parse(event!.body!);
   const { fieldData: unvalidatedFieldData, formTemplate } = unvalidatedPayload;
   const fieldDataValidationJson = formTemplate.validationJson;
-
   if (unvalidatedFieldData && fieldDataValidationJson) {
-    console.log("got here 3");
     // validate report metadata
     const validatedMetadata = await validateData(
       metadataValidationSchema,
@@ -41,26 +36,23 @@ export const createReport = handler(async (event, _context) => {
       unvalidatedFieldData
     );
 
-    if (validatedMetadata && validatedFieldData) {
-      console.log("got here 4");
-      const state: string = event.pathParameters.state;
-      const id: string = KSUID.randomSync().string;
-      let reportParams = {
-        TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-        Item: {
-          ...validatedMetadata,
-          state,
-          id,
-          createdAt: Date.now(),
-          lastAltered: Date.now(),
-          fieldData: validatedFieldData,
-        },
-      };
-      await dynamoDb.put(reportParams);
-      return {
-        status: StatusCodes.SUCCESS,
-        body: { ...reportParams.Item },
-      };
-    } else throw new Error(error.INVALID_DATA);
+    const state: string = event.pathParameters.state;
+    const id: string = KSUID.randomSync().string;
+    let reportParams = {
+      TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+      Item: {
+        ...validatedMetadata,
+        state,
+        id,
+        createdAt: Date.now(),
+        lastAltered: Date.now(),
+        fieldData: validatedFieldData,
+      },
+    };
+    await dynamoDb.put(reportParams);
+    return {
+      status: StatusCodes.SUCCESS,
+      body: { ...reportParams.Item },
+    };
   } else throw new Error(error.MISSING_DATA);
 });

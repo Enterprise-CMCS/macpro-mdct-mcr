@@ -2,6 +2,7 @@ import { createReport } from "./create";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
+import { mockReport } from "../../utils/testing/setupJest";
 import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
@@ -16,18 +17,25 @@ jest.mock("../../utils/auth/authorization", () => ({
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
-const creationEvent: APIGatewayProxyEvent = {
+const mockProxyEvent = {
   ...proxyEvent,
-  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"Not started","combinedData":"yes"}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB" },
 };
 
+const creationEvent: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: JSON.stringify(mockReport),
+};
+
+const creationEventWithNoFieldData: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: `{"formTemplate":{"validationJson":{}}}`,
+};
+
 const creationEventWithInvalidData: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"programName":{}}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB" },
+  ...mockProxyEvent,
+  body: `{"dueDate":"invalidString","fieldData":{},"formTemplate":{"validationJson":{}}}`,
 };
 
 describe("Test createReport API method", () => {
@@ -48,6 +56,11 @@ describe("Test createReport API method", () => {
 
   test("Test attempted report creation with invalid data fails", async () => {
     const res = await createReport(creationEventWithInvalidData, null);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
+  });
+
+  test("Test attempted report creation without field data throws 500 error", async () => {
+    const res = await createReport(creationEventWithNoFieldData, null);
     expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 

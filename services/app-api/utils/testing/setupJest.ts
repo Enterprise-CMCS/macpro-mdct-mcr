@@ -7,7 +7,7 @@ export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
   routes: [],
-  validationSchema: {},
+  validationJson: {},
 };
 
 export const mockReportKeys = {
