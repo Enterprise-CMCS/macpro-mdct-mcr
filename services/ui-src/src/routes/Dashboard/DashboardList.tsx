@@ -140,22 +140,5 @@ export const DashboardList = ({
       width: "1.75rem",
       minWidth: "28px",
     },
-    emptyTableContainer: {
-      maxWidth: "75%",
-      margin: "0 auto",
-      textAlign: "center",
-    },
-    callToActionContainer: {
-      marginTop: "2.5rem",
-      textAlign: "center",
-    },
-    label: {
-      fontSize: "sm",
-      fontWeight: "bold",
-      color: "palette.gray_medium",
-    },
-    editDate: {
-      marginRight: "3rem",
-    },
   };
   

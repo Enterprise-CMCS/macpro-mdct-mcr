@@ -3,7 +3,7 @@ import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { Dashboard } from "routes";
+import { DashboardPage } from "routes";
 import { ReportContext } from "components";
 // utils
 import {
@@ -56,7 +56,7 @@ const mockedReportContextWithError = {
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedReportContext}>
-      <Dashboard />
+      <DashboardPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -64,7 +64,7 @@ const dashboardViewWithReports = (
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedReportContextNoReports}>
-      <Dashboard />
+      <DashboardPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -72,7 +72,7 @@ const dashboardViewNoReports = (
 const dashboardViewWithError = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedReportContextWithError}>
-      <Dashboard />
+      <DashboardPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );

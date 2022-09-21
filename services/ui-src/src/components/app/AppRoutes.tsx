@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
   Admin,
-  Dashboard,
+  DashboardPage,
   GetStarted,
   Help,
   Home,
@@ -33,7 +33,7 @@ export const AppRoutes = ({ userRole }: Props) => {
           <Route path="/help" element={<Help />} />
 
           {/* MCPAR ROUTES */}
-          <Route path="/mcpar" element={<Dashboard />} />
+          <Route path="/mcpar" element={<DashboardPage />} />
           <Route path="/mcpar/get-started" element={<GetStarted />} />
           {mcparReportRoutesFlat.map((route: ReportRoute) => {
             return (
