@@ -58,10 +58,7 @@
       "!utils/types/*"
     ],
     "moduleDirectories": [
-      "node_modules",
-      "handlers",
-      "libs",
-      "util"
+      "node_modules"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/utils/testing/setupJest.ts"

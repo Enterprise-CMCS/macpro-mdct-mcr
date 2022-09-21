@@ -8,9 +8,7 @@ import { mockReport } from "../../utils/testing/setupJest";
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
   default: {
-    query: jest.fn().mockReturnValue({
-      Items: [mockReport],
-    }),
+    query: jest.fn(() => ({ Items: [mockReport] })),
   },
 }));
 
@@ -34,9 +32,8 @@ const testReadEventByState: APIGatewayProxyEvent = {
 describe("Test readReport API method", () => {
   test("Test Successful Report Fetch", async () => {
     const res = await readReport(testReadEvent, null);
-
-    const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    const body = JSON.parse(res.body);
     expect(body.lastAlteredBy).toContain("Thelonious States");
     expect(body.programName).toContain("testProgram");
   });
