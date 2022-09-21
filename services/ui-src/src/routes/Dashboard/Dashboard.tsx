@@ -18,9 +18,7 @@ import {
   PageTemplate,
   ReportContext,
 } from "components";
-import {
-  DashboardList
-} from "../Dashboard"
+import { DashboardList } from "./DashboardList";
 // utils
 import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
 import {

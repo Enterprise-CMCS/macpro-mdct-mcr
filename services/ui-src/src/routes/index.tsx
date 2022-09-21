@@ -8,4 +8,5 @@ export { Profile } from "./Profile/Profile";
 // report
 export { GetStarted } from "./GetStarted/GetStarted";
 export { Dashboard } from "./Dashboard/Dashboard";
+export { DashboardList } from "./Dashboard/DashboardList"
 export { ReviewSubmit } from "./ReviewSubmit/ReviewSubmit";
