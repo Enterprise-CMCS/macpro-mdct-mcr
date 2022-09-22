@@ -1,7 +1,7 @@
-import { nested, endDate } from "./schemas";
-import { schemaMap } from "./schemaMap";
+import * as yup from "yup";
+import { nested, endDate, schemaMap } from "./schemaMap";
 import { AnyObject } from "../types/types";
-import { VALIDATION_ERROR_MESSAGE } from "../constants/constants";
+import error from "../constants/constants";
 
 // compare payload data against validation schema
 export const validateData = async (
@@ -16,7 +16,7 @@ export const validateData = async (
       ...options,
     });
   } catch (e: any) {
-    throw new Error(VALIDATION_ERROR_MESSAGE);
+    throw new Error(error.INVALID_DATA);
   }
 };
 
@@ -81,4 +81,27 @@ export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
     const fieldBaseSchema = schemaMap[type];
     return nested(() => fieldBaseSchema, parentFieldName, visibleOptionValue);
   }
+};
+
+export const validateFieldData = async (
+  validationJson: AnyObject,
+  unvalidatedFieldData: AnyObject
+) => {
+  let validatedFieldData: AnyObject | undefined = undefined;
+  // filter field validation to just what's needed for the passed fields
+  const filteredFieldDataValidationJson = filterValidationSchema(
+    validationJson,
+    unvalidatedFieldData
+  );
+  // transform field validation instructions to yup validation schema
+  const fieldDataValidationSchema = yup
+    .object()
+    .shape(mapValidationTypesToSchema(filteredFieldDataValidationJson));
+  if (fieldDataValidationSchema) {
+    validatedFieldData = await validateData(
+      fieldDataValidationSchema,
+      unvalidatedFieldData
+    );
+  }
+  return validatedFieldData;
 };

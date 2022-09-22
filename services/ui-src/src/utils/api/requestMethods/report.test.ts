@@ -1,26 +1,21 @@
-import {
-  getReport,
-  getReportsByState,
-  writeReport,
-  deleteReport,
-} from "./report";
+import { getReport, getReportsByState, postReport, putReport } from "./report";
 // utils
-import { mockReportDetails, mockReport } from "utils/testing/setupJest";
+import { mockReportKeys, mockReport } from "utils/testing/setupJest";
 
 describe("Test report status methods", () => {
   test("getReport", () => {
-    expect(getReport(mockReportDetails)).toBeTruthy();
+    expect(getReport(mockReportKeys)).toBeTruthy();
   });
 
   test("getReportsByState", () => {
     expect(getReportsByState("AB")).toBeTruthy();
   });
 
-  test("writeReport", () => {
-    expect(writeReport(mockReportDetails, mockReport)).toBeTruthy();
+  test("postReport", () => {
+    expect(postReport("AB", mockReport)).toBeTruthy();
   });
 
-  test("deleteReport", () => {
-    expect(deleteReport(mockReportDetails)).toBeTruthy();
+  test("putReport", () => {
+    expect(putReport(mockReportKeys, mockReport)).toBeTruthy();
   });
 });

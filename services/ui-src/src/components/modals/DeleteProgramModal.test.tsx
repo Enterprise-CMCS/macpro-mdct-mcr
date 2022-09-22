@@ -3,22 +3,13 @@ import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 //components
 import { DeleteProgramModal, ReportContext } from "components";
-import { mockReport, mockReportContext } from "utils/testing/setupJest";
+import { mockReportContext } from "utils/testing/setupJest";
 
 const mockCloseHandler = jest.fn();
-const mockRemoveReport = jest.fn();
-const mockFetchReportsByState = jest.fn();
-
-const mockedReportContext = {
-  ...mockReportContext,
-  removeReport: mockRemoveReport,
-  fetchReportsByState: mockFetchReportsByState,
-};
 
 const modalComponent = (
-  <ReportContext.Provider value={mockedReportContext}>
+  <ReportContext.Provider value={mockReportContext}>
     <DeleteProgramModal
-      selectedReportMetadata={mockReport}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -56,8 +47,6 @@ describe("Test DeleteProgramModal", () => {
 
   test("DeleteProgramModals delete program button can be clicked", async () => {
     fireEvent.click(screen.getByText("Yes, delete program"));
-    await expect(mockRemoveReport).toHaveBeenCalledTimes(1);
-    await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });
