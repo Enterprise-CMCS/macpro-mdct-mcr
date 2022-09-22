@@ -37,7 +37,12 @@ export const AddEditProgramModal = ({
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
     const combinedDataArray = formData["aep-combinedData"];
-    const combinedData = combinedDataArray?.[0] || noCombinedDataInput;
+    const combinedData = combinedDataArray?.[0] || [
+      {
+        key: "aep-combinedData",
+        value: noCombinedDataInput,
+      },
+    ];
     const reportingPeriodStartDate = convertDateEtToUtc(
       formData["aep-startDate"]
     );
@@ -46,6 +51,7 @@ export const AddEditProgramModal = ({
       state: activeState,
       reportId: "",
     };
+
     const dataToWrite = {
       programName,
       reportingPeriodStartDate: reportingPeriodStartDate,

@@ -103,6 +103,7 @@ export const Dashboard = () => {
           "aep-startDate": convertDateUtcToEt(
             reportMetadata.reportingPeriodStartDate
           ),
+          "aep-combinedData": [reportMetadata.combinedData],
         },
         state: reportMetadata.state,
         reportId: reportMetadata.reportId,
