@@ -1,16 +1,23 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
-import { UserContext } from "./userContext";
 // utils
 import { PRODUCTION_HOST_DOMAIN } from "../../constants";
 // types
-import { MCRUser, UserContextI } from "types";
+import { MCRUser, UserContextShape, UserRoles } from "types";
 
-interface Props {
-  children?: ReactNode;
-}
+export const UserContext = createContext<UserContextShape>({
+  logout: async () => {},
+  loginWithIDM: () => {},
+});
 
 const authenticateWithIDM = async () => {
   await Auth.federatedSignIn({ customProvider: "Okta" });
@@ -45,6 +52,13 @@ export const UserProvider = ({ children }: Props) => {
       const userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
       const state = payload["custom:cms_state"] as string | undefined;
       const full_name = [given_name, " ", family_name].join("");
+      const userCheck = {
+        userIsAdmin: userRole === UserRoles.ADMIN,
+        userIsHelpDeskUser: userRole === UserRoles.HELP_DESK,
+        userIsApprover: userRole === UserRoles.APPROVER,
+        userIsStateRep: userRole === UserRoles.STATE_REP,
+        userIsStateUser: userRole === UserRoles.STATE_USER,
+      };
       const currentUser: MCRUser = {
         email,
         given_name,
@@ -52,6 +66,7 @@ export const UserProvider = ({ children }: Props) => {
         full_name,
         userRole,
         state,
+        ...userCheck,
       };
       setUser(currentUser);
     } catch (error) {
@@ -86,7 +101,7 @@ export const UserProvider = ({ children }: Props) => {
     checkAuthState();
   }, [location, checkAuthState]);
 
-  const values: UserContextI = useMemo(
+  const values: UserContextShape = useMemo(
     () => ({
       user,
       logout,
@@ -98,3 +113,7 @@ export const UserProvider = ({ children }: Props) => {
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
 };
+
+interface Props {
+  children?: ReactNode;
+}

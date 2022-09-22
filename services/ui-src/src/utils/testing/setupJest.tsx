@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 // utils
-import { ReportStatus, UserContextI, UserRoles } from "types";
+import { ReportStatus, UserContextShape, UserRoles } from "types";
 import { bannerId } from "../../constants";
 
 // GLOBALS
@@ -36,14 +36,14 @@ jest.mock("@chakra-ui/transition", () => ({
 
 // USERS
 
-export const mockNoUser: UserContextI = {
+export const mockNoUser: UserContextShape = {
   user: undefined,
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockStateUser: UserContextI = {
+export const mockStateUser: UserContextShape = {
   user: {
     userRole: UserRoles.STATE_USER,
     email: "stateuser@test.com",
@@ -57,7 +57,7 @@ export const mockStateUser: UserContextI = {
   loginWithIDM: () => {},
 };
 
-export const mockStateRep: UserContextI = {
+export const mockStateRep: UserContextShape = {
   user: {
     userRole: UserRoles.STATE_REP,
     email: "staterep@test.com",
@@ -71,7 +71,7 @@ export const mockStateRep: UserContextI = {
   loginWithIDM: () => {},
 };
 
-export const mockStateApprover: UserContextI = {
+export const mockStateApprover: UserContextShape = {
   user: {
     userRole: UserRoles.APPROVER,
     email: "stateapprover@test.com",
@@ -85,7 +85,7 @@ export const mockStateApprover: UserContextI = {
   loginWithIDM: () => {},
 };
 
-export const mockHelpDeskUser: UserContextI = {
+export const mockHelpDeskUser: UserContextShape = {
   user: {
     userRole: UserRoles.HELP_DESK,
     email: "helpdeskuser@test.com",
@@ -99,7 +99,7 @@ export const mockHelpDeskUser: UserContextI = {
   loginWithIDM: () => {},
 };
 
-export const mockAdminUser: UserContextI = {
+export const mockAdminUser: UserContextShape = {
   user: {
     userRole: UserRoles.ADMIN,
     email: "adminuser@test.com",

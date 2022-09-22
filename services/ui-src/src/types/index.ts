@@ -15,11 +15,16 @@ export interface MCRUser {
   given_name: string;
   family_name: string;
   full_name: string;
-  userRole?: string;
   state?: string;
+  userRole?: string;
+  userIsAdmin?: boolean;
+  userIsHelpDeskUser?: boolean;
+  userIsApprover?: boolean;
+  userIsStateRep?: boolean;
+  userIsStateUser?: boolean;
 }
 
-export interface UserContextI {
+export interface UserContextShape {
   user?: MCRUser;
   showLocalLogins?: boolean;
   logout: () => Promise<void>;
