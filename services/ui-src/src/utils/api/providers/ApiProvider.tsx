@@ -18,11 +18,6 @@ export const ApiProvider = ({ children }: Props) => {
           region: config.apiGateway.REGION,
         },
         {
-          name: "reportData",
-          endpoint: config.apiGateway.URL,
-          region: config.apiGateway.REGION,
-        },
-        {
           name: "reports",
           endpoint: config.apiGateway.URL,
           region: config.apiGateway.REGION,

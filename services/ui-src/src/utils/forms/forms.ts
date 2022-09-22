@@ -11,7 +11,7 @@ import {
   TextAreaField,
 } from "components";
 // types
-import { AnyObject, FieldChoice, FormField, ReportDataShape } from "types";
+import { AnyObject, FieldChoice, FormField } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
@@ -49,7 +49,7 @@ export const formFieldFactory = (
 
 export const hydrateFormFields = (
   formFields: FormField[],
-  formData: ReportDataShape | undefined
+  formData: AnyObject | undefined
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);

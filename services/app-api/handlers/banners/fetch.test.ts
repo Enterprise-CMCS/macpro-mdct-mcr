@@ -1,8 +1,8 @@
-import { getBanner } from "./get";
+import { fetchBanner } from "./fetch";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -37,13 +37,13 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
-describe("Test getBanner API method", () => {
+describe("Test fetchBanner API method", () => {
   beforeEach(() => {
     process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
   });
 
   test("Test Successful Banner Fetch", async () => {
-    const res = await getBanner(testEvent, null);
+    const res = await fetchBanner(testEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("testDesc");
@@ -55,10 +55,10 @@ describe("Test getBanner API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await getBanner(noKeyEvent, null);
+    const res = await fetchBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test bannerKey empty throws 500 error", async () => {
@@ -66,9 +66,9 @@ describe("Test getBanner API method", () => {
       ...testEvent,
       pathParameters: { bannerId: "" },
     };
-    const res = await getBanner(noKeyEvent, null);
+    const res = await fetchBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });
