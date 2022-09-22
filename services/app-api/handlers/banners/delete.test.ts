@@ -2,10 +2,7 @@ import { deleteBanner } from "./delete";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import {
-  NO_KEY_ERROR_MESSAGE,
-  UNAUTHORIZED_MESSAGE,
-} from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -39,7 +36,7 @@ describe("Test deleteBanner API method", () => {
     const res = await deleteBanner(testEvent, null);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test Successful Banner Deletion", async () => {
@@ -58,7 +55,7 @@ describe("Test deleteBanner API method", () => {
     const res = await deleteBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test bannerKey empty throws 500 error", async () => {
@@ -69,6 +66,6 @@ describe("Test deleteBanner API method", () => {
     const res = await deleteBanner(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });
