@@ -75,7 +75,7 @@ export const DateField = ({
         onBlur={onBlurHandler}
         value={displayValue}
         hint={parsedHint}
-        errorMessage={errorMessage}
+        errorMessage={name} // TODO: CHANGE BACK
         {...props}
       />
     </Box>

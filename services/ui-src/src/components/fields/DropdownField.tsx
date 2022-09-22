@@ -62,7 +62,7 @@ export const DropdownField = ({
         options={options}
         hint={parsedHint}
         onChange={onChangeHandler}
-        errorMessage={errorMessage}
+        errorMessage={name} // TODO: CHANGE BACK
         value={displayValue}
         {...props}
       />

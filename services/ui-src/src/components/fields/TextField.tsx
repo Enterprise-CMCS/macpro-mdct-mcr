@@ -66,7 +66,7 @@ export const TextField = ({
         placeholder={placeholder}
         disabled={disabled}
         onChange={(e) => onChangeHandler(e)}
-        errorMessage={errorMessage}
+        errorMessage={name} // TODO: CHANGE BACK
         value={displayValue}
         {...props}
       />
