@@ -30,7 +30,7 @@ export const writeReport = handler(async (event, context) => {
     reportingPeriodStartDate: yup.number(),
     reportingPeriodEndDate: yup.number(),
     dueDate: yup.number(),
-    combinedData: yup.string(),
+    combinedData: yup.object({ key: yup.string(), value: yup.string() }),
     lastAlteredBy: yup.string(),
     submittedBy: yup.string(),
     submittedOnDate: yup.string(),
