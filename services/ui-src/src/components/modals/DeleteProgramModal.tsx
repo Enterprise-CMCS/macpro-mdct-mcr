@@ -1,22 +1,26 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // components
-import { Text } from "@chakra-ui/react";
+import { Spinner, Text } from "@chakra-ui/react";
 import { Modal, ReportContext } from "components";
 import { AnyObject } from "types";
+import theme from "styles/theme";
 
 export const DeleteProgramModal = ({
   selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, removeReport } = useContext(ReportContext);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const deleteProgramHandler = async () => {
+    setLoading(true);
     const reportDetails = {
       state: selectedReportMetadata.state,
       reportId: selectedReportMetadata.reportId,
     };
     await removeReport(reportDetails);
     await fetchReportsByState(selectedReportMetadata.state);
+    setLoading(false);
     modalDisclosure.onClose();
   };
 
@@ -26,7 +30,11 @@ export const DeleteProgramModal = ({
       modalDisclosure={modalDisclosure}
       content={{
         heading: "Delete",
-        actionButtonText: "Yes, delete program",
+        actionButtonText: loading ? (
+          <Spinner color={theme.colors.white} size="md" />
+        ) : (
+          "Yes, delete program"
+        ),
         closeButtonText: "Cancel",
       }}
     >
