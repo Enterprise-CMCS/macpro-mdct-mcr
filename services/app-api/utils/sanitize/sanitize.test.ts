@@ -86,7 +86,7 @@ const cleanComplexObject = {
   emptyObject: {},
 };
 
-describe("brax Test sanitizeString", () => {
+describe("Test sanitizeString", () => {
   test("Test sanitizeString passes through empty strings and clean strings", () => {
     expect(sanitizeString("")).toEqual("");
     expect(sanitizeString(cleanString)).toEqual(cleanString);
@@ -100,7 +100,7 @@ describe("brax Test sanitizeString", () => {
   });
 });
 
-describe("brax Test sanitizeArray", () => {
+describe("Test sanitizeArray", () => {
   test("Test sanitizeArray passes through empty arrays and clean arrays", () => {
     expect(sanitizeArray([])).toEqual([]);
     expect(sanitizeArray(cleanStringArray)).toEqual(cleanStringArray);
@@ -119,7 +119,7 @@ describe("brax Test sanitizeArray", () => {
   });
 });
 
-describe("brax Test sanitizeObject", () => {
+describe("Test sanitizeObject", () => {
   test("Test sanitizeObject passes through safe types", () => {
     expect(sanitizeObject({ safeBoolean })).toEqual({ safeBoolean });
     // expect(sanitizeObject({ safeNaN })).toEqual({ safeNaN });
