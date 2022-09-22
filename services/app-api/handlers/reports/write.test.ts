@@ -30,14 +30,14 @@ const mockedGetReport = getReport as jest.MockedFunction<typeof getReport>;
 
 const creationEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"in progress","combinedData":"yes"}`,
+  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"in progress","combinedData":[{"key":"test","value":"yes"}]}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB", reportId: "testReportId" },
 };
 
 const submissionEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"submitted","combinedData":"yes"}`,
+  body: `{"programName":"mock-name","reportingPeriodStartDate":0,"reportingPeriodEndDate":1,"dueDate":2,"lastAlteredBy":"mock-name","reportType":"mock","status":"submitted","combinedData":[{"key":"test","value":"yes"}]}`,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { state: "AB", reportId: "testReportId" },
 };
@@ -104,9 +104,8 @@ describe("Test writeReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
+      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress","combinedData":[{"key":"test","value":"yes"}]}`,
     });
-
     const secondResponse = await writeReport(submissionEvent, null);
     const secondBody = JSON.parse(secondResponse.body);
     expect(secondResponse.statusCode).toBe(StatusCodes.SUCCESS);
@@ -120,7 +119,7 @@ describe("Test writeReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress"}`,
+      body: `{"createdAt": 1658938375131,"key": "AB","lastAltered": 1658938375131,"status": "in progress", "combinedData":[{"key":"test","value":"yes"}]}`,
     });
 
     const secondResponse = await writeReport(
