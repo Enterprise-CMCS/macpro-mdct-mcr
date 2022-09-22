@@ -118,7 +118,6 @@ export const ChoiceListField = ({
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
 
-  // console.log("Choices", choices);
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
