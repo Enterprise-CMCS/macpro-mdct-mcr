@@ -22,9 +22,7 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
-  useUser: () => {
-    return mockStateUser;
-  },
+  useUser: () => mockStateUser,
 }));
 
 const ReportPageComponent_StaticPage = (
