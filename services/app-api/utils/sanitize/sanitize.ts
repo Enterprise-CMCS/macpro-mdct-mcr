@@ -16,9 +16,9 @@ export const sanitizeArray = (array: unknown[]): unknown[] =>
   array.map((entry: unknown) => sanitizeEntry(entry));
 
 // iterates over object key-value pairs, sanitizing values recursively
-export const sanitizeObject = (object: unknown) => {
+export const sanitizeObject = (object: { [key: string]: unknown }) => {
   if (object) {
-    const entries = Object.entries(object!);
+    const entries = Object.entries(object);
     const sanitizedEntries = entries.map((entry: [string, unknown]) => {
       const [key, value] = entry;
       return [key, sanitizeEntry(value)];

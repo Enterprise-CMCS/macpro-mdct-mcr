@@ -3,7 +3,7 @@ import { sanitizeArray, sanitizeObject, sanitizeString } from "./sanitize";
 // SAFE TYPES
 
 const safeBoolean = true;
-// const safeNaN = NaN;
+const safeNaN = NaN;
 const safeNumber = 2349872;
 const safeNull = null;
 const safeUndefined = undefined;
@@ -122,7 +122,7 @@ describe("Test sanitizeArray", () => {
 describe("Test sanitizeObject", () => {
   test("Test sanitizeObject passes through safe types", () => {
     expect(sanitizeObject({ safeBoolean })).toEqual({ safeBoolean });
-    // expect(sanitizeObject({ safeNaN })).toEqual({ safeNaN });
+    expect(sanitizeObject({ safeNaN })).toEqual({ safeNaN });
     expect(sanitizeObject({ safeNumber })).toEqual({ safeNumber });
     expect(sanitizeObject({ safeNull })).toEqual({ safeNull });
     expect(sanitizeObject({ safeUndefined })).toEqual({ safeUndefined });
