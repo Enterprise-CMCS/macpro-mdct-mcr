@@ -21,7 +21,6 @@ export const DropdownField = ({
     dropdownDefaultOptionText
   );
 
-  // get form context and register field
   const form = useFormContext();
   form.register(name);
 

@@ -157,6 +157,7 @@ export interface FormField {
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];
+  dynamicValue?: string;
 }
 
 export interface DropdownOptions {
