@@ -59,16 +59,14 @@ export const ChoiceListField = ({
 
     // update DOM choices checked status
     choices.forEach((choice: FieldChoice) => {
-      const checkedState = displayValue?.find(
-        (option) => option.value === choice.value
-      );
-      choice.checked = !!checkedState;
+      setCheckedOrUnchecked(choice);
     });
   }, [displayValue]);
 
   // format choices with nested child fields to render (if any)
-  const formatChoices = (choices: FieldChoice[]) =>
-    choices.map((choice: FieldChoice) => {
+  const formatChoices = (choices: FieldChoice[]) => {
+    return choices.map((choice: FieldChoice) => {
+      setCheckedOrUnchecked(choice);
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
@@ -83,6 +81,14 @@ export const ChoiceListField = ({
       delete choiceObject.children;
       return choiceObject;
     });
+  };
+
+  const setCheckedOrUnchecked = (choice: FieldChoice) => {
+    const checkedState = displayValue?.find(
+      (option) => option.value === choice.value
+    );
+    choice.checked = !!checkedState;
+  };
 
   // update field values
   const onChangeHandler = (event: InputChangeEvent) => {
@@ -112,6 +118,7 @@ export const ChoiceListField = ({
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
 
+  // console.log("Choices", choices);
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
