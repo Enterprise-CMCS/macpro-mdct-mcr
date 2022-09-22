@@ -36,8 +36,7 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
-    const combinedDataArray = formData["aep-combinedData"];
-    const combinedData = combinedDataArray?.[0] || [
+    const combinedData = formData["aep-combinedData"] || [
       {
         key: "aep-combinedData",
         value: noCombinedDataInput,
