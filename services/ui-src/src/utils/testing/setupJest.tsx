@@ -134,7 +134,7 @@ jest.mock("aws-amplify", () => ({
   API: {
     get: () => {},
     post: () => {},
-    del: () => {},
+    put: () => {},
     configure: () => {},
   },
 }));
@@ -174,27 +174,12 @@ export const mockFormField = {
   },
 };
 
-export const mockPlanField = {
-  id: "plans",
-  type: "dynamic",
-  validation: "dynamic",
-  props: {
-    label: "Plan name",
-  },
-};
-
 export const mockForm = {
   id: "mock-form-id",
   fields: [mockFormField],
 };
 
-export const mockPlanFilledForm = {
-  id: "mock-form-id",
-  fields: [mockPlanField],
-};
-
 export const mockPageJson = {
-  pageType: "staticPage",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -203,16 +188,16 @@ export const mockPageJson = {
 
 export const mockPageJsonStaticDrawer = {
   pageType: "staticDrawer",
-  entityType: "plans",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
-  dashboard: {
-    title: "Mock dashboard title",
-  },
   drawer: {
-    title: "Mock drawer title",
+    dashboard: {
+      title: "Mock dashboard title",
+      entityType: "plans",
+    },
+    drawerTitle: "Mock drawer title",
   },
 };
 
@@ -245,7 +230,7 @@ export const mockReportRoutes = [
         name: "mock-route-2a",
         path: "/mock/mock-route-2a",
         page: mockPageJsonStaticDrawer,
-        form: mockPlanFilledForm,
+        form: mockForm,
       },
       {
         name: "mock-route-2b",
@@ -268,7 +253,7 @@ export const mockFlattenedReportRoutes = [
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
     page: mockPageJsonStaticDrawer,
-    form: mockPlanFilledForm,
+    form: mockForm,
   },
   {
     name: "mock-route-2b",
@@ -290,13 +275,21 @@ export const mockReportJsonFlatRoutes = {
   routes: mockFlattenedReportRoutes,
 };
 
-export const mockReportDetails = {
+export const mockReportKeys = {
   state: "AB",
-  reportId: "mock-report-id",
+  id: "mock-report-id",
+};
+
+export const mockReportFieldData = {
+  text: "text-input",
+  number: 0,
+  radio: ["option1"],
+  checkbox: ["option1", "option2"],
+  dropdown: "dropdown-selection",
 };
 
 export const mockReport = {
-  ...mockReportDetails,
+  ...mockReportKeys,
   reportType: "mock-type",
   formTemplate: mockReportJson,
   programName: "testProgram",
@@ -308,40 +301,27 @@ export const mockReport = {
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
   combinedData: "Yes...",
-};
-
-export const mockReportData = {
-  fieldData: {
-    plans: ["example-plan"],
-    text: "text-input",
-    number: 0,
-    radio: ["option1"],
-    checkbox: ["option1", "option2"],
-    dropdown: "dropdown-selection",
-  },
+  fieldData: mockReportFieldData,
 };
 
 export const mockReportsByState = [
-  { ...mockReport, reportId: "mock-report-id-1" },
-  { ...mockReport, reportId: "mock-report-id-2" },
-  { ...mockReport, reportId: "mock-report-id-3" },
+  { ...mockReport, id: "mock-report-id-1" },
+  { ...mockReport, id: "mock-report-id-2" },
+  { ...mockReport, id: "mock-report-id-3" },
 ];
 
 export const mockReportMethods = {
-  setReport: jest.fn(),
   fetchReport: jest.fn(),
-  updateReport: jest.fn(),
-  removeReport: jest.fn(),
-  setReportData: jest.fn(),
-  fetchReportData: jest.fn(),
-  updateReportData: jest.fn(),
   fetchReportsByState: jest.fn(),
+  createReport: jest.fn(),
+  updateReport: jest.fn(),
+  clearReportSelection: jest.fn(),
+  setReportSelection: jest.fn(),
 };
 
 export const mockReportContext = {
   ...mockReportMethods,
   report: mockReport,
-  reportData: mockReportData,
   reportsByState: mockReportsByState,
   errorMessage: "",
 };

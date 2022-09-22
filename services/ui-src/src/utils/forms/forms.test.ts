@@ -138,7 +138,7 @@ describe("Test hydrateFormFields", () => {
     },
   ];
 
-  const mockReportData = {
+  const mockData = {
     fieldData: {
       "mock-field-1": "mock-field-1-value",
       "mock-field-2": ["mock-option1"],
@@ -146,10 +146,10 @@ describe("Test hydrateFormFields", () => {
     },
   };
 
-  it("Correctly hydrates field with report data", () => {
+  it("Correctly hydrates field with passed data", () => {
     const hydratedFormFields = hydrateFormFields(
       mockFormFields.filter((field) => field.id === "mock-field-1"),
-      mockReportData
+      mockData
     );
     const hydratedFieldValue = hydratedFormFields.find(
       (field) => field.id === "mock-field-1"
@@ -160,7 +160,7 @@ describe("Test hydrateFormFields", () => {
   it("Correctly hydrates field with nested report data", () => {
     const hydratedFormFields = hydrateFormFields(
       mockNestedFormFields,
-      mockReportData
+      mockData
     );
     const parentField = hydratedFormFields.find(
       (field) => field.id === "mock-field-2"

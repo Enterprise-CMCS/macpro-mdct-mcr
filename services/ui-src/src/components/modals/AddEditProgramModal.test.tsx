@@ -6,12 +6,14 @@ import { axe } from "jest-axe";
 import { AddEditProgramModal, ReportContext } from "components";
 import { mockReport, mockReportContext } from "utils/testing/setupJest";
 
+const mockCreateReport = jest.fn();
 const mockUpdateReport = jest.fn();
 const mockFetchReportsByState = jest.fn();
 const mockCloseHandler = jest.fn();
 
 const mockedReportContext = {
   ...mockReportContext,
+  createReport: mockCreateReport,
   updateReport: mockUpdateReport,
   fetchReportsByState: mockFetchReportsByState,
 };
@@ -20,7 +22,7 @@ const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
       activeState="AB"
-      selectedReportMetadata={undefined}
+      selectedReport={undefined}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -33,7 +35,7 @@ const modalComponentWithSelectedReport = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
       activeState="AB"
-      selectedReportMetadata={mockReport}
+      selectedReport={mockReport}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -89,7 +91,7 @@ describe("Test AddEditProgramModal functionality", () => {
     const result = await render(modalComponent);
     const form = result.getByTestId("add-edit-program-form");
     await fillForm(form);
-    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    await expect(mockCreateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });

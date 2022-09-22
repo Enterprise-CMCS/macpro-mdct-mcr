@@ -49,13 +49,13 @@ const ReportPageComponent_DynamicDrawer = (
   </RouterWrappedComponent>
 );
 
-const mockedReportShapeWithoutReport = {
+const mockedNoReport = {
   ...mockReport,
-  reportId: "",
+  id: "",
 };
 const mockReportContextWithoutReport = {
   ...mockReportContext,
-  report: mockedReportShapeWithoutReport,
+  report: mockedNoReport,
 };
 
 const ReportPageComponent_WithoutReport = (
@@ -86,12 +86,12 @@ test("ReportPage DynamicDrawerSection view renders", () => {
 describe("Test ReportPage functionality", () => {
   afterEach(() => jest.clearAllMocks());
 
-  test("ReportPage navigates to dashboard if no reportId", () => {
+  test("ReportPage navigates to dashboard if no id", () => {
     render(ReportPageComponent_WithoutReport);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar");
   });
 
-  test("ReportPage updates reportData on successful fill", async () => {
+  test("ReportPage updates report field data on successful fill", async () => {
     const result = render(ReportPageComponent_StaticPage);
     const form = result.container;
     const mockField = form.querySelector("[name='mock-1']")!;
@@ -99,7 +99,6 @@ describe("Test ReportPage functionality", () => {
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReportData).toHaveBeenCalledTimes(1);
   });
 });
 

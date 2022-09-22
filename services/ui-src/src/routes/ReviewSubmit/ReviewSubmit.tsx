@@ -20,42 +20,41 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { report, fetchReport, updateReport, updateReportData } =
-    useContext(ReportContext);
+  const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user information
   const { email, full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
 
-  // get state and reportId from context or storage
-  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  // get state and id from context or storage
+  const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
-  const reportDetails = {
+  const reportKeys = {
     state: reportState,
-    reportId: reportId,
+    id: reportId,
   };
 
   useEffect(() => {
-    if (report?.reportId) {
-      fetchReport(reportDetails);
+    if (report?.id) {
+      fetchReport(reportKeys);
     }
   }, []);
 
   const submitForm = () => {
     if (userIsStateUser || userIsStateRep) {
       const submissionDate = Date.now();
-      updateReport(reportDetails, {
+      updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
         submittedBy: full_name,
         submittedOnDate: submissionDate,
-      });
-      updateReportData(reportDetails, {
-        "apoc-a3a": full_name,
-        "apoc-a3b": email,
-        "apoc-a4": convertDateUtcToEt(submissionDate),
+        fieldData: {
+          "apoc-a3a": full_name,
+          "apoc-a3b": email,
+          "apoc-a4": convertDateUtcToEt(submissionDate),
+        },
       });
     }
     onClose();

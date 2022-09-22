@@ -1,163 +1,121 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-// forms
-import { isMcparReportFormPage } from "forms/mcpar";
 // utils
+import { isMcparReportFormPage } from "forms/mcpar";
 import {
-  ReportDataShape,
-  ReportDetails,
-  ReportContextShape,
-  ReportShape,
-} from "types";
-import {
-  getReportData,
-  writeReportData,
   getReport,
   getReportsByState,
-  writeReport,
-  deleteReport,
+  postReport,
+  putReport,
   sortReportsOldestToNewest,
   useUser,
 } from "utils";
-// verbiage
+import { ReportKeys, ReportContextShape, ReportShape } from "types";
 import { reportErrors } from "verbiage/errors";
 
-// TYPES AND CONTEXT DECLARATION
+// CONTEXT DECLARATION
 
 export const ReportContext = createContext<ReportContextShape>({
-  // report metadata
+  // report
   report: undefined as ReportShape | undefined,
-  setReport: Function, // local useState setter
   fetchReport: Function,
+  createReport: Function,
   updateReport: Function,
-  removeReport: Function,
-  // report field data
-  reportData: undefined as ReportDataShape | undefined,
-  setReportData: Function, // local useState setter
-  fetchReportData: Function,
-  updateReportData: Function,
-  // report metadata of all reports for a given state
+  // reports by state
   reportsByState: undefined as ReportShape[] | undefined,
   fetchReportsByState: Function,
+  // selected report
+  clearReportSelection: Function,
+  setReportSelection: Function,
   errorMessage: undefined as string | undefined,
 });
 
-// PROVIDER
-
 export const ReportProvider = ({ children }: Props) => {
+  const { pathname } = useLocation();
+  const { state: userState } = useUser().user ?? {};
+  const [error, setError] = useState<string>();
+
+  // REPORT
+
   const [report, setReport] = useState<ReportShape | undefined>();
-  const [reportData, setReportData] = useState<ReportDataShape | undefined>();
   const [reportsByState, setReportsByState] = useState<
     ReportShape[] | undefined
   >();
-  const [error, setError] = useState<string>();
 
-  const { pathname } = useLocation();
-
-  // get user state, name, role
-  const { user } = useUser();
-  const { state } = user ?? {};
-
-  const fetchReportData = async (reportDetails: ReportDetails) => {
+  const fetchReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await getReportData(reportDetails);
-      setReportData(result);
-    } catch (e: any) {
-      setError(reportErrors.GET_REPORT_DATA_FAILED);
-    }
-  };
-
-  const updateReportData = async (
-    reportDetails: ReportDetails,
-    fieldData: ReportDataShape
-  ) => {
-    try {
-      await writeReportData(reportDetails, fieldData);
-      await fetchReportData(reportDetails);
-    } catch (e: any) {
-      setError(reportErrors.SET_REPORT_DATA_FAILED);
-    }
-  };
-
-  const fetchReport = async (reportDetails: ReportDetails) => {
-    try {
-      const result = await getReport(reportDetails);
+      const result = await getReport(reportKeys);
       setReport(result);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }
   };
 
-  const updateReport = async (
-    reportDetails: ReportDetails,
-    reportMetadata: ReportShape
-  ) => {
+  const fetchReportsByState = async (selectedState: string) => {
     try {
-      await writeReport(reportDetails, reportMetadata);
-      await fetchReport(reportDetails);
-    } catch (e: any) {
-      setError(reportErrors.SET_REPORT_FAILED);
-    }
-  };
-
-  const removeReport = async (reportDetails: ReportDetails) => {
-    try {
-      await deleteReport(reportDetails);
-    } catch (e: any) {
-      setError(reportErrors.DELETE_REPORT_FAILED);
-    }
-  };
-
-  const fetchReportsByState = async (state: string) => {
-    try {
-      const result = await getReportsByState(state);
+      const result = await getReportsByState(selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
     } catch (e: any) {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
 
-  useEffect(() => {
-    if (report) {
-      const reportDetails = {
-        state: report.state,
-        reportId: report.reportId,
-      };
-      fetchReportData(reportDetails);
+  const createReport = async (state: string, report: ReportShape) => {
+    try {
+      const result = await postReport(state, report);
+      setReport(result);
+    } catch (e: any) {
+      setError(reportErrors.SET_REPORT_FAILED);
     }
-  }, [report?.reportId]);
+  };
 
+  const updateReport = async (reportKeys: ReportKeys, report: ReportShape) => {
+    try {
+      const result = await putReport(reportKeys, report);
+      setReport(result);
+    } catch (e: any) {
+      setError(reportErrors.SET_REPORT_FAILED);
+    }
+  };
+
+  // SELECTED REPORT
+
+  const clearReportSelection = () => {
+    setReport(undefined);
+    localStorage.setItem("selectedReport", "");
+  };
+
+  const setReportSelection = async (report: ReportShape) => {
+    setReport(report);
+    localStorage.setItem("selectedReport", report.id);
+  };
+
+  // on mount, if report page, fetch report
   useEffect(() => {
-    // get state and reportId from context or storage
-    const reportId = report?.reportId || localStorage.getItem("selectedReport");
-    const reportState = state || localStorage.getItem("selectedState");
-
-    if (isMcparReportFormPage(pathname) && reportState && reportId) {
-      const reportDetails = {
-        state: reportState,
-        reportId: reportId,
-      };
-      fetchReport(reportDetails);
-      fetchReportData(reportDetails);
+    const state =
+      report?.state || userState || localStorage.getItem("selectedState");
+    const id = report?.id || localStorage.getItem("selectedReport");
+    if (isMcparReportFormPage(pathname) && state && id) {
+      fetchReport({ state, id });
     }
   }, []);
 
   const providerValue = useMemo(
     () => ({
+      // report
       report,
-      setReport,
       fetchReport,
+      createReport,
       updateReport,
-      removeReport,
-      reportData,
-      setReportData,
-      fetchReportData,
-      updateReportData,
+      // reports by state
       reportsByState,
       fetchReportsByState,
+      // selected report
+      clearReportSelection,
+      setReportSelection,
       errorMessage: error,
     }),
-    [report, reportData, reportsByState, error]
+    [report, reportsByState, error]
   );
 
   return (
