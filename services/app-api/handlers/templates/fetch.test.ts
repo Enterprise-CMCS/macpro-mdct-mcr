@@ -1,11 +1,8 @@
-import { getTemplate } from "./get";
+import { fetchTemplate } from "./fetch";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import {
-  INVALID_TEMPLATE_NAME_ERROR_MESSAGE,
-  NO_TEMPLATE_NAME_ERROR_MESSAGE,
-} from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("aws-sdk", () => ({
   S3: jest.fn().mockImplementation(() => ({
@@ -27,7 +24,7 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { templateName: "test" },
 };
 
-describe("Test getTemplate API method", () => {
+describe("Test fetchTemplate API method", () => {
   beforeAll(() => {
     process.env["TEMPLATE_BUCKET"] = "fakeTestBucket";
   });
@@ -37,7 +34,7 @@ describe("Test getTemplate API method", () => {
       ...testEvent,
       pathParameters: { templateName: "MCPAR" },
     };
-    const res = await getTemplate(mcparEvent, null);
+    const res = await fetchTemplate(mcparEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
@@ -48,7 +45,7 @@ describe("Test getTemplate API method", () => {
       ...testEvent,
       pathParameters: { templateName: "MLR" },
     };
-    const res = await getTemplate(mlrEvent, null);
+    const res = await fetchTemplate(mlrEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
@@ -59,7 +56,7 @@ describe("Test getTemplate API method", () => {
       ...testEvent,
       pathParameters: { templateName: "NAAAR" },
     };
-    const res = await getTemplate(naaarEvent, null);
+    const res = await fetchTemplate(naaarEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
@@ -70,10 +67,10 @@ describe("Test getTemplate API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await getTemplate(noKeyEvent, null);
+    const res = await fetchTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_TEMPLATE_NAME_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_TEMPLATE_NAME);
   });
 
   test("Test templateName doesn't match enum throws 500 error", async () => {
@@ -81,9 +78,9 @@ describe("Test getTemplate API method", () => {
       ...testEvent,
       pathParameters: { templateName: "wrongName" },
     };
-    const res = await getTemplate(noKeyEvent, null);
+    const res = await fetchTemplate(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(INVALID_TEMPLATE_NAME_ERROR_MESSAGE);
+    expect(res.body).toContain(error.INVALID_TEMPLATE_NAME);
   });
 });

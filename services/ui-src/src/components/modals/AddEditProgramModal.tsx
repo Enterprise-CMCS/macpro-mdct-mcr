@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
 // form
@@ -17,10 +16,10 @@ import {
 
 export const AddEditProgramModal = ({
   activeState,
-  selectedReportMetadata,
+  selectedReport,
   modalDisclosure,
 }: Props) => {
-  const { fetchReportsByState, updateReportMetadata, updateReportData } =
+  const { createReport, fetchReportsByState, updateReport } =
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
@@ -48,40 +47,33 @@ export const AddEditProgramModal = ({
       dueDate,
       lastAlteredBy: full_name,
       combinedData,
-    };
-    // if an existing program was selected, use that report id
-    if (selectedReportMetadata?.reportId) {
-      const reportKeys = {
-        state: activeState,
-        reportId: selectedReportMetadata.reportId,
-      };
-      // edit existing report
-      await updateReportMetadata(reportKeys, {
-        ...dataToWrite,
-      });
-      await updateReportData(reportKeys, {
+      fieldData: {
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,
-      });
-    } else {
-      // if no program was selected, create new report id
+      },
+    };
+    // if an existing program was selected, use that report id
+    if (selectedReport?.id) {
       const reportKeys = {
         state: activeState,
-        reportId: uuid(),
+        id: selectedReport.id,
       };
+      // edit existing report
+      await updateReport(reportKeys, {
+        ...dataToWrite,
+      });
+    } else {
       // create new report
-      await updateReportMetadata(reportKeys, {
+      await createReport(activeState, {
         ...dataToWrite,
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
         formTemplate: mcparReportJson,
-      });
-      await updateReportData(reportKeys, {
-        "apoc-a1": States[activeState as keyof typeof States],
-        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
-        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
-        "arp-a6": programName,
+        fieldData: {
+          ...dataToWrite.fieldData,
+          "apoc-a1": States[activeState as keyof typeof States],
+        },
       });
     }
     await fetchReportsByState(activeState);
@@ -94,9 +86,7 @@ export const AddEditProgramModal = ({
       formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedReportMetadata?.reportId
-          ? "Edit Program"
-          : "Add a Program",
+        heading: selectedReport?.id ? "Edit Program" : "Add a Program",
         actionButtonText: "Save",
         closeButtonText: "Cancel",
       }}
@@ -105,7 +95,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
-        formData={selectedReportMetadata}
+        formData={selectedReport}
         onSubmit={writeProgram}
       />
     </Modal>
@@ -114,7 +104,7 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
-  selectedReportMetadata?: AnyObject;
+  selectedReport?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
