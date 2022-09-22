@@ -3390,7 +3390,7 @@
                   "label": "Other",
                   "children": [
                     {
-                      "id": "bssEntity_entityType-o13-text",
+                      "id": "bssEntity_entityType-otherText",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -3448,7 +3448,7 @@
                   "label": "Other",
                   "children": [
                     {
-                      "id": "bssEntity_entityRole-o7-text",
+                      "id": "bssEntity_entityRole-otherText",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
