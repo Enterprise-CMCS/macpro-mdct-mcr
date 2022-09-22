@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "./UserProviderReal";
+import { UserContext } from "./UserProvider";
 import { UserContextShape } from "types";
 
 export const useUser = (): UserContextShape => {
