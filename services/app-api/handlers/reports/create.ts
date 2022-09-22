@@ -1,4 +1,3 @@
-import KSUID from "ksuid";
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -9,6 +8,9 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
+
+// syntax needed as per CJS module
+const KSUID = require("ksuid");
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
