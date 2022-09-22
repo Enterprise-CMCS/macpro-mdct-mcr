@@ -74,7 +74,7 @@ export const hydrateFormFields = (
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
 
     // if dropdown options is a string then retrieve options values from form data
-    if (field.type === "dropdown" && field?.dynamicValue) {
+    if (field.type === "dropdown" && field.dynamicValue) {
       const fieldOptions = formData?.fieldData[field?.dynamicValue].map(
         (value: string) => ({
           label: value,
@@ -82,7 +82,7 @@ export const hydrateFormFields = (
         })
       );
 
-      formFields[fieldFormIndex].props!.options! = fieldOptions;
+      formFields[fieldFormIndex].props!.options = fieldOptions;
     }
   });
 
