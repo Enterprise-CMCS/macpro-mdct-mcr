@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Modal, ReportContext, PageTemplate, Sidebar } from "components";
 // types
-import { ReportStatus, UserRoles } from "types";
+import { ReportStatus } from "types";
 // utils
 import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 // verbiage
@@ -25,8 +25,8 @@ export const ReviewSubmit = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user information
-  const { user } = useUser();
-  const { email, full_name, state, userRole } = user ?? {};
+  const { email, full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
 
   // get state and reportId from context or storage
   const reportId = report?.reportId || localStorage.getItem("selectedReport");
@@ -44,7 +44,7 @@ export const ReviewSubmit = () => {
   }, []);
 
   const submitForm = () => {
-    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+    if (userIsStateUser || userIsStateRep) {
       const submissionDate = Date.now();
       updateReport(reportDetails, {
         status: ReportStatus.SUBMITTED,

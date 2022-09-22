@@ -10,7 +10,7 @@ export const Profile = () => {
   const navigate = useNavigate();
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
-    useUser().user || {};
+    useUser().user ?? {};
 
   const { intro } = verbiage;
 

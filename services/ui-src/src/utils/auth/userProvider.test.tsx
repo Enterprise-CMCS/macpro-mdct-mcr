@@ -14,6 +14,7 @@ const mockAuthPayload = {
   family_name: "IsMe",
   ["custom:cms_roles"]: UserRoles.STATE_USER,
   ["custom:cms_state"]: "AL",
+  userIsStateUser: true,
 };
 
 jest.mock("aws-amplify", () => ({
