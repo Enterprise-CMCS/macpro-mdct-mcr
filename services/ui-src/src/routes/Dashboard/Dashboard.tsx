@@ -221,7 +221,7 @@ const DashboardTable = ({
         </Td>
         <Td sx={sx.deleteProgramCell}>
           {/* TODO: Remove stage check upon archive functionality implementation */}
-          {userRole === UserRoles.ADMIN && config.STAGE !== "production" && (
+          {userRole === UserRoles.ADMIN && config.STAGE === "main" && (
             <button onClick={() => openDeleteProgramModal(report)}>
               <Image
                 src={cancelIcon}
@@ -305,7 +305,7 @@ export const MobileDashboardRow = ({
           </Box>
           <Box sx={sx.deleteProgramCell}>
             {/* TODO: Remove stage check upon archive functionality implementation */}
-            {userRole === UserRoles.ADMIN && config.STAGE !== "production" && (
+            {userRole === UserRoles.ADMIN && config.STAGE === "main" && (
               <button onClick={() => openDeleteProgramModal(report)}>
                 <Image
                   src={cancelIcon}
