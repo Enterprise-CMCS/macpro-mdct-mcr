@@ -20,8 +20,12 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import checkIcon from "assets/icons/icon_check_circle.png";
 
 export const ReviewSubmit = () => {
-  const { report, fetchReport, updateReport, updateReportData } =
-    useContext(ReportContext);
+  const {
+    reportMetadata,
+    fetchReportMetadata,
+    updateReportMetadata,
+    updateReportData,
+  } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // get user information
@@ -29,30 +33,31 @@ export const ReviewSubmit = () => {
   const { email, full_name, state, userRole } = user ?? {};
 
   // get state and reportId from context or storage
-  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  const reportId =
+    reportMetadata?.reportId || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
-  const reportDetails = {
+  const reportKeys = {
     state: reportState,
     reportId: reportId,
   };
 
   useEffect(() => {
-    if (report?.reportId) {
-      fetchReport(reportDetails);
+    if (reportMetadata?.reportId) {
+      fetchReportMetadata(reportKeys);
     }
   }, []);
 
   const submitForm = () => {
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const submissionDate = Date.now();
-      updateReport(reportDetails, {
+      updateReportMetadata(reportKeys, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
         submittedBy: full_name,
         submittedOnDate: submissionDate,
       });
-      updateReportData(reportDetails, {
+      updateReportData(reportKeys, {
         "apoc-a3a": full_name,
         "apoc-a3b": email,
         "apoc-a4": convertDateUtcToEt(submissionDate),
@@ -65,12 +70,12 @@ export const ReviewSubmit = () => {
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        {report &&
-          (report?.status?.includes(ReportStatus.SUBMITTED) ? (
+        {reportMetadata &&
+          (reportMetadata?.status?.includes(ReportStatus.SUBMITTED) ? (
             <SuccessMessage
-              programName={report.programName}
-              date={report?.submittedOnDate}
-              submittedBy={report?.submittedBy}
+              programName={reportMetadata.programName}
+              date={reportMetadata?.submittedOnDate}
+              submittedBy={reportMetadata?.submittedBy}
             />
           ) : (
             <ReadyToSubmit

@@ -1,4 +1,4 @@
-import { getReport, getReportsByState } from "./get";
+import { getReportMetadata, getAllReportsByState } from "./get";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -43,13 +43,13 @@ const testEventByState: APIGatewayProxyEvent = {
   pathParameters: { state: "AB" },
 };
 
-describe("Test getReport API method", () => {
+describe("Test getReportMetadata API method", () => {
   beforeEach(() => {
-    process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
   });
 
   test("Test Successful Report Fetch", async () => {
-    const res = await getReport(testEvent, null);
+    const res = await getReportMetadata(testEvent, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
@@ -61,7 +61,7 @@ describe("Test getReport API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await getReport(noKeyEvent, null);
+    const res = await getReportMetadata(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
@@ -72,20 +72,20 @@ describe("Test getReport API method", () => {
       ...testEvent,
       pathParameters: { state: "", reportId: "" },
     };
-    const res = await getReport(noKeyEvent, null);
+    const res = await getReportMetadata(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
   });
 });
 
-describe("Test getReportsByState API method", () => {
+describe("Test getAllReportsByState API method", () => {
   beforeEach(() => {
-    process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
   });
 
   test("Test Successful Report by state Fetch", async () => {
-    const res = await getReportsByState(testEventByState, null);
+    const res = await getAllReportsByState(testEventByState, null);
 
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
@@ -97,7 +97,7 @@ describe("Test getReportsByState API method", () => {
       ...testEventByState,
       pathParameters: {},
     };
-    const res = await getReportsByState(noKeyEvent, null);
+    const res = await getAllReportsByState(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
@@ -108,7 +108,7 @@ describe("Test getReportsByState API method", () => {
       ...testEventByState,
       pathParameters: { state: "" },
     };
-    const res = await getReportsByState(noKeyEvent, null);
+    const res = await getAllReportsByState(noKeyEvent, null);
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);

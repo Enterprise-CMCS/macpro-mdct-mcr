@@ -51,13 +51,13 @@ const ReportPageComponent_DynamicDrawer = (
   </RouterWrappedComponent>
 );
 
-const mockedReportShapeWithoutReport = {
+const mockedReportMetadataWithoutReport = {
   ...mockReport,
   reportId: "",
 };
 const mockReportContextWithoutReport = {
   ...mockReportContext,
-  report: mockedReportShapeWithoutReport,
+  reportMetadata: mockedReportMetadataWithoutReport,
 };
 
 const ReportPageComponent_WithoutReport = (
@@ -100,7 +100,7 @@ describe("Test ReportPage functionality", () => {
     await userEvent.type(mockField, "mock input");
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReportMetadata).toHaveBeenCalledTimes(1);
     expect(mockReportContext.updateReportData).toHaveBeenCalledTimes(1);
   });
 });

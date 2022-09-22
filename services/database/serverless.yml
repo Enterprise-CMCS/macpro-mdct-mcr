@@ -21,8 +21,8 @@ custom:
       - val
       - production
   bannerTableName: ${self:custom.stage}-banners
+  reportMetadataTableName: ${self:custom.stage}-mcpar-reports-metadata
   reportDataTableName: ${self:custom.stage}-mcpar-reports-data
-  reportTableName: ${self:custom.stage}-mcpar-reports
   dynamodb:
     stages:
       - local
@@ -75,7 +75,7 @@ resources:
     ReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.reportTableName}
+        TableName: ${self:custom.reportMetadataTableName}
         PointInTimeRecoverySpecification:
           PointInTimeRecoveryEnabled: true
         StreamSpecification:

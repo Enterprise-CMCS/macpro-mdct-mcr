@@ -69,12 +69,12 @@ export enum ReportStatus {
 
 // REPORT PROVIDER/CONTEXT
 
-export interface ReportDetails {
+export interface ReportKeys {
   state: string;
   reportId: string;
 }
 
-export interface ReportShape extends ReportDetails {
+export interface ReportMetadata extends ReportKeys {
   reportType: string;
   programName: string;
   status: string;
@@ -91,25 +91,21 @@ export interface ReportShape extends ReportDetails {
   formTemplate: ReportJson;
 }
 
-export interface ReportDataShape {
-  [key: string]: any; // any valid object can be valid reportData
-}
-
 export interface ReportContextMethods {
-  setReport: Function;
-  fetchReport: Function;
-  updateReport: Function;
+  fetchReportMetadata: Function;
+  updateReportMetadata: Function;
   removeReport: Function;
-  setReportData: Function;
   fetchReportData: Function;
   updateReportData: Function;
   fetchReportsByState: Function;
+  clearReportSelection: Function;
+  setReportSelection: Function;
 }
 
 export interface ReportContextShape extends ReportContextMethods {
-  report: ReportShape | undefined;
-  reportData: ReportDataShape | undefined;
-  reportsByState: ReportShape[] | undefined;
+  reportMetadata: ReportMetadata | undefined;
+  reportData: AnyObject | undefined;
+  reportsByState: ReportMetadata[] | undefined;
   errorMessage?: string | undefined;
 }
 

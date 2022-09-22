@@ -20,12 +20,9 @@ export const AddEditProgramModal = ({
   selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
-  const { fetchReportsByState, updateReport, updateReportData } =
+  const { fetchReportsByState, updateReportMetadata, updateReportData } =
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
-
-  // get full state name from selected state
-  const stateName = States[activeState as keyof typeof States];
 
   // add validation to formJson
   const form: FormJson = formJson;
@@ -33,6 +30,7 @@ export const AddEditProgramModal = ({
   const writeProgram = async (formData: any) => {
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
+
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
@@ -42,42 +40,45 @@ export const AddEditProgramModal = ({
       formData["aep-startDate"]
     );
     const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
-    const reportDetails = {
-      state: activeState,
-      reportId: "",
-    };
+
     const dataToWrite = {
       programName,
-      reportingPeriodStartDate: reportingPeriodStartDate,
-      reportingPeriodEndDate: reportingPeriodEndDate,
+      reportingPeriodStartDate,
+      reportingPeriodEndDate,
       dueDate,
       lastAlteredBy: full_name,
       combinedData,
     };
     // if an existing program was selected, use that report id
     if (selectedReportMetadata?.reportId) {
-      reportDetails.reportId = selectedReportMetadata.reportId;
+      const reportKeys = {
+        state: activeState,
+        reportId: selectedReportMetadata.reportId,
+      };
       // edit existing report
-      await updateReport(reportDetails, {
+      await updateReportMetadata(reportKeys, {
         ...dataToWrite,
       });
-      await updateReportData(reportDetails, {
+      await updateReportData(reportKeys, {
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,
       });
     } else {
       // if no program was selected, create new report id
-      reportDetails.reportId = uuid();
+      const reportKeys = {
+        state: activeState,
+        reportId: uuid(),
+      };
       // create new report
-      await updateReport(reportDetails, {
+      await updateReportMetadata(reportKeys, {
         ...dataToWrite,
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
         formTemplate: mcparReportJson,
       });
-      await updateReportData(reportDetails, {
-        "apoc-a1": stateName,
+      await updateReportData(reportKeys, {
+        "apoc-a1": States[activeState as keyof typeof States],
         "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
         "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
         "arp-a6": programName,

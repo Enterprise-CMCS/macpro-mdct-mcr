@@ -2,14 +2,14 @@ import {
   AnyObject,
   FieldChoice,
   FormField,
-  ReportShape,
+  ReportMetadata,
   ReportJson,
   ReportRoute,
 } from "types";
 
 export const sortReportsOldestToNewest = (
-  reportsArray: ReportShape[]
-): ReportShape[] =>
+  reportsArray: ReportMetadata[]
+): ReportMetadata[] =>
   reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
 
 // returns reportJson with forms that mirror the adminDisabled status of the report

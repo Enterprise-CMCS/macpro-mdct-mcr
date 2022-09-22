@@ -39,7 +39,7 @@ const mockSubmittedReport = {
 
 const mockedReportContext_Submitted = {
   ...mockReportContext,
-  report: mockSubmittedReport,
+  reportMetadata: mockSubmittedReport,
 };
 
 const ReviewSubmitComponent_Submitted = (
@@ -81,7 +81,9 @@ describe("Test ReviewSubmit functionality", () => {
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
-    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    await expect(mockReportContext.updateReportMetadata).toHaveBeenCalledTimes(
+      1
+    );
   });
 });
 

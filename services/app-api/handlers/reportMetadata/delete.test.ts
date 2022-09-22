@@ -33,7 +33,7 @@ const testEvent: APIGatewayProxyEvent = {
 
 describe("Test deleteReport API method", () => {
   beforeEach(() => {
-    process.env["REPORT_TABLE_NAME"] = "fakeReportTable";
+    process.env["REPORT_METADATA_TABLE_NAME"] = "fakeReportTable";
     process.env["REPORT_DATA_TABLE_NAME"] = "fakeReportDataTable";
   });
 

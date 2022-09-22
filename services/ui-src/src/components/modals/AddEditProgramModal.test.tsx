@@ -6,13 +6,13 @@ import { axe } from "jest-axe";
 import { AddEditProgramModal, ReportContext } from "components";
 import { mockReport, mockReportContext } from "utils/testing/setupJest";
 
-const mockUpdateReport = jest.fn();
+const mockUpdateReportMetadata = jest.fn();
 const mockFetchReportsByState = jest.fn();
 const mockCloseHandler = jest.fn();
 
 const mockedReportContext = {
   ...mockReportContext,
-  updateReport: mockUpdateReport,
+  updateReportMetadata: mockUpdateReportMetadata,
   fetchReportsByState: mockFetchReportsByState,
 };
 
@@ -89,7 +89,7 @@ describe("Test AddEditProgramModal functionality", () => {
     const result = await render(modalComponent);
     const form = result.getByTestId("add-edit-program-form");
     await fillForm(form);
-    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    await expect(mockUpdateReportMetadata).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
@@ -98,7 +98,7 @@ describe("Test AddEditProgramModal functionality", () => {
     const result = await render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-program-form");
     await fillForm(form);
-    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    await expect(mockUpdateReportMetadata).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
