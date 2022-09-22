@@ -261,7 +261,7 @@ export const MobileDashboardRow = ({
   return (
     <>
       {reportsByState.map((report: AnyObject) => (
-        <Box data-testid="mobile-row" sx={sx.mobileTable} key={report.reportId}>
+        <Box data-testid="mobile-row" sx={sx.mobileTable} key={report.id}>
           <Box sx={sx.labelGroup}>
             <Text sx={sx.label}>Program name</Text>
             <Flex alignContent="flex-start">
