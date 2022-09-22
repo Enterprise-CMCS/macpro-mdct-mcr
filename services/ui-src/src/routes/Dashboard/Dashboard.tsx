@@ -22,7 +22,6 @@ import {
   Table,
 } from "components";
 // utils
-import { noCombinedDataInput } from "../../constants";
 import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
 import {
   convertDateUtcToEt,
@@ -104,10 +103,7 @@ export const Dashboard = () => {
           "aep-startDate": convertDateUtcToEt(
             reportMetadata.reportingPeriodStartDate
           ),
-          "aep-combinedData":
-            reportMetadata.combinedData?.[0]?.value !== noCombinedDataInput
-              ? reportMetadata.combinedData
-              : [],
+          "aep-combinedData": reportMetadata.combinedData,
         },
         state: reportMetadata.state,
         reportId: reportMetadata.reportId,
