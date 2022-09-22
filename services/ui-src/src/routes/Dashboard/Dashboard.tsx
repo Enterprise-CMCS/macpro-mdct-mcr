@@ -35,6 +35,8 @@ import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import { ArrowIcon } from "@cmsgov/design-system";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
+// temporary
+import config from "config";
 
 export const Dashboard = () => {
   const {
@@ -218,7 +220,8 @@ const DashboardTable = ({
           </Button>
         </Td>
         <Td sx={sx.deleteProgramCell}>
-          {userRole === UserRoles.ADMIN && (
+          {/* TODO: Remove stage check upon archive functionality implementation */}
+          {userRole === UserRoles.ADMIN && config.STAGE !== "production" && (
             <button onClick={() => openDeleteProgramModal(report)}>
               <Image
                 src={cancelIcon}
@@ -301,7 +304,8 @@ export const MobileDashboardRow = ({
             </Button>
           </Box>
           <Box sx={sx.deleteProgramCell}>
-            {userRole === UserRoles.ADMIN && (
+            {/* TODO: Remove stage check upon archive functionality implementation */}
+            {userRole === UserRoles.ADMIN && config.STAGE !== "production" && (
               <button onClick={() => openDeleteProgramModal(report)}>
                 <Image
                   src={cancelIcon}
