@@ -21,7 +21,6 @@ import {
   PageTypes,
   ReportRoute,
   ReportStatus,
-  UserRoles,
 } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
@@ -30,16 +29,8 @@ export const ReportPage = ({ route }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const { form, page } = route;
 
-  // get user state, name, role
-  const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
-
-  // determine if fields should be disabled (based on admin roles )
-  const isAdminUser =
-    userRole === UserRoles.ADMIN ||
-    userRole === UserRoles.APPROVER ||
-    userRole === UserRoles.HELP_DESK;
-  const fieldInputDisabled = isAdminUser && form.adminDisabled;
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -59,7 +50,7 @@ export const ReportPage = ({ route }: Props) => {
   }, [reportId, reportState]);
 
   const onSubmit = async (formData: AnyObject) => {
-    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+    if (userIsStateUser || userIsStateRep) {
       const reportKeys = {
         state: state,
         id: reportId,
@@ -109,10 +100,9 @@ export const ReportPage = ({ route }: Props) => {
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
           <ReportPageFooter
-            formId={form.id}
+            form={form}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
-            shouldDisableAllFields={fieldInputDisabled}
           />
         </Flex>
       </Flex>
