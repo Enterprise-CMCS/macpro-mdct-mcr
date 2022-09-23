@@ -40,11 +40,10 @@ export const Admin = () => {
     setLoading(true);
     try {
       await deleteAdminBanner();
-      setLoading(false);
     } catch (error: any) {
       setError(bannerErrors.DELETE_BANNER_FAILED);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
