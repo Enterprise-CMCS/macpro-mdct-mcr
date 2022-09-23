@@ -34,8 +34,7 @@ custom:
       - val
       - production
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
-  reportDataTableName: ${env:REPORT_DATA_TABLE_NAME, cf:database-${self:custom.stage}.ReportDataTableName}
-  reportTableName: ${env:REPORT_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
+  mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
@@ -91,14 +90,13 @@ provider:
             - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
-    REPORT_DATA_TABLE_NAME: ${self:custom.reportDataTableName}
-    REPORT_TABLE_NAME: ${self:custom.reportTableName}
+    MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
 
 functions:
-  getBanner:
-    handler: handlers/banners/get.getBanner
+  fetchBanner:
+    handler: handlers/banners/fetch.fetchBanner
     events:
       - http:
           path: banners/{bannerId}
@@ -109,8 +107,8 @@ functions:
             parameters:
               paths:
                 bannerId: true
-  writeBanner:
-    handler: handlers/banners/write.writeBanner
+  createBanner:
+    handler: handlers/banners/create.createBanner
     events:
       - http:
           path: banners/{bannerId}
@@ -133,11 +131,11 @@ functions:
             parameters:
               paths:
                 bannerId: true
-  getReportData:
-    handler: handlers/reportData/get.getReportData
+  fetchReport:
+    handler: handlers/reports/fetch.fetchReport
     events:
       - http:
-          path: reportData/{state}/{reportId}
+          path: reports/{state}/{id}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -145,35 +143,9 @@ functions:
             parameters:
               paths:
                 state: true
-                reportId: true
-  writeReportData:
-    handler: handlers/reportData/write.writeReportData
-    events:
-      - http:
-          path: reportData/{state}/{reportId}
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                reportId: true
-  getReport:
-    handler: handlers/reports/get.getReport
-    events:
-      - http:
-          path: reports/{state}/{reportId}
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                reportId: true
-  getReportsByState:
-    handler: handlers/reports/get.getReportsByState
+                id: true
+  fetchReportsByState:
+    handler: handlers/reports/fetch.fetchReportsByState
     events:
       - http:
           path: reports/{state}
@@ -184,11 +156,11 @@ functions:
             parameters:
               paths:
                 state: true
-  writeReport:
-    handler: handlers/reports/write.writeReport
+  createReport:
+    handler: handlers/reports/create.createReport
     events:
       - http:
-          path: reports/{state}/{reportId}
+          path: reports/{state}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -196,22 +168,21 @@ functions:
             parameters:
               paths:
                 state: true
-                reportId: true
-  deleteReport:
-    handler: handlers/reports/delete.deleteReport
+  updateReport:
+    handler: handlers/reports/update.updateReport
     events:
       - http:
-          path: reports/{state}/{reportId}
-          method: delete
+          path: reports/{state}/{id}
+          method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
                 state: true
-                reportId: true
-  getTemplate:
-    handler: handlers/templates/get.getTemplate
+                id: true
+  fetchTemplate:
+    handler: handlers/templates/fetch.fetchTemplate
     events:
       - http:
           path: templates/{templateName}
