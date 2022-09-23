@@ -89,7 +89,7 @@ export interface ReportShape extends ReportKeys {
   createdAt: number;
   lastAltered: number;
   lastAlteredBy: string;
-  combinedData: string;
+  combinedData: Choice[];
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
@@ -162,6 +162,7 @@ export interface DropdownOptions {
 }
 
 export interface FieldChoice {
+  id: string;
   name: string;
   type?: string;
   label: string;
@@ -177,6 +178,10 @@ export interface ChoiceFieldProps {
   choices: FieldChoice[];
   sxOverride?: AnyObject;
   [key: string]: any;
+}
+export interface Choice {
+  key: string; // choice.name
+  value: string; // choice.value
 }
 
 export enum PageTypes {
