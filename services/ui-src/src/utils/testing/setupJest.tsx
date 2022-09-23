@@ -57,6 +57,48 @@ export const mockStateUser: UserContextI = {
   loginWithIDM: () => {},
 };
 
+export const mockStateRep: UserContextI = {
+  user: {
+    userRole: UserRoles.STATE_REP,
+    email: "staterep@test.com",
+    given_name: "Robert",
+    family_name: "States",
+    full_name: "Robert States",
+    state: "MA",
+  },
+  showLocalLogins: true,
+  logout: async () => {},
+  loginWithIDM: () => {},
+};
+
+export const mockStateApprover: UserContextI = {
+  user: {
+    userRole: UserRoles.APPROVER,
+    email: "stateapprover@test.com",
+    given_name: "Zara",
+    family_name: "Zustimmer",
+    full_name: "Zara Zustimmer",
+    state: "MN",
+  },
+  showLocalLogins: true,
+  logout: async () => {},
+  loginWithIDM: () => {},
+};
+
+export const mockHelpDeskUser: UserContextI = {
+  user: {
+    userRole: UserRoles.HELP_DESK,
+    email: "helpdeskuser@test.com",
+    given_name: "Clippy",
+    family_name: "Helperson",
+    full_name: "Clippy Helperson",
+    state: undefined,
+  },
+  showLocalLogins: false,
+  logout: async () => {},
+  loginWithIDM: () => {},
+};
+
 export const mockAdminUser: UserContextI = {
   user: {
     userRole: UserRoles.ADMIN,
@@ -116,25 +158,185 @@ export const mockBannerDataEmpty = {
   endDate: "",
 };
 
-export const mockReportDetails = {
+// FORM
+
+export const mockFormField = {
+  id: "mock-1",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock field",
+  },
+};
+
+export const mockPlanField = {
+  id: "plans",
+  type: "dynamic",
+  validation: "dynamic",
+  props: {
+    label: "Plan name",
+  },
+};
+
+export const mockForm = {
+  id: "mock-form-id",
+  fields: [mockFormField],
+};
+
+export const mockPlanFilledForm = {
+  id: "mock-form-id",
+  fields: [mockPlanField],
+};
+
+export const mockPageJson = {
+  pageType: "staticPage",
+  intro: {
+    section: "mock section",
+    subsection: "mock subsection",
+  },
+};
+
+export const mockPageJsonStaticDrawer = {
+  pageType: "staticDrawer",
+  entityType: "plans",
+  intro: {
+    section: "mock section",
+    subsection: "mock subsection",
+  },
+  dashboard: {
+    title: "Mock dashboard title",
+  },
+  drawer: {
+    title: "Mock drawer title",
+  },
+};
+
+export const mockPageJsonDynamicDrawer = {
+  pageType: "dynamicDrawer",
+  intro: {
+    section: "mock section",
+    subsection: "mock subsection",
+  },
+  dynamicTable: {
+    tableHeading: "Add measures for monitoring access standards",
+    addEntityText: "Add access measure",
+  },
+};
+
+// REPORT
+
+export const mockReportRoutes = [
+  {
+    name: "mock-route-1",
+    path: "/mock/mock-route-1",
+    page: mockPageJson,
+    form: mockForm,
+  },
+  {
+    name: "mock-route-2",
+    path: "/mock/mock-route-2",
+    children: [
+      {
+        name: "mock-route-2a",
+        path: "/mock/mock-route-2a",
+        page: mockPageJsonStaticDrawer,
+        form: mockPlanFilledForm,
+      },
+      {
+        name: "mock-route-2b",
+        path: "/mock/mock-route-2b",
+        page: mockPageJsonDynamicDrawer,
+        form: mockForm,
+      },
+    ],
+  },
+];
+
+export const mockFlattenedReportRoutes = [
+  {
+    name: "mock-route-1",
+    path: "/mock/mock-route-1",
+    page: mockPageJson,
+    form: mockForm,
+  },
+  {
+    name: "mock-route-2a",
+    path: "/mock/mock-route-2a",
+    page: mockPageJsonStaticDrawer,
+    form: mockPlanFilledForm,
+  },
+  {
+    name: "mock-route-2b",
+    path: "/mock/mock-route-2b",
+    page: mockPageJsonDynamicDrawer,
+    form: mockForm,
+  },
+];
+
+export const mockReportJson = {
+  name: "mock-report",
+  basePath: "/mock",
+  routes: mockReportRoutes,
+  validationSchema: {},
+};
+
+export const mockReportJsonFlatRoutes = {
+  ...mockReportJson,
+  routes: mockFlattenedReportRoutes,
+};
+
+export const mockReportKeys = {
   state: "AB",
-  reportId: "testReportId",
+  reportId: "mock-report-id",
+};
+
+export const mockReport = {
+  ...mockReportKeys,
+  reportType: "mock-type",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: "Yes...",
 };
 
 export const mockReportData = {
-  field1: "value1",
-  field2: "value2",
-  num1: 0,
-  num2: 1,
-  array: ["array1, array2"],
+  fieldData: {
+    plans: ["example-plan"],
+    text: "text-input",
+    number: 0,
+    radio: ["option1"],
+    checkbox: ["option1", "option2"],
+    dropdown: "dropdown-selection",
+  },
 };
 
-export const mockReportStatus = {
-  state: "AB",
-  reportId: "testReportId",
-  status: ReportStatus.NOT_STARTED,
-  programName: "testProgram",
-  dueDate: "168515200000",
-  lastAltered: "162515200000",
-  lastAlteredBy: "Thelonious States",
+export const mockReportsByState = [
+  { ...mockReport, reportId: "mock-report-id-1" },
+  { ...mockReport, reportId: "mock-report-id-2" },
+  { ...mockReport, reportId: "mock-report-id-3" },
+];
+
+export const mockReportMethods = {
+  fetchReportMetadata: jest.fn(),
+  updateReportMetadata: jest.fn(),
+  removeReport: jest.fn(),
+  fetchReportData: jest.fn(),
+  updateReportData: jest.fn(),
+  fetchReportsByState: jest.fn(),
+  clearReportSelection: jest.fn(),
+  setReportSelection: jest.fn(),
+};
+
+export const mockReportContext = {
+  ...mockReportMethods,
+  reportMetadata: mockReport,
+  reportData: mockReportData,
+  reportsByState: mockReportsByState,
+  errorMessage: "",
 };

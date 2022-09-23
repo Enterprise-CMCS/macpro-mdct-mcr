@@ -1,8 +1,9 @@
 import {
   convertToCommaSeparatedString,
-  isValidCustomMask,
+  validCustomMask,
   isValidNumericalString,
   maskValue,
+  convertToCommaSeparatedRatioString,
 } from "utils";
 
 const commaSeparatedMaskAcceptableTestCases = [
@@ -26,12 +27,23 @@ const commaSeparatedMaskAcceptableTestCases = [
   },
 ];
 
-describe("Test isValidCustomMask", () => {
+const ratioMaskAcceptableTestCases = [
+  { test: "1:1", expected: "1:1" },
+  { test: "1,234:1.12", expected: "1,234:1.12" },
+  { test: "1234:1.12", expected: "1,234:1.12" },
+  { test: "1.23:1234.1", expected: "1.23:1,234.1" },
+  { test: "1,,,234,56....1234:1", expected: "123,456.12:1" },
+  { test: "1:1,,,234,56....1234", expected: "1:123,456.12" },
+  { test: "1:10,000", expected: "1:10,000" },
+  { test: "1:10,00:0", expected: "1:1,000" },
+];
+
+describe("Test validCustomMask", () => {
   test("Check if good and bad mask values return accurately", () => {
-    const commaSeparated = isValidCustomMask("comma-separated");
-    const badMask = isValidCustomMask("cherry-tree");
-    expect(commaSeparated).toEqual(true);
-    expect(badMask).toEqual(false);
+    const commaSeparated = validCustomMask("comma-separated");
+    const badMask = validCustomMask("cherry-tree");
+    expect(commaSeparated).toEqual("comma-separated");
+    expect(badMask).toBeFalsy();
   });
 });
 
@@ -60,11 +72,34 @@ describe("Test convertToCommaSeparatedString", () => {
   });
   test("Check if non number strings can fail gracefully", () => {
     const testCases = [
-      { test: "No numbers here me lord", expected: "NaN" },
+      { test: "No numbers here, m'lord", expected: "NaN" },
       { test: "", expected: "NaN" },
     ];
     for (let testCase of testCases) {
       expect(convertToCommaSeparatedString(testCase.test)).toEqual(
+        testCase.expected
+      );
+    }
+  });
+});
+
+describe("Test convertToCommaSeparatedRatioString", () => {
+  test("Valid ratio is split and masked on each side individually", () => {
+    for (let testCase of ratioMaskAcceptableTestCases) {
+      expect(convertToCommaSeparatedRatioString(testCase.test)).toEqual(
+        testCase.expected
+      );
+    }
+  });
+  test("Check if non number strings can fail gracefully", () => {
+    const testCases = [
+      { test: "No numbers here, m'lord", expected: ":" },
+      { test: " :1", expected: ":1" },
+      { test: "1: ", expected: "1:" },
+      { test: "1:::10,000 ", expected: "1:" },
+    ];
+    for (let testCase of testCases) {
+      expect(convertToCommaSeparatedRatioString(testCase.test)).toEqual(
         testCase.expected
       );
     }

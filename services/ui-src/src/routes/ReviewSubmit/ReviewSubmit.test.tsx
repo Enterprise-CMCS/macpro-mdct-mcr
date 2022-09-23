@@ -3,46 +3,19 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext } from "components";
 import { ReviewSubmit } from "routes";
+import { SuccessMessageGenerator } from "./ReviewSubmit";
 // types
 import { ReportStatus } from "types";
 // utils
-import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
+import {
+  mockReport,
+  mockReportContext,
+  mockStateUser,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
-
-// MOCKS
-
-const mockReportMethods = {
-  setReport: jest.fn(() => {}),
-  setReportData: jest.fn(() => {}),
-  fetchReportData: jest.fn(() => {}),
-  updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
-  updateReport: jest.fn(() => {}),
-  removeReport: jest.fn(() => {}),
-  fetchReportsByState: jest.fn(() => {}),
-};
-
-const mockReportInitialContext = {
-  ...mockReportMethods,
-  reportData: {},
-  report: {},
-  errorMessage: "",
-};
-
-const mockReportCompletedContext = {
-  ...mockReportMethods,
-  report: {
-    createdAt: 1660283173744,
-    state: "CA",
-    reportId: "tempName",
-    lastAltered: 1660283571013,
-    status: ReportStatus.SUBMITTED,
-  },
-  reportData: {},
-  errorMessage: "",
-};
 
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
@@ -51,39 +24,49 @@ jest.mock("utils", () => ({
   },
 }));
 
-const reviewSubmitInitialView = (
+const ReviewSubmitComponent_InProgress = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportInitialContext}>
+    <ReportContext.Provider value={mockReportContext}>
       <ReviewSubmit />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const reviewSubmitCompletedView = (
+const mockSubmittedReport = {
+  ...mockReport,
+  status: ReportStatus.SUBMITTED,
+};
+
+const mockedReportContext_Submitted = {
+  ...mockReportContext,
+  reportMetadata: mockSubmittedReport,
+};
+
+const ReviewSubmitComponent_Submitted = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportCompletedContext}>
+    <ReportContext.Provider value={mockedReportContext_Submitted}>
       <ReviewSubmit />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test /mcpar/review-and-submit view", () => {
-  test("Check that /mcpar/review-and-submit view renders", () => {
-    render(reviewSubmitInitialView);
+describe("Test ReviewSubmit functionality", () => {
+  test("ReviewSubmit renders pre-submit state when report status is 'in progress'", () => {
+    render(ReviewSubmitComponent_InProgress);
     const { review } = reviewVerbiage;
     const { intro } = review;
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
-  test("Check that /mcpar/review-and-submit view renders when report status is completed", () => {
-    render(reviewSubmitCompletedView);
+  test("ReviewSubmit renders success state when report status is 'submitted'", () => {
+    render(ReviewSubmitComponent_Submitted);
     const { submitted } = reviewVerbiage;
     const { intro } = submitted;
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
-  test("should show a modal when clicking initial submit button", async () => {
-    render(reviewSubmitInitialView);
+  test("ReviewSubmit shows modal on submit button click", async () => {
+    render(ReviewSubmitComponent_InProgress);
     const { review } = reviewVerbiage;
     const { modal, pageLink } = review;
     const submitCheckButton = screen.getByText(pageLink.text)!;
@@ -92,25 +75,48 @@ describe("Test /mcpar/review-and-submit view", () => {
     expect(modalTitle).toBeVisible();
   });
 
-  test("should fire the submitForm function when confirming the modal", async () => {
-    render(reviewSubmitInitialView);
+  test("ReviewSubmit updates report status on submit confirmation", async () => {
+    render(ReviewSubmitComponent_InProgress);
     const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
-    await expect(mockReportMethods.updateReport).toHaveBeenCalledTimes(1);
+    await expect(mockReportContext.updateReportMetadata).toHaveBeenCalledTimes(
+      1
+    );
   });
 });
 
-describe("Test /mcpar/review-and-submit view accessibility", () => {
-  it("Should not have basic accessibility issues on the initial state", async () => {
-    const { container } = render(reviewSubmitInitialView);
+describe("Success Message Generator", () => {
+  it("should give the full success date if given all params", () => {
+    const programName = "test-program";
+    const submittedDate = 1663163109045;
+    const submittersName = "Carol California";
+    expect(
+      SuccessMessageGenerator(programName, submittedDate, submittersName)
+    ).toBe(
+      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}`
+    );
+  });
+  it("should give a reduced version if not given all params", () => {
+    const programName = "test-program";
+    const submittedDate = undefined;
+    const submittersName = "Carol California";
+    expect(
+      SuccessMessageGenerator(programName, submittedDate, submittersName)
+    ).toBe(`MCPAR report for ${programName} was submitted.`);
+  });
+});
+
+describe("Test ReviewSubmit view accessibility", () => {
+  it("Should not have basic accessibility issues when report status is 'in progress", async () => {
+    const { container } = render(ReviewSubmitComponent_InProgress);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("Should not have basic accessibility issues on the submitted state", async () => {
-    const { container } = render(reviewSubmitCompletedView);
+  it("Should not have basic accessibility issues when report status is 'submitted", async () => {
+    const { container } = render(ReviewSubmitComponent_Submitted);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

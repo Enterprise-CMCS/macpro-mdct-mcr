@@ -7,9 +7,11 @@ export const ReportPageFooter = ({
   formId,
   previousRoute,
   nextRoute,
+  shouldDisableAllFields,
   ...props
 }: Props) => {
   const navigate = useNavigate();
+
   return (
     <Box sx={sx.footerBox} {...props}>
       <Box>
@@ -21,20 +23,20 @@ export const ReportPageFooter = ({
           >
             Previous
           </Button>
-          {formId ? (
+          {!formId || shouldDisableAllFields ? (
+            <Button
+              onClick={() => navigate(nextRoute)}
+              rightIcon={<Icon icon="arrowRight" />}
+            >
+              Continue
+            </Button>
+          ) : (
             <Button
               form={formId}
               type="submit"
               rightIcon={<Icon icon="arrowRight" />}
             >
               Save & continue
-            </Button>
-          ) : (
-            <Button
-              onClick={() => navigate(nextRoute)}
-              rightIcon={<Icon icon="arrowRight" />}
-            >
-              Continue
             </Button>
           )}
         </Flex>

@@ -1,41 +1,153 @@
-import React from "react";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // components
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+import {
+  ReportContext,
+  DynamicDrawerSection,
+  StaticDrawerSection,
+  PageTemplate,
+  ReportPageIntro,
+  ReportPageFooter,
+  Sidebar,
+  StaticPageSection,
+} from "components";
 // utils
+import { useFindRoute, useUser } from "utils";
+import {
+  AnyObject,
+  FormJson,
+  PageJson,
+  PageTypes,
+  ReportRoute,
+  ReportStatus,
+  UserRoles,
+} from "types";
+import { mcparReportRoutesFlat } from "forms/mcpar";
 
-import { makeMediaQueryClasses } from "utils";
-import { AnyObject } from "types";
+export const ReportPage = ({ route }: Props) => {
+  // get report, form, and page related-data
+  const { reportMetadata, updateReportData, updateReportMetadata } =
+    useContext(ReportContext);
+  const { form, page } = route;
 
-export const ReportPage = ({ children, sxOverride, ...props }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
+  // get user state, name, role
+  const { user } = useUser();
+  const { full_name, state, userRole } = user ?? {};
+
+  // determine if fields should be disabled (based on admin roles )
+  const isAdminUser =
+    userRole === UserRoles.ADMIN ||
+    userRole === UserRoles.APPROVER ||
+    userRole === UserRoles.HELP_DESK;
+  const fieldInputDisabled = isAdminUser && form.adminDisabled;
+
+  // get state and reportId from context or storage
+  const reportId =
+    reportMetadata?.reportId || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
+
+  // get next and previous routes
+  const navigate = useNavigate();
+  const { previousRoute, nextRoute } = useFindRoute(
+    mcparReportRoutesFlat,
+    "/mcpar"
+  );
+
+  useEffect(() => {
+    if (!reportId || !reportState) {
+      navigate("/mcpar");
+    }
+  }, [reportId, reportState]);
+
+  const onSubmit = async (formData: AnyObject) => {
+    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+      const reportKeys = {
+        state: state,
+        reportId: reportId,
+      };
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      };
+      await updateReportData(reportKeys, formData);
+      await updateReportMetadata(reportKeys, dataToWrite);
+    }
+    if (page?.pageType === PageTypes.STATIC_PAGE) {
+      navigate(nextRoute);
+    }
+  };
+
+  const renderPageSection = (form: FormJson, page?: PageJson) => {
+    switch (page?.pageType) {
+      case PageTypes.STATIC_PAGE:
+        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+      case PageTypes.STATIC_DRAWER:
+        return (
+          <StaticDrawerSection form={form} page={page} onSubmit={onSubmit} />
+        );
+      case PageTypes.DYNAMIC_DRAWER:
+        return (
+          <DynamicDrawerSection
+            form={form}
+            dynamicTable={page.dynamicTable}
+            onSubmit={onSubmit}
+          />
+        );
+      default:
+        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+    }
+  };
 
   return (
-    <section>
-      <Box
-        sx={{ ...sx.contentBox, ...sxOverride }}
-        className={mqClasses}
-        {...props}
-      >
-        <Flex sx={sx.contentFlex} className="contentFlex">
-          {children}
+    <PageTemplate type="report" data-testid={form.id}>
+      <Flex sx={sx.pageContainer}>
+        <Sidebar />
+        <Flex sx={sx.reportContainer}>
+          {page?.intro && <ReportPageIntro text={page.intro} />}
+          {renderPageSection(form, page)}
+          <ReportPageFooter
+            formId={form.id}
+            previousRoute={previousRoute}
+            nextRoute={nextRoute}
+            shouldDisableAllFields={fieldInputDisabled}
+          />
         </Flex>
-      </Box>
-    </section>
+      </Flex>
+    </PageTemplate>
   );
 };
 
 interface Props {
-  children: React.ReactNode;
-  sxOverride?: AnyObject;
-  [key: string]: any;
+  route: ReportRoute;
 }
 
 const sx = {
-  contentBox: {
+  pageContainer: {
+    width: "100%",
     height: "100%",
   },
-  contentFlex: {
-    height: "100%",
+  reportContainer: {
     flexDirection: "column",
+    width: "100%",
+    maxWidth: "reportPageWidth",
+    marginY: "3.5rem",
+    marginLeft: "3.5rem",
+    h3: {
+      paddingBottom: "0.75rem",
+      fontSize: "lg",
+      fontWeight: "bold",
+    },
+    h4: {
+      paddingBottom: "0.75rem",
+      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+      color: "palette.gray_medium",
+      fontSize: "lg",
+      fontWeight: "bold",
+    },
+    h5: {
+      fontSize: "lg",
+      fontWeight: "bold",
+    },
   },
 };

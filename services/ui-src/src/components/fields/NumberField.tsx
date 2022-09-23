@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
 import { TextField } from "./TextField";
 // utils
 import {
-  CustomMasks,
-  isValidCustomMask,
+  applyCustomMask,
+  customMaskMap,
   makeMediaQueryClasses,
-  maskValue,
+  validCmsdsMask,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
-import { TextFieldMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
+import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 
 export const NumberField = ({
   name,
@@ -22,40 +22,41 @@ export const NumberField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [displayValue, setDisplayValue] = useState("");
 
-  const hydrationValue = props?.hydrate;
-
-  // check for value and valid custom mask; return masked value or original value
-  const applyCustomMaskToValue = (value: any, mask: any) => {
-    if (value && isValidCustomMask(mask)) {
-      return maskValue(value, mask);
-    } else return value;
-  };
-
-  // if mask specified, but not a custom mask, return mask as assumed CMSDS mask
-  const validNonCustomMask =
-    mask && !isValidCustomMask(mask) ? mask : undefined;
-
-  const [displayValue, setDisplayValue] = useState(
-    applyCustomMaskToValue(hydrationValue, mask) || ""
-  );
-
-  // get the form context
+  // get form context
   const form = useFormContext();
 
-  // update form data and masked display value on blur
-  const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const eventValue = applyCustomMaskToValue(value, mask);
-    setDisplayValue(eventValue);
-    form.setValue(name, eventValue, { shouldValidate: true });
-  };
+  // set initial display value to form state field value or hydration value
+  const hydrationValue = props?.hydrate;
+  useEffect(() => {
+    // if form state has value for field, set as display value
+    const fieldValue = form.getValues(name);
+    if (fieldValue) {
+      const maskedFieldValue = applyCustomMask(fieldValue, mask);
+      setDisplayValue(maskedFieldValue);
+    }
+    // else if hydration value exists, set as display value
+    else if (hydrationValue) {
+      const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
+      setDisplayValue(maskedHydrationValue);
+      form.setValue(name, maskedHydrationValue, { shouldValidate: true });
+    }
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
-  // update form data on change
+  // update form data on change, but do not mask
   const onChangeHandler = async (e: InputChangeEvent) => {
     const { name, value } = e.target;
     setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
+  };
+
+  // update form data and display value on blur, using masked value
+  const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const maskedFieldValue = applyCustomMask(value, mask);
+    setDisplayValue(maskedFieldValue);
+    form.setValue(name, maskedFieldValue, { shouldValidate: true });
   };
 
   return (
@@ -64,13 +65,12 @@ export const NumberField = ({
         <TextField
           id={name}
           name={name}
-          label={label}
+          label={label || ""}
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
-          mask={validNonCustomMask}
+          mask={validCmsdsMask(mask)}
           value={displayValue}
-          controlled="true"
           {...props}
         />
         {mask === "percentage" && <Box sx={sx.percentage}> % </Box>}
@@ -81,9 +81,9 @@ export const NumberField = ({
 
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
-  mask?: TextFieldMask | CustomMasks;
+  mask?: ValidCmsdsMask | keyof typeof customMaskMap;
   nested?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
@@ -98,11 +98,11 @@ const sx = {
     position: "relative",
   },
   percentage: {
-    fontSize: "lg",
-    fontWeight: "700",
-    paddingTop: "1px",
+    position: "absolute",
     bottom: "11px",
     left: "213px",
-    position: "absolute",
+    paddingTop: "1px",
+    fontSize: "lg",
+    fontWeight: "700",
   },
 };

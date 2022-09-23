@@ -4,8 +4,13 @@ export const bannerId = "admin-banner-id";
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 
-// STATES
+// FIELDS
+export const dropdownDefaultOptionText = "- Select an option -";
 
+export const noCombinedDataInput =
+  "No, the report does not contain items for which the state is unable to remove Separate CHIP information";
+
+// STATES
 export enum States {
   AL = "Alabama",
   AK = "Alaska",

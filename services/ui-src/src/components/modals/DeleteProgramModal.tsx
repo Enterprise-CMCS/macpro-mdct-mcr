@@ -2,21 +2,21 @@ import { useContext } from "react";
 // components
 import { Text } from "@chakra-ui/react";
 import { Modal, ReportContext } from "components";
+import { AnyObject } from "types";
 
 export const DeleteProgramModal = ({
-  activeState,
-  selectedReportId,
+  selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
   const { fetchReportsByState, removeReport } = useContext(ReportContext);
 
   const deleteProgramHandler = async () => {
-    const reportDetails = {
-      state: activeState,
-      reportId: selectedReportId,
+    const reportKeys = {
+      state: selectedReportMetadata.state,
+      reportId: selectedReportMetadata.reportId,
     };
-    await removeReport(reportDetails);
-    await fetchReportsByState(activeState);
+    await removeReport(reportKeys);
+    await fetchReportsByState(selectedReportMetadata.state);
     modalDisclosure.onClose();
   };
 
@@ -30,7 +30,7 @@ export const DeleteProgramModal = ({
         closeButtonText: "Cancel",
       }}
     >
-      <Text>
+      <Text data-testid="delete-program-modal-text">
         You will lose all information entered for this program. Are you sure you
         want to proceed?
       </Text>
@@ -39,8 +39,7 @@ export const DeleteProgramModal = ({
 };
 
 interface Props {
-  activeState: string;
-  selectedReportId: string;
+  selectedReportMetadata: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

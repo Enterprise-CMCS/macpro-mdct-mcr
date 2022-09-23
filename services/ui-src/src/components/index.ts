@@ -41,10 +41,10 @@ export { Form } from "./forms/Form";
 // icons
 export { Icon } from "./icons/Icon";
 // layout
-export { BasicPage } from "./layout/BasicPage";
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { IntroSection } from "./layout/IntroSection";
+export { PageTemplate } from "./layout/PageTemplate";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
@@ -61,8 +61,9 @@ export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 export { ReportPage } from "./reports/ReportPage";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
-export { StandardFormSection } from "./reports/sections/StandardFormSection";
-export { EntityDrawerSection } from "./reports/sections/EntityDrawerSection";
+export { StaticPageSection } from "./reports/sections/StaticPageSection";
+export { DynamicDrawerSection } from "./reports/sections/DynamicDrawerSection";
+export { StaticDrawerSection } from "./reports/sections/StaticDrawerSection";
 // tables
 export { Table } from "./tables/Table";
 // widgets

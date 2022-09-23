@@ -4,37 +4,23 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { AddEditProgramModal, ReportContext } from "components";
+import { mockReport, mockReportContext } from "utils/testing/setupJest";
 
-const mockCloseHandler = jest.fn();
-const mockUpdateReport = jest.fn();
+const mockUpdateReportMetadata = jest.fn();
 const mockFetchReportsByState = jest.fn();
+const mockCloseHandler = jest.fn();
 
-const activeState = "AL";
-
-const mockReportMethods = {
-  setReport: jest.fn(() => {}),
-  setReportData: jest.fn(() => {}),
-  fetchReportData: jest.fn(() => {}),
-  updateReportData: jest.fn(() => {}),
-  fetchReport: jest.fn(() => {}),
-  updateReport: mockUpdateReport,
-  removeReport: jest.fn(() => {}),
+const mockedReportContext = {
+  ...mockReportContext,
+  updateReportMetadata: mockUpdateReportMetadata,
   fetchReportsByState: mockFetchReportsByState,
 };
 
-const mockReportContext = {
-  ...mockReportMethods,
-  report: {},
-  reportData: {},
-  reportsByState: [],
-  errorMessage: "",
-};
-
 const modalComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
-      activeState={activeState}
-      selectedReportId={undefined}
+      activeState="AB"
+      selectedReportMetadata={undefined}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -44,10 +30,10 @@ const modalComponent = (
 );
 
 const modalComponentWithSelectedReport = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
-      activeState={activeState}
-      selectedReportId="AB_report-id_1-1-2022"
+      activeState="AB"
+      selectedReportMetadata={mockReport}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -73,12 +59,12 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditProgramModals top close button can be clicked", () => {
-    fireEvent.click(screen.queryAllByText("Close")[0]);
+    fireEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("AddEditProgramModals bottom close button can be clicked", () => {
-    fireEvent.click(screen.queryAllByText("Close")[1]);
+  test("AddEditProgramModals bottom cancel button can be clicked", () => {
+    fireEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });
@@ -103,7 +89,7 @@ describe("Test AddEditProgramModal functionality", () => {
     const result = await render(modalComponent);
     const form = result.getByTestId("add-edit-program-form");
     await fillForm(form);
-    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    await expect(mockUpdateReportMetadata).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
@@ -112,7 +98,7 @@ describe("Test AddEditProgramModal functionality", () => {
     const result = await render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-program-form");
     await fillForm(form);
-    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    await expect(mockUpdateReportMetadata).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });

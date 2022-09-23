@@ -1,5 +1,9 @@
 // GLOBAL
 
+export interface AnyObject {
+  [key: string]: any;
+}
+
 export interface DynamoGet {
   TableName: string;
   Key: {
@@ -29,9 +33,7 @@ export interface DynamoUpdate {
 
 export interface DynamoScan {
   TableName: string;
-  FilterExpression?: string;
-  ExpressionAttributeNames: { [key: string]: string };
-  ExpressionAttributeValues: { [key: string]: any };
+  [key: string]: any;
 }
 
 export const enum RequestMethods {
@@ -43,7 +45,9 @@ export const enum RequestMethods {
 
 export const enum StatusCodes {
   SUCCESS = 200,
+  FAILURE = 400,
   UNAUTHORIZED = 403,
+  SERVER_ERROR = 500,
 }
 
 // USERS

@@ -1,60 +1,87 @@
 import { useContext } from "react";
+import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
+// form
+import formJson from "forms/addEditProgram/addEditProgram.json";
+import { mcparReportJson } from "forms/mcpar";
 // utils
-import { ReportStatus } from "types";
+import { AnyObject, FormJson, ReportStatus } from "types";
+import { noCombinedDataInput, States } from "../../constants";
 import {
   calculateDueDate,
   convertDateEtToUtc,
-  createReportId,
+  convertDateUtcToEt,
   useUser,
 } from "utils";
-// form
-import formJson from "forms/internal/aep/addEditProgram.json";
-import formSchema from "forms/internal/aep/addEditProgram.schema";
 
 export const AddEditProgramModal = ({
   activeState,
-  selectedReportId,
+  selectedReportMetadata,
   modalDisclosure,
 }: Props) => {
-  const { fetchReportsByState, updateReport } = useContext(ReportContext);
+  const { fetchReportsByState, updateReportMetadata, updateReportData } =
+    useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
 
-  const addEditProgram = async (formData: any) => {
+  // add validation to formJson
+  const form: FormJson = formJson;
+
+  const writeProgram = async (formData: any) => {
+    const submitButton = document.querySelector("[form=" + form.id + "]");
+    submitButton?.setAttribute("disabled", "true");
+
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
-    const reportDetails = {
-      state: activeState,
-      reportId: "",
-    };
+    const combinedDataArray = formData["aep-combinedData"];
+    const combinedData = combinedDataArray?.[0] || noCombinedDataInput;
+    const reportingPeriodStartDate = convertDateEtToUtc(
+      formData["aep-startDate"]
+    );
+    const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
+
     const dataToWrite = {
       programName,
-      reportingPeriodStartDate: convertDateEtToUtc(formData["aep-startDate"]),
-      reportingPeriodEndDate: convertDateEtToUtc(formData["aep-endDate"]),
+      reportingPeriodStartDate,
+      reportingPeriodEndDate,
       dueDate,
       lastAlteredBy: full_name,
+      combinedData,
     };
     // if an existing program was selected, use that report id
-    if (selectedReportId) {
-      reportDetails.reportId = selectedReportId;
+    if (selectedReportMetadata?.reportId) {
+      const reportKeys = {
+        state: activeState,
+        reportId: selectedReportMetadata.reportId,
+      };
       // edit existing report
-      await updateReport(reportDetails, {
+      await updateReportMetadata(reportKeys, {
         ...dataToWrite,
+      });
+      await updateReportData(reportKeys, {
+        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
+        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
+        "arp-a6": programName,
       });
     } else {
       // if no program was selected, create new report id
-      reportDetails.reportId = createReportId(
-        activeState,
-        programName,
-        dueDate
-      );
+      const reportKeys = {
+        state: activeState,
+        reportId: uuid(),
+      };
       // create new report
-      await updateReport(reportDetails, {
+      await updateReportMetadata(reportKeys, {
         ...dataToWrite,
         reportType: "MCPAR",
         status: ReportStatus.NOT_STARTED,
+        formTemplate: mcparReportJson,
+      });
+      await updateReportData(reportKeys, {
+        "apoc-a1": States[activeState as keyof typeof States],
+        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
+        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
+        "arp-a6": programName,
       });
     }
     await fetchReportsByState(activeState);
@@ -64,20 +91,22 @@ export const AddEditProgramModal = ({
   return (
     <Modal
       data-testid="add-edit-program-modal"
-      formId={formJson.id}
+      formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: "Add a Program",
+        heading: selectedReportMetadata?.reportId
+          ? "Edit Program"
+          : "Add a Program",
         actionButtonText: "Save",
-        closeButtonText: "Close",
+        closeButtonText: "Cancel",
       }}
     >
       <Form
         data-testid="add-edit-program-form"
-        id={formJson.id}
-        formJson={formJson}
-        formSchema={formSchema}
-        onSubmit={addEditProgram}
+        id={form.id}
+        formJson={form}
+        formData={selectedReportMetadata}
+        onSubmit={writeProgram}
       />
     </Modal>
   );
@@ -85,7 +114,7 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
-  selectedReportId: string | undefined;
+  selectedReportMetadata?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

@@ -1,9 +1,10 @@
 import React from "react";
+
 // USERS
 
 export enum UserRoles {
   ADMIN = "mdctmcr-bor", // "MDCT MCR Business Owner Representative"
-  HELP_DESK = "mdctmcr-help-desk", // "MDCTMCR Help Desk"
+  HELP_DESK = "mdctmcr-help-desk", // "MDCT MCR Help Desk"
   APPROVER = "mdctmcr-approver", // "MDCT MCR Approver"
   STATE_REP = "mdctmcr-state-rep", // "MDCT MCR State Representative"
   STATE_USER = "mdctmcr-state-user", // "MDCT MCR State User"
@@ -25,23 +26,39 @@ export interface UserContextI {
   loginWithIDM: () => void;
 }
 
-// REPORT
+// REPORT STRUCTURE
 
-export interface PageJson {
+export interface ReportJson {
+  id?: string;
+  name: string;
+  basePath: string;
+  adminDisabled?: boolean;
+  routes: ReportRoute[];
+  validationSchema?: AnyObject;
+}
+
+export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
+
+export interface ReportRouteBase {
+  name: string;
   path: string;
-  intro?: AnyObject;
-  form: FormJson;
-  drawer?: AnyObject;
+  page?: PageJson;
   [key: string]: any;
 }
 
-export interface ReportPath {
-  name: string;
-  path: string;
-  formId?: string;
-  element?: string;
-  pageJson?: PageJson;
-  children?: ReportPath[];
+export interface ReportRouteWithForm extends ReportRouteBase {
+  children?: never;
+}
+
+export interface ReportRouteWithChildren extends ReportRouteBase {
+  children?: ReportRoute[];
+  form?: never;
+}
+
+export interface PageJson {
+  pageType?: string;
+  intro?: AnyObject;
+  [key: string]: any;
 }
 
 export enum ReportStatus {
@@ -50,49 +67,91 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
-export interface ReportDataShape {
-  [key: string]: any;
-}
+// REPORT PROVIDER/CONTEXT
 
-export interface FieldDataShape {
-  [key: string]: any;
-}
-
-export interface ReportDetails {
+export interface ReportKeys {
   state: string;
   reportId: string;
 }
 
-export interface ReportShape {
-  [key: string]: any;
+export interface ReportMetadata extends ReportKeys {
+  reportType: string;
+  programName: string;
+  status: string;
+  reportingPeriodStartDate: number;
+  reportingPeriodEndDate: number;
+  dueDate: number;
+  createdAt: number;
+  lastAltered: number;
+  lastAlteredBy: string;
+  combinedData: string;
+  submittedBy?: string;
+  submitterEmail?: string;
+  submittedOnDate?: number;
+  formTemplate: ReportJson;
 }
 
 export interface ReportContextMethods {
-  setReport: Function;
-  setReportData: Function;
+  fetchReportMetadata: Function;
+  updateReportMetadata: Function;
+  removeReport: Function;
   fetchReportData: Function;
   updateReportData: Function;
-  fetchReport: Function;
-  updateReport: Function;
   fetchReportsByState: Function;
-  removeReport: Function;
+  clearReportSelection: Function;
+  setReportSelection: Function;
 }
 
-export interface ReportContextShape
-  extends ReportDataShape,
-    ReportShape,
-    ReportContextMethods {
-  errorMessage?: string;
+export interface ReportContextShape extends ReportContextMethods {
+  reportMetadata: ReportMetadata | undefined;
+  reportData: AnyObject | undefined;
+  reportsByState: ReportMetadata[] | undefined;
+  errorMessage?: string | undefined;
 }
 
-// FORM
+// FORM & FIELD STRUCTURE
+
+export declare type EntityType = "plans" | "bssEntities";
+
+export interface FormJson {
+  id: string;
+  fields: FormField[];
+  options?: AnyObject;
+  validation?: AnyObject;
+  adminDisabled?: boolean;
+}
+
+export interface DependentFieldValidation {
+  type: string;
+  dependentFieldName: string;
+}
+
+export interface NestedFieldValidation {
+  type: string;
+  nested: true;
+  parentFieldName: string;
+  visibleOptionValue: string;
+}
+
+export interface NestedDependentFieldValidation {
+  type: string;
+  dependentFieldName: string;
+  nested: true;
+  parentFieldName: string;
+  visibleOptionValue: string;
+}
+
+export type FieldValidationObject =
+  | DependentFieldValidation
+  | NestedFieldValidation
+  | NestedDependentFieldValidation;
 
 export interface FormField {
   id: string;
   type: string;
+  validation: string | FieldValidationObject;
   hydrate?: string;
   props?: AnyObject;
-  validation?: FormValidation;
   choices?: FieldChoice[];
 }
 
@@ -119,16 +178,10 @@ export interface ChoiceFieldProps {
   [key: string]: any;
 }
 
-export interface FormValidation {
-  type: string;
-  options?: AnyObject;
-  errorMessages?: AnyObject;
-}
-
-export interface FormJson {
-  id: string;
-  options?: AnyObject;
-  fields: FormField[];
+export enum PageTypes {
+  STATIC_PAGE = "staticPage",
+  STATIC_DRAWER = "staticDrawer",
+  DYNAMIC_DRAWER = "dynamicDrawer",
 }
 
 // BANNER
@@ -201,11 +254,4 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
-}
-
-export interface SpreadsheetWidgetProps {
-  title: string;
-  descriptionList: string[];
-  additionalInfo?: string;
-  [key: string]: any;
 }

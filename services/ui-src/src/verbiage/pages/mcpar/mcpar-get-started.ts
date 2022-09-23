@@ -44,6 +44,6 @@ export default {
   },
   pageLink: {
     text: "Enter MCPAR online",
-    route: "mcpar/intro",
+    route: "/mcpar",
   },
 };

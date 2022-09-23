@@ -5,8 +5,8 @@ import {
   AdminBannerContext,
   AdminBannerForm,
   Banner,
-  BasicPage,
   ErrorAlert,
+  PageTemplate,
 } from "components";
 // utils
 import { checkDateRangeStatus, convertDateUtcToEt } from "utils";
@@ -34,7 +34,7 @@ export const Admin = () => {
   };
 
   return (
-    <BasicPage sxOverride={sx.layout} data-testid="admin-view">
+    <PageTemplate sxOverride={sx.layout} data-testid="admin-view">
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
       <Box sx={sx.introTextBox}>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
@@ -79,7 +79,7 @@ export const Admin = () => {
         <Text sx={sx.sectionHeader}>Create a New Banner</Text>
         <AdminBannerForm writeAdminBanner={writeAdminBanner} />
       </Flex>
-    </BasicPage>
+    </PageTemplate>
   );
 };
 

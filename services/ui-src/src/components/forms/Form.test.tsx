@@ -1,4 +1,3 @@
-import { object, string } from "yup";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
@@ -12,6 +11,7 @@ const mockFormJson = {
     {
       type: "text",
       id: "testfield",
+      validation: "text",
       props: {
         name: "testfield",
         label: "testfield",
@@ -20,16 +20,11 @@ const mockFormJson = {
   ],
 };
 
-const mockValidationSchema = object({
-  testfield: string().required("Test field is required"),
-});
-
 const formComponent = (
   <>
     <Form
       id={mockFormJson.id}
       formJson={mockFormJson}
-      formSchema={mockValidationSchema}
       onSubmit={mockOnSubmit}
       data-testid="test-form"
     />

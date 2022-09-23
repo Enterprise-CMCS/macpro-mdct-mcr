@@ -1,147 +1,83 @@
+import { ReportJson } from "types";
 import {
-  addDataToReportStructure,
-  createReportId,
-  makeRouteArray,
+  flattenReportRoutesArray,
+  sortReportsOldestToNewest,
+  copyAdminDisabledStatusToForms,
 } from "./reports";
+import {
+  mockFlattenedReportRoutes,
+  mockReportRoutes,
+  mockReport,
+} from "utils/testing/setupJest";
 
-const mockFormField = {
-  id: "mockId",
-  type: "mockType",
-};
+describe("Test flattenReportRoutesArray", () => {
+  it("Should flatten report routes", () => {
+    const expectedResult = mockFlattenedReportRoutes;
+    const result = flattenReportRoutesArray(mockReportRoutes);
+    expect(result).toEqual(expectedResult);
+  });
+});
 
-const mockReportStructure = [
-  {
-    name: "mock1",
-    formId: "mockId1",
-    path: "/base/mock1",
-  },
-  {
-    name: "mock2",
-    path: "/base/mock2",
-    children: [
+describe("Test sortReportsOldestToNewest", () => {
+  it("Should sort reports by oldest to newest", () => {
+    const unsortedReports = [
       {
-        name: "mock2a",
-        formId: "mockId2a",
-        path: "/base/mock2/mock2a",
+        ...mockReport,
+        createdAt: 1662568568589,
+        programName: "created-today",
       },
       {
-        name: "mock2b",
-        path: "/base/mock2/mock2b",
-        children: [
-          {
-            name: "mock2bi",
-            formId: "mockId2bi",
-            path: "/base/mock2/mock2b/mock2bi",
+        ...mockReport,
+        createdAt: 1662568556165,
+        programName: "created-yesterday",
+      },
+      {
+        ...mockReport,
+        createdAt: 1652568576322,
+        programName: "created-last-month",
+      },
+    ];
+    const sortedReports = [
+      unsortedReports[2],
+      unsortedReports[1],
+      unsortedReports[0],
+    ];
+    expect(sortReportsOldestToNewest(unsortedReports)).toEqual(sortedReports);
+  });
+});
+
+describe("Test copyAdminDisabledStatusToForms", () => {
+  const newReportJson: ReportJson = {
+    name: "mockJson",
+    basePath: "/base/mockJson",
+    adminDisabled: true,
+    routes: [
+      {
+        name: "mock-route-1",
+        path: "/mock/mock-route-1",
+        page: {
+          pageType: "staticPage",
+          intro: {
+            section: "mock section",
+            subsection: "mock subsection",
           },
-        ],
+        },
+        form: {
+          id: "mock-form-id",
+          fields: {
+            id: "mock-1",
+            type: "text",
+            props: {
+              label: "mock field",
+            },
+          },
+        },
       },
     ],
-  },
-];
-
-const mockCombinedForms = [
-  {
-    path: "/base/mock1",
-    form: {
-      id: "mockId1",
-      fields: [mockFormField],
-    },
-  },
-  {
-    path: "/base/mock2/mock2a",
-    form: {
-      id: "mockId2a",
-      fields: [mockFormField],
-    },
-  },
-  {
-    path: "/base/mock2/mock2b/mock2bi",
-    form: {
-      id: "mockId2bi",
-      fields: [mockFormField],
-    },
-  },
-];
-
-describe("Test addDataToReportStructure", () => {
-  const mockExpectedResult = [
-    {
-      name: "mock1",
-      formId: "mockId1",
-      path: "/base/mock1",
-      pageJson: mockCombinedForms[0],
-    },
-    {
-      name: "mock2",
-      path: "/base/mock2",
-      children: [
-        {
-          name: "mock2a",
-          formId: "mockId2a",
-          path: "/base/mock2/mock2a",
-          pageJson: mockCombinedForms[1],
-        },
-        {
-          name: "mock2b",
-          path: "/base/mock2/mock2b",
-          children: [
-            {
-              name: "mock2bi",
-              formId: "mockId2bi",
-              path: "/base/mock2/mock2b/mock2bi",
-              pageJson: mockCombinedForms[2],
-            },
-          ],
-        },
-      ],
-    },
-  ];
-  it("Correctly populates structure with page/form data", () => {
-    const result = addDataToReportStructure(
-      mockReportStructure,
-      mockCombinedForms
-    );
-    expect(result).toEqual(mockExpectedResult);
-  });
-});
-
-describe("Test makeRouteArray", () => {
-  const mockExpectedResult = [
-    {
-      name: "mock1",
-      formId: "mockId1",
-      path: "/base/mock1",
-      pageJson: mockCombinedForms[0],
-    },
-    {
-      name: "mock2a",
-      formId: "mockId2a",
-      path: "/base/mock2/mock2a",
-      pageJson: mockCombinedForms[1],
-    },
-    {
-      name: "mock2bi",
-      formId: "mockId2bi",
-      path: "/base/mock2/mock2b/mock2bi",
-      pageJson: mockCombinedForms[2],
-    },
-  ];
-  it("makeRouteArray", () => {
-    const mockStructureWithData = addDataToReportStructure(
-      mockReportStructure,
-      mockCombinedForms
-    );
-    const result = makeRouteArray(mockStructureWithData);
-    expect(result).toEqual(mockExpectedResult);
-  });
-});
-
-describe("Test createReportId", () => {
-  test("createReportId correctly creates a reportId", () => {
-    const mockState = "AB";
-    const mockProgramName = "Program Number 1";
-    const mockDueDate = 1661894735910;
-    const result = createReportId(mockState, mockProgramName, mockDueDate);
-    expect(result).toEqual("AB_Program-Number-1_8-30-2022");
+  };
+  it("should be disabled for admin user", () => {
+    const report = copyAdminDisabledStatusToForms(newReportJson);
+    const form = report.routes[0].form;
+    expect(form.adminDisabled).toBeTruthy();
   });
 });

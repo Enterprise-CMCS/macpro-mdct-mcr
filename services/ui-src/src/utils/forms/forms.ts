@@ -12,11 +12,16 @@ import {
 } from "components";
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
+import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
-export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
+export const formFieldFactory = (
+  fields: FormField[],
+  shouldDisableAllFields: boolean,
+  isNested?: boolean
+) => {
   // define form field components
-  const fieldToComponentMap: any = {
+  const fieldToComponentMap: AnyObject = {
     checkbox: CheckboxField,
     date: DateField,
     dropdown: DropdownField,
@@ -26,7 +31,8 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
     text: TextField,
     textarea: TextAreaField,
   };
-  fields = initializeChoiceFields(fields);
+  fields = initializeChoiceListFields(fields);
+  fields = initializeDropdownFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     const fieldProps = {
@@ -34,6 +40,7 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
       name: field.id,
       nested: isNested,
       hydrate: field.props?.hydrate,
+      disabled: shouldDisableAllFields,
       ...field?.props,
     };
     return React.createElement(componentFieldType, fieldProps);
@@ -42,12 +49,11 @@ export const formFieldFactory = (fields: FormField[], isNested?: boolean) => {
 
 export const hydrateFormFields = (
   formFields: FormField[],
-  reportData: AnyObject
+  formData: AnyObject | undefined
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
     const fieldProps = formFields[fieldFormIndex].props!;
-
     // check for children on each choice in field props
     if (fieldProps) {
       const choices = fieldProps.choices;
@@ -55,7 +61,7 @@ export const hydrateFormFields = (
         choices.forEach((choice: FieldChoice) => {
           // if a choice has children, recurse
           if (choice.children) {
-            hydrateFormFields(choice.children, reportData);
+            hydrateFormFields(choice.children, formData);
           }
         });
       }
@@ -63,16 +69,15 @@ export const hydrateFormFields = (
       // if no props on field, initialize props as empty object
       formFields[fieldFormIndex].props = {};
     }
-
     // set props.hydrate
-    const fieldHydrationValue = reportData?.fieldData?.[field.id];
+    const fieldHydrationValue = formData?.fieldData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
   return formFields;
 };
 
 // add data to choice fields in preparation for render
-export const initializeChoiceFields = (fields: FormField[]) => {
+export const initializeChoiceListFields = (fields: FormField[]) => {
   const fieldsWithChoices = fields.filter(
     (field: FormField) => field.props?.choices
   );
@@ -83,15 +88,36 @@ export const initializeChoiceFields = (fields: FormField[]) => {
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
       // if choice has children, recurse
-      if (choice.children) initializeChoiceFields(choice.children);
+      if (choice.children) initializeChoiceListFields(choice.children);
     });
   });
   return fields;
 };
 
-export const sortFormErrors = (form: any, errors: any) => {
+// add initial blank option to dropdown fields if needed
+export const initializeDropdownFields = (fields: FormField[]) => {
+  const dropdownFields = fields.filter(
+    (field: FormField) => field.type === "dropdown"
+  );
+  dropdownFields.forEach((field: FormField) => {
+    // if first option is not already a blank default value
+    if (field?.props?.options[0].value !== "") {
+      // add initial blank option
+      field?.props?.options.splice(0, 0, {
+        label: dropdownDefaultOptionText,
+        value: "",
+      });
+    }
+  });
+  return fields;
+};
+
+export const sortFormErrors = (
+  form: AnyObject,
+  errors: AnyObject
+): string[] => {
   // sort errors into new array
-  const sortedErrorArray: any = [];
+  const sortedErrorArray: string[] = [];
   for (let fieldName in form) {
     if (errors[fieldName]) {
       sortedErrorArray.push(fieldName);

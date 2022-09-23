@@ -1,6 +1,6 @@
-import { findRoute } from "./routing";
+import { useFindRoute } from "./routing";
 
-const mockBasePath = "/base";
+const mockFallbackRoute = "/fallback-route";
 const mockRouteArray = [
   {
     path: "/base/fake-path-1",
@@ -13,46 +13,35 @@ const mockRouteArray = [
   },
 ];
 
-describe("Test findRoute for 'next' route", () => {
-  it("Returns next path if there are subsequent form pages", () => {
-    const route = findRoute(
-      mockRouteArray,
-      "/base/fake-path-2",
-      "next",
-      mockBasePath
-    );
-    expect(route).toEqual("/base/fake-path-3");
-  });
+jest.mock("react-router-dom", () => ({
+  useLocation: jest
+    .fn()
+    .mockReturnValueOnce({ pathname: "/base/fake-path-1" })
+    .mockReturnValueOnce({ pathname: "/base/fake-path-2" })
+    .mockReturnValueOnce({ pathname: "/base/fake-path-3" }),
+}));
 
-  it("Returns base path if there are no subsequent form pages", () => {
-    const route = findRoute(
-      mockRouteArray,
-      "/base/fake-path-3",
-      "next",
-      mockBasePath
-    );
-    expect(route).toEqual(mockBasePath);
+describe("Test useFindRoute behavior at first route in array (with no previous routes)", () => {
+  it("Returns fallback as previousRoute when there are no preceding routes", () => {
+    const { previousRoute } = useFindRoute(mockRouteArray, mockFallbackRoute);
+    expect(previousRoute).toEqual(mockFallbackRoute);
   });
 });
 
-describe("Test findRoute for 'previous' route", () => {
-  it("Returns previous path if there are preceding form pages", () => {
-    const route = findRoute(
+describe("Test useFindRoute behavior at middle route in array (with both previous and next routes)", () => {
+  it("Returns previous path when there are preceding routes and next path when there are subsequent routes", () => {
+    const { previousRoute, nextRoute } = useFindRoute(
       mockRouteArray,
-      "/base/fake-path-2",
-      "previous",
-      mockBasePath
+      mockFallbackRoute
     );
-    expect(route).toEqual("/base/fake-path-1");
+    expect(previousRoute).toEqual("/base/fake-path-1");
+    expect(nextRoute).toEqual("/base/fake-path-3");
   });
+});
 
-  it("Returns base path if there are no preceding form pages", () => {
-    const route = findRoute(
-      mockRouteArray,
-      "/base/fake-path-1",
-      "previous",
-      mockBasePath
-    );
-    expect(route).toEqual(mockBasePath);
+describe("Test useFindRoute behavior at last route in array (with no subsequent routes)", () => {
+  it("Returns fallback if there are no subsequent routes", () => {
+    const { nextRoute } = useFindRoute(mockRouteArray, mockFallbackRoute);
+    expect(nextRoute).toEqual(mockFallbackRoute);
   });
 });

@@ -1,12 +1,21 @@
+import * as yup from "yup";
+// handlers & methods
 import handler from "../handler-lib";
 import { getReportData } from "./get";
+import { getReportMetadata } from "../reportMetadata/get";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
+import { AnyObject, StatusCodes, UserRoles } from "../../utils/types/types";
+import {
+  filterValidationSchema,
+  mapValidationTypesToSchema,
+  validateData,
+} from "../../utils/validation/validation";
 import {
   NO_KEY_ERROR_MESSAGE,
   UNAUTHORIZED_MESSAGE,
 } from "../../utils/constants/constants";
-import { StatusCodes, UserRoles } from "../../utils/types/types";
 
 export const writeReportData = handler(async (event, context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
@@ -20,39 +29,71 @@ export const writeReportData = handler(async (event, context) => {
   ) {
     throw new Error(NO_KEY_ERROR_MESSAGE);
   }
-  const body = JSON.parse(event!.body!);
+
   const state: string = event.pathParameters.state;
   const reportId: string = event.pathParameters.reportId;
+  let validationSchema: AnyObject | undefined = undefined;
+  const unvalidatedPayload = JSON.parse(event!.body!);
 
-  let reportParams = {
-    TableName: process.env.REPORT_DATA_TABLE_NAME!,
-    Item: {
-      state: state,
-      reportId: reportId,
-      fieldData: body,
-    },
+  const reportEvent = {
+    ...event,
+    body: "",
   };
-  const getCurrentReport = await getReportData(event, context);
+
+  // get current report (for formTemplate/validationJson)
+  const getCurrentReport = await getReportMetadata(reportEvent, context);
   if (getCurrentReport.body) {
-    const currentBody = JSON.parse(getCurrentReport.body);
-    if (currentBody) {
-      const newReport = {
-        ...currentBody.fieldData,
-        ...body,
-      };
-      reportParams = {
+    const { formTemplate } = JSON.parse(getCurrentReport.body);
+    // filter field validation to just what's needed for the passed fields
+    const filteredValidationJson = filterValidationSchema(
+      formTemplate.validationJson,
+      unvalidatedPayload
+    );
+    // transform field validation instructions to yup validation schema
+    validationSchema = yup
+      .object()
+      .shape(mapValidationTypesToSchema(filteredValidationJson));
+  }
+
+  // validate payload
+  if (validationSchema) {
+    const validatedNewReportData = await validateData(
+      validationSchema,
+      unvalidatedPayload
+    );
+    if (validatedNewReportData) {
+      // create reportData params for pending .put()
+      let reportDataParams = {
         TableName: process.env.REPORT_DATA_TABLE_NAME!,
         Item: {
           state: state,
           reportId: reportId,
-          fieldData: { ...newReport },
+          fieldData: validatedNewReportData,
         },
       };
+      // get current reportData
+      const getCurrentReportData = await getReportData(event, context);
+      if (getCurrentReportData.body) {
+        const currentReportData = JSON.parse(getCurrentReportData.body);
+        const combinedReportDataToWrite = {
+          ...currentReportData.fieldData,
+          ...validatedNewReportData,
+        };
+        // set report params with new reportData
+        reportDataParams = {
+          TableName: process.env.REPORT_DATA_TABLE_NAME!,
+          Item: {
+            state: state,
+            reportId: reportId,
+            fieldData: { ...combinedReportDataToWrite },
+          },
+        };
+        await dynamoDb.put(reportDataParams);
+        return {
+          status: StatusCodes.SUCCESS,
+          body: { ...reportDataParams.Item },
+        };
+      }
     }
   }
-  await dynamoDb.put(reportParams);
-  return {
-    status: StatusCodes.SUCCESS,
-    body: { ...reportParams.Item },
-  };
 });
