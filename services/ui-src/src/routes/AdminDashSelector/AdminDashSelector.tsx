@@ -38,7 +38,6 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
         {verbiage.header}
       </Heading>
       <Form id={form.id} formJson={form} onSubmit={onSubmit} />
-      test
       <Flex sx={sx.navigationButton}>
         <Button type="submit" form={formJson.id}>
           {verbiage.buttonLabel}
