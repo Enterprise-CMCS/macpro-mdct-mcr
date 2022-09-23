@@ -89,6 +89,7 @@ export const Dashboard = () => {
           "aep-programName": report.programName,
           "aep-endDate": convertDateUtcToEt(report.reportingPeriodEndDate),
           "aep-startDate": convertDateUtcToEt(report.reportingPeriodStartDate),
+          "aep-combinedData": report.combinedData,
         },
         state: report.state,
         id: report.id,
