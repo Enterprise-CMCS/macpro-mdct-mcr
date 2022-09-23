@@ -8,6 +8,7 @@ import {
   Heading,
   Image,
   Link,
+  Spinner,
   Td,
   Text,
   Tr,
@@ -156,6 +157,11 @@ export const Dashboard = () => {
             />
           )
         ) : (
+          <Flex alignItems="center" w="full" justifyContent="center" p="10">
+            <Spinner size="lg" />
+          </Flex>
+        )}
+        {!reportsByState?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         {/* only show add program button to state users */}

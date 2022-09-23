@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
 // utils
@@ -19,6 +20,7 @@ export const Modal = ({
   modalDisclosure,
   content,
   onConfirmHandler,
+  loading,
   formId,
   children,
 }: Props) => {
@@ -56,7 +58,7 @@ export const Modal = ({
               type="submit"
               data-testid="modal-submit-button"
             >
-              {content.actionButtonText}
+              {loading ? <Spinner size="sm" /> : content.actionButtonText}
             </Button>
           )}
           {onConfirmHandler && (
@@ -66,7 +68,7 @@ export const Modal = ({
               onClick={() => onConfirmHandler()}
               data-testid="modal-submit-button"
             >
-              {content.actionButtonText}
+              {loading ? <Spinner size="sm" /> : content.actionButtonText}
             </Button>
           )}
           <Button
@@ -93,6 +95,7 @@ interface Props {
     actionButtonText: string | ReactNode;
     closeButtonText: string;
   };
+  loading?: boolean;
   onConfirmHandler?: Function;
   formId?: string;
   children?: ReactNode;

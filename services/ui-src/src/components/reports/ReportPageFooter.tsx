@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { Icon } from "components";
 
 export const ReportPageFooter = ({
   formId,
+  loading,
   previousRoute,
   nextRoute,
   shouldDisableAllFields,
@@ -26,7 +27,7 @@ export const ReportPageFooter = ({
           {!formId || shouldDisableAllFields ? (
             <Button
               onClick={() => navigate(nextRoute)}
-              rightIcon={<Icon icon="arrowRight" />}
+              rightIcon={loading ? <></> : <Icon icon="arrowRight" />}
             >
               Continue
             </Button>
@@ -34,9 +35,9 @@ export const ReportPageFooter = ({
             <Button
               form={formId}
               type="submit"
-              rightIcon={<Icon icon="arrowRight" />}
+              rightIcon={loading ? <></> : <Icon icon="arrowRight" />}
             >
-              Save & continue
+              {loading ? <Spinner size="sm" mr="-2" /> : "Save & continue"}
             </Button>
           )}
         </Flex>

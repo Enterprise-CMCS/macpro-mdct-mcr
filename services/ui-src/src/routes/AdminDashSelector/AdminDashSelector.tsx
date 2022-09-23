@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Form } from "components";
 // types
 import { AnyObject, FormJson, UserRoles } from "types";
@@ -8,11 +8,9 @@ import { AnyObject, FormJson, UserRoles } from "types";
 import formJson from "forms/adminDashSelector/adminDashSelector";
 // utils
 import { useUser } from "utils";
-import { useState } from "react";
 
 export const AdminDashSelector = ({ verbiage }: Props) => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
 
   // get current user role
   const { user } = useUser();
@@ -22,7 +20,6 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   const form: FormJson = formJson;
 
   const onSubmit = (formData: AnyObject) => {
-    setLoading(true);
     if (
       userRole === UserRoles.ADMIN ||
       userRole === UserRoles.APPROVER ||
@@ -31,7 +28,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
       const selectedState = formData["ads-state"];
       localStorage.setItem("selectedState", selectedState);
     }
-    setLoading(false);
+
     navigate("/mcpar");
   };
 
@@ -44,7 +41,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
       test
       <Flex sx={sx.navigationButton}>
         <Button type="submit" form={formJson.id}>
-          {loading ? <Spinner size="md" /> : verbiage.buttonLabel}
+          {verbiage.buttonLabel}
         </Button>
       </Flex>
     </Box>

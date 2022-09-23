@@ -1,4 +1,4 @@
-import { MouseEventHandler, useContext, useEffect } from "react";
+import { MouseEventHandler, useContext, useEffect, useState } from "react";
 // components
 import {
   Box,
@@ -23,6 +23,8 @@ export const ReviewSubmit = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   // get user information
   const { user } = useUser();
   const { email, full_name, state, userRole } = user ?? {};
@@ -42,10 +44,11 @@ export const ReviewSubmit = () => {
     }
   }, []);
 
-  const submitForm = () => {
+  const submitForm = async () => {
+    setLoading(true);
     if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
       const submissionDate = Date.now();
-      updateReport(reportKeys, {
+      await updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
         submittedBy: full_name,
@@ -57,6 +60,7 @@ export const ReviewSubmit = () => {
         },
       });
     }
+    setLoading(false);
     onClose();
   };
 
@@ -76,6 +80,7 @@ export const ReviewSubmit = () => {
               submitForm={submitForm}
               isOpen={isOpen}
               onOpen={onOpen}
+              loading={loading}
               onClose={onClose}
             />
           ))}
@@ -88,6 +93,7 @@ const ReadyToSubmit = ({
   submitForm,
   isOpen,
   onOpen,
+  loading,
   onClose,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
@@ -111,6 +117,7 @@ const ReadyToSubmit = ({
       </Flex>
       <Modal
         onConfirmHandler={submitForm}
+        loading={loading}
         modalDisclosure={{
           isOpen,
           onClose,
@@ -126,6 +133,7 @@ const ReadyToSubmit = ({
 interface ReadyToSubmitProps {
   submitForm: Function;
   isOpen: boolean;
+  loading?: boolean;
   onOpen: Function;
   onClose: Function;
 }
