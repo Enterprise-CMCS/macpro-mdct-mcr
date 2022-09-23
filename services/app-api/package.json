@@ -17,11 +17,10 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.88",
-    "@types/dompurify": "^2.3.4",
     "@types/jest": "^27.4.0",
-    "@types/jsdom": "^20.0.0",
     "aws-lambda": "^1.0.7",
     "jest": "^27.4.7",
+    "ksuid": "^3.0.0",
     "serverless-associate-waf": "^1.2.1",
     "serverless-plugin-typescript": "^2.1.0",
     "ts-jest": "^27.1.3",
@@ -29,11 +28,8 @@
   },
   "dependencies": {
     "aws-jwt-verify": "^3.1.0",
-    "dompurify": "^2.4.0",
-    "html-react-parser": "^3.0.4",
-    "jsdom": "^20.0.0",
     "jwt-decode": "^3.1.2",
-    "uuid": "^7.0.3",
+    "ksuid": "^3.0.0",
     "yup": "^0.32.11"
   },
   "jest": {
@@ -63,11 +59,10 @@
       "!utils/types/*"
     ],
     "moduleDirectories": [
-      "node_modules",
-      "handlers",
-      "libs",
-      "util"
+      "node_modules"
     ],
-    "setupFilesAfterEnv": []
+    "setupFilesAfterEnv": [
+      "<rootDir>/utils/testing/setupJest.ts"
+    ]
   }
 }
