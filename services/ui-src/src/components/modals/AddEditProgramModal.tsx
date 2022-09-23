@@ -6,7 +6,7 @@ import formJson from "forms/addEditProgram/addEditProgram.json";
 import { mcparReportJson } from "forms/mcpar";
 // utils
 import { AnyObject, FormJson, ReportStatus } from "types";
-import { noCombinedDataInput, States } from "../../constants";
+import { States } from "../../constants";
 import {
   calculateDueDate,
   convertDateEtToUtc,
@@ -33,8 +33,7 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["aep-programName"];
     const dueDate = calculateDueDate(formData["aep-endDate"]);
-    const combinedDataArray = formData["aep-combinedData"];
-    const combinedData = combinedDataArray?.[0] || noCombinedDataInput;
+    const combinedData = formData["aep-combinedData"] || [];
     const reportingPeriodStartDate = convertDateEtToUtc(
       formData["aep-startDate"]
     );
