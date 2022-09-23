@@ -41,7 +41,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             <TextField
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={name} // TODO: CHANGE BACK
+              errorMessage={fieldErrorState?.[index]?.message}
               sxOverride={sx.textFieldOverride}
               disabled={props?.disabled}
             />

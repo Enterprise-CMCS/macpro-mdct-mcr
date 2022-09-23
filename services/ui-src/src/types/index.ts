@@ -42,8 +42,8 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  [key: string]: any;
   page?: PageJson;
+  [key: string]: any;
 }
 
 export interface ReportRouteWithForm extends ReportRouteBase {

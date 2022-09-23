@@ -118,7 +118,7 @@ export const ChoiceListField = ({
         label={label || ""}
         choices={formatChoices(choices)}
         hint={parsedHint}
-        errorMessage={name} // TODO: CHANGE BACK
+        errorMessage={errorMessage}
         onChange={onChangeHandler}
         {...props}
       />

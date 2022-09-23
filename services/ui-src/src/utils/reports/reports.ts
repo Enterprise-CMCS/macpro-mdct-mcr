@@ -93,3 +93,30 @@ export const compileValidationJsonFromRoutes = (
   });
   return validationSchema;
 };
+
+/*
+ * saving this method here in case we need to programmatically
+ * create a list of fieldIds in the future or want to store
+ * them on the report object at some point. not currently called
+ * anywhere in the app as of 2022.09.23
+ */
+export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
+  const objectToReturn: AnyObject = {};
+  // recursively looks for fields and adds them to objectToReturn
+  const mapFieldIdsToObject = (fieldArray: FormField[]) =>
+    // for each field set key/value in object of fieldId: fieldLabel
+    fieldArray.map((field: FormField) => {
+      objectToReturn[field.id] = field.props?.label;
+      // if choices exist on field, check for children
+      field.props?.choices?.map((fieldChoice: FieldChoice) => {
+        // if children exist on choice, recurse through children
+        if (fieldChoice?.children) {
+          mapFieldIdsToObject(fieldChoice?.children);
+        }
+      });
+    });
+  routes.map((route: ReportRoute) =>
+    route.form?.fields ? mapFieldIdsToObject(route.form?.fields) : null
+  );
+  return objectToReturn;
+};
