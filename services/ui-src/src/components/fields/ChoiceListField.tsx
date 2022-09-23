@@ -11,6 +11,7 @@ import {
 } from "utils";
 import {
   AnyObject,
+  Choice,
   CustomHtmlElement,
   FieldChoice,
   InputChangeEvent,
@@ -27,7 +28,7 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [displayValue, setDisplayValue] = useState<string[] | null>(null);
+  const [displayValue, setDisplayValue] = useState<Choice[] | null>(null);
 
   // get form context and register field
   const form = useFormContext();
@@ -55,15 +56,17 @@ export const ChoiceListField = ({
     if (displayValue) {
       form.setValue(name, displayValue, { shouldValidate: true });
     }
+
     // update DOM choices checked status
     choices.forEach((choice: FieldChoice) => {
-      choice.checked = displayValue?.includes(choice.value) || false;
+      setCheckedOrUnchecked(choice);
     });
   }, [displayValue]);
 
   // format choices with nested child fields to render (if any)
-  const formatChoices = (choices: FieldChoice[]) =>
-    choices.map((choice: FieldChoice) => {
+  const formatChoices = (choices: FieldChoice[]) => {
+    return choices.map((choice: FieldChoice) => {
+      setCheckedOrUnchecked(choice);
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
@@ -78,10 +81,18 @@ export const ChoiceListField = ({
       delete choiceObject.children;
       return choiceObject;
     });
+  };
+
+  const setCheckedOrUnchecked = (choice: FieldChoice) => {
+    const checkedState = displayValue?.find(
+      (option) => option.value === choice.value
+    );
+    choice.checked = !!checkedState;
+  };
 
   // update field values
   const onChangeHandler = (event: InputChangeEvent) => {
-    const clickedOption = event.target.value;
+    const clickedOption = { key: event.target.id, value: event.target.value };
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
     // handle radio
@@ -92,7 +103,7 @@ export const ChoiceListField = ({
     if (type === "checkbox") {
       const checkedOptionValues = [...preChangeFieldValues, clickedOption];
       const uncheckedOptionValues = preChangeFieldValues.filter(
-        (value) => value !== clickedOption
+        (field) => field.value !== clickedOption.value
       );
       setDisplayValue(
         isOptionChecked ? checkedOptionValues : uncheckedOptionValues
