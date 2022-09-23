@@ -41,6 +41,7 @@ export const ReportPageFooter = ({
             <Button
               form={form.id}
               type="submit"
+              sx={sx[`${loading ? "buttonLoading" : "button"}`]}
               rightIcon={loading ? <></> : <Icon icon="arrowRight" />}
             >
               {loading ? <Spinner size="sm" mr="-2" /> : "Save & continue"}
@@ -65,6 +66,10 @@ const sx = {
   footerBox: {
     marginTop: "3.5rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
+  },
+  button: {},
+  buttonLoading: {
+    width: "11.5rem",
   },
   buttonFlex: {
     justifyContent: "space-between",

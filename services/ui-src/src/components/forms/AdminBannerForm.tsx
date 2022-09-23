@@ -51,7 +51,11 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
         <PreviewBanner />
       </Form>
       <Flex sx={sx.previewFlex}>
-        <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>
+        <Button
+          form={form.id}
+          type="submit"
+          sx={sx[`${loading ? "buttonLoading" : "replaceBannerButton"}`]}
+        >
           {loading ? (
             <Spinner size="sm" color={theme.colors.palette.white} />
           ) : (
@@ -74,6 +78,11 @@ const sx = {
   },
   previewFlex: {
     flexDirection: "column",
+  },
+  buttonLoading: {
+    width: "14rem",
+    marginTop: "1rem !important",
+    alignSelf: "end",
   },
   replaceBannerButton: {
     marginTop: "1rem !important",

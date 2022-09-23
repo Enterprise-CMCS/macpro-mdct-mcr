@@ -79,7 +79,7 @@ export const Admin = () => {
             <Banner bannerData={bannerData} />
             <Button
               variant="danger"
-              sx={sx.deleteBannerButton}
+              sx={sx[`${loading ? "buttonLoading" : "deleteBannerButton"}`]}
               onClick={deleteBanner}
             >
               {loading ? (
@@ -150,6 +150,11 @@ const sx = {
   },
   currentBannerFlex: {
     flexDirection: "column",
+  },
+  buttonLoading: {
+    width: "13.3rem",
+    alignSelf: "end",
+    marginTop: "1rem !important",
   },
   deleteBannerButton: {
     alignSelf: "end",
