@@ -1,11 +1,8 @@
-import { writeBanner } from "./write";
+import { createBanner } from "./create";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import {
-  NO_KEY_ERROR_MESSAGE,
-  UNAUTHORIZED_MESSAGE,
-} from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
@@ -38,26 +35,26 @@ const testEventWithInvalidData: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
-describe("Test writeBanner API method", () => {
+describe("Test createBanner API method", () => {
   beforeEach(() => {
     process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
   });
 
   test("Test unauthorized banner creation throws 403 error", async () => {
-    const res = await writeBanner(testEvent, null);
+    const res = await createBanner(testEvent, null);
     expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(UNAUTHORIZED_MESSAGE);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test Successful Run of Banner Creation", async () => {
-    const res = await writeBanner(testEvent, null);
+    const res = await createBanner(testEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");
   });
 
   test("Test invalid data causes failure", async () => {
-    const res = await writeBanner(testEventWithInvalidData, null);
+    const res = await createBanner(testEventWithInvalidData, null);
     expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
   });
 
@@ -66,9 +63,9 @@ describe("Test writeBanner API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await writeBanner(noKeyEvent, null);
+    const res = await createBanner(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test bannerKey empty throws 500 error", async () => {
@@ -76,8 +73,8 @@ describe("Test writeBanner API method", () => {
       ...testEvent,
       pathParameters: { bannerId: "" },
     };
-    const res = await writeBanner(noKeyEvent, null);
+    const res = await createBanner(noKeyEvent, null);
     expect(res.statusCode).toBe(500);
-    expect(res.body).toContain(NO_KEY_ERROR_MESSAGE);
+    expect(res.body).toContain(error.NO_KEY);
   });
 });

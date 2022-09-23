@@ -1,6 +1,6 @@
 import { MixedSchema } from "yup/lib/mixed";
 import { AnyObject } from "yup/lib/types";
-import { number, ratio } from "./schemas";
+import { number, ratio } from "./schemaMap";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [

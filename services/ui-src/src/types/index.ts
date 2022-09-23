@@ -42,8 +42,8 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  page?: PageJson;
   [key: string]: any;
+  page?: PageJson;
 }
 
 export interface ReportRouteWithForm extends ReportRouteBase {
@@ -56,8 +56,8 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
 }
 
 export interface PageJson {
-  pageType?: string;
   intro?: AnyObject;
+  drawer?: AnyObject;
   [key: string]: any;
 }
 
@@ -71,10 +71,10 @@ export enum ReportStatus {
 
 export interface ReportKeys {
   state: string;
-  reportId: string;
+  id: string;
 }
 
-export interface ReportMetadata extends ReportKeys {
+export interface ReportShape extends ReportKeys {
   reportType: string;
   programName: string;
   status: string;
@@ -89,29 +89,25 @@ export interface ReportMetadata extends ReportKeys {
   submitterEmail?: string;
   submittedOnDate?: number;
   formTemplate: ReportJson;
+  fieldData: AnyObject;
 }
 
 export interface ReportContextMethods {
-  fetchReportMetadata: Function;
-  updateReportMetadata: Function;
-  removeReport: Function;
-  fetchReportData: Function;
-  updateReportData: Function;
+  fetchReport: Function;
   fetchReportsByState: Function;
+  createReport: Function;
+  updateReport: Function;
   clearReportSelection: Function;
   setReportSelection: Function;
 }
 
 export interface ReportContextShape extends ReportContextMethods {
-  reportMetadata: ReportMetadata | undefined;
-  reportData: AnyObject | undefined;
-  reportsByState: ReportMetadata[] | undefined;
+  report: ReportShape | undefined;
+  reportsByState: ReportShape[] | undefined;
   errorMessage?: string | undefined;
 }
 
 // FORM & FIELD STRUCTURE
-
-export declare type EntityType = "plans" | "bssEntities";
 
 export interface FormJson {
   id: string;
