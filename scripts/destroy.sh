@@ -26,7 +26,7 @@ if [[ $stage =~ $protected_stage_regex ]] ; then
     """
     exit 1
 fi
-echo "\nCollecting information on stage $stage before attempting a destroy... This can take a minute or two..."
+echo "Collecting information on stage $stage before attempting a destroy... This can take a minute or two..."
 
 set -e
 
@@ -138,3 +138,10 @@ do
     | grep -o '"clientCertificateId": "[^"]*' \
     | grep -o '[^"]*$' || true) 
 done 
+
+# Find hanging api-gateway log group
+apiGatewayLogGroupName="/aws/api-gateway/app-api-$stage"
+apiGatewayLogGroupLength=(`aws logs describe-log-groups --log-group-name-prefix /aws/api-gateway/app-api-$stage | jq -r ".logGroups[] | length"`)
+if [[ -n $apiGatewayLogGroupLength ]] ; then
+    aws logs delete-log-group --log-group-name $apiGatewayLogGroupName
+fi
