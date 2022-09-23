@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Modal, ReportContext, PageTemplate, Sidebar } from "components";
 // types
-import { ReportStatus, UserRoles } from "types";
+import { ReportStatus } from "types";
 // utils
 import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 // verbiage
@@ -26,8 +26,8 @@ export const ReviewSubmit = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   // get user information
-  const { user } = useUser();
-  const { email, full_name, state, userRole } = user ?? {};
+  const { email, full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -46,7 +46,7 @@ export const ReviewSubmit = () => {
 
   const submitForm = async () => {
     setLoading(true);
-    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+    if (userIsStateUser || userIsStateRep) {
       const submissionDate = Date.now();
       await updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,

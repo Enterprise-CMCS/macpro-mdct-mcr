@@ -7,8 +7,7 @@ export * from "./api/requestMethods/getTemplateUrl";
 export * from "./api/requestMethods/report";
 // auth
 export * from "./auth/useUser";
-export * from "./auth/userContext";
-export * from "./auth/userProvider";
+export * from "./auth/UserProvider";
 // forms
 export * from "./forms/forms";
 // reports

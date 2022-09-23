@@ -44,7 +44,7 @@ describe("Test ReportPageFooter without form", () => {
 
 const mockPropsWithForm = {
   ...mockProps,
-  formId: "mock-form-id",
+  form: mockForm,
 };
 
 const reportPageComponentWithForm = (
