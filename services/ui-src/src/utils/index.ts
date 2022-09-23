@@ -2,11 +2,10 @@
 export * from "./api/providers/ApiProvider";
 export * from "./api/providers/QueryProvider";
 export * from "./api/requestMethods/banner";
-export * from "./api/requestMethods/formTemplate";
 export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
 export * from "./api/requestMethods/reportData";
-export * from "./api/requestMethods/report";
+export * from "./api/requestMethods/reportMetadata";
 // auth
 export * from "./auth/useUser";
 export * from "./auth/userContext";
@@ -18,6 +17,9 @@ export * from "./reports/reports";
 export * from "./reports/routing";
 // tracking
 export * from "./tracking/tealium";
+// validation
+export * from "./validation/schemas";
+export * from "./validation/validation";
 // other
 export * from "./other/email";
 export * from "./other/mask";

@@ -9,21 +9,19 @@ import { convertDatetimeStringToNumber } from "utils";
 import { FormJson } from "types";
 // data
 import formJson from "forms/addAdminBanner/addAdminBanner.json";
-import formSchema from "forms/addAdminBanner/addAdminBanner.schema";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
 
   // add validation to formJson
   const form: FormJson = formJson;
-  form.validation = formSchema;
 
   const onSubmit = async (formData: any) => {
     const newBannerData = {
       key: bannerId,
       title: formData["aab-title"],
       description: formData["aab-description"],
-      link: formData["aab-link"],
+      link: formData["aab-link"] || undefined,
       startDate: convertDatetimeStringToNumber(
         formData["aab-startDate"],
         "startDate"

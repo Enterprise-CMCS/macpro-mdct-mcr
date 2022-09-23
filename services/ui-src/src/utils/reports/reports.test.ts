@@ -1,5 +1,4 @@
 import { ReportJson } from "types";
-
 import {
   flattenReportRoutesArray,
   sortReportsOldestToNewest,
@@ -51,13 +50,13 @@ describe("Test copyAdminDisabledStatusToForms", () => {
   const newReportJson: ReportJson = {
     name: "mockJson",
     basePath: "/base/mockJson",
-    version: "0.0.0",
     adminDisabled: true,
     routes: [
       {
         name: "mock-route-1",
         path: "/mock/mock-route-1",
         page: {
+          pageType: "staticPage",
           intro: {
             section: "mock section",
             subsection: "mock subsection",

@@ -163,8 +163,18 @@ export const mockBannerDataEmpty = {
 export const mockFormField = {
   id: "mock-1",
   type: "text",
+  validation: "text",
   props: {
     label: "mock field",
+  },
+};
+
+export const mockPlanField = {
+  id: "plans",
+  type: "dynamic",
+  validation: "dynamic",
+  props: {
+    label: "Plan name",
   },
 };
 
@@ -173,7 +183,13 @@ export const mockForm = {
   fields: [mockFormField],
 };
 
+export const mockPlanFilledForm = {
+  id: "mock-form-id",
+  fields: [mockPlanField],
+};
+
 export const mockPageJson = {
+  pageType: "staticPage",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -182,16 +198,16 @@ export const mockPageJson = {
 
 export const mockPageJsonStaticDrawer = {
   pageType: "staticDrawer",
+  entityType: "plans",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
+  dashboard: {
+    title: "Mock dashboard title",
+  },
   drawer: {
-    dashboard: {
-      title: "Mock dashboard title",
-      entityType: "plans",
-    },
-    drawerTitle: "Mock drawer title",
+    title: "Mock drawer title",
   },
 };
 
@@ -204,16 +220,6 @@ export const mockPageJsonDynamicDrawer = {
   dynamicTable: {
     tableHeading: "Add measures for monitoring access standards",
     addEntityText: "Add access measure",
-  },
-};
-
-// FORM TEMPLATE
-
-export const mockFormTemplate = {
-  formTemplateId: "mockId",
-  formTemplate: {
-    name: "TEST",
-    routes: [{}, {}],
   },
 };
 
@@ -234,7 +240,7 @@ export const mockReportRoutes = [
         name: "mock-route-2a",
         path: "/mock/mock-route-2a",
         page: mockPageJsonStaticDrawer,
-        form: mockForm,
+        form: mockPlanFilledForm,
       },
       {
         name: "mock-route-2b",
@@ -257,7 +263,7 @@ export const mockFlattenedReportRoutes = [
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
     page: mockPageJsonStaticDrawer,
-    form: mockForm,
+    form: mockPlanFilledForm,
   },
   {
     name: "mock-route-2b",
@@ -270,8 +276,8 @@ export const mockFlattenedReportRoutes = [
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
-  version: "0.0.0",
   routes: mockReportRoutes,
+  validationSchema: {},
 };
 
 export const mockReportJsonFlatRoutes = {
@@ -279,15 +285,15 @@ export const mockReportJsonFlatRoutes = {
   routes: mockFlattenedReportRoutes,
 };
 
-export const mockReportDetails = {
+export const mockReportKeys = {
   state: "AB",
   reportId: "mock-report-id",
 };
 
 export const mockReport = {
-  ...mockReportDetails,
+  ...mockReportKeys,
   reportType: "mock-type",
-  formTemplateId: "mock-template-id",
+  formTemplate: mockReportJson,
   programName: "testProgram",
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
@@ -296,14 +302,18 @@ export const mockReport = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
+  combinedData: "Yes...",
 };
 
 export const mockReportData = {
-  text: "text-input",
-  number: 0,
-  radio: ["option1"],
-  checkbox: ["option1", "option2"],
-  dropdown: "dropdown-selection",
+  fieldData: {
+    plans: ["example-plan"],
+    text: "text-input",
+    number: 0,
+    radio: ["option1"],
+    checkbox: ["option1", "option2"],
+    dropdown: "dropdown-selection",
+  },
 };
 
 export const mockReportsByState = [
@@ -313,19 +323,19 @@ export const mockReportsByState = [
 ];
 
 export const mockReportMethods = {
-  setReport: jest.fn(),
-  fetchReport: jest.fn(),
-  updateReport: jest.fn(),
+  fetchReportMetadata: jest.fn(),
+  updateReportMetadata: jest.fn(),
   removeReport: jest.fn(),
-  setReportData: jest.fn(),
   fetchReportData: jest.fn(),
   updateReportData: jest.fn(),
   fetchReportsByState: jest.fn(),
+  clearReportSelection: jest.fn(),
+  setReportSelection: jest.fn(),
 };
 
 export const mockReportContext = {
   ...mockReportMethods,
-  report: mockReport,
+  reportMetadata: mockReport,
   reportData: mockReportData,
   reportsByState: mockReportsByState,
   errorMessage: "",

@@ -1,8 +1,25 @@
-import { array, mixed, number as numberSchema, string } from "yup";
-import { schemaValidationErrors as error } from "verbiage/errors";
+import {
+  array,
+  mixed,
+  number as numberSchema,
+  string,
+  StringSchema,
+} from "yup";
+
+const error = {
+  REQUIRED_GENERIC: "A response is required",
+  REQUIRED_CHECKBOX: "Select at least one response",
+  INVALID_GENERIC: "Response must be valid",
+  INVALID_EMAIL: "Response must be a valid email address",
+  INVALID_URL: "Response must be a valid hyperlink/URL",
+  INVALID_DATE: "Response must be a valid date",
+  INVALID_END_DATE: "End date can't be before start date",
+  INVALID_NUMBER_OR_NA: 'Response must be a valid number or "N/A"',
+  INVALID_RATIO: "Response must be a valid ratio",
+};
 
 // TEXT
-export const text = () =>
+export const text = (): StringSchema =>
   string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
 export const textOptional = () => text().notRequired();
 
@@ -126,7 +143,7 @@ export const dynamicOptional = () => dynamic().notRequired();
 
 // NESTED
 export const nested = (
-  fieldSchema: Function,
+  fieldSchema: Function | any,
   parentFieldName: string,
   parentOptionValue: any
 ) => {

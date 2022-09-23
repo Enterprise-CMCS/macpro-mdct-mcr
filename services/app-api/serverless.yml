@@ -35,8 +35,7 @@ custom:
       - production
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   reportDataTableName: ${env:REPORT_DATA_TABLE_NAME, cf:database-${self:custom.stage}.ReportDataTableName}
-  reportTableName: ${env:REPORT_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
-  formTemplateTableName: ${env:FORM_TEMPLATE_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplateTableName}
+  reportMetadataTableName: ${env:REPORT_METADATA_TABLE_NAME, cf:database-${self:custom.stage}.ReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   associateWaf:
@@ -93,8 +92,7 @@ provider:
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     REPORT_DATA_TABLE_NAME: ${self:custom.reportDataTableName}
-    REPORT_TABLE_NAME: ${self:custom.reportTableName}
-    FORM_TEMPLATE_TABLE_NAME: ${self:custom.formTemplateTableName}
+    REPORT_METADATA_TABLE_NAME: ${self:custom.reportMetadataTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
 
@@ -161,11 +159,11 @@ functions:
               paths:
                 state: true
                 reportId: true
-  getReport:
-    handler: handlers/reports/get.getReport
+  getReportMetadata:
+    handler: handlers/reportMetadata/get.getReportMetadata
     events:
       - http:
-          path: reports/{state}/{reportId}
+          path: reportMetadata/{state}/{reportId}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -174,11 +172,11 @@ functions:
               paths:
                 state: true
                 reportId: true
-  getReportsByState:
-    handler: handlers/reports/get.getReportsByState
+  getAllReportsByState:
+    handler: handlers/reportMetadata/get.getAllReportsByState
     events:
       - http:
-          path: reports/{state}
+          path: reportMetadata/{state}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -186,11 +184,11 @@ functions:
             parameters:
               paths:
                 state: true
-  writeReport:
-    handler: handlers/reports/write.writeReport
+  writeReportMetadata:
+    handler: handlers/reportMetadata/write.writeReportMetadata
     events:
       - http:
-          path: reports/{state}/{reportId}
+          path: reportMetadata/{state}/{reportId}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -200,10 +198,10 @@ functions:
                 state: true
                 reportId: true
   deleteReport:
-    handler: handlers/reports/delete.deleteReport
+    handler: handlers/reportMetadata/delete.deleteReport
     events:
       - http:
-          path: reports/{state}/{reportId}
+          path: reportMetadata/{state}/{reportId}
           method: delete
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -212,26 +210,6 @@ functions:
               paths:
                 state: true
                 reportId: true
-  getFormTemplate:
-    handler: handlers/formTemplates/get.getFormTemplate
-    events:
-      - http:
-          path: formTemplates/{formTemplateId}
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                formTemplateId: true
-  writeFormTemplate:
-    handler: handlers/formTemplates/write.writeFormTemplate
-    events:
-      - http:
-          path: formTemplates
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   getTemplate:
     handler: handlers/templates/get.getTemplate
     events:

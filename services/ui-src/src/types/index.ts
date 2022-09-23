@@ -1,5 +1,4 @@
 import React from "react";
-import { ArraySchema, StringSchema } from "yup";
 
 // USERS
 
@@ -33,9 +32,9 @@ export interface ReportJson {
   id?: string;
   name: string;
   basePath: string;
-  version: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
+  validationSchema?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
@@ -43,8 +42,8 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  [key: string]: any;
   page?: PageJson;
+  [key: string]: any;
 }
 
 export interface ReportRouteWithForm extends ReportRouteBase {
@@ -57,8 +56,8 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
 }
 
 export interface PageJson {
+  pageType?: string;
   intro?: AnyObject;
-  drawer?: AnyObject;
   [key: string]: any;
 }
 
@@ -70,14 +69,13 @@ export enum ReportStatus {
 
 // REPORT PROVIDER/CONTEXT
 
-export interface ReportDetails {
+export interface ReportKeys {
   state: string;
   reportId: string;
 }
 
-export interface ReportShape extends ReportDetails {
+export interface ReportMetadata extends ReportKeys {
   reportType: string;
-  formTemplateId: string;
   programName: string;
   status: string;
   reportingPeriodStartDate: number;
@@ -86,46 +84,72 @@ export interface ReportShape extends ReportDetails {
   createdAt: number;
   lastAltered: number;
   lastAlteredBy: string;
+  combinedData: string;
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
-}
-
-export interface ReportDataShape {
-  [key: string]: any; // any valid object can be valid reportData
+  formTemplate: ReportJson;
 }
 
 export interface ReportContextMethods {
-  setReport: Function;
-  fetchReport: Function;
-  updateReport: Function;
+  fetchReportMetadata: Function;
+  updateReportMetadata: Function;
   removeReport: Function;
-  setReportData: Function;
   fetchReportData: Function;
   updateReportData: Function;
   fetchReportsByState: Function;
+  clearReportSelection: Function;
+  setReportSelection: Function;
 }
 
 export interface ReportContextShape extends ReportContextMethods {
-  report: ReportShape | undefined;
-  reportData: ReportDataShape | undefined;
-  reportsByState: ReportShape[] | undefined;
+  reportMetadata: ReportMetadata | undefined;
+  reportData: AnyObject | undefined;
+  reportsByState: ReportMetadata[] | undefined;
   errorMessage?: string | undefined;
 }
 
 // FORM & FIELD STRUCTURE
 
+export declare type EntityType = "plans" | "bssEntities";
+
 export interface FormJson {
   id: string;
   fields: FormField[];
   options?: AnyObject;
-  validation?: StringSchema | ArraySchema<any> | AnyObject;
+  validation?: AnyObject;
   adminDisabled?: boolean;
 }
+
+export interface DependentFieldValidation {
+  type: string;
+  dependentFieldName: string;
+}
+
+export interface NestedFieldValidation {
+  type: string;
+  nested: true;
+  parentFieldName: string;
+  visibleOptionValue: string;
+}
+
+export interface NestedDependentFieldValidation {
+  type: string;
+  dependentFieldName: string;
+  nested: true;
+  parentFieldName: string;
+  visibleOptionValue: string;
+}
+
+export type FieldValidationObject =
+  | DependentFieldValidation
+  | NestedFieldValidation
+  | NestedDependentFieldValidation;
 
 export interface FormField {
   id: string;
   type: string;
+  validation: string | FieldValidationObject;
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];

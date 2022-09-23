@@ -6,7 +6,6 @@ import { Form } from "components";
 import { AnyObject, FormJson, UserRoles } from "types";
 // form
 import formJson from "forms/adminDashSelector/adminDashSelector";
-import formSchema from "forms/adminDashSelector/adminDashSelector.schema";
 // utils
 import { useUser } from "utils";
 
@@ -19,7 +18,6 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
 
   // add validation to formJson
   const form: FormJson = formJson;
-  form.validation = formSchema;
 
   const onSubmit = (formData: AnyObject) => {
     if (

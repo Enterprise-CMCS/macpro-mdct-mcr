@@ -1,4 +1,16 @@
-import { AnyObject, ReportShape, ReportJson, ReportRoute } from "types";
+import {
+  AnyObject,
+  FieldChoice,
+  FormField,
+  ReportMetadata,
+  ReportJson,
+  ReportRoute,
+} from "types";
+
+export const sortReportsOldestToNewest = (
+  reportsArray: ReportMetadata[]
+): ReportMetadata[] =>
+  reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
 
 // returns reportJson with forms that mirror the adminDisabled status of the report
 export const copyAdminDisabledStatusToForms = (
@@ -41,29 +53,43 @@ export const flattenReportRoutesArray = (
   return routesArray;
 };
 
-export const addValidationToReportJson = (
-  reportJson: ReportRoute[],
-  validationSchema: AnyObject
-): ReportRoute[] => {
-  const mapSchemaToForms = (routes: ReportRoute[], schema: AnyObject) => {
-    routes.map((route: ReportRoute) => {
-      // if children, recurse; if none, push to routes array
-      if (route?.children) {
-        mapSchemaToForms(route.children, validationSchema);
-      }
-      // else if form (children & form are always mutually exclusive)
-      else if (route?.form) {
-        // add corresponding validation schema to form
-        const correspondingValidationSchema = schema[route.form.id];
-        route.form.validation = correspondingValidationSchema || {};
-      }
-    });
-  };
-  mapSchemaToForms(reportJson, validationSchema);
-  return reportJson;
+export const compileValidationJsonFromFields = (
+  fieldArray: FormField[]
+): AnyObject => {
+  const validationSchema: AnyObject = {};
+  fieldArray.forEach((field: FormField) => {
+    // compile field's validation schema
+    validationSchema[field.id] = field.validation;
+    // if field has choices/options (ie could have nested children)
+    const fieldChoices = field.props?.choices;
+    if (fieldChoices) {
+      fieldChoices.forEach((choice: FieldChoice) => {
+        // if given field choice has nested children
+        const nestedChildFields = choice.children;
+        if (nestedChildFields) {
+          Object.assign(
+            validationSchema,
+            compileValidationJsonFromFields(nestedChildFields)
+          );
+        }
+      });
+    }
+  });
+  return validationSchema;
 };
 
-export const sortReportsOldestToNewest = (
-  reportsArray: ReportShape[]
-): ReportShape[] =>
-  reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
+export const compileValidationJsonFromRoutes = (
+  routeArray: ReportRoute[]
+): AnyObject => {
+  const validationSchema: AnyObject = {};
+  routeArray.forEach((route: ReportRoute) => {
+    const routeFormFields = route.form?.fields;
+    if (routeFormFields) {
+      Object.assign(
+        validationSchema,
+        compileValidationJsonFromFields(routeFormFields)
+      );
+    }
+  });
+  return validationSchema;
+};
