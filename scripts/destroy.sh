@@ -141,7 +141,7 @@ done
 
 # Find hanging api-gateway log group
 apiGatewayLogGroupName="/aws/api-gateway/app-api-$stage"
-apiGatewayLogGroupExists=(`aws logs describe-log-groups --log-group-name-prefix $apiGatewayLogGroupName | jq -r ".logGroups[] | Exists"`)
+apiGatewayLogGroupExists=(`aws logs describe-log-groups --log-group-name-prefix $apiGatewayLogGroupName | jq -r ".logGroups[] | length"`)
 if [[ -n $apiGatewayLogGroupExists ]] ; then
     aws logs delete-log-group --log-group-name $apiGatewayLogGroupName
 fi
