@@ -16,7 +16,7 @@ export default {
   },
   fields: [
     {
-      id: "ads-state",
+      id: "state",
       type: "dropdown",
       validation: "dropdown",
       props: {

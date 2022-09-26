@@ -166,7 +166,6 @@ export interface DropdownOptions {
 export interface FieldChoice {
   id: string;
   name: string;
-  type?: string;
   label: string;
   value: string;
   checked?: boolean;

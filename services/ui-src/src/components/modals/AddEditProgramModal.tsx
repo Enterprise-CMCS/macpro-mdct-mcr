@@ -36,13 +36,15 @@ export const AddEditProgramModal = ({
     submitButton?.setAttribute("disabled", "true");
 
     // prepare payload
-    const programName = formData["aep-programName"];
-    const dueDate = calculateDueDate(formData["aep-endDate"]);
-    const combinedData = formData["aep-combinedData"] || [];
+    const programName = formData["programName"];
+    const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
+    const combinedData = formData["combinedData"] || [];
     const reportingPeriodStartDate = convertDateEtToUtc(
-      formData["aep-startDate"]
+      formData["reportingPeriodStartDate"]
     );
-    const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
+    const reportingPeriodEndDate = convertDateEtToUtc(
+      formData["reportingPeriodEndDate"]
+    );
 
     const dataToWrite = {
       programName,
@@ -52,9 +54,9 @@ export const AddEditProgramModal = ({
       lastAlteredBy: full_name,
       combinedData,
       fieldData: {
-        "arp-a5a": convertDateUtcToEt(reportingPeriodStartDate),
-        "arp-a5b": convertDateUtcToEt(reportingPeriodEndDate),
-        "arp-a6": programName,
+        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
+        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
+        programName,
       },
     };
     // if an existing program was selected, use that report id
@@ -76,7 +78,7 @@ export const AddEditProgramModal = ({
         formTemplate: mcparReportJson,
         fieldData: {
           ...dataToWrite.fieldData,
-          "apoc-a1": States[activeState as keyof typeof States],
+          stateName: States[activeState as keyof typeof States],
         },
       });
     }
