@@ -64,7 +64,7 @@ export const ReportPage = ({ route }: Props) => {
       };
       await updateReport(reportKeys, dataToWrite);
     }
-    if (!page?.drawer) {
+    if (page?.pageType === PageTypes.STATIC_PAGE) {
       navigate(nextRoute);
     }
     setLoading(false);
@@ -76,11 +76,7 @@ export const ReportPage = ({ route }: Props) => {
         return <StaticPageSection form={form} onSubmit={onSubmit} />;
       case PageTypes.STATIC_DRAWER:
         return (
-          <StaticDrawerSection
-            form={form}
-            drawer={page.drawer!}
-            onSubmit={onSubmit}
-          />
+          <StaticDrawerSection form={form} page={page} onSubmit={onSubmit} />
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
