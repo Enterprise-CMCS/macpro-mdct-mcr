@@ -4,14 +4,14 @@ import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
 //utils
 import { createEmailLink, useUser } from "utils";
-import { UserRoles } from "types";
 import verbiage from "verbiage/pages/profile";
 
 export const Profile = () => {
   const navigate = useNavigate();
 
-  const { user } = useUser();
-  const { email, given_name, family_name, userRole, state } = user ?? {};
+  const { email, given_name, family_name, userRole, state, userIsAdmin } =
+    useUser().user ?? {};
+
   const { intro } = verbiage;
 
   const tableContent = {
@@ -38,7 +38,7 @@ export const Profile = () => {
         .
       </Text>
       <Table content={tableContent} variant="striped" sxOverride={sx.table} />
-      {userRole === UserRoles.ADMIN && (
+      {userIsAdmin && (
         <Button
           sx={sx.adminButton}
           onClick={() => navigate("/admin")}
@@ -55,7 +55,7 @@ const sx = {
   layout: {
     ".contentFlex": {
       marginTop: "3.5rem",
-      marginBottom: "2rem",
+      marginBottom: "5rem !important",
     },
   },
   headerText: {

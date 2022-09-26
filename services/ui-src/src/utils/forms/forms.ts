@@ -11,7 +11,7 @@ import {
   TextAreaField,
 } from "components";
 // types
-import { AnyObject, FieldChoice, FormField, ReportDataShape } from "types";
+import { AnyObject, FieldChoice, FormField } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
@@ -49,7 +49,7 @@ export const formFieldFactory = (
 
 export const hydrateFormFields = (
   formFields: FormField[],
-  formData: ReportDataShape | undefined
+  formData: AnyObject | undefined
 ) => {
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
@@ -85,6 +85,7 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     field?.props?.choices.forEach((choice: FieldChoice) => {
       // set choice value to choice label string
       choice.value = choice.label;
+      choice.id = choice.name;
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
       // if choice has children, recurse

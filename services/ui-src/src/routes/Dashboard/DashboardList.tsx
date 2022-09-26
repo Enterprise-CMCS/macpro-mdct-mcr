@@ -7,7 +7,7 @@ import {
   import {
     Table,
   } from "components";
-import { AnyObject, UserRoles } from "types";
+import { AnyObject } from "types";
 import {
     convertDateUtcToEt
 } from "utils";
@@ -16,19 +16,19 @@ import editIcon from "assets/icons/icon_edit.png";
 
 export const DashboardList = ({
     reportsByState,
-    userRole,
     body,
     openAddEditProgramModal,
     enterSelectedReport,
     openDeleteProgramModal,
     sxOverride,
+    isStateUser,
+    isAdmin,
   }: DashboardTableProps) => (
     <Table content={body.table}  data-testid="desktop-table">
       {reportsByState.map((report: AnyObject) => (
         <Tr key={report.reportId}>
           <Td sx={sxOverride.editProgram}>
-            {(userRole === UserRoles.STATE_REP ||
-              userRole === UserRoles.STATE_USER) && (
+            {isStateUser && (
               <button onClick={() => openAddEditProgramModal(report)}>
                 <Image src={editIcon} alt="Edit Program" />
               </button>
@@ -49,7 +49,7 @@ export const DashboardList = ({
             </Button>
           </Td>
           <Td sx={sxOverride.deleteProgramCell}>
-            {userRole === UserRoles.ADMIN && (
+            {isAdmin && (
               <button onClick={() => openDeleteProgramModal(report)}>
                 <Image
                   src={cancelIcon}
@@ -67,12 +67,13 @@ export const DashboardList = ({
   
   interface DashboardTableProps {
     reportsByState: AnyObject[];
-    userRole: string;
     body: { table: AnyObject };
     openAddEditProgramModal: Function;
     enterSelectedReport: Function;
     openDeleteProgramModal: Function;
     sxOverride: AnyObject;
+    isAdmin: boolean;
+    isStateUser: boolean;
   }
 
   const sx = {

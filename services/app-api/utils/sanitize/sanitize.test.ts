@@ -1,58 +1,141 @@
 import { sanitizeArray, sanitizeObject, sanitizeString } from "./sanitize";
-const string = '<img id="img1" src="foo.png" onload="alert("Hello!")" />';
-const object = {
-  string,
-  numbers: 2349872,
-  array: [
-    234234,
-    "test",
-    '<math><mi//xlink:href="data:x,<script>alert(4)</script>">',
-    "<svg><g/onload=alert(2)//<p>",
-  ],
-  object: {
-    string,
-    numbers: 2349872,
-    array: [
-      "<UL><li><A HREF=//google.com>click</UL>",
-      "test2",
-      234234,
-      "<svg><g/onload=alert(2)//<p>",
-    ],
-    array2: [],
-  },
+
+// SAFE TYPES
+
+const safeBoolean = true;
+const safeNaN = NaN;
+const safeNumber = 2349872;
+const safeNull = null;
+const safeUndefined = undefined;
+
+// STRINGS
+
+const cleanString = "test";
+
+const dirtyImgString = '<img src="foo.png" onload="alert("Hello!")"/>';
+const cleanImgString = '<img src="foo.png">';
+
+const dirtyLinkString = "<UL><li><A HREF=//google.com>click</UL>";
+const cleanLinkString = '<ul><li><a href="//google.com">click</a></li></ul>';
+
+const dirtyScriptString =
+  "<math><mi//xlink:href='data:x,<script>alert(4)</script>'>";
+const cleanScriptString = "<math><mi></mi></math>";
+
+const dirtySvgString = "<svg><g/onload=alert(2)//<p>";
+const cleanSvgString = "<svg><g></g></svg>";
+
+// ARRAYS
+
+const dirtyStringArray = [
+  cleanString,
+  dirtyImgString,
+  dirtyLinkString,
+  dirtySvgString,
+  dirtyScriptString,
+];
+const cleanStringArray = [
+  cleanString,
+  cleanImgString,
+  cleanLinkString,
+  cleanSvgString,
+  cleanScriptString,
+];
+
+const dirtyNestedStringArray = [dirtyStringArray, dirtyStringArray];
+const cleanNestedStringArray = [cleanStringArray, cleanStringArray];
+
+// OBJECTS
+
+const dirtyObject = {
+  string: dirtyImgString,
+  array: dirtyStringArray,
+};
+const cleanObject = {
+  string: cleanImgString,
+  array: cleanStringArray,
 };
 
-const sanitizedObject = {
-  string: '<img src="foo.png" id="img1">',
-  numbers: 2349872,
-  array: [234234, "test", "<math><mi></mi></math>", "<svg><g></g></svg>"],
-  object: {
-    string: '<img src="foo.png" id="img1">',
-    numbers: 2349872,
-    array: [
-      '<ul><li><a href="//google.com">click</a></li></ul>',
-      "test2",
-      234234,
-      "<svg><g></g></svg>",
-    ],
-    array2: [],
-  },
+const dirtyObjectArray = [dirtyObject, dirtyObject];
+const cleanObjectArray = [cleanObject, cleanObject];
+
+const dirtyComplexObject = {
+  string1: cleanString,
+  string2: dirtyImgString,
+  string3: dirtyLinkString,
+  string4: dirtySvgString,
+  string5: dirtyScriptString,
+  array: dirtyStringArray,
+  nestedStringArray: dirtyNestedStringArray,
+  nestedObjectArray: dirtyObjectArray,
+  emptyArray: [],
+  object: dirtyObject,
+  emptyObject: {},
+};
+const cleanComplexObject = {
+  string1: cleanString,
+  string2: cleanImgString,
+  string3: cleanLinkString,
+  string4: cleanSvgString,
+  string5: cleanScriptString,
+  array: cleanStringArray,
+  nestedStringArray: cleanNestedStringArray,
+  nestedObjectArray: cleanObjectArray,
+  emptyArray: [],
+  object: cleanObject,
+  emptyObject: {},
 };
 
-const array = [object, object];
-const arrays = [[object], ["<svg><g/onload=alert(2)//<p>", "test2"], []];
+describe("Test sanitizeString", () => {
+  test("Test sanitizeString passes through empty strings and clean strings", () => {
+    expect(sanitizeString("")).toEqual("");
+    expect(sanitizeString(cleanString)).toEqual(cleanString);
+  });
 
-test("Should remove code injection from string", () => {
-  expect(sanitizeString(string)).toEqual('<img src="foo.png" id="img1">');
+  test("Test sanitizeString cleans dirty strings", () => {
+    expect(sanitizeString(dirtyImgString)).toEqual(cleanImgString);
+    expect(sanitizeString(dirtyLinkString)).toEqual(cleanLinkString);
+    expect(sanitizeString(dirtySvgString)).toEqual(cleanSvgString);
+    expect(sanitizeString(dirtyScriptString)).toEqual(cleanScriptString);
+  });
 });
 
-test("Should remove code injection from strings in objects", () => {
-  expect(sanitizeObject(object)).toEqual(sanitizedObject);
-  expect(sanitizeArray(array)).toEqual([sanitizedObject, sanitizedObject]);
-  expect(sanitizeArray(arrays)).toEqual([
-    [sanitizedObject],
-    ["<svg><g></g></svg>", "test2"],
-    [],
-  ]);
-  expect(sanitizeArray([])).toEqual([]);
+describe("Test sanitizeArray", () => {
+  test("Test sanitizeArray passes through empty arrays and clean arrays", () => {
+    expect(sanitizeArray([])).toEqual([]);
+    expect(sanitizeArray(cleanStringArray)).toEqual(cleanStringArray);
+    expect(sanitizeArray(cleanNestedStringArray)).toEqual(
+      cleanNestedStringArray
+    );
+    expect(sanitizeArray(cleanObjectArray)).toEqual(cleanObjectArray);
+  });
+
+  test("Test sanitizeArray cleans dirty arrays", () => {
+    expect(sanitizeArray(dirtyStringArray)).toEqual(cleanStringArray);
+    expect(sanitizeArray(dirtyNestedStringArray)).toEqual(
+      cleanNestedStringArray
+    );
+    expect(sanitizeArray(dirtyObjectArray)).toEqual(cleanObjectArray);
+  });
+});
+
+describe("Test sanitizeObject", () => {
+  test("Test sanitizeObject passes through safe types", () => {
+    expect(sanitizeObject({ safeBoolean })).toEqual({ safeBoolean });
+    expect(sanitizeObject({ safeNaN })).toEqual({ safeNaN });
+    expect(sanitizeObject({ safeNumber })).toEqual({ safeNumber });
+    expect(sanitizeObject({ safeNull })).toEqual({ safeNull });
+    expect(sanitizeObject({ safeUndefined })).toEqual({ safeUndefined });
+  });
+
+  test("Test sanitizeObject passes through empty object, clean object", () => {
+    expect(sanitizeObject({})).toEqual({});
+    expect(sanitizeObject(cleanObject)).toEqual(cleanObject);
+    expect(sanitizeObject(cleanComplexObject)).toEqual(cleanComplexObject);
+  });
+
+  test("Test sanitizeObject cleans dirty objects", () => {
+    expect(sanitizeObject(dirtyObject)).toEqual(cleanObject);
+    expect(sanitizeObject(dirtyComplexObject)).toEqual(cleanComplexObject);
+  });
 });

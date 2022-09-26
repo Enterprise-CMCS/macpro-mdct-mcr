@@ -1,40 +1,38 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
-import { NO_KEY_ERROR_MESSAGE } from "../../utils/constants/constants";
+import error from "../../utils/constants/constants";
 
-export const getReport = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.reportId!) {
-    throw new Error(NO_KEY_ERROR_MESSAGE);
+export const fetchReport = handler(async (event, _context) => {
+  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+    throw new Error(error.NO_KEY);
   }
   const queryParams = {
-    TableName: process.env.REPORT_TABLE_NAME!,
-    KeyConditionExpression: "#state = :state AND #reportId = :reportId",
+    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    KeyConditionExpression: "#state = :state AND #id = :id",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,
-      ":reportId": event.pathParameters.reportId,
+      ":id": event.pathParameters.id,
     },
     ExpressionAttributeNames: {
       "#state": "state",
-      "#reportId": "reportId",
+      "#id": "id",
     },
   };
   const reportQueryResponse = await dynamoDb.query(queryParams);
-
   const responseBody = reportQueryResponse.Items![0] ?? {};
-
   return {
     status: StatusCodes.SUCCESS,
     body: responseBody,
   };
 });
 
-export const getReportsByState = handler(async (event, _context) => {
+export const fetchReportsByState = handler(async (event, _context) => {
   if (!event?.pathParameters?.state!) {
-    throw new Error(NO_KEY_ERROR_MESSAGE);
+    throw new Error(error.NO_KEY);
   }
   const queryParams = {
-    TableName: process.env.REPORT_TABLE_NAME!,
+    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,
@@ -44,7 +42,6 @@ export const getReportsByState = handler(async (event, _context) => {
     },
   };
   const reportQueryResponse = await dynamoDb.query(queryParams);
-
   return {
     status: StatusCodes.SUCCESS,
     body: reportQueryResponse.Items,

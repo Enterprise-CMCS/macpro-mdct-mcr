@@ -19,7 +19,7 @@ import {
 import { DashboardList } from "./DashboardList";
 import { MobileDashboardList } from "./MobileDashboardList";
 // utils
-import { AnyObject, ReportDetails, ReportShape, UserRoles } from "types";
+import { AnyObject, ReportShape } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -34,86 +34,75 @@ import { ArrowIcon } from "@cmsgov/design-system";
 export const DashboardPage = () => {
   const {
     errorMessage,
-    fetchReport,
     fetchReportsByState,
     reportsByState,
-    setReport,
-    setReportData,
+    clearReportSelection,
+    setReportSelection,
   } = useContext(ReportContext);
   const navigate = useNavigate();
-  const { state: userState, userRole } = useUser().user ?? {};
+  const {
+    state: userState,
+    userIsStateUser,
+    userIsStateRep,
+    userIsAdmin
+  } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
-  const [selectedReportMetadata, setSelectedReportMetadata] = useState<
-    AnyObject | undefined
-  >(undefined);
+  const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
+    undefined
+  );
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
   const activeState = userState || adminSelectedState;
 
   useEffect(() => {
-    // fetch reports on load
-    if (activeState) {
-      fetchReportsByState(activeState);
-    } else {
-      // if no activeState, go to homepage
+    // if no activeState, go to homepage
+    if (!activeState) {
       navigate("/");
     }
-    // unset active report & reportData
-    setReport(undefined);
-    setReportData(undefined);
-    localStorage.setItem("selectedReport", "");
+    fetchReportsByState(activeState);
+    clearReportSelection();
   }, []);
 
-  const enterSelectedReport = async (reportMetadata: ReportShape) => {
+  const enterSelectedReport = async (report: ReportShape) => {
     // set active report to selected report
-    const reportDetails: ReportDetails = {
-      state: reportMetadata.state!,
-      reportId: reportMetadata.reportId,
-    };
-    setReport(reportDetails);
-    localStorage.setItem("selectedReport", reportMetadata.reportId);
+    setReportSelection(report);
 
-    // fetch & set active report to selected report
-    await fetchReport(reportDetails);
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };
 
-  const openAddEditProgramModal = (reportMetadata?: ReportShape) => {
+  const openAddEditProgramModal = (report?: ReportShape) => {
     let formData = undefined;
     let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
-    if (reportMetadata) {
-      if (reportMetadata.submittedOnDate) {
-        submittedOnDate = convertDateUtcToEt(reportMetadata.submittedOnDate);
+    if (report) {
+      if (report.submittedOnDate) {
+        submittedOnDate = convertDateUtcToEt(report.submittedOnDate);
       }
       formData = {
         fieldData: {
-          "aep-programName": reportMetadata.programName,
-          "aep-endDate": convertDateUtcToEt(
-            reportMetadata.reportingPeriodEndDate
-          ),
-          "aep-startDate": convertDateUtcToEt(
-            reportMetadata.reportingPeriodStartDate
-          ),
+          "aep-programName": report.programName,
+          "aep-endDate": convertDateUtcToEt(report.reportingPeriodEndDate),
+          "aep-startDate": convertDateUtcToEt(report.reportingPeriodStartDate),
+          "aep-combinedData": report.combinedData,
         },
-        state: reportMetadata.state,
-        reportId: reportMetadata.reportId,
-        submittedBy: reportMetadata.submittedBy,
-        submitterEmail: reportMetadata.submitterEmail,
+        state: report.state,
+        id: report.id,
+        submittedBy: report.submittedBy,
+        submitterEmail: report.submitterEmail,
         submittedOnDate: submittedOnDate,
       };
     }
-    setSelectedReportMetadata(formData);
+    setSelectedReport(formData);
 
     // use disclosure to open modal
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (reportMetadata?: ReportShape) => {
-    setSelectedReportMetadata(reportMetadata);
+  const openDeleteProgramModal = (report?: ReportShape) => {
+    setSelectedReport(report);
     // use disclosure to open modal
     deleteProgramModalOnOpenHandler();
   };
@@ -150,29 +139,31 @@ export const DashboardPage = () => {
           (isTablet || isMobile ? (
             <MobileDashboardList
               reportsByState={reportsByState}
-              userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
               sxOverride = {sxChildStyles}
+              isStateUser={(!!userIsStateUser || !!userIsStateRep)}
+              isAdmin={!!userIsAdmin}
             />
           ) : (
             <DashboardList
               reportsByState={reportsByState}
-              userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
               body={body}
               sxOverride = {sxChildStyles}
+              isStateUser={(!!userIsStateUser || !!userIsStateRep)}
+              isAdmin={!!userIsAdmin}
             />
-          ))}
-        {!reportsByState?.length && (
-          <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
+          )
         )}
+        {!reportsByState && 
+          <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
+        }
         {/* only show add program button to state users */}
-        {(userRole === UserRoles.STATE_REP ||
-          userRole === UserRoles.STATE_USER) && (
+        {(userIsStateUser || userIsStateRep) && (
           <Box sx={sx.callToActionContainer}>
             <Button type="submit" onClick={() => openAddEditProgramModal()}>
               {body.callToAction}
@@ -182,14 +173,13 @@ export const DashboardPage = () => {
       </Box>
       <AddEditProgramModal
         activeState={activeState!}
-        selectedReportMetadata={selectedReportMetadata!}
+        selectedReport={selectedReport!}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
         }}
       />
       <DeleteProgramModal
-        selectedReportMetadata={selectedReportMetadata!}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,
           onClose: deleteProgramModalOnCloseHandler,

@@ -6,7 +6,7 @@ import {
     Image,
     Text,
 } from "@chakra-ui/react";
-import { AnyObject, UserRoles } from "types";
+import { AnyObject } from "types";
 import {
 convertDateUtcToEt,
 } from "utils";
@@ -16,11 +16,12 @@ import editIcon from "assets/icons/icon_edit.png";
 
 export const MobileDashboardList = ({
     reportsByState,
-    userRole,
     openAddEditProgramModal,
     enterSelectedReport,
     openDeleteProgramModal,
-    sxOverride
+    sxOverride,
+    isStateUser,
+    isAdmin,
   }: MobileDashboardRowProps) => (
     <>
       {reportsByState.map((report: AnyObject) => (
@@ -28,8 +29,7 @@ export const MobileDashboardList = ({
           <Box sx={sx.labelGroup}>
             <Text sx={sx.label}>Program name</Text>
             <Flex alignContent="flex-start">
-              {(userRole === UserRoles.STATE_REP ||
-                userRole === UserRoles.STATE_USER) && (
+              { isStateUser && (
                 <Box sx={sxOverride.editProgram}>
                   <button onClick={() => openAddEditProgramModal(report)}>
                     <Image
@@ -73,7 +73,7 @@ export const MobileDashboardList = ({
               </Button>
             </Box>
             <Box sx={sxOverride.deleteProgramCell}>
-              {userRole === UserRoles.ADMIN && (
+              {isAdmin && (
                 <button onClick={() => openDeleteProgramModal(report)}>
                   <Image
                     src={cancelIcon}
@@ -91,11 +91,12 @@ export const MobileDashboardList = ({
   
 interface MobileDashboardRowProps {
     reportsByState: any;
-    userRole: any;
     openAddEditProgramModal: Function;
     enterSelectedReport: Function;
     openDeleteProgramModal: Function;
     sxOverride: AnyObject;
+    isAdmin: boolean;
+    isStateUser: boolean;
   }
 
   const sx = {

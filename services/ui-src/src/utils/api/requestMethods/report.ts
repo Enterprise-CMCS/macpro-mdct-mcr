@@ -1,18 +1,14 @@
 import { API } from "aws-amplify";
-import { ReportDetails, ReportShape } from "types";
+import { ReportKeys, ReportShape } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 
-async function getReport(reportDetails: ReportDetails) {
+async function getReport(reportKeys: ReportKeys) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
   };
-  const { state, reportId } = reportDetails;
-  const response = await API.get(
-    "reports",
-    `/reports/${state}/${reportId}`,
-    request
-  );
+  const { state, id } = reportKeys;
+  const response = await API.get("reports", `/reports/${state}/${id}`, request);
   return response;
 }
 
@@ -25,36 +21,25 @@ async function getReportsByState(state: string) {
   return response;
 }
 
-async function writeReport(
-  reportDetails: ReportDetails,
-  reportMetadata: ReportShape
-) {
+async function postReport(state: string, report: ReportShape) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
-    body: { ...reportMetadata },
+    body: { ...report },
   };
-  const { state, reportId } = reportDetails;
-  const response = await API.post(
-    "reports",
-    `/reports/${state}/${reportId}`,
-    request
-  );
+  const response = await API.post("reports", `/reports/${state}`, request);
   return response;
 }
 
-async function deleteReport(reportDetails: ReportDetails) {
+async function putReport(reportKeys: ReportKeys, report: ReportShape) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
+    body: { ...report },
   };
-  const { state, reportId } = reportDetails;
-  const response = await API.del(
-    "reports",
-    `/reports/${state}/${reportId}`,
-    request
-  );
+  const { state, id } = reportKeys;
+  const response = await API.put("reports", `/reports/${state}/${id}`, request);
   return response;
 }
 
-export { getReport, getReportsByState, writeReport, deleteReport };
+export { getReport, postReport, putReport, getReportsByState };
