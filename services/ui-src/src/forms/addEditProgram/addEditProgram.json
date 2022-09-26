@@ -5,7 +5,7 @@
   },
   "fields": [
     {
-      "id": "aep-programName",
+      "id": "programName",
       "type": "text",
       "validation": "text",
       "props": {
@@ -13,7 +13,7 @@
       }
     },
     {
-      "id": "aep-startDate",
+      "id": "reportingPeriodStartDate",
       "type": "date",
       "validation": "date",
       "props": {
@@ -23,11 +23,11 @@
       }
     },
     {
-      "id": "aep-endDate",
+      "id": "reportingPeriodEndDate",
       "type": "date",
       "validation": {
         "type": "endDate",
-        "dependentFieldName": "aep-startDate"
+        "dependentFieldName": "reportingPeriodStartDate"
       },
       "props": {
         "label": "A.5b Reporting period  (i.e. contract period) end date",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "id": "aep-combinedData",
+      "id": "combinedData",
       "type": "checkbox",
       "validation": "checkboxSingle",
       "props": {
