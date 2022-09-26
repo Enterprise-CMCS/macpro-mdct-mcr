@@ -1333,7 +1333,7 @@
                               "validation": {
                                 "type": "radio",
                                 "nested": true,
-                                "parentFieldName": "population",
+                                "parentFieldName": "accessMeasure_oversightMethodFrequency",
                                 "visibleOptionValue": "Other, specify"
                               }
                             }
