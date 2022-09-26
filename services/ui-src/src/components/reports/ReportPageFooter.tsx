@@ -2,15 +2,21 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Icon } from "components";
+import { useUser } from "utils";
+import { FormJson } from "types";
 
 export const ReportPageFooter = ({
-  formId,
+  form,
   previousRoute,
   nextRoute,
-  shouldDisableAllFields,
   ...props
 }: Props) => {
   const navigate = useNavigate();
+
+  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
+    useUser().user ?? {};
+  const isAdminUserType = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const formIsDisabled = isAdminUserType && form?.adminDisabled;
 
   return (
     <Box sx={sx.footerBox} {...props}>
@@ -23,7 +29,7 @@ export const ReportPageFooter = ({
           >
             Previous
           </Button>
-          {!formId || shouldDisableAllFields ? (
+          {!form?.id || formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
               rightIcon={<Icon icon="arrowRight" />}
@@ -32,7 +38,7 @@ export const ReportPageFooter = ({
             </Button>
           ) : (
             <Button
-              form={formId}
+              form={form.id}
               type="submit"
               rightIcon={<Icon icon="arrowRight" />}
             >
@@ -47,7 +53,7 @@ export const ReportPageFooter = ({
 };
 
 interface Props {
-  formId?: string;
+  form?: FormJson;
   previousRoute: string;
   nextRoute: string;
   [key: string]: any;

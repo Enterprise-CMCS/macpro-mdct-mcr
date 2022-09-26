@@ -17,12 +17,12 @@ import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-sec
 
 export const StaticDrawerSection = ({ form, page, onSubmit }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { reportData } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
 
   const { entityType, dashboard, drawer } = page;
-  const entities = reportData?.fieldData?.[entityType];
+  const entities = report?.fieldData?.[entityType];
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 

@@ -15,34 +15,25 @@ import {
 // utils
 import { useFindRoute, useUser } from "utils";
 import {
+  AnyObject,
   FormJson,
   PageJson,
   PageTypes,
-  ReportDataShape,
   ReportRoute,
   ReportStatus,
-  UserRoles,
 } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const ReportPage = ({ route }: Props) => {
   // get report, form, and page related-data
-  const { report, updateReportData, updateReport } = useContext(ReportContext);
+  const { report, updateReport } = useContext(ReportContext);
   const { form, page } = route;
 
-  // get user state, name, role
-  const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
 
-  // determine if fields should be disabled (based on admin roles )
-  const isAdminUser =
-    userRole === UserRoles.ADMIN ||
-    userRole === UserRoles.APPROVER ||
-    userRole === UserRoles.HELP_DESK;
-  const fieldInputDisabled = isAdminUser && form.adminDisabled;
-
-  // get state and reportId from context or storage
-  const reportId = report?.reportId || localStorage.getItem("selectedReport");
+  // get state and id from context or storage
+  const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
   // get next and previous routes
@@ -58,18 +49,18 @@ export const ReportPage = ({ route }: Props) => {
     }
   }, [reportId, reportState]);
 
-  const onSubmit = async (formData: ReportDataShape) => {
-    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+  const onSubmit = async (formData: AnyObject) => {
+    if (userIsStateUser || userIsStateRep) {
       const reportKeys = {
         state: state,
-        reportId: reportId,
+        id: reportId,
       };
-      const reportMetadata = {
+      const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
+        fieldData: formData,
       };
-      await updateReportData(reportKeys, formData);
-      await updateReport(reportKeys, reportMetadata);
+      await updateReport(reportKeys, dataToWrite);
     }
     if (page?.pageType === PageTypes.STATIC_PAGE) {
       navigate(nextRoute);
@@ -105,10 +96,9 @@ export const ReportPage = ({ route }: Props) => {
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
           <ReportPageFooter
-            formId={form.id}
+            form={form}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
-            shouldDisableAllFields={fieldInputDisabled}
           />
         </Flex>
       </Flex>

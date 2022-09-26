@@ -22,7 +22,7 @@ jest.mock("react-router-dom", () => ({
 
 const mockReportContextWithoutEntities = {
   ...mockReportContext,
-  reportData: {},
+  report: undefined,
 };
 
 const staticDrawerSectionComponentWithEntities = (
@@ -74,7 +74,7 @@ describe("Test StaticDrawerSection with entities", () => {
   });
 
   it("Opens the sidedrawer correctly", async () => {
-    const visibleEntityText = mockReportContext.reportData.fieldData.plans[0];
+    const visibleEntityText = mockReportContext.report.fieldData.plans[0];
     expect(screen.getByText(visibleEntityText)).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
