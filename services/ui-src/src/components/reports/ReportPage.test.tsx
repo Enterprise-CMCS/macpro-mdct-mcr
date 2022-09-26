@@ -94,7 +94,7 @@ describe("Test ReportPage functionality", () => {
   test("ReportPage updates report field data on successful fill", async () => {
     const result = render(ReportPageComponent_StaticPage);
     const form = result.container;
-    const mockField = form.querySelector("[name='mock-1']")!;
+    const mockField = form.querySelector("[name='mock-text-field']")!;
     await userEvent.type(mockField, "mock input");
     const submitButton = form.querySelector("[type='submit']")!;
     await userEvent.click(submitButton);
