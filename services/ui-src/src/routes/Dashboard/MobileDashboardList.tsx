@@ -20,6 +20,7 @@ export const MobileDashboardList = ({
     openAddEditProgramModal,
     enterSelectedReport,
     openDeleteProgramModal,
+    sxOverride
   }: MobileDashboardRowProps) => (
     <>
       {reportsByState.map((report: AnyObject) => (
@@ -29,7 +30,7 @@ export const MobileDashboardList = ({
             <Flex alignContent="flex-start">
               {(userRole === UserRoles.STATE_REP ||
                 userRole === UserRoles.STATE_USER) && (
-                <Box sx={sx.editProgram}>
+                <Box sx={sxOverride.editProgram}>
                   <button onClick={() => openAddEditProgramModal(report)}>
                     <Image
                       src={editIcon}
@@ -39,7 +40,7 @@ export const MobileDashboardList = ({
                   </button>
                 </Box>
               )}
-              <Text sx={sx.programNameText}>{report.programName}</Text>
+              <Text sx={sxOverride.programNameText}>{report.programName}</Text>
             </Flex>
           </Box>
           <Box sx={sx.labelGroup}>
@@ -63,7 +64,7 @@ export const MobileDashboardList = ({
             <Text>{report?.status}</Text>
           </Box>
           <Flex alignContent="flex-start" gap={2}>
-            <Box sx={sx.editReportButtonCell}>
+            <Box sx={sxOverride.editReportButtonCell}>
               <Button
                 variant="outline"
                 onClick={() => enterSelectedReport(report)}
@@ -71,13 +72,13 @@ export const MobileDashboardList = ({
                 Enter
               </Button>
             </Box>
-            <Box sx={sx.deleteProgramCell}>
+            <Box sx={sxOverride.deleteProgramCell}>
               {userRole === UserRoles.ADMIN && (
                 <button onClick={() => openDeleteProgramModal(report)}>
                   <Image
                     src={cancelIcon}
                     alt="Delete Program"
-                    sx={sx.deleteProgramButtonImage}
+                    sx={sxOverride.deleteProgramButtonImage}
                   />
                 </button>
               )}
@@ -94,6 +95,7 @@ interface MobileDashboardRowProps {
     openAddEditProgramModal: Function;
     enterSelectedReport: Function;
     openDeleteProgramModal: Function;
+    sxOverride: AnyObject;
   }
 
   const sx = {
@@ -104,50 +106,6 @@ interface MobileDashboardRowProps {
     },
     labelGroup: {
       marginBottom: "0.5rem",
-    },
-    editReportButtonCell: {
-      width: "6.875rem",
-      padding: 0,
-      button: {
-        width: "6.875rem",
-        height: "1.75rem",
-        borderRadius: "0.25rem",
-        textAlign: "center",
-        fontSize: "sm",
-        fontWeight: "normal",
-        color: "palette.primary",
-      },
-    },
-    editProgram: {
-      padding: "0",
-      width: "2.5rem",
-      ".tablet &, .mobile &": {
-        width: "2rem",
-      },
-      img: {
-        height: "1.5rem",
-        minWidth: "21px",
-        marginLeft: "0.5rem",
-        ".tablet &, .mobile &": {
-          marginLeft: 0,
-        },
-      },
-    },
-    programNameText: {
-      fontSize: "md",
-      fontWeight: "bold",
-      width: "13rem",
-      ".tablet &, .mobile &": {
-        width: "100%",
-      },
-    },
-    deleteProgramCell: {
-      width: "2.5rem",
-    },
-    deleteProgramButtonImage: {
-      height: "1.75rem",
-      width: "1.75rem",
-      minWidth: "28px",
     },
     label: {
       fontSize: "sm",

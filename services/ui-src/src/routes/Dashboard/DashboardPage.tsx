@@ -154,6 +154,7 @@ export const DashboardPage = () => {
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
+              sxOverride = {sxChildStyles}
             />
           ) : (
             <DashboardList
@@ -163,6 +164,7 @@ export const DashboardPage = () => {
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
               body={body}
+              sxOverride = {sxChildStyles}
             />
           ))}
         {!reportsByState?.length && (
@@ -256,3 +258,50 @@ const sx = {
     textAlign: "center",
   },
 };
+
+const sxChildStyles = {
+  editReportButtonCell: {
+    width: "6.875rem",
+    padding: 0,
+    button: {
+      width: "6.875rem",
+      height: "1.75rem",
+      borderRadius: "0.25rem",
+      textAlign: "center",
+      fontSize: "sm",
+      fontWeight: "normal",
+      color: "palette.primary",
+    },
+  },
+  editProgram: {
+    padding: "0",
+    width: "2.5rem",
+    ".tablet &, .mobile &": {
+      width: "2rem",
+    },
+    img: {
+      height: "1.5rem",
+      minWidth: "21px",
+      marginLeft: "0.5rem",
+      ".tablet &, .mobile &": {
+        marginLeft: 0,
+      },
+    },
+  },
+  programNameText: {
+    fontSize: "md",
+    fontWeight: "bold",
+    width: "13rem",
+    ".tablet &, .mobile &": {
+      width: "100%",
+    },
+  },
+  deleteProgramCell: {
+    width: "2.5rem",
+  },
+  deleteProgramButtonImage: {
+    height: "1.75rem",
+    width: "1.75rem",
+    minWidth: "28px",
+  },
+}
