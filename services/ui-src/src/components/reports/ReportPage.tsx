@@ -39,8 +39,6 @@ export const ReportPage = ({ route }: Props) => {
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
     switch (page?.pageType) {
-      case PageTypes.STATIC_PAGE:
-        return <StaticPageSection form={form} setLoading={setLoading} />;
       case PageTypes.STATIC_DRAWER:
         return (
           <StaticDrawerSection
