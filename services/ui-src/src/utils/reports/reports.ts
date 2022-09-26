@@ -115,8 +115,8 @@ export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
         }
       });
     });
-  routes.map((route: ReportRoute) =>
-    route.form?.fields ? mapFieldIdsToObject(route.form?.fields) : null
-  );
+  routes.map((route: ReportRoute) => {
+    if (route.form?.fields) mapFieldIdsToObject(route.form?.fields);
+  });
   return objectToReturn;
 };

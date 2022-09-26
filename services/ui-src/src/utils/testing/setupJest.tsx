@@ -161,11 +161,29 @@ export const mockBannerDataEmpty = {
 // FORM
 
 export const mockFormField = {
-  id: "mock-1",
+  id: "mock-text-field",
   type: "text",
   validation: "text",
   props: {
-    label: "mock field",
+    label: "mock text field",
+  },
+};
+
+export const mockNestedFormField = {
+  id: "mock-nested-field",
+  type: "radio",
+  validation: "radio",
+  props: {
+    label: "mock radio field",
+    choices: [
+      { name: "option1", label: "option 1" },
+      { name: "option2", label: "option 2" },
+      {
+        name: "option3",
+        label: "option 3",
+        children: [mockFormField],
+      },
+    ],
   },
 };
 
