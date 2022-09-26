@@ -2,22 +2,32 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { Form, ReportPageFooter } from "components";
-import { mockForm, RouterWrappedComponent } from "utils/testing/setupJest";
+import {
+  mockForm,
+  mockStateUser,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 
 const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-}));
-
 const mockOnSubmit = jest.fn();
-const mockProps = {
+const mockRoutes = {
   previousRoute: "/mock-previous-route",
   nextRoute: "/mock-next-route",
 };
 
+jest.mock("react-router-dom", () => ({
+  useNavigate: () => mockUseNavigate,
+}));
+
+jest.mock("utils", () => ({
+  ...jest.requireActual("utils"),
+  useFindRoute: () => mockRoutes,
+  useUser: () => mockStateUser,
+}));
+
 const reportPageComponent = (
   <RouterWrappedComponent>
-    <ReportPageFooter {...mockProps} data-testid="report-page-footer" />
+    <ReportPageFooter data-testid="report-page-footer" />
   </RouterWrappedComponent>
 );
 
@@ -43,7 +53,6 @@ describe("Test ReportPageFooter without form", () => {
 });
 
 const mockPropsWithForm = {
-  ...mockProps,
   form: mockForm,
 };
 
