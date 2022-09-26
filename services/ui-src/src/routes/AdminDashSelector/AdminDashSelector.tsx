@@ -23,6 +23,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
       const selectedState = formData["ads-state"];
       localStorage.setItem("selectedState", selectedState);
     }
+
     navigate("/mcpar");
   };
 
