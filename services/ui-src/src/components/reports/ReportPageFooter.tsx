@@ -2,17 +2,17 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { Icon } from "components";
-import { useUser } from "utils";
+// utils
+import { useFindRoute, useUser } from "utils";
 import { FormJson } from "types";
+import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const ReportPageFooter = ({
-  loading,
-  form,
-  previousRoute,
-  nextRoute,
-  ...props
-}: Props) => {
+export const ReportPageFooter = ({ loading, form, ...props }: Props) => {
   const navigate = useNavigate();
+  const { previousRoute, nextRoute } = useFindRoute(
+    mcparReportRoutesFlat,
+    "/mcpar"
+  );
 
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
@@ -56,8 +56,6 @@ export const ReportPageFooter = ({
 
 interface Props {
   form?: FormJson;
-  previousRoute: string;
-  nextRoute: string;
   loading?: boolean;
   [key: string]: any;
 }
