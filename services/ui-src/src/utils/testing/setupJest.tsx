@@ -192,12 +192,27 @@ export const mockNestedFormField = {
   },
 };
 
+export const mockPlanField = {
+  id: "plans",
+  type: "dynamic",
+  validation: "dynamic",
+  props: {
+    label: "Plan name",
+  },
+};
+
 export const mockForm = {
   id: "mock-form-id",
   fields: [mockFormField],
 };
 
+export const mockPlanFilledForm = {
+  id: "mock-form-id",
+  fields: [mockPlanField],
+};
+
 export const mockPageJson = {
+  pageType: "staticPage",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -206,16 +221,16 @@ export const mockPageJson = {
 
 export const mockPageJsonStaticDrawer = {
   pageType: "staticDrawer",
+  entityType: "plans",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
+  dashboard: {
+    title: "Mock dashboard title",
+  },
   drawer: {
-    dashboard: {
-      title: "Mock dashboard title",
-      entityType: "plans",
-    },
-    drawerTitle: "Mock drawer title",
+    title: "Mock drawer title",
   },
 };
 
@@ -248,7 +263,7 @@ export const mockReportRoutes = [
         name: "mock-route-2a",
         path: "/mock/mock-route-2a",
         page: mockPageJsonStaticDrawer,
-        form: mockForm,
+        form: mockPlanFilledForm,
       },
       {
         name: "mock-route-2b",
@@ -271,7 +286,7 @@ export const mockFlattenedReportRoutes = [
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
     page: mockPageJsonStaticDrawer,
-    form: mockForm,
+    form: mockPlanFilledForm,
   },
   {
     name: "mock-route-2b",
@@ -299,6 +314,7 @@ export const mockReportKeys = {
 };
 
 export const mockReportFieldData = {
+  plans: ["example-plan"],
   text: "text-input",
   number: 0,
   radio: ["option1"],

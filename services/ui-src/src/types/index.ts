@@ -61,8 +61,8 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
 }
 
 export interface PageJson {
+  pageType?: string;
   intro?: AnyObject;
-  drawer?: AnyObject;
   [key: string]: any;
 }
 
@@ -113,6 +113,8 @@ export interface ReportContextShape extends ReportContextMethods {
 }
 
 // FORM & FIELD STRUCTURE
+
+export declare type EntityType = "plans" | "bssEntities";
 
 export interface FormJson {
   id: string;

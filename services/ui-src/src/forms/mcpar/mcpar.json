@@ -1453,6 +1453,7 @@
           "path": "/mcpar/plan-level-indicators/program-characteristics",
           "page": {
             "pageType": "staticDrawer",
+            "entityType": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic I. Program Characteristics & Enrollment",
@@ -1461,12 +1462,11 @@
                 "descriptionList": ["D1_Plan_Set"]
               }
             },
+            "dashboard": {
+              "title": "Report program characteristics & enrollment for each plan"
+            },
             "drawer": {
-              "dashboard": {
-                "title": "Report program characteristics & enrollment for each plan",
-                "entityType": "plans"
-              },
-              "drawerTitle": "Report program characteristics & enrollment for"
+              "title": "Report program characteristics & enrollment for"
             }
           },
           "form": {
@@ -1510,6 +1510,7 @@
           "path": "/mcpar/plan-level-indicators/financial-performance",
           "page": {
             "pageType": "staticDrawer",
+            "entityType": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic II. Financial Performance",
@@ -1518,12 +1519,11 @@
                 "descriptionList": ["D1_Plan_Set"]
               }
             },
+            "dashboard": {
+              "title": "Report financial performance for each plan"
+            },
             "drawer": {
-              "dashboard": {
-                "title": "Report financial performance for each plan",
-                "entityType": "plans"
-              },
-              "drawerTitle": "Report financial performance for"
+              "title": "Report financial performance for"
             }
           },
           "form": {
@@ -1649,6 +1649,7 @@
           "path": "/mcpar/plan-level-indicators/encounter-data-report",
           "page": {
             "pageType": "staticDrawer",
+            "entityType": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic III. Encounter Data",
@@ -1657,12 +1658,11 @@
                 "descriptionList": ["D1_Plan_Set"]
               }
             },
+            "dashboard": {
+              "title": "Report on encounter data for each plan"
+            },
             "drawer": {
-              "dashboard": {
-                "title": "Report on encounter data for each plan",
-                "entityType": "plans"
-              },
-              "drawerTitle": "Report encounter data for"
+              "title": "Report encounter data for"
             }
           },
           "form": {
@@ -1709,6 +1709,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
               "page": {
                 "pageType": "staticDrawer",
+                "entityType": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1717,12 +1718,11 @@
                     "descriptionList": ["D1_Plan_Set"]
                   }
                 },
+                "dashboard": {
+                  "title": "Report on appeals for each plan"
+                },
                 "drawer": {
-                  "dashboard": {
-                    "title": "Report on appeals for each plan",
-                    "entityType": "plans"
-                  },
-                  "drawerTitle": "Report on appeals for"
+                  "title": "Report on appeals for"
                 }
               },
               "form": {
@@ -1866,6 +1866,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
               "page": {
                 "pageType": "staticDrawer",
+                "entityType": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -1885,12 +1886,11 @@
                     }
                   ]
                 },
+                "dashboard": {
+                  "title": "Report on appeals by service for each plan"
+                },
                 "drawer": {
-                  "dashboard": {
-                    "title": "Report on appeals by service for each plan",
-                    "entityType": "plans"
-                  },
-                  "drawerTitle": "Report appeals by service for"
+                  "title": "Report appeals by service for"
                 }
               },
               "form": {
@@ -2004,6 +2004,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
               "page": {
                 "pageType": "staticDrawer",
+                "entityType": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2019,12 +2020,11 @@
                     }
                   ]
                 },
+                "dashboard": {
+                  "title": "Report state fair hearings and external medical reviews for each plan"
+                },
                 "drawer": {
-                  "dashboard": {
-                    "title": "Report state fair hearings and external medical reviews for each plan",
-                    "entityType": "plans"
-                  },
-                  "drawerTitle": "Report state fair hearings and external medical reviews for"
+                  "title": "Report state fair hearings and external medical reviews for"
                 }
               },
               "form": {
@@ -2098,6 +2098,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
               "page": {
                 "pageType": "staticDrawer",
+                "entityType": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2106,15 +2107,13 @@
                     "descriptionList": ["D1_Plan_Set"]
                   }
                 },
+                "dashboard": {
+                  "title": "Report on grievances for each plan"
+                },
                 "drawer": {
-                  "dashboard": {
-                    "title": "Report on grievances for each plan",
-                    "entityType": "plans"
-                  },
-                  "drawerTitle": "Report on grievances for"
+                  "title": "Report on grievances for"
                 }
               },
-
               "form": {
                 "id": "dgo",
                 "fields": [
@@ -2176,6 +2175,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
               "page": {
                 "pageType": "staticDrawer",
+                "entityType": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2195,14 +2195,11 @@
                     }
                   ]
                 },
+                "dashboard": {
+                  "title": "Report on grievances by service for each plan"
+                },
                 "drawer": {
-                  "dashboard": {
-                    "title": "Report on grievances by service for each plan",
-                    "type": "heading",
-                    "as": "h4",
-                    "entityType": "plans"
-                  },
-                  "drawerTitle": "Report encounter data for"
+                  "title": "Report encounter data for"
                 }
               },
               "form": {
@@ -2316,6 +2313,7 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
               "page": {
                 "pageType": "staticDrawer",
+                "entityType": "plans",
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
@@ -2335,13 +2333,12 @@
                     }
                   ]
                 },
+                "dashboard": {
+                  "title": "Report on grievances by reason for each plan"
+                },
                 "drawer": {
-                  "dashboard": {
-                    "title": "Report on grievances by reason for each plan",
-                    "entityType": "plans"
-                  },
-                  "drawerTitle": "Report on grievances by reason for",
-                  "drawerInfo": [
+                  "title": "Report on grievances by reason for",
+                  "info": [
                     {
                       "type": "p",
                       "content": "A single grievance may be related to multiple reasons and may therefore be counted in multiple categories."
@@ -2944,6 +2941,7 @@
           "path": "/mcpar/plan-level-indicators/program-integrity",
           "page": {
             "pageType": "staticDrawer",
+            "entityType": "plans",
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic X. Program Integrity",
@@ -2952,12 +2950,11 @@
                 "descriptionList": ["D1_Plan_Set"]
               }
             },
+            "dashboard": {
+              "title": "Report on program integrity for each plan"
+            },
             "drawer": {
-              "dashboard": {
-                "title": "Report on program integrity for each plan",
-                "entityType": "plans"
-              },
-              "drawerTitle": "Program integrity for"
+              "title": "Program integrity for"
             }
           },
           "form": {
@@ -3151,6 +3148,7 @@
       "path": "/mcpar/bss-entity-indicators",
       "page": {
         "pageType": "staticDrawer",
+        "entityType": "bssEntities",
         "intro": {
           "section": "Section E: BSS Entity Indicators",
           "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
@@ -3176,12 +3174,11 @@
             }
           ]
         },
+        "dashboard": {
+          "title": "Report on role and type for each BSS entity"
+        },
         "drawer": {
-          "dashboard": {
-            "title": "Report on role and type for each BSS entity",
-            "entityType": "entities"
-          },
-          "drawerTitle": "Report on"
+          "title": "Report on"
         }
       },
       "form": {
