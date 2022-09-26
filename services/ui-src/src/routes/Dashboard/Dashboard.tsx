@@ -22,7 +22,7 @@ import {
   Table,
 } from "components";
 // utils
-import { AnyObject, ReportShape, UserRoles } from "types";
+import { AnyObject, ReportShape } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -47,7 +47,11 @@ export const Dashboard = () => {
     setReportSelection,
   } = useContext(ReportContext);
   const navigate = useNavigate();
-  const { state: userState, userRole } = useUser().user ?? {};
+  const {
+    state: userState,
+    userIsStateUser,
+    userIsStateRep,
+  } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
@@ -88,6 +92,7 @@ export const Dashboard = () => {
           "aep-programName": report.programName,
           "aep-endDate": convertDateUtcToEt(report.reportingPeriodEndDate),
           "aep-startDate": convertDateUtcToEt(report.reportingPeriodStartDate),
+          "aep-combinedData": report.combinedData,
         },
         state: report.state,
         id: report.id,
@@ -140,7 +145,6 @@ export const Dashboard = () => {
           isTablet || isMobile ? (
             <MobileDashboardRow
               reportsByState={reportsByState}
-              userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
@@ -148,7 +152,6 @@ export const Dashboard = () => {
           ) : (
             <DashboardTable
               reportsByState={reportsByState}
-              userRole={userRole!}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
@@ -159,8 +162,7 @@ export const Dashboard = () => {
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         {/* only show add program button to state users */}
-        {(userRole === UserRoles.STATE_REP ||
-          userRole === UserRoles.STATE_USER) && (
+        {(userIsStateUser || userIsStateRep) && (
           <Box sx={sx.callToActionContainer}>
             <Button type="submit" onClick={() => openAddEditProgramModal()}>
               {body.callToAction}
@@ -188,58 +190,62 @@ export const Dashboard = () => {
 
 const DashboardTable = ({
   reportsByState,
-  userRole,
   body,
   openAddEditProgramModal,
   enterSelectedReport,
   openDeleteProgramModal,
-}: DashboardTableProps) => (
-  <Table content={body.table} sxOverride={sx.table} data-testid="desktop-table">
-    {reportsByState.map((report: AnyObject) => (
-      <Tr key={report.id}>
-        <Td sx={sx.editProgram}>
-          {(userRole === UserRoles.STATE_REP ||
-            userRole === UserRoles.STATE_USER) && (
-            <button onClick={() => openAddEditProgramModal(report)}>
-              <Image src={editIcon} alt="Edit Program" />
-            </button>
-          )}
-        </Td>
-        <Td sx={sx.programNameText}>{report.programName}</Td>
-        <Td>{convertDateUtcToEt(report.dueDate)}</Td>
-        <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
-        <Td>{report?.lastAlteredBy || "-"}</Td>
-        <Td>{report?.status}</Td>
-        <Td sx={sx.editReportButtonCell}>
-          <Button
-            variant="outline"
-            data-testid="enter-program"
-            onClick={() => enterSelectedReport(report)}
-          >
-            Enter
-          </Button>
-        </Td>
-        <Td sx={sx.deleteProgramCell}>
-          {/* TODO: Remove stage check upon archive functionality implementation */}
-          {userRole === UserRoles.ADMIN && config.STAGE === "main" && (
-            <button onClick={() => openDeleteProgramModal(report)}>
-              <Image
-                src={cancelIcon}
-                data-testid="delete-program"
-                alt="Delete Program"
-                sx={sx.deleteProgramButtonImage}
-              />
-            </button>
-          )}
-        </Td>
-      </Tr>
-    ))}
-  </Table>
-);
+}: DashboardTableProps) => {
+  const { userIsStateUser, userIsStateRep, userIsAdmin } = useUser().user ?? {};
+  return (
+    <Table
+      content={body.table}
+      sxOverride={sx.table}
+      data-testid="desktop-table"
+    >
+      {reportsByState.map((report: AnyObject) => (
+        <Tr key={report.id}>
+          <Td sx={sx.editProgram}>
+            {(userIsStateUser || userIsStateRep) && (
+              <button onClick={() => openAddEditProgramModal(report)}>
+                <Image src={editIcon} alt="Edit Program" />
+              </button>
+            )}
+          </Td>
+          <Td sx={sx.programNameText}>{report.programName}</Td>
+          <Td>{convertDateUtcToEt(report.dueDate)}</Td>
+          <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
+          <Td>{report?.lastAlteredBy || "-"}</Td>
+          <Td>{report?.status}</Td>
+          <Td sx={sx.editReportButtonCell}>
+            <Button
+              variant="outline"
+              data-testid="enter-program"
+              onClick={() => enterSelectedReport(report)}
+            >
+              Enter
+            </Button>
+          </Td>
+          <Td sx={sx.deleteProgramCell}>
+            {/* TODO: Remove stage check upon archive functionality implementation */}
+            {userIsAdmin && config.STAGE === "main" && (
+              <button onClick={() => openDeleteProgramModal(report)}>
+                <Image
+                  src={cancelIcon}
+                  data-testid="delete-program"
+                  alt="Delete Program"
+                  sx={sx.deleteProgramButtonImage}
+                />
+              </button>
+            )}
+          </Td>
+        </Tr>
+      ))}
+    </Table>
+  );
+};
 
 interface DashboardTableProps {
   reportsByState: AnyObject[];
-  userRole: string;
   body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
@@ -248,82 +254,82 @@ interface DashboardTableProps {
 
 export const MobileDashboardRow = ({
   reportsByState,
-  userRole,
   openAddEditProgramModal,
   enterSelectedReport,
   openDeleteProgramModal,
-}: MobileDashboardRowProps) => (
-  <>
-    {reportsByState.map((report: AnyObject) => (
-      <Box data-testid="mobile-row" sx={sx.mobileTable} key={report.id}>
-        <Box sx={sx.labelGroup}>
-          <Text sx={sx.label}>Program name</Text>
-          <Flex alignContent="flex-start">
-            {(userRole === UserRoles.STATE_REP ||
-              userRole === UserRoles.STATE_USER) && (
-              <Box sx={sx.editProgram}>
-                <button onClick={() => openAddEditProgramModal(report)}>
+}: MobileDashboardRowProps) => {
+  const { userIsStateUser, userIsStateRep, userIsAdmin } = useUser().user ?? {};
+  return (
+    <>
+      {reportsByState.map((report: AnyObject) => (
+        <Box data-testid="mobile-row" sx={sx.mobileTable} key={report.id}>
+          <Box sx={sx.labelGroup}>
+            <Text sx={sx.label}>Program name</Text>
+            <Flex alignContent="flex-start">
+              {(userIsStateUser || userIsStateRep) && (
+                <Box sx={sx.editProgram}>
+                  <button onClick={() => openAddEditProgramModal(report)}>
+                    <Image
+                      src={editIcon}
+                      data-testid="mobile-edit-program"
+                      alt="Edit Program"
+                    />
+                  </button>
+                </Box>
+              )}
+              <Text sx={sx.programNameText}>{report.programName}</Text>
+            </Flex>
+          </Box>
+          <Box sx={sx.labelGroup}>
+            <Flex alignContent="flex-start">
+              <Box sx={sx.editDate}>
+                <Text sx={sx.label}>Due date</Text>
+                <Text>{convertDateUtcToEt(report.dueDate)}</Text>
+              </Box>
+              <Box>
+                <Text sx={sx.label}>Last edited</Text>
+                <Text>{convertDateUtcToEt(report.lastAltered)}</Text>
+              </Box>
+            </Flex>
+          </Box>
+          <Box sx={sx.labelGroup}>
+            <Text sx={sx.label}>Edited by</Text>
+            <Text>{report?.lastAlteredBy || "-"}</Text>
+          </Box>
+          <Box sx={sx.labelGroup}>
+            <Text sx={sx.label}>Status</Text>
+            <Text>{report?.status}</Text>
+          </Box>
+          <Flex alignContent="flex-start" gap={2}>
+            <Box sx={sx.editReportButtonCell}>
+              <Button
+                variant="outline"
+                onClick={() => enterSelectedReport(report)}
+              >
+                Enter
+              </Button>
+            </Box>
+            <Box sx={sx.deleteProgramCell}>
+              {/* TODO: Remove stage check upon archive functionality implementation */}
+              {userIsAdmin && config.STAGE === "main" && (
+                <button onClick={() => openDeleteProgramModal(report)}>
                   <Image
-                    src={editIcon}
-                    data-testid="mobile-edit-program"
-                    alt="Edit Program"
+                    src={cancelIcon}
+                    alt="Delete Program"
+                    sx={sx.deleteProgramButtonImage}
                   />
                 </button>
-              </Box>
-            )}
-            <Text sx={sx.programNameText}>{report.programName}</Text>
-          </Flex>
-        </Box>
-        <Box sx={sx.labelGroup}>
-          <Flex alignContent="flex-start">
-            <Box sx={sx.editDate}>
-              <Text sx={sx.label}>Due date</Text>
-              <Text>{convertDateUtcToEt(report.dueDate)}</Text>
-            </Box>
-            <Box>
-              <Text sx={sx.label}>Last edited</Text>
-              <Text>{convertDateUtcToEt(report.lastAltered)}</Text>
+              )}
             </Box>
           </Flex>
         </Box>
-        <Box sx={sx.labelGroup}>
-          <Text sx={sx.label}>Edited by</Text>
-          <Text>{report?.lastAlteredBy || "-"}</Text>
-        </Box>
-        <Box sx={sx.labelGroup}>
-          <Text sx={sx.label}>Status</Text>
-          <Text>{report?.status}</Text>
-        </Box>
-        <Flex alignContent="flex-start" gap={2}>
-          <Box sx={sx.editReportButtonCell}>
-            <Button
-              variant="outline"
-              onClick={() => enterSelectedReport(report)}
-            >
-              Enter
-            </Button>
-          </Box>
-          <Box sx={sx.deleteProgramCell}>
-            {/* TODO: Remove stage check upon archive functionality implementation */}
-            {userRole === UserRoles.ADMIN && config.STAGE === "main" && (
-              <button onClick={() => openDeleteProgramModal(report)}>
-                <Image
-                  src={cancelIcon}
-                  alt="Delete Program"
-                  sx={sx.deleteProgramButtonImage}
-                />
-              </button>
-            )}
-          </Box>
-        </Flex>
-      </Box>
-    ))}
-  </>
-);
+      ))}
+    </>
+  );
+};
 
 interface MobileDashboardRowProps {
   reportsByState: any;
-  userRole: any;
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
   openDeleteProgramModal: Function;

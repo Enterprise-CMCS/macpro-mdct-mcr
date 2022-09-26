@@ -15,11 +15,16 @@ export interface MCRUser {
   given_name: string;
   family_name: string;
   full_name: string;
-  userRole?: string;
   state?: string;
+  userRole?: string;
+  userIsAdmin?: boolean;
+  userIsHelpDeskUser?: boolean;
+  userIsApprover?: boolean;
+  userIsStateRep?: boolean;
+  userIsStateUser?: boolean;
 }
 
-export interface UserContextI {
+export interface UserContextShape {
   user?: MCRUser;
   showLocalLogins?: boolean;
   logout: () => Promise<void>;
@@ -84,7 +89,7 @@ export interface ReportShape extends ReportKeys {
   createdAt: number;
   lastAltered: number;
   lastAlteredBy: string;
-  combinedData: string;
+  combinedData: Choice[];
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
@@ -157,6 +162,7 @@ export interface DropdownOptions {
 }
 
 export interface FieldChoice {
+  id: string;
   name: string;
   label: string;
   value: string;
@@ -171,6 +177,10 @@ export interface ChoiceFieldProps {
   choices: FieldChoice[];
   sxOverride?: AnyObject;
   [key: string]: any;
+}
+export interface Choice {
+  key: string; // choice.name
+  value: string; // choice.value
 }
 
 export enum PageTypes {
