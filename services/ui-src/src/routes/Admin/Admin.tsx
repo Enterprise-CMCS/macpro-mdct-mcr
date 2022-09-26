@@ -1,6 +1,14 @@
 import { useState, useContext, useEffect } from "react";
 // components
-import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Collapse,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import {
   AdminBannerContext,
   AdminBannerForm,
@@ -12,11 +20,14 @@ import {
 import { checkDateRangeStatus, convertDateUtcToEt } from "utils";
 import { bannerErrors } from "verbiage/errors";
 import verbiage from "verbiage/pages/admin";
+// theme
+import theme from "styles/theme";
 
 export const Admin = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
     useContext(AdminBannerContext);
   const [error, setError] = useState<string | undefined>(errorMessage);
+  const [loading, setLoading] = useState<boolean>(false);
   const bannerIsActive = checkDateRangeStatus(
     bannerData?.startDate,
     bannerData?.endDate
@@ -26,11 +37,13 @@ export const Admin = () => {
   }, [errorMessage]);
 
   const deleteBanner = async () => {
+    setLoading(true);
     try {
       await deleteAdminBanner();
     } catch (error: any) {
       setError(bannerErrors.DELETE_BANNER_FAILED);
     }
+    setLoading(false);
   };
 
   return (
@@ -69,7 +82,11 @@ export const Admin = () => {
               sx={sx.deleteBannerButton}
               onClick={deleteBanner}
             >
-              Delete Current Banner
+              {loading ? (
+                <Spinner size="sm" color={theme.colors.palette.white} />
+              ) : (
+                "Delete Current Banner"
+              )}
             </Button>
           </Flex>
         </Collapse>
@@ -135,6 +152,7 @@ const sx = {
     flexDirection: "column",
   },
   deleteBannerButton: {
+    width: "13.3rem",
     alignSelf: "end",
     marginTop: "1rem !important",
   },

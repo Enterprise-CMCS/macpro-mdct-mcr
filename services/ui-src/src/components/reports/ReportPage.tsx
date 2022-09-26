@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Flex } from "@chakra-ui/react";
@@ -25,6 +25,7 @@ import {
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const ReportPage = ({ route }: Props) => {
+  const [loading, setLoading] = useState<boolean>(false);
   // get report, form, and page related-data
   const { report, updateReport } = useContext(ReportContext);
   const { form, page } = route;
@@ -50,6 +51,7 @@ export const ReportPage = ({ route }: Props) => {
   }, [reportId, reportState]);
 
   const onSubmit = async (formData: AnyObject) => {
+    setLoading(true);
     if (userIsStateUser || userIsStateRep) {
       const reportKeys = {
         state: state,
@@ -65,6 +67,7 @@ export const ReportPage = ({ route }: Props) => {
     if (!page?.drawer) {
       navigate(nextRoute);
     }
+    setLoading(false);
   };
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
@@ -100,6 +103,7 @@ export const ReportPage = ({ route }: Props) => {
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
           <ReportPageFooter
+            loading={loading}
             form={form}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
