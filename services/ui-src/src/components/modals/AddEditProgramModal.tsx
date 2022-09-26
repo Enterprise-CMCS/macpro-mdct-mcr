@@ -31,13 +31,15 @@ export const AddEditProgramModal = ({
     submitButton?.setAttribute("disabled", "true");
 
     // prepare payload
-    const programName = formData["aep-programName"];
-    const dueDate = calculateDueDate(formData["aep-endDate"]);
-    const combinedData = formData["aep-combinedData"] || [];
+    const programName = formData["programName"];
+    const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
+    const combinedData = formData["combinedData"] || [];
     const reportingPeriodStartDate = convertDateEtToUtc(
-      formData["aep-startDate"]
+      formData["reportingPeriodStartDate"]
     );
-    const reportingPeriodEndDate = convertDateEtToUtc(formData["aep-endDate"]);
+    const reportingPeriodEndDate = convertDateEtToUtc(
+      formData["reportingPeriodEndDate"]
+    );
 
     const dataToWrite = {
       programName,

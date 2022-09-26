@@ -19,15 +19,15 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const onSubmit = async (formData: any) => {
     const newBannerData = {
       key: bannerId,
-      title: formData["aab-title"],
-      description: formData["aab-description"],
-      link: formData["aab-link"] || undefined,
+      title: formData["bannerTitle"],
+      description: formData["bannerDescription"],
+      link: formData["bannerLink"] || undefined,
       startDate: convertDatetimeStringToNumber(
-        formData["aab-startDate"],
+        formData["bannerStartDate"],
         "startDate"
       ),
       endDate: convertDatetimeStringToNumber(
-        formData["aab-endDate"],
+        formData["bannerEndDate"],
         "endDate"
       ),
     };

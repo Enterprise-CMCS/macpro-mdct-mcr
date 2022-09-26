@@ -89,10 +89,14 @@ export const Dashboard = () => {
       }
       formData = {
         fieldData: {
-          "aep-programName": report.programName,
-          "aep-endDate": convertDateUtcToEt(report.reportingPeriodEndDate),
-          "aep-startDate": convertDateUtcToEt(report.reportingPeriodStartDate),
-          "aep-combinedData": report.combinedData,
+          programName: report.programName,
+          reportingPeriodEndDate: convertDateUtcToEt(
+            report.reportingPeriodEndDate
+          ),
+          reportingPeriodStartDate: convertDateUtcToEt(
+            report.reportingPeriodStartDate
+          ),
+          combinedData: report.combinedData,
         },
         state: report.state,
         id: report.id,
