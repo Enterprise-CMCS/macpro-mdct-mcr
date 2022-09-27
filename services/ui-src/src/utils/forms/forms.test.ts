@@ -99,16 +99,6 @@ describe("Test hydrateFormFields", () => {
         label: "2. Second mocked field ",
       },
     },
-    {
-      id: "mock-field-3",
-      type: "dropdown",
-      validation: "dropdown",
-      dynamicValue: "mock-field-2",
-      props: {
-        label: "Mock dropdown Field",
-        options: [],
-      },
-    },
   ];
 
   const mockNestedFormFields = [
@@ -176,19 +166,6 @@ describe("Test hydrateFormFields", () => {
       (field: any) => field.id === "mock-field-2-o1-text"
     )?.props!.hydrate;
     expect(hydratedNestedFieldValue).toEqual("mock nested text");
-  });
-
-  it("Correctly hydrates dynamic dropdown field", () => {
-    const hydratedFormFields = hydrateFormFields(
-      mockFormFields.filter((field) => field.id === "mock-field-3"),
-      mockData
-    );
-    const hydratedFieldValue = hydratedFormFields.find(
-      (field) => field.id === "mock-field-3"
-    )?.props!.options;
-    expect(hydratedFieldValue).toEqual([
-      { label: "mock-option1", value: "mock-option1" },
-    ]);
   });
 });
 

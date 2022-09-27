@@ -72,18 +72,6 @@ export const hydrateFormFields = (
     // set props.hydrate
     const fieldHydrationValue = formData?.fieldData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
-
-    // if dropdown options is a string then retrieve options values from form data
-    if (field.type === "dropdown" && field.dynamicValue) {
-      const fieldOptions = formData?.fieldData[field?.dynamicValue].map(
-        (value: string) => ({
-          label: value,
-          value: value,
-        })
-      );
-
-      formFields[fieldFormIndex].props!.options = fieldOptions;
-    }
   });
 
   return formFields;
