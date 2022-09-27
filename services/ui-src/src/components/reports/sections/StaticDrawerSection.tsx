@@ -12,12 +12,15 @@ import {
 } from "@chakra-ui/react";
 import { ReportDrawer, ReportContext } from "components";
 // utils
-import { FormJson, PageJson } from "types";
+import { useUser } from "utils";
+import { AnyObject, FormJson, PageJson, ReportStatus } from "types";
 import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
 
-export const StaticDrawerSection = ({ form, page, onSubmit }: Props) => {
+export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { report } = useContext(ReportContext);
+  const { report, updateReport } = useContext(ReportContext);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
 
@@ -29,6 +32,23 @@ export const StaticDrawerSection = ({ form, page, onSubmit }: Props) => {
   const openRowDrawer = (entity: string) => {
     setCurrentEntity(entity);
     onOpen();
+  };
+
+  const onSubmit = async (formData: AnyObject) => {
+    if (userIsStateUser || userIsStateRep) {
+      setLoading(true);
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+        fieldData: formData,
+      };
+      await updateReport(reportKeys, dataToWrite);
+      setLoading(false);
+    }
   };
 
   const entityRows = (entities: string[]) =>
@@ -76,7 +96,7 @@ export const StaticDrawerSection = ({ form, page, onSubmit }: Props) => {
 interface Props {
   form: FormJson;
   page: PageJson;
-  onSubmit: Function;
+  setLoading: Function;
 }
 
 const sx = {
