@@ -9,6 +9,7 @@ import {
   RadioField,
   TextField,
   TextAreaField,
+  ChoiceField,
 } from "components";
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
@@ -22,6 +23,7 @@ export const formFieldFactory = (
 ) => {
   // define form field components
   const fieldToComponentMap: AnyObject = {
+    singleCheckbox: ChoiceField,
     checkbox: CheckboxField,
     date: DateField,
     dropdown: DropdownField,

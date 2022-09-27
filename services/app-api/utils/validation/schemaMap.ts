@@ -1,5 +1,6 @@
 import {
   array,
+  boolean,
   mixed,
   number as numberSchema,
   object,
@@ -130,7 +131,7 @@ export const checkbox = () =>
     .of(object({ key: text(), value: text() }))
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () => checkbox().notRequired();
-export const checkboxSingle = () => array();
+export const checkboxSingle = () => boolean();
 
 // RADIO
 export const radio = () =>

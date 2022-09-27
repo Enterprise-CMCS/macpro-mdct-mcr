@@ -38,7 +38,7 @@ export const AddEditProgramModal = ({
     // prepare payload
     const programName = formData["programName"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
-    const combinedData = formData["combinedData"] || [];
+    const combinedData = formData["combinedData"] || false;
     const reportingPeriodStartDate = convertDateEtToUtc(
       formData["reportingPeriodStartDate"]
     );
@@ -86,6 +86,8 @@ export const AddEditProgramModal = ({
     setLoading(false);
     modalDisclosure.onClose();
   };
+
+  console.log(selectedReport, 'selectedReport');
 
   return (
     <Modal
