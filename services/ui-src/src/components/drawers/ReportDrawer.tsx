@@ -14,6 +14,7 @@ export const ReportDrawer = ({
   ...props
 }: Props) => {
   const { report } = useContext(ReportContext);
+  // TODO: add spinner
   return (
     <Drawer
       drawerDisclosure={drawerDisclosure}
@@ -31,12 +32,13 @@ export const ReportDrawer = ({
         <Flex sx={sx.buttonFlex}>
           <Button
             variant="outline"
-            type="submit"
             onClick={drawerDisclosure.onClose as MouseEventHandler}
           >
             Cancel
           </Button>
-          <Button>Save & Close</Button>
+          <Button type="submit" form={form.id}>
+            Save & Close
+          </Button>
         </Flex>
       </Box>
     </Drawer>

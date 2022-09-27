@@ -28,14 +28,16 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   // make state
-  const [currentEntity, setCurrentEntity] = useState<string>("");
+  const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
 
   const { entityType, dashboard, drawer } = page;
   const entities = report?.fieldData?.[entityType];
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
-  const openRowDrawer = (entity: string) => {
+  const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);
     onOpen();
   };
@@ -47,13 +49,26 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
         state: state,
         id: report?.id,
       };
+      const currentEntities = [...(report?.fieldData[entityType] || {})];
+      const currentEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.name === currentEntity?.name
+      );
+      const newEntity = {
+        ...currentEntity,
+        ...formData,
+      };
+      let newEntities = currentEntities;
+      newEntities[currentEntityIndex] = newEntity;
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
-        fieldData: formData,
+        fieldData: {
+          [entityType]: newEntities,
+        },
       };
       await updateReport(reportKeys, dataToWrite);
       setLoading(false);
+      onClose();
     }
   };
 
@@ -63,7 +78,7 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
         <Heading as="h5">{entity.name}</Heading>
         <Button
           sx={sx.enterButton}
-          onClick={() => openRowDrawer(entity.name)}
+          onClick={() => openRowDrawer(entity)}
           variant="outline"
         >
           Enter
@@ -89,7 +104,7 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${currentEntity}`}
+        drawerTitle={`${drawer.title} ${currentEntity?.name}`}
         drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}
