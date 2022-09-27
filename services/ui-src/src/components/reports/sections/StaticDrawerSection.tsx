@@ -28,14 +28,16 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   // make state
-  const [currentEntity, setCurrentEntity] = useState<string>("");
+  const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
 
   const { entityType, dashboard, drawer } = page;
   const entities = report?.fieldData?.[entityType];
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
-  const openRowDrawer = (entity: string) => {
+  const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);
     onOpen();
   };
@@ -63,7 +65,7 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
         <Heading as="h5">{entity.name}</Heading>
         <Button
           sx={sx.enterButton}
-          onClick={() => openRowDrawer(entity.name)}
+          onClick={() => openRowDrawer(entity)}
           variant="outline"
         >
           Enter
@@ -89,7 +91,7 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${currentEntity}`}
+        drawerTitle={`${drawer.title} ${currentEntity?.name}`}
         drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}
