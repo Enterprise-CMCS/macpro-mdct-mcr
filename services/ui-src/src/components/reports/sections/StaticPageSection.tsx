@@ -1,12 +1,38 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 // components
 import { Box } from "@chakra-ui/react";
 import { Form, ReportContext } from "components";
-import { useContext } from "react";
 // utils
-import { FormJson } from "types";
+import { useFindRoute, useUser } from "utils";
+import { AnyObject, FormJson, ReportStatus } from "types";
+import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const StaticPageSection = ({ form, onSubmit }: Props) => {
-  const { report } = useContext(ReportContext);
+export const StaticPageSection = ({ form, setLoading }: Props) => {
+  const { report, updateReport } = useContext(ReportContext);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+  const navigate = useNavigate();
+  const { nextRoute } = useFindRoute(mcparReportRoutesFlat, "/mcpar");
+
+  const onSubmit = async (formData: AnyObject) => {
+    if (userIsStateUser || userIsStateRep) {
+      setLoading(true);
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+        fieldData: formData,
+      };
+      await updateReport(reportKeys, dataToWrite);
+      setLoading(false);
+    }
+    navigate(nextRoute);
+  };
+
   return (
     <Box data-testid="static-page-section">
       <Form
@@ -21,5 +47,5 @@ export const StaticPageSection = ({ form, onSubmit }: Props) => {
 
 interface Props {
   form: FormJson;
-  onSubmit: Function;
+  setLoading: Function;
 }
