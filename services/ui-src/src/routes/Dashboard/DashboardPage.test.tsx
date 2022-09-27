@@ -90,7 +90,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     jest.clearAllMocks();
   });
 
-  test("DAHN Check that Dashboard view renders", () => {
+  test("Check that Dashboard view renders", () => {
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
     expect(screen.getByTestId("desktop-table")).toBeVisible();
     expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();

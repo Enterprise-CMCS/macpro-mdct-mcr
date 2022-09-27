@@ -26,7 +26,7 @@ export const DashboardList = ({
   }: DashboardTableProps) => (
     <Table content={body.table}  data-testid="desktop-table" sx={sx.table}>
       {reportsByState.map((report: AnyObject) => (
-        <Tr key={report.reportId}>
+        <Tr key={report.id}>
           <Td sx={sxOverride.editProgram}>
             {isStateUser && (
               <button onClick={() => openAddEditProgramModal(report)}>
