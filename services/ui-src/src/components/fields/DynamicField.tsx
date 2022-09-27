@@ -16,7 +16,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
 
   // make formfield dynamic array with config options
-  const { fields, append, remove } = useFieldArray({
+  const { append, remove } = useFieldArray({
     name: name,
     shouldUnregister: true,
   });
@@ -28,6 +28,19 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     const currentEntityIndex = displayValues.indexOf(currentEntity!);
     const newDisplayValues = [...displayValues];
     newDisplayValues[currentEntityIndex].name = value;
+    setDisplayValues(newDisplayValues);
+  };
+
+  const appendNewRecord = () => {
+    const newEntity = { id: Date.now().toString(), name: "" };
+    append(newEntity);
+    setDisplayValues([...displayValues, newEntity]);
+  };
+
+  const removeRecord = (index: number) => {
+    remove(index);
+    const newDisplayValues = [...displayValues];
+    newDisplayValues.splice(index, 1);
     setDisplayValues(newDisplayValues);
   };
 
@@ -50,63 +63,58 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue) {
-      // setDisplayValues(hydrationValue);
+      setDisplayValues(hydrationValue);
       append(hydrationValue);
+    } else {
+      appendNewRecord();
     }
-  }, [hydrationValue]); // only runs on hydrationValue fetch/update
+  }, [props?.hydrate]); // only runs on hydrationValue fetch/update
+
+  // on displayValue change, set field array value to match
+  useEffect(() => {
+    form.setValue(name, displayValues, { shouldValidate: true });
+  }, [displayValues]);
 
   const fieldErrorState = form?.formState?.errors?.[name];
 
-  const appendRecord = () => {
-    const newEntity = { id: Date.now().toString(), name: "" };
-    append(newEntity);
-    setDisplayValues([...displayValues, newEntity]);
-  };
-
-  const removeRecord = (index: number) => {
-    remove(index);
-    const newDisplayValues = [...displayValues];
-    newDisplayValues.splice(index, 1);
-    setDisplayValues(newDisplayValues);
-  };
-
   return (
     <Box>
-      {fields.map((field: Record<"id", string>, index: number) => {
+      {displayValues.map((field: EntityShape, index: number) => {
         return (
-          <Flex key={field.id} alignItems="flex-end" sx={sx.textField}>
+          <Flex key={field.id} sx={sx.textField}>
             <CmsdsTextField
-              id={displayValues[index].id}
-              name={`${name}[${index}]`}
+              id={field.id}
+              name={field.id}
               label={label || ""}
-              // hint={parsedHint}
               errorMessage={fieldErrorState?.[index]?.message}
               disabled={props?.disabled}
               onChange={(e) => onChangeHandler(e)}
-              value={displayValues[index]?.name}
-              // {...props}
+              value={field.name}
+              {...props}
             />
-            {index != 0 && (
-              <Box sx={sx.removeBox}>
-                <button
-                  onClick={() => removeRecord(index)}
-                  data-testid="removeButton"
-                >
-                  {!props?.disabled && (
-                    <Image
-                      sx={sx.removeImage}
-                      src={cancelIcon}
-                      alt="Remove item"
-                    />
-                  )}
-                </button>
-              </Box>
-            )}
+            <Box sx={sx.removeBox}>
+              <button
+                onClick={() => removeRecord(index)}
+                data-testid="removeButton"
+              >
+                {!props?.disabled && (
+                  <Image
+                    sx={sx.removeImage}
+                    src={cancelIcon}
+                    alt="Remove item"
+                  />
+                )}
+              </button>
+            </Box>
           </Flex>
         );
       })}
       {!props.disabled && (
-        <Button variant="outline" sx={sx.appendButton} onClick={appendRecord}>
+        <Button
+          variant="outline"
+          sx={sx.appendButton}
+          onClick={appendNewRecord}
+        >
           Add a row
         </Button>
       )}
@@ -138,6 +146,7 @@ const sx = {
     marginTop: "2rem",
   },
   textField: {
+    alignItems: "flex-end",
     width: "32rem",
     ".ds-u-clearfix": {
       width: "100%",
