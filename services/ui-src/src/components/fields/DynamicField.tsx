@@ -1,16 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { svgFilters } from "styles/theme";
+// utils
+import { InputChangeEvent } from "types";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import { TextField } from "./TextField";
+
+/*
+
+plans: [
+  {
+    key: "blah",
+    name: "plan name",
+  },
+  {
+    key: "blah2",
+    name: "plan name 2",
+  }
+]
+
+*/
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // get form context and register field
   const form = useFormContext();
   form.register(name);
+  const [displayValues, setDisplayValues] = useState<any[]>([]);
 
   // make formfield dynamic array with config options
   const { fields, append, remove } = useFieldArray({
@@ -18,18 +36,42 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     shouldUnregister: true,
   });
 
-  // render form field values as individual inputs
-  useEffect(() => {
-    if (fields.length === 0) {
-      append(props?.hydrate || "");
-    }
-  }, []);
+  // update display value and form field data on change
+  const onChangeHandler = async (event: InputChangeEvent) => {
+    console.log("event.target", event);
+    const { id, value } = event.target;
+    const currentEntity = displayValues.find((entity) => entity.id === id);
+    const currentEntityIndex = displayValues.indexOf(currentEntity);
+    console.log("currentEntity", currentEntity);
+    const newDisplayValues = displayValues;
+    newDisplayValues[currentEntityIndex].name = value;
+    console.log("newDisplayValues", newDisplayValues);
+    setDisplayValues(newDisplayValues);
+  };
 
-  // render hydrated values on refresh
+  // render form field values as individual inputs
+  // useEffect(() => {
+  //   if (fields.length === 0) {
+  //     console.log("hydrate", props?.hydrate);
+  //     append(props?.hydrate || "");
+  //   }
+  // }, []);
+
+  // // render hydrated values on refresh
+  // useEffect(() => {
+  //   form.reset();
+  //   console.log("hydrate", props?.hydrate);
+  //   append(props?.hydrate || "");
+  // }, [props?.hydrate]);
+
+  // set initial display value to form state field value or hydration value
+  const hydrationValue = props?.hydrate;
   useEffect(() => {
-    form.reset();
-    append(props?.hydrate || "");
-  }, [props?.hydrate]);
+    if (hydrationValue) {
+      setDisplayValues(hydrationValue);
+      append(hydrationValue);
+    }
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   const fieldErrorState = form?.formState?.errors?.[name];
 
@@ -37,13 +79,17 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     <Box>
       {fields.map((field: Record<"id", string>, index: number) => {
         return (
-          <Flex key={field.id} alignItems="flex-end">
-            <TextField
+          <Flex key={field.id} alignItems="flex-end" sx={sx.textField}>
+            <CmsdsTextField
+              id={displayValues[index].id}
               name={`${name}[${index}]`}
-              label={label}
+              label={label || ""}
+              // hint={parsedHint}
               errorMessage={fieldErrorState?.[index]?.message}
-              sxOverride={sx.textFieldOverride}
               disabled={props?.disabled}
+              onChange={(e) => onChangeHandler(e)}
+              value={displayValues[index]?.name || ""}
+              // {...props}
             />
             {index != 0 && (
               <Box sx={sx.removeBox}>
@@ -69,7 +115,9 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           variant="outline"
           sx={sx.appendButton}
           onClick={() => {
-            append("");
+            const newEntity = { id: Date.now().toString(), name: "" };
+            append(newEntity);
+            setDisplayValues([...displayValues, newEntity]);
           }}
         >
           Add a row
@@ -102,7 +150,7 @@ const sx = {
     height: "2.5rem",
     marginTop: "2rem",
   },
-  textFieldOverride: {
+  textField: {
     width: "32rem",
     ".ds-u-clearfix": {
       width: "100%",

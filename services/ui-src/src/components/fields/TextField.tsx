@@ -12,7 +12,6 @@ export const TextField = ({
   label,
   hint,
   placeholder,
-  disabled,
   sxOverride,
   nested,
   ...props
@@ -64,7 +63,6 @@ export const TextField = ({
         label={label || ""}
         hint={parsedHint}
         placeholder={placeholder}
-        disabled={disabled}
         onChange={(e) => onChangeHandler(e)}
         errorMessage={errorMessage}
         value={displayValue}
@@ -79,7 +77,6 @@ interface Props {
   label?: string;
   hint?: CustomHtmlElement[];
   placeholder?: string;
-  disabled?: boolean;
   sxOverride?: AnyObject;
   nested?: boolean;
   [key: string]: any;
