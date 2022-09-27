@@ -44,21 +44,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
-  // render form field values as individual inputs
-  // useEffect(() => {
-  //   if (fields.length === 0) {
-  //     console.log("hydrate", props?.hydrate);
-  //     append(props?.hydrate || "");
-  //   }
-  // }, []);
-
-  // // render hydrated values on refresh
-  // useEffect(() => {
-  //   form.reset();
-  //   console.log("hydrate", props?.hydrate);
-  //   append(props?.hydrate || "");
-  // }, [props?.hydrate]);
-
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
@@ -84,10 +69,9 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           <Flex key={field.id} sx={sx.textField}>
             <CmsdsTextField
               id={field.id}
-              name={field.id}
+              name={`${name}[${index}]`}
               label={label || ""}
               errorMessage={fieldErrorState?.[index]?.message}
-              disabled={props?.disabled}
               onChange={(e) => onChangeHandler(e)}
               value={field.name}
               {...props}

@@ -13,7 +13,13 @@ import {
 import { ReportDrawer, ReportContext } from "components";
 // utils
 import { useUser } from "utils";
-import { AnyObject, FormJson, PageJson, ReportStatus } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  FormJson,
+  PageJson,
+  ReportStatus,
+} from "types";
 import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
 
 export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
@@ -51,13 +57,13 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
     }
   };
 
-  const entityRows = (entities: string[]) =>
+  const entityRows = (entities: EntityShape[]) =>
     entities.map((entity) => (
-      <Flex key={entity} sx={sx.entityRow}>
-        <Heading as="h5">{entity}</Heading>
+      <Flex key={entity.id} sx={sx.entityRow}>
+        <Heading as="h5">{entity.name}</Heading>
         <Button
           sx={sx.enterButton}
-          onClick={() => openRowDrawer(entity)}
+          onClick={() => openRowDrawer(entity.name)}
           variant="outline"
         >
           Enter

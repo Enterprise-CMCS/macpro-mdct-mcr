@@ -74,7 +74,7 @@ describe("Test StaticDrawerSection with entities", () => {
   });
 
   it("Opens the sidedrawer correctly", async () => {
-    const visibleEntityText = mockReportContext.report.fieldData.plans[0];
+    const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);

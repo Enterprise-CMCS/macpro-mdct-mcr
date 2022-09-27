@@ -314,7 +314,7 @@ export const mockReportKeys = {
 };
 
 export const mockReportFieldData = {
-  plans: ["example-plan"],
+  plans: [{ id: 123, name: "example-plan" }],
   text: "text-input",
   number: 0,
   radio: ["option1"],
