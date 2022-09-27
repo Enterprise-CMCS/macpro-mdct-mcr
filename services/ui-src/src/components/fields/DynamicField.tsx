@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
@@ -32,7 +33,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   };
 
   const appendNewRecord = () => {
-    const newEntity = { id: Date.now().toString(), name: "" };
+    const newEntity = { id: uuid(), name: "" };
     append(newEntity);
     setDisplayValues([...displayValues, newEntity]);
   };
@@ -44,7 +45,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
-  // set initial display value to form state field value or hydration value
+  // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue) {
@@ -53,7 +54,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     } else {
       appendNewRecord();
     }
-  }, [props?.hydrate]); // only runs on hydrationValue fetch/update
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // on displayValue change, set field array value to match
   useEffect(() => {
@@ -70,7 +71,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             <CmsdsTextField
               id={field.id}
               name={`${name}[${index}]`}
-              label={label || ""}
+              label={label}
               errorMessage={fieldErrorState?.[index]?.message}
               onChange={(e) => onChangeHandler(e)}
               value={field.name}
