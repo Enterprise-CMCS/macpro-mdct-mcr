@@ -159,7 +159,7 @@ export const DashboardPage = () => {
             />
           )
         )}
-        {!reportsByState && 
+        {(!reportsByState || !reportsByState.length) && 
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         }
         {/* only show add program button to state users */}

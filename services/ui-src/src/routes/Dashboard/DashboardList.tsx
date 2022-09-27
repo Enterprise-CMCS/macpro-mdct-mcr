@@ -24,7 +24,7 @@ export const DashboardList = ({
     isStateUser,
     isAdmin,
   }: DashboardTableProps) => (
-    <Table content={body.table}  data-testid="desktop-table">
+    <Table content={body.table}  data-testid="desktop-table" sx={sx.table}>
       {reportsByState.map((report: AnyObject) => (
         <Tr key={report.reportId}>
           <Td sx={sxOverride.editProgram}>
