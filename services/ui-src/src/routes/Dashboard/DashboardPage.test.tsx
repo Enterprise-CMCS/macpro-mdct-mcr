@@ -22,6 +22,8 @@ import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
@@ -88,7 +90,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     jest.clearAllMocks();
   });
 
-  test("Check that Dashboard view renders", () => {
+  test("DAHN Check that Dashboard view renders", () => {
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
     expect(screen.getByTestId("desktop-table")).toBeVisible();
     expect(screen.queryByText(verbiage.body.empty)).not.toBeInTheDocument();
@@ -336,7 +338,10 @@ describe("Test Dashboard (without reports)", () => {
 
 describe("Test Dashboard with error", () => {
   test("Error alert shows when there is an error", async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
     mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(dashboardViewWithError);
