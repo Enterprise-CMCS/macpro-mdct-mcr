@@ -13,25 +13,16 @@ import {
   StaticPageSection,
 } from "components";
 // utils
-import { useFindRoute, useUser } from "utils";
-import {
-  AnyObject,
-  FormJson,
-  PageJson,
-  PageTypes,
-  ReportRoute,
-  ReportStatus,
-} from "types";
-import { mcparReportRoutesFlat } from "forms/mcpar";
+import { useUser } from "utils";
+import { FormJson, PageJson, PageTypes, ReportRoute } from "types";
 
 export const ReportPage = ({ route }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   // get report, form, and page related-data
-  const { report, updateReport } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   const { form, page } = route;
 
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { state } = useUser().user ?? {};
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -39,10 +30,6 @@ export const ReportPage = ({ route }: Props) => {
 
   // get next and previous routes
   const navigate = useNavigate();
-  const { previousRoute, nextRoute } = useFindRoute(
-    mcparReportRoutesFlat,
-    "/mcpar"
-  );
 
   useEffect(() => {
     if (!reportId || !reportState) {
@@ -50,44 +37,26 @@ export const ReportPage = ({ route }: Props) => {
     }
   }, [reportId, reportState]);
 
-  const onSubmit = async (formData: AnyObject) => {
-    setLoading(true);
-    if (userIsStateUser || userIsStateRep) {
-      const reportKeys = {
-        state: state,
-        id: reportId,
-      };
-      const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-        fieldData: formData,
-      };
-      await updateReport(reportKeys, dataToWrite);
-    }
-    if (page?.pageType === PageTypes.STATIC_PAGE) {
-      navigate(nextRoute);
-    }
-    setLoading(false);
-  };
-
   const renderPageSection = (form: FormJson, page?: PageJson) => {
     switch (page?.pageType) {
-      case PageTypes.STATIC_PAGE:
-        return <StaticPageSection form={form} onSubmit={onSubmit} />;
       case PageTypes.STATIC_DRAWER:
         return (
-          <StaticDrawerSection form={form} page={page} onSubmit={onSubmit} />
+          <StaticDrawerSection
+            form={form}
+            page={page}
+            setLoading={setLoading}
+          />
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
           <DynamicDrawerSection
             form={form}
             dynamicTable={page.dynamicTable}
-            onSubmit={onSubmit}
+            setLoading={setLoading}
           />
         );
       default:
-        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+        return <StaticPageSection form={form} setLoading={setLoading} />;
     }
   };
 
@@ -98,12 +67,7 @@ export const ReportPage = ({ route }: Props) => {
         <Flex sx={sx.reportContainer}>
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
-          <ReportPageFooter
-            loading={loading}
-            form={form}
-            previousRoute={previousRoute}
-            nextRoute={nextRoute}
-          />
+          <ReportPageFooter loading={loading} form={form} />
         </Flex>
       </Flex>
     </PageTemplate>
