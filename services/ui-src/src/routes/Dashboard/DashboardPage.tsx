@@ -4,8 +4,10 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  Flex,
   Heading,
   Link,
+  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -83,10 +85,14 @@ export const DashboardPage = () => {
       }
       formData = {
         fieldData: {
-          "aep-programName": report.programName,
-          "aep-endDate": convertDateUtcToEt(report.reportingPeriodEndDate),
-          "aep-startDate": convertDateUtcToEt(report.reportingPeriodStartDate),
-          "aep-combinedData": report.combinedData,
+          programName: report.programName,
+          reportingPeriodEndDate: convertDateUtcToEt(
+            report.reportingPeriodEndDate
+          ),
+          reportingPeriodStartDate: convertDateUtcToEt(
+            report.reportingPeriodStartDate
+          ),
+          combinedData: report.combinedData,
         },
         state: report.state,
         id: report.id,
@@ -135,7 +141,7 @@ export const DashboardPage = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
-        {reportsByState &&
+        {reportsByState ?
           (isTablet || isMobile ? (
             <MobileDashboardList
               reportsByState={reportsByState}
@@ -158,10 +164,14 @@ export const DashboardPage = () => {
               isAdmin={!!userIsAdmin}
             />
           )
+        ) : (
+          <Flex alignItems="center" w="full" justifyContent="center" p="10">
+            <Spinner size="lg" />
+          </Flex>
         )}
-        {(!reportsByState || !reportsByState.length) && 
+        {!reportsByState?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
-        }
+        )}
         {/* only show add program button to state users */}
         {(userIsStateUser || userIsStateRep) && (
           <Box sx={sx.callToActionContainer}>

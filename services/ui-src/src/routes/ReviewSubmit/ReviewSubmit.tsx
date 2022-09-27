@@ -1,4 +1,4 @@
-import { MouseEventHandler, useContext, useEffect } from "react";
+import { MouseEventHandler, useContext, useEffect, useState } from "react";
 // components
 import {
   Box,
@@ -23,6 +23,8 @@ export const ReviewSubmit = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   // get user information
   const { email, full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -42,21 +44,23 @@ export const ReviewSubmit = () => {
     }
   }, []);
 
-  const submitForm = () => {
+  const submitForm = async () => {
+    setLoading(true);
     if (userIsStateUser || userIsStateRep) {
       const submissionDate = Date.now();
-      updateReport(reportKeys, {
+      await updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,
         lastAlteredBy: full_name,
         submittedBy: full_name,
         submittedOnDate: submissionDate,
         fieldData: {
-          "apoc-a3a": full_name,
-          "apoc-a3b": email,
-          "apoc-a4": convertDateUtcToEt(submissionDate),
+          submitterName: full_name,
+          submitterEmailAddress: email,
+          reportSubmissionDate: convertDateUtcToEt(submissionDate),
         },
       });
     }
+    setLoading(false);
     onClose();
   };
 
@@ -76,6 +80,7 @@ export const ReviewSubmit = () => {
               submitForm={submitForm}
               isOpen={isOpen}
               onOpen={onOpen}
+              loading={loading}
               onClose={onClose}
             />
           ))}
@@ -88,6 +93,7 @@ const ReadyToSubmit = ({
   submitForm,
   isOpen,
   onOpen,
+  loading,
   onClose,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
@@ -111,6 +117,7 @@ const ReadyToSubmit = ({
       </Flex>
       <Modal
         onConfirmHandler={submitForm}
+        loading={loading}
         modalDisclosure={{
           isOpen,
           onClose,
@@ -126,6 +133,7 @@ const ReadyToSubmit = ({
 interface ReadyToSubmitProps {
   submitForm: Function;
   isOpen: boolean;
+  loading?: boolean;
   onOpen: Function;
   onClose: Function;
 }

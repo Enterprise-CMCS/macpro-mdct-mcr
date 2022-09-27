@@ -20,9 +20,10 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
 
   const onSubmit = (formData: AnyObject) => {
     if (userIsAdmin || userIsApprover || userIsHelpDeskUser) {
-      const selectedState = formData["ads-state"];
+      const selectedState = formData["state"];
       localStorage.setItem("selectedState", selectedState);
     }
+
     navigate("/mcpar");
   };
 

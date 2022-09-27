@@ -5,7 +5,7 @@
   },
   "fields": [
     {
-      "id": "aab-title",
+      "id": "bannerTitle",
       "type": "text",
       "validation": "text",
       "props": {
@@ -14,7 +14,7 @@
       }
     },
     {
-      "id": "aab-description",
+      "id": "bannerDescription",
       "type": "textarea",
       "validation": "text",
       "props": {
@@ -23,7 +23,7 @@
       }
     },
     {
-      "id": "aab-link",
+      "id": "bannerLink",
       "type": "text",
       "validation": "urlOptional",
       "props": {
@@ -32,7 +32,7 @@
       }
     },
     {
-      "id": "aab-startDate",
+      "id": "bannerStartDate",
       "type": "date",
       "validation": "date",
       "props": {
@@ -41,11 +41,11 @@
       }
     },
     {
-      "id": "aab-endDate",
+      "id": "bannerEndDate",
       "type": "date",
       "validation": {
         "type": "endDate",
-        "dependentFieldName": "aab-startDate"
+        "dependentFieldName": "bannerStartDate"
       },
       "props": {
         "label": "End date",

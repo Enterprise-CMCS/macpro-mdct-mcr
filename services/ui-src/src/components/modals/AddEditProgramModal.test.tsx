@@ -77,11 +77,13 @@ describe("Test AddEditProgramModal functionality", () => {
   });
 
   const fillForm = async (form: any) => {
-    const programNameField = form.querySelector("[name='aep-programName']")!;
+    const programNameField = form.querySelector("[name='programName']")!;
     await userEvent.type(programNameField, "fake program name");
-    const startDateField = form.querySelector("[name='aep-startDate']")!;
+    const startDateField = form.querySelector(
+      "[name='reportingPeriodStartDate']"
+    )!;
     await userEvent.type(startDateField, "1/1/2022");
-    const endDateField = form.querySelector("[name='aep-endDate']")!;
+    const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
     await userEvent.type(endDateField, "12/31/2022");
     const submitButton = screen.getByRole("button", { name: "Save" });
     await userEvent.click(submitButton);

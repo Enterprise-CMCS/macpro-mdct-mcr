@@ -3,9 +3,13 @@ import {
   flattenReportRoutesArray,
   sortReportsOldestToNewest,
   copyAdminDisabledStatusToForms,
+  makeFieldIdList,
 } from "./reports";
 import {
   mockFlattenedReportRoutes,
+  mockFormField,
+  mockNestedFormField,
+  mockPageJson,
   mockReportRoutes,
   mockReport,
 } from "utils/testing/setupJest";
@@ -56,6 +60,7 @@ describe("Test copyAdminDisabledStatusToForms", () => {
         name: "mock-route-1",
         path: "/mock/mock-route-1",
         page: {
+          pageType: "staticPage",
           intro: {
             section: "mock section",
             subsection: "mock subsection",
@@ -78,5 +83,44 @@ describe("Test copyAdminDisabledStatusToForms", () => {
     const report = copyAdminDisabledStatusToForms(newReportJson);
     const form = report.routes[0].form;
     expect(form.adminDisabled).toBeTruthy();
+  });
+});
+
+const mockField1 = { ...mockFormField, id: "mock-1" };
+const mockField2 = { ...mockNestedFormField, id: "mock-2" };
+const mockField3 = { ...mockFormField, id: "mock-3" };
+
+const mockFlatRoutes = [
+  {
+    name: "mock-route-1",
+    path: "/mock/mock-route-1",
+    page: mockPageJson,
+    form: {
+      id: "mock-form-id-1",
+      fields: [mockField1],
+    },
+  },
+  {
+    name: "mock-route-2",
+    path: "/mock/mock-route-2",
+    page: mockPageJson,
+    form: {
+      id: "mock-form-id-2",
+      fields: [mockField2, mockField3],
+    },
+  },
+];
+
+const expectedResult = {
+  "mock-1": "mock text field",
+  "mock-2": "mock radio field",
+  "mock-text-field": "mock text field",
+  "mock-3": "mock text field",
+};
+
+describe("Test makeFieldIdList", () => {
+  test("Creates flat object of fieldIds when passed nested fields", () => {
+    const result = makeFieldIdList(mockFlatRoutes);
+    expect(result).toEqual(expectedResult);
   });
 });

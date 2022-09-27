@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { Icon } from "components";
 import { useUser } from "utils";
 import { FormJson } from "types";
 
 export const ReportPageFooter = ({
+  loading,
   form,
   previousRoute,
   nextRoute,
@@ -32,7 +33,7 @@ export const ReportPageFooter = ({
           {!form?.id || formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
-              rightIcon={<Icon icon="arrowRight" />}
+              rightIcon={loading ? <></> : <Icon icon="arrowRight" />}
             >
               Continue
             </Button>
@@ -40,9 +41,10 @@ export const ReportPageFooter = ({
             <Button
               form={form.id}
               type="submit"
-              rightIcon={<Icon icon="arrowRight" />}
+              sx={sx.button}
+              rightIcon={loading ? <></> : <Icon icon="arrowRight" />}
             >
-              Save & continue
+              {loading ? <Spinner size="sm" mr="-2" /> : "Save & continue"}
             </Button>
           )}
         </Flex>
@@ -56,6 +58,7 @@ interface Props {
   form?: FormJson;
   previousRoute: string;
   nextRoute: string;
+  loading?: boolean;
   [key: string]: any;
 }
 
@@ -63,6 +66,9 @@ const sx = {
   footerBox: {
     marginTop: "3.5rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
+  },
+  button: {
+    width: "11.5rem",
   },
   buttonFlex: {
     justifyContent: "space-between",

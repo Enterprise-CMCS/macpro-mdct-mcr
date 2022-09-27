@@ -38,7 +38,7 @@ describe("Test AdminDashSelector view", () => {
   test("Form submits correctly", async () => {
     const result = render(adminDashSelectorView);
     const form = result.container;
-    const dropdownInput = form.querySelector("[name='ads-state']")!;
+    const dropdownInput = form.querySelector("[name='state']")!;
     await fireEvent.change(dropdownInput, { target: { value: "CA" } });
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
