@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // components
 import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import { ReportDrawer } from "components";
+import { ReportContext, ReportDrawer } from "components";
 // utils
-import { FormJson, AnyObject } from "types";
+import { useUser } from "utils";
+import { AnyObject, FormJson, ReportStatus } from "types";
 
 export const DynamicDrawerSection = ({
   form,
   dynamicTable,
-  onSubmit,
+  setLoading,
 }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { report, updateReport } = useContext(ReportContext);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
 
   // make state
   const [currentEntity, setCurrentEntity] = useState<string>("");
@@ -36,6 +40,23 @@ export const DynamicDrawerSection = ({
 
   const removeEntity = (entityTitle: string) => {
     setEntities(entities.filter((entity) => entity.title !== entityTitle));
+  };
+
+  const onSubmit = async (formData: AnyObject) => {
+    if (userIsStateUser || userIsStateRep) {
+      setLoading(true);
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+        fieldData: formData,
+      };
+      await updateReport(reportKeys, dataToWrite);
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,7 +111,7 @@ export const DynamicDrawerSection = ({
 interface Props {
   form: FormJson;
   dynamicTable: AnyObject;
-  onSubmit: Function;
+  setLoading: Function;
 }
 
 const sx = {
