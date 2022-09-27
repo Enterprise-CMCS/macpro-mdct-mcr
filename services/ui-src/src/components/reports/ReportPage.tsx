@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Flex } from "@chakra-ui/react";
@@ -21,25 +21,17 @@ import {
   PageTypes,
   ReportRoute,
   ReportStatus,
-  UserRoles,
 } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const ReportPage = ({ route }: Props) => {
+  const [loading, setLoading] = useState<boolean>(false);
   // get report, form, and page related-data
   const { report, updateReport } = useContext(ReportContext);
   const { form, page } = route;
 
-  // get user state, name, role
-  const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
-
-  // determine if fields should be disabled (based on admin roles )
-  const isAdminUser =
-    userRole === UserRoles.ADMIN ||
-    userRole === UserRoles.APPROVER ||
-    userRole === UserRoles.HELP_DESK;
-  const fieldInputDisabled = isAdminUser && form.adminDisabled;
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -59,7 +51,8 @@ export const ReportPage = ({ route }: Props) => {
   }, [reportId, reportState]);
 
   const onSubmit = async (formData: AnyObject) => {
-    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
+    setLoading(true);
+    if (userIsStateUser || userIsStateRep) {
       const reportKeys = {
         state: state,
         id: reportId,
@@ -71,9 +64,10 @@ export const ReportPage = ({ route }: Props) => {
       };
       await updateReport(reportKeys, dataToWrite);
     }
-    if (!page?.drawer) {
+    if (page?.pageType === PageTypes.STATIC_PAGE) {
       navigate(nextRoute);
     }
+    setLoading(false);
   };
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
@@ -82,11 +76,7 @@ export const ReportPage = ({ route }: Props) => {
         return <StaticPageSection form={form} onSubmit={onSubmit} />;
       case PageTypes.STATIC_DRAWER:
         return (
-          <StaticDrawerSection
-            form={form}
-            drawer={page.drawer!}
-            onSubmit={onSubmit}
-          />
+          <StaticDrawerSection form={form} page={page} onSubmit={onSubmit} />
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
@@ -109,10 +99,10 @@ export const ReportPage = ({ route }: Props) => {
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
           <ReportPageFooter
-            formId={form.id}
+            loading={loading}
+            form={form}
             previousRoute={previousRoute}
             nextRoute={nextRoute}
-            shouldDisableAllFields={fieldInputDisabled}
           />
         </Flex>
       </Flex>

@@ -12,14 +12,12 @@ import {
 } from "routes";
 import { AdminBannerProvider, ReportPage } from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
-
 // utils
-import { ReportRoute, UserRoles } from "types";
-import { ScrollToTopComponent } from "utils";
+import { ReportRoute } from "types";
+import { ScrollToTopComponent, useUser } from "utils";
 
-export const AppRoutes = ({ userRole }: Props) => {
-  const isAdmin = userRole === UserRoles.ADMIN;
-
+export const AppRoutes = () => {
+  const { userIsAdmin } = useUser().user ?? {};
   return (
     <main id="main-content" tabIndex={-1}>
       <ScrollToTopComponent />
@@ -28,7 +26,7 @@ export const AppRoutes = ({ userRole }: Props) => {
           <Route path="/" element={<Home />} />
           <Route
             path="/admin"
-            element={!isAdmin ? <Navigate to="/profile" /> : <Admin />}
+            element={!userIsAdmin ? <Navigate to="/profile" /> : <Admin />}
           />
           <Route path="/help" element={<Help />} />
 
@@ -57,7 +55,3 @@ export const AppRoutes = ({ userRole }: Props) => {
     </main>
   );
 };
-
-interface Props {
-  userRole?: string;
-}

@@ -8,22 +8,18 @@ import {
   TemplateCard,
 } from "components";
 import { AdminDashSelector } from "routes";
-
 // utils
 import { checkDateRangeStatus, useUser } from "utils";
-import { UserRoles } from "types";
 import verbiage from "verbiage/pages/home";
 
 export const Home = () => {
   const { bannerData } = useContext(AdminBannerContext);
+  const { userIsStateUser, userIsStateRep } = useUser().user ?? {};
   const bannerIsActive = checkDateRangeStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
   const showBanner = !!bannerData.key && bannerIsActive;
-
-  // determine if landing page should be read-only
-  const { userRole } = useUser().user ?? {};
   const { intro, cards } = verbiage;
 
   return (
@@ -33,8 +29,7 @@ export const Home = () => {
       </Collapse>
       <PageTemplate sx={sx.layout} data-testid="home-view">
         {/* show standard view to state users */}
-        {userRole === UserRoles.STATE_USER ||
-        userRole === UserRoles.STATE_REP ? (
+        {userIsStateUser || userIsStateRep ? (
           <>
             <Box sx={sx.introTextBox}>
               <Heading as="h1" sx={sx.headerText}>

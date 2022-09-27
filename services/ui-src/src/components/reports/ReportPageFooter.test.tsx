@@ -44,7 +44,7 @@ describe("Test ReportPageFooter without form", () => {
 
 const mockPropsWithForm = {
   ...mockProps,
-  formId: "mock-form-id",
+  form: mockForm,
 };
 
 const reportPageComponentWithForm = (
@@ -75,7 +75,7 @@ describe("Test ReportPageFooter with form", () => {
   test("ReportPageFooter with form 'Save & continue' functionality works", async () => {
     const result = render(reportPageComponentWithForm);
     const form = result.container;
-    const textField = form.querySelector("[name='mock-1']")!;
+    const textField = form.querySelector("[name='mock-text-field']")!;
     await userEvent.type(textField, "valid fill");
     const saveAndContinueButton = result.getByText("Save & continue");
     await userEvent.click(saveAndContinueButton);

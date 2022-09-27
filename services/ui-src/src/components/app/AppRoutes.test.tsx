@@ -3,14 +3,15 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { AppRoutes } from "components";
-import { UserRoles } from "types";
+import { useUser } from "utils";
+import { mockAdminUser, mockStateUser } from "utils/testing/setupJest";
 
-const adminUserRole = UserRoles.ADMIN;
-const stateUserRole = UserRoles.STATE_USER;
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
-const appRoutesComponent = (history: any, userRole: string) => (
+const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
-    <AppRoutes userRole={userRole} />
+    <AppRoutes />
   </Router>
 );
 
@@ -18,10 +19,11 @@ let history: any;
 
 describe("Test AppRoutes for admin-specific routes", () => {
   beforeEach(async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
-      await render(appRoutesComponent(history, adminUserRole));
+      await render(appRoutesComponent(history));
     });
   });
   test("/admin is visible for admin user", async () => {
@@ -32,10 +34,11 @@ describe("Test AppRoutes for admin-specific routes", () => {
 
 describe("Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
-      await render(appRoutesComponent(history, stateUserRole));
+      await render(appRoutesComponent(history));
     });
   });
 
@@ -47,10 +50,11 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
 
 describe("Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
-      await render(appRoutesComponent(history, stateUserRole));
+      await render(appRoutesComponent(history));
     });
   });
 
@@ -62,10 +66,11 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
 
 describe("Test AppRoutes 404 handling", () => {
   beforeEach(async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
     history.push("/obviously-fake-route");
     await act(async () => {
-      await render(appRoutesComponent(history, stateUserRole));
+      await render(appRoutesComponent(history));
     });
   });
 

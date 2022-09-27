@@ -5,7 +5,7 @@
   },
   "fields": [
     {
-      "id": "aep-programName",
+      "id": "programName",
       "type": "text",
       "validation": "text",
       "props": {
@@ -13,7 +13,7 @@
       }
     },
     {
-      "id": "aep-startDate",
+      "id": "reportingPeriodStartDate",
       "type": "date",
       "validation": "date",
       "props": {
@@ -23,11 +23,11 @@
       }
     },
     {
-      "id": "aep-endDate",
+      "id": "reportingPeriodEndDate",
       "type": "date",
       "validation": {
         "type": "endDate",
-        "dependentFieldName": "aep-startDate"
+        "dependentFieldName": "reportingPeriodStartDate"
       },
       "props": {
         "label": "A.5b Reporting period  (i.e. contract period) end date",
@@ -36,7 +36,7 @@
       }
     },
     {
-      "id": "aep-combinedData",
+      "id": "combinedData",
       "type": "checkbox",
       "validation": "checkboxSingle",
       "props": {
@@ -44,7 +44,7 @@
         "hint": "For Medicaid-only or Medicaid Expansion CHIP programs, select this checkbox if there are reporting items for which the state is unable to remove Separate CHIP information.",
         "choices": [
           {
-            "name": "aep-combinedData-o1",
+            "name": "option1",
             "label": "Yes, the report contains items for which the state is unable to remove Separate CHIP information"
           }
         ]

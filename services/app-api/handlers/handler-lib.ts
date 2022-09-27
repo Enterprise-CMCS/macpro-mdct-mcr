@@ -7,6 +7,7 @@ import {
 } from "../utils/responses/response-lib";
 import error from "../utils/constants/constants";
 import { StatusCodes } from "../utils/types/types";
+import { sanitizeObject } from "../utils/sanitize/sanitize";
 
 type LambdaFunction = (
   event: APIGatewayProxyEvent, // eslint-disable-line no-unused-vars
@@ -20,6 +21,10 @@ export default function handler(lambda: LambdaFunction) {
 
     if (await isAuthorized(event)) {
       try {
+        if (event.body) {
+          const newEventBody = sanitizeObject(JSON.parse(event.body));
+          event.body = JSON.stringify(newEventBody);
+        }
         // Run the Lambda
         const { status, body } = await lambda(event, context);
         return buildResponse(status, body);

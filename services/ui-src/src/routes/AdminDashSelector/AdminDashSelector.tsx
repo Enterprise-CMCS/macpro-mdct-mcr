@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Form } from "components";
 // types
-import { AnyObject, FormJson, UserRoles } from "types";
+import { AnyObject, FormJson } from "types";
 // form
 import formJson from "forms/adminDashSelector/adminDashSelector";
 // utils
@@ -12,22 +12,18 @@ import { useUser } from "utils";
 export const AdminDashSelector = ({ verbiage }: Props) => {
   const navigate = useNavigate();
 
-  // get current user role
-  const { user } = useUser();
-  const { userRole } = user ?? {};
+  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
+    useUser().user ?? {};
 
   // add validation to formJson
   const form: FormJson = formJson;
 
   const onSubmit = (formData: AnyObject) => {
-    if (
-      userRole === UserRoles.ADMIN ||
-      userRole === UserRoles.APPROVER ||
-      userRole === UserRoles.HELP_DESK
-    ) {
-      const selectedState = formData["ads-state"];
+    if (userIsAdmin || userIsApprover || userIsHelpDeskUser) {
+      const selectedState = formData["state"];
       localStorage.setItem("selectedState", selectedState);
     }
+
     navigate("/mcpar");
   };
 
