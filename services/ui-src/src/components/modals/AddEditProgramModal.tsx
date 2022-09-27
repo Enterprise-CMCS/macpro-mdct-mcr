@@ -87,8 +87,6 @@ export const AddEditProgramModal = ({
     modalDisclosure.onClose();
   };
 
-  console.log(selectedReport, 'selectedReport');
-
   return (
     <Modal
       data-testid="add-edit-program-modal"

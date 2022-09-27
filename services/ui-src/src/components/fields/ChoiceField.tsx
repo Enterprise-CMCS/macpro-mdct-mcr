@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 // components
 import { Choice as CmsdsChoice } from "@cmsgov/design-system";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 // utils
 import { makeMediaQueryClasses } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
@@ -16,6 +16,7 @@ export const ChoiceField = ({
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const singleBoxClass = "single-box";
 
   const [displayValue, setDisplayValue] = useState<boolean>(false);
 
@@ -46,16 +47,16 @@ export const ChoiceField = ({
     setDisplayValue(!displayValue);
   };
 
-  console.log(form.getValues());
-
   const componentProps = {...props, hydrate:""}
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }}
+    className={`${mqClasses} ${singleBoxClass}`}
+    >
+      <Text sx={sx.label}>{label}</Text>
       <CmsdsChoice
         name={name}
         type="checkbox"
         value={displayValue.toString()}
-        label={label}
         onChange={(e) => onChangeHandler(e)}
         checked={displayValue}
         {...componentProps}
@@ -73,4 +74,18 @@ interface Props {
   [key: string]: any;
 }
 
-const sx = {};
+const sx = {
+  // checkboxes
+  ".ds-c-choice[type='checkbox']:checked::after": {
+    boxSizing: "content-box",
+  },
+  "label": {
+    fontWeight: "bold",
+    fontSize: "md",
+    marginTop: "1.5rem"
+  },
+  ".ds-c-field__hint": {
+    marginTop: "-.5rem",
+    marginLeft: ".25rem"
+  },
+};
