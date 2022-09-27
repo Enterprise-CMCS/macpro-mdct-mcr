@@ -2856,12 +2856,11 @@
                 "id": "sanction_planName",
                 "type": "dropdown",
                 "validation": "dropdown",
-                "dynamicValue": "plans",
                 "props": {
                   "label": "D3.VIII.3 Plan name",
                   "hint": "What is the name of the plan attached to the sanction or corrective action plan? Select plan name.",
                   "ariaLabel": "List of plan names",
-                  "options": []
+                  "options": "plans"
                 }
               },
               {

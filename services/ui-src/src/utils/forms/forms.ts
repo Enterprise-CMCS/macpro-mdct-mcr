@@ -116,7 +116,7 @@ export const initializeDropdownFields = (fields: FormField[]) => {
   dropdownFields.forEach((field: FormField) => {
     // if first provided option is not already a blank default value
     if (
-      field?.props?.options.length > 0 &&
+      typeof field?.props?.options !== "string" &&
       field?.props?.options[0].value !== ""
     ) {
       // add initial blank option

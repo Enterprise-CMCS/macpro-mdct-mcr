@@ -181,7 +181,7 @@ describe("Test hydrateFormFields", () => {
   it("Correctly hydrates dynamic dropdown field", () => {
     const hydratedFormFields = hydrateFormFields(
       mockFormFields.filter((field) => field.id === "mock-field-3"),
-      mockReportData
+      mockData
     );
     const hydratedFieldValue = hydratedFormFields.find(
       (field) => field.id === "mock-field-3"

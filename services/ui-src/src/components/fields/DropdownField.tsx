@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 import { InputChangeEvent, AnyObject, DropdownOptions } from "types";
@@ -24,6 +25,26 @@ export const DropdownField = ({
   // get form context and register field
   const form = useFormContext();
   form.register(name);
+  const { report } = useContext(ReportContext);
+
+  let dropdownOptions = [];
+  if (typeof options === "string") {
+    const dynamicOptionValues = report?.fieldData[options];
+    if (dynamicOptionValues) {
+      const fieldOptions = dynamicOptionValues.map((value: string) => ({
+        label: value,
+        value: value,
+      }));
+
+      dropdownOptions = fieldOptions;
+    }
+    dropdownOptions.splice(0, 0, {
+      label: dropdownDefaultOptionText,
+      value: "",
+    });
+  } else {
+    dropdownOptions = options;
+  }
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -59,7 +80,7 @@ export const DropdownField = ({
         name={name}
         id={name}
         label={label || ""}
-        options={options}
+        options={dropdownOptions}
         hint={parsedHint}
         onChange={onChangeHandler}
         errorMessage={errorMessage}
@@ -74,7 +95,7 @@ interface Props {
   name: string;
   label?: string;
   hint?: any;
-  options: DropdownOptions[];
+  options: DropdownOptions[] | string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
