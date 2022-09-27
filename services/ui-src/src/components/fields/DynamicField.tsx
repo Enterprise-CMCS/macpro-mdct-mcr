@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
@@ -32,7 +33,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   };
 
   const appendNewRecord = () => {
-    const newEntity = { id: Date.now().toString(), name: "" };
+    const newEntity = { id: uuid(), name: "" };
     append(newEntity);
     setDisplayValues([...displayValues, newEntity]);
   };
