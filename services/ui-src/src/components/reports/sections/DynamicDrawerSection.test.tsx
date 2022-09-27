@@ -11,7 +11,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
-const mockOnSubmit = jest.fn();
+const mockSetLoading = jest.fn();
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
@@ -26,7 +26,7 @@ const dynamicDrawerSectionComponent = (
       <DynamicDrawerSection
         form={mockForm}
         dynamicTable={mockPageJsonDynamicDrawer.dynamicTable}
-        onSubmit={mockOnSubmit}
+        setLoading={mockSetLoading}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>

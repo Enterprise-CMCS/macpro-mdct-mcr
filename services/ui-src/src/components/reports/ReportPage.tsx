@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Flex } from "@chakra-ui/react";
@@ -13,33 +13,16 @@ import {
   StaticPageSection,
 } from "components";
 // utils
-import { useFindRoute, useUser } from "utils";
-import {
-  AnyObject,
-  FormJson,
-  PageJson,
-  PageTypes,
-  ReportRoute,
-  ReportStatus,
-  UserRoles,
-} from "types";
-import { mcparReportRoutesFlat } from "forms/mcpar";
+import { useUser } from "utils";
+import { FormJson, PageJson, PageTypes, ReportRoute } from "types";
 
 export const ReportPage = ({ route }: Props) => {
+  const [loading, setLoading] = useState<boolean>(false);
   // get report, form, and page related-data
-  const { report, updateReport } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   const { form, page } = route;
 
-  // get user state, name, role
-  const { user } = useUser();
-  const { full_name, state, userRole } = user ?? {};
-
-  // determine if fields should be disabled (based on admin roles )
-  const isAdminUser =
-    userRole === UserRoles.ADMIN ||
-    userRole === UserRoles.APPROVER ||
-    userRole === UserRoles.HELP_DESK;
-  const fieldInputDisabled = isAdminUser && form.adminDisabled;
+  const { state } = useUser().user ?? {};
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -47,10 +30,6 @@ export const ReportPage = ({ route }: Props) => {
 
   // get next and previous routes
   const navigate = useNavigate();
-  const { previousRoute, nextRoute } = useFindRoute(
-    mcparReportRoutesFlat,
-    "/mcpar"
-  );
 
   useEffect(() => {
     if (!reportId || !reportState) {
@@ -58,34 +37,14 @@ export const ReportPage = ({ route }: Props) => {
     }
   }, [reportId, reportState]);
 
-  const onSubmit = async (formData: AnyObject) => {
-    if (userRole === UserRoles.STATE_USER || userRole === UserRoles.STATE_REP) {
-      const reportKeys = {
-        state: state,
-        id: reportId,
-      };
-      const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-        fieldData: formData,
-      };
-      await updateReport(reportKeys, dataToWrite);
-    }
-    if (!page?.drawer) {
-      navigate(nextRoute);
-    }
-  };
-
   const renderPageSection = (form: FormJson, page?: PageJson) => {
     switch (page?.pageType) {
-      case PageTypes.STATIC_PAGE:
-        return <StaticPageSection form={form} onSubmit={onSubmit} />;
       case PageTypes.STATIC_DRAWER:
         return (
           <StaticDrawerSection
             form={form}
-            drawer={page.drawer!}
-            onSubmit={onSubmit}
+            page={page}
+            setLoading={setLoading}
           />
         );
       case PageTypes.DYNAMIC_DRAWER:
@@ -93,11 +52,11 @@ export const ReportPage = ({ route }: Props) => {
           <DynamicDrawerSection
             form={form}
             dynamicTable={page.dynamicTable}
-            onSubmit={onSubmit}
+            setLoading={setLoading}
           />
         );
       default:
-        return <StaticPageSection form={form} onSubmit={onSubmit} />;
+        return <StaticPageSection form={form} setLoading={setLoading} />;
     }
   };
 
@@ -108,12 +67,7 @@ export const ReportPage = ({ route }: Props) => {
         <Flex sx={sx.reportContainer}>
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
-          <ReportPageFooter
-            formId={form.id}
-            previousRoute={previousRoute}
-            nextRoute={nextRoute}
-            shouldDisableAllFields={fieldInputDisabled}
-          />
+          <ReportPageFooter loading={loading} form={form} />
         </Flex>
       </Flex>
     </PageTemplate>

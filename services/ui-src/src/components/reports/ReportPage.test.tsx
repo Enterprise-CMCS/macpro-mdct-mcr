@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
 import { ReportContext, ReportPage } from "components";
@@ -22,9 +21,7 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
-  useUser: () => {
-    return mockStateUser;
-  },
+  useUser: () => mockStateUser,
 }));
 
 const ReportPageComponent_StaticPage = (
@@ -91,16 +88,6 @@ describe("Test ReportPage functionality", () => {
   test("ReportPage navigates to dashboard if no id", () => {
     render(ReportPageComponent_WithoutReport);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar");
-  });
-
-  test("ReportPage updates report field data on successful fill", async () => {
-    const result = render(ReportPageComponent_StaticPage);
-    const form = result.container;
-    const mockField = form.querySelector("[name='mock-1']")!;
-    await userEvent.type(mockField, "mock input");
-    const submitButton = form.querySelector("[type='submit']")!;
-    await userEvent.click(submitButton);
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 });
 

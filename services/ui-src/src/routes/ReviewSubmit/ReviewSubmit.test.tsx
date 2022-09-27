@@ -19,9 +19,7 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
-  useUser: () => {
-    return mockStateUser;
-  },
+  useUser: () => mockStateUser,
 }));
 
 const ReviewSubmitComponent_InProgress = (

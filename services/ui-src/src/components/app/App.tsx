@@ -51,7 +51,7 @@ export const App = () => {
               data-testid="app-container"
             >
               <ErrorBoundary FallbackComponent={Error}>
-                <AppRoutes userRole={user?.userRole} />
+                <AppRoutes />
               </ErrorBoundary>
             </Container>
             <Footer />
