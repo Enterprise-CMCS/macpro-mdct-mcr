@@ -46,7 +46,7 @@ export const DashboardPage = () => {
     state: userState,
     userIsStateUser,
     userIsStateRep,
-    userIsAdmin
+    userIsAdmin,
   } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
@@ -141,15 +141,15 @@ export const DashboardPage = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
-        {reportsByState ?
-          (isTablet || isMobile ? (
+        {reportsByState ? (
+          isTablet || isMobile ? (
             <MobileDashboardList
               reportsByState={reportsByState}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
-              sxOverride = {sxChildStyles}
-              isStateUser={(userIsStateUser! || userIsStateRep!)}
+              sxOverride={sxChildStyles}
+              isStateUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
             />
           ) : (
@@ -159,8 +159,8 @@ export const DashboardPage = () => {
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
               body={body}
-              sxOverride = {sxChildStyles}
-              isStateUser={(userIsStateUser! || userIsStateRep!)}
+              sxOverride={sxChildStyles}
+              isStateUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
             />
           )
@@ -304,4 +304,4 @@ const sxChildStyles = {
     width: "1.75rem",
     minWidth: "28px",
   },
-}
+};
