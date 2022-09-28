@@ -44,7 +44,7 @@ export const ReportPage = ({ route }: Props) => {
           <StaticDrawerSection
             form={form}
             page={page}
-            setLoading={setLoading}
+            loadingState={{ loading, setLoading }}
           />
         );
       case PageTypes.DYNAMIC_DRAWER:
