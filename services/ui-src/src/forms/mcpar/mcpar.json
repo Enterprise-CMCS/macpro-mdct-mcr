@@ -1096,7 +1096,7 @@
                               "id": "accessMeasure_standardType-otherText",
                               "type": "textarea",
                               "validation": {
-                                "type": "radio",
+                                "type": "text",
                                 "nested": true,
                                 "parentFieldName": "accessMeasure_standardType",
                                 "visibleOptionValue": "Other, specify"
@@ -1151,7 +1151,7 @@
                               "id": "accessMeasure_providerType-otherText",
                               "type": "textarea",
                               "validation": {
-                                "type": "radio",
+                                "type": "text",
                                 "nested": true,
                                 "parentFieldName": "accessMeasure_providerType",
                                 "visibleOptionValue": "Other, specify"
@@ -1194,7 +1194,7 @@
                               "id": "accessMeasure_applicableRegion-otherText",
                               "type": "textarea",
                               "validation": {
-                                "type": "radio",
+                                "type": "text",
                                 "nested": true,
                                 "parentFieldName": "accessMeasure_applicableRegion",
                                 "visibleOptionValue": "Other, specify"
@@ -1237,7 +1237,7 @@
                               "id": "accessMeasure_population-otherText",
                               "type": "textarea",
                               "validation": {
-                                "type": "radio",
+                                "type": "text",
                                 "nested": true,
                                 "parentFieldName": "accessMeasure_population",
                                 "visibleOptionValue": "Other, specify"
@@ -1284,7 +1284,7 @@
                               "id": "accessMeasure_monitoringMethods-otherText",
                               "type": "textarea",
                               "validation": {
-                                "type": "radio",
+                                "type": "text",
                                 "nested": true,
                                 "parentFieldName": "accessMeasure_monitoringMethods",
                                 "visibleOptionValue": "Other, specify"
@@ -1331,7 +1331,7 @@
                               "id": "accessMeasure_oversightMethodFrequency-otherText",
                               "type": "textarea",
                               "validation": {
-                                "type": "radio",
+                                "type": "text",
                                 "nested": true,
                                 "parentFieldName": "accessMeasure_oversightMethodFrequency",
                                 "visibleOptionValue": "Other, specify"
@@ -2595,8 +2595,7 @@
                           },
                           "props": {
                             "label": "D2.VII.5 Measure reporting: List programs",
-                            "hint": "What are the programs? Separate program names with a comma.",
-                            "mask": "comma-separated"
+                            "hint": "What are the programs? Separate program names with a comma."
                           }
                         }
                       ]

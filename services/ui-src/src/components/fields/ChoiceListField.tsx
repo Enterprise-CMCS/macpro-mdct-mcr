@@ -59,6 +59,16 @@ export const ChoiceListField = ({
 
     // update DOM choices checked status
     choices.forEach((choice: FieldChoice) => {
+      // if a choice is not selected and there are children, clear out any saved data
+      if (!choice.checked && choice.children) {
+        choice.children.map((child) => {
+          if (child.type === "radio") {
+            form.setValue(child.id, [], { shouldValidate: true });
+          } else {
+            form.setValue(child.id, "", { shouldValidate: true });
+          }
+        });
+      }
       setCheckedOrUnchecked(choice);
     });
   }, [displayValue]);
