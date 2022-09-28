@@ -7,14 +7,7 @@ import { makeMediaQueryClasses } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { useEffect, useState } from "react";
 
-export const ChoiceField = ({
-  name,
-  type,
-  value,
-  label,
-  sxOverride,
-  ...props
-}: Props) => {
+export const ChoiceField = ({ name, label, sxOverride, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   const singleBoxClass = "single-box";
 
@@ -23,7 +16,6 @@ export const ChoiceField = ({
   // get the form context
   const form = useFormContext();
   form.register(name);
-
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -47,14 +39,19 @@ export const ChoiceField = ({
     setDisplayValue(!displayValue);
   };
 
-  const componentProps = {...props, hydrate:""}
+  const componentProps = { ...props, hydrate: "" };
   return (
-    <Box sx={{ ...sx, ...sxOverride }}
-    className={`${mqClasses} ${singleBoxClass}`}
+    <Box
+      sx={{ ...sx, ...sxOverride }}
+      className={`${mqClasses} ${singleBoxClass}`}
     >
-      <Text sx={sx.label}>{label}</Text>
+      <Text sx={sx.label} id="label">
+        {label}
+      </Text>
       <CmsdsChoice
         name={name}
+        label={<></>}
+        aria-labelledby="label"
         type="checkbox"
         value={displayValue.toString()}
         onChange={(e) => onChangeHandler(e)}
@@ -67,8 +64,6 @@ export const ChoiceField = ({
 
 interface Props {
   name: string;
-  type: "checkbox" | "radio";
-  value: string;
   label?: string;
   sxOverride?: AnyObject;
   [key: string]: any;
@@ -79,13 +74,13 @@ const sx = {
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
   },
-  "label": {
+  label: {
     fontWeight: "bold",
     fontSize: "md",
-    marginTop: "1.5rem"
+    marginTop: "1.5rem",
   },
   ".ds-c-field__hint": {
     marginTop: "-.5rem",
-    marginLeft: ".25rem"
+    marginLeft: ".25rem",
   },
 };
