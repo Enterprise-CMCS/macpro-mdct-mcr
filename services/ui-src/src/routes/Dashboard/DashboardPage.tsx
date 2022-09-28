@@ -149,7 +149,7 @@ export const DashboardPage = () => {
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
               sxOverride={sxChildStyles}
-              isStateUser={userIsStateUser! || userIsStateRep!}
+              isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
             />
           ) : (
@@ -160,7 +160,7 @@ export const DashboardPage = () => {
               openDeleteProgramModal={openDeleteProgramModal}
               body={body}
               sxOverride={sxChildStyles}
-              isStateUser={userIsStateUser! || userIsStateRep!}
+              isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
             />
           )

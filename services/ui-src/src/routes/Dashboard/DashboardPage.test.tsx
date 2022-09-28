@@ -52,7 +52,7 @@ const mockReportContextWithError = {
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContextWithError}>
+    <ReportContext.Provider value={mockReportContext}>
       <DashboardPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>

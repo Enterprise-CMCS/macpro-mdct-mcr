@@ -1,6 +1,6 @@
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
-import { AnyObject } from "types";
+import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
@@ -12,14 +12,14 @@ export const DashboardList = ({
   enterSelectedReport,
   openDeleteProgramModal,
   sxOverride,
-  isStateUser,
+  isStateLevelUser,
   isAdmin,
 }: DashboardTableProps) => (
   <Table content={body.table} data-testid="desktop-table" sx={sx.table}>
     {reportsByState.map((report: AnyObject) => (
       <Tr key={report.id}>
         <Td sx={sxOverride.editProgram}>
-          {isStateUser && (
+          {isStateLevelUser && (
             <button onClick={() => openAddEditProgramModal(report)}>
               <Image src={editIcon} alt="Edit Program" />
             </button>
@@ -57,21 +57,21 @@ export const DashboardList = ({
 );
 
 interface DashboardTableProps {
-  reportsByState: AnyObject[];
+  reportsByState: ReportShape[];
   body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
   openDeleteProgramModal: Function;
   sxOverride: AnyObject;
   isAdmin: boolean;
-  isStateUser: boolean;
+  isStateLevelUser: boolean;
 }
 
 const sx = {
   table: {
     marginBottom: "2.5rem",
     th: {
-      padding: "0.5rem 0 0.5rem 0",
+      padding: "0.5rem 0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       color: "palette.gray_medium",
