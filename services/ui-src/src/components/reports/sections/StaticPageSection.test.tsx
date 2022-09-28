@@ -29,6 +29,9 @@ const staticPageSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <StaticPageSection form={mockForm} setLoading={mockSetLoading} />
+      <button form={mockForm.id} type="submit">
+        submit
+      </button>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
