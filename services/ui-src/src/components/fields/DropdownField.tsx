@@ -27,25 +27,6 @@ export const DropdownField = ({
   form.register(name);
   const { report } = useContext(ReportContext);
 
-  let dropdownOptions = [];
-  if (typeof options === "string") {
-    const dynamicOptionValues = report?.fieldData[options];
-    if (dynamicOptionValues) {
-      const fieldOptions = dynamicOptionValues.map((value: string) => ({
-        label: value,
-        value: value,
-      }));
-
-      dropdownOptions = fieldOptions;
-    }
-    dropdownOptions.splice(0, 0, {
-      label: dropdownDefaultOptionText,
-      value: "",
-    });
-  } else {
-    dropdownOptions = options;
-  }
-
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
@@ -68,6 +49,29 @@ export const DropdownField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
+  // fetch the option values and format them if necessary
+  const formatOptions = (options: DropdownOptions[] | string) => {
+    let dropdownOptions = [];
+    if (typeof options === "string") {
+      const dynamicOptionValues = report?.fieldData[options];
+      if (dynamicOptionValues) {
+        const fieldOptions = dynamicOptionValues.map((option: string) => ({
+          label: option,
+          value: option,
+        }));
+
+        dropdownOptions = fieldOptions;
+      }
+      dropdownOptions.splice(0, 0, {
+        label: dropdownDefaultOptionText,
+        value: "",
+      });
+    } else {
+      dropdownOptions = options;
+    }
+    return dropdownOptions;
+  };
+
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
@@ -80,7 +84,7 @@ export const DropdownField = ({
         name={name}
         id={name}
         label={label || ""}
-        options={dropdownOptions}
+        options={formatOptions(options)}
         hint={parsedHint}
         onChange={onChangeHandler}
         errorMessage={errorMessage}
