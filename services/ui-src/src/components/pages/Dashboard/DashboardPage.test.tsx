@@ -3,8 +3,7 @@ import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { Dashboard } from "routes";
-import { ReportContext } from "components";
+import { ReportContext, DashboardPage } from "components";
 // utils
 import {
   /*
@@ -21,6 +20,8 @@ import {
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
@@ -51,7 +52,7 @@ const mockReportContextWithError = {
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <Dashboard />
+      <DashboardPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -59,7 +60,7 @@ const dashboardViewWithReports = (
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextNoReports}>
-      <Dashboard />
+      <DashboardPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -67,7 +68,7 @@ const dashboardViewNoReports = (
 const dashboardViewWithError = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithError}>
-      <Dashboard />
+      <DashboardPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -336,7 +337,10 @@ describe("Test Dashboard (without reports)", () => {
 
 describe("Test Dashboard with error", () => {
   test("Error alert shows when there is an error", async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
     mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(dashboardViewWithError);
