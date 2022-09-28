@@ -69,8 +69,8 @@ export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
       };
       await updateReport(reportKeys, dataToWrite);
       setLoading(false);
-      onClose();
     }
+    onClose();
   };
 
   const entityRows = (entities: EntityShape[]) =>
