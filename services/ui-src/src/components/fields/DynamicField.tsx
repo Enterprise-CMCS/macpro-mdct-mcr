@@ -35,7 +35,8 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const appendNewRecord = () => {
     const newEntity = { id: uuid(), name: "" };
     append(newEntity);
-    setDisplayValues([...displayValues, newEntity]);
+    const newDisplayValues = [...displayValues, newEntity];
+    setDisplayValues(newDisplayValues);
   };
 
   const removeRecord = (index: number) => {
@@ -72,7 +73,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               id={field.id}
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={fieldErrorState?.[index]?.message}
+              errorMessage={fieldErrorState?.[index]?.name.message}
               onChange={(e) => onChangeHandler(e)}
               value={field.name}
               {...props}
