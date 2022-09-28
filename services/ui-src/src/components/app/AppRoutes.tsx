@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
   Admin,
-  Dashboard,
   GetStarted,
   Help,
   Home,
@@ -10,7 +9,7 @@ import {
   Profile,
   ReviewSubmit,
 } from "routes";
-import { AdminBannerProvider, ReportPage } from "components";
+import { AdminBannerProvider, DashboardPage, ReportPage } from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 // utils
 import { ReportRoute } from "types";
@@ -31,7 +30,7 @@ export const AppRoutes = () => {
           <Route path="/help" element={<Help />} />
 
           {/* MCPAR ROUTES */}
-          <Route path="/mcpar" element={<Dashboard />} />
+          <Route path="/mcpar" element={<DashboardPage />} />
           <Route path="/mcpar/get-started" element={<GetStarted />} />
           {mcparReportRoutesFlat.map((route: ReportRoute) => {
             return (

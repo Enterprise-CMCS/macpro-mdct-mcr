@@ -7,5 +7,4 @@ export { NotFound } from "./NotFound/NotFound";
 export { Profile } from "./Profile/Profile";
 // report
 export { GetStarted } from "./GetStarted/GetStarted";
-export { Dashboard } from "./Dashboard/Dashboard";
 export { ReviewSubmit } from "./ReviewSubmit/ReviewSubmit";
