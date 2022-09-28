@@ -1,6 +1,6 @@
 import { MouseEventHandler, useContext } from "react";
 // Components
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { Drawer, Form, ReportContext } from "components";
 // types
 import { FormJson } from "types";
@@ -11,6 +11,7 @@ export const ReportDrawer = ({
   drawerInfo,
   form,
   onSubmit,
+  loading,
   ...props
 }: Props) => {
   const { report } = useContext(ReportContext);
@@ -31,12 +32,17 @@ export const ReportDrawer = ({
         <Flex sx={sx.buttonFlex}>
           <Button
             variant="outline"
-            type="submit"
             onClick={drawerDisclosure.onClose as MouseEventHandler}
           >
             Cancel
           </Button>
-          <Button>Save & Close</Button>
+          <Button type="submit" form={form.id} sx={sx.saveButton}>
+            {loading ? (
+              <Spinner size="sm" color={"palette.white"} />
+            ) : (
+              "Save & Close"
+            )}
+          </Button>
         </Flex>
       </Box>
     </Drawer>
@@ -52,6 +58,7 @@ interface Props {
   drawerInfo?: any[];
   form: FormJson;
   onSubmit: Function;
+  loading?: boolean;
   [key: string]: any;
 }
 
@@ -63,5 +70,8 @@ const sx = {
   buttonFlex: {
     justifyContent: "space-between",
     marginY: "1.5rem",
+  },
+  saveButton: {
+    width: "8.25rem",
   },
 };

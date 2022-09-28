@@ -22,7 +22,7 @@ import {
 } from "types";
 import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
 
-export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
+export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -32,6 +32,7 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
     undefined
   );
 
+  const { loading, setLoading } = loadingState;
   const { entityType, dashboard, drawer } = page;
   const entities = report?.fieldData?.[entityType];
   const { message, link } =
@@ -49,14 +50,27 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
         state: state,
         id: report?.id,
       };
+      const currentEntities = [...(report?.fieldData[entityType] || {})];
+      const currentEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.name === currentEntity?.name
+      );
+      const newEntity = {
+        ...currentEntity,
+        ...formData,
+      };
+      let newEntities = currentEntities;
+      newEntities[currentEntityIndex] = newEntity;
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
-        fieldData: formData,
+        fieldData: {
+          [entityType]: newEntities,
+        },
       };
       await updateReport(reportKeys, dataToWrite);
       setLoading(false);
     }
+    onClose();
   };
 
   const entityRows = (entities: EntityShape[]) =>
@@ -95,6 +109,7 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
         drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}
+        loading={loading}
         data-testid="report-drawer"
       />
     </Box>
@@ -104,7 +119,10 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
 interface Props {
   form: FormJson;
   page: PageJson;
-  setLoading: Function;
+  loadingState: {
+    loading: boolean;
+    setLoading: Function;
+  };
 }
 
 const sx = {
