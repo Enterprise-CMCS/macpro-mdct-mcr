@@ -13,7 +13,13 @@ import {
 import { ReportDrawer, ReportContext } from "components";
 // utils
 import { useUser } from "utils";
-import { AnyObject, FormJson, PageJson, ReportStatus } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  FormJson,
+  PageJson,
+  ReportStatus,
+} from "types";
 import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
 
 export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
@@ -22,14 +28,16 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   // make state
-  const [currentEntity, setCurrentEntity] = useState<string>("");
+  const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
 
   const { entityType, dashboard, drawer } = page;
   const entities = report?.fieldData?.[entityType];
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
-  const openRowDrawer = (entity: string) => {
+  const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);
     onOpen();
   };
@@ -51,10 +59,10 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
     }
   };
 
-  const entityRows = (entities: string[]) =>
+  const entityRows = (entities: EntityShape[]) =>
     entities.map((entity) => (
-      <Flex key={entity} sx={sx.entityRow}>
-        <Heading as="h5">{entity}</Heading>
+      <Flex key={entity.id} sx={sx.entityRow}>
+        <Heading as="h5">{entity.name}</Heading>
         <Button
           sx={sx.enterButton}
           onClick={() => openRowDrawer(entity)}
@@ -83,7 +91,7 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${currentEntity}`}
+        drawerTitle={`${drawer.title} ${currentEntity?.name}`}
         drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}

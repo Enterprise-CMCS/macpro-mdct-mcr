@@ -6,12 +6,9 @@ import {
   Button,
   Flex,
   Heading,
-  Image,
   Link,
   Spinner,
-  Td,
   Text,
-  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -20,8 +17,9 @@ import {
   ErrorAlert,
   PageTemplate,
   ReportContext,
-  Table,
 } from "components";
+import { DashboardList } from "./DashboardProgramList";
+import { MobileDashboardList } from "./DashboardProgramListMobile";
 // utils
 import { AnyObject, ReportShape } from "types";
 import {
@@ -34,12 +32,8 @@ import {
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
 import { ArrowIcon } from "@cmsgov/design-system";
-import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import editIcon from "assets/icons/icon_edit.png";
-// temporary
-import config from "config";
 
-export const Dashboard = () => {
+export const DashboardPage = () => {
   const {
     errorMessage,
     fetchReportsByState,
@@ -52,6 +46,7 @@ export const Dashboard = () => {
     state: userState,
     userIsStateUser,
     userIsStateRep,
+    userIsAdmin,
   } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
@@ -148,19 +143,25 @@ export const Dashboard = () => {
       <Box sx={sx.bodyBox}>
         {reportsByState ? (
           isTablet || isMobile ? (
-            <MobileDashboardRow
+            <MobileDashboardList
               reportsByState={reportsByState}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
+              sxOverride={sxChildStyles}
+              isStateLevelUser={userIsStateUser! || userIsStateRep!}
+              isAdmin={userIsAdmin!}
             />
           ) : (
-            <DashboardTable
+            <DashboardList
               reportsByState={reportsByState}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
               openDeleteProgramModal={openDeleteProgramModal}
               body={body}
+              sxOverride={sxChildStyles}
+              isStateLevelUser={userIsStateUser! || userIsStateRep!}
+              isAdmin={userIsAdmin!}
             />
           )
         ) : (
@@ -197,153 +198,6 @@ export const Dashboard = () => {
     </PageTemplate>
   );
 };
-
-const DashboardTable = ({
-  reportsByState,
-  body,
-  openAddEditProgramModal,
-  enterSelectedReport,
-  openDeleteProgramModal,
-}: DashboardTableProps) => {
-  const { userIsStateUser, userIsStateRep, userIsAdmin } = useUser().user ?? {};
-  return (
-    <Table
-      content={body.table}
-      sxOverride={sx.table}
-      data-testid="desktop-table"
-    >
-      {reportsByState.map((report: AnyObject) => (
-        <Tr key={report.id}>
-          <Td sx={sx.editProgram}>
-            {(userIsStateUser || userIsStateRep) && (
-              <button onClick={() => openAddEditProgramModal(report)}>
-                <Image src={editIcon} alt="Edit Program" />
-              </button>
-            )}
-          </Td>
-          <Td sx={sx.programNameText}>{report.programName}</Td>
-          <Td>{convertDateUtcToEt(report.dueDate)}</Td>
-          <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
-          <Td>{report?.lastAlteredBy || "-"}</Td>
-          <Td>{report?.status}</Td>
-          <Td sx={sx.editReportButtonCell}>
-            <Button
-              variant="outline"
-              data-testid="enter-program"
-              onClick={() => enterSelectedReport(report)}
-            >
-              Enter
-            </Button>
-          </Td>
-          <Td sx={sx.deleteProgramCell}>
-            {/* TODO: Remove stage check upon archive functionality implementation */}
-            {userIsAdmin && config.STAGE === "main" && (
-              <button onClick={() => openDeleteProgramModal(report)}>
-                <Image
-                  src={cancelIcon}
-                  data-testid="delete-program"
-                  alt="Delete Program"
-                  sx={sx.deleteProgramButtonImage}
-                />
-              </button>
-            )}
-          </Td>
-        </Tr>
-      ))}
-    </Table>
-  );
-};
-
-interface DashboardTableProps {
-  reportsByState: AnyObject[];
-  body: { table: AnyObject };
-  openAddEditProgramModal: Function;
-  enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
-}
-
-export const MobileDashboardRow = ({
-  reportsByState,
-  openAddEditProgramModal,
-  enterSelectedReport,
-  openDeleteProgramModal,
-}: MobileDashboardRowProps) => {
-  const { userIsStateUser, userIsStateRep, userIsAdmin } = useUser().user ?? {};
-  return (
-    <>
-      {reportsByState.map((report: AnyObject) => (
-        <Box data-testid="mobile-row" sx={sx.mobileTable} key={report.id}>
-          <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>Program name</Text>
-            <Flex alignContent="flex-start">
-              {(userIsStateUser || userIsStateRep) && (
-                <Box sx={sx.editProgram}>
-                  <button onClick={() => openAddEditProgramModal(report)}>
-                    <Image
-                      src={editIcon}
-                      data-testid="mobile-edit-program"
-                      alt="Edit Program"
-                    />
-                  </button>
-                </Box>
-              )}
-              <Text sx={sx.programNameText}>{report.programName}</Text>
-            </Flex>
-          </Box>
-          <Box sx={sx.labelGroup}>
-            <Flex alignContent="flex-start">
-              <Box sx={sx.editDate}>
-                <Text sx={sx.label}>Due date</Text>
-                <Text>{convertDateUtcToEt(report.dueDate)}</Text>
-              </Box>
-              <Box>
-                <Text sx={sx.label}>Last edited</Text>
-                <Text>{convertDateUtcToEt(report.lastAltered)}</Text>
-              </Box>
-            </Flex>
-          </Box>
-          <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>Edited by</Text>
-            <Text>{report?.lastAlteredBy || "-"}</Text>
-          </Box>
-          <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>Status</Text>
-            <Text>{report?.status}</Text>
-          </Box>
-          <Flex alignContent="flex-start" gap={2}>
-            <Box sx={sx.editReportButtonCell}>
-              <Button
-                variant="outline"
-                onClick={() => enterSelectedReport(report)}
-              >
-                Enter
-              </Button>
-            </Box>
-            <Box sx={sx.deleteProgramCell}>
-              {/* TODO: Remove stage check upon archive functionality implementation */}
-              {userIsAdmin && config.STAGE === "main" && (
-                <button onClick={() => openDeleteProgramModal(report)}>
-                  <Image
-                    src={cancelIcon}
-                    alt="Delete Program"
-                    sx={sx.deleteProgramButtonImage}
-                  />
-                </button>
-              )}
-            </Box>
-          </Flex>
-        </Box>
-      ))}
-    </>
-  );
-};
-
-interface MobileDashboardRowProps {
-  reportsByState: any;
-  openAddEditProgramModal: Function;
-  enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
-}
 
 const sx = {
   layout: {
@@ -394,36 +248,18 @@ const sx = {
       margin: "0",
     },
   },
-  mobileTable: {
-    padding: "1rem 0",
-    borderBottom: "1px solid",
-    borderColor: "palette.gray_light",
+  emptyTableContainer: {
+    maxWidth: "75%",
+    margin: "0 auto",
+    textAlign: "center",
   },
-  labelGroup: {
-    marginBottom: "0.5rem",
+  callToActionContainer: {
+    marginTop: "2.5rem",
+    textAlign: "center",
   },
-  table: {
-    marginBottom: "2.5rem",
-    th: {
-      padding: "0.5rem 0 0.5rem 0",
-      borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
-      color: "palette.gray_medium",
-      fontWeight: "bold",
-    },
-    tr: {
-      borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
-    },
-    td: {
-      padding: "0.5rem 0.75rem",
-      paddingLeft: 0,
-      borderTop: "1px solid",
-      borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
-      textAlign: "left",
-    },
-  },
+};
+
+const sxChildStyles = {
   editReportButtonCell: {
     width: "6.875rem",
     padding: 0,
@@ -467,22 +303,5 @@ const sx = {
     height: "1.75rem",
     width: "1.75rem",
     minWidth: "28px",
-  },
-  emptyTableContainer: {
-    maxWidth: "75%",
-    margin: "0 auto",
-    textAlign: "center",
-  },
-  callToActionContainer: {
-    marginTop: "2.5rem",
-    textAlign: "center",
-  },
-  label: {
-    fontSize: "sm",
-    fontWeight: "bold",
-    color: "palette.gray_medium",
-  },
-  editDate: {
-    marginRight: "3rem",
   },
 };

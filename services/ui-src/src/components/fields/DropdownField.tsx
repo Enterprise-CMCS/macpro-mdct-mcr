@@ -6,7 +6,12 @@ import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
-import { InputChangeEvent, AnyObject, DropdownOptions } from "types";
+import {
+  InputChangeEvent,
+  AnyObject,
+  DropdownOptions,
+  EntityShape,
+} from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 export const DropdownField = ({
@@ -55,9 +60,9 @@ export const DropdownField = ({
     if (typeof options === "string") {
       const dynamicOptionValues = report?.fieldData[options];
       if (dynamicOptionValues) {
-        const fieldOptions = dynamicOptionValues.map((option: string) => ({
-          label: option,
-          value: option,
+        const fieldOptions = dynamicOptionValues.map((option: EntityShape) => ({
+          label: option.name,
+          value: option.id,
         }));
 
         dropdownOptions = fieldOptions;
