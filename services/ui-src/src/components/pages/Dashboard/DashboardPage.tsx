@@ -18,8 +18,8 @@ import {
   PageTemplate,
   ReportContext,
 } from "components";
-import { DashboardList } from "./DashboardList";
-import { MobileDashboardList } from "./MobileDashboardList";
+import { DashboardList } from "./DashboardProgramList";
+import { MobileDashboardList } from "./DashboardProgramListMobile";
 // utils
 import { AnyObject, ReportShape } from "types";
 import {

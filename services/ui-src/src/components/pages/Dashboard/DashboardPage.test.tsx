@@ -3,8 +3,7 @@ import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { DashboardPage } from "routes";
-import { ReportContext } from "components";
+import { ReportContext, DashboardPage } from "components";
 // utils
 import {
   /*

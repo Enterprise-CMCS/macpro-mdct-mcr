@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
   Admin,
-  DashboardPage,
   GetStarted,
   Help,
   Home,
@@ -10,7 +9,7 @@ import {
   Profile,
   ReviewSubmit,
 } from "routes";
-import { AdminBannerProvider, ReportPage } from "components";
+import { AdminBannerProvider, DashboardPage, ReportPage } from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 // utils
 import { ReportRoute } from "types";
