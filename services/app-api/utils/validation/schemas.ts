@@ -7,8 +7,7 @@ export const metadataValidationSchema = yup.object().shape({
   reportingPeriodStartDate: yup.number(),
   reportingPeriodEndDate: yup.number(),
   dueDate: yup.number(),
-  combinedData: yup
-    .boolean(),
+  combinedData: yup.boolean(),
   lastAlteredBy: yup.string(),
   submittedBy: yup.string(),
   submittedOnDate: yup.string(),
