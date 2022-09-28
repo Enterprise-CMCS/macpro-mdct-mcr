@@ -1,4 +1,11 @@
-import { array, boolean, mixed, number as numberSchema, object, string } from "yup";
+import {
+  array,
+  boolean,
+  mixed,
+  number as numberSchema,
+  object,
+  string,
+} from "yup";
 import { validationErrors as error } from "verbiage/errors";
 
 // TEXT
