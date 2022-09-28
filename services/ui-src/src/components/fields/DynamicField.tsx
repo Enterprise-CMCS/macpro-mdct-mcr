@@ -35,7 +35,8 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const appendNewRecord = () => {
     const newEntity = { id: uuid(), name: "" };
     append(newEntity);
-    setDisplayValues([...displayValues, newEntity]);
+    const newDisplayValues = [...displayValues, newEntity];
+    setDisplayValues(newDisplayValues);
   };
 
   const removeRecord = (index: number) => {
@@ -58,10 +59,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   // on displayValue change, set field array value to match
   useEffect(() => {
-    console.log("form values", form.getValues());
     form.setValue(name, displayValues, { shouldValidate: true });
-    console.log("form values after", form.getValues());
-    console.log("form errors", form?.formState?.errors?.[name]);
   }, [displayValues]);
 
   const fieldErrorState = form?.formState?.errors?.[name];
