@@ -21,8 +21,8 @@ export { PreviewBanner } from "./banners/PreviewBanner";
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
-// dashboard 
-export { DashboardPage } from "./pages/Dashboard/DashboardPage"
+// dashboard
+export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardList } from "./pages/Dashboard/DashboardProgramList";
 export { MobileDashboardList } from "./pages/Dashboard/DashboardProgramListMobile";
 // drawers
