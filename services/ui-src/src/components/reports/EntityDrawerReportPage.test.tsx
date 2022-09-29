@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, StaticDrawerSection } from "components";
+import { ReportContext, EntityDrawerReportPage } from "components";
 // utils
 import { useUser } from "utils";
 import {
@@ -39,7 +39,7 @@ const mockReportContextWithoutEntities = {
 const staticDrawerSectionComponentWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <StaticDrawerSection
+      <EntityDrawerReportPage
         form={mockForm}
         page={mockPageJsonStaticDrawer}
         submittingState={mockSubmittingState}
@@ -51,7 +51,7 @@ const staticDrawerSectionComponentWithEntities = (
 const staticDrawerSectionComponentWithoutEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
-      <StaticDrawerSection
+      <EntityDrawerReportPage
         form={mockForm}
         page={mockPageJsonStaticDrawer}
         submittingState={mockSubmittingState}
@@ -60,14 +60,14 @@ const staticDrawerSectionComponentWithoutEntities = (
   </RouterWrappedComponent>
 );
 
-describe("Test StaticDrawerSection without entities", () => {
+describe("Test EntityDrawerReportPage without entities", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
     render(staticDrawerSectionComponentWithoutEntities);
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("static-drawer-section")).toBeVisible();
+    expect(screen.getByTestId("entity-drawer")).toBeVisible();
   });
 
   it("should not have any way to open the side drawer", () => {
@@ -76,7 +76,7 @@ describe("Test StaticDrawerSection without entities", () => {
   });
 });
 
-describe("Test StaticDrawerSection with entities", () => {
+describe("Test EntityDrawerReportPage with entities", () => {
   beforeEach(() => {
     render(staticDrawerSectionComponentWithEntities);
   });
@@ -87,7 +87,7 @@ describe("Test StaticDrawerSection with entities", () => {
 
   it("should render the view", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("static-drawer-section")).toBeVisible();
+    expect(screen.getByTestId("entity-drawer")).toBeVisible();
   });
 
   it("Opens the sidedrawer correctly", async () => {
@@ -129,7 +129,7 @@ describe("Test StaticDrawerSection with entities", () => {
   });
 });
 
-describe("Test StaticDrawerSection accessibility", () => {
+describe("Test EntityDrawerReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const { container } = render(staticDrawerSectionComponentWithEntities);

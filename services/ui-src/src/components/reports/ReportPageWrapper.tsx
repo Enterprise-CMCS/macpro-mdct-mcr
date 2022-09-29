@@ -5,7 +5,7 @@ import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
   DynamicDrawerReportPage,
-  StaticDrawerSection,
+  EntityDrawerReportPage,
   PageTemplate,
   ReportPageIntro,
   ReportPageFooter,
@@ -41,7 +41,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
     switch (page?.pageType) {
       case PageTypes.STATIC_DRAWER:
         return (
-          <StaticDrawerSection
+          <EntityDrawerReportPage
             form={form}
             page={page}
             submittingState={{ submitting, setSubmitting }}

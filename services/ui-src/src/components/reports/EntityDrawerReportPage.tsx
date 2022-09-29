@@ -20,9 +20,13 @@ import {
   PageJson,
   ReportStatus,
 } from "types";
-import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
+import emptyVerbiage from "../../verbiage/pages/mcpar/mcpar-entity-drawer";
 
-export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
+export const EntityDrawerReportPage = ({
+  form,
+  page,
+  submittingState,
+}: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -91,7 +95,7 @@ export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
     ));
 
   return (
-    <Box data-testid="static-drawer-section">
+    <Box data-testid="entity-drawer">
       <Heading as="h4">{dashboard.title}</Heading>
       {entities ? (
         entityRows(entities)

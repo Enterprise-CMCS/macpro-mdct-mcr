@@ -73,7 +73,7 @@ describe("Test ReportPageWrapper view", () => {
 
   test("ReportPageWrapper EntityDrawerSection view renders", () => {
     render(ReportPageWrapper_StaticDrawer);
-    expect(screen.getByTestId("static-drawer-section")).toBeVisible();
+    expect(screen.getByTestId("entity-drawer")).toBeVisible();
   });
 });
 
