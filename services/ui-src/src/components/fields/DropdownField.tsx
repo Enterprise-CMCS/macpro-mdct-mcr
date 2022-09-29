@@ -67,10 +67,6 @@ export const DropdownField = ({
 
         dropdownOptions = fieldOptions;
       }
-      dropdownOptions.splice(0, 0, {
-        label: dropdownDefaultOptionText,
-        value: "",
-      });
     } else {
       dropdownOptions = options;
     }
