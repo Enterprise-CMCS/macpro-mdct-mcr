@@ -61,13 +61,13 @@ export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 // reports
-export { ReportContext, ReportProvider } from "./reports/ReportProvider";
-export { ReportPageIntro } from "./reports/ReportPageIntro";
-export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
-export { StaticPageSection } from "./reports/sections/StaticPageSection";
-export { DynamicDrawerReportPage } from "./reports/DynamicDrawerReportPage";
+export { ReportPageIntro } from "./reports/ReportPageIntro";
+export { StandardReportPage } from "./reports/StandardReportPage";
 export { EntityDrawerReportPage } from "./reports/EntityDrawerReportPage";
+export { DynamicDrawerReportPage } from "./reports/DynamicDrawerReportPage";
+export { ReportPageFooter } from "./reports/ReportPageFooter";
+export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables
 export { Table } from "./tables/Table";
 // widgets

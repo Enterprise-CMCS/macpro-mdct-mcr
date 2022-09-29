@@ -212,7 +212,7 @@ export const mockPlanFilledForm = {
 };
 
 export const mockPageJson = {
-  pageType: "staticPage",
+  pageType: "standard",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
@@ -220,7 +220,7 @@ export const mockPageJson = {
 };
 
 export const mockPageJsonEntityDrawer = {
-  pageType: "staticDrawer",
+  pageType: "entityDrawer",
   entityType: "plans",
   intro: {
     section: "mock section",

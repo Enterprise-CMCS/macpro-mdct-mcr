@@ -24,7 +24,7 @@ jest.mock("utils", () => ({
   useUser: () => mockStateUser,
 }));
 
-const ReportPageWrapper_StaticPage = (
+const ReportPageWrapper_StandardPage = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[0]} />
@@ -67,8 +67,8 @@ const ReportPageWrapper_WithoutReport = (
 
 describe("Test ReportPageWrapper view", () => {
   test("ReportPageWrapper StandardFormSection view renders", () => {
-    render(ReportPageWrapper_StaticPage);
-    expect(screen.getByTestId("static-page-section")).toBeVisible();
+    render(ReportPageWrapper_StandardPage);
+    expect(screen.getByTestId("standard-page")).toBeVisible();
   });
 
   test("ReportPageWrapper EntityDrawerSection view renders", () => {
@@ -93,7 +93,7 @@ describe("Test ReportPageWrapper functionality", () => {
 
 describe("Test ReportPageWrapper accessibility", () => {
   test("Standard page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_StaticPage);
+    const { container } = render(ReportPageWrapper_StandardPage);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

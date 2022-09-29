@@ -10,7 +10,7 @@ import {
   ReportPageIntro,
   ReportPageFooter,
   Sidebar,
-  StaticPageSection,
+  StandardReportPage,
 } from "components";
 // utils
 import { useUser } from "utils";
@@ -39,7 +39,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
     switch (page?.pageType) {
-      case PageTypes.STATIC_DRAWER:
+      case PageTypes.ENTITY_DRAWER:
         return (
           <EntityDrawerReportPage
             form={form}
@@ -56,7 +56,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
           />
         );
       default:
-        return <StaticPageSection form={form} setSubmitting={setSubmitting} />;
+        return <StandardReportPage form={form} setSubmitting={setSubmitting} />;
     }
   };
 

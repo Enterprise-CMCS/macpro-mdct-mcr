@@ -36,7 +36,7 @@ const mockReportContextWithoutEntities = {
   report: undefined,
 };
 
-const staticDrawerSectionComponentWithEntities = (
+const entityDrawerSectionComponentWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <EntityDrawerReportPage
@@ -48,7 +48,7 @@ const staticDrawerSectionComponentWithEntities = (
   </RouterWrappedComponent>
 );
 
-const staticDrawerSectionComponentWithoutEntities = (
+const entityDrawerSectionComponentWithoutEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
       <EntityDrawerReportPage
@@ -63,7 +63,7 @@ const staticDrawerSectionComponentWithoutEntities = (
 describe("Test EntityDrawerReportPage without entities", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    render(staticDrawerSectionComponentWithoutEntities);
+    render(entityDrawerSectionComponentWithoutEntities);
   });
 
   it("should render the view", () => {
@@ -78,7 +78,7 @@ describe("Test EntityDrawerReportPage without entities", () => {
 
 describe("Test EntityDrawerReportPage with entities", () => {
   beforeEach(() => {
-    render(staticDrawerSectionComponentWithEntities);
+    render(entityDrawerSectionComponentWithEntities);
   });
 
   afterEach(() => {
@@ -132,7 +132,7 @@ describe("Test EntityDrawerReportPage with entities", () => {
 describe("Test EntityDrawerReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const { container } = render(staticDrawerSectionComponentWithEntities);
+    const { container } = render(entityDrawerSectionComponentWithEntities);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
