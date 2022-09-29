@@ -17,7 +17,7 @@ import { useUser } from "utils";
 import { FormJson, PageJson, PageTypes, ReportRoute } from "types";
 
 export const ReportPage = ({ route }: Props) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   // get report, form, and page related-data
   const { report } = useContext(ReportContext);
   const { form, page } = route;
@@ -44,7 +44,7 @@ export const ReportPage = ({ route }: Props) => {
           <StaticDrawerSection
             form={form}
             page={page}
-            loadingState={{ loading, setLoading }}
+            submittingState={{ submitting, setSubmitting }}
           />
         );
       case PageTypes.DYNAMIC_DRAWER:
@@ -52,11 +52,11 @@ export const ReportPage = ({ route }: Props) => {
           <DynamicDrawerSection
             form={form}
             dynamicTable={page.dynamicTable}
-            setLoading={setLoading}
+            setSubmitting={setSubmitting}
           />
         );
       default:
-        return <StaticPageSection form={form} setLoading={setLoading} />;
+        return <StaticPageSection form={form} setSubmitting={setSubmitting} />;
     }
   };
 
@@ -67,7 +67,7 @@ export const ReportPage = ({ route }: Props) => {
         <Flex sx={sx.reportContainer}>
           {page?.intro && <ReportPageIntro text={page.intro} />}
           {renderPageSection(form, page)}
-          <ReportPageFooter loading={loading} form={form} />
+          <ReportPageFooter submitting={submitting} form={form} />
         </Flex>
       </Flex>
     </PageTemplate>
