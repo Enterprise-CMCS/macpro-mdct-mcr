@@ -337,7 +337,7 @@ export const mockReport = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
-  combinedData: [{ key: "combinedDataCheckbox", value: "Yes..." }],
+  combinedData: false,
   fieldData: mockReportFieldData,
 };
 

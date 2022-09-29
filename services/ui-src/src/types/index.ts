@@ -89,7 +89,7 @@ export interface ReportShape extends ReportKeys {
   createdAt: number;
   lastAltered: number;
   lastAlteredBy: string;
-  combinedData: Choice[];
+  combinedData: boolean;
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
