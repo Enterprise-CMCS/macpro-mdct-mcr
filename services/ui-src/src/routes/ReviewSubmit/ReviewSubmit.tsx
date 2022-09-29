@@ -23,7 +23,7 @@ export const ReviewSubmit = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   // get user information
   const { email, full_name, state, userIsStateUser, userIsStateRep } =
@@ -45,7 +45,7 @@ export const ReviewSubmit = () => {
   }, []);
 
   const submitForm = async () => {
-    setLoading(true);
+    setSubmitting(true);
     if (userIsStateUser || userIsStateRep) {
       const submissionDate = Date.now();
       await updateReport(reportKeys, {
@@ -60,7 +60,7 @@ export const ReviewSubmit = () => {
         },
       });
     }
-    setLoading(false);
+    setSubmitting(false);
     onClose();
   };
 
@@ -80,7 +80,7 @@ export const ReviewSubmit = () => {
               submitForm={submitForm}
               isOpen={isOpen}
               onOpen={onOpen}
-              loading={loading}
+              submitting={submitting}
               onClose={onClose}
             />
           ))}
@@ -93,7 +93,7 @@ const ReadyToSubmit = ({
   submitForm,
   isOpen,
   onOpen,
-  loading,
+  submitting,
   onClose,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
@@ -117,7 +117,7 @@ const ReadyToSubmit = ({
       </Flex>
       <Modal
         onConfirmHandler={submitForm}
-        loading={loading}
+        submitting={submitting}
         modalDisclosure={{
           isOpen,
           onClose,
@@ -133,7 +133,7 @@ const ReadyToSubmit = ({
 interface ReadyToSubmitProps {
   submitForm: Function;
   isOpen: boolean;
-  loading?: boolean;
+  submitting?: boolean;
   onOpen: Function;
   onClose: Function;
 }
