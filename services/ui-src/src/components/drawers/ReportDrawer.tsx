@@ -1,6 +1,7 @@
 import { MouseEventHandler, useContext } from "react";
 // Components
-import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 import { Drawer, Form, ReportContext } from "components";
 // types
 import { AnyObject, FormJson } from "types";
@@ -38,11 +39,7 @@ export const ReportDrawer = ({
             Cancel
           </Button>
           <Button type="submit" form={form.id} sx={sx.saveButton}>
-            {submitting ? (
-              <Spinner size="sm" color={"palette.white"} />
-            ) : (
-              "Save & Close"
-            )}
+            {submitting ? <Spinner size="small" /> : "Save & Close"}
           </Button>
         </Flex>
       </Box>
