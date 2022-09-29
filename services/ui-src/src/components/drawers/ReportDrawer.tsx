@@ -11,7 +11,7 @@ export const ReportDrawer = ({
   drawerInfo,
   form,
   onSubmit,
-  loading,
+  submitting,
   ...props
 }: Props) => {
   const { report } = useContext(ReportContext);
@@ -37,7 +37,7 @@ export const ReportDrawer = ({
             Cancel
           </Button>
           <Button type="submit" form={form.id} sx={sx.saveButton}>
-            {loading ? (
+            {submitting ? (
               <Spinner size="sm" color={"palette.white"} />
             ) : (
               "Save & Close"
@@ -58,7 +58,7 @@ interface Props {
   drawerInfo?: any[];
   form: FormJson;
   onSubmit: Function;
-  loading?: boolean;
+  submitting?: boolean;
   [key: string]: any;
 }
 

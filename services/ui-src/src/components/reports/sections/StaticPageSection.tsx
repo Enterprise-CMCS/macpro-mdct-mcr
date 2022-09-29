@@ -8,7 +8,7 @@ import { useFindRoute, useUser } from "utils";
 import { AnyObject, FormJson, ReportStatus } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const StaticPageSection = ({ form, setLoading }: Props) => {
+export const StaticPageSection = ({ form, setSubmitting }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -17,7 +17,7 @@ export const StaticPageSection = ({ form, setLoading }: Props) => {
 
   const onSubmit = async (formData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
-      setLoading(true);
+      setSubmitting(true);
       const reportKeys = {
         state: state,
         id: report?.id,
@@ -28,7 +28,7 @@ export const StaticPageSection = ({ form, setLoading }: Props) => {
         fieldData: formData,
       };
       await updateReport(reportKeys, dataToWrite);
-      setLoading(false);
+      setSubmitting(false);
     }
     navigate(nextRoute);
   };
@@ -47,5 +47,5 @@ export const StaticPageSection = ({ form, setLoading }: Props) => {
 
 interface Props {
   form: FormJson;
-  setLoading: Function;
+  setSubmitting: Function;
 }

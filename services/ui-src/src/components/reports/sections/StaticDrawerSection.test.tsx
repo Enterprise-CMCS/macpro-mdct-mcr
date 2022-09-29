@@ -14,9 +14,9 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
-const mockLoadingState = {
-  loading: false,
-  setLoading: jest.fn(),
+const mockSubmittingState = {
+  submitting: false,
+  setSubmitting: jest.fn(),
 };
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -42,7 +42,7 @@ const staticDrawerSectionComponentWithEntities = (
       <StaticDrawerSection
         form={mockForm}
         page={mockPageJsonStaticDrawer}
-        loadingState={mockLoadingState}
+        submittingState={mockSubmittingState}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -54,7 +54,7 @@ const staticDrawerSectionComponentWithoutEntities = (
       <StaticDrawerSection
         form={mockForm}
         page={mockPageJsonStaticDrawer}
-        loadingState={mockLoadingState}
+        submittingState={mockSubmittingState}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
