@@ -8,7 +8,7 @@ import { useUser } from "utils";
 import {
   mockAdminUser,
   mockForm,
-  mockPageJsonStaticDrawer,
+  mockPageJsonEntityDrawer,
   mockReportContext,
   mockStateUser,
   RouterWrappedComponent,
@@ -41,7 +41,7 @@ const staticDrawerSectionComponentWithEntities = (
     <ReportContext.Provider value={mockReportContext}>
       <EntityDrawerReportPage
         form={mockForm}
-        page={mockPageJsonStaticDrawer}
+        page={mockPageJsonEntityDrawer}
         submittingState={mockSubmittingState}
       />
     </ReportContext.Provider>
@@ -53,7 +53,7 @@ const staticDrawerSectionComponentWithoutEntities = (
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
       <EntityDrawerReportPage
         form={mockForm}
-        page={mockPageJsonStaticDrawer}
+        page={mockPageJsonEntityDrawer}
         submittingState={mockSubmittingState}
       />
     </ReportContext.Provider>

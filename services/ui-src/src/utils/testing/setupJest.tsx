@@ -219,7 +219,7 @@ export const mockPageJson = {
   },
 };
 
-export const mockPageJsonStaticDrawer = {
+export const mockPageJsonEntityDrawer = {
   pageType: "staticDrawer",
   entityType: "plans",
   intro: {
@@ -262,7 +262,7 @@ export const mockReportRoutes = [
       {
         name: "mock-route-2a",
         path: "/mock/mock-route-2a",
-        page: mockPageJsonStaticDrawer,
+        page: mockPageJsonEntityDrawer,
         form: mockPlanFilledForm,
       },
       {
@@ -285,7 +285,7 @@ export const mockFlattenedReportRoutes = [
   {
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
-    page: mockPageJsonStaticDrawer,
+    page: mockPageJsonEntityDrawer,
     form: mockPlanFilledForm,
   },
   {
