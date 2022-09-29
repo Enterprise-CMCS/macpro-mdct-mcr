@@ -38,6 +38,9 @@ export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
+  // shape entity data for hydration
+  const formData = { fieldData: currentEntity };
+
   const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);
     onOpen();
@@ -109,6 +112,7 @@ export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
         drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}
+        formData={formData}
         submitting={submitting}
         data-testid="report-drawer"
       />
