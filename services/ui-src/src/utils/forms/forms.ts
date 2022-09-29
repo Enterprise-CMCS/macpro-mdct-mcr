@@ -13,7 +13,6 @@ import {
 } from "components";
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
-import { dropdownDefaultOptionText } from "../../constants";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -34,7 +33,6 @@ export const formFieldFactory = (
     textarea: TextAreaField,
   };
   fields = initializeChoiceListFields(fields);
-  fields = initializeDropdownFields(fields);
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     const fieldProps = {
@@ -75,6 +73,7 @@ export const hydrateFormFields = (
     const fieldHydrationValue = formData?.fieldData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
+
   return formFields;
 };
 
@@ -93,24 +92,6 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
       // if choice has children, recurse
       if (choice.children) initializeChoiceListFields(choice.children);
     });
-  });
-  return fields;
-};
-
-// add initial blank option to dropdown fields if needed
-export const initializeDropdownFields = (fields: FormField[]) => {
-  const dropdownFields = fields.filter(
-    (field: FormField) => field.type === "dropdown"
-  );
-  dropdownFields.forEach((field: FormField) => {
-    // if first option is not already a blank default value
-    if (field?.props?.options[0].value !== "") {
-      // add initial blank option
-      field?.props?.options.splice(0, 0, {
-        label: dropdownDefaultOptionText,
-        value: "",
-      });
-    }
   });
   return fields;
 };

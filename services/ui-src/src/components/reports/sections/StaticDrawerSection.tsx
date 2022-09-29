@@ -13,48 +13,73 @@ import {
 import { ReportDrawer, ReportContext } from "components";
 // utils
 import { useUser } from "utils";
-import { AnyObject, FormJson, PageJson, ReportStatus } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  FormJson,
+  PageJson,
+  ReportStatus,
+} from "types";
 import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
 
-export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
+export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   // make state
-  const [currentEntity, setCurrentEntity] = useState<string>("");
+  const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
 
+  const { submitting, setSubmitting } = submittingState;
   const { entityType, dashboard, drawer } = page;
   const entities = report?.fieldData?.[entityType];
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
-  const openRowDrawer = (entity: string) => {
+  // shape entity data for hydration
+  const formData = { fieldData: currentEntity };
+
+  const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);
     onOpen();
   };
 
   const onSubmit = async (formData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
-      setLoading(true);
+      setSubmitting(true);
       const reportKeys = {
         state: state,
         id: report?.id,
       };
+      const currentEntities = [...(report?.fieldData[entityType] || {})];
+      const currentEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.name === currentEntity?.name
+      );
+      const newEntity = {
+        ...currentEntity,
+        ...formData,
+      };
+      let newEntities = currentEntities;
+      newEntities[currentEntityIndex] = newEntity;
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
-        fieldData: formData,
+        fieldData: {
+          [entityType]: newEntities,
+        },
       };
       await updateReport(reportKeys, dataToWrite);
-      setLoading(false);
+      setSubmitting(false);
     }
+    onClose();
   };
 
-  const entityRows = (entities: string[]) =>
+  const entityRows = (entities: EntityShape[]) =>
     entities.map((entity) => (
-      <Flex key={entity} sx={sx.entityRow}>
-        <Heading as="h5">{entity}</Heading>
+      <Flex key={entity.id} sx={sx.entityRow}>
+        <Heading as="h5">{entity.name}</Heading>
         <Button
           sx={sx.enterButton}
           onClick={() => openRowDrawer(entity)}
@@ -83,10 +108,12 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${currentEntity}`}
+        drawerTitle={`${drawer.title} ${currentEntity?.name}`}
         drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}
+        formData={formData}
+        submitting={submitting}
         data-testid="report-drawer"
       />
     </Box>
@@ -96,7 +123,10 @@ export const StaticDrawerSection = ({ form, page, setLoading }: Props) => {
 interface Props {
   form: FormJson;
   page: PageJson;
-  setLoading: Function;
+  submittingState: {
+    submitting: boolean;
+    setSubmitting: Function;
+  };
 }
 
 const sx = {

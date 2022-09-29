@@ -135,12 +135,15 @@ export const checkboxSingle = () => boolean();
 
 // RADIO
 export const radio = () =>
-  array().min(1).of(text()).required(error.REQUIRED_GENERIC);
+  array()
+    .min(1, error.REQUIRED_GENERIC)
+    .of(object({ key: text(), value: text() }))
+    .required(error.REQUIRED_GENERIC);
 export const radioOptional = () => radio().notRequired();
 
 // DYNAMIC
 export const dynamic = () =>
-  array().min(1).of(text()).required(error.REQUIRED_GENERIC);
+  array().min(1).of(mixed()).required(error.REQUIRED_GENERIC);
 export const dynamicOptional = () => dynamic().notRequired();
 
 // NESTED

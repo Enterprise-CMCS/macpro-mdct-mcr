@@ -116,6 +116,12 @@ export interface ReportContextShape extends ReportContextMethods {
 
 export declare type EntityType = "plans" | "bssEntities";
 
+export interface EntityShape {
+  id: string;
+  name: string;
+  [key: string]: any;
+}
+
 export interface FormJson {
   id: string;
   fields: FormField[];
