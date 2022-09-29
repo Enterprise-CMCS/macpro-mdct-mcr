@@ -37,7 +37,7 @@
     },
     {
       "id": "combinedData",
-      "type": "singleCheckbox",
+      "type": "checkboxSingle",
       "validation": "checkboxSingle",
       "props": {
         "label": "Exclusion of CHIP from MCPAR",

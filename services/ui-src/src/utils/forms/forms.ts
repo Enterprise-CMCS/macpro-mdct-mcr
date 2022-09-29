@@ -23,7 +23,7 @@ export const formFieldFactory = (
 ) => {
   // define form field components
   const fieldToComponentMap: AnyObject = {
-    singleCheckbox: ChoiceField,
+    checkboxSingle: ChoiceField,
     checkbox: CheckboxField,
     date: DateField,
     dropdown: DropdownField,

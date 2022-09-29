@@ -38,7 +38,6 @@ export const createReport = handler(async (event, _context) => {
 
     const state: string = event.pathParameters.state;
     const id: string = KSUID.randomSync().string;
-
     let reportParams = {
       TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
       Item: {
