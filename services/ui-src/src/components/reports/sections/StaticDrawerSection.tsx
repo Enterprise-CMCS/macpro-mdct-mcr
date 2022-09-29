@@ -39,11 +39,7 @@ export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
 
   // shape entity data for hydration
-  const formData = {
-    fieldData: {
-      ...currentEntity,
-    },
-  };
+  const formData = { fieldData: currentEntity };
 
   const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);
