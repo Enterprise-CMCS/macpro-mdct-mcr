@@ -7,7 +7,13 @@ import { Box, Text } from "@chakra-ui/react";
 import { makeMediaQueryClasses } from "utils";
 import { AnyObject } from "types";
 
-export const ChoiceField = ({ name, label, sxOverride, ...props }: Props) => {
+export const ChoiceField = ({
+  name,
+  label,
+  hint,
+  sxOverride,
+  ...props
+}: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
@@ -37,23 +43,21 @@ export const ChoiceField = ({ name, label, sxOverride, ...props }: Props) => {
     }
   }, [hydrationValue]);
 
-  // hydrationValue is unused, but passing as boolean throws an error
-  const componentProps = { ...props, hydrate: undefined };
   return (
     <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
       <Text sx={sx.label} id="label">
         {label}
       </Text>
       <CmsdsChoice
-        disabled
-        name={name}
-        label={<></>}
-        aria-labelledby="label"
         type="checkbox"
-        value={checkboxState.toString()}
+        name={name}
+        hint={hint}
         onChange={onChangeHandler}
         checked={checkboxState}
-        {...componentProps}
+        aria-labelledby="label"
+        // required by component library, but unused
+        label={<></>}
+        value={checkboxState.toString()}
       />
     </Box>
   );
@@ -62,12 +66,12 @@ export const ChoiceField = ({ name, label, sxOverride, ...props }: Props) => {
 interface Props {
   name: string;
   label?: string;
+  hint: string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
 
 const sx = {
-  // checkboxes
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
   },

@@ -1,94 +1,79 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
-import { ChoiceField, TextField } from "components";
-import userEvent from "@testing-library/user-event";
+import { ChoiceField } from "components";
+import { useFormContext } from "react-hook-form";
 
+const mockRhfMethods = {
+  register: () => {},
+  setValue: () => {},
+  getValues: jest.fn(),
+};
+const mockUseFormContext = useFormContext as unknown as jest.Mock<
+  typeof useFormContext
+>;
 jest.mock("react-hook-form", () => ({
-  useFormContext: () => ({
-    setValue: () => {},
-    register: () => {},
-    getValues: () => {},
-  }),
+  useFormContext: jest.fn(() => mockRhfMethods),
 }));
+const mockGetValues = (returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest.fn().mockReturnValue(returnValue),
+  }));
 
 const ChoiceFieldComponent = (
   <ChoiceField
     name="checkbox_choice"
-    type="checkbox"
     label="Checkbox A"
-    value="a"
+    hint="checkbox a"
     data-testid="test-checkbox-field"
   />
-);
-
-const ChoiceFieldRadioComponent = (
-  <ChoiceField
-    name="radio_choice"
-    type="radio"
-    label="Radio A"
-    value="a"
-    data-testid="test-radio-field"
-  />
-);
-
-const childField = (
-  <TextField
-    label="Child field"
-    labelClassName="ds-u-margin-top--0"
-    name="textfield_child"
-    data-testid="textfield_child"
-  />
-);
-
-const ChoiceFieldChildrenComponent = (
-  <div data-testid="checkbox_choice_container">
-    <ChoiceField
-      name="checkbox_choice_children"
-      type="checkbox"
-      label="Checkbox B"
-      value="a"
-      data-testid="test-checkboxb-field"
-      checkedChildren={
-        <div className="ds-c-choice__checkedChild">{childField}</div>
-      }
-    />
-  </div>
 );
 
 describe("Test ChoiceField component", () => {
   test("ChoiceField renders as Checkbox", () => {
     render(ChoiceFieldComponent);
-    const choice = screen.getByTestId("test-checkbox-field");
-    expect(choice).toBeVisible();
-  });
-
-  test("ChoiceField renders as Radio", () => {
-    render(ChoiceFieldRadioComponent);
-    const choice = screen.getByTestId("test-radio-field");
+    const choice = screen.getByLabelText("Checkbox A");
     expect(choice).toBeVisible();
   });
 
   test("ChoiceField calls onChange function successfully", async () => {
     render(ChoiceFieldComponent);
-    const choice = screen.getByTestId(
-      "test-checkbox-field"
-    ) as HTMLInputElement;
+    const choice = screen.getByLabelText("Checkbox A") as HTMLInputElement;
     expect(choice.checked).toBe(false);
     await userEvent.click(choice);
     expect(choice.checked).toBe(true);
   });
+});
 
-  test("ChoiceField displays checked children fields correctly when checked", async () => {
-    render(ChoiceFieldChildrenComponent);
-    const choice = screen.getByTestId(
-      "test-checkboxb-field"
-    ) as HTMLInputElement;
-    expect(screen.queryByTestId("textfield_child")).toBeFalsy();
-    expect(choice.checked).toBe(false);
-    await userEvent.click(choice);
-    expect(choice.checked).toBe(true);
-    expect(screen.queryByTestId("textfield_child")).toBeTruthy();
+describe("Test ChoiceField hydration functionality", () => {
+  const mockFormFieldValue = true;
+  const mockHydrationValue = true;
+  const ChoiceFieldComponentWithHydrationValue = (
+    <ChoiceField
+      name="checkbox_choice"
+      label="Checkbox B"
+      hint="checkbox b"
+      hydrate={mockHydrationValue}
+      data-testid="test-text-field-with-hydration-value"
+    />
+  );
+
+  test("If only formFieldValue exists, displayValue is set to it", () => {
+    mockGetValues(mockFormFieldValue);
+    render(ChoiceFieldComponent);
+    const textField: HTMLInputElement = screen.getByLabelText("Checkbox A");
+    const displayValue = textField.value;
+    expect(displayValue).toBeTruthy();
+  });
+
+  test("If only hydrationValue exists, displayValue is set to it", () => {
+    mockGetValues(undefined);
+    render(ChoiceFieldComponentWithHydrationValue);
+    const textField: HTMLInputElement = screen.getByLabelText("Checkbox B");
+    const displayValue = textField.value;
+    expect(displayValue).toBeTruthy();
   });
 });
 
