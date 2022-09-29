@@ -6,7 +6,7 @@ import { ReportContext, ReportDrawer } from "components";
 import { useUser } from "utils";
 import { AnyObject, FormJson, ReportStatus } from "types";
 
-export const DynamicDrawerSection = ({
+export const DynamicDrawerReportPage = ({
   form,
   dynamicTable,
   setSubmitting,

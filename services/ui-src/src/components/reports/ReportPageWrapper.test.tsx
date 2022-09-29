@@ -57,7 +57,7 @@ const mockReportContextWithoutReport = {
   report: mockedNoReport,
 };
 
-const ReportPageComponent_WithoutReport = (
+const ReportPageWrapper_WithoutReport = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
       <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[0]} />
@@ -77,7 +77,7 @@ describe("Test ReportPageWrapper view", () => {
   });
 });
 
-test("ReportPageWrapper DynamicDrawerSection view renders", () => {
+test("ReportPageWrapper DynamicDrawerReportPage view renders", () => {
   render(ReportPageWrapper_DynamicDrawer);
   expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
 });
@@ -86,7 +86,7 @@ describe("Test ReportPageWrapper functionality", () => {
   afterEach(() => jest.clearAllMocks());
 
   test("ReportPageWrapper navigates to dashboard if no id", () => {
-    render(ReportPageComponent_WithoutReport);
+    render(ReportPageWrapper_WithoutReport);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar");
   });
 });
@@ -100,6 +100,12 @@ describe("Test ReportPageWrapper accessibility", () => {
 
   test("Drawer page should not have basic accessibility issues", async () => {
     const { container } = render(ReportPageWrapper_StaticPage);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  test("DynamicDrawer should not have basic accessibility issues", async () => {
+    const { container } = render(ReportPageWrapper_DynamicDrawer);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  DynamicDrawerSection,
+  DynamicDrawerReportPage,
   StaticDrawerSection,
   PageTemplate,
   ReportPageIntro,
@@ -49,7 +49,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
-          <DynamicDrawerSection
+          <DynamicDrawerReportPage
             form={form}
             dynamicTable={page.dynamicTable}
             setSubmitting={setSubmitting}

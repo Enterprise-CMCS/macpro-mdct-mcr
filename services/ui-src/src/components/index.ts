@@ -66,7 +66,7 @@ export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { StaticPageSection } from "./reports/sections/StaticPageSection";
-export { DynamicDrawerSection } from "./reports/sections/DynamicDrawerSection";
+export { DynamicDrawerReportPage } from "./reports/DynamicDrawerReportPage";
 export { StaticDrawerSection } from "./reports/sections/StaticDrawerSection";
 // tables
 export { Table } from "./tables/Table";
