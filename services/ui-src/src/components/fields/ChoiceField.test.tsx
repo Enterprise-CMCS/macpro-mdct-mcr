@@ -63,16 +63,16 @@ describe("Test ChoiceField hydration functionality", () => {
   test("If only formFieldValue exists, displayValue is set to it", () => {
     mockGetValues(mockFormFieldValue);
     render(ChoiceFieldComponent);
-    const textField: HTMLInputElement = screen.getByLabelText("Checkbox A");
-    const displayValue = textField.value;
+    const choiceField: HTMLInputElement = screen.getByLabelText("Checkbox A");
+    const displayValue = choiceField.value;
     expect(displayValue).toBeTruthy();
   });
 
   test("If only hydrationValue exists, displayValue is set to it", () => {
     mockGetValues(undefined);
     render(ChoiceFieldComponentWithHydrationValue);
-    const textField: HTMLInputElement = screen.getByLabelText("Checkbox B");
-    const displayValue = textField.value;
+    const choiceField: HTMLInputElement = screen.getByLabelText("Checkbox B");
+    const displayValue = choiceField.value;
     expect(displayValue).toBeTruthy();
   });
 });
