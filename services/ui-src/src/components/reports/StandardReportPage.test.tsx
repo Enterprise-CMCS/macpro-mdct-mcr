@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, StaticPageSection } from "components";
+import { ReportContext, StandardReportPage } from "components";
 // utils
 import { useUser } from "utils";
 import {
@@ -25,10 +25,10 @@ jest.mock("react-router-dom", () => ({
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
-const staticPageSectionComponent = (
+const standardPageSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <StaticPageSection form={mockForm} setSubmitting={mockSetSubmitting} />
+      <StandardReportPage form={mockForm} setSubmitting={mockSetSubmitting} />
       <button form={mockForm.id} type="submit">
         submit
       </button>
@@ -36,18 +36,18 @@ const staticPageSectionComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test StaticPageSection", () => {
+describe("Test StandardReportPage", () => {
   afterEach(() => jest.clearAllMocks());
 
-  test("StaticFormSection view renders", () => {
+  test("StandardReportPage view renders", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    render(staticPageSectionComponent);
-    expect(screen.getByTestId("static-page-section")).toBeVisible();
+    render(standardPageSectionComponent);
+    expect(screen.getByTestId("standard-page")).toBeVisible();
   });
 
-  test("StaticPage updates report field data on successful fill from state user", async () => {
+  test("StandardReportPage updates report field data on successful fill from state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const result = render(staticPageSectionComponent);
+    const result = render(standardPageSectionComponent);
     const form = result.container;
     const mockField = form.querySelector("[name='mock-text-field']")!;
     await userEvent.type(mockField, "mock input");
@@ -60,9 +60,9 @@ describe("Test StaticPageSection", () => {
     expect(mockSetSubmitting).toHaveBeenCalledTimes(2);
   });
 
-  test("StaticPage does not update report field data when admin user clicks continue", async () => {
+  test("StandardReportPage does not update report field data when admin user clicks continue", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
-    const result = render(staticPageSectionComponent);
+    const result = render(standardPageSectionComponent);
     const form = result.container;
     const mockField = form.querySelector("[name='mock-text-field']")!;
     await userEvent.type(mockField, "mock input");
@@ -75,10 +75,10 @@ describe("Test StaticPageSection", () => {
   });
 });
 
-describe("Test StaticPageSection accessibility", () => {
+describe("Test StandardReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const { container } = render(staticPageSectionComponent);
+    const { container } = render(standardPageSectionComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

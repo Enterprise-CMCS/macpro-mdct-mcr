@@ -20,9 +20,13 @@ import {
   PageJson,
   ReportStatus,
 } from "types";
-import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
+import emptyVerbiage from "../../verbiage/pages/mcpar/mcpar-entity-drawer";
 
-export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
+export const EntityDrawerReportPage = ({
+  form,
+  page,
+  submittingState,
+}: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -79,7 +83,9 @@ export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
   const entityRows = (entities: EntityShape[]) =>
     entities.map((entity) => (
       <Flex key={entity.id} sx={sx.entityRow}>
-        <Heading as="h5">{entity.name}</Heading>
+        <Heading as="h4" sx={sx.entityName}>
+          {entity.name}
+        </Heading>
         <Button
           sx={sx.enterButton}
           onClick={() => openRowDrawer(entity)}
@@ -91,8 +97,10 @@ export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
     ));
 
   return (
-    <Box data-testid="static-drawer-section">
-      <Heading as="h4">{dashboard.title}</Heading>
+    <Box data-testid="entity-drawer">
+      <Heading as="h3" sx={sx.dashboardTitle}>
+        {dashboard.title}
+      </Heading>
       {entities ? (
         entityRows(entities)
       ) : (
@@ -130,6 +138,13 @@ interface Props {
 }
 
 const sx = {
+  dashboardTitle: {
+    paddingBottom: "0.75rem",
+    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    color: "palette.gray_medium",
+    fontSize: "lg",
+    fontWeight: "bold",
+  },
   entityRow: {
     justifyContent: "space-between",
     alignItems: "center",
@@ -137,6 +152,10 @@ const sx = {
     padding: "0.5rem",
     paddingLeft: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+  },
+  entityName: {
+    fontSize: "lg",
+    fontWeight: "bold",
   },
   emptyEntityMessage: {
     paddingTop: "1rem",

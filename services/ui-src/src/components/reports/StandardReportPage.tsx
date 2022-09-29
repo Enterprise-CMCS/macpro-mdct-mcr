@@ -8,7 +8,7 @@ import { useFindRoute, useUser } from "utils";
 import { AnyObject, FormJson, ReportStatus } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const StaticPageSection = ({ form, setSubmitting }: Props) => {
+export const StandardReportPage = ({ form, setSubmitting }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -34,7 +34,7 @@ export const StaticPageSection = ({ form, setSubmitting }: Props) => {
   };
 
   return (
-    <Box data-testid="static-page-section">
+    <Box data-testid="standard-page">
       <Form
         id={form.id}
         formJson={form}

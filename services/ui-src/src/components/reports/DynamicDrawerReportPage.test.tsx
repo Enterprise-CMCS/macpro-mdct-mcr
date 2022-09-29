@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, DynamicDrawerSection } from "components";
+import { ReportContext, DynamicDrawerReportPage } from "components";
 // utils
 import {
   mockForm,
@@ -23,7 +23,7 @@ jest.mock("react-router-dom", () => ({
 const dynamicDrawerSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DynamicDrawerSection
+      <DynamicDrawerReportPage
         form={mockForm}
         dynamicTable={mockPageJsonDynamicDrawer.dynamicTable}
         setSubmitting={mockSetSubmitting}
@@ -32,14 +32,14 @@ const dynamicDrawerSectionComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test DynamicDrawerSection view", () => {
-  test("DynamicDrawerSection view renders", () => {
+describe("Test DynamicDrawerReportPage view", () => {
+  test("DynamicDrawerReportPage view renders", () => {
     render(dynamicDrawerSectionComponent);
     expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test DynamicDrawerSection add entity operation", () => {
+describe("Test DynamicDrawerReportPage add entity operation", () => {
   test("Drawer opens correctly", async () => {
     render(dynamicDrawerSectionComponent);
     const addEntityButton = screen.getAllByText("Add access measure")[0];
@@ -48,7 +48,7 @@ describe("Test DynamicDrawerSection add entity operation", () => {
   });
 });
 
-describe("Test DynamicDrawerSection edit entity operation", () => {
+describe("Test DynamicDrawerReportPage edit entity operation", () => {
   test("Drawer opens correctly", async () => {
     render(dynamicDrawerSectionComponent);
     const editEntityButton = screen.getAllByText("Edit")[0];
@@ -57,7 +57,7 @@ describe("Test DynamicDrawerSection edit entity operation", () => {
   });
 });
 
-describe("Test DynamicDrawerSection delete entity operation", () => {
+describe("Test DynamicDrawerReportPage delete entity operation", () => {
   test("Drawer opens correctly", async () => {
     render(dynamicDrawerSectionComponent);
     const deleteEntityButton = screen.getAllByText("Delete")[0];
@@ -67,7 +67,7 @@ describe("Test DynamicDrawerSection delete entity operation", () => {
   });
 });
 
-describe("Test DynamicDrawerSection accessibility", () => {
+describe("Test DynamicDrawerReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(dynamicDrawerSectionComponent);
     const results = await axe(container);
