@@ -1,8 +1,9 @@
 // components
 import { Text } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 import { Modal } from "components";
 
-export const DeleteProgramModal = ({ modalDisclosure }: Props) => {
+export const DeleteProgramModal = ({ submitting, modalDisclosure }: Props) => {
   return (
     <Modal
       onConfirmHandler={() => {
@@ -12,7 +13,11 @@ export const DeleteProgramModal = ({ modalDisclosure }: Props) => {
       modalDisclosure={modalDisclosure}
       content={{
         heading: "Delete",
-        actionButtonText: "Yes, delete program",
+        actionButtonText: submitting ? (
+          <Spinner size="small" />
+        ) : (
+          "Yes, delete program"
+        ),
         closeButtonText: "Cancel",
       }}
     >
@@ -25,6 +30,7 @@ export const DeleteProgramModal = ({ modalDisclosure }: Props) => {
 };
 
 interface Props {
+  submitting?: boolean;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

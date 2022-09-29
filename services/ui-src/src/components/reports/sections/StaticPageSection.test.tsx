@@ -13,7 +13,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
-const mockSetLoading = jest.fn();
+const mockSetSubmitting = jest.fn();
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
@@ -28,7 +28,7 @@ const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 const staticPageSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <StaticPageSection form={mockForm} setLoading={mockSetLoading} />
+      <StaticPageSection form={mockForm} setSubmitting={mockSetSubmitting} />
       <button form={mockForm.id} type="submit">
         submit
       </button>
@@ -57,7 +57,7 @@ describe("Test StaticPageSection", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toHaveBeenCalledTimes(1);
     // once to set true, once to set false
-    expect(mockSetLoading).toHaveBeenCalledTimes(2);
+    expect(mockSetSubmitting).toHaveBeenCalledTimes(2);
   });
 
   test("StaticPage does not update report field data when admin user clicks continue", async () => {
@@ -70,7 +70,7 @@ describe("Test StaticPageSection", () => {
     expect(submitButton).toBeVisible();
     await userEvent.click(submitButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
-    expect(mockSetLoading).toHaveBeenCalledTimes(0);
+    expect(mockSetSubmitting).toHaveBeenCalledTimes(0);
     expect(mockUseNavigate).toHaveBeenCalledTimes(1);
   });
 });
