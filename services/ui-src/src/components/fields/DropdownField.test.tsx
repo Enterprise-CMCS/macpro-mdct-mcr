@@ -1,11 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-//components
 import { useFormContext } from "react-hook-form";
-import { DropdownField } from "components";
+//components
+import { DropdownField, ReportContext } from "components";
 import { dropdownDefaultOptionText } from "../../constants";
-
+// utils
+import {
+  mockReportContext,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 const mockRhfMethods = {
   register: () => {},
   setValue: () => {},
@@ -23,7 +27,7 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValue(returnValue),
   }));
 
-const dropdownComponent = (
+const dropdownComponentWithOptions = (
   <DropdownField
     name="testDropdown"
     label="test-label"
@@ -37,9 +41,22 @@ const dropdownComponent = (
   />
 );
 
+const dropdownComponentWithDynamicOptions = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <DropdownField
+        name="testDropdown"
+        label="test-label"
+        data-testid="test-dropdown-field"
+        options={"plans"}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 describe("Test DropdownField basic functionality", () => {
   test("Dropdown renders", () => {
-    render(dropdownComponent);
+    render(dropdownComponentWithOptions);
     const dropdown = screen.getByTestId("test-dropdown-field");
     expect(dropdown).toBeVisible();
   });
@@ -50,13 +67,21 @@ describe("Test DropdownField basic functionality", () => {
      * formFieldFactory, the default initial option is not being added.
      * this test is written accordingly.
      */
-    render(dropdownComponent);
+    render(dropdownComponentWithOptions);
     const dropdown = screen.getByTestId("test-dropdown-field");
     const option0 = dropdown.children.item(0) as HTMLOptionElement;
     const option2 = dropdown.children.item(2) as HTMLOptionElement;
     expect(option0.selected).toBe(true);
     await userEvent.selectOptions(dropdown, "b");
     expect(option2.selected).toBe(true);
+  });
+});
+
+describe("Test DropdownField dynamic options functionality", () => {
+  test("Dropdown renders dynamic options", () => {
+    render(dropdownComponentWithDynamicOptions);
+    const dropdown = screen.getByTestId("test-dropdown-field");
+    expect(dropdown.children.length).toEqual(3);
   });
 });
 
@@ -79,7 +104,7 @@ describe("Test DropdownField hydration functionality", () => {
 
   test("If only formFieldValue exists, displayValue is set to it", () => {
     mockGetValues(mockFormFieldValue);
-    render(dropdownComponent);
+    render(dropdownComponentWithOptions);
     const dropdownField: HTMLSelectElement = screen.getByTestId(
       "test-dropdown-field"
     );
@@ -110,7 +135,7 @@ describe("Test DropdownField hydration functionality", () => {
 
 describe("Test DropdownField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dropdownComponent);
+    const { container } = render(dropdownComponentWithOptions);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
