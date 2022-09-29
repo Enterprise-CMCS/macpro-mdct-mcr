@@ -3,7 +3,7 @@ import { MouseEventHandler, useContext } from "react";
 import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { Drawer, Form, ReportContext } from "components";
 // types
-import { FormJson } from "types";
+import { AnyObject, FormJson } from "types";
 
 export const ReportDrawer = ({
   drawerDisclosure,
@@ -11,7 +11,8 @@ export const ReportDrawer = ({
   drawerInfo,
   form,
   onSubmit,
-  loading,
+  formData,
+  submitting,
   ...props
 }: Props) => {
   const { report } = useContext(ReportContext);
@@ -26,7 +27,7 @@ export const ReportDrawer = ({
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={report}
+        formData={formData ?? report}
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
@@ -37,7 +38,7 @@ export const ReportDrawer = ({
             Cancel
           </Button>
           <Button type="submit" form={form.id} sx={sx.saveButton}>
-            {loading ? (
+            {submitting ? (
               <Spinner size="sm" color={"palette.white"} />
             ) : (
               "Save & Close"
@@ -58,7 +59,8 @@ interface Props {
   drawerInfo?: any[];
   form: FormJson;
   onSubmit: Function;
-  loading?: boolean;
+  formData?: AnyObject;
+  submitting?: boolean;
   [key: string]: any;
 }
 

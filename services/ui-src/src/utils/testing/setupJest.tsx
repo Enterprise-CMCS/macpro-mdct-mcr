@@ -314,7 +314,10 @@ export const mockReportKeys = {
 };
 
 export const mockReportFieldData = {
-  plans: [{ id: 123, name: "example-plan" }],
+  plans: [
+    { id: 123, name: "example-plan1" },
+    { id: 456, name: "example-plan2" },
+  ],
   text: "text-input",
   number: 0,
   radio: ["option1"],
@@ -334,7 +337,7 @@ export const mockReport = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
-  combinedData: [{ key: "combinedDataCheckbox", value: "Yes..." }],
+  combinedData: false,
   fieldData: mockReportFieldData,
 };
 

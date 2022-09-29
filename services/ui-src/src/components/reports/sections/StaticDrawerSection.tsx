@@ -22,7 +22,7 @@ import {
 } from "types";
 import emptyVerbiage from "../../../verbiage/pages/mcpar/mcpar-static-drawer-section";
 
-export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
+export const StaticDrawerSection = ({ form, page, submittingState }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -32,11 +32,14 @@ export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
     undefined
   );
 
-  const { loading, setLoading } = loadingState;
+  const { submitting, setSubmitting } = submittingState;
   const { entityType, dashboard, drawer } = page;
   const entities = report?.fieldData?.[entityType];
   const { message, link } =
     emptyVerbiage[entityType as keyof typeof emptyVerbiage];
+
+  // shape entity data for hydration
+  const formData = { fieldData: currentEntity };
 
   const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);
@@ -45,7 +48,7 @@ export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
 
   const onSubmit = async (formData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
-      setLoading(true);
+      setSubmitting(true);
       const reportKeys = {
         state: state,
         id: report?.id,
@@ -68,7 +71,7 @@ export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
         },
       };
       await updateReport(reportKeys, dataToWrite);
-      setLoading(false);
+      setSubmitting(false);
     }
     onClose();
   };
@@ -109,7 +112,8 @@ export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
         drawerInfo={drawer.info}
         form={form}
         onSubmit={onSubmit}
-        loading={loading}
+        formData={formData}
+        submitting={submitting}
         data-testid="report-drawer"
       />
     </Box>
@@ -119,9 +123,9 @@ export const StaticDrawerSection = ({ form, page, loadingState }: Props) => {
 interface Props {
   form: FormJson;
   page: PageJson;
-  loadingState: {
-    loading: boolean;
-    setLoading: Function;
+  submittingState: {
+    submitting: boolean;
+    setSubmitting: Function;
   };
 }
 

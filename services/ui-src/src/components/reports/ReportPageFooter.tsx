@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { Icon } from "components";
+import { Spinner } from "@cmsgov/design-system";
 // utils
 import { useFindRoute, useUser } from "utils";
 import { FormJson } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const ReportPageFooter = ({ loading, form, ...props }: Props) => {
+export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
   const navigate = useNavigate();
   const { previousRoute, nextRoute } = useFindRoute(
     mcparReportRoutesFlat,
@@ -33,7 +34,7 @@ export const ReportPageFooter = ({ loading, form, ...props }: Props) => {
           {!form?.id || formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
-              rightIcon={loading ? <></> : <Icon icon="arrowRight" />}
+              rightIcon={submitting ? <></> : <Icon icon="arrowRight" />}
             >
               Continue
             </Button>
@@ -42,9 +43,9 @@ export const ReportPageFooter = ({ loading, form, ...props }: Props) => {
               form={form.id}
               type="submit"
               sx={sx.button}
-              rightIcon={loading ? <></> : <Icon icon="arrowRight" />}
+              rightIcon={!submitting ? <Icon icon="arrowRight" /> : undefined}
             >
-              {loading ? <Spinner size="sm" mr="-2" /> : "Save & continue"}
+              {submitting ? <Spinner size="small" /> : "Save & continue"}
             </Button>
           )}
         </Flex>
@@ -56,7 +57,7 @@ export const ReportPageFooter = ({ loading, form, ...props }: Props) => {
 
 interface Props {
   form?: FormJson;
-  loading?: boolean;
+  submitting?: boolean;
   [key: string]: any;
 }
 
