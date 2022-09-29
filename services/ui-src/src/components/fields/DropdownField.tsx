@@ -74,6 +74,12 @@ export const DropdownField = ({
     } else {
       dropdownOptions = options;
     }
+    if (dropdownOptions[0].value !== "") {
+      dropdownOptions.splice(0, 0, {
+        label: dropdownDefaultOptionText,
+        value: "",
+      });
+    }
     return dropdownOptions;
   };
 
