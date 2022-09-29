@@ -60,7 +60,7 @@ describe("Test copyAdminDisabledStatusToForms", () => {
         name: "mock-route-1",
         path: "/mock/mock-route-1",
         page: {
-          pageType: "standard",
+          pageType: "staticPage",
           intro: {
             section: "mock section",
             subsection: "mock subsection",

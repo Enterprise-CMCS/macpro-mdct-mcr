@@ -192,8 +192,8 @@ export interface Choice {
 }
 
 export enum PageTypes {
-  STANDARD = "standard",
-  ENTITY_DRAWER = "entityDrawer",
+  STATIC_PAGE = "staticPage",
+  STATIC_DRAWER = "staticDrawer",
   DYNAMIC_DRAWER = "dynamicDrawer",
 }
 
