@@ -63,11 +63,15 @@ export const DynamicDrawerReportPage = ({
     <Box data-testid="dynamic-drawer-section">
       {entities.length > 0 && (
         <Box style={sx.entityTable}>
-          <Heading as="h4">{dynamicTable.tableHeading}</Heading>
+          <Heading as="h3" sx={sx.tableTitle}>
+            {dynamicTable.tableHeading}
+          </Heading>
           {entities.map((entity) => {
             return (
               <Flex key={entity.title} sx={sx.entityRow}>
-                <Heading as="h5">{entity.title}</Heading>
+                <Heading as="h4" sx={sx.entityName}>
+                  {entity.title}
+                </Heading>
                 <Flex key={entity.title} sx={sx.buttonContainer}>
                   <Button
                     sx={sx.buttonStyle}
@@ -115,6 +119,16 @@ interface Props {
 }
 
 const sx = {
+  tableTitle: {
+    paddingBottom: "0.75rem",
+    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    color: "palette.gray_medium",
+    fontSize: "lg",
+    fontWeight: "bold",
+  },
+  entityTable: {
+    marginBottom: "2rem",
+  },
   entityRow: {
     justifyContent: "space-between",
     alignItems: "center",
@@ -123,8 +137,9 @@ const sx = {
     paddingLeft: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
   },
-  entityTable: {
-    marginBottom: "2rem",
+  entityName: {
+    fontSize: "lg",
+    fontWeight: "bold",
   },
   buttonContainer: {
     justifyContent: "space-between",
