@@ -9,7 +9,7 @@ import { AnyObject, FormJson, ReportStatus } from "types";
 export const DynamicDrawerSection = ({
   form,
   dynamicTable,
-  setLoading,
+  setSubmitting,
 }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
@@ -44,7 +44,7 @@ export const DynamicDrawerSection = ({
 
   const onSubmit = async (formData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
-      setLoading(true);
+      setSubmitting(true);
       const reportKeys = {
         state: state,
         id: report?.id,
@@ -55,7 +55,7 @@ export const DynamicDrawerSection = ({
         fieldData: formData,
       };
       await updateReport(reportKeys, dataToWrite);
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -111,7 +111,7 @@ export const DynamicDrawerSection = ({
 interface Props {
   form: FormJson;
   dynamicTable: AnyObject;
-  setLoading: Function;
+  setSubmitting: Function;
 }
 
 const sx = {

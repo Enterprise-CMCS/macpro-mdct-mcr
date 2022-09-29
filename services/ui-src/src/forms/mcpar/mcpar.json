@@ -2859,12 +2859,7 @@
                 "props": {
                   "label": "D3.VIII.3 Plan name",
                   "hint": "What is the name of the plan attached to the sanction or corrective action plan? Select plan name.",
-                  "ariaLabel": "List of plan names",
-                  "options": [
-                    { "label": "Option 1", "value": "a" },
-                    { "label": "Option 2", "value": "b" },
-                    { "label": "Option 3", "value": "c" }
-                  ]
+                  "options": "plans"
                 }
               },
               {
