@@ -9,7 +9,11 @@ import {
   Profile,
   ReviewSubmit,
 } from "routes";
-import { AdminBannerProvider, DashboardPage, ReportPage } from "components";
+import {
+  AdminBannerProvider,
+  DashboardPage,
+  ReportPageWrapper,
+} from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 // utils
 import { ReportRoute } from "types";
@@ -39,7 +43,7 @@ export const AppRoutes = () => {
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={<ReportPage route={route} />}
+                  element={<ReportPageWrapper route={route} />}
                 />
               )
             );

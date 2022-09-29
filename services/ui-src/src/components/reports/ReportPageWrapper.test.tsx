@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, ReportPage } from "components";
+import { ReportContext, ReportPageWrapper } from "components";
 // utils
 import {
   mockReport,
@@ -24,26 +24,26 @@ jest.mock("utils", () => ({
   useUser: () => mockStateUser,
 }));
 
-const ReportPageComponent_StaticPage = (
+const ReportPageWrapper_StaticPage = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPage route={mockReportJsonFlatRoutes.routes[0]} />
+      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[0]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const ReportPageComponent_StaticDrawer = (
+const ReportPageWrapper_StaticDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPage route={mockReportJsonFlatRoutes.routes[1]} />
+      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[1]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const ReportPageComponent_DynamicDrawer = (
+const ReportPageWrapper_DynamicDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPage route={mockReportJsonFlatRoutes.routes[2]} />
+      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[2]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -60,46 +60,46 @@ const mockReportContextWithoutReport = {
 const ReportPageComponent_WithoutReport = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
-      <ReportPage route={mockReportJsonFlatRoutes.routes[0]} />
+      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[0]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test ReportPage view", () => {
-  test("ReportPage StandardFormSection view renders", () => {
-    render(ReportPageComponent_StaticPage);
+describe("Test ReportPageWrapper view", () => {
+  test("ReportPageWrapper StandardFormSection view renders", () => {
+    render(ReportPageWrapper_StaticPage);
     expect(screen.getByTestId("static-page-section")).toBeVisible();
   });
 
-  test("ReportPage EntityDrawerSection view renders", () => {
-    render(ReportPageComponent_StaticDrawer);
+  test("ReportPageWrapper EntityDrawerSection view renders", () => {
+    render(ReportPageWrapper_StaticDrawer);
     expect(screen.getByTestId("static-drawer-section")).toBeVisible();
   });
 });
 
-test("ReportPage DynamicDrawerSection view renders", () => {
-  render(ReportPageComponent_DynamicDrawer);
+test("ReportPageWrapper DynamicDrawerSection view renders", () => {
+  render(ReportPageWrapper_DynamicDrawer);
   expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
 });
 
-describe("Test ReportPage functionality", () => {
+describe("Test ReportPageWrapper functionality", () => {
   afterEach(() => jest.clearAllMocks());
 
-  test("ReportPage navigates to dashboard if no id", () => {
+  test("ReportPageWrapper navigates to dashboard if no id", () => {
     render(ReportPageComponent_WithoutReport);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar");
   });
 });
 
-describe("Test ReportPage accessibility", () => {
+describe("Test ReportPageWrapper accessibility", () => {
   test("Standard page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageComponent_StaticPage);
+    const { container } = render(ReportPageWrapper_StaticPage);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   test("Drawer page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageComponent_StaticPage);
+    const { container } = render(ReportPageWrapper_StaticPage);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

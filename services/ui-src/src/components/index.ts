@@ -62,9 +62,9 @@ export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 // reports
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
-export { ReportPage } from "./reports/ReportPage";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
+export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { StaticPageSection } from "./reports/sections/StaticPageSection";
 export { DynamicDrawerSection } from "./reports/sections/DynamicDrawerSection";
 export { StaticDrawerSection } from "./reports/sections/StaticDrawerSection";

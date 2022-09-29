@@ -16,7 +16,7 @@ import {
 import { useUser } from "utils";
 import { FormJson, PageJson, PageTypes, ReportRoute } from "types";
 
-export const ReportPage = ({ route }: Props) => {
+export const ReportPageWrapper = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   // get report, form, and page related-data
   const { report } = useContext(ReportContext);
