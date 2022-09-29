@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 // components
 import { Form, Modal, ReportContext } from "components";
-import { Spinner } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
 import { mcparReportJson } from "forms/mcpar";
@@ -14,8 +14,6 @@ import {
   convertDateUtcToEt,
   useUser,
 } from "utils";
-// theme
-import theme from "styles/theme";
 
 export const AddEditProgramModal = ({
   activeState,
@@ -25,13 +23,13 @@ export const AddEditProgramModal = ({
   const { createReport, fetchReportsByState, updateReport } =
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
-  const [loading, setLoading] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   // add validation to formJson
   const form: FormJson = formJson;
 
   const writeProgram = async (formData: any) => {
-    setLoading(true);
+    setSubmitting(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
 
@@ -83,7 +81,7 @@ export const AddEditProgramModal = ({
       });
     }
     await fetchReportsByState(activeState);
-    setLoading(false);
+    setSubmitting(false);
     modalDisclosure.onClose();
   };
 
@@ -94,11 +92,7 @@ export const AddEditProgramModal = ({
       modalDisclosure={modalDisclosure}
       content={{
         heading: selectedReport?.id ? "Edit Program" : "Add a Program",
-        actionButtonText: loading ? (
-          <Spinner color={theme.colors.white} size="md" />
-        ) : (
-          "Save"
-        ),
+        actionButtonText: submitting ? <Spinner size="small" /> : "Save",
         closeButtonText: "Cancel",
       }}
     >

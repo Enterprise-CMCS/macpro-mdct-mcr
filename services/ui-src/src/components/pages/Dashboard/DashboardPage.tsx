@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   Link,
-  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -31,7 +30,7 @@ import {
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
-import { ArrowIcon } from "@cmsgov/design-system";
+import { ArrowIcon, Spinner } from "@cmsgov/design-system";
 
 export const DashboardPage = () => {
   const {
@@ -165,8 +164,8 @@ export const DashboardPage = () => {
             />
           )
         ) : (
-          <Flex alignItems="center" w="full" justifyContent="center" p="10">
-            <Spinner size="lg" />
+          <Flex sx={sx.spinnerContainer}>
+            <Spinner size="big" />
           </Flex>
         )}
         {!reportsByState?.length && (
@@ -247,6 +246,14 @@ const sx = {
     ".tablet &, .mobile &": {
       margin: "0",
     },
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
+    },
   },
   emptyTableContainer: {
     maxWidth: "75%",
@@ -256,6 +263,12 @@ const sx = {
   callToActionContainer: {
     marginTop: "2.5rem",
     textAlign: "center",
+  },
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
   },
 };
 
