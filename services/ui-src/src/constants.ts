@@ -10,6 +10,9 @@ export const dropdownDefaultOptionText = "- Select an option -";
 export const noCombinedDataInput =
   "No, the report does not contain items for which the state is unable to remove Separate CHIP information";
 
+export const closeText = "Close";
+export const saveAndCloseText = "Save & Close";
+
 // STATES
 export enum States {
   AL = "Alabama",
