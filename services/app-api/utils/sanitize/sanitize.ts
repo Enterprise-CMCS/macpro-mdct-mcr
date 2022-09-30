@@ -4,63 +4,38 @@ import { JSDOM } from "jsdom";
 const windowEmulator: any = new JSDOM("").window;
 const DOMPurify = createDOMPurify(windowEmulator);
 
-// sanitize and parse a string
+// sanitize string
 export const sanitizeString = (string: string) => {
   if (DOMPurify.isSupported) {
     return DOMPurify.sanitize(string);
   }
 };
 
-// creates a custom "type"
-const entryType = (entry: unknown) => {
-  // checks if is an array
-  if (Array.isArray(entry) && entry.length > 0) {
-    return "array";
-  }
-  // checks if is an array and is not empty
-  if (Array.isArray(entry) && entry.length === 0) {
-    return "emptyArray";
-  }
-  // otherwise it's the default type
-  return typeof entry;
-};
+// iterates over array items, sanitizing items recursively
+export const sanitizeArray = (array: unknown[]): unknown[] =>
+  array.map((entry: unknown) => sanitizeEntry(entry));
 
-// receives array and iterates over objects or values and sanitizes each
-export const sanitizeArray = (array: any[] = []): any[] => {
-  return array.map((entry: any) => {
-    const type = entryType(entry);
-    const sanitizer = sanitizerMap[type];
-    if (sanitizer) {
-      return sanitizer(entry);
-    }
-    return entry;
-  });
-};
-
-// receives object and iterates over it's key-value pairs and sanitizes the values
-export const sanitizeObject = (object: any) => {
+// iterates over object key-value pairs, sanitizing values recursively
+export const sanitizeObject = (object: { [key: string]: unknown }) => {
   if (object) {
     const entries = Object.entries(object);
-    const newObject: any = {};
-
-    entries.forEach((entry: any) => {
+    const sanitizedEntries = entries.map((entry: [string, unknown]) => {
       const [key, value] = entry;
-      const type = entryType(value);
-      const sanitizer = sanitizerMap[type];
-
-      if (sanitizer) {
-        return (newObject[key] = sanitizer(value));
-      }
-
-      return (newObject[key] = value);
+      return [key, sanitizeEntry(value)];
     });
-
-    return newObject;
+    return Object.fromEntries(sanitizedEntries);
   }
 };
 
-export const sanitizerMap: any = {
+const sanitizerMap: any = {
   string: sanitizeString,
   array: sanitizeArray,
   object: sanitizeObject,
+};
+
+// return sanitized entry, or if safe type, return entry
+const sanitizeEntry = (entry: unknown) => {
+  const entryType = Array.isArray(entry) ? "array" : typeof entry;
+  const sanitizer = sanitizerMap[entryType];
+  return sanitizer?.(entry) || entry;
 };

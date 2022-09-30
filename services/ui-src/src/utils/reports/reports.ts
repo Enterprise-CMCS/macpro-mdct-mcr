@@ -2,14 +2,14 @@ import {
   AnyObject,
   FieldChoice,
   FormField,
-  ReportMetadata,
+  ReportShape,
   ReportJson,
   ReportRoute,
 } from "types";
 
 export const sortReportsOldestToNewest = (
-  reportsArray: ReportMetadata[]
-): ReportMetadata[] =>
+  reportsArray: ReportShape[]
+): ReportShape[] =>
   reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
 
 // returns reportJson with forms that mirror the adminDisabled status of the report
@@ -92,4 +92,24 @@ export const compileValidationJsonFromRoutes = (
     }
   });
   return validationSchema;
+};
+
+// saving method for future creation of fieldId map at product request
+export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
+  const objectToReturn: AnyObject = {};
+  const mapFieldIdsToObject = (fieldArray: FormField[]) =>
+    fieldArray.map((field: FormField) => {
+      objectToReturn[field.id] = field.props?.label;
+      // if choices exist on field, check for children
+      field.props?.choices?.map((fieldChoice: FieldChoice) => {
+        // if children exist on choice, recurse through children
+        if (fieldChoice?.children) {
+          mapFieldIdsToObject(fieldChoice?.children);
+        }
+      });
+    });
+  routes.map((route: ReportRoute) => {
+    if (route.form?.fields) mapFieldIdsToObject(route.form?.fields);
+  });
+  return objectToReturn;
 };

@@ -6,13 +6,15 @@ import { axe } from "jest-axe";
 import { AddEditProgramModal, ReportContext } from "components";
 import { mockReport, mockReportContext } from "utils/testing/setupJest";
 
-const mockUpdateReportMetadata = jest.fn();
+const mockCreateReport = jest.fn();
+const mockUpdateReport = jest.fn();
 const mockFetchReportsByState = jest.fn();
 const mockCloseHandler = jest.fn();
 
 const mockedReportContext = {
   ...mockReportContext,
-  updateReportMetadata: mockUpdateReportMetadata,
+  createReport: mockCreateReport,
+  updateReport: mockUpdateReport,
   fetchReportsByState: mockFetchReportsByState,
 };
 
@@ -20,7 +22,7 @@ const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
       activeState="AB"
-      selectedReportMetadata={undefined}
+      selectedReport={undefined}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -33,7 +35,7 @@ const modalComponentWithSelectedReport = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
       activeState="AB"
-      selectedReportMetadata={mockReport}
+      selectedReport={mockReport}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -75,11 +77,13 @@ describe("Test AddEditProgramModal functionality", () => {
   });
 
   const fillForm = async (form: any) => {
-    const programNameField = form.querySelector("[name='aep-programName']")!;
+    const programNameField = form.querySelector("[name='programName']")!;
     await userEvent.type(programNameField, "fake program name");
-    const startDateField = form.querySelector("[name='aep-startDate']")!;
+    const startDateField = form.querySelector(
+      "[name='reportingPeriodStartDate']"
+    )!;
     await userEvent.type(startDateField, "1/1/2022");
-    const endDateField = form.querySelector("[name='aep-endDate']")!;
+    const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
     await userEvent.type(endDateField, "12/31/2022");
     const submitButton = screen.getByRole("button", { name: "Save" });
     await userEvent.click(submitButton);
@@ -89,7 +93,7 @@ describe("Test AddEditProgramModal functionality", () => {
     const result = await render(modalComponent);
     const form = result.getByTestId("add-edit-program-form");
     await fillForm(form);
-    await expect(mockUpdateReportMetadata).toHaveBeenCalledTimes(1);
+    await expect(mockCreateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
@@ -98,7 +102,7 @@ describe("Test AddEditProgramModal functionality", () => {
     const result = await render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-program-form");
     await fillForm(form);
-    await expect(mockUpdateReportMetadata).toHaveBeenCalledTimes(1);
+    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });

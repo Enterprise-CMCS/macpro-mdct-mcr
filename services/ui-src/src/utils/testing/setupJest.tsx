@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 // utils
-import { ReportStatus, UserContextI, UserRoles } from "types";
+import { ReportStatus, UserContextShape, UserRoles } from "types";
 import { bannerId } from "../../constants";
 
 // GLOBALS
@@ -36,14 +36,14 @@ jest.mock("@chakra-ui/transition", () => ({
 
 // USERS
 
-export const mockNoUser: UserContextI = {
+export const mockNoUser: UserContextShape = {
   user: undefined,
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockStateUser: UserContextI = {
+export const mockStateUser: UserContextShape = {
   user: {
     userRole: UserRoles.STATE_USER,
     email: "stateuser@test.com",
@@ -51,13 +51,14 @@ export const mockStateUser: UserContextI = {
     family_name: "States",
     full_name: "Thelonious States",
     state: "MN",
+    userIsStateUser: true,
   },
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockStateRep: UserContextI = {
+export const mockStateRep: UserContextShape = {
   user: {
     userRole: UserRoles.STATE_REP,
     email: "staterep@test.com",
@@ -65,13 +66,14 @@ export const mockStateRep: UserContextI = {
     family_name: "States",
     full_name: "Robert States",
     state: "MA",
+    userIsStateRep: true,
   },
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockStateApprover: UserContextI = {
+export const mockStateApprover: UserContextShape = {
   user: {
     userRole: UserRoles.APPROVER,
     email: "stateapprover@test.com",
@@ -79,13 +81,14 @@ export const mockStateApprover: UserContextI = {
     family_name: "Zustimmer",
     full_name: "Zara Zustimmer",
     state: "MN",
+    userIsApprover: true,
   },
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockHelpDeskUser: UserContextI = {
+export const mockHelpDeskUser: UserContextShape = {
   user: {
     userRole: UserRoles.HELP_DESK,
     email: "helpdeskuser@test.com",
@@ -93,13 +96,14 @@ export const mockHelpDeskUser: UserContextI = {
     family_name: "Helperson",
     full_name: "Clippy Helperson",
     state: undefined,
+    userIsHelpDeskUser: true,
   },
   showLocalLogins: false,
   logout: async () => {},
   loginWithIDM: () => {},
 };
 
-export const mockAdminUser: UserContextI = {
+export const mockAdminUser: UserContextShape = {
   user: {
     userRole: UserRoles.ADMIN,
     email: "adminuser@test.com",
@@ -107,6 +111,7 @@ export const mockAdminUser: UserContextI = {
     family_name: "Admin",
     full_name: "Adam Admin",
     state: undefined,
+    userIsAdmin: true,
   },
   showLocalLogins: false,
   logout: async () => {},
@@ -129,7 +134,7 @@ jest.mock("aws-amplify", () => ({
   API: {
     get: () => {},
     post: () => {},
-    del: () => {},
+    put: () => {},
     configure: () => {},
   },
 }));
@@ -161,11 +166,29 @@ export const mockBannerDataEmpty = {
 // FORM
 
 export const mockFormField = {
-  id: "mock-1",
+  id: "mock-text-field",
   type: "text",
   validation: "text",
   props: {
-    label: "mock field",
+    label: "mock text field",
+  },
+};
+
+export const mockNestedFormField = {
+  id: "mock-nested-field",
+  type: "radio",
+  validation: "radio",
+  props: {
+    label: "mock radio field",
+    choices: [
+      { name: "option1", label: "option 1" },
+      { name: "option2", label: "option 2" },
+      {
+        name: "option3",
+        label: "option 3",
+        children: [mockFormField],
+      },
+    ],
   },
 };
 
@@ -189,15 +212,15 @@ export const mockPlanFilledForm = {
 };
 
 export const mockPageJson = {
-  pageType: "staticPage",
+  pageType: "standard",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
 };
 
-export const mockPageJsonStaticDrawer = {
-  pageType: "staticDrawer",
+export const mockPageJsonEntityDrawer = {
+  pageType: "entityDrawer",
   entityType: "plans",
   intro: {
     section: "mock section",
@@ -239,7 +262,7 @@ export const mockReportRoutes = [
       {
         name: "mock-route-2a",
         path: "/mock/mock-route-2a",
-        page: mockPageJsonStaticDrawer,
+        page: mockPageJsonEntityDrawer,
         form: mockPlanFilledForm,
       },
       {
@@ -262,7 +285,7 @@ export const mockFlattenedReportRoutes = [
   {
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
-    page: mockPageJsonStaticDrawer,
+    page: mockPageJsonEntityDrawer,
     form: mockPlanFilledForm,
   },
   {
@@ -287,7 +310,19 @@ export const mockReportJsonFlatRoutes = {
 
 export const mockReportKeys = {
   state: "AB",
-  reportId: "mock-report-id",
+  id: "mock-report-id",
+};
+
+export const mockReportFieldData = {
+  plans: [
+    { id: 123, name: "example-plan1" },
+    { id: 456, name: "example-plan2" },
+  ],
+  text: "text-input",
+  number: 0,
+  radio: ["option1"],
+  checkbox: ["option1", "option2"],
+  dropdown: "dropdown-selection",
 };
 
 export const mockReport = {
@@ -302,41 +337,28 @@ export const mockReport = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
-  combinedData: "Yes...",
-};
-
-export const mockReportData = {
-  fieldData: {
-    plans: ["example-plan"],
-    text: "text-input",
-    number: 0,
-    radio: ["option1"],
-    checkbox: ["option1", "option2"],
-    dropdown: "dropdown-selection",
-  },
+  combinedData: false,
+  fieldData: mockReportFieldData,
 };
 
 export const mockReportsByState = [
-  { ...mockReport, reportId: "mock-report-id-1" },
-  { ...mockReport, reportId: "mock-report-id-2" },
-  { ...mockReport, reportId: "mock-report-id-3" },
+  { ...mockReport, id: "mock-report-id-1" },
+  { ...mockReport, id: "mock-report-id-2" },
+  { ...mockReport, id: "mock-report-id-3" },
 ];
 
 export const mockReportMethods = {
-  fetchReportMetadata: jest.fn(),
-  updateReportMetadata: jest.fn(),
-  removeReport: jest.fn(),
-  fetchReportData: jest.fn(),
-  updateReportData: jest.fn(),
+  fetchReport: jest.fn(),
   fetchReportsByState: jest.fn(),
+  createReport: jest.fn(),
+  updateReport: jest.fn(),
   clearReportSelection: jest.fn(),
   setReportSelection: jest.fn(),
 };
 
 export const mockReportContext = {
   ...mockReportMethods,
-  reportMetadata: mockReport,
-  reportData: mockReportData,
+  report: mockReport,
   reportsByState: mockReportsByState,
   errorMessage: "",
 };

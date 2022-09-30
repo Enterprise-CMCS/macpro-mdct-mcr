@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
-import { InputChangeEvent, AnyObject, DropdownOptions } from "types";
+import {
+  InputChangeEvent,
+  AnyObject,
+  DropdownOptions,
+  EntityShape,
+} from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
 export const DropdownField = ({
@@ -24,6 +30,7 @@ export const DropdownField = ({
   // get form context and register field
   const form = useFormContext();
   form.register(name);
+  const { report } = useContext(ReportContext);
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -47,6 +54,31 @@ export const DropdownField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
+  // fetch the option values and format them if necessary
+  const formatOptions = (options: DropdownOptions[] | string) => {
+    let dropdownOptions = [];
+    if (typeof options === "string") {
+      const dynamicOptionValues = report?.fieldData[options];
+      if (dynamicOptionValues) {
+        const fieldOptions = dynamicOptionValues.map((option: EntityShape) => ({
+          label: option.name,
+          value: option.id,
+        }));
+
+        dropdownOptions = fieldOptions;
+      }
+    } else {
+      dropdownOptions = options;
+    }
+    if (dropdownOptions[0].value !== "") {
+      dropdownOptions.splice(0, 0, {
+        label: dropdownDefaultOptionText,
+        value: "",
+      });
+    }
+    return dropdownOptions;
+  };
+
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
@@ -59,7 +91,7 @@ export const DropdownField = ({
         name={name}
         id={name}
         label={label || ""}
-        options={options}
+        options={formatOptions(options)}
         hint={parsedHint}
         onChange={onChangeHandler}
         errorMessage={errorMessage}
@@ -74,7 +106,7 @@ interface Props {
   name: string;
   label?: string;
   hint?: any;
-  options: DropdownOptions[];
+  options: DropdownOptions[] | string;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

@@ -1,4 +1,11 @@
-import { array, mixed, number as numberSchema, string } from "yup";
+import {
+  array,
+  boolean,
+  mixed,
+  number as numberSchema,
+  object,
+  string,
+} from "yup";
 import { validationErrors as error } from "verbiage/errors";
 
 // TEXT
@@ -109,19 +116,30 @@ export const dropdown = () =>
 export const checkbox = () =>
   array()
     .min(1, error.REQUIRED_CHECKBOX)
-    .of(text())
+    .of(object({ key: text(), value: text() }))
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () => checkbox().notRequired();
-export const checkboxSingle = () => array();
+export const checkboxSingle = () => boolean();
 
 // RADIO
 export const radio = () =>
-  array().min(1).of(text()).required(error.REQUIRED_GENERIC);
+  array()
+    .min(1)
+    .of(object({ key: text(), value: text() }))
+    .required(error.REQUIRED_GENERIC);
 export const radioOptional = () => radio().notRequired();
 
 // DYNAMIC
 export const dynamic = () =>
-  array().min(1).of(text()).required(error.REQUIRED_GENERIC);
+  array()
+    .min(1)
+    .of(
+      object().shape({
+        id: text(),
+        name: text(),
+      })
+    )
+    .required(error.REQUIRED_GENERIC);
 export const dynamicOptional = () => dynamic().notRequired();
 
 // NESTED

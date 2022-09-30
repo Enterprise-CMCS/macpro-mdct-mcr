@@ -13,7 +13,7 @@ import {
   sortFormErrors,
   useUser,
 } from "utils";
-import { AnyObject, FormJson, FormField, UserRoles } from "types";
+import { AnyObject, FormJson, FormField } from "types";
 
 export const Form = ({
   id,
@@ -26,19 +26,16 @@ export const Form = ({
   const { fields, options } = formJson;
 
   // determine if fields should be disabled (based on admin roles )
-  const { userRole } = useUser().user ?? {};
-  const isAdminUser =
-    userRole === UserRoles.ADMIN ||
-    userRole === UserRoles.APPROVER ||
-    userRole === UserRoles.HELP_DESK;
-  const fieldInputDisabled = isAdminUser && formJson.adminDisabled;
+  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
+    useUser().user ?? {};
+  const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const fieldInputDisabled = isAdminTypeUser && formJson.adminDisabled;
 
   // create validation schema
   const formValidationJson = compileValidationJsonFromFields(formJson.fields);
   const formValidationSchema = mapValidationTypesToSchema(formValidationJson);
   const formResolverSchema = yupSchema(formValidationSchema || {});
   mapValidationTypesToSchema;
-
   // make form context
   const form = useForm({
     resolver: !fieldInputDisabled ? yupResolver(formResolverSchema) : undefined,

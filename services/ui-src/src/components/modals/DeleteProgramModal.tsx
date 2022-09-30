@@ -1,32 +1,23 @@
-import { useContext } from "react";
 // components
 import { Text } from "@chakra-ui/react";
-import { Modal, ReportContext } from "components";
-import { AnyObject } from "types";
+import { Spinner } from "@cmsgov/design-system";
+import { Modal } from "components";
 
-export const DeleteProgramModal = ({
-  selectedReportMetadata,
-  modalDisclosure,
-}: Props) => {
-  const { fetchReportsByState, removeReport } = useContext(ReportContext);
-
-  const deleteProgramHandler = async () => {
-    const reportKeys = {
-      state: selectedReportMetadata.state,
-      reportId: selectedReportMetadata.reportId,
-    };
-    await removeReport(reportKeys);
-    await fetchReportsByState(selectedReportMetadata.state);
-    modalDisclosure.onClose();
-  };
-
+export const DeleteProgramModal = ({ submitting, modalDisclosure }: Props) => {
   return (
     <Modal
-      onConfirmHandler={deleteProgramHandler}
+      onConfirmHandler={() => {
+        /* TODO: change delete to archive */
+        modalDisclosure.onClose();
+      }}
       modalDisclosure={modalDisclosure}
       content={{
         heading: "Delete",
-        actionButtonText: "Yes, delete program",
+        actionButtonText: submitting ? (
+          <Spinner size="small" />
+        ) : (
+          "Yes, delete program"
+        ),
         closeButtonText: "Cancel",
       }}
     >
@@ -39,7 +30,7 @@ export const DeleteProgramModal = ({
 };
 
 interface Props {
-  selectedReportMetadata: AnyObject;
+  submitting?: boolean;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

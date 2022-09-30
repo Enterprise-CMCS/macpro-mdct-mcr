@@ -1,6 +1,7 @@
 import { useState } from "react";
 // components
 import { Button, Flex } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId } from "../../constants";
@@ -12,22 +13,24 @@ import formJson from "forms/addAdminBanner/addAdminBanner.json";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<string>();
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   // add validation to formJson
   const form: FormJson = formJson;
 
   const onSubmit = async (formData: any) => {
+    setSubmitting(true);
     const newBannerData = {
       key: bannerId,
-      title: formData["aab-title"],
-      description: formData["aab-description"],
-      link: formData["aab-link"] || undefined,
+      title: formData["bannerTitle"],
+      description: formData["bannerDescription"],
+      link: formData["bannerLink"] || undefined,
       startDate: convertDatetimeStringToNumber(
-        formData["aab-startDate"],
+        formData["bannerStartDate"],
         "startDate"
       ),
       endDate: convertDatetimeStringToNumber(
-        formData["aab-endDate"],
+        formData["bannerEndDate"],
         "endDate"
       ),
     };
@@ -37,6 +40,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     } catch (error: any) {
       setError(bannerErrors.REPLACE_BANNER_FAILED);
     }
+    setSubmitting(false);
   };
 
   return (
@@ -47,7 +51,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       </Form>
       <Flex sx={sx.previewFlex}>
         <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>
-          Replace Current Banner
+          {submitting ? <Spinner size="small" /> : "Replace Current Banner"}
         </Button>
       </Flex>
     </>
@@ -67,6 +71,7 @@ const sx = {
     flexDirection: "column",
   },
   replaceBannerButton: {
+    width: "14rem",
     marginTop: "1rem !important",
     alignSelf: "end",
   },

@@ -39,7 +39,6 @@
     "react-scripts": "^5.0.0",
     "react-uuid": "^1.0.3",
     "sass": "^1.37.5",
-    "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -60,7 +59,6 @@
     "@types/react-bootstrap": "^0.32.28",
     "@types/react-dom": "^17.0.10",
     "@types/react-router-dom": "^5.3.2",
-    "@types/uuid": "^8.3.3",
     "axe-core": "^4.4.1",
     "babel": "^6.23.0",
     "babel-jest": "^26.6.3",

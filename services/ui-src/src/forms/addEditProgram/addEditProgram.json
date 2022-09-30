@@ -5,7 +5,7 @@
   },
   "fields": [
     {
-      "id": "aep-programName",
+      "id": "programName",
       "type": "text",
       "validation": "text",
       "props": {
@@ -13,7 +13,7 @@
       }
     },
     {
-      "id": "aep-startDate",
+      "id": "reportingPeriodStartDate",
       "type": "date",
       "validation": "date",
       "props": {
@@ -23,11 +23,11 @@
       }
     },
     {
-      "id": "aep-endDate",
+      "id": "reportingPeriodEndDate",
       "type": "date",
       "validation": {
         "type": "endDate",
-        "dependentFieldName": "aep-startDate"
+        "dependentFieldName": "reportingPeriodStartDate"
       },
       "props": {
         "label": "A.5b Reporting period  (i.e. contract period) end date",
@@ -36,18 +36,12 @@
       }
     },
     {
-      "id": "aep-combinedData",
-      "type": "checkbox",
+      "id": "combinedData",
+      "type": "checkboxSingle",
       "validation": "checkboxSingle",
       "props": {
         "label": "Exclusion of CHIP from MCPAR",
-        "hint": "For Medicaid-only or Medicaid Expansion CHIP programs, select this checkbox if there are reporting items for which the state is unable to remove Separate CHIP information.",
-        "choices": [
-          {
-            "name": "aep-combinedData-o1",
-            "label": "Yes, the report contains items for which the state is unable to remove Separate CHIP information"
-          }
-        ]
+        "hint": "Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program."
       }
     }
   ]

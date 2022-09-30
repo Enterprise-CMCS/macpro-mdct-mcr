@@ -1,40 +1,39 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
-  Admin,
-  Dashboard,
-  GetStarted,
-  Help,
-  Home,
-  NotFound,
-  Profile,
-  ReviewSubmit,
-} from "routes";
-import { AdminBannerProvider, ReportPage } from "components";
+  AdminPage,
+  AdminBannerProvider,
+  DashboardPage,
+  GetStartedPage,
+  HelpPage,
+  HomePage,
+  NotFoundPage,
+  ProfilePage,
+  ReportPageWrapper,
+  ReviewSubmitPage,
+} from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
-
 // utils
-import { ReportRoute, UserRoles } from "types";
-import { ScrollToTopComponent } from "utils";
+import { ReportRoute } from "types";
+import { ScrollToTopComponent, useUser } from "utils";
 
-export const AppRoutes = ({ userRole }: Props) => {
-  const isAdmin = userRole === UserRoles.ADMIN;
-
+export const AppRoutes = () => {
+  const { userIsAdmin } = useUser().user ?? {};
   return (
     <main id="main-content" tabIndex={-1}>
       <ScrollToTopComponent />
       <AdminBannerProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/admin"
-            element={!isAdmin ? <Navigate to="/profile" /> : <Admin />}
+            element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
           />
-          <Route path="/help" element={<Help />} />
+          <Route path="/help" element={<HelpPage />} />
 
           {/* MCPAR ROUTES */}
-          <Route path="/mcpar" element={<Dashboard />} />
-          <Route path="/mcpar/get-started" element={<GetStarted />} />
+          <Route path="/mcpar" element={<DashboardPage />} />
+          <Route path="/mcpar/get-started" element={<GetStartedPage />} />
           {mcparReportRoutesFlat.map((route: ReportRoute) => {
             return (
               route.form &&
@@ -42,22 +41,21 @@ export const AppRoutes = ({ userRole }: Props) => {
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={<ReportPage route={route} />}
+                  element={<ReportPageWrapper route={route} />}
                 />
               )
             );
           })}
-          <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
+          <Route
+            path="/mcpar/review-and-submit"
+            element={<ReviewSubmitPage />}
+          />
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AdminBannerProvider>
     </main>
   );
 };
-
-interface Props {
-  userRole?: string;
-}
