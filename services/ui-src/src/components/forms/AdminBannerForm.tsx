@@ -11,7 +11,11 @@ import { FormJson } from "types";
 // data
 import formJson from "forms/addAdminBanner/addAdminBanner.json";
 
-export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
+export const AdminBannerForm = ({
+  writeAdminBanner,
+  reset,
+  ...props
+}: Props) => {
   const [error, setError] = useState<string>();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -50,7 +54,14 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
         <PreviewBanner />
       </Form>
       <Flex sx={sx.previewFlex}>
-        <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>
+        <Button
+          form={form.id}
+          type="submit"
+          sx={sx.replaceBannerButton}
+          onClick={() => {
+            reset ? reset(false) : null;
+          }}
+        >
           {submitting ? <Spinner size="small" /> : "Replace Current Banner"}
         </Button>
       </Flex>
@@ -59,6 +70,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 };
 
 interface Props {
+  reset?: any;
   writeAdminBanner: Function;
   [key: string]: any;
 }
