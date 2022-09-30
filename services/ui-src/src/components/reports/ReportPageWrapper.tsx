@@ -4,19 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  DynamicDrawerSection,
-  StaticDrawerSection,
+  DynamicDrawerReportPage,
+  EntityDrawerReportPage,
   PageTemplate,
   ReportPageIntro,
   ReportPageFooter,
   Sidebar,
-  StaticPageSection,
+  StandardReportPage,
 } from "components";
 // utils
 import { useUser } from "utils";
 import { FormJson, PageJson, PageTypes, ReportRoute } from "types";
 
-export const ReportPage = ({ route }: Props) => {
+export const ReportPageWrapper = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   // get report, form, and page related-data
   const { report } = useContext(ReportContext);
@@ -39,9 +39,9 @@ export const ReportPage = ({ route }: Props) => {
 
   const renderPageSection = (form: FormJson, page?: PageJson) => {
     switch (page?.pageType) {
-      case PageTypes.STATIC_DRAWER:
+      case PageTypes.ENTITY_DRAWER:
         return (
-          <StaticDrawerSection
+          <EntityDrawerReportPage
             form={form}
             page={page}
             submittingState={{ submitting, setSubmitting }}
@@ -49,14 +49,14 @@ export const ReportPage = ({ route }: Props) => {
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
-          <DynamicDrawerSection
+          <DynamicDrawerReportPage
             form={form}
             dynamicTable={page.dynamicTable}
             setSubmitting={setSubmitting}
           />
         );
       default:
-        return <StaticPageSection form={form} setSubmitting={setSubmitting} />;
+        return <StandardReportPage form={form} setSubmitting={setSubmitting} />;
     }
   };
 
@@ -91,17 +91,6 @@ const sx = {
     marginLeft: "3.5rem",
     h3: {
       paddingBottom: "0.75rem",
-      fontSize: "lg",
-      fontWeight: "bold",
-    },
-    h4: {
-      paddingBottom: "0.75rem",
-      borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
-      color: "palette.gray_medium",
-      fontSize: "lg",
-      fontWeight: "bold",
-    },
-    h5: {
       fontSize: "lg",
       fontWeight: "bold",
     },
