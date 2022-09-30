@@ -1,66 +1,97 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { svgFilters } from "styles/theme";
+// utils
+import { EntityShape, InputChangeEvent } from "types";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import { TextField } from "./TextField";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // get form context and register field
   const form = useFormContext();
   form.register(name);
+  const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
 
   // make formfield dynamic array with config options
-  const { fields, append, remove } = useFieldArray({
+  const { append, remove } = useFieldArray({
     name: name,
     shouldUnregister: true,
   });
 
-  // render form field values as individual inputs
-  useEffect(() => {
-    if (fields.length === 0) {
-      append(props?.hydrate || "");
-    }
-  }, []);
+  // update display value and form field data on change
+  const onChangeHandler = async (event: InputChangeEvent) => {
+    const { id, value } = event.target;
+    const currentEntity = displayValues.find((entity) => entity.id === id);
+    const currentEntityIndex = displayValues.indexOf(currentEntity!);
+    const newDisplayValues = [...displayValues];
+    newDisplayValues[currentEntityIndex].name = value;
+    setDisplayValues(newDisplayValues);
+  };
 
-  // render hydrated values on refresh
+  const appendNewRecord = () => {
+    const newEntity = { id: uuid(), name: "" };
+    append(newEntity);
+    const newDisplayValues = [...displayValues, newEntity];
+    setDisplayValues(newDisplayValues);
+  };
+
+  const removeRecord = (index: number) => {
+    remove(index);
+    const newDisplayValues = [...displayValues];
+    newDisplayValues.splice(index, 1);
+    setDisplayValues(newDisplayValues);
+  };
+
+  // set initial value to form field value or hydration value
+  const hydrationValue = props?.hydrate;
   useEffect(() => {
-    form.reset();
-    append(props?.hydrate || "");
-  }, [props?.hydrate]);
+    if (hydrationValue) {
+      setDisplayValues(hydrationValue);
+      append(hydrationValue);
+    } else {
+      appendNewRecord();
+    }
+  }, [hydrationValue]); // only runs on hydrationValue fetch/update
+
+  // on displayValue change, set field array value to match
+  useEffect(() => {
+    form.setValue(name, displayValues, { shouldValidate: true });
+  }, [displayValues]);
 
   const fieldErrorState = form?.formState?.errors?.[name];
 
   return (
     <Box>
-      {fields.map((field: Record<"id", string>, index: number) => {
+      {displayValues.map((field: EntityShape, index: number) => {
         return (
-          <Flex key={field.id} alignItems="flex-end">
-            <TextField
+          <Flex key={field.id} sx={sx.textField}>
+            <CmsdsTextField
+              id={field.id}
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={fieldErrorState?.[index]?.message}
-              sxOverride={sx.textFieldOverride}
-              disabled={props?.disabled}
+              errorMessage={fieldErrorState?.[index]?.name.message}
+              onChange={(e) => onChangeHandler(e)}
+              value={field.name}
+              {...props}
             />
-            {index != 0 && (
-              <Box sx={sx.removeBox}>
-                <button
-                  onClick={() => remove(index)}
-                  data-testid="removeButton"
-                >
-                  {!props?.disabled && (
-                    <Image
-                      sx={sx.removeImage}
-                      src={cancelIcon}
-                      alt="Remove item"
-                    />
-                  )}
-                </button>
-              </Box>
-            )}
+            <Box sx={sx.removeBox}>
+              <button
+                onClick={() => removeRecord(index)}
+                data-testid="removeButton"
+              >
+                {!props?.disabled && (
+                  <Image
+                    sx={sx.removeImage}
+                    src={cancelIcon}
+                    alt="Remove item"
+                  />
+                )}
+              </button>
+            </Box>
           </Flex>
         );
       })}
@@ -68,9 +99,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         <Button
           variant="outline"
           sx={sx.appendButton}
-          onClick={() => {
-            append("");
-          }}
+          onClick={appendNewRecord}
         >
           Add a row
         </Button>
@@ -102,7 +131,8 @@ const sx = {
     height: "2.5rem",
     marginTop: "2rem",
   },
-  textFieldOverride: {
+  textField: {
+    alignItems: "flex-end",
     width: "32rem",
     ".ds-u-clearfix": {
       width: "100%",

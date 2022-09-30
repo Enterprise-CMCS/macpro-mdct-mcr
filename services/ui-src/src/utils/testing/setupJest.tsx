@@ -212,15 +212,15 @@ export const mockPlanFilledForm = {
 };
 
 export const mockPageJson = {
-  pageType: "staticPage",
+  pageType: "standard",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
 };
 
-export const mockPageJsonStaticDrawer = {
-  pageType: "staticDrawer",
+export const mockPageJsonEntityDrawer = {
+  pageType: "entityDrawer",
   entityType: "plans",
   intro: {
     section: "mock section",
@@ -262,7 +262,7 @@ export const mockReportRoutes = [
       {
         name: "mock-route-2a",
         path: "/mock/mock-route-2a",
-        page: mockPageJsonStaticDrawer,
+        page: mockPageJsonEntityDrawer,
         form: mockPlanFilledForm,
       },
       {
@@ -285,7 +285,7 @@ export const mockFlattenedReportRoutes = [
   {
     name: "mock-route-2a",
     path: "/mock/mock-route-2a",
-    page: mockPageJsonStaticDrawer,
+    page: mockPageJsonEntityDrawer,
     form: mockPlanFilledForm,
   },
   {
@@ -314,7 +314,10 @@ export const mockReportKeys = {
 };
 
 export const mockReportFieldData = {
-  plans: ["example-plan"],
+  plans: [
+    { id: 123, name: "example-plan1" },
+    { id: 456, name: "example-plan2" },
+  ],
   text: "text-input",
   number: 0,
   radio: ["option1"],
@@ -334,7 +337,7 @@ export const mockReport = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
-  combinedData: [{ key: "combinedDataCheckbox", value: "Yes..." }],
+  combinedData: false,
   fieldData: mockReportFieldData,
 };
 

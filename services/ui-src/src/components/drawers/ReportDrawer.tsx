@@ -1,9 +1,10 @@
 import { MouseEventHandler, useContext } from "react";
 // Components
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 import { Drawer, Form, ReportContext } from "components";
 // types
-import { FormJson } from "types";
+import { AnyObject, FormJson } from "types";
 
 export const ReportDrawer = ({
   drawerDisclosure,
@@ -11,6 +12,8 @@ export const ReportDrawer = ({
   drawerInfo,
   form,
   onSubmit,
+  formData,
+  submitting,
   ...props
 }: Props) => {
   const { report } = useContext(ReportContext);
@@ -25,18 +28,19 @@ export const ReportDrawer = ({
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={report}
+        formData={formData ?? report}
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
           <Button
             variant="outline"
-            type="submit"
             onClick={drawerDisclosure.onClose as MouseEventHandler}
           >
             Cancel
           </Button>
-          <Button>Save & Close</Button>
+          <Button type="submit" form={form.id} sx={sx.saveButton}>
+            {submitting ? <Spinner size="small" /> : "Save & Close"}
+          </Button>
         </Flex>
       </Box>
     </Drawer>
@@ -52,6 +56,8 @@ interface Props {
   drawerInfo?: any[];
   form: FormJson;
   onSubmit: Function;
+  formData?: AnyObject;
+  submitting?: boolean;
   [key: string]: any;
 }
 
@@ -63,5 +69,8 @@ const sx = {
   buttonFlex: {
     justifyContent: "space-between",
     marginY: "1.5rem",
+  },
+  saveButton: {
+    width: "8.25rem",
   },
 };

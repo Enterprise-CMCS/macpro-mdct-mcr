@@ -30,6 +30,6 @@ export const mockReport = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
-  combinedData: [{ key: "test", value: "yes" }],
+  combinedData: false,
   fieldData: mockReportFieldData,
 };

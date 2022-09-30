@@ -10,9 +10,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
 } from "@chakra-ui/react";
-import { CloseIcon } from "@cmsgov/design-system";
+import { CloseIcon, Spinner } from "@cmsgov/design-system";
 // utils
 import { makeMediaQueryClasses } from "utils";
 
@@ -20,7 +19,7 @@ export const Modal = ({
   modalDisclosure,
   content,
   onConfirmHandler,
-  loading,
+  submitting,
   formId,
   children,
 }: Props) => {
@@ -58,7 +57,7 @@ export const Modal = ({
               type="submit"
               data-testid="modal-submit-button"
             >
-              {loading ? <Spinner size="sm" /> : content.actionButtonText}
+              {submitting ? <Spinner size="small" /> : content.actionButtonText}
             </Button>
           )}
           {onConfirmHandler && (
@@ -68,7 +67,7 @@ export const Modal = ({
               onClick={() => onConfirmHandler()}
               data-testid="modal-submit-button"
             >
-              {loading ? <Spinner size="sm" /> : content.actionButtonText}
+              {submitting ? <Spinner size="small" /> : content.actionButtonText}
             </Button>
           )}
           <Button
@@ -95,7 +94,7 @@ interface Props {
     actionButtonText: string | ReactNode;
     closeButtonText: string;
   };
-  loading?: boolean;
+  submitting?: boolean;
   onConfirmHandler?: Function;
   formId?: string;
   children?: ReactNode;
@@ -153,6 +152,9 @@ const sx = {
     span: {
       marginLeft: "0.5rem",
       marginRight: "-0.25rem",
+      "&.ds-c-spinner": {
+        marginLeft: 0,
+      },
     },
     "&.mobile": {
       fontSize: "sm",

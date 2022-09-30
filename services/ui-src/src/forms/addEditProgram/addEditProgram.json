@@ -37,17 +37,11 @@
     },
     {
       "id": "combinedData",
-      "type": "checkbox",
+      "type": "checkboxSingle",
       "validation": "checkboxSingle",
       "props": {
         "label": "Exclusion of CHIP from MCPAR",
-        "hint": "For Medicaid-only or Medicaid Expansion CHIP programs, select this checkbox if there are reporting items for which the state is unable to remove Separate CHIP information.",
-        "choices": [
-          {
-            "name": "option1",
-            "label": "Yes, the report contains items for which the state is unable to remove Separate CHIP information"
-          }
-        ]
+        "hint": "Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program."
       }
     }
   ]

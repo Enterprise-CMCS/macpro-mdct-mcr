@@ -13,13 +13,9 @@ export const CheckboxField = ({
   ...props
 }: ChoiceFieldProps) => {
   const mqClasses = makeMediaQueryClasses();
-  const singleBoxClass = choices.length === 1 ? "single-box" : "";
 
   return (
-    <Box
-      sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${singleBoxClass}`}
-    >
+    <Box sx={{ ...sxOverride }} className={`${mqClasses}`}>
       <ChoiceListField
         type="checkbox"
         name={name}
@@ -29,17 +25,4 @@ export const CheckboxField = ({
       />
     </Box>
   );
-};
-
-const sx = {
-  "&.single-box": {
-    ".ds-c-choice-wrapper": {
-      display: "flex",
-      alignItems: "center",
-      ".ds-c-label": {
-        alignSelf: "center",
-        marginBottom: "0.5rem",
-      },
-    },
-  },
 };

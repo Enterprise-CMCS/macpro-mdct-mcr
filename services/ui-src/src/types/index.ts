@@ -89,7 +89,7 @@ export interface ReportShape extends ReportKeys {
   createdAt: number;
   lastAltered: number;
   lastAlteredBy: string;
-  combinedData: Choice[];
+  combinedData: boolean;
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
@@ -115,6 +115,12 @@ export interface ReportContextShape extends ReportContextMethods {
 // FORM & FIELD STRUCTURE
 
 export declare type EntityType = "plans" | "bssEntities";
+
+export interface EntityShape {
+  id: string;
+  name: string;
+  [key: string]: any;
+}
 
 export interface FormJson {
   id: string;
@@ -186,8 +192,8 @@ export interface Choice {
 }
 
 export enum PageTypes {
-  STATIC_PAGE = "staticPage",
-  STATIC_DRAWER = "staticDrawer",
+  STANDARD = "standard",
+  ENTITY_DRAWER = "entityDrawer",
   DYNAMIC_DRAWER = "dynamicDrawer",
 }
 

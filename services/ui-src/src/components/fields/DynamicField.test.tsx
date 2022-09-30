@@ -22,27 +22,21 @@ const MockForm = () => {
 const dynamicFieldComponent = <MockForm />;
 
 describe("Test DynamicField component", () => {
-  test("DynamicField is visible", () => {
+  beforeEach(() => {
     render(dynamicFieldComponent);
+  });
+
+  test("DynamicField is visible", () => {
     const inputBoxLabel = screen.getByText("test-label");
     expect(inputBoxLabel).toBeVisible();
   });
 
   test("DynamicField append button is visible", () => {
-    render(dynamicFieldComponent);
     const appendButton = screen.getByText("Add a row");
     expect(appendButton).toBeVisible();
   });
 
   test("DynamicField append button adds a field", async () => {
-    const result = render(dynamicFieldComponent);
-
-    // get first text box and type
-    const firstTextBox: HTMLInputElement = result.container.querySelector(
-      "[name='testDynamicField[0]']" // Get first text box
-    )!;
-    await userEvent.type(firstTextBox, "some text");
-
     // click append
     const appendButton = screen.getByText("Add a row");
     await userEvent.click(appendButton);
@@ -54,14 +48,6 @@ describe("Test DynamicField component", () => {
   });
 
   test("DynamicField remove button removes a field", async () => {
-    const result = render(dynamicFieldComponent);
-
-    // get first text box and type
-    const firstTextBox: HTMLInputElement = result.container.querySelector(
-      "[name='testDynamicField[0]']" // Get first text box
-    )!;
-    await userEvent.type(firstTextBox, "some text");
-
     // click append
     const appendButton = screen.getByText("Add a row");
     await userEvent.click(appendButton);
@@ -72,55 +58,24 @@ describe("Test DynamicField component", () => {
     expect(appendButton).toBeVisible();
 
     // click remove
-    const removeButton = screen.getByTestId("removeButton");
+    const removeButton = screen.queryAllByTestId("removeButton")[1];
     await userEvent.click(removeButton);
     const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
     expect(inputBoxLabelAfterRemove).toHaveLength(1);
     expect(removeButton).not.toBeVisible();
     expect(appendButton).toBeVisible();
   });
+});
 
-  test("DynamicField remove button only appears on added fields", async () => {
+describe("Test typing into DynamicField component", () => {
+  test("DynamicField accepts input", async () => {
     const result = render(dynamicFieldComponent);
-
-    // get first text box and type
-    const firstTextBox: HTMLInputElement = result.container.querySelector(
-      "[name='testDynamicField[0]']" // Get first text box
+    const firstDynamicField: HTMLInputElement = result.container.querySelector(
+      "[name='testDynamicField[0]']"
     )!;
-    await userEvent.type(firstTextBox, "some text");
-
-    // click append
-    const appendButton = screen.getByText("Add a row");
-    await userEvent.click(appendButton);
-
-    // verify there are two text boxes
-    const twoInputBoxLabel = screen.getAllByText("test-label");
-    expect(twoInputBoxLabel).toHaveLength(2);
-    expect(appendButton).toBeVisible();
-
-    // verify there is one remove button
-    const oneRemoveButton = screen.getAllByTestId("removeButton");
-    expect(oneRemoveButton).toHaveLength(1);
-    expect(appendButton).toBeVisible();
-
-    // get second text box and type
-    const secondTextBox: HTMLInputElement = result.container.querySelector(
-      "[name='testDynamicField[1]']" // Get second text box
-    )!;
-    await userEvent.type(secondTextBox, "some more text");
-
-    // click append
-    await userEvent.click(appendButton);
-
-    // verify there are now three text boxes
-    const threeInputBoxLabel = screen.getAllByText("test-label");
-    expect(threeInputBoxLabel).toHaveLength(3);
-    expect(appendButton).toBeVisible();
-
-    // verify there are two remove buttons
-    const removeButton = screen.getAllByTestId("removeButton");
-    expect(removeButton).toHaveLength(2);
-    expect(appendButton).toBeVisible();
+    expect(firstDynamicField).toBeVisible();
+    await userEvent.type(firstDynamicField, "123");
+    expect(firstDynamicField.value).toEqual("123");
   });
 });
 
