@@ -6,7 +6,7 @@ import { PageTemplate, Table } from "components";
 import { createEmailLink, useUser } from "utils";
 import verbiage from "verbiage/pages/profile";
 
-export const Profile = () => {
+export const ProfilePage = () => {
   const navigate = useNavigate();
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =

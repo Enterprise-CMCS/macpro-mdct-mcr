@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { Profile } from "routes";
+import { ProfilePage } from "components";
 // utils
 import {
   mockAdminUser,
@@ -10,9 +10,9 @@ import {
 } from "utils/testing/setupJest";
 import { useUser } from "utils";
 
-const profileView = (
+const ProfilePageComponent = (
   <RouterWrappedComponent>
-    <Profile />
+    <ProfilePage />
   </RouterWrappedComponent>
 );
 
@@ -23,10 +23,10 @@ const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 // TESTS
 
-describe("Test Profile view for admin users", () => {
+describe("Test ProfilePage for admin users", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockAdminUser);
-    render(profileView);
+    render(ProfilePageComponent);
   });
   test("Check that Profile page renders properly", () => {
     expect(screen.getByTestId("profile-view")).toBeVisible();
@@ -49,10 +49,10 @@ describe("Test Profile view for admin users", () => {
   });
 });
 
-describe("Test Profile view for state users", () => {
+describe("Test ProfilePage for state users", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    render(profileView);
+    render(ProfilePageComponent);
   });
   test("Check that Profile page renders properly", () => {
     expect(screen.getByTestId("profile-view")).toBeVisible();
@@ -68,10 +68,10 @@ describe("Test Profile view for state users", () => {
   });
 });
 
-describe("Test Profile view accessibility", () => {
+describe("Test ProfilePage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
-    const { container } = render(profileView);
+    const { container } = render(ProfilePageComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext } from "components";
-import { ReviewSubmit } from "routes";
-import { SuccessMessageGenerator } from "./ReviewSubmit";
+import { ReportContext, ReviewSubmitPage } from "components";
+import { SuccessMessageGenerator } from "./ReviewSubmitPage";
 // types
 import { ReportStatus } from "types";
 // utils
@@ -22,10 +21,10 @@ jest.mock("utils", () => ({
   useUser: () => mockStateUser,
 }));
 
-const ReviewSubmitComponent_InProgress = (
+const ReviewSubmitPage_InProgress = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReviewSubmit />
+      <ReviewSubmitPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -40,31 +39,31 @@ const mockedReportContext_Submitted = {
   report: mockSubmittedReport,
 };
 
-const ReviewSubmitComponent_Submitted = (
+const ReviewSubmitPage_Submitted = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedReportContext_Submitted}>
-      <ReviewSubmit />
+      <ReviewSubmitPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test ReviewSubmit functionality", () => {
-  test("ReviewSubmit renders pre-submit state when report status is 'in progress'", () => {
-    render(ReviewSubmitComponent_InProgress);
+describe("Test ReviewSubmitPage functionality", () => {
+  test("ReviewSubmitPage renders pre-submit state when report status is 'in progress'", () => {
+    render(ReviewSubmitPage_InProgress);
     const { review } = reviewVerbiage;
     const { intro } = review;
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
-  test("ReviewSubmit renders success state when report status is 'submitted'", () => {
-    render(ReviewSubmitComponent_Submitted);
+  test("ReviewSubmitPage renders success state when report status is 'submitted'", () => {
+    render(ReviewSubmitPage_Submitted);
     const { submitted } = reviewVerbiage;
     const { intro } = submitted;
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
-  test("ReviewSubmit shows modal on submit button click", async () => {
-    render(ReviewSubmitComponent_InProgress);
+  test("ReviewSubmitPage shows modal on submit button click", async () => {
+    render(ReviewSubmitPage_InProgress);
     const { review } = reviewVerbiage;
     const { modal, pageLink } = review;
     const submitCheckButton = screen.getByText(pageLink.text)!;
@@ -73,8 +72,8 @@ describe("Test ReviewSubmit functionality", () => {
     expect(modalTitle).toBeVisible();
   });
 
-  test("ReviewSubmit updates report status on submit confirmation", async () => {
-    render(ReviewSubmitComponent_InProgress);
+  test("ReviewSubmitPage updates report status on submit confirmation", async () => {
+    render(ReviewSubmitPage_InProgress);
     const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
@@ -104,15 +103,15 @@ describe("Success Message Generator", () => {
   });
 });
 
-describe("Test ReviewSubmit view accessibility", () => {
+describe("Test ReviewSubmitPage view accessibility", () => {
   it("Should not have basic accessibility issues when report status is 'in progress", async () => {
-    const { container } = render(ReviewSubmitComponent_InProgress);
+    const { container } = render(ReviewSubmitPage_InProgress);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   it("Should not have basic accessibility issues when report status is 'submitted", async () => {
-    const { container } = render(ReviewSubmitComponent_Submitted);
+    const { container } = render(ReviewSubmitPage_Submitted);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

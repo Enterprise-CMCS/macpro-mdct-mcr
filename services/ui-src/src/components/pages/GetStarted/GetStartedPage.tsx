@@ -1,6 +1,6 @@
 // components
 import { Box, Button, Image, Heading, Text, Flex } from "@chakra-ui/react";
-import { IntroSection, PageTemplate, SpreadsheetWidget } from "components";
+import { InfoSection, PageTemplate, SpreadsheetWidget } from "components";
 import { useNavigate } from "react-router-dom";
 // utils
 import { makeMediaQueryClasses } from "utils";
@@ -11,7 +11,7 @@ import nextIcon from "assets/icons/icon_next.png";
 import NavigationSectionsImage from "assets/other/nav-sections.png";
 import NavigationSectionsSubmissionImage from "assets/other/nav-sections-review-submit.png";
 
-export const GetStarted = () => {
+export const GetStartedPage = () => {
   const { intro, body, pageLink } = verbiage;
   const mqClasses = makeMediaQueryClasses();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export const GetStarted = () => {
         </Heading>
       </Box>
       <div>
-        <IntroSection content={section1}>
+        <InfoSection content={section1}>
           <Flex sx={sx.sectionContent} className={mqClasses}>
             <Box sx={sx.widgetContainer}>
               <Text sx={sx.widgetTitle}>{section1.widget?.title}</Text>
@@ -37,8 +37,8 @@ export const GetStarted = () => {
               </Box>
             </Box>
           </Flex>
-        </IntroSection>
-        <IntroSection content={section2}>
+        </InfoSection>
+        <InfoSection content={section2}>
           <Flex sx={sx.sectionContent} className={mqClasses}>
             <Box>
               <Image
@@ -50,8 +50,8 @@ export const GetStarted = () => {
             </Box>
             <SpreadsheetWidget content={section2.spreadsheetWidget!} />
           </Flex>
-        </IntroSection>
-        <IntroSection content={section3}>
+        </InfoSection>
+        <InfoSection content={section3}>
           <Flex sx={sx.sectionContent} className={mqClasses}>
             <Box>
               <Image
@@ -61,7 +61,7 @@ export const GetStarted = () => {
               />
             </Box>
           </Flex>
-        </IntroSection>
+        </InfoSection>
       </div>
       <Box sx={sx.pageLinkContainer}>
         <Button

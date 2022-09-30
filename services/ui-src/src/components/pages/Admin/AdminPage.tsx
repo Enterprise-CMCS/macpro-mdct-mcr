@@ -14,7 +14,7 @@ import { checkDateRangeStatus, convertDateUtcToEt } from "utils";
 import { bannerErrors } from "verbiage/errors";
 import verbiage from "verbiage/pages/admin";
 
-export const Admin = () => {
+export const AdminPage = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
     useContext(AdminBannerContext);
   const [error, setError] = useState<string | undefined>(errorMessage);

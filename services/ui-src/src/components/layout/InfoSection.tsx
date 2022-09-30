@@ -2,7 +2,7 @@ import React, { ReactChild } from "react";
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-export const IntroSection = ({ content, children, ...props }: Props) => {
+export const InfoSection = ({ content, children, ...props }: Props) => {
   return (
     <Flex sx={sx.sectionContainer} {...props}>
       <Box>

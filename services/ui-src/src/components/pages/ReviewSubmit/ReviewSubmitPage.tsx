@@ -19,7 +19,7 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 
-export const ReviewSubmit = () => {
+export const ReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -149,7 +149,6 @@ export const SuccessMessageGenerator = (
     const submittersName = `by ${submittedBy}`;
     return `MCPAR report for ${programName} ${submittedDate} ${submittersName}`;
   }
-
   return `MCPAR report for ${programName} was submitted.`;
 };
 
