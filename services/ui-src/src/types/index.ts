@@ -47,10 +47,15 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  [key: string]: any;
 }
 
-export interface ReportRouteWithForm extends ReportRouteBase {
+export type ReportRouteWithForm =
+  | StandardReportPageShape
+  | EntityDrawerReportPageShape
+  | DynamicDrawerReportPageShape;
+
+export interface ReportPageShapeBase extends ReportRouteBase {
+  children?: never;
   pageType: string;
   intro?: {
     section: string;
@@ -58,13 +63,46 @@ export interface ReportRouteWithForm extends ReportRouteBase {
     spreadsheet?: string;
     info?: string | AnyObject[];
   };
-  children?: never;
+}
+
+export interface StandardReportPageShape extends ReportPageShapeBase {
+  form: FormJson;
+  modal?: never;
+  drawer?: never;
+}
+
+export interface EntityDrawerReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  dashboard: AnyObject;
+  drawer: ReportPageDrawer;
+  modal?: never;
+  form?: never;
+}
+
+export interface DynamicDrawerReportPageShape extends ReportPageShapeBase {
+  dynamicType: string;
+  dashboard: AnyObject;
+  modal: ReportPageModal;
+  drawer: ReportPageDrawer;
+  form?: never;
 }
 
 export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
   pageType?: never;
   form?: never;
+  modal?: never;
+  drawer?: never;
+}
+
+export interface ReportPageDrawer {
+  form: FormJson;
+  title: string;
+  info?: CustomHtmlElement[];
+}
+
+export interface ReportPageModal {
+  form: FormJson;
 }
 
 // REPORT PROVIDER/CONTEXT

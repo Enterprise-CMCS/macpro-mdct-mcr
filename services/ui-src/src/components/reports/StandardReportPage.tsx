@@ -5,7 +5,7 @@ import { Box } from "@chakra-ui/react";
 import { Form, ReportContext } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
-import { AnyObject, ReportRouteWithForm, ReportStatus } from "types";
+import { AnyObject, StandardReportPageShape, ReportStatus } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const StandardReportPage = ({ route, setSubmitting }: Props) => {
@@ -46,6 +46,6 @@ export const StandardReportPage = ({ route, setSubmitting }: Props) => {
 };
 
 interface Props {
-  route: ReportRouteWithForm;
+  route: StandardReportPageShape;
   setSubmitting: Function;
 }

@@ -16,7 +16,7 @@ import { useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
-  ReportRouteWithForm,
+  EntityDrawerReportPageShape,
   ReportStatus,
 } from "types";
 import emptyVerbiage from "../../verbiage/pages/mcpar/mcpar-entity-drawer";
@@ -93,7 +93,7 @@ export const EntityDrawerReportPage = ({ route, submittingState }: Props) => {
   return (
     <Box data-testid="entity-drawer">
       <Heading as="h3" sx={sx.dashboardTitle}>
-        {dashboard.title}
+        {dashboard!.title}
       </Heading>
       {entities ? (
         entityRows(entities)
@@ -112,7 +112,7 @@ export const EntityDrawerReportPage = ({ route, submittingState }: Props) => {
         }}
         drawerTitle={`${drawer.title} ${currentEntity?.name}`}
         drawerInfo={drawer.info}
-        form={route.form}
+        form={drawer.form}
         onSubmit={onSubmit}
         formData={formData}
         submitting={submitting}
@@ -123,7 +123,7 @@ export const EntityDrawerReportPage = ({ route, submittingState }: Props) => {
 };
 
 interface Props {
-  route: ReportRouteWithForm;
+  route: EntityDrawerReportPageShape;
   submittingState: {
     submitting: boolean;
     setSubmitting: Function;

@@ -62,13 +62,16 @@ describe("Test copyAdminDisabledStatusToForms", () => {
         path: "/mock/mock-route-1",
         form: {
           id: "mock-form-id",
-          fields: {
-            id: "mock-1",
-            type: "text",
-            props: {
-              label: "mock field",
+          fields: [
+            {
+              id: "mock-1",
+              type: "text",
+              validation: "text",
+              props: {
+                label: "mock field",
+              },
             },
-          },
+          ],
         },
       },
     ],
@@ -76,7 +79,7 @@ describe("Test copyAdminDisabledStatusToForms", () => {
   it("should be disabled for admin user", () => {
     const report = copyAdminDisabledStatusToForms(newReportJson);
     const form = report.routes[0].form;
-    expect(form.adminDisabled).toBeTruthy();
+    expect(form!.adminDisabled).toBeTruthy();
   });
 });
 

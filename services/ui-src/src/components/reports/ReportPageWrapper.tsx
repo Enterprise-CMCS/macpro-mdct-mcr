@@ -14,7 +14,13 @@ import {
 } from "components";
 // utils
 import { useUser } from "utils";
-import { PageTypes, ReportRouteWithForm } from "types";
+import {
+  DynamicDrawerReportPageShape,
+  EntityDrawerReportPageShape,
+  PageTypes,
+  ReportRouteWithForm,
+  StandardReportPageShape,
+} from "types";
 
 export const ReportPageWrapper = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -41,26 +47,29 @@ export const ReportPageWrapper = ({ route }: Props) => {
       case PageTypes.ENTITY_DRAWER:
         return (
           <EntityDrawerReportPage
-            route={route}
+            route={route as EntityDrawerReportPageShape}
             submittingState={{ submitting, setSubmitting }}
           />
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
           <DynamicDrawerReportPage
-            route={route}
+            route={route as DynamicDrawerReportPageShape}
             setSubmitting={setSubmitting}
           />
         );
       default:
         return (
-          <StandardReportPage route={route} setSubmitting={setSubmitting} />
+          <StandardReportPage
+            route={route as StandardReportPageShape}
+            setSubmitting={setSubmitting}
+          />
         );
     }
   };
 
   return (
-    <PageTemplate type="report" data-testid={route.form.id}>
+    <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>

@@ -19,14 +19,16 @@ export const copyAdminDisabledStatusToForms = (
   const reportAdminDisabledStatus = !!reportJson.adminDisabled;
   const writeAdminDisabledStatus = (routes: ReportRoute[]) => {
     routes.forEach((route: ReportRoute) => {
-      // if children, recurse
-      if (route?.children) {
+      // if children, recurse (only parent routes have children)
+      if (route.children) {
         writeAdminDisabledStatus(route.children);
-      }
-      // else if form (children & form are always mutually exclusive)
-      else if (route?.form) {
-        // copy adminDisabled status to form
-        route.form.adminDisabled = reportAdminDisabledStatus;
+      } else {
+        // else if form present downstream, copy adminDisabled status to form
+        if (route.form) route.form.adminDisabled = reportAdminDisabledStatus;
+        if (route.drawer?.form)
+          route.drawer.form.adminDisabled = reportAdminDisabledStatus;
+        if (route.modal?.form)
+          route.modal.form.adminDisabled = reportAdminDisabledStatus;
       }
     });
   };

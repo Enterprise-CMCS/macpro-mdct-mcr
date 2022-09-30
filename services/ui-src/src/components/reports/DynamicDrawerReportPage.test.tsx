@@ -6,7 +6,6 @@ import { ReportContext, DynamicDrawerReportPage } from "components";
 // utils
 import {
   mockDynamicDrawerReportPageJson,
-  mockForm,
   mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -24,7 +23,7 @@ const dynamicDrawerSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <DynamicDrawerReportPage
-        route={{ ...mockDynamicDrawerReportPageJson, form: mockForm }}
+        route={mockDynamicDrawerReportPageJson}
         setSubmitting={mockSetSubmitting}
       />
     </ReportContext.Provider>
@@ -41,7 +40,7 @@ describe("Test DynamicDrawerReportPage view", () => {
 describe("Test DynamicDrawerReportPage add entity operation", () => {
   test("Drawer opens correctly", async () => {
     render(dynamicDrawerSectionComponent);
-    const addEntityButton = screen.getAllByText("Add access measure")[0];
+    const addEntityButton = screen.getAllByText("Add TEMPORARY")[0];
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
