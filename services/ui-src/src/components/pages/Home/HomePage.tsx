@@ -3,16 +3,16 @@ import { useContext } from "react";
 import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminBannerContext,
+  AdminDashSelector,
   Banner,
   PageTemplate,
   TemplateCard,
 } from "components";
-import { AdminDashSelector } from "routes";
 // utils
 import { checkDateRangeStatus, useUser } from "utils";
 import verbiage from "verbiage/pages/home";
 
-export const Home = () => {
+export const HomePage = () => {
   const { bannerData } = useContext(AdminBannerContext);
   const { userIsStateUser, userIsStateRep } = useUser().user ?? {};
   const bannerIsActive = checkDateRangeStatus(

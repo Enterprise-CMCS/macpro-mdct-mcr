@@ -41,13 +41,14 @@ export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
+export { AdminDashSelector } from "./forms/AdminDashSelector";
 export { Form } from "./forms/Form";
 // icons
 export { Icon } from "./icons/Icon";
 // layout
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
-export { IntroSection } from "./layout/IntroSection";
+export { InfoSection } from "./layout/InfoSection";
 export { PageTemplate } from "./layout/PageTemplate";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
@@ -60,6 +61,14 @@ export { Sidebar } from "./menus/Sidebar";
 export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
+// pages
+export { AdminPage } from "./pages/Admin/AdminPage";
+export { HelpPage } from "./pages/Help/HelpPage";
+export { HomePage } from "./pages/Home/HomePage";
+export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+export { ProfilePage } from "./pages/Profile/ProfilePage";
+export { GetStartedPage } from "./pages/GetStarted/GetStartedPage";
+export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";

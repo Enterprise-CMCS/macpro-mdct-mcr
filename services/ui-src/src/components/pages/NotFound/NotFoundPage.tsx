@@ -8,7 +8,7 @@ import { makeMediaQueryClasses } from "utils";
 import warningIcon from "assets/icons/icon_warning.png";
 import verbiage from "verbiage/pages/not-found";
 
-export const NotFound = () => {
+export const NotFoundPage = () => {
   const mqClasses = makeMediaQueryClasses();
   const { header, subHeading, emailText, body } = verbiage;
   const { preLinkText, cmsEmail, postLinkText } = emailText;

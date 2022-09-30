@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
-import { AdminDashSelector } from "routes";
+import { AdminDashSelector } from "components";
 // utils
 import { mockAdminUser, RouterWrappedComponent } from "utils/testing/setupJest";
 import { useUser } from "utils";

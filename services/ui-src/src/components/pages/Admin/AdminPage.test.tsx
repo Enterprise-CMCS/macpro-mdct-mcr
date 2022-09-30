@@ -3,8 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // components
-import { Admin } from "routes";
-import { AdminBannerContext } from "components";
+import { AdminPage, AdminBannerContext } from "components";
 // utils
 import {
   RouterWrappedComponent,
@@ -33,12 +32,12 @@ const mockContextWithBanner = {
 const adminView = (context: any) => (
   <RouterWrappedComponent>
     <AdminBannerContext.Provider value={context}>
-      <Admin />
+      <AdminPage />
     </AdminBannerContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test /admin view banner manipulation functionality", () => {
+describe("Test AdminPage banner manipulation functionality", () => {
   it("Deletes current banner on delete button click", async () => {
     await act(async () => {
       await render(adminView(mockContextWithBanner));
@@ -51,14 +50,14 @@ describe("Test /admin view banner manipulation functionality", () => {
   });
 });
 
-describe("Test /admin view without banner", () => {
+describe("Test AdminPage without banner", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(adminView(mockContextWithoutBanner));
     });
   });
 
-  test("Check that /admin view renders", () => {
+  test("Check that AdminPage renders", () => {
     expect(screen.getByTestId("admin-view")).toBeVisible();
   });
 
@@ -76,14 +75,14 @@ describe("Test /admin view without banner", () => {
   });
 });
 
-describe("Test /admin view with banner", () => {
+describe("Test AdminPage with banner", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(adminView(mockContextWithBanner));
     });
   });
 
-  test("Check that /admin view renders", () => {
+  test("Check that AdminPage renders", () => {
     expect(screen.getByTestId("admin-view")).toBeVisible();
   });
 
@@ -102,7 +101,7 @@ describe("Test /admin view with banner", () => {
   });
 });
 
-describe("Test /admin view with active/inactive banner", () => {
+describe("Test AdminPage with active/inactive banner", () => {
   const currentTime = Date.now(); // 'current' time in ms since unix epoch
   const oneDay = 1000 * 60 * 60 * 24; // 1000ms * 60s * 60m * 24h = 86,400,000ms
   const context = mockContextWithBanner;
@@ -128,7 +127,7 @@ describe("Test /admin view with active/inactive banner", () => {
   });
 });
 
-describe("Test /admin delete banner error handling", () => {
+describe("Test AdminPage delete banner error handling", () => {
   it("Displays error if deleteBanner throws error", async () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const context = mockContextWithBanner;
@@ -144,7 +143,7 @@ describe("Test /admin delete banner error handling", () => {
   });
 });
 
-describe("Test /admin view accessibility", () => {
+describe("Test AdminPage accessibility", () => {
   it("Should not have basic accessibility issues without banner", async () => {
     const { container } = render(adminView(mockContextWithoutBanner));
     await act(async () => {

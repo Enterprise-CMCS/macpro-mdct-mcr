@@ -1,29 +1,29 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { Home } from "routes";
+import { HelpPage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 
-const homeView = (
+const helpView = (
   <RouterWrappedComponent>
-    <Home />
+    <HelpPage />
   </RouterWrappedComponent>
 );
 
-describe("Test Home view", () => {
+describe("Test HelpPage", () => {
   beforeEach(() => {
-    render(homeView);
+    render(helpView);
   });
 
-  test("Check that Home view renders", () => {
-    expect(screen.getByTestId("home-view")).toBeVisible();
+  test("Check that HelpPage renders", () => {
+    expect(screen.getByTestId("help-view")).toBeVisible();
   });
 });
 
-describe("Test Home view accessibility", () => {
+describe("Test HelpPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(homeView);
+    const { container } = render(helpView);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

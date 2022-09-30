@@ -1,18 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
-  Admin,
-  GetStarted,
-  Help,
-  Home,
-  NotFound,
-  Profile,
-  ReviewSubmit,
-} from "routes";
-import {
+  AdminPage,
   AdminBannerProvider,
   DashboardPage,
+  GetStartedPage,
+  HelpPage,
+  HomePage,
+  NotFoundPage,
+  ProfilePage,
   ReportPageWrapper,
+  ReviewSubmitPage,
 } from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 // utils
@@ -26,16 +24,16 @@ export const AppRoutes = () => {
       <ScrollToTopComponent />
       <AdminBannerProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/admin"
-            element={!userIsAdmin ? <Navigate to="/profile" /> : <Admin />}
+            element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
           />
-          <Route path="/help" element={<Help />} />
+          <Route path="/help" element={<HelpPage />} />
 
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<DashboardPage />} />
-          <Route path="/mcpar/get-started" element={<GetStarted />} />
+          <Route path="/mcpar/get-started" element={<GetStartedPage />} />
           {mcparReportRoutesFlat.map((route: ReportRoute) => {
             return (
               route.form &&
@@ -48,11 +46,14 @@ export const AppRoutes = () => {
               )
             );
           })}
-          <Route path="/mcpar/review-and-submit" element={<ReviewSubmit />} />
+          <Route
+            path="/mcpar/review-and-submit"
+            element={<ReviewSubmitPage />}
+          />
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AdminBannerProvider>
     </main>

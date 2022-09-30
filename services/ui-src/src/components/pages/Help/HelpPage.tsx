@@ -3,7 +3,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import { EmailCard, FaqAccordion, PageTemplate } from "components";
 import verbiage from "verbiage/pages/help";
 
-export const Help = () => {
+export const HelpPage = () => {
   const { intro, cards, accordionItems } = verbiage;
   return (
     <PageTemplate data-testid="help-view">

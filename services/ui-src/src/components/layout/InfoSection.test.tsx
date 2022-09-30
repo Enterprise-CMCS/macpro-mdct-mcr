@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import { IntroSection } from "components";
+import { InfoSection } from "components";
 
 const content = {
   sectionNumber: 1,
@@ -9,18 +9,18 @@ const content = {
   widget: {},
 };
 
-const introSectionComponent = (
-  <IntroSection data-testid="section-component" content={content} />
+const InfoSectionComponent = (
+  <InfoSection data-testid="section-component" content={content} />
 );
 
-describe("Test IntroSection", () => {
+describe("Test InfoSection", () => {
   test("Check that Section renders", () => {
-    const { getByTestId } = render(introSectionComponent);
+    const { getByTestId } = render(InfoSectionComponent);
     expect(getByTestId("section-component")).toBeVisible();
   });
 
   test("should see that there is a section number and associated content", async () => {
-    render(introSectionComponent);
+    render(InfoSectionComponent);
     const sectionNumber = screen.getByText("1");
     await expect(sectionNumber).toBeVisible();
     const sectionHeader = screen.getByText(content.header);
@@ -28,9 +28,9 @@ describe("Test IntroSection", () => {
   });
 });
 
-describe("Test IntroSection accessibility", () => {
+describe("Test InfoSection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(introSectionComponent);
+    const { container } = render(InfoSectionComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

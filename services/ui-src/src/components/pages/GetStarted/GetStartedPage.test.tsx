@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { GetStarted } from "routes";
+import { GetStartedPage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // verbiage
@@ -19,16 +19,16 @@ jest.mock("react-router-dom", () => ({
 
 const dashboardView = (
   <RouterWrappedComponent>
-    <GetStarted />
+    <GetStartedPage />
   </RouterWrappedComponent>
 );
 
-describe("Test /mcpar/get-started view", () => {
+describe("Test GetStartedPage", () => {
   beforeEach(() => {
     render(dashboardView);
   });
 
-  test("Check that /mcpar/get-started view renders", () => {
+  test("Check that GetStartedPage renders", () => {
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
   });
 
@@ -40,7 +40,7 @@ describe("Test /mcpar/get-started view", () => {
   });
 });
 
-describe("Test /mcpar/get-started view accessibility", () => {
+describe("Test GetStartedPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(dashboardView);
     const results = await axe(container);

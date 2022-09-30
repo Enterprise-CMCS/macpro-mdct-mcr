@@ -1,18 +1,18 @@
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { NotFound } from "routes";
+import { NotFoundPage } from "components";
 
-const notFoundView = <NotFound />;
+const notFoundView = <NotFoundPage />;
 
-describe("Test NotFound 404 view", () => {
-  test("Check that NotFound 404 page renders", () => {
+describe("Test NotFoundPage (404)", () => {
+  test("Check that page renders", () => {
     const { getByTestId } = render(notFoundView);
     expect(getByTestId("404-view")).toBeVisible();
   });
 });
 
-describe("Test NotFound 404 view accessibility", () => {
+describe("Test NotFoundPage (404) accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(notFoundView);
     const results = await axe(container);
