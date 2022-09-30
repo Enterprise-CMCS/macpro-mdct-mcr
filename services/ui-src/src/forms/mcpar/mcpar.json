@@ -542,10 +542,7 @@
           "intro": {
             "section": "C: Program-Level Indicators",
             "subsection": "Topic I: Program Characteristics",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["C1_Program_Set"]
-            }
+            "spreadsheet": "C1_Program_Set"
           },
           "form": {
             "id": "cpc",
@@ -697,10 +694,7 @@
           "intro": {
             "section": "C: Program-Level Indicators",
             "subsection": "Topic III: Encounter Data Report",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["C1_Program_Set"]
-            }
+            "spreadsheet": "C1_Program_Set"
           },
           "form": {
             "id": "cedr",
@@ -853,10 +847,7 @@
           "intro": {
             "section": "C: Program-Level Indicators",
             "subsection": "Topic IV. Grievances, Appeals & State Fair Hearings",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["C1_Program_Set"]
-            }
+            "spreadsheet": "C1_Program_Set"
           },
           "form": {
             "id": "casfhag",
@@ -911,10 +902,7 @@
               "intro": {
                 "section": "C: Program-Level Indicators",
                 "subsection": "Topic V. Availability/Accessibility: Network Adequacy",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["C1_Program_Set"]
-                },
+                "spreadsheet": "C1_Program_Set",
                 "info": [
                   {
                     "type": "heading",
@@ -955,13 +943,11 @@
               "name": "Access Measures",
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
               "pageType": "dynamicDrawer",
+              "dynamicType": "accessMeasures",
               "intro": {
                 "section": "Section C: Program-Level Indicators",
                 "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["C2_Program_State"]
-                },
+                "spreadsheet": "C2_Program_State",
                 "info": [
                   {
                     "type": "html",
@@ -1330,10 +1316,7 @@
           "intro": {
             "section": "C: Program-Level Indicators",
             "subsection": "Topic IX: Beneficiary Support System (BSS)",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["C1_Program_Set"]
-            }
+            "spreadsheet": "C1_Program_Set"
           },
           "form": {
             "id": "cbss",
@@ -1384,10 +1367,7 @@
           "intro": {
             "section": "C: Program-Level Indicators",
             "subsection": "Topic X: Program Integrity",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["C1_Program_Set"]
-            }
+            "spreadsheet": "C1_Program_Set"
           },
           "form": {
             "id": "cpi",
@@ -1428,10 +1408,7 @@
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic I. Program Characteristics & Enrollment",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["D1_Plan_Set"]
-            }
+            "spreadsheet": "D1_Plan_Set"
           },
           "dashboard": {
             "title": "Report program characteristics & enrollment for each plan"
@@ -1483,10 +1460,7 @@
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic II. Financial Performance",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["D1_Plan_Set"]
-            }
+            "spreadsheet": "D1_Plan_Set"
           },
           "dashboard": {
             "title": "Report financial performance for each plan"
@@ -1620,10 +1594,7 @@
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic III. Encounter Data",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["D1_Plan_Set"]
-            }
+            "spreadsheet": "D1_Plan_Set"
           },
           "dashboard": {
             "title": "Report on encounter data for each plan"
@@ -1678,10 +1649,7 @@
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["D1_Plan_Set"]
-                }
+                "spreadsheet": "D1_Plan_Set"
               },
               "dashboard": {
                 "title": "Report on appeals for each plan"
@@ -1833,10 +1801,7 @@
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["D1_Plan_Set"]
-                },
+                "spreadsheet": "D1_Plan_Set",
                 "info": [
                   {
                     "type": "heading",
@@ -1969,10 +1934,7 @@
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["D1_Plan_Set"]
-                },
+                "spreadsheet": "D1_Plan_Set",
                 "info": [
                   {
                     "type": "heading",
@@ -2061,10 +2023,7 @@
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["D1_Plan_Set"]
-                }
+                "spreadsheet": "D1_Plan_Set"
               },
               "dashboard": {
                 "title": "Report on grievances for each plan"
@@ -2136,10 +2095,7 @@
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["D1_Plan_Set"]
-                },
+                "spreadsheet": "D1_Plan_Set",
                 "info": [
                   {
                     "type": "heading",
@@ -2272,10 +2228,7 @@
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": {
-                  "title": "Find in the Excel Workbook",
-                  "descriptionList": ["D1_Plan_Set"]
-                },
+                "spreadsheet": "D1_Plan_Set",
                 "info": [
                   {
                     "type": "heading",
@@ -2422,13 +2375,11 @@
           "name": "VII: Quality Measures",
           "path": "/mcpar/plan-level-indicators/quality-measures",
           "pageType": "dynamicDrawer",
+          "dynamicType": "qualityMeasures",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic VII: Quality Measures",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["D2_Plan_Measures"]
-            },
+            "spreadsheet": "D2_Plan_Measures",
             "info": [
               {
                 "type": "html",
@@ -2675,13 +2626,11 @@
           "name": "VIII: Sanctions",
           "path": "/mcpar/plan-level-indicators/sanctions",
           "pageType": "dynamicDrawer",
+          "dynamicType": "sanctions",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic VIII. Sanctions",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["D3_Plan_Sanctions"]
-            },
+            "spreadsheet": "D3_Plan_Sanctions",
             "info": [
               {
                 "type": "html",
@@ -2889,10 +2838,7 @@
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic X. Program Integrity",
-            "spreadsheet": {
-              "title": "Find in the Excel Workbook",
-              "descriptionList": ["D1_Plan_Set"]
-            }
+            "spreadsheet": "D1_Plan_Set"
           },
           "dashboard": {
             "title": "Report on program integrity for each plan"
@@ -3094,10 +3040,7 @@
       "intro": {
         "section": "Section E: BSS Entity Indicators",
         "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
-        "spreadsheet": {
-          "title": "Find in the Excel Workbook",
-          "descriptionList": ["E_BSS_Entities"]
-        },
+        "spreadsheet": "E_BSS_Entities",
         "info": [
           {
             "type": "span",

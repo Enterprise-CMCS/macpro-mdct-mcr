@@ -55,7 +55,7 @@ export interface ReportRouteWithForm extends ReportRouteBase {
   intro?: {
     section: string;
     subsection: string;
-    spreadsheet?: AnyObject;
+    spreadsheet?: string;
     info?: string | AnyObject[];
   };
   children?: never;

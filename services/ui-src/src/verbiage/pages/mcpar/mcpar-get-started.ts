@@ -24,13 +24,9 @@ export default {
           alt: "Image of side navigation in the application ",
           description: "Preview of the online MCPAR form navigation.",
         },
-        spreadsheetWidget: {
-          iconDescription: "Excel Workbook Icon",
-          title: "Find in the Excel Workbook",
-          descriptionList: ["A_Program_Info"],
-          additionalInfo:
-            "Use these guides to understand which sections match specific tabs in the Excel workbook.",
-        },
+        spreadsheet: "A_Program_Info",
+        additionalInfo:
+          "Use these guides to understand which sections match specific tabs in the Excel workbook.",
       },
       {
         sectionNumber: 3,
