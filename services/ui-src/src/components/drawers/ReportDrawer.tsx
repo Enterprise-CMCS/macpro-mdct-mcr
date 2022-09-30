@@ -3,8 +3,11 @@ import { MouseEventHandler, useContext } from "react";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 import { Drawer, Form, ReportContext } from "components";
+// utils
+import { useUser } from "utils";
 // types
 import { AnyObject, FormJson } from "types";
+import { closeText, saveAndCloseText } from "../../constants";
 
 export const ReportDrawer = ({
   drawerDisclosure,
@@ -17,6 +20,14 @@ export const ReportDrawer = ({
   ...props
 }: Props) => {
   const { report } = useContext(ReportContext);
+
+  // determine if fields should be disabled (based on admin roles )
+  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
+    useUser().user ?? {};
+  const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+
+  const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
+
   return (
     <Drawer
       drawerDisclosure={drawerDisclosure}
@@ -32,14 +43,16 @@ export const ReportDrawer = ({
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
-          <Button
-            variant="outline"
-            onClick={drawerDisclosure.onClose as MouseEventHandler}
-          >
-            Cancel
-          </Button>
+          {!isAdminTypeUser && (
+            <Button
+              variant="outline"
+              onClick={drawerDisclosure.onClose as MouseEventHandler}
+            >
+              Cancel
+            </Button>
+          )}
           <Button type="submit" form={form.id} sx={sx.saveButton}>
-            {submitting ? <Spinner size="small" /> : "Save & Close"}
+            {submitting ? <Spinner size="small" /> : buttonText}
           </Button>
         </Flex>
       </Box>
