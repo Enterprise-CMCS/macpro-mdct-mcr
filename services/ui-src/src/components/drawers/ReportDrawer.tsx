@@ -7,6 +7,7 @@ import { Drawer, Form, ReportContext } from "components";
 import { useUser } from "utils";
 // types
 import { AnyObject, FormJson } from "types";
+// constants
 import { closeText, saveAndCloseText } from "../../constants";
 
 export const ReportDrawer = ({
@@ -21,7 +22,7 @@ export const ReportDrawer = ({
 }: Props) => {
   const { report } = useContext(ReportContext);
 
-  // determine if fields should be disabled (based on admin roles )
+  // determine if fields should be disabled (based on admin roles)
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
   const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
