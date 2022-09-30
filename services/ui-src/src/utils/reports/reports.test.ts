@@ -1,4 +1,3 @@
-import { ReportJson } from "types";
 import {
   flattenReportRoutesArray,
   sortReportsOldestToNewest,
@@ -12,6 +11,7 @@ import {
   mockReportRoutes,
   mockReport,
   mockStandardReportPageJson,
+  mockReportJson,
 } from "utils/testing/setupJest";
 
 describe("Test flattenReportRoutesArray", () => {
@@ -51,35 +51,24 @@ describe("Test sortReportsOldestToNewest", () => {
 });
 
 describe("Test copyAdminDisabledStatusToForms", () => {
-  const newReportJson: ReportJson = {
-    name: "mockJson",
-    basePath: "/base/mockJson",
-    adminDisabled: true,
-    routes: [
-      {
-        ...mockStandardReportPageJson,
-        name: "mock-route-1",
-        path: "/mock/mock-route-1",
-        form: {
-          id: "mock-form-id",
-          fields: [
-            {
-              id: "mock-1",
-              type: "text",
-              validation: "text",
-              props: {
-                label: "mock field",
-              },
-            },
-          ],
-        },
-      },
-    ],
-  };
-  it("should be disabled for admin user", () => {
-    const report = copyAdminDisabledStatusToForms(newReportJson);
-    const form = report.routes[0].form;
-    expect(form!.adminDisabled).toBeTruthy();
+  it("should copy disabled status to all form types", () => {
+    const mockAdminDisabledReportJson = {
+      ...mockReportJson,
+      adminDisabled: true,
+    };
+    const output = copyAdminDisabledStatusToForms(mockAdminDisabledReportJson);
+
+    const testStandardPageForm = output.routes[0].form;
+    const testEntityDrawerPageForm = output.routes[1].children![0].drawer!.form;
+    const testDynamicDrawerPageModalForm =
+      output.routes[1].children![1].modal!.form;
+    const testDynamicDrawerPageDrawerForm =
+      output.routes[1].children![1].drawer!.form;
+
+    expect(testStandardPageForm!.adminDisabled).toBeTruthy();
+    expect(testEntityDrawerPageForm!.adminDisabled).toBeTruthy();
+    expect(testDynamicDrawerPageModalForm!.adminDisabled).toBeTruthy();
+    expect(testDynamicDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
   });
 });
 

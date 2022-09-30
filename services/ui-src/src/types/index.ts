@@ -47,6 +47,7 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
+  pageType?: string;
 }
 
 export type ReportRouteWithForm =
@@ -56,7 +57,6 @@ export type ReportRouteWithForm =
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
-  pageType: string;
   intro?: {
     section: string;
     subsection: string;
