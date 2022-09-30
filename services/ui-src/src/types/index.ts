@@ -75,6 +75,7 @@ export interface EntityDrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   dashboard: AnyObject;
   drawer: ReportPageDrawer;
+  dynamicType?: never;
   modal?: never;
   form?: never;
 }
@@ -84,15 +85,18 @@ export interface DynamicDrawerReportPageShape extends ReportPageShapeBase {
   dashboard: AnyObject;
   modal: ReportPageModal;
   drawer: ReportPageDrawer;
+  entityType?: never;
   form?: never;
 }
 
 export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
   pageType?: never;
-  form?: never;
+  entityType?: never;
+  dynamicType?: never;
   modal?: never;
   drawer?: never;
+  form?: never;
 }
 
 export interface ReportPageDrawer {
