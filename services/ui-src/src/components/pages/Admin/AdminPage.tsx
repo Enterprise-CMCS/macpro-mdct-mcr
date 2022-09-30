@@ -34,7 +34,6 @@ export const AdminPage = () => {
     } catch (error: any) {
       setError(bannerErrors.DELETE_BANNER_FAILED);
     }
-    setSubmitting(false);
   };
 
   return (
@@ -81,7 +80,10 @@ export const AdminPage = () => {
       </Box>
       <Flex sx={sx.newBannerBox}>
         <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-        <AdminBannerForm writeAdminBanner={writeAdminBanner} />
+        <AdminBannerForm
+          writeAdminBanner={writeAdminBanner}
+          reset={setSubmitting}
+        />
       </Flex>
     </PageTemplate>
   );
