@@ -105,7 +105,7 @@ describe("Test EntityDrawerReportPage with entities", () => {
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock text field");
+    const textField = await screen.getByLabelText("mock drawer text field");
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test");
     const saveAndCloseButton = screen.getByText(saveAndCloseText);
@@ -120,7 +120,7 @@ describe("Test EntityDrawerReportPage with entities", () => {
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock text field");
+    const textField = await screen.getByLabelText("mock drawer text field");
     expect(textField).toBeVisible();
     const saveAndCloseButton = screen.queryByText(saveAndCloseText);
     expect(saveAndCloseButton).toBeFalsy();

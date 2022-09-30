@@ -174,6 +174,24 @@ export const mockFormField = {
   },
 };
 
+export const mockModalFormField = {
+  id: "mock-modal-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock modal text field",
+  },
+};
+
+export const mockDrawerFormField = {
+  id: "mock-drawer-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock drawer text field",
+  },
+};
+
 export const mockNestedFormField = {
   id: "mock-nested-field",
   type: "radio",
@@ -206,6 +224,16 @@ export const mockForm = {
   fields: [mockFormField],
 };
 
+export const mockModalForm = {
+  id: "mock-modal-form-id",
+  fields: [mockModalFormField],
+};
+
+export const mockDrawerForm = {
+  id: "mock-drawer-form-id",
+  fields: [mockDrawerFormField],
+};
+
 export const mockPlanFilledForm = {
   id: "mock-form-id",
   fields: [mockPlanField],
@@ -236,7 +264,7 @@ export const mockEntityDrawerReportPageJson = {
   },
   drawer: {
     title: "Mock drawer title",
-    form: mockForm,
+    form: mockDrawerForm,
   },
 };
 
@@ -253,11 +281,11 @@ export const mockDynamicDrawerReportPageJson = {
     title: "Mock dashboard title",
   },
   modal: {
-    form: mockForm,
+    form: mockModalForm,
   },
   drawer: {
     title: "Mock drawer title",
-    form: mockForm,
+    form: mockDrawerForm,
   },
 };
 
