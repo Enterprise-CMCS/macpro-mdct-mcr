@@ -47,29 +47,24 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  page?: PageJson;
   [key: string]: any;
 }
 
 export interface ReportRouteWithForm extends ReportRouteBase {
+  pageType: string;
+  intro?: {
+    section: string;
+    subsection: string;
+    spreadsheet?: AnyObject;
+    info?: string | AnyObject[];
+  };
   children?: never;
 }
 
 export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
+  pageType?: never;
   form?: never;
-}
-
-export interface PageJson {
-  pageType?: string;
-  intro?: AnyObject;
-  [key: string]: any;
-}
-
-export enum ReportStatus {
-  NOT_STARTED = "Not started",
-  IN_PROGRESS = "In progress",
-  SUBMITTED = "Submitted",
 }
 
 // REPORT PROVIDER/CONTEXT
@@ -82,7 +77,7 @@ export interface ReportKeys {
 export interface ReportShape extends ReportKeys {
   reportType: string;
   programName: string;
-  status: string;
+  status: ReportStatus;
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;
   dueDate: number;
@@ -110,6 +105,12 @@ export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
   reportsByState: ReportShape[] | undefined;
   errorMessage?: string | undefined;
+}
+
+export enum ReportStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  SUBMITTED = "Submitted",
 }
 
 // FORM & FIELD STRUCTURE

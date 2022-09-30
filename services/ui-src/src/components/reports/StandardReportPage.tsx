@@ -5,10 +5,10 @@ import { Box } from "@chakra-ui/react";
 import { Form, ReportContext } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
-import { AnyObject, FormJson, ReportStatus } from "types";
+import { AnyObject, ReportRouteWithForm, ReportStatus } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const StandardReportPage = ({ form, setSubmitting }: Props) => {
+export const StandardReportPage = ({ route, setSubmitting }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -36,8 +36,8 @@ export const StandardReportPage = ({ form, setSubmitting }: Props) => {
   return (
     <Box data-testid="standard-page">
       <Form
-        id={form.id}
-        formJson={form}
+        id={route.form.id}
+        formJson={route.form}
         onSubmit={onSubmit}
         formData={report}
       />
@@ -46,6 +46,6 @@ export const StandardReportPage = ({ form, setSubmitting }: Props) => {
 };
 
 interface Props {
-  form: FormJson;
+  route: ReportRouteWithForm;
   setSubmitting: Function;
 }

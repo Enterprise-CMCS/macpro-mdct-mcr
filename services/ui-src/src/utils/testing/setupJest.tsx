@@ -211,7 +211,9 @@ export const mockPlanFilledForm = {
   fields: [mockPlanField],
 };
 
-export const mockPageJson = {
+export const mockStandardReportPageJson = {
+  name: "mock-route-1",
+  path: "/mock/mock-route-1",
   pageType: "standard",
   intro: {
     section: "mock section",
@@ -219,7 +221,9 @@ export const mockPageJson = {
   },
 };
 
-export const mockPageJsonEntityDrawer = {
+export const mockEntityDrawerReportPageJson = {
+  name: "mock-route-2a",
+  path: "/mock/mock-route-2a",
   pageType: "entityDrawer",
   entityType: "plans",
   intro: {
@@ -234,7 +238,9 @@ export const mockPageJsonEntityDrawer = {
   },
 };
 
-export const mockPageJsonDynamicDrawer = {
+export const mockDynamicDrawerReportPageJson = {
+  name: "mock-route-2b",
+  path: "/mock/mock-route-2b",
   pageType: "dynamicDrawer",
   intro: {
     section: "mock section",
@@ -250,9 +256,7 @@ export const mockPageJsonDynamicDrawer = {
 
 export const mockReportRoutes = [
   {
-    name: "mock-route-1",
-    path: "/mock/mock-route-1",
-    page: mockPageJson,
+    ...mockStandardReportPageJson,
     form: mockForm,
   },
   {
@@ -260,15 +264,11 @@ export const mockReportRoutes = [
     path: "/mock/mock-route-2",
     children: [
       {
-        name: "mock-route-2a",
-        path: "/mock/mock-route-2a",
-        page: mockPageJsonEntityDrawer,
+        ...mockEntityDrawerReportPageJson,
         form: mockPlanFilledForm,
       },
       {
-        name: "mock-route-2b",
-        path: "/mock/mock-route-2b",
-        page: mockPageJsonDynamicDrawer,
+        ...mockDynamicDrawerReportPageJson,
         form: mockForm,
       },
     ],
@@ -277,21 +277,15 @@ export const mockReportRoutes = [
 
 export const mockFlattenedReportRoutes = [
   {
-    name: "mock-route-1",
-    path: "/mock/mock-route-1",
-    page: mockPageJson,
+    ...mockStandardReportPageJson,
     form: mockForm,
   },
   {
-    name: "mock-route-2a",
-    path: "/mock/mock-route-2a",
-    page: mockPageJsonEntityDrawer,
+    ...mockEntityDrawerReportPageJson,
     form: mockPlanFilledForm,
   },
   {
-    name: "mock-route-2b",
-    path: "/mock/mock-route-2b",
-    page: mockPageJsonDynamicDrawer,
+    ...mockDynamicDrawerReportPageJson,
     form: mockForm,
   },
 ];

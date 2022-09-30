@@ -9,9 +9,9 @@ import {
   mockFlattenedReportRoutes,
   mockFormField,
   mockNestedFormField,
-  mockPageJson,
   mockReportRoutes,
   mockReport,
+  mockStandardReportPageJson,
 } from "utils/testing/setupJest";
 
 describe("Test flattenReportRoutesArray", () => {
@@ -57,15 +57,9 @@ describe("Test copyAdminDisabledStatusToForms", () => {
     adminDisabled: true,
     routes: [
       {
+        ...mockStandardReportPageJson,
         name: "mock-route-1",
         path: "/mock/mock-route-1",
-        page: {
-          pageType: "standard",
-          intro: {
-            section: "mock section",
-            subsection: "mock subsection",
-          },
-        },
         form: {
           id: "mock-form-id",
           fields: {
@@ -92,18 +86,18 @@ const mockField3 = { ...mockFormField, id: "mock-3" };
 
 const mockFlatRoutes = [
   {
+    ...mockStandardReportPageJson,
     name: "mock-route-1",
     path: "/mock/mock-route-1",
-    page: mockPageJson,
     form: {
       id: "mock-form-id-1",
       fields: [mockField1],
     },
   },
   {
+    ...mockStandardReportPageJson,
     name: "mock-route-2",
     path: "/mock/mock-route-2",
-    page: mockPageJson,
     form: {
       id: "mock-form-id-2",
       fields: [mockField2, mockField3],

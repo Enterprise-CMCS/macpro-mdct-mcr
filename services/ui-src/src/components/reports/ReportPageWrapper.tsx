@@ -14,13 +14,12 @@ import {
 } from "components";
 // utils
 import { useUser } from "utils";
-import { FormJson, PageJson, PageTypes, ReportRoute } from "types";
+import { PageTypes, ReportRouteWithForm } from "types";
 
 export const ReportPageWrapper = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   // get report, form, and page related-data
   const { report } = useContext(ReportContext);
-  const { form, page } = route;
 
   const { state } = useUser().user ?? {};
 
@@ -37,37 +36,37 @@ export const ReportPageWrapper = ({ route }: Props) => {
     }
   }, [reportId, reportState]);
 
-  const renderPageSection = (form: FormJson, page?: PageJson) => {
-    switch (page?.pageType) {
+  const renderPageSection = (route: ReportRouteWithForm) => {
+    switch (route.pageType) {
       case PageTypes.ENTITY_DRAWER:
         return (
           <EntityDrawerReportPage
-            form={form}
-            page={page}
+            route={route}
             submittingState={{ submitting, setSubmitting }}
           />
         );
       case PageTypes.DYNAMIC_DRAWER:
         return (
           <DynamicDrawerReportPage
-            form={form}
-            dynamicTable={page.dynamicTable}
+            route={route}
             setSubmitting={setSubmitting}
           />
         );
       default:
-        return <StandardReportPage form={form} setSubmitting={setSubmitting} />;
+        return (
+          <StandardReportPage route={route} setSubmitting={setSubmitting} />
+        );
     }
   };
 
   return (
-    <PageTemplate type="report" data-testid={form.id}>
+    <PageTemplate type="report" data-testid={route.form.id}>
       <Flex sx={sx.pageContainer}>
         <Sidebar />
         <Flex sx={sx.reportContainer}>
-          {page?.intro && <ReportPageIntro text={page.intro} />}
-          {renderPageSection(form, page)}
-          <ReportPageFooter submitting={submitting} form={form} />
+          {route.intro && <ReportPageIntro text={route.intro} />}
+          {renderPageSection(route)}
+          <ReportPageFooter submitting={submitting} form={route.form} />
         </Flex>
       </Flex>
     </PageTemplate>
@@ -75,7 +74,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
 };
 
 interface Props {
-  route: ReportRoute;
+  route: ReportRouteWithForm;
 }
 
 const sx = {

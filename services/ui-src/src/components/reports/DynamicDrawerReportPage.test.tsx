@@ -5,8 +5,8 @@ import { axe } from "jest-axe";
 import { ReportContext, DynamicDrawerReportPage } from "components";
 // utils
 import {
+  mockDynamicDrawerReportPageJson,
   mockForm,
-  mockPageJsonDynamicDrawer,
   mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -24,8 +24,7 @@ const dynamicDrawerSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <DynamicDrawerReportPage
-        form={mockForm}
-        dynamicTable={mockPageJsonDynamicDrawer.dynamicTable}
+        route={{ ...mockDynamicDrawerReportPageJson, form: mockForm }}
         setSubmitting={mockSetSubmitting}
       />
     </ReportContext.Provider>
