@@ -13,6 +13,11 @@ export const fetchBanner = handler(async (event, _context) => {
       key: event?.pathParameters?.bannerId!,
     },
   };
-  const queryResponse = await dynamoDb.get(params);
-  return { status: StatusCodes.SUCCESS, body: queryResponse };
+  const response = await dynamoDb.get(params);
+
+  let status = StatusCodes.SUCCESS;
+  if (!response?.Item) {
+    status = StatusCodes.NOT_FOUND;
+  }
+  return { status: status, body: response };
 });

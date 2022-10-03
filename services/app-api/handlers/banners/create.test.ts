@@ -48,7 +48,7 @@ describe("Test createBanner API method", () => {
 
   test("Test Successful Run of Banner Creation", async () => {
     const res = await createBanner(testEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");
   });
