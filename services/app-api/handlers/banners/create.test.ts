@@ -4,13 +4,6 @@ import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
-jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  __esModule: true,
-  default: {
-    put: jest.fn(),
-  },
-}));
-
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
@@ -36,10 +29,6 @@ const testEventWithInvalidData: APIGatewayProxyEvent = {
 };
 
 describe("Test createBanner API method", () => {
-  beforeEach(() => {
-    process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
-  });
-
   test("Test unauthorized banner creation throws 403 error", async () => {
     const res = await createBanner(testEvent, null);
     expect(res.statusCode).toBe(403);
