@@ -29,18 +29,25 @@ export const AddEditRecordModal = ({
       state: report?.state,
       id: report?.id,
     };
+    const currentDynamicTypeRecords = report?.fieldData?.[dynamicType] || {};
     if (selectedRecord?.id) {
       // if existing record selected, edit
+      const selectedRecordIndex = currentDynamicTypeRecords.indexOf(
+        (record: AnyObject) => record.id === selectedRecord.id
+      );
+      const updatedDynamicTypeRecords = currentDynamicTypeRecords.splice(
+        selectedRecordIndex,
+        1,
+        {
+          id: selectedRecord.id,
+          ...formData,
+        }
+      );
       await updateReport(reportKeys, {
         lastAlteredBy: full_name,
         reportStatus: ReportStatus.IN_PROGRESS,
         fieldData: {
-          [dynamicType]: [
-            {
-              id: selectedRecord.id,
-              ...formData,
-            },
-          ],
+          [dynamicType]: updatedDynamicTypeRecords,
         },
       });
     } else {
@@ -50,6 +57,7 @@ export const AddEditRecordModal = ({
         reportStatus: ReportStatus.IN_PROGRESS,
         fieldData: {
           [dynamicType]: [
+            ...currentDynamicTypeRecords,
             {
               id: uuid(),
               ...formData,
