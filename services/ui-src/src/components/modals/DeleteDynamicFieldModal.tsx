@@ -2,15 +2,17 @@
 import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 import { Modal } from "components";
+import { useState } from "react";
+// types
 import { EntityShape, EntityType } from "types";
 
 export const DeleteDynamicFieldModal = ({
   selectedRecord,
   removeRecord,
   entityType,
-  submitting,
   modalDisclosure,
 }: Props) => {
+  const [deleting, setDeleting] = useState<boolean>(false);
   const convertToReadableEntityName = (name: any) => {
     const fieldTypeMap = {
       plans: "Plan",
@@ -21,7 +23,9 @@ export const DeleteDynamicFieldModal = ({
   };
 
   const deleteProgramHandler = async () => {
+    setDeleting(true);
     removeRecord(selectedRecord);
+    setDeleting(false);
     modalDisclosure.onClose();
   };
 
@@ -31,7 +35,7 @@ export const DeleteDynamicFieldModal = ({
       modalDisclosure={modalDisclosure}
       content={{
         heading: `Delete ${convertToReadableEntityName(entityType)}`,
-        actionButtonText: submitting ? (
+        actionButtonText: deleting ? (
           <Spinner size="small" />
         ) : (
           `Yes, delete ${convertToReadableEntityName(entityType)}`
@@ -53,7 +57,6 @@ interface Props {
   selectedRecord?: EntityShape;
   removeRecord: Function;
   entityType: EntityType;
-  submitting?: boolean;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
