@@ -71,6 +71,25 @@ describe("Test DynamicField component", () => {
     expect(removeButton).not.toBeVisible();
     expect(appendButton).toBeVisible();
   });
+
+  test("Removing all dynamic fields still leaves 1 open", async () => {
+    // verify there is one input
+    const inputBoxLabel = screen.getAllByText("test-label");
+    expect(inputBoxLabel).toHaveLength(1);
+
+    // click remove
+    const removeButton = screen.queryAllByTestId("removeButton")[0];
+    await userEvent.click(removeButton);
+
+    // click delete in modal
+    const deleteButton = screen.getByText("Yes, delete Plan");
+    await userEvent.click(deleteButton);
+
+    // verify that there is still one field available
+    const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
+    expect(inputBoxLabelAfterRemove).toHaveLength(1);
+    expect(removeButton).not.toBeVisible();
+  });
 });
 
 describe("Test typing into DynamicField component", () => {
