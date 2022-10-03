@@ -2,19 +2,37 @@ import { useEffect, useState } from "react";
 import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { svgFilters } from "styles/theme";
 // utils
-import { EntityShape, InputChangeEvent } from "types";
+import { EntityShape, EntityType, InputChangeEvent } from "types";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import { DeleteDynamicFieldModal } from "components";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // get form context and register field
   const form = useFormContext();
   form.register(name);
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
+  const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
+    undefined
+  );
+
+  const openDeleteProgramModal = (index: number) => {
+    setSelectedRecord(displayValues[index]);
+  };
+
+  useEffect(() => {
+    if (selectedRecord) deleteProgramModalOnOpenHandler();
+  }, [selectedRecord]);
+
+  const {
+    isOpen: deleteProgramModalIsOpen,
+    onOpen: deleteProgramModalOnOpenHandler,
+    onClose: deleteProgramModalOnCloseHandler,
+  } = useDisclosure();
 
   // make formfield dynamic array with config options
   const { append, remove } = useFieldArray({
@@ -39,7 +57,10 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
-  const removeRecord = (index: number) => {
+  const removeRecord = (selectedRecord: EntityShape) => {
+    const index = displayValues.findIndex(
+      (entity: EntityShape) => entity.id === selectedRecord.id
+    );
     remove(index);
     const newDisplayValues = [...displayValues];
     newDisplayValues.splice(index, 1);
@@ -80,7 +101,8 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
             />
             <Box sx={sx.removeBox}>
               <button
-                onClick={() => removeRecord(index)}
+                type="button"
+                onClick={() => openDeleteProgramModal(index)}
                 data-testid="removeButton"
               >
                 {!props?.disabled && (
@@ -104,12 +126,21 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           Add a row
         </Button>
       )}
+      <DeleteDynamicFieldModal
+        selectedRecord={selectedRecord}
+        removeRecord={removeRecord}
+        entityType={name}
+        modalDisclosure={{
+          isOpen: deleteProgramModalIsOpen,
+          onClose: deleteProgramModalOnCloseHandler,
+        }}
+      />
     </Box>
   );
 };
 
 interface Props {
-  name: string;
+  name: EntityType;
   label: string;
   [key: string]: any;
 }

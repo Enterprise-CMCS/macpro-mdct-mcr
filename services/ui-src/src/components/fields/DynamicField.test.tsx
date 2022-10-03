@@ -13,7 +13,7 @@ const MockForm = () => {
   return (
     <FormProvider {...form}>
       <form id={"uniqueId"} onSubmit={form.handleSubmit(jest.fn())}>
-        <DynamicField name="testDynamicField" label="test-label" />;
+        <DynamicField name="plans" label="test-label" />;
       </form>
     </FormProvider>
   );
@@ -60,6 +60,12 @@ describe("Test DynamicField component", () => {
     // click remove
     const removeButton = screen.queryAllByTestId("removeButton")[1];
     await userEvent.click(removeButton);
+
+    // click delete in modal
+    const deleteButton = screen.getByText("Yes, delete Plan");
+    await userEvent.click(deleteButton);
+
+    // verify that the field is removed
     const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
     expect(inputBoxLabelAfterRemove).toHaveLength(1);
     expect(removeButton).not.toBeVisible();
@@ -70,9 +76,8 @@ describe("Test DynamicField component", () => {
 describe("Test typing into DynamicField component", () => {
   test("DynamicField accepts input", async () => {
     const result = render(dynamicFieldComponent);
-    const firstDynamicField: HTMLInputElement = result.container.querySelector(
-      "[name='testDynamicField[0]']"
-    )!;
+    const firstDynamicField: HTMLInputElement =
+      result.container.querySelector("[name='plans[0]']")!;
     expect(firstDynamicField).toBeVisible();
     await userEvent.type(firstDynamicField, "123");
     expect(firstDynamicField.value).toEqual("123");
