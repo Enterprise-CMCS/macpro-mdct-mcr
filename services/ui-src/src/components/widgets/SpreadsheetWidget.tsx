@@ -4,42 +4,30 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 // assets
 import greenSpreadsheetIcon from "../../assets/icons/icon_spreadsheet_green.png";
 
-export const SpreadsheetWidget = ({ content, ...props }: Props) => {
+export const SpreadsheetWidget = ({ description, ...props }: Props) => {
   return (
     <Box {...props}>
       <Flex sx={sx.container}>
         <Flex sx={sx.iconContainer}>
           <Image
             src={greenSpreadsheetIcon}
-            alt={"Excel Workbook Icon"}
+            alt="Excel Workbook Icon"
             sx={sx.icon}
           />
         </Flex>
         <Box>
-          <Text sx={sx.title}>{content.title}</Text>
+          <Text sx={sx.title}>Find in the Excel Workbook</Text>
           <Box>
-            {content.descriptionList.map((description: any, index: any) => (
-              <Text key={index} sx={sx.description}>
-                {description}
-              </Text>
-            ))}
+            <Text sx={sx.description}>{description}</Text>
           </Box>
         </Box>
       </Flex>
-      {content.additionalInfo && (
-        <Text sx={sx.additionalInfo}>{content.additionalInfo}</Text>
-      )}
     </Box>
   );
 };
 
 interface Props {
-  content: {
-    title: string;
-    descriptionList: string[];
-    additionalInfo?: string;
-    [key: string]: any;
-  };
+  description: string;
   [key: string]: any;
 }
 
@@ -65,9 +53,5 @@ const sx = {
   description: {
     fontWeight: "bold",
     color: "palette.spreadsheet_dark",
-  },
-  additionalInfo: {
-    marginTop: "1rem",
-    fontSize: "14",
   },
 };

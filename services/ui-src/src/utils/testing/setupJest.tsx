@@ -174,6 +174,24 @@ export const mockFormField = {
   },
 };
 
+export const mockModalFormField = {
+  id: "mock-modal-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock modal text field",
+  },
+};
+
+export const mockDrawerFormField = {
+  id: "mock-drawer-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock drawer text field",
+  },
+};
+
 export const mockNestedFormField = {
   id: "mock-nested-field",
   type: "radio",
@@ -206,20 +224,35 @@ export const mockForm = {
   fields: [mockFormField],
 };
 
+export const mockModalForm = {
+  id: "mock-modal-form-id",
+  fields: [mockModalFormField],
+};
+
+export const mockDrawerForm = {
+  id: "mock-drawer-form-id",
+  fields: [mockDrawerFormField],
+};
+
 export const mockPlanFilledForm = {
   id: "mock-form-id",
   fields: [mockPlanField],
 };
 
-export const mockPageJson = {
+export const mockStandardReportPageJson = {
+  name: "mock-route-1",
+  path: "/mock/mock-route-1",
   pageType: "standard",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
+  form: mockForm,
 };
 
-export const mockPageJsonEntityDrawer = {
+export const mockEntityDrawerReportPageJson = {
+  name: "mock-route-2a",
+  path: "/mock/mock-route-2a",
   pageType: "entityDrawer",
   entityType: "plans",
   intro: {
@@ -231,69 +264,46 @@ export const mockPageJsonEntityDrawer = {
   },
   drawer: {
     title: "Mock drawer title",
+    form: mockDrawerForm,
   },
 };
 
-export const mockPageJsonDynamicDrawer = {
+export const mockDynamicDrawerReportPageJson = {
+  name: "mock-route-2b",
+  path: "/mock/mock-route-2b",
   pageType: "dynamicDrawer",
+  dynamicType: "accessMeasures",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
-  dynamicTable: {
-    tableHeading: "Add measures for monitoring access standards",
-    addEntityText: "Add access measure",
+  dashboard: {
+    title: "Mock dashboard title",
+  },
+  modal: {
+    form: mockModalForm,
+  },
+  drawer: {
+    title: "Mock drawer title",
+    form: mockDrawerForm,
   },
 };
 
 // REPORT
 
 export const mockReportRoutes = [
-  {
-    name: "mock-route-1",
-    path: "/mock/mock-route-1",
-    page: mockPageJson,
-    form: mockForm,
-  },
+  mockStandardReportPageJson,
   {
     name: "mock-route-2",
     path: "/mock/mock-route-2",
-    children: [
-      {
-        name: "mock-route-2a",
-        path: "/mock/mock-route-2a",
-        page: mockPageJsonEntityDrawer,
-        form: mockPlanFilledForm,
-      },
-      {
-        name: "mock-route-2b",
-        path: "/mock/mock-route-2b",
-        page: mockPageJsonDynamicDrawer,
-        form: mockForm,
-      },
-    ],
+    children: [mockEntityDrawerReportPageJson, mockDynamicDrawerReportPageJson],
   },
 ];
 
 export const mockFlattenedReportRoutes = [
-  {
-    name: "mock-route-1",
-    path: "/mock/mock-route-1",
-    page: mockPageJson,
-    form: mockForm,
-  },
-  {
-    name: "mock-route-2a",
-    path: "/mock/mock-route-2a",
-    page: mockPageJsonEntityDrawer,
-    form: mockPlanFilledForm,
-  },
-  {
-    name: "mock-route-2b",
-    path: "/mock/mock-route-2b",
-    page: mockPageJsonDynamicDrawer,
-    form: mockForm,
-  },
+  mockStandardReportPageJson,
+  mockEntityDrawerReportPageJson,
+  mockDynamicDrawerReportPageJson,
 ];
 
 export const mockReportJson = {

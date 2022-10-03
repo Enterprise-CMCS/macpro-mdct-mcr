@@ -17,7 +17,7 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
       </Heading>
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
-          <SpreadsheetWidget content={spreadsheet} />
+          <SpreadsheetWidget description={spreadsheet} />
         </Box>
       )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}

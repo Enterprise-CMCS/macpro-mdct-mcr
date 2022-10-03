@@ -34,22 +34,20 @@ export const AppRoutes = () => {
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<DashboardPage />} />
           <Route path="/mcpar/get-started" element={<GetStartedPage />} />
-          {mcparReportRoutesFlat.map((route: ReportRoute) => {
-            return (
-              route.form &&
-              route.page && (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<ReportPageWrapper route={route} />}
-                />
-              )
-            );
-          })}
-          <Route
-            path="/mcpar/review-and-submit"
-            element={<ReviewSubmitPage />}
-          />
+          {mcparReportRoutesFlat.map((route: ReportRoute) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                route.pageType ? (
+                  // if report route with form
+                  <ReportPageWrapper route={route} />
+                ) : (
+                  <ReviewSubmitPage />
+                )
+              }
+            />
+          ))}
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
           <Route path="/profile" element={<ProfilePage />} />

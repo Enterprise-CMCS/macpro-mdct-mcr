@@ -4,13 +4,9 @@ import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { ReportContext, ReportDrawer } from "components";
 // utils
 import { useUser } from "utils";
-import { AnyObject, FormJson, ReportStatus } from "types";
+import { AnyObject, DynamicDrawerReportPageShape, ReportStatus } from "types";
 
-export const DynamicDrawerReportPage = ({
-  form,
-  dynamicTable,
-  setSubmitting,
-}: Props) => {
+export const DynamicDrawerReportPage = ({ route, setSubmitting }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -64,7 +60,7 @@ export const DynamicDrawerReportPage = ({
       {entities.length > 0 && (
         <Box style={sx.entityTable}>
           <Heading as="h3" sx={sx.tableTitle}>
-            {dynamicTable.tableHeading}
+            {route.drawer.title}
           </Heading>
           {entities.map((entity) => {
             return (
@@ -94,17 +90,15 @@ export const DynamicDrawerReportPage = ({
         </Box>
       )}
       <Button onClick={() => openRowDrawer("")} type="submit">
-        {dynamicTable.addEntityText}
+        Add TEMPORARY
       </Button>
       <ReportDrawer
         drawerDisclosure={{
           isOpen,
           onClose,
         }}
-        drawerTitle={
-          currentEntity === "" ? dynamicTable.addEntityText : currentEntity
-        }
-        form={form}
+        drawerTitle={currentEntity}
+        form={route.drawer.form}
         onSubmit={onSubmit}
         data-testid="report-drawer"
       />
@@ -113,8 +107,7 @@ export const DynamicDrawerReportPage = ({
 };
 
 interface Props {
-  form: FormJson;
-  dynamicTable: AnyObject;
+  route: DynamicDrawerReportPageShape;
   setSubmitting: Function;
 }
 
