@@ -62,8 +62,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       (entity: EntityShape) => entity.id === selectedRecord.id
     );
     remove(index);
-    const newDisplayValues = [...displayValues];
+    let newDisplayValues = [...displayValues];
     newDisplayValues.splice(index, 1);
+    if (newDisplayValues.length === 0) {
+      const newEntity = { id: uuid(), name: "" };
+      append(newEntity);
+      newDisplayValues = [newEntity];
+    }
     setDisplayValues(newDisplayValues);
   };
 
