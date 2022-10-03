@@ -11,6 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
+import { CustomHtmlElement } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
@@ -59,7 +60,7 @@ interface Props {
     onClose: Function;
   };
   drawerTitle: string;
-  drawerInfo?: any[];
+  drawerInfo?: CustomHtmlElement[];
   [key: string]: any;
 }
 

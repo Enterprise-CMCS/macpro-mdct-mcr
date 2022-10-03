@@ -48,7 +48,10 @@ export const GetStartedPage = () => {
               />
               <Text sx={sx.additionalInfo}>{section2.img?.description}</Text>
             </Box>
-            <SpreadsheetWidget content={section2.spreadsheetWidget!} />
+            <Box>
+              <SpreadsheetWidget description={section2.spreadsheet!} />
+              <Text sx={sx.additionalInfo}>{section2.additionalInfo}</Text>
+            </Box>
           </Flex>
         </InfoSection>
         <InfoSection content={section3}>

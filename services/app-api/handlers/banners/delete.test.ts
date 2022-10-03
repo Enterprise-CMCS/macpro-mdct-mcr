@@ -4,13 +4,6 @@ import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
-jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  __esModule: true,
-  default: {
-    delete: jest.fn(),
-  },
-}));
-
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
@@ -28,10 +21,6 @@ const testEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test deleteBanner API method", () => {
-  beforeEach(() => {
-    process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
-  });
-
   test("Test not authorized to delete banner throws 403 error", async () => {
     const res = await deleteBanner(testEvent, null);
 
@@ -43,7 +32,6 @@ describe("Test deleteBanner API method", () => {
     const res = await deleteBanner(testEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(res.body).toContain("fakeBannerTable");
     expect(res.body).toContain("testKey");
   });
 
