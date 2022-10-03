@@ -135,6 +135,7 @@ jest.mock("aws-amplify", () => ({
     get: () => {},
     post: () => {},
     put: () => {},
+    del: () => {},
     configure: () => {},
   },
 }));

@@ -55,7 +55,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(creationEvent, null);
 
     const body = JSON.parse(res.body);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(body.status).toContain("Not started");
   });
 
