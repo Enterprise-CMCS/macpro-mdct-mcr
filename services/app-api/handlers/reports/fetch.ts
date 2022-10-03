@@ -7,23 +7,22 @@ export const fetchReport = handler(async (event, _context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(error.NO_KEY);
   }
-  const queryParams = {
+  const params = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    KeyConditionExpression: "#state = :state AND #id = :id",
-    ExpressionAttributeValues: {
-      ":state": event.pathParameters.state,
-      ":id": event.pathParameters.id,
-    },
-    ExpressionAttributeNames: {
-      "#state": "state",
-      "#id": "id",
+    Key: {
+      state: event.pathParameters.state,
+      id: event.pathParameters.id,
     },
   };
-  const reportQueryResponse = await dynamoDb.query(queryParams);
-  const responseBody = reportQueryResponse.Items![0] ?? {};
+  const response = await dynamoDb.get(params);
+
+  let status = StatusCodes.SUCCESS;
+  if (!response?.Item) {
+    status = StatusCodes.NOT_FOUND;
+  }
   return {
-    status: StatusCodes.SUCCESS,
-    body: responseBody,
+    status: status,
+    body: response.Item,
   };
 });
 
@@ -42,6 +41,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
     },
   };
   const reportQueryResponse = await dynamoDb.query(queryParams);
+
   return {
     status: StatusCodes.SUCCESS,
     body: reportQueryResponse.Items,

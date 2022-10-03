@@ -164,9 +164,11 @@ export const DashboardPage = () => {
             />
           )
         ) : (
-          <Flex sx={sx.spinnerContainer}>
-            <Spinner size="big" />
-          </Flex>
+          !errorMessage && (
+            <Flex sx={sx.spinnerContainer}>
+              <Spinner size="big" />
+            </Flex>
+          )
         )}
         {!reportsByState?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>

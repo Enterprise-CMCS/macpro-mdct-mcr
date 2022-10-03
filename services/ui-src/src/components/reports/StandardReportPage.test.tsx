@@ -9,6 +9,7 @@ import {
   mockAdminUser,
   mockForm,
   mockReportContext,
+  mockStandardReportPageJson,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -28,7 +29,10 @@ const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 const standardPageSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <StandardReportPage form={mockForm} setSubmitting={mockSetSubmitting} />
+      <StandardReportPage
+        route={{ ...mockStandardReportPageJson, form: mockForm }}
+        setSubmitting={mockSetSubmitting}
+      />
       <button form={mockForm.id} type="submit">
         submit
       </button>

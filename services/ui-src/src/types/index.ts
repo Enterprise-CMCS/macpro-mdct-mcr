@@ -47,29 +47,66 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  page?: PageJson;
-  [key: string]: any;
+  pageType?: string;
 }
 
-export interface ReportRouteWithForm extends ReportRouteBase {
+export type ReportRouteWithForm =
+  | StandardReportPageShape
+  | EntityDrawerReportPageShape
+  | DynamicDrawerReportPageShape;
+
+export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
+  intro?: {
+    section: string;
+    subsection: string;
+    spreadsheet?: string;
+    info?: string | AnyObject[];
+  };
+}
+
+export interface StandardReportPageShape extends ReportPageShapeBase {
+  form: FormJson;
+  modal?: never;
+  drawer?: never;
+}
+
+export interface EntityDrawerReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  dashboard: AnyObject;
+  drawer: ReportPageDrawer;
+  dynamicType?: never;
+  modal?: never;
+  form?: never;
+}
+
+export interface DynamicDrawerReportPageShape extends ReportPageShapeBase {
+  dynamicType: string;
+  dashboard: AnyObject;
+  modal: ReportPageModal;
+  drawer: ReportPageDrawer;
+  entityType?: never;
+  form?: never;
 }
 
 export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
+  pageType?: never;
+  entityType?: never;
+  dynamicType?: never;
+  modal?: never;
+  drawer?: never;
   form?: never;
 }
 
-export interface PageJson {
-  pageType?: string;
-  intro?: AnyObject;
-  [key: string]: any;
+export interface ReportPageDrawer {
+  form: FormJson;
+  title: string;
+  info?: CustomHtmlElement[];
 }
 
-export enum ReportStatus {
-  NOT_STARTED = "Not started",
-  IN_PROGRESS = "In progress",
-  SUBMITTED = "Submitted",
+export interface ReportPageModal {
+  form: FormJson;
 }
 
 // REPORT PROVIDER/CONTEXT
@@ -82,7 +119,7 @@ export interface ReportKeys {
 export interface ReportShape extends ReportKeys {
   reportType: string;
   programName: string;
-  status: string;
+  status: ReportStatus;
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;
   dueDate: number;
@@ -110,6 +147,12 @@ export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
   reportsByState: ReportShape[] | undefined;
   errorMessage?: string | undefined;
+}
+
+export enum ReportStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  SUBMITTED = "Submitted",
 }
 
 // FORM & FIELD STRUCTURE

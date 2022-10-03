@@ -51,7 +51,7 @@ export const createReport = handler(async (event, _context) => {
     };
     await dynamoDb.put(reportParams);
     return {
-      status: StatusCodes.SUCCESS,
+      status: StatusCodes.CREATED,
       body: { ...reportParams.Item },
     };
   } else throw new Error(error.MISSING_DATA);
