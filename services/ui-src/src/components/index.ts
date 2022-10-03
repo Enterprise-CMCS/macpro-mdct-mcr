@@ -61,6 +61,7 @@ export { Sidebar } from "./menus/Sidebar";
 export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
+export { AddEditRecordModal } from "./modals/AddEditRecordModal";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
 export { HelpPage } from "./pages/Help/HelpPage";

@@ -93,6 +93,10 @@ export const compileValidationJsonFromRoutes = (
     );
   };
   routeArray.forEach((route: ReportRoute) => {
+    // check for non-standard needed validation objects
+    if (route.dynamicType) {
+      Object.assign(validationSchema, { [route.dynamicType]: "objectArray" });
+    }
     // if standard form present, add validation to schema
     const standardFormFields = route.form?.fields;
     if (standardFormFields) addValidationToAccumulator(standardFormFields);

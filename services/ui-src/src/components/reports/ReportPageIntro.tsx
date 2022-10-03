@@ -53,15 +53,13 @@ const sx = {
     },
     "p, span": {
       color: "palette.gray",
+      marginY: "1rem",
     },
     a: {
       color: "palette.primary",
       "&:hover": {
         color: "palette.primary_darker",
       },
-    },
-    p: {
-      color: "palette.base",
     },
   },
 };

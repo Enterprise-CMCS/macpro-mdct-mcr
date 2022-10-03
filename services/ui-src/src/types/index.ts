@@ -67,8 +67,11 @@ export interface ReportPageShapeBase extends ReportRouteBase {
 
 export interface StandardReportPageShape extends ReportPageShapeBase {
   form: FormJson;
+  dashboard?: never;
   modal?: never;
   drawer?: never;
+  entityType?: never;
+  dynamicType?: never;
 }
 
 export interface EntityDrawerReportPageShape extends ReportPageShapeBase {
@@ -107,6 +110,7 @@ export interface ReportPageDrawer {
 
 export interface ReportPageModal {
   form: FormJson;
+  [key: string]: any;
 }
 
 // REPORT PROVIDER/CONTEXT
