@@ -18,7 +18,7 @@ export const AdminPage = () => {
   const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
     useContext(AdminBannerContext);
   const [error, setError] = useState<string | undefined>(errorMessage);
-  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [deleting, setDeleting] = useState<boolean>(false);
   const bannerIsActive = checkDateRangeStatus(
     bannerData?.startDate,
     bannerData?.endDate
@@ -28,12 +28,13 @@ export const AdminPage = () => {
   }, [errorMessage]);
 
   const deleteBanner = async () => {
-    setSubmitting(true);
+    setDeleting(true);
     try {
       await deleteAdminBanner();
     } catch (error: any) {
       setError(bannerErrors.DELETE_BANNER_FAILED);
     }
+    setDeleting(false);
   };
 
   return (
@@ -65,25 +66,24 @@ export const AdminPage = () => {
               </Text>
             </Flex>
           )}
-          <Flex sx={sx.currentBannerFlex}>
-            <Banner bannerData={bannerData} />
-            <Button
-              variant="danger"
-              sx={sx.deleteBannerButton}
-              onClick={deleteBanner}
-            >
-              {submitting ? <Spinner size="small" /> : "Delete Current Banner"}
-            </Button>
-          </Flex>
+          {!!bannerData?.key && (
+            <Flex sx={sx.currentBannerFlex}>
+              <Banner bannerData={bannerData} />
+              <Button
+                variant="danger"
+                sx={sx.deleteBannerButton}
+                onClick={deleteBanner}
+              >
+                {deleting ? <Spinner size="small" /> : "Delete Current Banner"}
+              </Button>
+            </Flex>
+          )}
         </Collapse>
         {!bannerData?.key && <Text>There is no current banner</Text>}
       </Box>
       <Flex sx={sx.newBannerBox}>
         <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-        <AdminBannerForm
-          writeAdminBanner={writeAdminBanner}
-          reset={setSubmitting}
-        />
+        <AdminBannerForm writeAdminBanner={writeAdminBanner} />
       </Flex>
     </PageTemplate>
   );
