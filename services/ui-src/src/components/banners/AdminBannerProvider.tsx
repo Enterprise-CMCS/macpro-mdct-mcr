@@ -34,12 +34,12 @@ export const AdminBannerProvider = ({ children }: Props) => {
 
   const deleteAdminBanner = async () => {
     await deleteBanner(ADMIN_BANNER_ID);
-    await fetchAdminBanner();
+    setBannerData({} as AdminBannerData);
   };
 
   const writeAdminBanner = async (newBannerData: AdminBannerData) => {
     await writeBanner(newBannerData);
-    await fetchAdminBanner();
+    setBannerData(newBannerData);
   };
 
   useEffect(() => {

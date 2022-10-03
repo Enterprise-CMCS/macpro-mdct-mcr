@@ -8,6 +8,14 @@ import { mockReport } from "../../utils/testing/setupJest";
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
   default: {
+    get: jest
+      .fn()
+      .mockImplementationOnce(() => ({
+        Item: undefined,
+      }))
+      .mockImplementation(() => ({
+        Item: mockReport,
+      })),
     query: jest.fn(() => ({ Items: [mockReport] })),
   },
 }));
@@ -35,6 +43,11 @@ const testReadEventByState: APIGatewayProxyEvent = {
 };
 
 describe("Test fetchReport API method", () => {
+  test("Test Report not found Fetch", async () => {
+    const res = await fetchReport(testReadEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+  });
+
   test("Test Successful Report Fetch", async () => {
     const res = await fetchReport(testReadEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);

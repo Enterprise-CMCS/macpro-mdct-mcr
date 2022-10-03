@@ -3,21 +3,19 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
+import { mockBannerResponse } from "../../utils/testing/setupJest";
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   __esModule: true,
   default: {
-    get: jest.fn().mockReturnValue({
-      Item: {
-        createdAt: 1654198665696,
-        endDate: 1657252799000,
-        lastAltered: 1654198665696,
-        description: "testDesc",
-        title: "testTitle",
-        key: "admin-banner-id",
-        startDate: 1641013200000,
-      },
-    }),
+    get: jest
+      .fn()
+      .mockImplementationOnce(() => ({
+        Item: undefined,
+      }))
+      .mockImplementation(() => ({
+        Item: mockBannerResponse,
+      })),
   },
 }));
 
@@ -38,8 +36,9 @@ const testEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test fetchBanner API method", () => {
-  beforeEach(() => {
-    process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
+  test("Test Report not found Fetch", async () => {
+    const res = await fetchBanner(testEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
   });
 
   test("Test Successful Banner Fetch", async () => {
