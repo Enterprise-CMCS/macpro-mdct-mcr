@@ -13,6 +13,8 @@ import {
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+// constants
+import { saveAndCloseText } from "../../constants";
 
 const mockSubmittingState = {
   submitting: false,
@@ -99,7 +101,7 @@ describe("Test EntityDrawerReportPage with entities", () => {
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
-  it("Submit sidedrawer works for state user", async () => {
+  it("Submit sidedrawer opens and saves for state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
@@ -109,12 +111,12 @@ describe("Test EntityDrawerReportPage with entities", () => {
     const textField = await screen.getByLabelText("mock text field");
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test");
-    const saveAndCloseButton = screen.getByText("Save & Close");
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 
-  it("Submit sidedrawer opens but cannot submit for admin user", async () => {
+  it("Submit sidedrawer opens but admin user doesnt see save and close button", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
@@ -123,9 +125,8 @@ describe("Test EntityDrawerReportPage with entities", () => {
     expect(screen.getByRole("dialog")).toBeVisible();
     const textField = await screen.getByLabelText("mock text field");
     expect(textField).toBeVisible();
-    const saveAndCloseButton = screen.getByText("Save & Close");
-    await userEvent.click(saveAndCloseButton);
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    const saveAndCloseButton = screen.queryByText(saveAndCloseText);
+    expect(saveAndCloseButton).toBeFalsy();
   });
 });
 
