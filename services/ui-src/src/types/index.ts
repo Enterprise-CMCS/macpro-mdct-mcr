@@ -220,7 +220,7 @@ export interface AdminBannerMethods {
 }
 
 export interface AdminBannerShape extends AdminBannerMethods {
-  bannerData: AdminBannerData | undefined;
+  bannerData: AdminBannerData;
   errorMessage?: string;
 }
 
