@@ -6,7 +6,7 @@ import { Drawer, Form, ReportContext } from "components";
 // utils
 import { useUser } from "utils";
 // types
-import { AnyObject, FormJson } from "types";
+import { AnyObject, CustomHtmlElement, FormJson } from "types";
 // constants
 import { closeText, saveAndCloseText } from "../../constants";
 
@@ -67,7 +67,7 @@ interface Props {
     onClose: Function;
   };
   drawerTitle: string;
-  drawerInfo?: any[];
+  drawerInfo?: CustomHtmlElement[];
   form: FormJson;
   onSubmit: Function;
   formData?: AnyObject;

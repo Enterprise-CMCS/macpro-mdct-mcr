@@ -27,6 +27,7 @@ export const updateReport = handler(async (event, context) => {
   const getCurrentReport = await fetchReport(reportEvent, context);
   const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
 
+  let status, body;
   if (getCurrentReport?.body) {
     if (unvalidatedFieldData) {
       // validate report metadata
@@ -59,10 +60,18 @@ export const updateReport = handler(async (event, context) => {
         },
       };
       await dynamoDb.put(reportParams);
-      return {
-        status: StatusCodes.SUCCESS,
-        body: { ...reportParams.Item },
-      };
-    } else throw new Error(error.MISSING_DATA);
-  } else throw new Error(error.NO_MATCHING_RECORD);
+      status = StatusCodes.SUCCESS;
+      body = reportParams.Item;
+    } else {
+      status = StatusCodes.BAD_REQUEST;
+      body = error.MISSING_DATA;
+    }
+  } else {
+    status = StatusCodes.NOT_FOUND;
+    body = error.NO_MATCHING_RECORD;
+  }
+  return {
+    status: status,
+    body: body,
+  };
 });
