@@ -157,11 +157,15 @@ export enum ReportStatus {
 
 // FORM & FIELD STRUCTURE
 
-export declare type EntityType = "plans" | "bssEntities";
+export declare type EntityType =
+  | "plans"
+  | "bssEntities"
+  | "accessMeasures"
+  | "qualityMeasures"
+  | "sanctions";
 
 export interface EntityShape {
   id: string;
-  name: string;
   [key: string]: any;
 }
 

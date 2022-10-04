@@ -53,20 +53,22 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           {dashboard.addEntityButtonText}
         </Button>
         {entities && (
-          <Heading as="h4" sx={sx.dashboardTitle}>
-            {dashboard.title}
-          </Heading>
+          <>
+            <Heading as="h4" sx={sx.dashboardTitle}>
+              {dashboard.title}
+            </Heading>
+            {entities.map((entity: AnyObject) => (
+              <EntityCard
+                key={entity.id}
+                entity={entity}
+                openDeleteEntityModal={openDeleteEntityModal}
+              />
+            ))}
+          </>
         )}
-        {entities?.map((entity: AnyObject) => (
-          <EntityCard
-            key={entity.id}
-            entity={entity}
-            openDeleteEntityModal={openDeleteEntityModal}
-          />
-        ))}
         <AddEditEntityModal
           entityType={entityType}
-          modal={modal}
+          modalData={modal}
           selectedEntity={selectedEntity}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
