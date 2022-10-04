@@ -23,8 +23,8 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
 
-  const openAddEditEntityModal = (entityId?: string) => {
-    if (report && entityId) {
+  const openAddEditEntityModal = () => {
+    if (report) {
       // pre-fill form if if editing an existing entity
       setSelectedEntity(report.fieldData[entityType]);
     }
