@@ -52,8 +52,8 @@ export interface ReportRouteBase {
 
 export type ReportRouteWithForm =
   | StandardReportPageShape
-  | EntityDrawerReportPageShape
-  | DynamicDrawerReportPageShape;
+  | DrawerReportPageShape
+  | ModalDrawerReportPageShape;
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
@@ -74,7 +74,7 @@ export interface StandardReportPageShape extends ReportPageShapeBase {
   dynamicType?: never;
 }
 
-export interface EntityDrawerReportPageShape extends ReportPageShapeBase {
+export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   dashboard: AnyObject;
   drawer: ReportPageDrawer;
@@ -83,7 +83,7 @@ export interface EntityDrawerReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
-export interface DynamicDrawerReportPageShape extends ReportPageShapeBase {
+export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   dynamicType: string;
   dashboard: AnyObject;
   modal: ReportPageModal;
@@ -240,8 +240,8 @@ export interface Choice {
 
 export enum PageTypes {
   STANDARD = "standard",
-  ENTITY_DRAWER = "entityDrawer",
-  DYNAMIC_DRAWER = "dynamicDrawer",
+  DRAWER = "drawer",
+  MODAL_DRAWER = "modalDrawer",
 }
 
 // BANNER

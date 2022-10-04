@@ -75,8 +75,8 @@ export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { StandardReportPage } from "./reports/StandardReportPage";
-export { EntityDrawerReportPage } from "./reports/EntityDrawerReportPage";
-export { DynamicDrawerReportPage } from "./reports/DynamicDrawerReportPage";
+export { DrawerReportPage } from "./reports/DrawerReportPage";
+export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables

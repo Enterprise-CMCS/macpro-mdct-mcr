@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, DynamicDrawerReportPage } from "components";
+import { ReportContext, ModalDrawerReportPage } from "components";
 // utils
 import {
-  mockDynamicDrawerReportPageJson,
+  mockModalDrawerReportPageJson,
   mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -19,27 +19,27 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const dynamicDrawerReportPageComponent = (
+const modalDrawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DynamicDrawerReportPage
-        route={mockDynamicDrawerReportPageJson}
+      <ModalDrawerReportPage
+        route={mockModalDrawerReportPageJson}
         setSubmitting={mockSetSubmitting}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test DynamicDrawerReportPage view", () => {
-  test("DynamicDrawerReportPage view renders", () => {
-    render(dynamicDrawerReportPageComponent);
+describe("Test ModalDrawerReportPage view", () => {
+  test("ModalDrawerReportPage view renders", () => {
+    render(modalDrawerReportPageComponent);
     expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test DynamicDrawerReportPage add entity operation", () => {
+describe("Test ModalDrawerReportPage add entity operation", () => {
   test("Modal opens correctly", async () => {
-    render(dynamicDrawerReportPageComponent);
+    render(modalDrawerReportPageComponent);
     const addRecordButton = screen.getByText("Add record button");
     await userEvent.click(addRecordButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -47,9 +47,9 @@ describe("Test DynamicDrawerReportPage add entity operation", () => {
   });
 });
 
-describe("Test DynamicDrawerReportPage accessibility", () => {
+describe("Test ModalDrawerReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dynamicDrawerReportPageComponent);
+    const { container } = render(modalDrawerReportPageComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

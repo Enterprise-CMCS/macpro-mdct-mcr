@@ -7,9 +7,9 @@ import {
   ReportContext,
 } from "components";
 // utils
-import { AnyObject, DynamicDrawerReportPageShape } from "types";
+import { AnyObject, ModalDrawerReportPageShape } from "types";
 
-export const DynamicDrawerReportPage = ({ route }: Props) => {
+export const ModalDrawerReportPage = ({ route }: Props) => {
   const { dynamicType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
   const [selectedRecord, setSelectedRecord] = useState<AnyObject>({});
@@ -63,7 +63,7 @@ export const DynamicDrawerReportPage = ({ route }: Props) => {
 };
 
 interface Props {
-  route: DynamicDrawerReportPageShape;
+  route: ModalDrawerReportPageShape;
   setSubmitting: Function;
 }
 
