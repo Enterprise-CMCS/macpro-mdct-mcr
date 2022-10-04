@@ -22,6 +22,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   const openDeleteProgramModal = (index: number) => {
     setSelectedRecord(displayValues[index]);
+    if (selectedRecord) deleteProgramModalOnOpenHandler();
   };
 
   useEffect(() => {
