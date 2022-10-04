@@ -1412,7 +1412,7 @@
         {
           "name": "I: Program Characteristics",
           "path": "/mcpar/plan-level-indicators/program-characteristics",
-          "pageType": "entityDrawer",
+          "pageType": "drawer",
           "entityType": "plans",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
@@ -1464,7 +1464,7 @@
         {
           "name": "II: Financial Performance",
           "path": "/mcpar/plan-level-indicators/financial-performance",
-          "pageType": "entityDrawer",
+          "pageType": "drawer",
           "entityType": "plans",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
@@ -1598,7 +1598,7 @@
         {
           "name": "III: Encounter Data Report",
           "path": "/mcpar/plan-level-indicators/encounter-data-report",
-          "pageType": "entityDrawer",
+          "pageType": "drawer",
           "entityType": "plans",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
@@ -1653,7 +1653,7 @@
             {
               "name": "Appeals Overview",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
-              "pageType": "entityDrawer",
+              "pageType": "drawer",
               "entityType": "plans",
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
@@ -1805,7 +1805,7 @@
             {
               "name": "Appeals by Service",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
-              "pageType": "entityDrawer",
+              "pageType": "drawer",
               "entityType": "plans",
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
@@ -1938,7 +1938,7 @@
             {
               "name": "State Fair Hearings",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
-              "pageType": "entityDrawer",
+              "pageType": "drawer",
               "entityType": "plans",
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
@@ -2027,7 +2027,7 @@
             {
               "name": "Grievances Overview",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
-              "pageType": "entityDrawer",
+              "pageType": "drawer",
               "entityType": "plans",
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
@@ -2099,7 +2099,7 @@
             {
               "name": "Grievances by Service",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
-              "pageType": "entityDrawer",
+              "pageType": "drawer",
               "entityType": "plans",
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
@@ -2232,7 +2232,7 @@
             {
               "name": "Grievances by Reason",
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
-              "pageType": "entityDrawer",
+              "pageType": "drawer",
               "entityType": "plans",
               "intro": {
                 "section": "Section D: Plan-Level Indicators",
@@ -2860,7 +2860,7 @@
         {
           "name": "X: Program Integrity",
           "path": "/mcpar/plan-level-indicators/program-integrity",
-          "pageType": "entityDrawer",
+          "pageType": "drawer",
           "entityType": "plans",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
@@ -3062,7 +3062,7 @@
     {
       "name": "E: BSS Entity Indicators",
       "path": "/mcpar/bss-entity-indicators",
-      "pageType": "entityDrawer",
+      "pageType": "drawer",
       "entityType": "bssEntities",
       "intro": {
         "section": "Section E: BSS Entity Indicators",

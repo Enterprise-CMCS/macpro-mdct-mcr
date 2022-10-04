@@ -32,7 +32,7 @@ const ReportPageWrapper_StandardPage = (
   </RouterWrappedComponent>
 );
 
-const ReportPageWrapper_EntityDrawer = (
+const ReportPageWrapper_Drawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[1]} />
@@ -71,9 +71,9 @@ describe("Test ReportPageWrapper view", () => {
     expect(screen.getByTestId("standard-page")).toBeVisible();
   });
 
-  test("ReportPageWrapper EntityDrawerSection view renders", () => {
-    render(ReportPageWrapper_EntityDrawer);
-    expect(screen.getByTestId("entity-drawer")).toBeVisible();
+  test("ReportPageWrapper DrawerSection view renders", () => {
+    render(ReportPageWrapper_Drawer);
+    expect(screen.getByTestId("drawer")).toBeVisible();
   });
 });
 
@@ -98,8 +98,8 @@ describe("Test ReportPageWrapper accessibility", () => {
     expect(results).toHaveNoViolations();
   });
 
-  test("EntityDrawer page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_EntityDrawer);
+  test("Drawer page should not have basic accessibility issues", async () => {
+    const { container } = render(ReportPageWrapper_Drawer);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

@@ -251,10 +251,10 @@ export const mockStandardReportPageJson = {
   form: mockForm,
 };
 
-export const mockEntityDrawerReportPageJson = {
+export const mockDrawerReportPageJson = {
   name: "mock-route-2a",
   path: "/mock/mock-route-2a",
-  pageType: "entityDrawer",
+  pageType: "drawer",
   entityType: "plans",
   intro: {
     section: "mock section",
@@ -297,13 +297,13 @@ export const mockReportRoutes = [
   {
     name: "mock-route-2",
     path: "/mock/mock-route-2",
-    children: [mockEntityDrawerReportPageJson, mockDynamicDrawerReportPageJson],
+    children: [mockDrawerReportPageJson, mockDynamicDrawerReportPageJson],
   },
 ];
 
 export const mockFlattenedReportRoutes = [
   mockStandardReportPageJson,
-  mockEntityDrawerReportPageJson,
+  mockDrawerReportPageJson,
   mockDynamicDrawerReportPageJson,
 ];
 

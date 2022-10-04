@@ -52,7 +52,7 @@ export interface ReportRouteBase {
 
 export type ReportRouteWithForm =
   | StandardReportPageShape
-  | EntityDrawerReportPageShape
+  | DrawerReportPageShape
   | DynamicDrawerReportPageShape;
 
 export interface ReportPageShapeBase extends ReportRouteBase {
@@ -71,7 +71,7 @@ export interface StandardReportPageShape extends ReportPageShapeBase {
   drawer?: never;
 }
 
-export interface EntityDrawerReportPageShape extends ReportPageShapeBase {
+export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   dashboard: AnyObject;
   drawer: ReportPageDrawer;
@@ -236,7 +236,7 @@ export interface Choice {
 
 export enum PageTypes {
   STANDARD = "standard",
-  ENTITY_DRAWER = "entityDrawer",
+  DRAWER = "drawer",
   DYNAMIC_DRAWER = "dynamicDrawer",
 }
 
