@@ -25,6 +25,7 @@ export const Form = ({
   ...props
 }: Props) => {
   const { fields, options } = formJson;
+  const selectedReport = localStorage.getItem("selectedReport");
 
   // determine if fields should be disabled (based on admin roles )
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
@@ -71,7 +72,7 @@ export const Form = ({
         {...props}
       >
         <Box sx={sx}>
-          {!formData ? (
+          {!formData && selectedReport ? (
             <>
               <Flex sx={sx.spinnerContainer}>
                 <Spinner size="big" />
