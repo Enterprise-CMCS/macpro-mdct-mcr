@@ -42,7 +42,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
               {dashboard.title}
             </Heading>
             {entities.map((entity: AnyObject) => (
-              <EntityCard key={entity.id} entity={entity} />
+              <EntityCard key={entity.id} entity={entity} modalData={modal} />
             ))}
           </>
         )}

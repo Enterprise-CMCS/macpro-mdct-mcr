@@ -1,6 +1,13 @@
 // components
-import { Card } from "components";
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
+import { Card, AddEditEntityModal } from "components";
+import {
+  Box,
+  Button,
+  Heading,
+  Image,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
 import { makeMediaQueryClasses } from "utils";
@@ -13,6 +20,13 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 export const EntityCard = ({ entity, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
+  // add/edit entity modal disclosure
+  const {
+    isOpen: addEditEntityModalIsOpen,
+    onOpen: addEditEntityModalOnOpenHandler,
+    onClose: addEditEntityModalOnCloseHandler,
+  } = useDisclosure();
+
   // data to fill in card
   const data = {
     category: entity.accessMeasure_generalCategory[0].value,
@@ -21,6 +35,11 @@ export const EntityCard = ({ entity, ...props }: Props) => {
       entity.accessMeasure_standardType[0].value !== "Other, specify"
         ? entity.accessMeasure_standardType[0].value
         : entity["accessMeasure_standardType-otherText"],
+  };
+
+  const openAddEditEntityModal = () => {
+    // use disclosure to open modal
+    addEditEntityModalOnOpenHandler();
   };
 
   return (
@@ -49,6 +68,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
           size="sm"
           sx={sx.editEntityButton}
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
+          onClick={() => openAddEditEntityModal()}
         >
           Edit measure
         </Button>
@@ -60,6 +80,15 @@ export const EntityCard = ({ entity, ...props }: Props) => {
           Enter details
         </Button>
       </Box>
+      <AddEditEntityModal
+        entityType="accessMeasures"
+        modalData={props.modalData}
+        selectedEntity={entity}
+        modalDisclosure={{
+          isOpen: addEditEntityModalIsOpen,
+          onClose: addEditEntityModalOnCloseHandler,
+        }}
+      />
     </Card>
   );
 };
