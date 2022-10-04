@@ -1,6 +1,5 @@
 // components
 import { Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
 import { Modal, ReportContext } from "components";
 import { useContext, useState } from "react";
 // types
@@ -41,13 +40,10 @@ export const DeleteEntityModal = ({
     <Modal
       onConfirmHandler={deleteProgramHandler}
       modalDisclosure={modalDisclosure}
+      submitting={deleting}
       content={{
         heading: `Delete access measure?`,
-        actionButtonText: deleting ? (
-          <Spinner size="small" />
-        ) : (
-          `Yes, Delete Measure`
-        ),
+        actionButtonText: `Yes, Delete Measure`,
         closeButtonText: "Cancel",
       }}
     >
