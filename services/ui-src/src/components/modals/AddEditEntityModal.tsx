@@ -10,7 +10,7 @@ import { useUser } from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
-  modal,
+  modalData,
   selectedEntity,
   modalDisclosure,
 }: Props) => {
@@ -18,7 +18,7 @@ export const AddEditEntityModal = ({
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const { form, addTitle, editTitle, message } = modal;
+  const { form, addTitle, editTitle, message } = modalData;
 
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
@@ -91,7 +91,7 @@ export const AddEditEntityModal = ({
 
 interface Props {
   entityType: string;
-  modal: AnyObject;
+  modalData: AnyObject;
   selectedEntity?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
