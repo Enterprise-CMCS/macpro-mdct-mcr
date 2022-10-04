@@ -5,10 +5,7 @@ import { ReportPageIntro } from "components";
 const mockText = {
   section: "mock section",
   subsection: "mock subsection",
-  spreadsheet: {
-    title: "mock title",
-    descriptionList: ["mock item"],
-  },
+  spreadsheet: "mock item",
   info: [
     {
       type: "html",

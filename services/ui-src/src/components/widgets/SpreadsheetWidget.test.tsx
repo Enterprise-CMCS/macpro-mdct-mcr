@@ -3,15 +3,11 @@ import { axe } from "jest-axe";
 //components
 import { SpreadsheetWidget } from "components";
 
-const fullContent = {
-  title: "Find in the Excel Workbook",
-  descriptionList: ["A_Program_Info"],
-  additionalInfo:
-    "Use these guides to understand which sections match specific tabs in the Excel workbook.",
-};
-
 const SpreadsheetWidgetComponent = (
-  <SpreadsheetWidget content={fullContent} data-testid="spreadsheet-widget" />
+  <SpreadsheetWidget
+    description="mock-description"
+    data-testid="spreadsheet-widget"
+  />
 );
 
 describe("Test SpreadsheetWidget with all props", () => {

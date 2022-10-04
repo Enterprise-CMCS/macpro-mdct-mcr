@@ -7,7 +7,7 @@ export interface AnyObject {
 export interface DynamoGet {
   TableName: string;
   Key: {
-    key: string;
+    [key: string]: any;
   };
 }
 
@@ -45,8 +45,10 @@ export const enum RequestMethods {
 
 export const enum StatusCodes {
   SUCCESS = 200,
-  FAILURE = 400,
+  CREATED = 201,
+  BAD_REQUEST = 400,
   UNAUTHORIZED = 403,
+  NOT_FOUND = 404,
   SERVER_ERROR = 500,
 }
 

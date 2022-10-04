@@ -5,8 +5,7 @@ import { axe } from "jest-axe";
 import { ReportContext, DynamicDrawerReportPage } from "components";
 // utils
 import {
-  mockForm,
-  mockPageJsonDynamicDrawer,
+  mockDynamicDrawerReportPageJson,
   mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -24,8 +23,7 @@ const dynamicDrawerSectionComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <DynamicDrawerReportPage
-        form={mockForm}
-        dynamicTable={mockPageJsonDynamicDrawer.dynamicTable}
+        route={mockDynamicDrawerReportPageJson}
         setSubmitting={mockSetSubmitting}
       />
     </ReportContext.Provider>
@@ -42,7 +40,7 @@ describe("Test DynamicDrawerReportPage view", () => {
 describe("Test DynamicDrawerReportPage add entity operation", () => {
   test("Drawer opens correctly", async () => {
     render(dynamicDrawerSectionComponent);
-    const addEntityButton = screen.getAllByText("Add access measure")[0];
+    const addEntityButton = screen.getAllByText("Add TEMPORARY")[0];
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
