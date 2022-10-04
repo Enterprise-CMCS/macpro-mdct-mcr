@@ -3,7 +3,6 @@ import { Card } from "components";
 import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
-import { makeMediaQueryClasses } from "utils";
 // assets
 import { svgFilters } from "styles/theme";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
@@ -11,8 +10,6 @@ import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({ entity, ...props }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
-
   // data to fill in card
   const data = {
     category: entity.accessMeasure_generalCategory[0].value,
@@ -24,7 +21,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
   };
 
   return (
-    <Card {...props} className={mqClasses} marginTop="2rem">
+    <Card {...props} marginTop="2rem">
       <Box sx={sx.contentBox}>
         <Image
           src={unfinishedIcon}
@@ -79,12 +76,18 @@ const sx = {
     ".delete-entity-button": {
       position: "absolute",
       right: "-2rem",
+      ".mobile &": {
+        right: "-1.5rem",
+      },
     },
   },
   statusIcon: {
     position: "absolute",
     left: "-2rem",
     height: "1rem",
+    ".mobile &": {
+      left: "-1.5rem",
+    },
   },
   deleteButtonImage: {
     height: "1.25rem",

@@ -3,10 +3,6 @@ import { axe } from "jest-axe";
 // components
 import { EntityCard } from "components";
 
-jest.mock("utils/other/useBreakpoint", () => ({
-  makeMediaQueryClasses: jest.fn(() => "desktop"),
-}));
-
 const mockEntity = {
   id: "mock-id",
   accessMeasure_generalCategory: [
