@@ -279,8 +279,12 @@ export const mockDynamicDrawerReportPageJson = {
   },
   dashboard: {
     title: "Mock dashboard title",
+    addRecordButtonText: "Add record button",
   },
   modal: {
+    addTitle: "Add record modal",
+    editTitle: "Edit record modal",
+    message: "Mock message",
     form: mockModalForm,
   },
   drawer: {
