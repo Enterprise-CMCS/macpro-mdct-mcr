@@ -942,7 +942,7 @@
             {
               "name": "Access Measures",
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
-              "pageType": "dynamicDrawer",
+              "pageType": "modalDrawer",
               "dynamicType": "accessMeasures",
               "intro": {
                 "section": "Section C: Program-Level Indicators",
@@ -2383,7 +2383,7 @@
         {
           "name": "VII: Quality Measures",
           "path": "/mcpar/plan-level-indicators/quality-measures",
-          "pageType": "dynamicDrawer",
+          "pageType": "modalDrawer",
           "dynamicType": "qualityMeasures",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
@@ -2643,7 +2643,7 @@
         {
           "name": "VIII: Sanctions",
           "path": "/mcpar/plan-level-indicators/sanctions",
-          "pageType": "dynamicDrawer",
+          "pageType": "modalDrawer",
           "dynamicType": "sanctions",
           "intro": {
             "section": "Section D: Plan-Level Indicators",

@@ -13,7 +13,7 @@ import {
   mockReport,
   mockStandardReportPageJson,
   mockReportJson,
-  mockDynamicDrawerReportPageJson,
+  mockModalDrawerReportPageJson,
   mockDrawerReportPageJson,
   mockDrawerFormField,
   mockModalFormField,
@@ -65,15 +65,15 @@ describe("Test copyAdminDisabledStatusToForms", () => {
 
     const testStandardPageForm = result.routes[0].form;
     const testDrawerPageForm = result.routes[1].children![0].drawer!.form;
-    const testDynamicDrawerPageModalForm =
+    const testModalDrawerPageModalForm =
       result.routes[1].children![1].modal!.form;
-    const testDynamicDrawerPageDrawerForm =
+    const testModalDrawerPageDrawerForm =
       result.routes[1].children![1].drawer!.form;
 
     expect(testStandardPageForm!.adminDisabled).toBeTruthy();
     expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
-    expect(testDynamicDrawerPageModalForm!.adminDisabled).toBeTruthy();
-    expect(testDynamicDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
   });
 });
 
@@ -121,7 +121,7 @@ describe("Test makeFieldIdList", () => {
       },
     },
     {
-      ...mockDynamicDrawerReportPageJson,
+      ...mockModalDrawerReportPageJson,
       name: "mock-route-3",
       path: "/mock/mock-route-3",
       modal: {

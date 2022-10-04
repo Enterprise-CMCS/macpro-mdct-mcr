@@ -269,10 +269,10 @@ export const mockDrawerReportPageJson = {
   },
 };
 
-export const mockDynamicDrawerReportPageJson = {
+export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
-  pageType: "dynamicDrawer",
+  pageType: "modalDrawer",
   dynamicType: "accessMeasures",
   intro: {
     section: "mock section",
@@ -297,14 +297,14 @@ export const mockReportRoutes = [
   {
     name: "mock-route-2",
     path: "/mock/mock-route-2",
-    children: [mockDrawerReportPageJson, mockDynamicDrawerReportPageJson],
+    children: [mockDrawerReportPageJson, mockModalDrawerReportPageJson],
   },
 ];
 
 export const mockFlattenedReportRoutes = [
   mockStandardReportPageJson,
   mockDrawerReportPageJson,
-  mockDynamicDrawerReportPageJson,
+  mockModalDrawerReportPageJson,
 ];
 
 export const mockReportJson = {

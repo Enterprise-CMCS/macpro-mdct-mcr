@@ -74,7 +74,7 @@ export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
-export { DynamicDrawerReportPage } from "./reports/DynamicDrawerReportPage";
+export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables

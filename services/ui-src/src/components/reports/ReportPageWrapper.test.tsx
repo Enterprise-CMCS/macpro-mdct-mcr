@@ -40,7 +40,7 @@ const ReportPageWrapper_Drawer = (
   </RouterWrappedComponent>
 );
 
-const ReportPageWrapper_DynamicDrawer = (
+const ReportPageWrapper_ModalDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[2]} />
@@ -77,8 +77,8 @@ describe("Test ReportPageWrapper view", () => {
   });
 });
 
-test("ReportPageWrapper DynamicDrawerReportPage view renders", () => {
-  render(ReportPageWrapper_DynamicDrawer);
+test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
+  render(ReportPageWrapper_ModalDrawer);
   expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
 });
 
@@ -104,8 +104,8 @@ describe("Test ReportPageWrapper accessibility", () => {
     expect(results).toHaveNoViolations();
   });
 
-  test("DynamicDrawer should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_DynamicDrawer);
+  test("ModalDrawer should not have basic accessibility issues", async () => {
+    const { container } = render(ReportPageWrapper_ModalDrawer);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

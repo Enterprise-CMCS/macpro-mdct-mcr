@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, DynamicDrawerReportPage } from "components";
+import { ReportContext, ModalDrawerReportPage } from "components";
 // utils
 import {
-  mockDynamicDrawerReportPageJson,
+  mockModalDrawerReportPageJson,
   mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -19,45 +19,45 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const dynamicDrawerSectionComponent = (
+const modalDrawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DynamicDrawerReportPage
-        route={mockDynamicDrawerReportPageJson}
+      <ModalDrawerReportPage
+        route={mockModalDrawerReportPageJson}
         setSubmitting={mockSetSubmitting}
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test DynamicDrawerReportPage view", () => {
-  test("DynamicDrawerReportPage view renders", () => {
-    render(dynamicDrawerSectionComponent);
+describe("Test ModalDrawerReportPage view", () => {
+  test("ModalDrawerReportPage view renders", () => {
+    render(modalDrawerReportPageComponent);
     expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
   });
 });
 
-describe("Test DynamicDrawerReportPage add entity operation", () => {
+describe("Test ModalDrawerReportPage add entity operation", () => {
   test("Drawer opens correctly", async () => {
-    render(dynamicDrawerSectionComponent);
+    render(modalDrawerReportPageComponent);
     const addEntityButton = screen.getAllByText("Add TEMPORARY")[0];
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 });
 
-describe("Test DynamicDrawerReportPage edit entity operation", () => {
+describe("Test ModalDrawerReportPage edit entity operation", () => {
   test("Drawer opens correctly", async () => {
-    render(dynamicDrawerSectionComponent);
+    render(modalDrawerReportPageComponent);
     const editEntityButton = screen.getAllByText("Edit")[0];
     await userEvent.click(editEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 });
 
-describe("Test DynamicDrawerReportPage delete entity operation", () => {
+describe("Test ModalDrawerReportPage delete entity operation", () => {
   test("Drawer opens correctly", async () => {
-    render(dynamicDrawerSectionComponent);
+    render(modalDrawerReportPageComponent);
     const deleteEntityButton = screen.getAllByText("Delete")[0];
     expect(screen.getAllByText("Delete").length).toBe(3);
     await userEvent.click(deleteEntityButton);
@@ -65,9 +65,9 @@ describe("Test DynamicDrawerReportPage delete entity operation", () => {
   });
 });
 
-describe("Test DynamicDrawerReportPage accessibility", () => {
+describe("Test ModalDrawerReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dynamicDrawerSectionComponent);
+    const { container } = render(modalDrawerReportPageComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
