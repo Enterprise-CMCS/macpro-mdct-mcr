@@ -9,7 +9,7 @@ import { AnyObject, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const AddEditEntityModal = ({
-  dynamicType,
+  entityType,
   modal,
   selectedEntity,
   modalDisclosure,
@@ -29,7 +29,7 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
-    const currentEntities = report?.fieldData?.[dynamicType] || [];
+    const currentEntities = report?.fieldData?.[entityType] || [];
     if (selectedEntity?.id) {
       // if existing entity selected, edit
       const selectedEntityIndex = currentEntities.indexOf(
@@ -43,7 +43,7 @@ export const AddEditEntityModal = ({
         lastAlteredBy: full_name,
         reportStatus: ReportStatus.IN_PROGRESS,
         fieldData: {
-          [dynamicType]: updatedEntities,
+          [entityType]: updatedEntities,
         },
       });
     } else {
@@ -52,7 +52,7 @@ export const AddEditEntityModal = ({
         lastAlteredBy: full_name,
         reportStatus: ReportStatus.IN_PROGRESS,
         fieldData: {
-          [dynamicType]: [
+          [entityType]: [
             ...currentEntities,
             {
               id: uuid(),
@@ -90,7 +90,7 @@ export const AddEditEntityModal = ({
 };
 
 interface Props {
-  dynamicType: string;
+  entityType: string;
   modal: AnyObject;
   selectedEntity?: AnyObject;
   modalDisclosure: {

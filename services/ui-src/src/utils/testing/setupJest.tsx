@@ -273,7 +273,7 @@ export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
   pageType: "modalDrawer",
-  dynamicType: "accessMeasures",
+  entityType: "accessMeasures",
   intro: {
     section: "mock section",
     subsection: "mock subsection",

@@ -6,10 +6,10 @@ import { AddEditEntityModal, EntityCard, ReportContext } from "components";
 import { AnyObject, ModalDrawerReportPageShape } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
-  const { dynamicType, dashboard, modal } = route;
+  const { entityType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
   const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
-  const entities = report?.fieldData[dynamicType];
+  const entities = report?.fieldData[entityType];
 
   // add/edit entity modal disclosure
   const {
@@ -21,7 +21,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const openAddEditEntityModal = (entityId?: string) => {
     if (report && entityId) {
       // pre-fill form if if editing an existing entity
-      setSelectedEntity(report.fieldData[dynamicType]);
+      setSelectedEntity(report.fieldData[entityType]);
     }
     // use disclosure to open modal
     addEditEntityModalOnOpenHandler();
@@ -45,7 +45,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           <EntityCard key={entity.id} entity={entity} />
         ))}
         <AddEditEntityModal
-          dynamicType={dynamicType}
+          entityType={entityType}
           modal={modal}
           selectedEntity={selectedEntity}
           modalDisclosure={{
