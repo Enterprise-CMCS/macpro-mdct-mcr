@@ -36,6 +36,7 @@ export const EntityCard = ({
           type="button"
           className="delete-entity-button"
           onClick={() => openDeleteEntityModal(entity)}
+          data-testid="deleteEntityButton"
         >
           <Image
             src={deleteIcon}

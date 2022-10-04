@@ -2,6 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
 import { EntityCard } from "components";
+import userEvent from "@testing-library/user-event";
+
+const openDeleteEntityModal = jest.fn();
 
 const mockEntity = {
   id: "mock-id",
@@ -22,7 +25,11 @@ const mockEntity = {
 };
 
 const EntityCardComponent = (
-  <EntityCard entity={mockEntity} data-testid="mock-entity-card" />
+  <EntityCard
+    entity={mockEntity}
+    data-testid="mock-entity-card"
+    openDeleteEntityModal={openDeleteEntityModal}
+  />
 );
 
 describe("Test EntityCard", () => {
@@ -32,6 +39,13 @@ describe("Test EntityCard", () => {
 
   test("EntityCard is visible", () => {
     expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 });
 
