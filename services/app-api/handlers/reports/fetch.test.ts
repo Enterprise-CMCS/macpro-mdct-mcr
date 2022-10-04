@@ -3,14 +3,7 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
-import { mockReport } from "../../utils/testing/setupJest";
-
-jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  __esModule: true,
-  default: {
-    query: jest.fn(() => ({ Items: [mockReport] })),
-  },
-}));
+import { mockDocumentClient, mockReport } from "../../utils/testing/setupJest";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
@@ -35,7 +28,14 @@ const testReadEventByState: APIGatewayProxyEvent = {
 };
 
 describe("Test fetchReport API method", () => {
+  test("Test Report not found Fetch", async () => {
+    mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
+    const res = await fetchReport(testReadEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+  });
+
   test("Test Successful Report Fetch", async () => {
+    mockDocumentClient.get.promise.mockReturnValueOnce({ Item: mockReport });
     const res = await fetchReport(testReadEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     const body = JSON.parse(res.body);
@@ -66,6 +66,9 @@ describe("Test fetchReport API method", () => {
 
 describe("Test fetchReportsByState API method", () => {
   test("Test successful call", async () => {
+    mockDocumentClient.query.promise.mockReturnValueOnce({
+      Items: [mockReport],
+    });
     const res = await fetchReportsByState(testReadEventByState, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     const body = JSON.parse(res.body);

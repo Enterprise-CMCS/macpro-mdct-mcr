@@ -64,8 +64,6 @@ describe("Test AdminPage without banner", () => {
   test("Check that current banner info does not render", () => {
     const currentBannerStatus = screen.queryByText("Status:");
     expect(currentBannerStatus).not.toBeInTheDocument();
-    const deleteButton = screen.getByText("Delete Current Banner");
-    expect(deleteButton).not.toBeVisible();
   });
 
   test("Check that 'no current banner' text shows", () => {
