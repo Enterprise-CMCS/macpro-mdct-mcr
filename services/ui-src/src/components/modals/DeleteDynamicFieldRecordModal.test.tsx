@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // components
-import { DeleteDynamicFieldModal, ReportContext } from "components";
+import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 // utils
 import { mockReportContext } from "utils/testing/setupJest";
 
@@ -11,7 +11,7 @@ const mockRemoveRecord = jest.fn();
 
 const modalComponent = (
   <ReportContext.Provider value={mockReportContext}>
-    <DeleteDynamicFieldModal
+    <DeleteDynamicFieldRecordModal
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -22,7 +22,7 @@ const modalComponent = (
   </ReportContext.Provider>
 );
 
-describe("Test DeleteDynamicFieldModal", () => {
+describe("Test DeleteDynamicFieldRecordModal", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(modalComponent);
@@ -33,23 +33,23 @@ describe("Test DeleteDynamicFieldModal", () => {
     jest.clearAllMocks();
   });
 
-  test("DeleteDynamicFieldModal shows the contents", () => {
+  test("DeleteDynamicFieldRecordModal shows the contents", () => {
     expect(screen.queryAllByText("Delete Plan")[0]).toBeTruthy();
     expect(screen.getByText("Yes, delete Plan")).toBeTruthy();
     expect(screen.getByText("Cancel")).toBeTruthy();
   });
 
-  test("DeleteDynamicFieldModal top close button can be clicked", () => {
+  test("DeleteDynamicFieldRecordModal top close button can be clicked", () => {
     fireEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("DeleteDynamicFieldModal bottom cancel button can be clicked", () => {
+  test("DeleteDynamicFieldRecordModal bottom cancel button can be clicked", () => {
     fireEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("DeleteDynamicFieldModal delete plan button can be clicked", async () => {
+  test("DeleteDynamicFieldRecordModal delete plan button can be clicked", async () => {
     fireEvent.click(screen.getByText("Yes, delete Plan"));
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
     await expect(mockRemoveRecord).toHaveBeenCalledTimes(1);

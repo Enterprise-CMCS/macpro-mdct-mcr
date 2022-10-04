@@ -1,25 +1,21 @@
+import { useState } from "react";
 // components
 import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 import { Modal } from "components";
-import { useState } from "react";
 // types
 import { EntityShape, EntityType } from "types";
 
-export const DeleteDynamicFieldModal = ({
+export const DeleteDynamicFieldRecordModal = ({
   selectedRecord,
   removeRecord,
   entityType,
   modalDisclosure,
 }: Props) => {
   const [deleting, setDeleting] = useState<boolean>(false);
-  const convertToReadableEntityName = (name: any) => {
-    const fieldTypeMap = {
-      plans: "Plan",
-      bssEntities: "BSS Entity",
-    };
-    const fieldType: keyof typeof fieldTypeMap = name;
-    return fieldTypeMap[fieldType];
+  const fieldTypeMap = {
+    plans: "Plan",
+    bssEntities: "BSS Entity",
   };
 
   const deleteProgramHandler = async () => {
@@ -34,20 +30,19 @@ export const DeleteDynamicFieldModal = ({
       onConfirmHandler={deleteProgramHandler}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: `Delete ${convertToReadableEntityName(entityType)}`,
+        heading: `Delete ${fieldTypeMap[entityType]}`,
         actionButtonText: deleting ? (
           <Spinner size="small" />
         ) : (
-          `Yes, delete ${convertToReadableEntityName(entityType)}`
+          `Yes, delete ${fieldTypeMap[entityType]}`
         ),
         closeButtonText: "Cancel",
       }}
     >
       <Text data-testid="delete-program-modal-text">
-        Are you sure you want to delete this{" "}
-        {convertToReadableEntityName(entityType)}? Once deleted it will also
-        remove any additional information related to the{" "}
-        {convertToReadableEntityName(entityType)} throughout the report.
+        Are you sure you want to delete this {fieldTypeMap[entityType]}? Once
+        deleted it will also remove any additional information related to the{" "}
+        {fieldTypeMap[entityType]} throughout the report.
       </Text>
     </Modal>
   );

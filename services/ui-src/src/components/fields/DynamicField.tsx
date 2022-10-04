@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { DeleteDynamicFieldModal } from "components";
+import { DeleteDynamicFieldRecordModal } from "components";
 import { svgFilters } from "styles/theme";
 // utils
 import { EntityShape, EntityType, InputChangeEvent } from "types";
@@ -129,7 +129,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           Add a row
         </Button>
       )}
-      <DeleteDynamicFieldModal
+      <DeleteDynamicFieldRecordModal
         selectedRecord={selectedRecord}
         removeRecord={removeRecord}
         entityType={name}
