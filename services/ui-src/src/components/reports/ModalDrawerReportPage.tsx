@@ -1,60 +1,56 @@
 import { useContext, useState } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
-import {
-  AddEditRecordModal,
-  DynamicDrawerRecordCard,
-  ReportContext,
-} from "components";
+import { AddEditEntityModal, EntityCard, ReportContext } from "components";
 // utils
 import { AnyObject, ModalDrawerReportPageShape } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { dynamicType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
-  const [selectedRecord, setSelectedRecord] = useState<AnyObject>({});
-  const records = report?.fieldData[dynamicType];
+  const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
+  const entities = report?.fieldData[dynamicType];
 
-  // add/edit record modal disclosure
+  // add/edit entity modal disclosure
   const {
-    isOpen: addEditRecordModalIsOpen,
-    onOpen: addEditRecordModalOnOpenHandler,
-    onClose: addEditRecordModalOnCloseHandler,
+    isOpen: addEditEntityModalIsOpen,
+    onOpen: addEditEntityModalOnOpenHandler,
+    onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
 
-  const openAddEditRecordModal = (recordId?: string) => {
-    if (report && recordId) {
-      // pre-fill form if if editing an existing record
-      setSelectedRecord(report.fieldData[dynamicType]);
+  const openAddEditEntityModal = (entityId?: string) => {
+    if (report && entityId) {
+      // pre-fill form if if editing an existing entity
+      setSelectedEntity(report.fieldData[dynamicType]);
     }
     // use disclosure to open modal
-    addEditRecordModalOnOpenHandler();
+    addEditEntityModalOnOpenHandler();
   };
 
   return (
     <Box data-testid="dynamic-drawer-section">
       <Box>
         <Button
-          sx={sx.addRecordButton}
-          onClick={() => openAddEditRecordModal()}
+          sx={sx.addEntityButton}
+          onClick={() => openAddEditEntityModal()}
         >
-          {dashboard.addRecordButtonText}
+          {dashboard.addEntityButtonText}
         </Button>
-        {records && (
+        {entities && (
           <Heading as="h4" sx={sx.dashboardTitle}>
             {dashboard.title}
           </Heading>
         )}
-        {records?.map((record: AnyObject) => (
-          <DynamicDrawerRecordCard key={record.id} record={record} />
+        {entities?.map((entity: AnyObject) => (
+          <EntityCard key={entity.id} entity={entity} />
         ))}
-        <AddEditRecordModal
+        <AddEditEntityModal
           dynamicType={dynamicType}
           modal={modal}
-          selectedRecord={selectedRecord}
+          selectedEntity={selectedEntity}
           modalDisclosure={{
-            isOpen: addEditRecordModalIsOpen,
-            onClose: addEditRecordModalOnCloseHandler,
+            isOpen: addEditEntityModalIsOpen,
+            onClose: addEditEntityModalOnCloseHandler,
           }}
         />
       </Box>
@@ -75,7 +71,7 @@ const sx = {
     fontWeight: "bold",
     color: "palette.gray_medium",
   },
-  addRecordButton: {
+  addEntityButton: {
     marginBottom: "2rem",
   },
 };

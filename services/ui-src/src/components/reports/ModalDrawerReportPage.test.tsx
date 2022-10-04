@@ -40,10 +40,10 @@ describe("Test ModalDrawerReportPage view", () => {
 describe("Test ModalDrawerReportPage add entity operation", () => {
   test("Modal opens correctly", async () => {
     render(modalDrawerReportPageComponent);
-    const addRecordButton = screen.getByText("Add record button");
-    await userEvent.click(addRecordButton);
+    const addEntityButton = screen.getByText("Add entity button");
+    await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
-    expect(screen.getByText("Add record modal")).toBeVisible();
+    expect(screen.getByText("Add entity modal")).toBeVisible();
   });
 });
 

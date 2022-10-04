@@ -962,7 +962,7 @@
               },
               "dashboard": {
                 "title": "Add measures for monitoring access standards",
-                "addRecordButtonText": "Add access measure"
+                "addEntityButtonText": "Add access measure"
               },
               "modal": {
                 "addTitle": "Add access measure",

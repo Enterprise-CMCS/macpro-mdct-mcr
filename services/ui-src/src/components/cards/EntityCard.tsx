@@ -10,17 +10,17 @@ import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
-export const DynamicDrawerRecordCard = ({ record, ...props }: Props) => {
+export const EntityCard = ({ entity, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
 
   // data to fill in card
   const data = {
-    category: record.accessMeasure_generalCategory[0].value,
-    standardDescription: record.accessMeasure_standardDescription,
+    category: entity.accessMeasure_generalCategory[0].value,
+    standardDescription: entity.accessMeasure_standardDescription,
     standardType:
-      record.accessMeasure_standardType[0].value !== "Other, specify"
-        ? record.accessMeasure_standardType[0].value
-        : record["accessMeasure_standardType-otherText"],
+      entity.accessMeasure_standardType[0].value !== "Other, specify"
+        ? entity.accessMeasure_standardType[0].value
+        : entity["accessMeasure_standardType-otherText"],
   };
 
   return (
@@ -28,13 +28,13 @@ export const DynamicDrawerRecordCard = ({ record, ...props }: Props) => {
       <Box sx={sx.contentBox}>
         <Image
           src={unfinishedIcon}
-          alt="record is unfinished"
+          alt="entity is unfinished"
           sx={sx.statusIcon}
         />
-        <button className="delete-record-button">
+        <button className="delete-entity-button">
           <Image
             src={deleteIcon}
-            alt="Delete Record"
+            alt="Delete Entity"
             sx={sx.deleteButtonImage}
           />
         </button>
@@ -47,7 +47,7 @@ export const DynamicDrawerRecordCard = ({ record, ...props }: Props) => {
         <Button
           variant="outline"
           size="sm"
-          sx={sx.editRecordButton}
+          sx={sx.editEntityButton}
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
         >
           Edit measure
@@ -65,7 +65,7 @@ export const DynamicDrawerRecordCard = ({ record, ...props }: Props) => {
 };
 
 interface Props {
-  record: AnyObject;
+  entity: AnyObject;
   [key: string]: any;
 }
 
@@ -76,7 +76,7 @@ const sx = {
   contentBox: {
     marginX: "1.25rem",
     position: "relative",
-    ".delete-record-button": {
+    ".delete-entity-button": {
       position: "absolute",
       right: "-2rem",
     },
@@ -108,7 +108,7 @@ const sx = {
     marginTop: "0.25rem",
     fontSize: "sm",
   },
-  editRecordButton: {
+  editEntityButton: {
     marginY: "1rem",
     fontWeight: "normal",
   },

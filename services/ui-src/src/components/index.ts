@@ -19,7 +19,7 @@ export { Banner } from "./banners/Banner";
 export { PreviewBanner } from "./banners/PreviewBanner";
 // cards
 export { Card } from "./cards/Card";
-export { DynamicDrawerRecordCard } from "./cards/DynamicDrawerRecordCard";
+export { EntityCard } from "./cards/EntityCard";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
@@ -62,7 +62,7 @@ export { Sidebar } from "./menus/Sidebar";
 export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
-export { AddEditRecordModal } from "./modals/AddEditRecordModal";
+export { AddEditEntityModal } from "./modals/AddEditEntityModal";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
 export { HelpPage } from "./pages/Help/HelpPage";

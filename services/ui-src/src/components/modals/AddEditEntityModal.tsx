@@ -8,10 +8,10 @@ import { Spinner } from "@cmsgov/design-system";
 import { AnyObject, ReportStatus } from "types";
 import { useUser } from "utils";
 
-export const AddEditRecordModal = ({
+export const AddEditEntityModal = ({
   dynamicType,
   modal,
-  selectedRecord,
+  selectedEntity,
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
@@ -20,7 +20,7 @@ export const AddEditRecordModal = ({
 
   const { form, addTitle, editTitle, message } = modal;
 
-  const writeRecord = async (formData: any) => {
+  const writeEntity = async (formData: any) => {
     setSubmitting(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
@@ -29,35 +29,31 @@ export const AddEditRecordModal = ({
       state: report?.state,
       id: report?.id,
     };
-    const currentDynamicTypeRecords = report?.fieldData?.[dynamicType] || [];
-    if (selectedRecord?.id) {
-      // if existing record selected, edit
-      const selectedRecordIndex = currentDynamicTypeRecords.indexOf(
-        (record: AnyObject) => record.id === selectedRecord.id
+    const currentEntities = report?.fieldData?.[dynamicType] || [];
+    if (selectedEntity?.id) {
+      // if existing entity selected, edit
+      const selectedEntityIndex = currentEntities.indexOf(
+        (entity: AnyObject) => entity.id === selectedEntity.id
       );
-      const updatedDynamicTypeRecords = currentDynamicTypeRecords.splice(
-        selectedRecordIndex,
-        1,
-        {
-          id: selectedRecord.id,
-          ...formData,
-        }
-      );
+      const updatedEntities = currentEntities.splice(selectedEntityIndex, 1, {
+        id: selectedEntity.id,
+        ...formData,
+      });
       await updateReport(reportKeys, {
         lastAlteredBy: full_name,
         reportStatus: ReportStatus.IN_PROGRESS,
         fieldData: {
-          [dynamicType]: updatedDynamicTypeRecords,
+          [dynamicType]: updatedEntities,
         },
       });
     } else {
-      // create new record
+      // create new entity
       const datatowrite = {
         lastAlteredBy: full_name,
         reportStatus: ReportStatus.IN_PROGRESS,
         fieldData: {
           [dynamicType]: [
-            ...currentDynamicTypeRecords,
+            ...currentEntities,
             {
               id: uuid(),
               ...formData,
@@ -73,20 +69,20 @@ export const AddEditRecordModal = ({
 
   return (
     <Modal
-      data-testid="add-edit-record-modal"
+      data-testid="add-edit-entity-modal"
       formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedRecord?.id ? editTitle : addTitle,
+        heading: selectedEntity?.id ? editTitle : addTitle,
         actionButtonText: submitting ? <Spinner size="small" /> : "Save",
       }}
     >
       <Form
-        data-testid="add-edit-record-form"
+        data-testid="add-edit-entity-form"
         id={form.id}
         formJson={form}
-        formData={selectedRecord}
-        onSubmit={writeRecord}
+        formData={selectedEntity}
+        onSubmit={writeEntity}
       />
       <Text sx={sx.bottomMessage}>{message}</Text>
     </Modal>
@@ -96,7 +92,7 @@ export const AddEditRecordModal = ({
 interface Props {
   dynamicType: string;
   modal: AnyObject;
-  selectedRecord?: AnyObject;
+  selectedEntity?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
