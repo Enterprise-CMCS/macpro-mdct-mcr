@@ -47,8 +47,15 @@ const mockChoices = [
 
 const mockNestedChildren = [
   {
-    id: "test-nested-child",
+    id: "test-nested-child-text",
     type: "text",
+  },
+  {
+    id: "test-nested-child-radio",
+    type: "radio",
+    props: {
+      choices: [...mockChoices],
+    },
   },
 ];
 
