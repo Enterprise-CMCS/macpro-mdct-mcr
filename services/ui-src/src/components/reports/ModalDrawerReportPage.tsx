@@ -4,9 +4,9 @@ import { Box, Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { ReportContext, ReportDrawer } from "components";
 // utils
 import { useUser } from "utils";
-import { AnyObject, DynamicDrawerReportPageShape, ReportStatus } from "types";
+import { AnyObject, ModalDrawerReportPageShape, ReportStatus } from "types";
 
-export const DynamicDrawerReportPage = ({ route, setSubmitting }: Props) => {
+export const ModalDrawerReportPage = ({ route, setSubmitting }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -107,7 +107,7 @@ export const DynamicDrawerReportPage = ({ route, setSubmitting }: Props) => {
 };
 
 interface Props {
-  route: DynamicDrawerReportPageShape;
+  route: ModalDrawerReportPageShape;
   setSubmitting: Function;
 }
 

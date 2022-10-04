@@ -16,12 +16,12 @@ import { useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
-  EntityDrawerReportPageShape,
+  DrawerReportPageShape,
   ReportStatus,
 } from "types";
-import emptyVerbiage from "../../verbiage/pages/mcpar/mcpar-entity-drawer";
+import verbiage from "../../verbiage/pages/mcpar/mcpar-drawer-report-page";
 
-export const EntityDrawerReportPage = ({ route, submittingState }: Props) => {
+export const DrawerReportPage = ({ route, submittingState }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -34,8 +34,8 @@ export const EntityDrawerReportPage = ({ route, submittingState }: Props) => {
   const { submitting, setSubmitting } = submittingState;
   const { entityType, dashboard, drawer } = route;
   const entities = report?.fieldData?.[entityType];
-  const { message, link } =
-    emptyVerbiage[entityType as keyof typeof emptyVerbiage];
+
+  const { message, link } = verbiage[entityType as keyof typeof verbiage];
 
   // shape entity data for hydration
   const formData = { fieldData: currentEntity };
@@ -91,7 +91,7 @@ export const EntityDrawerReportPage = ({ route, submittingState }: Props) => {
       </Flex>
     ));
   return (
-    <Box data-testid="entity-drawer">
+    <Box data-testid="drawer">
       <Heading as="h3" sx={sx.dashboardTitle}>
         {dashboard!.title}
       </Heading>
@@ -123,7 +123,7 @@ export const EntityDrawerReportPage = ({ route, submittingState }: Props) => {
 };
 
 interface Props {
-  route: EntityDrawerReportPageShape;
+  route: DrawerReportPageShape;
   submittingState: {
     submitting: boolean;
     setSubmitting: Function;

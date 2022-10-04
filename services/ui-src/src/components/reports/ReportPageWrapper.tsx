@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  DynamicDrawerReportPage,
-  EntityDrawerReportPage,
+  ModalDrawerReportPage,
+  DrawerReportPage,
   PageTemplate,
   ReportPageIntro,
   ReportPageFooter,
@@ -15,8 +15,8 @@ import {
 // utils
 import { useUser } from "utils";
 import {
-  DynamicDrawerReportPageShape,
-  EntityDrawerReportPageShape,
+  ModalDrawerReportPageShape,
+  DrawerReportPageShape,
   PageTypes,
   ReportRouteWithForm,
   StandardReportPageShape,
@@ -44,17 +44,17 @@ export const ReportPageWrapper = ({ route }: Props) => {
 
   const renderPageSection = (route: ReportRouteWithForm) => {
     switch (route.pageType) {
-      case PageTypes.ENTITY_DRAWER:
+      case PageTypes.DRAWER:
         return (
-          <EntityDrawerReportPage
-            route={route as EntityDrawerReportPageShape}
+          <DrawerReportPage
+            route={route as DrawerReportPageShape}
             submittingState={{ submitting, setSubmitting }}
           />
         );
-      case PageTypes.DYNAMIC_DRAWER:
+      case PageTypes.MODAL_DRAWER:
         return (
-          <DynamicDrawerReportPage
-            route={route as DynamicDrawerReportPageShape}
+          <ModalDrawerReportPage
+            route={route as ModalDrawerReportPageShape}
             setSubmitting={setSubmitting}
           />
         );

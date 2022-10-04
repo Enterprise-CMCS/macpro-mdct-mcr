@@ -13,8 +13,8 @@ import {
   mockReport,
   mockStandardReportPageJson,
   mockReportJson,
-  mockDynamicDrawerReportPageJson,
-  mockEntityDrawerReportPageJson,
+  mockModalDrawerReportPageJson,
+  mockDrawerReportPageJson,
   mockDrawerFormField,
   mockModalFormField,
 } from "utils/testing/setupJest";
@@ -64,16 +64,16 @@ describe("Test copyAdminDisabledStatusToForms", () => {
     const result = copyAdminDisabledStatusToForms(mockAdminDisabledReportJson);
 
     const testStandardPageForm = result.routes[0].form;
-    const testEntityDrawerPageForm = result.routes[1].children![0].drawer!.form;
-    const testDynamicDrawerPageModalForm =
+    const testDrawerPageForm = result.routes[1].children![0].drawer!.form;
+    const testModalDrawerPageModalForm =
       result.routes[1].children![1].modal!.form;
-    const testDynamicDrawerPageDrawerForm =
+    const testModalDrawerPageDrawerForm =
       result.routes[1].children![1].drawer!.form;
 
     expect(testStandardPageForm!.adminDisabled).toBeTruthy();
-    expect(testEntityDrawerPageForm!.adminDisabled).toBeTruthy();
-    expect(testDynamicDrawerPageModalForm!.adminDisabled).toBeTruthy();
-    expect(testDynamicDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
+    expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
   });
 });
 
@@ -90,8 +90,8 @@ describe("Test compileValidationJsonFromRoutes", () => {
 
 describe("Test makeFieldIdList", () => {
   const mockField1 = { ...mockFormField, id: "mock-standard-1" };
-  const mockField2 = { ...mockNestedFormField, id: "mock-entity-drawer-1" };
-  const mockField3 = { ...mockDrawerFormField, id: "mock-entity-drawer-2" };
+  const mockField2 = { ...mockNestedFormField, id: "mock-drawer-1" };
+  const mockField3 = { ...mockDrawerFormField, id: "mock-drawer-2" };
   const mockField4 = {
     ...mockModalFormField,
     id: "mock-dynamic-drawer-modal-1",
@@ -109,7 +109,7 @@ describe("Test makeFieldIdList", () => {
       },
     },
     {
-      ...mockEntityDrawerReportPageJson,
+      ...mockDrawerReportPageJson,
       name: "mock-route-2",
       path: "/mock/mock-route-2",
       drawer: {
@@ -121,7 +121,7 @@ describe("Test makeFieldIdList", () => {
       },
     },
     {
-      ...mockDynamicDrawerReportPageJson,
+      ...mockModalDrawerReportPageJson,
       name: "mock-route-3",
       path: "/mock/mock-route-3",
       modal: {
@@ -146,8 +146,8 @@ describe("Test makeFieldIdList", () => {
     expect(result).toEqual({
       "mock-dynamic-drawer-1": "mock drawer text field",
       "mock-dynamic-drawer-modal-1": "mock modal text field",
-      "mock-entity-drawer-1": "mock radio field",
-      "mock-entity-drawer-2": "mock drawer text field",
+      "mock-drawer-1": "mock radio field",
+      "mock-drawer-2": "mock drawer text field",
       "mock-standard-1": "mock text field",
       "mock-text-field": "mock text field",
     });
