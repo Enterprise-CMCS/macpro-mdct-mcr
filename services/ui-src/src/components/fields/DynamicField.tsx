@@ -22,12 +22,8 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   const openDeleteProgramModal = (index: number) => {
     setSelectedRecord(displayValues[index]);
-    if (selectedRecord) deleteProgramModalOnOpenHandler();
+    deleteProgramModalOnOpenHandler();
   };
-
-  useEffect(() => {
-    if (selectedRecord) deleteProgramModalOnOpenHandler();
-  }, [selectedRecord]);
 
   const {
     isOpen: deleteProgramModalIsOpen,
@@ -71,6 +67,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       newDisplayValues = [newEntity];
     }
     setDisplayValues(newDisplayValues);
+    setSelectedRecord(undefined);
   };
 
   // set initial value to form field value or hydration value
