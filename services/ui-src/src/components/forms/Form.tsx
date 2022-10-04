@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, VisuallyHidden } from "@chakra-ui/react";
 // utils
 import {
   compileValidationJsonFromFields,
@@ -14,6 +14,7 @@ import {
   useUser,
 } from "utils";
 import { AnyObject, FormJson, FormField } from "types";
+import { Spinner } from "@cmsgov/design-system";
 
 export const Form = ({
   id,
@@ -69,7 +70,18 @@ export const Form = ({
         onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
         {...props}
       >
-        <Box sx={sx}>{renderFormFields(fields)}</Box>
+        <Box sx={sx}>
+          {!formData ? (
+            <>
+              <Flex sx={sx.spinnerContainer}>
+                <Spinner size="big" />
+              </Flex>
+              <VisuallyHidden>{renderFormFields(fields)}</VisuallyHidden>
+            </>
+          ) : (
+            <>{renderFormFields(fields)}</>
+          )}
+        </Box>
         {children}
       </form>
     </FormProvider>
@@ -111,6 +123,21 @@ const sx = {
     paddingTop: 0,
     ".ds-c-fieldset, label": {
       marginTop: 0,
+    },
+  },
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
+
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
     },
   },
 };
