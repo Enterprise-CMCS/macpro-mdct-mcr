@@ -52,6 +52,7 @@ describe("Test DeleteDynamicFieldModal", () => {
   test("DeleteDynamicFieldModal delete plan button can be clicked", async () => {
     fireEvent.click(screen.getByText("Yes, delete Plan"));
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    await expect(mockRemoveRecord).toHaveBeenCalledTimes(1);
   });
 });
 

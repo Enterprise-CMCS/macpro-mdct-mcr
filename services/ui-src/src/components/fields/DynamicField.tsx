@@ -4,12 +4,12 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+import { DeleteDynamicFieldModal } from "components";
 import { svgFilters } from "styles/theme";
 // utils
 import { EntityShape, EntityType, InputChangeEvent } from "types";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import { DeleteDynamicFieldModal } from "components";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // get form context and register field
