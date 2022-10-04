@@ -29,7 +29,7 @@ export const AddEditRecordModal = ({
       state: report?.state,
       id: report?.id,
     };
-    const currentDynamicTypeRecords = report?.fieldData?.[dynamicType] || {};
+    const currentDynamicTypeRecords = report?.fieldData?.[dynamicType] || [];
     if (selectedRecord?.id) {
       // if existing record selected, edit
       const selectedRecordIndex = currentDynamicTypeRecords.indexOf(

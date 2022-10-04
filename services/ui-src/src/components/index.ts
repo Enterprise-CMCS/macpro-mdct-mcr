@@ -19,6 +19,7 @@ export { Banner } from "./banners/Banner";
 export { PreviewBanner } from "./banners/PreviewBanner";
 // cards
 export { Card } from "./cards/Card";
+export { DynamicDrawerRecordCard } from "./cards/DynamicDrawerRecordCard";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard

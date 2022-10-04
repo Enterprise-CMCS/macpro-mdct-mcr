@@ -1,7 +1,11 @@
 import { useContext, useState } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
-import { AddEditRecordModal, ReportContext } from "components";
+import {
+  AddEditRecordModal,
+  DynamicDrawerRecordCard,
+  ReportContext,
+} from "components";
 // utils
 import { AnyObject, DynamicDrawerReportPageShape } from "types";
 
@@ -29,24 +33,21 @@ export const DynamicDrawerReportPage = ({ route }: Props) => {
 
   return (
     <Box data-testid="dynamic-drawer-section">
-      <Box style={sx.recordTable}>
-        <Heading as="h3" sx={sx.tableTitle}>
-          {dashboard.title}
-        </Heading>
-        {records?.map((record: AnyObject) => {
-          return (
-            <div key={JSON.stringify(record)}>
-              <span>{JSON.stringify(record)}</span>
-            </div>
-          );
-        })}
-        {/* TODO: Add cards here */}
+      <Box>
         <Button
           sx={sx.addRecordButton}
           onClick={() => openAddEditRecordModal()}
         >
           {dashboard.addRecordButtonText}
         </Button>
+        {records && (
+          <Heading as="h4" sx={sx.dashboardTitle}>
+            {dashboard.title}
+          </Heading>
+        )}
+        {records?.map((record: AnyObject) => (
+          <DynamicDrawerRecordCard key={record.id} record={record} />
+        ))}
         <AddEditRecordModal
           dynamicType={dynamicType}
           modal={modal}
@@ -67,17 +68,14 @@ interface Props {
 }
 
 const sx = {
-  tableTitle: {
-    paddingBottom: "0.75rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
-    color: "palette.gray_medium",
-    fontSize: "lg",
+  dashboardTitle: {
+    marginBottom: "1.25rem",
+    marginLeft: "0.75rem",
+    fontSize: "md",
     fontWeight: "bold",
-  },
-  recordTable: {
-    marginBottom: "2rem",
+    color: "palette.gray_medium",
   },
   addRecordButton: {
-    marginTop: "2rem",
+    marginBottom: "2rem",
   },
 };

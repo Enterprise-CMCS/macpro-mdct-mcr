@@ -53,7 +53,7 @@ const sx = {
     },
     "p, span": {
       color: "palette.gray",
-      marginY: "1rem",
+      marginTop: "1rem",
     },
     a: {
       color: "palette.primary",
