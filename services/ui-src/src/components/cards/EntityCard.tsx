@@ -35,7 +35,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
             sx={sx.deleteButtonImage}
           />
         </button>
-        <Heading as="h5" sx={sx.heading}>
+        <Heading as="h4" sx={sx.heading}>
           {data.category}
         </Heading>
         <Text sx={sx.description}>{data.standardDescription}</Text>
