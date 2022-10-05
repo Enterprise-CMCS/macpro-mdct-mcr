@@ -21,6 +21,7 @@ import {
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
+import { Spinner } from "@cmsgov/design-system";
 
 export const ReportPageWrapper = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -74,7 +75,14 @@ export const ReportPageWrapper = ({ route }: Props) => {
         <Sidebar />
         <Flex sx={sx.reportContainer}>
           {route.intro && <ReportPageIntro text={route.intro} />}
-          {renderPageSection(route)}
+          {!report ? (
+            <Flex sx={sx.spinnerContainer}>
+              <Spinner size="big" />
+            </Flex>
+          ) : (
+            renderPageSection(route)
+          )}
+
           <ReportPageFooter submitting={submitting} form={route.form} />
         </Flex>
       </Flex>
@@ -101,6 +109,21 @@ const sx = {
       paddingBottom: "0.75rem",
       fontSize: "lg",
       fontWeight: "bold",
+    },
+  },
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
+
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
     },
   },
 };

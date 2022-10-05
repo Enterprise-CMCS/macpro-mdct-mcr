@@ -5,7 +5,6 @@ import { ReportContext, ReportDrawer } from "components";
 // utils
 import { useUser } from "utils";
 import { AnyObject, ModalDrawerReportPageShape, ReportStatus } from "types";
-import { Spinner } from "@cmsgov/design-system";
 
 export const ModalDrawerReportPage = ({ route, setSubmitting }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -63,39 +62,31 @@ export const ModalDrawerReportPage = ({ route, setSubmitting }: Props) => {
           <Heading as="h3" sx={sx.tableTitle}>
             {route.drawer.title}
           </Heading>
-          {!report ? (
-            <Flex sx={sx.spinnerContainer}>
-              <Spinner size="big" />
-            </Flex>
-          ) : (
-            <>
-              {entities.map((entity) => {
-                return (
-                  <Flex key={entity.title} sx={sx.entityRow}>
-                    <Heading as="h4" sx={sx.entityName}>
-                      {entity.title}
-                    </Heading>
-                    <Flex key={entity.title} sx={sx.buttonContainer}>
-                      <Button
-                        sx={sx.buttonStyle}
-                        onClick={() => openRowDrawer(entity.title)}
-                        variant="outline"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        sx={sx.buttonStyle}
-                        onClick={() => removeEntity(entity.title)}
-                        variant="outline"
-                      >
-                        Delete
-                      </Button>
-                    </Flex>
-                  </Flex>
-                );
-              })}
-            </>
-          )}
+          {entities.map((entity) => {
+            return (
+              <Flex key={entity.title} sx={sx.entityRow}>
+                <Heading as="h4" sx={sx.entityName}>
+                  {entity.title}
+                </Heading>
+                <Flex key={entity.title} sx={sx.buttonContainer}>
+                  <Button
+                    sx={sx.buttonStyle}
+                    onClick={() => openRowDrawer(entity.title)}
+                    variant="outline"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    sx={sx.buttonStyle}
+                    onClick={() => removeEntity(entity.title)}
+                    variant="outline"
+                  >
+                    Delete
+                  </Button>
+                </Flex>
+              </Flex>
+            );
+          })}
         </Box>
       )}
       <Button onClick={() => openRowDrawer("")} type="submit">
@@ -156,20 +147,5 @@ const sx = {
     fontSize: "md",
     fontWeight: "normal",
     margin: "0.5rem",
-  },
-  spinnerContainer: {
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "center",
-    padding: "10",
-
-    ".ds-c-spinner": {
-      "&:before": {
-        borderColor: "palette.black",
-      },
-      "&:after": {
-        borderLeftColor: "palette.black",
-      },
-    },
   },
 };

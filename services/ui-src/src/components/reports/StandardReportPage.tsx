@@ -1,13 +1,12 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Form, ReportContext } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
 import { AnyObject, StandardReportPageShape, ReportStatus } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
-import { Spinner } from "@cmsgov/design-system";
 
 export const StandardReportPage = ({ route, setSubmitting }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
@@ -36,18 +35,12 @@ export const StandardReportPage = ({ route, setSubmitting }: Props) => {
 
   return (
     <Box data-testid="standard-page">
-      {!report ? (
-        <Flex sx={sx.spinnerContainer}>
-          <Spinner size="big" />
-        </Flex>
-      ) : (
-        <Form
-          id={route.form.id}
-          formJson={route.form}
-          onSubmit={onSubmit}
-          formData={report}
-        />
-      )}
+      <Form
+        id={route.form.id}
+        formJson={route.form}
+        onSubmit={onSubmit}
+        formData={report}
+      />
     </Box>
   );
 };
@@ -56,21 +49,3 @@ interface Props {
   route: StandardReportPageShape;
   setSubmitting: Function;
 }
-
-const sx = {
-  spinnerContainer: {
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "center",
-    padding: "10",
-
-    ".ds-c-spinner": {
-      "&:before": {
-        borderColor: "palette.black",
-      },
-      "&:after": {
-        borderLeftColor: "palette.black",
-      },
-    },
-  },
-};

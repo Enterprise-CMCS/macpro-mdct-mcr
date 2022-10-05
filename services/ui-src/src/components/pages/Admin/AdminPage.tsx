@@ -79,7 +79,6 @@ export const AdminPage = () => {
             </Flex>
           )}
         </Collapse>
-
         {!bannerData?.key && <Text>There is no current banner</Text>}
       </Box>
       <Flex sx={sx.newBannerBox}>
@@ -150,20 +149,5 @@ const sx = {
     width: "100%",
     flexDirection: "column",
     marginBottom: "2.25rem",
-  },
-  spinnerContainer: {
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "center",
-    padding: "10",
-
-    ".ds-c-spinner": {
-      "&:before": {
-        borderColor: "palette.black",
-      },
-      "&:after": {
-        borderLeftColor: "palette.black",
-      },
-    },
   },
 };
