@@ -20,6 +20,7 @@ import {
   ReportStatus,
 } from "types";
 import verbiage from "../../verbiage/pages/mcpar/mcpar-drawer-report-page";
+import { Spinner } from "@cmsgov/design-system";
 
 export const DrawerReportPage = ({ route, submittingState }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -95,29 +96,38 @@ export const DrawerReportPage = ({ route, submittingState }: Props) => {
       <Heading as="h3" sx={sx.dashboardTitle}>
         {dashboard!.title}
       </Heading>
-      {entities ? (
-        entityRows(entities)
+
+      {!report ? (
+        <Flex sx={sx.spinnerContainer}>
+          <Spinner size="big" />
+        </Flex>
       ) : (
-        <Text sx={sx.emptyEntityMessage}>
-          {message}{" "}
-          <Link as={RouterLink} to={link.href}>
-            {link.text}
-          </Link>
-        </Text>
+        <>
+          {entities ? (
+            entityRows(entities)
+          ) : (
+            <Text sx={sx.emptyEntityMessage}>
+              {message}{" "}
+              <Link as={RouterLink} to={link.href}>
+                {link.text}
+              </Link>
+            </Text>
+          )}
+          <ReportDrawer
+            drawerDisclosure={{
+              isOpen,
+              onClose,
+            }}
+            drawerTitle={`${drawer.title} ${currentEntity?.name}`}
+            drawerInfo={drawer.info}
+            form={drawer.form}
+            onSubmit={onSubmit}
+            formData={formData}
+            submitting={submitting}
+            data-testid="report-drawer"
+          />
+        </>
       )}
-      <ReportDrawer
-        drawerDisclosure={{
-          isOpen,
-          onClose,
-        }}
-        drawerTitle={`${drawer.title} ${currentEntity?.name}`}
-        drawerInfo={drawer.info}
-        form={drawer.form}
-        onSubmit={onSubmit}
-        formData={formData}
-        submitting={submitting}
-        data-testid="report-drawer"
-      />
     </Box>
   );
 };
@@ -159,5 +169,20 @@ const sx = {
     height: "1.75rem",
     fontSize: "md",
     fontWeight: "normal",
+  },
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
+
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
+    },
   },
 };
