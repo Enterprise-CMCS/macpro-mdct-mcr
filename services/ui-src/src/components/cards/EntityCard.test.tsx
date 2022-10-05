@@ -21,7 +21,16 @@ const mockEntity = {
   "accessMeasure_standardType-otherText": "",
 };
 const mockOpenDrawer = jest.fn();
-const mockFormattedEntityData = {};
+const mockFormattedEntityData = {
+  category: "mock-category",
+  standardDescription: "mock-standardDescription",
+  standardType: "mock-standardType",
+  provider: "mock-providerType",
+  region: "mock-applicableRegion",
+  population: "mock-population",
+  monitoringMethods: ["mock-monitoringMethod-1", "mock-monitoringMethod-2"],
+  methodFrequency: "mock-oversightMethodFrequency",
+};
 
 const EntityCardComponent = (
   <EntityCard
