@@ -11,10 +11,12 @@ import {
 import { AnyObject, EntityShape, ModalDrawerReportPageShape } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
-  const { entityType, dashboard, modal } = route;
+  const { entityType, dashboard, modal, drawer } = route;
   const { report } = useContext(ReportContext);
   const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
   const entities = report?.fieldData[entityType] || [];
+  const formData = { fieldData: entityType };
+  console.log("formData", formData);
 
   // add/edit entity modal disclosure
   const {
@@ -48,6 +50,36 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     addEditEntityModalOnOpenHandler();
   };
 
+  const onSubmit = async () => {
+    // if (userIsStateUser || userIsStateRep) {
+    //   setSubmitting(true);
+    //   const reportKeys = {
+    //     state: state,
+    //     id: report?.id,
+    //   };
+    //   const currentEntities = [...(report?.fieldData[entityType] || {})];
+    //   const currentEntityIndex = report?.fieldData[entityType].findIndex(
+    //     (entity: EntityShape) => entity.name === currentEntity?.name
+    //   );
+    //   const newEntity = {
+    //     ...currentEntity,
+    //     ...formData,
+    //   };
+    //   let newEntities = currentEntities;
+    //   newEntities[currentEntityIndex] = newEntity;
+    //   const dataToWrite = {
+    //     status: ReportStatus.IN_PROGRESS,
+    //     lastAlteredBy: full_name,
+    //     fieldData: {
+    //       [entityType]: newEntities,
+    //     },
+    //   };
+    //   await updateReport(reportKeys, dataToWrite);
+    //   setSubmitting(false);
+    // }
+    // onClose();
+  };
+
   return (
     <Box data-testid="dynamic-drawer-section">
       <Box>
@@ -79,11 +111,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             isOpen: drawerIsOpen,
             onClose: drawerOnCloseHandler,
           }}
-          drawerTitle={`${drawer.title} ${currentEntity?.name}`}
-          // drawerInfo={drawer.info}
+          drawerTitle={drawer.title}
+          drawerInfo={drawer.info}
           form={drawer.form}
           onSubmit={onSubmit}
-          // formData={formData}
+          formData={formData}
           // submitting={submitting}
           data-testid="report-drawer"
         />

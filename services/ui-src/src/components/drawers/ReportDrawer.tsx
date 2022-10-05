@@ -67,7 +67,7 @@ interface Props {
     onClose: Function;
   };
   drawerTitle: string;
-  drawerInfo?: CustomHtmlElement[];
+  drawerInfo?: CustomHtmlElement[] | string;
   form: FormJson;
   onSubmit: Function;
   formData?: AnyObject;

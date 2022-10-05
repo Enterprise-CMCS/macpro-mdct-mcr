@@ -60,7 +60,7 @@ interface Props {
     onClose: Function;
   };
   drawerTitle: string;
-  drawerInfo?: CustomHtmlElement[];
+  drawerInfo?: CustomHtmlElement[] | string;
   [key: string]: any;
 }
 
