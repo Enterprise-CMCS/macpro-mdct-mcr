@@ -12,7 +12,7 @@ export const DeleteDynamicFieldRecordModal = ({
   modalDisclosure,
 }: Props) => {
   const [deleting, setDeleting] = useState<boolean>(false);
-  const fieldTypeMap = {
+  const fieldTypeMap: any = {
     plans: "Plan",
     bssEntities: "BSS Entity",
   };
