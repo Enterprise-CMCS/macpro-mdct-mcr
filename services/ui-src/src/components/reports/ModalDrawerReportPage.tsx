@@ -14,7 +14,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
   const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
-  const entities = report?.fieldData[entityType];
+  const entities = report?.fieldData[entityType] || [];
 
   // add/edit entity modal disclosure
   const {
@@ -24,10 +24,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   } = useDisclosure();
 
   const openAddEditEntityModal = () => {
-    if (report) {
-      // pre-fill form if if editing an existing entity
-      setSelectedEntity(report.fieldData[entityType]);
-    }
+    setSelectedEntity({});
+    /*
+     * TODO: setSelectedEntity if editing an existing entity
+     * if (report && entityId) {
+     *   // pre-fill form if editing an existing entity
+     *   setSelectedEntity(report.fieldData[entityType]);
+     * }
+     */
     // use disclosure to open modal
     addEditEntityModalOnOpenHandler();
   };
@@ -52,20 +56,16 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         >
           {dashboard.addEntityButtonText}
         </Button>
-        {entities && (
-          <>
-            <Heading as="h4" sx={sx.dashboardTitle}>
-              {dashboard.title}
-            </Heading>
-            {entities.map((entity: AnyObject) => (
-              <EntityCard
-                key={entity.id}
-                entity={entity}
-                openDeleteEntityModal={openDeleteEntityModal}
-              />
-            ))}
-          </>
-        )}
+        <Heading as="h4" sx={sx.dashboardTitle}>
+          {dashboard.title}
+        </Heading>
+        {entities.map((entity: AnyObject) => (
+          <EntityCard
+            key={entity.id}
+            entity={entity}
+            openDeleteEntityModal={openDeleteEntityModal}
+          />
+        ))}
         <AddEditEntityModal
           entityType={entityType}
           modalData={modal}
