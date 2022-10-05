@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Flex } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 import {
   ReportContext,
   ModalDrawerReportPage,
@@ -21,7 +22,6 @@ import {
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
-import { Spinner } from "@cmsgov/design-system";
 
 export const ReportPageWrapper = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
