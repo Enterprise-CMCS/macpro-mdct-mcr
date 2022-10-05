@@ -25,24 +25,26 @@ export const DeleteDynamicFieldRecordModal = ({
     modalDisclosure.onClose();
   };
 
+  const entityName = fieldTypeMap[entityType];
+
   return (
     <Modal
       onConfirmHandler={deleteProgramHandler}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: `Delete ${fieldTypeMap[entityType]}`,
+        heading: `Delete ${entityName}`,
         actionButtonText: deleting ? (
           <Spinner size="small" />
         ) : (
-          `Yes, delete ${fieldTypeMap[entityType]}`
+          `Yes, delete ${entityName}`
         ),
         closeButtonText: "Cancel",
       }}
     >
       <Text data-testid="delete-program-modal-text">
-        Are you sure you want to delete this {fieldTypeMap[entityType]}? Once
-        deleted it will also remove any additional information related to the{" "}
-        {fieldTypeMap[entityType]} throughout the report.
+        Are you sure you want to delete this {entityName}? Once deleted it will
+        also remove any additional information related to the {entityName}{" "}
+        throughout the report.
       </Text>
     </Modal>
   );
