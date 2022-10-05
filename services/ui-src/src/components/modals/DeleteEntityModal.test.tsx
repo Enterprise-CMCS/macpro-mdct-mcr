@@ -45,7 +45,7 @@ const modalComponent = (
         isOpen: true,
         onClose: mockCloseHandler,
       }}
-      entityType={"accessMeasures"}
+      entityType="accessMeasures"
       selectedEntity={mockEntity}
     />
   </ReportContext.Provider>
@@ -79,12 +79,12 @@ describe("Test DeleteEntityModal", () => {
   });
 });
 
-describe("Test AddEditEntityModal functionality", () => {
+describe("Test DeleteEntityModal functionality", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("DeleteEntityModal delete entity button can be clicked", async () => {
+  test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
     render(modalComponent);
 
     const submitButton = screen.getByRole("button", {

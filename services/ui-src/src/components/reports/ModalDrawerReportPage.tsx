@@ -23,6 +23,13 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
 
+  // delete modal disclosure
+  const {
+    isOpen: deleteEntityModalIsOpen,
+    onOpen: deleteEntityModalOnOpenHandler,
+    onClose: deleteEntityModalOnCloseHandler,
+  } = useDisclosure();
+
   const openAddEditEntityModal = () => {
     setSelectedEntity({});
     /*
@@ -40,12 +47,6 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     setSelectedEntity(entity);
     deleteEntityModalOnOpenHandler();
   };
-
-  const {
-    isOpen: deleteEntityModalIsOpen,
-    onOpen: deleteEntityModalOnOpenHandler,
-    onClose: deleteEntityModalOnCloseHandler,
-  } = useDisclosure();
 
   return (
     <Box data-testid="dynamic-drawer-section">

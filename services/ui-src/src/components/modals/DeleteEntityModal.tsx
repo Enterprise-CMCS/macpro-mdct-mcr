@@ -3,7 +3,7 @@ import { Text } from "@chakra-ui/react";
 import { Modal, ReportContext } from "components";
 import { useContext, useState } from "react";
 // types
-import { AnyObject, ReportStatus } from "types";
+import { AnyObject, EntityShape, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const DeleteEntityModal = ({
@@ -23,7 +23,7 @@ export const DeleteEntityModal = ({
     };
     const currentEntities = report?.fieldData?.[entityType] || [];
     const updatedEntities = currentEntities.filter(
-      (entity: AnyObject) => entity != selectedEntity
+      (entity: EntityShape) => entity != selectedEntity
     );
     await updateReport(reportKeys, {
       lastAlteredBy: full_name,
@@ -42,14 +42,14 @@ export const DeleteEntityModal = ({
       modalDisclosure={modalDisclosure}
       submitting={deleting}
       content={{
-        heading: `Delete access measure?`,
-        actionButtonText: `Yes, Delete Measure`,
+        heading: "Delete access measure?",
+        actionButtonText: "Yes, Delete Measure",
         closeButtonText: "Cancel",
       }}
     >
       <Text>
         You will lose all information entered for this measure. Are you sure you
-        want to proceed
+        want to proceed?
       </Text>
     </Modal>
   );
