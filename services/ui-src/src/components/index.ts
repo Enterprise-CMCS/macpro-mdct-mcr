@@ -60,6 +60,7 @@ export { Sidebar } from "./menus/Sidebar";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
+export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
