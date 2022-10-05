@@ -17,7 +17,7 @@ export const EntityCard = ({
   ...props
 }: Props) => {
   // any drawer-based field will do for this check
-  const entityCompleted = formattedEntityData.accessMeasure_population;
+  const entityCompleted = entity.accessMeasure_population;
   return (
     <Card {...props} marginTop="2rem">
       <Box sx={sx.contentBox}>
