@@ -10,16 +10,29 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { AnyObject, EntityShape, ModalDrawerReportPageShape } from "types";
+import { useUser } from "utils";
+import {
+  AnyObject,
+  EntityShape,
+  ModalDrawerReportPageShape,
+  ReportStatus,
+} from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
+  // use state
   const [submitting, setSubmitting] = useState<boolean>(false);
+  // user
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+  // destructured props
   const { entityType, dashboard, modal, drawer } = route;
-  const { report } = useContext(ReportContext);
+  // report & entity data
+  const { report, updateReport } = useContext(ReportContext);
   const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
   const entities = report?.fieldData[entityType] || [];
+
+  // hydration data
   const formData = { fieldData: entityType };
-  console.log("formData", formData);
 
   // add/edit entity modal disclosure
   const {
@@ -53,34 +66,34 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     addEditEntityModalOnOpenHandler();
   };
 
-  const onSubmit = async () => {
-    // if (userIsStateUser || userIsStateRep) {
-    //   setSubmitting(true);
-    //   const reportKeys = {
-    //     state: state,
-    //     id: report?.id,
-    //   };
-    //   const currentEntities = [...(report?.fieldData[entityType] || {})];
-    //   const currentEntityIndex = report?.fieldData[entityType].findIndex(
-    //     (entity: EntityShape) => entity.name === currentEntity?.name
-    //   );
-    //   const newEntity = {
-    //     ...currentEntity,
-    //     ...formData,
-    //   };
-    //   let newEntities = currentEntities;
-    //   newEntities[currentEntityIndex] = newEntity;
-    //   const dataToWrite = {
-    //     status: ReportStatus.IN_PROGRESS,
-    //     lastAlteredBy: full_name,
-    //     fieldData: {
-    //       [entityType]: newEntities,
-    //     },
-    //   };
-    //   await updateReport(reportKeys, dataToWrite);
-    //   setSubmitting(false);
-    // }
-    // onClose();
+  const onSubmit = async (formData: AnyObject) => {
+    if (userIsStateUser || userIsStateRep) {
+      setSubmitting(true);
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+      const currentEntities = [...(report?.fieldData[entityType] || {})];
+      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.name === selectedEntity?.name
+      );
+      const newEntity = {
+        ...selectedEntity,
+        ...formData,
+      };
+      let newEntities = currentEntities;
+      newEntities[selectedEntityIndex] = newEntity;
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+        fieldData: {
+          [entityType]: newEntities,
+        },
+      };
+      await updateReport(reportKeys, dataToWrite);
+      setSubmitting(false);
+    }
+    drawerOnCloseHandler();
   };
 
   return (

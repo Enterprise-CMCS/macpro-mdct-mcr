@@ -33,17 +33,17 @@ export const DrawerReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   // make state
-  const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
 
   const { entityType, dashboard, drawer } = route;
   const entities = report?.fieldData?.[entityType];
-  const formData = { fieldData: currentEntity };
+  const formData = { fieldData: selectedEntity };
   const { message, link } = verbiage[entityType as keyof typeof verbiage];
 
   const openRowDrawer = (entity: EntityShape) => {
-    setCurrentEntity(entity);
+    setSelectedEntity(entity);
     onOpen();
   };
 
@@ -55,15 +55,15 @@ export const DrawerReportPage = ({ route }: Props) => {
         id: report?.id,
       };
       const currentEntities = [...(report?.fieldData[entityType] || {})];
-      const currentEntityIndex = report?.fieldData[entityType].findIndex(
-        (entity: EntityShape) => entity.name === currentEntity?.name
+      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.name === selectedEntity?.name
       );
       const newEntity = {
-        ...currentEntity,
+        ...selectedEntity,
         ...formData,
       };
       let newEntities = currentEntities;
-      newEntities[currentEntityIndex] = newEntity;
+      newEntities[selectedEntityIndex] = newEntity;
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
@@ -113,7 +113,7 @@ export const DrawerReportPage = ({ route }: Props) => {
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${currentEntity?.name}`}
+        drawerTitle={`${drawer.title} ${selectedEntity?.name}`}
         drawerInfo={drawer.info}
         form={drawer.form}
         onSubmit={onSubmit}
