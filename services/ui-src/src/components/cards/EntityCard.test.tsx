@@ -21,10 +21,12 @@ const mockEntity = {
   "accessMeasure_standardType-otherText": "",
 };
 const mockOpenDrawer = jest.fn();
+const mockFormattedEntityData = {};
 
 const EntityCardComponent = (
   <EntityCard
     entity={mockEntity}
+    formattedEntityData={mockFormattedEntityData}
     openDrawer={mockOpenDrawer}
     data-testid="mock-entity-card"
   />

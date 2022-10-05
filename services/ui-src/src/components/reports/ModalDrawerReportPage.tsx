@@ -29,6 +29,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   // report & entity data
   const { report, updateReport } = useContext(ReportContext);
   const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
+
   const entities = report?.fieldData[entityType] || [];
 
   // hydration data
@@ -96,6 +97,15 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     drawerOnCloseHandler();
   };
 
+  const getFormattedEntityData = (entity: EntityShape) => ({
+    category: entity.accessMeasure_generalCategory[0].value,
+    standardDescription: entity.accessMeasure_standardDescription,
+    standardType:
+      entity.accessMeasure_standardType[0].value !== "Other, specify"
+        ? entity.accessMeasure_standardType[0].value
+        : entity["accessMeasure_standardType-otherText"],
+  });
+
   return (
     <>
       {route.intro && <ReportPageIntro text={route.intro} />}
@@ -112,10 +122,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
               {dashboard.title}
             </Heading>
           )}
-          {entities.map((entity: AnyObject) => (
+          {entities.map((entity: EntityShape) => (
             <EntityCard
               key={entity.id}
               entity={entity}
+              formattedEntityData={getFormattedEntityData(entity)}
               openDrawer={openDrawer}
             />
           ))}

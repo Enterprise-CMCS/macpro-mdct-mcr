@@ -5,27 +5,25 @@ import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 import { AnyObject } from "types";
 // assets
 import { svgFilters } from "styles/theme";
+import completedIcon from "assets/icons/icon_check_circle.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
-export const EntityCard = ({ entity, openDrawer, ...props }: Props) => {
-  // data to fill in card
-  const data = {
-    category: entity.accessMeasure_generalCategory[0].value,
-    standardDescription: entity.accessMeasure_standardDescription,
-    standardType:
-      entity.accessMeasure_standardType[0].value !== "Other, specify"
-        ? entity.accessMeasure_standardType[0].value
-        : entity["accessMeasure_standardType-otherText"],
-  };
-
+export const EntityCard = ({
+  entity,
+  formattedEntityData,
+  openDrawer,
+  ...props
+}: Props) => {
+  // any drawer-based field will do for this check
+  const entityCompleted = formattedEntityData.accessMeasure_population;
   return (
     <Card {...props} marginTop="2rem">
       <Box sx={sx.contentBox}>
         <Image
-          src={unfinishedIcon}
-          alt="entity is unfinished"
+          src={entityCompleted ? completedIcon : unfinishedIcon}
+          alt={`entity is ${entityCompleted ? "completed" : "unfinished"}`}
           sx={sx.statusIcon}
         />
         <button className="delete-entity-button">
@@ -36,11 +34,13 @@ export const EntityCard = ({ entity, openDrawer, ...props }: Props) => {
           />
         </button>
         <Heading as="h4" sx={sx.heading}>
-          {data.category}
+          {formattedEntityData.category}
         </Heading>
-        <Text sx={sx.description}>{data.standardDescription}</Text>
+        <Text sx={sx.description}>
+          {formattedEntityData.standardDescription}
+        </Text>
         <Text sx={sx.subtitle}>General category</Text>
-        <Text sx={sx.subtext}>{data.standardType}</Text>
+        <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
         <Button
           variant="outline"
           size="sm"
@@ -49,10 +49,14 @@ export const EntityCard = ({ entity, openDrawer, ...props }: Props) => {
         >
           Edit measure
         </Button>
-        <Text sx={sx.unfinishedMessage}>
-          Complete the remaining indicators for this access measure by entering
-          details.
-        </Text>
+        {entityCompleted ? (
+          <>i'm done!</>
+        ) : (
+          <Text sx={sx.unfinishedMessage}>
+            Complete the remaining indicators for this access measure by
+            entering details.
+          </Text>
+        )}
         <Button
           size="sm"
           sx={sx.enterDrawerButton}
@@ -67,6 +71,7 @@ export const EntityCard = ({ entity, openDrawer, ...props }: Props) => {
 
 interface Props {
   entity: AnyObject;
+  formattedEntityData: AnyObject;
   openDrawer: Function;
   [key: string]: any;
 }
