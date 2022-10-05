@@ -1,3 +1,4 @@
+import { useState } from "react";
 // components
 import { Card, AddEditEntityModal } from "components";
 import {
@@ -19,6 +20,10 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({ entity, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
+  const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
+
+  const entityType = props.entityType;
+  const modalData = props?.modalData;
 
   // add/edit entity modal disclosure
   const {
@@ -35,9 +40,14 @@ export const EntityCard = ({ entity, ...props }: Props) => {
       entity.accessMeasure_standardType[0].value !== "Other, specify"
         ? entity.accessMeasure_standardType[0].value
         : entity["accessMeasure_standardType-otherText"],
+    id: entity.id,
   };
 
-  const openAddEditEntityModal = () => {
+  const openAddEditEntityModal = (entityId?: string) => {
+    if (entityId) {
+      // pre-fill form if editing an existing entity
+      setSelectedEntity(entity);
+    }
     // use disclosure to open modal
     addEditEntityModalOnOpenHandler();
   };
@@ -68,7 +78,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
           size="sm"
           sx={sx.editEntityButton}
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
-          onClick={() => openAddEditEntityModal()}
+          onClick={() => openAddEditEntityModal(entity.id)}
         >
           Edit measure
         </Button>
@@ -81,9 +91,9 @@ export const EntityCard = ({ entity, ...props }: Props) => {
         </Button>
       </Box>
       <AddEditEntityModal
-        entityType="accessMeasures"
-        modalData={props.modalData}
-        selectedEntity={entity}
+        entityType={entityType}
+        modalData={modalData}
+        selectedEntity={selectedEntity}
         modalDisclosure={{
           isOpen: addEditEntityModalIsOpen,
           onClose: addEditEntityModalOnCloseHandler,

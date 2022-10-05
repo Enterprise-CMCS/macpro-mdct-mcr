@@ -29,22 +29,25 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
-    const currentEntities = report?.fieldData?.[entityType] || [];
+    let currentEntities = report?.fieldData?.[entityType] || [];
     if (selectedEntity?.id) {
       // if existing entity selected, edit
-      const selectedEntityIndex = currentEntities.indexOf(
+      const selectedEntityIndex = currentEntities.findIndex(
         (entity: AnyObject) => entity.id === selectedEntity.id
       );
-      const updatedEntities = currentEntities.splice(selectedEntityIndex, 1, {
+      currentEntities.splice(selectedEntityIndex, 1, {
         id: selectedEntity.id,
         ...formData,
       });
-      await updateReport(reportKeys, {
+      const dataToWrite = {
         lastAlteredBy: full_name,
         reportStatus: ReportStatus.IN_PROGRESS,
         fieldData: {
-          [entityType]: updatedEntities,
+          [entityType]: [...currentEntities],
         },
+      };
+      await updateReport(reportKeys, {
+        ...dataToWrite,
       });
     } else {
       // create new entity

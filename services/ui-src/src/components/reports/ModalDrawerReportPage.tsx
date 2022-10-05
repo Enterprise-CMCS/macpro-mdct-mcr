@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import { AddEditEntityModal, EntityCard, ReportContext } from "components";
@@ -8,7 +8,6 @@ import { AnyObject, ModalDrawerReportPageShape } from "types";
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
-  const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
   const entities = report?.fieldData[entityType];
 
   // add/edit entity modal disclosure
@@ -18,11 +17,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
 
-  const openAddEditEntityModal = (entityId?: string) => {
-    if (report && entityId) {
-      // pre-fill form if if editing an existing entity
-      setSelectedEntity(report.fieldData[entityType]);
-    }
+  const openAddEditEntityModal = () => {
     // use disclosure to open modal
     addEditEntityModalOnOpenHandler();
   };
@@ -42,14 +37,19 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
               {dashboard.title}
             </Heading>
             {entities.map((entity: AnyObject) => (
-              <EntityCard key={entity.id} entity={entity} modalData={modal} />
+              <EntityCard
+                key={entity.id}
+                entity={entity}
+                modalData={modal}
+                entityType={entityType}
+              />
             ))}
           </>
         )}
         <AddEditEntityModal
           entityType={entityType}
           modalData={modal}
-          selectedEntity={selectedEntity}
+          selectedEntity={undefined}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: addEditEntityModalOnCloseHandler,
