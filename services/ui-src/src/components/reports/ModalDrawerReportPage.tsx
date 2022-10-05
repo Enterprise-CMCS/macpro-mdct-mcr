@@ -74,6 +74,19 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             onClose: addEditEntityModalOnCloseHandler,
           }}
         />
+        <ReportDrawer
+          drawerDisclosure={{
+            isOpen: drawerIsOpen,
+            onClose: drawerOnCloseHandler,
+          }}
+          drawerTitle={`${drawer.title} ${currentEntity?.name}`}
+          // drawerInfo={drawer.info}
+          form={drawer.form}
+          onSubmit={onSubmit}
+          // formData={formData}
+          // submitting={submitting}
+          data-testid="report-drawer"
+        />
       </Box>
     </Box>
   );
