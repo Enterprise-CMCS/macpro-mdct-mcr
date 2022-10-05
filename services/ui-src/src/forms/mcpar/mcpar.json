@@ -1075,7 +1075,6 @@
               },
               "drawer": {
                 "title": "Add details for access measure",
-                "info": "testing",
                 "form": {
                   "id": "cam-drawer",
                   "fields": [
@@ -1089,7 +1088,7 @@
                         "choices": [
                           {
                             "name": "option1",
-                            "label": "Primary care;"
+                            "label": "Primary care"
                           },
                           {
                             "name": "option2",

@@ -28,10 +28,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal, drawer } = route;
   // report & entity data
   const { report, updateReport } = useContext(ReportContext);
-  const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
 
   const entities = report?.fieldData[entityType] || [];
-
   // hydration data
   const formData = { fieldData: entityType };
 
@@ -55,7 +56,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   };
 
   const openAddEditEntityModal = () => {
-    setSelectedEntity({});
+    setSelectedEntity(undefined);
     /*
      * TODO: setSelectedEntity if editing an existing entity
      * if (report && entityId) {
@@ -76,7 +77,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       };
       const currentEntities = [...(report?.fieldData[entityType] || {})];
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
-        (entity: EntityShape) => entity.name === selectedEntity?.name
+        (entity: EntityShape) => entity.id === selectedEntity?.id
       );
       const newEntity = {
         ...selectedEntity,
@@ -97,13 +98,36 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     drawerOnCloseHandler();
   };
 
-  const getFormattedEntityData = (entity: EntityShape) => ({
-    category: entity.accessMeasure_generalCategory[0].value,
-    standardDescription: entity.accessMeasure_standardDescription,
+  const getFormattedEntityData = (entity?: EntityShape) => ({
+    category: entity?.accessMeasure_generalCategory[0].value,
+    standardDescription: entity?.accessMeasure_standardDescription,
     standardType:
-      entity.accessMeasure_standardType[0].value !== "Other, specify"
-        ? entity.accessMeasure_standardType[0].value
-        : entity["accessMeasure_standardType-otherText"],
+      entity?.accessMeasure_standardType[0].value !== "Other, specify"
+        ? entity?.accessMeasure_standardType[0].value
+        : entity?.["accessMeasure_standardType-otherText"],
+    provider:
+      entity?.accessMeasure_providerType?.[0].value !== "Other, specify"
+        ? entity?.accessMeasure_providerType?.[0].value
+        : entity?.["accessMeasure_providerType-otherText"],
+    region:
+      entity?.accessMeasure_applicableRegion?.[0].value !== "Other, specify"
+        ? entity?.accessMeasure_applicableRegion?.[0].value
+        : entity?.["accessMeasure_applicableRegion-otherText"],
+    population:
+      entity?.accessMeasure_population?.[0].value !== "Other, specify"
+        ? entity?.accessMeasure_population?.[0].value
+        : entity?.["accessMeasure_population-otherText"],
+    monitoringMethods: entity?.accessMeasure_monitoringMethods?.map(
+      (method: AnyObject) =>
+        method.value === "Other, specify"
+          ? entity?.["accessMeasure_monitoringMethods-otherText"]
+          : method.value
+    ),
+    methodFrequency:
+      entity?.accessMeasure_oversightMethodFrequency?.[0].value !==
+      "Other, specify"
+        ? entity?.accessMeasure_oversightMethodFrequency?.[0].value
+        : entity?.["accessMeasure_oversightMethodFrequency-otherText"],
   });
 
   return (
@@ -145,7 +169,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
               onClose: drawerOnCloseHandler,
             }}
             drawerTitle={drawer.title}
-            drawerInfo={drawer.info}
+            drawerDetails={getFormattedEntityData(selectedEntity)}
             form={drawer.form}
             onSubmit={onSubmit}
             formData={formData}

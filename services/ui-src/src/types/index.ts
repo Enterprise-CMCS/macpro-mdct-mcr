@@ -101,7 +101,7 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
 export interface ReportPageDrawer {
   form: FormJson;
   title: string;
-  info?: CustomHtmlElement[] | string;
+  info?: CustomHtmlElement[];
   [key: string]: any;
 }
 

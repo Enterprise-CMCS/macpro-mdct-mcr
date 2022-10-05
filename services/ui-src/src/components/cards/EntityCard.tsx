@@ -1,6 +1,6 @@
 // components
 import { Card } from "components";
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
 // assets
@@ -17,7 +17,8 @@ export const EntityCard = ({
   ...props
 }: Props) => {
   // any drawer-based field will do for this check
-  const entityCompleted = entity.accessMeasure_population;
+  const entityCompleted = formattedEntityData.population;
+
   return (
     <Card {...props} marginTop="2rem">
       <Box sx={sx.contentBox}>
@@ -50,20 +51,53 @@ export const EntityCard = ({
           Edit measure
         </Button>
         {entityCompleted ? (
-          <>i'm done!</>
+          <>
+            <Flex sx={sx.highlight}>
+              <Box sx={sx.highlightContentContainer}>
+                <Text sx={sx.subtitle}>Provider</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
+              </Box>
+              <Box sx={sx.highlightContentContainer}>
+                <Text sx={sx.subtitle}>Region</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
+              </Box>
+              <Box sx={sx.highlightContentContainer}>
+                <Text sx={sx.subtitle}>Population</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
+              </Box>
+            </Flex>
+            <Text sx={sx.subtitle}>Monitoring Methods</Text>
+            <Text sx={sx.subtext}>
+              {formattedEntityData?.monitoringMethods.join(", ")}
+            </Text>
+            <Text sx={sx.subtitle}>Frequency of oversight methods</Text>
+            <Text sx={sx.subtext}>{formattedEntityData.methodFrequency}</Text>
+          </>
         ) : (
           <Text sx={sx.unfinishedMessage}>
             Complete the remaining indicators for this access measure by
             entering details.
           </Text>
         )}
-        <Button
-          size="sm"
-          sx={sx.enterDrawerButton}
-          onClick={() => openDrawer(entity)}
-        >
-          Enter details
-        </Button>
+        {entityCompleted ? (
+          <Button
+            variant="outline"
+            size="sm"
+            sx={sx.editEntityButton}
+            leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
+            onClick={() => openDrawer(entity)}
+          >
+            Edit Details
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            sx={sx.enterDrawerButton}
+            onClick={() => openDrawer(entity)}
+          >
+            Enter details
+          </Button>
+        )}
       </Box>
     </Card>
   );
@@ -121,16 +155,25 @@ const sx = {
     marginTop: "0.25rem",
     fontSize: "sm",
   },
+  highlight: {
+    background: "palette.secondary_lightest",
+    marginTop: ".5em",
+    padding: "0em 1.5em 1em 1.5em",
+    borderRadius: "3px",
+  },
+  highlightContentContainer: {
+    width: "100%",
+  },
   editEntityButton: {
     marginY: "1rem",
     fontWeight: "normal",
   },
   unfinishedMessage: {
-    marginBottom: "0.75rem",
     fontSize: "xs",
     color: "palette.error_dark",
   },
   enterDrawerButton: {
+    marginTop: "1em",
     fontWeight: "normal",
   },
 };
