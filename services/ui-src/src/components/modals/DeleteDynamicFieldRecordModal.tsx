@@ -1,7 +1,6 @@
 import { useState } from "react";
 // components
 import { Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
 import { Modal } from "components";
 // types
 import { EntityShape, EntityType } from "types";
@@ -31,13 +30,10 @@ export const DeleteDynamicFieldRecordModal = ({
     <Modal
       onConfirmHandler={deleteProgramHandler}
       modalDisclosure={modalDisclosure}
+      submitting={deleting}
       content={{
         heading: `Delete ${entityName}`,
-        actionButtonText: deleting ? (
-          <Spinner size="small" />
-        ) : (
-          `Yes, delete ${entityName}`
-        ),
+        actionButtonText: `Yes, delete ${entityName}`,
         closeButtonText: "Cancel",
       }}
     >
