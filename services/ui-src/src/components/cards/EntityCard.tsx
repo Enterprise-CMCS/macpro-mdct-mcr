@@ -45,7 +45,7 @@ export const EntityCard = ({
         <Button
           variant="outline"
           size="sm"
-          sx={sx.editEntityButton}
+          sx={sx.editButton}
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
         >
           Edit measure
@@ -83,7 +83,7 @@ export const EntityCard = ({
           <Button
             variant="outline"
             size="sm"
-            sx={sx.editEntityButton}
+            sx={sx.editButton}
             leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
             onClick={() => openDrawer(entity)}
           >
@@ -92,7 +92,7 @@ export const EntityCard = ({
         ) : (
           <Button
             size="sm"
-            sx={sx.enterDrawerButton}
+            sx={sx.openDrawerButton}
             onClick={() => openDrawer(entity)}
           >
             Enter details
@@ -164,7 +164,7 @@ const sx = {
   highlightContentContainer: {
     width: "100%",
   },
-  editEntityButton: {
+  editButton: {
     marginY: "1rem",
     fontWeight: "normal",
   },
@@ -172,8 +172,8 @@ const sx = {
     fontSize: "xs",
     color: "palette.error_dark",
   },
-  enterDrawerButton: {
-    marginTop: "1em",
+  openDrawerButton: {
+    marginTop: "1rem",
     fontWeight: "normal",
   },
 };

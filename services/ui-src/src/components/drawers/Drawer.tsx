@@ -42,14 +42,14 @@ export const Drawer = ({
           )}
           {drawerDetails && (
             <Box sx={sx.detailTextBox}>
-              <Heading as="h4" sx={sx.drawerDetailHeader}>
+              <Heading as="h4" sx={sx.detailHeader}>
                 Standard Type - {drawerDetails.category}
               </Heading>
-              <Text sx={sx.drawerDetailDescription}>
+              <Text sx={sx.detailDescription}>
                 {drawerDetails.standardDescription}
               </Text>
-              <Text sx={sx.drawerDetailCategoryHeader}>General Category</Text>
-              <Text sx={sx.drawerDetailCategory}>{drawerDetails.category}</Text>
+              <Text sx={sx.detailCategoryHeader}>General Category</Text>
+              <Text sx={sx.detailCategory}>{drawerDetails.category}</Text>
             </Box>
           )}
           <Button
@@ -97,26 +97,6 @@ const sx = {
     fontSize: "2xl",
     fontWeight: "bold",
   },
-  drawerDetailHeader: {
-    marginBottom: ".5rem",
-    fontSize: "md",
-    fontWeight: "bold",
-    color: "palette.gray_medium",
-  },
-  drawerDetailDescription: {
-    fontSize: "md",
-    marginBottom: ".5rem",
-    color: "palette.base",
-  },
-  drawerDetailCategoryHeader: {
-    fontSize: "sm",
-    marginBottom: ".25rem",
-    color: "palette.base",
-  },
-  drawerDetailCategory: {
-    fontSize: "md",
-    color: "palette.base",
-  },
   drawerCloseButton: {
     position: "absolute",
     top: "2rem",
@@ -130,12 +110,28 @@ const sx = {
       },
     },
   },
-  drawerBody: {
-    padding: "1rem",
-  },
   detailTextBox: {
     marginTop: "2rem",
-    fontWeight: "400",
+    fontWeight: "normal",
+    color: "palette.base",
+  },
+  detailHeader: {
+    marginBottom: ".5rem",
+    fontSize: "md",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
+  },
+  detailDescription: {
+    fontSize: "md",
+    marginBottom: ".5rem",
+  },
+  detailCategoryHeader: {
+    marginBottom: ".25rem",
+    fontSize: "sm",
+    fontWeight: "bold",
+  },
+  detailCategory: {
+    fontSize: "md",
   },
   infoTextBox: {
     marginTop: "2rem",
@@ -149,5 +145,8 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+  },
+  drawerBody: {
+    padding: "1rem",
   },
 };

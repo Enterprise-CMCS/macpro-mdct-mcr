@@ -19,22 +19,17 @@ import {
 } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
-  // use state
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  // user
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
-  // destructured props
-  const { entityType, dashboard, modal, drawer } = route;
-  // report & entity data
-  const { report, updateReport } = useContext(ReportContext);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
+  const { report, updateReport } = useContext(ReportContext);
 
-  const entities = report?.fieldData[entityType] || [];
-  // hydration data
-  const formData = { fieldData: entityType };
+  const { entityType, dashboard, modal, drawer } = route;
+  const reportFieldDataEntities = report?.fieldData[entityType] || [];
+  const hydrationData = { fieldData: entityType };
 
   // add/edit entity modal disclosure
   const {
@@ -56,7 +51,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   };
 
   const openAddEditEntityModal = () => {
-    setSelectedEntity(undefined);
+    setSelectedEntity(undefined); // TODO: remove
     /*
      * TODO: setSelectedEntity if editing an existing entity
      * if (report && entityId) {
@@ -131,55 +126,53 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   });
 
   return (
-    <>
+    <Box data-testid="modal-drawer-report-page">
       {route.intro && <ReportPageIntro text={route.intro} />}
-      <Box data-testid="modal-drawer-report-page">
-        <Box>
-          <Button
-            sx={sx.addEntityButton}
-            onClick={() => openAddEditEntityModal()}
-          >
-            {dashboard.addEntityButtonText}
-          </Button>
-          {entities.length !== 0 && (
-            <Heading as="h3" sx={sx.dashboardTitle}>
-              {dashboard.title}
-            </Heading>
-          )}
-          {entities.map((entity: EntityShape) => (
-            <EntityCard
-              key={entity.id}
-              entity={entity}
-              formattedEntityData={getFormattedEntityData(entity)}
-              openDrawer={openDrawer}
-            />
-          ))}
-          <AddEditEntityModal
-            entityType={entityType}
-            modalData={modal}
-            selectedEntity={selectedEntity}
-            modalDisclosure={{
-              isOpen: addEditEntityModalIsOpen,
-              onClose: addEditEntityModalOnCloseHandler,
-            }}
+      <Box>
+        <Button
+          sx={sx.addEntityButton}
+          onClick={() => openAddEditEntityModal()}
+        >
+          {dashboard.addEntityButtonText}
+        </Button>
+        {reportFieldDataEntities.length !== 0 && (
+          <Heading as="h3" sx={sx.dashboardTitle}>
+            {dashboard.title}
+          </Heading>
+        )}
+        {reportFieldDataEntities.map((entity: EntityShape) => (
+          <EntityCard
+            key={entity.id}
+            entity={entity}
+            formattedEntityData={getFormattedEntityData(entity)}
+            openDrawer={openDrawer}
           />
-          <ReportDrawer
-            drawerDisclosure={{
-              isOpen: drawerIsOpen,
-              onClose: drawerOnCloseHandler,
-            }}
-            drawerTitle={drawer.title}
-            drawerDetails={getFormattedEntityData(selectedEntity)}
-            form={drawer.form}
-            onSubmit={onSubmit}
-            formData={formData}
-            submitting={submitting}
-            data-testid="report-drawer"
-          />
-        </Box>
+        ))}
+        <AddEditEntityModal
+          entityType={entityType}
+          modalData={modal}
+          selectedEntity={selectedEntity}
+          modalDisclosure={{
+            isOpen: addEditEntityModalIsOpen,
+            onClose: addEditEntityModalOnCloseHandler,
+          }}
+        />
+        <ReportDrawer
+          drawerDisclosure={{
+            isOpen: drawerIsOpen,
+            onClose: drawerOnCloseHandler,
+          }}
+          drawerTitle={drawer.title}
+          drawerDetails={getFormattedEntityData(selectedEntity)}
+          form={drawer.form}
+          onSubmit={onSubmit}
+          formData={hydrationData}
+          submitting={submitting}
+          data-testid="report-drawer"
+        />
       </Box>
       <ReportPageFooter />
-    </>
+    </Box>
   );
 };
 
