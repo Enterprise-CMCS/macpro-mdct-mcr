@@ -9,7 +9,7 @@ import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
-export const EntityCard = ({ entity, ...props }: Props) => {
+export const EntityCard = ({ entity, openDrawer, ...props }: Props) => {
   // data to fill in card
   const data = {
     category: entity.accessMeasure_generalCategory[0].value,
@@ -53,7 +53,11 @@ export const EntityCard = ({ entity, ...props }: Props) => {
           Complete the remaining indicators for this access measure by entering
           details.
         </Text>
-        <Button size="sm" sx={sx.enterDrawerButton}>
+        <Button
+          size="sm"
+          sx={sx.enterDrawerButton}
+          onClick={() => openDrawer(entity)}
+        >
           Enter details
         </Button>
       </Box>
@@ -63,6 +67,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
 
 interface Props {
   entity: AnyObject;
+  openDrawer: Function;
   [key: string]: any;
 }
 

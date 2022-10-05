@@ -34,11 +34,8 @@ export const DrawerReportPage = ({ route, submittingState }: Props) => {
   const { submitting, setSubmitting } = submittingState;
   const { entityType, dashboard, drawer } = route;
   const entities = report?.fieldData?.[entityType];
-
-  const { message, link } = verbiage[entityType as keyof typeof verbiage];
-
-  // shape entity data for hydration
   const formData = { fieldData: currentEntity };
+  const { message, link } = verbiage[entityType as keyof typeof verbiage];
 
   const openRowDrawer = (entity: EntityShape) => {
     setCurrentEntity(entity);

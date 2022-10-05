@@ -1,9 +1,14 @@
 import { useContext, useState } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
-import { AddEditEntityModal, EntityCard, ReportContext } from "components";
+import {
+  AddEditEntityModal,
+  EntityCard,
+  ReportContext,
+  ReportDrawer,
+} from "components";
 // utils
-import { AnyObject, ModalDrawerReportPageShape } from "types";
+import { AnyObject, EntityShape, ModalDrawerReportPageShape } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal } = route;
@@ -17,6 +22,18 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onOpen: addEditEntityModalOnOpenHandler,
     onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
+
+  // drawer disclosure
+  const {
+    isOpen: drawerIsOpen,
+    onOpen: drawerOnOpenHandler,
+    onClose: drawerOnCloseHandler,
+  } = useDisclosure();
+
+  const openDrawer = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    drawerOnOpenHandler();
+  };
 
   const openAddEditEntityModal = () => {
     setSelectedEntity({});
@@ -46,7 +63,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           </Heading>
         )}
         {entities.map((entity: AnyObject) => (
-          <EntityCard key={entity.id} entity={entity} />
+          <EntityCard key={entity.id} entity={entity} openDrawer={openDrawer} />
         ))}
         <AddEditEntityModal
           entityType={entityType}
