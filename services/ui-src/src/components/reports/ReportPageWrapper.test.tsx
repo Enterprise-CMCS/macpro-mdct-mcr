@@ -73,13 +73,13 @@ describe("Test ReportPageWrapper view", () => {
 
   test("ReportPageWrapper DrawerSection view renders", () => {
     render(ReportPageWrapper_Drawer);
-    expect(screen.getByTestId("drawer")).toBeVisible();
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 });
 
 test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
   render(ReportPageWrapper_ModalDrawer);
-  expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
+  expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
 });
 
 describe("Test ReportPageWrapper functionality", () => {

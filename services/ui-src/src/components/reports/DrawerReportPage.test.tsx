@@ -40,10 +40,7 @@ const mockReportContextWithoutEntities = {
 const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DrawerReportPage
-        route={mockDrawerReportPageJson}
-        submittingState={mockSubmittingState}
-      />
+      <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -51,10 +48,7 @@ const drawerReportPageWithEntities = (
 const drawerReportPageWithoutEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
-      <DrawerReportPage
-        route={mockDrawerReportPageJson}
-        submittingState={mockSubmittingState}
-      />
+      <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -66,7 +60,7 @@ describe("Test DrawerReportPage without entities", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("drawer")).toBeVisible();
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 
   it("should not have any way to open the side drawer", () => {
@@ -86,7 +80,7 @@ describe("Test DrawerReportPage with entities", () => {
 
   it("should render the view", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("drawer")).toBeVisible();
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 
   it("Opens the sidedrawer correctly", async () => {

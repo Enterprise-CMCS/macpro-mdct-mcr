@@ -22,10 +22,7 @@ jest.mock("react-router-dom", () => ({
 const modalDrawerReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ModalDrawerReportPage
-        route={mockModalDrawerReportPageJson}
-        setSubmitting={mockSetSubmitting}
-      />
+      <ModalDrawerReportPage route={mockModalDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -33,7 +30,7 @@ const modalDrawerReportPageComponent = (
 describe("Test ModalDrawerReportPage view", () => {
   test("ModalDrawerReportPage view renders", () => {
     render(modalDrawerReportPageComponent);
-    expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
+    expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
   });
 });
 
