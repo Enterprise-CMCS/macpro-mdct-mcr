@@ -52,6 +52,7 @@ export const EntityCard = ({
           variant="outline"
           size="sm"
           sx={sx.editButton}
+          data-testid="editMeasureButton"
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
         >
           Edit measure
@@ -90,6 +91,7 @@ export const EntityCard = ({
             variant="outline"
             size="sm"
             sx={sx.editButton}
+            data-testid="editDetailsButton"
             leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
             onClick={() => openDrawer(entity)}
           >
@@ -99,6 +101,7 @@ export const EntityCard = ({
           <Button
             size="sm"
             sx={sx.openDrawerButton}
+            data-testid="enterDetailsButton"
             onClick={() => openDrawer(entity)}
           >
             Enter details

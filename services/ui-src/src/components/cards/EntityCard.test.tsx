@@ -35,6 +35,12 @@ const mockFormattedEntityData = {
   methodFrequency: "mock-oversightMethodFrequency",
 };
 
+const mockUnfinishedEntityData = {
+  category: "mock-category",
+  standardDescription: "mock-standardDescription",
+  standardType: "mock-standardType",
+};
+
 const EntityCardComponent = (
   <EntityCard
     entity={mockEntity}
@@ -45,9 +51,23 @@ const EntityCardComponent = (
   />
 );
 
-describe("Test EntityCard", () => {
+const UnfinishedEntityCardComponent = (
+  <EntityCard
+    entity={mockEntity}
+    formattedEntityData={mockUnfinishedEntityData}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
+    openDeleteEntityModal={openDeleteEntityModal}
+  />
+);
+
+describe("Test Finished EntityCard", () => {
   beforeEach(() => {
     render(EntityCardComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   test("EntityCard is visible", () => {
@@ -60,11 +80,66 @@ describe("Test EntityCard", () => {
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
+
+  test("EntityCard opens the drawer on edit-details click", async () => {
+    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    const editDetailsButton = screen.queryAllByTestId("editDetailsButton")[0];
+    await userEvent.click(editDetailsButton);
+    expect(mockOpenDrawer).toBeCalledTimes(1);
+  });
+
+  test("EntityCard doesnt show the unfinished message", () => {
+    const unfinishedMessage = screen.queryByText(
+      "Complete the remaining indicators for this access measure by entering details."
+    );
+    expect(unfinishedMessage).toBeFalsy();
+  });
+});
+
+describe("Test Unfinished EntityCard", () => {
+  beforeEach(() => {
+    render(UnfinishedEntityCardComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard is visible", () => {
+    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
+  });
+
+  test("EntityCard opens the drawer on enter-details click", async () => {
+    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    const enterDetailsButton = screen.queryAllByTestId("enterDetailsButton")[0];
+    await userEvent.click(enterDetailsButton);
+    expect(mockOpenDrawer).toBeCalledTimes(1);
+  });
+
+  test("EntityCard shows the unfinished message", () => {
+    const unfinishedMessage = screen.queryByText(
+      "Complete the remaining indicators for this access measure by entering details."
+    );
+    expect(unfinishedMessage).toBeTruthy();
+  });
 });
 
 describe("Test EntityCard accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(EntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(UnfinishedEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
