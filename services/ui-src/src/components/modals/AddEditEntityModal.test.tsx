@@ -32,7 +32,7 @@ const mockedReportContext = {
   },
 };
 
-const mockUpdateCallBaseline = {
+const mockUpdateCallPayload = {
   fieldData: mockedReportContext.report.fieldData,
   lastAlteredBy: undefined,
   reportStatus: "In progress",
@@ -96,6 +96,7 @@ describe("Test AddEditEntityModal", () => {
 
 describe("Test AddEditEntityModal functionality", () => {
   afterEach(() => {
+    mockUpdateCallPayload.fieldData.accessMeasures.splice(-1);
     jest.clearAllMocks();
   });
 
@@ -113,7 +114,6 @@ describe("Test AddEditEntityModal functionality", () => {
     const form = result.getByTestId("add-edit-entity-form");
     await fillAndSubmitForm(form);
 
-    const mockUpdateCallPayload = mockUpdateCallBaseline;
     mockUpdateCallPayload.fieldData.accessMeasures.push({
       id: "mock-id-2",
       "mock-modal-text-field": "mock input 2",
@@ -130,7 +130,13 @@ describe("Test AddEditEntityModal functionality", () => {
     const result = await render(modalComponentWithSelectedEntity);
     const form = result.getByTestId("add-edit-entity-form");
     await fillAndSubmitForm(form);
-    const mockUpdateCallPayload = mockUpdateCallBaseline;
+
+    const mockUpdateCallPayload = {
+      fieldData: mockedReportContext.report.fieldData,
+      lastAlteredBy: undefined,
+      reportStatus: "In progress",
+    };
+
     mockUpdateCallPayload.fieldData.accessMeasures = [
       {
         id: "mock-id-1",
