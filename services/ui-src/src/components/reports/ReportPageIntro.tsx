@@ -1,12 +1,12 @@
 // components
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
 
 export const ReportPageIntro = ({ text, ...props }: Props) => {
-  const { section, subsection, info, spreadsheet } = text;
+  const { section, subsection, info, spreadsheet, spreadsheetLast } = text;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -15,18 +15,21 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {spreadsheet && (
-        <Box sx={sx.spreadsheetWidgetBox}>
-          <SpreadsheetWidget description={spreadsheet} />
-        </Box>
-      )}
-      {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
+      <Flex flexDir={spreadsheetLast ? "column-reverse" : "column"}>
+        {spreadsheet && (
+          <Box sx={sx.spreadsheetWidgetBox}>
+            <SpreadsheetWidget description={spreadsheet} />
+          </Box>
+        )}
+        {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
+      </Flex>
     </Box>
   );
 };
 
 interface Props {
   text: AnyObject;
+  reverse?: boolean;
   [key: string]: any;
 }
 
