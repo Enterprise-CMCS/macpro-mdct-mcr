@@ -38,6 +38,21 @@ const mockUpdateCallBaseline = {
   reportStatus: "In progress",
 };
 
+const mockBadReportContext = {
+  ...mockReportContext,
+  updateReport: mockUpdateReport,
+  report: {
+    ...mockReport,
+    fieldData: {},
+  },
+};
+
+const mockBadUpdateCallBaseline = {
+  fieldData: mockBadReportContext.report.fieldData,
+  lastAlteredBy: undefined,
+  reportStatus: "In progress",
+};
+
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <DeleteEntityModal
@@ -94,6 +109,24 @@ describe("Test DeleteEntityModal functionality", () => {
 
     const mockUpdateCallPayload = mockUpdateCallBaseline;
     mockUpdateCallPayload.fieldData.accessMeasures = [];
+
+    await expect(mockUpdateReport).toHaveBeenCalledWith(
+      mockReportKeys,
+      mockUpdateCallPayload
+    );
+    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
+
+  test("DeleteEntityModal deletes handles empty fielddata", async () => {
+    render(modalComponent);
+
+    const submitButton = screen.getByRole("button", {
+      name: "Yes, Delete Measure",
+    });
+    await userEvent.click(submitButton);
+
+    const mockUpdateCallPayload = mockBadUpdateCallBaseline;
+    mockUpdateCallPayload.fieldData = { accessMeasures: [] };
 
     await expect(mockUpdateReport).toHaveBeenCalledWith(
       mockReportKeys,
