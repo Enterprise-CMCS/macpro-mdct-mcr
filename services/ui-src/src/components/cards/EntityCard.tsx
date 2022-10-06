@@ -9,7 +9,11 @@ import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
-export const EntityCard = ({ entity, ...props }: Props) => {
+export const EntityCard = ({
+  entity,
+  openDeleteEntityModal,
+  ...props
+}: Props) => {
   // data to fill in card
   const data = {
     category: entity.accessMeasure_generalCategory[0].value,
@@ -28,7 +32,12 @@ export const EntityCard = ({ entity, ...props }: Props) => {
           alt="entity is unfinished"
           sx={sx.statusIcon}
         />
-        <button className="delete-entity-button">
+        <button
+          type="button"
+          className="delete-entity-button"
+          onClick={() => openDeleteEntityModal(entity)}
+          data-testid="deleteEntityButton"
+        >
           <Image
             src={deleteIcon}
             alt="Delete Entity"
@@ -63,6 +72,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
 
 interface Props {
   entity: AnyObject;
+  openDeleteEntityModal: Function;
   [key: string]: any;
 }
 

@@ -1,7 +1,12 @@
 import { useContext, useState } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
-import { AddEditEntityModal, EntityCard, ReportContext } from "components";
+import {
+  AddEditEntityModal,
+  DeleteEntityModal,
+  EntityCard,
+  ReportContext,
+} from "components";
 // utils
 import { AnyObject, ModalDrawerReportPageShape } from "types";
 
@@ -18,6 +23,13 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
 
+  // delete modal disclosure
+  const {
+    isOpen: deleteEntityModalIsOpen,
+    onOpen: deleteEntityModalOnOpenHandler,
+    onClose: deleteEntityModalOnCloseHandler,
+  } = useDisclosure();
+
   const openAddEditEntityModal = () => {
     setSelectedEntity({});
     /*
@@ -29,6 +41,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
      */
     // use disclosure to open modal
     addEditEntityModalOnOpenHandler();
+  };
+
+  const openDeleteEntityModal = (entity: AnyObject) => {
+    setSelectedEntity(entity);
+    deleteEntityModalOnOpenHandler();
   };
 
   return (
@@ -46,7 +63,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           </Heading>
         )}
         {entities.map((entity: AnyObject) => (
-          <EntityCard key={entity.id} entity={entity} />
+          <EntityCard
+            key={entity.id}
+            entity={entity}
+            openDeleteEntityModal={openDeleteEntityModal}
+          />
         ))}
         <AddEditEntityModal
           entityType={entityType}
@@ -55,6 +76,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: addEditEntityModalOnCloseHandler,
+          }}
+        />
+        <DeleteEntityModal
+          entityType={entityType}
+          selectedEntity={selectedEntity}
+          modalDisclosure={{
+            isOpen: deleteEntityModalIsOpen,
+            onClose: deleteEntityModalOnCloseHandler,
           }}
         />
       </Box>
