@@ -38,30 +38,12 @@ describe("Test ModalDrawerReportPage view", () => {
 });
 
 describe("Test ModalDrawerReportPage add entity operation", () => {
-  test("Drawer opens correctly", async () => {
+  test("Modal opens correctly", async () => {
     render(modalDrawerReportPageComponent);
-    const addEntityButton = screen.getAllByText("Add TEMPORARY")[0];
+    const addEntityButton = screen.getByText("Add entity button");
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
-  });
-});
-
-describe("Test ModalDrawerReportPage edit entity operation", () => {
-  test("Drawer opens correctly", async () => {
-    render(modalDrawerReportPageComponent);
-    const editEntityButton = screen.getAllByText("Edit")[0];
-    await userEvent.click(editEntityButton);
-    expect(screen.getByRole("dialog")).toBeVisible();
-  });
-});
-
-describe("Test ModalDrawerReportPage delete entity operation", () => {
-  test("Drawer opens correctly", async () => {
-    render(modalDrawerReportPageComponent);
-    const deleteEntityButton = screen.getAllByText("Delete")[0];
-    expect(screen.getAllByText("Delete").length).toBe(3);
-    await userEvent.click(deleteEntityButton);
-    expect(screen.getAllByText("Delete").length).toBe(2);
+    expect(screen.getByText("Add entity modal")).toBeVisible();
   });
 });
 

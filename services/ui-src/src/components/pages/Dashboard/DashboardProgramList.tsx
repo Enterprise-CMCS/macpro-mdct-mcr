@@ -3,7 +3,7 @@ import { Table } from "components";
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import editIcon from "assets/icons/icon_edit.png";
+import editIcon from "assets/icons/icon_edit-square.png";
 
 export const DashboardList = ({
   reportsByState,

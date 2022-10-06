@@ -70,14 +70,16 @@ export const Modal = ({
               {submitting ? <Spinner size="small" /> : content.actionButtonText}
             </Button>
           )}
-          <Button
-            className={mqClasses}
-            sx={sx.close}
-            variant="link"
-            onClick={modalDisclosure.onClose}
-          >
-            {content.closeButtonText}
-          </Button>
+          {content.closeButtonText && (
+            <Button
+              className={mqClasses}
+              sx={sx.close}
+              variant="link"
+              onClick={modalDisclosure.onClose}
+            >
+              {content.closeButtonText}
+            </Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </ChakraModal>
@@ -92,7 +94,7 @@ interface Props {
   content: {
     heading: string;
     actionButtonText: string | ReactNode;
-    closeButtonText: string;
+    closeButtonText?: string;
   };
   submitting?: boolean;
   onConfirmHandler?: Function;
