@@ -111,16 +111,15 @@ describe("Test AddEditEntityModal functionality", () => {
     await userEvent.click(submitButton);
   };
   const mockUpdateCallPayload = mockUpdateCallBaseline;
+  mockUpdateCallPayload.fieldData.accessMeasures.push({
+    id: "mock-id-2",
+    "mock-modal-text-field": "mock input 2",
+  });
 
   test("Successfully adds new entity, even with existing entities", async () => {
     const result = await render(modalComponent);
     const form = result.getByTestId("add-edit-entity-form");
     await fillAndSubmitForm(form);
-
-    mockUpdateCallPayload.fieldData.accessMeasures.push({
-      id: "mock-id-2",
-      "mock-modal-text-field": "mock input 2",
-    });
 
     await expect(mockUpdateReport).toHaveBeenCalledWith(
       mockReportKeys,
