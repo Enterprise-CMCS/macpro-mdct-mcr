@@ -49,7 +49,6 @@ const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditEntityModal
       entityType="accessMeasures"
-      selectedEntity={undefined}
       modalData={mockModalData}
       modalDisclosure={{
         isOpen: true,
@@ -103,6 +102,7 @@ describe("Test AddEditEntityModal functionality", () => {
   const fillAndSubmitForm = async (form: any) => {
     // fill and submit form
     const textField = form.querySelector("[name='mock-modal-text-field']")!;
+    await userEvent.clear(textField);
     await userEvent.type(textField, "mock input 2");
     const submitButton = screen.getByRole("button", { name: "Save" });
     await userEvent.click(submitButton);
@@ -126,12 +126,11 @@ describe("Test AddEditEntityModal functionality", () => {
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test.only("Successfully edits an existing entity", async () => {
+  test("Successfully edits an existing entity", async () => {
     const result = await render(modalComponentWithSelectedEntity);
     const form = result.getByTestId("add-edit-entity-form");
     await fillAndSubmitForm(form);
     const mockUpdateCallPayload = mockUpdateCallBaseline;
-
     mockUpdateCallPayload.fieldData.accessMeasures = [
       {
         id: "mock-id-1",

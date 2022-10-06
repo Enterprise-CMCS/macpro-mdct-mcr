@@ -10,22 +10,22 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 // utils
-import { EntityShape } from "types";
-import { makeMediaQueryClasses } from "utils";
+import { AnyObject, EntityShape } from "types";
 // assets
 import { svgFilters } from "styles/theme";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
-export const EntityCard = ({ entity, ...props }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
+export const EntityCard = ({
+  entity,
+  entityType,
+  modalData,
+  ...props
+}: Props) => {
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
-
-  const entityType = props.entityType;
-  const modalData = props?.modalData;
 
   // add/edit entity modal disclosure
   const {
@@ -55,7 +55,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
   };
 
   return (
-    <Card {...props} className={mqClasses} marginTop="2rem">
+    <Card {...props} marginTop="2rem">
       <Box sx={sx.contentBox}>
         <Image
           src={unfinishedIcon}
@@ -69,7 +69,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
             sx={sx.deleteButtonImage}
           />
         </button>
-        <Heading as="h5" sx={sx.heading}>
+        <Heading as="h4" sx={sx.heading}>
           {data.category}
         </Heading>
         <Text sx={sx.description}>{data.standardDescription}</Text>
@@ -107,6 +107,8 @@ export const EntityCard = ({ entity, ...props }: Props) => {
 
 interface Props {
   entity: EntityShape;
+  entityType: string;
+  modalData: AnyObject;
   [key: string]: any;
 }
 
@@ -120,12 +122,18 @@ const sx = {
     ".delete-entity-button": {
       position: "absolute",
       right: "-2rem",
+      ".mobile &": {
+        right: "-1.5rem",
+      },
     },
   },
   statusIcon: {
     position: "absolute",
     left: "-2rem",
     height: "1rem",
+    ".mobile &": {
+      left: "-1.5rem",
+    },
   },
   deleteButtonImage: {
     height: "1.25rem",

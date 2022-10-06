@@ -2,10 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
 import { EntityCard } from "components";
-
-jest.mock("utils/other/useBreakpoint", () => ({
-  makeMediaQueryClasses: jest.fn(() => "desktop"),
-}));
+import { mockModalForm } from "utils/testing/setupJest";
 
 const mockEntity = {
   id: "mock-id",
@@ -25,8 +22,20 @@ const mockEntity = {
   "accessMeasure_standardType-otherText": "",
 };
 
+const mockModalData = {
+  addTitle: "mock-add-title",
+  editTitle: "mock-edit-title",
+  message: "mock-message",
+  form: mockModalForm,
+};
+
 const EntityCardComponent = (
-  <EntityCard entity={mockEntity} data-testid="mock-entity-card" />
+  <EntityCard
+    entity={mockEntity}
+    entityType="accessMeasures"
+    modalData={mockModalData}
+    data-testid="mock-entity-card"
+  />
 );
 
 describe("Test EntityCard", () => {

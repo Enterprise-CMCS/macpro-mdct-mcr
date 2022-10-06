@@ -5,7 +5,7 @@ import { Form, Modal, ReportContext } from "components";
 import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
-import { AnyObject, ReportStatus } from "types";
+import { AnyObject, EntityShape, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const AddEditEntityModal = ({
@@ -32,43 +32,31 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
-    let currentEntities = report?.fieldData?.[entityType] || [];
+    let dataToWrite = {
+      lastAlteredBy: full_name,
+      reportStatus: ReportStatus.IN_PROGRESS,
+      fieldData: {},
+    };
+    const currentEntities = report?.fieldData?.[entityType] || [];
     if (selectedEntity?.id) {
       // if existing entity selected, edit
       const selectedEntityIndex = currentEntities.findIndex(
-        (entity: AnyObject) => entity.id === selectedEntity.id
+        (entity: EntityShape) => entity.id === selectedEntity.id
       );
-      currentEntities.splice(selectedEntityIndex, 1, {
+      const updatedEntities = [...currentEntities];
+
+      updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,
         ...formData,
-      });
-      const dataToWrite = {
-        lastAlteredBy: full_name,
-        reportStatus: ReportStatus.IN_PROGRESS,
-        fieldData: {
-          [entityType]: [...currentEntities],
-        },
       };
-      await updateReport(reportKeys, {
-        ...dataToWrite,
-      });
+      dataToWrite.fieldData = { [entityType]: updatedEntities };
     } else {
       // create new entity
-      const datatowrite = {
-        lastAlteredBy: full_name,
-        reportStatus: ReportStatus.IN_PROGRESS,
-        fieldData: {
-          [entityType]: [
-            ...currentEntities,
-            {
-              id: uuid(),
-              ...formData,
-            },
-          ],
-        },
+      dataToWrite.fieldData = {
+        [entityType]: [...currentEntities, { id: uuid(), ...formData }],
       };
-      await updateReport(reportKeys, datatowrite);
     }
+    await updateReport(reportKeys, dataToWrite);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
@@ -98,7 +86,7 @@ export const AddEditEntityModal = ({
 interface Props {
   entityType: string;
   modalData: AnyObject;
-  selectedEntity?: AnyObject;
+  selectedEntity?: EntityShape;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

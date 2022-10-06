@@ -55,12 +55,9 @@ export const ChoiceListField = ({
   useEffect(() => {
     if (displayValue) {
       form.setValue(name, displayValue, { shouldValidate: true });
+      // update DOM choices checked status
+      clearNestedValues(choices);
     }
-
-    // update DOM choices checked status
-    choices.forEach((choice: FieldChoice) => {
-      setCheckedOrUnchecked(choice);
-    });
   }, [displayValue]);
 
   // format choices with nested child fields to render (if any)
@@ -80,6 +77,31 @@ export const ChoiceListField = ({
       }
       delete choiceObject.children;
       return choiceObject;
+    });
+  };
+
+  const clearNestedValues = (choices: FieldChoice[]) => {
+    choices.forEach((choice: FieldChoice) => {
+      // if a choice is not selected and there are children, clear out any saved data
+      if (!choice.checked && choice.children) {
+        choice.children.forEach((child) => {
+          switch (child.type) {
+            case "radio":
+            case "checkbox":
+              form.setValue(child.id, [], { shouldValidate: true });
+              if (child.props?.choices) {
+                child.props.choices.forEach((choice: FieldChoice) => {
+                  choice.checked = false;
+                });
+                clearNestedValues(child.props.choices);
+              }
+              break;
+            default:
+              form.setValue(child.id, "", { shouldValidate: true });
+              break;
+          }
+        });
+      }
     });
   };
 

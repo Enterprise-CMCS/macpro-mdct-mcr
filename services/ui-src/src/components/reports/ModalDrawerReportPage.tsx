@@ -8,7 +8,7 @@ import { EntityShape, ModalDrawerReportPageShape } from "types";
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
-  const entities = report?.fieldData[entityType];
+  const entities = report?.fieldData[entityType] || [];
 
   // add/edit entity modal disclosure
   const {
@@ -31,25 +31,22 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         >
           {dashboard.addEntityButtonText}
         </Button>
-        {entities && (
-          <>
-            <Heading as="h4" sx={sx.dashboardTitle}>
-              {dashboard.title}
-            </Heading>
-            {entities.map((entity: EntityShape) => (
-              <EntityCard
-                key={entity.id}
-                entity={entity}
-                modalData={modal}
-                entityType={entityType}
-              />
-            ))}
-          </>
+        {entities.length !== 0 && (
+          <Heading as="h3" sx={sx.dashboardTitle}>
+            {dashboard.title}
+          </Heading>
         )}
+        {entities.map((entity: EntityShape) => (
+          <EntityCard
+            key={entity.id}
+            entity={entity}
+            entityType={entityType}
+            modalData={modal}
+          />
+        ))}
         <AddEditEntityModal
           entityType={entityType}
           modalData={modal}
-          selectedEntity={undefined}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: addEditEntityModalOnCloseHandler,
