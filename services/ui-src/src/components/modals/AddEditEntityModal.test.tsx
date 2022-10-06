@@ -59,22 +59,19 @@ const modalComponent = (
   </ReportContext.Provider>
 );
 
-/*
- * TODO: add tests for edit
- * const modalComponentWithSelectedEntity = (
- *   <ReportContext.Provider value={mockedReportContext}>
- *     <AddEditEntityModal
- *       entityType="accessMeasures"
- *       selectedEntity={mockEntity}
- *       modalData={mockModalData}
- *       modalDisclosure={{
- *         isOpen: true,
- *         onClose: mockCloseHandler,
- *       }}
- *     />
- *   </ReportContext.Provider>
- * );
- */
+const modalComponentWithSelectedEntity = (
+  <ReportContext.Provider value={mockedReportContext}>
+    <AddEditEntityModal
+      entityType="accessMeasures"
+      selectedEntity={mockEntity}
+      modalData={mockModalData}
+      modalDisclosure={{
+        isOpen: true,
+        onClose: mockCloseHandler,
+      }}
+    />
+  </ReportContext.Provider>
+);
 
 describe("Test AddEditEntityModal", () => {
   beforeEach(async () => {
@@ -129,26 +126,24 @@ describe("Test AddEditEntityModal functionality", () => {
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  /*
-   * TODO: add edit test here. left for next dev
-   * test("Successfully edits an existing entity", async () => {
-   *   const result = await render(modalComponentWithSelectedEntity);
-   *   const form = result.getByTestId("add-edit-entity-form");
-   *   await fillAndSubmitForm(form);
-   *   const mockUpdateCallPayload = mockUpdateCallBaseline;
-   *   mockUpdateCallPayload.fieldData.accessMeasures = [
-   *     {
-   *       id: "mock-id-1",
-   *       "mock-modal-text-field": "mock input 2",
-   *     },
-   *   ];
-   *   await expect(mockUpdateReport).toHaveBeenCalledWith(
-   *     mockReportKeys,
-   *     mockUpdateCallPayload
-   *   );
-   *   await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-   * });
-   */
+  test("Successfully edits an existing entity", async () => {
+    const result = await render(modalComponentWithSelectedEntity);
+    const form = result.getByTestId("add-edit-entity-form");
+    await fillAndSubmitForm(form);
+    const mockUpdateCallPayload = mockUpdateCallBaseline;
+    mockUpdateCallPayload.fieldData.accessMeasures = [
+      {
+        id: "mock-id-1",
+        "mock-modal-text-field": "mock input 2",
+      },
+    ];
+
+    await expect(mockUpdateReport).toHaveBeenCalledWith(
+      mockReportKeys,
+      mockUpdateCallPayload
+    );
+    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("Test AddEditEntityModal accessibility", () => {
