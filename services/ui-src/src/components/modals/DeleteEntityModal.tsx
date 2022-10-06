@@ -57,7 +57,7 @@ export const DeleteEntityModal = ({
 
 interface Props {
   entityType: string;
-  selectedEntity: EntityShape;
+  selectedEntity: EntityShape | undefined;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
