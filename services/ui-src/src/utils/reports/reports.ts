@@ -93,6 +93,10 @@ export const compileValidationJsonFromRoutes = (
     );
   };
   routeArray.forEach((route: ReportRoute) => {
+    // check for non-standard needed validation objects
+    if (route.pageType === "modalDrawer" && route.entityType) {
+      Object.assign(validationSchema, { [route.entityType]: "objectArray" });
+    }
     // if standard form present, add validation to schema
     const standardFormFields = route.form?.fields;
     if (standardFormFields) addValidationToAccumulator(standardFormFields);

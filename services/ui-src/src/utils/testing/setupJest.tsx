@@ -273,15 +273,19 @@ export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
   pageType: "modalDrawer",
-  dynamicType: "accessMeasures",
+  entityType: "accessMeasures",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
   dashboard: {
     title: "Mock dashboard title",
+    addEntityButtonText: "Add entity button",
   },
   modal: {
+    addTitle: "Add entity modal",
+    editTitle: "Edit entity modal",
+    message: "Mock message",
     form: mockModalForm,
   },
   drawer: {

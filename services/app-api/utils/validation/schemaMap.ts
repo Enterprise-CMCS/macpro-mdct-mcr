@@ -167,29 +167,33 @@ export const nested = (
   });
 };
 
+// OBJECT ARRAY
+export const objectArray = () => array().of(mixed());
+
 // REGEX
 export const dateFormatRegex =
   /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
 
 // SCHEMA MAP
 export const schemaMap: any = {
-  text: text(),
-  textOptional: textOptional(),
-  number: number(),
-  numberOptional: numberOptional(),
-  ratio: ratio(),
-  email: email(),
-  emailOptional: emailOptional(),
-  url: url(),
-  urlOptional: urlOptional(),
-  date: date(),
-  dateOptional: dateOptional(),
-  dropdown: dropdown(),
   checkbox: checkbox(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
-  radio: radio(),
-  radioOptional: radioOptional(),
+  date: date(),
+  dateOptional: dateOptional(),
+  dropdown: dropdown(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
+  email: email(),
+  emailOptional: emailOptional(),
+  number: number(),
+  numberOptional: numberOptional(),
+  objectArray: objectArray(),
+  radio: radio(),
+  radioOptional: radioOptional(),
+  ratio: ratio(),
+  text: text(),
+  textOptional: textOptional(),
+  url: url(),
+  urlOptional: urlOptional(),
 };

@@ -67,25 +67,25 @@ export interface ReportPageShapeBase extends ReportRouteBase {
 
 export interface StandardReportPageShape extends ReportPageShapeBase {
   form: FormJson;
+  dashboard?: never;
   modal?: never;
   drawer?: never;
+  entityType?: never;
 }
 
 export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   dashboard: AnyObject;
   drawer: ReportPageDrawer;
-  dynamicType?: never;
   modal?: never;
   form?: never;
 }
 
 export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
-  dynamicType: string;
+  entityType: string;
   dashboard: AnyObject;
   modal: ReportPageModal;
   drawer: ReportPageDrawer;
-  entityType?: never;
   form?: never;
 }
 
@@ -93,7 +93,6 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
   pageType?: never;
   entityType?: never;
-  dynamicType?: never;
   modal?: never;
   drawer?: never;
   form?: never;
@@ -107,6 +106,7 @@ export interface ReportPageDrawer {
 
 export interface ReportPageModal {
   form: FormJson;
+  [key: string]: any;
 }
 
 // REPORT PROVIDER/CONTEXT
@@ -157,11 +157,15 @@ export enum ReportStatus {
 
 // FORM & FIELD STRUCTURE
 
-export declare type EntityType = "plans" | "bssEntities";
+export declare type EntityType =
+  | "plans"
+  | "bssEntities"
+  | "accessMeasures"
+  | "qualityMeasures"
+  | "sanctions";
 
 export interface EntityShape {
   id: string;
-  name: string;
   [key: string]: any;
 }
 

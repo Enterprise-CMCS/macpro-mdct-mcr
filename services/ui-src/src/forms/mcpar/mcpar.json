@@ -943,34 +943,31 @@
               "name": "Access Measures",
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
               "pageType": "modalDrawer",
-              "dynamicType": "accessMeasures",
+              "entityType": "accessMeasures",
               "intro": {
                 "section": "Section C: Program-Level Indicators",
                 "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
                 "spreadsheet": "C2_Program_State",
                 "info": [
                   {
-                    "type": "html",
-                    "content": "<p><b>Access Measures</b></p>"
+                    "type": "heading",
+                    "as": "h3",
+                    "content": "Access Measures"
                   },
                   {
                     "type": "html",
-                    "content": "<p>Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level.</p>"
-                  },
-                  {
-                    "type": "html",
-                    "content": "</br><p>Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p>"
-                  },
-                  {
-                    "type": "html",
-                    "content": "</br><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program.</p>"
+                    "content": "<p>Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level.</p><p>Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program.</p>"
                   }
                 ]
               },
               "dashboard": {
-                "title": "Add measures for monitoring access standards"
+                "title": "Add measures for monitoring access standards",
+                "addEntityButtonText": "Add access measure"
               },
               "modal": {
+                "addTitle": "Add access measure",
+                "editTitle": "Edit access measure",
+                "message": "Complete the remaining indicators for this access measure by saving the measure and selecting \"Enter measure details\".",
                 "form": {
                   "id": "cam-modal",
                   "fields": [
@@ -1020,45 +1017,49 @@
                         "choices": [
                           {
                             "name": "option1",
-                            "label": "Maximum time to travel; Maximum distance to travel"
+                            "label": "Maximum time to travel"
                           },
                           {
                             "name": "option2",
-                            "label": "Maximum time or distance"
+                            "label": "Maximum distance to travel"
                           },
                           {
                             "name": "option3",
-                            "label": "Ease of getting a timely appointment"
+                            "label": "Maximum time or distance"
                           },
                           {
                             "name": "option4",
-                            "label": "Appointment wait time"
+                            "label": "Ease of getting a timely appointment"
                           },
                           {
                             "name": "option5",
-                            "label": "Hours of operation"
+                            "label": "Appointment wait time"
                           },
                           {
                             "name": "option6",
-                            "label": "Provider to enrollee ratios"
+                            "label": "Hours of operation"
                           },
                           {
                             "name": "option7",
-                            "label": "Minimum number of network providers"
+                            "label": "Provider to enrollee ratios"
                           },
                           {
                             "name": "option8",
-                            "label": "Service fulfillment"
+                            "label": "Minimum number of network providers"
                           },
                           {
                             "name": "option9",
+                            "label": "Service fulfillment"
+                          },
+                          {
+                            "name": "option10",
                             "label": "Other, specify",
                             "children": [
                               {
                                 "id": "accessMeasure_standardType-otherText",
                                 "type": "textarea",
                                 "validation": {
-                                  "type": "radio",
+                                  "type": "text",
                                   "nested": true,
                                   "parentFieldName": "accessMeasure_standardType",
                                   "visibleOptionValue": "Other, specify"
@@ -1121,7 +1122,7 @@
                                 "id": "accessMeasure_providerType-otherText",
                                 "type": "textarea",
                                 "validation": {
-                                  "type": "radio",
+                                  "type": "text",
                                   "nested": true,
                                   "parentFieldName": "accessMeasure_providerType",
                                   "visibleOptionValue": "Other, specify"
@@ -1164,7 +1165,7 @@
                                 "id": "accessMeasure_applicableRegion-otherText",
                                 "type": "textarea",
                                 "validation": {
-                                  "type": "radio",
+                                  "type": "text",
                                   "nested": true,
                                   "parentFieldName": "accessMeasure_applicableRegion",
                                   "visibleOptionValue": "Other, specify"
@@ -1207,7 +1208,7 @@
                                 "id": "accessMeasure_population-otherText",
                                 "type": "textarea",
                                 "validation": {
-                                  "type": "radio",
+                                  "type": "text",
                                   "nested": true,
                                   "parentFieldName": "accessMeasure_population",
                                   "visibleOptionValue": "Other, specify"
@@ -1254,7 +1255,7 @@
                                 "id": "accessMeasure_monitoringMethods-otherText",
                                 "type": "textarea",
                                 "validation": {
-                                  "type": "radio",
+                                  "type": "text",
                                   "nested": true,
                                   "parentFieldName": "accessMeasure_monitoringMethods",
                                   "visibleOptionValue": "Other, specify"
@@ -1301,7 +1302,7 @@
                                 "id": "accessMeasure_oversightMethodFrequency-otherText",
                                 "type": "textarea",
                                 "validation": {
-                                  "type": "radio",
+                                  "type": "text",
                                   "nested": true,
                                   "parentFieldName": "accessMeasure_oversightMethodFrequency",
                                   "visibleOptionValue": "Other, specify"
@@ -2384,7 +2385,7 @@
           "name": "VII: Quality Measures",
           "path": "/mcpar/plan-level-indicators/quality-measures",
           "pageType": "modalDrawer",
-          "dynamicType": "qualityMeasures",
+          "entityType": "qualityMeasures",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic VII: Quality Measures",
@@ -2644,7 +2645,7 @@
           "name": "VIII: Sanctions",
           "path": "/mcpar/plan-level-indicators/sanctions",
           "pageType": "modalDrawer",
-          "dynamicType": "sanctions",
+          "entityType": "sanctions",
           "intro": {
             "section": "Section D: Plan-Level Indicators",
             "subsection": "Topic VIII. Sanctions",

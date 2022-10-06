@@ -19,6 +19,7 @@ export { Banner } from "./banners/Banner";
 export { PreviewBanner } from "./banners/PreviewBanner";
 // cards
 export { Card } from "./cards/Card";
+export { EntityCard } from "./cards/EntityCard";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
@@ -62,6 +63,7 @@ export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
+export { AddEditEntityModal } from "./modals/AddEditEntityModal";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
 export { HelpPage } from "./pages/Help/HelpPage";

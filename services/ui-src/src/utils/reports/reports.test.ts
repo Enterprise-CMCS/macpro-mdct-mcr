@@ -81,6 +81,7 @@ describe("Test compileValidationJsonFromRoutes", () => {
   it("Compiles validation from forms of any kind", () => {
     const result = compileValidationJsonFromRoutes(mockFlattenedReportRoutes);
     expect(result).toEqual({
+      accessMeasures: "objectArray",
       "mock-text-field": "text",
       "mock-drawer-text-field": "text",
       "mock-modal-text-field": "text",
