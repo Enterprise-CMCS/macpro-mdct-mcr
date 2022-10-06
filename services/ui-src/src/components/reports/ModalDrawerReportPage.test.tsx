@@ -11,6 +11,8 @@ import {
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+// constants
+import { saveAndCloseText } from "../../constants";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -110,6 +112,9 @@ describe("Test ModalDrawerReportPage with entities", () => {
     const textField = await screen.getByLabelText("mock drawer text field");
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test");
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     // Stopping point
   });
 });
