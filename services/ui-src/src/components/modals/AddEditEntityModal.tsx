@@ -29,6 +29,11 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
+    let dataToWrite = {
+      lastAlteredBy: full_name,
+      reportStatus: ReportStatus.IN_PROGRESS,
+      fieldData: {},
+    };
     const currentEntities = report?.fieldData?.[entityType] || [];
     if (selectedEntity?.id) {
       // if existing entity selected, edit
@@ -39,30 +44,14 @@ export const AddEditEntityModal = ({
         id: selectedEntity.id,
         ...formData,
       });
-      await updateReport(reportKeys, {
-        lastAlteredBy: full_name,
-        reportStatus: ReportStatus.IN_PROGRESS,
-        fieldData: {
-          [entityType]: updatedEntities,
-        },
-      });
+      dataToWrite.fieldData = { [entityType]: updatedEntities };
     } else {
       // create new entity
-      const datatowrite = {
-        lastAlteredBy: full_name,
-        reportStatus: ReportStatus.IN_PROGRESS,
-        fieldData: {
-          [entityType]: [
-            ...currentEntities,
-            {
-              id: uuid(),
-              ...formData,
-            },
-          ],
-        },
+      dataToWrite.fieldData = {
+        [entityType]: [...currentEntities, { id: uuid(), ...formData }],
       };
-      await updateReport(reportKeys, datatowrite);
     }
+    await updateReport(reportKeys, dataToWrite);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
