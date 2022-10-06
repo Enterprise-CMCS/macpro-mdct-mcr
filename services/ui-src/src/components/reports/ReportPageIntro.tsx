@@ -29,7 +29,6 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
 
 interface Props {
   text: AnyObject;
-  reverse?: boolean;
   [key: string]: any;
 }
 
