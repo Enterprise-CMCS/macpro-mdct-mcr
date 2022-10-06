@@ -64,6 +64,7 @@ export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 export { AddEditEntityModal } from "./modals/AddEditEntityModal";
+export { DeleteEntityModal } from "./modals/DeleteEntityModal";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
 export { HelpPage } from "./pages/Help/HelpPage";

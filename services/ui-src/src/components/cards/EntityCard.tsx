@@ -14,6 +14,7 @@ export const EntityCard = ({
   entity,
   formattedEntityData,
   openDrawer,
+  openDeleteEntityModal,
   ...props
 }: Props) => {
   // any drawer-based field will do for this check
@@ -27,7 +28,12 @@ export const EntityCard = ({
           alt={`entity is ${entityCompleted ? "completed" : "unfinished"}`}
           sx={sx.statusIcon}
         />
-        <button className="delete-entity-button">
+        <button
+          type="button"
+          className="delete-entity-button"
+          onClick={() => openDeleteEntityModal(entity)}
+          data-testid="deleteEntityButton"
+        >
           <Image
             src={deleteIcon}
             alt="Delete Entity"
@@ -107,6 +113,7 @@ interface Props {
   entity: AnyObject;
   formattedEntityData: AnyObject;
   openDrawer: Function;
+  openDeleteEntityModal: Function;
   [key: string]: any;
 }
 

@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
+  DeleteEntityModal,
   EntityCard,
   ReportContext,
   ReportDrawer,
@@ -50,6 +51,13 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     drawerOnOpenHandler();
   };
 
+  // delete modal disclosure
+  const {
+    isOpen: deleteEntityModalIsOpen,
+    onOpen: deleteEntityModalOnOpenHandler,
+    onClose: deleteEntityModalOnCloseHandler,
+  } = useDisclosure();
+
   const openAddEditEntityModal = () => {
     setSelectedEntity(undefined); // TODO: remove
     /*
@@ -61,6 +69,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
      */
     // use disclosure to open modal
     addEditEntityModalOnOpenHandler();
+  };
+
+  const openDeleteEntityModal = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    deleteEntityModalOnOpenHandler();
   };
 
   const onSubmit = async (formData: AnyObject) => {
@@ -146,6 +159,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             entity={entity}
             formattedEntityData={getFormattedEntityData(entity)}
             openDrawer={openDrawer}
+            openDeleteEntityModal={openDeleteEntityModal}
           />
         ))}
         <AddEditEntityModal
@@ -155,6 +169,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: addEditEntityModalOnCloseHandler,
+          }}
+        />
+        <DeleteEntityModal
+          entityType={entityType}
+          selectedEntity={selectedEntity}
+          modalDisclosure={{
+            isOpen: deleteEntityModalIsOpen,
+            onClose: deleteEntityModalOnCloseHandler,
           }}
         />
         <ReportDrawer
