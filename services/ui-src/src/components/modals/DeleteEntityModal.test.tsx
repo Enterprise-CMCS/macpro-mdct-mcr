@@ -117,7 +117,7 @@ describe("Test DeleteEntityModal functionality", () => {
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("DeleteEntityModal deletes handles empty fielddata", async () => {
+  test("DeleteEntityModal delete handles empty fielddata", async () => {
     render(modalComponent);
 
     const submitButton = screen.getByRole("button", {
