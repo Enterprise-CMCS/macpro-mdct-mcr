@@ -17,12 +17,6 @@ import {
 // constants
 import { saveAndCloseText } from "../../constants";
 
-/*
- * const mockSubmittingState = {
- *   submitting: false,
- *   setSubmitting: jest.fn(),
- * };
- */
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
