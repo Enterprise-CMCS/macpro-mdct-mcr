@@ -5,6 +5,8 @@ import userEvent from "@testing-library/user-event";
 import { EntityCard } from "components";
 import { mockModalForm } from "utils/testing/setupJest";
 
+const openDeleteEntityModal = jest.fn();
+
 const mockEntity = {
   id: "mock-id",
   accessMeasure_generalCategory: [
@@ -35,6 +37,7 @@ const EntityCardComponent = (
     entity={mockEntity}
     entityType="accessMeasures"
     modalData={mockModalData}
+    openDeleteEntityModal={openDeleteEntityModal}
     data-testid="mock-entity-card"
   />
 );
@@ -53,6 +56,13 @@ describe("Test EntityCard", () => {
     expect(editMeasureButton).toBeVisible();
     await userEvent.click(editMeasureButton);
     await expect(screen.getByTestId("add-edit-entity-form")).toBeVisible();
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 });
 

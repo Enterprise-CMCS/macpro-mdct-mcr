@@ -114,6 +114,12 @@ describe("Test AddEditEntityModal functionality", () => {
     const form = result.getByTestId("add-edit-entity-form");
     await fillAndSubmitForm(form);
 
+    const mockUpdateCallPayload = {
+      fieldData: mockedReportContext.report.fieldData,
+      lastAlteredBy: undefined,
+      reportStatus: "In progress",
+    };
+
     mockUpdateCallPayload.fieldData.accessMeasures.push({
       id: "mock-id-2",
       "mock-modal-text-field": "mock input 2",

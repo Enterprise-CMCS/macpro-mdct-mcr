@@ -1,13 +1,21 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
-import { AddEditEntityModal, EntityCard, ReportContext } from "components";
+import {
+  AddEditEntityModal,
+  DeleteEntityModal,
+  EntityCard,
+  ReportContext,
+} from "components";
 // utils
 import { EntityShape, ModalDrawerReportPageShape } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
   const entities = report?.fieldData[entityType] || [];
 
   // add/edit entity modal disclosure
@@ -17,9 +25,21 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
 
+  // delete modal disclosure
+  const {
+    isOpen: deleteEntityModalIsOpen,
+    onOpen: deleteEntityModalOnOpenHandler,
+    onClose: deleteEntityModalOnCloseHandler,
+  } = useDisclosure();
+
   const openAddEditEntityModal = () => {
     // use disclosure to open modal
     addEditEntityModalOnOpenHandler();
+  };
+
+  const openDeleteEntityModal = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    deleteEntityModalOnOpenHandler();
   };
 
   return (
@@ -42,6 +62,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             entity={entity}
             entityType={entityType}
             modalData={modal}
+            openDeleteEntityModal={openDeleteEntityModal}
           />
         ))}
         <AddEditEntityModal
@@ -50,6 +71,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: addEditEntityModalOnCloseHandler,
+          }}
+        />
+        <DeleteEntityModal
+          entityType={entityType}
+          selectedEntity={selectedEntity}
+          modalDisclosure={{
+            isOpen: deleteEntityModalIsOpen,
+            onClose: deleteEntityModalOnCloseHandler,
           }}
         />
       </Box>

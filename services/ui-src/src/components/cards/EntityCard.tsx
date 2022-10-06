@@ -21,6 +21,7 @@ export const EntityCard = ({
   entity,
   entityType,
   modalData,
+  openDeleteEntityModal,
   ...props
 }: Props) => {
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
@@ -62,7 +63,12 @@ export const EntityCard = ({
           alt="entity is unfinished"
           sx={sx.statusIcon}
         />
-        <button className="delete-entity-button">
+        <button
+          type="button"
+          className="delete-entity-button"
+          onClick={() => openDeleteEntityModal(entity)}
+          data-testid="deleteEntityButton"
+        >
           <Image
             src={deleteIcon}
             alt="Delete Entity"
@@ -109,6 +115,7 @@ interface Props {
   entity: EntityShape;
   entityType: string;
   modalData: AnyObject;
+  openDeleteEntityModal: Function;
   [key: string]: any;
 }
 
