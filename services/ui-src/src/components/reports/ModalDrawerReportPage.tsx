@@ -178,6 +178,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             isOpen: deleteEntityModalIsOpen,
             onClose: deleteEntityModalOnCloseHandler,
           }}
+          data-testid="deleteEntityModal"
         />
         <ReportDrawer
           drawerDisclosure={{

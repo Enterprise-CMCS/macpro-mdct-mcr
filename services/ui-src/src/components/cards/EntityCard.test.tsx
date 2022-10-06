@@ -46,7 +46,6 @@ const EntityCardComponent = (
     entity={mockEntity}
     formattedEntityData={mockFormattedEntityData}
     openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
     openDeleteEntityModal={openDeleteEntityModal}
   />
 );
@@ -56,7 +55,6 @@ const UnfinishedEntityCardComponent = (
     entity={mockEntity}
     formattedEntityData={mockUnfinishedEntityData}
     openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
     openDeleteEntityModal={openDeleteEntityModal}
   />
 );
@@ -71,18 +69,18 @@ describe("Test Finished EntityCard", () => {
   });
 
   test("EntityCard is visible", () => {
-    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    expect(screen.getByTestId("entityCard")).toBeVisible();
   });
 
   test("EntityCard opens the delete modal on remove click", async () => {
-    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    expect(screen.getByTestId("entityCard")).toBeVisible();
     const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on edit-details click", async () => {
-    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    expect(screen.getByTestId("entityCard")).toBeVisible();
     const editDetailsButton = screen.queryAllByTestId("editDetailsButton")[0];
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
@@ -106,18 +104,18 @@ describe("Test Unfinished EntityCard", () => {
   });
 
   test("EntityCard is visible", () => {
-    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    expect(screen.getByTestId("entityCard")).toBeVisible();
   });
 
   test("EntityCard opens the delete modal on remove click", async () => {
-    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    expect(screen.getByTestId("entityCard")).toBeVisible();
     const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on enter-details click", async () => {
-    expect(screen.getByTestId("mock-entity-card")).toBeVisible();
+    expect(screen.getByTestId("entityCard")).toBeVisible();
     const enterDetailsButton = screen.queryAllByTestId("enterDetailsButton")[0];
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);

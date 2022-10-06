@@ -8,7 +8,9 @@ import { useUser } from "utils";
 import {
   mockAdminUser,
   mockDrawerReportPageJson,
+  mockNoUser,
   mockReportContext,
+  mockStateRep,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -109,6 +111,21 @@ describe("Test DrawerReportPage with entities", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 
+  it("Submit sidedrawer opens and saves for state rep user", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const textField = await screen.getByLabelText("mock drawer text field");
+    expect(textField).toBeVisible();
+    await userEvent.type(textField, "test");
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+  });
+
   it("Submit sidedrawer opens but admin user doesnt see save and close button", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
@@ -120,6 +137,16 @@ describe("Test DrawerReportPage with entities", () => {
     expect(textField).toBeVisible();
     const saveAndCloseButton = screen.queryByText(saveAndCloseText);
     expect(saveAndCloseButton).toBeFalsy();
+  });
+
+  it("Submit sidedrawer bad user can't submit the form", async () => {
+    mockedUseUser.mockReturnValue(mockNoUser);
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 

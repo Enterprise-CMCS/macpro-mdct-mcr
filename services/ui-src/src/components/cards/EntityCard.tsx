@@ -21,7 +21,7 @@ export const EntityCard = ({
   const entityCompleted = formattedEntityData.population;
 
   return (
-    <Card {...props} marginTop="2rem">
+    <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox}>
         <Image
           src={entityCompleted ? completedIcon : unfinishedIcon}
