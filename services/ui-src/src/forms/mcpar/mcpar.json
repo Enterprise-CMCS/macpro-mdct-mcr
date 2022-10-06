@@ -532,7 +532,7 @@
       ]
     },
     {
-      "name": "C: Program-Level Indicators",
+      "name": "Section C: Program-Level Indicators",
       "path": "/mcpar/program-level-indicators",
       "children": [
         {
@@ -627,7 +627,7 @@
                     },
                     {
                       "name": "option2",
-                      "label": "Long-term services and supports"
+                      "label": "Long-term services and supports (LTSS)"
                     },
                     {
                       "name": "option3",
@@ -662,7 +662,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.I.4b Variation in special benefits",
-                  "hint": "What are any variations in the availability of special benefits within the program (e.g. by service area or population)?"
+                  "hint": "What are any variations in the availability of special benefits within the program (e.g. by service area or population)? Enter \"N/A\" if not applicable."
                 }
               },
               {
@@ -681,7 +681,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.I.6 Changes to enrollment or benefits",
-                  "hint": "Briefly explain of any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year."
+                  "hint": "Briefly explain any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year."
                 }
               }
             ]
@@ -692,7 +692,7 @@
           "path": "/mcpar/program-level-indicators/encounter-data-report",
           "pageType": "standard",
           "intro": {
-            "section": "C: Program-Level Indicators",
+            "section": "Section C: Program-Level Indicators",
             "subsection": "Topic III: Encounter Data Report",
             "spreadsheet": "C1_Program_Set"
           },
@@ -733,7 +733,7 @@
                     },
                     {
                       "name": "option7",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "program_encounterDataUses-otherText",
@@ -772,15 +772,23 @@
                     },
                     {
                       "name": "option3",
-                      "label": "Use of correct file format"
+                      "label": "Timeliness of data certifications"
                     },
                     {
                       "name": "option4",
-                      "label": "Provider ID field complete"
+                      "label": "Use of correct file formats"
                     },
                     {
                       "name": "option5",
-                      "label": "Other",
+                      "label": "Provider ID field complete"
+                    },
+                    {
+                      "name": "option6",
+                      "label": "Overall data accuracy (as determined through data validation)"
+                    },
+                    {
+                      "name": "option7",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-otherText",
@@ -795,7 +803,7 @@
                       ]
                     },
                     {
-                      "name": "option6",
+                      "name": "option8",
                       "label": "None of the above"
                     }
                   ]
@@ -825,7 +833,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.III.5 Incentives for encounter data quality",
-                  "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality."
+                  "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with N/A if the plan does not use incentives to award encounter data quality."
                 }
               },
               {
@@ -845,8 +853,8 @@
           "path": "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances",
           "pageType": "standard",
           "intro": {
-            "section": "C: Program-Level Indicators",
-            "subsection": "Topic IV. Grievances, Appeals & State Fair Hearings",
+            "section": "Section C: Program-Level Indicators",
+            "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
             "spreadsheet": "C1_Program_Set"
           },
           "form": {
@@ -900,14 +908,14 @@
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
               "pageType": "standard",
               "intro": {
-                "section": "C: Program-Level Indicators",
-                "subsection": "Topic V. Availability/Accessibility: Network Adequacy",
+                "section": "Section C: Program-Level Indicators",
+                "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
                 "spreadsheet": "C1_Program_Set",
                 "info": [
                   {
                     "type": "heading",
                     "as": "h3",
-                    "content": "Network adequacy"
+                    "content": "Network Adequacy"
                   },
                   {
                     "type": "text",
