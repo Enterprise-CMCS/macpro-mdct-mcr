@@ -126,11 +126,12 @@ describe("Test AddEditEntityModal functionality", () => {
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("Successfully edits an existing entity", async () => {
+  test.only("Successfully edits an existing entity", async () => {
     const result = await render(modalComponentWithSelectedEntity);
     const form = result.getByTestId("add-edit-entity-form");
     await fillAndSubmitForm(form);
     const mockUpdateCallPayload = mockUpdateCallBaseline;
+
     mockUpdateCallPayload.fieldData.accessMeasures = [
       {
         id: "mock-id-1",

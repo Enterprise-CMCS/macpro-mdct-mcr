@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import { AddEditEntityModal, EntityCard, ReportContext } from "components";
 // utils
-import { AnyObject, ModalDrawerReportPageShape } from "types";
+import { EntityShape, ModalDrawerReportPageShape } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal } = route;
@@ -36,7 +36,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             <Heading as="h4" sx={sx.dashboardTitle}>
               {dashboard.title}
             </Heading>
-            {entities.map((entity: AnyObject) => (
+            {entities.map((entity: EntityShape) => (
               <EntityCard
                 key={entity.id}
                 entity={entity}

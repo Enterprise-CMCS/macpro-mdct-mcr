@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 // utils
-import { AnyObject } from "types";
+import { EntityShape } from "types";
 import { makeMediaQueryClasses } from "utils";
 // assets
 import { svgFilters } from "styles/theme";
@@ -20,7 +20,9 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({ entity, ...props }: Props) => {
   const mqClasses = makeMediaQueryClasses();
-  const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
 
   const entityType = props.entityType;
   const modalData = props?.modalData;
@@ -43,8 +45,8 @@ export const EntityCard = ({ entity, ...props }: Props) => {
     id: entity.id,
   };
 
-  const openAddEditEntityModal = (entityId?: string) => {
-    if (entityId) {
+  const openAddEditEntityModal = (entity?: EntityShape) => {
+    if (entity) {
       // pre-fill form if editing an existing entity
       setSelectedEntity(entity);
     }
@@ -78,7 +80,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
           size="sm"
           sx={sx.editEntityButton}
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
-          onClick={() => openAddEditEntityModal(entity.id)}
+          onClick={() => openAddEditEntityModal(entity)}
         >
           Edit measure
         </Button>
@@ -104,7 +106,7 @@ export const EntityCard = ({ entity, ...props }: Props) => {
 };
 
 interface Props {
-  entity: AnyObject;
+  entity: EntityShape;
   [key: string]: any;
 }
 
