@@ -76,12 +76,10 @@ describe("Test ModalDrawerReportPage with entities", () => {
     const addEntityButton = screen.getByText("Add entity button");
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
-    expect(screen.getByText("Add entity modal")).toBeVisible();
   });
 
   test("ModalDrawerReportPage opens the delete modal on remove click", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("entityCard")).toBeVisible();
     const addEntityButton = screen.getByText("Add entity button");
     const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
     await userEvent.click(removeButton);
@@ -97,7 +95,6 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   test("ModalDrawerReportPage opens the drawer on enter-details click", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("entityCard")).toBeVisible();
     const enterDetailsButton = screen.queryAllByTestId("enterDetailsButton")[0];
     await userEvent.click(enterDetailsButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -105,17 +102,15 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   it("ModalDrawerReportPage sidedrawer opens and saves for state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("entityCard")).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter details")[0];
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
+
     const textField = await screen.getByLabelText("mock drawer text field");
-    expect(textField).toBeVisible();
     await userEvent.type(textField, "test");
     const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    // Stopping point
   });
 });
 

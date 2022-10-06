@@ -59,16 +59,16 @@ export const EntityCard = ({
         </Button>
         {entityCompleted ? (
           <>
-            <Flex sx={sx.highlight}>
-              <Box sx={sx.highlightContentContainer}>
+            <Flex sx={sx.highlightContainer}>
+              <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>Provider</Text>
                 <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
               </Box>
-              <Box sx={sx.highlightContentContainer}>
+              <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>Region</Text>
                 <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
               </Box>
-              <Box sx={sx.highlightContentContainer}>
+              <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>Population</Text>
                 <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
               </Box>
@@ -165,13 +165,13 @@ const sx = {
     marginTop: "0.25rem",
     fontSize: "sm",
   },
-  highlight: {
-    background: "palette.secondary_lightest",
+  highlightContainer: {
     marginTop: ".5em",
     padding: "0em 1.5em 1em 1.5em",
+    background: "palette.secondary_lightest",
     borderRadius: "3px",
   },
-  highlightContentContainer: {
+  highlightSection: {
     width: "100%",
   },
   editButton: {

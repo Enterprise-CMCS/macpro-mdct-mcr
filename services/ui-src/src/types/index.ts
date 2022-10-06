@@ -102,12 +102,13 @@ export interface ReportPageDrawer {
   form: FormJson;
   title: string;
   info?: CustomHtmlElement[];
-  [key: string]: any;
 }
 
 export interface ReportPageModal {
   form: FormJson;
-  [key: string]: any;
+  addTitle: string;
+  editTitle: string;
+  message: string;
 }
 
 // REPORT PROVIDER/CONTEXT

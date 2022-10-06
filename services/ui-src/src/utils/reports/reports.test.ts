@@ -126,7 +126,9 @@ describe("Test makeFieldIdList", () => {
       name: "mock-route-3",
       path: "/mock/mock-route-3",
       modal: {
-        title: "",
+        addTitle: "",
+        editTitle: "",
+        message: "",
         form: {
           id: "mock-form-id-3",
           fields: [mockField4],

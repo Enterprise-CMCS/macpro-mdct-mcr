@@ -4,6 +4,7 @@ import { axe } from "jest-axe";
 import { EntityCard } from "components";
 import userEvent from "@testing-library/user-event";
 
+const mockOpenDrawer = jest.fn();
 const openDeleteEntityModal = jest.fn();
 
 const mockEntity = {
@@ -23,7 +24,7 @@ const mockEntity = {
   ],
   "accessMeasure_standardType-otherText": "",
 };
-const mockOpenDrawer = jest.fn();
+
 const mockFormattedEntityData = {
   category: "mock-category",
   standardDescription: "mock-standardDescription",
@@ -73,14 +74,12 @@ describe("Test Finished EntityCard", () => {
   });
 
   test("EntityCard opens the delete modal on remove click", async () => {
-    expect(screen.getByTestId("entityCard")).toBeVisible();
     const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on edit-details click", async () => {
-    expect(screen.getByTestId("entityCard")).toBeVisible();
     const editDetailsButton = screen.queryAllByTestId("editDetailsButton")[0];
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
@@ -108,14 +107,12 @@ describe("Test Unfinished EntityCard", () => {
   });
 
   test("EntityCard opens the delete modal on remove click", async () => {
-    expect(screen.getByTestId("entityCard")).toBeVisible();
     const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on enter-details click", async () => {
-    expect(screen.getByTestId("entityCard")).toBeVisible();
     const enterDetailsButton = screen.queryAllByTestId("enterDetailsButton")[0];
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);

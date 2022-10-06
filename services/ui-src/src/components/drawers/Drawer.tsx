@@ -41,7 +41,7 @@ export const Drawer = ({
             <Box sx={sx.infoTextBox}>{parseCustomHtml(drawerInfo)}</Box>
           )}
           {drawerDetails && (
-            <Box sx={sx.detailTextBox}>
+            <Box sx={sx.detailBox}>
               <Heading as="h4" sx={sx.detailHeader}>
                 Standard Type - {drawerDetails.category}
               </Heading>
@@ -110,7 +110,7 @@ const sx = {
       },
     },
   },
-  detailTextBox: {
+  detailBox: {
     marginTop: "2rem",
     fontWeight: "normal",
     color: "palette.base",
@@ -122,8 +122,8 @@ const sx = {
     color: "palette.gray_medium",
   },
   detailDescription: {
-    fontSize: "md",
     marginBottom: ".5rem",
+    fontSize: "md",
   },
   detailCategoryHeader: {
     marginBottom: ".25rem",

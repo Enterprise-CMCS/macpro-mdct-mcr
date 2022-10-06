@@ -2405,6 +2405,9 @@
             "title": "Add quality and performance measures"
           },
           "modal": {
+            "addTitle": "replace me in json",
+            "editTitle": "replace me in json",
+            "message": "replace me in json",
             "form": {
               "id": "dqm-modal",
               "fields": [
@@ -2665,6 +2668,9 @@
             "title": "Add quality and performance measures"
           },
           "modal": {
+            "addTitle": "replace me in json",
+            "editTitle": "replace me in json",
+            "message": "replace me in json",
             "form": {
               "id": "ds-modal",
               "fields": [
