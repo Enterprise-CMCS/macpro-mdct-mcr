@@ -101,7 +101,7 @@ describe("Test Finished EntityCard", () => {
   });
 
   test("EntityCard opens the drawer on edit-details click", async () => {
-    const editDetailsButton = screen.queryAllByTestId("editDetailsButton")[0];
+    const editDetailsButton = screen.queryAllByTestId("edit-details-button")[0];
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
