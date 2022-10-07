@@ -39,7 +39,6 @@ export const DrawerReportPage = ({ route }: Props) => {
 
   const { entityType, dashboard, drawer } = route;
   const entities = report?.fieldData?.[entityType];
-  const formData = { fieldData: selectedEntity };
   const { message, link } = verbiage[entityType as keyof typeof verbiage];
 
   const openRowDrawer = (entity: EntityShape) => {
@@ -117,7 +116,7 @@ export const DrawerReportPage = ({ route }: Props) => {
         drawerInfo={drawer.info}
         form={drawer.form}
         onSubmit={onSubmit}
-        formData={formData}
+        formData={selectedEntity}
         submitting={submitting}
         data-testid="report-drawer"
       />
