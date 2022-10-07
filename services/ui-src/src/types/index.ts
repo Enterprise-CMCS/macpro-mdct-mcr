@@ -104,7 +104,6 @@ export interface ReportPageDrawer {
   info?: CustomHtmlElement[];
   addEntityButtonText?: string;
   editEntityButtonText?: string;
-  editEntityDetailsButtonText?: string;
   deleteEntityButtonAltText?: string;
 }
 

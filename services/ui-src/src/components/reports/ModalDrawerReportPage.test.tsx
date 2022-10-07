@@ -95,7 +95,9 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   test("ModalDrawerReportPage opens the drawer on enter-details click", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const enterDetailsButton = screen.queryAllByTestId("enterDetailsButton")[0];
+    const enterDetailsButton = screen.queryAllByTestId(
+      "enter-details-button"
+    )[0];
     await userEvent.click(enterDetailsButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });

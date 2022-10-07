@@ -93,14 +93,14 @@ export const EntityCard = ({
           sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
           variant={entityCompleted ? "outline" : "primary"}
           onClick={() => openDrawer(entity)}
-          data-testid="edit-details-button"
+          data-testid={`${entityCompleted ? "edit" : "enter"}-details-button`}
           leftIcon={
             entityCompleted ? (
               <Image src={editIcon} alt="edit icon" height="1rem" />
             ) : undefined
           }
         >
-          {dashboard.editEntityDetailsButtonText}
+          {entityCompleted ? "Edit" : "Enter"} details
         </Button>
       </Box>
     </Card>

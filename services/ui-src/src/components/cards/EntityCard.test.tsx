@@ -134,7 +134,9 @@ describe("Test Unfinished EntityCard", () => {
   });
 
   test("EntityCard opens the drawer on enter-details click", async () => {
-    const enterDetailsButton = screen.queryAllByTestId("enterDetailsButton")[0];
+    const enterDetailsButton = screen.queryAllByTestId(
+      "enter-details-button"
+    )[0];
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
