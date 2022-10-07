@@ -14,7 +14,6 @@ export const AddEditEntityModal = ({
   selectedEntity,
   modalDisclosure,
 }: Props) => {
-  console.log("selectedEntity", selectedEntity);
   const { report, updateReport } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -23,10 +22,11 @@ export const AddEditEntityModal = ({
 
   // shape entity data for hydration
   const reportFieldDataEntities = report?.fieldData[entityType];
-  const hydrationData = reportFieldDataEntities?.find(
-    (entity: EntityShape) => entity.id === selectedEntity?.id
-  );
-  console.log("hd", hydrationData);
+  const hydrationData = {
+    fieldData: reportFieldDataEntities?.find(
+      (entity: EntityShape) => entity.id === selectedEntity?.id
+    ),
+  };
 
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
