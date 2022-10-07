@@ -969,7 +969,10 @@
               },
               "dashboard": {
                 "title": "Add measures for monitoring access standards",
-                "addEntityButtonText": "Add access measure"
+                "addEntityButtonText": "Add access measure",
+                "editEntityButtonText": "Edit measure",
+                "editEntityDetailsButtonText": "Edit details",
+                "deleteEntityButtonAltText": "Delete measure"
               },
               "modal": {
                 "addTitle": "Add access measure",
@@ -2409,7 +2412,11 @@
             ]
           },
           "dashboard": {
-            "title": "Add quality and performance measures"
+            "title": "Add quality and performance measures",
+            "addEntityButtonText": "replace me in json",
+            "editEntityButtonText": "replace me in json",
+            "editEntityDetailsButtonText": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json"
           },
           "modal": {
             "addTitle": "replace me in json",
@@ -2672,7 +2679,11 @@
             ]
           },
           "dashboard": {
-            "title": "Add quality and performance measures"
+            "title": "Add quality and performance measures",
+            "addEntityButtonText": "replace me in json",
+            "editEntityButtonText": "replace me in json",
+            "editEntityDetailsButtonText": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json"
           },
           "modal": {
             "addTitle": "replace me in json",

@@ -281,6 +281,9 @@ export const mockModalDrawerReportPageJson = {
   dashboard: {
     title: "Mock dashboard title",
     addEntityButtonText: "Add entity button",
+    editEntityButtonText: "Edit measure",
+    editEntityDetailsButtonText: "Edit details",
+    deleteEntityButtonAltText: "Delete measure",
   },
   modal: {
     addTitle: "Add entity modal",

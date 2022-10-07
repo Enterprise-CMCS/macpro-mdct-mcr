@@ -152,6 +152,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           <EntityCard
             key={entity.id}
             entity={entity}
+            dashboard={dashboard}
             formattedEntityData={getFormattedEntityData(entity)}
             openAddEditEntityModal={openAddEditEntityModal}
             openDeleteEntityModal={openDeleteEntityModal}

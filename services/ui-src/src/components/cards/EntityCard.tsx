@@ -13,6 +13,7 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 export const EntityCard = ({
   entity,
   formattedEntityData,
+  dashboard,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openDrawer,
@@ -20,7 +21,6 @@ export const EntityCard = ({
 }: Props) => {
   // any drawer-based field will do for this check
   const entityCompleted = formattedEntityData.population;
-
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox}>
@@ -37,7 +37,7 @@ export const EntityCard = ({
         >
           <Image
             src={deleteIcon}
-            alt="Delete Entity"
+            alt={dashboard.deleteEntityButtonAltText}
             sx={sx.deleteButtonImage}
           />
         </button>
@@ -53,11 +53,11 @@ export const EntityCard = ({
           variant="outline"
           size="sm"
           sx={sx.editButton}
-          data-testid="editMeasureButton"
+          data-testid="editEntityButton"
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
           onClick={() => openAddEditEntityModal(entity)}
         >
-          Edit measure
+          {dashboard.editEntityButtonText}
         </Button>
         {entityCompleted ? (
           <>
@@ -97,7 +97,7 @@ export const EntityCard = ({
             leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
             onClick={() => openDrawer(entity)}
           >
-            Edit Details
+            {dashboard.editEntityDetailsButtonText}
           </Button>
         ) : (
           <Button
@@ -117,6 +117,7 @@ export const EntityCard = ({
 interface Props {
   entity: EntityShape;
   formattedEntityData: AnyObject;
+  dashboard: AnyObject;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
   openDrawer: Function;
