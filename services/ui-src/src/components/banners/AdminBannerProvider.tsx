@@ -28,7 +28,10 @@ export const AdminBannerProvider = ({ children }: Props) => {
       const newBannerData = currentBanner?.Item || {};
       setBannerData(newBannerData);
     } catch (e: any) {
-      setError(bannerErrors.GET_BANNER_FAILED);
+      // 404 expected when no current banner exists
+      if (!e.toString().includes("404")) {
+        setError(bannerErrors.GET_BANNER_FAILED);
+      }
     }
   };
 
