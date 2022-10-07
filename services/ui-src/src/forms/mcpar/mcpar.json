@@ -158,8 +158,7 @@
             "spreadsheet": "A_Program_Info",
             "info": [
               {
-                "type": "html",
-                "as": "span",
+                "type": "span",
                 "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data. Learn more about BSS entities at "
               },
               {
@@ -172,8 +171,7 @@
               },
               {
                 "type": "html",
-                "as": "span",
-                "content": " See Glossary in Excel Workbook for the definition of BSS entities.<br/><br/>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization."
+                "content": "<span>. See Glossary in Excel Workbook for the definition of BSS entities.</span><p>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization.</p>"
               }
             ]
           },
