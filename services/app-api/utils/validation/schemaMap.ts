@@ -150,7 +150,7 @@ export const dynamicOptional = () => dynamic().notRequired();
 export const nested = (
   fieldSchema: Function | any,
   parentFieldName: string,
-  parentOptionName: any
+  parentOptionId: any
 ) => {
   const fieldTypeMap = {
     array: array(),
@@ -163,8 +163,8 @@ export const nested = (
 
   return baseSchema.when(parentFieldName, {
     is: (value: any[]) =>
-      // look for parentOptionName in checked choices
-      value?.find((option: any) => option.key === parentOptionName),
+      // look for parentOptionId in checked choices
+      value?.find((option: any) => option.key === parentOptionId),
     then: () => fieldSchema(),
   });
 };

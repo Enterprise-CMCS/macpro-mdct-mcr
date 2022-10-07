@@ -10,7 +10,7 @@ const mockNestedValidationType = {
     type: "text",
     nested: true,
     parentFieldName: "mock-parent-field-name",
-    parentOptionName: "mock-parent-option-name",
+    parentOptionId: "mock-parent-option-name",
   },
 };
 
@@ -27,7 +27,7 @@ const mockNestedDependentValidationType = {
     dependentFieldName: "mock-dependent-field-name",
     nested: true,
     parentFieldName: "mock-parent-field-name",
-    parentOptionName: "mock-parent-option-name",
+    parentOptionId: "mock-parent-option-name",
   },
 };
 

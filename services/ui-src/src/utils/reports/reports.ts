@@ -64,7 +64,7 @@ export const compileValidationJsonFromFields = (
   fieldArray.forEach((field: FormField) => {
     // if field has a parent option, add option name to validation object
     if (typeof field.validation === "object") {
-      field.validation.parentOptionName = parentOption?.name;
+      field.validation.parentOptionId = parentOption?.name;
     }
     // compile field's validation schema
     validationSchema[field.id] = field.validation;
