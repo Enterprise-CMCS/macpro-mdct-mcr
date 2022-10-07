@@ -52,6 +52,7 @@ export const AddEditEntityModal = ({
 
       updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,
+        ...currentEntities[selectedEntityIndex],
         ...formData,
       };
       dataToWrite.fieldData = { [entityType]: updatedEntities };

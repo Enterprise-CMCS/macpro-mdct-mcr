@@ -22,17 +22,24 @@ import {
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
+  const { entityType, dashboard, modal, drawer } = route;
+
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
+
   const { report, updateReport } = useContext(ReportContext);
-
-  const { entityType, dashboard, modal, drawer } = route;
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-  const hydrationData = { fieldData: entityType };
 
-  // add/edit entity modal disclosure
+  // shape entity data for hydration
+  const formHydrationData = {
+    fieldData: reportFieldDataEntities?.find(
+      (entity: EntityShape) => entity.id === selectedEntity?.id
+    ),
+  };
+
+  // add/edit entity modal disclosure and methods
   const {
     isOpen: addEditEntityModalIsOpen,
     onOpen: addEditEntityModalOnOpenHandler,
@@ -40,10 +47,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   } = useDisclosure();
 
   const openAddEditEntityModal = (entity?: EntityShape) => {
-    // if editing an existing entity, set as selectedEntity
-    if (entity) {
-      setSelectedEntity(entity);
-    }
+    if (entity) setSelectedEntity(entity);
     addEditEntityModalOnOpenHandler();
   };
 
@@ -52,19 +56,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     addEditEntityModalOnCloseHandler();
   };
 
-  // drawer disclosure
-  const {
-    isOpen: drawerIsOpen,
-    onOpen: drawerOnOpenHandler,
-    onClose: drawerOnCloseHandler,
-  } = useDisclosure();
-
-  const openDrawer = (entity: EntityShape) => {
-    setSelectedEntity(entity);
-    drawerOnOpenHandler();
-  };
-
-  // delete modal disclosure
+  // delete modal disclosure and methods
   const {
     isOpen: deleteEntityModalIsOpen,
     onOpen: deleteEntityModalOnOpenHandler,
@@ -79,6 +71,23 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const closeDeleteEntityModal = () => {
     setSelectedEntity(undefined);
     deleteEntityModalOnCloseHandler();
+  };
+
+  // report drawer disclosure and methods
+  const {
+    isOpen: drawerIsOpen,
+    onOpen: drawerOnOpenHandler,
+    onClose: drawerOnCloseHandler,
+  } = useDisclosure();
+
+  const openDrawer = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    drawerOnOpenHandler();
+  };
+
+  const closeDrawer = () => {
+    setSelectedEntity(undefined);
+    drawerOnCloseHandler();
   };
 
   const onSubmit = async (formData: AnyObject) => {
@@ -108,7 +117,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       await updateReport(reportKeys, dataToWrite);
       setSubmitting(false);
     }
-    drawerOnCloseHandler();
+    closeDrawer();
   };
 
   const getFormattedEntityData = (entity?: EntityShape) => ({
@@ -190,13 +199,13 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         <ReportDrawer
           drawerDisclosure={{
             isOpen: drawerIsOpen,
-            onClose: drawerOnCloseHandler,
+            onClose: closeDrawer,
           }}
           drawerTitle={drawer.title}
           drawerDetails={getFormattedEntityData(selectedEntity)}
           form={drawer.form}
           onSubmit={onSubmit}
-          formData={hydrationData}
+          formData={formHydrationData}
           submitting={submitting}
           data-testid="report-drawer"
         />
