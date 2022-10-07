@@ -87,6 +87,13 @@ describe("Test Finished EntityCard", () => {
     await expect(openAddEditEntityModal).toBeCalledTimes(1);
   });
 
+  test("Clicking 'Edit measure' button opens the AddEditProgramModal", async () => {
+    const editMeasureButton = screen.getByText("Edit measure");
+    expect(editMeasureButton).toBeVisible();
+    await userEvent.click(editMeasureButton);
+    expect(openAddEditEntityModal).toBeCalledTimes(1);
+  });
+
   test("EntityCard opens the delete modal on remove click", async () => {
     const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
     await userEvent.click(removeButton);

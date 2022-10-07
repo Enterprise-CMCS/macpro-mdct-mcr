@@ -139,7 +139,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       <Box>
         <Button
           sx={sx.addEntityButton}
-          onClick={() => openAddEditEntityModal()}
+          onClick={addEditEntityModalOnOpenHandler}
         >
           {dashboard.addEntityButtonText}
         </Button>
