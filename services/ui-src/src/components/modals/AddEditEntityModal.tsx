@@ -5,7 +5,7 @@ import { Form, Modal, ReportContext } from "components";
 import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
-import { AnyObject, ReportStatus } from "types";
+import { AnyObject, EntityShape, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const AddEditEntityModal = ({
@@ -19,6 +19,9 @@ export const AddEditEntityModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const { form, addTitle, editTitle, message } = modalData;
+
+  // shape entity data for hydration
+  const formData = { fieldData: selectedEntity };
 
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
@@ -37,13 +40,15 @@ export const AddEditEntityModal = ({
     const currentEntities = report?.fieldData?.[entityType] || [];
     if (selectedEntity?.id) {
       // if existing entity selected, edit
-      const selectedEntityIndex = currentEntities.indexOf(
-        (entity: AnyObject) => entity.id === selectedEntity.id
+      const selectedEntityIndex = currentEntities.findIndex(
+        (entity: EntityShape) => entity.id === selectedEntity.id
       );
-      const updatedEntities = currentEntities.splice(selectedEntityIndex, 1, {
+      const updatedEntities = currentEntities;
+
+      updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,
         ...formData,
-      });
+      };
       dataToWrite.fieldData = { [entityType]: updatedEntities };
     } else {
       // create new entity
@@ -70,7 +75,7 @@ export const AddEditEntityModal = ({
         data-testid="add-edit-entity-form"
         id={form.id}
         formJson={form}
-        formData={selectedEntity}
+        formData={formData}
         onSubmit={writeEntity}
       />
       <Text sx={sx.bottomMessage}>{message}</Text>
@@ -81,7 +86,7 @@ export const AddEditEntityModal = ({
 interface Props {
   entityType: string;
   modalData: AnyObject;
-  selectedEntity?: AnyObject;
+  selectedEntity?: EntityShape;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
