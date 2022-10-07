@@ -97,7 +97,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         state: state,
         id: report?.id,
       };
-      const currentEntities = [...(report?.fieldData[entityType] || {})];
+      const currentEntities = reportFieldDataEntities;
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );

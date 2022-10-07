@@ -102,6 +102,9 @@ export interface ReportPageDrawer {
   form: FormJson;
   title: string;
   info?: CustomHtmlElement[];
+  addEntityButtonText?: string;
+  editEntityButtonText?: string;
+  deleteEntityButtonAltText?: string;
 }
 
 export interface ReportPageModal {
@@ -182,13 +185,14 @@ export interface FormJson {
 export interface DependentFieldValidation {
   type: string;
   dependentFieldName: string;
+  parentOptionId?: never;
 }
 
 export interface NestedFieldValidation {
   type: string;
   nested: true;
   parentFieldName: string;
-  visibleOptionValue: string;
+  parentOptionId: string;
 }
 
 export interface NestedDependentFieldValidation {
@@ -196,7 +200,7 @@ export interface NestedDependentFieldValidation {
   dependentFieldName: string;
   nested: true;
   parentFieldName: string;
-  visibleOptionValue: string;
+  parentOptionId: string;
 }
 
 export type FieldValidationObject =

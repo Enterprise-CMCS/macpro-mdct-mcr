@@ -88,27 +88,20 @@ export const EntityCard = ({
             entering details.
           </Text>
         )}
-        {entityCompleted ? (
-          <Button
-            variant="outline"
-            size="sm"
-            sx={sx.editButton}
-            data-testid="editDetailsButton"
-            leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
-            onClick={() => openDrawer(entity)}
-          >
-            {dashboard.editEntityDetailsButtonText}
-          </Button>
-        ) : (
-          <Button
-            size="sm"
-            sx={sx.openDrawerButton}
-            data-testid="enterDetailsButton"
-            onClick={() => openDrawer(entity)}
-          >
-            Enter details
-          </Button>
-        )}
+        <Button
+          size="sm"
+          sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
+          variant={entityCompleted ? "outline" : "primary"}
+          onClick={() => openDrawer(entity)}
+          data-testid={`${entityCompleted ? "edit" : "enter"}-details-button`}
+          leftIcon={
+            entityCompleted ? (
+              <Image src={editIcon} alt="edit icon" height="1rem" />
+            ) : undefined
+          }
+        >
+          {entityCompleted ? "Edit" : "Enter"} details
+        </Button>
       </Box>
     </Card>
   );

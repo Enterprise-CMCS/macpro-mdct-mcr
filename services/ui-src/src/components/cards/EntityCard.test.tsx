@@ -101,7 +101,7 @@ describe("Test Finished EntityCard", () => {
   });
 
   test("EntityCard opens the drawer on edit-details click", async () => {
-    const editDetailsButton = screen.queryAllByTestId("editDetailsButton")[0];
+    const editDetailsButton = screen.queryAllByTestId("edit-details-button")[0];
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
@@ -134,7 +134,9 @@ describe("Test Unfinished EntityCard", () => {
   });
 
   test("EntityCard opens the drawer on enter-details click", async () => {
-    const enterDetailsButton = screen.queryAllByTestId("enterDetailsButton")[0];
+    const enterDetailsButton = screen.queryAllByTestId(
+      "enter-details-button"
+    )[0];
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
