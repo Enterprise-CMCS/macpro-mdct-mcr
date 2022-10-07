@@ -539,7 +539,7 @@
       ]
     },
     {
-      "name": "Section C: Program-Level Indicators",
+      "name": "Program-Level Indicators",
       "path": "/mcpar/program-level-indicators",
       "children": [
         {
@@ -547,7 +547,7 @@
           "path": "/mcpar/program-level-indicators/program-characteristics",
           "pageType": "standard",
           "intro": {
-            "section": "C: Program-Level Indicators",
+            "section": "Section C: Program-Level Indicators",
             "subsection": "Topic I: Program Characteristics",
             "spreadsheet": "C1_Program_Set"
           },
