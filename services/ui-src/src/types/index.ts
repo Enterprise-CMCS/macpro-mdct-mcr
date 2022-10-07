@@ -180,13 +180,14 @@ export interface FormJson {
 export interface DependentFieldValidation {
   type: string;
   dependentFieldName: string;
+  parentOptionId?: never;
 }
 
 export interface NestedFieldValidation {
   type: string;
   nested: true;
   parentFieldName: string;
-  visibleOptionValue: string;
+  parentOptionId: string;
 }
 
 export interface NestedDependentFieldValidation {
@@ -194,7 +195,7 @@ export interface NestedDependentFieldValidation {
   dependentFieldName: string;
   nested: true;
   parentFieldName: string;
-  visibleOptionValue: string;
+  parentOptionId: string;
 }
 
 export type FieldValidationObject =
