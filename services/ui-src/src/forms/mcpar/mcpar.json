@@ -971,7 +971,9 @@
               },
               "dashboard": {
                 "title": "Add measures for monitoring access standards",
-                "addEntityButtonText": "Add access measure"
+                "addEntityButtonText": "Add access measure",
+                "editEntityButtonText": "Edit measure",
+                "deleteEntityButtonAltText": "Delete measure"
               },
               "modal": {
                 "addTitle": "Add access measure",
@@ -1096,7 +1098,7 @@
                         "choices": [
                           {
                             "name": "option1",
-                            "label": "Primary care;"
+                            "label": "Primary care"
                           },
                           {
                             "name": "option2",
@@ -2402,9 +2404,15 @@
             ]
           },
           "dashboard": {
-            "title": "Add quality and performance measures"
+            "title": "Add quality and performance measures",
+            "addEntityButtonText": "replace me in json",
+            "editEntityButtonText": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json"
           },
           "modal": {
+            "addTitle": "replace me in json",
+            "editTitle": "replace me in json",
+            "message": "replace me in json",
             "form": {
               "id": "dqm-modal",
               "fields": [
@@ -2657,9 +2665,15 @@
             ]
           },
           "dashboard": {
-            "title": "Add quality and performance measures"
+            "title": "Add quality and performance measures",
+            "addEntityButtonText": "replace me in json",
+            "editEntityButtonText": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json"
           },
           "modal": {
+            "addTitle": "replace me in json",
+            "editTitle": "replace me in json",
+            "message": "replace me in json",
             "form": {
               "id": "ds-modal",
               "fields": [

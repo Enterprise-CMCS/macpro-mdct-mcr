@@ -102,11 +102,16 @@ export interface ReportPageDrawer {
   form: FormJson;
   title: string;
   info?: CustomHtmlElement[];
+  addEntityButtonText?: string;
+  editEntityButtonText?: string;
+  deleteEntityButtonAltText?: string;
 }
 
 export interface ReportPageModal {
   form: FormJson;
-  [key: string]: any;
+  addTitle: string;
+  editTitle: string;
+  message: string;
 }
 
 // REPORT PROVIDER/CONTEXT

@@ -14,6 +14,7 @@ export const ReportDrawer = ({
   drawerDisclosure,
   drawerTitle,
   drawerInfo,
+  drawerDetails,
   form,
   onSubmit,
   formData,
@@ -34,6 +35,7 @@ export const ReportDrawer = ({
       drawerDisclosure={drawerDisclosure}
       drawerTitle={drawerTitle}
       drawerInfo={drawerInfo}
+      drawerDetails={drawerDetails}
       {...props}
     >
       <Form
@@ -68,6 +70,7 @@ interface Props {
   };
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
+  drawerDetails?: AnyObject;
   form: FormJson;
   onSubmit: Function;
   formData?: AnyObject;

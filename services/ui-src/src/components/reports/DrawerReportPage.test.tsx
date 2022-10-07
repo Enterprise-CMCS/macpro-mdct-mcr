@@ -8,17 +8,15 @@ import { useUser } from "utils";
 import {
   mockAdminUser,
   mockDrawerReportPageJson,
+  mockNoUser,
   mockReportContext,
+  mockStateRep,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";
 
-const mockSubmittingState = {
-  submitting: false,
-  setSubmitting: jest.fn(),
-};
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
@@ -40,10 +38,7 @@ const mockReportContextWithoutEntities = {
 const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DrawerReportPage
-        route={mockDrawerReportPageJson}
-        submittingState={mockSubmittingState}
-      />
+      <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -51,10 +46,7 @@ const drawerReportPageWithEntities = (
 const drawerReportPageWithoutEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
-      <DrawerReportPage
-        route={mockDrawerReportPageJson}
-        submittingState={mockSubmittingState}
-      />
+      <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -66,7 +58,7 @@ describe("Test DrawerReportPage without entities", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("drawer")).toBeVisible();
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 
   it("should not have any way to open the side drawer", () => {
@@ -86,7 +78,7 @@ describe("Test DrawerReportPage with entities", () => {
 
   it("should render the view", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("drawer")).toBeVisible();
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 
   it("Opens the sidedrawer correctly", async () => {
@@ -113,6 +105,21 @@ describe("Test DrawerReportPage with entities", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 
+  it("Submit sidedrawer opens and saves for state rep user", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const textField = await screen.getByLabelText("mock drawer text field");
+    expect(textField).toBeVisible();
+    await userEvent.type(textField, "test");
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+  });
+
   it("Submit sidedrawer opens but admin user doesnt see save and close button", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
@@ -124,6 +131,16 @@ describe("Test DrawerReportPage with entities", () => {
     expect(textField).toBeVisible();
     const saveAndCloseButton = screen.queryByText(saveAndCloseText);
     expect(saveAndCloseButton).toBeFalsy();
+  });
+
+  it("Submit sidedrawer bad user can't submit the form", async () => {
+    mockedUseUser.mockReturnValue(mockNoUser);
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 

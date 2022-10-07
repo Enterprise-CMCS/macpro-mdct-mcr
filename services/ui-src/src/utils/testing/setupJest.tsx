@@ -281,6 +281,8 @@ export const mockModalDrawerReportPageJson = {
   dashboard: {
     title: "Mock dashboard title",
     addEntityButtonText: "Add entity button",
+    editEntityButtonText: "Edit measure",
+    deleteEntityButtonAltText: "Delete measure",
   },
   modal: {
     addTitle: "Add entity modal",
@@ -338,6 +340,25 @@ export const mockReportFieldData = {
   radio: ["option1"],
   checkbox: ["option1", "option2"],
   dropdown: "dropdown-selection",
+  accessMeasures: [
+    {
+      id: "mock-id",
+      accessMeasure_generalCategory: [
+        {
+          key: "option1",
+          value: "mock-category",
+        },
+      ],
+      accessMeasure_standardDescription: "mock-description",
+      accessMeasure_standardType: [
+        {
+          key: "option1",
+          value: "mock-type",
+        },
+      ],
+      "accessMeasure_standardType-otherText": "",
+    },
+  ],
 };
 
 export const mockReport = {
