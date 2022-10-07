@@ -87,7 +87,8 @@
           "pageType": "standard",
           "intro": {
             "section": "Section A: Program Information",
-            "subsection": "Reporting Period"
+            "subsection": "Reporting Period",
+            "spreadsheet": "A_Program_Info"
           },
           "form": {
             "id": "arp",
@@ -132,7 +133,8 @@
           "intro": {
             "section": "Section A: Program Information",
             "subsection": "Add plans (A.7)",
-            "info": "Enter the name of each plan that participates in the program for which the state is reporting data."
+            "info": "Enter the name of each plan that participates in the program for which the state is reporting data.",
+            "spreadsheet": "A_Program_Info"
           },
           "form": {
             "id": "aap",
@@ -173,7 +175,8 @@
                 "type": "html",
                 "content": "<span>. See Glossary in Excel Workbook for the definition of BSS entities.</span><p>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization.</p>"
               }
-            ]
+            ],
+            "spreadsheet": "A_Program_Info"
           },
           "form": {
             "id": "absse",
@@ -201,7 +204,8 @@
           "pageType": "standard",
           "intro": {
             "section": "Section B: State-Level Indicators",
-            "subsection": "Topic I. Program Characteristics and Enrollment"
+            "subsection": "Topic I. Program Characteristics and Enrollment",
+            "spreadsheet": "B_State"
           },
           "form": {
             "id": "bpc",
@@ -235,7 +239,8 @@
           "pageType": "standard",
           "intro": {
             "section": "Section B: State-Level Indicators",
-            "subsection": "Topic III. Encounter Data Report"
+            "subsection": "Topic III. Encounter Data Report",
+            "spreadsheet": "B_State"
           },
           "form": {
             "id": "bedr",
@@ -326,7 +331,8 @@
           "pageType": "standard",
           "intro": {
             "section": "Section B: State-Level Indicators",
-            "subsection": "Topic X: Program Integrity"
+            "subsection": "Topic X: Program Integrity",
+            "spreadsheet": "B_State"
           },
           "form": {
             "id": "bpi",
