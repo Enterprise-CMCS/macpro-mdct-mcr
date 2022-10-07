@@ -3,7 +3,7 @@ import { Text } from "@chakra-ui/react";
 import { Modal, ReportContext } from "components";
 import { useContext, useState } from "react";
 // types
-import { AnyObject, EntityShape, ReportStatus } from "types";
+import { EntityShape, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const DeleteEntityModal = ({
@@ -57,7 +57,7 @@ export const DeleteEntityModal = ({
 
 interface Props {
   entityType: string;
-  selectedEntity: AnyObject;
+  selectedEntity?: EntityShape;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

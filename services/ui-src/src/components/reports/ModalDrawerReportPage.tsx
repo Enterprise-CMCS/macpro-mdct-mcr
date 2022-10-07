@@ -8,12 +8,14 @@ import {
   ReportContext,
 } from "components";
 // utils
-import { AnyObject, ModalDrawerReportPageShape } from "types";
+import { EntityShape, ModalDrawerReportPageShape } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { entityType, dashboard, modal } = route;
   const { report } = useContext(ReportContext);
-  const [selectedEntity, setSelectedEntity] = useState<AnyObject>({});
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
   const entities = report?.fieldData[entityType] || [];
 
   // add/edit entity modal disclosure
@@ -30,20 +32,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: deleteEntityModalOnCloseHandler,
   } = useDisclosure();
 
-  const openAddEditEntityModal = () => {
-    setSelectedEntity({});
-    /*
-     * TODO: setSelectedEntity if editing an existing entity
-     * if (report && entityId) {
-     *   // pre-fill form if editing an existing entity
-     *   setSelectedEntity(report.fieldData[entityType]);
-     * }
-     */
-    // use disclosure to open modal
-    addEditEntityModalOnOpenHandler();
-  };
-
-  const openDeleteEntityModal = (entity: AnyObject) => {
+  const openDeleteEntityModal = (entity: EntityShape) => {
     setSelectedEntity(entity);
     deleteEntityModalOnOpenHandler();
   };
@@ -53,7 +42,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       <Box>
         <Button
           sx={sx.addEntityButton}
-          onClick={() => openAddEditEntityModal()}
+          onClick={addEditEntityModalOnOpenHandler}
         >
           {dashboard.addEntityButtonText}
         </Button>
@@ -62,17 +51,18 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             {dashboard.title}
           </Heading>
         )}
-        {entities.map((entity: AnyObject) => (
+        {entities.map((entity: EntityShape) => (
           <EntityCard
             key={entity.id}
             entity={entity}
+            entityType={entityType}
+            modalData={modal}
             openDeleteEntityModal={openDeleteEntityModal}
           />
         ))}
         <AddEditEntityModal
           entityType={entityType}
           modalData={modal}
-          selectedEntity={selectedEntity}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: addEditEntityModalOnCloseHandler,

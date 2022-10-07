@@ -1,8 +1,16 @@
+import { useState } from "react";
 // components
-import { Card } from "components";
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
+import { Card, AddEditEntityModal } from "components";
+import {
+  Box,
+  Button,
+  Heading,
+  Image,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 // utils
-import { AnyObject } from "types";
+import { AnyObject, EntityShape } from "types";
 // assets
 import { svgFilters } from "styles/theme";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
@@ -11,9 +19,22 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({
   entity,
+  entityType,
+  modalData,
   openDeleteEntityModal,
   ...props
 }: Props) => {
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
+
+  // add/edit entity modal disclosure
+  const {
+    isOpen: addEditEntityModalIsOpen,
+    onOpen: addEditEntityModalOnOpenHandler,
+    onClose: addEditEntityModalOnCloseHandler,
+  } = useDisclosure();
+
   // data to fill in card
   const data = {
     category: entity.accessMeasure_generalCategory[0].value,
@@ -22,6 +43,16 @@ export const EntityCard = ({
       entity.accessMeasure_standardType[0].value !== "Other, specify"
         ? entity.accessMeasure_standardType[0].value
         : entity["accessMeasure_standardType-otherText"],
+    id: entity.id,
+  };
+
+  const openAddEditEntityModal = (entity?: EntityShape) => {
+    if (entity) {
+      // pre-fill form if editing an existing entity
+      setSelectedEntity(entity);
+    }
+    // use disclosure to open modal
+    addEditEntityModalOnOpenHandler();
   };
 
   return (
@@ -55,6 +86,7 @@ export const EntityCard = ({
           size="sm"
           sx={sx.editEntityButton}
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
+          onClick={() => openAddEditEntityModal(entity)}
         >
           Edit measure
         </Button>
@@ -66,12 +98,23 @@ export const EntityCard = ({
           Enter details
         </Button>
       </Box>
+      <AddEditEntityModal
+        entityType={entityType}
+        modalData={modalData}
+        selectedEntity={selectedEntity}
+        modalDisclosure={{
+          isOpen: addEditEntityModalIsOpen,
+          onClose: addEditEntityModalOnCloseHandler,
+        }}
+      />
     </Card>
   );
 };
 
 interface Props {
-  entity: AnyObject;
+  entity: EntityShape;
+  entityType: string;
+  modalData: AnyObject;
   openDeleteEntityModal: Function;
   [key: string]: any;
 }
