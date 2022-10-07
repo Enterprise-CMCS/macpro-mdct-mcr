@@ -67,7 +67,7 @@ export const ChoiceListField = ({
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
-        const isNested = !!choiceChildren;
+        const isNested = true;
         const formattedChildren = formFieldFactory(
           choiceChildren,
           shouldDisableChildFields,

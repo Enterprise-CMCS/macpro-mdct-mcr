@@ -57,10 +57,15 @@ export const flattenReportRoutesArray = (
 
 // returns validation schema object for array of fields
 export const compileValidationJsonFromFields = (
-  fieldArray: FormField[]
+  fieldArray: FormField[],
+  parentOption?: any
 ): AnyObject => {
   const validationSchema: AnyObject = {};
   fieldArray.forEach((field: FormField) => {
+    // if field has a parent option, add option name to validation object
+    if (typeof field.validation === "object") {
+      field.validation.parentOptionName = parentOption?.name;
+    }
     // compile field's validation schema
     validationSchema[field.id] = field.validation;
     // if field has choices/options (ie could have nested children)
@@ -72,7 +77,7 @@ export const compileValidationJsonFromFields = (
         if (nestedChildFields) {
           Object.assign(
             validationSchema,
-            compileValidationJsonFromFields(nestedChildFields)
+            compileValidationJsonFromFields(nestedChildFields, choice)
           );
         }
       });
