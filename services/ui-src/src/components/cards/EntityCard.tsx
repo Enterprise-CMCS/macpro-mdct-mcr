@@ -177,6 +177,10 @@ const sx = {
   },
   highlightSection: {
     width: "100%",
+    marginLeft: "1rem",
+    ":nth-of-type(1)": {
+      marginLeft: 0,
+    },
   },
   editButton: {
     marginY: "1rem",
