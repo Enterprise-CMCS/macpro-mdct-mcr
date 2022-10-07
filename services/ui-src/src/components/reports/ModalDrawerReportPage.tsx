@@ -47,6 +47,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     addEditEntityModalOnOpenHandler();
   };
 
+  const closeAddEditEntityModal = () => {
+    setSelectedEntity(undefined);
+    addEditEntityModalOnCloseHandler();
+  };
+
   // drawer disclosure
   const {
     isOpen: drawerIsOpen,
@@ -69,6 +74,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const openDeleteEntityModal = (entity: EntityShape) => {
     setSelectedEntity(entity);
     deleteEntityModalOnOpenHandler();
+  };
+
+  const closeDeleteEntityModal = () => {
+    setSelectedEntity(undefined);
+    deleteEntityModalOnCloseHandler();
   };
 
   const onSubmit = async (formData: AnyObject) => {
@@ -165,7 +175,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           modalData={modal}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
-            onClose: addEditEntityModalOnCloseHandler,
+            onClose: closeAddEditEntityModal,
           }}
         />
         <DeleteEntityModal
@@ -173,7 +183,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           selectedEntity={selectedEntity}
           modalDisclosure={{
             isOpen: deleteEntityModalIsOpen,
-            onClose: deleteEntityModalOnCloseHandler,
+            onClose: closeDeleteEntityModal,
           }}
           data-testid="deleteEntityModal"
         />
