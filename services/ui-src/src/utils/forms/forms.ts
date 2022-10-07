@@ -51,6 +51,9 @@ export const hydrateFormFields = (
   formFields: FormField[],
   formData: AnyObject | undefined
 ) => {
+  console.log("hydrating formFields", formFields);
+  console.log("with formData", formData);
+
   formFields.forEach((field: FormField) => {
     const fieldFormIndex = formFields.indexOf(field!);
     const fieldProps = formFields[fieldFormIndex].props!;

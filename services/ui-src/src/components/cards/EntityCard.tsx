@@ -2,7 +2,7 @@
 import { Card } from "components";
 import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 // utils
-import { AnyObject } from "types";
+import { AnyObject, EntityShape } from "types";
 // assets
 import { svgFilters } from "styles/theme";
 import completedIcon from "assets/icons/icon_check_circle.png";
@@ -13,8 +13,9 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 export const EntityCard = ({
   entity,
   formattedEntityData,
-  openDrawer,
+  openAddEditEntityModal,
   openDeleteEntityModal,
+  openDrawer,
   ...props
 }: Props) => {
   // any drawer-based field will do for this check
@@ -54,6 +55,7 @@ export const EntityCard = ({
           sx={sx.editButton}
           data-testid="editMeasureButton"
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
+          onClick={() => openAddEditEntityModal(entity)}
         >
           Edit measure
         </Button>
@@ -113,10 +115,11 @@ export const EntityCard = ({
 };
 
 interface Props {
-  entity: AnyObject;
+  entity: EntityShape;
   formattedEntityData: AnyObject;
-  openDrawer: Function;
+  openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
+  openDrawer: Function;
   [key: string]: any;
 }
 

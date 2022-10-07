@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
 // components
 import { EntityCard } from "components";
-import userEvent from "@testing-library/user-event";
 
-const mockOpenDrawer = jest.fn();
+const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
+const mockOpenDrawer = jest.fn();
 
 const mockEntity = {
   id: "mock-id",
@@ -46,8 +47,10 @@ const EntityCardComponent = (
   <EntityCard
     entity={mockEntity}
     formattedEntityData={mockFormattedEntityData}
-    openDrawer={mockOpenDrawer}
+    openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
   />
 );
 
@@ -55,8 +58,9 @@ const UnfinishedEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
     formattedEntityData={mockUnfinishedEntityData}
-    openDrawer={mockOpenDrawer}
+    openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
   />
 );
 
@@ -71,6 +75,13 @@ describe("Test Finished EntityCard", () => {
 
   test("EntityCard is visible", () => {
     expect(screen.getByTestId("entityCard")).toBeVisible();
+  });
+
+  test("Clicking 'Edit measure' button opens the AddEditProgramModal", async () => {
+    const editMeasureButton = screen.getByText("Edit measure");
+    expect(editMeasureButton).toBeVisible();
+    await userEvent.click(editMeasureButton);
+    await expect(screen.getByTestId("add-edit-entity-form")).toBeVisible();
   });
 
   test("EntityCard opens the delete modal on remove click", async () => {

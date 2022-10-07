@@ -39,6 +39,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: addEditEntityModalOnCloseHandler,
   } = useDisclosure();
 
+  const openAddEditEntityModal = (entity?: EntityShape) => {
+    // if editing an existing entity, set as selectedEntity
+    if (entity) {
+      setSelectedEntity(entity);
+    }
+    addEditEntityModalOnOpenHandler();
+  };
+
   // drawer disclosure
   const {
     isOpen: drawerIsOpen,
@@ -131,7 +139,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       <Box>
         <Button
           sx={sx.addEntityButton}
-          onClick={() => addEditEntityModalOnOpenHandler()}
+          onClick={() => openAddEditEntityModal()}
         >
           {dashboard.addEntityButtonText}
         </Button>
@@ -145,14 +153,15 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             key={entity.id}
             entity={entity}
             formattedEntityData={getFormattedEntityData(entity)}
-            openDrawer={openDrawer}
+            openAddEditEntityModal={openAddEditEntityModal}
             openDeleteEntityModal={openDeleteEntityModal}
+            openDrawer={openDrawer}
           />
         ))}
         <AddEditEntityModal
           entityType={entityType}
-          modalData={modal}
           selectedEntity={selectedEntity}
+          modalData={modal}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: addEditEntityModalOnCloseHandler,
