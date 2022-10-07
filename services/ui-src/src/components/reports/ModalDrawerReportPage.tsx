@@ -205,7 +205,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           drawerDetails={getFormattedEntityData(selectedEntity)}
           form={drawer.form}
           onSubmit={onSubmit}
-          formData={formHydrationData?.fieldData}
+          formData={formHydrationData}
           submitting={submitting}
           data-testid="report-drawer"
         />
