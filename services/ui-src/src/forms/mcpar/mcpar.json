@@ -283,8 +283,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "state_encounterDataValidationEntity",
-                            "visibleOptionValue": "Proprietary system(s)"
+                            "parentFieldName": "state_encounterDataValidationEntity"
                           },
                           "props": {
                             "label": "B.III.2 HIPAA compliance of proprietary system(s) for encounter data validation",
@@ -313,8 +312,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "state_encounterDataValidationEntity",
-                            "visibleOptionValue": "Other, specify"
+                            "parentFieldName": "state_encounterDataValidationEntity"
                           }
                         }
                       ]
@@ -423,8 +421,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "state_providerTerminationReportingMonitoringEfforts",
-                            "visibleOptionValue": "Yes"
+                            "parentFieldName": "state_providerTerminationReportingMonitoringEfforts"
                           },
                           "props": {
                             "label": "B.X.7b Changes in provider circumstances: Metrics",
@@ -440,8 +437,7 @@
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
-                                      "parentFieldName": "state_providerTerminationReportingMonitoringMetrics",
-                                      "visibleOptionValue": "Yes"
+                                      "parentFieldName": "state_providerTerminationReportingMonitoringMetrics"
                                     },
                                     "props": {
                                       "label": "B.X.7c Changes in provider circumstances: Describe metric",
@@ -484,8 +480,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "state_excludedEntityIdentifiedInFederalDatabaseCheck",
-                            "visibleOptionValue": "Yes"
+                            "parentFieldName": "state_excludedEntityIdentifiedInFederalDatabaseCheck"
                           },
                           "props": {
                             "label": "B.X.8b Federal database checks: Summarize instances of exclusion",
@@ -519,8 +514,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "state_ownershipControlDisclosureWebsite",
-                            "visibleOptionValue": "Yes"
+                            "parentFieldName": "state_ownershipControlDisclosureWebsite"
                           },
                           "props": {
                             "label": "B.X.9b Website posting of 5 percent or more ownership control: Link",
@@ -623,8 +617,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_type",
-                            "visibleOptionValue": "Other, specify"
+                            "parentFieldName": "program_type"
                           }
                         }
                       ]
@@ -666,8 +659,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_coveredSpecialBenefits",
-                            "visibleOptionValue": "None of the above"
+                            "parentFieldName": "program_coveredSpecialBenefits"
                           }
                         }
                       ]
@@ -760,8 +752,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_encounterDataUses",
-                            "visibleOptionValue": "Other"
+                            "parentFieldName": "program_encounterDataUses"
                           }
                         }
                       ]
@@ -807,8 +798,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria",
-                            "visibleOptionValue": "Other"
+                            "parentFieldName": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria"
                           }
                         }
                       ]
@@ -1083,8 +1073,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_standardType",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_standardType"
                                 }
                               }
                             ]
@@ -1146,8 +1135,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_providerType",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_providerType"
                                 }
                               }
                             ]
@@ -1189,8 +1177,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_applicableRegion",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_applicableRegion"
                                 }
                               }
                             ]
@@ -1232,8 +1219,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_population",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_population"
                                 }
                               }
                             ]
@@ -1279,8 +1265,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_monitoringMethods",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_monitoringMethods"
                                 }
                               }
                             ]
@@ -1326,8 +1311,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_oversightMethodFrequency",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_oversightMethodFrequency"
                                 }
                               }
                             ]
@@ -1546,8 +1530,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "plan_medicalLossRatioPercentageAggregationLevel",
-                              "visibleOptionValue": "Other"
+                              "parentFieldName": "plan_medicalLossRatioPercentageAggregationLevel"
                             }
                           }
                         ]
@@ -1582,8 +1565,7 @@
                             "validation": {
                               "type": "date",
                               "nested": true,
-                              "parentFieldName": "plan_medicalLossRatioReportingPeriod",
-                              "visibleOptionValue": "Yes"
+                              "parentFieldName": "plan_medicalLossRatioReportingPeriod"
                             },
                             "props": {
                               "hint": "Enter the start date.",
@@ -1597,8 +1579,7 @@
                               "type": "endDate",
                               "dependentFieldName": "plan_medicalLossRatioReportingPeriodStartDate",
                               "nested": true,
-                              "parentFieldName": "plan_medicalLossRatioReportingPeriod",
-                              "visibleOptionValue": "Yes"
+                              "parentFieldName": "plan_medicalLossRatioReportingPeriod"
                             },
                             "props": {
                               "hint": "Enter the end date.",
@@ -2483,8 +2464,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_domain",
-                              "visibleOptionValue": "Other"
+                              "parentFieldName": "qualityMeasure_domain"
                             }
                           }
                         ]
@@ -2532,8 +2512,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingRateType",
-                              "visibleOptionValue": "Cross-program rate"
+                              "parentFieldName": "qualityMeasure_reportingRateType"
                             },
                             "props": {
                               "label": "D2.VII.5 Measure reporting: List programs",
@@ -2580,8 +2559,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_set",
-                              "visibleOptionValue": "Other"
+                              "parentFieldName": "qualityMeasure_set"
                             }
                           }
                         ]
@@ -2611,8 +2589,7 @@
                             "validation": {
                               "type": "date",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingPeriod",
-                              "visibleOptionValue": "No"
+                              "parentFieldName": "qualityMeasure_reportingPeriod"
                             },
                             "props": {
                               "label": "D2.VII.7b Reporting period: Date range",
@@ -2627,8 +2604,7 @@
                               "type": "endDate",
                               "dependentFieldName": "qualityMeasure_reportingPeriodStartDate",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingPeriod",
-                              "visibleOptionValue": "No"
+                              "parentFieldName": "qualityMeasure_reportingPeriod"
                             },
                             "props": {
                               "hint": "End date",
@@ -2746,8 +2722,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "sanction_interventionType",
-                              "visibleOptionValue": "What type of intervention?"
+                              "parentFieldName": "sanction_interventionType"
                             }
                           }
                         ]
@@ -2797,8 +2772,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "sanction_interventionTopic",
-                              "visibleOptionValue": "What was the topic of intervention?"
+                              "parentFieldName": "sanction_interventionTopic"
                             }
                           }
                         ]
@@ -2980,8 +2954,7 @@
                             "validation": {
                               "type": "number",
                               "nested": true,
-                              "parentFieldName": "plan_programIntegrityReferralPath",
-                              "visibleOptionValue": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only"
+                              "parentFieldName": "plan_programIntegrityReferralPath"
                             },
                             "props": {
                               "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -3001,8 +2974,7 @@
                             "validation": {
                               "type": "number",
                               "nested": true,
-                              "parentFieldName": "plan_programIntegrityReferralPath",
-                              "visibleOptionValue": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently"
+                              "parentFieldName": "plan_programIntegrityReferralPath"
                             },
                             "props": {
                               "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -3022,8 +2994,7 @@
                             "validation": {
                               "type": "number",
                               "nested": true,
-                              "parentFieldName": "plan_programIntegrityReferralPath",
-                              "visibleOptionValue": "Makes some referrals to the SMA and others directly to the MFCU"
+                              "parentFieldName": "plan_programIntegrityReferralPath"
                             },
                             "props": {
                               "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -3197,8 +3168,7 @@
                         "validation": {
                           "type": "text",
                           "nested": true,
-                          "parentFieldName": "bssEntity_entityType",
-                          "visibleOptionValue": "Other"
+                          "parentFieldName": "bssEntity_entityType"
                         }
                       }
                     ]
@@ -3248,8 +3218,7 @@
                         "validation": {
                           "type": "text",
                           "nested": true,
-                          "parentFieldName": "bssEntity_entityRole",
-                          "visibleOptionValue": "Other"
+                          "parentFieldName": "bssEntity_entityRole"
                         }
                       }
                     ]
