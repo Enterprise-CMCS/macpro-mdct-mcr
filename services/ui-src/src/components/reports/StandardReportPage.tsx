@@ -46,7 +46,7 @@ export const StandardReportPage = ({ route }: Props) => {
         id={route.form.id}
         formJson={route.form}
         onSubmit={onSubmit}
-        formData={report}
+        formData={report?.fieldData}
       />
       <ReportPageFooter submitting={submitting} form={route.form} />
     </Box>
