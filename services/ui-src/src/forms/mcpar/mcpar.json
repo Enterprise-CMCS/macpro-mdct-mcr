@@ -15,7 +15,6 @@
           "intro": {
             "section": "Section A: Program Information",
             "subsection": "Point of Contact",
-            "info": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers.",
             "spreadsheet": "A_Program_Info"
           },
           "form": {
@@ -37,7 +36,7 @@
                 "validation": "text",
                 "props": {
                   "label": "A.2a Contact name",
-                  "hint": "First and last name of the contact person."
+                  "hint": "First and last name of the contact person. <br/> States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
                 }
               },
               {
@@ -46,7 +45,7 @@
                 "validation": "email",
                 "props": {
                   "label": "A.2b Contact email address",
-                  "hint": "Enter email address."
+                  "hint": "Enter email address. Department or program-wide email addresses ok."
                 }
               },
               {
@@ -158,10 +157,23 @@
           "intro": {
             "section": "Section A: Program Information",
             "subsection": "Add BSS entities (A.8)",
+            "spreadsheet": "A_Program_Info",
             "info": [
               {
-                "type": "text",
-                "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data."
+                "type": "span",
+                "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data. Learn more about BSS entities at "
+              },
+              {
+                "type": "externalLink",
+                "content": "42 CFR 438.71",
+                "props": {
+                  "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.71",
+                  "target": "_blank"
+                }
+              },
+              {
+                "type": "html",
+                "content": "<span>. See Glossary in Excel Workbook for the definition of BSS entities.</span><p>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization.</p>"
               }
             ],
             "spreadsheet": "A_Program_Info"
