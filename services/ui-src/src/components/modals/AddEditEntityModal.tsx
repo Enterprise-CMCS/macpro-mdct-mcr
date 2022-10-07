@@ -43,7 +43,7 @@ export const AddEditEntityModal = ({
       const selectedEntityIndex = currentEntities.findIndex(
         (entity: EntityShape) => entity.id === selectedEntity.id
       );
-      const updatedEntities = [...currentEntities];
+      const updatedEntities = currentEntities;
 
       updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,

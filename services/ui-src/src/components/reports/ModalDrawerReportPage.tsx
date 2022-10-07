@@ -32,11 +32,6 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     onClose: deleteEntityModalOnCloseHandler,
   } = useDisclosure();
 
-  const openAddEditEntityModal = () => {
-    // use disclosure to open modal
-    addEditEntityModalOnOpenHandler();
-  };
-
   const openDeleteEntityModal = (entity: EntityShape) => {
     setSelectedEntity(entity);
     deleteEntityModalOnOpenHandler();
@@ -47,7 +42,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       <Box>
         <Button
           sx={sx.addEntityButton}
-          onClick={() => openAddEditEntityModal()}
+          onClick={addEditEntityModalOnOpenHandler}
         >
           {dashboard.addEntityButtonText}
         </Button>

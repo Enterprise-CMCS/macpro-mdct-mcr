@@ -96,7 +96,8 @@ describe("Test AddEditEntityModal", () => {
 
 describe("Test AddEditEntityModal functionality", () => {
   afterEach(() => {
-    mockUpdateCallPayload.fieldData.accessMeasures.splice(-1);
+    // reset payload to baseline with only mockEntity
+    mockUpdateCallPayload.fieldData.accessMeasures = [mockEntity];
     jest.clearAllMocks();
   });
 
