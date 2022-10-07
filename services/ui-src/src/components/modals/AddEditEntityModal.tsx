@@ -21,12 +21,7 @@ export const AddEditEntityModal = ({
   const { form, addTitle, editTitle, message } = modalData;
 
   // shape entity data for hydration
-  const reportFieldDataEntities = report?.fieldData[entityType];
-  const hydrationData = {
-    fieldData: reportFieldDataEntities?.find(
-      (entity: EntityShape) => entity.id === selectedEntity?.id
-    ),
-  };
+  const hydrationData = { fieldData: selectedEntity };
 
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
@@ -52,6 +47,7 @@ export const AddEditEntityModal = ({
 
       updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,
+        ...currentEntities[selectedEntityIndex],
         ...formData,
       };
       dataToWrite.fieldData = { [entityType]: updatedEntities };

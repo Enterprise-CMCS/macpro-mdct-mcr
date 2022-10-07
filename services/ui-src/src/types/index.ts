@@ -102,6 +102,10 @@ export interface ReportPageDrawer {
   form: FormJson;
   title: string;
   info?: CustomHtmlElement[];
+  addEntityButtonText?: string;
+  editEntityButtonText?: string;
+  editEntityDetailsButtonText?: string;
+  deleteEntityButtonAltText?: string;
 }
 
 export interface ReportPageModal {

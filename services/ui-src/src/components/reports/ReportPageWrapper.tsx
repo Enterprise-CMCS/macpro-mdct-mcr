@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // components
+import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
@@ -52,7 +53,13 @@ export const ReportPageWrapper = ({ route }: Props) => {
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        <Flex sx={sx.reportContainer}>{renderPageSection(route)}</Flex>
+        {!report ? (
+          <Flex sx={sx.spinnerContainer}>
+            <Spinner size="big" />
+          </Flex>
+        ) : (
+          <Flex sx={sx.reportContainer}>{renderPageSection(route)}</Flex>
+        )}
       </Flex>
     </PageTemplate>
   );
