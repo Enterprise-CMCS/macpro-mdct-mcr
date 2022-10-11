@@ -66,7 +66,8 @@ describe("Test AdminPage without banner", () => {
     expect(currentBannerStatus).not.toBeInTheDocument();
   });
 
-  test("Check that 'no current banner' text shows", () => {
+  test("Check that 'no current banner' text shows", async () => {
+    await new Promise((r) => setTimeout(r, 1000));
     expect(
       screen.queryByText("There is no current banner")
     ).toBeInTheDocument();

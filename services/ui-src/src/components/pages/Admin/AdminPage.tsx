@@ -19,13 +19,21 @@ export const AdminPage = () => {
     useContext(AdminBannerContext);
   const [error, setError] = useState<string | undefined>(errorMessage);
   const [deleting, setDeleting] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const bannerIsActive = checkDateRangeStatus(
     bannerData?.startDate,
     bannerData?.endDate
   );
+
   useEffect(() => {
     setError(errorMessage);
   }, [errorMessage]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, [bannerData]);
 
   const deleteBanner = async () => {
     setDeleting(true);
@@ -79,7 +87,11 @@ export const AdminPage = () => {
             </Flex>
           )}
         </Collapse>
-        {!bannerData?.key && <Text>There is no current banner</Text>}
+        {loading ? (
+          <Spinner />
+        ) : (
+          !bannerData?.key && <Text>There is no current banner</Text>
+        )}
       </Box>
       <Flex sx={sx.newBannerBox}>
         <Text sx={sx.sectionHeader}>Create a New Banner</Text>
