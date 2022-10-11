@@ -20,9 +20,6 @@ export const AddEditEntityModal = ({
 
   const { form, addTitle, editTitle, message } = modalData;
 
-  // shape entity data for hydration
-  const formData = { fieldData: selectedEntity };
-
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
@@ -47,6 +44,7 @@ export const AddEditEntityModal = ({
 
       updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,
+        ...currentEntities[selectedEntityIndex],
         ...formData,
       };
       dataToWrite.fieldData = { [entityType]: updatedEntities };
@@ -75,7 +73,7 @@ export const AddEditEntityModal = ({
         data-testid="add-edit-entity-form"
         id={form.id}
         formJson={form}
-        formData={formData}
+        formData={selectedEntity}
         onSubmit={writeEntity}
       />
       <Text sx={sx.bottomMessage}>{message}</Text>

@@ -7,6 +7,7 @@ import {
   string,
 } from "yup";
 import { validationErrors as error } from "verbiage/errors";
+import { Choice } from "types";
 
 // TEXT
 export const text = () =>
@@ -146,7 +147,7 @@ export const dynamicOptional = () => dynamic().notRequired();
 export const nested = (
   fieldSchema: Function,
   parentFieldName: string,
-  parentOptionValue: any
+  parentOptionId: string
 ) => {
   const fieldTypeMap = {
     array: array(),
@@ -158,7 +159,9 @@ export const nested = (
   const baseSchema: any = fieldTypeMap[fieldType];
 
   return baseSchema.when(parentFieldName, {
-    is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
+    is: (value: Choice[]) =>
+      // look for parentOptionId in checked choices
+      value?.find((option: Choice) => option.key === parentOptionId),
     then: () => fieldSchema(),
   });
 };

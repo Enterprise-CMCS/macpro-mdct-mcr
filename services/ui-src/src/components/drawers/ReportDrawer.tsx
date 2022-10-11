@@ -14,6 +14,7 @@ export const ReportDrawer = ({
   drawerDisclosure,
   drawerTitle,
   drawerInfo,
+  drawerDetails,
   form,
   onSubmit,
   formData,
@@ -34,13 +35,14 @@ export const ReportDrawer = ({
       drawerDisclosure={drawerDisclosure}
       drawerTitle={drawerTitle}
       drawerInfo={drawerInfo}
+      drawerDetails={drawerDetails}
       {...props}
     >
       <Form
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={formData ?? report}
+        formData={formData ?? report?.fieldData}
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
@@ -68,6 +70,7 @@ interface Props {
   };
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
+  drawerDetails?: AnyObject;
   form: FormJson;
   onSubmit: Function;
   formData?: AnyObject;

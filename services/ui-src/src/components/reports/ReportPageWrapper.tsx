@@ -1,15 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Flex } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
+import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
   ModalDrawerReportPage,
   DrawerReportPage,
   PageTemplate,
-  ReportPageIntro,
-  ReportPageFooter,
   Sidebar,
   StandardReportPage,
 } from "components";
@@ -24,18 +22,13 @@ import {
 } from "types";
 
 export const ReportPageWrapper = ({ route }: Props) => {
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  // get report, form, and page related-data
-  const { report } = useContext(ReportContext);
-
   const { state } = useUser().user ?? {};
+  const { report } = useContext(ReportContext);
+  const navigate = useNavigate();
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
-
-  // get next and previous routes
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!reportId || !reportState) {
@@ -46,26 +39,13 @@ export const ReportPageWrapper = ({ route }: Props) => {
   const renderPageSection = (route: ReportRouteWithForm) => {
     switch (route.pageType) {
       case PageTypes.DRAWER:
-        return (
-          <DrawerReportPage
-            route={route as DrawerReportPageShape}
-            submittingState={{ submitting, setSubmitting }}
-          />
-        );
+        return <DrawerReportPage route={route as DrawerReportPageShape} />;
       case PageTypes.MODAL_DRAWER:
         return (
-          <ModalDrawerReportPage
-            route={route as ModalDrawerReportPageShape}
-            setSubmitting={setSubmitting}
-          />
+          <ModalDrawerReportPage route={route as ModalDrawerReportPageShape} />
         );
       default:
-        return (
-          <StandardReportPage
-            route={route as StandardReportPageShape}
-            setSubmitting={setSubmitting}
-          />
-        );
+        return <StandardReportPage route={route as StandardReportPageShape} />;
     }
   };
 
@@ -73,18 +53,13 @@ export const ReportPageWrapper = ({ route }: Props) => {
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        <Flex sx={sx.reportContainer}>
-          {route.intro && <ReportPageIntro text={route.intro} />}
-          {!report ? (
-            <Flex sx={sx.spinnerContainer}>
-              <Spinner size="big" />
-            </Flex>
-          ) : (
-            renderPageSection(route)
-          )}
-
-          <ReportPageFooter submitting={submitting} form={route.form} />
-        </Flex>
+        {!report ? (
+          <Flex sx={sx.spinnerContainer}>
+            <Spinner size="big" />
+          </Flex>
+        ) : (
+          <Flex sx={sx.reportContainer}>{renderPageSection(route)}</Flex>
+        )}
       </Flex>
     </PageTemplate>
   );

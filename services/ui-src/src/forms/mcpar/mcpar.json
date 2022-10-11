@@ -15,7 +15,6 @@
           "intro": {
             "section": "Section A: Program Information",
             "subsection": "Point of Contact",
-            "info": "Who should CMS contact with questions regarding information reported in the MCPAR? States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers.",
             "spreadsheet": "A_Program_Info"
           },
           "form": {
@@ -37,7 +36,7 @@
                 "validation": "text",
                 "props": {
                   "label": "A.2a Contact name",
-                  "hint": "First and last name of the contact person."
+                  "hint": "First and last name of the contact person. <br/> States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
                 }
               },
               {
@@ -46,7 +45,7 @@
                 "validation": "email",
                 "props": {
                   "label": "A.2b Contact email address",
-                  "hint": "Enter email address."
+                  "hint": "Enter email address. Department or program-wide email addresses ok."
                 }
               },
               {
@@ -158,10 +157,23 @@
           "intro": {
             "section": "Section A: Program Information",
             "subsection": "Add BSS entities (A.8)",
+            "spreadsheet": "A_Program_Info",
             "info": [
               {
-                "type": "text",
-                "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data."
+                "type": "span",
+                "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data. Learn more about BSS entities at "
+              },
+              {
+                "type": "externalLink",
+                "content": "42 CFR 438.71",
+                "props": {
+                  "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.71",
+                  "target": "_blank"
+                }
+              },
+              {
+                "type": "html",
+                "content": "<span>. See Glossary in Excel Workbook for the definition of BSS entities.</span><p>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization.</p>"
               }
             ],
             "spreadsheet": "A_Program_Info"
@@ -271,8 +283,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "state_encounterDataValidationEntity",
-                            "visibleOptionValue": "Proprietary system(s)"
+                            "parentFieldName": "state_encounterDataValidationEntity"
                           },
                           "props": {
                             "label": "B.III.2 HIPAA compliance of proprietary system(s) for encounter data validation",
@@ -301,8 +312,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "state_encounterDataValidationEntity",
-                            "visibleOptionValue": "Other, specify"
+                            "parentFieldName": "state_encounterDataValidationEntity"
                           }
                         }
                       ]
@@ -411,8 +421,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "state_providerTerminationReportingMonitoringEfforts",
-                            "visibleOptionValue": "Yes"
+                            "parentFieldName": "state_providerTerminationReportingMonitoringEfforts"
                           },
                           "props": {
                             "label": "B.X.7b Changes in provider circumstances: Metrics",
@@ -428,8 +437,7 @@
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
-                                      "parentFieldName": "state_providerTerminationReportingMonitoringMetrics",
-                                      "visibleOptionValue": "Yes"
+                                      "parentFieldName": "state_providerTerminationReportingMonitoringMetrics"
                                     },
                                     "props": {
                                       "label": "B.X.7c Changes in provider circumstances: Describe metric",
@@ -472,8 +480,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "state_excludedEntityIdentifiedInFederalDatabaseCheck",
-                            "visibleOptionValue": "Yes"
+                            "parentFieldName": "state_excludedEntityIdentifiedInFederalDatabaseCheck"
                           },
                           "props": {
                             "label": "B.X.8b Federal database checks: Summarize instances of exclusion",
@@ -507,8 +514,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "state_ownershipControlDisclosureWebsite",
-                            "visibleOptionValue": "Yes"
+                            "parentFieldName": "state_ownershipControlDisclosureWebsite"
                           },
                           "props": {
                             "label": "B.X.9b Website posting of 5 percent or more ownership control: Link",
@@ -539,7 +545,7 @@
       ]
     },
     {
-      "name": "Program-Level Indicators",
+      "name": "C: Program-Level Indicators",
       "path": "/mcpar/program-level-indicators",
       "children": [
         {
@@ -611,8 +617,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_type",
-                            "visibleOptionValue": "Other, specify"
+                            "parentFieldName": "program_type"
                           }
                         }
                       ]
@@ -654,8 +659,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_coveredSpecialBenefits",
-                            "visibleOptionValue": "None of the above"
+                            "parentFieldName": "program_coveredSpecialBenefits"
                           }
                         }
                       ]
@@ -748,8 +752,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_encounterDataUses",
-                            "visibleOptionValue": "Other, specify"
+                            "parentFieldName": "program_encounterDataUses"
                           }
                         }
                       ]
@@ -803,8 +806,7 @@
                           "validation": {
                             "type": "text",
                             "nested": true,
-                            "parentFieldName": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria",
-                            "visibleOptionValue": "Other, specify"
+                            "parentFieldName": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria"
                           }
                         }
                       ]
@@ -977,7 +979,9 @@
               },
               "dashboard": {
                 "title": "Add measures for monitoring access standards",
-                "addEntityButtonText": "Add access measure"
+                "addEntityButtonText": "Add access measure",
+                "editEntityButtonText": "Edit measure",
+                "deleteEntityButtonAltText": "Delete measure"
               },
               "modal": {
                 "addTitle": "Add access measure",
@@ -1076,8 +1080,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_standardType",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_standardType"
                                 }
                               }
                             ]
@@ -1103,7 +1106,7 @@
                         "choices": [
                           {
                             "name": "option1",
-                            "label": "Primary care;"
+                            "label": "Primary care"
                           },
                           {
                             "name": "option2",
@@ -1139,8 +1142,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_providerType",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_providerType"
                                 }
                               }
                             ]
@@ -1182,8 +1184,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_applicableRegion",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_applicableRegion"
                                 }
                               }
                             ]
@@ -1225,8 +1226,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_population",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_population"
                                 }
                               }
                             ]
@@ -1272,8 +1272,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_monitoringMethods",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_monitoringMethods"
                                 }
                               }
                             ]
@@ -1319,8 +1318,7 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "accessMeasure_oversightMethodFrequency",
-                                  "visibleOptionValue": "Other, specify"
+                                  "parentFieldName": "accessMeasure_oversightMethodFrequency"
                                 }
                               }
                             ]
@@ -1539,8 +1537,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "plan_medicalLossRatioPercentageAggregationLevel",
-                              "visibleOptionValue": "Other"
+                              "parentFieldName": "plan_medicalLossRatioPercentageAggregationLevel"
                             }
                           }
                         ]
@@ -1575,8 +1572,7 @@
                             "validation": {
                               "type": "date",
                               "nested": true,
-                              "parentFieldName": "plan_medicalLossRatioReportingPeriod",
-                              "visibleOptionValue": "Yes"
+                              "parentFieldName": "plan_medicalLossRatioReportingPeriod"
                             },
                             "props": {
                               "hint": "Enter the start date.",
@@ -1590,8 +1586,7 @@
                               "type": "endDate",
                               "dependentFieldName": "plan_medicalLossRatioReportingPeriodStartDate",
                               "nested": true,
-                              "parentFieldName": "plan_medicalLossRatioReportingPeriod",
-                              "visibleOptionValue": "Yes"
+                              "parentFieldName": "plan_medicalLossRatioReportingPeriod"
                             },
                             "props": {
                               "hint": "Enter the end date.",
@@ -2417,9 +2412,15 @@
             ]
           },
           "dashboard": {
-            "title": "Add quality and performance measures"
+            "title": "Add quality and performance measures",
+            "addEntityButtonText": "replace me in json",
+            "editEntityButtonText": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json"
           },
           "modal": {
+            "addTitle": "replace me in json",
+            "editTitle": "replace me in json",
+            "message": "replace me in json",
             "form": {
               "id": "dqm-modal",
               "fields": [
@@ -2469,8 +2470,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_domain",
-                              "visibleOptionValue": "Other"
+                              "parentFieldName": "qualityMeasure_domain"
                             }
                           }
                         ]
@@ -2518,8 +2518,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingRateType",
-                              "visibleOptionValue": "Cross-program rate"
+                              "parentFieldName": "qualityMeasure_reportingRateType"
                             },
                             "props": {
                               "label": "D2.VII.5 Measure reporting: List programs",
@@ -2566,8 +2565,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_set",
-                              "visibleOptionValue": "Other"
+                              "parentFieldName": "qualityMeasure_set"
                             }
                           }
                         ]
@@ -2597,8 +2595,7 @@
                             "validation": {
                               "type": "date",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingPeriod",
-                              "visibleOptionValue": "No"
+                              "parentFieldName": "qualityMeasure_reportingPeriod"
                             },
                             "props": {
                               "label": "D2.VII.7b Reporting period: Date range",
@@ -2613,8 +2610,7 @@
                               "type": "endDate",
                               "dependentFieldName": "qualityMeasure_reportingPeriodStartDate",
                               "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingPeriod",
-                              "visibleOptionValue": "No"
+                              "parentFieldName": "qualityMeasure_reportingPeriod"
                             },
                             "props": {
                               "hint": "End date",
@@ -2677,9 +2673,15 @@
             ]
           },
           "dashboard": {
-            "title": "Add quality and performance measures"
+            "title": "Add quality and performance measures",
+            "addEntityButtonText": "replace me in json",
+            "editEntityButtonText": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json"
           },
           "modal": {
+            "addTitle": "replace me in json",
+            "editTitle": "replace me in json",
+            "message": "replace me in json",
             "form": {
               "id": "ds-modal",
               "fields": [
@@ -2725,8 +2727,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "sanction_interventionType",
-                              "visibleOptionValue": "What type of intervention?"
+                              "parentFieldName": "sanction_interventionType"
                             }
                           }
                         ]
@@ -2776,8 +2777,7 @@
                             "validation": {
                               "type": "text",
                               "nested": true,
-                              "parentFieldName": "sanction_interventionTopic",
-                              "visibleOptionValue": "What was the topic of intervention?"
+                              "parentFieldName": "sanction_interventionTopic"
                             }
                           }
                         ]
@@ -2959,8 +2959,7 @@
                             "validation": {
                               "type": "number",
                               "nested": true,
-                              "parentFieldName": "plan_programIntegrityReferralPath",
-                              "visibleOptionValue": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only"
+                              "parentFieldName": "plan_programIntegrityReferralPath"
                             },
                             "props": {
                               "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -2980,8 +2979,7 @@
                             "validation": {
                               "type": "number",
                               "nested": true,
-                              "parentFieldName": "plan_programIntegrityReferralPath",
-                              "visibleOptionValue": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently"
+                              "parentFieldName": "plan_programIntegrityReferralPath"
                             },
                             "props": {
                               "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -3001,8 +2999,7 @@
                             "validation": {
                               "type": "number",
                               "nested": true,
-                              "parentFieldName": "plan_programIntegrityReferralPath",
-                              "visibleOptionValue": "Makes some referrals to the SMA and others directly to the MFCU"
+                              "parentFieldName": "plan_programIntegrityReferralPath"
                             },
                             "props": {
                               "label": "D1.X.7 Count of program integrity referrals to the state",
@@ -3176,8 +3173,7 @@
                         "validation": {
                           "type": "text",
                           "nested": true,
-                          "parentFieldName": "bssEntity_entityType",
-                          "visibleOptionValue": "Other"
+                          "parentFieldName": "bssEntity_entityType"
                         }
                       }
                     ]
@@ -3227,8 +3223,7 @@
                         "validation": {
                           "type": "text",
                           "nested": true,
-                          "parentFieldName": "bssEntity_entityRole",
-                          "visibleOptionValue": "Other"
+                          "parentFieldName": "bssEntity_entityRole"
                         }
                       }
                     ]

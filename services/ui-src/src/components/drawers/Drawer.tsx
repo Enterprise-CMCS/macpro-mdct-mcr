@@ -9,21 +9,22 @@ import {
   DrawerContent,
   Text,
   Box,
+  Heading,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
-import { CustomHtmlElement } from "types";
+import { AnyObject, CustomHtmlElement } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
   drawerDisclosure,
   drawerTitle,
   drawerInfo,
+  drawerDetails,
   children,
   ...props
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   const { isOpen, onClose } = drawerDisclosure;
-
   return (
     <ChakraDrawer
       isOpen={isOpen}
@@ -38,6 +39,18 @@ export const Drawer = ({
           <Text sx={sx.drawerHeaderText}>{drawerTitle}</Text>
           {drawerInfo && (
             <Box sx={sx.infoTextBox}>{parseCustomHtml(drawerInfo)}</Box>
+          )}
+          {drawerDetails && (
+            <Box sx={sx.detailBox}>
+              <Heading as="h4" sx={sx.detailHeader}>
+                Standard Type - {drawerDetails.category}
+              </Heading>
+              <Text sx={sx.detailDescription}>
+                {drawerDetails.standardDescription}
+              </Text>
+              <Text sx={sx.detailCategoryHeader}>General Category</Text>
+              <Text sx={sx.detailCategory}>{drawerDetails.category}</Text>
+            </Box>
           )}
           <Button
             sx={sx.drawerCloseButton}
@@ -61,6 +74,7 @@ interface Props {
   };
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
+  drawerDetails?: AnyObject;
   [key: string]: any;
 }
 
@@ -96,8 +110,28 @@ const sx = {
       },
     },
   },
-  drawerBody: {
-    padding: "1rem",
+  detailBox: {
+    marginTop: "2rem",
+    fontWeight: "normal",
+    color: "palette.base",
+  },
+  detailHeader: {
+    marginBottom: ".5rem",
+    fontSize: "md",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
+  },
+  detailDescription: {
+    marginBottom: ".5rem",
+    fontSize: "md",
+  },
+  detailCategoryHeader: {
+    marginBottom: ".25rem",
+    fontSize: "sm",
+    fontWeight: "bold",
+  },
+  detailCategory: {
+    fontSize: "md",
   },
   infoTextBox: {
     marginTop: "2rem",
@@ -111,5 +145,8 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+  },
+  drawerBody: {
+    padding: "1rem",
   },
 };

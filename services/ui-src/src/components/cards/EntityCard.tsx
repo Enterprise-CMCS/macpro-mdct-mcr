@@ -1,66 +1,32 @@
-import { useState } from "react";
 // components
-import { Card, AddEditEntityModal } from "components";
-import {
-  Box,
-  Button,
-  Heading,
-  Image,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Card } from "components";
+import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, EntityShape } from "types";
 // assets
 import { svgFilters } from "styles/theme";
+import completedIcon from "assets/icons/icon_check_circle.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({
   entity,
-  entityType,
-  modalData,
+  formattedEntityData,
+  dashboard,
+  openAddEditEntityModal,
   openDeleteEntityModal,
+  openDrawer,
   ...props
 }: Props) => {
-  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
-    undefined
-  );
-
-  // add/edit entity modal disclosure
-  const {
-    isOpen: addEditEntityModalIsOpen,
-    onOpen: addEditEntityModalOnOpenHandler,
-    onClose: addEditEntityModalOnCloseHandler,
-  } = useDisclosure();
-
-  // data to fill in card
-  const data = {
-    category: entity.accessMeasure_generalCategory[0].value,
-    standardDescription: entity.accessMeasure_standardDescription,
-    standardType:
-      entity.accessMeasure_standardType[0].value !== "Other, specify"
-        ? entity.accessMeasure_standardType[0].value
-        : entity["accessMeasure_standardType-otherText"],
-    id: entity.id,
-  };
-
-  const openAddEditEntityModal = (entity?: EntityShape) => {
-    if (entity) {
-      // pre-fill form if editing an existing entity
-      setSelectedEntity(entity);
-    }
-    // use disclosure to open modal
-    addEditEntityModalOnOpenHandler();
-  };
-
+  // any drawer-based field will do for this check
+  const entityCompleted = formattedEntityData.population;
   return (
-    <Card {...props} marginTop="2rem">
+    <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox}>
         <Image
-          src={unfinishedIcon}
-          alt="entity is unfinished"
+          src={entityCompleted ? completedIcon : unfinishedIcon}
+          alt={`entity is ${entityCompleted ? "completed" : "unfinished"}`}
           sx={sx.statusIcon}
         />
         <button
@@ -71,51 +37,83 @@ export const EntityCard = ({
         >
           <Image
             src={deleteIcon}
-            alt="Delete Entity"
+            alt={dashboard.deleteEntityButtonAltText}
             sx={sx.deleteButtonImage}
           />
         </button>
         <Heading as="h4" sx={sx.heading}>
-          {data.category}
+          {formattedEntityData.category}
         </Heading>
-        <Text sx={sx.description}>{data.standardDescription}</Text>
+        <Text sx={sx.description}>
+          {formattedEntityData.standardDescription}
+        </Text>
         <Text sx={sx.subtitle}>General category</Text>
-        <Text sx={sx.subtext}>{data.standardType}</Text>
+        <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
         <Button
           variant="outline"
           size="sm"
-          sx={sx.editEntityButton}
+          sx={sx.editButton}
+          data-testid="editEntityButton"
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
           onClick={() => openAddEditEntityModal(entity)}
         >
-          Edit measure
+          {dashboard.editEntityButtonText}
         </Button>
-        <Text sx={sx.unfinishedMessage}>
-          Complete the remaining indicators for this access measure by entering
-          details.
-        </Text>
-        <Button size="sm" sx={sx.enterDrawerButton}>
-          Enter details
+        {entityCompleted ? (
+          <>
+            <Flex sx={sx.highlightContainer}>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Provider</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
+              </Box>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Region</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
+              </Box>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Population</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
+              </Box>
+            </Flex>
+            <Text sx={sx.subtitle}>Monitoring Methods</Text>
+            <Text sx={sx.subtext}>
+              {formattedEntityData?.monitoringMethods.join(", ")}
+            </Text>
+            <Text sx={sx.subtitle}>Frequency of oversight methods</Text>
+            <Text sx={sx.subtext}>{formattedEntityData.methodFrequency}</Text>
+          </>
+        ) : (
+          <Text sx={sx.unfinishedMessage}>
+            Complete the remaining indicators for this access measure by
+            entering details.
+          </Text>
+        )}
+        <Button
+          size="sm"
+          sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
+          variant={entityCompleted ? "outline" : "primary"}
+          onClick={() => openDrawer(entity)}
+          data-testid={`${entityCompleted ? "edit" : "enter"}-details-button`}
+          leftIcon={
+            entityCompleted ? (
+              <Image src={editIcon} alt="edit icon" height="1rem" />
+            ) : undefined
+          }
+        >
+          {entityCompleted ? "Edit" : "Enter"} details
         </Button>
       </Box>
-      <AddEditEntityModal
-        entityType={entityType}
-        modalData={modalData}
-        selectedEntity={selectedEntity}
-        modalDisclosure={{
-          isOpen: addEditEntityModalIsOpen,
-          onClose: addEditEntityModalOnCloseHandler,
-        }}
-      />
     </Card>
   );
 };
 
 interface Props {
   entity: EntityShape;
-  entityType: string;
-  modalData: AnyObject;
+  formattedEntityData: AnyObject;
+  dashboard: AnyObject;
+  openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
+  openDrawer: Function;
   [key: string]: any;
 }
 
@@ -164,16 +162,29 @@ const sx = {
     marginTop: "0.25rem",
     fontSize: "sm",
   },
-  editEntityButton: {
+  highlightContainer: {
+    marginTop: ".5em",
+    padding: "0em 1.5em 1em 1.5em",
+    background: "palette.secondary_lightest",
+    borderRadius: "3px",
+  },
+  highlightSection: {
+    width: "100%",
+    marginLeft: "1rem",
+    ":nth-of-type(1)": {
+      marginLeft: 0,
+    },
+  },
+  editButton: {
     marginY: "1rem",
     fontWeight: "normal",
   },
   unfinishedMessage: {
-    marginBottom: "0.75rem",
     fontSize: "xs",
     color: "palette.error_dark",
   },
-  enterDrawerButton: {
+  openDrawerButton: {
+    marginTop: "1rem",
     fontWeight: "normal",
   },
 };
