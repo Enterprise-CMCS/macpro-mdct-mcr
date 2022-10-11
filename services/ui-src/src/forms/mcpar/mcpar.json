@@ -254,27 +254,27 @@
                   "hint": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs.</br>Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses. See Glossary in Excel Workbook for more information.",
                   "choices": [
                     {
-                      "name": "state_encounterDataValidationEntity_option_plum",
+                      "name": "state-encounterDataValidationEntity-option-plum",
                       "label": "State Medicaid agency staff"
                     },
                     {
-                      "name": "state_encounterDataValidationEntity_option_gray",
+                      "name": "state-encounterDataValidationEntity-option-gray",
                       "label": "Other state agency staff"
                     },
                     {
-                      "name": "state_encounterDataValidationEntity_option_crimson",
+                      "name": "state-encounterDataValidationEntity-option-crimson",
                       "label": "State actuaries"
                     },
                     {
-                      "name": "state_encounterDataValidationEntity_option_fuchsia",
+                      "name": "state-encounterDataValidationEntity-option-fuchsia",
                       "label": "EQRO"
                     },
                     {
-                      "name": "state_encounterDataValidationEntity_option_limeGreen",
+                      "name": "state-encounterDataValidationEntity-option-lime",
                       "label": "Other third-party vendor"
                     },
                     {
-                      "name": "state_encounterDataValidationEntity_option_aquamarine",
+                      "name": "state-encounterDataValidationEntity-option-aquamarine",
                       "label": "Proprietary system(s)",
                       "children": [
                         {
@@ -290,11 +290,11 @@
                             "hint": "Were the system(s) utilized fully HIPAA compliant? Select one.",
                             "choices": [
                               {
-                                "name": "state_encounterDataValidationSystemHipaaCompliance_option_moccasin",
+                                "name": "state-encounterDataValidationSystemHipaaCompliance-option-moccasin",
                                 "label": "Yes"
                               },
                               {
-                                "name": "state_encounterDataValidationSystemHipaaCompliance_option_khaki",
+                                "name": "state-encounterDataValidationSystemHipaaCompliance-option-khaki",
                                 "label": "No"
                               }
                             ]
@@ -303,7 +303,7 @@
                       ]
                     },
                     {
-                      "name": "state_encounterDataValidationEntity_option_ivory",
+                      "name": "state-encounterDataValidationEntity-option-ivory",
                       "label": "Other, specify",
                       "children": [
                         {
@@ -353,15 +353,15 @@
                   "hint": "Does the state allow plans to retain overpayments, require the return of overpayments, or has established a hybrid system? Select one.",
                   "choices": [
                     {
-                      "name": "state_overpaymentStandard_option_tomato",
+                      "name": "state-overpaymentStandard-option-tomato",
                       "label": "Allow plans to retain overpayments"
                     },
                     {
-                      "name": "state_overpaymentStandard_option_peachPuff",
+                      "name": "state-overpaymentStandard-option-peach",
                       "label": "State requires the return of overpayments"
                     },
                     {
-                      "name": "state_overpaymentStandard_option_lime",
+                      "name": "state-overpaymentStandard-option-lime",
                       "label": "State has established a hybrid system"
                     }
                   ]
@@ -412,7 +412,7 @@
                   "hint": "Does the state monitor whether plans report provider “for cause” terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
                   "choices": [
                     {
-                      "name": "state_providerTerminationReportingMonitoringEfforts_option_mediumBlue",
+                      "name": "state-providerTerminationReportingMonitoringEfforts-option-blue",
                       "label": "Yes",
                       "children": [
                         {
@@ -428,7 +428,7 @@
                             "hint": "Does the state use a metric or indicator to assess plan reporting performance? Select one.",
                             "choices": [
                               {
-                                "name": "state_providerTerminationReportingMonitoringMetrics_option_burlywood",
+                                "name": "state-providerTerminationReportingMonitoringMetrics-option-burlywood",
                                 "label": "Yes",
                                 "children": [
                                   {
@@ -447,7 +447,7 @@
                                 ]
                               },
                               {
-                                "name": "state_providerTerminationReportingMonitoringMetrics_option_beige",
+                                "name": "state-providerTerminationReportingMonitoringMetrics-option-beige",
                                 "label": "No"
                               }
                             ]
@@ -456,7 +456,7 @@
                       ]
                     },
                     {
-                      "name": "state_providerTerminationReportingMonitoringEfforts_option_blanchedAlmond",
+                      "name": "state-providerTerminationReportingMonitoringEfforts-option-almond",
                       "label": "No"
                     }
                   ]
@@ -471,7 +471,7 @@
                   "hint": "During the state's federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
                   "choices": [
                     {
-                      "name": "state_excludedEntityIdentifiedInFederalDatabaseCheck_option_lawnGreen",
+                      "name": "state-excludedEntityIdentifiedInFederalDatabaseCheck-option-lawn",
                       "label": "Yes",
                       "children": [
                         {
@@ -490,7 +490,7 @@
                       ]
                     },
                     {
-                      "name": "state_excludedEntityIdentifiedInFederalDatabaseCheck_option_darkGoldenrod",
+                      "name": "state-excludedEntityIdentifiedInFederalDatabaseCheck-option-goldenrod",
                       "label": "No"
                     }
                   ]
@@ -505,7 +505,7 @@
                   "hint": "Does the state post on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3).",
                   "choices": [
                     {
-                      "name": "state_ownershipControlDisclosureWebsite_option_mediumAquamarine",
+                      "name": "state-ownershipControlDisclosureWebsite-option-aquamarine",
                       "label": "Yes",
                       "children": [
                         {
@@ -524,7 +524,7 @@
                       ]
                     },
                     {
-                      "name": "state_ownershipControlDisclosureWebsite_option_peru",
+                      "name": "state-ownershipControlDisclosureWebsite-option-peru",
                       "label": "No"
                     }
                   ]
@@ -592,23 +592,23 @@
                   "hint": "What is the type of MCPs that contract with the state to provide the services covered under the program? Select one.",
                   "choices": [
                     {
-                      "name": "program_type_option_honeydew",
+                      "name": "program-type-option-honeydew",
                       "label": "Managed Care Organization (MCO)"
                     },
                     {
-                      "name": "program_type_option_darkOrchid",
+                      "name": "program-type-option-orchid",
                       "label": "Prepaid Inpatient Health Plan (PIHP)"
                     },
                     {
-                      "name": "program_type_option_indigo",
+                      "name": "program-type-option-indigo",
                       "label": "Prepaid Ambulatory Health Plan (PAHP)"
                     },
                     {
-                      "name": "program_type_option_lightSalmon",
+                      "name": "program-type-option-salmon",
                       "label": "Primary Care Case Management (PCCM) Entity"
                     },
                     {
-                      "name": "program_type_option_orange",
+                      "name": "program-type-option-orange",
                       "label": "Other, specify",
                       "children": [
                         {
@@ -634,23 +634,23 @@
                   "hint": "Are any of the four special benefit types covered by the managed care program: (1) behavioral health, (2) long-term services and supports, (3) dental, and (4) transportation, or (5) none of the above? Select one or more.</br>Only list the benefit type if it is a covered service as specified in a contract between the state and managed care plans participating in the program. Benefits available to eligible program enrollees via fee-for-service should not be listed here.",
                   "choices": [
                     {
-                      "name": "program_coveredSpecialBenefits_option_firebrick",
+                      "name": "program-coveredSpecialBenefits-option-firebrick",
                       "label": "Behavioral health"
                     },
                     {
-                      "name": "program_coveredSpecialBenefits_option_springGreen",
+                      "name": "program-coveredSpecialBenefits-option-spring",
                       "label": "Long-term services and supports"
                     },
                     {
-                      "name": "program_coveredSpecialBenefits_option_gold",
+                      "name": "program-coveredSpecialBenefits-option-gold",
                       "label": "Dental"
                     },
                     {
-                      "name": "program_coveredSpecialBenefits_option_lightSkyBlue",
+                      "name": "program-coveredSpecialBenefits-option-sky",
                       "label": "Transportation"
                     },
                     {
-                      "name": "program_coveredSpecialBenefits_option_orangeRed",
+                      "name": "program-coveredSpecialBenefits-option-orange",
                       "label": "None of the above",
                       "children": [
                         {
@@ -719,31 +719,31 @@
                   "hint": "For what purposes does the state use encounter data collected from managed care plans (MCPs)? Select one or more.<br/>Federal regulations require that states, through their contracts with MCPs, collect and maintain sufficient enrollee encounter data to identify the provider who delivers any item(s) or service(s) to enrollees (42 CFR 438.242(c)(1)).",
                   "choices": [
                     {
-                      "name": "program_encounterDataUses_option_darkMagenta",
+                      "name": "program-encounterDataUses-option-magenta",
                       "label": "Rate setting"
                     },
                     {
-                      "name": "program_encounterDataUses_option_mintCream",
+                      "name": "program-encounterDataUses-option-cream",
                       "label": "Quality/performance measurement"
                     },
                     {
-                      "name": "program_encounterDataUses_option_mediumSeaGreen",
+                      "name": "program-encounterDataUses-option-sea",
                       "label": "Monitoring and reporting"
                     },
                     {
-                      "name": "program_encounterDataUses_option_sienna",
+                      "name": "program-encounterDataUses-option-sienna",
                       "label": "Contract oversight"
                     },
                     {
-                      "name": "program_encounterDataUses_option_lightCoral",
+                      "name": "program-encounterDataUses-option-coral",
                       "label": "Program integrity"
                     },
                     {
-                      "name": "program_encounterDataUses_option_lightGreen",
+                      "name": "program-encounterDataUses-option-green",
                       "label": "Policy making and decision support"
                     },
                     {
-                      "name": "program_encounterDataUses_option_turquoise",
+                      "name": "program-encounterDataUses-option-turquoise",
                       "label": "Other",
                       "children": [
                         {
@@ -758,7 +758,7 @@
                       ]
                     },
                     {
-                      "name": "program_encounterDataUses_option_mistyRose",
+                      "name": "program-encounterDataUses-option-misty",
                       "label": "Encounter data not used for any purpose"
                     }
                   ]
@@ -773,23 +773,23 @@
                   "hint": "What types of measures are used by the state to evaluate managed care plan performance in encounter data submission and correction? Select one or more.<br/>Federal regulations also require that states validate that submitted enrollee encounter data they receive is a complete and accurate representation of the services provided to enrollees under the contract between the state and the MCO, PIHP, or PAHP. 42 CFR 438.242(d).",
                   "choices": [
                     {
-                      "name": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria_option_darkCyan",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-cyan",
                       "label": "Timeliness of initial data submissions"
                     },
                     {
-                      "name": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria_option_seaGreen",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-sea",
                       "label": "Timeliness of data corrections"
                     },
                     {
-                      "name": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria_option_slateBlue",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-slate",
                       "label": "Use of correct file format"
                     },
                     {
-                      "name": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria_option_darkBlue",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-blue",
                       "label": "Provider ID field complete"
                     },
                     {
-                      "name": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria_option_salmon",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-salmon",
                       "label": "Other",
                       "children": [
                         {
@@ -804,7 +804,7 @@
                       ]
                     },
                     {
-                      "name": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria_option_blue",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-gray",
                       "label": "None of the above"
                     }
                   ]
@@ -991,19 +991,19 @@
                         "hint": "Select one.",
                         "choices": [
                           {
-                            "name": "accessMeasure_generalCategory_option_linen",
+                            "name": "accessMeasure-generalCategory-option-linen",
                             "label": "General quantitative availability and accessibility standard"
                           },
                           {
-                            "name": "accessMeasure_generalCategory_option_midnightBlue",
+                            "name": "accessMeasure-generalCategory-option-midnight",
                             "label": "LTSS-related standard: provider travels to the enrollee"
                           },
                           {
-                            "name": "accessMeasure_generalCategory_option_azure",
+                            "name": "accessMeasure-generalCategory-option-azure",
                             "label": "LTSS-related standard: enrollee travels to the provider"
                           },
                           {
-                            "name": "accessMeasure_generalCategory_option_lightSeaGreen",
+                            "name": "accessMeasure-generalCategory-option-sea",
                             "label": "Exceptions to time and distance standards"
                           }
                         ]
@@ -1027,43 +1027,43 @@
                         "hint": "What is the standard type? Select one or add free text if you select \"Other\".",
                         "choices": [
                           {
-                            "name": "accessMeasure_standardType_option_darkOrchid",
+                            "name": "accessMeasure-standardType-option-orchid",
                             "label": "Maximum time to travel"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_wheat",
+                            "name": "accessMeasure-standardType-option-wheat",
                             "label": "Maximum distance to travel"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_hotPink",
+                            "name": "accessMeasure-standardType-option-pink",
                             "label": "Maximum time or distance"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_darkSeaGreen",
+                            "name": "accessMeasure-standardType-option-sea",
                             "label": "Ease of getting a timely appointment"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_yellowGreen",
+                            "name": "accessMeasure-standardType-option-yellow",
                             "label": "Appointment wait time"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_green",
+                            "name": "accessMeasure-standardType-option-green",
                             "label": "Hours of operation"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_aqua",
+                            "name": "accessMeasure-standardType-option-aqua",
                             "label": "Provider to enrollee ratios"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_black",
+                            "name": "accessMeasure-standardType-option-black",
                             "label": "Minimum number of network providers"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_lightPink",
+                            "name": "accessMeasure-standardType-option-red",
                             "label": "Service fulfillment"
                           },
                           {
-                            "name": "accessMeasure_standardType_option_darkSlateGray0",
+                            "name": "accessMeasure-standardType-option-slate",
                             "label": "Other, specify",
                             "children": [
                               {
@@ -1097,35 +1097,35 @@
                         "hint": "What is the provider type? Select one or add free text if you select \"Other\"",
                         "choices": [
                           {
-                            "name": "accessMeasure_providerType_option_powderBlue",
+                            "name": "accessMeasure-providerType-option-powder",
                             "label": "Primary care"
                           },
                           {
-                            "name": "accessMeasure_providerType_option_lavender",
+                            "name": "accessMeasure-providerType-option-lavender",
                             "label": "Behavioral health"
                           },
                           {
-                            "name": "accessMeasure_providerType_option_gainsboro",
+                            "name": "accessMeasure-providerType-option-gainsboro",
                             "label": "Hospital"
                           },
                           {
-                            "name": "accessMeasure_providerType_option_snow",
+                            "name": "accessMeasure-providerType-option-snow",
                             "label": "LTSS-personal care assistant"
                           },
                           {
-                            "name": "accessMeasure_providerType_option_aqua",
+                            "name": "accessMeasure-providerType-option-aqua",
                             "label": "LTSS assistive technology"
                           },
                           {
-                            "name": "accessMeasure_providerType_option_antiqueWhite",
+                            "name": "accessMeasure-providerType-option-antique",
                             "label": "LTSS-adult day care"
                           },
                           {
-                            "name": "accessMeasure_providerType_option_paleGreen",
+                            "name": "accessMeasure-providerType-option-pale",
                             "label": "LTSS-SNF"
                           },
                           {
-                            "name": "accessMeasure_providerType_option_powderBlue",
+                            "name": "accessMeasure-providerType-option-slate",
                             "label": "Other, specify",
                             "children": [
                               {
@@ -1151,23 +1151,23 @@
                         "hint": "What is the applicable region? Select one or add free text if you select \"Other\"",
                         "choices": [
                           {
-                            "name": "accessMeasure_applicableRegion_option_lightBlue",
+                            "name": "accessMeasure-applicableRegion-option-blue",
                             "label": "Urban"
                           },
                           {
-                            "name": "accessMeasure_applicableRegion_option_orchid",
+                            "name": "accessMeasure-applicableRegion-option-orchid",
                             "label": "Rural"
                           },
                           {
-                            "name": "accessMeasure_applicableRegion_option_whiteSmoke",
+                            "name": "accessMeasure-applicableRegion-option-smoke",
                             "label": "Large counties"
                           },
                           {
-                            "name": "accessMeasure_applicableRegion_option_steelBlue",
+                            "name": "accessMeasure-applicableRegion-option-steel",
                             "label": "Small counties"
                           },
                           {
-                            "name": "accessMeasure_applicableRegion_option_tomato",
+                            "name": "accessMeasure-applicableRegion-option-tomato",
                             "label": "Other, specify",
                             "children": [
                               {
@@ -1193,23 +1193,23 @@
                         "hint": "What is the population? Select one or add free text if you select \"Other\"",
                         "choices": [
                           {
-                            "name": "accessMeasure_population_option_white",
+                            "name": "accessMeasure-population-option-white",
                             "label": "Adult"
                           },
                           {
-                            "name": "accessMeasure_population_option_pink",
+                            "name": "accessMeasure-population-option-pink",
                             "label": "Pediatric"
                           },
                           {
-                            "name": "accessMeasure_population_option_teal",
+                            "name": "accessMeasure-population-option-teal",
                             "label": "Adult and pediatric"
                           },
                           {
-                            "name": "accessMeasure_population_option_mediumTurquoise",
+                            "name": "accessMeasure-population-option-turquoise",
                             "label": "MLTSS"
                           },
                           {
-                            "name": "accessMeasure_population_option_thistle",
+                            "name": "accessMeasure-population-option-thistle",
                             "label": "Other, specify",
                             "children": [
                               {
@@ -1235,27 +1235,27 @@
                         "hint": "What are the monitoring methods? Check all that apply or add free text if you select \"Other\"",
                         "choices": [
                           {
-                            "name": "accessMeasure_monitoringMethods_option_darkViolet",
+                            "name": "accessMeasure-monitoringMethods-option-violet",
                             "label": "Geomapping"
                           },
                           {
-                            "name": "accessMeasure_monitoringMethods_option_indianRed",
+                            "name": "accessMeasure-monitoringMethods-option-red",
                             "label": "Plan provider roster review"
                           },
                           {
-                            "name": "accessMeasure_monitoringMethods_option_whiteSmoke",
+                            "name": "accessMeasure-monitoringMethods-option-smoke",
                             "label": "Secret shopper calls"
                           },
                           {
-                            "name": "accessMeasure_monitoringMethods_option_darkTurquoise",
+                            "name": "accessMeasure-monitoringMethods-option-turquoise",
                             "label": "EVV data analysis"
                           },
                           {
-                            "name": "accessMeasure_monitoringMethods_option_navy",
+                            "name": "accessMeasure-monitoringMethods-option-navy",
                             "label": "Review of grievances related to access"
                           },
                           {
-                            "name": "accessMeasure_monitoringMethods_option_paleVioletRed",
+                            "name": "accessMeasure-monitoringMethods-option-tomato",
                             "label": "Other, specify",
                             "children": [
                               {
@@ -1281,27 +1281,27 @@
                         "hint": "What is the frequency of oversight methods? Select one or add free text if you select \"Other\"",
                         "choices": [
                           {
-                            "name": "accessMeasure_oversightMethodFrequency_option_darkSlateBlue",
+                            "name": "accessMeasure-oversightMethodFrequency-option-slate",
                             "label": "At procurement"
                           },
                           {
-                            "name": "accessMeasure_oversightMethodFrequency_option_mediumVioletRed",
+                            "name": "accessMeasure-oversightMethodFrequency-option-red",
                             "label": "Monthly"
                           },
                           {
-                            "name": "accessMeasure_oversightMethodFrequency_option_tan",
+                            "name": "accessMeasure-oversightMethodFrequency-option-tan",
                             "label": "Quarterly"
                           },
                           {
-                            "name": "accessMeasure_oversightMethodFrequency_option_lightYellow",
+                            "name": "accessMeasure-oversightMethodFrequency-option-yellow",
                             "label": "Annually"
                           },
                           {
-                            "name": "accessMeasure_oversightMethodFrequency_option_dodgerBlue",
+                            "name": "accessMeasure-oversightMethodFrequency-option-dodger",
                             "label": "Less than annually"
                           },
                           {
-                            "name": "accessMeasure_oversightMethodFrequency_option_goldenrod",
+                            "name": "accessMeasure-oversightMethodFrequency-option-goldenrod",
                             "label": "Other, specify",
                             "children": [
                               {
@@ -1396,11 +1396,11 @@
                   "hint": "Did any plans disclose prohibited affiliations? If the state took action, enter those actions under D: Plan-level Indicators, Section VIII - Sanctions (Corresponds with Tab D3 in the Excel Workbook). Refer to 42 CFR 438.610(d).",
                   "choices": [
                     {
-                      "name": "program_prohibitedAffiliationDisclosure_option_red",
+                      "name": "program-prohibitedAffiliationDisclosure-option-red",
                       "label": "Yes"
                     },
                     {
-                      "name": "program_prohibitedAffiliationDisclosure_option_coral",
+                      "name": "program-prohibitedAffiliationDisclosure-option-coral",
                       "label": "No"
                     }
                   ]
@@ -1504,23 +1504,23 @@
                     "hint": "What is the aggregation level that best describes the MLR being reported in the previous indicator? Select one.</br>As permitted under 42 CFR 438.8(i), states are allowed to aggregate data for reporting purposes across programs and populations.",
                     "choices": [
                       {
-                        "name": "plan_medicalLossRatioPercentageAggregationLevel_option_cornflowerBlue",
+                        "name": "plan-medicalLossRatioPercentageAggregationLevel-option-cornflower",
                         "label": "Program-specific statewide"
                       },
                       {
-                        "name": "plan_medicalLossRatioPercentageAggregationLevel_option_cornsilk",
+                        "name": "plan-medicalLossRatioPercentageAggregationLevel-option-cornsilk",
                         "label": "Program-specific regional"
                       },
                       {
-                        "name": "plan_medicalLossRatioPercentageAggregationLevel_option_paleTurquoise",
+                        "name": "plan-medicalLossRatioPercentageAggregationLevel-option-turquoise",
                         "label": "Statewide all programs & populations"
                       },
                       {
-                        "name": "plan_medicalLossRatioPercentageAggregationLevel_option_darkGray",
+                        "name": "plan-medicalLossRatioPercentageAggregationLevel-option-gray",
                         "label": "Regional all programs & populations"
                       },
                       {
-                        "name": "plan_medicalLossRatioPercentageAggregationLevel_option_oldLace",
+                        "name": "plan-medicalLossRatioPercentageAggregationLevel-option-lace",
                         "label": "Other",
                         "children": [
                           {
@@ -1555,7 +1555,7 @@
                     "hint": "Does the data reported in item D1.II.1a cover a different time period than the MCPAR report?",
                     "choices": [
                       {
-                        "name": "plan_medicalLossRatioReportingPeriod_option_olive",
+                        "name": "plan-medicalLossRatioReportingPeriod-option-olive",
                         "label": "Yes",
                         "children": [
                           {
@@ -1588,7 +1588,7 @@
                         ]
                       },
                       {
-                        "name": "plan_medicalLossRatioReportingPeriod_option_indigo",
+                        "name": "plan-medicalLossRatioReportingPeriod-option-indigo",
                         "label": "No"
                       }
                     ]
@@ -2425,35 +2425,35 @@
                     "hint": "Select domain or add your own as needed.",
                     "choices": [
                       {
-                        "name": "qualityMeasure_domain_option_saddleBrown",
+                        "name": "qualityMeasure-domain-option-saddle",
                         "label": "Primary care access and preventative care"
                       },
                       {
-                        "name": "qualityMeasure_domain_option_darkOliveGreen",
+                        "name": "qualityMeasure-domain-option-olive",
                         "label": "Maternal and perinatal health"
                       },
                       {
-                        "name": "qualityMeasure_domain_option_oliveDrab",
+                        "name": "qualityMeasure-domain-option-drab",
                         "label": "Care of acute and chronic conditions"
                       },
                       {
-                        "name": "qualityMeasure_domain_option_magenta",
+                        "name": "qualityMeasure-domain-option-magenta",
                         "label": "Behavioral health care"
                       },
                       {
-                        "name": "qualityMeasure_domain_option_forestGreen",
+                        "name": "qualityMeasure-domain-option-forest",
                         "label": "Dental and oral health services"
                       },
                       {
-                        "name": "qualityMeasure_domain_option_snow",
+                        "name": "qualityMeasure-domain-option-snow",
                         "label": "Health plan enrollee experience of care"
                       },
                       {
-                        "name": "qualityMeasure_domain_option_greenYellow",
+                        "name": "qualityMeasure-domain-option-green",
                         "label": "Long-term services and supports"
                       },
                       {
-                        "name": "qualityMeasure_domain_option_cadetBlue",
+                        "name": "qualityMeasure-domain-option-cadet",
                         "label": "Other",
                         "children": [
                           {
@@ -2497,11 +2497,11 @@
                     "hint": "Is measure reporting program-specific or cross-program? Select one.",
                     "choices": [
                       {
-                        "name": "qualityMeasure_reportingRateType_option_darkMagenta",
+                        "name": "qualityMeasure-reportingRateType-option-magenta",
                         "label": "Program-specific rate"
                       },
                       {
-                        "name": "qualityMeasure_reportingRateType_option_darkSalmon",
+                        "name": "qualityMeasure-reportingRateType-option-salmon",
                         "label": "Cross-program rate",
                         "children": [
                           {
@@ -2532,23 +2532,23 @@
                     "hint": "What is the measure set? Select one.",
                     "choices": [
                       {
-                        "name": "qualityMeasure_set_option_rosyBrown",
+                        "name": "qualityMeasure-set-option-rosy",
                         "label": "Medicaid Child Core Set"
                       },
                       {
-                        "name": "qualityMeasure_set_option_gray",
+                        "name": "qualityMeasure-set-option-gray",
                         "label": "Medicaid Adult Core Set"
                       },
                       {
-                        "name": "qualityMeasure_set_option_skyBlue",
+                        "name": "qualityMeasure-set-option-sky",
                         "label": "State-specific"
                       },
                       {
-                        "name": "qualityMeasure_set_option_mediumSeaGreen",
+                        "name": "qualityMeasure-set-option-sea",
                         "label": "HEDIS"
                       },
                       {
-                        "name": "qualityMeasure_set_option_deepPink",
+                        "name": "qualityMeasure-set-option-deep",
                         "label": "Other",
                         "children": [
                           {
@@ -2574,11 +2574,11 @@
                     "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
                     "choices": [
                       {
-                        "name": "qualityMeasure_reportingPeriod_option_blueViolet",
+                        "name": "qualityMeasure-reportingPeriod-option-violet",
                         "label": "Yes"
                       },
                       {
-                        "name": "qualityMeasure_reportingPeriod_option_green",
+                        "name": "qualityMeasure-reportingPeriod-option-green",
                         "label": "No",
                         "children": [
                           {
@@ -2686,31 +2686,31 @@
                     "hint": "What type of intervention? Select one.",
                     "choices": [
                       {
-                        "name": "sanction_interventionType_option_chocolate",
+                        "name": "sanction-interventionType-option-chocolate",
                         "label": "Civil monetary penalty"
                       },
                       {
-                        "name": "sanction_interventionType_option_sandyBrown",
+                        "name": "sanction-interventionType-option-sandy",
                         "label": "Suspension of new enrollment"
                       },
                       {
-                        "name": "sanction_interventionType_option_maroon",
+                        "name": "sanction-interventionType-option-maroon",
                         "label": "Fine"
                       },
                       {
-                        "name": "sanction_interventionType_option_slateGray",
+                        "name": "sanction-interventionType-option-slate",
                         "label": "Corrective action plan"
                       },
                       {
-                        "name": "sanction_interventionType_option_seashell",
+                        "name": "sanction-interventionType-option-seashell",
                         "label": "Compliance letter"
                       },
                       {
-                        "name": "sanction_interventionType_option_mediumSpringGreen",
+                        "name": "sanction-interventionType-option-spring",
                         "label": "Liquidated damages"
                       },
                       {
-                        "name": "sanction_interventionType_option_darkRed",
+                        "name": "sanction-interventionType-option-red",
                         "label": "Other",
                         "children": [
                           {
@@ -2736,31 +2736,31 @@
                     "hint": "What was the topic of intervention? Select one.",
                     "choices": [
                       {
-                        "name": "sanction_interventionTopic_option_mediumPurple",
+                        "name": "sanction-interventionTopic-option-purple",
                         "label": "Discrimination"
                       },
                       {
-                        "name": "sanction_interventionTopic_option_darkOrange",
+                        "name": "sanction-interventionTopic-option-orange",
                         "label": "False information"
                       },
                       {
-                        "name": "sanction_interventionTopic_option_yellow",
+                        "name": "sanction-interventionTopic-option-yellow",
                         "label": "Excess charges"
                       },
                       {
-                        "name": "sanction_interventionTopic_option_cadetBlue",
+                        "name": "sanction-interventionTopic-option-cadet",
                         "label": "Reporting"
                       },
                       {
-                        "name": "sanction_interventionTopic_option_violet",
+                        "name": "sanction-interventionTopic-option-violet",
                         "label": "Performance management"
                       },
                       {
-                        "name": "sanction_interventionTopic_option_paleGoldenrod",
+                        "name": "sanction-interventionTopic-option-goldenrod",
                         "label": "Timely access"
                       },
                       {
-                        "name": "sanction_interventionTopic_option_lightSlateGray",
+                        "name": "sanction-interventionTopic-option-slate",
                         "label": "Other",
                         "children": [
                           {
@@ -2851,11 +2851,11 @@
                     "hint": "Has the state sanctioned the plan within the previous two years, (e.g. corrective action plans or other informal interventions such as special outreach, focused technical assistance)?",
                     "choices": [
                       {
-                        "name": "sanction_correctiveActionPlan_option_purple",
+                        "name": "sanction-correctiveActionPlan-option-purple",
                         "label": "Yes"
                       },
                       {
-                        "name": "sanction_correctiveActionPlan_option_silver",
+                        "name": "sanction-correctiveActionPlan-option-silver",
                         "label": "No"
                       }
                     ]
@@ -2942,7 +2942,7 @@
                     "hint": "What is the referral path that the plan uses to make program integrity referrals to the state? Select one.",
                     "choices": [
                       {
-                        "name": "plan_programIntegrityReferralPath_option_floralWhite",
+                        "name": "plan-programIntegrityReferralPath-option-floral",
                         "label": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
                         "children": [
                           {
@@ -2962,7 +2962,7 @@
                         ]
                       },
                       {
-                        "name": "plan_programIntegrityReferralPath_option_dimGray",
+                        "name": "plan-programIntegrityReferralPath-option-dim",
                         "label": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently",
                         "children": [
                           {
@@ -2982,7 +2982,7 @@
                         ]
                       },
                       {
-                        "name": "plan_programIntegrityReferralPath_option_lightSteelBlue",
+                        "name": "plan-programIntegrityReferralPath-option-steel",
                         "label": "Makes some referrals to the SMA and others directly to the MFCU",
                         "children": [
                           {
@@ -3032,27 +3032,27 @@
                     "hint": "Select the frequency the plan reports changes in beneficiary circumstances to the state.",
                     "choices": [
                       {
-                        "name": "plan_beneficiaryCircumstanceChangeReportingFrequency_option_aliceBlue",
+                        "name": "plan-beneficiaryCircumstanceChangeReportingFrequency-option-alice",
                         "label": "Daily"
                       },
                       {
-                        "name": "plan_beneficiaryCircumstanceChangeReportingFrequency_option_lemonChiffon",
+                        "name": "plan-beneficiaryCircumstanceChangeReportingFrequency-option-lemon",
                         "label": "Weekly"
                       },
                       {
-                        "name": "plan_beneficiaryCircumstanceChangeReportingFrequency_option_brown",
+                        "name": "plan-beneficiaryCircumstanceChangeReportingFrequency-option-brown",
                         "label": "Bi-weekly"
                       },
                       {
-                        "name": "plan_beneficiaryCircumstanceChangeReportingFrequency_option_deepPink",
+                        "name": "plan-beneficiaryCircumstanceChangeReportingFrequency-option-pink",
                         "label": "Monthly"
                       },
                       {
-                        "name": "plan_beneficiaryCircumstanceChangeReportingFrequency_option_ghostWhite",
+                        "name": "plan-beneficiaryCircumstanceChangeReportingFrequency-option-ghost",
                         "label": "Bi-monthly"
                       },
                       {
-                        "name": "plan_beneficiaryCircumstanceChangeReportingFrequency_option_lavender",
+                        "name": "plan-beneficiaryCircumstanceChangeReportingFrequency-option-lavender",
                         "label": "Quarterly"
                       }
                     ]
@@ -3108,55 +3108,55 @@
                 "hint": "What type of entity was contracted to perform each BSS activity? Check all that apply. Refer to 42 CFR 438.71(b).",
                 "choices": [
                   {
-                    "name": "bssEntity_entityType_option_blanchedAlmond",
+                    "name": "bssEntity-entityType-option-almond",
                     "label": "State Government Entity"
                   },
                   {
-                    "name": "bssEntity_entityType_option_mediumOrchid",
+                    "name": "bssEntity-entityType-option-orchid",
                     "label": "Local Government Entity"
                   },
                   {
-                    "name": "bssEntity_entityType_option_lightGoldenrodYellow",
+                    "name": "bssEntity-entityType-option-goldenrod",
                     "label": "Ombudsman Program"
                   },
                   {
-                    "name": "bssEntity_entityType_option_navajoWhite",
+                    "name": "bssEntity-entityType-option-white",
                     "label": "State Health Insurance Assistance Program (SHIP)"
                   },
                   {
-                    "name": "bssEntity_entityType_option_chartreuse",
+                    "name": "bssEntity-entityType-option-chartreuse",
                     "label": "Aging and Disability Resource Network (ADRN)"
                   },
                   {
-                    "name": "bssEntity_entityType_option_mediumAquamarine",
+                    "name": "bssEntity-entityType-option-aquamarine",
                     "label": "Center for Independent Living (CIL)"
                   },
                   {
-                    "name": "bssEntity_entityType_option_royalBlue",
+                    "name": "bssEntity-entityType-option-royal",
                     "label": "Legal Assistance Organization"
                   },
                   {
-                    "name": "bssEntity_entityType_option_darkKhaki",
+                    "name": "bssEntity-entityType-option-khaki",
                     "label": "Other Community-Based Organization"
                   },
                   {
-                    "name": "bssEntity_entityType_option_darkGreen",
+                    "name": "bssEntity-entityType-option-green",
                     "label": "Subcontractor"
                   },
                   {
-                    "name": "bssEntity_entityType_option_lavenderBlush0",
+                    "name": "bssEntity-entityType-option-lavender",
                     "label": "Enrollment Broker"
                   },
                   {
-                    "name": "bssEntity_entityType_option_mediumSlateBlue1",
+                    "name": "bssEntity-entityType-option-slate",
                     "label": "Consultant"
                   },
                   {
-                    "name": "bssEntity_entityType_option_deepSkyBlue2",
+                    "name": "bssEntity-entityType-option-sky",
                     "label": "Academic/Research Organization"
                   },
                   {
-                    "name": "bssEntity_entityType_option_bisque3",
+                    "name": "bssEntity-entityType-option-bisque",
                     "label": "Other",
                     "children": [
                       {
@@ -3182,31 +3182,31 @@
                 "hint": "What are the roles performed by the BSS entity? Check all that apply. Refer to 42 CFR 438.71(b).",
                 "choices": [
                   {
-                    "name": "bssEntity_entityRole_option_mediumBlue",
+                    "name": "bssEntity-entityRole-option-blue",
                     "label": "Enrollment Broker/Choice Counseling"
                   },
                   {
-                    "name": "bssEntity_entityRole_option_lightCyan",
+                    "name": "bssEntity-entityRole-option-cyan",
                     "label": "Beneficiary Outreach"
                   },
                   {
-                    "name": "bssEntity_entityRole_option_chartreuse",
+                    "name": "bssEntity-entityRole-option-chartreuse",
                     "label": "LTSS Complaint Access Point"
                   },
                   {
-                    "name": "bssEntity_entityRole_option_paleVioletRed",
+                    "name": "bssEntity-entityRole-option-violet",
                     "label": "LTSS Grievance/Appeals Education"
                   },
                   {
-                    "name": "bssEntity_entityRole_option_lightGray",
+                    "name": "bssEntity-entityRole-option-gray",
                     "label": "LTSS Grievance/Appeals Assistance"
                   },
                   {
-                    "name": "bssEntity_entityRole_option_cyan",
+                    "name": "bssEntity-entityRole-option-tomato",
                     "label": "Review/Oversight of LTSS Data"
                   },
                   {
-                    "name": "bssEntity_entityRole_option_papayaWhip",
+                    "name": "bssEntity-entityRole-option-papaya",
                     "label": "Other",
                     "children": [
                       {
