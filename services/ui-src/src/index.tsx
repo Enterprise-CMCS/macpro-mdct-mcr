@@ -28,7 +28,6 @@ ReactDOM.render(
           <ChakraProvider theme={theme}>
             <App />
           </ChakraProvider>
-          {/* <ReactQueryDevtools /> */}
         </ApiProvider>
       </UserProvider>
     </Router>
