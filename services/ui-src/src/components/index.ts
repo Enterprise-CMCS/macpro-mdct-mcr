@@ -19,9 +19,9 @@ export { Banner } from "./banners/Banner";
 export { PreviewBanner } from "./banners/PreviewBanner";
 // cards
 export { Card } from "./cards/Card";
-export { EntityCard } from "./cards/EntityCard";
-export { EntityCardTopText } from "./cards/EntityCardTopText";
-export { EntityCardBottomText } from "./cards/EntityCardBottomText";
+export { EntityCard } from "./cards/EntityCard/EntityCard";
+export { EntityCardTopText } from "./cards/EntityCard/EntityCardTopText";
+export { EntityCardBottomText } from "./cards/EntityCard/EntityCardBottomText";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
