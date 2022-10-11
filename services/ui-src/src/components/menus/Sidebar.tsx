@@ -3,6 +3,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { SkipNav } from "components";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
 import { isMcparReportFormPage, mcparReportJson } from "forms/mcpar";
@@ -30,6 +31,12 @@ export const Sidebar = () => {
           aria-label="Sidebar menu"
           data-testid="sidebar-nav"
         >
+          <SkipNav
+            id="skip-nav-sidebar"
+            href="#report-content"
+            text="Skip to report page"
+            sxOverride={sx.sideBarSkipNav}
+          />
           <Box
             as="button"
             sx={sx.closeButton}
@@ -179,6 +186,9 @@ const sx = {
       zIndex: "dropdown",
       height: "100%",
     },
+  },
+  sideBarSkipNav: {
+    top: -200,
   },
   topBox: {
     borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",

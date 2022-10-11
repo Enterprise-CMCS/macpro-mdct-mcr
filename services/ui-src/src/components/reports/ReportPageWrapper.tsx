@@ -58,7 +58,9 @@ export const ReportPageWrapper = ({ route }: Props) => {
             <Spinner size="big" />
           </Flex>
         ) : (
-          <Flex sx={sx.reportContainer}>{renderPageSection(route)}</Flex>
+          <Flex id="report-content" sx={sx.reportContainer}>
+            {renderPageSection(route)}
+          </Flex>
         )}
       </Flex>
     </PageTemplate>
