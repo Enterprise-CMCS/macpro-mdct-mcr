@@ -777,23 +777,23 @@
                       "label": "Timeliness of initial data submissions"
                     },
                     {
-                      "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-forest",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-forest",
                       "label": "Timeliness of data corrections"
                     },
                     {
-                      "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-banana",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-banana",
                       "label": "Timeliness of data certifications"
                     },
                     {
-                      "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-strawberry",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-strawberry",
                       "label": "Use of correct file formats"
                     },
                     {
-                      "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-blush",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-blush",
                       "label": "Provider ID field complete"
                     },
                     {
-                      "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-apricot",
+                      "name": "program-encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-option-apricot",
                       "label": "Overall data accuracy (as determined through data validation)"
                     },
                     {
