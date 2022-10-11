@@ -71,6 +71,45 @@ const UnfinishedEntityCardComponent = (
   />
 );
 
+const AccessMeasuresEntityCardComponent = (
+  <EntityCard
+    entity={mockEntity}
+    entityType={"accessMeasures"}
+    formattedEntityData={mockFormattedEntityData}
+    dashboard={mockModalDrawerReportPageJson.dashboard}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
+  />
+);
+
+const SanctionsEntityCardComponent = (
+  <EntityCard
+    entity={mockEntity}
+    entityType={"sanctions"}
+    formattedEntityData={mockFormattedEntityData}
+    dashboard={mockModalDrawerReportPageJson.dashboard}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
+  />
+);
+
+const QualityMeasuresEntityCardComponent = (
+  <EntityCard
+    entity={mockEntity}
+    entityType={"qualityMeasures"}
+    formattedEntityData={mockFormattedEntityData}
+    dashboard={mockModalDrawerReportPageJson.dashboard}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
+  />
+);
+
 describe("Test Finished EntityCard", () => {
   beforeEach(() => {
     render(EntityCardComponent);
@@ -148,6 +187,24 @@ describe("Test EntityCard accessibility", () => {
 
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(UnfinishedEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(AccessMeasuresEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(SanctionsEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(QualityMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
