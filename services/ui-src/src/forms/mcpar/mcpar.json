@@ -1355,7 +1355,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.IX.2 BSS auxiliary aids and services",
-                  "hint": "How do BSS entities offer services in a manner that is accessible to all beneficiaries who need their services, including beneficiaries with disabilities, as required by 42 CFR 438.71 (b)(2))?</br>CFR 438.71 requires that the beneficiary support system be accessible in multiple ways including phone, Internet, in-person, and via auxiliary aids and services when requested."
+                  "hint": "How do BSS entities offer services in a manner that is accessible to all beneficiaries who need their services, including beneficiaries with disabilities, as required by 42 CFR 438.71(b)(2))?</br>CFR 438.71 requires that the beneficiary support system be accessible in multiple ways including phone, Internet, in-person, and via auxiliary aids and services when requested."
                 }
               },
               {
