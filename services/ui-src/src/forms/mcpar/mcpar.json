@@ -925,10 +925,6 @@
                     "type": "heading",
                     "as": "h3",
                     "content": "Network Adequacy"
-                  },
-                  {
-                    "type": "text",
-                    "content": "[Description needed]"
                   }
                 ]
               },
@@ -941,7 +937,7 @@
                     "validation": "text",
                     "props": {
                       "label": "C1.V.1 Gaps/challenges in network adequacy",
-                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPS have maintaining adequate networks and meeting standards."
+                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting standards."
                     }
                   },
                   {
@@ -1337,7 +1333,7 @@
           "path": "/mcpar/program-level-indicators/bss",
           "pageType": "standard",
           "intro": {
-            "section": "C: Program-Level Indicators",
+            "section": "Section C: Program-Level Indicators",
             "subsection": "Topic IX: Beneficiary Support System (BSS)",
             "spreadsheet": "C1_Program_Set"
           },
@@ -1388,7 +1384,7 @@
           "path": "/mcpar/program-level-indicators/program-integrity",
           "pageType": "standard",
           "intro": {
-            "section": "C: Program-Level Indicators",
+            "section": "Section C: Program-Level Indicators",
             "subsection": "Topic X: Program Integrity",
             "spreadsheet": "C1_Program_Set"
           },
