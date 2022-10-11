@@ -1,6 +1,5 @@
 // api
 export * from "./api/providers/ApiProvider";
-export * from "./api/providers/QueryProvider";
 export * from "./api/requestMethods/banner";
 export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
