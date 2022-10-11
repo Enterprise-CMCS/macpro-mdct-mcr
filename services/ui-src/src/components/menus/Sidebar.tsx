@@ -189,10 +189,6 @@ const sx = {
   },
   sideBarSkipNav: {
     top: -200,
-    zIndex: "skipLink",
-    "&:focus-visible": {
-      top: 1,
-    },
   },
   topBox: {
     borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",
