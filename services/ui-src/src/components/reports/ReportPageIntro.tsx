@@ -8,7 +8,7 @@ import { AnyObject } from "types";
 export const ReportPageIntro = ({ text, ...props }: Props) => {
   const { section, subsection, info, spreadsheet } = text;
   return (
-    <Box {...props}>
+    <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
         {section}
       </Heading>
@@ -31,6 +31,9 @@ interface Props {
 }
 
 const sx = {
+  introBox: {
+    marginBottom: "2rem",
+  },
   sectionHeading: {
     color: "palette.gray",
     fontSize: "md",

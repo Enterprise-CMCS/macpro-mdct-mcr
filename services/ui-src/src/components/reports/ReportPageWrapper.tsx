@@ -83,6 +83,7 @@ const sx = {
     marginY: "3.5rem",
     marginLeft: "3.5rem",
     h3: {
+      paddingBottom: "0.75rem",
       fontSize: "lg",
       fontWeight: "bold",
     },
