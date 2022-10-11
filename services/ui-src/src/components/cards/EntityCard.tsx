@@ -100,7 +100,9 @@ export const EntityCard = ({
             ) : undefined
           }
         >
-          {entityCompleted ? "Edit" : "Enter"} details
+          {entityCompleted
+            ? dashboard.editEntityDetailsButtonText
+            : dashboard.enterEntityDetailsButtonText}
         </Button>
       </Box>
     </Card>

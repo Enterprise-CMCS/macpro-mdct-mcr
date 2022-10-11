@@ -973,7 +973,9 @@
                 "title": "Add measures for monitoring access standards",
                 "addEntityButtonText": "Add access measure",
                 "editEntityButtonText": "Edit measure",
-                "deleteEntityButtonAltText": "Delete measure"
+                "deleteEntityButtonAltText": "Delete measure",
+                "enterEntityDetailsButtonText": "Enter details",
+                "editEntityDetailsButtonText": "Edit details"
               },
               "modal": {
                 "addTitle": "Add access measure",
@@ -2407,7 +2409,9 @@
             "title": "Add quality and performance measures",
             "addEntityButtonText": "replace me in json",
             "editEntityButtonText": "replace me in json",
-            "deleteEntityButtonAltText": "replace me in json"
+            "deleteEntityButtonAltText": "replace me in json",
+            "enterEntityDetailsButtonText": "Enter sanction details",
+            "editEntityDetailsButtonText": "Edit sanction details"
           },
           "modal": {
             "addTitle": "replace me in json",
@@ -2665,15 +2669,17 @@
             ]
           },
           "dashboard": {
-            "title": "Add quality and performance measures",
-            "addEntityButtonText": "replace me in json",
-            "editEntityButtonText": "replace me in json",
-            "deleteEntityButtonAltText": "replace me in json"
+            "title": "Add plan sanctions",
+            "addEntityButtonText": "Add a sanction",
+            "editEntityButtonText": "Edit sanction",
+            "deleteEntityButtonAltText": "Delete sanction",
+            "enterEntityDetailsButtonText": "replace me in json",
+            "editEntityDetailsButtonText": "replace me in json"
           },
           "modal": {
-            "addTitle": "replace me in json",
-            "editTitle": "replace me in json",
-            "message": "replace me in json",
+            "addTitle": "Add a sanction",
+            "editTitle": "Edit sanction",
+            "message": "Complete the remaining indicators for this sanction by saving the sanction and selecting \"Enter sanction details\".",
             "form": {
               "id": "ds-modal",
               "fields": [
