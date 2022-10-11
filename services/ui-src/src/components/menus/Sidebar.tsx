@@ -5,7 +5,7 @@ import { ArrowIcon } from "@cmsgov/design-system";
 import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { SkipNav } from "components";
 // utils
-import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 import { isMcparReportFormPage, mcparReportJson } from "forms/mcpar";
 
 interface LinkItemProps {
@@ -15,7 +15,6 @@ interface LinkItemProps {
 }
 
 export const Sidebar = () => {
-  const mqClasses = makeMediaQueryClasses();
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { pathname } = useLocation();
@@ -26,7 +25,7 @@ export const Sidebar = () => {
         <Box
           id="sidebar"
           sx={sx.root}
-          className={`${mqClasses} ${isOpen ? "open" : "closed"}`}
+          className={`${isOpen ? "open" : "closed"}`}
           role="navigation"
           aria-label="Sidebar menu"
           data-testid="sidebar-nav"
@@ -49,14 +48,9 @@ export const Sidebar = () => {
             />
           </Box>
           <Box id="sidebar-title-box" sx={sx.topBox}>
-            <Heading sx={sx.title} className={mqClasses}>
-              MCPAR Report Submission Form
-            </Heading>
+            <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
           </Box>
-          <Box
-            sx={sx.navSectionsBox}
-            className={`${mqClasses} nav-sections-box`}
-          >
+          <Box sx={sx.navSectionsBox} className={"nav-sections-box"}>
             {mcparReportJson.routes.map((section) => (
               <NavSection key={section.name} section={section} level={1} />
             ))}
@@ -145,12 +139,11 @@ const NavItem = ({
   hasChildren,
   isOpen,
 }: NavItemProps) => {
-  const mqClasses = makeMediaQueryClasses();
   const currentPath = window.location.pathname;
   const isCurrentPath = optionPath === currentPath;
   return (
     <Flex sx={sx.navItemFlex} className={isCurrentPath ? "selected" : ""}>
-      <Text sx={sx.navItemTitle} className={`level-${level} ${mqClasses}`}>
+      <Text sx={sx.navItemTitle} className={`level-${level}`}>
         {name}
       </Text>
       {!!hasChildren && (
@@ -171,17 +164,17 @@ const sx = {
     transition: "all 0.3s ease",
     "&.open": {
       marginLeft: "-1rem",
-      "&.desktop": {
+      ".desktop &": {
         marginLeft: "-2rem",
       },
     },
     "&.closed": {
       marginLeft: "-21rem",
-      "&.desktop": {
+      ".desktop &": {
         marginLeft: "-22rem",
       },
     },
-    "&.tablet, &.mobile": {
+    ".tablet &, .mobile &": {
       position: "fixed",
       zIndex: "dropdown",
       height: "100%",
@@ -198,7 +191,7 @@ const sx = {
     fontWeight: "bold",
     width: "15rem",
     padding: "1rem 1rem",
-    "&.desktop": {
+    ".desktop &": {
       padding: "1rem 0 1rem 2rem",
     },
   },
@@ -220,7 +213,7 @@ const sx = {
     },
   },
   navSectionsBox: {
-    "&.tablet, &.mobile": {
+    ".tablet &, .mobile &": {
       height: "100%",
       paddingBottom: "16rem",
       overflowY: "scroll",
@@ -275,19 +268,19 @@ const sx = {
     textAlign: "left",
     "&.level-1": {
       marginLeft: "1rem",
-      "&.desktop": {
+      ".desktop &": {
         marginLeft: "2rem",
       },
     },
     "&.level-2": {
       marginLeft: "2rem",
-      "&.desktop": {
+      ".desktop &": {
         marginLeft: "3rem",
       },
     },
     "&.level-3": {
       marginLeft: "3rem",
-      "&.desktop": {
+      ".desktop &": {
         marginLeft: "4rem",
       },
     },

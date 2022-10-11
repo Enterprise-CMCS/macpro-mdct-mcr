@@ -4,7 +4,6 @@ import { useFormContext } from "react-hook-form";
 import { Choice as CmsdsChoice } from "@cmsgov/design-system";
 import { Box, Text } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
 import { AnyObject } from "types";
 
 export const ChoiceField = ({
@@ -14,8 +13,6 @@ export const ChoiceField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
-
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
 
   // get the form context
@@ -44,7 +41,7 @@ export const ChoiceField = ({
   }, [hydrationValue]);
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }}>
       <Text sx={sx.label} id="label">
         {label}
       </Text>
