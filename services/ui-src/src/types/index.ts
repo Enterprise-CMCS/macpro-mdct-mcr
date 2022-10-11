@@ -169,6 +169,11 @@ export declare type EntityType =
   | "qualityMeasures"
   | "sanctions";
 
+export enum ModalDrawerEntityTypes {
+  ACCESS_MEASURES = "accessMeasures",
+  QUALITY_MEASURES = "qualityMeasures",
+  SANCTIONS = "sanctions",
+}
 export interface EntityShape {
   id: string;
   [key: string]: any;

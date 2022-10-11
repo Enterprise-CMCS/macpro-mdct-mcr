@@ -1,19 +1,42 @@
 // components
 import { Text } from "@chakra-ui/react";
 // utils
-import { AnyObject } from "types";
+import { AnyObject, ModalDrawerEntityTypes } from "types";
 
-export const EntityCardTopText = ({ formattedEntityData }: Props) => {
-  return (
-    <>
-      <Text sx={sx.description}>{formattedEntityData.standardDescription}</Text>
-      <Text sx={sx.subtitle}>General category</Text>
-      <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
-    </>
-  );
+export const EntityCardTopText = ({
+  entityType,
+  formattedEntityData,
+}: Props) => {
+  switch (entityType) {
+    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+      return (
+        <>
+          <Text sx={sx.description}>
+            {formattedEntityData.standardDescription}
+          </Text>
+          <Text sx={sx.subtitle}>General category</Text>
+          <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
+        </>
+      );
+    case ModalDrawerEntityTypes.SANCTIONS:
+      return (
+        <>
+          <Text sx={sx.description}>Sanctions TODO</Text>
+        </>
+      );
+    case ModalDrawerEntityTypes.QUALITY_MEASURES:
+      return (
+        <>
+          <Text sx={sx.description}>Quality Measures TODO</Text>
+        </>
+      );
+    default:
+      return <Text>{entityType}</Text>;
+  }
 };
 
 interface Props {
+  entityType: string;
   formattedEntityData: AnyObject;
 }
 

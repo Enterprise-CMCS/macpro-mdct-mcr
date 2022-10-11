@@ -12,6 +12,7 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({
   entity,
+  entityType,
   formattedEntityData,
   dashboard,
   openAddEditEntityModal,
@@ -44,7 +45,10 @@ export const EntityCard = ({
         <Heading as="h4" sx={sx.heading}>
           {formattedEntityData.category}
         </Heading>
-        <EntityCardTopText formattedEntityData={formattedEntityData} />
+        <EntityCardTopText
+          entityType={entityType}
+          formattedEntityData={formattedEntityData}
+        />
         <Button
           variant="outline"
           size="sm"
@@ -56,6 +60,7 @@ export const EntityCard = ({
           {dashboard.editEntityButtonText}
         </Button>
         <EntityCardBottomText
+          entityType={entityType}
           entityCompleted={entityCompleted}
           formattedEntityData={formattedEntityData}
         />
@@ -81,6 +86,7 @@ export const EntityCard = ({
 
 interface Props {
   entity: EntityShape;
+  entityType: string;
   formattedEntityData: AnyObject;
   dashboard: AnyObject;
   openAddEditEntityModal: Function;

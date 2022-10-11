@@ -27,6 +27,8 @@ const mockEntity = {
   "accessMeasure_standardType-otherText": "",
 };
 
+const mockEntityType = "mock-entity-type";
+
 const mockFormattedEntityData = {
   category: "mock-category",
   standardDescription: "mock-standardDescription",
@@ -47,6 +49,7 @@ const mockUnfinishedEntityData = {
 const EntityCardComponent = (
   <EntityCard
     entity={mockEntity}
+    entityType={mockEntityType}
     formattedEntityData={mockFormattedEntityData}
     dashboard={mockModalDrawerReportPageJson.dashboard}
     openAddEditEntityModal={openAddEditEntityModal}
@@ -59,6 +62,7 @@ const EntityCardComponent = (
 const UnfinishedEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
+    entityType={mockEntityType}
     formattedEntityData={mockUnfinishedEntityData}
     dashboard={mockModalDrawerReportPageJson.dashboard}
     openAddEditEntityModal={openAddEditEntityModal}
@@ -105,13 +109,6 @@ describe("Test Finished EntityCard", () => {
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
-
-  test("EntityCard doesnt show the unfinished message", () => {
-    const unfinishedMessage = screen.queryByText(
-      "Complete the remaining indicators for this access measure by entering details."
-    );
-    expect(unfinishedMessage).toBeFalsy();
-  });
 });
 
 describe("Test Unfinished EntityCard", () => {
@@ -139,13 +136,6 @@ describe("Test Unfinished EntityCard", () => {
     )[0];
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
-  });
-
-  test("EntityCard shows the unfinished message", () => {
-    const unfinishedMessage = screen.queryByText(
-      "Complete the remaining indicators for this access measure by entering details."
-    );
-    expect(unfinishedMessage).toBeTruthy();
   });
 });
 
