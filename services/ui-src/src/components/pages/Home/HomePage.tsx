@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 // components
 import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
@@ -15,11 +15,20 @@ import verbiage from "verbiage/pages/home";
 export const HomePage = () => {
   const { bannerData } = useContext(AdminBannerContext);
   const { userIsStateUser, userIsStateRep } = useUser().user ?? {};
-  const bannerIsActive = checkDateRangeStatus(
-    bannerData?.startDate,
-    bannerData?.endDate
-  );
-  const showBanner = !!bannerData.key && bannerIsActive;
+  const [isBannerActive, setIsBannerActive] = useState(false);
+
+  useEffect(() => {
+    let bannerActivity = false;
+    if (bannerData) {
+      bannerActivity = checkDateRangeStatus(
+        bannerData.startDate,
+        bannerData.endDate
+      );
+    }
+    setIsBannerActive(bannerActivity);
+  }, [bannerData]);
+
+  const showBanner = !!bannerData?.key && isBannerActive;
   const { intro, cards } = verbiage;
 
   return (

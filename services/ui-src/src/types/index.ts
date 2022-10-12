@@ -169,6 +169,11 @@ export declare type EntityType =
   | "qualityMeasures"
   | "sanctions";
 
+export enum ModalDrawerEntityTypes {
+  ACCESS_MEASURES = "accessMeasures",
+  QUALITY_MEASURES = "qualityMeasures",
+  SANCTIONS = "sanctions",
+}
 export interface EntityShape {
   id: string;
   [key: string]: any;
@@ -273,7 +278,8 @@ export interface AdminBannerMethods {
 }
 
 export interface AdminBannerShape extends AdminBannerMethods {
-  bannerData: AdminBannerData;
+  bannerData?: AdminBannerData;
+  isLoading: boolean;
   errorMessage?: string;
 }
 
