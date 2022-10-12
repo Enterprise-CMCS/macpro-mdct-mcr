@@ -3,7 +3,7 @@ import { Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
-export const EntityCardTopText = ({
+export const EntityCardTopSection = ({
   entityType,
   formattedEntityData,
 }: Props) => {

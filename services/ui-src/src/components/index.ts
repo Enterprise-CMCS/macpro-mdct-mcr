@@ -20,8 +20,8 @@ export { PreviewBanner } from "./banners/PreviewBanner";
 // cards
 export { Card } from "./cards/Card";
 export { EntityCard } from "./cards/EntityCard/EntityCard";
-export { EntityCardTopText } from "./cards/EntityCard/EntityCardTopText";
-export { EntityCardBottomText } from "./cards/EntityCard/EntityCardBottomText";
+export { EntityCardTopSection } from "./cards/EntityCard/EntityCardTopSection";
+export { EntityCardBottomSection } from "./cards/EntityCard/EntityCardBottomSection";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
