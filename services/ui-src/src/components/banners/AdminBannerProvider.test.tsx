@@ -87,78 +87,38 @@ describe("Test AdminBannerProvider fetchAdminBanner method", () => {
 });
 
 describe("Test AdminBannerProvider deleteAdminBanner method", () => {
-  beforeEach(async () => {
-    await act(async () => {
-      await render(testComponent);
-    });
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("deleteAdminBanner method calls API deleteBanner method", async () => {
-    expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
-
+    await act(async () => {
+      await render(testComponent);
+    });
     await act(async () => {
       const deleteButton = screen.getByTestId("delete-button");
       await userEvent.click(deleteButton);
     });
-
     expect(mockAPI.deleteBanner).toHaveBeenCalledTimes(1);
     expect(mockAPI.deleteBanner).toHaveBeenCalledWith(mockBannerData.key);
-    // 1 call on render + 1 call on button click
-    await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
-  });
-
-  test("deleteAdminBanner method calls fetchAdminBanner method", async () => {
-    expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
-
-    await act(async () => {
-      const deleteButton = screen.getByTestId("delete-button");
-      await userEvent.click(deleteButton);
-    });
-
-    /*
-     * if fetchAdminBannerMethod has been called, then so has API getBannerMethod
-     * 1 call on render + 1 call on button click
-     */
-    await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(1));
   });
 });
 
 describe("Test AdminBannerProvider writeAdminBanner method", () => {
-  beforeEach(async () => {
-    await act(async () => {
-      await render(testComponent);
-    });
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("writeAdminBanner method calls API writeBanner method", async () => {
     await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
       const writeButton = screen.getByTestId("write-button");
       await userEvent.click(writeButton);
     });
     expect(mockAPI.writeBanner).toHaveBeenCalledTimes(1);
     expect(mockAPI.writeBanner).toHaveBeenCalledWith(mockBannerData);
-  });
-
-  test("writeAdminBanner method calls fetchAdminBanner method", async () => {
-    expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
-
-    await act(async () => {
-      const writeButton = screen.getByTestId("write-button");
-      await userEvent.click(writeButton);
-    });
-
-    /*
-     * if fetchAdminBannerMethod has been called, then so has API getBannerMethod
-     * 1 call on render + 1 call on button click
-     */
-    expect(mockAPI.getBanner).toHaveBeenCalledTimes(2);
   });
 });

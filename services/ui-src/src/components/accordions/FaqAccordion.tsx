@@ -2,17 +2,14 @@
 import { Accordion, Box, Text } from "@chakra-ui/react";
 import { AccordionItem } from "components";
 // utils
-import { makeMediaQueryClasses } from "utils";
 import { AnyObject } from "types";
 
 export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
-
   return (
     <Accordion allowToggle={true} allowMultiple={true} {...props}>
       {accordionItems.map((item: AnyObject, index: number) => (
         <AccordionItem key={index} label={item.question} sx={sx.item}>
-          <Box sx={sx.answerBox} className={mqClasses}>
+          <Box sx={sx.answerBox}>
             <Text>{item.answer}</Text>
           </Box>
         </AccordionItem>
@@ -32,7 +29,7 @@ const sx = {
     borderStyle: "none",
   },
   answerBox: {
-    "&.mobile": {
+    ".mobile &": {
       paddingLeft: "1rem",
     },
   },

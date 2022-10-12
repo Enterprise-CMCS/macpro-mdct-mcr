@@ -19,14 +19,16 @@ export const copyAdminDisabledStatusToForms = (
   const reportAdminDisabledStatus = !!reportJson.adminDisabled;
   const writeAdminDisabledStatus = (routes: ReportRoute[]) => {
     routes.forEach((route: ReportRoute) => {
-      // if children, recurse
-      if (route?.children) {
+      // if children, recurse (only parent routes have children)
+      if (route.children) {
         writeAdminDisabledStatus(route.children);
-      }
-      // else if form (children & form are always mutually exclusive)
-      else if (route?.form) {
-        // copy adminDisabled status to form
-        route.form.adminDisabled = reportAdminDisabledStatus;
+      } else {
+        // else if form present downstream, copy adminDisabled status to form
+        if (route.form) route.form.adminDisabled = reportAdminDisabledStatus;
+        if (route.drawer?.form)
+          route.drawer.form.adminDisabled = reportAdminDisabledStatus;
+        if (route.modal?.form)
+          route.modal.form.adminDisabled = reportAdminDisabledStatus;
       }
     });
   };
@@ -53,11 +55,17 @@ export const flattenReportRoutesArray = (
   return routesArray;
 };
 
+// returns validation schema object for array of fields
 export const compileValidationJsonFromFields = (
-  fieldArray: FormField[]
+  fieldArray: FormField[],
+  parentOption?: any
 ): AnyObject => {
   const validationSchema: AnyObject = {};
   fieldArray.forEach((field: FormField) => {
+    // if field has a parent option, add option name to validation object
+    if (typeof field.validation === "object") {
+      field.validation.parentOptionId = parentOption?.name;
+    }
     // compile field's validation schema
     validationSchema[field.id] = field.validation;
     // if field has choices/options (ie could have nested children)
@@ -69,7 +77,7 @@ export const compileValidationJsonFromFields = (
         if (nestedChildFields) {
           Object.assign(
             validationSchema,
-            compileValidationJsonFromFields(nestedChildFields)
+            compileValidationJsonFromFields(nestedChildFields, choice)
           );
         }
       });
@@ -78,18 +86,31 @@ export const compileValidationJsonFromFields = (
   return validationSchema;
 };
 
+// traverse routes and compile all field validation schema into one object
 export const compileValidationJsonFromRoutes = (
   routeArray: ReportRoute[]
 ): AnyObject => {
   const validationSchema: AnyObject = {};
+  const addValidationToAccumulator = (formFields: FormField[]) => {
+    Object.assign(
+      validationSchema,
+      compileValidationJsonFromFields(formFields)
+    );
+  };
   routeArray.forEach((route: ReportRoute) => {
-    const routeFormFields = route.form?.fields;
-    if (routeFormFields) {
-      Object.assign(
-        validationSchema,
-        compileValidationJsonFromFields(routeFormFields)
-      );
+    // check for non-standard needed validation objects
+    if (route.pageType === "modalDrawer" && route.entityType) {
+      Object.assign(validationSchema, { [route.entityType]: "objectArray" });
     }
+    // if standard form present, add validation to schema
+    const standardFormFields = route.form?.fields;
+    if (standardFormFields) addValidationToAccumulator(standardFormFields);
+    // if modal form present, add validation to schema
+    const modalFormFields = route.modal?.form.fields;
+    if (modalFormFields) addValidationToAccumulator(modalFormFields);
+    // if drawer form present, add validation to schema
+    const drawerFormFields = route.drawer?.form.fields;
+    if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
   });
   return validationSchema;
 };
@@ -109,7 +130,15 @@ export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
       });
     });
   routes.map((route: ReportRoute) => {
-    if (route.form?.fields) mapFieldIdsToObject(route.form?.fields);
+    // if standard form present, map to return object
+    const standardFormFields = route.form?.fields;
+    if (standardFormFields) mapFieldIdsToObject(standardFormFields);
+    // if modal form present, map to return object
+    const modalFormFields = route.modal?.form.fields;
+    if (modalFormFields) mapFieldIdsToObject(modalFormFields);
+    // if drawer form present, map to return object
+    const drawerFormFields = route.drawer?.form.fields;
+    if (drawerFormFields) mapFieldIdsToObject(drawerFormFields);
   });
   return objectToReturn;
 };

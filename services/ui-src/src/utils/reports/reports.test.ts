@@ -1,7 +1,7 @@
-import { ReportJson } from "types";
 import {
   flattenReportRoutesArray,
   sortReportsOldestToNewest,
+  compileValidationJsonFromRoutes,
   copyAdminDisabledStatusToForms,
   makeFieldIdList,
 } from "./reports";
@@ -9,9 +9,14 @@ import {
   mockFlattenedReportRoutes,
   mockFormField,
   mockNestedFormField,
-  mockPageJson,
   mockReportRoutes,
   mockReport,
+  mockStandardReportPageJson,
+  mockReportJson,
+  mockModalDrawerReportPageJson,
+  mockDrawerReportPageJson,
+  mockDrawerFormField,
+  mockModalFormField,
 } from "utils/testing/setupJest";
 
 describe("Test flattenReportRoutesArray", () => {
@@ -51,76 +56,103 @@ describe("Test sortReportsOldestToNewest", () => {
 });
 
 describe("Test copyAdminDisabledStatusToForms", () => {
-  const newReportJson: ReportJson = {
-    name: "mockJson",
-    basePath: "/base/mockJson",
-    adminDisabled: true,
-    routes: [
-      {
-        name: "mock-route-1",
-        path: "/mock/mock-route-1",
-        page: {
-          pageType: "standard",
-          intro: {
-            section: "mock section",
-            subsection: "mock subsection",
-          },
-        },
-        form: {
-          id: "mock-form-id",
-          fields: {
-            id: "mock-1",
-            type: "text",
-            props: {
-              label: "mock field",
-            },
-          },
-        },
-      },
-    ],
-  };
-  it("should be disabled for admin user", () => {
-    const report = copyAdminDisabledStatusToForms(newReportJson);
-    const form = report.routes[0].form;
-    expect(form.adminDisabled).toBeTruthy();
+  it("Copies disabled status to nested forms of any kind", () => {
+    const mockAdminDisabledReportJson = {
+      ...mockReportJson,
+      adminDisabled: true,
+    };
+    const result = copyAdminDisabledStatusToForms(mockAdminDisabledReportJson);
+
+    const testStandardPageForm = result.routes[0].form;
+    const testDrawerPageForm = result.routes[1].children![0].drawer!.form;
+    const testModalDrawerPageModalForm =
+      result.routes[1].children![1].modal!.form;
+    const testModalDrawerPageDrawerForm =
+      result.routes[1].children![1].drawer!.form;
+
+    expect(testStandardPageForm!.adminDisabled).toBeTruthy();
+    expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
   });
 });
 
-const mockField1 = { ...mockFormField, id: "mock-1" };
-const mockField2 = { ...mockNestedFormField, id: "mock-2" };
-const mockField3 = { ...mockFormField, id: "mock-3" };
-
-const mockFlatRoutes = [
-  {
-    name: "mock-route-1",
-    path: "/mock/mock-route-1",
-    page: mockPageJson,
-    form: {
-      id: "mock-form-id-1",
-      fields: [mockField1],
-    },
-  },
-  {
-    name: "mock-route-2",
-    path: "/mock/mock-route-2",
-    page: mockPageJson,
-    form: {
-      id: "mock-form-id-2",
-      fields: [mockField2, mockField3],
-    },
-  },
-];
-
-const expectedResult = {
-  "mock-1": "mock text field",
-  "mock-2": "mock radio field",
-  "mock-text-field": "mock text field",
-  "mock-3": "mock text field",
-};
+describe("Test compileValidationJsonFromRoutes", () => {
+  it("Compiles validation from forms of any kind", () => {
+    const result = compileValidationJsonFromRoutes(mockFlattenedReportRoutes);
+    expect(result).toEqual({
+      accessMeasures: "objectArray",
+      "mock-text-field": "text",
+      "mock-drawer-text-field": "text",
+      "mock-modal-text-field": "text",
+    });
+  });
+});
 
 describe("Test makeFieldIdList", () => {
+  const mockField1 = { ...mockFormField, id: "mock-standard-1" };
+  const mockField2 = { ...mockNestedFormField, id: "mock-drawer-1" };
+  const mockField3 = { ...mockDrawerFormField, id: "mock-drawer-2" };
+  const mockField4 = {
+    ...mockModalFormField,
+    id: "mock-dynamic-drawer-modal-1",
+  };
+  const mockField5 = { ...mockDrawerFormField, id: "mock-dynamic-drawer-1" };
+
+  const mockFlatRoutes = [
+    {
+      ...mockStandardReportPageJson,
+      name: "mock-route-1",
+      path: "/mock/mock-route-1",
+      form: {
+        id: "mock-form-id-1",
+        fields: [mockField1],
+      },
+    },
+    {
+      ...mockDrawerReportPageJson,
+      name: "mock-route-2",
+      path: "/mock/mock-route-2",
+      drawer: {
+        title: "",
+        form: {
+          id: "mock-form-id-2",
+          fields: [mockField2, mockField3],
+        },
+      },
+    },
+    {
+      ...mockModalDrawerReportPageJson,
+      name: "mock-route-3",
+      path: "/mock/mock-route-3",
+      modal: {
+        addTitle: "",
+        editTitle: "",
+        message: "",
+        form: {
+          id: "mock-form-id-3",
+          fields: [mockField4],
+        },
+      },
+      drawer: {
+        title: "",
+        form: {
+          id: "mock-form-id-4",
+          fields: [mockField5],
+        },
+      },
+    },
+  ];
+
   test("Creates flat object of fieldIds when passed nested fields", () => {
     const result = makeFieldIdList(mockFlatRoutes);
-    expect(result).toEqual(expectedResult);
+    expect(result).toEqual({
+      "mock-dynamic-drawer-1": "mock drawer text field",
+      "mock-dynamic-drawer-modal-1": "mock modal text field",
+      "mock-drawer-1": "mock radio field",
+      "mock-drawer-2": "mock drawer text field",
+      "mock-standard-1": "mock text field",
+      "mock-text-field": "mock text field",
+    });
   });
 });

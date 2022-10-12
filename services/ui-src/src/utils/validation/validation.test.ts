@@ -10,7 +10,7 @@ const mockNestedValidationType = {
     type: "text",
     nested: true,
     parentFieldName: "mock-parent-field-name",
-    visibleOptionValue: "mock-visible-option-value",
+    parentOptionId: "mock-parent-option-name",
   },
 };
 
@@ -27,7 +27,7 @@ const mockNestedDependentValidationType = {
     dependentFieldName: "mock-dependent-field-name",
     nested: true,
     parentFieldName: "mock-parent-field-name",
-    visibleOptionValue: "mock-visible-option-value",
+    parentOptionId: "mock-parent-option-name",
   },
 };
 
@@ -46,7 +46,7 @@ describe("Test mapValidationTypesToSchema", () => {
         key: schema.nested(
           () => schema.text(),
           "mock-parent-field-name",
-          "mock-visible-option-value"
+          "mock-parent-option-name"
         ),
       })
     );
@@ -70,7 +70,7 @@ describe("Test mapValidationTypesToSchema", () => {
         key: schema.nested(
           () => schema.endDate("mock-dependent-field-name"),
           "mock-parent-field-name",
-          "mock-visible-option-value"
+          "mock-parent-option-name"
         ),
       })
     );

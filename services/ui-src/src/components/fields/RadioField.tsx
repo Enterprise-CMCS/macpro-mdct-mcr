@@ -2,7 +2,6 @@
 import { Box } from "@chakra-ui/react";
 import { ChoiceListField } from "components";
 // utils
-import { makeMediaQueryClasses } from "utils";
 import { ChoiceFieldProps } from "types";
 
 export const RadioField = ({
@@ -12,10 +11,8 @@ export const RadioField = ({
   sxOverride,
   ...props
 }: ChoiceFieldProps) => {
-  const mqClasses = makeMediaQueryClasses();
-
   return (
-    <Box sx={sxOverride} className={mqClasses}>
+    <Box sx={sxOverride}>
       <ChoiceListField
         name={name}
         type="radio"

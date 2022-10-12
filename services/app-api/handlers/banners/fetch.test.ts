@@ -3,23 +3,10 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
-
-jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  __esModule: true,
-  default: {
-    get: jest.fn().mockReturnValue({
-      Item: {
-        createdAt: 1654198665696,
-        endDate: 1657252799000,
-        lastAltered: 1654198665696,
-        description: "testDesc",
-        title: "testTitle",
-        key: "admin-banner-id",
-        startDate: 1641013200000,
-      },
-    }),
-  },
-}));
+import {
+  mockBannerResponse,
+  mockDocumentClient,
+} from "../../utils/testing/setupJest";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
@@ -38,11 +25,16 @@ const testEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test fetchBanner API method", () => {
-  beforeEach(() => {
-    process.env["BANNER_TABLE_NAME"] = "fakeBannerTable";
+  test("Test Report not found Fetch", async () => {
+    mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
+    const res = await fetchBanner(testEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
   });
 
   test("Test Successful Banner Fetch", async () => {
+    mockDocumentClient.get.promise.mockReturnValueOnce({
+      Item: mockBannerResponse,
+    });
     const res = await fetchBanner(testEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);

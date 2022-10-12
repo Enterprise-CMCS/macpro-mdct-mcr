@@ -135,6 +135,7 @@ jest.mock("aws-amplify", () => ({
     get: () => {},
     post: () => {},
     put: () => {},
+    del: () => {},
     configure: () => {},
   },
 }));
@@ -155,14 +156,6 @@ export const mockBannerData = {
   endDate: 1672531199000, // 12/31/2022 23:59:59 UTC
 };
 
-export const mockBannerDataEmpty = {
-  key: "",
-  title: "",
-  description: "",
-  startDate: "",
-  endDate: "",
-};
-
 // FORM
 
 export const mockFormField = {
@@ -171,6 +164,24 @@ export const mockFormField = {
   validation: "text",
   props: {
     label: "mock text field",
+  },
+};
+
+export const mockModalFormField = {
+  id: "mock-modal-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock modal text field",
+  },
+};
+
+export const mockDrawerFormField = {
+  id: "mock-drawer-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock drawer text field",
   },
 };
 
@@ -206,21 +217,36 @@ export const mockForm = {
   fields: [mockFormField],
 };
 
+export const mockModalForm = {
+  id: "mock-modal-form-id",
+  fields: [mockModalFormField],
+};
+
+export const mockDrawerForm = {
+  id: "mock-drawer-form-id",
+  fields: [mockDrawerFormField],
+};
+
 export const mockPlanFilledForm = {
   id: "mock-form-id",
   fields: [mockPlanField],
 };
 
-export const mockPageJson = {
+export const mockStandardReportPageJson = {
+  name: "mock-route-1",
+  path: "/mock/mock-route-1",
   pageType: "standard",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
+  form: mockForm,
 };
 
-export const mockPageJsonEntityDrawer = {
-  pageType: "entityDrawer",
+export const mockDrawerReportPageJson = {
+  name: "mock-route-2a",
+  path: "/mock/mock-route-2a",
+  pageType: "drawer",
   entityType: "plans",
   intro: {
     section: "mock section",
@@ -231,69 +257,52 @@ export const mockPageJsonEntityDrawer = {
   },
   drawer: {
     title: "Mock drawer title",
+    form: mockDrawerForm,
   },
 };
 
-export const mockPageJsonDynamicDrawer = {
-  pageType: "dynamicDrawer",
+export const mockModalDrawerReportPageJson = {
+  name: "mock-route-2b",
+  path: "/mock/mock-route-2b",
+  pageType: "modalDrawer",
+  entityType: "accessMeasures",
   intro: {
     section: "mock section",
     subsection: "mock subsection",
   },
-  dynamicTable: {
-    tableHeading: "Add measures for monitoring access standards",
-    addEntityText: "Add access measure",
+  dashboard: {
+    title: "Mock dashboard title",
+    addEntityButtonText: "Add entity button",
+    editEntityButtonText: "Edit measure",
+    deleteEntityButtonAltText: "Delete measure",
+  },
+  modal: {
+    addTitle: "Add entity modal",
+    editTitle: "Edit entity modal",
+    message: "Mock message",
+    form: mockModalForm,
+  },
+  drawer: {
+    title: "Mock drawer title",
+    form: mockDrawerForm,
   },
 };
 
 // REPORT
 
 export const mockReportRoutes = [
-  {
-    name: "mock-route-1",
-    path: "/mock/mock-route-1",
-    page: mockPageJson,
-    form: mockForm,
-  },
+  mockStandardReportPageJson,
   {
     name: "mock-route-2",
     path: "/mock/mock-route-2",
-    children: [
-      {
-        name: "mock-route-2a",
-        path: "/mock/mock-route-2a",
-        page: mockPageJsonEntityDrawer,
-        form: mockPlanFilledForm,
-      },
-      {
-        name: "mock-route-2b",
-        path: "/mock/mock-route-2b",
-        page: mockPageJsonDynamicDrawer,
-        form: mockForm,
-      },
-    ],
+    children: [mockDrawerReportPageJson, mockModalDrawerReportPageJson],
   },
 ];
 
 export const mockFlattenedReportRoutes = [
-  {
-    name: "mock-route-1",
-    path: "/mock/mock-route-1",
-    page: mockPageJson,
-    form: mockForm,
-  },
-  {
-    name: "mock-route-2a",
-    path: "/mock/mock-route-2a",
-    page: mockPageJsonEntityDrawer,
-    form: mockPlanFilledForm,
-  },
-  {
-    name: "mock-route-2b",
-    path: "/mock/mock-route-2b",
-    page: mockPageJsonDynamicDrawer,
-    form: mockForm,
-  },
+  mockStandardReportPageJson,
+  mockDrawerReportPageJson,
+  mockModalDrawerReportPageJson,
 ];
 
 export const mockReportJson = {
@@ -323,6 +332,25 @@ export const mockReportFieldData = {
   radio: ["option1"],
   checkbox: ["option1", "option2"],
   dropdown: "dropdown-selection",
+  accessMeasures: [
+    {
+      id: "mock-id",
+      accessMeasure_generalCategory: [
+        {
+          key: "option1",
+          value: "mock-category",
+        },
+      ],
+      accessMeasure_standardDescription: "mock-description",
+      accessMeasure_standardType: [
+        {
+          key: "option1",
+          value: "mock-type",
+        },
+      ],
+      "accessMeasure_standardType-otherText": "",
+    },
+  ],
 };
 
 export const mockReport = {

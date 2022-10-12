@@ -10,43 +10,39 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ReportDrawer, ReportContext } from "components";
+import {
+  ReportDrawer,
+  ReportContext,
+  ReportPageFooter,
+  ReportPageIntro,
+} from "components";
 // utils
 import { useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
-  FormJson,
-  PageJson,
+  DrawerReportPageShape,
   ReportStatus,
 } from "types";
-import emptyVerbiage from "../../verbiage/pages/mcpar/mcpar-entity-drawer";
+import verbiage from "../../verbiage/pages/mcpar/mcpar-drawer-report-page";
 
-export const EntityDrawerReportPage = ({
-  form,
-  page,
-  submittingState,
-}: Props) => {
+export const DrawerReportPage = ({ route }: Props) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   // make state
-  const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
 
-  const { submitting, setSubmitting } = submittingState;
-  const { entityType, dashboard, drawer } = page;
+  const { entityType, dashboard, drawer } = route;
   const entities = report?.fieldData?.[entityType];
-  const { message, link } =
-    emptyVerbiage[entityType as keyof typeof emptyVerbiage];
-
-  // shape entity data for hydration
-  const formData = { fieldData: currentEntity };
+  const { message, link } = verbiage[entityType as keyof typeof verbiage];
 
   const openRowDrawer = (entity: EntityShape) => {
-    setCurrentEntity(entity);
+    setSelectedEntity(entity);
     onOpen();
   };
 
@@ -58,15 +54,15 @@ export const EntityDrawerReportPage = ({
         id: report?.id,
       };
       const currentEntities = [...(report?.fieldData[entityType] || {})];
-      const currentEntityIndex = report?.fieldData[entityType].findIndex(
-        (entity: EntityShape) => entity.name === currentEntity?.name
+      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.name === selectedEntity?.name
       );
       const newEntity = {
-        ...currentEntity,
+        ...selectedEntity,
         ...formData,
       };
       let newEntities = currentEntities;
-      newEntities[currentEntityIndex] = newEntity;
+      newEntities[selectedEntityIndex] = newEntity;
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
@@ -95,11 +91,11 @@ export const EntityDrawerReportPage = ({
         </Button>
       </Flex>
     ));
-
   return (
-    <Box data-testid="entity-drawer">
+    <Box data-testid="drawer-report-page">
+      {route.intro && <ReportPageIntro text={route.intro} />}
       <Heading as="h3" sx={sx.dashboardTitle}>
-        {dashboard.title}
+        {dashboard!.title}
       </Heading>
       {entities ? (
         entityRows(entities)
@@ -116,25 +112,21 @@ export const EntityDrawerReportPage = ({
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${currentEntity?.name}`}
+        drawerTitle={`${drawer.title} ${selectedEntity?.name}`}
         drawerInfo={drawer.info}
-        form={form}
+        form={drawer.form}
         onSubmit={onSubmit}
-        formData={formData}
+        formData={selectedEntity}
         submitting={submitting}
         data-testid="report-drawer"
       />
+      <ReportPageFooter />
     </Box>
   );
 };
 
 interface Props {
-  form: FormJson;
-  page: PageJson;
-  submittingState: {
-    submitting: boolean;
-    setSubmitting: Function;
-  };
+  route: DrawerReportPageShape;
 }
 
 const sx = {

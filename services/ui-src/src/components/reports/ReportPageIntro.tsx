@@ -17,7 +17,7 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
       </Heading>
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
-          <SpreadsheetWidget content={spreadsheet} />
+          <SpreadsheetWidget description={spreadsheet} />
         </Box>
       )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
@@ -53,15 +53,13 @@ const sx = {
     },
     "p, span": {
       color: "palette.gray",
+      marginTop: "1rem",
     },
     a: {
       color: "palette.primary",
       "&:hover": {
         color: "palette.primary_darker",
       },
-    },
-    p: {
-      color: "palette.base",
     },
   },
 };

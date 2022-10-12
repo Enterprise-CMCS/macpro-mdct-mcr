@@ -24,8 +24,6 @@ export const AddEditProgramModal = ({
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  // add validation to formJson
   const form: FormJson = formJson;
 
   const writeProgram = async (formData: any) => {
@@ -100,7 +98,7 @@ export const AddEditProgramModal = ({
         data-testid="add-edit-program-form"
         id={form.id}
         formJson={form}
-        formData={selectedReport}
+        formData={selectedReport?.fieldData}
         onSubmit={writeProgram}
       />
     </Modal>

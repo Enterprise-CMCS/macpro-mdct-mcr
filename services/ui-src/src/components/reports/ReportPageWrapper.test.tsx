@@ -32,7 +32,7 @@ const ReportPageWrapper_StandardPage = (
   </RouterWrappedComponent>
 );
 
-const ReportPageWrapper_EntityDrawer = (
+const ReportPageWrapper_Drawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[1]} />
@@ -40,7 +40,7 @@ const ReportPageWrapper_EntityDrawer = (
   </RouterWrappedComponent>
 );
 
-const ReportPageWrapper_DynamicDrawer = (
+const ReportPageWrapper_ModalDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
       <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[2]} />
@@ -71,15 +71,15 @@ describe("Test ReportPageWrapper view", () => {
     expect(screen.getByTestId("standard-page")).toBeVisible();
   });
 
-  test("ReportPageWrapper EntityDrawerSection view renders", () => {
-    render(ReportPageWrapper_EntityDrawer);
-    expect(screen.getByTestId("entity-drawer")).toBeVisible();
+  test("ReportPageWrapper DrawerSection view renders", () => {
+    render(ReportPageWrapper_Drawer);
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 });
 
-test("ReportPageWrapper DynamicDrawerReportPage view renders", () => {
-  render(ReportPageWrapper_DynamicDrawer);
-  expect(screen.getByTestId("dynamic-drawer-section")).toBeVisible();
+test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
+  render(ReportPageWrapper_ModalDrawer);
+  expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
 });
 
 describe("Test ReportPageWrapper functionality", () => {
@@ -98,14 +98,14 @@ describe("Test ReportPageWrapper accessibility", () => {
     expect(results).toHaveNoViolations();
   });
 
-  test("EntityDrawer page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_EntityDrawer);
+  test("Drawer page should not have basic accessibility issues", async () => {
+    const { container } = render(ReportPageWrapper_Drawer);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  test("DynamicDrawer should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_DynamicDrawer);
+  test("ModalDrawer should not have basic accessibility issues", async () => {
+    const { container } = render(ReportPageWrapper_ModalDrawer);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
