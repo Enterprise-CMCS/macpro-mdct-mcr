@@ -38,7 +38,7 @@ export const App = () => {
   const isReportPage = isMcparReportFormPage(pathname);
 
   return (
-    <div id="app-wrapper">
+    <div id="app-wrapper" className={mqClasses}>
       {user && (
         <Flex sx={sx.appLayout}>
           <SkipNav
@@ -49,11 +49,7 @@ export const App = () => {
           />
           <ReportProvider>
             <Header handleLogout={logout} />
-            <Container
-              sx={sx.appContainer}
-              className={mqClasses}
-              data-testid="app-container"
-            >
+            <Container sx={sx.appContainer} data-testid="app-container">
               <ErrorBoundary FallbackComponent={Error}>
                 <AppRoutes />
               </ErrorBoundary>
@@ -94,7 +90,7 @@ const sx = {
     display: "flex",
     maxW: "appMax",
     flex: "1 0 auto",
-    "&.desktop": {
+    ".desktop &": {
       padding: "0 2rem",
     },
     "#main-content": {

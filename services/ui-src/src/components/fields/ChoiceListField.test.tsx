@@ -24,7 +24,6 @@ const mockGetValues = (returnValue: any) =>
   }));
 
 jest.mock("utils", () => ({
-  makeMediaQueryClasses: () => {},
   formFieldFactory: jest.fn(),
 }));
 

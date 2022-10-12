@@ -2,7 +2,6 @@ import React from "react";
 // components
 import { Box, Flex } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses } from "utils";
 import { AnyObject } from "types";
 
 export const PageTemplate = ({
@@ -11,18 +10,10 @@ export const PageTemplate = ({
   sxOverride,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   return (
     <section>
-      <Box
-        sx={{ ...sx.contentBox, ...sxOverride }}
-        className={`${type} ${mqClasses}`}
-        {...props}
-      >
-        <Flex
-          sx={sx.contentFlex}
-          className={`contentFlex ${type} ${mqClasses}`}
-        >
+      <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
+        <Flex sx={sx.contentFlex} className={`contentFlex ${type}`}>
           {children}
         </Flex>
       </Box>
