@@ -62,7 +62,7 @@ export const AdminPage = () => {
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner</Text>
-        {!isLoading ? (
+        {isLoading ? (
           <Flex sx={sx.spinnerContainer}>
             <Spinner />
           </Flex>
