@@ -23,6 +23,7 @@ export const Modal = ({
   formId,
   children,
 }: Props) => {
+  // TODO: Replace CloseIcon with custom graphic asset
   const mqClasses = makeMediaQueryClasses();
   return (
     <ChakraModal

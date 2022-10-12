@@ -33,6 +33,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import { ArrowIcon, Spinner } from "@cmsgov/design-system";
 
 export const DashboardPage = () => {
+  // TODO: Replace ArrowIcon with custom graphic asset
   const {
     errorMessage,
     fetchReportsByState,

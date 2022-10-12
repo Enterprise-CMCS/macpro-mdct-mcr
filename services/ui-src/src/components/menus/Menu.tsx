@@ -18,6 +18,8 @@ import editIcon from "assets/icons/icon_edit_square.png";
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const mqClasses = makeMediaQueryClasses();
+
+  // TODO: Replace ChevronDown with custom graphic asset
   return (
     <MenuRoot offset={[8, 20]}>
       <Box role="group">

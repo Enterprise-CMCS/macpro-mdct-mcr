@@ -20,6 +20,7 @@ export const Sidebar = () => {
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { pathname } = useLocation();
 
+  // TODO: Replace ArrowIcon with custom graphic asset
   return (
     <>
       {isMcparReportFormPage(pathname) && (

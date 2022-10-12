@@ -3,14 +3,13 @@ import { Flex, Image, Text } from "@chakra-ui/react";
 import { Icon } from "components";
 
 export const MenuOption = ({ text, icon, role, hideText }: Props) => {
+  // TODO: Replace Log Out with custom graphic asset
   return (
     <Flex
       align="center"
       role={role}
       sx={!hideText ? { paddingRight: ".5rem" } : {}}
     >
-      {/* There is no custom graphic asset for the Log Out icon
-          TODO: replace it if one exists */}
       {text === "Manage Account" ? (
         <Image src={icon} alt="Edit" sx={sx.editIcon} />
       ) : text === "Get Help" ? (
