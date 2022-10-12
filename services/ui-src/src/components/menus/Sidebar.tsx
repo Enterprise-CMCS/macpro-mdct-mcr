@@ -50,7 +50,7 @@ export const Sidebar = () => {
           <Box id="sidebar-title-box" sx={sx.topBox}>
             <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
           </Box>
-          <Box sx={sx.navSectionsBox} className={"nav-sections-box"}>
+          <Box sx={sx.navSectionsBox} className="nav-sections-box">
             {mcparReportJson.routes.map((section) => (
               <NavSection key={section.name} section={section} level={1} />
             ))}
