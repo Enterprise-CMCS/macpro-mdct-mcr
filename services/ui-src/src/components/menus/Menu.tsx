@@ -12,6 +12,8 @@ import {
 import { Icon, MenuOption } from "components";
 // utils
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
+// assets
+import editIcon from "assets/icons/icon_edit_square.png";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -40,7 +42,7 @@ export const Menu = ({ handleLogout }: Props) => {
             sx={sx.menuItem}
             data-testid="header-menu-option-manage-account"
           >
-            <MenuOption icon="pencilSquare" text="Manage Account" />
+            <MenuOption icon={editIcon} text="Manage Account" />
           </MenuItem>
         </Link>
         <MenuItem

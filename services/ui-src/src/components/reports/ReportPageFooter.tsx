@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
 import { useFindRoute, useUser } from "utils";
@@ -30,7 +30,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             onClick={() => navigate(previousRoute)}
             variant="outline"
             leftIcon={
-              <img src={previousIcon} alt="Previous" style={sx.arrowIcon} />
+              <Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />
             }
           >
             Previous
@@ -42,7 +42,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
                 submitting ? (
                   <></>
                 ) : (
-                  <img src={nextIcon} alt="Next" style={sx.arrowIcon} />
+                  <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
                 )
               }
             >
@@ -55,7 +55,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
               sx={sx.button}
               rightIcon={
                 !submitting ? (
-                  <img src={nextIcon} alt="Next" style={sx.arrowIcon} />
+                  <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
                 ) : undefined
               }
             >

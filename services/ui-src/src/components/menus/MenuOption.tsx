@@ -1,5 +1,5 @@
 // components
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import { Icon } from "components";
 
 export const MenuOption = ({ text, icon, role, hideText }: Props) => {
@@ -9,12 +9,20 @@ export const MenuOption = ({ text, icon, role, hideText }: Props) => {
       role={role}
       sx={!hideText ? { paddingRight: ".5rem" } : {}}
     >
-      <Icon
-        icon={icon}
-        margin=".5rem"
-        fontSize="1.4rem"
-        color="palette.white"
-      />
+      {/* There is no custom graphic asset for the Log Out icon
+          TODO: replace it if one exists */}
+      {text === "Manage Account" ? (
+        <Image src={icon} alt="Edit" sx={sx.editIcon} />
+      ) : text === "Get Help" ? (
+        <Image src={icon} alt="Get Help" sx={sx.helpIcon} />
+      ) : (
+        <Icon
+          icon={icon}
+          margin=".5rem"
+          fontSize="1.4rem"
+          color="palette.white"
+        />
+      )}
       {!hideText && <Text sx={sx.text}>{text}</Text>}
     </Flex>
   );
@@ -32,5 +40,13 @@ const sx = {
     fontWeight: "bold",
     color: "palette.white",
     _groupHover: { color: "palette.gray_lighter" },
+  },
+  editIcon: {
+    width: "1.5rem",
+    margin: "0.5rem",
+  },
+  helpIcon: {
+    width: "1.75rem",
+    margin: "0.5rem",
   },
 };
