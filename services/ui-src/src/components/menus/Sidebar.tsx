@@ -23,45 +23,47 @@ export const Sidebar = () => {
   return (
     <>
       {isMcparReportFormPage(pathname) && (
-        <Box
-          id="sidebar"
-          sx={sx.root}
-          className={`${mqClasses} ${isOpen ? "open" : "closed"}`}
-          role="navigation"
-          aria-label="Sidebar menu"
-          data-testid="sidebar-nav"
-        >
+        <>
           <SkipNav
             id="skip-nav-sidebar"
             href="#report-content"
-            text="Skip to report page"
+            text="Skip to main content"
             sxOverride={sx.sideBarSkipNav}
           />
           <Box
-            as="button"
-            sx={sx.closeButton}
-            onClick={() => toggleSidebar(!isOpen)}
-            aria-label="Open/Close sidebar menu"
+            id="sidebar"
+            sx={sx.root}
+            className={`${mqClasses} ${isOpen ? "open" : "closed"}`}
+            role="navigation"
+            aria-label="Sidebar menu"
+            data-testid="sidebar-nav"
           >
-            <ArrowIcon
-              title="closeNavBarButton"
-              direction={isOpen ? "left" : "right"}
-            />
+            <Box
+              as="button"
+              sx={sx.closeButton}
+              onClick={() => toggleSidebar(!isOpen)}
+              aria-label="Open/Close sidebar menu"
+            >
+              <ArrowIcon
+                title="closeNavBarButton"
+                direction={isOpen ? "left" : "right"}
+              />
+            </Box>
+            <Box id="sidebar-title-box" sx={sx.topBox}>
+              <Heading sx={sx.title} className={mqClasses}>
+                MCPAR Report Submission Form
+              </Heading>
+            </Box>
+            <Box
+              sx={sx.navSectionsBox}
+              className={`${mqClasses} nav-sections-box`}
+            >
+              {mcparReportJson.routes.map((section) => (
+                <NavSection key={section.name} section={section} level={1} />
+              ))}
+            </Box>
           </Box>
-          <Box id="sidebar-title-box" sx={sx.topBox}>
-            <Heading sx={sx.title} className={mqClasses}>
-              MCPAR Report Submission Form
-            </Heading>
-          </Box>
-          <Box
-            sx={sx.navSectionsBox}
-            className={`${mqClasses} nav-sections-box`}
-          >
-            {mcparReportJson.routes.map((section) => (
-              <NavSection key={section.name} section={section} level={1} />
-            ))}
-          </Box>
-        </Box>
+        </>
       )}
     </>
   );
@@ -188,7 +190,8 @@ const sx = {
     },
   },
   sideBarSkipNav: {
-    top: -200,
+    position: "fixed",
+    top: -100,
   },
   topBox: {
     borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",
