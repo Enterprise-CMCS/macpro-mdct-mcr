@@ -16,7 +16,7 @@ import { Menu, MenuOption, ReportContext } from "components";
 import { makeMediaQueryClasses, useBreakpoint } from "utils";
 import { isMcparReportFormPage } from "forms/mcpar";
 // assets
-import appLogo from "assets/logos/logo_mcr_draft.png";
+import appLogo from "assets/logos/logo_mcr.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();

@@ -7,7 +7,7 @@ import { makeMediaQueryClasses } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 // assets
-import nextIcon from "assets/icons/icon_next.png";
+import nextIcon from "assets/icons/icon_next_white.png";
 import NavigationSectionsImage from "assets/other/nav-sections.png";
 import NavigationSectionsSubmissionImage from "assets/other/nav-sections-review-submit.png";
 

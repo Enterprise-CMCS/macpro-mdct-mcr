@@ -3,7 +3,7 @@ import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import editIcon from "assets/icons/icon_edit-square.png";
+import editIcon from "assets/icons/icon_edit_square.png";
 
 export const MobileDashboardList = ({
   reportsByState,
