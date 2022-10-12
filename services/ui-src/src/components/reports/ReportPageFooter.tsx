@@ -30,11 +30,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             onClick={() => navigate(previousRoute)}
             variant="outline"
             leftIcon={
-              <img
-                src={previousIcon}
-                alt="previous icon"
-                style={sx.arrowIcon}
-              />
+              <img src={previousIcon} alt="Previous" style={sx.arrowIcon} />
             }
           >
             Previous
@@ -46,7 +42,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
                 submitting ? (
                   <></>
                 ) : (
-                  <img src={nextIcon} alt="next icon" style={sx.arrowIcon} />
+                  <img src={nextIcon} alt="Next" style={sx.arrowIcon} />
                 )
               }
             >
@@ -59,7 +55,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
               sx={sx.button}
               rightIcon={
                 !submitting ? (
-                  <img src={nextIcon} alt="next icon" style={sx.arrowIcon} />
+                  <img src={nextIcon} alt="Next" style={sx.arrowIcon} />
                 ) : undefined
               }
             >

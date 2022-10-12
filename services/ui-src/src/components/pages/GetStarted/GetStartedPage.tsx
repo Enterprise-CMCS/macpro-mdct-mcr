@@ -8,8 +8,8 @@ import { makeMediaQueryClasses } from "utils";
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
-import NavigationSectionsImage from "assets/other/nav-sections.png";
-import NavigationSectionsSubmissionImage from "assets/other/nav-sections-review-submit.png";
+import NavigationSectionsImage from "assets/other/nav_sections.png";
+import NavigationSectionsSubmissionImage from "assets/other/nav_sections_review_submit.png";
 
 export const GetStartedPage = () => {
   const { intro, body, pageLink } = verbiage;
