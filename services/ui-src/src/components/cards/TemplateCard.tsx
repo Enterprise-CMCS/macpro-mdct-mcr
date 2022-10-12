@@ -4,11 +4,7 @@ import { Card, TemplateCardAccordion } from "components";
 // utils
 import { useNavigate } from "react-router-dom";
 import config from "config";
-import {
-  getSignedTemplateUrl,
-  makeMediaQueryClasses,
-  useBreakpoint,
-} from "utils";
+import { getSignedTemplateUrl, useBreakpoint } from "utils";
 import { AnyObject } from "types";
 // assets
 import downloadIcon from "assets/icons/icon_download.png";
@@ -32,7 +28,6 @@ export const TemplateCard = ({
   ...props
 }: Props) => {
   const { isDesktop } = useBreakpoint();
-  const mqClasses = makeMediaQueryClasses();
   const navigate = useNavigate();
 
   const showFormLink = verbiage.link && config.STAGE !== "production";
@@ -53,11 +48,10 @@ export const TemplateCard = ({
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
           <Text>{cardText}</Text>
 
-          <Flex className={mqClasses} sx={sx.actionsFlex}>
+          <Flex sx={sx.actionsFlex}>
             <Button
               variant="link"
               sx={sx.templateDownloadButton}
-              className={mqClasses}
               leftIcon={
                 <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
               }
@@ -71,7 +65,6 @@ export const TemplateCard = ({
             {showFormLink && (
               <Button
                 sx={sx.formLink}
-                className={mqClasses}
                 onClick={() => navigate(verbiage.link.route)}
                 rightIcon={
                   <Image src={nextIcon} alt="Link Icon" height="1rem" />
@@ -118,7 +111,7 @@ const sx = {
     gridGap: "1rem",
     justifyContent: "space-between",
     marginTop: "1rem",
-    "&.mobile": {
+    ".mobile &": {
       flexDirection: "column",
     },
   },
@@ -130,7 +123,7 @@ const sx = {
       marginLeft: "0rem",
       marginRight: "0.5rem",
     },
-    "&.mobile": {
+    ".mobile &": {
       marginRight: "0",
     },
   },

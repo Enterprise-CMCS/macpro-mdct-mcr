@@ -15,7 +15,6 @@ jest.mock("utils/other/useBreakpoint", () => ({
   useBreakpoint: jest.fn(() => ({
     isDesktop: true,
   })),
-  makeMediaQueryClasses: jest.fn(() => "desktop"),
 }));
 
 const mockUseNavigate = jest.fn();
