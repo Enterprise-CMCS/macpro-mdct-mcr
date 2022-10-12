@@ -1,6 +1,10 @@
 // components
-import { Card, EntityCardBottomText, EntityCardTopText } from "components";
-import { Box, Button, Heading, Image } from "@chakra-ui/react";
+import {
+  Card,
+  EntityCardBottomSection,
+  EntityCardTopSection,
+} from "components";
+import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, EntityShape } from "types";
 // assets
@@ -45,7 +49,7 @@ export const EntityCard = ({
         <Heading as="h4" sx={sx.heading}>
           {formattedEntityData.category}
         </Heading>
-        <EntityCardTopText
+        <EntityCardTopSection
           entityType={entityType}
           formattedEntityData={formattedEntityData}
         />
@@ -58,11 +62,16 @@ export const EntityCard = ({
         >
           {verbiage.editEntityButtonText}
         </Button>
-        <EntityCardBottomText
-          entityType={entityType}
-          entityCompleted={entityCompleted}
-          formattedEntityData={formattedEntityData}
-        />
+        {entityCompleted ? (
+          <EntityCardBottomSection
+            entityType={entityType}
+            formattedEntityData={formattedEntityData}
+          />
+        ) : (
+          <Text sx={sx.unfinishedMessage}>
+            {verbiage.entityUnfinishedMessage}
+          </Text>
+        )}
         <Button
           size="sm"
           sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
@@ -123,6 +132,10 @@ const sx = {
   },
   heading: {
     fontSize: "sm",
+  },
+  unfinishedMessage: {
+    fontSize: "xs",
+    color: "palette.error_dark",
   },
   editButton: {
     marginY: "1rem",

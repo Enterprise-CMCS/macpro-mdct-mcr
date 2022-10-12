@@ -3,7 +3,7 @@ import { Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
-export const EntityCardTopText = ({
+export const EntityCardTopSection = ({
   entityType,
   formattedEntityData,
 }: Props) => {
@@ -19,17 +19,9 @@ export const EntityCardTopText = ({
         </>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
-      return (
-        <>
-          <Text sx={sx.description}>Sanctions TODO</Text>
-        </>
-      );
+      return <Text sx={sx.description}>Sanctions TODO</Text>;
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      return (
-        <>
-          <Text sx={sx.description}>Quality Measures TODO</Text>
-        </>
-      );
+      return <Text sx={sx.description}>Quality Measures TODO</Text>;
     default:
       return <Text>{entityType}</Text>;
   }

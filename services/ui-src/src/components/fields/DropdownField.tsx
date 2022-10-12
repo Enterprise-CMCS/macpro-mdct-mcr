@@ -5,7 +5,7 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { makeMediaQueryClasses, parseCustomHtml } from "utils";
+import { parseCustomHtml } from "utils";
 import {
   InputChangeEvent,
   AnyObject,
@@ -22,7 +22,6 @@ export const DropdownField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   const [displayValue, setDisplayValue] = useState<string>(
     dropdownDefaultOptionText
   );
@@ -85,7 +84,7 @@ export const DropdownField = ({
   const labelClass = !label ? "no-label" : "";
 
   return (
-    <Box sx={sxOverride} className={`${mqClasses} ${labelClass}`}>
+    <Box sx={sxOverride} className={labelClass}>
       <CmsdsDropdown
         name={name}
         id={name}

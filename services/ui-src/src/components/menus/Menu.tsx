@@ -11,11 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { Icon, MenuOption } from "components";
 // utils
-import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
-  const mqClasses = makeMediaQueryClasses();
   return (
     <MenuRoot offset={[8, 20]}>
       <Box role="group">
@@ -23,7 +22,6 @@ export const Menu = ({ handleLogout }: Props) => {
           as={Button}
           rightIcon={<Icon icon="chevronDown" color="palette.white" />}
           sx={sx.menuButton}
-          className={mqClasses}
           aria-label="my account"
           data-testid="header-menu-dropdown-button"
         >
@@ -75,7 +73,7 @@ const sx = {
       boxShadow: "none",
       outline: "0px solid transparent !important",
     },
-    "&.mobile": {
+    ".mobile &": {
       marginLeft: 0,
     },
     "& .chakra-button__icon": {

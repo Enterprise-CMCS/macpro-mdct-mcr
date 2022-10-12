@@ -10,8 +10,6 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-// utils
-import { makeMediaQueryClasses } from "utils";
 import { AnyObject, TableContentShape } from "types";
 
 export const Table = ({
@@ -21,7 +19,6 @@ export const Table = ({
   children,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   return (
     <TableRoot
       variant={variant}
@@ -37,12 +34,7 @@ export const Table = ({
           {/* Head Row */}
           <Tr>
             {content.headRow.map((headerCell: string, index: number) => (
-              <Th
-                key={index}
-                scope="col"
-                sx={sx.tableHeader}
-                className={mqClasses}
-              >
+              <Th key={index} scope="col" sx={sx.tableHeader}>
                 {headerCell}
               </Th>
             ))}
@@ -57,7 +49,7 @@ export const Table = ({
           content.bodyRows!.map((row: string[], index: number) => (
             <Tr key={row[0] + index}>
               {row.map((cell: string, index: number) => (
-                <Td key={cell + index} sx={sx.tableCell} className={mqClasses}>
+                <Td key={cell + index} sx={sx.tableCell}>
                   {cell}
                 </Td>
               ))}
@@ -92,7 +84,7 @@ const sx = {
     textTransform: "none",
     letterSpacing: "normal",
     color: "black",
-    "&.mobile": {
+    ".mobile &": {
       fontSize: "xs",
     },
   },
@@ -101,7 +93,7 @@ const sx = {
     borderStyle: "none",
     fontWeight: "normal",
     color: "black",
-    "&.mobile": {
+    ".mobile &": {
       fontSize: "xs",
     },
   },

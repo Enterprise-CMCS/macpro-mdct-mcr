@@ -4,13 +4,17 @@ import { Alert } from "components";
 import { BannerData } from "types";
 
 export const Banner = ({ bannerData, ...props }: Props) => {
-  const { title, description, link } = bannerData;
-  return (
-    <Alert title={title} description={description} link={link} {...props} />
-  );
+  if (bannerData) {
+    const { title, description, link } = bannerData;
+    return (
+      bannerData && (
+        <Alert title={title} description={description} link={link} {...props} />
+      )
+    );
+  } else return <></>;
 };
 
 interface Props {
-  bannerData: BannerData;
+  bannerData: BannerData | undefined;
   [key: string]: any;
 }

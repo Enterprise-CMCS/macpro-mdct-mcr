@@ -119,7 +119,7 @@ const theme = extendTheme({
         width: "fit-content",
         borderRadius: "0.25rem",
         fontWeight: "bold",
-        "&.mobile": {
+        ".mobile &": {
           fontSize: "sm",
         },
       },

@@ -2,7 +2,7 @@
 import { Flex, Image, Link, Text } from "@chakra-ui/react";
 import { Card } from "components";
 // utils
-import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 import { AnyObject } from "types";
 import { createEmailLink } from "utils/other/email";
 // assets
@@ -22,17 +22,11 @@ const iconMap: { [key: string]: { [key: string]: string } } = {
 
 export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
   const { isDesktop } = useBreakpoint();
-  const mqClasses = makeMediaQueryClasses();
 
   return (
     <Card {...cardprops} paddingBottom="1.5rem !important">
-      <Flex sx={sx.root} {...props} className={mqClasses}>
-        <Image
-          src={iconMap[icon].image}
-          alt={iconMap[icon].alt}
-          sx={sx.icon}
-          className={mqClasses}
-        />
+      <Flex sx={sx.root} {...props}>
+        <Image src={iconMap[icon].image} alt={iconMap[icon].alt} sx={sx.icon} />
         <Flex sx={sx.cardContentFlex}>
           <Text sx={sx.bodyText}>{verbiage.body}</Text>
           <Text sx={sx.emailText}>
@@ -57,14 +51,14 @@ const sx = {
   root: {
     flexDirection: "row",
     textAlign: "left",
-    "&.mobile": {
+    ".mobile &": {
       flexDirection: "column",
     },
   },
   icon: {
     marginRight: "2rem",
     boxSize: "78px",
-    "&.mobile": {
+    ".mobile &": {
       alignSelf: "center",
       marginRight: "0",
       marginBottom: "1rem",

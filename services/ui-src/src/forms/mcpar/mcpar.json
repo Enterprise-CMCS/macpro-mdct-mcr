@@ -984,6 +984,7 @@
                 "deleteModalTitle": "Delete access measure?",
                 "deleteModalConfirmButtonText": "Yes, Delete Measure",
                 "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
+                "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
                 "enterEntityDetailsButtonText": "Enter details",
                 "editEntityDetailsButtonText": "Edit details",
                 "drawerTitle": "Add details for access measure"
@@ -2423,6 +2424,7 @@
             "deleteModalTitle": "replace me in json",
             "deleteModalConfirmButtonText": "replace me in json",
             "deleteModalWarning": "replace me in json",
+            "entityUnfinishedMessage": "replace me in json",
             "enterEntityDetailsButtonText": "replace me in json",
             "editEntityDetailsButtonText": "replace me in json",
             "drawerTitle": "replace me in json"
@@ -2689,6 +2691,7 @@
             "deleteModalTitle": "replace me in json",
             "deleteModalConfirmButtonText": "replace me in json",
             "deleteModalWarning": "replace me in json",
+            "entityUnfinishedMessage": "replace me in json",
             "enterEntityDetailsButtonText": "replace me in json",
             "editEntityDetailsButtonText": "replace me in json",
             "drawerTitle": "replace me in json"

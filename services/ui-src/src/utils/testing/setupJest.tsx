@@ -156,14 +156,6 @@ export const mockBannerData = {
   endDate: 1672531199000, // 12/31/2022 23:59:59 UTC
 };
 
-export const mockBannerDataEmpty = {
-  key: "",
-  title: "",
-  description: "",
-  startDate: "",
-  endDate: "",
-};
-
 // FORM
 
 export const mockFormField = {
@@ -280,6 +272,7 @@ export const mockModalDrawerReportPageVerbiage = {
   deleteModalTitle: "Mock delete modal title",
   deleteModalConfirmButtonText: "Mock delete modal confirm button text",
   deleteModalWarning: "Mock delete modal warning",
+  entityUnfinishedMessage: "Mock entity unfinished messsage",
   enterEntityDetailsButtonText: "Mock enter entity details button text",
   editEntityDetailsButtonText: "Mock edit entity details button text",
   drawerTitle: "Mock drawer title",
