@@ -27,6 +27,8 @@ const mockEntity = {
   "accessMeasure_standardType-otherText": "",
 };
 
+const mockEntityType = "mock-entity-type";
+
 const mockFormattedEntityData = {
   category: "mock-category",
   standardDescription: "mock-standardDescription",
@@ -47,6 +49,7 @@ const mockUnfinishedEntityData = {
 const EntityCardComponent = (
   <EntityCard
     entity={mockEntity}
+    entityType={mockEntityType}
     formattedEntityData={mockFormattedEntityData}
     dashboard={mockModalDrawerReportPageJson.dashboard}
     openAddEditEntityModal={openAddEditEntityModal}
@@ -59,11 +62,51 @@ const EntityCardComponent = (
 const UnfinishedEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
+    entityType={mockEntityType}
     formattedEntityData={mockUnfinishedEntityData}
     dashboard={mockModalDrawerReportPageJson.dashboard}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
+  />
+);
+
+const AccessMeasuresEntityCardComponent = (
+  <EntityCard
+    entity={mockEntity}
+    entityType={"accessMeasures"}
+    formattedEntityData={mockFormattedEntityData}
+    dashboard={mockModalDrawerReportPageJson.dashboard}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
+  />
+);
+
+const SanctionsEntityCardComponent = (
+  <EntityCard
+    entity={mockEntity}
+    entityType={"sanctions"}
+    formattedEntityData={mockFormattedEntityData}
+    dashboard={mockModalDrawerReportPageJson.dashboard}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
+  />
+);
+
+const QualityMeasuresEntityCardComponent = (
+  <EntityCard
+    entity={mockEntity}
+    entityType={"qualityMeasures"}
+    formattedEntityData={mockFormattedEntityData}
+    dashboard={mockModalDrawerReportPageJson.dashboard}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
   />
 );
 
@@ -105,13 +148,6 @@ describe("Test Finished EntityCard", () => {
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
-
-  test("EntityCard doesnt show the unfinished message", () => {
-    const unfinishedMessage = screen.queryByText(
-      "Complete the remaining indicators for this access measure by entering details."
-    );
-    expect(unfinishedMessage).toBeFalsy();
-  });
 });
 
 describe("Test Unfinished EntityCard", () => {
@@ -140,13 +176,6 @@ describe("Test Unfinished EntityCard", () => {
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
-
-  test("EntityCard shows the unfinished message", () => {
-    const unfinishedMessage = screen.queryByText(
-      "Complete the remaining indicators for this access measure by entering details."
-    );
-    expect(unfinishedMessage).toBeTruthy();
-  });
 });
 
 describe("Test EntityCard accessibility", () => {
@@ -158,6 +187,24 @@ describe("Test EntityCard accessibility", () => {
 
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(UnfinishedEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(AccessMeasuresEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(SanctionsEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(QualityMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

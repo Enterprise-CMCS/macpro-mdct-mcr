@@ -156,14 +156,6 @@ export const mockBannerData = {
   endDate: 1672531199000, // 12/31/2022 23:59:59 UTC
 };
 
-export const mockBannerDataEmpty = {
-  key: "",
-  title: "",
-  description: "",
-  startDate: "",
-  endDate: "",
-};
-
 // FORM
 
 export const mockFormField = {

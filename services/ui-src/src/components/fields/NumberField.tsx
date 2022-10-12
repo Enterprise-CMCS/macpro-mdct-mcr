@@ -4,12 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
 import { TextField } from "./TextField";
 // utils
-import {
-  applyCustomMask,
-  customMaskMap,
-  makeMediaQueryClasses,
-  validCmsdsMask,
-} from "utils";
+import { applyCustomMask, customMaskMap, validCmsdsMask } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 
@@ -21,7 +16,6 @@ export const NumberField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   const [displayValue, setDisplayValue] = useState("");
 
   // get form context
@@ -60,7 +54,7 @@ export const NumberField = ({
   };
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={mqClasses}>
+    <Box sx={{ ...sx, ...sxOverride }}>
       <Box sx={sx.numberFieldContainer}>
         <TextField
           id={name}
