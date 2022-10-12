@@ -73,6 +73,7 @@ export const TemplateCard = ({
                 sx={sx.formLink}
                 className={mqClasses}
                 onClick={() => navigate(verbiage.link.route)}
+                data-testid="enter-mcpar-online"
                 rightIcon={
                   <Image src={nextIcon} alt="Link Icon" height="1rem" />
                 }

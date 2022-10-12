@@ -43,6 +43,7 @@ export const Modal = ({
             leftIcon={<CloseIcon />}
             variant="link"
             onClick={modalDisclosure.onClose}
+            data-testid="close-modal"
           >
             Close
           </Button>
