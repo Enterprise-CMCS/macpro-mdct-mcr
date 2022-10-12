@@ -12,8 +12,6 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { CloseIcon, Spinner } from "@cmsgov/design-system";
-// utils
-import { makeMediaQueryClasses } from "utils";
 
 export const Modal = ({
   modalDisclosure,
@@ -23,7 +21,6 @@ export const Modal = ({
   formId,
   children,
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   return (
     <ChakraModal
       isOpen={modalDisclosure.isOpen}
@@ -51,7 +48,6 @@ export const Modal = ({
         <ModalFooter sx={sx.modalFooter}>
           {formId && (
             <Button
-              className={mqClasses}
               sx={sx.action}
               form={formId}
               type="submit"
@@ -62,7 +58,6 @@ export const Modal = ({
           )}
           {onConfirmHandler && (
             <Button
-              className={mqClasses}
               sx={sx.action}
               onClick={() => onConfirmHandler()}
               data-testid="modal-submit-button"
@@ -72,7 +67,6 @@ export const Modal = ({
           )}
           {content.closeButtonText && (
             <Button
-              className={mqClasses}
               sx={sx.close}
               variant="link"
               onClick={modalDisclosure.onClose}
@@ -158,7 +152,7 @@ const sx = {
         marginLeft: 0,
       },
     },
-    "&.mobile": {
+    ".mobile &": {
       fontSize: "sm",
     },
   },
@@ -170,7 +164,7 @@ const sx = {
       marginLeft: "0rem",
       marginRight: "0.5rem",
     },
-    "&.mobile": {
+    ".mobile &": {
       fontSize: "sm",
       marginRight: "0",
     },
