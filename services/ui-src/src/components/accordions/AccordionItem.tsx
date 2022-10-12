@@ -7,12 +7,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Icon } from "components";
-// utils
-import { makeMediaQueryClasses } from "utils";
 
 export const AccordionItem = ({ label, children, ...props }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
-
   return (
     <AccordionItemRoot sx={sx.root} {...props}>
       {({ isExpanded }) => (
@@ -28,9 +24,7 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
               boxSize={isExpanded ? "1.5rem" : "2rem"}
             />
           </AccordionButton>
-          <AccordionPanel sx={sx.accordionPanel} className={mqClasses}>
-            {children}
-          </AccordionPanel>
+          <AccordionPanel sx={sx.accordionPanel}>{children}</AccordionPanel>
         </>
       )}
     </AccordionItemRoot>
@@ -53,7 +47,7 @@ const sx = {
   },
   accordionPanel: {
     padding: "1.5rem 1rem 0.5rem",
-    "&.mobile": {
+    ".mobile &": {
       padding: "0.5rem 0",
     },
   },

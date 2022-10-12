@@ -1,6 +1,10 @@
 // components
-import { Card, EntityCardBottomText, EntityCardTopText } from "components";
-import { Box, Button, Heading, Image } from "@chakra-ui/react";
+import {
+  Card,
+  EntityCardBottomSection,
+  EntityCardTopSection,
+} from "components";
+import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, EntityShape } from "types";
 // assets
@@ -45,7 +49,7 @@ export const EntityCard = ({
         <Heading as="h4" sx={sx.heading}>
           {formattedEntityData.category}
         </Heading>
-        <EntityCardTopText
+        <EntityCardTopSection
           entityType={entityType}
           formattedEntityData={formattedEntityData}
         />
@@ -59,11 +63,18 @@ export const EntityCard = ({
         >
           {dashboard.editEntityButtonText}
         </Button>
-        <EntityCardBottomText
-          entityType={entityType}
-          entityCompleted={entityCompleted}
-          formattedEntityData={formattedEntityData}
-        />
+        {entityCompleted ? (
+          <EntityCardBottomSection
+            entityType={entityType}
+            entityCompleted={entityCompleted}
+            formattedEntityData={formattedEntityData}
+          />
+        ) : (
+          <Text sx={sx.unfinishedMessage}>
+            Complete the remaining indicators for this access measure by
+            entering details.
+          </Text>
+        )}
 
         <Button
           size="sm"
@@ -123,6 +134,10 @@ const sx = {
   },
   heading: {
     fontSize: "sm",
+  },
+  unfinishedMessage: {
+    fontSize: "xs",
+    color: "palette.error_dark",
   },
   editButton: {
     marginY: "1rem",
