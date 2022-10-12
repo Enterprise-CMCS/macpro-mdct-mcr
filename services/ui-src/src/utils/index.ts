@@ -10,6 +10,7 @@ export * from "./auth/UserProvider";
 // forms
 export * from "./forms/forms";
 // reports
+export * from "./reports/entities";
 export * from "./reports/reports";
 export * from "./reports/routing";
 // tracking
