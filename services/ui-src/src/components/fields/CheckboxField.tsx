@@ -12,7 +12,7 @@ export const CheckboxField = ({
   ...props
 }: ChoiceFieldProps) => {
   return (
-    <Box sx={{ ...sxOverride }}>
+    <Box sx={sxOverride}>
       <ChoiceListField
         type="checkbox"
         name={name}
