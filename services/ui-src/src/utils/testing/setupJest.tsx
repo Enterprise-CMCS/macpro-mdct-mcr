@@ -260,11 +260,11 @@ export const mockDrawerReportPageJson = {
     section: "mock section",
     subsection: "mock subsection",
   },
-  dashboard: {
-    title: "Mock dashboard title",
+  verbiage: {
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
   },
   drawer: {
-    title: "Mock drawer title",
     form: mockDrawerForm,
   },
 };
