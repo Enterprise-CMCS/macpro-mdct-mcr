@@ -249,6 +249,11 @@ export interface Choice {
   value: string; // choice.value
 }
 
+export interface DropdownChoice {
+  label: string;
+  value: string;
+}
+
 export enum PageTypes {
   STANDARD = "standard",
   DRAWER = "drawer",

@@ -122,7 +122,7 @@ export const endDate = (startDateField: string) =>
 
 // DROPDOWN
 export const dropdown = () =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+  object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
 
 // CHECKBOX
 export const checkbox = () =>
