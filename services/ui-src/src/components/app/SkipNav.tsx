@@ -4,15 +4,15 @@ import { AnyObject } from "types";
 
 export const SkipNav = ({ id, href, text, sxOverride, ...props }: Props) => {
   return (
-    <div id={id} tabIndex={-1} {...props}>
-      <Link
-        sx={{ ...sx.skipNavLink, ...sxOverride }}
-        href={href}
-        className="ds-c-skip-nav"
-      >
-        {text}
-      </Link>
-    </div>
+    <Link
+      id={id}
+      sx={{ ...sx.skipNavLink, ...sxOverride }}
+      href={href}
+      className="ds-c-skip-nav"
+      {...props}
+    >
+      {text}
+    </Link>
   );
 };
 
@@ -26,10 +26,10 @@ interface Props {
 
 const sx = {
   skipNavLink: {
-    background: "palette.white",
-    position: "absolute",
-    top: -100,
     zIndex: "skipLink",
+    minWidth: "200px",
+    background: "palette.white",
+    transition: "all 0s !important",
     "&:focus-visible": {
       top: 1,
     },

@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { SkipNav } from "components";
@@ -16,9 +15,8 @@ const skipNavComponent = (
 describe("Test SkipNav component", () => {
   test("SkipNav is visible and focusable", async () => {
     render(skipNavComponent);
-    const skipNavContainer = document.getElementById("skip-nav-test")!;
-    skipNavContainer.focus();
-    await userEvent.tab();
+    const skipNav = document.getElementById("skip-nav-test")!;
+    skipNav.focus();
 
     const skipNavLink = screen.getByText("Test text");
     await expect(skipNavLink).toHaveFocus();

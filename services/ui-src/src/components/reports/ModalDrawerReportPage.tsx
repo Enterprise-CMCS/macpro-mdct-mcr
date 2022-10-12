@@ -33,11 +33,9 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
   // shape entity data for hydration
-  const formHydrationData = {
-    fieldData: reportFieldDataEntities?.find(
-      (entity: EntityShape) => entity.id === selectedEntity?.id
-    ),
-  };
+  const formHydrationData = reportFieldDataEntities?.find(
+    (entity: EntityShape) => entity.id === selectedEntity?.id
+  );
 
   // add/edit entity modal disclosure and methods
   const {

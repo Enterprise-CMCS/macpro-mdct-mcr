@@ -5,8 +5,8 @@ export const ScrollToTopComponent = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const skipNav = document.getElementById("skip-nav-main")!;
-    skipNav?.focus();
+    const appWrapper = document.getElementById("app-wrapper")!;
+    appWrapper?.focus();
     window.scrollTo(0, 0);
   }, [pathname]);
 
