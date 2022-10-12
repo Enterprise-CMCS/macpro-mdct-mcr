@@ -228,6 +228,7 @@ const sx = {
     color: "palette.gray_medium",
   },
   addEntityButton: {
+    marginTop: "1.5rem",
     marginBottom: "2rem",
   },
 };
