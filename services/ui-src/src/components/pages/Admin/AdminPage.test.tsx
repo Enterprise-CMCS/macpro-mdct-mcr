@@ -8,7 +8,6 @@ import { AdminPage, AdminBannerContext } from "components";
 import {
   RouterWrappedComponent,
   mockBannerData,
-  mockBannerDataEmpty,
 } from "utils/testing/setupJest";
 
 const mockBannerMethods = {
@@ -19,13 +18,15 @@ const mockBannerMethods = {
 
 const mockContextWithoutBanner = {
   ...mockBannerMethods,
-  bannerData: mockBannerDataEmpty,
+  bannerData: undefined,
+  isLoading: false,
   errorData: null,
 };
 
 const mockContextWithBanner = {
   ...mockBannerMethods,
   bannerData: mockBannerData,
+  isLoading: false,
   errorData: null,
 };
 
@@ -64,14 +65,10 @@ describe("Test AdminPage without banner", () => {
   test("Check that current banner info does not render", () => {
     const currentBannerStatus = screen.queryByText("Status:");
     expect(currentBannerStatus).not.toBeInTheDocument();
-    const deleteButton = screen.getByText("Delete Current Banner");
-    expect(deleteButton).not.toBeVisible();
   });
 
-  test("Check that 'no current banner' text shows", () => {
-    expect(
-      screen.queryByText("There is no current banner")
-    ).toBeInTheDocument();
+  test("Check that 'no current banner' text shows", async () => {
+    expect(screen.getByText("There is no current banner")).toBeVisible();
   });
 });
 

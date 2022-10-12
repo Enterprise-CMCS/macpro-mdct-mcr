@@ -2,22 +2,21 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, EntityDrawerReportPage } from "components";
+import { ReportContext, DrawerReportPage } from "components";
 // utils
 import { useUser } from "utils";
 import {
   mockAdminUser,
-  mockForm,
-  mockPageJsonEntityDrawer,
+  mockDrawerReportPageJson,
+  mockNoUser,
   mockReportContext,
+  mockStateRep,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+// constants
+import { saveAndCloseText } from "../../constants";
 
-const mockSubmittingState = {
-  submitting: false,
-  setSubmitting: jest.fn(),
-};
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
@@ -36,38 +35,30 @@ const mockReportContextWithoutEntities = {
   report: undefined,
 };
 
-const entityDrawerSectionComponentWithEntities = (
+const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <EntityDrawerReportPage
-        form={mockForm}
-        page={mockPageJsonEntityDrawer}
-        submittingState={mockSubmittingState}
-      />
+      <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-const entityDrawerSectionComponentWithoutEntities = (
+const drawerReportPageWithoutEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
-      <EntityDrawerReportPage
-        form={mockForm}
-        page={mockPageJsonEntityDrawer}
-        submittingState={mockSubmittingState}
-      />
+      <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test EntityDrawerReportPage without entities", () => {
+describe("Test DrawerReportPage without entities", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    render(entityDrawerSectionComponentWithoutEntities);
+    render(drawerReportPageWithoutEntities);
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("entity-drawer")).toBeVisible();
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 
   it("should not have any way to open the side drawer", () => {
@@ -76,9 +67,9 @@ describe("Test EntityDrawerReportPage without entities", () => {
   });
 });
 
-describe("Test EntityDrawerReportPage with entities", () => {
+describe("Test DrawerReportPage with entities", () => {
   beforeEach(() => {
-    render(entityDrawerSectionComponentWithEntities);
+    render(drawerReportPageWithEntities);
   });
 
   afterEach(() => {
@@ -87,7 +78,7 @@ describe("Test EntityDrawerReportPage with entities", () => {
 
   it("should render the view", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("entity-drawer")).toBeVisible();
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 
   it("Opens the sidedrawer correctly", async () => {
@@ -99,40 +90,64 @@ describe("Test EntityDrawerReportPage with entities", () => {
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
-  it("Submit sidedrawer works for state user", async () => {
+  it("Submit sidedrawer opens and saves for state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock text field");
+    const textField = await screen.getByLabelText("mock drawer text field");
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test");
-    const saveAndCloseButton = screen.getByText("Save & Close");
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 
-  it("Submit sidedrawer opens but cannot submit for admin user", async () => {
+  it("Submit sidedrawer opens and saves for state rep user", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const textField = await screen.getByLabelText("mock drawer text field");
+    expect(textField).toBeVisible();
+    await userEvent.type(textField, "test");
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+  });
+
+  it("Submit sidedrawer opens but admin user doesnt see save and close button", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock text field");
+    const textField = await screen.getByLabelText("mock drawer text field");
     expect(textField).toBeVisible();
-    const saveAndCloseButton = screen.getByText("Save & Close");
+    const saveAndCloseButton = screen.queryByText(saveAndCloseText);
+    expect(saveAndCloseButton).toBeFalsy();
+  });
+
+  it("Submit sidedrawer bad user can't submit the form", async () => {
+    mockedUseUser.mockReturnValue(mockNoUser);
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 
-describe("Test EntityDrawerReportPage accessibility", () => {
+describe("Test DrawerReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const { container } = render(entityDrawerSectionComponentWithEntities);
+    const { container } = render(drawerReportPageWithEntities);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

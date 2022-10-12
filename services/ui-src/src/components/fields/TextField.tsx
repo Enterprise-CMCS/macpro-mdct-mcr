@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { makeMediaQueryClasses, parseCustomHtml } from "utils";
+import { parseCustomHtml } from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
@@ -16,7 +16,6 @@ export const TextField = ({
   nested,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   const [displayValue, setDisplayValue] = useState<string>("");
 
   // get form context and register field
@@ -53,10 +52,7 @@ export const TextField = ({
   const labelClass = !label ? "no-label" : "";
 
   return (
-    <Box
-      sx={sxOverride}
-      className={`${mqClasses} ${nestedChildClasses} ${labelClass}`}
-    >
+    <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
       <CmsdsTextField
         id={name}
         name={name}

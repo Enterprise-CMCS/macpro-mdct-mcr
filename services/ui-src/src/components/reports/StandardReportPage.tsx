@@ -1,14 +1,20 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box } from "@chakra-ui/react";
-import { Form, ReportContext } from "components";
+import {
+  Form,
+  ReportContext,
+  ReportPageFooter,
+  ReportPageIntro,
+} from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
-import { AnyObject, FormJson, ReportStatus } from "types";
+import { AnyObject, StandardReportPageShape, ReportStatus } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
-export const StandardReportPage = ({ form, setSubmitting }: Props) => {
+export const StandardReportPage = ({ route }: Props) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -35,17 +41,18 @@ export const StandardReportPage = ({ form, setSubmitting }: Props) => {
 
   return (
     <Box data-testid="standard-page">
+      {route.intro && <ReportPageIntro text={route.intro} />}
       <Form
-        id={form.id}
-        formJson={form}
+        id={route.form.id}
+        formJson={route.form}
         onSubmit={onSubmit}
-        formData={report}
+        formData={report?.fieldData}
       />
+      <ReportPageFooter submitting={submitting} form={route.form} />
     </Box>
   );
 };
 
 interface Props {
-  form: FormJson;
-  setSubmitting: Function;
+  route: StandardReportPageShape;
 }

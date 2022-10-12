@@ -19,6 +19,9 @@ export { Banner } from "./banners/Banner";
 export { PreviewBanner } from "./banners/PreviewBanner";
 // cards
 export { Card } from "./cards/Card";
+export { EntityCard } from "./cards/EntityCard/EntityCard";
+export { EntityCardTopSection } from "./cards/EntityCard/EntityCardTopSection";
+export { EntityCardBottomSection } from "./cards/EntityCard/EntityCardBottomSection";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
@@ -60,7 +63,10 @@ export { Sidebar } from "./menus/Sidebar";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
+export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
 export { DeleteProgramModal } from "./modals/DeleteProgramModal";
+export { AddEditEntityModal } from "./modals/AddEditEntityModal";
+export { DeleteEntityModal } from "./modals/DeleteEntityModal";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
 export { HelpPage } from "./pages/Help/HelpPage";
@@ -73,8 +79,8 @@ export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { StandardReportPage } from "./reports/StandardReportPage";
-export { EntityDrawerReportPage } from "./reports/EntityDrawerReportPage";
-export { DynamicDrawerReportPage } from "./reports/DynamicDrawerReportPage";
+export { DrawerReportPage } from "./reports/DrawerReportPage";
+export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables

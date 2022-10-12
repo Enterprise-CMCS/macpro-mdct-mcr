@@ -5,13 +5,6 @@ import { StatusCodes } from "../../utils/types/types";
 import { mockReport } from "../../utils/testing/setupJest";
 import error from "../../utils/constants/constants";
 
-jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  __esModule: true,
-  default: {
-    put: jest.fn(),
-  },
-}));
-
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
@@ -55,7 +48,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(creationEvent, null);
 
     const body = JSON.parse(res.body);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(body.status).toContain("Not started");
   });
 

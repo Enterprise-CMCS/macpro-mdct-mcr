@@ -47,29 +47,71 @@ export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
 export interface ReportRouteBase {
   name: string;
   path: string;
-  page?: PageJson;
-  [key: string]: any;
+  pageType?: string;
 }
 
-export interface ReportRouteWithForm extends ReportRouteBase {
+export type ReportRouteWithForm =
+  | StandardReportPageShape
+  | DrawerReportPageShape
+  | ModalDrawerReportPageShape;
+
+export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
+  intro?: {
+    section: string;
+    subsection: string;
+    spreadsheet?: string;
+    info?: string | AnyObject[];
+  };
+}
+
+export interface StandardReportPageShape extends ReportPageShapeBase {
+  form: FormJson;
+  dashboard?: never;
+  modal?: never;
+  drawer?: never;
+  entityType?: never;
+}
+
+export interface DrawerReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  dashboard: AnyObject;
+  drawer: ReportPageDrawer;
+  modal?: never;
+  form?: never;
+}
+
+export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  dashboard: AnyObject;
+  modal: ReportPageModal;
+  drawer: ReportPageDrawer;
+  form?: never;
 }
 
 export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
+  pageType?: never;
+  entityType?: never;
+  modal?: never;
+  drawer?: never;
   form?: never;
 }
 
-export interface PageJson {
-  pageType?: string;
-  intro?: AnyObject;
-  [key: string]: any;
+export interface ReportPageDrawer {
+  form: FormJson;
+  title: string;
+  info?: CustomHtmlElement[];
+  addEntityButtonText?: string;
+  editEntityButtonText?: string;
+  deleteEntityButtonAltText?: string;
 }
 
-export enum ReportStatus {
-  NOT_STARTED = "Not started",
-  IN_PROGRESS = "In progress",
-  SUBMITTED = "Submitted",
+export interface ReportPageModal {
+  form: FormJson;
+  addTitle: string;
+  editTitle: string;
+  message: string;
 }
 
 // REPORT PROVIDER/CONTEXT
@@ -82,7 +124,7 @@ export interface ReportKeys {
 export interface ReportShape extends ReportKeys {
   reportType: string;
   programName: string;
-  status: string;
+  status: ReportStatus;
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;
   dueDate: number;
@@ -112,13 +154,28 @@ export interface ReportContextShape extends ReportContextMethods {
   errorMessage?: string | undefined;
 }
 
+export enum ReportStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  SUBMITTED = "Submitted",
+}
+
 // FORM & FIELD STRUCTURE
 
-export declare type EntityType = "plans" | "bssEntities";
+export declare type EntityType =
+  | "plans"
+  | "bssEntities"
+  | "accessMeasures"
+  | "qualityMeasures"
+  | "sanctions";
 
+export enum ModalDrawerEntityTypes {
+  ACCESS_MEASURES = "accessMeasures",
+  QUALITY_MEASURES = "qualityMeasures",
+  SANCTIONS = "sanctions",
+}
 export interface EntityShape {
   id: string;
-  name: string;
   [key: string]: any;
 }
 
@@ -133,13 +190,14 @@ export interface FormJson {
 export interface DependentFieldValidation {
   type: string;
   dependentFieldName: string;
+  parentOptionId?: never;
 }
 
 export interface NestedFieldValidation {
   type: string;
   nested: true;
   parentFieldName: string;
-  visibleOptionValue: string;
+  parentOptionId: string;
 }
 
 export interface NestedDependentFieldValidation {
@@ -147,7 +205,7 @@ export interface NestedDependentFieldValidation {
   dependentFieldName: string;
   nested: true;
   parentFieldName: string;
-  visibleOptionValue: string;
+  parentOptionId: string;
 }
 
 export type FieldValidationObject =
@@ -193,8 +251,8 @@ export interface Choice {
 
 export enum PageTypes {
   STANDARD = "standard",
-  ENTITY_DRAWER = "entityDrawer",
-  DYNAMIC_DRAWER = "dynamicDrawer",
+  DRAWER = "drawer",
+  MODAL_DRAWER = "modalDrawer",
 }
 
 // BANNER
@@ -220,7 +278,8 @@ export interface AdminBannerMethods {
 }
 
 export interface AdminBannerShape extends AdminBannerMethods {
-  bannerData: AdminBannerData;
+  bannerData?: AdminBannerData;
+  isLoading: boolean;
   errorMessage?: string;
 }
 

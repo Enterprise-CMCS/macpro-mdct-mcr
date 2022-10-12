@@ -150,7 +150,7 @@ export const dynamicOptional = () => dynamic().notRequired();
 export const nested = (
   fieldSchema: Function | any,
   parentFieldName: string,
-  parentOptionValue: any
+  parentOptionId: any
 ) => {
   const fieldTypeMap = {
     array: array(),
@@ -162,10 +162,15 @@ export const nested = (
   const baseSchema: any = fieldTypeMap[fieldType];
 
   return baseSchema.when(parentFieldName, {
-    is: (value: any) => value && value.indexOf(parentOptionValue) != -1,
+    is: (value: any[]) =>
+      // look for parentOptionId in checked choices
+      value?.find((option: any) => option.key === parentOptionId),
     then: () => fieldSchema(),
   });
 };
+
+// OBJECT ARRAY
+export const objectArray = () => array().of(mixed());
 
 // REGEX
 export const dateFormatRegex =
@@ -173,23 +178,24 @@ export const dateFormatRegex =
 
 // SCHEMA MAP
 export const schemaMap: any = {
-  text: text(),
-  textOptional: textOptional(),
-  number: number(),
-  numberOptional: numberOptional(),
-  ratio: ratio(),
-  email: email(),
-  emailOptional: emailOptional(),
-  url: url(),
-  urlOptional: urlOptional(),
-  date: date(),
-  dateOptional: dateOptional(),
-  dropdown: dropdown(),
   checkbox: checkbox(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
-  radio: radio(),
-  radioOptional: radioOptional(),
+  date: date(),
+  dateOptional: dateOptional(),
+  dropdown: dropdown(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
+  email: email(),
+  emailOptional: emailOptional(),
+  number: number(),
+  numberOptional: numberOptional(),
+  objectArray: objectArray(),
+  radio: radio(),
+  radioOptional: radioOptional(),
+  ratio: ratio(),
+  text: text(),
+  textOptional: textOptional(),
+  url: url(),
+  urlOptional: urlOptional(),
 };

@@ -1,3 +1,25 @@
+export const mockDocumentClient = {
+  get: { promise: jest.fn() },
+  query: { promise: jest.fn() },
+  put: { promise: jest.fn() },
+  delete: { promise: jest.fn() },
+};
+
+jest.mock("aws-sdk", () => {
+  return {
+    DynamoDB: {
+      DocumentClient: jest.fn().mockImplementation(() => {
+        return {
+          get: () => mockDocumentClient.get,
+          query: () => mockDocumentClient.query,
+          put: () => mockDocumentClient.put,
+          delete: () => mockDocumentClient.delete,
+        };
+      }),
+    },
+  };
+});
+
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
@@ -32,4 +54,14 @@ export const mockReport = {
   lastAlteredBy: "Thelonious States",
   combinedData: false,
   fieldData: mockReportFieldData,
+};
+
+export const mockBannerResponse = {
+  createdAt: 1654198665696,
+  endDate: 1657252799000,
+  lastAltered: 1654198665696,
+  description: "testDesc",
+  title: "testTitle",
+  key: "admin-banner-id",
+  startDate: 1641013200000,
 };

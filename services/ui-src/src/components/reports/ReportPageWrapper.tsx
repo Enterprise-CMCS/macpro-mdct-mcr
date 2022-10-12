@@ -1,35 +1,34 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // components
+import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  DynamicDrawerReportPage,
-  EntityDrawerReportPage,
+  ModalDrawerReportPage,
+  DrawerReportPage,
   PageTemplate,
-  ReportPageIntro,
-  ReportPageFooter,
   Sidebar,
   StandardReportPage,
 } from "components";
 // utils
 import { useUser } from "utils";
-import { FormJson, PageJson, PageTypes, ReportRoute } from "types";
+import {
+  ModalDrawerReportPageShape,
+  DrawerReportPageShape,
+  PageTypes,
+  ReportRouteWithForm,
+  StandardReportPageShape,
+} from "types";
 
 export const ReportPageWrapper = ({ route }: Props) => {
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  // get report, form, and page related-data
-  const { report } = useContext(ReportContext);
-  const { form, page } = route;
-
   const { state } = useUser().user ?? {};
+  const { report } = useContext(ReportContext);
+  const navigate = useNavigate();
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
-
-  // get next and previous routes
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!reportId || !reportState) {
@@ -37,45 +36,39 @@ export const ReportPageWrapper = ({ route }: Props) => {
     }
   }, [reportId, reportState]);
 
-  const renderPageSection = (form: FormJson, page?: PageJson) => {
-    switch (page?.pageType) {
-      case PageTypes.ENTITY_DRAWER:
+  const renderPageSection = (route: ReportRouteWithForm) => {
+    switch (route.pageType) {
+      case PageTypes.DRAWER:
+        return <DrawerReportPage route={route as DrawerReportPageShape} />;
+      case PageTypes.MODAL_DRAWER:
         return (
-          <EntityDrawerReportPage
-            form={form}
-            page={page}
-            submittingState={{ submitting, setSubmitting }}
-          />
-        );
-      case PageTypes.DYNAMIC_DRAWER:
-        return (
-          <DynamicDrawerReportPage
-            form={form}
-            dynamicTable={page.dynamicTable}
-            setSubmitting={setSubmitting}
-          />
+          <ModalDrawerReportPage route={route as ModalDrawerReportPageShape} />
         );
       default:
-        return <StandardReportPage form={form} setSubmitting={setSubmitting} />;
+        return <StandardReportPage route={route as StandardReportPageShape} />;
     }
   };
 
   return (
-    <PageTemplate type="report" data-testid={form.id}>
+    <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
         <Sidebar />
-        <Flex sx={sx.reportContainer}>
-          {page?.intro && <ReportPageIntro text={page.intro} />}
-          {renderPageSection(form, page)}
-          <ReportPageFooter submitting={submitting} form={form} />
-        </Flex>
+        {!report ? (
+          <Flex sx={sx.spinnerContainer}>
+            <Spinner size="big" />
+          </Flex>
+        ) : (
+          <Flex id="report-content" sx={sx.reportContainer}>
+            {renderPageSection(route)}
+          </Flex>
+        )}
       </Flex>
     </PageTemplate>
   );
 };
 
 interface Props {
-  route: ReportRoute;
+  route: ReportRouteWithForm;
 }
 
 const sx = {
@@ -93,6 +86,21 @@ const sx = {
       paddingBottom: "0.75rem",
       fontSize: "lg",
       fontWeight: "bold",
+    },
+  },
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
+
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
     },
   },
 };

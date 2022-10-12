@@ -4,11 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import {
-  formFieldFactory,
-  makeMediaQueryClasses,
-  parseCustomHtml,
-} from "utils";
+import { formFieldFactory, parseCustomHtml } from "utils";
 import {
   AnyObject,
   Choice,
@@ -27,7 +23,6 @@ export const ChoiceListField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   const [displayValue, setDisplayValue] = useState<Choice[] | null>(null);
 
   // get form context and register field
@@ -55,12 +50,9 @@ export const ChoiceListField = ({
   useEffect(() => {
     if (displayValue) {
       form.setValue(name, displayValue, { shouldValidate: true });
+      // update DOM choices checked status
+      clearNestedValues(choices);
     }
-
-    // update DOM choices checked status
-    choices.forEach((choice: FieldChoice) => {
-      setCheckedOrUnchecked(choice);
-    });
   }, [displayValue]);
 
   // format choices with nested child fields to render (if any)
@@ -70,7 +62,7 @@ export const ChoiceListField = ({
       const choiceObject: FieldChoice = { ...choice };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
-        const isNested = !!choiceChildren;
+        const isNested = true;
         const formattedChildren = formFieldFactory(
           choiceChildren,
           shouldDisableChildFields,
@@ -80,6 +72,31 @@ export const ChoiceListField = ({
       }
       delete choiceObject.children;
       return choiceObject;
+    });
+  };
+
+  const clearNestedValues = (choices: FieldChoice[]) => {
+    choices.forEach((choice: FieldChoice) => {
+      // if a choice is not selected and there are children, clear out any saved data
+      if (!choice.checked && choice.children) {
+        choice.children.forEach((child) => {
+          switch (child.type) {
+            case "radio":
+            case "checkbox":
+              form.setValue(child.id, [], { shouldValidate: true });
+              if (child.props?.choices) {
+                child.props.choices.forEach((choice: FieldChoice) => {
+                  choice.checked = false;
+                });
+                clearNestedValues(child.props.choices);
+              }
+              break;
+            default:
+              form.setValue(child.id, "", { shouldValidate: true });
+              break;
+          }
+        });
+      }
     });
   };
 
@@ -121,7 +138,7 @@ export const ChoiceListField = ({
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${nestedChildClasses} ${labelClass} ${mqClasses}`}
+      className={`${nestedChildClasses} ${labelClass}`}
     >
       <CmsdsChoiceList
         name={name}

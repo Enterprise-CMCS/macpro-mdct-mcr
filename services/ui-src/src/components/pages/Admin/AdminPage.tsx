@@ -15,26 +15,40 @@ import { bannerErrors } from "verbiage/errors";
 import verbiage from "verbiage/pages/admin";
 
 export const AdminPage = () => {
-  const { bannerData, deleteAdminBanner, writeAdminBanner, errorMessage } =
-    useContext(AdminBannerContext);
+  const {
+    bannerData,
+    deleteAdminBanner,
+    writeAdminBanner,
+    isLoading,
+    errorMessage,
+  } = useContext(AdminBannerContext);
   const [error, setError] = useState<string | undefined>(errorMessage);
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const bannerIsActive = checkDateRangeStatus(
-    bannerData?.startDate,
-    bannerData?.endDate
-  );
+  const [deleting, setDeleting] = useState<boolean>(false);
+  const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
+
+  useEffect(() => {
+    let bannerActivity = false;
+    if (bannerData) {
+      bannerActivity = checkDateRangeStatus(
+        bannerData.startDate,
+        bannerData.endDate
+      );
+    }
+    setIsBannerActive(bannerActivity);
+  }, [bannerData]);
+
   useEffect(() => {
     setError(errorMessage);
   }, [errorMessage]);
 
   const deleteBanner = async () => {
-    setSubmitting(true);
+    setDeleting(true);
     try {
       await deleteAdminBanner();
     } catch (error: any) {
       setError(bannerErrors.DELETE_BANNER_FAILED);
     }
-    setSubmitting(false);
+    setDeleting(false);
   };
 
   return (
@@ -48,36 +62,51 @@ export const AdminPage = () => {
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner</Text>
-        <Collapse in={!!bannerData?.key}>
-          {bannerData?.key && (
-            <Flex sx={sx.currentBannerInfo}>
-              <Text sx={sx.currentBannerStatus}>
-                Status:{" "}
-                <span className={bannerIsActive ? "active" : "inactive"}>
-                  {bannerIsActive ? "Active" : "Inactive"}
-                </span>
-              </Text>
-              <Text sx={sx.currentBannerDate}>
-                Start Date:{" "}
-                <span>{convertDateUtcToEt(bannerData?.startDate)}</span>
-              </Text>
-              <Text sx={sx.currentBannerDate}>
-                End Date: <span>{convertDateUtcToEt(bannerData?.endDate)}</span>
-              </Text>
-            </Flex>
-          )}
-          <Flex sx={sx.currentBannerFlex}>
-            <Banner bannerData={bannerData} />
-            <Button
-              variant="danger"
-              sx={sx.deleteBannerButton}
-              onClick={deleteBanner}
-            >
-              {submitting ? <Spinner size="small" /> : "Delete Current Banner"}
-            </Button>
+        {isLoading ? (
+          <Flex sx={sx.spinnerContainer}>
+            <Spinner />
           </Flex>
-        </Collapse>
-        {!bannerData?.key && <Text>There is no current banner</Text>}
+        ) : (
+          <>
+            <Collapse in={!!bannerData?.key}>
+              {bannerData && (
+                <>
+                  <Flex sx={sx.currentBannerInfo}>
+                    <Text sx={sx.currentBannerStatus}>
+                      Status:{" "}
+                      <span className={isBannerActive ? "active" : "inactive"}>
+                        {isBannerActive ? "Active" : "Inactive"}
+                      </span>
+                    </Text>
+                    <Text sx={sx.currentBannerDate}>
+                      Start Date:{" "}
+                      <span>{convertDateUtcToEt(bannerData?.startDate)}</span>
+                    </Text>
+                    <Text sx={sx.currentBannerDate}>
+                      End Date:{" "}
+                      <span>{convertDateUtcToEt(bannerData?.endDate)}</span>
+                    </Text>
+                  </Flex>
+                  <Flex sx={sx.currentBannerFlex}>
+                    <Banner bannerData={bannerData} />
+                    <Button
+                      variant="danger"
+                      sx={sx.deleteBannerButton}
+                      onClick={deleteBanner}
+                    >
+                      {deleting ? (
+                        <Spinner size="small" />
+                      ) : (
+                        "Delete Current Banner"
+                      )}
+                    </Button>
+                  </Flex>
+                </>
+              )}
+            </Collapse>
+            {!bannerData && <Text>There is no current banner</Text>}
+          </>
+        )}
       </Box>
       <Flex sx={sx.newBannerBox}>
         <Text sx={sx.sectionHeader}>Create a New Banner</Text>
@@ -137,6 +166,17 @@ const sx = {
   },
   currentBannerFlex: {
     flexDirection: "column",
+  },
+  spinnerContainer: {
+    marginTop: "0.5rem",
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
+    },
   },
   deleteBannerButton: {
     width: "13.3rem",
