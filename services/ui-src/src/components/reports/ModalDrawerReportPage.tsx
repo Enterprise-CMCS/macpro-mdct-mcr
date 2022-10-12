@@ -11,7 +11,7 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { useUser } from "utils";
+import { getFormattedEntityData, useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
@@ -120,38 +120,6 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     closeDrawer();
   };
 
-  const getFormattedEntityData = (entity?: EntityShape) => ({
-    category: entity?.accessMeasure_generalCategory[0].value,
-    standardDescription: entity?.accessMeasure_standardDescription,
-    standardType:
-      entity?.accessMeasure_standardType[0].value !== "Other, specify"
-        ? entity?.accessMeasure_standardType[0].value
-        : entity?.["accessMeasure_standardType-otherText"],
-    provider:
-      entity?.accessMeasure_providerType?.[0].value !== "Other, specify"
-        ? entity?.accessMeasure_providerType?.[0].value
-        : entity?.["accessMeasure_providerType-otherText"],
-    region:
-      entity?.accessMeasure_applicableRegion?.[0].value !== "Other, specify"
-        ? entity?.accessMeasure_applicableRegion?.[0].value
-        : entity?.["accessMeasure_applicableRegion-otherText"],
-    population:
-      entity?.accessMeasure_population?.[0].value !== "Other, specify"
-        ? entity?.accessMeasure_population?.[0].value
-        : entity?.["accessMeasure_population-otherText"],
-    monitoringMethods: entity?.accessMeasure_monitoringMethods?.map(
-      (method: AnyObject) =>
-        method.value === "Other, specify"
-          ? entity?.["accessMeasure_monitoringMethods-otherText"]
-          : method.value
-    ),
-    methodFrequency:
-      entity?.accessMeasure_oversightMethodFrequency?.[0].value !==
-      "Other, specify"
-        ? entity?.accessMeasure_oversightMethodFrequency?.[0].value
-        : entity?.["accessMeasure_oversightMethodFrequency-otherText"],
-  });
-
   return (
     <Box data-testid="modal-drawer-report-page">
       {route.intro && <ReportPageIntro text={route.intro} />}
@@ -171,8 +139,9 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           <EntityCard
             key={entity.id}
             entity={entity}
+            entityType={entityType}
             dashboard={dashboard}
-            formattedEntityData={getFormattedEntityData(entity)}
+            formattedEntityData={getFormattedEntityData(entityType, entity)}
             openAddEditEntityModal={openAddEditEntityModal}
             openDeleteEntityModal={openDeleteEntityModal}
             openDrawer={openDrawer}
@@ -202,7 +171,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             onClose: closeDrawer,
           }}
           drawerTitle={drawer.title}
-          drawerDetails={getFormattedEntityData(selectedEntity)}
+          drawerDetails={getFormattedEntityData(entityType, selectedEntity)}
           form={drawer.form}
           onSubmit={onSubmit}
           formData={formHydrationData}
@@ -228,6 +197,7 @@ const sx = {
     color: "palette.gray_medium",
   },
   addEntityButton: {
+    marginTop: "1.5rem",
     marginBottom: "2rem",
   },
 };

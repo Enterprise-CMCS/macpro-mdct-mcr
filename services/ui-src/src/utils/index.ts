@@ -1,6 +1,5 @@
 // api
 export * from "./api/providers/ApiProvider";
-export * from "./api/providers/QueryProvider";
 export * from "./api/requestMethods/banner";
 export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
@@ -11,6 +10,7 @@ export * from "./auth/UserProvider";
 // forms
 export * from "./forms/forms";
 // reports
+export * from "./reports/entities";
 export * from "./reports/reports";
 export * from "./reports/routing";
 // tracking
