@@ -19,17 +19,9 @@ export const EntityCardTopSection = ({
         </>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
-      return (
-        <>
-          <Text sx={sx.description}>Sanctions TODO</Text>
-        </>
-      );
+      return <Text sx={sx.description}>Sanctions TODO</Text>;
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      return (
-        <>
-          <Text sx={sx.description}>Quality Measures TODO</Text>
-        </>
-      );
+      return <Text sx={sx.description}>Quality Measures TODO</Text>;
     default:
       return <Text>{entityType}</Text>;
   }
