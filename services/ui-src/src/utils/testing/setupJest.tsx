@@ -286,7 +286,7 @@ export const mockModalDrawerReportPageJson = {
   pageType: "modalDrawer",
   entityType: "accessMeasures",
   verbiage: mockModalDrawerReportPageVerbiage,
-  modal: mockModalForm,
+  modalForm: mockModalForm,
   drawer: {
     form: mockDrawerForm,
   },

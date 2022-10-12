@@ -1010,7 +1010,7 @@
                 "editEntityDetailsButtonText": "Edit details",
                 "drawerTitle": "Add details for access measure"
               },
-              "modal": {
+              "modalForm": {
                 "id": "cam-modal",
                 "fields": [
                   {
@@ -2452,7 +2452,7 @@
             "editEntityDetailsButtonText": "replace me in json",
             "drawerTitle": "replace me in json"
           },
-          "modal": {
+          "modalForm": {
             "id": "dqm-modal",
             "fields": [
               {
@@ -2717,7 +2717,7 @@
             "editEntityDetailsButtonText": "replace me in json",
             "drawerTitle": "replace me in json"
           },
-          "modal": {
+          "modalForm": {
             "id": "ds-modal",
             "fields": [
               {

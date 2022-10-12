@@ -65,7 +65,8 @@ describe("Test copyAdminDisabledStatusToForms", () => {
 
     const testStandardPageForm = result.routes[0].form;
     const testDrawerPageForm = result.routes[1].children![0].drawer!.form;
-    const testModalDrawerPageModalForm = result.routes[1].children![1].modal!;
+    const testModalDrawerPageModalForm =
+      result.routes[1].children![1].modalForm!;
     const testModalDrawerPageDrawerForm =
       result.routes[1].children![1].drawer!.form;
 
@@ -124,7 +125,7 @@ describe("Test makeFieldIdList", () => {
       ...mockModalDrawerReportPageJson,
       name: "mock-route-3",
       path: "/mock/mock-route-3",
-      modal: {
+      modalForm: {
         id: "mock-form-id-3",
         fields: [mockField4],
       },

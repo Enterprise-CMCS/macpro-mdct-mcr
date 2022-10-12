@@ -17,13 +17,12 @@ import {
   EntityShape,
   ModalDrawerReportPageShape,
   ReportStatus,
-  FormJson,
 } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
-  const { entityType, verbiage, modal, drawer } = route;
+  const { entityType, verbiage, modalForm, drawer } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
@@ -150,7 +149,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           entityType={entityType}
           selectedEntity={selectedEntity}
           verbiage={verbiage}
-          modalForm={modal!}
+          modalForm={modalForm}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: closeAddEditEntityModal,
