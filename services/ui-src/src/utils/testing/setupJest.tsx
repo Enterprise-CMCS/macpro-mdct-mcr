@@ -232,13 +232,17 @@ export const mockPlanFilledForm = {
   fields: [mockPlanField],
 };
 
+export const mockVerbiageIntro = {
+  section: "mock section",
+  subsection: "mock subsection",
+};
+
 export const mockStandardReportPageJson = {
   name: "mock-route-1",
   path: "/mock/mock-route-1",
   pageType: "standard",
-  intro: {
-    section: "mock section",
-    subsection: "mock subsection",
+  verbiage: {
+    intro: mockVerbiageIntro,
   },
   form: mockForm,
 };
@@ -248,11 +252,8 @@ export const mockDrawerReportPageJson = {
   path: "/mock/mock-route-2a",
   pageType: "drawer",
   entityType: "plans",
-  intro: {
-    section: "mock section",
-    subsection: "mock subsection",
-  },
   verbiage: {
+    intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
   },
@@ -262,6 +263,7 @@ export const mockDrawerReportPageJson = {
 };
 
 export const mockModalDrawerReportPageVerbiage = {
+  intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
   addEntityButtonText: "Mock add entity button text",
   editEntityButtonText: "Mock edit entity button text",
@@ -283,10 +285,6 @@ export const mockModalDrawerReportPageJson = {
   path: "/mock/mock-route-2b",
   pageType: "modalDrawer",
   entityType: "accessMeasures",
-  intro: {
-    section: "mock section",
-    subsection: "mock subsection",
-  },
   verbiage: mockModalDrawerReportPageVerbiage,
   modal: {
     form: mockModalForm,

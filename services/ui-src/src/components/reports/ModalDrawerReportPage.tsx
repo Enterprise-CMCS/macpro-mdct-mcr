@@ -120,7 +120,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
   return (
     <Box data-testid="modal-drawer-report-page">
-      {route.intro && <ReportPageIntro text={route.intro} />}
+      {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         <Button
           sx={sx.addEntityButton}
