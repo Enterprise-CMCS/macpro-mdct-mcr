@@ -61,10 +61,13 @@ export const ChoiceListField = ({
   }, [displayValue]);
 
   // format choices with nested child fields to render (if any)
-  const formatChoices = (choices: FieldChoice[]) => {
+  const formatChoices = (choices: FieldChoice[], parentId: string) => {
     return choices.map((choice: FieldChoice) => {
       setCheckedOrUnchecked(choice);
-      const choiceObject: FieldChoice = { ...choice };
+      const choiceObject: FieldChoice = {
+        ...choice,
+        id: `${parentId}-${choice.id}`,
+      };
       const choiceChildren = choice?.children;
       if (choiceChildren) {
         const isNested = true;
@@ -149,7 +152,7 @@ export const ChoiceListField = ({
         name={name}
         type={type}
         label={label || ""}
-        choices={formatChoices(choices)}
+        choices={formatChoices(choices, name)}
         hint={parsedHint}
         errorMessage={errorMessage}
         onChange={onChangeHandler}
