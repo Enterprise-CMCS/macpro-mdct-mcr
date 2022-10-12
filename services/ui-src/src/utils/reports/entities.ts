@@ -1,6 +1,20 @@
 // utils
 import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
 
+const getRadioValue = (entity: EntityShape | undefined, label: string) => {
+  return entity?.[label]?.[0].value !== "Other, specify"
+    ? entity?.[label]?.[0].value
+    : entity?.[label + "-otherText"];
+};
+
+const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
+  return entity?.[label]?.map((method: AnyObject) =>
+    method.value === "Other, specify"
+      ? entity?.[label + "-otherText"]
+      : method.value
+  );
+};
+
 export const getFormattedEntityData = (
   entityType: string,
   entity?: EntityShape
@@ -11,33 +25,18 @@ export const getFormattedEntityData = (
       entityData = {
         category: entity?.accessMeasure_generalCategory[0].value,
         standardDescription: entity?.accessMeasure_standardDescription,
-        standardType:
-          entity?.accessMeasure_standardType[0].value !== "Other, specify"
-            ? entity?.accessMeasure_standardType[0].value
-            : entity?.["accessMeasure_standardType-otherText"],
-        provider:
-          entity?.accessMeasure_providerType?.[0].value !== "Other, specify"
-            ? entity?.accessMeasure_providerType?.[0].value
-            : entity?.["accessMeasure_providerType-otherText"],
-        region:
-          entity?.accessMeasure_applicableRegion?.[0].value !== "Other, specify"
-            ? entity?.accessMeasure_applicableRegion?.[0].value
-            : entity?.["accessMeasure_applicableRegion-otherText"],
-        population:
-          entity?.accessMeasure_population?.[0].value !== "Other, specify"
-            ? entity?.accessMeasure_population?.[0].value
-            : entity?.["accessMeasure_population-otherText"],
-        monitoringMethods: entity?.accessMeasure_monitoringMethods?.map(
-          (method: AnyObject) =>
-            method.value === "Other, specify"
-              ? entity?.["accessMeasure_monitoringMethods-otherText"]
-              : method.value
+        standardType: getRadioValue(entity, "accessMeasure_standardType"),
+        provider: getRadioValue(entity, "accessMeasure_providerType"),
+        region: getRadioValue(entity, "accessMeasure_applicableRegion"),
+        population: getRadioValue(entity, "accessMeasure_population"),
+        monitoringMethods: getCheckboxValues(
+          entity,
+          "accessMeasure_monitoringMethods"
         ),
-        methodFrequency:
-          entity?.accessMeasure_oversightMethodFrequency?.[0].value !==
-          "Other, specify"
-            ? entity?.accessMeasure_oversightMethodFrequency?.[0].value
-            : entity?.["accessMeasure_oversightMethodFrequency-otherText"],
+        methodFrequency: getRadioValue(
+          entity,
+          "accessMeasure_oversightMethodFrequency"
+        ),
       };
       break;
 
