@@ -62,8 +62,10 @@ export const AdminPage = () => {
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner</Text>
-        {isLoading ? (
-          <Spinner />
+        {!isLoading ? (
+          <Flex sx={sx.spinnerContainer}>
+            <Spinner />
+          </Flex>
         ) : (
           <>
             <Collapse in={!!bannerData?.key}>
@@ -164,6 +166,17 @@ const sx = {
   },
   currentBannerFlex: {
     flexDirection: "column",
+  },
+  spinnerContainer: {
+    marginTop: "0.5rem",
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
+    },
   },
   deleteBannerButton: {
     width: "13.3rem",
