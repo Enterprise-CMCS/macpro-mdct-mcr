@@ -14,7 +14,7 @@ export const EntityCard = ({
   entity,
   entityType,
   formattedEntityData,
-  dashboard,
+  verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openDrawer,
@@ -34,11 +34,11 @@ export const EntityCard = ({
           type="button"
           className="delete-entity-button"
           onClick={() => openDeleteEntityModal(entity)}
-          data-testid="deleteEntityButton"
+          data-testid="delete-entity-button"
         >
           <Image
             src={deleteIcon}
-            alt={dashboard.deleteEntityButtonAltText}
+            alt={verbiage.deleteEntityButtonAltText}
             sx={sx.deleteButtonImage}
           />
         </button>
@@ -53,18 +53,16 @@ export const EntityCard = ({
           variant="outline"
           size="sm"
           sx={sx.editButton}
-          data-testid="editEntityButton"
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
           onClick={() => openAddEditEntityModal(entity)}
         >
-          {dashboard.editEntityButtonText}
+          {verbiage.editEntityButtonText}
         </Button>
         <EntityCardBottomText
           entityType={entityType}
           entityCompleted={entityCompleted}
           formattedEntityData={formattedEntityData}
         />
-
         <Button
           size="sm"
           sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
@@ -78,8 +76,8 @@ export const EntityCard = ({
           }
         >
           {entityCompleted
-            ? dashboard.editEntityDetailsButtonText
-            : dashboard.enterEntityDetailsButtonText}
+            ? verbiage.editEntityDetailsButtonText
+            : verbiage.enterEntityDetailsButtonText}
         </Button>
       </Box>
     </Card>
@@ -90,7 +88,7 @@ interface Props {
   entity: EntityShape;
   entityType: string;
   formattedEntityData: AnyObject;
-  dashboard: AnyObject;
+  verbiage: AnyObject;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
   openDrawer: Function;

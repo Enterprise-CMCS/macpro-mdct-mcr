@@ -5,12 +5,13 @@ import { Form, Modal, ReportContext } from "components";
 import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
-import { AnyObject, EntityShape, ReportStatus } from "types";
+import { AnyObject, EntityShape, FormJson, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
-  modalData,
+  modalForm,
+  verbiage,
   selectedEntity,
   modalDisclosure,
 }: Props) => {
@@ -18,11 +19,9 @@ export const AddEditEntityModal = ({
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const { form, addTitle, editTitle, message } = modalData;
-
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
-    const submitButton = document.querySelector("[form=" + form.id + "]");
+    const submitButton = document.querySelector("[form=" + modalForm.id + "]");
     submitButton?.setAttribute("disabled", "true");
 
     const reportKeys = {
@@ -62,28 +61,31 @@ export const AddEditEntityModal = ({
   return (
     <Modal
       data-testid="add-edit-entity-modal"
-      formId={form.id}
+      formId={modalForm.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedEntity?.id ? editTitle : addTitle,
+        heading: selectedEntity?.id
+          ? verbiage.addEditModalEditTitle
+          : verbiage.addEditModalAddTitle,
         actionButtonText: submitting ? <Spinner size="small" /> : "Save",
       }}
     >
       <Form
         data-testid="add-edit-entity-form"
-        id={form.id}
-        formJson={form}
+        id={modalForm.id}
+        formJson={modalForm}
         formData={selectedEntity}
         onSubmit={writeEntity}
       />
-      <Text sx={sx.bottomMessage}>{message}</Text>
+      <Text sx={sx.bottomModalMessage}>{verbiage.addEditModalMessage}</Text>
     </Modal>
   );
 };
 
 interface Props {
   entityType: string;
-  modalData: AnyObject;
+  modalForm: FormJson;
+  verbiage: AnyObject;
   selectedEntity?: EntityShape;
   modalDisclosure: {
     isOpen: boolean;
@@ -92,7 +94,7 @@ interface Props {
 }
 
 const sx = {
-  bottomMessage: {
+  bottomModalMessage: {
     fontSize: "xs",
     color: "palette.primary_darker",
     marginTop: "1rem",

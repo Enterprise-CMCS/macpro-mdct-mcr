@@ -973,18 +973,22 @@
                   }
                 ]
               },
-              "dashboard": {
-                "title": "Add measures for monitoring access standards",
+              "verbiage": {
+                "dashboardTitle": "Add measures for monitoring access standards",
                 "addEntityButtonText": "Add access measure",
                 "editEntityButtonText": "Edit measure",
+                "addEditModalAddTitle": "Add access measure",
+                "addEditModalEditTitle": "Edit access measure",
+                "addEditModalMessage": "Complete the remaining indicators for this access measure by saving the measure and selecting \"Enter measure details\".",
                 "deleteEntityButtonAltText": "Delete measure",
+                "deleteModalTitle": "Delete access measure?",
+                "deleteModalConfirmButtonText": "Yes, Delete Measure",
+                "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
                 "enterEntityDetailsButtonText": "Enter details",
-                "editEntityDetailsButtonText": "Edit details"
+                "editEntityDetailsButtonText": "Edit details",
+                "drawerTitle": "Add details for access measure"
               },
               "modal": {
-                "addTitle": "Add access measure",
-                "editTitle": "Edit access measure",
-                "message": "Complete the remaining indicators for this access measure by saving the measure and selecting \"Enter measure details\".",
                 "form": {
                   "id": "cam-modal",
                   "fields": [
@@ -1090,7 +1094,6 @@
                 }
               },
               "drawer": {
-                "title": "Add details for access measure",
                 "form": {
                   "id": "cam-drawer",
                   "fields": [
@@ -2409,18 +2412,22 @@
               }
             ]
           },
-          "dashboard": {
-            "title": "Add quality and performance measures",
+          "verbiage": {
+            "dashboardTitle": "replace me in json",
             "addEntityButtonText": "replace me in json",
             "editEntityButtonText": "replace me in json",
+            "addEditModalAddTitle": "replace me in json",
+            "addEditModalEditTitle": "replace me in json",
+            "addEditModalMessage": "replace me in json",
             "deleteEntityButtonAltText": "replace me in json",
-            "enterEntityDetailsButtonText": "Enter sanction details",
-            "editEntityDetailsButtonText": "Edit sanction details"
+            "deleteModalTitle": "replace me in json",
+            "deleteModalConfirmButtonText": "replace me in json",
+            "deleteModalWarning": "replace me in json",
+            "enterEntityDetailsButtonText": "replace me in json",
+            "editEntityDetailsButtonText": "replace me in json",
+            "drawerTitle": "replace me in json"
           },
           "modal": {
-            "addTitle": "replace me in json",
-            "editTitle": "replace me in json",
-            "message": "replace me in json",
             "form": {
               "id": "dqm-modal",
               "fields": [
@@ -2635,7 +2642,6 @@
             }
           },
           "drawer": {
-            "title": "Add measure results",
             "form": {
               "id": "dqm-drawer",
               "fields": [
@@ -2672,18 +2678,22 @@
               }
             ]
           },
-          "dashboard": {
-            "title": "Add plan sanctions",
-            "addEntityButtonText": "Add a sanction",
-            "editEntityButtonText": "Edit sanction",
-            "deleteEntityButtonAltText": "Delete sanction",
+          "verbiage": {
+            "dashboardTitle": "replace me in json",
+            "addEntityButtonText": "replace me in json",
+            "editEntityButtonText": "replace me in json",
+            "addEditModalAddTitle": "replace me in json",
+            "addEditModalEditTitle": "replace me in json",
+            "addEditModalMessage": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json",
+            "deleteModalTitle": "replace me in json",
+            "deleteModalConfirmButtonText": "replace me in json",
+            "deleteModalWarning": "replace me in json",
             "enterEntityDetailsButtonText": "replace me in json",
-            "editEntityDetailsButtonText": "replace me in json"
+            "editEntityDetailsButtonText": "replace me in json",
+            "drawerTitle": "replace me in json"
           },
           "modal": {
-            "addTitle": "Add a sanction",
-            "editTitle": "Edit sanction",
-            "message": "Complete the remaining indicators for this sanction by saving the sanction and selecting \"Enter sanction details\".",
             "form": {
               "id": "ds-modal",
               "fields": [
@@ -2810,7 +2820,6 @@
             }
           },
           "drawer": {
-            "title": "Add details for sanction",
             "form": {
               "id": "ds",
               "fields": [

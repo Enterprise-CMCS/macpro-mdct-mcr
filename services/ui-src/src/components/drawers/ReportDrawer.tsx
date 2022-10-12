@@ -27,7 +27,6 @@ export const ReportDrawer = ({
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
   const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
-
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
 
   return (
@@ -64,17 +63,17 @@ export const ReportDrawer = ({
 };
 
 interface Props {
-  drawerDisclosure: {
-    isOpen: boolean;
-    onClose: Function;
-  };
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
   drawerDetails?: AnyObject;
   form: FormJson;
-  onSubmit: Function;
   formData?: AnyObject;
+  onSubmit: Function;
   submitting?: boolean;
+  drawerDisclosure: {
+    isOpen: boolean;
+    onClose: Function;
+  };
   [key: string]: any;
 }
 
