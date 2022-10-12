@@ -3,30 +3,23 @@ import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { PageTemplate } from "components";
 // utils
 import { createEmailLink } from "utils/other/email";
-import { makeMediaQueryClasses } from "utils";
 // assets
 import warningIcon from "assets/icons/icon_warning.png";
 import verbiage from "verbiage/pages/not-found";
 
 export const NotFoundPage = () => {
-  const mqClasses = makeMediaQueryClasses();
   const { header, subHeading, emailText, body } = verbiage;
   const { preLinkText, cmsEmail, postLinkText } = emailText;
 
   return (
     <PageTemplate data-testid="404-view" sxOverride={sx.layout}>
       <Flex sx={sx.heading}>
-        <Image
-          src={warningIcon}
-          alt="warning icon"
-          sx={sx.warningIcon}
-          className={mqClasses}
-        />
-        <Heading as="h1" sx={sx.headerText} className={mqClasses}>
+        <Image src={warningIcon} alt="warning icon" sx={sx.warningIcon} />
+        <Heading as="h1" sx={sx.headerText}>
           {header}
         </Heading>
       </Flex>
-      <Heading as="h2" sx={sx.subHeadingText} className={mqClasses}>
+      <Heading as="h2" sx={sx.subHeadingText}>
         {subHeading}
       </Heading>
       <Text sx={sx.descriptionText}>
@@ -53,14 +46,14 @@ const sx = {
   },
   warningIcon: {
     boxSize: "2rem",
-    "&.mobile": {
+    ".mobile &": {
       boxSize: "1.5rem",
     },
   },
   headerText: {
     fontSize: "4xl",
     fontWeight: "normal",
-    "&.mobile": {
+    ".mobile &": {
       fontSize: "2xl",
     },
   },
@@ -68,7 +61,7 @@ const sx = {
     fontSize: "lg",
     fontWeight: "bold",
     marginBottom: "1rem",
-    "&.mobile": {
+    ".mobile &": {
       marginBottom: "1.5rem",
     },
   },
