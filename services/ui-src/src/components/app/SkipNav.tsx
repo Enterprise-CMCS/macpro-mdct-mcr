@@ -26,8 +26,9 @@ interface Props {
 
 const sx = {
   skipNavLink: {
-    background: "palette.white",
     zIndex: "skipLink",
+    minWidth: "200px",
+    background: "palette.white",
     transition: "all 0s !important",
     "&:focus-visible": {
       top: 1,

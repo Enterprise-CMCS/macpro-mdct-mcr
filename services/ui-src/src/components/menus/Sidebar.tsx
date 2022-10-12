@@ -191,7 +191,6 @@ const sx = {
   },
   sideBarSkipNav: {
     position: "fixed",
-    top: -100,
   },
   topBox: {
     borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",

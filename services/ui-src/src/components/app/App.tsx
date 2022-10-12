@@ -89,7 +89,6 @@ const sx = {
   },
   skipnav: {
     position: "absolute",
-    top: -100,
   },
   appContainer: {
     display: "flex",
