@@ -17,6 +17,7 @@ import {
   EntityShape,
   ModalDrawerReportPageShape,
   ReportStatus,
+  FormJson,
 } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
@@ -149,7 +150,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           entityType={entityType}
           selectedEntity={selectedEntity}
           verbiage={verbiage}
-          modalForm={modal.form}
+          modalForm={modal!}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: closeAddEditEntityModal,

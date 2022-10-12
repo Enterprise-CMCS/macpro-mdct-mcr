@@ -13,12 +13,10 @@ export const sortReportsOldestToNewest = (
   reportsArray.sort((stateA, stateB) => stateA.createdAt - stateB.createdAt);
 
 // returns reportJson with forms that mirror the adminDisabled status of the report
-export const copyAdminDisabledStatusToForms = (
-  reportJson: ReportJson
-): ReportJson => {
+export const copyAdminDisabledStatusToForms = (reportJson: any): any => {
   const reportAdminDisabledStatus = !!reportJson.adminDisabled;
-  const writeAdminDisabledStatus = (routes: ReportRoute[]) => {
-    routes.forEach((route: ReportRoute) => {
+  const writeAdminDisabledStatus = (routes: any[]) => {
+    routes.forEach((route: any) => {
       // if children, recurse (only parent routes have children)
       if (route.children) {
         writeAdminDisabledStatus(route.children);
@@ -106,7 +104,7 @@ export const compileValidationJsonFromRoutes = (
     const standardFormFields = route.form?.fields;
     if (standardFormFields) addValidationToAccumulator(standardFormFields);
     // if modal form present, add validation to schema
-    const modalFormFields = route.modal?.form.fields;
+    const modalFormFields = route.modal?.fields;
     if (modalFormFields) addValidationToAccumulator(modalFormFields);
     // if drawer form present, add validation to schema
     const drawerFormFields = route.drawer?.form.fields;
@@ -134,7 +132,7 @@ export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
     const standardFormFields = route.form?.fields;
     if (standardFormFields) mapFieldIdsToObject(standardFormFields);
     // if modal form present, map to return object
-    const modalFormFields = route.modal?.form.fields;
+    const modalFormFields = route.modal?.fields;
     if (modalFormFields) mapFieldIdsToObject(modalFormFields);
     // if drawer form present, map to return object
     const drawerFormFields = route.drawer?.form.fields;

@@ -1011,109 +1011,107 @@
                 "drawerTitle": "Add details for access measure"
               },
               "modal": {
-                "form": {
-                  "id": "cam-modal",
-                  "fields": [
-                    {
-                      "id": "accessMeasure_generalCategory",
-                      "type": "radio",
-                      "validation": "radio",
-                      "props": {
-                        "label": "C2.V.1 General category",
-                        "hint": "Select one.",
-                        "choices": [
-                          {
-                            "name": "option1",
-                            "label": "General quantitative availability and accessibility standard"
-                          },
-                          {
-                            "name": "option2",
-                            "label": "LTSS-related standard: provider travels to the enrollee"
-                          },
-                          {
-                            "name": "option3",
-                            "label": "LTSS-related standard: enrollee travels to the provider"
-                          },
-                          {
-                            "name": "option4",
-                            "label": "Exceptions to time and distance standards"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "id": "accessMeasure_standardDescription",
-                      "type": "textarea",
-                      "validation": "text",
-                      "props": {
-                        "label": "C2.V.2 Measure standard",
-                        "hint": "What is the standard for your program-level indicators? Add a description."
-                      }
-                    },
-                    {
-                      "id": "accessMeasure_standardType",
-                      "type": "radio",
-                      "validation": "radio",
-                      "props": {
-                        "label": "C2.V.3 Standard type",
-                        "hint": "What is the standard type? Select one or add free text if you select \"Other\".",
-                        "choices": [
-                          {
-                            "name": "option1",
-                            "label": "Maximum time to travel"
-                          },
-                          {
-                            "name": "option2",
-                            "label": "Maximum distance to travel"
-                          },
-                          {
-                            "name": "option3",
-                            "label": "Maximum time or distance"
-                          },
-                          {
-                            "name": "option4",
-                            "label": "Ease of getting a timely appointment"
-                          },
-                          {
-                            "name": "option5",
-                            "label": "Appointment wait time"
-                          },
-                          {
-                            "name": "option6",
-                            "label": "Hours of operation"
-                          },
-                          {
-                            "name": "option7",
-                            "label": "Provider to enrollee ratios"
-                          },
-                          {
-                            "name": "option8",
-                            "label": "Minimum number of network providers"
-                          },
-                          {
-                            "name": "option9",
-                            "label": "Service fulfillment"
-                          },
-                          {
-                            "name": "option10",
-                            "label": "Other, specify",
-                            "children": [
-                              {
-                                "id": "accessMeasure_standardType-otherText",
-                                "type": "textarea",
-                                "validation": {
-                                  "type": "text",
-                                  "nested": true,
-                                  "parentFieldName": "accessMeasure_standardType"
-                                }
-                              }
-                            ]
-                          }
-                        ]
-                      }
+                "id": "cam-modal",
+                "fields": [
+                  {
+                    "id": "accessMeasure_generalCategory",
+                    "type": "radio",
+                    "validation": "radio",
+                    "props": {
+                      "label": "C2.V.1 General category",
+                      "hint": "Select one.",
+                      "choices": [
+                        {
+                          "name": "option1",
+                          "label": "General quantitative availability and accessibility standard"
+                        },
+                        {
+                          "name": "option2",
+                          "label": "LTSS-related standard: provider travels to the enrollee"
+                        },
+                        {
+                          "name": "option3",
+                          "label": "LTSS-related standard: enrollee travels to the provider"
+                        },
+                        {
+                          "name": "option4",
+                          "label": "Exceptions to time and distance standards"
+                        }
+                      ]
                     }
-                  ]
-                }
+                  },
+                  {
+                    "id": "accessMeasure_standardDescription",
+                    "type": "textarea",
+                    "validation": "text",
+                    "props": {
+                      "label": "C2.V.2 Measure standard",
+                      "hint": "What is the standard for your program-level indicators? Add a description."
+                    }
+                  },
+                  {
+                    "id": "accessMeasure_standardType",
+                    "type": "radio",
+                    "validation": "radio",
+                    "props": {
+                      "label": "C2.V.3 Standard type",
+                      "hint": "What is the standard type? Select one or add free text if you select \"Other\".",
+                      "choices": [
+                        {
+                          "name": "option1",
+                          "label": "Maximum time to travel"
+                        },
+                        {
+                          "name": "option2",
+                          "label": "Maximum distance to travel"
+                        },
+                        {
+                          "name": "option3",
+                          "label": "Maximum time or distance"
+                        },
+                        {
+                          "name": "option4",
+                          "label": "Ease of getting a timely appointment"
+                        },
+                        {
+                          "name": "option5",
+                          "label": "Appointment wait time"
+                        },
+                        {
+                          "name": "option6",
+                          "label": "Hours of operation"
+                        },
+                        {
+                          "name": "option7",
+                          "label": "Provider to enrollee ratios"
+                        },
+                        {
+                          "name": "option8",
+                          "label": "Minimum number of network providers"
+                        },
+                        {
+                          "name": "option9",
+                          "label": "Service fulfillment"
+                        },
+                        {
+                          "name": "option10",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "accessMeasure_standardType-otherText",
+                              "type": "textarea",
+                              "validation": {
+                                "type": "text",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_standardType"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
               },
               "drawer": {
                 "form": {
@@ -2455,218 +2453,216 @@
             "drawerTitle": "replace me in json"
           },
           "modal": {
-            "form": {
-              "id": "dqm-modal",
-              "fields": [
-                {
-                  "id": "qualityMeasure_domain",
-                  "type": "radio",
-                  "validation": "radio",
-                  "props": {
-                    "label": "D2.VII.1 Measure domain",
-                    "hint": "Select domain or add your own as needed.",
-                    "choices": [
-                      {
-                        "name": "option1",
-                        "label": "Primary care access and preventative care"
-                      },
-                      {
-                        "name": "option2",
-                        "label": "Maternal and perinatal health"
-                      },
-                      {
-                        "name": "option3",
-                        "label": "Care of acute and chronic conditions"
-                      },
-                      {
-                        "name": "option4",
-                        "label": "Behavioral health care"
-                      },
-                      {
-                        "name": "option5",
-                        "label": "Dental and oral health services"
-                      },
-                      {
-                        "name": "option6",
-                        "label": "Health plan enrollee experience of care"
-                      },
-                      {
-                        "name": "option7",
-                        "label": "Long-term services and supports"
-                      },
-                      {
-                        "name": "option8",
-                        "label": "Other",
-                        "children": [
-                          {
-                            "id": "qualityMeasure_domain-otherText",
-                            "type": "textarea",
-                            "validation": {
-                              "type": "text",
-                              "nested": true,
-                              "parentFieldName": "qualityMeasure_domain"
-                            }
+            "id": "dqm-modal",
+            "fields": [
+              {
+                "id": "qualityMeasure_domain",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.1 Measure domain",
+                  "hint": "Select domain or add your own as needed.",
+                  "choices": [
+                    {
+                      "name": "option1",
+                      "label": "Primary care access and preventative care"
+                    },
+                    {
+                      "name": "option2",
+                      "label": "Maternal and perinatal health"
+                    },
+                    {
+                      "name": "option3",
+                      "label": "Care of acute and chronic conditions"
+                    },
+                    {
+                      "name": "option4",
+                      "label": "Behavioral health care"
+                    },
+                    {
+                      "name": "option5",
+                      "label": "Dental and oral health services"
+                    },
+                    {
+                      "name": "option6",
+                      "label": "Health plan enrollee experience of care"
+                    },
+                    {
+                      "name": "option7",
+                      "label": "Long-term services and supports"
+                    },
+                    {
+                      "name": "option8",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_domain-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_domain"
                           }
-                        ]
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "qualityMeasure_name",
-                  "type": "textarea",
-                  "validation": "text",
-                  "props": {
-                    "label": "D2.VII.2 Measure name",
-                    "hint": "What is the measure name?"
-                  }
-                },
-                {
-                  "id": "qualityMeasure_nqfNumber",
-                  "type": "number",
-                  "validation": "number",
-                  "props": {
-                    "label": "D2.VII.3 National Quality Forum (NQF) number",
-                    "hint": "What is the NQF number?"
-                  }
-                },
-                {
-                  "id": "qualityMeasure_reportingRateType",
-                  "type": "radio",
-                  "validation": "radio",
-                  "props": {
-                    "label": "D2.VII.4 Measure reporting",
-                    "hint": "Is measure reporting program-specific or cross-program? Select one.",
-                    "choices": [
-                      {
-                        "name": "option1",
-                        "label": "Program-specific rate"
-                      },
-                      {
-                        "name": "option2",
-                        "label": "Cross-program rate",
-                        "children": [
-                          {
-                            "id": "qualityMeasure_crossProgramReportingRateProgramList",
-                            "type": "textarea",
-                            "validation": {
-                              "type": "text",
-                              "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingRateType"
-                            },
-                            "props": {
-                              "label": "D2.VII.5 Measure reporting: List programs",
-                              "hint": "What are the programs? Separate program names with a comma.",
-                              "mask": "comma-separated"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "qualityMeasure_set",
-                  "type": "radio",
-                  "validation": "radio",
-                  "props": {
-                    "label": "D2.VII.6 Measure set",
-                    "hint": "What is the measure set? Select one.",
-                    "choices": [
-                      {
-                        "name": "option1",
-                        "label": "Medicaid Child Core Set"
-                      },
-                      {
-                        "name": "option2",
-                        "label": "Medicaid Adult Core Set"
-                      },
-                      {
-                        "name": "option3",
-                        "label": "State-specific"
-                      },
-                      {
-                        "name": "option4",
-                        "label": "HEDIS"
-                      },
-                      {
-                        "name": "option5",
-                        "label": "Other",
-                        "children": [
-                          {
-                            "id": "qualityMeasure_set-otherText",
-                            "type": "textarea",
-                            "validation": {
-                              "type": "text",
-                              "nested": true,
-                              "parentFieldName": "qualityMeasure_set"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "qualityMeasure_reportingPeriod",
-                  "type": "radio",
-                  "validation": "radio",
-                  "props": {
-                    "label": "D2.VII.7a Reporting period",
-                    "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
-                    "choices": [
-                      {
-                        "name": "option1",
-                        "label": "Yes"
-                      },
-                      {
-                        "name": "option2",
-                        "label": "No",
-                        "children": [
-                          {
-                            "id": "qualityMeasure_reportingPeriodStartDate",
-                            "type": "date",
-                            "validation": {
-                              "type": "date",
-                              "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingPeriod"
-                            },
-                            "props": {
-                              "label": "D2.VII.7b Reporting period: Date range",
-                              "hint": "What is the reporting period covered by the measure?<br><br>Start date",
-                              "timetype": "startDate"
-                            }
-                          },
-                          {
-                            "id": "qualityMeasure_reportingPeriodEndDate",
-                            "type": "date",
-                            "validation": {
-                              "type": "endDate",
-                              "dependentFieldName": "qualityMeasure_reportingPeriodStartDate",
-                              "nested": true,
-                              "parentFieldName": "qualityMeasure_reportingPeriod"
-                            },
-                            "props": {
-                              "hint": "End date",
-                              "timetype": "endDate"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "qualityMeasure_description",
-                  "type": "textarea",
-                  "validation": "text",
-                  "props": {
-                    "label": "D2.VII.8 Measure description",
-                    "hint": "For measures that are not part of standardized national measure sets (i.e. state-specific measures), states should provide a description of the measure (for example, numerator and denominator)."
-                  }
+                        }
+                      ]
+                    }
+                  ]
                 }
-              ]
-            }
+              },
+              {
+                "id": "qualityMeasure_name",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "D2.VII.2 Measure name",
+                  "hint": "What is the measure name?"
+                }
+              },
+              {
+                "id": "qualityMeasure_nqfNumber",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D2.VII.3 National Quality Forum (NQF) number",
+                  "hint": "What is the NQF number?"
+                }
+              },
+              {
+                "id": "qualityMeasure_reportingRateType",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.4 Measure reporting",
+                  "hint": "Is measure reporting program-specific or cross-program? Select one.",
+                  "choices": [
+                    {
+                      "name": "option1",
+                      "label": "Program-specific rate"
+                    },
+                    {
+                      "name": "option2",
+                      "label": "Cross-program rate",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_crossProgramReportingRateProgramList",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_reportingRateType"
+                          },
+                          "props": {
+                            "label": "D2.VII.5 Measure reporting: List programs",
+                            "hint": "What are the programs? Separate program names with a comma.",
+                            "mask": "comma-separated"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "qualityMeasure_set",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.6 Measure set",
+                  "hint": "What is the measure set? Select one.",
+                  "choices": [
+                    {
+                      "name": "option1",
+                      "label": "Medicaid Child Core Set"
+                    },
+                    {
+                      "name": "option2",
+                      "label": "Medicaid Adult Core Set"
+                    },
+                    {
+                      "name": "option3",
+                      "label": "State-specific"
+                    },
+                    {
+                      "name": "option4",
+                      "label": "HEDIS"
+                    },
+                    {
+                      "name": "option5",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_set-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_set"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "qualityMeasure_reportingPeriod",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.7a Reporting period",
+                  "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
+                  "choices": [
+                    {
+                      "name": "option1",
+                      "label": "Yes"
+                    },
+                    {
+                      "name": "option2",
+                      "label": "No",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_reportingPeriodStartDate",
+                          "type": "date",
+                          "validation": {
+                            "type": "date",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_reportingPeriod"
+                          },
+                          "props": {
+                            "label": "D2.VII.7b Reporting period: Date range",
+                            "hint": "What is the reporting period covered by the measure?<br><br>Start date",
+                            "timetype": "startDate"
+                          }
+                        },
+                        {
+                          "id": "qualityMeasure_reportingPeriodEndDate",
+                          "type": "date",
+                          "validation": {
+                            "type": "endDate",
+                            "dependentFieldName": "qualityMeasure_reportingPeriodStartDate",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_reportingPeriod"
+                          },
+                          "props": {
+                            "hint": "End date",
+                            "timetype": "endDate"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "qualityMeasure_description",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "D2.VII.8 Measure description",
+                  "hint": "For measures that are not part of standardized national measure sets (i.e. state-specific measures), states should provide a description of the measure (for example, numerator and denominator)."
+                }
+              }
+            ]
           },
           "drawer": {
             "form": {
@@ -2722,130 +2718,128 @@
             "drawerTitle": "replace me in json"
           },
           "modal": {
-            "form": {
-              "id": "ds-modal",
-              "fields": [
-                {
-                  "id": "sanction_interventionType",
-                  "type": "radio",
-                  "validation": "radio",
-                  "props": {
-                    "label": "D3.VIII.1 Intervention type",
-                    "hint": "What type of intervention? Select one.",
-                    "choices": [
-                      {
-                        "name": "option1",
-                        "label": "Civil monetary penalty"
-                      },
-                      {
-                        "name": "option2",
-                        "label": "Suspension of new enrollment"
-                      },
-                      {
-                        "name": "option3",
-                        "label": "Fine"
-                      },
-                      {
-                        "name": "option4",
-                        "label": "Corrective action plan"
-                      },
-                      {
-                        "name": "option5",
-                        "label": "Compliance letter"
-                      },
-                      {
-                        "name": "option6",
-                        "label": "Liquidated damages"
-                      },
-                      {
-                        "name": "option7",
-                        "label": "Other",
-                        "children": [
-                          {
-                            "id": "sanction_interventionType-otherText",
-                            "type": "textarea",
-                            "validation": {
-                              "type": "text",
-                              "nested": true,
-                              "parentFieldName": "sanction_interventionType"
-                            }
+            "id": "ds-modal",
+            "fields": [
+              {
+                "id": "sanction_interventionType",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D3.VIII.1 Intervention type",
+                  "hint": "What type of intervention? Select one.",
+                  "choices": [
+                    {
+                      "name": "option1",
+                      "label": "Civil monetary penalty"
+                    },
+                    {
+                      "name": "option2",
+                      "label": "Suspension of new enrollment"
+                    },
+                    {
+                      "name": "option3",
+                      "label": "Fine"
+                    },
+                    {
+                      "name": "option4",
+                      "label": "Corrective action plan"
+                    },
+                    {
+                      "name": "option5",
+                      "label": "Compliance letter"
+                    },
+                    {
+                      "name": "option6",
+                      "label": "Liquidated damages"
+                    },
+                    {
+                      "name": "option7",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "sanction_interventionType-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "sanction_interventionType"
                           }
-                        ]
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "sanction_interventionTopic",
-                  "type": "radio",
-                  "validation": "radio",
-                  "props": {
-                    "label": "D3.VIII.2 Intervention topic",
-                    "hint": "What was the topic of intervention? Select one.",
-                    "choices": [
-                      {
-                        "name": "option1",
-                        "label": "Discrimination"
-                      },
-                      {
-                        "name": "option2",
-                        "label": "False information"
-                      },
-                      {
-                        "name": "option3",
-                        "label": "Excess charges"
-                      },
-                      {
-                        "name": "option4",
-                        "label": "Reporting"
-                      },
-                      {
-                        "name": "option5",
-                        "label": "Performance management"
-                      },
-                      {
-                        "name": "option6",
-                        "label": "Timely access"
-                      },
-                      {
-                        "name": "option7",
-                        "label": "Other",
-                        "children": [
-                          {
-                            "id": "sanction_interventionTopic-otherText",
-                            "type": "textarea",
-                            "validation": {
-                              "type": "text",
-                              "nested": true,
-                              "parentFieldName": "sanction_interventionTopic"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "sanction_planName",
-                  "type": "dropdown",
-                  "validation": "dropdown",
-                  "props": {
-                    "label": "D3.VIII.3 Plan name",
-                    "hint": "What is the name of the plan attached to the sanction or corrective action plan? Select plan name.",
-                    "options": "plans"
-                  }
-                },
-                {
-                  "id": "sanction_interventionReason",
-                  "type": "textarea",
-                  "validation": "text",
-                  "props": {
-                    "label": "D3.VIII.4 Reason for intervention",
-                    "hint": "What was the reason for intervention? Add a description."
-                  }
+                        }
+                      ]
+                    }
+                  ]
                 }
-              ]
-            }
+              },
+              {
+                "id": "sanction_interventionTopic",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D3.VIII.2 Intervention topic",
+                  "hint": "What was the topic of intervention? Select one.",
+                  "choices": [
+                    {
+                      "name": "option1",
+                      "label": "Discrimination"
+                    },
+                    {
+                      "name": "option2",
+                      "label": "False information"
+                    },
+                    {
+                      "name": "option3",
+                      "label": "Excess charges"
+                    },
+                    {
+                      "name": "option4",
+                      "label": "Reporting"
+                    },
+                    {
+                      "name": "option5",
+                      "label": "Performance management"
+                    },
+                    {
+                      "name": "option6",
+                      "label": "Timely access"
+                    },
+                    {
+                      "name": "option7",
+                      "label": "Other",
+                      "children": [
+                        {
+                          "id": "sanction_interventionTopic-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "sanction_interventionTopic"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "sanction_planName",
+                "type": "dropdown",
+                "validation": "dropdown",
+                "props": {
+                  "label": "D3.VIII.3 Plan name",
+                  "hint": "What is the name of the plan attached to the sanction or corrective action plan? Select plan name.",
+                  "options": "plans"
+                }
+              },
+              {
+                "id": "sanction_interventionReason",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "D3.VIII.4 Reason for intervention",
+                  "hint": "What was the reason for intervention? Add a description."
+                }
+              }
+            ]
           },
           "drawer": {
             "form": {
