@@ -20,6 +20,7 @@ export const DropdownField = ({
   label,
   options,
   hint,
+  nested,
   sxOverride,
   ...props
 }: Props) => {
@@ -86,10 +87,11 @@ export const DropdownField = ({
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.value.message;
   const parsedHint = hint && parseCustomHtml(hint);
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
 
   return (
-    <Box sx={sxOverride} className={labelClass}>
+    <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
       <CmsdsDropdown
         name={name}
         id={name}
@@ -110,6 +112,7 @@ interface Props {
   label?: string;
   hint?: any;
   options: DropdownOptions[] | string;
+  nested?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

@@ -157,6 +157,7 @@ export const nested = (
     mixed: number(),
     string: string(),
     date: date(),
+    object: object(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
