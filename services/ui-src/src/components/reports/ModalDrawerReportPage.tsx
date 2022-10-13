@@ -22,7 +22,7 @@ import {
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
-  const { entityType, verbiage, modal, drawer } = route;
+  const { entityType, verbiage, modalForm, drawerForm } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
@@ -149,7 +149,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           entityType={entityType}
           selectedEntity={selectedEntity}
           verbiage={verbiage}
-          modalForm={modal.form}
+          modalForm={modalForm}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: closeAddEditEntityModal,
@@ -168,7 +168,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         <ReportDrawer
           drawerTitle={verbiage.drawerTitle}
           drawerDetails={getFormattedEntityData(entityType, selectedEntity)}
-          form={drawer.form}
+          form={drawerForm}
           formData={formHydrationData}
           onSubmit={onSubmit}
           submitting={submitting}

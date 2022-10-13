@@ -25,10 +25,10 @@ export const copyAdminDisabledStatusToForms = (
       } else {
         // else if form present downstream, copy adminDisabled status to form
         if (route.form) route.form.adminDisabled = reportAdminDisabledStatus;
-        if (route.drawer?.form)
-          route.drawer.form.adminDisabled = reportAdminDisabledStatus;
-        if (route.modal?.form)
-          route.modal.form.adminDisabled = reportAdminDisabledStatus;
+        if (route.drawerForm)
+          route.drawerForm.adminDisabled = reportAdminDisabledStatus;
+        if (route.modalForm)
+          route.modalForm.adminDisabled = reportAdminDisabledStatus;
       }
     });
   };
@@ -106,10 +106,10 @@ export const compileValidationJsonFromRoutes = (
     const standardFormFields = route.form?.fields;
     if (standardFormFields) addValidationToAccumulator(standardFormFields);
     // if modal form present, add validation to schema
-    const modalFormFields = route.modal?.form.fields;
+    const modalFormFields = route.modalForm?.fields;
     if (modalFormFields) addValidationToAccumulator(modalFormFields);
     // if drawer form present, add validation to schema
-    const drawerFormFields = route.drawer?.form.fields;
+    const drawerFormFields = route.drawerForm?.fields;
     if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
   });
   return validationSchema;
@@ -134,10 +134,10 @@ export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
     const standardFormFields = route.form?.fields;
     if (standardFormFields) mapFieldIdsToObject(standardFormFields);
     // if modal form present, map to return object
-    const modalFormFields = route.modal?.form.fields;
+    const modalFormFields = route.modalForm?.fields;
     if (modalFormFields) mapFieldIdsToObject(modalFormFields);
     // if drawer form present, map to return object
-    const drawerFormFields = route.drawer?.form.fields;
+    const drawerFormFields = route.drawerForm?.fields;
     if (drawerFormFields) mapFieldIdsToObject(drawerFormFields);
   });
   return objectToReturn;

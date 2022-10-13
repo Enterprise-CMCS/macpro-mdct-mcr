@@ -257,9 +257,7 @@ export const mockDrawerReportPageJson = {
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
   },
-  drawer: {
-    form: mockDrawerForm,
-  },
+  drawerForm: mockDrawerForm,
 };
 
 export const mockModalDrawerReportPageVerbiage = {
@@ -286,12 +284,8 @@ export const mockModalDrawerReportPageJson = {
   pageType: "modalDrawer",
   entityType: "accessMeasures",
   verbiage: mockModalDrawerReportPageVerbiage,
-  modal: {
-    form: mockModalForm,
-  },
-  drawer: {
-    form: mockDrawerForm,
-  },
+  modalForm: mockModalForm,
+  drawerForm: mockDrawerForm,
 };
 
 // REPORT
