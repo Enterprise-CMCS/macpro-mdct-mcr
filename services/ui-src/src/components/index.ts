@@ -31,6 +31,7 @@ export { MobileDashboardList } from "./pages/Dashboard/DashboardProgramListMobil
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
+export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";
