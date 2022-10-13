@@ -9,7 +9,6 @@ import { ReportJson } from "types";
 
 const reportJsonBase: ReportJson =
   copyAdminDisabledStatusToForms(rawReportJson);
-
 /*
  * export routes in flattened array
  * for use in creating app routes and navigation links

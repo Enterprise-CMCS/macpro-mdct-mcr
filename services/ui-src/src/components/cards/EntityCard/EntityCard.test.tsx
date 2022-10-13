@@ -51,7 +51,7 @@ const EntityCardComponent = (
     entity={mockEntity}
     entityType={mockEntityType}
     formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
@@ -64,7 +64,7 @@ const UnfinishedEntityCardComponent = (
     entity={mockEntity}
     entityType={mockEntityType}
     formattedEntityData={mockUnfinishedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
@@ -76,7 +76,7 @@ const AccessMeasuresEntityCardComponent = (
     entity={mockEntity}
     entityType={"accessMeasures"}
     formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
@@ -89,7 +89,7 @@ const SanctionsEntityCardComponent = (
     entity={mockEntity}
     entityType={"sanctions"}
     formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
@@ -102,13 +102,19 @@ const QualityMeasuresEntityCardComponent = (
     entity={mockEntity}
     entityType={"qualityMeasures"}
     formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
     data-testid="mock-entity-card"
   />
 );
+
+const {
+  editEntityButtonText,
+  enterEntityDetailsButtonText,
+  editEntityDetailsButtonText,
+} = mockModalDrawerReportPageJson.verbiage;
 
 describe("Test Finished EntityCard", () => {
   beforeEach(() => {
@@ -124,27 +130,19 @@ describe("Test Finished EntityCard", () => {
   });
 
   test("Clicking edit button opens the AddEditProgramModal", async () => {
-    const editEntityButton = screen.getByTestId("editEntityButton");
-    expect(editEntityButton).toBeVisible();
+    const editEntityButton = screen.getByText(editEntityButtonText);
     await userEvent.click(editEntityButton);
     await expect(openAddEditEntityModal).toBeCalledTimes(1);
   });
 
-  test("Clicking 'Edit measure' button opens the AddEditProgramModal", async () => {
-    const editMeasureButton = screen.getByText("Edit measure");
-    expect(editMeasureButton).toBeVisible();
-    await userEvent.click(editMeasureButton);
-    expect(openAddEditEntityModal).toBeCalledTimes(1);
-  });
-
   test("EntityCard opens the delete modal on remove click", async () => {
-    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on edit-details click", async () => {
-    const editDetailsButton = screen.queryAllByTestId("edit-details-button")[0];
+    const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
@@ -164,15 +162,13 @@ describe("Test Unfinished EntityCard", () => {
   });
 
   test("EntityCard opens the delete modal on remove click", async () => {
-    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on enter-details click", async () => {
-    const enterDetailsButton = screen.queryAllByTestId(
-      "enter-details-button"
-    )[0];
+    const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });

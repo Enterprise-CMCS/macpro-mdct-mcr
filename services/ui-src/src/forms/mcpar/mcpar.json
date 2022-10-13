@@ -973,16 +973,23 @@
                   }
                 ]
               },
-              "dashboard": {
-                "title": "Add measures for monitoring access standards",
+              "verbiage": {
+                "dashboardTitle": "Add measures for monitoring access standards",
                 "addEntityButtonText": "Add access measure",
                 "editEntityButtonText": "Edit measure",
-                "deleteEntityButtonAltText": "Delete measure"
+                "addEditModalAddTitle": "Add access measure",
+                "addEditModalEditTitle": "Edit access measure",
+                "addEditModalMessage": "Complete the remaining indicators for this access measure by saving the measure and selecting \"Enter measure details\".",
+                "deleteEntityButtonAltText": "Delete measure",
+                "deleteModalTitle": "Delete access measure?",
+                "deleteModalConfirmButtonText": "Yes, delete measure",
+                "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
+                "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
+                "enterEntityDetailsButtonText": "Enter details",
+                "editEntityDetailsButtonText": "Edit details",
+                "drawerTitle": "Add details for access measure"
               },
               "modal": {
-                "addTitle": "Add access measure",
-                "editTitle": "Edit access measure",
-                "message": "Complete the remaining indicators for this access measure by saving the measure and selecting \"Enter measure details\".",
                 "form": {
                   "id": "cam-modal",
                   "fields": [
@@ -1088,7 +1095,6 @@
                 }
               },
               "drawer": {
-                "title": "Add details for access measure",
                 "form": {
                   "id": "cam-drawer",
                   "fields": [
@@ -1429,11 +1435,11 @@
             "subsection": "Topic I. Program Characteristics & Enrollment",
             "spreadsheet": "D1_Plan_Set"
           },
-          "dashboard": {
-            "title": "Report program characteristics & enrollment for each plan"
+          "verbiage": {
+            "dashboardTitle": "Report program characteristics & enrollment for each plan",
+            "drawerTitle": "Report program characteristics & enrollment for"
           },
           "drawer": {
-            "title": "Report program characteristics & enrollment for",
             "form": {
               "id": "dpc",
               "fields": [
@@ -1481,11 +1487,11 @@
             "subsection": "Topic II. Financial Performance",
             "spreadsheet": "D1_Plan_Set"
           },
-          "dashboard": {
-            "title": "Report financial performance for each plan"
+          "verbiage": {
+            "dashboardTitle": "Report financial performance for each plan",
+            "drawerTitle": "Report financial performance for"
           },
           "drawer": {
-            "title": "Report financial performance for",
             "form": {
               "id": "dfp",
               "fields": [
@@ -1612,11 +1618,11 @@
             "subsection": "Topic III. Encounter Data",
             "spreadsheet": "D1_Plan_Set"
           },
-          "dashboard": {
-            "title": "Report on encounter data for each plan"
+          "verbiage": {
+            "dashboardTitle": "Report on encounter data for each plan",
+            "drawerTitle": "Report encounter data for"
           },
           "drawer": {
-            "title": "Report encounter data for",
             "form": {
               "id": "dedr",
               "fields": [
@@ -1667,11 +1673,11 @@
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
                 "spreadsheet": "D1_Plan_Set"
               },
-              "dashboard": {
-                "title": "Report on appeals for each plan"
+              "verbiage": {
+                "dashboardTitle": "Report on appeals for each plan",
+                "drawerTitle": "Report on appeals for"
               },
               "drawer": {
-                "title": "Report on appeals for",
                 "form": {
                   "id": "dao",
                   "fields": [
@@ -1830,11 +1836,11 @@
                   }
                 ]
               },
-              "dashboard": {
-                "title": "Report on appeals by service for each plan"
+              "verbiage": {
+                "dashboardTitle": "Report on appeals by service for each plan",
+                "drawerTitle": "Report appeals by service for"
               },
               "drawer": {
-                "title": "Report appeals by service for",
                 "form": {
                   "id": "dabs",
                   "fields": [
@@ -1959,11 +1965,11 @@
                   }
                 ]
               },
-              "dashboard": {
-                "title": "Report state fair hearings and external medical reviews for each plan"
+              "verbiage": {
+                "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
+                "drawerTitle": "Report state fair hearings and external medical reviews for"
               },
               "drawer": {
-                "title": "Report state fair hearings and external medical reviews for",
                 "form": {
                   "id": "dsfh",
                   "fields": [
@@ -2041,11 +2047,11 @@
                 "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
                 "spreadsheet": "D1_Plan_Set"
               },
-              "dashboard": {
-                "title": "Report on grievances for each plan"
+              "verbiage": {
+                "dashboardTitle": "Report on grievances for each plan",
+                "drawerTitle": "Report on grievances for"
               },
               "drawer": {
-                "title": "Report on grievances for",
                 "form": {
                   "id": "dgo",
                   "fields": [
@@ -2124,11 +2130,11 @@
                   }
                 ]
               },
-              "dashboard": {
-                "title": "Report on grievances by service for each plan"
+              "verbiage": {
+                "dashboardTitle": "Report on grievances by service for each plan",
+                "drawerTitle": "Report encounter data for"
               },
               "drawer": {
-                "title": "Report encounter data for",
                 "form": {
                   "id": "dgbs",
                   "fields": [
@@ -2257,12 +2263,12 @@
                   }
                 ]
               },
-              "dashboard": {
-                "title": "Report on grievances by reason for each plan"
+              "verbiage": {
+                "dashboardTitle": "Report on grievances by reason for each plan",
+                "drawerTitle": "Report on grievances by reason for"
               },
               "drawer": {
-                "title": "Report on grievances by reason for",
-                "info": [
+                "drawerInfo": [
                   {
                     "type": "p",
                     "content": "A single grievance may be related to multiple reasons and may therefore be counted in multiple categories."
@@ -2407,16 +2413,23 @@
               }
             ]
           },
-          "dashboard": {
-            "title": "Add quality and performance measures",
+          "verbiage": {
+            "dashboardTitle": "replace me in json",
             "addEntityButtonText": "replace me in json",
             "editEntityButtonText": "replace me in json",
-            "deleteEntityButtonAltText": "replace me in json"
+            "addEditModalAddTitle": "replace me in json",
+            "addEditModalEditTitle": "replace me in json",
+            "addEditModalMessage": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json",
+            "deleteModalTitle": "replace me in json",
+            "deleteModalConfirmButtonText": "replace me in json",
+            "deleteModalWarning": "replace me in json",
+            "entityUnfinishedMessage": "replace me in json",
+            "enterEntityDetailsButtonText": "replace me in json",
+            "editEntityDetailsButtonText": "replace me in json",
+            "drawerTitle": "replace me in json"
           },
           "modal": {
-            "addTitle": "replace me in json",
-            "editTitle": "replace me in json",
-            "message": "replace me in json",
             "form": {
               "id": "dqm-modal",
               "fields": [
@@ -2631,7 +2644,6 @@
             }
           },
           "drawer": {
-            "title": "Add measure results",
             "form": {
               "id": "dqm-drawer",
               "fields": [
@@ -2668,16 +2680,23 @@
               }
             ]
           },
-          "dashboard": {
-            "title": "Add quality and performance measures",
+          "verbiage": {
+            "dashboardTitle": "replace me in json",
             "addEntityButtonText": "replace me in json",
             "editEntityButtonText": "replace me in json",
-            "deleteEntityButtonAltText": "replace me in json"
+            "addEditModalAddTitle": "replace me in json",
+            "addEditModalEditTitle": "replace me in json",
+            "addEditModalMessage": "replace me in json",
+            "deleteEntityButtonAltText": "replace me in json",
+            "deleteModalTitle": "replace me in json",
+            "deleteModalConfirmButtonText": "replace me in json",
+            "deleteModalWarning": "replace me in json",
+            "entityUnfinishedMessage": "replace me in json",
+            "enterEntityDetailsButtonText": "replace me in json",
+            "editEntityDetailsButtonText": "replace me in json",
+            "drawerTitle": "replace me in json"
           },
           "modal": {
-            "addTitle": "replace me in json",
-            "editTitle": "replace me in json",
-            "message": "replace me in json",
             "form": {
               "id": "ds-modal",
               "fields": [
@@ -2804,7 +2823,6 @@
             }
           },
           "drawer": {
-            "title": "Add details for sanction",
             "form": {
               "id": "ds",
               "fields": [
@@ -2879,11 +2897,11 @@
             "subsection": "Topic X. Program Integrity",
             "spreadsheet": "D1_Plan_Set"
           },
-          "dashboard": {
-            "title": "Report on program integrity for each plan"
+          "verbiage": {
+            "dashboardTitle": "Report on program integrity for each plan",
+            "drawerTitle": "Program integrity for"
           },
           "drawer": {
-            "title": "Program integrity for",
             "form": {
               "id": "dpi",
               "fields": [
@@ -3095,11 +3113,11 @@
           }
         ]
       },
-      "dashboard": {
-        "title": "Report on role and type for each BSS entity"
+      "verbiage": {
+        "dashboardTitle": "Report on role and type for each BSS entity",
+        "drawerTitle": "Report on"
       },
       "drawer": {
-        "title": "Report on",
         "form": {
           "id": "ebssei",
           "fields": [

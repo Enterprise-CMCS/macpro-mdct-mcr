@@ -44,7 +44,6 @@ export const EntityCardBottomSection = ({
 
 interface Props {
   entityType: string;
-  entityCompleted: boolean;
   formattedEntityData: AnyObject;
 }
 

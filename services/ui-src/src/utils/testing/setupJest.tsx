@@ -252,13 +252,30 @@ export const mockDrawerReportPageJson = {
     section: "mock section",
     subsection: "mock subsection",
   },
-  dashboard: {
-    title: "Mock dashboard title",
+  verbiage: {
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
   },
   drawer: {
-    title: "Mock drawer title",
     form: mockDrawerForm,
   },
+};
+
+export const mockModalDrawerReportPageVerbiage = {
+  dashboardTitle: "Mock dashboard title",
+  addEntityButtonText: "Mock add entity button text",
+  editEntityButtonText: "Mock edit entity button text",
+  addEditModalAddTitle: "Mock add/edit entity modal add title",
+  addEditModalEditTitle: "Mock add/edit entity modal edit title",
+  addEditModalMessage: "Mock add/edit entity modal message",
+  deleteEntityButtonAltText: "Mock delete entity button alt text",
+  deleteModalTitle: "Mock delete modal title",
+  deleteModalConfirmButtonText: "Mock delete modal confirm button text",
+  deleteModalWarning: "Mock delete modal warning",
+  entityUnfinishedMessage: "Mock entity unfinished messsage",
+  enterEntityDetailsButtonText: "Mock enter entity details button text",
+  editEntityDetailsButtonText: "Mock edit entity details button text",
+  drawerTitle: "Mock drawer title",
 };
 
 export const mockModalDrawerReportPageJson = {
@@ -270,20 +287,11 @@ export const mockModalDrawerReportPageJson = {
     section: "mock section",
     subsection: "mock subsection",
   },
-  dashboard: {
-    title: "Mock dashboard title",
-    addEntityButtonText: "Add entity button",
-    editEntityButtonText: "Edit measure",
-    deleteEntityButtonAltText: "Delete measure",
-  },
+  verbiage: mockModalDrawerReportPageVerbiage,
   modal: {
-    addTitle: "Add entity modal",
-    editTitle: "Edit entity modal",
-    message: "Mock message",
     form: mockModalForm,
   },
   drawer: {
-    title: "Mock drawer title",
     form: mockDrawerForm,
   },
 };

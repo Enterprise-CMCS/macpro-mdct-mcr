@@ -63,13 +63,12 @@ export const DropdownField = ({
           label: option.name,
           value: option.id,
         }));
-
         dropdownOptions = fieldOptions;
       }
     } else {
       dropdownOptions = options;
     }
-    if (dropdownOptions[0].value !== "") {
+    if (dropdownOptions[0]?.value !== "") {
       dropdownOptions.splice(0, 0, {
         label: dropdownDefaultOptionText,
         value: "",

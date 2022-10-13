@@ -30,6 +30,12 @@ const mockReportContextWithoutEntities = {
   report: undefined,
 };
 
+const {
+  addEntityButtonText,
+  enterEntityDetailsButtonText,
+  deleteModalConfirmButtonText,
+} = mockModalDrawerReportPageJson.verbiage;
+
 const modalDrawerReportPageComponentWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
@@ -73,18 +79,18 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   it("ModalDrawerReportPage Modal opens correctly", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const addEntityButton = screen.getByText("Add entity button");
+    const addEntityButton = screen.getByText(addEntityButtonText);
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
   test("ModalDrawerReportPage opens the delete modal on remove click", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const addEntityButton = screen.getByText("Add entity button");
-    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    const addEntityButton = screen.getByText(addEntityButtonText);
+    const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
     // click delete in modal
-    const deleteButton = screen.getByText("Yes, Delete Measure");
+    const deleteButton = screen.getByText(deleteModalConfirmButtonText);
     await userEvent.click(deleteButton);
 
     // verify that the field is removed
@@ -95,16 +101,14 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   test("ModalDrawerReportPage opens the drawer on enter-details click", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const enterDetailsButton = screen.queryAllByTestId(
-      "enter-details-button"
-    )[0];
+    const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(enterDetailsButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
   it("ModalDrawerReportPage sidedrawer opens and saves for state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const launchDrawerButton = screen.getAllByText("Enter details")[0];
+    const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
 
