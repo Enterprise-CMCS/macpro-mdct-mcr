@@ -57,35 +57,30 @@ export type ReportRouteWithForm =
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
-  intro?: {
-    section: string;
-    subsection: string;
-    spreadsheet?: string;
-    info?: string | AnyObject[];
-  };
+  verbiage: ReportPageVerbiage;
 }
 
 export interface StandardReportPageShape extends ReportPageShapeBase {
   form: FormJson;
   dashboard?: never;
-  modal?: never;
-  drawer?: never;
+  modalForm?: never;
+  drawerForm?: never;
   entityType?: never;
 }
 
 export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
-  dashboard: AnyObject;
-  drawer: ReportPageDrawer;
-  modal?: never;
+  verbiage: DrawerReportPageVerbiage;
+  drawerForm: FormJson;
+  modalForm?: never;
   form?: never;
 }
 
 export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
-  dashboard: AnyObject;
-  modal: ReportPageModal;
-  drawer: ReportPageDrawer;
+  verbiage: ModalDrawerReportPageVerbiage;
+  modalForm: FormJson;
+  drawerForm: FormJson;
   form?: never;
 }
 
@@ -93,25 +88,41 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
   pageType?: never;
   entityType?: never;
-  modal?: never;
-  drawer?: never;
+  verbiage?: never;
+  modalForm?: never;
+  drawerForm?: never;
   form?: never;
 }
 
-export interface ReportPageDrawer {
-  form: FormJson;
-  title: string;
-  info?: CustomHtmlElement[];
-  addEntityButtonText?: string;
-  editEntityButtonText?: string;
-  deleteEntityButtonAltText?: string;
+export interface ReportPageVerbiage {
+  intro: {
+    section: string;
+    subsection: string;
+    spreadsheet?: string;
+    info?: string | AnyObject[];
+  };
 }
 
-export interface ReportPageModal {
-  form: FormJson;
-  addTitle: string;
-  editTitle: string;
-  message: string;
+export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
+  dashboardTitle: string;
+  drawerTitle: string;
+  drawerInfo?: CustomHtmlElement[];
+}
+
+export interface ModalDrawerReportPageVerbiage
+  extends DrawerReportPageVerbiage {
+  addEntityButtonText: string;
+  editEntityButtonText: string;
+  addEditModalAddTitle: string;
+  addEditModalEditTitle: string;
+  addEditModalMessage: string;
+  deleteEntityButtonAltText: string;
+  deleteModalTitle: string;
+  deleteModalConfirmButtonText: string;
+  deleteModalWarning: string;
+  entityUnfinishedMessage: string;
+  enterEntityDetailsButtonText: string;
+  editEntityDetailsButtonText: string;
 }
 
 // REPORT PROVIDER/CONTEXT
@@ -169,6 +180,11 @@ export declare type EntityType =
   | "qualityMeasures"
   | "sanctions";
 
+export enum ModalDrawerEntityTypes {
+  ACCESS_MEASURES = "accessMeasures",
+  QUALITY_MEASURES = "qualityMeasures",
+  SANCTIONS = "sanctions",
+}
 export interface EntityShape {
   id: string;
   [key: string]: any;
@@ -273,7 +289,8 @@ export interface AdminBannerMethods {
 }
 
 export interface AdminBannerShape extends AdminBannerMethods {
-  bannerData: AdminBannerData;
+  bannerData?: AdminBannerData;
+  isLoading: boolean;
   errorMessage?: string;
 }
 

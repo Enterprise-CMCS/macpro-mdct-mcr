@@ -24,7 +24,6 @@ import {
   DrawerReportPageShape,
   ReportStatus,
 } from "types";
-import verbiage from "../../verbiage/pages/mcpar/mcpar-drawer-report-page";
 
 export const DrawerReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -37,9 +36,29 @@ export const DrawerReportPage = ({ route }: Props) => {
     undefined
   );
 
-  const { entityType, dashboard, drawer } = route;
+  const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
-  const { message, link } = verbiage[entityType as keyof typeof verbiage];
+
+  const missingEntitiesVerbiage: any = {
+    plans: {
+      message:
+        "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7.",
+      link: {
+        text: "Add Plans.",
+        href: "/mcpar/program-information/add-plans",
+      },
+    },
+    bssEntities: {
+      message:
+        "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program.",
+      link: {
+        text: "Add BSS entities.",
+        href: "/mcpar/program-information/add-bss-entities",
+      },
+    },
+  };
+  const { message: missingEntitiesMessage, link: missingEntitiesLink } =
+    missingEntitiesVerbiage[entityType];
 
   const openRowDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
@@ -93,31 +112,33 @@ export const DrawerReportPage = ({ route }: Props) => {
     ));
   return (
     <Box data-testid="drawer-report-page">
-      {route.intro && <ReportPageIntro text={route.intro} />}
+      {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Heading as="h3" sx={sx.dashboardTitle}>
-        {dashboard!.title}
+        {verbiage.dashboardTitle}
       </Heading>
       {entities ? (
         entityRows(entities)
       ) : (
         <Text sx={sx.emptyEntityMessage}>
-          {message}{" "}
-          <Link as={RouterLink} to={link.href}>
-            {link.text}
+          {missingEntitiesMessage}{" "}
+          <Link as={RouterLink} to={missingEntitiesLink.href}>
+            {missingEntitiesLink.text}
           </Link>
         </Text>
       )}
       <ReportDrawer
+        selectedEntity={selectedEntity!}
+        verbiage={{
+          drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
+          drawerInfo: verbiage.drawerInfo,
+        }}
+        form={drawerForm}
+        onSubmit={onSubmit}
+        submitting={submitting}
         drawerDisclosure={{
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${selectedEntity?.name}`}
-        drawerInfo={drawer.info}
-        form={drawer.form}
-        onSubmit={onSubmit}
-        formData={selectedEntity}
-        submitting={submitting}
         data-testid="report-drawer"
       />
       <ReportPageFooter />

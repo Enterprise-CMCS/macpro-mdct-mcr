@@ -14,6 +14,7 @@ import {
   SkipNav,
 } from "components";
 // utils
+import { isMcparReportFormPage } from "forms/mcpar";
 import { fireTealiumPageView, makeMediaQueryClasses, useUser } from "utils";
 
 export const App = () => {
@@ -34,22 +35,21 @@ export const App = () => {
     );
   }, [key]);
 
+  const isReportPage = isMcparReportFormPage(pathname);
+
   return (
-    <div id="app-wrapper">
+    <div id="app-wrapper" className={mqClasses}>
       {user && (
         <Flex sx={sx.appLayout}>
           <SkipNav
             id="skip-nav-main"
-            href="#main-content"
-            text="Skip to main content"
+            href={isReportPage ? "#skip-nav-sidebar" : "#main-content"}
+            text={`Skip to ${isReportPage ? "report sidebar" : "main content"}`}
+            sxOverride={sx.skipnav}
           />
           <ReportProvider>
             <Header handleLogout={logout} />
-            <Container
-              sx={sx.appContainer}
-              className={mqClasses}
-              data-testid="app-container"
-            >
+            <Container sx={sx.appContainer} data-testid="app-container">
               <ErrorBoundary FallbackComponent={Error}>
                 <AppRoutes />
               </ErrorBoundary>
@@ -83,11 +83,14 @@ const sx = {
     minHeight: "100vh",
     flexDirection: "column",
   },
+  skipnav: {
+    position: "absolute",
+  },
   appContainer: {
     display: "flex",
     maxW: "appMax",
     flex: "1 0 auto",
-    "&.desktop": {
+    ".desktop &": {
       padding: "0 2rem",
     },
     "#main-content": {

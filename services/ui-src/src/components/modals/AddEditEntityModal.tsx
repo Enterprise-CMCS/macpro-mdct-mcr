@@ -5,20 +5,19 @@ import { Form, Modal, ReportContext } from "components";
 import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
-import { AnyObject, EntityShape, ReportStatus } from "types";
+import { AnyObject, EntityShape, FormJson, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
-  modalData,
+  form,
+  verbiage,
   selectedEntity,
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const { form, addTitle, editTitle, message } = modalData;
 
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
@@ -65,7 +64,9 @@ export const AddEditEntityModal = ({
       formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedEntity?.id ? editTitle : addTitle,
+        heading: selectedEntity?.id
+          ? verbiage.addEditModalEditTitle
+          : verbiage.addEditModalAddTitle,
         actionButtonText: submitting ? <Spinner size="small" /> : "Save",
       }}
     >
@@ -76,14 +77,15 @@ export const AddEditEntityModal = ({
         formData={selectedEntity}
         onSubmit={writeEntity}
       />
-      <Text sx={sx.bottomMessage}>{message}</Text>
+      <Text sx={sx.bottomModalMessage}>{verbiage.addEditModalMessage}</Text>
     </Modal>
   );
 };
 
 interface Props {
   entityType: string;
-  modalData: AnyObject;
+  form: FormJson;
+  verbiage: AnyObject;
   selectedEntity?: EntityShape;
   modalDisclosure: {
     isOpen: boolean;
@@ -92,7 +94,7 @@ interface Props {
 }
 
 const sx = {
-  bottomMessage: {
+  bottomModalMessage: {
     fontSize: "xs",
     color: "palette.primary_darker",
     marginTop: "1rem",

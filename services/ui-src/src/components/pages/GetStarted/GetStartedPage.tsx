@@ -2,8 +2,6 @@
 import { Box, Button, Image, Heading, Text, Flex } from "@chakra-ui/react";
 import { InfoSection, PageTemplate, SpreadsheetWidget } from "components";
 import { useNavigate } from "react-router-dom";
-// utils
-import { makeMediaQueryClasses } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 // assets
@@ -13,7 +11,6 @@ import NavigationSectionsSubmissionImage from "assets/other/nav-sections-review-
 
 export const GetStartedPage = () => {
   const { intro, body, pageLink } = verbiage;
-  const mqClasses = makeMediaQueryClasses();
   const navigate = useNavigate();
 
   const [section1, section2, section3] = body.sections;
@@ -27,7 +24,7 @@ export const GetStartedPage = () => {
       </Box>
       <div>
         <InfoSection content={section1}>
-          <Flex sx={sx.sectionContent} className={mqClasses}>
+          <Flex sx={sx.sectionContent}>
             <Box sx={sx.widgetContainer}>
               <Text sx={sx.widgetTitle}>{section1.widget?.title}</Text>
               <Box>
@@ -39,7 +36,7 @@ export const GetStartedPage = () => {
           </Flex>
         </InfoSection>
         <InfoSection content={section2}>
-          <Flex sx={sx.sectionContent} className={mqClasses}>
+          <Flex sx={sx.sectionContent}>
             <Box>
               <Image
                 src={NavigationSectionsImage}
@@ -55,7 +52,7 @@ export const GetStartedPage = () => {
           </Flex>
         </InfoSection>
         <InfoSection content={section3}>
-          <Flex sx={sx.sectionContent} className={mqClasses}>
+          <Flex sx={sx.sectionContent}>
             <Box>
               <Image
                 src={NavigationSectionsSubmissionImage}
@@ -69,7 +66,6 @@ export const GetStartedPage = () => {
       <Box sx={sx.pageLinkContainer}>
         <Button
           sx={sx.pageLink}
-          className={mqClasses}
           onClick={() => navigate(pageLink.route)}
           data-testid="second-enter-mcpar-button"
           rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
@@ -100,7 +96,7 @@ const sx = {
     marginTop: "1rem",
     gridGap: "2rem",
     flexDirection: "column",
-    "&.desktop": {
+    ".desktop &": {
       flexDirection: "row",
     },
   },

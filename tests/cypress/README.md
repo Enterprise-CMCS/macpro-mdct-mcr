@@ -19,12 +19,17 @@
 
 ## Running tests
 
-To run cypress tests locally you need to pass in environment variables for the state user and admin user passwords.
+To run cypress tests locally you will go to the root of the project and you'll need to pass in environment variables for the state user and admin user passwords.
 The final command will look something like this:
 
 `CYPRESS_ADMIN_USER_PASSWORD=passwordhere CYPRESS_STATE_USER_PASSWORD=passwordhere yarn test`
 
 If you don't have these passwords you can find them in AWS SSM parameters in the mdct-mcr-dev account. Look for the parameter with a name like `/configuration/default/cognito/bootstrapUsers/password`. Ask a repository contributor for help if needed.
+
+If you run into errors after trying to run the cypress test command:
+ -try running `yarn` at the root of the project
+ -run `nvm use` along with the current version that the project is on
+ -cd into tests/cypress and run `yarn`.
 
 _These variables are included in GitHub secrets for CI stages._
 

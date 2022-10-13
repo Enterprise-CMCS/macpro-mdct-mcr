@@ -1,6 +1,10 @@
 // components
-import { Card } from "components";
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import {
+  Card,
+  EntityCardBottomSection,
+  EntityCardTopSection,
+} from "components";
+import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, EntityShape } from "types";
 // assets
@@ -12,8 +16,9 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({
   entity,
+  entityType,
   formattedEntityData,
-  dashboard,
+  verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openDrawer,
@@ -33,59 +38,38 @@ export const EntityCard = ({
           type="button"
           className="delete-entity-button"
           onClick={() => openDeleteEntityModal(entity)}
-          data-testid="deleteEntityButton"
+          data-testid="delete-entity-button"
         >
           <Image
             src={deleteIcon}
-            alt={dashboard.deleteEntityButtonAltText}
+            alt={verbiage.deleteEntityButtonAltText}
             sx={sx.deleteButtonImage}
           />
         </button>
         <Heading as="h4" sx={sx.heading}>
           {formattedEntityData.category}
         </Heading>
-        <Text sx={sx.description}>
-          {formattedEntityData.standardDescription}
-        </Text>
-        <Text sx={sx.subtitle}>General category</Text>
-        <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
+        <EntityCardTopSection
+          entityType={entityType}
+          formattedEntityData={formattedEntityData}
+        />
         <Button
           variant="outline"
           size="sm"
           sx={sx.editButton}
-          data-testid="editEntityButton"
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
           onClick={() => openAddEditEntityModal(entity)}
         >
-          {dashboard.editEntityButtonText}
+          {verbiage.editEntityButtonText}
         </Button>
         {entityCompleted ? (
-          <>
-            <Flex sx={sx.highlightContainer}>
-              <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Provider</Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
-              </Box>
-              <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Region</Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
-              </Box>
-              <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Population</Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
-              </Box>
-            </Flex>
-            <Text sx={sx.subtitle}>Monitoring Methods</Text>
-            <Text sx={sx.subtext}>
-              {formattedEntityData?.monitoringMethods.join(", ")}
-            </Text>
-            <Text sx={sx.subtitle}>Frequency of oversight methods</Text>
-            <Text sx={sx.subtext}>{formattedEntityData.methodFrequency}</Text>
-          </>
+          <EntityCardBottomSection
+            entityType={entityType}
+            formattedEntityData={formattedEntityData}
+          />
         ) : (
           <Text sx={sx.unfinishedMessage}>
-            Complete the remaining indicators for this access measure by
-            entering details.
+            {verbiage.entityUnfinishedMessage}
           </Text>
         )}
         <Button
@@ -100,7 +84,9 @@ export const EntityCard = ({
             ) : undefined
           }
         >
-          {entityCompleted ? "Edit" : "Enter"} details
+          {entityCompleted
+            ? verbiage.editEntityDetailsButtonText
+            : verbiage.enterEntityDetailsButtonText}
         </Button>
       </Box>
     </Card>
@@ -109,8 +95,9 @@ export const EntityCard = ({
 
 interface Props {
   entity: EntityShape;
+  entityType: string;
   formattedEntityData: AnyObject;
-  dashboard: AnyObject;
+  verbiage: AnyObject;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
   openDrawer: Function;
@@ -118,9 +105,6 @@ interface Props {
 }
 
 const sx = {
-  root: {
-    marginTop: "2rem",
-  },
   contentBox: {
     marginX: "1.25rem",
     position: "relative",
@@ -149,39 +133,13 @@ const sx = {
   heading: {
     fontSize: "sm",
   },
-  description: {
-    marginTop: "0.75rem",
-    fontSize: "sm",
-  },
-  subtitle: {
-    marginTop: "1rem",
+  unfinishedMessage: {
     fontSize: "xs",
-    fontWeight: "bold",
-  },
-  subtext: {
-    marginTop: "0.25rem",
-    fontSize: "sm",
-  },
-  highlightContainer: {
-    marginTop: ".5em",
-    padding: "0em 1.5em 1em 1.5em",
-    background: "palette.secondary_lightest",
-    borderRadius: "3px",
-  },
-  highlightSection: {
-    width: "100%",
-    marginLeft: "1rem",
-    ":nth-of-type(1)": {
-      marginLeft: 0,
-    },
+    color: "palette.error_dark",
   },
   editButton: {
     marginY: "1rem",
     fontWeight: "normal",
-  },
-  unfinishedMessage: {
-    fontSize: "xs",
-    color: "palette.error_dark",
   },
   openDrawerButton: {
     marginTop: "1rem",
