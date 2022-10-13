@@ -160,6 +160,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           }}
         />
         <ReportDrawer
+          entityType={entityType}
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,

@@ -30,7 +30,8 @@ export { DashboardList } from "./pages/Dashboard/DashboardProgramList";
 export { MobileDashboardList } from "./pages/Dashboard/DashboardProgramListMobile";
 // drawers
 export { Drawer } from "./drawers/Drawer";
-export { ReportDrawer } from "./drawers/ReportDrawer";
+export { ReportDrawer } from "./drawers/ReportDrawer/ReportDrawer";
+export { ReportDrawerDetails } from "./drawers/ReportDrawer/ReportDrawerDetails";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";

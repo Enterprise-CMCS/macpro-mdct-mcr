@@ -8,13 +8,14 @@ import { useUser } from "utils";
 // types
 import { AnyObject, CustomHtmlElement, FormJson, EntityShape } from "types";
 // constants
-import { closeText, saveAndCloseText } from "../../constants";
+import { closeText, saveAndCloseText } from "../../../constants";
 
 export const ReportDrawer = ({
   selectedEntity,
   verbiage,
   form,
   onSubmit,
+  entityType,
   submitting,
   drawerDisclosure,
   ...props
@@ -26,7 +27,12 @@ export const ReportDrawer = ({
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
 
   return (
-    <Drawer verbiage={verbiage} drawerDisclosure={drawerDisclosure} {...props}>
+    <Drawer
+      verbiage={verbiage}
+      drawerDisclosure={drawerDisclosure}
+      entityType={entityType}
+      {...props}
+    >
       <Form
         id={form.id}
         formJson={form}
@@ -61,6 +67,7 @@ interface Props {
   };
   form: FormJson;
   onSubmit: Function;
+  entityType?: string;
   submitting?: boolean;
   drawerDisclosure: {
     isOpen: boolean;
