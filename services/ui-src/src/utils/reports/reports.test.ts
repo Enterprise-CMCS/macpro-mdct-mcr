@@ -64,11 +64,11 @@ describe("Test copyAdminDisabledStatusToForms", () => {
     const result = copyAdminDisabledStatusToForms(mockAdminDisabledReportJson);
 
     const testStandardPageForm = result.routes[0].form;
-    const testDrawerPageForm = result.routes[1].children![0].drawer!.form;
+    const testDrawerPageForm = result.routes[1].children![0].drawerForm!;
     const testModalDrawerPageModalForm =
       result.routes[1].children![1].modalForm!;
     const testModalDrawerPageDrawerForm =
-      result.routes[1].children![1].drawer!.form;
+      result.routes[1].children![1].drawerForm!;
 
     expect(testStandardPageForm!.adminDisabled).toBeTruthy();
     expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
@@ -113,12 +113,9 @@ describe("Test makeFieldIdList", () => {
       ...mockDrawerReportPageJson,
       name: "mock-route-2",
       path: "/mock/mock-route-2",
-      drawer: {
-        title: "",
-        form: {
-          id: "mock-form-id-2",
-          fields: [mockField2, mockField3],
-        },
+      drawerForm: {
+        id: "mock-form-id-2",
+        fields: [mockField2, mockField3],
       },
     },
     {
@@ -129,11 +126,9 @@ describe("Test makeFieldIdList", () => {
         id: "mock-form-id-3",
         fields: [mockField4],
       },
-      drawer: {
-        form: {
-          id: "mock-form-id-4",
-          fields: [mockField5],
-        },
+      drawerForm: {
+        id: "mock-form-id-4",
+        fields: [mockField5],
       },
     },
   ];

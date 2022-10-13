@@ -25,8 +25,8 @@ export const copyAdminDisabledStatusToForms = (
       } else {
         // else if form present downstream, copy adminDisabled status to form
         if (route.form) route.form.adminDisabled = reportAdminDisabledStatus;
-        if (route.drawer?.form)
-          route.drawer.form.adminDisabled = reportAdminDisabledStatus;
+        if (route.drawerForm)
+          route.drawerForm.adminDisabled = reportAdminDisabledStatus;
         if (route.modalForm)
           route.modalForm.adminDisabled = reportAdminDisabledStatus;
       }
@@ -109,7 +109,7 @@ export const compileValidationJsonFromRoutes = (
     const modalFormFields = route.modalForm?.fields;
     if (modalFormFields) addValidationToAccumulator(modalFormFields);
     // if drawer form present, add validation to schema
-    const drawerFormFields = route.drawer?.form.fields;
+    const drawerFormFields = route.drawerForm?.fields;
     if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
   });
   return validationSchema;
@@ -137,7 +137,7 @@ export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
     const modalFormFields = route.modalForm?.fields;
     if (modalFormFields) mapFieldIdsToObject(modalFormFields);
     // if drawer form present, map to return object
-    const drawerFormFields = route.drawer?.form.fields;
+    const drawerFormFields = route.drawerForm?.fields;
     if (drawerFormFields) mapFieldIdsToObject(drawerFormFields);
   });
   return objectToReturn;

@@ -64,14 +64,14 @@ export interface StandardReportPageShape extends ReportPageShapeBase {
   form: FormJson;
   dashboard?: never;
   modalForm?: never;
-  drawer?: never;
+  drawerForm?: never;
   entityType?: never;
 }
 
 export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   verbiage: DrawerReportPageVerbiage;
-  drawer: { form: FormJson };
+  drawerForm: FormJson;
   modalForm?: never;
   form?: never;
 }
@@ -80,7 +80,7 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   verbiage: ModalDrawerReportPageVerbiage;
   modalForm: FormJson;
-  drawer: { form: FormJson };
+  drawerForm: FormJson;
   form?: never;
 }
 
@@ -90,7 +90,7 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
   entityType?: never;
   verbiage?: never;
   modalForm?: never;
-  drawer?: never;
+  drawerForm?: never;
   form?: never;
 }
 

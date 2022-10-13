@@ -36,7 +36,7 @@ export const DrawerReportPage = ({ route }: Props) => {
     undefined
   );
 
-  const { entityType, verbiage, drawer } = route;
+  const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
 
   const missingEntitiesVerbiage: any = {
@@ -133,7 +133,7 @@ export const DrawerReportPage = ({ route }: Props) => {
         }}
         drawerTitle={`${verbiage.drawerTitle} ${selectedEntity?.name}`}
         drawerInfo={verbiage.drawerInfo}
-        form={drawer.form}
+        form={drawerForm}
         onSubmit={onSubmit}
         formData={selectedEntity}
         submitting={submitting}
