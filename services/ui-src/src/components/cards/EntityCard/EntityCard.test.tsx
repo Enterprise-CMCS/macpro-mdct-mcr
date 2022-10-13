@@ -27,8 +27,6 @@ const mockEntity = {
   "accessMeasure_standardType-otherText": "",
 };
 
-const mockEntityType = "mock-entity-type";
-
 const mockFormattedEntityData = {
   category: "mock-category",
   standardDescription: "mock-standardDescription",
@@ -46,23 +44,10 @@ const mockUnfinishedEntityData = {
   standardType: "mock-standardType",
 };
 
-const EntityCardComponent = (
-  <EntityCard
-    entity={mockEntity}
-    entityType={mockEntityType}
-    formattedEntityData={mockFormattedEntityData}
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
-  />
-);
-
 const UnfinishedEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
-    entityType={mockEntityType}
+    entityType={"mock-entity-type"}
     formattedEntityData={mockUnfinishedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
@@ -118,7 +103,7 @@ const {
 
 describe("Test Finished EntityCard", () => {
   beforeEach(() => {
-    render(EntityCardComponent);
+    render(AccessMeasuresEntityCardComponent);
   });
 
   afterEach(() => {
@@ -175,12 +160,6 @@ describe("Test Unfinished EntityCard", () => {
 });
 
 describe("Test EntityCard accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(EntityCardComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(UnfinishedEntityCardComponent);
     const results = await axe(container);
