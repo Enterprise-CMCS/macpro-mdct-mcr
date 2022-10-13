@@ -16,10 +16,8 @@ import { AnyObject, CustomHtmlElement } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
+  verbiage,
   drawerDisclosure,
-  drawerTitle,
-  drawerInfo,
-  drawerDetails,
   children,
   ...props
 }: Props) => {
@@ -36,20 +34,24 @@ export const Drawer = ({
       <DrawerOverlay />
       <DrawerContent sx={sx.drawerContent} className={mqClasses}>
         <DrawerHeader sx={sx.drawerHeader}>
-          <Text sx={sx.drawerHeaderText}>{drawerTitle}</Text>
-          {drawerInfo && (
-            <Box sx={sx.infoTextBox}>{parseCustomHtml(drawerInfo)}</Box>
+          <Text sx={sx.drawerHeaderText}>{verbiage.drawerTitle}</Text>
+          {verbiage.drawerInfo && (
+            <Box sx={sx.infoTextBox}>
+              {parseCustomHtml(verbiage.drawerInfo)}
+            </Box>
           )}
-          {drawerDetails && (
+          {verbiage.drawerDetails && (
             <Box sx={sx.detailBox}>
               <Heading as="h4" sx={sx.detailHeader}>
-                Standard Type - {drawerDetails.category}
+                Standard Type - {verbiage.drawerDetails.category}
               </Heading>
               <Text sx={sx.detailDescription}>
-                {drawerDetails.standardDescription}
+                {verbiage.drawerDetails.standardDescription}
               </Text>
               <Text sx={sx.detailCategoryHeader}>General Category</Text>
-              <Text sx={sx.detailCategory}>{drawerDetails.category}</Text>
+              <Text sx={sx.detailCategory}>
+                {verbiage.drawerDetails.category}
+              </Text>
             </Box>
           )}
           <Button
@@ -68,13 +70,15 @@ export const Drawer = ({
 };
 
 interface Props {
+  verbiage: {
+    drawerTitle: string;
+    drawerInfo?: CustomHtmlElement[];
+    drawerDetails?: AnyObject;
+  };
   drawerDisclosure: {
     isOpen: boolean;
     onClose: Function;
   };
-  drawerTitle: string;
-  drawerInfo?: CustomHtmlElement[];
-  drawerDetails?: AnyObject;
   [key: string]: any;
 }
 

@@ -16,7 +16,9 @@ const mockEntity = {
 
 const drawerComponent = (
   <ReportDrawer
-    drawerTitle="mock title"
+    verbiage={{
+      drawerTitle: "mock title",
+    }}
     selectedEntity={mockEntity}
     form={mockDrawerForm}
     onSubmit={() => {}}

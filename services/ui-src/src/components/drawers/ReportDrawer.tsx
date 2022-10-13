@@ -10,14 +10,12 @@ import { AnyObject, CustomHtmlElement, FormJson, EntityShape } from "types";
 import { closeText, saveAndCloseText } from "../../constants";
 
 export const ReportDrawer = ({
-  drawerDisclosure,
-  drawerTitle,
-  drawerInfo,
-  drawerDetails,
-  form,
   selectedEntity,
+  verbiage,
+  form,
   onSubmit,
   submitting,
+  drawerDisclosure,
   ...props
 }: Props) => {
   // determine if fields should be disabled (based on admin roles)
@@ -27,13 +25,7 @@ export const ReportDrawer = ({
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
 
   return (
-    <Drawer
-      drawerDisclosure={drawerDisclosure}
-      drawerTitle={drawerTitle}
-      drawerInfo={drawerInfo}
-      drawerDetails={drawerDetails}
-      {...props}
-    >
+    <Drawer verbiage={verbiage} drawerDisclosure={drawerDisclosure} {...props}>
       <Form
         id={form.id}
         formJson={form}
@@ -57,11 +49,13 @@ export const ReportDrawer = ({
 };
 
 interface Props {
-  drawerTitle: string;
-  drawerInfo?: CustomHtmlElement[];
-  drawerDetails?: AnyObject;
-  form: FormJson;
   selectedEntity: EntityShape;
+  verbiage: {
+    drawerTitle: string;
+    drawerInfo?: CustomHtmlElement[];
+    drawerDetails?: AnyObject;
+  };
+  form: FormJson;
   onSubmit: Function;
   submitting?: boolean;
   drawerDisclosure: {

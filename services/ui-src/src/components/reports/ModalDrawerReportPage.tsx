@@ -160,8 +160,10 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           }}
         />
         <ReportDrawer
-          drawerTitle={verbiage.drawerTitle}
-          drawerDetails={getFormattedEntityData(entityType, selectedEntity)}
+          verbiage={{
+            ...verbiage,
+            drawerDetails: getFormattedEntityData(entityType, selectedEntity),
+          }}
           form={drawerForm}
           selectedEntity={selectedEntity!}
           onSubmit={onSubmit}
