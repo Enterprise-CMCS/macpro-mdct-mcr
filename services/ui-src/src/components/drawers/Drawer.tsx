@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
 import { AnyObject, CustomHtmlElement } from "types";
-import { parseCustomHtml } from "utils";
+import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
   drawerDisclosure,
@@ -23,6 +23,7 @@ export const Drawer = ({
   children,
   ...props
 }: Props) => {
+  const mqClasses = makeMediaQueryClasses();
   const { isOpen, onClose } = drawerDisclosure;
   return (
     <ChakraDrawer
@@ -33,7 +34,7 @@ export const Drawer = ({
       {...props}
     >
       <DrawerOverlay />
-      <DrawerContent sx={sx.drawerContent}>
+      <DrawerContent sx={sx.drawerContent} className={mqClasses}>
         <DrawerHeader sx={sx.drawerHeader}>
           <Text sx={sx.drawerHeaderText}>{drawerTitle}</Text>
           {drawerInfo && (
@@ -81,10 +82,10 @@ const sx = {
   drawerContent: {
     maxWidth: "90vw",
     padding: "1rem",
-    ".tablet &": {
+    "&.tablet": {
       maxWidth: "32rem",
     },
-    ".desktop &": {
+    "&.desktop": {
       maxWidth: "36rem",
     },
   },

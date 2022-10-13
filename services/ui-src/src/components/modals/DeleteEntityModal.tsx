@@ -3,12 +3,13 @@ import { Text } from "@chakra-ui/react";
 import { Modal, ReportContext } from "components";
 import { useContext, useState } from "react";
 // types
-import { EntityShape, ReportStatus } from "types";
+import { AnyObject, EntityShape, ReportStatus } from "types";
 import { useUser } from "utils";
 
 export const DeleteEntityModal = ({
   entityType,
   selectedEntity,
+  verbiage,
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
@@ -42,15 +43,12 @@ export const DeleteEntityModal = ({
       modalDisclosure={modalDisclosure}
       submitting={deleting}
       content={{
-        heading: "Delete access measure?",
-        actionButtonText: "Yes, Delete Measure",
+        heading: verbiage.deleteModalTitle,
+        actionButtonText: verbiage.deleteModalConfirmButtonText,
         closeButtonText: "Cancel",
       }}
     >
-      <Text>
-        You will lose all information entered for this measure. Are you sure you
-        want to proceed?
-      </Text>
+      <Text>{verbiage.deleteModalWarning}</Text>
     </Modal>
   );
 };
@@ -58,6 +56,7 @@ export const DeleteEntityModal = ({
 interface Props {
   entityType: string;
   selectedEntity?: EntityShape;
+  verbiage: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

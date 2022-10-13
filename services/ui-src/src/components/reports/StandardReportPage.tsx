@@ -41,7 +41,7 @@ export const StandardReportPage = ({ route }: Props) => {
 
   return (
     <Box data-testid="standard-page">
-      {route.intro && <ReportPageIntro text={route.intro} />}
+      {route.verbiage.intro && <ReportPageIntro text={route.verbiage.intro} />}
       <Form
         id={route.form.id}
         formJson={route.form}
