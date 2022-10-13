@@ -8,8 +8,12 @@ const mockDrawerDisclosure = {
   onClose: () => {},
 };
 
+const mockVerbiage = {
+  drawerTitle: "mock title",
+};
+
 const drawerComponent = (
-  <Drawer drawerDisclosure={mockDrawerDisclosure} drawerTitle="mock title" />
+  <Drawer drawerDisclosure={mockDrawerDisclosure} verbiage={mockVerbiage} />
 );
 
 // TODO: Test Drawer rendering, opening, closing functionalities
