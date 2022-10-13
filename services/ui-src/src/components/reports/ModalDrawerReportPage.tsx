@@ -11,7 +11,7 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { getFormattedEntityData, useUser } from "utils";
+import { filterFormData, getFormattedEntityData, useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
@@ -83,7 +83,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     drawerOnCloseHandler();
   };
 
-  const onSubmit = async (formData: AnyObject) => {
+  const onSubmit = async (enteredData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
       setSubmitting(true);
       const reportKeys = {
@@ -94,9 +94,10 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
+      const filteredFormData = filterFormData(enteredData, drawerForm.fields);
       const newEntity = {
         ...selectedEntity,
-        ...formData,
+        ...filteredFormData,
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;

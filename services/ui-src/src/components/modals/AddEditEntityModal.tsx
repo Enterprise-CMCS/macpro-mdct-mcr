@@ -6,7 +6,7 @@ import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
 import { AnyObject, EntityShape, FormJson, ReportStatus } from "types";
-import { useUser } from "utils";
+import { filterFormData, useUser } from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
@@ -19,7 +19,7 @@ export const AddEditEntityModal = ({
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const writeEntity = async (formData: any) => {
+  const writeEntity = async (enteredData: any) => {
     setSubmitting(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
@@ -34,6 +34,7 @@ export const AddEditEntityModal = ({
       fieldData: {},
     };
     const currentEntities = report?.fieldData?.[entityType] || [];
+    const filteredFormData = filterFormData(enteredData, form.fields);
     if (selectedEntity?.id) {
       // if existing entity selected, edit
       const selectedEntityIndex = currentEntities.findIndex(
@@ -44,13 +45,13 @@ export const AddEditEntityModal = ({
       updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,
         ...currentEntities[selectedEntityIndex],
-        ...formData,
+        ...filteredFormData,
       };
       dataToWrite.fieldData = { [entityType]: updatedEntities };
     } else {
       // create new entity
       dataToWrite.fieldData = {
-        [entityType]: [...currentEntities, { id: uuid(), ...formData }],
+        [entityType]: [...currentEntities, { id: uuid(), ...filteredFormData }],
       };
     }
     await updateReport(reportKeys, dataToWrite);
