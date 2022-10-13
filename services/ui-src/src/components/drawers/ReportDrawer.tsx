@@ -6,11 +6,18 @@ import { Drawer, Form } from "components";
 // utils
 import { useUser } from "utils";
 // types
-import { AnyObject, CustomHtmlElement, FormJson, EntityShape } from "types";
+import {
+  AnyObject,
+  CustomHtmlElement,
+  FormJson,
+  EntityShape,
+  EntityType,
+} from "types";
 // constants
 import { closeText, saveAndCloseText } from "../../constants";
 
 export const ReportDrawer = ({
+  entityType,
   selectedEntity,
   verbiage,
   form,
@@ -26,7 +33,12 @@ export const ReportDrawer = ({
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
 
   return (
-    <Drawer verbiage={verbiage} drawerDisclosure={drawerDisclosure} {...props}>
+    <Drawer
+      verbiage={verbiage}
+      drawerDisclosure={drawerDisclosure}
+      entityType={entityType}
+      {...props}
+    >
       <Form
         id={form.id}
         formJson={form}
@@ -61,6 +73,7 @@ interface Props {
   };
   form: FormJson;
   onSubmit: Function;
+  entityType?: EntityType;
   submitting?: boolean;
   drawerDisclosure: {
     isOpen: boolean;

@@ -13,7 +13,11 @@ const mockVerbiage = {
 };
 
 const drawerComponent = (
-  <Drawer drawerDisclosure={mockDrawerDisclosure} verbiage={mockVerbiage} />
+  <Drawer
+    entityType="accessMeasures"
+    drawerDisclosure={mockDrawerDisclosure}
+    verbiage={mockVerbiage}
+  />
 );
 
 // TODO: Test Drawer rendering, opening, closing functionalities

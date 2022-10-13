@@ -6,7 +6,7 @@ import {
 } from "components";
 import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 // utils
-import { AnyObject, EntityShape } from "types";
+import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
 // assets
 import { svgFilters } from "styles/theme";
 import completedIcon from "assets/icons/icon_check_circle.png";
@@ -25,7 +25,21 @@ export const EntityCard = ({
   ...props
 }: Props) => {
   // any drawer-based field will do for this check
-  const entityCompleted = formattedEntityData.population;
+
+  let entityCompleted = false;
+  switch (entityType) {
+    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+      entityCompleted = !!formattedEntityData.population;
+      break;
+    case ModalDrawerEntityTypes.SANCTIONS:
+      // TODO Sanctions
+      break;
+    case ModalDrawerEntityTypes.QUALITY_MEASURES:
+      // TODO quality measures
+      break;
+    default:
+      break;
+  }
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox}>
