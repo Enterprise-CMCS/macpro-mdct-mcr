@@ -67,7 +67,7 @@ describe("Test formFieldFactory", () => {
 
     // Nested text field exists under parent
     const nestedTextField = topRadioField?.props.choices.find(
-      (choice: any) => choice.name === "mockField2-o1"
+      (choice: any) => choice.name === choice.id
     ).children[0];
     expect(nestedTextField.id).toBe("mockField2-o1-text");
 
