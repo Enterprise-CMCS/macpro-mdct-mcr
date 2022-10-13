@@ -144,7 +144,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           entityType={entityType}
           selectedEntity={selectedEntity}
           verbiage={verbiage}
-          modalForm={modalForm}
+          form={modalForm}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: closeAddEditEntityModal,
@@ -158,7 +158,6 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             isOpen: deleteEntityModalIsOpen,
             onClose: closeDeleteEntityModal,
           }}
-          data-testid="deleteEntityModal"
         />
         <ReportDrawer
           drawerTitle={verbiage.drawerTitle}

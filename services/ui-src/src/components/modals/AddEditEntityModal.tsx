@@ -10,7 +10,7 @@ import { useUser } from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
-  modalForm,
+  form,
   verbiage,
   selectedEntity,
   modalDisclosure,
@@ -21,7 +21,7 @@ export const AddEditEntityModal = ({
 
   const writeEntity = async (formData: any) => {
     setSubmitting(true);
-    const submitButton = document.querySelector("[form=" + modalForm.id + "]");
+    const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
 
     const reportKeys = {
@@ -61,7 +61,7 @@ export const AddEditEntityModal = ({
   return (
     <Modal
       data-testid="add-edit-entity-modal"
-      formId={modalForm.id}
+      formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
         heading: selectedEntity?.id
@@ -72,8 +72,8 @@ export const AddEditEntityModal = ({
     >
       <Form
         data-testid="add-edit-entity-form"
-        id={modalForm.id}
-        formJson={modalForm}
+        id={form.id}
+        formJson={form}
         formData={selectedEntity}
         onSubmit={writeEntity}
       />
@@ -84,7 +84,7 @@ export const AddEditEntityModal = ({
 
 interface Props {
   entityType: string;
-  modalForm: FormJson;
+  form: FormJson;
   verbiage: AnyObject;
   selectedEntity?: EntityShape;
   modalDisclosure: {

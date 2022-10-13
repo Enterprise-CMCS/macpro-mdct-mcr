@@ -44,7 +44,7 @@ const modalComponent = (
     <AddEditEntityModal
       entityType="accessMeasures"
       verbiage={mockModalDrawerReportPageVerbiage}
-      modalForm={mockModalForm}
+      form={mockModalForm}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -59,7 +59,7 @@ const modalComponentWithSelectedEntity = (
       entityType="accessMeasures"
       selectedEntity={mockEntity}
       verbiage={mockModalDrawerReportPageVerbiage}
-      modalForm={mockModalForm}
+      form={mockModalForm}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
