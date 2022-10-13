@@ -1,12 +1,11 @@
-import { MouseEventHandler, useContext } from "react";
 // Components
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
-import { Drawer, Form, ReportContext } from "components";
+import { Drawer, Form } from "components";
 // utils
 import { useUser } from "utils";
 // types
-import { AnyObject, CustomHtmlElement, FormJson } from "types";
+import { AnyObject, CustomHtmlElement, FormJson, EntityShape } from "types";
 // constants
 import { closeText, saveAndCloseText } from "../../constants";
 
@@ -16,13 +15,11 @@ export const ReportDrawer = ({
   drawerInfo,
   drawerDetails,
   form,
+  selectedEntity,
   onSubmit,
-  formData,
   submitting,
   ...props
 }: Props) => {
-  const { report } = useContext(ReportContext);
-
   // determine if fields should be disabled (based on admin roles)
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
@@ -41,15 +38,12 @@ export const ReportDrawer = ({
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={formData ?? report?.fieldData}
+        formData={selectedEntity}
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
           {!isAdminTypeUser && (
-            <Button
-              variant="outline"
-              onClick={drawerDisclosure.onClose as MouseEventHandler}
-            >
+            <Button variant="outline" onClick={() => drawerDisclosure.onClose}>
               Cancel
             </Button>
           )}
@@ -67,14 +61,13 @@ interface Props {
   drawerInfo?: CustomHtmlElement[];
   drawerDetails?: AnyObject;
   form: FormJson;
-  formData?: AnyObject;
+  selectedEntity: EntityShape;
   onSubmit: Function;
   submitting?: boolean;
   drawerDisclosure: {
     isOpen: boolean;
     onClose: Function;
   };
-  [key: string]: any;
 }
 
 const sx = {

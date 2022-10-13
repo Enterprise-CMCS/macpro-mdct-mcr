@@ -2,24 +2,25 @@ import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { ReportDrawer } from "components";
+import { mockDrawerForm } from "utils/testing/setupJest";
 
 const mockDrawerDisclosure = {
   isOpen: true,
   onClose: () => {},
 };
 
-const mockFormJson = {
-  id: "mockid",
-  options: {},
-  fields: [],
+const mockEntity = {
+  id: "mock-id-1",
+  "mock-modal-text-field": "mock input 1",
 };
 
 const drawerComponent = (
   <ReportDrawer
-    drawerDisclosure={mockDrawerDisclosure}
     drawerTitle="mock title"
-    form={mockFormJson}
+    selectedEntity={mockEntity}
+    form={mockDrawerForm}
     onSubmit={() => {}}
+    drawerDisclosure={mockDrawerDisclosure}
   />
 );
 

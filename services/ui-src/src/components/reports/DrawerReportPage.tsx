@@ -135,7 +135,7 @@ export const DrawerReportPage = ({ route }: Props) => {
         drawerInfo={verbiage.drawerInfo}
         form={drawerForm}
         onSubmit={onSubmit}
-        formData={selectedEntity}
+        selectedEntity={selectedEntity!}
         submitting={submitting}
         data-testid="report-drawer"
       />

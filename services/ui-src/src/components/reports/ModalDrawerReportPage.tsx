@@ -32,11 +32,6 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
-  // shape entity data for hydration
-  const formHydrationData = reportFieldDataEntities?.find(
-    (entity: EntityShape) => entity.id === selectedEntity?.id
-  );
-
   // add/edit entity modal disclosure and methods
   const {
     isOpen: addEditEntityModalIsOpen,
@@ -169,7 +164,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           drawerTitle={verbiage.drawerTitle}
           drawerDetails={getFormattedEntityData(entityType, selectedEntity)}
           form={drawerForm}
-          formData={formHydrationData}
+          selectedEntity={selectedEntity!}
           onSubmit={onSubmit}
           submitting={submitting}
           drawerDisclosure={{
