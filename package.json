@@ -21,9 +21,7 @@
     "url": "https://github.com/CMSgov/mdct-mcr/issues"
   },
   "homepage": "https://github.com/CMSgov/mdct-mcr#readme",
-  "dependencies": {
-    "dynamodb-admin": "^4.4.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/flat": "^5.0.2",
