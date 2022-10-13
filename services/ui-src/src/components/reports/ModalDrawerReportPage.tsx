@@ -15,6 +15,7 @@ import { getFormattedEntityData, useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
+  EntityType,
   ModalDrawerReportPageShape,
   ReportStatus,
 } from "types";
@@ -160,7 +161,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           }}
         />
         <ReportDrawer
-          entityType={entityType}
+          entityType={entityType as EntityType}
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,

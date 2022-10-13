@@ -47,7 +47,7 @@ const mockUnfinishedEntityData = {
 const UnfinishedEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
-    entityType={"mock-entity-type"}
+    entityType="mock-entity-type"
     formattedEntityData={mockUnfinishedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
@@ -59,7 +59,7 @@ const UnfinishedEntityCardComponent = (
 const AccessMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
-    entityType={"accessMeasures"}
+    entityType="accessMeasures"
     formattedEntityData={mockFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
@@ -72,7 +72,7 @@ const AccessMeasuresEntityCardComponent = (
 const SanctionsEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
-    entityType={"sanctions"}
+    entityType="sanctions"
     formattedEntityData={mockFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
@@ -85,7 +85,7 @@ const SanctionsEntityCardComponent = (
 const QualityMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockEntity}
-    entityType={"qualityMeasures"}
+    entityType="qualityMeasures"
     formattedEntityData={mockFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}

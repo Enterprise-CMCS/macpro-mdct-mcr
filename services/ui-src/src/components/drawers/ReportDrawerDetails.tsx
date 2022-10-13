@@ -1,6 +1,6 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { AnyObject, ModalDrawerEntityTypes } from "types";
+import { AnyObject, EntityType, ModalDrawerEntityTypes } from "types";
 
 export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
   switch (entityType) {
@@ -27,7 +27,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
 };
 
 interface Props {
-  entityType: string;
+  entityType: EntityType;
   drawerDetails: AnyObject;
 }
 

@@ -13,7 +13,7 @@ import {
 import { CloseIcon } from "@cmsgov/design-system";
 import { ReportDrawerDetails } from "components";
 // utils
-import { AnyObject, CustomHtmlElement } from "types";
+import { AnyObject, CustomHtmlElement, EntityType } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
@@ -73,7 +73,7 @@ interface Props {
     isOpen: boolean;
     onClose: Function;
   };
-  entityType?: string;
+  entityType?: EntityType;
   [key: string]: any;
 }
 

@@ -14,7 +14,7 @@ const mockVerbiage = {
 
 const drawerAccessMeasuresComponent = (
   <Drawer
-    entityType={"accessMeasures"}
+    entityType="accessMeasures"
     drawerDisclosure={mockDrawerDisclosure}
     verbiage={mockVerbiage}
   />
@@ -22,7 +22,7 @@ const drawerAccessMeasuresComponent = (
 
 const drawerSanctionsComponent = (
   <Drawer
-    entityType={"sanctions"}
+    entityType="sanctions"
     drawerDisclosure={mockDrawerDisclosure}
     verbiage={mockVerbiage}
   />
@@ -30,7 +30,7 @@ const drawerSanctionsComponent = (
 
 const drawerQualityMeasuresComponent = (
   <Drawer
-    entityType={"qualityMeasures"}
+    entityType="qualityMeasures"
     drawerDisclosure={mockDrawerDisclosure}
     verbiage={mockVerbiage}
   />
