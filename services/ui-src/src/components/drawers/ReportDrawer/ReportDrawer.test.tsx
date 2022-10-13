@@ -16,7 +16,6 @@ const mockEntity = {
 
 const drawerComponent = (
   <ReportDrawer
-    entityType={"mock-entity-type"}
     verbiage={{
       drawerTitle: "mock title",
     }}
