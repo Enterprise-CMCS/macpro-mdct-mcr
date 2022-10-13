@@ -1,28 +1,24 @@
-import { MouseEventHandler, useContext } from "react";
+import { MouseEventHandler } from "react";
 // Components
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
-import { Drawer, Form, ReportContext } from "components";
+import { Drawer, Form } from "components";
 // utils
 import { useUser } from "utils";
 // types
-import { AnyObject, CustomHtmlElement, FormJson } from "types";
+import { AnyObject, CustomHtmlElement, FormJson, EntityShape } from "types";
 // constants
 import { closeText, saveAndCloseText } from "../../constants";
 
 export const ReportDrawer = ({
-  drawerDisclosure,
-  drawerTitle,
-  drawerInfo,
-  drawerDetails,
+  selectedEntity,
+  verbiage,
   form,
   onSubmit,
-  formData,
   submitting,
+  drawerDisclosure,
   ...props
 }: Props) => {
-  const { report } = useContext(ReportContext);
-
   // determine if fields should be disabled (based on admin roles)
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
@@ -30,18 +26,12 @@ export const ReportDrawer = ({
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
 
   return (
-    <Drawer
-      drawerDisclosure={drawerDisclosure}
-      drawerTitle={drawerTitle}
-      drawerInfo={drawerInfo}
-      drawerDetails={drawerDetails}
-      {...props}
-    >
+    <Drawer verbiage={verbiage} drawerDisclosure={drawerDisclosure} {...props}>
       <Form
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        formData={formData ?? report?.fieldData}
+        formData={selectedEntity}
       />
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
@@ -63,18 +53,19 @@ export const ReportDrawer = ({
 };
 
 interface Props {
-  drawerTitle: string;
-  drawerInfo?: CustomHtmlElement[];
-  drawerDetails?: AnyObject;
+  selectedEntity: EntityShape;
+  verbiage: {
+    drawerTitle: string;
+    drawerInfo?: CustomHtmlElement[];
+    drawerDetails?: AnyObject;
+  };
   form: FormJson;
-  formData?: AnyObject;
   onSubmit: Function;
   submitting?: boolean;
   drawerDisclosure: {
     isOpen: boolean;
     onClose: Function;
   };
-  [key: string]: any;
 }
 
 const sx = {
