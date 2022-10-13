@@ -127,16 +127,18 @@ export const DrawerReportPage = ({ route }: Props) => {
         </Text>
       )}
       <ReportDrawer
+        selectedEntity={selectedEntity!}
+        verbiage={{
+          drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
+          drawerInfo: verbiage.drawerInfo,
+        }}
+        form={drawerForm}
+        onSubmit={onSubmit}
+        submitting={submitting}
         drawerDisclosure={{
           isOpen,
           onClose,
         }}
-        drawerTitle={`${verbiage.drawerTitle} ${selectedEntity?.name}`}
-        drawerInfo={verbiage.drawerInfo}
-        form={drawerForm}
-        onSubmit={onSubmit}
-        formData={selectedEntity}
-        submitting={submitting}
         data-testid="report-drawer"
       />
       <ReportPageFooter />
