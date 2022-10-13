@@ -31,6 +31,8 @@ describe("state user creates a program", () => {
     cy.get(checkbox).focus().click();
 
     cy.get(submitButton).click();
+
+    cy.get(programNameListItem).first().contains("program title");
   });
 
   it("hydrates modal correctly", () => {
@@ -47,14 +49,23 @@ describe("state user creates a program", () => {
   it("enters the program", () => {
     cy.get(enterProgram).first().click();
     cy.location("pathname").should("match", /point-of-contact/);
+  });
+
+  it("returns to dashboard", () => {
     cy.get(leaveFormButton).first().click();
+    cy.location("pathname").should("match", /mcpar/);
   });
 
   it("edits modal after program creation", () => {
+    cy.visit("/");
+    cy.authenticate("stateUser");
+    cy.get(enterMcparOnline).click();
+    cy.get(secondButton).click();
+
     cy.get(editProgramButtom).first().click();
     cy.get(titleInput).clear().type("new name");
     cy.get(submitButton).click();
 
-    cy.get(programNameListItem).first().should("have.value", "new name");
+    cy.get(programNameListItem).first().contains("new name");
   });
 });
