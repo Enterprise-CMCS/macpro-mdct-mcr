@@ -12,10 +12,12 @@
           "name": "Point of Contact",
           "path": "/mcpar/program-information/point-of-contact",
           "pageType": "standard",
-          "intro": {
-            "section": "Section A: Program Information",
-            "subsection": "Point of Contact",
-            "spreadsheet": "A_Program_Info"
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Point of Contact",
+              "spreadsheet": "A_Program_Info"
+            }
           },
           "form": {
             "id": "apoc",
@@ -85,10 +87,12 @@
           "name": "Reporting Period",
           "path": "/mcpar/program-information/reporting-period",
           "pageType": "standard",
-          "intro": {
-            "section": "Section A: Program Information",
-            "subsection": "Reporting Period",
-            "spreadsheet": "A_Program_Info"
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Reporting Period",
+              "spreadsheet": "A_Program_Info"
+            }
           },
           "form": {
             "id": "arp",
@@ -130,11 +134,13 @@
           "name": "Add Plans",
           "path": "/mcpar/program-information/add-plans",
           "pageType": "standard",
-          "intro": {
-            "section": "Section A: Program Information",
-            "subsection": "Add plans (A.7)",
-            "info": "Enter the name of each plan that participates in the program for which the state is reporting data.",
-            "spreadsheet": "A_Program_Info"
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Add plans (A.7)",
+              "info": "Enter the name of each plan that participates in the program for which the state is reporting data.",
+              "spreadsheet": "A_Program_Info"
+            }
           },
           "form": {
             "id": "aap",
@@ -154,29 +160,30 @@
           "name": "Add BSS Entities",
           "path": "/mcpar/program-information/add-bss-entities",
           "pageType": "standard",
-          "intro": {
-            "section": "Section A: Program Information",
-            "subsection": "Add BSS entities (A.8)",
-            "spreadsheet": "A_Program_Info",
-            "info": [
-              {
-                "type": "span",
-                "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data. Learn more about BSS entities at "
-              },
-              {
-                "type": "externalLink",
-                "content": "42 CFR 438.71",
-                "props": {
-                  "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.71",
-                  "target": "_blank"
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Add BSS entities (A.8)",
+              "spreadsheet": "A_Program_Info",
+              "info": [
+                {
+                  "type": "span",
+                  "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data. Learn more about BSS entities at "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR 438.71",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.71",
+                    "target": "_blank"
+                  }
+                },
+                {
+                  "type": "html",
+                  "content": "<span>. See Glossary in Excel Workbook for the definition of BSS entities.</span><p>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization.</p>"
                 }
-              },
-              {
-                "type": "html",
-                "content": "<span>. See Glossary in Excel Workbook for the definition of BSS entities.</span><p>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization.</p>"
-              }
-            ],
-            "spreadsheet": "A_Program_Info"
+              ]
+            }
           },
           "form": {
             "id": "absse",
@@ -202,10 +209,12 @@
           "name": "I: Program Characteristics",
           "path": "/mcpar/state-level-indicators/program-characteristics",
           "pageType": "standard",
-          "intro": {
-            "section": "Section B: State-Level Indicators",
-            "subsection": "Topic I. Program Characteristics and Enrollment",
-            "spreadsheet": "B_State"
+          "verbiage": {
+            "intro": {
+              "section": "Section B: State-Level Indicators",
+              "subsection": "Topic I. Program Characteristics and Enrollment",
+              "spreadsheet": "B_State"
+            }
           },
           "form": {
             "id": "bpc",
@@ -237,10 +246,12 @@
           "name": "III: Encounter Data Report",
           "path": "/mcpar/state-level-indicators/encounter-data-report",
           "pageType": "standard",
-          "intro": {
-            "section": "Section B: State-Level Indicators",
-            "subsection": "Topic III. Encounter Data Report",
-            "spreadsheet": "B_State"
+          "verbiage": {
+            "intro": {
+              "section": "Section B: State-Level Indicators",
+              "subsection": "Topic III. Encounter Data Report",
+              "spreadsheet": "B_State"
+            }
           },
           "form": {
             "id": "bedr",
@@ -327,10 +338,12 @@
           "name": "X: Program Integrity",
           "path": "/mcpar/state-level-indicators/program-integrity",
           "pageType": "standard",
-          "intro": {
-            "section": "Section B: State-Level Indicators",
-            "subsection": "Topic X: Program Integrity",
-            "spreadsheet": "B_State"
+          "verbiage": {
+            "intro": {
+              "section": "Section B: State-Level Indicators",
+              "subsection": "Topic X: Program Integrity",
+              "spreadsheet": "B_State"
+            }
           },
           "form": {
             "id": "bpi",
@@ -552,10 +565,12 @@
           "name": "I: Program Characteristics",
           "path": "/mcpar/program-level-indicators/program-characteristics",
           "pageType": "standard",
-          "intro": {
-            "section": "Section C: Program-Level Indicators",
-            "subsection": "Topic I: Program Characteristics",
-            "spreadsheet": "C1_Program_Set"
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic I: Program Characteristics",
+              "spreadsheet": "C1_Program_Set"
+            }
           },
           "form": {
             "id": "cpc",
@@ -702,10 +717,12 @@
           "name": "III: Encounter Data Report",
           "path": "/mcpar/program-level-indicators/encounter-data-report",
           "pageType": "standard",
-          "intro": {
-            "section": "Section C: Program-Level Indicators",
-            "subsection": "Topic III: Encounter Data Report",
-            "spreadsheet": "C1_Program_Set"
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic III: Encounter Data Report",
+              "spreadsheet": "C1_Program_Set"
+            }
           },
           "form": {
             "id": "cedr",
@@ -861,10 +878,12 @@
           "name": "IV: Appeals, State Fair Hearings & Grievances",
           "path": "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances",
           "pageType": "standard",
-          "intro": {
-            "section": "Section C: Program-Level Indicators",
-            "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-            "spreadsheet": "C1_Program_Set"
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+              "spreadsheet": "C1_Program_Set"
+            }
           },
           "form": {
             "id": "casfhag",
@@ -916,17 +935,19 @@
               "name": "Network Adequacy",
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
               "pageType": "standard",
-              "intro": {
-                "section": "Section C: Program-Level Indicators",
-                "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
-                "spreadsheet": "C1_Program_Set",
-                "info": [
-                  {
-                    "type": "heading",
-                    "as": "h3",
-                    "content": "Network Adequacy"
-                  }
-                ]
+              "verbiage": {
+                "intro": {
+                  "section": "Section C: Program-Level Indicators",
+                  "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
+                  "spreadsheet": "C1_Program_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Network Adequacy"
+                    }
+                  ]
+                }
               },
               "form": {
                 "id": "cna",
@@ -957,23 +978,23 @@
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
               "pageType": "modalDrawer",
               "entityType": "accessMeasures",
-              "intro": {
-                "section": "Section C: Program-Level Indicators",
-                "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
-                "spreadsheet": "C2_Program_State",
-                "info": [
-                  {
-                    "type": "heading",
-                    "as": "h3",
-                    "content": "Access Measures"
-                  },
-                  {
-                    "type": "html",
-                    "content": "<p>Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level.</p><p>Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program.</p>"
-                  }
-                ]
-              },
               "verbiage": {
+                "intro": {
+                  "section": "Section C: Program-Level Indicators",
+                  "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
+                  "spreadsheet": "C2_Program_State",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Access Measures"
+                    },
+                    {
+                      "type": "html",
+                      "content": "<p>Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level.</p><p>Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program.</p>"
+                    }
+                  ]
+                },
                 "dashboardTitle": "Add measures for monitoring access standards",
                 "addEntityButtonText": "Add access measure",
                 "editEntityButtonText": "Edit measure",
@@ -1338,10 +1359,12 @@
           "name": "IX: BSS",
           "path": "/mcpar/program-level-indicators/bss",
           "pageType": "standard",
-          "intro": {
-            "section": "Section C: Program-Level Indicators",
-            "subsection": "Topic IX: Beneficiary Support System (BSS)",
-            "spreadsheet": "C1_Program_Set"
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic IX: Beneficiary Support System (BSS)",
+              "spreadsheet": "C1_Program_Set"
+            }
           },
           "form": {
             "id": "cbss",
@@ -1389,10 +1412,12 @@
           "name": "X: Program Integrity",
           "path": "/mcpar/program-level-indicators/program-integrity",
           "pageType": "standard",
-          "intro": {
-            "section": "Section C: Program-Level Indicators",
-            "subsection": "Topic X: Program Integrity",
-            "spreadsheet": "C1_Program_Set"
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic X: Program Integrity",
+              "spreadsheet": "C1_Program_Set"
+            }
           },
           "form": {
             "id": "cpi",
@@ -1430,12 +1455,12 @@
           "path": "/mcpar/plan-level-indicators/program-characteristics",
           "pageType": "drawer",
           "entityType": "plans",
-          "intro": {
-            "section": "Section D: Plan-Level Indicators",
-            "subsection": "Topic I. Program Characteristics & Enrollment",
-            "spreadsheet": "D1_Plan_Set"
-          },
           "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic I. Program Characteristics & Enrollment",
+              "spreadsheet": "D1_Plan_Set"
+            },
             "dashboardTitle": "Report program characteristics & enrollment for each plan",
             "drawerTitle": "Report program characteristics & enrollment for"
           },
@@ -1482,12 +1507,12 @@
           "path": "/mcpar/plan-level-indicators/financial-performance",
           "pageType": "drawer",
           "entityType": "plans",
-          "intro": {
-            "section": "Section D: Plan-Level Indicators",
-            "subsection": "Topic II. Financial Performance",
-            "spreadsheet": "D1_Plan_Set"
-          },
           "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic II. Financial Performance",
+              "spreadsheet": "D1_Plan_Set"
+            },
             "dashboardTitle": "Report financial performance for each plan",
             "drawerTitle": "Report financial performance for"
           },
@@ -1613,12 +1638,12 @@
           "path": "/mcpar/plan-level-indicators/encounter-data-report",
           "pageType": "drawer",
           "entityType": "plans",
-          "intro": {
-            "section": "Section D: Plan-Level Indicators",
-            "subsection": "Topic III. Encounter Data",
-            "spreadsheet": "D1_Plan_Set"
-          },
           "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic III. Encounter Data",
+              "spreadsheet": "D1_Plan_Set"
+            },
             "dashboardTitle": "Report on encounter data for each plan",
             "drawerTitle": "Report encounter data for"
           },
@@ -1668,12 +1693,12 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview",
               "pageType": "drawer",
               "entityType": "plans",
-              "intro": {
-                "section": "Section D: Plan-Level Indicators",
-                "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": "D1_Plan_Set"
-              },
               "verbiage": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": "D1_Plan_Set"
+                },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for"
               },
@@ -1820,23 +1845,23 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
               "pageType": "drawer",
               "entityType": "plans",
-              "intro": {
-                "section": "Section D: Plan-Level Indicators",
-                "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": "D1_Plan_Set",
-                "info": [
-                  {
-                    "type": "heading",
-                    "as": "h3",
-                    "content": "Appeals by Service"
-                  },
-                  {
-                    "type": "p",
-                    "content": "Number of appeals resolved during the reporting period related to various services. Note: A single appeal may be related to multiple service types and may therefore be counted in multiple categories."
-                  }
-                ]
-              },
               "verbiage": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Appeals by Service"
+                    },
+                    {
+                      "type": "p",
+                      "content": "Number of appeals resolved during the reporting period related to various services. Note: A single appeal may be related to multiple service types and may therefore be counted in multiple categories."
+                    }
+                  ]
+                },
                 "dashboardTitle": "Report on appeals by service for each plan",
                 "drawerTitle": "Report appeals by service for"
               },
@@ -1953,19 +1978,19 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
               "pageType": "drawer",
               "entityType": "plans",
-              "intro": {
-                "section": "Section D: Plan-Level Indicators",
-                "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": "D1_Plan_Set",
-                "info": [
-                  {
-                    "type": "heading",
-                    "as": "h3",
-                    "content": "State Fair Hearings"
-                  }
-                ]
-              },
               "verbiage": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "State Fair Hearings"
+                    }
+                  ]
+                },
                 "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
                 "drawerTitle": "Report state fair hearings and external medical reviews for"
               },
@@ -2042,12 +2067,12 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
               "pageType": "drawer",
               "entityType": "plans",
-              "intro": {
-                "section": "Section D: Plan-Level Indicators",
-                "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": "D1_Plan_Set"
-              },
               "verbiage": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": "D1_Plan_Set"
+                },
                 "dashboardTitle": "Report on grievances for each plan",
                 "drawerTitle": "Report on grievances for"
               },
@@ -2114,23 +2139,23 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
               "pageType": "drawer",
               "entityType": "plans",
-              "intro": {
-                "section": "Section D: Plan-Level Indicators",
-                "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": "D1_Plan_Set",
-                "info": [
-                  {
-                    "type": "heading",
-                    "as": "h3",
-                    "content": "Grievances by Service"
-                  },
-                  {
-                    "type": "p",
-                    "content": "Report the number of grievances resolved by plan during the reporting period by service."
-                  }
-                ]
-              },
               "verbiage": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Grievances by Service"
+                    },
+                    {
+                      "type": "p",
+                      "content": "Report the number of grievances resolved by plan during the reporting period by service."
+                    }
+                  ]
+                },
                 "dashboardTitle": "Report on grievances by service for each plan",
                 "drawerTitle": "Report encounter data for"
               },
@@ -2247,23 +2272,23 @@
               "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
               "pageType": "drawer",
               "entityType": "plans",
-              "intro": {
-                "section": "Section D: Plan-Level Indicators",
-                "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                "spreadsheet": "D1_Plan_Set",
-                "info": [
-                  {
-                    "type": "heading",
-                    "as": "h3",
-                    "content": "Grievances by Reason"
-                  },
-                  {
-                    "type": "p",
-                    "content": "Report the number of grievances resolved by plan during the reporting period by reason."
-                  }
-                ]
-              },
               "verbiage": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Grievances by Reason"
+                    },
+                    {
+                      "type": "p",
+                      "content": "Report the number of grievances resolved by plan during the reporting period by reason."
+                    }
+                  ]
+                },
                 "dashboardTitle": "Report on grievances by reason for each plan",
                 "drawerTitle": "Report on grievances by reason for"
               },
@@ -2398,22 +2423,22 @@
           "path": "/mcpar/plan-level-indicators/quality-measures",
           "pageType": "modalDrawer",
           "entityType": "qualityMeasures",
-          "intro": {
-            "section": "Section D: Plan-Level Indicators",
-            "subsection": "Topic VII: Quality Measures",
-            "spreadsheet": "D2_Plan_Measures",
-            "info": [
-              {
-                "type": "html",
-                "content": "<p><b>Add Quality & Performance Measures</b></p>"
-              },
-              {
-                "type": "html",
-                "content": "</br><p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
-              }
-            ]
-          },
           "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VII: Quality Measures",
+              "spreadsheet": "D2_Plan_Measures",
+              "info": [
+                {
+                  "type": "html",
+                  "content": "<p><b>Add Quality & Performance Measures</b></p>"
+                },
+                {
+                  "type": "html",
+                  "content": "</br><p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
+                }
+              ]
+            },
             "dashboardTitle": "replace me in json",
             "addEntityButtonText": "replace me in json",
             "editEntityButtonText": "replace me in json",
@@ -2665,22 +2690,22 @@
           "path": "/mcpar/plan-level-indicators/sanctions",
           "pageType": "modalDrawer",
           "entityType": "sanctions",
-          "intro": {
-            "section": "Section D: Plan-Level Indicators",
-            "subsection": "Topic VIII. Sanctions",
-            "spreadsheet": "D3_Plan_Sanctions",
-            "info": [
-              {
-                "type": "html",
-                "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p>"
-              },
-              {
-                "type": "html",
-                "content": "</br><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
-              }
-            ]
-          },
           "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VIII. Sanctions",
+              "spreadsheet": "D3_Plan_Sanctions",
+              "info": [
+                {
+                  "type": "html",
+                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p>"
+                },
+                {
+                  "type": "html",
+                  "content": "</br><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
+                }
+              ]
+            },
             "dashboardTitle": "replace me in json",
             "addEntityButtonText": "replace me in json",
             "editEntityButtonText": "replace me in json",
@@ -2892,12 +2917,12 @@
           "path": "/mcpar/plan-level-indicators/program-integrity",
           "pageType": "drawer",
           "entityType": "plans",
-          "intro": {
-            "section": "Section D: Plan-Level Indicators",
-            "subsection": "Topic X. Program Integrity",
-            "spreadsheet": "D1_Plan_Set"
-          },
           "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic X. Program Integrity",
+              "spreadsheet": "D1_Plan_Set"
+            },
             "dashboardTitle": "Report on program integrity for each plan",
             "drawerTitle": "Program integrity for"
           },
@@ -3091,29 +3116,29 @@
       "path": "/mcpar/bss-entity-indicators",
       "pageType": "drawer",
       "entityType": "bssEntities",
-      "intro": {
-        "section": "Section E: BSS Entity Indicators",
-        "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
-        "spreadsheet": "E_BSS_Entities",
-        "info": [
-          {
-            "type": "span",
-            "content": "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the "
-          },
-          {
-            "type": "internalLink",
-            "content": "Program-Level BSS",
-            "props": {
-              "to": "/mcpar/program-information/add-bss-entities"
-            }
-          },
-          {
-            "type": "span",
-            "content": " page."
-          }
-        ]
-      },
       "verbiage": {
+        "intro": {
+          "section": "Section E: BSS Entity Indicators",
+          "subsection": "Topic IX. Beneficiary Support System (BSS) Entities",
+          "spreadsheet": "E_BSS_Entities",
+          "info": [
+            {
+              "type": "span",
+              "content": "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the "
+            },
+            {
+              "type": "internalLink",
+              "content": "Program-Level BSS",
+              "props": {
+                "to": "/mcpar/program-information/add-bss-entities"
+              }
+            },
+            {
+              "type": "span",
+              "content": " page."
+            }
+          ]
+        },
         "dashboardTitle": "Report on role and type for each BSS entity",
         "drawerTitle": "Report on"
       },

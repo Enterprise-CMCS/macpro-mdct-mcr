@@ -57,12 +57,7 @@ export type ReportRouteWithForm =
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
-  intro?: {
-    section: string;
-    subsection: string;
-    spreadsheet?: string;
-    info?: string | AnyObject[];
-  };
+  verbiage: ReportPageVerbiage;
 }
 
 export interface StandardReportPageShape extends ReportPageShapeBase {
@@ -99,7 +94,16 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
   form?: never;
 }
 
-export interface DrawerReportPageVerbiage {
+export interface ReportPageVerbiage {
+  intro: {
+    section: string;
+    subsection: string;
+    spreadsheet?: string;
+    info?: string | AnyObject[];
+  };
+}
+
+export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
