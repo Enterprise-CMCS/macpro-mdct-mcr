@@ -22,7 +22,7 @@ import {
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
-  const { entityType, dashboard, modal, drawer } = route;
+  const { entityType, verbiage, modal, drawer } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
@@ -120,17 +120,17 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
   return (
     <Box data-testid="modal-drawer-report-page">
-      {route.intro && <ReportPageIntro text={route.intro} />}
+      {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         <Button
           sx={sx.addEntityButton}
           onClick={addEditEntityModalOnOpenHandler}
         >
-          {dashboard.addEntityButtonText}
+          {verbiage.addEntityButtonText}
         </Button>
         {reportFieldDataEntities.length !== 0 && (
           <Heading as="h3" sx={sx.dashboardTitle}>
-            {dashboard.title}
+            {verbiage.dashboardTitle}
           </Heading>
         )}
         {reportFieldDataEntities.map((entity: EntityShape) => (
@@ -138,7 +138,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             key={entity.id}
             entity={entity}
             entityType={entityType}
-            dashboard={dashboard}
+            verbiage={verbiage}
             formattedEntityData={getFormattedEntityData(entityType, entity)}
             openAddEditEntityModal={openAddEditEntityModal}
             openDeleteEntityModal={openDeleteEntityModal}
@@ -148,7 +148,8 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         <AddEditEntityModal
           entityType={entityType}
           selectedEntity={selectedEntity}
-          modalData={modal}
+          verbiage={verbiage}
+          modalForm={modal.form}
           modalDisclosure={{
             isOpen: addEditEntityModalIsOpen,
             onClose: closeAddEditEntityModal,
@@ -157,6 +158,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         <DeleteEntityModal
           entityType={entityType}
           selectedEntity={selectedEntity}
+          verbiage={verbiage}
           modalDisclosure={{
             isOpen: deleteEntityModalIsOpen,
             onClose: closeDeleteEntityModal,
@@ -164,16 +166,16 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           data-testid="deleteEntityModal"
         />
         <ReportDrawer
+          drawerTitle={verbiage.drawerTitle}
+          drawerDetails={getFormattedEntityData(entityType, selectedEntity)}
+          form={drawer.form}
+          formData={formHydrationData}
+          onSubmit={onSubmit}
+          submitting={submitting}
           drawerDisclosure={{
             isOpen: drawerIsOpen,
             onClose: closeDrawer,
           }}
-          drawerTitle={drawer.title}
-          drawerDetails={getFormattedEntityData(entityType, selectedEntity)}
-          form={drawer.form}
-          onSubmit={onSubmit}
-          formData={formHydrationData}
-          submitting={submitting}
           data-testid="report-drawer"
         />
       </Box>

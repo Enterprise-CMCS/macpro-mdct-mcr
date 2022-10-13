@@ -5,6 +5,7 @@ import { axe } from "jest-axe";
 //components
 import { AddEditEntityModal, ReportContext } from "components";
 import {
+  mockModalDrawerReportPageVerbiage,
   mockModalForm,
   mockReport,
   mockReportContext,
@@ -38,18 +39,12 @@ const mockUpdateCallPayload = {
   reportStatus: "In progress",
 };
 
-const mockModalData = {
-  addTitle: "mock-add-title",
-  editTitle: "mock-edit-title",
-  message: "mock-message",
-  form: mockModalForm,
-};
-
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditEntityModal
       entityType="accessMeasures"
-      modalData={mockModalData}
+      verbiage={mockModalDrawerReportPageVerbiage}
+      modalForm={mockModalForm}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -63,7 +58,8 @@ const modalComponentWithSelectedEntity = (
     <AddEditEntityModal
       entityType="accessMeasures"
       selectedEntity={mockEntity}
-      modalData={mockModalData}
+      verbiage={mockModalDrawerReportPageVerbiage}
+      modalForm={mockModalForm}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -84,7 +80,9 @@ describe("Test AddEditEntityModal", () => {
   });
 
   test("AddEditEntityModal shows the contents", () => {
-    expect(screen.getByText("mock-add-title")).toBeTruthy();
+    expect(
+      screen.getByText(mockModalDrawerReportPageVerbiage.addEditModalAddTitle)
+    ).toBeTruthy();
     expect(screen.getByTestId("add-edit-entity-form")).toBeTruthy();
   });
 

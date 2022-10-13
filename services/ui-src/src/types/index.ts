@@ -57,12 +57,7 @@ export type ReportRouteWithForm =
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
-  intro?: {
-    section: string;
-    subsection: string;
-    spreadsheet?: string;
-    info?: string | AnyObject[];
-  };
+  verbiage: ReportPageVerbiage;
 }
 
 export interface StandardReportPageShape extends ReportPageShapeBase {
@@ -75,17 +70,17 @@ export interface StandardReportPageShape extends ReportPageShapeBase {
 
 export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
-  dashboard: AnyObject;
-  drawer: ReportPageDrawer;
+  verbiage: DrawerReportPageVerbiage;
+  drawer: { form: FormJson };
   modal?: never;
   form?: never;
 }
 
 export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
-  dashboard: AnyObject;
-  modal: ReportPageModal;
-  drawer: ReportPageDrawer;
+  verbiage: ModalDrawerReportPageVerbiage;
+  modal: { form: FormJson };
+  drawer: { form: FormJson };
   form?: never;
 }
 
@@ -93,25 +88,41 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
   pageType?: never;
   entityType?: never;
+  verbiage?: never;
   modal?: never;
   drawer?: never;
   form?: never;
 }
 
-export interface ReportPageDrawer {
-  form: FormJson;
-  title: string;
-  info?: CustomHtmlElement[];
-  addEntityButtonText?: string;
-  editEntityButtonText?: string;
-  deleteEntityButtonAltText?: string;
+export interface ReportPageVerbiage {
+  intro: {
+    section: string;
+    subsection: string;
+    spreadsheet?: string;
+    info?: string | AnyObject[];
+  };
 }
 
-export interface ReportPageModal {
-  form: FormJson;
-  addTitle: string;
-  editTitle: string;
-  message: string;
+export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
+  dashboardTitle: string;
+  drawerTitle: string;
+  drawerInfo?: CustomHtmlElement[];
+}
+
+export interface ModalDrawerReportPageVerbiage
+  extends DrawerReportPageVerbiage {
+  addEntityButtonText: string;
+  editEntityButtonText: string;
+  addEditModalAddTitle: string;
+  addEditModalEditTitle: string;
+  addEditModalMessage: string;
+  deleteEntityButtonAltText: string;
+  deleteModalTitle: string;
+  deleteModalConfirmButtonText: string;
+  deleteModalWarning: string;
+  entityUnfinishedMessage: string;
+  enterEntityDetailsButtonText: string;
+  editEntityDetailsButtonText: string;
 }
 
 // REPORT PROVIDER/CONTEXT
