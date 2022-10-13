@@ -1003,7 +1003,7 @@
                 "addEditModalMessage": "Complete the remaining indicators for this access measure by saving the measure and selecting \"Enter measure details\".",
                 "deleteEntityButtonAltText": "Delete measure",
                 "deleteModalTitle": "Delete access measure?",
-                "deleteModalConfirmButtonText": "Yes, Delete Measure",
+                "deleteModalConfirmButtonText": "Yes, delete measure",
                 "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
                 "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
                 "enterEntityDetailsButtonText": "Enter details",
