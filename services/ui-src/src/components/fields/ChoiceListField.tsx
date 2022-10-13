@@ -12,6 +12,7 @@ import {
   FieldChoice,
   InputChangeEvent,
 } from "types";
+import { dropdownDefaultOptionText } from "../../constants";
 
 export const ChoiceListField = ({
   name,
@@ -90,6 +91,13 @@ export const ChoiceListField = ({
                 });
                 clearNestedValues(child.props.choices);
               }
+              break;
+            case "dropdown":
+              form.setValue(
+                child.id,
+                { label: dropdownDefaultOptionText, value: "" },
+                { shouldValidate: true }
+              );
               break;
             default:
               form.setValue(child.id, "", { shouldValidate: true });
