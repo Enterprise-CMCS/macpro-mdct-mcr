@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 // Components
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
@@ -35,7 +36,10 @@ export const ReportDrawer = ({
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
           {!isAdminTypeUser && (
-            <Button variant="outline" onClick={() => drawerDisclosure.onClose}>
+            <Button
+              variant="outline"
+              onClick={drawerDisclosure.onClose as MouseEventHandler}
+            >
               Cancel
             </Button>
           )}
