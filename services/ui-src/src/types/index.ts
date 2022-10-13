@@ -90,6 +90,7 @@ export interface ReportRouteWithChildren extends ReportRouteBase {
   entityType?: never;
   verbiage?: never;
   modalForm?: never;
+  Ï;
   drawerForm?: never;
   form?: never;
 }
