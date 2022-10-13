@@ -44,7 +44,7 @@ describe("Test CheckboxField component", () => {
     await userEvent.click(firstCheckbox);
     expect(mockSetValue).toHaveBeenCalledWith(
       "checkbox_choices",
-      [{ key: "checkbox_choices-Choice 1", value: "A" }],
+      [{ key: "Choice 1", value: "A" }],
       {
         shouldValidate: true,
       }

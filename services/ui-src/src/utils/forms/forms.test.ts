@@ -18,7 +18,7 @@ describe("Test formFieldFactory", () => {
         label: "Mock Radio Field",
         choices: [
           {
-            name: "mockField2-o1",
+            id: "mockField2-o1",
             label: "Option 1, mock choice with nested child",
             value: "mock-option1",
             children: [
@@ -33,7 +33,7 @@ describe("Test formFieldFactory", () => {
             ],
           },
           {
-            name: "mockField2-o2",
+            id: "mockField2-o2",
             label: "Option 2, mock with no children",
             value: "mock-option2",
           },
@@ -119,7 +119,7 @@ describe("Test hydrateFormFields", () => {
         label: "2. Second mocked field ",
         choices: [
           {
-            name: "mock-field-2-o1",
+            id: "mock-field-2-o1",
             label: "Option 1, mocked choice with nested child",
             value: "mock-option1",
             children: [
