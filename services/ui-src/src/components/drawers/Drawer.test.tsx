@@ -12,25 +12,9 @@ const mockVerbiage = {
   drawerTitle: "mock title",
 };
 
-const drawerAccessMeasuresComponent = (
+const drawerComponent = (
   <Drawer
     entityType="accessMeasures"
-    drawerDisclosure={mockDrawerDisclosure}
-    verbiage={mockVerbiage}
-  />
-);
-
-const drawerSanctionsComponent = (
-  <Drawer
-    entityType="sanctions"
-    drawerDisclosure={mockDrawerDisclosure}
-    verbiage={mockVerbiage}
-  />
-);
-
-const drawerQualityMeasuresComponent = (
-  <Drawer
-    entityType="qualityMeasures"
     drawerDisclosure={mockDrawerDisclosure}
     verbiage={mockVerbiage}
   />
@@ -40,19 +24,7 @@ const drawerQualityMeasuresComponent = (
 
 describe("Test Drawer accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(drawerAccessMeasuresComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(drawerSanctionsComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(drawerQualityMeasuresComponent);
+    const { container } = render(drawerComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
