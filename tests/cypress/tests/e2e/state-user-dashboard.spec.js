@@ -1,5 +1,3 @@
-const { describe } = require("yargs");
-
 // element selectors
 const enterMcparOnline = '[data-testid="enter-mcpar-online"]';
 const secondButton = '[data-testid="second-enter-mcpar-button"]';
