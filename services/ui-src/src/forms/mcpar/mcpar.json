@@ -2404,31 +2404,32 @@
           "verbiage": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic VII: Quality Measures",
+              "subsection": "Topic VII: Quality & Performance Measures",
               "spreadsheet": "D2_Plan_Measures",
               "info": [
                 {
-                  "type": "html",
-                  "content": "<p><b>Add Quality & Performance Measures</b></p>"
+                  "type": "heading",
+                  "as": "h3",
+                  "content": "Add Quality & Performance Measures"
                 },
                 {
                   "type": "html",
-                  "content": "</br><p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
+                  "content": "<p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
                 }
               ]
             },
             "dashboardTitle": "replace me in json",
-            "addEntityButtonText": "replace me in json",
-            "editEntityButtonText": "replace me in json",
-            "addEditModalAddTitle": "replace me in json",
+            "addEntityButtonText": "Add quality & performance measure",
+            "editEntityButtonText": "Edit Measure",
+            "addEditModalAddTitle": "Add a quality & performance measure",
             "addEditModalEditTitle": "replace me in json",
-            "addEditModalMessage": "replace me in json",
+            "addEditModalMessage": "Complete the remaining indicators for this measure by saving the measure and selecting \"Enter measure results\".",
             "deleteEntityButtonAltText": "replace me in json",
             "deleteModalTitle": "replace me in json",
             "deleteModalConfirmButtonText": "replace me in json",
             "deleteModalWarning": "replace me in json",
-            "entityUnfinishedMessage": "replace me in json",
-            "enterEntityDetailsButtonText": "replace me in json",
+            "entityUnfinishedMessage": "Add the plan-level details for this quality and performance measure by entering measure results.",
+            "enterEntityDetailsButtonText": "Edit Measure Results",
             "editEntityDetailsButtonText": "replace me in json",
             "drawerTitle": "replace me in json"
           },

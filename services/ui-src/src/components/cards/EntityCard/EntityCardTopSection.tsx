@@ -1,5 +1,5 @@
 // components
-import { Text } from "@chakra-ui/react";
+import { Grid, GridItem, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
@@ -21,7 +21,32 @@ export const EntityCardTopSection = ({
     case ModalDrawerEntityTypes.SANCTIONS:
       return <Text sx={sx.description}>Sanctions TODO</Text>;
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      return <Text sx={sx.description}>Quality Measures TODO</Text>;
+      return (
+        <>
+          <Text sx={sx.subtitle}>Measure Domain</Text>
+          <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+          <Grid gap="normal 6" templateColumns="33% 66%">
+            <GridItem>
+              <Text sx={sx.subtitle}>NQF</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>Measure Reporting and Programs</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>Measure Set</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>Measure Reporting Period</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+            </GridItem>
+          </Grid>
+          <Text sx={sx.subtitle}>Measure Description</Text>
+          <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
+        </>
+      );
     default:
       return <Text>{entityType}</Text>;
   }

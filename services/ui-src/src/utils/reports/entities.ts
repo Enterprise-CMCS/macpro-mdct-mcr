@@ -44,6 +44,21 @@ export const getFormattedEntityData = (
       break;
 
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
+      entityData = {
+        category: entity?.qualityMeasure_name,
+        description: entity?.qualityMeasure_description,
+        domain: getRadioValue(entity, "qualityMeasure_domain"),
+        nqfNumber: entity?.qualityMeasure_nqfNumber,
+        reportingPeriod: getRadioValue(
+          entity,
+          "qualityMeasure_reportingPeriod"
+        ),
+        reportingRateType: getRadioValue(
+          entity,
+          "qualityMeasure_reportingRateType"
+        ),
+        set: getRadioValue(entity, "qualityMeasure_set"),
+      };
       break;
 
     default:
