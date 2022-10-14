@@ -124,14 +124,6 @@ const sx = {
     marginBottom: ".5rem",
     fontSize: "md",
   },
-  detailCategoryHeader: {
-    marginBottom: ".25rem",
-    fontSize: "sm",
-    fontWeight: "bold",
-  },
-  detailCategory: {
-    fontSize: "md",
-  },
   infoTextBox: {
     marginTop: "2rem",
     "p, span": {
