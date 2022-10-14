@@ -15,13 +15,15 @@ const startDateInput = "[name='reportingPeriodStartDate']";
 const endDateInput = "[name='reportingPeriodEndDate']";
 const checkbox = "[name='combinedData']";
 
+beforeEach(() => {
+  cy.visit("/");
+  cy.authenticate("stateUser");
+  cy.get(enterMcparOnline).click();
+  cy.get(secondButton).click();
+});
+
 describe("state user creates a program", () => {
   it("Fills out program modal without errors", () => {
-    //log in
-    cy.visit("/");
-    cy.authenticate("stateUser");
-    cy.get(enterMcparOnline).click();
-    cy.get(secondButton).click();
     cy.get(addProgram).click();
 
     // fill out form fields
@@ -31,8 +33,6 @@ describe("state user creates a program", () => {
     cy.get(checkbox).focus().click();
 
     cy.get(submitButton).click();
-
-    cy.get(programNameListItem).first().contains("program title");
   });
 
   it("hydrates modal correctly", () => {
@@ -46,22 +46,14 @@ describe("state user creates a program", () => {
     cy.get(closeButton).click();
   });
 
-  it("enters the program", () => {
+  it("enters the program and returns to dashboard", () => {
     cy.get(enterProgram).first().click();
     cy.location("pathname").should("match", /point-of-contact/);
-  });
-
-  it("returns to dashboard", () => {
     cy.get(leaveFormButton).first().click();
     cy.location("pathname").should("match", /mcpar/);
   });
 
   it("edits modal after program creation", () => {
-    cy.visit("/");
-    cy.authenticate("stateUser");
-    cy.get(enterMcparOnline).click();
-    cy.get(secondButton).click();
-
     cy.get(editProgramButtom).first().click();
     cy.get(titleInput).clear().type("new name");
     cy.get(submitButton).click();
