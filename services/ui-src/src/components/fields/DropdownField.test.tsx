@@ -86,8 +86,8 @@ describe("Test DropdownField dynamic options functionality", () => {
 });
 
 describe("Test DropdownField hydration functionality", () => {
-  const mockFormFieldValue = "a";
-  const mockHydrationValue = "c";
+  const mockFormFieldValue = { label: "Option 1", value: "a" };
+  const mockHydrationValue = { label: "Option 3", value: "c" };
   const dropdownComponentWithHydrationValue = (
     <DropdownField
       name="testDropdown"
@@ -109,7 +109,7 @@ describe("Test DropdownField hydration functionality", () => {
       "test-dropdown-field"
     );
     const displayValue = dropdownField.value;
-    expect(displayValue).toEqual(mockFormFieldValue);
+    expect(displayValue).toEqual(mockFormFieldValue.value);
   });
 
   test("If only hydrationValue exists, displayValue is set to it", () => {
@@ -119,7 +119,7 @@ describe("Test DropdownField hydration functionality", () => {
       "test-dropdown-field-to-hydrate"
     );
     const displayValue = dropdownField.value;
-    expect(displayValue).toEqual(mockHydrationValue);
+    expect(displayValue).toEqual(mockHydrationValue.value);
   });
 
   test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
@@ -129,7 +129,7 @@ describe("Test DropdownField hydration functionality", () => {
       "test-dropdown-field-to-hydrate"
     );
     const displayValue = dropdownField.value;
-    expect(displayValue).toEqual(mockFormFieldValue);
+    expect(displayValue).toEqual(mockFormFieldValue.value);
   });
 });
 

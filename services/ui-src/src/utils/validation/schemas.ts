@@ -111,7 +111,7 @@ export const endDate = (startDateField: string) =>
 
 // DROPDOWN
 export const dropdown = () =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+  object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
 
 // CHECKBOX
 export const checkbox = () =>
@@ -154,6 +154,7 @@ export const nested = (
     mixed: number(),
     string: string(),
     date: date(),
+    object: object(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];

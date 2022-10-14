@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-// Components
+// components
 import {
   Button,
   Drawer as ChakraDrawer,
@@ -9,13 +9,15 @@ import {
   DrawerContent,
   Text,
   Box,
-  Heading,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
-import { AnyObject, CustomHtmlElement } from "types";
+import { ReportDrawerDetails } from "components";
+// utils
+import { AnyObject, CustomHtmlElement, EntityType } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
+  entityType,
   verbiage,
   drawerDisclosure,
   children,
@@ -40,19 +42,11 @@ export const Drawer = ({
               {parseCustomHtml(verbiage.drawerInfo)}
             </Box>
           )}
-          {verbiage.drawerDetails && (
-            <Box sx={sx.detailBox}>
-              <Heading as="h4" sx={sx.detailHeader}>
-                Standard Type - {verbiage.drawerDetails.category}
-              </Heading>
-              <Text sx={sx.detailDescription}>
-                {verbiage.drawerDetails.standardDescription}
-              </Text>
-              <Text sx={sx.detailCategoryHeader}>General Category</Text>
-              <Text sx={sx.detailCategory}>
-                {verbiage.drawerDetails.category}
-              </Text>
-            </Box>
+          {verbiage.drawerDetails && entityType && (
+            <ReportDrawerDetails
+              drawerDetails={verbiage.drawerDetails}
+              entityType={entityType}
+            />
           )}
           <Button
             sx={sx.drawerCloseButton}
@@ -79,6 +73,7 @@ interface Props {
     isOpen: boolean;
     onClose: Function;
   };
+  entityType?: EntityType;
   [key: string]: any;
 }
 
