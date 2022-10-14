@@ -34,7 +34,9 @@ describe("state user creates a program", () => {
 
     cy.get(submitButton).click();
   });
+});
 
+describe("user interacts with program", () => {
   it("hydrates modal correctly", () => {
     cy.get(editProgramButtom).first().click();
 
