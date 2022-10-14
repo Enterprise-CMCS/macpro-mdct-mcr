@@ -52,9 +52,7 @@ describe("state user creates a program", () => {
     cy.get(leaveFormButton).first().click();
     cy.location("pathname").should("match", /mcpar/);
   });
-});
 
-describe("user edits the modal", () => {
   it("edits modal after program creation", () => {
     cy.get(editProgramButtom).first().click();
     cy.get(titleInput).clear().type("new name");
