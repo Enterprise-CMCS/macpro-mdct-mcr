@@ -9,7 +9,7 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { useFindRoute, useUser } from "utils";
+import { filterFormData, useFindRoute, useUser } from "utils";
 import { AnyObject, StandardReportPageShape, ReportStatus } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 
@@ -21,17 +21,18 @@ export const StandardReportPage = ({ route }: Props) => {
   const navigate = useNavigate();
   const { nextRoute } = useFindRoute(mcparReportRoutesFlat, "/mcpar");
 
-  const onSubmit = async (formData: AnyObject) => {
+  const onSubmit = async (enteredData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
       setSubmitting(true);
       const reportKeys = {
         state: state,
         id: report?.id,
       };
+      const filteredFormData = filterFormData(enteredData, route.form.fields);
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
-        fieldData: formData,
+        fieldData: filteredFormData,
       };
       await updateReport(reportKeys, dataToWrite);
       setSubmitting(false);

@@ -97,6 +97,24 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
   return fields;
 };
 
+// returns user-entered data, filtered to only fields in the current form
+export const filterFormData = (
+  enteredData: AnyObject,
+  currentFormFields: FormField[]
+) => {
+  // translate user-entered data to array for filtration
+  const enteredDataEntries = Object.entries(enteredData);
+  // create array of the current form's field ids
+  const formFieldArray = currentFormFields.map((field: FormField) => field.id);
+  // filter user-entered data to only fields in the current form
+  const filteredDataEntries = enteredDataEntries.filter((fieldData) => {
+    const [fieldDataKey] = fieldData;
+    return formFieldArray.includes(fieldDataKey);
+  });
+  // translate data array back to a form data object
+  return Object.fromEntries(filteredDataEntries);
+};
+
 export const sortFormErrors = (
   form: AnyObject,
   errors: AnyObject
