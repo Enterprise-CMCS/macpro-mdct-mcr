@@ -1,3 +1,5 @@
+const { describe } = require("yargs");
+
 // element selectors
 const enterMcparOnline = '[data-testid="enter-mcpar-online"]';
 const secondButton = '[data-testid="second-enter-mcpar-button"]';
@@ -34,9 +36,7 @@ describe("state user creates a program", () => {
 
     cy.get(submitButton).click();
   });
-});
 
-describe("user interacts with program", () => {
   it("hydrates modal correctly", () => {
     cy.get(editProgramButtom).first().click();
 
@@ -54,7 +54,9 @@ describe("user interacts with program", () => {
     cy.get(leaveFormButton).first().click();
     cy.location("pathname").should("match", /mcpar/);
   });
+});
 
+describe("user edits the modal", () => {
   it("edits modal after program creation", () => {
     cy.get(editProgramButtom).first().click();
     cy.get(titleInput).clear().type("new name");
