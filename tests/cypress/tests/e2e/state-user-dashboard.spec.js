@@ -36,7 +36,7 @@ describe("state user creates a program", () => {
   });
 
   it("hydrates modal correctly", () => {
-    cy.get(editProgramButtom).first().click();
+    cy.get(editProgramButtom).last().click();
 
     cy.get(titleInput).should("have.value", "program title");
     cy.get(startDateInput).should("have.value", "07/14/2023");
@@ -47,7 +47,7 @@ describe("state user creates a program", () => {
   });
 
   it("enters the program and returns to dashboard", () => {
-    cy.get(enterProgram).first().click();
+    cy.get(enterProgram).last().click();
     cy.location("pathname").should("match", /point-of-contact/);
     cy.get(leaveFormButton).first().click();
     cy.location("pathname").should("match", /mcpar/);
