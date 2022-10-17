@@ -20,12 +20,17 @@ export const DashboardList = ({
       <Tr key={report.id}>
         <Td sx={sxOverride.editProgram}>
           {isStateLevelUser && (
-            <button onClick={() => openAddEditProgramModal(report)}>
+            <button
+              data-testid="edit-button"
+              onClick={() => openAddEditProgramModal(report)}
+            >
               <Image src={editIcon} alt="Edit Program" />
             </button>
           )}
         </Td>
-        <Td sx={sxOverride.programNameText}>{report.programName}</Td>
+        <Td data-testid="program-name" sx={sxOverride.programNameText}>
+          {report.programName}
+        </Td>
         <Td>{convertDateUtcToEt(report.dueDate)}</Td>
         <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
         <Td>{report?.lastAlteredBy || "-"}</Td>
