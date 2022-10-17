@@ -23,10 +23,12 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           <Heading as="h4" sx={sx.detailHeader}>
             Intervention type - {drawerDetails.interventionType}
           </Heading>
-          <Flex>
+          <Flex sx={sx.flexbox}>
             <Box sx={sx.containerBox}>
               <Text sx={sx.detailSubtitle}>Intervention topic</Text>
-              <Text sx={sx.detailSubtext}>{drawerDetails.category}</Text>
+              <Text sx={sx.detailSubtext}>
+                {drawerDetails.interventionTopic}
+              </Text>
             </Box>
             <Box sx={sx.containerBox}>
               <Text sx={sx.detailSubtitle}>Plan name</Text>
@@ -62,6 +64,9 @@ const sx = {
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",
+  },
+  flexbox: {
+    marginBottom: ".5rem",
   },
   containerBox: {
     marginRight: "2.5rem",
