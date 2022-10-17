@@ -390,3 +390,85 @@ export const mockReportContext = {
   reportsByState: mockReportsByState,
   errorMessage: "",
 };
+
+// ENTITIES
+
+export const mockAccessMeasuresEntity = {
+  id: "mock-id",
+  accessMeasure_generalCategory: [
+    {
+      key: "option1",
+      value: "mock-category",
+    },
+  ],
+  accessMeasure_standardDescription: "mock-description",
+  accessMeasure_standardType: [
+    {
+      key: "option1",
+      value: "mock-type",
+    },
+  ],
+  "accessMeasure_standardType-otherText": "",
+};
+
+export const mockUnfinishedAccessMeasuresFormattedEntityData = {
+  category: "mock-category",
+  standardDescription: "mock-standardDescription",
+  standardType: "mock-standardType",
+};
+
+export const mockCompletedAccessMeasuresFormattedEntityData = {
+  ...mockUnfinishedAccessMeasuresFormattedEntityData,
+  provider: "mock-providerType",
+  region: "mock-applicableRegion",
+  population: "mock-population",
+  monitoringMethods: ["mock-monitoringMethod-1", "mock-monitoringMethod-2"],
+  methodFrequency: "mock-oversightMethodFrequency",
+};
+
+export const mockSanctionsEntity = {
+  id: "mock-id",
+  sanction_interventionType: [
+    {
+      key: "option1",
+      value: "mock-type",
+    },
+  ],
+  sanction_interventionTopic: [
+    {
+      key: "option1",
+      value: "mock-topic",
+    },
+  ],
+  sanction_planName: {
+    label: "sanction_planName",
+    value: "mock-plan-id",
+  },
+  sanction_interventionReason: "mock-reason",
+  sanction_noncomplianceInstances: "mock-number",
+  sanction_dollarAmount: "mock-dollar-amount",
+  sanction_date: "mock-date",
+  sanction_remediationDate: "mock-date",
+  sanction_correctiveActionPlan: [
+    {
+      key: "option1",
+      value: "mock-answer",
+    },
+  ],
+};
+
+export const mockUnfinishedSanctionsFormattedEntityData = {
+  interventionType: "mock-type",
+  interventionTopic: "mock-topic",
+  planName: "mock-plan-name",
+  interventionReason: "mock-reason",
+};
+
+export const mockCompletedSanctionsFormattedEntityData = {
+  ...mockUnfinishedSanctionsFormattedEntityData,
+  noncomplianceInstances: "mock-instances",
+  dollarAmount: "mock-dollar-amount",
+  assessmentDate: "mock-date",
+  remediationDate: "mock-date",
+  correctiveActionPlan: "mock-answer",
+};
