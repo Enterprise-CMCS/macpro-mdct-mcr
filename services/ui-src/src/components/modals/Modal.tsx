@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Modal as ChakraModal,
   ModalBody,
   ModalContent,
@@ -11,7 +12,9 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { CloseIcon, Spinner } from "@cmsgov/design-system";
+import { Spinner } from "@cmsgov/design-system";
+// assets
+import closeIcon from "assets/icons/icon_close.png";
 
 export const Modal = ({
   modalDisclosure,
@@ -21,7 +24,6 @@ export const Modal = ({
   formId,
   children,
 }: Props) => {
-  // TODO: Replace CloseIcon with custom graphic asset
   return (
     <ChakraModal
       isOpen={modalDisclosure.isOpen}
@@ -38,7 +40,7 @@ export const Modal = ({
         <Flex sx={sx.modalCloseContainer}>
           <Button
             sx={sx.modalClose}
-            leftIcon={<CloseIcon />}
+            leftIcon={<Image src={closeIcon} alt="Close" sx={sx.closeIcon} />}
             variant="link"
             onClick={modalDisclosure.onClose}
           >
@@ -169,5 +171,8 @@ const sx = {
       fontSize: "sm",
       marginRight: "0",
     },
+  },
+  closeIcon: {
+    width: "0.75rem",
   },
 };

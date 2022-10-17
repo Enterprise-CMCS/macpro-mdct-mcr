@@ -4,9 +4,12 @@ import {
   AccordionButton,
   AccordionItem as AccordionItemRoot,
   AccordionPanel,
+  Image,
   Text,
 } from "@chakra-ui/react";
-import { Icon } from "components";
+// assets
+import plusIcon from "assets/icons/icon_plus.png";
+import minusIcon from "assets/icons/icon_minus.png";
 
 export const AccordionItem = ({ label, children, ...props }: Props) => {
   return (
@@ -19,9 +22,9 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
             title="accordion-button"
           >
             <Text flex="1">{label}</Text>
-            <Icon
-              icon={isExpanded ? "minus" : "plus"}
-              boxSize={isExpanded ? "1.5rem" : "2rem"}
+            <Image
+              src={isExpanded ? minusIcon : plusIcon}
+              sx={sx.accordionIcon}
             />
           </AccordionButton>
           <AccordionPanel sx={sx.accordionPanel}>{children}</AccordionPanel>
@@ -50,5 +53,8 @@ const sx = {
     ".mobile &": {
       padding: "0.5rem 0",
     },
+  },
+  accordionIcon: {
+    width: "1rem",
   },
 };
