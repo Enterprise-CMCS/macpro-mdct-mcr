@@ -29,7 +29,6 @@ export const Sidebar = () => {
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { pathname } = useLocation();
 
-  // TODO: Replace ArrowIcon with custom graphic asset
   return (
     <>
       {isMcparReportFormPage(pathname) && (
@@ -54,7 +53,11 @@ export const Sidebar = () => {
               onClick={() => toggleSidebar(!isOpen)}
               aria-label="Open/Close sidebar menu"
             >
-              <Image src={arrowDownIcon} />
+              <Image
+                src={arrowDownIcon}
+                sx={sx.sidebarIcon}
+                className={isOpen ? "left" : "right"}
+              />
             </Box>
             <Box id="sidebar-title-box" sx={sx.topBox}>
               <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
@@ -156,12 +159,12 @@ const NavItem = ({
       <Text sx={sx.navItemTitle} className={`level-${level}`}>
         {name}
       </Text>
-      {!!hasChildren &&
-        (isOpen ? (
-          <Image src={arrowUpIcon} sx={sx.navItemArrow} />
-        ) : (
-          <Image src={arrowDownIcon} sx={sx.navItemArrow} />
-        ))}
+      {!!hasChildren && (
+        <Image
+          src={isOpen ? arrowUpIcon : arrowDownIcon}
+          sx={sx.navItemArrow}
+        />
+      )}
     </Flex>
   );
 };
@@ -299,5 +302,14 @@ const sx = {
     width: "1rem",
     height: "1rem",
     margin: "0.75rem 0.75rem 0 auto",
+  },
+  sidebarIcon: {
+    width: "1rem",
+    "&.left": {
+      transform: "rotate(90deg)",
+    },
+    "&.right": {
+      transform: "rotate(270deg)",
+    },
   },
 };
