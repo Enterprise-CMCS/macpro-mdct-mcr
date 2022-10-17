@@ -11,13 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { Icon, MenuOption } from "components";
 // utils
-import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square.png";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
-  const mqClasses = makeMediaQueryClasses();
 
   // TODO: Replace ChevronDown with custom graphic asset
   return (
@@ -27,7 +26,6 @@ export const Menu = ({ handleLogout }: Props) => {
           as={Button}
           rightIcon={<Icon icon="chevronDown" color="palette.white" />}
           sx={sx.menuButton}
-          className={mqClasses}
           aria-label="my account"
           data-testid="header-menu-dropdown-button"
         >
@@ -79,7 +77,7 @@ const sx = {
       boxShadow: "none",
       outline: "0px solid transparent !important",
     },
-    "&.mobile": {
+    ".mobile &": {
       marginLeft: 0,
     },
     "& .chakra-button__icon": {

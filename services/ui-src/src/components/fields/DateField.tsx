@@ -5,11 +5,7 @@ import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
-import {
-  checkDateCompleteness,
-  makeMediaQueryClasses,
-  parseCustomHtml,
-} from "utils";
+import { checkDateCompleteness, parseCustomHtml } from "utils";
 
 export const DateField = ({
   name,
@@ -19,7 +15,6 @@ export const DateField = ({
   nested,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   const [displayValue, setDisplayValue] = useState<string>("");
 
   // get form context and register form field
@@ -66,7 +61,7 @@ export const DateField = ({
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${mqClasses} ${labelClass} ${nestedChildClasses} date-field`}
+      className={`${labelClass} ${nestedChildClasses} date-field`}
     >
       <CmsdsDateField
         name={name}

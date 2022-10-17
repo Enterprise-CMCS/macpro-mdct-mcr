@@ -4,11 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import {
-  formFieldFactory,
-  makeMediaQueryClasses,
-  parseCustomHtml,
-} from "utils";
+import { formFieldFactory, parseCustomHtml } from "utils";
 import {
   AnyObject,
   Choice,
@@ -16,6 +12,7 @@ import {
   FieldChoice,
   InputChangeEvent,
 } from "types";
+import { dropdownDefaultOptionText } from "../../constants";
 
 export const ChoiceListField = ({
   name,
@@ -27,7 +24,6 @@ export const ChoiceListField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const mqClasses = makeMediaQueryClasses();
   const [displayValue, setDisplayValue] = useState<Choice[] | null>(null);
 
   // get form context and register field
@@ -96,6 +92,13 @@ export const ChoiceListField = ({
                 clearNestedValues(child.props.choices);
               }
               break;
+            case "dropdown":
+              form.setValue(
+                child.id,
+                { label: dropdownDefaultOptionText, value: "" },
+                { shouldValidate: true }
+              );
+              break;
             default:
               form.setValue(child.id, "", { shouldValidate: true });
               break;
@@ -143,7 +146,7 @@ export const ChoiceListField = ({
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${nestedChildClasses} ${labelClass} ${mqClasses}`}
+      className={`${nestedChildClasses} ${labelClass}`}
     >
       <CmsdsChoiceList
         name={name}

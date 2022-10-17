@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Menu, MenuOption, ReportContext } from "components";
 // utils
-import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 import { isMcparReportFormPage } from "forms/mcpar";
 // assets
 import appLogo from "assets/logos/logo_mcr.png";
@@ -21,17 +21,16 @@ import getHelpIcon from "assets/icons/icon_help.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
-  const mqClasses = makeMediaQueryClasses();
   const { pathname } = useLocation();
   const { report } = useContext(ReportContext);
 
   return (
     <Box sx={sx.root} id="header">
-      <Flex sx={sx.usaBannerContainer} className={mqClasses}>
+      <Flex sx={sx.usaBannerContainer}>
         <UsaBanner />
       </Flex>
       <Flex sx={sx.headerBar} role="navigation">
-        <Container sx={sx.headerContainer} className={mqClasses}>
+        <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
             <Link as={RouterLink} to="/" variant="unstyled">
               <Image src={appLogo} alt="MCR logo" sx={sx.appLogo} />
@@ -58,7 +57,7 @@ export const Header = ({ handleLogout }: Props) => {
       </Flex>
       {isMcparReportFormPage(pathname) && (
         <Flex sx={sx.subnavBar}>
-          <Container sx={sx.subnavContainer} className={mqClasses}>
+          <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
                 <Text sx={sx.programNameText}>
@@ -104,7 +103,7 @@ const sx = {
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: "palette.gray_lightest",
-    "&.desktop": {
+    ".desktop &": {
       padding: "0 1rem",
     },
   },
@@ -115,7 +114,7 @@ const sx = {
   },
   headerContainer: {
     maxW: "appMax",
-    "&.desktop": {
+    ".desktop &": {
       padding: "0 2rem",
     },
   },
@@ -134,7 +133,7 @@ const sx = {
   },
   subnavContainer: {
     maxW: "appMax",
-    "&.desktop": {
+    ".desktop &": {
       padding: "0 2rem",
     },
   },

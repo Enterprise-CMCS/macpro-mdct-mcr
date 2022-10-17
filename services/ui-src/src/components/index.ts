@@ -19,7 +19,9 @@ export { Banner } from "./banners/Banner";
 export { PreviewBanner } from "./banners/PreviewBanner";
 // cards
 export { Card } from "./cards/Card";
-export { EntityCard } from "./cards/EntityCard";
+export { EntityCard } from "./cards/EntityCard/EntityCard";
+export { EntityCardTopSection } from "./cards/EntityCard/EntityCardTopSection";
+export { EntityCardBottomSection } from "./cards/EntityCard/EntityCardBottomSection";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
@@ -29,6 +31,7 @@ export { MobileDashboardList } from "./pages/Dashboard/DashboardProgramListMobil
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
+export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";

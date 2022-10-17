@@ -86,7 +86,8 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     field?.props?.choices.forEach((choice: FieldChoice) => {
       // set choice value to choice label string
       choice.value = choice.label;
-      choice.id = choice.name;
+      choice.id = `${field.id}-${choice.id}`;
+      choice.name = choice.id;
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
       // if choice has children, recurse
@@ -94,6 +95,24 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     });
   });
   return fields;
+};
+
+// returns user-entered data, filtered to only fields in the current form
+export const filterFormData = (
+  enteredData: AnyObject,
+  currentFormFields: FormField[]
+) => {
+  // translate user-entered data to array for filtration
+  const enteredDataEntries = Object.entries(enteredData);
+  // create array of the current form's field ids
+  const formFieldArray = currentFormFields.map((field: FormField) => field.id);
+  // filter user-entered data to only fields in the current form
+  const filteredDataEntries = enteredDataEntries.filter((fieldData) => {
+    const [fieldDataKey] = fieldData;
+    return formFieldArray.includes(fieldDataKey);
+  });
+  // translate data array back to a form data object
+  return Object.fromEntries(filteredDataEntries);
 };
 
 export const sortFormErrors = (
