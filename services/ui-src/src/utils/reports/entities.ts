@@ -45,7 +45,7 @@ export const getFormattedEntityData = (
       entityData = {
         interventionType: getRadioValue(entity, "sanction_interventionType"),
         interventionTopic: getRadioValue(entity, "sanction_interventionTopic"),
-        planName: reportFieldData?.plans.find(
+        planName: reportFieldData?.plans?.find(
           (plan: { id: string; name: string }) =>
             (plan.id = entity?.sanction_planName.value)
         )?.name,
