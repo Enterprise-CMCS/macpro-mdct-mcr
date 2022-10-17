@@ -17,8 +17,9 @@ const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
 
 export const getFormattedEntityData = (
   entityType: string,
-  entity?: EntityShape
-) => {
+  entity?: EntityShape,
+  reportFieldData?: AnyObject
+): AnyObject => {
   let entityData: any = {};
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
@@ -41,6 +42,23 @@ export const getFormattedEntityData = (
       break;
 
     case ModalDrawerEntityTypes.SANCTIONS:
+      entityData = {
+        interventionType: getRadioValue(entity, "sanction_interventionType"),
+        interventionTopic: getRadioValue(entity, "sanction_interventionTopic"),
+        planName: reportFieldData?.plans.find(
+          (plan: { id: string; name: string }) =>
+            (plan.id = entity?.sanction_planName.value)
+        )?.name,
+        interventionReason: entity?.sanction_interventionReason,
+        noncomplianceInstances: entity?.sanction_noncomplianceInstances,
+        dollarAmount: entity?.sanction_dollarAmount,
+        date: entity?.sanction_date,
+        remediationDate: entity?.sanction_remediationDate,
+        correctiveActionPlan: getRadioValue(
+          entity,
+          "sanction_correctiveActionPlan"
+        ),
+      };
       break;
 
     case ModalDrawerEntityTypes.QUALITY_MEASURES:

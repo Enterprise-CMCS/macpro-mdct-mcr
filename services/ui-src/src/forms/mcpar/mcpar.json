@@ -2473,7 +2473,7 @@
                     },
                     {
                       "id": "p7XrgO0am0uYpaks9bBXvg",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "qualityMeasure_domain-otherText",
@@ -2568,7 +2568,7 @@
                     },
                     {
                       "id": "70AlIcEQgEOofv0fqGqLpA",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "qualityMeasure_set-otherText",
@@ -2728,7 +2728,7 @@
                     },
                     {
                       "id": "U4ALG08NZkOSEuTkOlf20w",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "sanction_interventionType-otherText",
@@ -2778,7 +2778,7 @@
                     },
                     {
                       "id": "uFRKwEVzfE21KzEotYRkUw",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "sanction_interventionTopic-otherText",
@@ -2819,7 +2819,7 @@
             "id": "ds",
             "fields": [
               {
-                "id": "sanction-noncomplianceInstances",
+                "id": "sanction_noncomplianceInstances",
                 "type": "number",
                 "validation": "number",
                 "props": {
