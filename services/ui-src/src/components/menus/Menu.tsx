@@ -3,17 +3,21 @@ import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Button,
+  Image,
   Link,
   Menu as MenuRoot,
   MenuButton,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { Icon, MenuOption } from "components";
+import { MenuOption } from "components";
 // utils
 import { useBreakpoint } from "utils";
 // assets
+import accountCircleIcon from "assets/icons/icon_account_circle.png";
+import chevronDownIcon from "assets/icons/icon_arrow_down.png";
 import editIcon from "assets/icons/icon_edit_square.png";
+import logoutIcon from "assets/icons/icon_arrow_right_square.png";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -24,13 +28,16 @@ export const Menu = ({ handleLogout }: Props) => {
       <Box role="group">
         <MenuButton
           as={Button}
-          rightIcon={<Icon icon="chevronDown" color="palette.white" />}
+          rightIcon={
+            <Image src={chevronDownIcon} alt="Arrow down" sx={sx.menuIcon} />
+          }
           sx={sx.menuButton}
           aria-label="my account"
           data-testid="header-menu-dropdown-button"
         >
           <MenuOption
-            icon="personCircle"
+            icon={accountCircleIcon}
+            altText="Account"
             text="My Account"
             hideText={isMobile}
           />
@@ -42,7 +49,11 @@ export const Menu = ({ handleLogout }: Props) => {
             sx={sx.menuItem}
             data-testid="header-menu-option-manage-account"
           >
-            <MenuOption icon={editIcon} text="Manage Account" />
+            <MenuOption
+              icon={editIcon}
+              altText="Manage account"
+              text="Manage Account"
+            />
           </MenuItem>
         </Link>
         <MenuItem
@@ -51,7 +62,7 @@ export const Menu = ({ handleLogout }: Props) => {
           tabIndex={0}
           data-testid="header-menu-option-log-out"
         >
-          <MenuOption icon="arrowRightSquare" text="Log Out" />
+          <MenuOption icon={logoutIcon} text="Log Out" altText="Logout" />
         </MenuItem>
       </MenuList>
     </MenuRoot>
@@ -94,5 +105,8 @@ const sx = {
     borderRadius: ".375rem",
     _focus: { background: "palette.primary_darker" },
     _hover: { background: "palette.primary_darker" },
+  },
+  menuIcon: {
+    width: "0.8rem",
   },
 };
