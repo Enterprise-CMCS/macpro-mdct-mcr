@@ -9,7 +9,7 @@ const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
 const mockOpenDrawer = jest.fn();
 
-const mockEntity = {
+const mockAccessMeasuresEntity = {
   id: "mock-id",
   accessMeasure_generalCategory: [
     {
@@ -27,10 +27,14 @@ const mockEntity = {
   "accessMeasure_standardType-otherText": "",
 };
 
-const mockFormattedEntityData = {
+const mockUnfinishedAccessMeasuresFormattedEntityData = {
   category: "mock-category",
   standardDescription: "mock-standardDescription",
   standardType: "mock-standardType",
+};
+
+const mockAccessMeasuresFormattedEntityData = {
+  ...mockUnfinishedAccessMeasuresFormattedEntityData,
   provider: "mock-providerType",
   region: "mock-applicableRegion",
   population: "mock-population",
@@ -38,17 +42,11 @@ const mockFormattedEntityData = {
   methodFrequency: "mock-oversightMethodFrequency",
 };
 
-const mockUnfinishedEntityData = {
-  category: "mock-category",
-  standardDescription: "mock-standardDescription",
-  standardType: "mock-standardType",
-};
-
-const UnfinishedEntityCardComponent = (
+const UnfinishedAccessMeasuresEntityCardComponent = (
   <EntityCard
-    entity={mockEntity}
+    entity={mockAccessMeasuresEntity}
     entityType="mock-entity-type"
-    formattedEntityData={mockUnfinishedEntityData}
+    formattedEntityData={mockUnfinishedAccessMeasuresFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
@@ -58,9 +56,69 @@ const UnfinishedEntityCardComponent = (
 
 const AccessMeasuresEntityCardComponent = (
   <EntityCard
-    entity={mockEntity}
+    entity={mockAccessMeasuresEntity}
     entityType="accessMeasures"
-    formattedEntityData={mockFormattedEntityData}
+    formattedEntityData={mockAccessMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    data-testid="mock-entity-card"
+  />
+);
+
+const mockSanctionsEntity = {
+  id: "mock-id",
+  sanction_interventionType: [
+    {
+      key: "option1",
+      value: "mock-type",
+    },
+  ],
+  sanction_interventionTopic: [
+    {
+      key: "option1",
+      value: "mock-topic",
+    },
+  ],
+  sanction_planName: {
+    label: "sanction_planName",
+    value: "mock-plan-id",
+  },
+  sanction_interventionReason: "mock-reason",
+  sanction_noncomplianceInstances: "mock-number",
+  sanction_dollarAmount: "mock-dollar-amount",
+  sanction_date: "mock-date",
+  sanction_remediationDate: "mock-date",
+  sanction_correctiveActionPlan: [
+    {
+      key: "option1",
+      value: "mock-answer",
+    },
+  ],
+};
+
+const mockUnfinishedSanctionsFormattedEntityData = {
+  interventionType: "mock-type",
+  interventionTopic: "mock-topic",
+  planName: "mock-plan-name",
+  interventionReason: "mock-reason",
+};
+
+const mockSanctionsFormattedEntityData = {
+  ...mockUnfinishedSanctionsFormattedEntityData,
+  noncomplianceInstances: "mock-instances",
+  dollarAmount: "mock-dollar-amount",
+  date: "mock-date",
+  remediationDate: "mock-date",
+  correctiveActionPlan: "mock-answer",
+};
+
+const UnfinishedSanctionsEntityCardComponent = (
+  <EntityCard
+    entity={mockSanctionsEntity}
+    entityType="sanctions"
+    formattedEntityData={mockUnfinishedSanctionsFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
@@ -71,9 +129,9 @@ const AccessMeasuresEntityCardComponent = (
 
 const SanctionsEntityCardComponent = (
   <EntityCard
-    entity={mockEntity}
+    entity={mockSanctionsEntity}
     entityType="sanctions"
-    formattedEntityData={mockFormattedEntityData}
+    formattedEntityData={mockSanctionsFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
@@ -82,18 +140,24 @@ const SanctionsEntityCardComponent = (
   />
 );
 
-const QualityMeasuresEntityCardComponent = (
-  <EntityCard
-    entity={mockEntity}
-    entityType="qualityMeasures"
-    formattedEntityData={mockFormattedEntityData}
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
-  />
-);
+// const mockQualityMeasuresEntity = {};
+
+// const mockFormattedQualityMeasuresEntityData = {};
+
+/*
+ * const QualityMeasuresEntityCardComponent = (
+ *   <EntityCard
+ *     entity={mockQualityMeasuresEntity}
+ *     entityType="qualityMeasures"
+ *     formattedEntityData={mockFormattedQualityMeasuresEntityData}
+ *     verbiage={mockModalDrawerReportPageJson.verbiage}
+ *     openAddEditEntityModal={openAddEditEntityModal}
+ *     openDeleteEntityModal={openDeleteEntityModal}
+ *     openDrawer={mockOpenDrawer}
+ *     data-testid="mock-entity-card"
+ *   />
+ * );
+ */
 
 const {
   editEntityButtonText,
@@ -135,7 +199,7 @@ describe("Test Finished EntityCard", () => {
 
 describe("Test Unfinished EntityCard", () => {
   beforeEach(() => {
-    render(UnfinishedEntityCardComponent);
+    render(UnfinishedAccessMeasuresEntityCardComponent);
   });
 
   afterEach(() => {
@@ -160,27 +224,35 @@ describe("Test Unfinished EntityCard", () => {
 });
 
 describe("Test EntityCard accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(UnfinishedEntityCardComponent);
+  it("Unfinished AccessMeasures EntityCard should not have basic accessibility issues", async () => {
+    const { container } = render(UnfinishedAccessMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("Should not have basic accessibility issues", async () => {
+  it("Completed AccessMeasures EntityCard should not have basic accessibility issues", async () => {
     const { container } = render(AccessMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("Should not have basic accessibility issues", async () => {
+  it("Unfinished Sanctions EntityCard Should not have basic accessibility issues", async () => {
+    const { container } = render(UnfinishedSanctionsEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Completed Sanctions EntityCard should not have basic accessibility issues", async () => {
     const { container } = render(SanctionsEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(QualityMeasuresEntityCardComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  /*
+   * it("Should not have basic accessibility issues", async () => {
+   *   const { container } = render(QualityMeasuresEntityCardComponent);
+   *   const results = await axe(container);
+   *   expect(results).toHaveNoViolations();
+   * });
+   */
 });
