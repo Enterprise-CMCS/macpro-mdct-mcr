@@ -21,8 +21,6 @@ import logoutIcon from "assets/icons/icon_arrow_right_square.png";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
-
-  // TODO: Replace ChevronDown with custom graphic asset
   return (
     <MenuRoot offset={[8, 20]}>
       <Box role="group">

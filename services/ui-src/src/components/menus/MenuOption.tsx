@@ -2,7 +2,6 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 export const MenuOption = ({ text, icon, altText, role, hideText }: Props) => {
-  // TODO: Replace Log Out with custom graphic asset
   return (
     <Flex
       align="center"

@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
-import { ArrowIcon } from "@cmsgov/design-system";
-import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Collapse,
+  Flex,
+  Image,
+  Heading,
+  Link,
+  Text,
+} from "@chakra-ui/react";
 import { SkipNav } from "components";
 // utils
 import { useBreakpoint } from "utils";
 import { isMcparReportFormPage, mcparReportJson } from "forms/mcpar";
+// assets
+import arrowDownIcon from "assets/icons/icon_arrow_down_gray.png";
+import arrowUpIcon from "assets/icons/icon_arrow_up_gray.png";
 
 interface LinkItemProps {
   name: string;
@@ -44,10 +54,7 @@ export const Sidebar = () => {
               onClick={() => toggleSidebar(!isOpen)}
               aria-label="Open/Close sidebar menu"
             >
-              <ArrowIcon
-                title="closeNavBarButton"
-                direction={isOpen ? "left" : "right"}
-              />
+              <Image src={arrowDownIcon} />
             </Box>
             <Box id="sidebar-title-box" sx={sx.topBox}>
               <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
@@ -149,12 +156,12 @@ const NavItem = ({
       <Text sx={sx.navItemTitle} className={`level-${level}`}>
         {name}
       </Text>
-      {!!hasChildren && (
-        <ArrowIcon
-          title="openNavItemsArrow"
-          direction={isOpen ? "up" : "down"}
-        />
-      )}
+      {!!hasChildren &&
+        (isOpen ? (
+          <Image src={arrowUpIcon} sx={sx.navItemArrow} />
+        ) : (
+          <Image src={arrowDownIcon} sx={sx.navItemArrow} />
+        ))}
     </Flex>
   );
 };
@@ -224,7 +231,7 @@ const sx = {
     },
   },
   navItemFlex: {
-    flexDirection: "column",
+    flexDirection: "row",
     width: "20rem",
     minHeight: "2.5rem",
     position: "relative",
@@ -287,5 +294,10 @@ const sx = {
         marginLeft: "4rem",
       },
     },
+  },
+  navItemArrow: {
+    width: "1rem",
+    height: "1rem",
+    margin: "0.75rem 0.75rem 0 auto",
   },
 };
