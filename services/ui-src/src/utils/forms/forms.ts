@@ -28,7 +28,11 @@ export const populateRepeatedFields = (
         const newFieldAlreadyExists = fields.find((el: any) => {
           return el.id.includes(entity.id);
         });
-        if (!newFieldAlreadyExists) {
+        if (newFieldAlreadyExists) {
+          console.log("already exists");
+          // TODO: Nick -- start here with updating the existing field with a potentially changed plan label
+          return field;
+        } else {
           // if new field does not already exist, stage new field for addition
           const newFieldId = `${field.id}_${entity.id}`;
           const newFieldLabel = `${entity.name} ${field?.props?.label}`;
@@ -38,7 +42,7 @@ export const populateRepeatedFields = (
             props: { ...field.props, label: newFieldLabel },
           };
           return newField;
-        } else return field;
+        }
       });
     } else return field;
   })[0];
