@@ -6,7 +6,6 @@ const enterProgram = '[data-testid="enter-program"]';
 const editProgramButtom = "[data-testid='edit-button']";
 const submitButton = "[data-testid='modal-submit-button']";
 const programNameListItem = "[data-testid='program-name']";
-const leaveFormButton = "[data-testid='leave-form-button']";
 
 // selectors for all the required fields
 const titleInput = "[name='programName']";
