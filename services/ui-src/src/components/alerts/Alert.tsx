@@ -31,7 +31,7 @@ export const Alert = ({
       {...props}
     >
       <Flex>
-        {showIcon && <Image src={alertIcon} sx={sx.icon} />}
+        {showIcon && <Image src={alertIcon} sx={sx.icon} alt="Alert" />}
         <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
           {title && <AlertTitle>{title}</AlertTitle>}
           {description && (

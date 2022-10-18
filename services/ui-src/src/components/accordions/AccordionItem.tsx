@@ -24,6 +24,7 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
             <Text flex="1">{label}</Text>
             <Image
               src={isExpanded ? minusIcon : plusIcon}
+              alt={isExpanded ? "Collapse" : "Expand"}
               sx={sx.accordionIcon}
             />
           </AccordionButton>

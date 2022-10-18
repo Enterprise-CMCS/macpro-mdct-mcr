@@ -55,6 +55,7 @@ export const Sidebar = () => {
             >
               <Image
                 src={arrowDownIcon}
+                alt={isOpen ? "Arrow left" : "Arrow right"}
                 sx={sx.sidebarIcon}
                 className={isOpen ? "left" : "right"}
               />
@@ -162,6 +163,7 @@ const NavItem = ({
       {!!hasChildren && (
         <Image
           src={isOpen ? arrowUpIcon : arrowDownIcon}
+          alt={isOpen ? "Collapse subitems" : "Expand subitems"}
           sx={sx.navItemArrow}
         />
       )}
