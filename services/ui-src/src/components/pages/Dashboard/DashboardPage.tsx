@@ -6,6 +6,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Link,
   Text,
   useDisclosure,
@@ -30,10 +31,10 @@ import {
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
-import { ArrowIcon, Spinner } from "@cmsgov/design-system";
+import { Spinner } from "@cmsgov/design-system";
+import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
 export const DashboardPage = () => {
-  // TODO: Replace ArrowIcon with custom graphic asset
   const {
     errorMessage,
     fetchReportsByState,
@@ -130,7 +131,7 @@ export const DashboardPage = () => {
   return (
     <PageTemplate type="report" sx={sx.layout}>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
-        <ArrowIcon title="returnHome" direction="left" />
+        <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
         Return Home
       </Link>
       {errorMessage && <ErrorAlert error={errorMessage} />}
@@ -210,6 +211,7 @@ const sx = {
     },
   },
   returnLink: {
+    display: "flex",
     width: "8.5rem",
     svg: {
       height: "1.375rem",
@@ -220,6 +222,12 @@ const sx = {
     textDecoration: "none",
     _hover: {
       textDecoration: "underline",
+    },
+    ".returnIcon": {
+      width: "1.25rem",
+      height: "1.25rem",
+      marginTop: "0.2rem",
+      marginRight: "0.5rem",
     },
   },
   leadTextBox: {

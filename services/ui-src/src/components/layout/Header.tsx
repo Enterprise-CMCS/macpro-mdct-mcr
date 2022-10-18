@@ -46,6 +46,7 @@ export const Header = ({ handleLogout }: Props) => {
                 <MenuOption
                   icon={getHelpIcon}
                   text="Get Help"
+                  altText="Help"
                   role="group"
                   hideText={isMobile}
                 />
