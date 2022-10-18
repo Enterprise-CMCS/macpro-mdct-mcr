@@ -14,6 +14,56 @@ import {
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
 
+export const populateRepeatedFields = (
+  fields: FormField[],
+  reportFieldData?: AnyObject
+) => {
+  const newFields: FormField[] = [...fields];
+  // for each form field, check if it needs to be repeated
+  console.log(
+    "RUNNING WITH FIELDS:",
+    fields,
+    "AND DATA:",
+    reportFieldData?.plans
+  );
+  fields.forEach((field: FormField, index: number) => {
+    console.log("FIELD.LABEL", field?.props?.label);
+    if (field.repeat) {
+      // if field needs to be repeated, get entities for which it is to be repeated
+      const entities = reportFieldData?.[field.repeat];
+      const newFieldArray: any = [];
+      // for each entity, check if corresponding field already exists
+      entities?.forEach((entity: AnyObject) => {
+        const newFieldAlreadyExists = fields.find((el: any) => {
+          console.log("el.id", el.id);
+          console.log("entity name/id", entity.name, entity.id);
+          console.log("already exists?", el.id.includes(entity.id));
+          return el.id.includes(entity.id);
+        });
+
+        if (!newFieldAlreadyExists) {
+          console.log("making a new field");
+          // if new field does not already exist, stage new field for addition
+          const newFieldId = `${field.id}_${entity.id}`;
+          const newFieldLabel = `${entity.name} ${field?.props?.label}`;
+          const newField = {
+            ...field,
+            id: newFieldId,
+            props: { ...field.props, label: newFieldLabel },
+          };
+          console.log("making a new field", newFieldLabel, newField);
+
+          newFieldArray.push(newField);
+        }
+      });
+      // if there are fields staged for addition, add them to the field array
+      if (newFieldArray.length > 0)
+        newFields.splice(index, 1, ...newFieldArray);
+    }
+  });
+  return newFields;
+};
+
 // return created elements from provided fields
 export const formFieldFactory = (
   fields: FormField[],

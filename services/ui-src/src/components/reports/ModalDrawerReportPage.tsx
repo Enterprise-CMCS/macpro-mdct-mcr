@@ -16,8 +16,6 @@ import {
   AnyObject,
   EntityShape,
   EntityType,
-  FormField,
-  FormJson,
   ModalDrawerReportPageShape,
   ReportStatus,
 } from "types";
@@ -34,38 +32,6 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
   const { report, updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-
-  // ---- Plans Repeating
-  const populateFormWithRepeatedFields = (
-    drawerForm: FormJson,
-    reportFieldData?: AnyObject
-  ) => {
-    const newDrawerForm: FormJson = { ...drawerForm };
-    const fields = drawerForm.fields;
-    fields.forEach((field: FormField, index: number) => {
-      if (field.repeat) {
-        const plans = reportFieldData?.[field.repeat];
-        const newFieldArray: any = [];
-        plans?.forEach((plan: AnyObject) => {
-          const newFieldId = `${field.id}_${plan.id}`;
-          const fieldAlreadyExists = fields.find((el: any) =>
-            el.id.includes(plan.id)
-          );
-          if (!fieldAlreadyExists)
-            newFieldArray.push({ ...field, id: newFieldId, repeat: undefined });
-        });
-        if (newFieldArray.length > 0)
-          newDrawerForm.fields.splice(index, 1, ...newFieldArray);
-      }
-    });
-    return newDrawerForm;
-  };
-  const drawerFormWithRepeatedFields = populateFormWithRepeatedFields(
-    drawerForm,
-    report?.fieldData
-  );
-
-  // ----
 
   // add/edit entity modal disclosure and methods
   const {
@@ -129,10 +95,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
-      const filteredFormData = filterFormData(
-        enteredData,
-        drawerFormWithRepeatedFields.fields
-      );
+      const filteredFormData = filterFormData(enteredData, drawerForm.fields);
       const newEntity = {
         ...selectedEntity,
         ...filteredFormData,
@@ -205,11 +168,12 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             ...verbiage,
             drawerDetails: getFormattedEntityData(entityType, selectedEntity),
           }}
-          form={
-            !drawerFormWithRepeatedFields.fields[0]?.repeat
-              ? drawerFormWithRepeatedFields
-              : { ...drawerFormWithRepeatedFields, fields: [] }
-          }
+          // form={
+          //   !drawerFormWithRepeatedFields.fields[0]?.repeat
+          //     ? drawerFormWithRepeatedFields
+          //     : { ...drawerFormWithRepeatedFields, fields: [] }
+          // }
+          form={drawerForm}
           onSubmit={onSubmit}
           submitting={submitting}
           drawerDisclosure={{
