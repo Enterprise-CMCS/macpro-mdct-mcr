@@ -2,7 +2,6 @@
 const enterMcparOnlineHomepageButton = '[data-testid="enter-mcpar-online"]';
 const enterMcparOnlineGetStartedButton =
   '[data-testid="second-enter-mcpar-button"]';
-const enterProgram = '[data-testid="enter-program"]';
 const editProgramButtom = "[data-testid='edit-button']";
 const submitButton = "[data-testid='modal-submit-button']";
 const programNameListItem = "[data-testid='program-name']";
@@ -16,8 +15,8 @@ const checkbox = "[name='combinedData']";
 beforeEach(() => {
   cy.visit("/");
   cy.authenticate("stateUser");
-  cy.get(enterMcparOnlineHomepageButton).click();
-  cy.get(enterMcparOnlineGetStartedButton).click();
+  cy.findByRole("button", {name: "Enter MCPAR online"}).click();
+  cy.findAllByRole("button", {name: "Enter MCPAR online"}).click();
 });
 
 describe("state user creates a program", () => {
@@ -26,7 +25,7 @@ describe("state user creates a program", () => {
     cy.get("button[type=submit]").click();
 
     // fill out form fields
-    cy.get(titleInput).type("program title");
+    cy.findByLabelText("Program name").type("program title");
     cy.get(startDateInput).type("07142023");
     cy.get(endDateInput).type("07142026");
     cy.get(checkbox).focus().click();
@@ -35,9 +34,7 @@ describe("state user creates a program", () => {
   });
 
   it("hydrates modal correctly", () => {
-    // cy.get(editProgramButtom).last().click();
-    cy.getByRole("button", { name: "Enter" }).last().click();
-
+    cy.findAllByRole("button", { name: "Edit Program"}).last().click();
     cy.get(titleInput).should("have.value", "program title");
     cy.get(startDateInput).should("have.value", "07/14/2023");
     cy.get(endDateInput).should("have.value", "07/14/2026");
@@ -47,7 +44,7 @@ describe("state user creates a program", () => {
   });
 
   it("enters the program and returns to dashboard", () => {
-    cy.get(enterProgram).last().click();
+    cy.findAllByRole("button", { name: "Enter" }).last().click();
     cy.location("pathname").should("match", /point-of-contact/);
     cy.get("button[type=button]").contains("Leave form").click();
     cy.location("pathname").should("match", /mcpar/);
