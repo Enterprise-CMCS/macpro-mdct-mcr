@@ -17,14 +17,14 @@ export const DeleteDynamicFieldRecordModal = ({
     bssEntities: "BSS Entity",
   };
 
+  const entityName = fieldTypeMap[entityType];
+
   const deleteProgramHandler = async () => {
     setDeleting(true);
     removeRecord(selectedRecord);
     setDeleting(false);
     modalDisclosure.onClose();
   };
-
-  const entityName = fieldTypeMap[entityType];
 
   return (
     <Modal

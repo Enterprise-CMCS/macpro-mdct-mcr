@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { DeleteDynamicFieldRecordModal } from "components";
+import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 import { svgFilters } from "styles/theme";
 // utils
 import { EntityShape, EntityType, InputChangeEvent } from "types";
@@ -15,6 +15,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // get form context and register field
   const form = useFormContext();
   form.register(name);
+  const { report, updateReport } = useContext(ReportContext);
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
@@ -60,6 +61,26 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     );
     remove(index);
     let newDisplayValues = [...displayValues];
+    // delete related entities
+    if (report?.fieldData.sanctions) {
+      const reportKeys = {
+        state: report?.state,
+        id: report?.id,
+      };
+      let dataToWrite = {
+        fieldData: {
+          sanctions: [...report.fieldData.sanctions],
+        },
+      };
+      report.fieldData.sanctions.forEach((sanction: EntityShape) => {
+        if (sanction.sanction_planName.value === selectedRecord.id) {
+          const sanctionIndex = report.fieldData.sanctions.indexOf(sanction);
+          report.fieldData.sanctions.splice(sanctionIndex, 1);
+        }
+      });
+      dataToWrite.fieldData.sanctions = { ...report.fieldData.sanctions };
+      updateReport(reportKeys, dataToWrite);
+    }
     newDisplayValues.splice(index, 1);
     if (newDisplayValues.length === 0) {
       const newEntity = { id: uuid(), name: "" };
