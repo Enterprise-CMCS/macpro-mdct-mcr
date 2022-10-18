@@ -67,7 +67,6 @@ export const GetStartedPage = () => {
         <Button
           sx={sx.pageLink}
           onClick={() => navigate(pageLink.route)}
-          data-testid="second-enter-mcpar-button"
           rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
         >
           {pageLink.text}
