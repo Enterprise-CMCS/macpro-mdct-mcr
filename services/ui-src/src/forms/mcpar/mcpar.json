@@ -2651,6 +2651,7 @@
                 "id": "qualityMeasure_plan_measureResults",
                 "type": "text",
                 "validation": "text",
+                "repeat": "plans",
                 "props": {
                   "label": ": Measure Results",
                   "hint": "What are the measure results or values for this plan? Add free text or enter \"N/A\" if not applicable."
