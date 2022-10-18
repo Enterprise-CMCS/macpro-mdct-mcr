@@ -176,11 +176,7 @@ export const DashboardPage = () => {
         {/* only show add program button to state users */}
         {(userIsStateUser || userIsStateRep) && (
           <Box sx={sx.callToActionContainer}>
-            <Button
-              data-testid="add-program"
-              type="submit"
-              onClick={() => openAddEditProgramModal()}
-            >
+            <Button type="submit" onClick={() => openAddEditProgramModal()}>
               {body.callToAction}
             </Button>
           </Box>
