@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-// Components
+// components
 import {
   Button,
   Drawer as ChakraDrawer,
@@ -9,17 +9,17 @@ import {
   DrawerContent,
   Text,
   Box,
-  Heading,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
-import { AnyObject, CustomHtmlElement } from "types";
+import { ReportDrawerDetails } from "components";
+// utils
+import { AnyObject, CustomHtmlElement, EntityType } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 export const Drawer = ({
+  entityType,
+  verbiage,
   drawerDisclosure,
-  drawerTitle,
-  drawerInfo,
-  drawerDetails,
   children,
   ...props
 }: Props) => {
@@ -36,21 +36,17 @@ export const Drawer = ({
       <DrawerOverlay />
       <DrawerContent sx={sx.drawerContent} className={mqClasses}>
         <DrawerHeader sx={sx.drawerHeader}>
-          <Text sx={sx.drawerHeaderText}>{drawerTitle}</Text>
-          {drawerInfo && (
-            <Box sx={sx.infoTextBox}>{parseCustomHtml(drawerInfo)}</Box>
-          )}
-          {drawerDetails && (
-            <Box sx={sx.detailBox}>
-              <Heading as="h4" sx={sx.detailHeader}>
-                Standard Type - {drawerDetails.category}
-              </Heading>
-              <Text sx={sx.detailDescription}>
-                {drawerDetails.standardDescription}
-              </Text>
-              <Text sx={sx.detailCategoryHeader}>General Category</Text>
-              <Text sx={sx.detailCategory}>{drawerDetails.category}</Text>
+          <Text sx={sx.drawerHeaderText}>{verbiage.drawerTitle}</Text>
+          {verbiage.drawerInfo && (
+            <Box sx={sx.infoTextBox}>
+              {parseCustomHtml(verbiage.drawerInfo)}
             </Box>
+          )}
+          {verbiage.drawerDetails && entityType && (
+            <ReportDrawerDetails
+              drawerDetails={verbiage.drawerDetails}
+              entityType={entityType}
+            />
           )}
           <Button
             sx={sx.drawerCloseButton}
@@ -68,13 +64,16 @@ export const Drawer = ({
 };
 
 interface Props {
+  verbiage: {
+    drawerTitle: string;
+    drawerInfo?: CustomHtmlElement[];
+    drawerDetails?: AnyObject;
+  };
   drawerDisclosure: {
     isOpen: boolean;
     onClose: Function;
   };
-  drawerTitle: string;
-  drawerInfo?: CustomHtmlElement[];
-  drawerDetails?: AnyObject;
+  entityType?: EntityType;
   [key: string]: any;
 }
 
@@ -123,14 +122,6 @@ const sx = {
   },
   detailDescription: {
     marginBottom: ".5rem",
-    fontSize: "md",
-  },
-  detailCategoryHeader: {
-    marginBottom: ".25rem",
-    fontSize: "sm",
-    fontWeight: "bold",
-  },
-  detailCategory: {
     fontSize: "md",
   },
   infoTextBox: {

@@ -232,13 +232,17 @@ export const mockPlanFilledForm = {
   fields: [mockPlanField],
 };
 
+export const mockVerbiageIntro = {
+  section: "mock section",
+  subsection: "mock subsection",
+};
+
 export const mockStandardReportPageJson = {
   name: "mock-route-1",
   path: "/mock/mock-route-1",
   pageType: "standard",
-  intro: {
-    section: "mock section",
-    subsection: "mock subsection",
+  verbiage: {
+    intro: mockVerbiageIntro,
   },
   form: mockForm,
 };
@@ -248,17 +252,30 @@ export const mockDrawerReportPageJson = {
   path: "/mock/mock-route-2a",
   pageType: "drawer",
   entityType: "plans",
-  intro: {
-    section: "mock section",
-    subsection: "mock subsection",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
   },
-  dashboard: {
-    title: "Mock dashboard title",
-  },
-  drawer: {
-    title: "Mock drawer title",
-    form: mockDrawerForm,
-  },
+  drawerForm: mockDrawerForm,
+};
+
+export const mockModalDrawerReportPageVerbiage = {
+  intro: mockVerbiageIntro,
+  dashboardTitle: "Mock dashboard title",
+  addEntityButtonText: "Mock add entity button text",
+  editEntityButtonText: "Mock edit entity button text",
+  addEditModalAddTitle: "Mock add/edit entity modal add title",
+  addEditModalEditTitle: "Mock add/edit entity modal edit title",
+  addEditModalMessage: "Mock add/edit entity modal message",
+  deleteEntityButtonAltText: "Mock delete entity button alt text",
+  deleteModalTitle: "Mock delete modal title",
+  deleteModalConfirmButtonText: "Mock delete modal confirm button text",
+  deleteModalWarning: "Mock delete modal warning",
+  entityUnfinishedMessage: "Mock entity unfinished messsage",
+  enterEntityDetailsButtonText: "Mock enter entity details button text",
+  editEntityDetailsButtonText: "Mock edit entity details button text",
+  drawerTitle: "Mock drawer title",
 };
 
 export const mockModalDrawerReportPageJson = {
@@ -266,26 +283,9 @@ export const mockModalDrawerReportPageJson = {
   path: "/mock/mock-route-2b",
   pageType: "modalDrawer",
   entityType: "accessMeasures",
-  intro: {
-    section: "mock section",
-    subsection: "mock subsection",
-  },
-  dashboard: {
-    title: "Mock dashboard title",
-    addEntityButtonText: "Add entity button",
-    editEntityButtonText: "Edit measure",
-    deleteEntityButtonAltText: "Delete measure",
-  },
-  modal: {
-    addTitle: "Add entity modal",
-    editTitle: "Edit entity modal",
-    message: "Mock message",
-    form: mockModalForm,
-  },
-  drawer: {
-    title: "Mock drawer title",
-    form: mockDrawerForm,
-  },
+  verbiage: mockModalDrawerReportPageVerbiage,
+  modalForm: mockModalForm,
+  drawerForm: mockDrawerForm,
 };
 
 // REPORT

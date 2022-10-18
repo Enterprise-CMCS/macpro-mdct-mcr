@@ -1,5 +1,5 @@
 // components
-import { Text } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
@@ -11,6 +11,9 @@ export const EntityCardTopSection = ({
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (
         <>
+          <Heading as="h4" sx={sx.heading}>
+            {formattedEntityData.category}
+          </Heading>
           <Text sx={sx.description}>
             {formattedEntityData.standardDescription}
           </Text>
@@ -33,6 +36,9 @@ interface Props {
 }
 
 const sx = {
+  heading: {
+    fontSize: "sm",
+  },
   description: {
     marginTop: "0.75rem",
     fontSize: "sm",

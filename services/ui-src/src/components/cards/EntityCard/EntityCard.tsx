@@ -4,9 +4,9 @@ import {
   EntityCardBottomSection,
   EntityCardTopSection,
 } from "components";
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Text } from "@chakra-ui/react";
 // utils
-import { AnyObject, EntityShape } from "types";
+import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
 // assets
 import { svgFilters } from "styles/theme";
 import completedIcon from "assets/icons/icon_check_circle.png";
@@ -18,14 +18,28 @@ export const EntityCard = ({
   entity,
   entityType,
   formattedEntityData,
-  dashboard,
+  verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openDrawer,
   ...props
 }: Props) => {
   // any drawer-based field will do for this check
-  const entityCompleted = formattedEntityData.population;
+
+  let entityCompleted = false;
+  switch (entityType) {
+    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+      entityCompleted = !!formattedEntityData.population;
+      break;
+    case ModalDrawerEntityTypes.SANCTIONS:
+      // TODO Sanctions
+      break;
+    case ModalDrawerEntityTypes.QUALITY_MEASURES:
+      // TODO quality measures
+      break;
+    default:
+      break;
+  }
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox}>
@@ -38,17 +52,14 @@ export const EntityCard = ({
           type="button"
           className="delete-entity-button"
           onClick={() => openDeleteEntityModal(entity)}
-          data-testid="deleteEntityButton"
+          data-testid="delete-entity-button"
         >
           <Image
             src={deleteIcon}
-            alt={dashboard.deleteEntityButtonAltText}
+            alt={verbiage.deleteEntityButtonAltText}
             sx={sx.deleteButtonImage}
           />
         </button>
-        <Heading as="h4" sx={sx.heading}>
-          {formattedEntityData.category}
-        </Heading>
         <EntityCardTopSection
           entityType={entityType}
           formattedEntityData={formattedEntityData}
@@ -57,25 +68,21 @@ export const EntityCard = ({
           variant="outline"
           size="sm"
           sx={sx.editButton}
-          data-testid="editEntityButton"
           leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
           onClick={() => openAddEditEntityModal(entity)}
         >
-          {dashboard.editEntityButtonText}
+          {verbiage.editEntityButtonText}
         </Button>
         {entityCompleted ? (
           <EntityCardBottomSection
             entityType={entityType}
-            entityCompleted={entityCompleted}
             formattedEntityData={formattedEntityData}
           />
         ) : (
           <Text sx={sx.unfinishedMessage}>
-            Complete the remaining indicators for this access measure by
-            entering details.
+            {verbiage.entityUnfinishedMessage}
           </Text>
         )}
-
         <Button
           size="sm"
           sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
@@ -88,7 +95,9 @@ export const EntityCard = ({
             ) : undefined
           }
         >
-          {entityCompleted ? "Edit" : "Enter"} details
+          {entityCompleted
+            ? verbiage.editEntityDetailsButtonText
+            : verbiage.enterEntityDetailsButtonText}
         </Button>
       </Box>
     </Card>
@@ -99,7 +108,7 @@ interface Props {
   entity: EntityShape;
   entityType: string;
   formattedEntityData: AnyObject;
-  dashboard: AnyObject;
+  verbiage: AnyObject;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
   openDrawer: Function;
@@ -131,9 +140,6 @@ const sx = {
     _hover: {
       filter: svgFilters.primary_darker,
     },
-  },
-  heading: {
-    fontSize: "sm",
   },
   unfinishedMessage: {
     fontSize: "xs",
