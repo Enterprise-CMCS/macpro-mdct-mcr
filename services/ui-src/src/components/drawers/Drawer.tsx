@@ -81,6 +81,7 @@ const sx = {
   drawerContent: {
     maxWidth: "90vw",
     padding: "1rem",
+    overflowY: "auto",
     "&.tablet": {
       maxWidth: "32rem",
     },
@@ -139,5 +140,6 @@ const sx = {
   },
   drawerBody: {
     padding: "1rem",
+    overflow: "none",
   },
 };
