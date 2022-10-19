@@ -1,4 +1,15 @@
-import { formFieldFactory, hydrateFormFields, sortFormErrors } from "./forms";
+import {
+  filterFormData,
+  flattenFormFields,
+  formFieldFactory,
+  hydrateFormFields,
+  sortFormErrors,
+} from "./forms";
+import {
+  mockDrawerFormField,
+  mockFormField,
+  mockNestedFormField,
+} from "utils/testing/setupJest";
 
 describe("Test formFieldFactory", () => {
   const mockFormFields = [
@@ -164,6 +175,34 @@ describe("Test hydrateFormFields", () => {
       (field: any) => field.id === "mock-field-2-o1-text"
     )?.props!.hydrate;
     expect(hydratedNestedFieldValue).toEqual("mock nested text");
+  });
+});
+
+describe("Test filterFormData", () => {
+  const mockValidData = {
+    "mock-drawer-text-field": "mock-top-level-text-field-value",
+    "mock-nested-field": [
+      { key: "mock-radio-field-abc123", value: "mock-radio-value" },
+    ],
+    "mock-text-field": "mock-nested-text-field-value",
+  };
+  const mockInvalidData = { "invalid-data": "invalid" };
+  const mockEnteredData = {
+    ...mockValidData,
+    ...mockInvalidData,
+  };
+  const mockFormFields = [mockDrawerFormField, mockNestedFormField];
+
+  it("Correctly passes through nested and non-nested field data from the current form and filters out data not from the current form", () => {
+    const result = filterFormData(mockEnteredData, mockFormFields);
+    expect(result).toEqual(mockValidData);
+  });
+});
+
+describe("Test flattenFormFields", () => {
+  it("Correctly flattens nested form fields to a single level array", () => {
+    const result = flattenFormFields([mockNestedFormField]);
+    expect(result).toEqual([mockNestedFormField, mockFormField]);
   });
 });
 
