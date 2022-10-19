@@ -17,36 +17,23 @@ import { AnyObject, FieldChoice, FormField } from "types";
 export const populateRepeatedFields = (
   fields: FormField[],
   reportFieldData?: AnyObject
-): FormField[] => {
+): FormField[] =>
   // for each form field, check if it needs to be repeated
-  return fields.map((field: FormField) => {
+  fields.flatMap((field: FormField) => {
     if (field.repeat) {
-      // if field needs to be repeated, get entities for which it is to be repeated
+      // if so, get entities for which the field is to be repeated
       const entities = reportFieldData?.[field.repeat];
-      // for each entity, check if corresponding field already exists
+      // for each entity, create and return a new field with unique id
       return entities?.map((entity: AnyObject) => {
-        const newFieldAlreadyExists = fields.find((el: any) => {
-          return el.id.includes(entity.id);
-        });
-        if (newFieldAlreadyExists) {
-          console.log("already exists");
-          // TODO: Nick -- start here with updating the existing field with a potentially changed plan label
-          return field;
-        } else {
-          // if new field does not already exist, stage new field for addition
-          const newFieldId = `${field.id}_${entity.id}`;
-          const newFieldLabel = `${entity.name} ${field?.props?.label}`;
-          const newField = {
-            ...field,
-            id: newFieldId,
-            props: { ...field.props, label: newFieldLabel },
-          };
-          return newField;
-        }
+        const newField = {
+          ...field,
+          id: field.id + "_" + entity.id,
+          props: { ...field.props, label: entity.name + field?.props?.label },
+        };
+        return newField;
       });
     } else return field;
-  })[0];
-};
+  });
 
 // return created elements from provided fields
 export const formFieldFactory = (

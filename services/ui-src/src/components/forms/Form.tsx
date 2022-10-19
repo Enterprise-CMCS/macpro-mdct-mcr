@@ -66,9 +66,7 @@ export const Form = ({
     );
     if (formContainsFieldsToRepeat) {
       const repeatedFields = populateRepeatedFields(fields, report?.fieldData);
-      console.log("fields", fields);
-      console.log("repeatedFields", repeatedFields);
-      fields = repeatedFields;
+      fields = repeatedFields || [];
     }
     const fieldsToRender = hydrateFormFields(fields, formData);
     return formFieldFactory(fieldsToRender, !!fieldInputDisabled);
