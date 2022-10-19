@@ -136,7 +136,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             entity={entity}
             entityType={entityType}
             verbiage={verbiage}
-            formattedEntityData={getFormattedEntityData(entityType, entity)}
+            formattedEntityData={getFormattedEntityData(
+              entityType,
+              entity,
+              report?.fieldData
+            )}
             openAddEditEntityModal={openAddEditEntityModal}
             openDeleteEntityModal={openDeleteEntityModal}
             openDrawer={openDrawer}
@@ -166,7 +170,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,
-            drawerDetails: getFormattedEntityData(entityType, selectedEntity),
+            drawerDetails: getFormattedEntityData(
+              entityType,
+              selectedEntity,
+              report?.fieldData
+            ),
           }}
           form={drawerForm}
           onSubmit={onSubmit}
