@@ -31,8 +31,7 @@ export const ReportDrawer = ({
     useUser().user ?? {};
   const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
-  // console.log("form", form);
-  // console.log("form.id", form.id);
+
   return (
     <Drawer
       verbiage={verbiage}
