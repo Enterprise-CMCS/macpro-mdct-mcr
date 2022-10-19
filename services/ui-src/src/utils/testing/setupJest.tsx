@@ -390,3 +390,68 @@ export const mockReportContext = {
   reportsByState: mockReportsByState,
   errorMessage: "",
 };
+
+// ENTITIES
+
+export const mockAccessMeasuresEntity = {
+  id: "mock-access-measures-id",
+  accessMeasure_generalCategory: [{ value: "mock-category" }],
+  accessMeasure_standardDescription: "mock-description",
+  accessMeasure_standardType: [{ value: "mock-standard-type" }],
+  "accessMeasure_standardType-otherText": "",
+  accessMeasure_providerType: [{ value: "mock-provider-type" }],
+  accessMeasure_applicableRegion: [{ value: "Other, specify" }],
+  "accessMeasure_applicableRegion-otherText": "mock-region-other-text",
+  accessMeasure_population: [{ value: "mock-population" }],
+  accessMeasure_monitoringMethods: [
+    { value: "mock-monitoring-method-1" },
+    { value: "mock-monitoring-method-2" },
+  ],
+  accessMeasure_oversightMethodFrequency: [
+    { value: "mock-oversight-method-frequency" },
+  ],
+};
+
+export const mockUnfinishedAccessMeasuresFormattedEntityData = {
+  category: "mock-category",
+  standardDescription: "mock-description",
+  standardType: "mock-standard-type",
+};
+
+export const mockCompletedAccessMeasuresFormattedEntityData = {
+  ...mockUnfinishedAccessMeasuresFormattedEntityData,
+  provider: "mock-provider-type",
+  region: "mock-region-other-text",
+  population: "mock-population",
+  monitoringMethods: ["mock-monitoring-method-1", "mock-monitoring-method-2"],
+  methodFrequency: "mock-oversight-method-frequency",
+};
+
+export const mockSanctionsEntity = {
+  id: "mock-id",
+  sanction_interventionType: [{ value: "mock-type" }],
+  sanction_interventionTopic: [{ value: "mock-topic" }],
+  sanction_planName: { label: "sanction_planName", value: "mock-plan-id" },
+  sanction_interventionReason: "mock-reason",
+  sanction_noncomplianceInstances: "mock-instances",
+  sanction_dollarAmount: "mock-dollar-amount",
+  sanction_assessmentDate: "mock-date",
+  sanction_remediationDate: "mock-date",
+  sanction_correctiveActionPlan: [{ value: "mock-answer" }],
+};
+
+export const mockUnfinishedSanctionsFormattedEntityData = {
+  interventionType: "mock-type",
+  interventionTopic: "mock-topic",
+  planName: "mock-plan-name",
+  interventionReason: "mock-reason",
+};
+
+export const mockCompletedSanctionsFormattedEntityData = {
+  ...mockUnfinishedSanctionsFormattedEntityData,
+  noncomplianceInstances: "mock-instances",
+  dollarAmount: "mock-dollar-amount",
+  assessmentDate: "mock-date",
+  remediationDate: "mock-date",
+  correctiveActionPlan: "mock-answer",
+};
