@@ -125,12 +125,10 @@ export const flattenFormFields = (formFields: FormField[]): FormField[] => {
     formFields.forEach((field: FormField) => {
       // push field to flattened fields array
       flattenedFields.push(field);
-      if (field?.props?.choices) {
-        field.props.choices.forEach((choice: FieldChoice) => {
-          // if choice has children, recurse
-          if (choice.children) compileFields(choice.children);
-        });
-      }
+      // if choice has children, recurse
+      field?.props?.choices?.forEach((choice: FieldChoice) => {
+        if (choice.children) compileFields(choice.children);
+      });
     });
   };
   compileFields(formFields);
