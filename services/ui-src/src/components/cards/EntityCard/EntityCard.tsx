@@ -34,7 +34,7 @@ export const EntityCard = ({
       entityCompleted = !!formattedEntityData.assessmentDate;
       break;
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      // TODO quality measures
+      entityCompleted = !!formattedEntityData.plans;
       break;
     default:
       break;

@@ -78,7 +78,18 @@ export const EntityCardBottomSection = ({
         </>
       );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      return <Text sx={sx.subtitle}>Quality Measures TODO</Text>;
+      return formattedEntityData?.plans?.map(
+        (plan: { name: string; value: string }, index: number) => (
+          <Box key={index} sx={sx.highlightContainer}>
+            <Flex>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>{plan.name}</Text>
+                <Text sx={sx.subtext}>{plan.value}</Text>
+              </Box>
+            </Flex>
+          </Box>
+        )
+      );
     default:
       return <Text>{entityType}</Text>;
   }

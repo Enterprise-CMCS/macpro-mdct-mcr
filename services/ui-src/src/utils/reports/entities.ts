@@ -15,6 +15,42 @@ const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
   );
 };
 
+const getPlans = (entity: EntityShape, reportFieldData?: AnyObject) => {
+  // Check the entity to see how many plans are associated with the measure
+  const foundPlans = Object.keys(entity).filter((key) =>
+    key.includes("qualityMeasure_plan_measureResults")
+  );
+  let convertedPlans: any = [];
+
+  // Loop through all the plans that are found tied to the measure
+  for (let foundPlan of foundPlans) {
+    // We have the value already tied in from the users input on the field
+    const accessMeasureValue = entity[foundPlan];
+
+    /*
+     * We need the name of the plan however, and we're only given the ID at the end of the key.
+     * That means we need to look up in the reportFieldData for a matching key to know the plan name
+     */
+    const planName = reportFieldData?.plans?.find(
+      (plan: any) =>
+        plan.id === foundPlan.replace("qualityMeasure_plan_measureResults_", "")
+    )?.name;
+
+    /*
+     * If we know the plan name and the value the user inputted for the access measure associated
+     * with the plan, then we can tie it together and add it to the list to return
+     */
+    if (planName) {
+      const formattedAccessMeasure = {
+        name: planName,
+        value: accessMeasureValue,
+      };
+      convertedPlans.push(formattedAccessMeasure);
+    }
+  }
+  return convertedPlans;
+};
+
 export const getFormattedEntityData = (
   entityType: string,
   entity?: EntityShape,
@@ -76,6 +112,7 @@ export const getFormattedEntityData = (
         ),
         set: getRadioValue(entity, "qualityMeasure_set"),
       };
+      if (entity) entityData.plans = getPlans(entity, reportFieldData);
       break;
 
     default:
