@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import {
@@ -11,11 +11,17 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, getFormattedEntityData, useUser } from "utils";
+import {
+  filterFormData,
+  getFormattedEntityData,
+  createRepeatedFields,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   EntityShape,
   EntityType,
+  FormField,
   ModalDrawerReportPageShape,
   ReportStatus,
 } from "types";
@@ -23,7 +29,7 @@ import {
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
-  const { entityType, verbiage, modalForm, drawerForm } = route;
+  const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
@@ -32,6 +38,25 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
   const { report, updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
+
+  const drawerForm = { ...drawerFormJson };
+
+  // useEffect(() => {
+  console.log("pre-drawerFormJson", drawerFormJson.fields);
+  console.log("pre-drawerForm", drawerForm.fields);
+  const formContainsFieldsToRepeat = drawerFormJson.fields.find(
+    (field: FormField) => field.repeat
+  );
+  console.log("running");
+  if (formContainsFieldsToRepeat) {
+    drawerForm.fields = createRepeatedFields(
+      drawerFormJson.fields,
+      report?.fieldData
+    );
+  }
+  console.log("post-drawerFormJson", drawerFormJson.fields);
+  console.log("post-drawerForm", drawerForm.fields);
+  // }, [drawerForm]);
 
   // add/edit entity modal disclosure and methods
   const {
@@ -168,11 +193,6 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             ...verbiage,
             drawerDetails: getFormattedEntityData(entityType, selectedEntity),
           }}
-          // form={
-          //   !drawerFormWithRepeatedFields.fields[0]?.repeat
-          //     ? drawerFormWithRepeatedFields
-          //     : { ...drawerFormWithRepeatedFields, fields: [] }
-          // }
           form={drawerForm}
           onSubmit={onSubmit}
           submitting={submitting}

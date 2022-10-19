@@ -1,17 +1,15 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
-import { ReportContext } from "components";
 // utils
 import {
   compileValidationJsonFromFields,
   formFieldFactory,
   hydrateFormFields,
   mapValidationTypesToSchema,
-  populateRepeatedFields,
   sortFormErrors,
   useUser,
 } from "utils";
@@ -26,7 +24,6 @@ export const Form = ({
   ...props
 }: Props) => {
   const { fields, options } = formJson;
-  const { report } = useContext(ReportContext);
 
   // determine if fields should be disabled (based on admin roles )
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
@@ -61,13 +58,6 @@ export const Form = ({
 
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: FormField[]) => {
-    const formContainsFieldsToRepeat = fields.find(
-      (field: FormField) => field.repeat
-    );
-    if (formContainsFieldsToRepeat) {
-      const repeatedFields = populateRepeatedFields(fields, report?.fieldData);
-      fields = repeatedFields || [];
-    }
     const fieldsToRender = hydrateFormFields(fields, formData);
     return formFieldFactory(fieldsToRender, !!fieldInputDisabled);
   };

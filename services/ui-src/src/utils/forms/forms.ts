@@ -14,27 +14,6 @@ import {
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
 
-export const populateRepeatedFields = (
-  fields: FormField[],
-  reportFieldData?: AnyObject
-): FormField[] =>
-  // for each form field, check if it needs to be repeated
-  fields.flatMap((field: FormField) => {
-    if (field.repeat) {
-      // if so, get entities for which the field is to be repeated
-      const entities = reportFieldData?.[field.repeat];
-      // for each entity, create and return a new field with unique id
-      return entities?.map((entity: AnyObject) => {
-        const newField = {
-          ...field,
-          id: field.id + "_" + entity.id,
-          props: { ...field.props, label: entity.name + field?.props?.label },
-        };
-        return newField;
-      });
-    } else return field;
-  });
-
 // return created elements from provided fields
 export const formFieldFactory = (
   fields: FormField[],
@@ -117,6 +96,40 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
   });
   return fields;
 };
+
+// create repeated fields per entity specified (e.g. one field for each plan)
+export const createRepeatedFields = (
+  fields: FormField[],
+  reportFieldData?: AnyObject
+): FormField[] =>
+  // for each form field, check if it needs to be repeated
+  fields.flatMap((originalField: FormField) => {
+    if (originalField.repeat) {
+      // if so, get entities for which the field is to be repeated
+      const entities = reportFieldData?.[originalField.repeat];
+      if (entities && entities.length) {
+        console.log("entities", entities);
+        // for each entity, check if repeated field already exists
+        return entities?.map((entity: AnyObject) => {
+          const repeatedFieldAlreadyExists = fields.find((existingField: any) =>
+            existingField.id.includes(entity.id)
+          );
+          // if repeated field already exists, reuse id. if not, create new id.
+          const fieldId = repeatedFieldAlreadyExists
+            ? originalField.id
+            : originalField.id + "_" + entity.id;
+          const fieldLabel = entity.name + originalField?.props?.label;
+          // return created field
+          const createdField = {
+            ...originalField,
+            id: fieldId,
+            props: { ...originalField.props, label: fieldLabel },
+          };
+          return createdField;
+        });
+      } else return []; // if no entities, return blank array (later flattened)
+    } else return originalField; // if field is not to be repeated, return it unchanged
+  });
 
 // returns user-entered data, filtered to only fields in the current form
 export const filterFormData = (
