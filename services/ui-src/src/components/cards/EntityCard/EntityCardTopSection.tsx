@@ -1,5 +1,5 @@
 // components
-import { Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
@@ -11,6 +11,9 @@ export const EntityCardTopSection = ({
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (
         <>
+          <Heading as="h4" sx={sx.heading}>
+            {formattedEntityData.category}
+          </Heading>
           <Text sx={sx.description}>
             {formattedEntityData.standardDescription}
           </Text>
@@ -19,7 +22,29 @@ export const EntityCardTopSection = ({
         </>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
-      return <Text sx={sx.description}>Sanctions TODO</Text>;
+      return (
+        <>
+          <Heading as="h4" sx={sx.heading}>
+            {formattedEntityData.interventionType}
+          </Heading>
+          <Flex>
+            <Box sx={sx.containerBox}>
+              <Text sx={sx.subtitle}>Intervention topic</Text>
+              <Text sx={sx.subtext}>
+                {formattedEntityData.interventionTopic}
+              </Text>
+            </Box>
+            <Box sx={sx.containerBox}>
+              <Text sx={sx.subtitle}>Plan name</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
+            </Box>
+          </Flex>
+          <Text sx={sx.subtitle}>Reason for intervention</Text>
+          <Text sx={sx.description}>
+            {formattedEntityData.interventionReason}
+          </Text>
+        </>
+      );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return (
         <>
@@ -58,9 +83,15 @@ interface Props {
 }
 
 const sx = {
+  heading: {
+    fontSize: "sm",
+  },
   description: {
     marginTop: "0.75rem",
     fontSize: "sm",
+  },
+  containerBox: {
+    marginRight: "2.5rem",
   },
   subtitle: {
     marginTop: "1rem",

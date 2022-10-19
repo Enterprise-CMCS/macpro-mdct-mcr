@@ -1549,7 +1549,7 @@
                     },
                     {
                       "id": "ou7IxaZKnEeGLuqBSehl9g",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "plan_medicalLossRatioPercentageAggregationLevel-otherText",
@@ -2568,7 +2568,7 @@
                     },
                     {
                       "id": "70AlIcEQgEOofv0fqGqLpA",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "qualityMeasure_set-otherText",
@@ -2673,28 +2673,24 @@
               "info": [
                 {
                   "type": "html",
-                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p>"
-                },
-                {
-                  "type": "html",
-                  "content": "</br><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
+                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
                 }
               ]
             },
-            "dashboardTitle": "replace me in json",
-            "addEntityButtonText": "replace me in json",
-            "editEntityButtonText": "replace me in json",
-            "addEditModalAddTitle": "replace me in json",
-            "addEditModalEditTitle": "replace me in json",
-            "addEditModalMessage": "replace me in json",
-            "deleteEntityButtonAltText": "replace me in json",
-            "deleteModalTitle": "replace me in json",
-            "deleteModalConfirmButtonText": "replace me in json",
-            "deleteModalWarning": "replace me in json",
-            "entityUnfinishedMessage": "replace me in json",
-            "enterEntityDetailsButtonText": "replace me in json",
-            "editEntityDetailsButtonText": "replace me in json",
-            "drawerTitle": "replace me in json"
+            "dashboardTitle": "Add plan sanctions",
+            "addEntityButtonText": "Add a sanction",
+            "editEntityButtonText": "Edit sanction",
+            "addEditModalAddTitle": "Add a sanction",
+            "addEditModalEditTitle": "Edit sanction",
+            "addEditModalMessage": "Complete the remaining indicators for this sanction by saving the sanction and selecting \"Enter sanction details\".",
+            "deleteEntityButtonAltText": "Delete sanction",
+            "deleteModalTitle": "Delete plan sanction?",
+            "deleteModalConfirmButtonText": "Yes, delete sanction",
+            "deleteModalWarning": "You will lose all information entered for this sanction. Are you sure you want to proceed?",
+            "entityUnfinishedMessage": "Complete the remaining indicators for this plan sanction by selecting \"Enter sanction details\".",
+            "enterEntityDetailsButtonText": "Enter sanction details",
+            "editEntityDetailsButtonText": "Edit sanction details",
+            "drawerTitle": "Add details for sanction"
           },
           "modalForm": {
             "id": "ds-modal",
@@ -2733,7 +2729,7 @@
                     },
                     {
                       "id": "U4ALG08NZkOSEuTkOlf20w",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "sanction_interventionType-otherText",
@@ -2783,7 +2779,7 @@
                     },
                     {
                       "id": "uFRKwEVzfE21KzEotYRkUw",
-                      "label": "Other",
+                      "label": "Other, specify",
                       "children": [
                         {
                           "id": "sanction_interventionTopic-otherText",
@@ -2824,7 +2820,7 @@
             "id": "ds",
             "fields": [
               {
-                "id": "sanction-noncomplianceInstances",
+                "id": "sanction_noncomplianceInstances",
                 "type": "number",
                 "validation": "number",
                 "props": {
@@ -2844,7 +2840,7 @@
                 }
               },
               {
-                "id": "sanction_date",
+                "id": "sanction_assessmentDate",
                 "type": "date",
                 "validation": "date",
                 "props": {
@@ -3172,7 +3168,7 @@
                 },
                 {
                   "id": "dgtCWe8drkivORajgmqYRw",
-                  "label": "Other",
+                  "label": "Other, specify",
                   "children": [
                     {
                       "id": "bssEntity_entityType-otherText",
@@ -3222,7 +3218,7 @@
                 },
                 {
                   "id": "HcfrzcLqYU6faU0EBi9dfA",
-                  "label": "Other",
+                  "label": "Other, specify",
                   "children": [
                     {
                       "id": "bssEntity_entityRole-otherText",

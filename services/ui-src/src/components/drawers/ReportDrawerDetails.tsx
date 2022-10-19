@@ -1,5 +1,5 @@
 // components
-import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import { AnyObject, EntityType, ModalDrawerEntityTypes } from "types";
 
 export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
@@ -13,12 +13,34 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           <Text sx={sx.detailDescription}>
             {drawerDetails.standardDescription}
           </Text>
-          <Text sx={sx.detailCategoryHeader}>General Category</Text>
-          <Text sx={sx.detailCategory}>{drawerDetails.category}</Text>
+          <Text sx={sx.detailSubtitle}>General Category</Text>
+          <Text sx={sx.detailSubtext}>{drawerDetails.category}</Text>
         </Box>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
-      return <Text sx={sx.detailDescription}>Sanctions TODO</Text>;
+      return (
+        <Box sx={sx.detailBox}>
+          <Heading as="h4" sx={sx.detailHeader}>
+            Intervention type - {drawerDetails.interventionType}
+          </Heading>
+          <Flex sx={sx.flexbox}>
+            <Box sx={sx.containerBox}>
+              <Text sx={sx.detailSubtitle}>Intervention topic</Text>
+              <Text sx={sx.detailSubtext}>
+                {drawerDetails.interventionTopic}
+              </Text>
+            </Box>
+            <Box sx={sx.containerBox}>
+              <Text sx={sx.detailSubtitle}>Plan name</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.planName}</Text>
+            </Box>
+          </Flex>
+          <Text sx={sx.detailSubtitle}>Reason for intervention</Text>
+          <Text sx={sx.detailDescription}>
+            {drawerDetails.interventionReason}
+          </Text>
+        </Box>
+      );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return (
         <Box sx={sx.detailBox}>
@@ -75,16 +97,22 @@ const sx = {
     fontWeight: "bold",
     color: "palette.gray_medium",
   },
+  flexbox: {
+    marginBottom: ".5rem",
+  },
+  containerBox: {
+    marginRight: "2.5rem",
+  },
   detailDescription: {
     marginBottom: ".5rem",
     fontSize: "md",
   },
-  detailCategoryHeader: {
+  detailSubtitle: {
     marginBottom: ".25rem",
     fontSize: "sm",
     fontWeight: "bold",
   },
-  detailCategory: {
+  detailSubtext: {
     fontSize: "md",
   },
   description: {
