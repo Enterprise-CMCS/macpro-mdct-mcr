@@ -40,7 +40,7 @@ const getPlans = (entity: EntityShape, reportFieldData?: AnyObject) => {
      * If we know the plan name and the value the user inputted for the access measure associated
      * with the plan, then we can tie it together and add it to the list to return
      */
-    if (planName) {
+    if (planName && accessMeasureValue) {
       const formattedAccessMeasure = {
         name: planName,
         value: accessMeasureValue,
@@ -111,6 +111,7 @@ export const getFormattedEntityData = (
           "qualityMeasure_reportingRateType"
         ),
         set: getRadioValue(entity, "qualityMeasure_set"),
+        numberOfPlans: reportFieldData?.plans.length,
       };
       if (entity) entityData.plans = getPlans(entity, reportFieldData);
       break;
