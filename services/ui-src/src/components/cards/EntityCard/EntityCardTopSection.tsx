@@ -48,6 +48,9 @@ export const EntityCardTopSection = ({
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return (
         <>
+          <Heading as="h4" sx={sx.heading}>
+            {formattedEntityData.name}
+          </Heading>
           <Text sx={sx.subtitle}>Measure Domain</Text>
           <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
           <Grid gap="normal 6" templateColumns="33% 66%">
@@ -57,7 +60,9 @@ export const EntityCardTopSection = ({
             </GridItem>
             <GridItem>
               <Text sx={sx.subtitle}>Measure Reporting and Programs</Text>
-              <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+              <Text sx={sx.subtext}>
+                {formattedEntityData.reportingRateType}
+              </Text>
             </GridItem>
             <GridItem>
               <Text sx={sx.subtitle}>Measure Set</Text>
@@ -65,7 +70,7 @@ export const EntityCardTopSection = ({
             </GridItem>
             <GridItem>
               <Text sx={sx.subtitle}>Measure Reporting Period</Text>
-              <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.reportingPeriod}</Text>
             </GridItem>
           </Grid>
           <Text sx={sx.subtitle}>Measure Description</Text>

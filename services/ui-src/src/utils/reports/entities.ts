@@ -20,6 +20,20 @@ const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
   );
 };
 
+const getReportingRateType = (entity: EntityShape | undefined) => {
+  return entity?.qualityMeasure_reportingRateType?.[0]?.value ===
+    "Cross-program rate"
+    ? "Cross-program rate: " +
+        entity?.qualityMeasure_crossProgramReportingRateProgramList
+    : entity?.qualityMeasure_reportingRateType?.[0]?.value;
+};
+
+const getReportingPeriod = (entity: EntityShape | undefined) => {
+  return entity?.qualityMeasure_reportingPeriod?.[0]?.value === "No"
+    ? `${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`
+    : entity?.qualityMeasure_reportingPeriod?.[0]?.value;
+};
+
 const getPlans = (entity: EntityShape, reportFieldData?: AnyObject) => {
   // Check the entity to see how many plans are associated with the measure
   const qualityMeasurePlanIdentifier = "qualityMeasure_plan_measureResults_";
@@ -103,19 +117,13 @@ export const getFormattedEntityData = (
 
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       entityData = {
-        category: entity?.qualityMeasure_name,
-        description: entity?.qualityMeasure_description,
         domain: getRadioValue(entity, "qualityMeasure_domain"),
+        name: entity?.qualityMeasure_name,
         nqfNumber: entity?.qualityMeasure_nqfNumber,
-        reportingPeriod: getRadioValue(
-          entity,
-          "qualityMeasure_reportingPeriod"
-        ),
-        reportingRateType: getRadioValue(
-          entity,
-          "qualityMeasure_reportingRateType"
-        ),
+        reportingRateType: getReportingRateType(entity),
         set: getRadioValue(entity, "qualityMeasure_set"),
+        reportingPeriod: getReportingPeriod(entity),
+        description: entity?.qualityMeasure_description,
         numberOfPlans: reportFieldData?.plans.length,
         plans: entity ? getPlans(entity, reportFieldData) : undefined,
       };

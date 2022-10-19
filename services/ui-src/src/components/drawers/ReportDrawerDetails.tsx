@@ -53,7 +53,9 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
             </GridItem>
             <GridItem>
               <Text sx={sx.detailSubtitle}>Measure Reporting and Programs</Text>
-              <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
+              <Text sx={sx.detailSubtext}>
+                {drawerDetails.reportingRateType}
+              </Text>
             </GridItem>
             <GridItem>
               <Text sx={sx.detailSubtitle}>Measure Set</Text>
@@ -61,7 +63,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
             </GridItem>
             <GridItem>
               <Text sx={sx.detailSubtitle}>Measure Reporting Period</Text>
-              <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.reportingPeriod}</Text>
             </GridItem>
           </Grid>
           <Text sx={sx.detailSubtitle}>Measure Description</Text>
