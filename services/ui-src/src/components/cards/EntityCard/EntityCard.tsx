@@ -34,6 +34,10 @@ export const EntityCard = ({
       entityCompleted = !!formattedEntityData.assessmentDate;
       break;
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
+      /*
+       * We need to make sure the number of plans the user has inputted matches the number of plans
+       * that are in the report.
+       */
       entityCompleted =
         formattedEntityData.plans.length === formattedEntityData.numberOfPlans;
       break;

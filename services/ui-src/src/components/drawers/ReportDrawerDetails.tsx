@@ -44,28 +44,28 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return (
         <Box sx={sx.detailBox}>
-          <Text sx={sx.subtitle}>Measure Domain</Text>
-          <Text sx={sx.subtext}>{drawerDetails.domain}</Text>
+          <Text sx={sx.detailSubtitle}>Measure Domain</Text>
+          <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
           <Grid gap="normal 6" templateColumns="33% 66%">
             <GridItem>
-              <Text sx={sx.subtitle}>NQF</Text>
-              <Text sx={sx.subtext}>{drawerDetails.nqfNumber}</Text>
+              <Text sx={sx.detailSubtitle}>NQF</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.nqfNumber}</Text>
             </GridItem>
             <GridItem>
-              <Text sx={sx.subtitle}>Measure Reporting and Programs</Text>
-              <Text sx={sx.subtext}>{drawerDetails.domain}</Text>
+              <Text sx={sx.detailSubtitle}>Measure Reporting and Programs</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
             </GridItem>
             <GridItem>
-              <Text sx={sx.subtitle}>Measure Set</Text>
-              <Text sx={sx.subtext}>{drawerDetails.set}</Text>
+              <Text sx={sx.detailSubtitle}>Measure Set</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.set}</Text>
             </GridItem>
             <GridItem>
-              <Text sx={sx.subtitle}>Measure Reporting Period</Text>
-              <Text sx={sx.subtext}>{drawerDetails.domain}</Text>
+              <Text sx={sx.detailSubtitle}>Measure Reporting Period</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
             </GridItem>
           </Grid>
-          <Text sx={sx.subtitle}>Measure Description</Text>
-          <Text sx={sx.subtext}>{drawerDetails.description}</Text>
+          <Text sx={sx.detailSubtitle}>Measure Description</Text>
+          <Text sx={sx.detailSubtext}>{drawerDetails.description}</Text>
           <Heading as="h2" sx={sx.questionEyebrow}>
             D2.VII.9a and D2.VII.9b
           </Heading>
@@ -96,7 +96,6 @@ const sx = {
     color: "palette.base",
   },
   detailHeader: {
-    marginBottom: ".5rem",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",
@@ -112,23 +111,11 @@ const sx = {
     fontSize: "md",
   },
   detailSubtitle: {
-    marginBottom: ".25rem",
-    fontSize: "sm",
-    fontWeight: "bold",
-  },
-  detailSubtext: {
-    fontSize: "md",
-  },
-  description: {
-    marginTop: "0.75rem",
-    fontSize: "sm",
-  },
-  subtitle: {
     marginTop: "1rem",
     fontSize: "xs",
     fontWeight: "bold",
   },
-  subtext: {
+  detailSubtext: {
     marginTop: "0.25rem",
     fontSize: "sm",
   },

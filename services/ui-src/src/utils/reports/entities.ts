@@ -1,5 +1,10 @@
 // utils
-import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
+import {
+  AccessMeasureAssociatedPlan,
+  AnyObject,
+  EntityShape,
+  ModalDrawerEntityTypes,
+} from "types";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return entity?.[label]?.[0].value !== "Other, specify"
@@ -17,23 +22,23 @@ const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
 
 const getPlans = (entity: EntityShape, reportFieldData?: AnyObject) => {
   // Check the entity to see how many plans are associated with the measure
+  const qualityMeasurePlanIdentifier = "qualityMeasure_plan_measureResults_";
   const foundPlans = Object.keys(entity).filter((key) =>
-    key.includes("qualityMeasure_plan_measureResults")
+    key.includes(qualityMeasurePlanIdentifier)
   );
-  let convertedPlans: any = [];
+  let convertedPlans: AccessMeasureAssociatedPlan[] = [];
 
   // Loop through all the plans that are found tied to the measure
   for (let foundPlan of foundPlans) {
     // We have the value already tied in from the users input on the field
-    const accessMeasureValue = entity[foundPlan];
-
+    const accessMeasureValue: string = entity[foundPlan];
     /*
      * We need the name of the plan however, and we're only given the ID at the end of the key.
      * That means we need to look up in the reportFieldData for a matching key to know the plan name
      */
-    const planName = reportFieldData?.plans?.find(
-      (plan: any) =>
-        plan.id === foundPlan.replace("qualityMeasure_plan_measureResults_", "")
+    const planName: string = reportFieldData?.plans?.find(
+      (plan: AnyObject) =>
+        plan.id === foundPlan.replace(qualityMeasurePlanIdentifier, "")
     )?.name;
 
     /*
@@ -41,7 +46,7 @@ const getPlans = (entity: EntityShape, reportFieldData?: AnyObject) => {
      * with the plan, then we can tie it together and add it to the list to return
      */
     if (planName && accessMeasureValue) {
-      const formattedAccessMeasure = {
+      const formattedAccessMeasure: AccessMeasureAssociatedPlan = {
         name: planName,
         value: accessMeasureValue,
       };
@@ -112,8 +117,8 @@ export const getFormattedEntityData = (
         ),
         set: getRadioValue(entity, "qualityMeasure_set"),
         numberOfPlans: reportFieldData?.plans.length,
+        plans: entity ? getPlans(entity, reportFieldData) : undefined,
       };
-      if (entity) entityData.plans = getPlans(entity, reportFieldData);
       break;
 
     default:
