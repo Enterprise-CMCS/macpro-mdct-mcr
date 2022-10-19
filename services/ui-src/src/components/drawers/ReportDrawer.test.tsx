@@ -45,12 +45,6 @@ describe("Test ReportDrawer rendering", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  it("Should render", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    render(drawerComponent);
-  });
-
   it("Should render save text for state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     render(drawerComponent);
