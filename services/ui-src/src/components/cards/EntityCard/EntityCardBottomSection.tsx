@@ -1,7 +1,11 @@
 // components
 import { Box, Flex, Text } from "@chakra-ui/react";
 // utils
-import { AnyObject, ModalDrawerEntityTypes } from "types";
+import {
+  AccessMeasureAssociatedPlan,
+  AnyObject,
+  ModalDrawerEntityTypes,
+} from "types";
 
 export const EntityCardBottomSection = ({
   entityType,
@@ -79,7 +83,7 @@ export const EntityCardBottomSection = ({
       );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return formattedEntityData?.plans?.map(
-        (plan: { name: string; value: string }, index: number) => (
+        (plan: AccessMeasureAssociatedPlan, index: number) => (
           <Box key={index} sx={sx.highlightContainer}>
             <Flex>
               <Box sx={sx.highlightSection}>
