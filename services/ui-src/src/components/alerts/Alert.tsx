@@ -96,7 +96,7 @@ const sx = {
     position: "absolute",
     color: "palette.base",
     marginBottom: "1.75rem",
-    width: "1.2rem",
+    width: "1.25rem",
   },
   contentBox: {
     marginLeft: "2rem",

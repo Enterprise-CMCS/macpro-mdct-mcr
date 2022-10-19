@@ -105,6 +105,6 @@ const sx = {
     _hover: { background: "palette.primary_darker" },
   },
   menuIcon: {
-    width: "0.8rem",
+    width: "0.75rem",
   },
 };

@@ -226,7 +226,7 @@ const sx = {
     ".returnIcon": {
       width: "1.25rem",
       height: "1.25rem",
-      marginTop: "0.2rem",
+      marginTop: "0.25rem",
       marginRight: "0.5rem",
     },
   },
