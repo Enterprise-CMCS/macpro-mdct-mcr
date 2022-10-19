@@ -24,15 +24,14 @@ export const EntityCard = ({
   openDrawer,
   ...props
 }: Props) => {
-  // any drawer-based field will do for this check
-
   let entityCompleted = false;
+  // any drawer-based field will do for this check
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       entityCompleted = !!formattedEntityData.population;
       break;
     case ModalDrawerEntityTypes.SANCTIONS:
-      // TODO Sanctions
+      entityCompleted = !!formattedEntityData.assessmentDate;
       break;
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       // TODO quality measures
