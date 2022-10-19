@@ -7,8 +7,7 @@ beforeEach(() => {
 
 describe("state user creates a program", () => {
   it("Fills out program modal without errors", () => {
-    cy.get("#main-content");
-    cy.get("button[type=submit]").click();
+    cy.findByRole("button", { name: "Add managed care program" }).click();
 
     // fill out form fields
     cy.findByLabelText("Program name").type("program title");
