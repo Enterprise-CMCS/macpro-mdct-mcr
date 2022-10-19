@@ -103,32 +103,25 @@ export const createRepeatedFields = (
   reportFieldData?: AnyObject
 ): FormField[] =>
   // for each form field, check if it needs to be repeated
-  fields.flatMap((originalField: FormField) => {
-    if (originalField.repeat) {
+  fields.flatMap((currentField: FormField) => {
+    if (currentField.repeat) {
       // if so, get entities for which the field is to be repeated
-      const entities = reportFieldData?.[originalField.repeat];
+      const entities = reportFieldData?.[currentField.repeat];
       if (entities && entities.length) {
-        console.log("entities", entities);
-        // for each entity, check if repeated field already exists
+        // for each entity, create and return a new field with entity-linked id
         return entities?.map((entity: AnyObject) => {
-          const repeatedFieldAlreadyExists = fields.find((existingField: any) =>
-            existingField.id.includes(entity.id)
-          );
-          // if repeated field already exists, reuse id. if not, create new id.
-          const fieldId = repeatedFieldAlreadyExists
-            ? originalField.id
-            : originalField.id + "_" + entity.id;
-          const fieldLabel = entity.name + originalField?.props?.label;
-          // return created field
-          const createdField = {
-            ...originalField,
-            id: fieldId,
-            props: { ...originalField.props, label: fieldLabel },
+          const newField = {
+            ...currentField,
+            id: currentField.id + "_" + entity.id,
+            props: {
+              ...currentField.props,
+              label: entity.name + currentField?.props?.label,
+            },
           };
-          return createdField;
+          return newField;
         });
       } else return []; // if no entities, return blank array (later flattened)
-    } else return originalField; // if field is not to be repeated, return it unchanged
+    } else return currentField; // if field is not to be repeated, return it unchanged
   });
 
 // returns user-entered data, filtered to only fields in the current form

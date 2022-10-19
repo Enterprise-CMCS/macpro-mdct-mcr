@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 // components
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import {
@@ -39,24 +39,17 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
+  // create drawerForm from json with repeated fields
   const drawerForm = { ...drawerFormJson };
-
-  // useEffect(() => {
-  console.log("pre-drawerFormJson", drawerFormJson.fields);
-  console.log("pre-drawerForm", drawerForm.fields);
   const formContainsFieldsToRepeat = drawerFormJson.fields.find(
     (field: FormField) => field.repeat
   );
-  console.log("running");
   if (formContainsFieldsToRepeat) {
     drawerForm.fields = createRepeatedFields(
       drawerFormJson.fields,
       report?.fieldData
     );
   }
-  console.log("post-drawerFormJson", drawerFormJson.fields);
-  console.log("post-drawerForm", drawerForm.fields);
-  // }, [drawerForm]);
 
   // add/edit entity modal disclosure and methods
   const {
