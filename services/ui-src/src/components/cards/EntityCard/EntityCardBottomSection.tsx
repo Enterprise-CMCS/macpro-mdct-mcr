@@ -11,20 +11,22 @@ export const EntityCardBottomSection = ({
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (
         <>
-          <Flex sx={sx.highlightContainer}>
-            <Box sx={sx.highlightSection}>
-              <Text sx={sx.subtitle}>Provider</Text>
-              <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
-            </Box>
-            <Box sx={sx.highlightSection}>
-              <Text sx={sx.subtitle}>Region</Text>
-              <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
-            </Box>
-            <Box sx={sx.highlightSection}>
-              <Text sx={sx.subtitle}>Population</Text>
-              <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
-            </Box>
-          </Flex>
+          <Box sx={sx.highlightContainer}>
+            <Flex>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Provider</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
+              </Box>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Region</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
+              </Box>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Population</Text>
+                <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
+              </Box>
+            </Flex>
+          </Box>
           <Text sx={sx.subtitle}>Monitoring Methods</Text>
           <Text sx={sx.subtext}>
             {formattedEntityData?.monitoringMethods.join(", ")}
@@ -34,7 +36,47 @@ export const EntityCardBottomSection = ({
         </>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
-      return <Text sx={sx.subtitle}>Sanctions TODO</Text>;
+      return (
+        <>
+          <Text sx={sx.subtitle}>Sanction Details</Text>
+          <Box sx={sx.highlightContainer}>
+            <Flex>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Instances of non-compliance</Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.noncomplianceInstances}
+                </Text>
+              </Box>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Sanction amount</Text>
+                <Text sx={sx.subtext}>
+                  $ {formattedEntityData?.dollarAmount}
+                </Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>Date assessed</Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.assessmentDate}
+                </Text>
+              </Box>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>
+                  Remediation date non-compliance was corrected
+                </Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.remediationDate}
+                </Text>
+              </Box>
+            </Flex>
+            <Text sx={sx.subtitle}>Corrective action plan</Text>
+            <Text sx={sx.subtext}>
+              {formattedEntityData?.correctiveActionPlan}
+            </Text>
+          </Box>
+        </>
+      );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return <Text sx={sx.subtitle}>Quality Measures TODO</Text>;
     default:
