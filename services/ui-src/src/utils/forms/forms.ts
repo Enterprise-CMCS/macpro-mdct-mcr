@@ -104,8 +104,11 @@ export const filterFormData = (
 ) => {
   // translate user-entered data to array for filtration
   const enteredDataEntries = Object.entries(enteredData);
-  // create array of the current form's field ids
-  const formFieldArray = currentFormFields.map((field: FormField) => field.id);
+  // flatten current form fields and create array of the form's field ids
+  const flattenedFormFields = flattenFormFields(currentFormFields);
+  const formFieldArray = flattenedFormFields.map(
+    (field: FormField) => field.id
+  );
   // filter user-entered data to only fields in the current form
   const filteredDataEntries = enteredDataEntries.filter((fieldData) => {
     const [fieldDataKey] = fieldData;
@@ -113,6 +116,25 @@ export const filterFormData = (
   });
   // translate data array back to a form data object
   return Object.fromEntries(filteredDataEntries);
+};
+
+// returns all fields in a given form, flattened to a single level array
+export const flattenFormFields = (formFields: FormField[]): FormField[] => {
+  const flattenedFields: any = [];
+  const compileFields = (formFields: FormField[]) => {
+    formFields.forEach((field: FormField) => {
+      // push field to flattened fields array
+      flattenedFields.push(field);
+      if (field?.props?.choices) {
+        field.props.choices.forEach((choice: FieldChoice) => {
+          // if choice has children, recurse
+          if (choice.children) compileFields(choice.children);
+        });
+      }
+    });
+  };
+  compileFields(formFields);
+  return flattenedFields;
 };
 
 export const sortFormErrors = (
