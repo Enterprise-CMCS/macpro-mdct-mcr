@@ -89,7 +89,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         lastAlteredBy: full_name,
         fieldData: filteredEntities,
       };
-      await updateReport(reportKeys, dataToWrite);
 
       // delete related sanctions and quality measures
       if (report?.fieldData.sanctions) {
@@ -109,6 +108,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
       // TODO: Delete related quality measures
       removeRecord(selectedRecord);
+      await updateReport(reportKeys, dataToWrite);
     }
   };
 
