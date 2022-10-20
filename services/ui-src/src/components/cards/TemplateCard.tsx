@@ -8,7 +8,7 @@ import { getSignedTemplateUrl, useBreakpoint } from "utils";
 import { AnyObject } from "types";
 // assets
 import downloadIcon from "assets/icons/icon_download.png";
-import nextIcon from "assets/icons/icon_next.png";
+import nextIcon from "assets/icons/icon_next_white.png";
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
 const downloadTemplate = async (templateName: string) => {
