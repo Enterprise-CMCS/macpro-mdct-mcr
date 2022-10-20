@@ -68,9 +68,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         id: report?.id,
       };
       let dataToWrite = {
-        fieldData: {
-          sanctions: [...report.fieldData.sanctions],
-        },
+        fieldData: {},
       };
       report.fieldData.sanctions.forEach((sanction: EntityShape) => {
         if (sanction.sanction_planName.value === selectedRecord.id) {
@@ -78,7 +76,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           report.fieldData.sanctions.splice(sanctionIndex, 1);
         }
       });
-      dataToWrite.fieldData.sanctions = { ...report.fieldData.sanctions };
+      dataToWrite.fieldData = { ...report.fieldData };
       updateReport(reportKeys, dataToWrite);
     }
     newDisplayValues.splice(index, 1);
