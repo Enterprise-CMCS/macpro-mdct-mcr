@@ -1,20 +1,14 @@
 // components
-import { Flex, Text } from "@chakra-ui/react";
-import { Icon } from "components";
+import { Flex, Image, Text } from "@chakra-ui/react";
 
-export const MenuOption = ({ text, icon, role, hideText }: Props) => {
+export const MenuOption = ({ text, icon, altText, role, hideText }: Props) => {
   return (
     <Flex
       align="center"
       role={role}
       sx={!hideText ? { paddingRight: ".5rem" } : {}}
     >
-      <Icon
-        icon={icon}
-        margin=".5rem"
-        fontSize="1.4rem"
-        color="palette.white"
-      />
+      <Image src={icon} alt={altText} sx={sx.menuIcon} />
       {!hideText && <Text sx={sx.text}>{text}</Text>}
     </Flex>
   );
@@ -23,6 +17,7 @@ export const MenuOption = ({ text, icon, role, hideText }: Props) => {
 interface Props {
   text: string;
   icon: string;
+  altText: string;
   role?: string;
   hideText?: boolean;
 }
@@ -32,5 +27,9 @@ const sx = {
     fontWeight: "bold",
     color: "palette.white",
     _groupHover: { color: "palette.gray_lighter" },
+  },
+  menuIcon: {
+    width: "1.5rem",
+    margin: "0.5rem",
   },
 };
