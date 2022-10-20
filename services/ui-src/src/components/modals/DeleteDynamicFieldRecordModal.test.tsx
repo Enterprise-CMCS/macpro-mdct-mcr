@@ -7,7 +7,7 @@ import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 import { mockReportContext } from "utils/testing/setupJest";
 
 const mockCloseHandler = jest.fn();
-const mockRemoveRecord = jest.fn();
+const mockDeleteRecord = jest.fn();
 
 const modalComponent = (
   <ReportContext.Provider value={mockReportContext}>
@@ -16,7 +16,7 @@ const modalComponent = (
         isOpen: true,
         onClose: mockCloseHandler,
       }}
-      deleteRecord={mockRemoveRecord}
+      deleteRecord={mockDeleteRecord}
       entityType={"plans"}
     />
   </ReportContext.Provider>
@@ -52,7 +52,7 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
   test("DeleteDynamicFieldRecordModal delete plan button can be clicked", async () => {
     fireEvent.click(screen.getByText("Yes, delete Plan"));
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-    await expect(mockRemoveRecord).toHaveBeenCalledTimes(1);
+    await expect(mockDeleteRecord).toHaveBeenCalledTimes(1);
   });
 });
 
