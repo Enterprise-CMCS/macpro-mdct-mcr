@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import {
   AddEditProgramModal,
-  DeleteProgramModal,
   ErrorAlert,
   PageTemplate,
   ReportContext,
@@ -108,24 +107,11 @@ export const DashboardPage = () => {
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (report?: ReportShape) => {
-    setSelectedReport(report);
-    // use disclosure to open modal
-    deleteProgramModalOnOpenHandler();
-  };
-
   // add/edit program modal disclosure
   const {
     isOpen: addEditProgramModalIsOpen,
     onOpen: addEditProgramModalOnOpenHandler,
     onClose: addEditProgramModalOnCloseHandler,
-  } = useDisclosure();
-
-  // delete program modal disclosure
-  const {
-    isOpen: deleteProgramModalIsOpen,
-    onOpen: deleteProgramModalOnOpenHandler,
-    onClose: deleteProgramModalOnCloseHandler,
   } = useDisclosure();
 
   return (
@@ -148,7 +134,6 @@ export const DashboardPage = () => {
               reportsByState={reportsByState}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
-              openDeleteProgramModal={openDeleteProgramModal}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
@@ -158,7 +143,6 @@ export const DashboardPage = () => {
               reportsByState={reportsByState}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
-              openDeleteProgramModal={openDeleteProgramModal}
               body={body}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
@@ -190,12 +174,6 @@ export const DashboardPage = () => {
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
-        }}
-      />
-      <DeleteProgramModal
-        modalDisclosure={{
-          isOpen: deleteProgramModalIsOpen,
-          onClose: deleteProgramModalOnCloseHandler,
         }}
       />
     </PageTemplate>
@@ -322,10 +300,5 @@ const sxChildStyles = {
   },
   deleteProgramCell: {
     width: "2.5rem",
-  },
-  deleteProgramButtonImage: {
-    height: "1.75rem",
-    width: "1.75rem",
-    minWidth: "28px",
   },
 };

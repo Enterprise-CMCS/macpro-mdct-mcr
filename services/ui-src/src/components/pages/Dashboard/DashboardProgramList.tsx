@@ -1,8 +1,7 @@
-import { Button, Image, Td, Tr } from "@chakra-ui/react";
+import { Button, Image, Link, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
-import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const DashboardList = ({
@@ -10,7 +9,6 @@ export const DashboardList = ({
   body,
   openAddEditProgramModal,
   enterSelectedReport,
-  openDeleteProgramModal,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -40,16 +38,7 @@ export const DashboardList = ({
           </Button>
         </Td>
         <Td sx={sxOverride.deleteProgramCell}>
-          {isAdmin && (
-            <button onClick={() => openDeleteProgramModal(report)}>
-              <Image
-                src={cancelIcon}
-                data-testid="delete-program"
-                alt="Delete Program"
-                sx={sxOverride.deleteProgramButtonImage}
-              />
-            </button>
-          )}
+          {isAdmin && <Link>Archive here</Link>}
         </Td>
       </Tr>
     ))}
@@ -61,7 +50,6 @@ interface DashboardTableProps {
   body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;

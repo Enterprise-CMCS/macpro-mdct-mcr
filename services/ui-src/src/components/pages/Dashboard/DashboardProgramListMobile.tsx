@@ -1,15 +1,13 @@
 // components
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
-import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const MobileDashboardList = ({
   reportsByState,
   openAddEditProgramModal,
   enterSelectedReport,
-  openDeleteProgramModal,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -64,15 +62,7 @@ export const MobileDashboardList = ({
             </Button>
           </Box>
           <Box sx={sxOverride.deleteProgramCell}>
-            {isAdmin && (
-              <button onClick={() => openDeleteProgramModal(report)}>
-                <Image
-                  src={cancelIcon}
-                  alt="Delete Program"
-                  sx={sxOverride.deleteProgramButtonImage}
-                />
-              </button>
-            )}
+            {isAdmin && <Link>Archive here</Link>}
           </Box>
         </Flex>
       </Box>
@@ -84,7 +74,6 @@ interface MobileDashboardListProps {
   reportsByState: ReportShape[];
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
