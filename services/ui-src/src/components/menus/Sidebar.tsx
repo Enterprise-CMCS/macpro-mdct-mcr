@@ -246,7 +246,7 @@ const sx = {
       borderInlineStartWidth: "0.125rem",
       borderInlineStartColor: "palette.secondary",
       ".chakra-text": {
-        color: "palette.secondary_darker",
+        color: "palette.secondary_darkest",
       },
     },
   },
