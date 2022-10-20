@@ -4,7 +4,7 @@ import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 // utils
 import { useBreakpoint } from "utils";
 // assets
-import hhsLogo from "assets/logos/logo_hhs.svg";
+import hhsLogo from "assets/logos/logo_hhs.png";
 import mcrLogo from "assets/logos/logo_mcr_footer.png";
 import medicaidLogo from "assets/logos/logo_medicaid.svg";
 
