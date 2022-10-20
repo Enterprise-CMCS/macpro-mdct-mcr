@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
-import { EntityCard } from "components";
+import { EntityCard, EntityCardBottomSection } from "components";
 import {
   mockModalDrawerReportPageJson,
   mockAccessMeasuresEntity,
@@ -319,5 +319,21 @@ describe("Test Sanctions EntityCard accessibility", () => {
     const { container } = render(SanctionsEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+});
+
+// Undefined EntityType
+
+const UndefinedEntityCardBottomSection = (
+  <EntityCardBottomSection
+    entityType={"Undefined Entity Type"}
+    formattedEntityData={mockUnfinishedAccessMeasuresFormattedEntityData}
+  />
+);
+
+describe("Should return Entity Type by default", () => {
+  it("should return the entity type given", () => {
+    render(UndefinedEntityCardBottomSection);
+    expect(screen.queryByText("Undefined Entity Type")).toBeTruthy();
   });
 });
