@@ -7,3 +7,4 @@ import "cypress-xpath";
 import "cypress-axe";
 import "./accessibility";
 import "./authentication";
+import "@testing-library/cypress/add-commands";
