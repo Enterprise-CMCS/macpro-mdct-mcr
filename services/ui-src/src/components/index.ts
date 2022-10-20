@@ -47,8 +47,6 @@ export { TextAreaField } from "./fields/TextAreaField";
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";
 export { Form } from "./forms/Form";
-// icons
-export { Icon } from "./icons/Icon";
 // layout
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";

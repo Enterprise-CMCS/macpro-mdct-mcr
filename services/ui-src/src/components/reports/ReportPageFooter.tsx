@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { Icon } from "components";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
 import { useFindRoute, useUser } from "utils";
 import { FormJson } from "types";
 import { mcparReportRoutesFlat } from "forms/mcpar";
+// assets
+import nextIcon from "assets/icons/icon_next_white.png";
+import previousIcon from "assets/icons/icon_previous_blue.png";
 
 export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
   const navigate = useNavigate();
@@ -27,14 +29,22 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           <Button
             onClick={() => navigate(previousRoute)}
             variant="outline"
-            leftIcon={<Icon icon="arrowLeft" />}
+            leftIcon={
+              <Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />
+            }
           >
             Previous
           </Button>
           {!form?.id || formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
-              rightIcon={submitting ? <></> : <Icon icon="arrowRight" />}
+              rightIcon={
+                submitting ? (
+                  <></>
+                ) : (
+                  <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
+                )
+              }
             >
               Continue
             </Button>
@@ -43,7 +53,11 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
               form={form.id}
               type="submit"
               sx={sx.button}
-              rightIcon={!submitting ? <Icon icon="arrowRight" /> : undefined}
+              rightIcon={
+                !submitting ? (
+                  <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
+                ) : undefined
+              }
             >
               {submitting ? <Spinner size="small" /> : "Save & continue"}
             </Button>
@@ -72,5 +86,8 @@ const sx = {
   buttonFlex: {
     justifyContent: "space-between",
     marginY: "1.5rem",
+  },
+  arrowIcon: {
+    width: "1rem",
   },
 };

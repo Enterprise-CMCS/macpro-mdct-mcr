@@ -16,7 +16,8 @@ import { Menu, MenuOption, ReportContext } from "components";
 import { useBreakpoint } from "utils";
 import { isMcparReportFormPage } from "forms/mcpar";
 // assets
-import appLogo from "assets/logos/logo_mcr_draft.png";
+import appLogo from "assets/logos/logo_mcr.png";
+import getHelpIcon from "assets/icons/icon_help.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -43,8 +44,9 @@ export const Header = ({ handleLogout }: Props) => {
                 data-testid="header-help-button"
               >
                 <MenuOption
-                  icon="questionCircleFill"
+                  icon={getHelpIcon}
                   text="Get Help"
+                  altText="Help"
                   role="group"
                   hideText={isMobile}
                 />
@@ -126,6 +128,7 @@ const sx = {
   },
   appLogo: {
     maxWidth: "200px",
+    marginTop: "0.5rem",
   },
   subnavBar: {
     bg: "palette.secondary_lightest",

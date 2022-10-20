@@ -2,15 +2,17 @@
 import {
   Alert as AlertRoot,
   AlertDescription,
-  AlertIcon,
   AlertTitle,
   Box,
   Flex,
+  Image,
   Link,
   Text,
 } from "@chakra-ui/react";
 // utils
 import { AlertTypes } from "types";
+// assets
+import alertIcon from "assets/icons/icon_info_circle.png";
 
 export const Alert = ({
   status = AlertTypes.INFO,
@@ -29,7 +31,7 @@ export const Alert = ({
       {...props}
     >
       <Flex>
-        {showIcon && <AlertIcon sx={sx.icon} />}
+        {showIcon && <Image src={alertIcon} sx={sx.icon} alt="Alert" />}
         <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
           {title && <AlertTitle>{title}</AlertTitle>}
           {description && (
@@ -94,6 +96,7 @@ const sx = {
     position: "absolute",
     color: "palette.base",
     marginBottom: "1.75rem",
+    width: "1.25rem",
   },
   contentBox: {
     marginLeft: "2rem",
