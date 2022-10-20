@@ -13,6 +13,7 @@ import {
   mockCompletedSanctionsFormattedEntityData,
   mockUnfinishedQualityMeasuresWithOtherAnswersFormattedEntityData,
   mockCompletedQualityMeasuresWithOtherAnswersFormattedEntityData,
+  mockQualityMeasuresEntity,
 } from "utils/testing/setupJest";
 
 const openAddEditEntityModal = jest.fn();
@@ -128,8 +129,8 @@ describe("Test AccessMeasures EntityCard accessibility", () => {
 
 const UnfinishedQualityMeasuresEntityCardComponent = (
   <EntityCard
-    entity={mockAccessMeasuresEntity}
-    entityType="mock-entity-type"
+    entity={mockQualityMeasuresEntity}
+    entityType="qualityMeasures"
     formattedEntityData={
       mockUnfinishedQualityMeasuresWithOtherAnswersFormattedEntityData
     }
@@ -142,8 +143,8 @@ const UnfinishedQualityMeasuresEntityCardComponent = (
 
 const QualityMeasuresEntityCardComponent = (
   <EntityCard
-    entity={mockAccessMeasuresEntity}
-    entityType="accessMeasures"
+    entity={mockQualityMeasuresEntity}
+    entityType="qualityMeasures"
     formattedEntityData={
       mockCompletedQualityMeasuresWithOtherAnswersFormattedEntityData
     }
@@ -209,13 +210,13 @@ describe("Test Unfinished QualityMeasures EntityCard", () => {
 
 describe("Test QualityMeasures EntityCard accessibility", () => {
   it("Unfinished QualityMeasures EntityCard should not have basic accessibility issues", async () => {
-    const { container } = render(UnfinishedAccessMeasuresEntityCardComponent);
+    const { container } = render(UnfinishedQualityMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   it("Completed QualityMeasures EntityCard should not have basic accessibility issues", async () => {
-    const { container } = render(AccessMeasuresEntityCardComponent);
+    const { container } = render(QualityMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
