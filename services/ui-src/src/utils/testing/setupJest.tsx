@@ -427,6 +427,116 @@ export const mockCompletedAccessMeasuresFormattedEntityData = {
   methodFrequency: "mock-oversight-method-frequency",
 };
 
+export const mockQualityMeasuresEntity = {
+  id: "mock-quality-measure-id",
+  qualityMeasure_domain: [
+    {
+      key: "qualityMeasure_domain-id",
+      value: "Other, specify",
+    },
+  ],
+  qualityMeasure_name: "Measure Name",
+  qualityMeasure_nqfNumber: "1234",
+  qualityMeasure_reportingRateType: [
+    {
+      key: "qualityMeasure_reportingRateType-id",
+      value: "Cross-program rate",
+    },
+  ],
+  qualityMeasure_set: [
+    {
+      key: "qualityMeasure_set-id",
+      value: "Other, specify",
+    },
+  ],
+  qualityMeasure_reportingPeriod: [
+    {
+      key: "qualityMeasure_reportingPeriod-id",
+      value: "No",
+    },
+  ],
+  qualityMeasure_description: "Test Measure Description",
+  "qualityMeasure_domain-otherText": "Other, Specified Measure Domain",
+  qualityMeasure_crossProgramReportingRateProgramList:
+    "Program Name 1, Program Name 2",
+  "qualityMeasure_set-otherText": "Other Specify Measure Set",
+  "qualityMeasure_plan_measureResults_mock-plan-id": "Okie",
+  qualityMeasure_reportingPeriodStartDate: "02/02/2020",
+  qualityMeasure_reportingPeriodEndDate: "05/05/2022",
+};
+
+export const mockUnfinishedQualityMeasuresWithOtherAnswersFormattedEntityData =
+  {
+    domain: "Primary care access and preventative care",
+    name: "Measure Name",
+    nqfNumber: "1234",
+    reportingRateType: "Program-specific rate",
+    set: "Medicaid Child Core Set",
+    reportingPeriod: "Yes",
+    description: "Measure Description",
+    numberOfPlans: 1,
+    plans: [],
+  };
+
+export const mockCompletedQualityMeasuresWithOtherAnswersFormattedEntityData = {
+  ...mockUnfinishedQualityMeasuresWithOtherAnswersFormattedEntityData,
+  plans: [{ name: "mock-plan-name", value: "Okie" }],
+};
+
+export const mockQualityMeasuresWithNoOtherAnswersEntity = {
+  qualityMeasure_domain: [
+    {
+      value: "Primary care access and preventative care",
+      key: "qualityMeasure_domain-id",
+    },
+  ],
+  qualityMeasure_set: [
+    {
+      value: "Medicaid Child Core Set",
+      key: "qualityMeasure_set-id",
+    },
+  ],
+  qualityMeasure_description: "Measure Description",
+  qualityMeasure_reportingPeriodStartDate: "",
+  qualityMeasure_name: "Measure Name",
+  qualityMeasure_reportingPeriod: [
+    {
+      value: "Yes",
+      key: "qualityMeasure_reportingPeriod-id",
+    },
+  ],
+  qualityMeasure_crossProgramReportingRateProgramList: "",
+  qualityMeasure_nqfNumber: "1234",
+  "qualityMeasure_domain-otherText": "",
+  qualityMeasure_reportingPeriodEndDate: "",
+  "qualityMeasure_set-otherText": "",
+  id: "ad3126-7225-17a8-628f-821857076e",
+  qualityMeasure_reportingRateType: [
+    {
+      value: "Program-specific rate",
+      key: "qualityMeasure_reportingRateType-id",
+    },
+  ],
+  "qualityMeasure_plan_measureResults_mock-plan-id": "Okie",
+};
+
+export const mockUnfinishedQualityMeasuresNoOtherAnswersFormattedEntityData = {
+  description: "Measure Description",
+  domain: "Primary care access and preventative care",
+  name: "Measure Name",
+  nqfNumber: "1234",
+  numberOfPlans: 1,
+  plans: [],
+  reportingPeriod: "Yes",
+  reportingRateType: "Program-specific rate",
+  set: "Medicaid Child Core Set",
+};
+
+export const mockCompletedQualityMeasuresNoOtherAnswersFormattedEntityData = {
+  ...mockUnfinishedQualityMeasuresNoOtherAnswersFormattedEntityData,
+  plans: [{ name: "mock-plan-name", value: "Okie" }],
+};
+
 export const mockSanctionsEntity = {
   id: "mock-id",
   sanction_interventionType: [{ value: "mock-type" }],

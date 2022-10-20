@@ -5,6 +5,9 @@ import {
   mockCompletedAccessMeasuresFormattedEntityData,
   mockSanctionsEntity,
   mockCompletedSanctionsFormattedEntityData,
+  mockQualityMeasuresWithNoOtherAnswersEntity,
+  mockCompletedQualityMeasuresNoOtherAnswersFormattedEntityData,
+  mockCompletedQualityMeasuresWithOtherAnswersFormattedEntityData,
 } from "utils/testing/setupJest";
 
 const mockReportFieldData = {
@@ -23,6 +26,28 @@ describe("Test getFormattedEntityData", () => {
       mockAccessMeasuresEntity
     );
     expect(entityData).toEqual(mockCompletedAccessMeasuresFormattedEntityData);
+  });
+
+  it("Test getFormattedEntityData returns correct data for quality measures with no other answers", () => {
+    const entityData = getFormattedEntityData(
+      ModalDrawerEntityTypes.QUALITY_MEASURES,
+      mockQualityMeasuresWithNoOtherAnswersEntity,
+      mockReportFieldData
+    );
+    expect(entityData).toEqual(
+      mockCompletedQualityMeasuresNoOtherAnswersFormattedEntityData
+    );
+  });
+
+  it("Test getFormattedEntityData returns correct data for quality measures with other answers", () => {
+    const entityData = getFormattedEntityData(
+      ModalDrawerEntityTypes.QUALITY_MEASURES,
+      mockQualityMeasuresWithNoOtherAnswersEntity,
+      mockReportFieldData
+    );
+    expect(entityData).toEqual(
+      mockCompletedQualityMeasuresWithOtherAnswersFormattedEntityData
+    );
   });
 
   it("Test getFormattedEntityData returns correct data for sanctions", () => {
