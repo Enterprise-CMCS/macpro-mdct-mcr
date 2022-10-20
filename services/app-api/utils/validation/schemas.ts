@@ -16,5 +16,5 @@ export const metadataValidationSchema = yup.object().shape({
 });
 
 export const archiveValidationSchema = yup.object().shape({
-  archive: yup.boolean(),
+  archived: yup.boolean(),
 });
