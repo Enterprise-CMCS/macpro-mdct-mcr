@@ -2672,7 +2672,7 @@
               "info": [
                 {
                   "type": "html",
-                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
+                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
                 }
               ]
             },
