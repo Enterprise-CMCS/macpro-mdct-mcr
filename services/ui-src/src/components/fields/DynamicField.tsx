@@ -7,14 +7,18 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 import { svgFilters } from "styles/theme";
 // utils
-import { EntityShape, EntityType, InputChangeEvent } from "types";
+import { EntityShape, EntityType, InputChangeEvent, ReportStatus } from "types";
+import { useUser } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import { AnyObject } from "yup/lib/object";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // get form context and register field
   const form = useFormContext();
   form.register(name);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
@@ -55,30 +59,67 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
+  // delete selected record from DB
+  const deleteRecord = async (selectedRecord: EntityShape) => {
+    if (userIsStateUser || userIsStateRep) {
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+
+      let filteredEntities = {};
+      if (name === "plans") {
+        filteredEntities = {
+          [name]: form
+            .getValues()
+            .plans.filter((plan: AnyObject) => plan.id !== selectedRecord.id),
+        };
+      } else if (name === "bssEntities") {
+        filteredEntities = {
+          [name]: form
+            .getValues()
+            .bssEntities.filter(
+              (bssEntity: AnyObject) => bssEntity.id !== selectedRecord.id
+            ),
+        };
+      }
+
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+        fieldData: filteredEntities,
+      };
+      await updateReport(reportKeys, dataToWrite);
+
+      // delete related sanctions and quality measures
+      if (report?.fieldData.sanctions) {
+        const filteredSanctions = {
+          ["sanctions"]: report.fieldData.sanctions.filter(
+            (sanction: EntityShape) =>
+              sanction.sanction_planName.value !== selectedRecord.id
+          ),
+        };
+        const dataToWrite = {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+          fieldData: filteredSanctions,
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
+
+      // TODO: Delete related quality measures
+
+      removeRecord(selectedRecord);
+    }
+  };
+
+  // remove selected record from the UI
   const removeRecord = (selectedRecord: EntityShape) => {
     const index = displayValues.findIndex(
       (entity: EntityShape) => entity.id === selectedRecord.id
     );
     remove(index);
     let newDisplayValues = [...displayValues];
-    // delete related entities
-    if (report?.fieldData.sanctions) {
-      const reportKeys = {
-        state: report?.state,
-        id: report?.id,
-      };
-      let dataToWrite = {
-        fieldData: {},
-      };
-      report.fieldData.sanctions.forEach((sanction: EntityShape) => {
-        if (sanction.sanction_planName.value === selectedRecord.id) {
-          const sanctionIndex = report.fieldData.sanctions.indexOf(sanction);
-          report.fieldData.sanctions.splice(sanctionIndex, 1);
-        }
-      });
-      dataToWrite.fieldData = { ...report.fieldData };
-      updateReport(reportKeys, dataToWrite);
-    }
     newDisplayValues.splice(index, 1);
     if (newDisplayValues.length === 0) {
       const newEntity = { id: uuid(), name: "" };
@@ -150,7 +191,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       )}
       <DeleteDynamicFieldRecordModal
         selectedRecord={selectedRecord}
-        removeRecord={removeRecord}
+        deleteRecord={deleteRecord}
         entityType={name}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,

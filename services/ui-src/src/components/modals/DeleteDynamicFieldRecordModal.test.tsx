@@ -16,7 +16,7 @@ const modalComponent = (
         isOpen: true,
         onClose: mockCloseHandler,
       }}
-      removeRecord={mockRemoveRecord}
+      deleteRecord={mockRemoveRecord}
       entityType={"plans"}
     />
   </ReportContext.Provider>
