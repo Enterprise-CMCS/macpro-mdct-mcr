@@ -108,7 +108,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       }
 
       // TODO: Delete related quality measures
-
       removeRecord(selectedRecord);
     }
   };
