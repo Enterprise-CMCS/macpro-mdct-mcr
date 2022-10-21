@@ -301,11 +301,11 @@
                             "hint": "Were the system(s) utilized fully HIPAA compliant? Select one.",
                             "choices": [
                               {
-                                "name": "DeRYxSPAg0aZpPgqHfUcGA",
+                                "id": "DeRYxSPAg0aZpPgqHfUcGA",
                                 "label": "Yes"
                               },
                               {
-                                "name": "CJVUudlBrEGWZAv7CVqKrQ",
+                                "id": "CJVUudlBrEGWZAv7CVqKrQ",
                                 "label": "No"
                               }
                             ]
@@ -314,7 +314,7 @@
                       ]
                     },
                     {
-                      "name": "Gxk89QOgQkmMTaNHH9WznQ",
+                      "id": "Gxk89QOgQkmMTaNHH9WznQ",
                       "label": "Other, specify",
                       "children": [
                         {
