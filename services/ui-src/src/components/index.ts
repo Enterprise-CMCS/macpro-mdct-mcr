@@ -47,8 +47,6 @@ export { TextAreaField } from "./fields/TextAreaField";
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";
 export { Form } from "./forms/Form";
-// icons
-export { Icon } from "./icons/Icon";
 // layout
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
@@ -65,7 +63,6 @@ export { Sidebar } from "./menus/Sidebar";
 export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
-export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 export { AddEditEntityModal } from "./modals/AddEditEntityModal";
 export { DeleteEntityModal } from "./modals/DeleteEntityModal";
 // pages

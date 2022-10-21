@@ -8,8 +8,9 @@ import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
-  hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
+  hasPermissions: jest.fn(() => {}),
 }));
+const mockAuthUtil = require("../../utils/auth/authorization");
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
   init: jest.fn(),
@@ -37,6 +38,14 @@ const updateEvent: APIGatewayProxyEvent = {
   }),
 };
 
+const archiveEvent: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: JSON.stringify({
+    ...mockReport,
+    archived: true,
+  }),
+};
+
 const submissionEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
@@ -53,14 +62,26 @@ const updateEventWithInvalidData: APIGatewayProxyEvent = {
   body: `{"programName":{}}`,
 };
 
-describe("Test updateReport API method", () => {
-  test("Test unauthorized report status creation throws 403 error", async () => {
+describe("Test updateReport and archiveReport unauthorized calls", () => {
+  test("Test unauthorized report update throws 403 error", async () => {
+    // fail both state and admin auth checks
+    mockAuthUtil.hasPermissions.mockReturnValue(false);
     const res = await updateReport(updateEvent, null);
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
+    jest.clearAllMocks();
   });
+});
 
+describe("Test updateReport API method", () => {
+  beforeAll(() => {
+    // pass state auth check
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("Test Successful Run of report update", async () => {
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
@@ -139,5 +160,47 @@ describe("Test updateReport API method", () => {
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
+  });
+});
+
+describe("Test archiveReport method", () => {
+  beforeEach(() => {
+    // fail state and pass admin auth checks
+    mockAuthUtil.hasPermissions
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(true);
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Test archive report passes with valid data", async () => {
+    mockedFetchReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: JSON.stringify(mockReport),
+    });
+    const res: any = await updateReport(archiveEvent, null);
+
+    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(body.archived).toBe(true);
+  });
+
+  test("Test archive report with no existing record throws 404", async () => {
+    mockedFetchReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: undefined!,
+    });
+    const res = await updateReport(archiveEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+    expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
 });
