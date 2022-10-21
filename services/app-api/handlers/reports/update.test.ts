@@ -140,6 +140,21 @@ describe("Test updateReport API method", () => {
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
 
+  test("Test attempted report update to an archived report throws 403 error", async () => {
+    mockedFetchReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: JSON.stringify({ ...mockReport, archived: true }),
+    });
+    const res = await updateReport(updateEvent, null);
+
+    expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
   test("Test reportKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...updateEvent,
