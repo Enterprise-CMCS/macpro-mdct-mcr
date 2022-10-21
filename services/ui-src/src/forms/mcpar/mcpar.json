@@ -2428,12 +2428,14 @@
             "deleteModalTitle": "Delete quality measure?",
             "deleteModalConfirmButtonText": "Yes, delete measure",
             "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
+            "entityMissingResponseMessage": "Missing measure results for one or more plans.",
+            "entityEmptyResponseMessage": "Error: no results entered",
             "entityUnfinishedMessage": "Add the plan-level details for this quality and performance measure by entering measure results.",
             "enterEntityDetailsButtonText": "Enter measure results",
             "editEntityDetailsButtonText": "Edit measure results",
             "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
             "drawerTitle": "Add plan-level measure results",
-            "noFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
+            "drawerNoFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
           },
           "modalForm": {
             "id": "dqm-modal",
@@ -2503,8 +2505,8 @@
               },
               {
                 "id": "qualityMeasure_nqfNumber",
-                "type": "number",
-                "validation": "number",
+                "type": "text",
+                "validation": "text",
                 "props": {
                   "label": "D2.VII.3 National Quality Forum (NQF) number",
                   "hint": "What is the NQF number?"

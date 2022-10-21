@@ -87,6 +87,7 @@ export const EntityCard = ({
         {entityStarted || entityCompleted ? (
           <EntityCardBottomSection
             entityType={entityType}
+            verbiage={verbiage}
             formattedEntityData={{
               ...formattedEntityData,
               isPartiallyComplete: entityStarted && !entityCompleted,

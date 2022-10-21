@@ -6,6 +6,7 @@ import { AnyObject, ModalDrawerEntityTypes } from "types";
 export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
+  verbiage,
 }: Props) => {
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
@@ -82,8 +83,8 @@ export const EntityCardBottomSection = ({
         <>
           <Text sx={sx.resultsHeader}>Measure results</Text>
           {formattedEntityData?.isPartiallyComplete && (
-            <Text sx={sx.missingPlanResponse}>
-              Missing measure results for some plans.
+            <Text sx={sx.missingResponseMessage}>
+              {verbiage?.entityMissingResponseMessage}
             </Text>
           )}
           {formattedEntityData?.perPlanResponses?.map(
@@ -97,7 +98,7 @@ export const EntityCardBottomSection = ({
                   <Box sx={sx.highlightSection}>
                     <Text sx={sx.planTitle}>{plan.name}</Text>
                     <Text sx={sx.planText}>
-                      {plan.response || "Error: no results entered"}
+                      {plan.response || verbiage?.entityEmptyResponseMessage}
                     </Text>
                   </Box>
                 </Flex>
@@ -114,6 +115,10 @@ export const EntityCardBottomSection = ({
 interface Props {
   entityType: string;
   formattedEntityData: AnyObject;
+  verbiage?: {
+    entityMissingResponseMessage?: string;
+    entityEmptyResponseMessage?: string;
+  };
 }
 
 const sx = {
@@ -131,7 +136,7 @@ const sx = {
     fontSize: "xs",
     fontWeight: "bold",
   },
-  missingPlanResponse: {
+  missingResponseMessage: {
     marginBottom: "1rem",
     fontSize: "xs",
     color: "palette.error_dark",

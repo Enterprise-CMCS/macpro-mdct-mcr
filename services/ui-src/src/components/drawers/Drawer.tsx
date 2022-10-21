@@ -87,7 +87,6 @@ const sx = {
   drawerContent: {
     maxWidth: "90vw",
     padding: "1rem",
-    overflowY: "auto",
     "&.tablet": {
       maxWidth: "32rem",
     },
@@ -100,7 +99,7 @@ const sx = {
     fontWeight: "bold",
   },
   drawerHeader: {
-    padding: "1rem 1rem 0 1rem",
+    padding: "1rem",
   },
   drawerHeaderText: {
     paddingRight: "4rem",
@@ -150,6 +149,5 @@ const sx = {
   },
   drawerBody: {
     padding: "1rem",
-    overflow: "none",
   },
 };

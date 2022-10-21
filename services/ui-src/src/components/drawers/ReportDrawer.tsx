@@ -47,7 +47,7 @@ export const ReportDrawer = ({
           formData={selectedEntity}
         />
       ) : (
-        <Text sx={sx.noFormMessage}>{verbiage.noFormMessage}</Text>
+        <Text sx={sx.noFormMessage}>{verbiage.drawerNoFormMessage}</Text>
       )}
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
@@ -80,7 +80,7 @@ interface Props {
     drawerTitle: string;
     drawerInfo?: CustomHtmlElement[];
     drawerDetails?: AnyObject;
-    noFormMessage?: string;
+    drawerNoFormMessage?: string;
   };
   form: FormJson;
   onSubmit: Function;
