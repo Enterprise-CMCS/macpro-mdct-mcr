@@ -1,5 +1,5 @@
 describe("state user enters a program", () => {
-  it("enters data in the contact name and email fields", () => {
+  it("enters data", () => {
     //authenticate
     cy.visit("/");
     cy.authenticate("stateUser");
@@ -25,9 +25,8 @@ describe("state user enters a program", () => {
     cy.get('input[name="submitterName"]').should("be.disabled");
     cy.get('input[name="submitterEmailAddress"]').should("be.disabled");
     cy.findByRole("button", { name: "Save & continue" }).click();
-  });
 
-  it("cannot interact with data on Reporting Period page", () => {
+    //cannot interact with data on Reporting Period page
     cy.get('input[name="reportingPeriodStartDate"]')
       .should("have.value", "07/14/2023")
       .should("be.disabled");
@@ -37,25 +36,22 @@ describe("state user enters a program", () => {
     cy.get('input[name="programName"]')
       .should("have.value", "program title")
       .should("be.disabled");
-  });
 
-  it("adds plans", () => {
+    //adds plans
     cy.get("p").contains("Add Plans").click();
     cy.get('input[name="plans[0]"]').type("Plan 1");
     cy.findByRole("button", { name: "Add a row" }).click();
     cy.get('input[name="plans[1]"]').type("Plan 2");
     cy.findByRole("button", { name: "Save & continue" }).click();
-  });
 
-  it("add entities", () => {
+    //add entities
     cy.findByLabelText("BSS entity name");
     cy.get('input[name="bssEntities[0]"]').type("Entity 1");
     cy.findByRole("button", { name: "Add a row" }).click();
     cy.get('input[name="bssEntities[1]"]').type("Entity 2");
     cy.findByRole("button", { name: "Save & continue" }).click();
-  });
 
-  it("fills out B: State-Level Indicators", () => {
+    //fills out B
     cy.get('input[name="state_statewideMedicaidEnrollment"]').type("1020");
     cy.get('input[name="state_statewideMedicaidManagedCareEnrollment"]').type(
       "1000"
@@ -100,9 +96,8 @@ describe("state user enters a program", () => {
       "https://www.auditwebsite.com"
     );
     cy.findByRole("button", { name: "Save & continue" }).click();
-  });
 
-  it("fills out section C", () => {
+    //fills out section C"
     cy.get('input[name="program_contractTitle"]').type("Contract Title");
     cy.get('input[name="program_contractDate"]').type("07142023");
     cy.get('input[name="program_contractUrl"]').type(
@@ -198,27 +193,92 @@ describe("state user enters a program", () => {
     //X
     cy.get('[type="radio"]').check("Yes");
     cy.findByRole("button", { name: "Save & continue" }).click();
-  });
 
-  it("Fills out Section D", () => {
-    // running into a problem here, the plans I created don't show up here
-    cy.findByRole("button", { name: "Enter details" }).click();
-    cy.get('[type="radio"]').check("Primary care");
-    cy.get('[type="radio"]').check("Urban");
-    cy.get('[type="radio"]').check("Adult and pediatric");
-    cy.get('[type="checkbox"]').check("Geomapping");
-    cy.get('[type="checkbox"]').check("Review of grievances related to access");
-    cy.get('[type="radio"]').check("Quarterly");
-    cy.get("button[type=submit]").contains("Save & Close").click();
+    //Fills out Section D
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
     cy.findByRole("button", { name: "Continue" }).click();
 
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    //quality measures
+    cy.findByRole("button", { name: "replace me in json" }).click();
+    cy.get('input[name="qualityMeasure_domain"]')
+      .get('[type="radio"]')
+      .check("Dental and oral health services");
+    cy.get('textarea[name="qualityMeasure_name"]').type("measure name");
+    cy.get('input[name="qualityMeasure_nqfNumber"]').type("8675309");
+    cy.get('input[name="qualityMeasure_reportingRateType"]')
+      .get('[type="radio"]')
+      .check("Program-specific rate");
+    cy.get('input[name="qualityMeasure_set"]')
+      .get('[type="radio"]')
+      .check("HEDIS");
+    cy.get('input[name="qualityMeasure_reportingPeriod"]')
+      .get('[type="radio"]')
+      .check("Yes");
+    cy.get('textarea[name="qualityMeasure_description"]').type(
+      "measure details"
+    );
+    cy.findByRole("button", { name: "Save" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    //add a sanction
+    cy.findByRole("button", { name: "Add a sanction" }).click();
+    cy.get('input[name="sanction_interventionType"]')
+      .get('[type="radio"]')
+      .check("Corrective action plan");
+    cy.get('input[name="sanction_interventionTopic"]')
+      .get('[type="radio"]')
+      .check("Performance management");
+    cy.get("select").select("Plan 1");
+    cy.get('textarea[name="sanction_interventionReason"]').type("Reason here");
+    cy.findByRole("button", { name: "Save" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    //program integrity
     cy.get("button").contains("Enter");
     cy.findAllByRole("button", { name: "Enter" }).first().click();
     cy.findAllByRole("button", { name: "Cancel" }).click();
     cy.findByRole("button", { name: "Continue" }).click();
-  });
 
-  it("submits the program", () => {
+    //BSS entity indicators
+    cy.get("button").contains("Enter");
+    cy.findAllByRole("button", { name: "Enter" }).first().click();
+    cy.findAllByRole("button", { name: "Cancel" }).click();
+    cy.findByRole("button", { name: "Continue" }).click();
+
+    //submits the program
     cy.get("p").contains("Review & Submit").click();
     cy.location("pathname").should("match", /review-and-submit/);
     cy.get("button[type=submit]").contains("Submit MCPAR").click();
