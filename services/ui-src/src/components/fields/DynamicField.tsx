@@ -7,11 +7,16 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 import { svgFilters } from "styles/theme";
 // utils
-import { EntityShape, EntityType, InputChangeEvent, ReportStatus } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  EntityType,
+  InputChangeEvent,
+  ReportStatus,
+} from "types";
 import { useUser } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import { AnyObject } from "yup/lib/object";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // get form context and register field
@@ -68,21 +73,12 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       };
 
       let filteredEntities = {};
-      if (name === "plans") {
-        filteredEntities = {
-          [name]: form
-            .getValues()
-            .plans.filter((plan: AnyObject) => plan.id !== selectedRecord.id),
-        };
-      } else if (name === "bssEntities") {
-        filteredEntities = {
-          [name]: form
-            .getValues()
-            .bssEntities.filter(
-              (bssEntity: AnyObject) => bssEntity.id !== selectedRecord.id
-            ),
-        };
-      }
+      filteredEntities = {
+        [name]: form
+          .getValues()
+          // eslint-disable-next-line no-unexpected-multiline
+          [name].filter((entity: AnyObject) => entity.id !== selectedRecord.id),
+      };
 
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
@@ -93,7 +89,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       // delete related sanctions and quality measures
       if (report?.fieldData.sanctions) {
         const filteredSanctions = {
-          ["sanctions"]: report.fieldData.sanctions.filter(
+          sanctions: report.fieldData.sanctions.filter(
             (sanction: EntityShape) =>
               sanction.sanction_planName.value !== selectedRecord.id
           ),
