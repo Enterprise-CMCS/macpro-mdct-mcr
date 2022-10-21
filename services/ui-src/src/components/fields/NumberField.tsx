@@ -67,7 +67,14 @@ export const NumberField = ({
           value={displayValue}
           {...props}
         />
-        {mask === "percentage" && <Box sx={sx.percentage}> % </Box>}
+        {mask === "percentage" && (
+          <Box
+            className={props.disabled ? "disabled" : undefined}
+            sx={sx.percentage}
+          >
+            {" % "}
+          </Box>
+        )}
       </Box>
     </Box>
   );
@@ -98,5 +105,8 @@ const sx = {
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",
+    "&.disabled": {
+      color: "palette.gray_light",
+    },
   },
 };

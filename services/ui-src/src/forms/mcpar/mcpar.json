@@ -2501,7 +2501,7 @@
               {
                 "id": "qualityMeasure_nqfNumber",
                 "type": "number",
-                "validation": "number",
+                "validation": "text",
                 "props": {
                   "label": "D2.VII.3 National Quality Forum (NQF) number",
                   "hint": "What is the NQF number?"
