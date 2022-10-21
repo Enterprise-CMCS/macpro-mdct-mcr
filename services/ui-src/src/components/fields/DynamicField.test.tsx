@@ -46,6 +46,12 @@ const mockedReportContext = {
   report: {
     ...mockReport,
     fieldData: {
+      plans: [
+        {
+          id: "mock-plan-id",
+          name: "mock-plan-id",
+        },
+      ],
       sanctions: [mockSanctionsEntity],
     },
   },
@@ -163,14 +169,6 @@ describe("Test DynamicField component", () => {
     const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
     expect(inputBoxLabelAfterRemove).toHaveLength(1);
     expect(removeButton).not.toBeVisible();
-  });
-
-  test("Removing a dynamic field also removes related entities", async () => {
-    // create plan with a related sanction
-    const result = render(dynamicFieldComponent);
-    const firstDynamicField: HTMLInputElement =
-      result.container.querySelector("[name='plans[0]']")!;
-    await userEvent.type(firstDynamicField, "mock-plan-id");
   });
 });
 
