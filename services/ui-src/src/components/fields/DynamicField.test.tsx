@@ -3,7 +3,10 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { FormProvider, useForm } from "react-hook-form";
 //components
-import { DynamicField } from "components";
+import { DynamicField, ReportContext } from "components";
+// utils
+import { useUser } from "utils";
+import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
 
 const MockForm = () => {
   const form = useForm({
@@ -11,18 +14,23 @@ const MockForm = () => {
   });
 
   return (
-    <FormProvider {...form}>
-      <form id={"uniqueId"} onSubmit={form.handleSubmit(jest.fn())}>
-        <DynamicField name="plans" label="test-label" />;
-      </form>
-    </FormProvider>
+    <ReportContext.Provider value={mockReportContext}>
+      <FormProvider {...form}>
+        <form id={"uniqueId"} onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField name="plans" label="test-label" />;
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
   );
 };
 
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 const dynamicFieldComponent = <MockForm />;
 
 describe("Test DynamicField component", () => {
   beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     render(dynamicFieldComponent);
   });
 
@@ -67,9 +75,9 @@ describe("Test DynamicField component", () => {
 
     // verify that the field is removed
     const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
-    expect(inputBoxLabelAfterRemove).toHaveLength(1);
     expect(removeButton).not.toBeVisible();
     expect(appendButton).toBeVisible();
+    expect(inputBoxLabelAfterRemove).toHaveLength(1);
   });
 
   test("DynamicField remove button can be clicked multiple times if a user doesnt submit confirmation to remove the input", async () => {
