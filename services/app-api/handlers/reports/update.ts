@@ -95,10 +95,6 @@ export const archiveReport = handler(async (event, context) => {
       TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
       Item: {
         ...currentReport,
-        lastAltered: Date.now(),
-        fieldData: {
-          ...currentReport.fieldData,
-        },
         archived: !currentArchivedStatus,
       },
     };
