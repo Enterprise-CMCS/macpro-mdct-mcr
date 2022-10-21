@@ -6,7 +6,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { DynamicField, ReportContext } from "components";
 // utils
 import { useUser } from "utils";
-import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
+import {
+  mockReport,
+  mockReportContext,
+  mockSanctionsEntity,
+  mockStateUser,
+} from "utils/testing/setupJest";
 
 const MockForm = () => {
   const form = useForm({
@@ -14,7 +19,7 @@ const MockForm = () => {
   });
 
   return (
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockedReportContext}>
       <FormProvider {...form}>
         <form id={"uniqueId"} onSubmit={form.handleSubmit(jest.fn())}>
           <DynamicField name="plans" label="test-label" />;
@@ -24,9 +29,27 @@ const MockForm = () => {
   );
 };
 
+const mockUpdateReport = jest.fn();
+const mockUseNavigate = jest.fn();
+
 jest.mock("utils/auth/useUser");
+jest.mock("react-router-dom", () => ({
+  useNavigate: () => mockUseNavigate,
+}));
+
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 const dynamicFieldComponent = <MockForm />;
+
+const mockedReportContext = {
+  ...mockReportContext,
+  updateReport: mockUpdateReport,
+  report: {
+    ...mockReport,
+    fieldData: {
+      sanctions: [mockSanctionsEntity],
+    },
+  },
+};
 
 describe("Test DynamicField component", () => {
   beforeEach(() => {
@@ -140,6 +163,14 @@ describe("Test DynamicField component", () => {
     const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
     expect(inputBoxLabelAfterRemove).toHaveLength(1);
     expect(removeButton).not.toBeVisible();
+  });
+
+  test("Removing a dynamic field also removes related entities", async () => {
+    // create plan with a related sanction
+    const result = render(dynamicFieldComponent);
+    const firstDynamicField: HTMLInputElement =
+      result.container.querySelector("[name='plans[0]']")!;
+    await userEvent.type(firstDynamicField, "mock-plan-id");
   });
 });
 
