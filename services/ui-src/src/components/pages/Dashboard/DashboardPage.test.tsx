@@ -6,12 +6,10 @@ import { axe } from "jest-axe";
 import { ReportContext, DashboardPage } from "components";
 // utils
 import {
-  /*
-   * mockAdminUser,
-   * mockHelpDeskUser,
-   * mockStateApprover,
-   * mockStateRep,
-   */
+  mockAdminUser,
+  mockHelpDeskUser,
+  mockStateApprover,
+  mockStateRep,
   mockNoUser,
   mockStateUser,
   mockReportContext,
@@ -168,142 +166,124 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
   });
 });
 
-/*
- * describe("Test Dashboard report deletion privileges (desktop)", () => {
- *   beforeEach(() => {
- *     mockUseBreakpoint.mockReturnValue({
- *       isMobile: false,
- *     });
- *     mockMakeMediaQueryClasses.mockReturnValue("desktop");
- *   });
- */
+describe("Test Dashboard report archiving privileges (desktop)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+  });
 
-/*
- *   afterEach(() => {
- *     jest.clearAllMocks();
- *   });
- */
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-/*
- *   test("Admin user can delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockAdminUser);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     const deleteProgramButton = screen.getAllByAltText("Delete Program")[0];
- *     expect(deleteProgramButton).toBeVisible();
- *     await userEvent.click(deleteProgramButton);
- *     await expect(screen.getByTestId("delete-program-modal-text")).toBeVisible();
- *   });
- */
+  test("Admin user can archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    const archiveProgramButton = screen.getAllByText("Archive")[0];
+    expect(archiveProgramButton).toBeVisible();
+    await userEvent.click(archiveProgramButton);
+    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    // once for render, once for archive
+    await expect(mockReportContext.fetchReportsByState).toHaveBeenCalledTimes(
+      2
+    );
+  });
 
-/*
- *   test("Help desk user cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockHelpDeskUser);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- */
+  test("Help desk user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
 
-/*
- *   test("State approver cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockStateApprover);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- */
+  test("State approver cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateApprover);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
 
-/*
- *   test("State user cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockStateUser);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- */
+  test("State user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
 
-/*
- *   test("State rep cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockStateRep);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- * });
- */
+  test("State rep cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+});
 
-/*
- * describe("Test Dashboard report deletion privileges (mobile)", () => {
- *   beforeEach(() => {
- *     mockUseBreakpoint.mockReturnValue({
- *       isMobile: true,
- *     });
- *     mockMakeMediaQueryClasses.mockReturnValue("mobile");
- *   });
- *   afterEach(() => {
- *     jest.clearAllMocks();
- *   });
- */
+describe("Test Dashboard report archiving privileges (mobile)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-/*
- *   test("Admin user can delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockAdminUser);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     const deleteProgramButton = screen.getAllByAltText("Delete Program")[0];
- *     expect(deleteProgramButton).toBeVisible();
- *     await userEvent.click(deleteProgramButton);
- *     await expect(screen.getByTestId("delete-program-modal-text")).toBeVisible();
- *   });
- */
+  test("Admin user can archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    const archiveProgramButton = screen.getAllByText("Archive")[0];
+    expect(archiveProgramButton).toBeVisible();
+    await userEvent.click(archiveProgramButton);
+    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    // once for render, once for archive
+    await expect(mockReportContext.fetchReportsByState).toHaveBeenCalledTimes(
+      2
+    );
+  });
 
-/*
- *   test("Help desk user cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockHelpDeskUser);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- */
+  test("Help desk user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
 
-/*
- *   test("State approver cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockStateApprover);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- */
+  test("State approver cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateApprover);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
 
-/*
- *   test("State user cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockStateUser);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- */
+  test("State user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
 
-/*
- *   test("State rep cannot delete reports", async () => {
- *     mockedUseUser.mockReturnValue(mockStateRep);
- *     await act(async () => {
- *       await render(dashboardViewWithReports);
- *     });
- *     expect(screen.queryByAltText("Delete Program")).toBeNull();
- *   });
- * });
- */
+  test("State rep cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+});
 
 describe("Test Dashboard with no activeState", () => {
   test("Dashboard reroutes to / with no active state", async () => {
