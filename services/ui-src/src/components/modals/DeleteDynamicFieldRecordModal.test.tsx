@@ -56,7 +56,7 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
   });
 });
 
-describe("Test deleteProgramModal accessibility", () => {
+describe("Test DeleteDynamicFieldRecordModal accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(modalComponent);
     const results = await axe(container);

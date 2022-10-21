@@ -190,43 +190,6 @@ describe("Test archiveReport method", () => {
     expect(body.archived).toBe(true);
   });
 
-  test("Test archive report fails with missing data, throws 400", async () => {
-    const missingDataArchiveEvent = {
-      ...archiveEvent,
-      body: JSON.stringify({ bad: "data" }),
-    };
-    mockedFetchReport.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(mockReport),
-    });
-    const res = await updateReport(missingDataArchiveEvent, null);
-
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
-    expect(res.body).toContain(error.MISSING_DATA);
-  });
-
-  test("Test archive report fails with invalid data, throws 500", async () => {
-    const invalidArchiveEvent = {
-      ...archiveEvent,
-      body: JSON.stringify({ archived: "not boolean" }),
-    };
-    mockedFetchReport.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(mockReport),
-    });
-    const res = await updateReport(invalidArchiveEvent, null);
-
-    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
-  });
-
   test("Test archive report with no existing record throws 404", async () => {
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,

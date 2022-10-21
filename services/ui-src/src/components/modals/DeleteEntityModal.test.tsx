@@ -137,7 +137,7 @@ describe("Test DeleteEntityModal functionality", () => {
   });
 });
 
-describe("Test deleteProgramModal accessibility", () => {
+describe("Test DeleteEntityModal accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(modalComponent);
     const results = await axe(container);

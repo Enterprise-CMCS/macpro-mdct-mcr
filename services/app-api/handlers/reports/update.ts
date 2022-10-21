@@ -6,10 +6,7 @@ import {
   validateData,
   validateFieldData,
 } from "../../utils/validation/validation";
-import {
-  archiveValidationSchema,
-  metadataValidationSchema,
-} from "../../utils/validation/schemas";
+import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
@@ -87,37 +84,23 @@ export const updateReport = handler(async (event, context) => {
 
 export const archiveReport = handler(async (event, context) => {
   let status, body;
-  const unvalidatedPayload = JSON.parse(event!.body!);
-
   // get current report
   const reportEvent = { ...event, body: "" };
   const getCurrentReport = await fetchReport(reportEvent, context);
 
   if (getCurrentReport?.body) {
-    if (unvalidatedPayload?.archived) {
-      const validatedArchiveValue = await validateData(
-        archiveValidationSchema,
-        unvalidatedPayload
-      );
-      const currentReport = JSON.parse(getCurrentReport.body);
-      const reportParams = {
-        TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-        Item: {
-          ...currentReport,
-          lastAltered: Date.now(),
-          fieldData: {
-            ...currentReport.fieldData,
-          },
-          archived: validatedArchiveValue.archived,
-        },
-      };
-      await dynamoDb.put(reportParams);
-      status = StatusCodes.SUCCESS;
-      body = reportParams.Item;
-    } else {
-      status = StatusCodes.BAD_REQUEST;
-      body = error.MISSING_DATA;
-    }
+    const currentReport = JSON.parse(getCurrentReport.body);
+    const currentArchivedStatus = currentReport?.archived;
+    const reportParams = {
+      TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+      Item: {
+        ...currentReport,
+        archived: !currentArchivedStatus,
+      },
+    };
+    await dynamoDb.put(reportParams);
+    status = StatusCodes.SUCCESS;
+    body = reportParams.Item;
   } else {
     status = StatusCodes.NOT_FOUND;
     body = error.NO_MATCHING_RECORD;
