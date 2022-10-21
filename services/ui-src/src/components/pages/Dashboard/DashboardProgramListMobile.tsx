@@ -1,13 +1,18 @@
 // components
-import { Box, Button, Flex, Image, Link, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
+// utils
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
+// assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const MobileDashboardList = ({
   reportsByState,
   openAddEditProgramModal,
   enterSelectedReport,
+  archiveReport,
+  archiving,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -50,19 +55,34 @@ export const MobileDashboardList = ({
         </Box>
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>Status</Text>
-          <Text>{report?.status}</Text>
+          <Text>{report?.archived ? "Archived" : report?.status}</Text>
         </Box>
         <Flex alignContent="flex-start" gap={2}>
           <Box sx={sxOverride.editReportButtonCell}>
             <Button
               variant="outline"
               onClick={() => enterSelectedReport(report)}
+              isDisabled={report?.archived}
             >
               Enter
             </Button>
           </Box>
           <Box sx={sxOverride.deleteProgramCell}>
-            {isAdmin && <Link>Archive here</Link>}
+            {isAdmin && (
+              <Button
+                variant="link"
+                sx={sxOverride.archiveReportButton}
+                onClick={() => archiveReport(report)}
+              >
+                {archiving ? (
+                  <Spinner size="small" />
+                ) : report?.archived ? (
+                  "Unarchive"
+                ) : (
+                  "Archive"
+                )}
+              </Button>
+            )}
           </Box>
         </Flex>
       </Box>
@@ -74,6 +94,8 @@ interface MobileDashboardListProps {
   reportsByState: ReportShape[];
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
+  archiveReport: Function;
+  archiving: boolean;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;

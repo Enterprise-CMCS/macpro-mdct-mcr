@@ -1,7 +1,11 @@
-import { Button, Image, Link, Td, Tr } from "@chakra-ui/react";
+// components
+import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
+import { Spinner } from "@cmsgov/design-system";
+// utils
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
+// assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const DashboardList = ({
@@ -9,6 +13,8 @@ export const DashboardList = ({
   body,
   openAddEditProgramModal,
   enterSelectedReport,
+  archiveReport,
+  archiving,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -27,18 +33,33 @@ export const DashboardList = ({
         <Td>{convertDateUtcToEt(report.dueDate)}</Td>
         <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
         <Td>{report?.lastAlteredBy || "-"}</Td>
-        <Td>{report?.status}</Td>
+        <Td>{report?.archived ? "Archived" : report?.status}</Td>
         <Td sx={sxOverride.editReportButtonCell}>
           <Button
             variant="outline"
             data-testid="enter-program"
             onClick={() => enterSelectedReport(report)}
+            isDisabled={report?.archived}
           >
             Enter
           </Button>
         </Td>
         <Td sx={sxOverride.deleteProgramCell}>
-          {isAdmin && <Link>Archive here</Link>}
+          {isAdmin && (
+            <Button
+              variant="link"
+              sx={sxOverride.archiveReportButton}
+              onClick={() => archiveReport(report)}
+            >
+              {archiving ? (
+                <Spinner size="small" />
+              ) : report?.archived ? (
+                "Unarchive"
+              ) : (
+                "Archive"
+              )}
+            </Button>
+          )}
         </Td>
       </Tr>
     ))}
@@ -50,6 +71,8 @@ interface DashboardTableProps {
   body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
+  archiveReport: Function;
+  archiving: boolean;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
@@ -76,6 +99,9 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       textAlign: "left",
+      "&:last-of-type": {
+        paddingRight: 0,
+      },
     },
   },
 };

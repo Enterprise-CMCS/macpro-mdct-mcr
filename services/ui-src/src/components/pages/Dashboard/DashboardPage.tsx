@@ -19,6 +19,7 @@ import {
 } from "components";
 import { DashboardList } from "./DashboardProgramList";
 import { MobileDashboardList } from "./DashboardProgramListMobile";
+import { Spinner } from "@cmsgov/design-system";
 // utils
 import { AnyObject, ReportShape } from "types";
 import {
@@ -30,7 +31,6 @@ import {
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
-import { Spinner } from "@cmsgov/design-system";
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
 export const DashboardPage = () => {
@@ -40,6 +40,7 @@ export const DashboardPage = () => {
     reportsByState,
     clearReportSelection,
     setReportSelection,
+    updateReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -50,6 +51,10 @@ export const DashboardPage = () => {
   } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
+  const [reportsToDisplay, setReportsToDisplay] = useState<
+    ReportShape[] | undefined
+  >(undefined);
+  const [archiving, setArchiving] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
@@ -66,6 +71,16 @@ export const DashboardPage = () => {
     fetchReportsByState(activeState);
     clearReportSelection();
   }, []);
+
+  useEffect(() => {
+    let newReportsToDisplay = reportsByState;
+    if (!userIsAdmin) {
+      newReportsToDisplay = reportsByState?.filter(
+        (report: ReportShape) => !report?.archived
+      );
+    }
+    setReportsToDisplay(newReportsToDisplay);
+  }, [reportsByState]);
 
   const enterSelectedReport = async (report: ReportShape) => {
     // set active report to selected report
@@ -114,6 +129,19 @@ export const DashboardPage = () => {
     onClose: addEditProgramModalOnCloseHandler,
   } = useDisclosure();
 
+  const toggleReportArchiveStatus = async (report: ReportShape) => {
+    if (userIsAdmin) {
+      setArchiving(true);
+      const reportKeys = {
+        state: adminSelectedState,
+        id: report.id,
+      };
+      await updateReport(reportKeys, {});
+      await fetchReportsByState(activeState);
+      setArchiving(false);
+    }
+  };
+
   return (
     <PageTemplate type="report" sx={sx.layout}>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
@@ -128,21 +156,25 @@ export const DashboardPage = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
-        {reportsByState ? (
+        {reportsToDisplay ? (
           isTablet || isMobile ? (
             <MobileDashboardList
-              reportsByState={reportsByState}
+              reportsByState={reportsToDisplay}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
+              archiveReport={toggleReportArchiveStatus}
+              archiving={archiving}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
             />
           ) : (
             <DashboardList
-              reportsByState={reportsByState}
+              reportsByState={reportsToDisplay}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
+              archiveReport={toggleReportArchiveStatus}
+              archiving={archiving}
               body={body}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
@@ -156,7 +188,7 @@ export const DashboardPage = () => {
             </Flex>
           )
         )}
-        {!reportsByState?.length && (
+        {!reportsToDisplay?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         {/* only show add program button to state users */}
@@ -300,5 +332,10 @@ const sxChildStyles = {
   },
   deleteProgramCell: {
     width: "2.5rem",
+  },
+  archiveReportButton: {
+    minWidth: "4.5rem",
+    fontSize: "sm",
+    fontWeight: "normal",
   },
 };

@@ -148,6 +148,7 @@ export interface ReportShape extends ReportKeys {
   submittedOnDate?: number;
   formTemplate: ReportJson;
   fieldData: AnyObject;
+  archived?: boolean;
 }
 
 export interface ReportContextMethods {
