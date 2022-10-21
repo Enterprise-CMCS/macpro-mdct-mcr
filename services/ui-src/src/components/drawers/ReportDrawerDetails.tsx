@@ -68,17 +68,6 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           </Grid>
           <Text sx={sx.detailSubtitle}>Measure Description</Text>
           <Text sx={sx.detailSubtext}>{drawerDetails.description}</Text>
-          <Heading as="h2" sx={sx.questionEyebrow}>
-            D2.VII.9a and D2.VII.9b
-          </Heading>
-          <Heading as="h3" sx={sx.questionHeader}>
-            Add plan-level measure results
-          </Heading>
-          <Text sx={sx.questionDescription}>
-            Add quality & performance measure results for specific plans. Not
-            seeing a plan? Be sure to add all plans in A: Program Information -
-            Add Plans before entering measure results.
-          </Text>
         </Box>
       );
     default:
@@ -120,20 +109,5 @@ const sx = {
   detailSubtext: {
     marginTop: "0.25rem",
     fontSize: "sm",
-  },
-  questionEyebrow: {
-    marginTop: "2em",
-    fontWeight: 700,
-    fontSize: "md",
-  },
-  questionHeader: {
-    marginTop: ".5em",
-    fontWeight: 700,
-    fontSize: "2xl",
-  },
-  questionDescription: {
-    marginTop: "1em",
-    fontWeight: 400,
-    fontSize: "md",
   },
 };

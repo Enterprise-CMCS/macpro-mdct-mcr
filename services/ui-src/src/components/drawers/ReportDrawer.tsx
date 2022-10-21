@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 // Components
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 import { Drawer, Form } from "components";
 // utils
@@ -31,7 +31,7 @@ export const ReportDrawer = ({
     useUser().user ?? {};
   const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
-
+  const formFieldsExist = form.fields.length;
   return (
     <Drawer
       verbiage={verbiage}
@@ -39,12 +39,16 @@ export const ReportDrawer = ({
       entityType={entityType}
       {...props}
     >
-      <Form
-        id={form.id}
-        formJson={form}
-        onSubmit={onSubmit}
-        formData={selectedEntity}
-      />
+      {formFieldsExist ? (
+        <Form
+          id={form.id}
+          formJson={form}
+          onSubmit={onSubmit}
+          formData={selectedEntity}
+        />
+      ) : (
+        <Text sx={sx.noFormMessage}>{verbiage.noFormMessage}</Text>
+      )}
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
           {!isAdminTypeUser && (
@@ -55,7 +59,12 @@ export const ReportDrawer = ({
               Cancel
             </Button>
           )}
-          <Button type="submit" form={form.id} sx={sx.saveButton}>
+          <Button
+            type="submit"
+            form={form.id}
+            sx={sx.saveButton}
+            disabled={!formFieldsExist}
+          >
             {submitting ? <Spinner size="small" /> : buttonText}
           </Button>
         </Flex>
@@ -67,9 +76,11 @@ export const ReportDrawer = ({
 interface Props {
   selectedEntity: EntityShape;
   verbiage: {
+    drawerEyebrowTitle?: string;
     drawerTitle: string;
     drawerInfo?: CustomHtmlElement[];
     drawerDetails?: AnyObject;
+    noFormMessage?: string;
   };
   form: FormJson;
   onSubmit: Function;
@@ -82,6 +93,11 @@ interface Props {
 }
 
 const sx = {
+  noFormMessage: {
+    margin: "0.5rem auto 0.25rem",
+    fontSize: "lg",
+    color: "palette.error_darker",
+  },
   footerBox: {
     marginTop: "2rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",

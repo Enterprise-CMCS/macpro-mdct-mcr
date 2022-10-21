@@ -1,8 +1,10 @@
+import { useContext } from "react";
 // components
 import {
   Card,
   EntityCardBottomSection,
   EntityCardTopSection,
+  ReportContext,
 } from "components";
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 // utils
@@ -24,6 +26,8 @@ export const EntityCard = ({
   openDrawer,
   ...props
 }: Props) => {
+  const { report } = useContext(ReportContext);
+  let entityStarted = false;
   let entityCompleted = false;
   // any drawer-based field will do for this check
   switch (entityType) {
@@ -33,14 +37,17 @@ export const EntityCard = ({
     case ModalDrawerEntityTypes.SANCTIONS:
       entityCompleted = !!formattedEntityData.assessmentDate;
       break;
-    case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      /*
-       * We need to make sure the number of plans the user has inputted matches the number of plans
-       * that are in the report.
-       */
+    case ModalDrawerEntityTypes.QUALITY_MEASURES: {
+      const perPlanResponses = formattedEntityData?.perPlanResponses;
+      const validPerPlanResponses = perPlanResponses?.filter(
+        (el: any) => el.response
+      );
+      entityStarted = validPerPlanResponses?.length;
       entityCompleted =
-        formattedEntityData.plans.length === formattedEntityData.numberOfPlans;
+        entityStarted &&
+        validPerPlanResponses?.length === report?.fieldData?.plans?.length;
       break;
+    }
     default:
       break;
   }
@@ -49,7 +56,7 @@ export const EntityCard = ({
       <Box sx={sx.contentBox}>
         <Image
           src={entityCompleted ? completedIcon : unfinishedIcon}
-          alt={`entity is ${entityCompleted ? "completed" : "unfinished"}`}
+          alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
           sx={sx.statusIcon}
         />
         <button
@@ -77,10 +84,13 @@ export const EntityCard = ({
         >
           {verbiage.editEntityButtonText}
         </Button>
-        {entityCompleted ? (
+        {entityStarted || entityCompleted ? (
           <EntityCardBottomSection
             entityType={entityType}
-            formattedEntityData={formattedEntityData}
+            formattedEntityData={{
+              ...formattedEntityData,
+              isPartiallyComplete: entityStarted && !entityCompleted,
+            }}
           />
         ) : (
           <Text sx={sx.unfinishedMessage}>

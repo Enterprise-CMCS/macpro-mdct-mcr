@@ -2431,7 +2431,9 @@
             "entityUnfinishedMessage": "Add the plan-level details for this quality and performance measure by entering measure results.",
             "enterEntityDetailsButtonText": "Enter measure results",
             "editEntityDetailsButtonText": "Edit measure results",
-            "drawerTitle": "Add measure results"
+            "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
+            "drawerTitle": "Add plan-level measure results",
+            "noFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
           },
           "modalForm": {
             "id": "dqm-modal",

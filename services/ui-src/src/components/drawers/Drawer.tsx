@@ -36,6 +36,11 @@ export const Drawer = ({
       <DrawerOverlay />
       <DrawerContent sx={sx.drawerContent} className={mqClasses}>
         <DrawerHeader sx={sx.drawerHeader}>
+          {verbiage.drawerEyebrowTitle && (
+            <Text sx={sx.drawerEyebrowHeaderText}>
+              {verbiage.drawerEyebrowTitle}
+            </Text>
+          )}
           <Text sx={sx.drawerHeaderText}>{verbiage.drawerTitle}</Text>
           {verbiage.drawerInfo && (
             <Box sx={sx.infoTextBox}>
@@ -65,6 +70,7 @@ export const Drawer = ({
 
 interface Props {
   verbiage: {
+    drawerEyebrowTitle?: string;
     drawerTitle: string;
     drawerInfo?: CustomHtmlElement[];
     drawerDetails?: AnyObject;
@@ -88,6 +94,10 @@ const sx = {
     "&.desktop": {
       maxWidth: "36rem",
     },
+  },
+  drawerEyebrowHeaderText: {
+    fontSize: "md",
+    fontWeight: "bold",
   },
   drawerHeader: {
     padding: "1rem 1rem 0 1rem",

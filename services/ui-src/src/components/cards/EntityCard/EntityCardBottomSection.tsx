@@ -1,11 +1,7 @@
 // components
 import { Box, Flex, Text } from "@chakra-ui/react";
 // utils
-import {
-  AccessMeasureAssociatedPlan,
-  AnyObject,
-  ModalDrawerEntityTypes,
-} from "types";
+import { AnyObject, ModalDrawerEntityTypes } from "types";
 
 export const EntityCardBottomSection = ({
   entityType,
@@ -82,17 +78,33 @@ export const EntityCardBottomSection = ({
         </>
       );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      return formattedEntityData?.plans?.map(
-        (plan: AccessMeasureAssociatedPlan, index: number) => (
-          <Box key={index} sx={sx.highlightContainer}>
-            <Flex>
-              <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>{plan.name}</Text>
-                <Text sx={sx.subtext}>{plan.value}</Text>
+      return (
+        <>
+          <Text sx={sx.resultsHeader}>Measure results</Text>
+          {formattedEntityData?.isPartiallyComplete && (
+            <Text sx={sx.missingPlanResponse}>
+              Missing measure results for some plans.
+            </Text>
+          )}
+          {formattedEntityData?.perPlanResponses?.map(
+            (plan: { name: string; response: string }) => (
+              <Box
+                key={plan.name + plan.response}
+                sx={sx.highlightContainer}
+                className={!plan.response ? "error" : ""}
+              >
+                <Flex>
+                  <Box sx={sx.highlightSection}>
+                    <Text sx={sx.planTitle}>{plan.name}</Text>
+                    <Text sx={sx.planText}>
+                      {plan.response || "Error: no results entered"}
+                    </Text>
+                  </Box>
+                </Flex>
               </Box>
-            </Flex>
-          </Box>
-        )
+            )
+          )}
+        </>
       );
     default:
       return <Text>{entityType}</Text>;
@@ -114,11 +126,27 @@ const sx = {
     marginTop: "0.25rem",
     fontSize: "sm",
   },
+  resultsHeader: {
+    marginBottom: "1rem",
+    fontSize: "xs",
+    fontWeight: "bold",
+  },
+  missingPlanResponse: {
+    marginBottom: "1rem",
+    fontSize: "xs",
+    color: "palette.error_dark",
+  },
   highlightContainer: {
-    marginTop: ".5em",
-    padding: "0em 1.5em 1em 1.5em",
+    marginBottom: "1rem",
+    padding: "1rem 1.5rem",
     background: "palette.secondary_lightest",
     borderRadius: "3px",
+    "&.error": {
+      background: "palette.error_lightest",
+    },
+    "&:last-of-type": {
+      marginBottom: 0,
+    },
   },
   highlightSection: {
     width: "100%",
@@ -126,5 +154,13 @@ const sx = {
     ":nth-of-type(1)": {
       marginLeft: 0,
     },
+  },
+  planTitle: {
+    marginBottom: ".25rem",
+    fontSize: "sm",
+    fontWeight: "bold",
+  },
+  planText: {
+    fontSize: "sm",
   },
 };

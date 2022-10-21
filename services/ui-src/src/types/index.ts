@@ -332,11 +332,6 @@ export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
 export type { IconType } from "react-icons";
 
-export interface AccessMeasureAssociatedPlan {
-  name: string;
-  value: string;
-}
-
 export interface TableContentShape {
   caption?: string;
   headRow?: string[];
