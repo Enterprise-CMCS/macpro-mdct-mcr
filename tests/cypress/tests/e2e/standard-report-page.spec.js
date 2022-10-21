@@ -55,6 +55,33 @@ describe("state user enters a program", () => {
     cy.findByRole("button", { name: "Save & continue" }).click();
   });
 
+  it("fills out B: State-Level Indicators", () => {
+    cy.get('input[name="state_statewideMedicaidEnrollment"]').type("1020");
+    cy.get('input[name="state_statewideMedicaidManagedCareEnrollment"]').type("1000");
+    cy.findByRole("button", { name: "Save & continue" }).click();
+
+    cy.get('[type="checkbox"]').check("State actuaries");
+    cy.findByRole("button", { name: "Save & continue" }).click();
+
+    cy.get('textarea[name="state_focusedProgramIntegrityActivitiesConducted"]').type("nothing to note");
+    cy.get('[type="radio"]').check("Allow plans to retain overpayments");
+    cy.get('textarea[name="state_overpaymentStandardContractLanguageLocation"]').type("In plan details");
+    cy.get('textarea[name="state_overpaymentStandardDescription"]').type("State returns payments");
+    cy.get('textarea[name="state_overpaymentReportingMonitoringEfforts"]').type("State tracks compliance");
+    cy.get('textarea[name="state_beneficiaryCircumstanceChangeReconciliationEfforts"]').type("State team dedicated to these cases");
+    cy.get('input[name="state_providerTerminationReportingMonitoringEfforts"]').get('[type="radio"]').check("Yes");
+    cy.get('input[name="state_providerTerminationReportingMonitoringMetrics"]').get('[type="radio"]').check("Yes");
+    cy.get('textarea[name="state_providerTerminationReportingMonitoringMetricsDescription"]').type("metric here");
+    cy.get('input[name="state_excludedEntityIdentifiedInFederalDatabaseCheck"]').get('[type="radio"]').check("No");
+    cy.get('input[name="state_ownershipControlDisclosureWebsite"]').get('[type="radio"]').check("No");
+    cy.get('textarea[name="state_submittedDataAuditResults"]').type("www.auditwebsite.com");
+    cy.findByRole("button", { name: "Save & continue" }).click();
+  });
+
+  it("fills out section C", () => {
+
+  });
+
   it("submits the program", () => {
     cy.get("p").contains("Review & Submit").click();
     cy.location("pathname").should("match", /review-and-submit/);
