@@ -13,6 +13,7 @@ export const MobileDashboardList = ({
   enterSelectedReport,
   archiveReport,
   archiving,
+  archivingReportId,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -74,7 +75,7 @@ export const MobileDashboardList = ({
                 sx={sxOverride.archiveReportButton}
                 onClick={() => archiveReport(report)}
               >
-                {archiving ? (
+                {archiving && archivingReportId === report.id ? (
                   <Spinner size="small" />
                 ) : report?.archived ? (
                   "Unarchive"
@@ -96,6 +97,7 @@ interface MobileDashboardListProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
+  archivingReportId: string | undefined;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;

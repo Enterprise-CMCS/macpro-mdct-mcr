@@ -55,6 +55,9 @@ export const DashboardPage = () => {
     ReportShape[] | undefined
   >(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
+  const [archivingReportId, setArchivingReportId] = useState<
+    string | undefined
+  >(undefined);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
@@ -131,6 +134,7 @@ export const DashboardPage = () => {
 
   const toggleReportArchiveStatus = async (report: ReportShape) => {
     if (userIsAdmin) {
+      setArchivingReportId(report.id);
       setArchiving(true);
       const reportKeys = {
         state: adminSelectedState,
@@ -138,6 +142,7 @@ export const DashboardPage = () => {
       };
       await updateReport(reportKeys, {});
       await fetchReportsByState(activeState);
+      setArchivingReportId(undefined);
       setArchiving(false);
     }
   };
@@ -164,6 +169,7 @@ export const DashboardPage = () => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
+              archivingReportId={archivingReportId}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
@@ -175,6 +181,7 @@ export const DashboardPage = () => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
+              archivingReportId={archivingReportId}
               body={body}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}

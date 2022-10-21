@@ -15,6 +15,7 @@ export const DashboardList = ({
   enterSelectedReport,
   archiveReport,
   archiving,
+  archivingReportId,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -51,7 +52,7 @@ export const DashboardList = ({
               sx={sxOverride.archiveReportButton}
               onClick={() => archiveReport(report)}
             >
-              {archiving ? (
+              {archiving && archivingReportId === report.id ? (
                 <Spinner size="small" />
               ) : report?.archived ? (
                 "Unarchive"
@@ -73,6 +74,7 @@ interface DashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
+  archivingReportId: string | undefined;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
@@ -93,6 +95,7 @@ const sx = {
       borderColor: "palette.gray_light",
     },
     td: {
+      minWidth: "6rem",
       padding: "0.5rem 0.75rem",
       paddingLeft: 0,
       borderTop: "1px solid",
