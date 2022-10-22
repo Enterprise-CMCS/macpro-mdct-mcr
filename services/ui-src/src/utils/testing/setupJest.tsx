@@ -167,6 +167,15 @@ export const mockFormField = {
   },
 };
 
+export const mockDeepNestedFormField = {
+  id: "mock-deep-nested-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock deep nested text field",
+  },
+};
+
 export const mockModalFormField = {
   id: "mock-modal-text-field",
   type: "text",
@@ -185,19 +194,19 @@ export const mockDrawerFormField = {
   },
 };
 
-export const mockNestedFormField = {
-  id: "mock-nested-field",
+export const mockRadioFieldWithNested = {
+  id: "mock-radio-field-with-nested",
   type: "radio",
   validation: "radio",
   props: {
-    label: "mock radio field",
+    label: "mock nested radio field",
     choices: [
-      { name: "option1", label: "option 1" },
-      { name: "option2", label: "option 2" },
+      { id: "option1uuid", label: "option 1" },
+      { id: "option2uuid", label: "option 2" },
       {
-        name: "option3",
+        id: "option3uuid",
         label: "option 3",
-        children: [mockFormField],
+        children: [mockDeepNestedFormField],
       },
     ],
   },

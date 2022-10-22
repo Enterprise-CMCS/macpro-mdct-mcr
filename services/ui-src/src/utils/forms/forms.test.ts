@@ -3,70 +3,104 @@ import {
   flattenFormFields,
   formFieldFactory,
   hydrateFormFields,
+  initializeChoiceListFields,
   sortFormErrors,
 } from "./forms";
 import {
   mockDrawerFormField,
   mockFormField,
-  mockNestedFormField,
+  mockDeepNestedFormField,
+  mockRadioFieldWithNested,
 } from "utils/testing/setupJest";
 
-describe("Test formFieldFactory", () => {
-  const mockFormFields = [
-    {
-      id: "mockField1",
-      type: "text",
-      validation: "text",
-      props: {
-        label: "Mock Text Field",
-      },
-    },
-    {
-      id: "mockField2",
-      type: "radio",
-      validation: "radio",
-      props: {
-        label: "Mock Radio Field",
-        choices: [
-          {
-            id: "mockField2-o1",
-            label: "Option 1, mock choice with nested child",
-            value: "mock-option1",
-            children: [
-              {
-                id: "mockField2-o1-text",
-                type: "text",
-                validation: "text",
-                props: {
-                  label: "Mock nested child text field",
-                },
+const mockFormFields = [
+  mockFormField,
+  {
+    id: "mockField2",
+    type: "radio",
+    validation: "radio",
+    props: {
+      label: "Mock Radio Field",
+      choices: [
+        {
+          id: "option1uuid",
+          label: "Option 1, mock choice with nested child",
+          value: "mock-option1",
+          children: [
+            {
+              id: "mockField2-o1-text",
+              type: "text",
+              validation: "text",
+              props: {
+                label: "Mock nested child text field",
               },
-            ],
-          },
-          {
-            id: "mockField2-o2",
-            label: "Option 2, mock with no children",
-            value: "mock-option2",
-          },
-        ],
-      },
+            },
+          ],
+        },
+        {
+          id: "option2uuid",
+          label: "Option 2, mock with no children",
+          value: "mock-option2",
+        },
+      ],
     },
-    {
-      id: "mockField3",
-      type: "number",
-      validation: "number",
-      props: {
-        label: "Mock Number Field",
-      },
+  },
+  {
+    id: "mockField3",
+    type: "number",
+    validation: "number",
+    props: {
+      label: "Mock Number Field",
     },
-  ];
+  },
+];
 
+const mockFlatFormFields = [
+  mockFormField,
+  {
+    id: "mock-field-2",
+    type: "text",
+    validation: "text",
+    props: {
+      name: "mock-field-2",
+      label: "2. Second mocked field ",
+    },
+  },
+];
+
+const mockNestedFormFields = [
+  mockFormField,
+  {
+    id: "mock-field-2",
+    type: "checkbox",
+    validation: "checkbox",
+    props: {
+      label: "2. Second mocked field ",
+      choices: [
+        {
+          id: "option1uuid",
+          label: "Option 1, mocked choice with nested child",
+          value: "mock-option1",
+          children: [
+            {
+              id: "mock-field-2-o1-text",
+              type: "text",
+              validation: "text",
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
+
+describe("brax Test formFieldFactory", () => {
   it("Correctly generates fields", () => {
     const generatedFields = formFieldFactory(mockFormFields, true);
 
     // Text field matches to component
     const topTextField: any = generatedFields.find(
-      (field) => field.key === "mockField1"
+      (field) => field.key === "mock-text-field"
     );
     expect(topTextField?.type.name).toBe("TextField");
 
@@ -90,77 +124,22 @@ describe("Test formFieldFactory", () => {
   });
 });
 
-describe("Test hydrateFormFields", () => {
-  const mockFormFields = [
-    {
-      id: "mock-field-1",
-      type: "text",
-      validation: "text",
-      props: {
-        name: "mock-field-1",
-        label: "1. First mocked field ",
-      },
-    },
-    {
-      id: "mock-field-2",
-      type: "text",
-      validation: "text",
-      props: {
-        name: "mock-field-2",
-        label: "2. Second mocked field ",
-      },
-    },
-  ];
-
-  const mockNestedFormFields = [
-    {
-      id: "mock-field-1",
-      type: "text",
-      validation: "text",
-      props: {
-        name: "mock-field-1",
-        label: "1. First mocked field ",
-      },
-    },
-    {
-      id: "mock-field-2",
-      type: "checkbox",
-      validation: "checkbox",
-      props: {
-        label: "2. Second mocked field ",
-        choices: [
-          {
-            id: "mock-field-2-o1",
-            label: "Option 1, mocked choice with nested child",
-            value: "mock-option1",
-            children: [
-              {
-                id: "mock-field-2-o1-text",
-                type: "text",
-                validation: "text",
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ];
-
+describe("brax Test hydrateFormFields", () => {
   const mockData = {
-    "mock-field-1": "mock-field-1-value",
+    "mock-text-field": "mock-text-field-value",
     "mock-field-2": ["mock-option1"],
     "mock-field-2-o1-text": "mock nested text",
   };
 
   it("Correctly hydrates field with passed data", () => {
     const hydratedFormFields = hydrateFormFields(
-      mockFormFields.filter((field) => field.id === "mock-field-1"),
+      mockFlatFormFields.filter((field) => field.id === "mock-text-field"),
       mockData
     );
     const hydratedFieldValue = hydratedFormFields.find(
-      (field) => field.id === "mock-field-1"
+      (field) => field.id === "mock-text-field"
     )?.props!.hydrate;
-    expect(hydratedFieldValue).toEqual("mock-field-1-value");
+    expect(hydratedFieldValue).toEqual("mock-text-field-value");
   });
 
   it("Correctly hydrates field with nested report data", () => {
@@ -178,7 +157,7 @@ describe("Test hydrateFormFields", () => {
   });
 });
 
-describe("Test filterFormData", () => {
+describe.only("brax Test filterFormData", () => {
   const mockValidData = {
     "mock-drawer-text-field": "mock-top-level-text-field-value",
     "mock-nested-field": [
@@ -191,22 +170,33 @@ describe("Test filterFormData", () => {
     ...mockValidData,
     ...mockInvalidData,
   };
-  const mockFormFields = [mockDrawerFormField, mockNestedFormField];
 
   it("Correctly passes through nested and non-nested field data from the current form and filters out data not from the current form", () => {
-    const result = filterFormData(mockEnteredData, mockFormFields);
+    const result = filterFormData(mockEnteredData, [
+      mockDrawerFormField,
+      mockRadioFieldWithNested,
+    ]);
     expect(result).toEqual(mockValidData);
   });
 });
 
-describe("Test flattenFormFields", () => {
+describe("brax Test flattenFormFields", () => {
   it("Correctly flattens nested form fields to a single level array", () => {
-    const result = flattenFormFields([mockNestedFormField]);
-    expect(result).toEqual([mockNestedFormField, mockFormField]);
+    const result = flattenFormFields([mockRadioFieldWithNested]);
+    expect(result).toEqual([mockRadioFieldWithNested, mockFormField]);
   });
 });
 
-describe("Test sortFormErrors", () => {
+describe("brax Test initializeChoiceListFields", () => {
+  it("Correctly creates choice fields", () => {
+    const mockFormFields = [mockDrawerFormField, mockRadioFieldWithNested];
+    const result = initializeChoiceListFields(mockFormFields);
+    // console.log("BRAXRESULT", result);
+    // console.log("BRAXRESULT", result[1].props?.choices);
+  });
+});
+
+describe("brax Test sortFormErrors", () => {
   const mockFormObject = {
     stateName: {},
     contactName: {},
