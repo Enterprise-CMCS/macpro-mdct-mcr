@@ -5,16 +5,23 @@ import {
   mockCompletedAccessMeasuresFormattedEntityData,
   mockSanctionsEntity,
   mockCompletedSanctionsFormattedEntityData,
-  mockQualityMeasuresWithNoOtherAnswersEntity,
-  mockCompletedQualityMeasuresNoOtherAnswersFormattedEntityData,
-  mockCompletedQualityMeasuresWithOtherAnswersFormattedEntityData,
+  mockQualityMeasuresEntity,
+  mockQualityMeasuresFormattedEntityData,
+  mockHalfCompletedQualityMeasuresEntity,
+  mockHalfCompletedQualityMeasuresFormattedEntityData,
+  mockCompletedQualityMeasuresEntity,
+  mockCompletedQualityMeasuresFormattedEntityData,
 } from "utils/testing/setupJest";
 
 const mockReportFieldData = {
   plans: [
     {
-      id: "mock-plan-id",
-      name: "mock-plan-name",
+      id: "mock-plan-id-1",
+      name: "mock-plan-name-1",
+    },
+    {
+      id: "mock-plan-id-2",
+      name: "mock-plan-name-2",
     },
   ],
 };
@@ -28,26 +35,31 @@ describe("Test getFormattedEntityData", () => {
     expect(entityData).toEqual(mockCompletedAccessMeasuresFormattedEntityData);
   });
 
-  it("Test getFormattedEntityData returns correct data for quality measures with no other answers", () => {
-    const entityData = getFormattedEntityData(
+  it("Returns correct data for quality measures with no completed measures", () => {
+    const result = getFormattedEntityData(
       ModalDrawerEntityTypes.QUALITY_MEASURES,
-      mockQualityMeasuresWithNoOtherAnswersEntity,
+      mockQualityMeasuresEntity,
       mockReportFieldData
     );
-    expect(entityData).toEqual(
-      mockCompletedQualityMeasuresNoOtherAnswersFormattedEntityData
-    );
+    expect(result).toEqual(mockQualityMeasuresFormattedEntityData);
   });
 
-  it("Test getFormattedEntityData returns correct data for quality measures with other answers", () => {
-    const entityData = getFormattedEntityData(
+  it("Returns correct data for quality measures with some completed measures", () => {
+    const result = getFormattedEntityData(
       ModalDrawerEntityTypes.QUALITY_MEASURES,
-      mockQualityMeasuresWithNoOtherAnswersEntity,
+      mockHalfCompletedQualityMeasuresEntity,
       mockReportFieldData
     );
-    expect(entityData).toEqual(
-      mockCompletedQualityMeasuresWithOtherAnswersFormattedEntityData
+    expect(result).toEqual(mockHalfCompletedQualityMeasuresFormattedEntityData);
+  });
+
+  it("Returns correct data for quality measures with fully completed measures", () => {
+    const result = getFormattedEntityData(
+      ModalDrawerEntityTypes.QUALITY_MEASURES,
+      mockCompletedQualityMeasuresEntity,
+      mockReportFieldData
     );
+    expect(result).toEqual(mockCompletedQualityMeasuresFormattedEntityData);
   });
 
   it("Test getFormattedEntityData returns correct data for sanctions", () => {
