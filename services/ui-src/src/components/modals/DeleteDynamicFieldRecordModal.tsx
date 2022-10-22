@@ -21,7 +21,7 @@ export const DeleteDynamicFieldRecordModal = ({
 
   const deleteProgramHandler = async () => {
     setDeleting(true);
-    deleteRecord(selectedRecord);
+    await deleteRecord(selectedRecord);
     setDeleting(false);
     modalDisclosure.onClose();
   };

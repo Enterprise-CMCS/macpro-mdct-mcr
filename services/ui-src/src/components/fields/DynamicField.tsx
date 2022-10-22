@@ -131,7 +131,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (hydrationValue) {
+    if (hydrationValue?.length) {
       setDisplayValues(hydrationValue);
       append(hydrationValue);
     } else {

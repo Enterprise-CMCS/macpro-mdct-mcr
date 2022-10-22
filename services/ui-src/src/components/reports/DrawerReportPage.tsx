@@ -117,7 +117,7 @@ export const DrawerReportPage = ({ route }: Props) => {
       <Heading as="h3" sx={sx.dashboardTitle}>
         {verbiage.dashboardTitle}
       </Heading>
-      {entities ? (
+      {entities?.length ? (
         entityRows(entities)
       ) : (
         <Text sx={sx.emptyEntityMessage}>
