@@ -20,7 +20,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
 
   const onSubmit = (formData: AnyObject) => {
     if (userIsAdmin || userIsApprover || userIsHelpDeskUser) {
-      const selectedState = formData["state"];
+      const selectedState = formData["state"].value;
       localStorage.setItem("selectedState", selectedState);
     }
 

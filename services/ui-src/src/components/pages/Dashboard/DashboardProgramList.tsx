@@ -1,8 +1,11 @@
+// components
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
+import { Spinner } from "@cmsgov/design-system";
+// utils
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
-import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+// assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const DashboardList = ({
@@ -10,7 +13,9 @@ export const DashboardList = ({
   body,
   openAddEditProgramModal,
   enterSelectedReport,
-  openDeleteProgramModal,
+  archiveReport,
+  archiving,
+  archivingReportId,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -29,26 +34,32 @@ export const DashboardList = ({
         <Td>{convertDateUtcToEt(report.dueDate)}</Td>
         <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
         <Td>{report?.lastAlteredBy || "-"}</Td>
-        <Td>{report?.status}</Td>
+        <Td>{report?.archived ? "Archived" : report?.status}</Td>
         <Td sx={sxOverride.editReportButtonCell}>
           <Button
             variant="outline"
             data-testid="enter-program"
             onClick={() => enterSelectedReport(report)}
+            isDisabled={report?.archived}
           >
             Enter
           </Button>
         </Td>
         <Td sx={sxOverride.deleteProgramCell}>
           {isAdmin && (
-            <button onClick={() => openDeleteProgramModal(report)}>
-              <Image
-                src={cancelIcon}
-                data-testid="delete-program"
-                alt="Delete Program"
-                sx={sxOverride.deleteProgramButtonImage}
-              />
-            </button>
+            <Button
+              variant="link"
+              sx={sxOverride.archiveReportButton}
+              onClick={() => archiveReport(report)}
+            >
+              {archiving && archivingReportId === report.id ? (
+                <Spinner size="small" />
+              ) : report?.archived ? (
+                "Unarchive"
+              ) : (
+                "Archive"
+              )}
+            </Button>
           )}
         </Td>
       </Tr>
@@ -61,7 +72,9 @@ interface DashboardTableProps {
   body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
+  archiveReport: Function;
+  archiving: boolean;
+  archivingReportId: string | undefined;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
@@ -82,12 +95,16 @@ const sx = {
       borderColor: "palette.gray_light",
     },
     td: {
+      minWidth: "6rem",
       padding: "0.5rem 0.75rem",
       paddingLeft: 0,
       borderTop: "1px solid",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       textAlign: "left",
+      "&:last-of-type": {
+        paddingRight: 0,
+      },
     },
   },
 };
