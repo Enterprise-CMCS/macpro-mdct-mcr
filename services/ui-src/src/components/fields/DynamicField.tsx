@@ -101,7 +101,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
         fieldData: {
-          [entity]: filteredEntities,
+          [name]: filteredEntities,
           sanctions: filteredSanctions,
           qualityMeasures: filteredQualityMeasures,
         },
