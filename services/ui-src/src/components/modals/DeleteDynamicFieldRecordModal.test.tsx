@@ -17,7 +17,7 @@ const modalComponent = (
         onClose: mockCloseHandler,
       }}
       deleteRecord={mockDeleteRecord}
-      entityType={"plans"}
+      entityType="plans"
     />
   </ReportContext.Provider>
 );
@@ -34,8 +34,8 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
   });
 
   test("DeleteDynamicFieldRecordModal shows the contents", () => {
-    expect(screen.queryAllByText("Delete Plan")[0]).toBeTruthy();
-    expect(screen.getByText("Yes, delete Plan")).toBeTruthy();
+    expect(screen.queryAllByText("Delete plan")[0]).toBeTruthy();
+    expect(screen.getByText("Yes, delete plan")).toBeTruthy();
     expect(screen.getByText("Cancel")).toBeTruthy();
   });
 
@@ -50,9 +50,10 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
   });
 
   test("DeleteDynamicFieldRecordModal delete plan button can be clicked", async () => {
-    fireEvent.click(screen.getByText("Yes, delete Plan"));
-    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-    await expect(mockDeleteRecord).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      fireEvent.click(screen.getByText("Yes, delete plan"));
+      expect(mockDeleteRecord).toHaveBeenCalledTimes(1);
+    });
   });
 });
 

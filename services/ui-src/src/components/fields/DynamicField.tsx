@@ -170,7 +170,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                   <Image
                     sx={sx.removeImage}
                     src={cancelIcon}
-                    alt="Remove item"
+                    alt={`Delete ${field.name}`}
                   />
                 )}
               </button>

@@ -7,60 +7,108 @@ import { DynamicField, ReportContext } from "components";
 // utils
 import { useUser } from "utils";
 import {
+  mockReportKeys,
   mockReport,
   mockReportContext,
   mockSanctionsEntity,
   mockStateUser,
+  mockQualityMeasuresEntity,
 } from "utils/testing/setupJest";
-
-const MockForm = () => {
-  const form = useForm({
-    shouldFocusError: false,
-  });
-
-  return (
-    <ReportContext.Provider value={mockedReportContext}>
-      <FormProvider {...form}>
-        <form id={"uniqueId"} onSubmit={form.handleSubmit(jest.fn())}>
-          <DynamicField name="plans" label="test-label" />;
-        </form>
-      </FormProvider>
-    </ReportContext.Provider>
-  );
-};
-
-const mockUpdateReport = jest.fn();
-const mockUseNavigate = jest.fn();
+import { ReportStatus } from "types";
 
 jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+
+const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
-const dynamicFieldComponent = <MockForm />;
-
+const mockHydrationPlans = [
+  {
+    id: "mock-plan-id-1",
+    name: "mock-plan-1",
+  },
+  {
+    id: "mock-plan-id-2",
+    name: "mock-plan-2",
+  },
+];
+const mockUpdateReport = jest.fn();
 const mockedReportContext = {
   ...mockReportContext,
   updateReport: mockUpdateReport,
   report: {
     ...mockReport,
     fieldData: {
-      plans: [
+      plans: mockHydrationPlans,
+      sanctions: [
         {
-          id: "mock-plan-id",
-          name: "mock-plan-id",
+          ...mockSanctionsEntity,
+          sanction_planName: {
+            label: "sanction_planName",
+            value: "mock-plan-id-1",
+          },
+        },
+        {
+          ...mockSanctionsEntity,
+          sanction_planName: {
+            label: "sanction_planName",
+            value: "mock-plan-id-2",
+          },
         },
       ],
-      sanctions: [mockSanctionsEntity],
+      qualityMeasures: [
+        {
+          ...mockQualityMeasuresEntity,
+          "qualityMeasure_plan_measureResults_mock-plan-id-1":
+            "mock-response-1",
+          "qualityMeasure_plan_measureResults_mock-plan-id-2":
+            "mock-response-2",
+        },
+        {
+          ...mockQualityMeasuresEntity,
+          "qualityMeasure_plan_measureResults_mock-plan-id-1":
+            "mock-response-1",
+          "qualityMeasure_plan_measureResults_mock-plan-id-2":
+            "mock-response-2",
+        },
+      ],
     },
   },
 };
 
+const MockForm = (props: any) => {
+  const form = useForm({
+    shouldFocusError: false,
+  });
+  return (
+    <ReportContext.Provider value={mockedReportContext}>
+      <FormProvider {...form}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField
+            name="plans"
+            label="test-label"
+            hydrate={props.hydrationValue}
+          />
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
+  );
+};
+
+const dynamicFieldComponent = (hydrationValue?: any) => (
+  <MockForm hydrationValue={hydrationValue} />
+);
+
 describe("Test DynamicField component", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    render(dynamicFieldComponent);
+    render(dynamicFieldComponent());
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   test("DynamicField is visible", () => {
@@ -99,7 +147,7 @@ describe("Test DynamicField component", () => {
     await userEvent.click(removeButton);
 
     // click delete in modal
-    const deleteButton = screen.getByText("Yes, delete Plan");
+    const deleteButton = screen.getByText("Yes, delete plan");
     await userEvent.click(deleteButton);
 
     // verify that the field is removed
@@ -142,7 +190,7 @@ describe("Test DynamicField component", () => {
     await userEvent.click(removeButton);
 
     // click delete in modal
-    const deleteButton = screen.getByText("Yes, delete Plan");
+    const deleteButton = screen.getByText("Yes, delete plan");
     await userEvent.click(deleteButton);
 
     // verify that the field is removed
@@ -162,7 +210,7 @@ describe("Test DynamicField component", () => {
     await userEvent.click(removeButton);
 
     // click delete in modal
-    const deleteButton = screen.getByText("Yes, delete Plan");
+    const deleteButton = screen.getByText("Yes, delete plan");
     await userEvent.click(deleteButton);
 
     // verify that there is still one field available
@@ -172,9 +220,60 @@ describe("Test DynamicField component", () => {
   });
 });
 
+describe("Test DynamicField entity deletion and deletion of associated data", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(dynamicFieldComponent(mockHydrationPlans));
+  });
+  it("Deletes entity and associated sanctions and quality measure responses", async () => {
+    // delete mock-plan-1
+    const removeButton = screen.queryAllByTestId("removeButton")[0];
+    await userEvent.click(removeButton);
+    const deleteButton = screen.getByText("Yes, delete plan");
+    await userEvent.click(deleteButton);
+
+    expect(mockUpdateReport).toHaveBeenCalledWith(
+      { ...mockReportKeys, state: mockStateUser.user?.state },
+      {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: mockStateUser.user?.full_name,
+        fieldData: {
+          plans: [
+            {
+              id: "mock-plan-id-2",
+              name: "mock-plan-2",
+            },
+          ],
+          sanctions: [
+            {
+              ...mockSanctionsEntity,
+              sanction_planName: {
+                label: "sanction_planName",
+                value: "mock-plan-id-2",
+              },
+            },
+          ],
+          qualityMeasures: [
+            {
+              ...mockQualityMeasuresEntity,
+              "qualityMeasure_plan_measureResults_mock-plan-id-2":
+                "mock-response-2",
+            },
+            {
+              ...mockQualityMeasuresEntity,
+              "qualityMeasure_plan_measureResults_mock-plan-id-2":
+                "mock-response-2",
+            },
+          ],
+        },
+      }
+    );
+  });
+});
+
 describe("Test typing into DynamicField component", () => {
   test("DynamicField accepts input", async () => {
-    const result = render(dynamicFieldComponent);
+    const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
       result.container.querySelector("[name='plans[0]']")!;
     expect(firstDynamicField).toBeVisible();
@@ -185,7 +284,7 @@ describe("Test typing into DynamicField component", () => {
 
 describe("Test DynamicField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dynamicFieldComponent);
+    const { container } = render(dynamicFieldComponent());
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
