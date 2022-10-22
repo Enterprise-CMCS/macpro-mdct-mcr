@@ -1,5 +1,5 @@
 // components
-import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import { AnyObject, EntityType, ModalDrawerEntityTypes } from "types";
 
 export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
@@ -23,18 +23,18 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           <Heading as="h4" sx={sx.detailHeader}>
             Intervention type - {drawerDetails.interventionType}
           </Heading>
-          <Flex sx={sx.flexbox}>
-            <Box sx={sx.containerBox}>
+          <Grid sx={sx.grid}>
+            <GridItem>
               <Text sx={sx.detailSubtitle}>Intervention topic</Text>
               <Text sx={sx.detailSubtext}>
                 {drawerDetails.interventionTopic}
               </Text>
-            </Box>
-            <Box sx={sx.containerBox}>
+            </GridItem>
+            <GridItem>
               <Text sx={sx.detailSubtitle}>Plan name</Text>
               <Text sx={sx.detailSubtext}>{drawerDetails.planName}</Text>
-            </Box>
-          </Flex>
+            </GridItem>
+          </Grid>
           <Text sx={sx.detailSubtitle}>Reason for intervention</Text>
           <Text sx={sx.detailDescription}>
             {drawerDetails.interventionReason}
@@ -46,7 +46,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
         <Box sx={sx.detailBox}>
           <Text sx={sx.detailSubtitle}>Measure Domain</Text>
           <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
-          <Grid gap="normal 6" templateColumns="33% 66%">
+          <Grid sx={sx.grid}>
             <GridItem>
               <Text sx={sx.detailSubtitle}>NQF</Text>
               <Text sx={sx.detailSubtext}>{drawerDetails.nqfNumber}</Text>
@@ -91,11 +91,10 @@ const sx = {
     fontWeight: "bold",
     color: "palette.gray_medium",
   },
-  flexbox: {
+  grid: {
     marginBottom: ".5rem",
-  },
-  containerBox: {
-    marginRight: "2.5rem",
+    gridTemplateColumns: "33% auto",
+    columnGap: "1rem",
   },
   detailDescription: {
     marginBottom: ".5rem",

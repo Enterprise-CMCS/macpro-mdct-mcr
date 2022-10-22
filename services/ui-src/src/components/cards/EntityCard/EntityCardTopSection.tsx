@@ -1,5 +1,5 @@
 // components
-import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
@@ -27,18 +27,18 @@ export const EntityCardTopSection = ({
           <Heading as="h4" sx={sx.heading}>
             {formattedEntityData.interventionType}
           </Heading>
-          <Flex>
-            <Box sx={sx.containerBox}>
+          <Grid sx={sx.grid}>
+            <GridItem>
               <Text sx={sx.subtitle}>Intervention topic</Text>
               <Text sx={sx.subtext}>
                 {formattedEntityData.interventionTopic}
               </Text>
-            </Box>
-            <Box sx={sx.containerBox}>
+            </GridItem>
+            <GridItem>
               <Text sx={sx.subtitle}>Plan name</Text>
               <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
-            </Box>
-          </Flex>
+            </GridItem>
+          </Grid>
           <Text sx={sx.subtitle}>Reason for intervention</Text>
           <Text sx={sx.description}>
             {formattedEntityData.interventionReason}
@@ -53,7 +53,7 @@ export const EntityCardTopSection = ({
           </Heading>
           <Text sx={sx.subtitle}>Measure Domain</Text>
           <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
-          <Grid gap="normal 6" templateColumns="33% 66%">
+          <Grid sx={sx.grid}>
             <GridItem>
               <Text sx={sx.subtitle}>NQF</Text>
               <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
@@ -95,8 +95,9 @@ const sx = {
     marginTop: "0.75rem",
     fontSize: "sm",
   },
-  containerBox: {
-    marginRight: "2.5rem",
+  grid: {
+    gridTemplateColumns: "33% auto",
+    columnGap: "1rem",
   },
   subtitle: {
     marginTop: "1rem",
