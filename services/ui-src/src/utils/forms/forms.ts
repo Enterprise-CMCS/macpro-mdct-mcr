@@ -97,6 +97,33 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
   return fields;
 };
 
+// create repeated fields per entity specified (e.g. one field for each plan)
+export const createRepeatedFields = (
+  fields: FormField[],
+  reportFieldData?: AnyObject
+): FormField[] =>
+  // for each form field, check if it needs to be repeated
+  fields.flatMap((currentField: FormField) => {
+    if (currentField.repeat) {
+      // if so, get entities for which the field is to be repeated
+      const entities = reportFieldData?.[currentField.repeat];
+      if (entities && entities.length) {
+        // for each entity, create and return a new field with entity-linked id
+        return entities?.map((entity: AnyObject) => {
+          const newField = {
+            ...currentField,
+            id: currentField.id + "_" + entity.id,
+            props: {
+              ...currentField.props,
+              label: entity.name + currentField?.props?.label,
+            },
+          };
+          return newField;
+        });
+      } else return []; // if no entities, return blank array (later flattened)
+    } else return currentField; // if field is not to be repeated, return it unchanged
+  });
+
 // returns user-entered data, filtered to only fields in the current form
 export const filterFormData = (
   enteredData: AnyObject,

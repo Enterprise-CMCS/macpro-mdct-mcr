@@ -1,5 +1,5 @@
 // components
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import { AnyObject, EntityType, ModalDrawerEntityTypes } from "types";
 
 export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
@@ -23,18 +23,18 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           <Heading as="h4" sx={sx.detailHeader}>
             Intervention type - {drawerDetails.interventionType}
           </Heading>
-          <Flex sx={sx.flexbox}>
-            <Box sx={sx.containerBox}>
+          <Grid sx={sx.grid}>
+            <GridItem>
               <Text sx={sx.detailSubtitle}>Intervention topic</Text>
               <Text sx={sx.detailSubtext}>
                 {drawerDetails.interventionTopic}
               </Text>
-            </Box>
-            <Box sx={sx.containerBox}>
+            </GridItem>
+            <GridItem>
               <Text sx={sx.detailSubtitle}>Plan name</Text>
               <Text sx={sx.detailSubtext}>{drawerDetails.planName}</Text>
-            </Box>
-          </Flex>
+            </GridItem>
+          </Grid>
           <Text sx={sx.detailSubtitle}>Reason for intervention</Text>
           <Text sx={sx.detailDescription}>
             {drawerDetails.interventionReason}
@@ -42,7 +42,34 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
         </Box>
       );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      return <Text sx={sx.detailDescription}>Quality Measures TODO</Text>;
+      return (
+        <Box sx={sx.detailBox}>
+          <Text sx={sx.detailSubtitle}>Measure Domain</Text>
+          <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
+          <Grid sx={sx.grid}>
+            <GridItem>
+              <Text sx={sx.detailSubtitle}>NQF</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.nqfNumber}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.detailSubtitle}>Measure Reporting and Programs</Text>
+              <Text sx={sx.detailSubtext}>
+                {drawerDetails.reportingRateType}
+              </Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.detailSubtitle}>Measure Set</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.set}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.detailSubtitle}>Measure Reporting Period</Text>
+              <Text sx={sx.detailSubtext}>{drawerDetails.reportingPeriod}</Text>
+            </GridItem>
+          </Grid>
+          <Text sx={sx.detailSubtitle}>Measure Description</Text>
+          <Text sx={sx.detailSubtext}>{drawerDetails.description}</Text>
+        </Box>
+      );
     default:
       return <Text>{entityType}</Text>;
   }
@@ -60,27 +87,26 @@ const sx = {
     color: "palette.base",
   },
   detailHeader: {
-    marginBottom: ".5rem",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",
   },
-  flexbox: {
+  grid: {
     marginBottom: ".5rem",
-  },
-  containerBox: {
-    marginRight: "2.5rem",
+    gridTemplateColumns: "33% auto",
+    columnGap: "1rem",
   },
   detailDescription: {
     marginBottom: ".5rem",
     fontSize: "md",
   },
   detailSubtitle: {
-    marginBottom: ".25rem",
-    fontSize: "sm",
+    marginTop: "1rem",
+    fontSize: "xs",
     fontWeight: "bold",
   },
   detailSubtext: {
-    fontSize: "md",
+    marginTop: "0.25rem",
+    fontSize: "sm",
   },
 };
