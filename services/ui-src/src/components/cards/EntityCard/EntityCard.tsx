@@ -32,10 +32,10 @@ export const EntityCard = ({
   // any drawer-based field will do for this check
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
-      entityCompleted = !!formattedEntityData.population;
+      entityCompleted = !!formattedEntityData?.population;
       break;
     case ModalDrawerEntityTypes.SANCTIONS:
-      entityCompleted = !!formattedEntityData.assessmentDate;
+      entityCompleted = !!formattedEntityData?.assessmentDate;
       break;
     case ModalDrawerEntityTypes.QUALITY_MEASURES: {
       const perPlanResponses = formattedEntityData?.perPlanResponses;

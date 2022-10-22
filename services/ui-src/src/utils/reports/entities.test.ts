@@ -27,7 +27,7 @@ const mockReportFieldData = {
 };
 
 describe("Test getFormattedEntityData", () => {
-  it("Test getFormattedEntityData returns correct data for access measures", () => {
+  it("Returns correct data for access measures", () => {
     const entityData = getFormattedEntityData(
       ModalDrawerEntityTypes.ACCESS_MEASURES,
       mockAccessMeasuresEntity
@@ -36,38 +36,49 @@ describe("Test getFormattedEntityData", () => {
   });
 
   it("Returns correct data for quality measures with no completed measures", () => {
-    const result = getFormattedEntityData(
+    const entityData = getFormattedEntityData(
       ModalDrawerEntityTypes.QUALITY_MEASURES,
       mockQualityMeasuresEntity,
       mockReportFieldData
     );
-    expect(result).toEqual(mockQualityMeasuresFormattedEntityData);
+    expect(entityData).toEqual(mockQualityMeasuresFormattedEntityData);
   });
 
   it("Returns correct data for quality measures with some completed measures", () => {
-    const result = getFormattedEntityData(
+    const entityData = getFormattedEntityData(
       ModalDrawerEntityTypes.QUALITY_MEASURES,
       mockHalfCompletedQualityMeasuresEntity,
       mockReportFieldData
     );
-    expect(result).toEqual(mockHalfCompletedQualityMeasuresFormattedEntityData);
+    expect(entityData).toEqual(
+      mockHalfCompletedQualityMeasuresFormattedEntityData
+    );
   });
 
   it("Returns correct data for quality measures with fully completed measures", () => {
-    const result = getFormattedEntityData(
+    const entityData = getFormattedEntityData(
       ModalDrawerEntityTypes.QUALITY_MEASURES,
       mockCompletedQualityMeasuresEntity,
       mockReportFieldData
     );
-    expect(result).toEqual(mockCompletedQualityMeasuresFormattedEntityData);
+    expect(entityData).toEqual(mockCompletedQualityMeasuresFormattedEntityData);
   });
 
-  it("Test getFormattedEntityData returns correct data for sanctions", () => {
+  it("Returns correct data for sanctions", () => {
     const entityData = getFormattedEntityData(
       ModalDrawerEntityTypes.SANCTIONS,
       mockSanctionsEntity,
       mockReportFieldData
     );
     expect(entityData).toEqual(mockCompletedSanctionsFormattedEntityData);
+  });
+
+  it("Returns empty object if invalid entity type is passed", () => {
+    const entityData = getFormattedEntityData(
+      "invalid entity type",
+      mockSanctionsEntity,
+      mockReportFieldData
+    );
+    expect(entityData).toEqual({});
   });
 });

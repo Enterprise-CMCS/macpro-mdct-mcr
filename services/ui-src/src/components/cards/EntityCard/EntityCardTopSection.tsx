@@ -99,6 +99,7 @@ const sx = {
     gridTemplateColumns: "33% auto",
     columnGap: "1rem",
   },
+
   subtitle: {
     marginTop: "1rem",
     fontSize: "xs",
