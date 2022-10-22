@@ -19,16 +19,18 @@ import { useUser } from "utils";
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
-  // get form context and register field
-  const form = useFormContext();
-  form.register(name);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
+
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
   );
+
+  // get form context and register field
+  const form = useFormContext();
+  form.register(name);
 
   const openDeleteProgramModal = (index: number) => {
     setSelectedRecord(displayValues[index]);
@@ -72,40 +74,40 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         id: report?.id,
       };
 
-      let filteredEntities = {};
-      filteredEntities = {
-        [name]: form
-          .getValues()
-          // eslint-disable-next-line no-unexpected-multiline
-          [name].filter((entity: AnyObject) => entity.id !== selectedRecord.id),
-      };
+      // queue selected entity for deletion from DB
+      const { [name]: entity } = form.getValues();
+      const filteredEntities = entity.filter(
+        (entity: AnyObject) => entity.id !== selectedRecord.id
+      );
+
+      // filter sanctions to exclude those related to selected entity
+      const filteredSanctions = report?.fieldData?.sanctions?.filter(
+        (entity: EntityShape) =>
+          entity.sanction_planName.value !== selectedRecord.id
+      );
+
+      // filter qualityMeasures to exclude responses from each measure related to selected entity
+      const filteredQualityMeasures = report?.fieldData?.qualityMeasures?.map(
+        (entity: EntityShape) => {
+          const newEntity = { ...entity };
+          delete newEntity[
+            `qualityMeasure_plan_measureResults_${selectedRecord.id}`
+          ];
+          return newEntity;
+        }
+      );
 
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
-        fieldData: filteredEntities,
+        fieldData: {
+          [entity]: filteredEntities,
+          sanctions: filteredSanctions,
+          qualityMeasures: filteredQualityMeasures,
+        },
       };
-
-      // delete related sanctions and quality measures
-      if (report?.fieldData.sanctions) {
-        const filteredSanctions = {
-          sanctions: report.fieldData.sanctions.filter(
-            (sanction: EntityShape) =>
-              sanction.sanction_planName.value !== selectedRecord.id
-          ),
-        };
-        const dataToWrite = {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-          fieldData: filteredSanctions,
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
-
-      // TODO: Delete related quality measures
-
-      removeRecord(selectedRecord);
       await updateReport(reportKeys, dataToWrite);
+      removeRecord(selectedRecord);
     }
   };
 
