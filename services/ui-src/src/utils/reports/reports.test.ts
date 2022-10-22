@@ -8,7 +8,7 @@ import {
 import {
   mockFlattenedReportRoutes,
   mockFormField,
-  mockRadioFieldWithNested,
+  mockNestedFormField,
   mockReportRoutes,
   mockReport,
   mockStandardReportPageJson,
@@ -91,7 +91,7 @@ describe("Test compileValidationJsonFromRoutes", () => {
 
 describe("Test makeFieldIdList", () => {
   const mockField1 = { ...mockFormField, id: "mock-standard-1" };
-  const mockField2 = { ...mockRadioFieldWithNested, id: "mock-drawer-1" };
+  const mockField2 = { ...mockNestedFormField, id: "mock-drawer-1" };
   const mockField3 = { ...mockDrawerFormField, id: "mock-drawer-2" };
   const mockField4 = {
     ...mockModalFormField,
