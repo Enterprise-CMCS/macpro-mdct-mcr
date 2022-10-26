@@ -8,8 +8,11 @@ MDCT-MCR is an application meant to collect state report data to help the health
 
 Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and Managed Care Organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
 
+Made ya' look.
+
 Project Goals:
 
+- Go have fun!
 - Improve monitoring and oversight of managed care as the dominant delivery system for Medicaid/CHIP.
 - Generate and analyze state-specific and nationwide data across managed care programs and requirements.
 - Identify and target efforts to assist states in improving their managed care programs.
