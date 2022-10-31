@@ -7,6 +7,7 @@ import { ReportContext, ModalDrawerReportPage } from "components";
 import { useUser } from "utils";
 import {
   mockModalDrawerReportPageJson,
+  mockRepeatedFormField,
   mockReportContext,
   mockStateUser,
   RouterWrappedComponent,
@@ -117,6 +118,39 @@ describe("Test ModalDrawerReportPage with entities", () => {
     const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+  });
+});
+
+const mockRouteWithRepeatedField = {
+  ...mockModalDrawerReportPageJson,
+  drawerForm: {
+    id: "mock-drawer-form-id",
+    fields: [mockRepeatedFormField],
+  },
+};
+
+const modalDrawerReportPageComponentWithRepeatedFieldForm = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <ModalDrawerReportPage route={mockRouteWithRepeatedField} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+describe("ModalDrawerReportPage drawer form repeats fields if necessary", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it("Should repeat fields if there are repeated fields in the form", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(modalDrawerReportPageComponentWithRepeatedFieldForm);
+
+    const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
+    await userEvent.click(launchDrawerButton);
+
+    // there are 2 plans in the mock report context and 1 field to repeat, so 2 fields should render
+    const renderedFields = screen.getAllByRole("textbox");
+    expect(renderedFields.length).toEqual(2);
   });
 });
 

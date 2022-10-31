@@ -15,15 +15,35 @@ const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
   );
 };
 
+const getReportingRateType = (entity: EntityShape | undefined) => {
+  return entity?.qualityMeasure_reportingRateType?.[0]?.value ===
+    "Cross-program rate"
+    ? "Cross-program rate: " +
+        entity?.qualityMeasure_crossProgramReportingRateProgramList
+    : entity?.qualityMeasure_reportingRateType?.[0]?.value;
+};
+
+const getReportingPeriod = (entity: EntityShape | undefined) => {
+  return entity?.qualityMeasure_reportingPeriod?.[0]?.value === "No"
+    ? `${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`
+    : entity?.qualityMeasure_reportingPeriod?.[0]?.value;
+};
+
+// returns an array of { planName: string, response: string } or undefined
+export const getPlanValues = (entity?: EntityShape, plans?: AnyObject[]) =>
+  plans?.map((plan: AnyObject) => ({
+    name: plan.name,
+    response: entity?.[`qualityMeasure_plan_measureResults_${plan.id}`],
+  }));
+
 export const getFormattedEntityData = (
   entityType: string,
   entity?: EntityShape,
   reportFieldData?: AnyObject
 ) => {
-  let entityData: any = {};
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
-      entityData = {
+      return {
         category: entity?.accessMeasure_generalCategory[0].value,
         standardDescription: entity?.accessMeasure_standardDescription,
         standardType: getRadioValue(entity, "accessMeasure_standardType"),
@@ -39,10 +59,8 @@ export const getFormattedEntityData = (
           "accessMeasure_oversightMethodFrequency"
         ),
       };
-      break;
-
     case ModalDrawerEntityTypes.SANCTIONS:
-      entityData = {
+      return {
         interventionType: getRadioValue(entity, "sanction_interventionType"),
         interventionTopic: getRadioValue(entity, "sanction_interventionTopic"),
         planName: reportFieldData?.plans?.find(
@@ -58,12 +76,18 @@ export const getFormattedEntityData = (
           "sanction_correctiveActionPlan"
         ),
       };
-      break;
-
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      break;
-
+      return {
+        domain: getRadioValue(entity, "qualityMeasure_domain"),
+        name: entity?.qualityMeasure_name,
+        nqfNumber: entity?.qualityMeasure_nqfNumber,
+        reportingRateType: getReportingRateType(entity),
+        set: getRadioValue(entity, "qualityMeasure_set"),
+        reportingPeriod: getReportingPeriod(entity),
+        description: entity?.qualityMeasure_description,
+        perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
+      };
     default:
+      return {};
   }
-  return entityData;
 };

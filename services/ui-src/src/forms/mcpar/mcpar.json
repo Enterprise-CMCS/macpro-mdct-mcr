@@ -2404,33 +2404,38 @@
           "verbiage": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic VII: Quality Measures",
+              "subsection": "Topic VII: Quality & Performance Measures",
               "spreadsheet": "D2_Plan_Measures",
               "info": [
                 {
-                  "type": "html",
-                  "content": "<p><b>Add Quality & Performance Measures</b></p>"
+                  "type": "heading",
+                  "as": "h3",
+                  "content": "Add Quality & Performance Measures"
                 },
                 {
                   "type": "html",
-                  "content": "</br><p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
+                  "content": "<p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component.</p>"
                 }
               ]
             },
-            "dashboardTitle": "replace me in json",
-            "addEntityButtonText": "replace me in json",
-            "editEntityButtonText": "replace me in json",
-            "addEditModalAddTitle": "replace me in json",
-            "addEditModalEditTitle": "replace me in json",
-            "addEditModalMessage": "replace me in json",
-            "deleteEntityButtonAltText": "replace me in json",
-            "deleteModalTitle": "replace me in json",
-            "deleteModalConfirmButtonText": "replace me in json",
-            "deleteModalWarning": "replace me in json",
-            "entityUnfinishedMessage": "replace me in json",
-            "enterEntityDetailsButtonText": "replace me in json",
-            "editEntityDetailsButtonText": "replace me in json",
-            "drawerTitle": "replace me in json"
+            "dashboardTitle": "Add quality & performance measures",
+            "addEntityButtonText": "Add quality & performance measure",
+            "editEntityButtonText": "Edit measure",
+            "addEditModalAddTitle": "Add a quality & performance measure",
+            "addEditModalEditTitle": "Edit quality & performance measure",
+            "addEditModalMessage": "Complete the remaining indicators for this measure by saving the measure and selecting \"Enter measure results\".",
+            "deleteEntityButtonAltText": "Delete quality & performance measure",
+            "deleteModalTitle": "Delete quality measure?",
+            "deleteModalConfirmButtonText": "Yes, delete measure",
+            "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
+            "entityMissingResponseMessage": "Missing measure results for one or more plans.",
+            "entityEmptyResponseMessage": "Error: no results entered",
+            "entityUnfinishedMessage": "Add the plan-level details for this quality and performance measure by entering measure results.",
+            "enterEntityDetailsButtonText": "Enter measure results",
+            "editEntityDetailsButtonText": "Edit measure results",
+            "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
+            "drawerTitle": "Add plan-level measure results",
+            "drawerNoFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
           },
           "modalForm": {
             "id": "dqm-modal",
@@ -2500,7 +2505,7 @@
               },
               {
                 "id": "qualityMeasure_nqfNumber",
-                "type": "number",
+                "type": "text",
                 "validation": "text",
                 "props": {
                   "label": "D2.VII.3 National Quality Forum (NQF) number",
@@ -2533,8 +2538,7 @@
                           },
                           "props": {
                             "label": "D2.VII.5 Measure reporting: List programs",
-                            "hint": "What are the programs? Separate program names with a comma.",
-                            "mask": "comma-separated"
+                            "hint": "What are the programs? Separate program names with a comma."
                           }
                         }
                       ]
@@ -2651,6 +2655,7 @@
                 "id": "qualityMeasure_plan_measureResults",
                 "type": "text",
                 "validation": "text",
+                "repeat": "plans",
                 "props": {
                   "label": ": Measure Results",
                   "hint": "What are the measure results or values for this plan? Add free text or enter \"N/A\" if not applicable."
