@@ -36,39 +36,45 @@ export const updateReport = handler(async (event, context) => {
     const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
 
     if (getCurrentReport?.body) {
-      if (unvalidatedFieldData) {
-        // validate report metadata
-        const validatedMetadata = await validateData(
-          metadataValidationSchema,
-          unvalidatedPayload
-        );
+      const currentReport = JSON.parse(getCurrentReport.body);
+      const isArchived = currentReport.archived;
+      if (!isArchived) {
+        if (unvalidatedFieldData) {
+          // validate report metadata
+          const validatedMetadata = await validateData(
+            metadataValidationSchema,
+            unvalidatedPayload
+          );
 
-        // validate report field data
-        const currentReport = JSON.parse(getCurrentReport.body);
-        const { formTemplate } = currentReport;
-        const validatedFieldData = await validateFieldData(
-          formTemplate.validationJson,
-          unvalidatedFieldData
-        );
+          // validate report field data
+          const { formTemplate } = currentReport;
+          const validatedFieldData = await validateFieldData(
+            formTemplate.validationJson,
+            unvalidatedFieldData
+          );
 
-        const reportParams = {
-          TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-          Item: {
-            ...currentReport,
-            ...validatedMetadata,
-            lastAltered: Date.now(),
-            fieldData: {
-              ...currentReport.fieldData,
-              ...validatedFieldData,
+          const reportParams = {
+            TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+            Item: {
+              ...currentReport,
+              ...validatedMetadata,
+              lastAltered: Date.now(),
+              fieldData: {
+                ...currentReport.fieldData,
+                ...validatedFieldData,
+              },
             },
-          },
-        };
-        await dynamoDb.put(reportParams);
-        status = StatusCodes.SUCCESS;
-        body = reportParams.Item;
+          };
+          await dynamoDb.put(reportParams);
+          status = StatusCodes.SUCCESS;
+          body = reportParams.Item;
+        } else {
+          status = StatusCodes.BAD_REQUEST;
+          body = error.MISSING_DATA;
+        }
       } else {
-        status = StatusCodes.BAD_REQUEST;
-        body = error.MISSING_DATA;
+        status = StatusCodes.UNAUTHORIZED;
+        body = error.UNAUTHORIZED;
       }
     } else {
       status = StatusCodes.NOT_FOUND;

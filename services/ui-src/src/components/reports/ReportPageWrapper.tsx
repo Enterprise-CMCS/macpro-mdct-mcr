@@ -31,10 +31,10 @@ export const ReportPageWrapper = ({ route }: Props) => {
   const reportState = state || localStorage.getItem("selectedState");
 
   useEffect(() => {
-    if (!reportId || !reportState) {
+    if (!reportId || !reportState || report?.archived) {
       navigate("/mcpar");
     }
-  }, [reportId, reportState]);
+  }, [report, reportId, reportState]);
 
   const renderPageSection = (route: ReportRouteWithForm) => {
     switch (route.pageType) {
