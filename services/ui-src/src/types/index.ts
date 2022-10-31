@@ -186,6 +186,19 @@ export enum ModalDrawerEntityTypes {
   QUALITY_MEASURES = "qualityMeasures",
   SANCTIONS = "sanctions",
 }
+
+export enum DrawerFormId {
+  PROGRAM_CHARACTERISTICS = "dpc",
+  FINANCIAL_PERFORMANCE = "dfp",
+  ENCOUNTER_DATA_REPORT = "dedr",
+  APPEALS_OVERVIEW = "dao",
+  APPEALS_BY_SERVICE = "dabs",
+  STATE_FAIR_HEARINGS = "dsfh",
+  GRIEVANCES_OVERVIEW = "dgo",
+  GRIEVANCES_BY_SERVICE = "dgbs",
+  GRIEVANCES_BY_REASON = "dgbr",
+  PROGRAM_INTEGRITY = "dpi",
+}
 export interface EntityShape {
   id: string;
   [key: string]: any;

@@ -24,6 +24,7 @@ import {
   EntityShape,
   DrawerReportPageShape,
   ReportStatus,
+  DrawerFormId,
 } from "types";
 import completedIcon from "assets/icons/icon_check_circle.png";
 
@@ -101,36 +102,36 @@ export const DrawerReportPage = ({ route }: Props) => {
   const checkIfEntityIsCompleted = (entity: EntityShape) => {
     let entityCompleted = false;
     switch (drawerForm.id) {
-      case "dpc":
+      case DrawerFormId.PROGRAM_CHARACTERISTICS:
         entityCompleted = !!entity.plan_enrollment;
         break;
-      case "dfp":
+      case DrawerFormId.FINANCIAL_PERFORMANCE:
         entityCompleted = !!entity.plan_medicalLossRatioPercentage;
         break;
-      case "dedr":
+      case DrawerFormId.ENCOUNTER_DATA_REPORT:
         entityCompleted =
           !!entity.program_encounterDataSubmissionTimelinessStandardDefinition;
         break;
-      case "dao":
+      case DrawerFormId.APPEALS_OVERVIEW:
         entityCompleted = !!entity.plan_resolvedAppeals;
         break;
-      case "dabs":
+      case DrawerFormId.APPEALS_BY_SERVICE:
         entityCompleted = !!entity.plan_resolvedGeneralInpatientServiceAppeals;
         break;
-      case "dsfh":
+      case DrawerFormId.STATE_FAIR_HEARINGS:
         entityCompleted = !!entity.plan_stateFairHearingRequestsFiled;
         break;
-      case "dgo":
+      case DrawerFormId.GRIEVANCES_OVERVIEW:
         entityCompleted = !!entity.plan_resolvedGrievances;
         break;
-      case "dgbs":
+      case DrawerFormId.GRIEVANCES_BY_SERVICE:
         entityCompleted =
           !!entity.plan_resolvedGeneralInpatientServiceGrievances;
         break;
-      case "dgbr":
+      case DrawerFormId.GRIEVANCES_BY_REASON:
         entityCompleted = !!entity.plan_resolvedCustomerServiceGrievances;
         break;
-      case "dpi":
+      case DrawerFormId.PROGRAM_INTEGRITY:
         entityCompleted = !!entity.plan_resolvedCustomerServiceGrievances;
         break;
       default:
