@@ -45,7 +45,7 @@ const mockReportWithCompletedEntityContext = {
         {
           id: 123,
           name: "example-plan1",
-          "mock-drawer-text-field": "example-explaination",
+          "mock-drawer-text-field": "example-explanation",
         },
         { id: 456, name: "example-plan2" },
       ],
