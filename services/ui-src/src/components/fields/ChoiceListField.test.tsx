@@ -1,5 +1,7 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 //components
 import { useFormContext } from "react-hook-form";
 import { ChoiceListField } from "components";
@@ -44,6 +46,17 @@ const mockChoices = [
   },
 ];
 
+const mockDropdownOptions = [
+  {
+    label: "Option 1",
+    value: "test-dropdown-1",
+  },
+  {
+    label: "Option 2",
+    value: "test-dropdown-2",
+  },
+];
+
 const mockNestedChildren = [
   {
     id: "test-nested-child-text",
@@ -54,6 +67,13 @@ const mockNestedChildren = [
     type: "radio",
     props: {
       choices: [...mockChoices],
+    },
+  },
+  {
+    id: "test-nest-child-dropdown",
+    type: "dropdown",
+    props: {
+      options: [...mockDropdownOptions],
     },
   },
 ];
@@ -166,9 +186,16 @@ describe("Test ChoiceListField hydration functionality", () => {
     );
   });
 
-  test("For CheckboxField, if only hydrationValue exists, displayValue is set to it", () => {
+  test("For CheckboxField, if only hydrationValue exists, displayValue is set to it", async () => {
     mockGetValues(undefined);
     render(CheckboxComponentWithHydrationValue);
+    const checkBox1 = screen.getByText("Choice 1");
+    expect(checkBox1).toBeVisible();
+
+    await act(async () => {
+      await userEvent.click(checkBox1);
+    });
+
     expect(mockSetValue).toHaveBeenCalledWith(
       "checkbox-field-with-hydration-value",
       mockHydrationValue,
