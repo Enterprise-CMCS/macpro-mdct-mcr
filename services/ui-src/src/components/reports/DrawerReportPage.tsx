@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Flex,
+  Image,
   Heading,
   Link,
   Text,
@@ -24,6 +25,7 @@ import {
   DrawerReportPageShape,
   ReportStatus,
 } from "types";
+import completedIcon from "assets/icons/icon_check_circle.png";
 
 export const DrawerReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -96,21 +98,73 @@ export const DrawerReportPage = ({ route }: Props) => {
     onClose();
   };
 
-  const entityRows = (entities: EntityShape[]) =>
-    entities.map((entity) => (
-      <Flex key={entity.id} sx={sx.entityRow}>
-        <Heading as="h4" sx={sx.entityName}>
-          {entity.name}
-        </Heading>
-        <Button
-          sx={sx.enterButton}
-          onClick={() => openRowDrawer(entity)}
-          variant="outline"
-        >
-          Enter
-        </Button>
-      </Flex>
-    ));
+  const checkIfEntityIsCompleted = (entity: EntityShape) => {
+    let entityCompleted = false;
+    switch (drawerForm.id) {
+      case "dpc":
+        entityCompleted = !!entity.plan_enrollment;
+        break;
+      case "dfp":
+        entityCompleted = !!entity.plan_medicalLossRatioPercentage;
+        break;
+      case "dedr":
+        entityCompleted =
+          !!entity.program_encounterDataSubmissionTimelinessStandardDefinition;
+        break;
+      case "dao":
+        entityCompleted = !!entity.plan_resolvedAppeals;
+        break;
+      case "dabs":
+        entityCompleted = !!entity.plan_resolvedGeneralInpatientServiceAppeals;
+        break;
+      case "dsfh":
+        entityCompleted = !!entity.plan_stateFairHearingRequestsFiled;
+        break;
+      case "dgo":
+        entityCompleted = !!entity.plan_resolvedGrievances;
+        break;
+      case "dgbs":
+        entityCompleted =
+          !!entity.plan_resolvedGeneralInpatientServiceGrievances;
+        break;
+      case "dgbr":
+        entityCompleted = !!entity.plan_resolvedCustomerServiceGrievances;
+        break;
+      case "dpi":
+        entityCompleted = !!entity.plan_resolvedCustomerServiceGrievances;
+        break;
+      default:
+        break;
+    }
+    return entityCompleted;
+  };
+
+  const entityRows = (entities: EntityShape[]) => {
+    return entities.map((entity) => {
+      const isEntityCompleted = checkIfEntityIsCompleted(entity);
+      return (
+        <Flex key={entity.id} sx={sx.entityRow}>
+          {isEntityCompleted && (
+            <Image
+              src={completedIcon}
+              alt={`entity is complete`}
+              sx={sx.statusIcon}
+            />
+          )}
+          <Heading as="h4" sx={sx.entityName}>
+            {entity.name}
+          </Heading>
+          <Button
+            sx={sx.enterButton}
+            onClick={() => openRowDrawer(entity)}
+            variant="outline"
+          >
+            {isEntityCompleted ? "Edit" : "Enter"}
+          </Button>
+        </Flex>
+      );
+    });
+  };
   return (
     <Box data-testid="drawer-report-page">
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
@@ -152,6 +206,10 @@ interface Props {
 }
 
 const sx = {
+  statusIcon: {
+    height: "1.25rem",
+    position: "absolute",
+  },
   dashboardTitle: {
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
@@ -170,6 +228,8 @@ const sx = {
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
+    flexGrow: 1,
+    marginLeft: "2.25rem",
   },
   emptyEntityMessage: {
     paddingTop: "1rem",
