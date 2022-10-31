@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Flex,
+  Image,
   Heading,
   Link,
   Text,
@@ -23,7 +24,9 @@ import {
   EntityShape,
   DrawerReportPageShape,
   ReportStatus,
+  FormField,
 } from "types";
+import completedIcon from "assets/icons/icon_check_circle.png";
 
 export const DrawerReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -96,21 +99,38 @@ export const DrawerReportPage = ({ route }: Props) => {
     onClose();
   };
 
-  const entityRows = (entities: EntityShape[]) =>
-    entities.map((entity) => (
-      <Flex key={entity.id} sx={sx.entityRow}>
-        <Heading as="h4" sx={sx.entityName}>
-          {entity.name}
-        </Heading>
-        <Button
-          sx={sx.enterButton}
-          onClick={() => openRowDrawer(entity)}
-          variant="outline"
-        >
-          Enter
-        </Button>
-      </Flex>
-    ));
+  const entityRows = (entities: EntityShape[]) => {
+    return entities.map((entity) => {
+      /*
+       * If the entity has the same fields from drawerForms fields, it was completed
+       * at somepoint.
+       */
+      const isEntityCompleted = drawerForm.fields?.every(
+        (field: FormField) => field.id in entity
+      );
+      return (
+        <Flex key={entity.id} sx={sx.entityRow}>
+          {isEntityCompleted && (
+            <Image
+              src={completedIcon}
+              alt={"Entity is complete"}
+              sx={sx.statusIcon}
+            />
+          )}
+          <Heading as="h4" sx={sx.entityName}>
+            {entity.name}
+          </Heading>
+          <Button
+            sx={sx.enterButton}
+            onClick={() => openRowDrawer(entity)}
+            variant="outline"
+          >
+            {isEntityCompleted ? "Edit" : "Enter"}
+          </Button>
+        </Flex>
+      );
+    });
+  };
   return (
     <Box data-testid="drawer-report-page">
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
@@ -152,6 +172,10 @@ interface Props {
 }
 
 const sx = {
+  statusIcon: {
+    height: "1.25rem",
+    position: "absolute",
+  },
   dashboardTitle: {
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
@@ -170,6 +194,8 @@ const sx = {
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
+    flexGrow: 1,
+    marginLeft: "2.25rem",
   },
   emptyEntityMessage: {
     paddingTop: "1rem",
