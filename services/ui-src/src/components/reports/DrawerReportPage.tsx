@@ -105,9 +105,9 @@ export const DrawerReportPage = ({ route }: Props) => {
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
        */
-      const isEntityCompleted = drawerForm.fields?.every((field: FormField) => {
-        return field.id in entity;
-      });
+      const isEntityCompleted = drawerForm.fields?.every(
+        (field: FormField) => field.id in entity
+      );
       return (
         <Flex key={entity.id} sx={sx.entityRow}>
           {isEntityCompleted && (
