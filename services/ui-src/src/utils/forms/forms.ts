@@ -86,7 +86,10 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     field?.props?.choices.forEach((choice: FieldChoice) => {
       // set choice value to choice label string
       choice.value = choice.label;
-      choice.id = `${field.id}-${choice.id}`;
+      // if choice id has not already had parent field id appended, do so now
+      if (!choice.id.includes("-")) {
+        choice.id = field.id + "-" + choice.id;
+      }
       choice.name = choice.id;
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
