@@ -98,18 +98,16 @@ export const DrawerReportPage = ({ route }: Props) => {
     onClose();
   };
 
-  /*
-   * If the entity has any data from any drawerForms fields,
-   * it must have been completed at some point. So simply check to
-   * see if the first drawerForm field has been entered and saved
-   * to the entity
-   */
-  const checkIfEntityIsCompleted = (entity: EntityShape) =>
-    drawerForm.fields?.[0]?.id in entity;
-
   const entityRows = (entities: EntityShape[]) => {
     return entities.map((entity) => {
-      const isEntityCompleted = checkIfEntityIsCompleted(entity);
+      /*
+       * If the entity has any data from any drawerForms fields,
+       * it must have been completed at some point. So simply check to
+       * see if the first drawerForm field has been entered and saved
+       * to the entity
+       */
+      const isEntityCompleted = drawerForm.fields?.[0]?.id in entity;
+
       return (
         <Flex key={entity.id} sx={sx.entityRow}>
           {isEntityCompleted && (
