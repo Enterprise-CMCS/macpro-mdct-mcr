@@ -44,6 +44,17 @@ const mockChoices = [
   },
 ];
 
+const mockDropdownOptions = [
+  {
+    label: "Option 1",
+    value: "test-dropdown-1",
+  },
+  {
+    label: "Option 2",
+    value: "test-dropdown-2",
+  },
+];
+
 const mockNestedChildren = [
   {
     id: "test-nested-child-text",
@@ -54,6 +65,13 @@ const mockNestedChildren = [
     type: "radio",
     props: {
       choices: [...mockChoices],
+    },
+  },
+  {
+    id: "test-nest-child-dropdown",
+    type: "dropdown",
+    props: {
+      options: [...mockDropdownOptions],
     },
   },
 ];
