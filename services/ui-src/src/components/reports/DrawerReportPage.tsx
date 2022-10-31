@@ -24,6 +24,7 @@ import {
   EntityShape,
   DrawerReportPageShape,
   ReportStatus,
+  FormField,
 } from "types";
 import completedIcon from "assets/icons/icon_check_circle.png";
 
@@ -101,13 +102,12 @@ export const DrawerReportPage = ({ route }: Props) => {
   const entityRows = (entities: EntityShape[]) => {
     return entities.map((entity) => {
       /*
-       * If the entity has any data from any drawerForms fields,
-       * it must have been completed at some point. So simply check to
-       * see if the first drawerForm field has been entered and saved
-       * to the entity
+       * If the entity has the same fields from drawerForms fields, it was completed
+       * at somepoint.
        */
-      const isEntityCompleted = drawerForm.fields?.[0]?.id in entity;
-
+      const isEntityCompleted = drawerForm.fields?.every((field: FormField) => {
+        return field.id in entity;
+      });
       return (
         <Flex key={entity.id} sx={sx.entityRow}>
           {isEntityCompleted && (
