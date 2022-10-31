@@ -1,4 +1,5 @@
 import {
+  createRepeatedFields,
   filterFormData,
   flattenFormFields,
   formFieldFactory,
@@ -205,6 +206,92 @@ describe("Test flattenFormFields", () => {
   it("Correctly flattens nested form fields to a single level array", () => {
     const result = flattenFormFields([mockNestedFormField]);
     expect(result).toEqual([mockNestedFormField, mockFormField]);
+  });
+});
+
+describe("Test Create Repeated Fields", () => {
+  const FieldsWithoutRepeat = [
+    {
+      id: "mock-field-id",
+      type: "text",
+      validation: "text",
+      props: {
+        label: "mock label",
+        hint: "mock hint",
+      },
+    },
+  ];
+
+  const FieldsWithRepeatButNoFoundAssociatedData = [
+    {
+      id: "mock-field-id",
+      type: "text",
+      validation: "text",
+      repeat: "mock-no-repeated-data",
+      props: {
+        label: "mock label",
+        hint: "mock hint",
+      },
+    },
+  ];
+
+  const FieldsWithRepeatAndAssociatedData = [
+    {
+      id: "mock-field-id",
+      type: "text",
+      validation: "text",
+      repeat: "plans",
+      props: {
+        label: "mock label",
+        hint: "mock hint",
+      },
+    },
+  ];
+  const reportFieldData = {
+    reportingPeriodStartDate: "07/28/2022",
+    reportingPeriodEndDate: "11/24/2022",
+    stateName: "California",
+    programName: "Example Program",
+    plans: [
+      {
+        id: "123-456",
+        name: "Test",
+      },
+    ],
+  };
+
+  const combinedField = [
+    {
+      id: "mock-field-id_123-456",
+      props: {
+        hint: "mock hint",
+        label: "Testmock label",
+      },
+      repeat: "plans",
+      type: "text",
+      validation: "text",
+    },
+  ];
+
+  it("should return current field if not repeating", () => {
+    expect(createRepeatedFields(FieldsWithoutRepeat, reportFieldData)).toEqual(
+      FieldsWithoutRepeat
+    );
+  });
+
+  it("should return a flattened array if repeating but no found data", () => {
+    expect(
+      createRepeatedFields(
+        FieldsWithRepeatButNoFoundAssociatedData,
+        reportFieldData
+      )
+    ).toEqual([]);
+  });
+
+  it("should return a nice array of found repeating fields with combined data", () => {
+    expect(
+      createRepeatedFields(FieldsWithRepeatAndAssociatedData, reportFieldData)
+    ).toEqual(combinedField);
   });
 });
 
