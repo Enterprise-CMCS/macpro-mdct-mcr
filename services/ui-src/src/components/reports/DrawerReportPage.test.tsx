@@ -35,6 +35,24 @@ const mockReportContextWithoutEntities = {
   report: undefined,
 };
 
+const mockReportWithCompletedEntityContext = {
+  ...mockReportContext,
+  report: {
+    ...mockReportContext.report,
+    fieldData: {
+      ...mockReportContext.report.fieldData,
+      plans: [
+        {
+          id: 123,
+          name: "example-plan1",
+          "mock-drawer-text-field": "example-explaination",
+        },
+        { id: 456, name: "example-plan2" },
+      ],
+    },
+  },
+};
+
 const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
@@ -46,6 +64,14 @@ const drawerReportPageWithEntities = (
 const drawerReportPageWithoutEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
+      <DrawerReportPage route={mockDrawerReportPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const drawerReportPageWithCompletedEntity = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportWithCompletedEntityContext}>
       <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -141,6 +167,25 @@ describe("Test DrawerReportPage with entities", () => {
     const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe("Test DrawerReportPage with completed entity", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(drawerReportPageWithCompletedEntity);
+  });
+
+  it("should render the view", () => {
+    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+  });
+
+  it("should show the completed state on one entity", () => {
+    const visibleEntityText = mockReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    expect(screen.queryAllByText("Edit")).toHaveLength(1);
+    expect(screen.queryAllByText("Enter")).toHaveLength(1);
+    expect(screen.getAllByAltText("Entity is complete")).toHaveLength(1);
   });
 });
 

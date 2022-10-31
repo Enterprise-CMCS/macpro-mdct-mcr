@@ -115,7 +115,7 @@ export const DrawerReportPage = ({ route }: Props) => {
           {isEntityCompleted && (
             <Image
               src={completedIcon}
-              alt={`entity is complete`}
+              alt={"Entity is complete"}
               sx={sx.statusIcon}
             />
           )}
