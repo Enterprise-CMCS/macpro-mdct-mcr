@@ -147,7 +147,7 @@ const sx = {
     justifyContent: "center",
     marginTop: "1rem",
     marginRight: "2rem",
-    minWidth: "7.5rem",
+    minWidth: "10rem",
     span: {
       marginLeft: "0.5rem",
       marginRight: "-0.25rem",
