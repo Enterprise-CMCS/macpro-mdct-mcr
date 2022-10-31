@@ -24,7 +24,6 @@ import {
   EntityShape,
   DrawerReportPageShape,
   ReportStatus,
-  DrawerFormId,
 } from "types";
 import completedIcon from "assets/icons/icon_check_circle.png";
 
@@ -99,46 +98,14 @@ export const DrawerReportPage = ({ route }: Props) => {
     onClose();
   };
 
-  const checkIfEntityIsCompleted = (entity: EntityShape) => {
-    let entityCompleted = false;
-    switch (drawerForm.id) {
-      case DrawerFormId.PROGRAM_CHARACTERISTICS:
-        entityCompleted = !!entity.plan_enrollment;
-        break;
-      case DrawerFormId.FINANCIAL_PERFORMANCE:
-        entityCompleted = !!entity.plan_medicalLossRatioPercentage;
-        break;
-      case DrawerFormId.ENCOUNTER_DATA_REPORT:
-        entityCompleted =
-          !!entity.program_encounterDataSubmissionTimelinessStandardDefinition;
-        break;
-      case DrawerFormId.APPEALS_OVERVIEW:
-        entityCompleted = !!entity.plan_resolvedAppeals;
-        break;
-      case DrawerFormId.APPEALS_BY_SERVICE:
-        entityCompleted = !!entity.plan_resolvedGeneralInpatientServiceAppeals;
-        break;
-      case DrawerFormId.STATE_FAIR_HEARINGS:
-        entityCompleted = !!entity.plan_stateFairHearingRequestsFiled;
-        break;
-      case DrawerFormId.GRIEVANCES_OVERVIEW:
-        entityCompleted = !!entity.plan_resolvedGrievances;
-        break;
-      case DrawerFormId.GRIEVANCES_BY_SERVICE:
-        entityCompleted =
-          !!entity.plan_resolvedGeneralInpatientServiceGrievances;
-        break;
-      case DrawerFormId.GRIEVANCES_BY_REASON:
-        entityCompleted = !!entity.plan_resolvedCustomerServiceGrievances;
-        break;
-      case DrawerFormId.PROGRAM_INTEGRITY:
-        entityCompleted = !!entity.plan_resolvedCustomerServiceGrievances;
-        break;
-      default:
-        break;
-    }
-    return entityCompleted;
-  };
+  /*
+   * If the entity has any data from any drawerForms fields,
+   * it must have been completed at some point. So simply check to
+   * see if the first drawerForm field has been entered and saved
+   * to the entity
+   */
+  const checkIfEntityIsCompleted = (entity: EntityShape) =>
+    drawerForm.fields?.[0]?.id in entity;
 
   const entityRows = (entities: EntityShape[]) => {
     return entities.map((entity) => {
