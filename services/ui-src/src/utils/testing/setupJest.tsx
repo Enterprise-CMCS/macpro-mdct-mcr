@@ -192,10 +192,10 @@ export const mockNestedFormField = {
   props: {
     label: "mock radio field",
     choices: [
-      { name: "option1", label: "option 1" },
-      { name: "option2", label: "option 2" },
+      { id: "option1uuid", label: "option 1" },
+      { id: "option2uuid", label: "option 2" },
       {
-        name: "option3",
+        id: "option3uuid",
         label: "option 3",
         children: [mockFormField],
       },
