@@ -4,13 +4,13 @@ import {
   AdminPage,
   AdminBannerProvider,
   DashboardPage,
-  GetStartedPage,
+  McparGetStartedPage,
   HelpPage,
   HomePage,
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
-  ReviewSubmitPage,
+  McparReviewSubmitPage,
 } from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 // utils
@@ -33,7 +33,7 @@ export const AppRoutes = () => {
 
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<DashboardPage />} />
-          <Route path="/mcpar/get-started" element={<GetStartedPage />} />
+          <Route path="/mcpar/get-started" element={<McparGetStartedPage />} />
           {mcparReportRoutesFlat.map((route: ReportRoute) => (
             <Route
               key={route.path}
@@ -43,7 +43,7 @@ export const AppRoutes = () => {
                   // if report route with form
                   <ReportPageWrapper route={route} />
                 ) : (
-                  <ReviewSubmitPage />
+                  <McparReviewSubmitPage />
                 )
               }
             />
