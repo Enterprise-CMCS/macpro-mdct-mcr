@@ -107,6 +107,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
+  missingEntityMessage?: CustomHtmlElement[];
 }
 
 export interface ModalDrawerReportPageVerbiage
@@ -186,6 +187,7 @@ export enum ModalDrawerEntityTypes {
   QUALITY_MEASURES = "qualityMeasures",
   SANCTIONS = "sanctions",
 }
+
 export interface EntityShape {
   id: string;
   [key: string]: any;

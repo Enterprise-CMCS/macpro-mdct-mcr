@@ -32,7 +32,7 @@ export default {
           headRow: ["Contract Year", "Contract Period", "Due Date"],
           bodyRows: [
             ["Jul to Jun", "7/1/21 to 6/30/22", "Dec 27, 2022"],
-            ["Sep to Aug", "9/1/21 to 8/21/22", "Feb 27, 2023"],
+            ["Sep to Aug", "9/1/21 to 8/31/22", "Feb 27, 2023"],
             ["Oct to Sep", "10/1/21 to 9/30/22", "Mar 29, 2023"],
             ["Jan to Dec", "1/1/22 to 12/31/22", "Jun 29, 2023"],
             ["Feb to Jan", "2/1/22 to 1/31/23", "Jul 30, 2023"],
