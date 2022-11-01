@@ -1458,7 +1458,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report program characteristics & enrollment for each plan",
-            "drawerTitle": "Report program characteristics & enrollment for"
+            "drawerTitle": "Report program characteristics & enrollment for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dpc",
@@ -1508,7 +1521,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report financial performance for each plan",
-            "drawerTitle": "Report financial performance for"
+            "drawerTitle": "Report financial performance for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dfp",
@@ -1637,7 +1663,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on encounter data for each plan",
-            "drawerTitle": "Report encounter data for"
+            "drawerTitle": "Report encounter data for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dedr",
@@ -1690,7 +1729,20 @@
                   "spreadsheet": "D1_Plan_Set"
                 },
                 "dashboardTitle": "Report on appeals for each plan",
-                "drawerTitle": "Report on appeals for"
+                "drawerTitle": "Report on appeals for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dao",
@@ -1851,7 +1903,20 @@
                   ]
                 },
                 "dashboardTitle": "Report on appeals by service for each plan",
-                "drawerTitle": "Report appeals by service for"
+                "drawerTitle": "Report appeals by service for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dabs",
@@ -1978,7 +2043,20 @@
                   ]
                 },
                 "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
-                "drawerTitle": "Report state fair hearings and external medical reviews for"
+                "drawerTitle": "Report state fair hearings and external medical reviews for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dsfh",
@@ -2058,7 +2136,20 @@
                   "spreadsheet": "D1_Plan_Set"
                 },
                 "dashboardTitle": "Report on grievances for each plan",
-                "drawerTitle": "Report on grievances for"
+                "drawerTitle": "Report on grievances for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dgo",
@@ -2139,7 +2230,20 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
-                "drawerTitle": "Report encounter data for"
+                "drawerTitle": "Report encounter data for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dgbs",
@@ -2275,6 +2379,19 @@
                   {
                     "type": "p",
                     "content": "A single grievance may be related to multiple reasons and may therefore be counted in multiple categories."
+                  }
+                ],
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
                   }
                 ]
               },
@@ -2895,7 +3012,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on program integrity for each plan",
-            "drawerTitle": "Program integrity for"
+            "drawerTitle": "Program integrity for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dpi",
@@ -3109,7 +3239,20 @@
           ]
         },
         "dashboardTitle": "Report on role and type for each BSS entity",
-        "drawerTitle": "Report on"
+        "drawerTitle": "Report on",
+        "missingEntityMessage": [
+          {
+            "type": "span",
+            "content": "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program. "
+          },
+          {
+            "type": "internalLink",
+            "content": "Add BSS entities",
+            "props": {
+              "to": "/mcpar/program-information/add-bss-entities"
+            }
+          }
+        ]
       },
       "drawerForm": {
         "id": "ebssei",
