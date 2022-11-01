@@ -58,18 +58,18 @@ export const isAuthorized = async (event: APIGatewayProxyEvent) => {
     clientId: cognitoValues.userPoolClientId,
   });
 
-  let payload;
+  let isAuthorized;
 
-  if (event?.headers["x-api-key"]) {
+  if (event?.headers?.["x-api-key"]) {
     try {
-      payload = await verifier.verify(event.headers["x-api-key"]);
+      isAuthorized = await verifier.verify(event.headers["x-api-key"]);
     } catch {
       // verification failed - unauthorized
-      return false;
+      isAuthorized = false;
     }
   }
 
-  return !!payload;
+  return !!isAuthorized;
 };
 
 export const hasPermissions = (
