@@ -107,6 +107,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
+  missingEntityMessage?: CustomHtmlElement[];
 }
 
 export interface ModalDrawerReportPageVerbiage

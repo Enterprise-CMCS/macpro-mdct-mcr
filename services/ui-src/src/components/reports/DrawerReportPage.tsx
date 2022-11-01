@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 // components
 import {
   Box,
@@ -7,8 +6,6 @@ import {
   Flex,
   Image,
   Heading,
-  Link,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -18,7 +15,7 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, useUser } from "utils";
+import { filterFormData, parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
@@ -41,27 +38,6 @@ export const DrawerReportPage = ({ route }: Props) => {
 
   const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
-
-  const missingEntitiesVerbiage: any = {
-    plans: {
-      message:
-        "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7.",
-      link: {
-        text: "Add Plans.",
-        href: "/mcpar/program-information/add-plans",
-      },
-    },
-    bssEntities: {
-      message:
-        "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program.",
-      link: {
-        text: "Add BSS entities.",
-        href: "/mcpar/program-information/add-bss-entities",
-      },
-    },
-  };
-  const { message: missingEntitiesMessage, link: missingEntitiesLink } =
-    missingEntitiesVerbiage[entityType];
 
   const openRowDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
@@ -137,16 +113,11 @@ export const DrawerReportPage = ({ route }: Props) => {
       <Heading as="h3" sx={sx.dashboardTitle}>
         {verbiage.dashboardTitle}
       </Heading>
-      {entities?.length ? (
-        entityRows(entities)
-      ) : (
-        <Text sx={sx.emptyEntityMessage}>
-          {missingEntitiesMessage}{" "}
-          <Link as={RouterLink} to={missingEntitiesLink.href}>
-            {missingEntitiesLink.text}
-          </Link>
-        </Text>
-      )}
+      <Box sx={sx.missingEntityMessage}>
+        {entities?.length
+          ? entityRows(entities)
+          : parseCustomHtml(verbiage.missingEntityMessage || "")}
+      </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
         verbiage={{
@@ -197,9 +168,16 @@ const sx = {
     flexGrow: 1,
     marginLeft: "2.25rem",
   },
-  emptyEntityMessage: {
+  missingEntityMessage: {
     paddingTop: "1rem",
     fontWeight: "bold",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
   },
   enterButton: {
     width: "4.25rem",
