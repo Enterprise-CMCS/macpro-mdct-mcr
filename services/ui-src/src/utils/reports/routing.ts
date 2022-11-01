@@ -1,9 +1,16 @@
 import { useLocation } from "react-router-dom";
-import { isMcparReportFormPage, mcparReportRoutesFlat } from "forms/mcpar";
+import {
+  isMcparReportFormPage,
+  mcparReportJson,
+  mcparReportRoutesFlat,
+} from "forms/mcpar";
 
 const getRoutingStructure = (pathname: string) => {
   if (isMcparReportFormPage(pathname)) {
-    return { fallbackRoute: "/mcpar", routeArray: mcparReportRoutesFlat };
+    return {
+      fallbackRoute: mcparReportJson.basePath,
+      routeArray: mcparReportRoutesFlat,
+    };
   }
   return { fallbackRoute: "/", routeArray: undefined };
 };
