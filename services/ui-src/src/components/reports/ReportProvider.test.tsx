@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
+import { useLocation } from "react-router-dom";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
 import {
@@ -17,6 +18,17 @@ jest.mock("utils/api/requestMethods/report", () => ({
   postReport: jest.fn(() => {}),
   putReport: jest.fn(() => {}),
 }));
+
+jest.mock("react-router-dom");
+const mockUseLocation = useLocation as jest.MockedFunction<typeof useLocation>;
+
+const mockMcparReportLocation = {
+  pathname: "/mcpar/test",
+  state: undefined,
+  key: "",
+  search: "",
+  hash: "",
+};
 
 const TestComponent = () => {
   const { ...context } = useContext(ReportContext);
@@ -46,6 +58,18 @@ const TestComponent = () => {
       >
         Fetch Reports By State
       </button>
+      <button
+        onClick={() => context.clearReportSelection()}
+        data-testid="clear-report-selection-button"
+      >
+        Clear Report Selection
+      </button>
+      <button
+        onClick={() => context.setReportSelection(mockReport)}
+        data-testid="set-report-selection-button"
+      >
+        Set Report Selection
+      </button>
       {context.errorMessage && (
         <p data-testid="error-message">{context.errorMessage}</p>
       )}
@@ -63,6 +87,7 @@ const testComponent = (
 
 describe("Test ReportProvider fetch methods", () => {
   beforeEach(async () => {
+    mockUseLocation.mockReturnValue(mockMcparReportLocation);
     await act(async () => {
       await render(testComponent);
     });
@@ -113,6 +138,30 @@ describe("Test ReportProvider fetch methods", () => {
       await userEvent.click(createButton);
     });
     expect(mockReportAPI.postReport).toHaveBeenCalledTimes(1);
+  });
+
+  test("setReportSelection sets report in storage and clearReportSelection clears report in storage", async () => {
+    // start with no report set
+    expect(localStorage.getItem("selectedReport")).toBe(null);
+    // click button to set report
+    await act(async () => {
+      const setReportSelectionButton = screen.getByTestId(
+        "set-report-selection-button"
+      );
+      await userEvent.click(setReportSelectionButton);
+    });
+    // verify report is set in storage
+    expect(localStorage.getItem("selectedReport")).toBe(mockReport.id);
+
+    // click button to clear report selection
+    await act(async () => {
+      const clearReportSelectionButton = screen.getByTestId(
+        "clear-report-selection-button"
+      );
+      await userEvent.click(clearReportSelectionButton);
+    });
+    // verify storage is set to empty string
+    expect(localStorage.getItem("selectedReport")).toBe("");
   });
 });
 
@@ -177,5 +226,38 @@ describe("Test ReportProvider error states", () => {
       await userEvent.click(updateButton);
     });
     expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+});
+
+describe("garrett Test ReportProvider fetches when loading on report page", () => {
+  beforeEach(async () => {
+    localStorage.setItem("selectedState", "AB");
+    localStorage.setItem("selectedReport", "mock-report-id");
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+    localStorage.clear();
+  });
+
+  test("getReport is not called on load when not on a report page", async () => {
+    const mockNonReportLocation = { ...mockMcparReportLocation };
+    mockNonReportLocation.pathname = "/non-report";
+    mockUseLocation.mockReturnValue(mockNonReportLocation);
+    await act(async () => {
+      await render(testComponent);
+    });
+    await waitFor(() =>
+      expect(mockReportAPI.getReport).toHaveBeenCalledTimes(0)
+    );
+  });
+
+  test("getReport is called on load for valid report path", async () => {
+    mockUseLocation.mockReturnValue(mockMcparReportLocation);
+    await act(async () => {
+      await render(testComponent);
+    });
+    await waitFor(() =>
+      expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1)
+    );
   });
 });
