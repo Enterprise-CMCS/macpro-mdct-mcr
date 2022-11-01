@@ -35,10 +35,10 @@ const loadCognitoValues = async () => {
     const userPoolClientId = await ssm
       .getParameter(userPoolClientIdParams)
       .promise();
-    if (userPoolId.Parameter?.Value && userPoolClientId.Parameter?.Value) {
-      process.env["COGNITO_USER_POOL_ID"] = userPoolId.Parameter?.Value;
+    if (userPoolId?.Parameter?.Value && userPoolClientId?.Parameter?.Value) {
+      process.env["COGNITO_USER_POOL_ID"] = userPoolId.Parameter.Value;
       process.env["COGNITO_USER_POOL_CLIENT_ID"] =
-        userPoolClientId.Parameter?.Value;
+        userPoolClientId.Parameter.Value;
       return {
         userPoolId: userPoolId.Parameter.Value,
         userPoolClientId: userPoolClientId.Parameter.Value,
@@ -58,17 +58,18 @@ export const isAuthorized = async (event: APIGatewayProxyEvent) => {
     clientId: cognitoValues.userPoolClientId,
   });
 
-  let payload;
+  let isAuthorized;
 
-  if (event?.headers["x-api-key"]) {
+  if (event?.headers?.["x-api-key"]) {
     try {
-      payload = await verifier.verify(event.headers["x-api-key"]);
+      isAuthorized = await verifier.verify(event.headers["x-api-key"]);
     } catch {
-      console.log("Token not valid!"); // eslint-disable-line
+      // verification failed - unauthorized
+      isAuthorized = false;
     }
   }
 
-  return !!payload;
+  return !!isAuthorized;
 };
 
 export const hasPermissions = (
