@@ -1,16 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
-  AdminPage,
   AdminBannerProvider,
+  AdminPage,
   DashboardPage,
-  GetStartedPage,
   HelpPage,
   HomePage,
+  McparGetStartedPage,
+  McparReviewSubmitPage,
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
-  ReviewSubmitPage,
 } from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 // utils
@@ -33,7 +33,7 @@ export const AppRoutes = () => {
 
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<DashboardPage />} />
-          <Route path="/mcpar/get-started" element={<GetStartedPage />} />
+          <Route path="/mcpar/get-started" element={<McparGetStartedPage />} />
           {mcparReportRoutesFlat.map((route: ReportRoute) => (
             <Route
               key={route.path}
@@ -43,7 +43,7 @@ export const AppRoutes = () => {
                   // if report route with form
                   <ReportPageWrapper route={route} />
                 ) : (
-                  <ReviewSubmitPage />
+                  <McparReviewSubmitPage />
                 )
               }
             />
