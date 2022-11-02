@@ -1,16 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 // components
 import {
-  AdminPage,
   AdminBannerProvider,
+  AdminPage,
   DashboardPage,
-  McparGetStartedPage,
   HelpPage,
   HomePage,
+  McparGetStartedPage,
+  McparReviewSubmitPage,
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
-  McparReviewSubmitPage,
 } from "components";
 import { mcparReportRoutesFlat } from "forms/mcpar";
 // utils
