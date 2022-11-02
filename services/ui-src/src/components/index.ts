@@ -54,6 +54,7 @@ export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
 export { InfoSection } from "./layout/InfoSection";
 export { PageTemplate } from "./layout/PageTemplate";
+export { Timeout } from "./layout/Timeout";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";

@@ -91,7 +91,7 @@ export const UserProvider = ({ children }: Props) => {
         redirectSignIn: config.cognito.REDIRECT_SIGNIN,
         redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
         scope: ["email", "openid", "profile"],
-        responseType: "token",
+        responseType: "code",
       },
     });
   }, []);

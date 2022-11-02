@@ -4,13 +4,15 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Amplify } from "aws-amplify";
 import config from "config";
 // utils
-import { ApiProvider, UserProvider } from "utils";
+import { ApiProvider, UserProvider, initAuthManager } from "utils";
 // components
 import { App, Error } from "components";
 // styles
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "styles/theme";
 import "./styles/index.scss";
+
+initAuthManager();
 
 Amplify.configure({
   Storage: {
