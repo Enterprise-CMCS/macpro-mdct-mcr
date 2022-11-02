@@ -5,17 +5,13 @@ import { Spinner } from "@cmsgov/design-system";
 // utils
 import { useFindRoute, useUser } from "utils";
 import { FormJson } from "types";
-import { mcparReportRoutesFlat } from "forms/mcpar";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
 
 export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
   const navigate = useNavigate();
-  const { previousRoute, nextRoute } = useFindRoute(
-    mcparReportRoutesFlat,
-    "/mcpar"
-  );
+  const { previousRoute, nextRoute } = useFindRoute();
 
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
