@@ -229,7 +229,7 @@ describe("Test ReportProvider error states", () => {
   });
 });
 
-describe("garrett Test ReportProvider fetches when loading on report page", () => {
+describe("Test ReportProvider fetches when loading on report page", () => {
   beforeEach(async () => {
     localStorage.setItem("selectedState", "AB");
     localStorage.setItem("selectedReport", "mock-report-id");
