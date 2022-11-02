@@ -25,9 +25,11 @@ export const HelpPage = () => {
           cardprops={sx.card}
         />
       </Box>
-      <Box sx={sx.faqAccordionBox}>
-        <FaqAccordion accordionItems={accordionItems} />
-      </Box>
+      {accordionItems.length > 1 && (
+        <Box sx={sx.faqAccordionBox}>
+          <FaqAccordion accordionItems={accordionItems} />
+        </Box>
+      )}
     </PageTemplate>
   );
 };
