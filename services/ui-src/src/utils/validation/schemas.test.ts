@@ -14,7 +14,7 @@ describe("Schemas", () => {
     "N/A",
     "Data not available",
   ];
-  const badNumberTestCases = ["abc", "N", "", "123:123", "!@#!@%"];
+  const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
 
   const goodRatioTestCases = [
     "1:1",
@@ -48,12 +48,12 @@ describe("Schemas", () => {
     }
   };
 
-  test("Evalulate Number Schema using number scheme", () => {
+  test("Evaluate Number Schema using number scheme", () => {
     testNumberSchema(number(), goodNumberTestCases, true);
     testNumberSchema(number(), badNumberTestCases, false);
   });
 
-  test("Evalulate Number Schema using ratio scheme", () => {
+  test("Evaluate Number Schema using ratio scheme", () => {
     testNumberSchema(ratio(), goodRatioTestCases, true);
     testNumberSchema(ratio(), badRatioTestCases, false);
   });
