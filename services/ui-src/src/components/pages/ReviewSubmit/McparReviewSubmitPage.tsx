@@ -19,7 +19,7 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 
-export const ReviewSubmitPage = () => {
+export const McparReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
