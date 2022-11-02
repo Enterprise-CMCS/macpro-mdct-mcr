@@ -33,6 +33,7 @@ const mockReportContextWithoutEntities = {
 
 const {
   addEntityButtonText,
+  editEntityButtonText,
   enterEntityDetailsButtonText,
   deleteModalConfirmButtonText,
 } = mockModalDrawerReportPageJson.verbiage;
@@ -83,6 +84,11 @@ describe("Test ModalDrawerReportPage with entities", () => {
     const addEntityButton = screen.getByText(addEntityButtonText);
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
+
+    const editButton = screen.getByText(editEntityButtonText);
+    await userEvent.click(editButton);
+    const closeButton = screen.getByText("Close");
+    await userEvent.click(closeButton);
   });
 
   test("ModalDrawerReportPage opens the delete modal on remove click", async () => {

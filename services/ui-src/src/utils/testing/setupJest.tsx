@@ -376,6 +376,7 @@ export const mockReport = {
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
   combinedData: false,
+  submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
 };
 
