@@ -23,53 +23,6 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   });
 };
 
-// export const number = () =>
-//   mixed()
-//     .test({
-//       message: error.REQUIRED_GENERIC,
-//       test: (val) => val != “”,
-//     })
-//     .required(error.REQUIRED_GENERIC)
-// .test({
-//   message: error.INVALID_NUMBER_OR_NA,
-//   test: (val) => {
-//     const replaceCharsRegex = /[,.]/g;
-//     return (
-//       valueCleaningNumberSchema(val, replaceCharsRegex).isValidSync(val) ||
-//       validNAValues.includes(val)
-//     );
-//   },
-// });
-
-// NUMBER - Number or Valid Strings
-// export const number = () =>
-//   mixed()
-//     .required(error.REQUIRED_GENERIC)
-//     // .typeError(error.INVALID_NUMBER_OR_NA)
-// .test({
-//   message: error.INVALID_NUMBER_OR_NA,
-//   test: (val) => {
-//     const value = val?.toString();
-//     const isValidNumber = valueCleaningNumberSchema(
-//       value,
-//       /[,]/g
-//     ).isValidSync(value);
-//     const isValidString = validNAValues.includes(value);
-//     return isValidNumber || isValidString;
-//   },
-// })
-
-//     .transform((value) => {
-//       let valueToReturn = value;
-//       if (!validNAValues.includes(value)) {
-//         const valueAsString = value.toString();
-//         const valueAsStringWithoutCommas = valueAsString.replace(/[,]/g, "");
-//         const finalValueAsNumber = parseFloat(valueAsStringWithoutCommas);
-//         valueToReturn = finalValueAsNumber;
-//       }
-//       return valueToReturn || undefined;
-//     });
-
 export const number = () =>
   string()
     .required(error.REQUIRED_GENERIC)
@@ -196,7 +149,6 @@ export const nested = (
 ) => {
   const fieldTypeMap = {
     array: array(),
-    mixed: number(),
     string: string(),
     date: date(),
     object: object(),
