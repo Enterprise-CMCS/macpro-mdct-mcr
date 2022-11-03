@@ -9,9 +9,26 @@ import {
 import { validationErrors as error } from "verbiage/errors";
 import { Choice } from "types";
 
+// TEXT - Helpers
+const testForEmptyValue = (value: any) => {
+  if (value) {
+    if (value === "" || value.trim().length === 0) {
+      return false;
+    }
+  }
+  return true;
+};
+
 // TEXT
 export const text = () =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+  string()
+    .typeError(error.INVALID_GENERIC)
+    .required(error.REQUIRED_GENERIC)
+    // check for blank spaces
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => testForEmptyValue(value),
+    });
 export const textOptional = () => text().notRequired();
 
 // NUMBER - Helpers
@@ -37,6 +54,11 @@ export const number = () =>
           return isValidStringValue || isValidNumberValue;
         } else return true;
       },
+    })
+    // check for blank spaces
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => testForEmptyValue(value),
     });
 
 export const numberOptional = () => number().notRequired();
@@ -94,7 +116,12 @@ export const urlOptional = () => url().notRequired();
 export const date = () =>
   string()
     .required(error.REQUIRED_GENERIC)
-    .matches(dateFormatRegex, error.INVALID_DATE);
+    .matches(dateFormatRegex, error.INVALID_DATE)
+    // check for empty values
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => testForEmptyValue(value),
+    });
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
   date().test(
