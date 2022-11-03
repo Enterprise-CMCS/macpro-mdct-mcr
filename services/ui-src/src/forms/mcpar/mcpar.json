@@ -2195,7 +2195,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed).</p>",
+                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.</p>",
                       "mask": "comma-separated"
                     }
                   },
@@ -3065,11 +3065,11 @@
               {
                 "id": "plan_programIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations opened by the plan in the past year per 1,000 beneficiaries enrolled in the plan on the first day of the last month of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
@@ -3085,11 +3085,11 @@
               {
                 "id": "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year per 1,000 beneficiaries enrolled in the plan at the beginning of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
