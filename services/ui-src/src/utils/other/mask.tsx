@@ -40,8 +40,10 @@ export function convertToCommaSeparatedString(value: string): string {
   value = value.replace(/[.]/g, (match, index) => {
     return index > firstDecimalPointIndex ? "" : match;
   });
-  // Remove leading zeroes (we'll add one back later if needed).
-  value = value.replace(/^0+/g, "");
+  if (parseFloat(value) !== 0) {
+    // Remove all leading zeroes if value is not equal to 0
+    value = value.replace(/^0+/g, "");
+  }
   // Convert String to a float to begin operation
   const valueAsFloat = parseFloat(value);
   // Slide any extra decimals down to 2
