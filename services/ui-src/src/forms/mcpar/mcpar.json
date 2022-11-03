@@ -3051,11 +3051,11 @@
               {
                 "id": "plan_programIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations opened by the plan in the past year per 1,000 beneficiaries enrolled in the plan on the first day of the last month of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
@@ -3071,11 +3071,11 @@
               {
                 "id": "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year per 1,000 beneficiaries enrolled in the plan at the beginning of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
