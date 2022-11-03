@@ -3,7 +3,6 @@ import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
 // utils
 import { useNavigate } from "react-router-dom";
-import config from "config";
 import { getSignedTemplateUrl, useBreakpoint } from "utils";
 import { AnyObject } from "types";
 // assets
@@ -30,10 +29,9 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
 
-  const showFormLink = verbiage.link && config.STAGE !== "production";
-  const cardText = showFormLink
-    ? verbiage.body.available
-    : verbiage.body.unavailable;
+  const cardText = verbiage.link
+    ? verbiage.body?.available
+    : verbiage.body?.unavailable;
   return (
     <Card {...cardprops}>
       <Flex sx={sx.root} {...props}>
@@ -62,7 +60,7 @@ export const TemplateCard = ({
             >
               {verbiage.downloadText}
             </Button>
-            {showFormLink && (
+            {verbiage.link && (
               <Button
                 sx={sx.formLink}
                 onClick={() => navigate(verbiage.link.route)}
