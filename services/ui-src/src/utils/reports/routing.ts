@@ -5,14 +5,9 @@ import {
   mcparReportRoutesFlat,
 } from "forms/mcpar";
 
-// TODO: Add future reports here
-export const getCurrentReportFormPageType = (
-  pathname: string
-): string | undefined => {
-  let pageType = undefined;
-  if (isMcparReportFormPage(pathname)) pageType = "mcpar";
-  return pageType;
-};
+// TODO: Chain future reports here
+export const isReportFormPage = (pathname: string): boolean =>
+  isMcparReportFormPage(pathname);
 
 // TODO: Add future reports here
 const getRoutingStructure = (pathname: string) => {

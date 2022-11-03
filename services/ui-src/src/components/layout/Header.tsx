@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Menu, MenuOption, ReportContext } from "components";
 // utils
-import { getCurrentReportFormPageType, useBreakpoint } from "utils";
+import { isReportFormPage, useBreakpoint } from "utils";
 // assets
 import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
@@ -22,9 +22,7 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
   const { report } = useContext(ReportContext);
-
-  const currentReportFormPageType = getCurrentReportFormPageType(pathname);
-  const isReportFormPage = currentReportFormPageType;
+  const basePath = report?.formTemplate.basePath || "/";
 
   return (
     <Box sx={sx.root} id="header">
@@ -58,7 +56,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isReportFormPage && (
+      {isReportFormPage(pathname) && (
         <Flex sx={sx.subnavBar}>
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
@@ -71,7 +69,7 @@ export const Header = ({ handleLogout }: Props) => {
                 {!isMobile && (
                   <Link
                     as={RouterLink}
-                    to={"/" + currentReportFormPageType}
+                    to={basePath}
                     sx={sx.leaveFormLink}
                     variant="unstyled"
                     tabIndex={-1}
