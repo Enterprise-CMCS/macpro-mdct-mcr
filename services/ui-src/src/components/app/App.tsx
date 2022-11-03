@@ -14,8 +14,12 @@ import {
   SkipNav,
 } from "components";
 // utils
-import { isMcparReportFormPage } from "forms/mcpar";
-import { fireTealiumPageView, makeMediaQueryClasses, useUser } from "utils";
+import {
+  fireTealiumPageView,
+  isReportFormPage,
+  makeMediaQueryClasses,
+  useUser,
+} from "utils";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
@@ -35,7 +39,7 @@ export const App = () => {
     );
   }, [key]);
 
-  const isReportPage = isMcparReportFormPage(pathname);
+  const isReportPage = isReportFormPage(pathname);
 
   return (
     <div id="app-wrapper" className={mqClasses}>
