@@ -133,6 +133,10 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     closeDrawer();
   };
 
+  const dashTitle = `${verbiage.dashboardTitle}${
+    verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
+  }`;
+
   return (
     <Box data-testid="modal-drawer-report-page">
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
@@ -145,7 +149,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         </Button>
         {reportFieldDataEntities.length !== 0 && (
           <Heading as="h3" sx={sx.dashboardTitle}>
-            {verbiage.dashboardTitle}
+            {dashTitle}
           </Heading>
         )}
         {reportFieldDataEntities.map((entity: EntityShape) => (
@@ -216,7 +220,6 @@ interface Props {
 const sx = {
   dashboardTitle: {
     marginBottom: "1.25rem",
-    marginLeft: "0.75rem",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",
