@@ -22,7 +22,6 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
   const { report } = useContext(ReportContext);
-  const basePath = report?.formTemplate.basePath || "/";
 
   return (
     <Box sx={sx.root} id="header">
@@ -69,7 +68,7 @@ export const Header = ({ handleLogout }: Props) => {
                 {!isMobile && (
                   <Link
                     as={RouterLink}
-                    to={basePath}
+                    to={report?.formTemplate.basePath || "/"}
                     sx={sx.leaveFormLink}
                     variant="unstyled"
                     tabIndex={-1}
