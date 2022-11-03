@@ -21,7 +21,7 @@ export const createBanner = handler(async (event, _context) => {
       key: yup.string().required(),
       title: yup.string().required(),
       description: yup.string().required(),
-      url: yup.string().url().notRequired(),
+      link: yup.string().url().notRequired(),
       startDate: yup.number().required(),
       endDate: yup.number().required(),
     });
