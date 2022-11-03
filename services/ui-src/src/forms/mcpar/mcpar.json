@@ -995,7 +995,8 @@
                     }
                   ]
                 },
-                "dashboardTitle": "Add measures for monitoring access standards",
+                "dashboardTitle": "Access measure total count:",
+                "countEntitiesInTitle": true,
                 "addEntityButtonText": "Add access measure",
                 "editEntityButtonText": "Edit measure",
                 "addEditModalAddTitle": "Add access measure",
@@ -2525,17 +2526,13 @@
               "spreadsheet": "D2_Plan_Measures",
               "info": [
                 {
-                  "type": "heading",
-                  "as": "h3",
-                  "content": "Add Quality & Performance Measures"
-                },
-                {
                   "type": "html",
                   "content": "<p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component.</p>"
                 }
               ]
             },
-            "dashboardTitle": "Add quality & performance measures",
+            "dashboardTitle": "Quality & performance measure total count:",
+            "countEntitiesInTitle": true,
             "addEntityButtonText": "Add quality & performance measure",
             "editEntityButtonText": "Edit measure",
             "addEditModalAddTitle": "Add a quality & performance measure",
@@ -2798,10 +2795,11 @@
                 }
               ]
             },
-            "dashboardTitle": "Add plan sanctions",
-            "addEntityButtonText": "Add a sanction",
+            "dashboardTitle": "Sanction total count:",
+            "countEntitiesInTitle": true,
+            "addEntityButtonText": "Add sanction",
             "editEntityButtonText": "Edit sanction",
-            "addEditModalAddTitle": "Add a sanction",
+            "addEditModalAddTitle": "Add sanction",
             "addEditModalEditTitle": "Edit sanction",
             "addEditModalMessage": "Complete the remaining indicators for this sanction by saving the sanction and selecting \"Enter sanction details\".",
             "deleteEntityButtonAltText": "Delete sanction",
@@ -3156,7 +3154,7 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.X.8 ratio of program integrity referral to the state",
+                  "label": "D1.X.8 Ratio of program integrity referral to the state",
                   "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
                   "mask": "comma-separated"
                 }
