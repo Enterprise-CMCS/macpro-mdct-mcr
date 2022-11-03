@@ -29,6 +29,8 @@ export const McparReviewSubmitPage = () => {
   const { email, full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
 
+  const isPermittedToSubmit = userIsStateUser || userIsStateRep;
+
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
@@ -46,7 +48,7 @@ export const McparReviewSubmitPage = () => {
 
   const submitForm = async () => {
     setSubmitting(true);
-    if (userIsStateUser || userIsStateRep) {
+    if (isPermittedToSubmit) {
       const submissionDate = Date.now();
       await updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,
@@ -80,8 +82,9 @@ export const McparReviewSubmitPage = () => {
               submitForm={submitForm}
               isOpen={isOpen}
               onOpen={onOpen}
-              submitting={submitting}
               onClose={onClose}
+              submitting={submitting}
+              isPermittedToSubmit={isPermittedToSubmit}
             />
           ))}
       </Flex>
@@ -93,8 +96,9 @@ const ReadyToSubmit = ({
   submitForm,
   isOpen,
   onOpen,
-  submitting,
   onClose,
+  submitting,
+  isPermittedToSubmit,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
@@ -111,7 +115,11 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        <Button type="submit" onClick={onOpen as MouseEventHandler}>
+        <Button
+          type="submit"
+          onClick={onOpen as MouseEventHandler}
+          isDisabled={!isPermittedToSubmit}
+        >
           {pageLink.text}
         </Button>
       </Flex>
@@ -133,9 +141,10 @@ const ReadyToSubmit = ({
 interface ReadyToSubmitProps {
   submitForm: Function;
   isOpen: boolean;
-  submitting?: boolean;
   onOpen: Function;
   onClose: Function;
+  submitting?: boolean;
+  isPermittedToSubmit?: boolean;
 }
 
 export const SuccessMessageGenerator = (
