@@ -30,7 +30,6 @@ describe("Sidebar integration tests", () => {
     cy.get(collapseButton).first().click();
     cy.wait(600);
 
-    // cy.findByText("I: Program Characteristics").click();
     cy.get(subsectionText).filter(":visible").first().parent().parent().click();
     cy.get(subsectionText)
       .filter(":visible")
