@@ -14,8 +14,6 @@ export default {
     MCPAR: {
       title: "Managed Care Program Annual Report (MCPAR)",
       body: {
-        unavailable:
-          "The MCPAR online form will be available on this website in November 2022. Note: Every state must complete one report per program.",
         available:
           "The MCPAR online form is now available. Note: Every state must submit one report per program, through the online form.",
       },
