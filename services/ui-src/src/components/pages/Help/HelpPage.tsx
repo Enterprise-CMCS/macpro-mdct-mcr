@@ -25,7 +25,7 @@ export const HelpPage = () => {
           cardprops={sx.card}
         />
       </Box>
-      {accordionItems.length > 1 && (
+      {accordionItems.length > 0 && (
         <Box sx={sx.faqAccordionBox}>
           <FaqAccordion accordionItems={accordionItems} />
         </Box>

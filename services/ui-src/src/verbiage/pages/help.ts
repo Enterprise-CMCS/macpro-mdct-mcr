@@ -17,5 +17,13 @@ export default {
       },
     },
   },
-  accordionItems: [],
+  accordionItems: [
+    /*
+     *  accordion items are in the following format:
+     *  {
+     *    question: "",
+     *    answer: "",
+     *  }
+     */
+  ],
 };
