@@ -2181,7 +2181,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed).</p>",
+                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.</p>",
                       "mask": "comma-separated"
                     }
                   },
