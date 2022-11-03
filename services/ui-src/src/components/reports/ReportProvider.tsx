@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import {
   getReport,
   getReportsByState,
-  isReportFormPage,
+  getCurrentReportFormPageType,
   postReport,
   putReport,
   sortReportsOldestToNewest,
@@ -94,12 +94,13 @@ export const ReportProvider = ({ children }: Props) => {
     );
   };
 
-  // on mount, if report page, fetch report
+  // on first mount, if on report page, fetch report
   useEffect(() => {
     const state =
       report?.state || userState || localStorage.getItem("selectedState");
     const id = report?.id || localStorage.getItem("selectedReport");
-    if (isReportFormPage(pathname) && state && id) {
+    const isReportFormPage = getCurrentReportFormPageType(pathname);
+    if (isReportFormPage && state && id) {
       fetchReport({ state, id });
     }
   }, []);

@@ -16,7 +16,7 @@ import {
 // utils
 import {
   fireTealiumPageView,
-  isReportFormPage,
+  getCurrentReportFormPageType,
   makeMediaQueryClasses,
   useUser,
 } from "utils";
@@ -25,11 +25,13 @@ export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
+  const currentReportFormPageType = getCurrentReportFormPageType(pathname);
+  const isReportFormPage = currentReportFormPageType;
 
   // fire tealium page view on route change
   useEffect(() => {
-    const contentType = pathname.includes("/mcpar") ? "form" : "app";
-    const sectionName = pathname.includes("/mcpar") ? "MCPAR form" : "Main app";
+    const contentType = isReportFormPage ? "form" : "app";
+    const sectionName = currentReportFormPageType || "main app";
     fireTealiumPageView(
       user,
       window.location.href,
@@ -39,16 +41,16 @@ export const App = () => {
     );
   }, [key]);
 
-  const isReportPage = isReportFormPage(pathname);
-
   return (
     <div id="app-wrapper" className={mqClasses}>
       {user && (
         <Flex sx={sx.appLayout}>
           <SkipNav
             id="skip-nav-main"
-            href={isReportPage ? "#skip-nav-sidebar" : "#main-content"}
-            text={`Skip to ${isReportPage ? "report sidebar" : "main content"}`}
+            href={isReportFormPage ? "#skip-nav-sidebar" : "#main-content"}
+            text={`Skip to ${
+              isReportFormPage ? "report sidebar" : "main content"
+            }`}
             sxOverride={sx.skipnav}
           />
           <ReportProvider>

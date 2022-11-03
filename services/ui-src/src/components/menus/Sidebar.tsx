@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { SkipNav } from "components";
 // utils
-import { isReportFormPage, useBreakpoint } from "utils";
+import { getCurrentReportFormPageType, useBreakpoint } from "utils";
 import { mcparReportJson } from "forms/mcpar";
 // assets
 import arrowDownIcon from "assets/icons/icon_arrow_down_gray.png";
@@ -28,10 +28,11 @@ export const Sidebar = () => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { pathname } = useLocation();
+  const isReportFormPage = getCurrentReportFormPageType(pathname);
 
   return (
     <>
-      {isReportFormPage(pathname) && (
+      {isReportFormPage && (
         <>
           <SkipNav
             id="skip-nav-sidebar"
