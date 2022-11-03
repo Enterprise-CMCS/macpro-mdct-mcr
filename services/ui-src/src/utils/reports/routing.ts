@@ -5,6 +5,11 @@ import {
   mcparReportRoutesFlat,
 } from "forms/mcpar";
 
+// TODO: Add future reports here
+export const isReportFormPage = (pathname: string): boolean =>
+  isMcparReportFormPage(pathname);
+
+// TODO: Add future reports here
 const getRoutingStructure = (pathname: string) => {
   if (isMcparReportFormPage(pathname)) {
     return {
