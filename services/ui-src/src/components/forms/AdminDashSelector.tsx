@@ -23,7 +23,6 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
       const selectedState = formData["state"].value;
       localStorage.setItem("selectedState", selectedState);
     }
-
     navigate("/mcpar");
   };
 

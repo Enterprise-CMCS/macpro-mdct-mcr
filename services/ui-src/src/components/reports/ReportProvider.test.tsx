@@ -233,6 +233,7 @@ describe("Test ReportProvider fetches when loading on report page", () => {
   beforeEach(async () => {
     localStorage.setItem("selectedState", "AB");
     localStorage.setItem("selectedReport", "mock-report-id");
+    localStorage.setItem("selectedReportBasePath", "/mock");
   });
   afterEach(() => {
     jest.clearAllMocks();

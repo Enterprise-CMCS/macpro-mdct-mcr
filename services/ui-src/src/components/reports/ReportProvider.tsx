@@ -88,6 +88,10 @@ export const ReportProvider = ({ children }: Props) => {
   const setReportSelection = async (report: ReportShape) => {
     setReport(report);
     localStorage.setItem("selectedReport", report.id);
+    localStorage.setItem(
+      "selectedReportBasePath",
+      report.formTemplate.basePath
+    );
   };
 
   // on mount, if report page, fetch report
