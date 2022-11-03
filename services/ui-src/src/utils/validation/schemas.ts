@@ -11,7 +11,21 @@ import { Choice } from "types";
 
 // TEXT
 export const text = () =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+  string()
+    .typeError(error.INVALID_GENERIC)
+    .required(error.REQUIRED_GENERIC)
+    // check for blank spaces
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => {
+        if (value) {
+          if (value === "" || value.trim().length === 0) {
+            return false;
+          }
+        }
+        return true;
+      },
+    });
 export const textOptional = () => text().notRequired();
 
 // NUMBER - Helpers
@@ -36,6 +50,18 @@ export const number = () =>
           const isValidNumberValue = validNumberRegex.test(value);
           return isValidStringValue || isValidNumberValue;
         } else return true;
+      },
+    })
+    // check for blank spaces
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => {
+        if (value) {
+          if (value === "" || value.trim().length === 0) {
+            return false;
+          }
+        }
+        return true;
       },
     });
 
@@ -94,7 +120,18 @@ export const urlOptional = () => url().notRequired();
 export const date = () =>
   string()
     .required(error.REQUIRED_GENERIC)
-    .matches(dateFormatRegex, error.INVALID_DATE);
+    .matches(dateFormatRegex, error.INVALID_DATE)
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => {
+        if (value) {
+          if (value === "" || value.trim().length === 0) {
+            return false;
+          }
+        }
+        return true;
+      },
+    });
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
   date().test(
