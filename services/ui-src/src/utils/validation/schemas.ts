@@ -23,6 +23,7 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   });
 };
 
+// NUMBER - Number or Valid Strings
 export const number = () =>
   string()
     .required(error.REQUIRED_GENERIC)
@@ -31,11 +32,10 @@ export const number = () =>
       test: (value) => {
         const validNumberRegex = /[0-9,.]/;
         if (value) {
-          const isValidStringValue = !!validNAValues.includes(value);
-          const isValidNumberValue = !!value?.match(validNumberRegex);
+          const isValidStringValue = validNAValues.includes(value);
+          const isValidNumberValue = validNumberRegex.test(value);
           return isValidStringValue || isValidNumberValue;
-        }
-        return true;
+        } else return true;
       },
     });
 
