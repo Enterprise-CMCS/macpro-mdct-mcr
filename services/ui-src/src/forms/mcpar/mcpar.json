@@ -1727,7 +1727,14 @@
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set"
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Appeals Overview"
+                    }
+                  ]
                 },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for",
@@ -2134,7 +2141,14 @@
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set"
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Grievances Overview"
+                    }
+                  ]
                 },
                 "dashboardTitle": "Report on grievances for each plan",
                 "drawerTitle": "Report on grievances for",
