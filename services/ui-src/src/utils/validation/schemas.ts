@@ -55,10 +55,11 @@ export const ratio = () =>
       message: error.INVALID_RATIO,
       test: (val) => {
         const replaceCharsRegex = /[,.:]/g;
-        const ratio = val.split(":");
+        const ratio = val?.split(":");
 
         // Double check and make sure that a ratio contains numbers on both sides
         if (
+          !ratio ||
           ratio.length != 2 ||
           ratio[0].trim().length == 0 ||
           ratio[1].trim().length == 0
