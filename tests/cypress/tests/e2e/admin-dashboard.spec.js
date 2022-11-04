@@ -32,16 +32,15 @@ beforeEach(() => {
 });
 
 describe("Admin Dashboard integration tests", () => {
-  it("Archive a report successfully", () => {
+  it("Archive/unarchive a report successfully", () => {
+    // archive a report
     cy.location("pathname").should("match", /mcpar/);
     cy.findAllByRole("button", { name: "Archive" }).click();
     cy.get(enterProgramButton).should("be.disabled");
     cy.findByRole("button", { name: "Archive" }).should("not.exist");
-    cy.findByRole("button", { name: "Unarchive" }).should("exist");
-  });
 
-  it("Unarchive a report successfully", () => {
-    cy.location("pathname").should("match", /mcpar/);
+    // unarchive a report
+    cy.findByRole("button", { name: "Unarchive" }).should("exist");
     cy.findAllByRole("button", { name: "Unarchive" }).click();
     cy.get(enterProgramButton).should("not.be.disabled");
     cy.findByRole("button", { name: "Unarchive" }).should("not.exist");
