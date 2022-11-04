@@ -4,7 +4,7 @@ const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
 const statesDropdown = '[data-testid="admin-dropdown"]';
 const enterProgramButton = '[data-testid="enter-program"]';
 
-before(() => {
+beforeEach(() => {
   // create a report as state user
   cy.visit("/");
   cy.authenticate("stateUser");
@@ -21,9 +21,7 @@ before(() => {
   // log out as state user
   cy.get(menuButton).click();
   cy.get(menuOptionLogOut).click();
-});
 
-beforeEach(() => {
   // log in as admin
   cy.visit("/");
   cy.authenticate("adminUser");
