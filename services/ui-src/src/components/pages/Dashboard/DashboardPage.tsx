@@ -26,7 +26,6 @@ import { mcparReportJson } from "forms/mcpar";
 import { AnyObject, ReportShape } from "types";
 import {
   convertDateUtcToEt,
-  flattenReportRoutesArray,
   parseCustomHtml,
   useBreakpoint,
   useUser,
@@ -91,10 +90,7 @@ export const DashboardPage = () => {
   const enterSelectedReport = async (report: ReportShape) => {
     // set active report to selected report
     setReportSelection(report);
-    const flattenedRoutes = flattenReportRoutesArray(
-      report.formTemplate.routes
-    );
-    const firstReportPagePath = flattenedRoutes[0].path;
+    const firstReportPagePath = report.formTemplate.flatRoutes![0].path;
     navigate(firstReportPagePath);
   };
 
