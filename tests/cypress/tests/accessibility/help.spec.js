@@ -4,8 +4,8 @@ const headerHelpButton = "[data-testid='header-help-button']";
 
 describe("Baseline /help accessibility check", () => {
   beforeEach(() => {
+    cy.silentAuthenticate("stateUser");
     cy.visit("/");
-    cy.authenticate("stateUser");
     cy.get(headerHelpButton).click();
   });
 

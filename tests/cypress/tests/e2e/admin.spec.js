@@ -13,8 +13,8 @@ const bannerDeleteErrorMessage =
 const noCurrentBannerMessage = "There is no current banner";
 
 beforeEach(() => {
+  cy.silentAuthenticate("adminUser");
   cy.visit("/");
-  cy.authenticate("adminUser");
   cy.get(menuButton).click();
   cy.get(menuOptionManageAccount).click();
   cy.get(adminButton).click();

@@ -5,8 +5,8 @@ const profileButton = '[data-testid="header-menu-option-manage-account"]';
 
 describe("Baseline /profile accessibility check", () => {
   beforeEach(() => {
+    cy.silentAuthenticate("stateUser");
     cy.visit("/");
-    cy.authenticate("stateUser");
     cy.get(menuButton).click();
     cy.get(profileButton).click();
   });

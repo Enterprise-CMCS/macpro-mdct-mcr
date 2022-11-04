@@ -6,8 +6,8 @@ const subsectionText = ".chakra-link .level-2";
 const sectionLink = ".chakra-link .level-1";
 
 beforeEach(() => {
+  cy.silentAuthenticate("stateUser");
   cy.visit("/");
-  cy.authenticate("stateUser");
   cy.findByRole("button", { name: "Enter MCPAR online" }).click();
   cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
 

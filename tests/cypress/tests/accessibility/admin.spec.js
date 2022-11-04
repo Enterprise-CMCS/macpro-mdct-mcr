@@ -6,8 +6,8 @@ const adminButton = '[data-testid="banner-admin-button"]';
 
 describe("Baseline /admin accessibility check", () => {
   beforeEach(() => {
+    cy.silentAuthenticate("adminUser");
     cy.visit("/");
-    cy.authenticate("adminUser");
     cy.get(menuButton).click();
     cy.get(profileButton).click();
     cy.get(adminButton).click();

@@ -1,3 +1,5 @@
+import { Auth } from "aws-amplify";
+
 // element selectors
 const cognitoEmailInputField = "//input[@name='email']";
 const cognitoPasswordInputField = "//input[@name='password']";
@@ -30,6 +32,22 @@ const adminUser = {
   password: adminUserPassword,
 };
 
+// Configure AWS Amplify
+Auth.configure({
+  mandatorySignIn: true,
+  region: Cypress.env("AWS_REGION"),
+  userPoolId: Cypress.env("COGNITO_USER_POOL_ID"),
+  identityPoolId: Cypress.env("COGNITO_IDENTITY_POOL_ID"),
+  userPoolWebClientId: Cypress.env("COGNITO_USER_POOL_CLIENT_ID"),
+  oauth: {
+    domain: Cypress.env("COGNITO_USER_POOL_CLIENT_DOMAIN"),
+    redirectSignIn: Cypress.env("COGNITO_REDIRECT_SIGNIN"),
+    redirectSignOut: Cypress.env("COGNITO_REDIRECT_SIGNOUT"),
+    scope: ["email", "openid", "profile"],
+    responseType: "token",
+  },
+});
+
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   let credentials = {};
 
@@ -61,3 +79,34 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   });
   cy.get(cognitoLoginButton).click();
 });
+
+Cypress.Commands.add(
+  "silentAuthenticate",
+  async (userType, userCredentials) => {
+    let credentials = {};
+
+    if (userType && userCredentials) {
+      /* eslint-disable-next-line no-console */
+      console.warn(
+        "If userType and userCredentials are both provided, userType is ignored and provided userCredentials are used."
+      );
+    } else if (userCredentials) {
+      credentials = userCredentials;
+    } else if (userType) {
+      switch (userType) {
+        case "adminUser":
+          credentials = adminUser;
+          break;
+        case "stateUser":
+          credentials = stateUser;
+          break;
+        default:
+          throw new Error("Provided userType not recognized.");
+      }
+    } else {
+      throw new Error("Must specify either userType or userCredentials.");
+    }
+
+    await Auth.signIn(credentials.email, credentials.password);
+  }
+);
