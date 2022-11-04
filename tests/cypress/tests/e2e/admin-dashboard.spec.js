@@ -29,7 +29,7 @@ beforeEach(() => {
   cy.authenticate("adminUser");
 
   // navigate to state report dashboard
-  cy.get(statesDropdown).select("MA");
+  cy.get(statesDropdown).select("MN");
   cy.get("button[type=submit]").contains("Go to Report Dashboard").click();
 });
 
