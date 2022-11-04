@@ -1,4 +1,5 @@
 {
+  "type": "mcpar",
   "name": "MCPAR Report Submission Form",
   "basePath": "/mcpar",
   "version": "MCPAR_2022-09-08",
