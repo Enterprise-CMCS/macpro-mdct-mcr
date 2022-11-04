@@ -52,7 +52,7 @@ describe("Test McparReviewSubmitPage functionality", () => {
     render(McparReviewSubmitPage_InProgress);
     const { review } = reviewVerbiage;
     const { intro } = review;
-    expect(screen.getByText(intro.header)).toBeVisible();
+    expect(screen.getByText(intro.infoHeader)).toBeVisible();
   });
 
   test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {

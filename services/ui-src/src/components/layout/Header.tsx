@@ -13,8 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Menu, MenuOption, ReportContext } from "components";
 // utils
-import { useBreakpoint } from "utils";
-import { isMcparReportFormPage } from "forms/mcpar";
+import { isReportFormPage, useBreakpoint } from "utils";
 // assets
 import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
@@ -56,7 +55,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isMcparReportFormPage(pathname) && (
+      {isReportFormPage(pathname) && (
         <Flex sx={sx.subnavBar}>
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
@@ -69,7 +68,7 @@ export const Header = ({ handleLogout }: Props) => {
                 {!isMobile && (
                   <Link
                     as={RouterLink}
-                    to="/mcpar"
+                    to={report?.formTemplate.basePath || "/"}
                     sx={sx.leaveFormLink}
                     variant="unstyled"
                     tabIndex={-1}
