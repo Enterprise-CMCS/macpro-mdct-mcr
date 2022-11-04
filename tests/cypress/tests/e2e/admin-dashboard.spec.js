@@ -4,7 +4,7 @@ const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
 const statesDropdown = '[data-testid="admin-dropdown"]';
 const enterProgramButton = '[data-testid="enter-program"]';
 
-beforeEach(() => {
+before(() => {
   // create a report as state user
   cy.visit("/");
   cy.authenticate("stateUser");
@@ -21,7 +21,9 @@ beforeEach(() => {
   // log out as state user
   cy.get(menuButton).click();
   cy.get(menuOptionLogOut).click();
+});
 
+beforeEach(() => {
   // log in as admin
   cy.visit("/");
   cy.authenticate("adminUser");
@@ -35,13 +37,15 @@ describe("Admin Dashboard integration tests", () => {
   it("Archive/unarchive a report successfully", () => {
     // archive a report
     cy.location("pathname").should("match", /mcpar/);
-    cy.findAllByRole("button", { name: "Archive" }).click();
+    cy.findAllByRole("button", { name: "Archive" }).click({ multiple: true });
     cy.get(enterProgramButton).should("be.disabled");
     cy.findByRole("button", { name: "Archive" }).should("not.exist");
+  });
 
+  it("Unarchive a report successfully", () => {
     // unarchive a report
     cy.findByRole("button", { name: "Unarchive" }).should("exist");
-    cy.findAllByRole("button", { name: "Unarchive" }).click();
+    cy.findAllByRole("button", { name: "Unarchive" }).click({ multiple: true });
     cy.get(enterProgramButton).should("not.be.disabled");
     cy.findByRole("button", { name: "Unarchive" }).should("not.exist");
     cy.findByRole("button", { name: "Archive" }).should("exist");
