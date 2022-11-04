@@ -37,7 +37,7 @@ describe("Admin Dashboard integration tests", () => {
   it("Enter a report", () => {
     // enter report
     cy.location("pathname").should("match", /mcpar/);
-    cy.get(enterProgramButton).click();
+    cy.get(enterProgramButton).click({ multiple: true });
     cy.location("pathname").should(
       "match",
       /^\/mcpar\/program-information\/point-of-contact$/i
