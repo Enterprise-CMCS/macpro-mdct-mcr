@@ -17,9 +17,12 @@ import {
   PageTemplate,
   ReportContext,
 } from "components";
+
 import { DashboardList } from "./DashboardProgramList";
 import { MobileDashboardList } from "./DashboardProgramListMobile";
 import { Spinner } from "@cmsgov/design-system";
+// forms
+import { mcparReportJson } from "forms/mcpar";
 // utils
 import { AnyObject, ReportShape } from "types";
 import {
@@ -88,7 +91,6 @@ export const DashboardPage = () => {
   const enterSelectedReport = async (report: ReportShape) => {
     // set active report to selected report
     setReportSelection(report);
-
     const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
     navigate(reportFirstPagePath);
   };
@@ -210,6 +212,10 @@ export const DashboardPage = () => {
       <AddEditProgramModal
         activeState={activeState!}
         selectedReport={selectedReport!}
+        newReportData={{
+          reportType: "MCPAR",
+          formTemplate: mcparReportJson,
+        }}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
