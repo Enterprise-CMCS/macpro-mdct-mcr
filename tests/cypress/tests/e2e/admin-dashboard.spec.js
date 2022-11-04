@@ -49,15 +49,11 @@ describe("Admin Dashboard integration tests", () => {
     // archive a report
     cy.findAllByRole("button", { name: "Archive" }).last().click();
     cy.get(enterProgramButton).should("be.disabled");
-    cy.findByRole("button", { name: "Archive" }).should("not.exist");
   });
 
   it("Unarchive a report successfully", () => {
     // unarchive a report
-    cy.findByRole("button", { name: "Unarchive" }).should("exist");
     cy.findByRole("button", { name: "Unarchive" }).last().click();
     cy.get(enterProgramButton).should("not.be.disabled");
-    cy.findByRole("button", { name: "Unarchive" }).should("not.exist");
-    cy.findByRole("button", { name: "Archive" }).should("exist");
   });
 });
