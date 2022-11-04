@@ -34,9 +34,18 @@ beforeEach(() => {
 });
 
 describe("Admin Dashboard integration tests", () => {
+  it("Enter a report", () => {
+    // enter report
+    cy.location("pathname").should("match", /mcpar/);
+    cy.get(enterProgramButton).click();
+    cy.location("pathname").should(
+      "match",
+      /^\/mcpar\/program-information\/point-of-contact$/i
+    );
+  });
+
   it("Archive a report successfully", () => {
     // archive a report
-    cy.location("pathname").should("match", /mcpar/);
     cy.findAllByRole("button", { name: "Archive" }).click({ multiple: true });
     cy.get(enterProgramButton).should("be.disabled");
     cy.findByRole("button", { name: "Archive" }).should("not.exist");
