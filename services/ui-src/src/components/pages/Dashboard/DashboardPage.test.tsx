@@ -99,9 +99,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     await userEvent.click(enterReportButton);
     expect(mockReportContext.setReportSelection).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toBeCalledTimes(1);
-    expect(mockUseNavigate).toBeCalledWith(
-      "/mcpar/program-information/point-of-contact"
-    );
+    expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
   });
 
   test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {
@@ -146,9 +144,7 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
-    expect(mockUseNavigate).toBeCalledWith(
-      "/mcpar/program-information/point-of-contact"
-    );
+    expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
   });
 
   test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {
