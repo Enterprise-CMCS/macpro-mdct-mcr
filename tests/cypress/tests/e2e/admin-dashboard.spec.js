@@ -34,7 +34,7 @@ beforeEach(() => {
 });
 
 describe("Admin Dashboard integration tests", () => {
-  it("Archive/unarchive a report successfully", () => {
+  it("Archive a report successfully", () => {
     // archive a report
     cy.location("pathname").should("match", /mcpar/);
     cy.findAllByRole("button", { name: "Archive" }).click({ multiple: true });
