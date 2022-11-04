@@ -11,11 +11,17 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, getFormattedEntityData, useUser } from "utils";
+import {
+  filterFormData,
+  getFormattedEntityData,
+  createRepeatedFields,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   EntityShape,
   EntityType,
+  FormField,
   ModalDrawerReportPageShape,
   ReportStatus,
 } from "types";
@@ -23,7 +29,7 @@ import {
 export const ModalDrawerReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
-  const { entityType, verbiage, modalForm, drawerForm } = route;
+  const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
@@ -32,6 +38,18 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
   const { report, updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
+
+  // create drawerForm from json with repeated fields
+  const drawerForm = { ...drawerFormJson };
+  const formContainsFieldsToRepeat = drawerFormJson.fields.find(
+    (field: FormField) => field.repeat
+  );
+  if (formContainsFieldsToRepeat) {
+    drawerForm.fields = createRepeatedFields(
+      drawerFormJson.fields,
+      report?.fieldData
+    );
+  }
 
   // add/edit entity modal disclosure and methods
   const {
@@ -115,6 +133,10 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     closeDrawer();
   };
 
+  const dashTitle = `${verbiage.dashboardTitle}${
+    verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
+  }`;
+
   return (
     <Box data-testid="modal-drawer-report-page">
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
@@ -127,7 +149,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         </Button>
         {reportFieldDataEntities.length !== 0 && (
           <Heading as="h3" sx={sx.dashboardTitle}>
-            {verbiage.dashboardTitle}
+            {dashTitle}
           </Heading>
         )}
         {reportFieldDataEntities.map((entity: EntityShape) => (
@@ -198,7 +220,6 @@ interface Props {
 const sx = {
   dashboardTitle: {
     marginBottom: "1.25rem",
-    marginLeft: "0.75rem",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",

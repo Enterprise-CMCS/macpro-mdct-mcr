@@ -4,9 +4,8 @@ import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@cmsgov/design-system";
 // form
 import formJson from "forms/addEditProgram/addEditProgram.json";
-import { mcparReportJson } from "forms/mcpar";
 // utils
-import { AnyObject, FormJson, ReportStatus } from "types";
+import { AnyObject, FormJson, ReportJson, ReportStatus } from "types";
 import { States } from "../../constants";
 import {
   calculateDueDate,
@@ -18,6 +17,7 @@ import {
 export const AddEditProgramModal = ({
   activeState,
   selectedReport,
+  newReportData,
   modalDisclosure,
 }: Props) => {
   const { createReport, fetchReportsByState, updateReport } =
@@ -69,9 +69,8 @@ export const AddEditProgramModal = ({
       // create new report
       await createReport(activeState, {
         ...dataToWrite,
-        reportType: "MCPAR",
+        ...newReportData,
         status: ReportStatus.NOT_STARTED,
-        formTemplate: mcparReportJson,
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
@@ -108,6 +107,10 @@ export const AddEditProgramModal = ({
 interface Props {
   activeState: string;
   selectedReport?: AnyObject;
+  newReportData: {
+    reportType: string;
+    formTemplate: ReportJson;
+  };
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

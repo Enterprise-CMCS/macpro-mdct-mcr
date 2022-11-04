@@ -58,6 +58,30 @@ describe("Test ReportDrawer rendering", () => {
   });
 });
 
+const drawerComponentWithoutFormFields = (
+  <ReportDrawer
+    verbiage={{
+      drawerTitle: "mock title",
+      drawerNoFormMessage: "no form fields here",
+    }}
+    selectedEntity={mockEntity}
+    form={{ id: "mock-drawer-form-id", fields: [] }}
+    onSubmit={mockOnSubmit}
+    drawerDisclosure={mockDrawerDisclosure}
+  />
+);
+
+describe("Test ReportDrawerWithoutFormFields rendering", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it("Should render save text for state user", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(drawerComponentWithoutFormFields);
+    expect(screen.getByText("no form fields here")).toBeVisible();
+  });
+});
+
 describe("Test ReportDrawer fill form and close", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);

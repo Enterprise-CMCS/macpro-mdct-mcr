@@ -35,6 +35,7 @@ export interface UserContextShape {
 
 export interface ReportJson {
   id?: string;
+  type: string;
   name: string;
   basePath: string;
   adminDisabled?: boolean;
@@ -105,8 +106,10 @@ export interface ReportPageVerbiage {
 
 export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
+  countEntitiesInTitle?: boolean;
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
+  missingEntityMessage?: CustomHtmlElement[];
 }
 
 export interface ModalDrawerReportPageVerbiage
@@ -186,6 +189,7 @@ export enum ModalDrawerEntityTypes {
   QUALITY_MEASURES = "qualityMeasures",
   SANCTIONS = "sanctions",
 }
+
 export interface EntityShape {
   id: string;
   [key: string]: any;
@@ -232,6 +236,7 @@ export interface FormField {
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];
+  repeat?: string;
 }
 
 export interface DropdownOptions {

@@ -28,7 +28,7 @@ export const textOptional = () => text().notRequired();
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
 
-const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
+const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   return numberSchema().transform((_value) => {
     return Number(value.replace(charsToReplace, ""));
   });
@@ -36,20 +36,17 @@ const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
 
 // NUMBER - Number or Valid Strings
 export const number = () =>
-  mixed()
-    .test({
-      message: error.REQUIRED_GENERIC,
-      test: (val) => val != "",
-    })
+  string()
     .required(error.REQUIRED_GENERIC)
     .test({
       message: error.INVALID_NUMBER_OR_NA,
-      test: (val) => {
-        const replaceCharsRegex = /[,.]/g;
-        return (
-          ignoreCharsForSchema(val, replaceCharsRegex).isValidSync(val) ||
-          validNAValues.includes(val)
-        );
+      test: (value) => {
+        const validNumberRegex = /[0-9,.]/;
+        if (value) {
+          const isValidStringValue = validNAValues.includes(value);
+          const isValidNumberValue = validNumberRegex.test(value);
+          return isValidStringValue || isValidNumberValue;
+        } else return true;
       },
     });
 export const numberOptional = () => number().notRequired();
@@ -78,13 +75,13 @@ export const ratio = () =>
         }
 
         // Check if the left side of the ratio is a valid number
-        const firstTest = ignoreCharsForSchema(
+        const firstTest = valueCleaningNumberSchema(
           ratio[0],
           replaceCharsRegex
         ).isValidSync(val);
 
         // Check if the right side of the ratio is a valid number
-        const secondTest = ignoreCharsForSchema(
+        const secondTest = valueCleaningNumberSchema(
           ratio[1],
           replaceCharsRegex
         ).isValidSync(val);
@@ -143,30 +140,29 @@ export const radioOptional = () => radio().notRequired();
 
 // DYNAMIC
 export const dynamic = () =>
-  array().min(1).of(mixed()).required(error.REQUIRED_GENERIC);
+  array().min(0).of(mixed()).required(error.REQUIRED_GENERIC);
 export const dynamicOptional = () => dynamic().notRequired();
 
 // NESTED
 export const nested = (
-  fieldSchema: Function | any,
+  fieldSchema: Function,
   parentFieldName: string,
-  parentOptionId: any
+  parentOptionId: string
 ) => {
   const fieldTypeMap = {
     array: array(),
-    mixed: number(),
     string: string(),
     date: date(),
     object: object(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
-
   return baseSchema.when(parentFieldName, {
     is: (value: any[]) =>
-      // look for parentOptionId in checked choices
+      // look for parentOptionId in checked Choices
       value?.find((option: any) => option.key === parentOptionId),
-    then: () => fieldSchema(),
+    then: () => fieldSchema(), // returns standard field schema (required)
+    otherwise: () => fieldSchema().notRequired(), // returns not-required field schema
   });
 };
 

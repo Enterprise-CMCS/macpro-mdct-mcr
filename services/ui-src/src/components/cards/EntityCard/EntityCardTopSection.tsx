@@ -1,5 +1,5 @@
 // components
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
@@ -27,18 +27,18 @@ export const EntityCardTopSection = ({
           <Heading as="h4" sx={sx.heading}>
             {formattedEntityData.interventionType}
           </Heading>
-          <Flex>
-            <Box sx={sx.containerBox}>
+          <Grid sx={sx.grid}>
+            <GridItem>
               <Text sx={sx.subtitle}>Intervention topic</Text>
               <Text sx={sx.subtext}>
                 {formattedEntityData.interventionTopic}
               </Text>
-            </Box>
-            <Box sx={sx.containerBox}>
+            </GridItem>
+            <GridItem>
               <Text sx={sx.subtitle}>Plan name</Text>
               <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
-            </Box>
-          </Flex>
+            </GridItem>
+          </Grid>
           <Text sx={sx.subtitle}>Reason for intervention</Text>
           <Text sx={sx.description}>
             {formattedEntityData.interventionReason}
@@ -46,7 +46,37 @@ export const EntityCardTopSection = ({
         </>
       );
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
-      return <Text sx={sx.description}>Quality Measures TODO</Text>;
+      return (
+        <>
+          <Heading as="h4" sx={sx.heading}>
+            {formattedEntityData.name}
+          </Heading>
+          <Text sx={sx.subtitle}>Measure Domain</Text>
+          <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+          <Grid sx={sx.grid}>
+            <GridItem>
+              <Text sx={sx.subtitle}>NQF</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>Measure Reporting and Programs</Text>
+              <Text sx={sx.subtext}>
+                {formattedEntityData.reportingRateType}
+              </Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>Measure Set</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>Measure Reporting Period</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.reportingPeriod}</Text>
+            </GridItem>
+          </Grid>
+          <Text sx={sx.subtitle}>Measure Description</Text>
+          <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
+        </>
+      );
     default:
       return <Text>{entityType}</Text>;
   }
@@ -65,9 +95,11 @@ const sx = {
     marginTop: "0.75rem",
     fontSize: "sm",
   },
-  containerBox: {
-    marginRight: "2.5rem",
+  grid: {
+    gridTemplateColumns: "33% auto",
+    columnGap: "1rem",
   },
+
   subtitle: {
     marginTop: "1rem",
     fontSize: "xs",

@@ -87,7 +87,7 @@ describe("Test ReportPageWrapper functionality", () => {
 
   test("ReportPageWrapper navigates to dashboard if no id", () => {
     render(ReportPageWrapper_WithoutReport);
-    expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar");
+    expect(mockUseNavigate).toHaveBeenCalledWith("/mock");
   });
 });
 
