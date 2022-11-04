@@ -8,10 +8,8 @@ import { axe } from "jest-axe";
 //components
 import { ReportContext, Sidebar } from "components";
 
-jest.mock("react-router-dom", () => ({
-  useLocation: jest.fn(() => ({
-    pathname: "/mcpar/review-and-submit",
-  })),
+jest.mock("utils/reports/routing", () => ({
+  isReportFormPage: jest.fn(() => true),
 }));
 
 const sidebarComponent = (
