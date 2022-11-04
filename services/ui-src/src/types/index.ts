@@ -35,11 +35,12 @@ export interface UserContextShape {
 
 export interface ReportJson {
   id?: string;
-  type: string;
+  type?: string;
   name: string;
   basePath: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
+  flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
 }
 

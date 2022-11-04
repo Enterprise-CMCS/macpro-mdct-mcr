@@ -6,7 +6,7 @@ import { ReportContext, ReportPageWrapper } from "components";
 import {
   mockReport,
   mockReportContext,
-  mockReportJsonFlatRoutes,
+  mockReportJson,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -27,7 +27,7 @@ jest.mock("utils", () => ({
 const ReportPageWrapper_StandardPage = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[0]} />
+      <ReportPageWrapper route={mockReportJson.flatRoutes[0]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -35,7 +35,7 @@ const ReportPageWrapper_StandardPage = (
 const ReportPageWrapper_Drawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[1]} />
+      <ReportPageWrapper route={mockReportJson.flatRoutes[1]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -43,7 +43,7 @@ const ReportPageWrapper_Drawer = (
 const ReportPageWrapper_ModalDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[2]} />
+      <ReportPageWrapper route={mockReportJson.flatRoutes[2]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -60,7 +60,7 @@ const mockReportContextWithoutReport = {
 const ReportPageWrapper_WithoutReport = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
-      <ReportPageWrapper route={mockReportJsonFlatRoutes.routes[0]} />
+      <ReportPageWrapper route={mockReportJson.flatRoutes[0]} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );

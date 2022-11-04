@@ -1,45 +1,53 @@
 import { useLocation } from "react-router-dom";
 import {
   isMcparReportFormPage,
-  mcparReportJson,
-  mcparReportRoutesFlat,
+  /*
+   * mcparReportJson,
+   * mcparReportRoutesFlat,
+   */
 } from "forms/mcpar";
+import { ReportRoute } from "types";
 
 // TODO: Chain future reports here
 export const isReportFormPage = (pathname: string): boolean =>
   isMcparReportFormPage(pathname);
 
-// TODO: Add future reports here
-const getRoutingStructure = (pathname: string) => {
-  if (isMcparReportFormPage(pathname)) {
-    return {
-      fallbackRoute: mcparReportJson.basePath,
-      routeArray: mcparReportRoutesFlat,
-    };
-  }
-  return { fallbackRoute: "/", routeArray: undefined };
-};
+// eslint-disable-next-line multiline-comment-style
+// // TODO: Add future reports here
+// const getRoutingStructure = (pathname: string) => {
+//   if (isMcparReportFormPage(pathname)) {
+//     return {
+//       basePath: mcparReportJson.basePath,
+//       reportJson: mcparReportJson,
+//       reportRoutesFlat: mcparReportRoutesFlat,
+//     };
+//   }
+//   return { basePath: "/", reportJson: undefined, reportRoutesFlat: undefined };
+// };
 
-export const useFindRoute = () => {
+export const useFindRoute = (
+  flatRouteArray: ReportRoute[] | undefined,
+  fallbackRoute: string = "/"
+) => {
   const { pathname } = useLocation();
-  const { fallbackRoute, routeArray } = getRoutingStructure(pathname);
   let calculatedRoutes = {
     previousRoute: fallbackRoute,
     nextRoute: fallbackRoute,
   };
-  // find current route and position in array
-  if (routeArray) {
-    const currentRouteObject = routeArray.find(
-      (route: any) => route.path === pathname
+  if (flatRouteArray) {
+    // find current route and position in array
+    const currentRouteObject = flatRouteArray.find(
+      (route: ReportRoute) => route.path === pathname
     );
     if (currentRouteObject) {
-      const currentPosition = routeArray.indexOf(currentRouteObject);
-      // set previousRoute to previous path || base route
+      const currentPosition = flatRouteArray.indexOf(currentRouteObject);
+      // set previousRoute to previous path or fallback route
       const previousRoute =
-        routeArray[currentPosition - 1]?.path || fallbackRoute;
+        flatRouteArray[currentPosition - 1]?.path || fallbackRoute;
       calculatedRoutes.previousRoute = previousRoute;
-      // set nextRoute to next path || base route
-      const nextRoute = routeArray[currentPosition + 1]?.path || fallbackRoute;
+      // set nextRoute to next path or fallback route
+      const nextRoute =
+        flatRouteArray[currentPosition + 1]?.path || fallbackRoute;
       calculatedRoutes.nextRoute = nextRoute;
     }
   }

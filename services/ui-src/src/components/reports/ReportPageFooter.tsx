@@ -1,7 +1,9 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
+import { ReportContext } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
 import { FormJson } from "types";
@@ -11,7 +13,11 @@ import previousIcon from "assets/icons/icon_previous_blue.png";
 
 export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
   const navigate = useNavigate();
-  const { previousRoute, nextRoute } = useFindRoute();
+  const { report } = useContext(ReportContext);
+  const { previousRoute, nextRoute } = useFindRoute(
+    report?.formTemplate.flatRoutes,
+    report?.formTemplate.basePath
+  );
 
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
