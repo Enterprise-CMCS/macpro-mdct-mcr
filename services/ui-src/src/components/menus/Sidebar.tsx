@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import {
@@ -10,10 +10,9 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { SkipNav } from "components";
+import { ReportContext, SkipNav } from "components";
 // utils
 import { useBreakpoint } from "utils";
-import { isMcparReportFormPage, mcparReportJson } from "forms/mcpar";
 // assets
 import arrowDownIcon from "assets/icons/icon_arrow_down_gray.png";
 import arrowUpIcon from "assets/icons/icon_arrow_up_gray.png";
@@ -27,11 +26,12 @@ interface LinkItemProps {
 export const Sidebar = () => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
-  const { pathname } = useLocation();
+  const { report } = useContext(ReportContext);
+  const reportJson = report?.formTemplate;
 
   return (
     <>
-      {isMcparReportFormPage(pathname) && (
+      {reportJson && (
         <>
           <SkipNav
             id="skip-nav-sidebar"
@@ -61,10 +61,10 @@ export const Sidebar = () => {
               />
             </Box>
             <Box id="sidebar-title-box" sx={sx.topBox}>
-              <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
+              <Heading sx={sx.title}>{reportJson.name}</Heading>
             </Box>
             <Box sx={sx.navSectionsBox} className="nav-sections-box">
-              {mcparReportJson.routes.map((section) => (
+              {reportJson.routes.map((section) => (
                 <NavSection key={section.name} section={section} level={1} />
               ))}
             </Box>

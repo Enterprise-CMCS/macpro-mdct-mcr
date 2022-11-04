@@ -35,6 +35,7 @@ export interface UserContextShape {
 
 export interface ReportJson {
   id?: string;
+  type: string;
   name: string;
   basePath: string;
   adminDisabled?: boolean;
