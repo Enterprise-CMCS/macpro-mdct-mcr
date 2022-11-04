@@ -113,10 +113,14 @@ export const DrawerReportPage = ({ route }: Props) => {
       <Heading as="h3" sx={sx.dashboardTitle}>
         {verbiage.dashboardTitle}
       </Heading>
-      <Box sx={sx.missingEntityMessage}>
-        {entities?.length
-          ? entityRows(entities)
-          : parseCustomHtml(verbiage.missingEntityMessage || "")}
+      <Box>
+        {entities?.length ? (
+          entityRows(entities)
+        ) : (
+          <Box sx={sx.missingEntityMessage}>
+            {parseCustomHtml(verbiage.missingEntityMessage || "")}
+          </Box>
+        )}
       </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
