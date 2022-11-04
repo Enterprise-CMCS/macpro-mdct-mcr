@@ -71,8 +71,8 @@ export { HelpPage } from "./pages/Help/HelpPage";
 export { HomePage } from "./pages/Home/HomePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
-export { GetStartedPage } from "./pages/GetStarted/GetStartedPage";
-export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
+export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
+export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";

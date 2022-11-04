@@ -29,10 +29,14 @@ export const ReportPageWrapper = ({ route }: Props) => {
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
+  const reportBasePath =
+    report?.formTemplate.basePath ||
+    localStorage.getItem("selectedReportBasePath");
 
   useEffect(() => {
+    // if no report, redirect to report base path or homepage
     if (!reportId || !reportState || report?.archived) {
-      navigate("/mcpar");
+      navigate(reportBasePath || "/");
     }
   }, [report, reportId, reportState]);
 

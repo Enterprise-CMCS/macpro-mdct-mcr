@@ -1,5 +1,6 @@
 {
-  "name": "MCPAR",
+  "type": "mcpar",
+  "name": "MCPAR Report Submission Form",
   "basePath": "/mcpar",
   "version": "MCPAR_2022-09-08",
   "adminDisabled": true,
@@ -995,7 +996,8 @@
                     }
                   ]
                 },
-                "dashboardTitle": "Add measures for monitoring access standards",
+                "dashboardTitle": "Access measure total count:",
+                "countEntitiesInTitle": true,
                 "addEntityButtonText": "Add access measure",
                 "editEntityButtonText": "Edit measure",
                 "addEditModalAddTitle": "Add access measure",
@@ -1726,7 +1728,14 @@
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set"
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Appeals Overview"
+                    }
+                  ]
                 },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for",
@@ -2133,7 +2142,14 @@
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set"
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Grievances Overview"
+                    }
+                  ]
                 },
                 "dashboardTitle": "Report on grievances for each plan",
                 "drawerTitle": "Report on grievances for",
@@ -2180,7 +2196,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed).</p>",
+                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.</p>",
                       "mask": "comma-separated"
                     }
                   },
@@ -2525,17 +2541,13 @@
               "spreadsheet": "D2_Plan_Measures",
               "info": [
                 {
-                  "type": "heading",
-                  "as": "h3",
-                  "content": "Add Quality & Performance Measures"
-                },
-                {
                   "type": "html",
                   "content": "<p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component.</p>"
                 }
               ]
             },
-            "dashboardTitle": "Add quality & performance measures",
+            "dashboardTitle": "Quality & performance measure total count:",
+            "countEntitiesInTitle": true,
             "addEntityButtonText": "Add quality & performance measure",
             "editEntityButtonText": "Edit measure",
             "addEditModalAddTitle": "Add a quality & performance measure",
@@ -2798,10 +2810,11 @@
                 }
               ]
             },
-            "dashboardTitle": "Add plan sanctions",
-            "addEntityButtonText": "Add a sanction",
+            "dashboardTitle": "Sanction total count:",
+            "countEntitiesInTitle": true,
+            "addEntityButtonText": "Add sanction",
             "editEntityButtonText": "Edit sanction",
-            "addEditModalAddTitle": "Add a sanction",
+            "addEditModalAddTitle": "Add sanction",
             "addEditModalEditTitle": "Edit sanction",
             "addEditModalMessage": "Complete the remaining indicators for this sanction by saving the sanction and selecting \"Enter sanction details\".",
             "deleteEntityButtonAltText": "Delete sanction",
@@ -3053,11 +3066,11 @@
               {
                 "id": "plan_programIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations opened by the plan in the past year per 1,000 beneficiaries enrolled in the plan on the first day of the last month of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
@@ -3073,11 +3086,11 @@
               {
                 "id": "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year per 1,000 beneficiaries enrolled in the plan at the beginning of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
@@ -3156,7 +3169,7 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.X.8 ratio of program integrity referral to the state",
+                  "label": "D1.X.8 Ratio of program integrity referral to the state",
                   "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
                   "mask": "comma-separated"
                 }
