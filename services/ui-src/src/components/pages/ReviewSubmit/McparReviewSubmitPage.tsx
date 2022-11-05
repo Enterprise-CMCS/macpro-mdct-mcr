@@ -67,7 +67,7 @@ export const McparReviewSubmitPage = () => {
   };
 
   return (
-    <Flex sx={sx.pageContainer}>
+    <Flex sx={sx.pageContainer} data-testid="review-submit-page">
       {report?.status === ReportStatus.SUBMITTED ? (
         <SuccessMessage
           programName={report.programName}
@@ -152,7 +152,7 @@ export const SuccessMessageGenerator = (
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
-    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}`;
+    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}.`;
   }
   return `MCPAR report for ${programName} was submitted.`;
 };
