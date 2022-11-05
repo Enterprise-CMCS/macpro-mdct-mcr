@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, ReportContext, PageTemplate, Sidebar } from "components";
+import { Modal, ReportContext } from "components";
 // types
 import { ReportStatus } from "types";
 // utils
@@ -67,28 +67,24 @@ export const McparReviewSubmitPage = () => {
   };
 
   return (
-    <PageTemplate type="report">
-      <Flex sx={sx.pageContainer}>
-        <Sidebar />
-        {report &&
-          (report?.status?.includes(ReportStatus.SUBMITTED) ? (
-            <SuccessMessage
-              programName={report.programName}
-              date={report?.submittedOnDate}
-              submittedBy={report?.submittedBy}
-            />
-          ) : (
-            <ReadyToSubmit
-              submitForm={submitForm}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
-              submitting={submitting}
-              isPermittedToSubmit={isPermittedToSubmit}
-            />
-          ))}
-      </Flex>
-    </PageTemplate>
+    <Flex sx={sx.pageContainer}>
+      {report?.status === ReportStatus.SUBMITTED ? (
+        <SuccessMessage
+          programName={report.programName}
+          date={report?.submittedOnDate}
+          submittedBy={report?.submittedBy}
+        />
+      ) : (
+        <ReadyToSubmit
+          submitForm={submitForm}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          submitting={submitting}
+          isPermittedToSubmit={isPermittedToSubmit}
+        />
+      )}
+    </Flex>
   );
 };
 
@@ -210,8 +206,6 @@ const sx = {
     flexDirection: "column",
     width: "100%",
     maxWidth: "reportPageWidth",
-    marginY: "3.5rem",
-    marginLeft: "3.5rem",
   },
   leadTextBox: {
     width: "100%",

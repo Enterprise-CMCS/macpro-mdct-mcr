@@ -7,7 +7,6 @@ import {
   HelpPage,
   HomePage,
   McparGetStartedPage,
-  McparReviewSubmitPage,
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
@@ -38,14 +37,7 @@ export const AppRoutes = () => {
             <Route
               key={route.path}
               path={route.path}
-              element={
-                route.pageType ? (
-                  // if report route with form
-                  <ReportPageWrapper route={route} />
-                ) : (
-                  <McparReviewSubmitPage />
-                )
-              }
+              element={<ReportPageWrapper route={route} />}
             />
           ))}
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />

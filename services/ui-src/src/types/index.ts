@@ -88,7 +88,7 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
 
 export interface ReportRouteWithChildren extends ReportRouteBase {
   children?: ReportRoute[];
-  pageType?: never;
+  pageType?: string;
   entityType?: never;
   verbiage?: never;
   modalForm?: never;
@@ -276,6 +276,7 @@ export enum PageTypes {
   STANDARD = "standard",
   DRAWER = "drawer",
   MODAL_DRAWER = "modalDrawer",
+  REVIEW_SUBMIT = "reviewSubmit",
 }
 
 // BANNER
