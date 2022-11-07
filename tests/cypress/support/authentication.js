@@ -70,8 +70,7 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
     /**
      * Waits for cognito session tokens to be set in local storage before saving session
      * This ensures reused sessions maintain these tokens
-     * We expect six values from cognito with the 'CognitoIdentityServiceProvider' prefix
-     * We don't explicitly check for full token keys because they change
+     * We expect at least three for the id, access, and refresh tokens
      */
     cy.waitUntil(() =>
       cy
@@ -79,8 +78,10 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
         .then(
           (window) =>
             Object.keys(window.localStorage).filter((key) =>
-              key.startsWith("CognitoIdentityServiceProvider.")
-            ).length >= 6
+              key.match(
+                /CognitoIdentityServiceProvider.+(refresh|access|id)Token/
+              )
+            ).length === 3
         )
     );
   });
