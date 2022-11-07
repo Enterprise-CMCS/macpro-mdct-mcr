@@ -232,6 +232,7 @@ export type FieldValidationObject =
 
 export interface FormField {
   id: string;
+  indicator?: string;
   type: string;
   validation: string | FieldValidationObject;
   hydrate?: string;
