@@ -35,7 +35,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
-export const DashboardPage = () => {
+export const DashboardPage = ({ reportType }: Props) => {
   const {
     errorMessage,
     fetchReportsByState,
@@ -63,6 +63,11 @@ export const DashboardPage = () => {
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
+
+  const genericReportJsonMap: any = {
+    MCPAR: mcparReportJson,
+  };
+  const genericReportJson = genericReportJsonMap[reportType]!;
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
@@ -212,8 +217,8 @@ export const DashboardPage = () => {
         activeState={activeState!}
         selectedReport={selectedReport!}
         newReportData={{
-          reportType: "MCPAR",
-          formTemplate: mcparReportJson,
+          reportType: reportType,
+          formTemplate: genericReportJson,
         }}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
@@ -223,6 +228,10 @@ export const DashboardPage = () => {
     </PageTemplate>
   );
 };
+
+interface Props {
+  reportType: string;
+}
 
 const sx = {
   layout: {
