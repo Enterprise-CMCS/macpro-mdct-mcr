@@ -19,7 +19,8 @@ beforeEach(() => {
   cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
   cy.findByRole("checkbox").focus().click();
   cy.get("button[type=submit]").contains("Save").click();
-  cy.findAllByRole("button", { name: "Enter" }).eq(0).click();
+  cy.wait(1000);
+  cy.findAllByRole("button", { name: "Enter" }).first().click();
 });
 
 afterEach(() => {
