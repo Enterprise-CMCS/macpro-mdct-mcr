@@ -26,7 +26,6 @@ import { mcparReportJson } from "forms/mcpar";
 import { AnyObject, ReportShape } from "types";
 import {
   convertDateUtcToEt,
-  flattenReportRoutesArray,
   parseCustomHtml,
   useBreakpoint,
   useUser,
@@ -36,7 +35,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
-export const DashboardPage = () => {
+export const DashboardPage = ({ reportType }: Props) => {
   const {
     errorMessage,
     fetchReportsByState,
@@ -65,6 +64,11 @@ export const DashboardPage = () => {
     undefined
   );
 
+  const genericReportJsonMap: any = {
+    MCPAR: mcparReportJson,
+  };
+  const genericReportJson = genericReportJsonMap[reportType]!;
+
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
   const activeState = userState || adminSelectedState;
@@ -91,10 +95,7 @@ export const DashboardPage = () => {
   const enterSelectedReport = async (report: ReportShape) => {
     // set active report to selected report
     setReportSelection(report);
-    const flattenedRoutes = flattenReportRoutesArray(
-      report.formTemplate.routes
-    );
-    const firstReportPagePath = flattenedRoutes[0].path;
+    const firstReportPagePath = report.formTemplate.flatRoutes![0].path;
     navigate(firstReportPagePath);
   };
 
@@ -216,8 +217,8 @@ export const DashboardPage = () => {
         activeState={activeState!}
         selectedReport={selectedReport!}
         newReportData={{
-          reportType: "MCPAR",
-          formTemplate: mcparReportJson,
+          reportType: reportType,
+          formTemplate: genericReportJson,
         }}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
@@ -227,6 +228,10 @@ export const DashboardPage = () => {
     </PageTemplate>
   );
 };
+
+interface Props {
+  reportType: string;
+}
 
 const sx = {
   layout: {

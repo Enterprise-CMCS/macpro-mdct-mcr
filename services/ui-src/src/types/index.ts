@@ -35,15 +35,16 @@ export interface UserContextShape {
 
 export interface ReportJson {
   id?: string;
-  type: string;
+  type?: string;
   name: string;
   basePath: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
+  flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
 }
 
-export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
+export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
 
 export interface ReportRouteBase {
   name: string;
@@ -85,9 +86,9 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
-export interface ReportRouteWithChildren extends ReportRouteBase {
+export interface ReportRouteWithoutForm extends ReportRouteBase {
   children?: ReportRoute[];
-  pageType?: never;
+  pageType?: string;
   entityType?: never;
   verbiage?: never;
   modalForm?: never;
@@ -275,6 +276,7 @@ export enum PageTypes {
   STANDARD = "standard",
   DRAWER = "drawer",
   MODAL_DRAWER = "modalDrawer",
+  REVIEW_SUBMIT = "reviewSubmit",
 }
 
 // BANNER
