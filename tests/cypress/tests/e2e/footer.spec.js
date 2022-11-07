@@ -3,7 +3,10 @@ const helpLinkText = "Contact Us";
 const accessibilityStatementLinkText = "Accessibility Statement";
 
 beforeEach(() => {
-  cy.silentAuthenticate("stateUser");
+  cy.authenticate("stateUser");
+});
+
+afterEach(() => {
   cy.visit("/");
 });
 

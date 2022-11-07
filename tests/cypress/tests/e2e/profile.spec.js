@@ -4,10 +4,13 @@ const menuOptionManageAccount =
   '[data-testid="header-menu-option-manage-account"]';
 const adminButton = '[data-testid="banner-admin-button"]';
 
+afterEach(() => {
+  cy.visit("/");
+});
+
 describe("Profile integration tests", () => {
   it("Allows admin user to navigate to /admin", () => {
-    cy.silentAuthenticate("adminUser");
-    cy.visit("/");
+    cy.authenticate("adminUser");
 
     cy.get(menuButton).click();
     cy.get(menuOptionManageAccount).click();
@@ -18,8 +21,7 @@ describe("Profile integration tests", () => {
   });
 
   it("Disallows state user to navigate to /admin (redirects to /profile)", () => {
-    cy.silentAuthenticate("stateUser");
-    cy.visit("/");
+    cy.authenticate("stateUser");
 
     cy.get(menuButton).click();
     cy.get(menuOptionManageAccount).click();

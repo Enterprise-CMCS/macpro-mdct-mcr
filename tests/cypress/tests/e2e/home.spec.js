@@ -3,7 +3,10 @@ const templateCardAccordionVerbiage = "When is the MCPAR due?";
 const templateCardAccordionTableRole = '[role="table"]';
 
 beforeEach(() => {
-  cy.silentAuthenticate("stateUser");
+  cy.authenticate("stateUser");
+});
+
+afterEach(() => {
   cy.visit("/");
 });
 
