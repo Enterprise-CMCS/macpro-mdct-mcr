@@ -23,7 +23,8 @@ module.exports = defineConfig({
     testIsolation: "off",
     specPattern: "tests/**/*.spec.js",
     supportFile: "support/index.js",
-    setupNodeEvents(on, _config) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setupNodeEvents(on, config) {
       on("file:preprocessor", cucumber());
 
       on("task", {
@@ -38,8 +39,8 @@ module.exports = defineConfig({
           return null;
         },
       });
-
-      on("before:browser:launch", (launchOptions) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      on("before:browser:launch", (browser = {}, launchOptions) => {
         prepareAudit(launchOptions);
       });
 
