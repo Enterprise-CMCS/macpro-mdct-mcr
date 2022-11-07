@@ -35,6 +35,9 @@ const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
+  useLocation: jest.fn(() => ({
+    pathname: "/mcpar",
+  })),
 }));
 
 const mockReportContextNoReports = {
@@ -50,7 +53,7 @@ const mockReportContextWithError = {
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DashboardPage />
+      <DashboardPage reportType="MOCK" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -58,7 +61,7 @@ const dashboardViewWithReports = (
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextNoReports}>
-      <DashboardPage />
+      <DashboardPage reportType="MOCK" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -66,7 +69,7 @@ const dashboardViewNoReports = (
 const dashboardViewWithError = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithError}>
-      <DashboardPage />
+      <DashboardPage reportType="MOCK" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
