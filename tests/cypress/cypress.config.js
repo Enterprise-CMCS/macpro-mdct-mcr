@@ -23,21 +23,23 @@ module.exports = defineConfig({
     testIsolation: "off",
     specPattern: "tests/**/*.spec.js",
     supportFile: "support/index.js",
-    setupNodeEvents(on, config) {
+    setupNodeEvents(on, _config) {
       on("file:preprocessor", cucumber());
 
       on("task", {
         log(message) {
+          // eslint-disable-next-line no-console
           console.log(message);
           return null;
         },
         table(message) {
+          // eslint-disable-next-line no-console
           console.table(message);
           return null;
         },
       });
 
-      on("before:browser:launch", (browser = {}, launchOptions) => {
+      on("before:browser:launch", (launchOptions) => {
         prepareAudit(launchOptions);
       });
 
