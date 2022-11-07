@@ -5,7 +5,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  cy.visit("/");
+  cy.navigateToHomePage();
 });
 
 describe("state user creates a program", () => {

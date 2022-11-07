@@ -20,7 +20,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  cy.visit("/");
+  cy.navigateToHomePage();
 });
 
 describe("Admin banner integration tests", () => {

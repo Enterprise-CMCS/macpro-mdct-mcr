@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  cy.visit("/");
+  cy.navigateToHomePage();
 });
 
 describe("Header integration tests", () => {

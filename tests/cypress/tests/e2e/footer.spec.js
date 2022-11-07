@@ -7,7 +7,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  cy.visit("/");
+  cy.navigateToHomePage();
 });
 
 describe("Footer integration tests", () => {
