@@ -9,11 +9,7 @@ import { ReportJson } from "types";
 
 const reportJsonBase: ReportJson =
   copyAdminDisabledStatusToForms(rawReportJson);
-
-// export routes in flattened array
-export const mcparReportRoutesFlat = flattenReportRoutesArray(
-  reportJsonBase.routes
-);
+const mcparReportRoutesFlat = flattenReportRoutesArray(reportJsonBase.routes);
 
 // export full reportJson with validation and flattened routes
 export const mcparReportJson = {

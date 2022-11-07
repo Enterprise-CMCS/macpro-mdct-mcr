@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-import { useLocation } from "react-router-dom";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
 import {
@@ -10,6 +9,7 @@ import {
   mockReport,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { isReportFormPage } from "utils/reports/routing";
 
 const mockReportAPI = require("utils/api/requestMethods/report");
 jest.mock("utils/api/requestMethods/report", () => ({
@@ -19,16 +19,9 @@ jest.mock("utils/api/requestMethods/report", () => ({
   putReport: jest.fn(() => {}),
 }));
 
-jest.mock("react-router-dom");
-const mockUseLocation = useLocation as jest.MockedFunction<typeof useLocation>;
-
-const mockMcparReportLocation = {
-  pathname: "/mcpar/test",
-  state: undefined,
-  key: "",
-  search: "",
-  hash: "",
-};
+jest.mock("utils/reports/routing", () => ({
+  isReportFormPage: jest.fn(),
+}));
 
 const TestComponent = () => {
   const { ...context } = useContext(ReportContext);
@@ -87,7 +80,7 @@ const testComponent = (
 
 describe("Test ReportProvider fetch methods", () => {
   beforeEach(async () => {
-    mockUseLocation.mockReturnValue(mockMcparReportLocation);
+    (isReportFormPage as jest.Mock).mockReturnValue(true);
     await act(async () => {
       await render(testComponent);
     });
@@ -241,9 +234,7 @@ describe("Test ReportProvider fetches when loading on report page", () => {
   });
 
   test("getReport is not called on load when not on a report page", async () => {
-    const mockNonReportLocation = { ...mockMcparReportLocation };
-    mockNonReportLocation.pathname = "/non-report";
-    mockUseLocation.mockReturnValue(mockNonReportLocation);
+    (isReportFormPage as jest.Mock).mockReturnValue(false);
     await act(async () => {
       await render(testComponent);
     });
@@ -253,7 +244,7 @@ describe("Test ReportProvider fetches when loading on report page", () => {
   });
 
   test("getReport is called on load for valid report path", async () => {
-    mockUseLocation.mockReturnValue(mockMcparReportLocation);
+    (isReportFormPage as jest.Mock).mockReturnValue(true);
     await act(async () => {
       await render(testComponent);
     });
