@@ -7,6 +7,19 @@ const sectionLink = ".chakra-link .level-1";
 
 beforeEach(() => {
   cy.authenticate("stateUser");
+  cy.findByRole("button", { name: "Enter MCPAR online" }).click();
+  cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
+
+  // Create Report & nav to it
+  cy.findByRole("button", { name: "Add managed care program" }).click();
+  cy.findByLabelText("Program name").type(
+    "automated test - " + new Date().toISOString()
+  );
+  cy.get('input[name="reportingPeriodStartDate"]').type("07142023");
+  cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
+  cy.findByRole("checkbox").focus().click();
+  cy.get("button[type=submit]").contains("Save").click();
+  cy.findAllByRole("button", { name: "Enter" }).first().click();
 });
 
 afterEach(() => {
@@ -15,21 +28,6 @@ afterEach(() => {
 
 describe("Sidebar integration tests", () => {
   it("The sidebar can be navigated at multiple depths, references the selected items, and can be", () => {
-    // Navigate to the dashboard
-    cy.findByRole("button", { name: "Enter MCPAR online" }).click();
-    cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
-
-    // Create Report & nav to it
-    cy.findByRole("button", { name: "Add managed care program" }).click();
-    cy.findByLabelText("Program name").type(
-      "automated test - " + new Date().toISOString()
-    );
-    cy.get('input[name="reportingPeriodStartDate"]').type("07142023");
-    cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
-    cy.findByRole("checkbox").focus().click();
-    cy.get("button[type=submit]").contains("Save").click();
-    cy.findAllByRole("button", { name: "Enter" }).first().click();
-
     // Expand next section, collapse first, nav to new page.
     cy.get(expandButton).first().click();
     cy.get(collapseButton).first().click();
