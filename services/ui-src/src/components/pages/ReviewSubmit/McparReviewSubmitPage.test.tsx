@@ -90,7 +90,7 @@ describe("Success Message Generator", () => {
     expect(
       SuccessMessageGenerator(programName, submittedDate, submittersName)
     ).toBe(
-      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}`
+      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
   it("should give a reduced version if not given all params", () => {
