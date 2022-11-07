@@ -63,29 +63,14 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
     });
     cy.get(cognitoLoginButton).click();
 
+    /**
+     * Waits for cognito session tokens to be set in local storage before saving session
+     * This ensures reused sessions maintain these tokens
+     * We expect at least three for the id, access, and refresh tokens
+     * We don't explicitly check for token names because they change
+     */
     cy.waitUntil(() =>
-      cy.window().then((window) => window.localStorage.length > 0)
+      cy.window().then((window) => window.localStorage.length > 3)
     );
-
-    // let retry = 5;
-    // let tries = 0;
-    // let sessionReady = false;
-    // // this https://www.npmjs.com/package/cypress-wait-until
-    // while (!sessionReady) {
-    //   for (var key of Object.keys(localStorage)) {
-    //     if (key.contains("CognitoIdentityServiceProvider")) {
-    //       sessionReady = true;
-    //     }
-    //   }
-    //   if (sessionReady) {
-    //     break;
-    //   } else {
-    //     cy.wait(1000);
-    //     tries += 1;
-    //     if (tries > retry) {
-    //       break;
-    //     }
-    //   }
-    // }
   });
 });

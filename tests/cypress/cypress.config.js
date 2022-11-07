@@ -14,10 +14,15 @@ module.exports = defineConfig({
   defaultCommandTimeout: 20000,
   types: ["cypress", "cypress-axe"],
   env: {
-    STATE_USER_EMAIL: "stateuser1@test.com",
+    STATE_USER_EMAIL: "stateuser@test.com",
     ADMIN_USER_EMAIL: "adminuser@test.com",
   },
   e2e: {
+    baseUrl: "http://localhost:3000/",
+    experimentalSessionAndOrigin: true,
+    testIsolation: "off",
+    specPattern: "tests/**/*.spec.js",
+    supportFile: "support/index.js",
     setupNodeEvents(on, config) {
       on("file:preprocessor", cucumber());
 
@@ -40,10 +45,5 @@ module.exports = defineConfig({
         pa11y: pa11y(),
       });
     },
-    baseUrl: "http://localhost:3000/",
-    experimentalSessionAndOrigin: true,
-    testIsolation: "off",
-    specPattern: "tests/**/*.spec.js",
-    supportFile: "support/index.js",
   },
 });
