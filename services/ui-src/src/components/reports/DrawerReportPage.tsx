@@ -1,13 +1,11 @@
 import { useContext, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 // components
 import {
   Box,
   Button,
   Flex,
+  Image,
   Heading,
-  Link,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -17,14 +15,15 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { useUser } from "utils";
+import { filterFormData, parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
   DrawerReportPageShape,
   ReportStatus,
+  FormField,
 } from "types";
-import verbiage from "../../verbiage/pages/mcpar/mcpar-drawer-report-page";
+import completedIcon from "assets/icons/icon_check_circle.png";
 
 export const DrawerReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -37,16 +36,15 @@ export const DrawerReportPage = ({ route }: Props) => {
     undefined
   );
 
-  const { entityType, dashboard, drawer } = route;
+  const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
-  const { message, link } = verbiage[entityType as keyof typeof verbiage];
 
   const openRowDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
     onOpen();
   };
 
-  const onSubmit = async (formData: AnyObject) => {
+  const onSubmit = async (enteredData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
       setSubmitting(true);
       const reportKeys = {
@@ -57,9 +55,10 @@ export const DrawerReportPage = ({ route }: Props) => {
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.name === selectedEntity?.name
       );
+      const filteredFormData = filterFormData(enteredData, drawerForm.fields);
       const newEntity = {
         ...selectedEntity,
-        ...formData,
+        ...filteredFormData,
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
@@ -76,48 +75,66 @@ export const DrawerReportPage = ({ route }: Props) => {
     onClose();
   };
 
-  const entityRows = (entities: EntityShape[]) =>
-    entities.map((entity) => (
-      <Flex key={entity.id} sx={sx.entityRow}>
-        <Heading as="h4" sx={sx.entityName}>
-          {entity.name}
-        </Heading>
-        <Button
-          sx={sx.enterButton}
-          onClick={() => openRowDrawer(entity)}
-          variant="outline"
-        >
-          Enter
-        </Button>
-      </Flex>
-    ));
+  const entityRows = (entities: EntityShape[]) => {
+    return entities.map((entity) => {
+      /*
+       * If the entity has the same fields from drawerForms fields, it was completed
+       * at somepoint.
+       */
+      const isEntityCompleted = drawerForm.fields?.every(
+        (field: FormField) => field.id in entity
+      );
+      return (
+        <Flex key={entity.id} sx={sx.entityRow}>
+          {isEntityCompleted && (
+            <Image
+              src={completedIcon}
+              alt={"Entity is complete"}
+              sx={sx.statusIcon}
+            />
+          )}
+          <Heading as="h4" sx={sx.entityName}>
+            {entity.name}
+          </Heading>
+          <Button
+            sx={sx.enterButton}
+            onClick={() => openRowDrawer(entity)}
+            variant="outline"
+          >
+            {isEntityCompleted ? "Edit" : "Enter"}
+          </Button>
+        </Flex>
+      );
+    });
+  };
   return (
     <Box data-testid="drawer-report-page">
-      {route.intro && <ReportPageIntro text={route.intro} />}
+      {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Heading as="h3" sx={sx.dashboardTitle}>
-        {dashboard!.title}
+        {verbiage.dashboardTitle}
       </Heading>
-      {entities ? (
-        entityRows(entities)
-      ) : (
-        <Text sx={sx.emptyEntityMessage}>
-          {message}{" "}
-          <Link as={RouterLink} to={link.href}>
-            {link.text}
-          </Link>
-        </Text>
-      )}
+      <Box>
+        {entities?.length ? (
+          entityRows(entities)
+        ) : (
+          <Box sx={sx.missingEntityMessage}>
+            {parseCustomHtml(verbiage.missingEntityMessage || "")}
+          </Box>
+        )}
+      </Box>
       <ReportDrawer
+        selectedEntity={selectedEntity!}
+        verbiage={{
+          drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
+          drawerInfo: verbiage.drawerInfo,
+        }}
+        form={drawerForm}
+        onSubmit={onSubmit}
+        submitting={submitting}
         drawerDisclosure={{
           isOpen,
           onClose,
         }}
-        drawerTitle={`${drawer.title} ${selectedEntity?.name}`}
-        drawerInfo={drawer.info}
-        form={drawer.form}
-        onSubmit={onSubmit}
-        formData={selectedEntity}
-        submitting={submitting}
         data-testid="report-drawer"
       />
       <ReportPageFooter />
@@ -130,6 +147,10 @@ interface Props {
 }
 
 const sx = {
+  statusIcon: {
+    height: "1.25rem",
+    position: "absolute",
+  },
   dashboardTitle: {
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
@@ -148,10 +169,19 @@ const sx = {
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
+    flexGrow: 1,
+    marginLeft: "2.25rem",
   },
-  emptyEntityMessage: {
+  missingEntityMessage: {
     paddingTop: "1rem",
     fontWeight: "bold",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
   },
   enterButton: {
     width: "4.25rem",

@@ -31,6 +31,7 @@ export { MobileDashboardList } from "./pages/Dashboard/DashboardProgramListMobil
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
+export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";
@@ -46,8 +47,6 @@ export { TextAreaField } from "./fields/TextAreaField";
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";
 export { Form } from "./forms/Form";
-// icons
-export { Icon } from "./icons/Icon";
 // layout
 export { Footer } from "./layout/Footer";
 export { Header } from "./layout/Header";
@@ -64,7 +63,6 @@ export { Sidebar } from "./menus/Sidebar";
 export { Modal } from "./modals/Modal";
 export { AddEditProgramModal } from "./modals/AddEditProgramModal";
 export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
-export { DeleteProgramModal } from "./modals/DeleteProgramModal";
 export { AddEditEntityModal } from "./modals/AddEditEntityModal";
 export { DeleteEntityModal } from "./modals/DeleteEntityModal";
 // pages
@@ -73,8 +71,8 @@ export { HelpPage } from "./pages/Help/HelpPage";
 export { HomePage } from "./pages/Home/HomePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
-export { GetStartedPage } from "./pages/GetStarted/GetStartedPage";
-export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
+export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
+export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";

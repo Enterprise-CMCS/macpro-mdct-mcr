@@ -13,10 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { Menu, MenuOption, ReportContext } from "components";
 // utils
-import { useBreakpoint } from "utils";
-import { isMcparReportFormPage } from "forms/mcpar";
+import { isReportFormPage, useBreakpoint } from "utils";
 // assets
-import appLogo from "assets/logos/logo_mcr_draft.png";
+import appLogo from "assets/logos/logo_mcr.png";
+import getHelpIcon from "assets/icons/icon_help.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -43,8 +43,9 @@ export const Header = ({ handleLogout }: Props) => {
                 data-testid="header-help-button"
               >
                 <MenuOption
-                  icon="questionCircleFill"
+                  icon={getHelpIcon}
                   text="Get Help"
+                  altText="Help"
                   role="group"
                   hideText={isMobile}
                 />
@@ -54,7 +55,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isMcparReportFormPage(pathname) && (
+      {isReportFormPage(pathname) && (
         <Flex sx={sx.subnavBar}>
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
@@ -67,7 +68,7 @@ export const Header = ({ handleLogout }: Props) => {
                 {!isMobile && (
                   <Link
                     as={RouterLink}
-                    to="/mcpar"
+                    to={report?.formTemplate.basePath || "/"}
                     sx={sx.leaveFormLink}
                     variant="unstyled"
                     tabIndex={-1}
@@ -126,6 +127,7 @@ const sx = {
   },
   appLogo: {
     maxWidth: "200px",
+    marginTop: "0.5rem",
   },
   subnavBar: {
     bg: "palette.secondary_lightest",

@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 // assets
-import nextIcon from "assets/icons/icon_next.png";
-import NavigationSectionsImage from "assets/other/nav-sections.png";
-import NavigationSectionsSubmissionImage from "assets/other/nav-sections-review-submit.png";
+import nextIcon from "assets/icons/icon_next_white.png";
+import NavigationSectionsImage from "assets/other/nav_sections.png";
+import NavigationSectionsSubmissionImage from "assets/other/nav_sections_review_submit.png";
 
-export const GetStartedPage = () => {
+export const McparGetStartedPage = () => {
   const { intro, body, pageLink } = verbiage;
   const navigate = useNavigate();
 

@@ -5,6 +5,7 @@ import { axe } from "jest-axe";
 import { DeleteEntityModal, ReportContext } from "components";
 // utils
 import {
+  mockModalDrawerReportPageVerbiage,
   mockReport,
   mockReportContext,
   mockReportKeys,
@@ -56,15 +57,19 @@ const mockBadUpdateCallBaseline = {
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <DeleteEntityModal
+      entityType="accessMeasures"
+      selectedEntity={mockEntity}
+      verbiage={mockModalDrawerReportPageVerbiage}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
       }}
-      entityType="accessMeasures"
-      selectedEntity={mockEntity}
     />
   </ReportContext.Provider>
 );
+
+const { deleteModalTitle, deleteModalConfirmButtonText } =
+  mockModalDrawerReportPageVerbiage;
 
 describe("Test DeleteEntityModal", () => {
   beforeEach(async () => {
@@ -78,8 +83,8 @@ describe("Test DeleteEntityModal", () => {
   });
 
   test("DeleteEntityModal shows the contents", () => {
-    expect(screen.getByText("Delete access measure?")).toBeTruthy();
-    expect(screen.getByText("Yes, Delete Measure")).toBeTruthy();
+    expect(screen.getByText(deleteModalTitle)).toBeTruthy();
+    expect(screen.getByText(deleteModalConfirmButtonText)).toBeTruthy();
     expect(screen.getByText("Cancel")).toBeTruthy();
   });
 
@@ -102,9 +107,7 @@ describe("Test DeleteEntityModal functionality", () => {
   test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
     render(modalComponent);
 
-    const submitButton = screen.getByRole("button", {
-      name: "Yes, Delete Measure",
-    });
+    const submitButton = screen.getByText(deleteModalConfirmButtonText);
     await userEvent.click(submitButton);
 
     const mockUpdateCallPayload = mockUpdateCallBaseline;
@@ -120,9 +123,7 @@ describe("Test DeleteEntityModal functionality", () => {
   test("DeleteEntityModal delete handles empty fielddata", async () => {
     render(modalComponent);
 
-    const submitButton = screen.getByRole("button", {
-      name: "Yes, Delete Measure",
-    });
+    const submitButton = screen.getByText(deleteModalConfirmButtonText);
     await userEvent.click(submitButton);
 
     const mockUpdateCallPayload = mockBadUpdateCallBaseline;
@@ -136,7 +137,7 @@ describe("Test DeleteEntityModal functionality", () => {
   });
 });
 
-describe("Test deleteProgramModal accessibility", () => {
+describe("Test DeleteEntityModal accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(modalComponent);
     const results = await axe(container);

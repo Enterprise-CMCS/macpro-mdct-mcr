@@ -5,6 +5,7 @@ import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
+  McparReviewSubmitPage,
   ModalDrawerReportPage,
   DrawerReportPage,
   PageTemplate,
@@ -17,7 +18,7 @@ import {
   ModalDrawerReportPageShape,
   DrawerReportPageShape,
   PageTypes,
-  ReportRouteWithForm,
+  ReportRoute,
   StandardReportPageShape,
 } from "types";
 
@@ -29,14 +30,18 @@ export const ReportPageWrapper = ({ route }: Props) => {
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
+  const reportBasePath =
+    report?.formTemplate.basePath ||
+    localStorage.getItem("selectedReportBasePath");
 
   useEffect(() => {
-    if (!reportId || !reportState) {
-      navigate("/mcpar");
+    // if no report, redirect to report base path or homepage
+    if (!reportId || !reportState || report?.archived) {
+      navigate(reportBasePath || "/");
     }
-  }, [reportId, reportState]);
+  }, [report, reportId, reportState]);
 
-  const renderPageSection = (route: ReportRouteWithForm) => {
+  const renderPageSection = (route: ReportRoute) => {
     switch (route.pageType) {
       case PageTypes.DRAWER:
         return <DrawerReportPage route={route as DrawerReportPageShape} />;
@@ -44,6 +49,8 @@ export const ReportPageWrapper = ({ route }: Props) => {
         return (
           <ModalDrawerReportPage route={route as ModalDrawerReportPageShape} />
         );
+      case PageTypes.REVIEW_SUBMIT:
+        return <McparReviewSubmitPage />;
       default:
         return <StandardReportPage route={route as StandardReportPageShape} />;
     }
@@ -52,14 +59,16 @@ export const ReportPageWrapper = ({ route }: Props) => {
   return (
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
-        <Sidebar />
-        {!report ? (
+        {report ? (
+          <>
+            <Sidebar />
+            <Flex id="report-content" sx={sx.reportContainer}>
+              {renderPageSection(route)}
+            </Flex>
+          </>
+        ) : (
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="big" />
-          </Flex>
-        ) : (
-          <Flex id="report-content" sx={sx.reportContainer}>
-            {renderPageSection(route)}
           </Flex>
         )}
       </Flex>
@@ -68,7 +77,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
 };
 
 interface Props {
-  route: ReportRouteWithForm;
+  route: ReportRoute;
 }
 
 const sx = {

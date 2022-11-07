@@ -18,7 +18,7 @@ const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
-    pathname: "/mcpar/program-information/point-of-contact",
+    pathname: "/mock",
   })),
 }));
 

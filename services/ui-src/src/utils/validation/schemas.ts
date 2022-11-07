@@ -9,15 +9,32 @@ import {
 import { validationErrors as error } from "verbiage/errors";
 import { Choice } from "types";
 
+// TEXT - Helpers
+const testForEmptyValue = (value: any) => {
+  if (value) {
+    if (value === "" || value.trim().length === 0) {
+      return false;
+    }
+  }
+  return true;
+};
+
 // TEXT
 export const text = () =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+  string()
+    .typeError(error.INVALID_GENERIC)
+    .required(error.REQUIRED_GENERIC)
+    // check for blank spaces
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => testForEmptyValue(value),
+    });
 export const textOptional = () => text().notRequired();
 
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
 
-const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
+const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   return numberSchema().transform((_value) => {
     return Number(value.replace(charsToReplace, ""));
   });
@@ -25,22 +42,25 @@ const ignoreCharsForSchema = (value: string, charsToReplace: RegExp) => {
 
 // NUMBER - Number or Valid Strings
 export const number = () =>
-  mixed()
-    .test({
-      message: error.REQUIRED_GENERIC,
-      test: (val) => val != "",
-    })
+  string()
     .required(error.REQUIRED_GENERIC)
     .test({
       message: error.INVALID_NUMBER_OR_NA,
-      test: (val) => {
-        const replaceCharsRegex = /[,.]/g;
-        return (
-          ignoreCharsForSchema(val, replaceCharsRegex).isValidSync(val) ||
-          validNAValues.includes(val)
-        );
+      test: (value) => {
+        const validNumberRegex = /[0-9,.]/;
+        if (value) {
+          const isValidStringValue = validNAValues.includes(value);
+          const isValidNumberValue = validNumberRegex.test(value);
+          return isValidStringValue || isValidNumberValue;
+        } else return true;
       },
+    })
+    // check for blank spaces
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => testForEmptyValue(value),
     });
+
 export const numberOptional = () => number().notRequired();
 
 // Number - Ratio
@@ -55,10 +75,11 @@ export const ratio = () =>
       message: error.INVALID_RATIO,
       test: (val) => {
         const replaceCharsRegex = /[,.:]/g;
-        const ratio = val.split(":");
+        const ratio = val?.split(":");
 
         // Double check and make sure that a ratio contains numbers on both sides
         if (
+          !ratio ||
           ratio.length != 2 ||
           ratio[0].trim().length == 0 ||
           ratio[1].trim().length == 0
@@ -67,13 +88,13 @@ export const ratio = () =>
         }
 
         // Check if the left side of the ratio is a valid number
-        const firstTest = ignoreCharsForSchema(
+        const firstTest = valueCleaningNumberSchema(
           ratio[0],
           replaceCharsRegex
         ).isValidSync(val);
 
         // Check if the right side of the ratio is a valid number
-        const secondTest = ignoreCharsForSchema(
+        const secondTest = valueCleaningNumberSchema(
           ratio[1],
           replaceCharsRegex
         ).isValidSync(val);
@@ -95,7 +116,12 @@ export const urlOptional = () => url().notRequired();
 export const date = () =>
   string()
     .required(error.REQUIRED_GENERIC)
-    .matches(dateFormatRegex, error.INVALID_DATE);
+    .matches(dateFormatRegex, error.INVALID_DATE)
+    // check for empty values
+    .test({
+      message: error.REQUIRED_GENERIC,
+      test: (value) => testForEmptyValue(value),
+    });
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
   date().test(
@@ -111,7 +137,7 @@ export const endDate = (startDateField: string) =>
 
 // DROPDOWN
 export const dropdown = () =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+  object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
 
 // CHECKBOX
 export const checkbox = () =>
@@ -125,7 +151,7 @@ export const checkboxSingle = () => boolean();
 // RADIO
 export const radio = () =>
   array()
-    .min(1)
+    .min(1, error.REQUIRED_GENERIC)
     .of(object({ key: text(), value: text() }))
     .required(error.REQUIRED_GENERIC);
 export const radioOptional = () => radio().notRequired();
@@ -151,18 +177,18 @@ export const nested = (
 ) => {
   const fieldTypeMap = {
     array: array(),
-    mixed: number(),
     string: string(),
     date: date(),
+    object: object(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
-
   return baseSchema.when(parentFieldName, {
     is: (value: Choice[]) =>
       // look for parentOptionId in checked choices
       value?.find((option: Choice) => option.key === parentOptionId),
-    then: () => fieldSchema(),
+    then: () => fieldSchema(), // returns standard field schema (required)
+    otherwise: () => fieldSchema().notRequired().min(0), // returns not-required field schema
   });
 };
 

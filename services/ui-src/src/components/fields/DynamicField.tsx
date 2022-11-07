@@ -1,24 +1,36 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { DeleteDynamicFieldRecordModal } from "components";
+import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 import { svgFilters } from "styles/theme";
 // utils
-import { EntityShape, EntityType, InputChangeEvent } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  EntityType,
+  InputChangeEvent,
+  ReportStatus,
+} from "types";
+import { useUser } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
-  // get form context and register field
-  const form = useFormContext();
-  form.register(name);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+  const { report, updateReport } = useContext(ReportContext);
+
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
   );
+
+  // get form context and register field
+  const form = useFormContext();
+  form.register(name);
 
   const openDeleteProgramModal = (index: number) => {
     setSelectedRecord(displayValues[index]);
@@ -54,6 +66,52 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
+  // delete selected record from DB
+  const deleteRecord = async (selectedRecord: EntityShape) => {
+    if (userIsStateUser || userIsStateRep) {
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+
+      // queue selected entity for deletion from DB
+      const { [name]: entity } = form.getValues();
+      const filteredEntities = entity.filter(
+        (entity: AnyObject) => entity.id !== selectedRecord.id
+      );
+
+      // filter sanctions to exclude those related to selected entity
+      const filteredSanctions = report?.fieldData?.sanctions?.filter(
+        (entity: EntityShape) =>
+          entity.sanction_planName.value !== selectedRecord.id
+      );
+
+      // filter qualityMeasures to exclude responses from each measure related to selected entity
+      const filteredQualityMeasures = report?.fieldData?.qualityMeasures?.map(
+        (entity: EntityShape) => {
+          const newEntity = { ...entity };
+          delete newEntity[
+            `qualityMeasure_plan_measureResults_${selectedRecord.id}`
+          ];
+          return newEntity;
+        }
+      );
+
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+        fieldData: {
+          [name]: filteredEntities,
+          sanctions: filteredSanctions,
+          qualityMeasures: filteredQualityMeasures,
+        },
+      };
+      await updateReport(reportKeys, dataToWrite);
+      removeRecord(selectedRecord);
+    }
+  };
+
+  // remove selected record from the UI
   const removeRecord = (selectedRecord: EntityShape) => {
     const index = displayValues.findIndex(
       (entity: EntityShape) => entity.id === selectedRecord.id
@@ -73,7 +131,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
-    if (hydrationValue) {
+    if (hydrationValue?.length) {
       setDisplayValues(hydrationValue);
       append(hydrationValue);
     } else {
@@ -112,7 +170,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                   <Image
                     sx={sx.removeImage}
                     src={cancelIcon}
-                    alt="Remove item"
+                    alt={`Delete ${field.name}`}
                   />
                 )}
               </button>
@@ -131,7 +189,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       )}
       <DeleteDynamicFieldRecordModal
         selectedRecord={selectedRecord}
-        removeRecord={removeRecord}
+        deleteRecord={deleteRecord}
         entityType={name}
         modalDisclosure={{
           isOpen: deleteProgramModalIsOpen,

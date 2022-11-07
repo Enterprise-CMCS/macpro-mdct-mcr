@@ -2,69 +2,41 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
-import { EntityCard } from "components";
-import { mockModalDrawerReportPageJson } from "utils/testing/setupJest";
+import { EntityCard, EntityCardBottomSection } from "components";
+import {
+  mockModalDrawerReportPageJson,
+  mockAccessMeasuresEntity,
+  mockUnfinishedAccessMeasuresFormattedEntityData,
+  mockCompletedAccessMeasuresFormattedEntityData,
+  mockSanctionsEntity,
+  mockUnfinishedSanctionsFormattedEntityData,
+  mockCompletedSanctionsFormattedEntityData,
+  mockQualityMeasuresEntity,
+  mockQualityMeasuresFormattedEntityData,
+  mockHalfCompletedQualityMeasuresEntity,
+  mockHalfCompletedQualityMeasuresFormattedEntityData,
+  mockCompletedQualityMeasuresEntity,
+  mockCompletedQualityMeasuresFormattedEntityData,
+} from "utils/testing/setupJest";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
 const mockOpenDrawer = jest.fn();
 
-const mockEntity = {
-  id: "mock-id",
-  accessMeasure_generalCategory: [
-    {
-      key: "option1",
-      value: "mock-category",
-    },
-  ],
-  accessMeasure_standardDescription: "mock-description",
-  accessMeasure_standardType: [
-    {
-      key: "option1",
-      value: "mock-type",
-    },
-  ],
-  "accessMeasure_standardType-otherText": "",
-};
+const {
+  editEntityButtonText,
+  enterEntityDetailsButtonText,
+  editEntityDetailsButtonText,
+} = mockModalDrawerReportPageJson.verbiage;
 
-const mockEntityType = "mock-entity-type";
+// ACCESS MEASURES
 
-const mockFormattedEntityData = {
-  category: "mock-category",
-  standardDescription: "mock-standardDescription",
-  standardType: "mock-standardType",
-  provider: "mock-providerType",
-  region: "mock-applicableRegion",
-  population: "mock-population",
-  monitoringMethods: ["mock-monitoringMethod-1", "mock-monitoringMethod-2"],
-  methodFrequency: "mock-oversightMethodFrequency",
-};
-
-const mockUnfinishedEntityData = {
-  category: "mock-category",
-  standardDescription: "mock-standardDescription",
-  standardType: "mock-standardType",
-};
-
-const EntityCardComponent = (
+const UnfinishedAccessMeasuresEntityCardComponent = (
   <EntityCard
-    entity={mockEntity}
-    entityType={mockEntityType}
-    formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
-  />
-);
-
-const UnfinishedEntityCardComponent = (
-  <EntityCard
-    entity={mockEntity}
-    entityType={mockEntityType}
-    formattedEntityData={mockUnfinishedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
+    entity={mockAccessMeasuresEntity}
+    entityType="mock-entity-type"
+    formattedEntityData={mockUnfinishedAccessMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
@@ -73,46 +45,19 @@ const UnfinishedEntityCardComponent = (
 
 const AccessMeasuresEntityCardComponent = (
   <EntityCard
-    entity={mockEntity}
-    entityType={"accessMeasures"}
-    formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
+    entity={mockAccessMeasuresEntity}
+    entityType="accessMeasures"
+    formattedEntityData={mockCompletedAccessMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
   />
 );
 
-const SanctionsEntityCardComponent = (
-  <EntityCard
-    entity={mockEntity}
-    entityType={"sanctions"}
-    formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
-  />
-);
-
-const QualityMeasuresEntityCardComponent = (
-  <EntityCard
-    entity={mockEntity}
-    entityType={"qualityMeasures"}
-    formattedEntityData={mockFormattedEntityData}
-    dashboard={mockModalDrawerReportPageJson.dashboard}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-    data-testid="mock-entity-card"
-  />
-);
-
-describe("Test Finished EntityCard", () => {
+describe("Test Completed AccessMeasures EntityCard", () => {
   beforeEach(() => {
-    render(EntityCardComponent);
+    render(AccessMeasuresEntityCardComponent);
   });
 
   afterEach(() => {
@@ -124,35 +69,27 @@ describe("Test Finished EntityCard", () => {
   });
 
   test("Clicking edit button opens the AddEditProgramModal", async () => {
-    const editEntityButton = screen.getByTestId("editEntityButton");
-    expect(editEntityButton).toBeVisible();
+    const editEntityButton = screen.getByText(editEntityButtonText);
     await userEvent.click(editEntityButton);
     await expect(openAddEditEntityModal).toBeCalledTimes(1);
   });
 
-  test("Clicking 'Edit measure' button opens the AddEditProgramModal", async () => {
-    const editMeasureButton = screen.getByText("Edit measure");
-    expect(editMeasureButton).toBeVisible();
-    await userEvent.click(editMeasureButton);
-    expect(openAddEditEntityModal).toBeCalledTimes(1);
-  });
-
   test("EntityCard opens the delete modal on remove click", async () => {
-    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on edit-details click", async () => {
-    const editDetailsButton = screen.queryAllByTestId("edit-details-button")[0];
+    const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
     await userEvent.click(editDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
 });
 
-describe("Test Unfinished EntityCard", () => {
+describe("Test Unfinished AccessMeasures EntityCard", () => {
   beforeEach(() => {
-    render(UnfinishedEntityCardComponent);
+    render(UnfinishedAccessMeasuresEntityCardComponent);
   });
 
   afterEach(() => {
@@ -164,48 +101,280 @@ describe("Test Unfinished EntityCard", () => {
   });
 
   test("EntityCard opens the delete modal on remove click", async () => {
-    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
     expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 
   test("EntityCard opens the drawer on enter-details click", async () => {
-    const enterDetailsButton = screen.queryAllByTestId(
-      "enter-details-button"
-    )[0];
+    const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
   });
 });
 
-describe("Test EntityCard accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(EntityCardComponent);
+describe("Test AccessMeasures EntityCard accessibility", () => {
+  it("Unfinished AccessMeasures EntityCard should not have basic accessibility issues", async () => {
+    const { container } = render(UnfinishedAccessMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(UnfinishedEntityCardComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it("Should not have basic accessibility issues", async () => {
+  it("Completed AccessMeasures EntityCard should not have basic accessibility issues", async () => {
     const { container } = render(AccessMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+});
 
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(SanctionsEntityCardComponent);
+// QUALITY MEASURES
+
+const UnstartedQualityMeasuresEntityCardComponent = (
+  <EntityCard
+    entity={mockQualityMeasuresEntity}
+    entityType="qualityMeasures"
+    formattedEntityData={mockQualityMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
+);
+
+const HalfCompletedQualityMeasuresEntityCardComponent = (
+  <EntityCard
+    entity={mockHalfCompletedQualityMeasuresEntity}
+    entityType="qualityMeasures"
+    formattedEntityData={mockHalfCompletedQualityMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
+);
+
+const CompletedQualityMeasuresEntityCardComponent = (
+  <EntityCard
+    entity={mockCompletedQualityMeasuresEntity}
+    entityType="qualityMeasures"
+    formattedEntityData={mockCompletedQualityMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
+);
+
+describe("Test Unstarted QualityMeasures EntityCard", () => {
+  beforeEach(() => {
+    render(UnstartedQualityMeasuresEntityCardComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard is visible", () => {
+    expect(screen.getByTestId("entityCard")).toBeVisible();
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    const removeButton = screen.getByTestId("delete-entity-button");
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
+  });
+
+  test("EntityCard opens the drawer on enter-details click", async () => {
+    const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
+    await userEvent.click(enterDetailsButton);
+    expect(mockOpenDrawer).toBeCalledTimes(1);
+  });
+});
+
+describe("Test half-completed QualityMeasures EntityCard", () => {
+  beforeEach(() => {
+    render(HalfCompletedQualityMeasuresEntityCardComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard is visible", () => {
+    expect(screen.getByTestId("entityCard")).toBeVisible();
+  });
+
+  test("Clicking edit button opens the AddEditProgramModal", async () => {
+    const editEntityButton = screen.getByText(editEntityButtonText);
+    await userEvent.click(editEntityButton);
+    await expect(openAddEditEntityModal).toBeCalledTimes(1);
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    const removeButton = screen.getByTestId("delete-entity-button");
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
+  });
+});
+
+describe("Test completed QualityMeasures EntityCard", () => {
+  beforeEach(() => {
+    render(CompletedQualityMeasuresEntityCardComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard is visible", () => {
+    expect(screen.getByTestId("entityCard")).toBeVisible();
+  });
+
+  test("Clicking edit button opens the AddEditProgramModal", async () => {
+    const editEntityButton = screen.getByText(editEntityButtonText);
+    await userEvent.click(editEntityButton);
+    await expect(openAddEditEntityModal).toBeCalledTimes(1);
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    const removeButton = screen.getByTestId("delete-entity-button");
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
+  });
+});
+
+describe("Test QualityMeasures EntityCard accessibility", () => {
+  it("Unstarted QualityMeasures EntityCard should not have basic accessibility issues", async () => {
+    const { container } = render(UnstartedQualityMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(QualityMeasuresEntityCardComponent);
+  it("Half-completed QualityMeasures EntityCard should not have basic accessibility issues", async () => {
+    const { container } = render(
+      HalfCompletedQualityMeasuresEntityCardComponent
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("Completed QualityMeasures EntityCard should not have basic accessibility issues", async () => {
+    const { container } = render(CompletedQualityMeasuresEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+});
+
+// SANCTIONS
+
+const UnfinishedSanctionsEntityCardComponent = (
+  <EntityCard
+    entity={mockSanctionsEntity}
+    entityType="sanctions"
+    formattedEntityData={mockUnfinishedSanctionsFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
+);
+
+const SanctionsEntityCardComponent = (
+  <EntityCard
+    entity={mockSanctionsEntity}
+    entityType="sanctions"
+    formattedEntityData={mockCompletedSanctionsFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
+);
+
+describe("Test Completed Sanctions EntityCard", () => {
+  beforeEach(() => {
+    render(SanctionsEntityCardComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard is visible", () => {
+    expect(screen.getByTestId("entityCard")).toBeVisible();
+  });
+
+  test("Clicking edit button opens the AddEditProgramModal", async () => {
+    const editEntityButton = screen.getByText(editEntityButtonText);
+    await userEvent.click(editEntityButton);
+    await expect(openAddEditEntityModal).toBeCalledTimes(1);
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    const removeButton = screen.getByTestId("delete-entity-button");
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
+  });
+
+  test("EntityCard opens the drawer on edit-details click", async () => {
+    const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
+    await userEvent.click(editDetailsButton);
+    expect(mockOpenDrawer).toBeCalledTimes(1);
+  });
+});
+
+describe("Test Unfinished Sanctions EntityCard", () => {
+  beforeEach(() => {
+    render(UnfinishedSanctionsEntityCardComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard is visible", () => {
+    expect(screen.getByTestId("entityCard")).toBeVisible();
+  });
+
+  test("EntityCard opens the delete modal on remove click", async () => {
+    const removeButton = screen.getByTestId("delete-entity-button");
+    await userEvent.click(removeButton);
+    expect(openDeleteEntityModal).toBeCalledTimes(1);
+  });
+
+  test("EntityCard opens the drawer on enter-details click", async () => {
+    const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
+    await userEvent.click(enterDetailsButton);
+    expect(mockOpenDrawer).toBeCalledTimes(1);
+  });
+});
+
+describe("Test Sanctions EntityCard accessibility", () => {
+  it("Unfinished Sanctions EntityCard should not have basic accessibility issues", async () => {
+    const { container } = render(UnfinishedSanctionsEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("Completed Sanctions EntityCard should not have basic accessibility issues", async () => {
+    const { container } = render(SanctionsEntityCardComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+});
+
+// Undefined EntityType
+
+const UndefinedEntityCardBottomSection = (
+  <EntityCardBottomSection
+    entityType={"Undefined Entity Type"}
+    formattedEntityData={mockUnfinishedAccessMeasuresFormattedEntityData}
+  />
+);
+
+describe("Should return Entity Type by default", () => {
+  it("should return the entity type given", () => {
+    render(UndefinedEntityCardBottomSection);
+    expect(screen.queryByText("Undefined Entity Type")).toBeTruthy();
   });
 });

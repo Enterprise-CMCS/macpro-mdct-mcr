@@ -7,6 +7,7 @@ import { ReportContext, ModalDrawerReportPage } from "components";
 import { useUser } from "utils";
 import {
   mockModalDrawerReportPageJson,
+  mockRepeatedFormField,
   mockReportContext,
   mockStateUser,
   RouterWrappedComponent,
@@ -29,6 +30,13 @@ const mockReportContextWithoutEntities = {
   ...mockReportContext,
   report: undefined,
 };
+
+const {
+  addEntityButtonText,
+  editEntityButtonText,
+  enterEntityDetailsButtonText,
+  deleteModalConfirmButtonText,
+} = mockModalDrawerReportPageJson.verbiage;
 
 const modalDrawerReportPageComponentWithEntities = (
   <RouterWrappedComponent>
@@ -73,18 +81,23 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   it("ModalDrawerReportPage Modal opens correctly", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const addEntityButton = screen.getByText("Add entity button");
+    const addEntityButton = screen.getByText(addEntityButtonText);
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
+
+    const editButton = screen.getByText(editEntityButtonText);
+    await userEvent.click(editButton);
+    const closeButton = screen.getByText("Close");
+    await userEvent.click(closeButton);
   });
 
   test("ModalDrawerReportPage opens the delete modal on remove click", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const addEntityButton = screen.getByText("Add entity button");
-    const removeButton = screen.queryAllByTestId("deleteEntityButton")[0];
+    const addEntityButton = screen.getByText(addEntityButtonText);
+    const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
     // click delete in modal
-    const deleteButton = screen.getByText("Yes, Delete Measure");
+    const deleteButton = screen.getByText(deleteModalConfirmButtonText);
     await userEvent.click(deleteButton);
 
     // verify that the field is removed
@@ -95,16 +108,14 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   test("ModalDrawerReportPage opens the drawer on enter-details click", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const enterDetailsButton = screen.queryAllByTestId(
-      "enter-details-button"
-    )[0];
+    const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(enterDetailsButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
   it("ModalDrawerReportPage sidedrawer opens and saves for state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    const launchDrawerButton = screen.getAllByText("Enter details")[0];
+    const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
 
@@ -113,6 +124,39 @@ describe("Test ModalDrawerReportPage with entities", () => {
     const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+  });
+});
+
+const mockRouteWithRepeatedField = {
+  ...mockModalDrawerReportPageJson,
+  drawerForm: {
+    id: "mock-drawer-form-id",
+    fields: [mockRepeatedFormField],
+  },
+};
+
+const modalDrawerReportPageComponentWithRepeatedFieldForm = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <ModalDrawerReportPage route={mockRouteWithRepeatedField} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+describe("ModalDrawerReportPage drawer form repeats fields if necessary", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it("Should repeat fields if there are repeated fields in the form", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(modalDrawerReportPageComponentWithRepeatedFieldForm);
+
+    const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
+    await userEvent.click(launchDrawerButton);
+
+    // there are 2 plans in the mock report context and 1 field to repeat, so 2 fields should render
+    const renderedFields = screen.getAllByRole("textbox");
+    expect(renderedFields.length).toEqual(2);
   });
 });
 

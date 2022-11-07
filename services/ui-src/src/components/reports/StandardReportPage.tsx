@@ -9,9 +9,8 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { useFindRoute, useUser } from "utils";
+import { filterFormData, useFindRoute, useUser } from "utils";
 import { AnyObject, StandardReportPageShape, ReportStatus } from "types";
-import { mcparReportRoutesFlat } from "forms/mcpar";
 
 export const StandardReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -19,19 +18,23 @@ export const StandardReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   const navigate = useNavigate();
-  const { nextRoute } = useFindRoute(mcparReportRoutesFlat, "/mcpar");
+  const { nextRoute } = useFindRoute(
+    report!.formTemplate.flatRoutes!,
+    report!.formTemplate.basePath
+  );
 
-  const onSubmit = async (formData: AnyObject) => {
+  const onSubmit = async (enteredData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {
       setSubmitting(true);
       const reportKeys = {
         state: state,
         id: report?.id,
       };
+      const filteredFormData = filterFormData(enteredData, route.form.fields);
       const dataToWrite = {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
-        fieldData: formData,
+        fieldData: filteredFormData,
       };
       await updateReport(reportKeys, dataToWrite);
       setSubmitting(false);
@@ -41,7 +44,7 @@ export const StandardReportPage = ({ route }: Props) => {
 
   return (
     <Box data-testid="standard-page">
-      {route.intro && <ReportPageIntro text={route.intro} />}
+      {route.verbiage.intro && <ReportPageIntro text={route.verbiage.intro} />}
       <Form
         id={route.form.id}
         formJson={route.form}

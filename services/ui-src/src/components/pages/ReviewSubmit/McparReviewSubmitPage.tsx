@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, ReportContext, PageTemplate, Sidebar } from "components";
+import { Modal, ReportContext } from "components";
 // types
 import { ReportStatus } from "types";
 // utils
@@ -19,7 +19,7 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 
-export const ReviewSubmitPage = () => {
+export const McparReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -28,6 +28,8 @@ export const ReviewSubmitPage = () => {
   // get user information
   const { email, full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
+
+  const isPermittedToSubmit = userIsStateUser || userIsStateRep;
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -46,7 +48,7 @@ export const ReviewSubmitPage = () => {
 
   const submitForm = async () => {
     setSubmitting(true);
-    if (userIsStateUser || userIsStateRep) {
+    if (isPermittedToSubmit) {
       const submissionDate = Date.now();
       await updateReport(reportKeys, {
         status: ReportStatus.SUBMITTED,
@@ -65,27 +67,24 @@ export const ReviewSubmitPage = () => {
   };
 
   return (
-    <PageTemplate type="report">
-      <Flex sx={sx.pageContainer}>
-        <Sidebar />
-        {report &&
-          (report?.status?.includes(ReportStatus.SUBMITTED) ? (
-            <SuccessMessage
-              programName={report.programName}
-              date={report?.submittedOnDate}
-              submittedBy={report?.submittedBy}
-            />
-          ) : (
-            <ReadyToSubmit
-              submitForm={submitForm}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              submitting={submitting}
-              onClose={onClose}
-            />
-          ))}
-      </Flex>
-    </PageTemplate>
+    <Flex sx={sx.pageContainer} data-testid="review-submit-page">
+      {report?.status === ReportStatus.SUBMITTED ? (
+        <SuccessMessage
+          programName={report.programName}
+          date={report?.submittedOnDate}
+          submittedBy={report?.submittedBy}
+        />
+      ) : (
+        <ReadyToSubmit
+          submitForm={submitForm}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          submitting={submitting}
+          isPermittedToSubmit={isPermittedToSubmit}
+        />
+      )}
+    </Flex>
   );
 };
 
@@ -93,8 +92,9 @@ const ReadyToSubmit = ({
   submitForm,
   isOpen,
   onOpen,
-  submitting,
   onClose,
+  submitting,
+  isPermittedToSubmit,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
@@ -111,7 +111,11 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        <Button type="submit" onClick={onOpen as MouseEventHandler}>
+        <Button
+          type="submit"
+          onClick={onOpen as MouseEventHandler}
+          isDisabled={!isPermittedToSubmit}
+        >
           {pageLink.text}
         </Button>
       </Flex>
@@ -133,9 +137,10 @@ const ReadyToSubmit = ({
 interface ReadyToSubmitProps {
   submitForm: Function;
   isOpen: boolean;
-  submitting?: boolean;
   onOpen: Function;
   onClose: Function;
+  submitting?: boolean;
+  isPermittedToSubmit?: boolean;
 }
 
 export const SuccessMessageGenerator = (
@@ -147,7 +152,7 @@ export const SuccessMessageGenerator = (
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
-    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}`;
+    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}.`;
   }
   return `MCPAR report for ${programName} was submitted.`;
 };
@@ -201,8 +206,6 @@ const sx = {
     flexDirection: "column",
     width: "100%",
     maxWidth: "reportPageWidth",
-    marginY: "3.5rem",
-    marginLeft: "3.5rem",
   },
   leadTextBox: {
     width: "100%",

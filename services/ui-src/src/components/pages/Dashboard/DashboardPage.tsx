@@ -6,19 +6,22 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   Link,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
   AddEditProgramModal,
-  DeleteProgramModal,
   ErrorAlert,
   PageTemplate,
   ReportContext,
 } from "components";
 import { DashboardList } from "./DashboardProgramList";
 import { MobileDashboardList } from "./DashboardProgramListMobile";
+import { Spinner } from "@cmsgov/design-system";
+// forms
+import { mcparReportJson } from "forms/mcpar";
 // utils
 import { AnyObject, ReportShape } from "types";
 import {
@@ -30,15 +33,16 @@ import {
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
-import { ArrowIcon, Spinner } from "@cmsgov/design-system";
+import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
-export const DashboardPage = () => {
+export const DashboardPage = ({ reportType }: Props) => {
   const {
     errorMessage,
     fetchReportsByState,
     reportsByState,
     clearReportSelection,
     setReportSelection,
+    updateReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -49,9 +53,21 @@ export const DashboardPage = () => {
   } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
+  const [reportsToDisplay, setReportsToDisplay] = useState<
+    ReportShape[] | undefined
+  >(undefined);
+  const [archiving, setArchiving] = useState<boolean>(false);
+  const [archivingReportId, setArchivingReportId] = useState<
+    string | undefined
+  >(undefined);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
+
+  const genericReportJsonMap: any = {
+    MCPAR: mcparReportJson,
+  };
+  const genericReportJson = genericReportJsonMap[reportType]!;
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
@@ -66,12 +82,21 @@ export const DashboardPage = () => {
     clearReportSelection();
   }, []);
 
+  useEffect(() => {
+    let newReportsToDisplay = reportsByState;
+    if (!userIsAdmin) {
+      newReportsToDisplay = reportsByState?.filter(
+        (report: ReportShape) => !report?.archived
+      );
+    }
+    setReportsToDisplay(newReportsToDisplay);
+  }, [reportsByState]);
+
   const enterSelectedReport = async (report: ReportShape) => {
     // set active report to selected report
     setReportSelection(report);
-
-    const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
-    navigate(reportFirstPagePath);
+    const firstReportPagePath = report.formTemplate.flatRoutes![0].path;
+    navigate(firstReportPagePath);
   };
 
   const openAddEditProgramModal = (report?: ReportShape) => {
@@ -106,12 +131,6 @@ export const DashboardPage = () => {
     addEditProgramModalOnOpenHandler();
   };
 
-  const openDeleteProgramModal = (report?: ReportShape) => {
-    setSelectedReport(report);
-    // use disclosure to open modal
-    deleteProgramModalOnOpenHandler();
-  };
-
   // add/edit program modal disclosure
   const {
     isOpen: addEditProgramModalIsOpen,
@@ -119,17 +138,25 @@ export const DashboardPage = () => {
     onClose: addEditProgramModalOnCloseHandler,
   } = useDisclosure();
 
-  // delete program modal disclosure
-  const {
-    isOpen: deleteProgramModalIsOpen,
-    onOpen: deleteProgramModalOnOpenHandler,
-    onClose: deleteProgramModalOnCloseHandler,
-  } = useDisclosure();
+  const toggleReportArchiveStatus = async (report: ReportShape) => {
+    if (userIsAdmin) {
+      setArchivingReportId(report.id);
+      setArchiving(true);
+      const reportKeys = {
+        state: adminSelectedState,
+        id: report.id,
+      };
+      await updateReport(reportKeys, {});
+      await fetchReportsByState(activeState);
+      setArchivingReportId(undefined);
+      setArchiving(false);
+    }
+  };
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
-        <ArrowIcon title="returnHome" direction="left" />
+        <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
         Return Home
       </Link>
       {errorMessage && <ErrorAlert error={errorMessage} />}
@@ -140,23 +167,27 @@ export const DashboardPage = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
-        {reportsByState ? (
+        {reportsToDisplay ? (
           isTablet || isMobile ? (
             <MobileDashboardList
-              reportsByState={reportsByState}
+              reportsByState={reportsToDisplay}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
-              openDeleteProgramModal={openDeleteProgramModal}
+              archiveReport={toggleReportArchiveStatus}
+              archiving={archiving}
+              archivingReportId={archivingReportId}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
             />
           ) : (
             <DashboardList
-              reportsByState={reportsByState}
+              reportsByState={reportsToDisplay}
               openAddEditProgramModal={openAddEditProgramModal}
               enterSelectedReport={enterSelectedReport}
-              openDeleteProgramModal={openDeleteProgramModal}
+              archiveReport={toggleReportArchiveStatus}
+              archiving={archiving}
+              archivingReportId={archivingReportId}
               body={body}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
@@ -170,7 +201,7 @@ export const DashboardPage = () => {
             </Flex>
           )
         )}
-        {!reportsByState?.length && (
+        {!reportsToDisplay?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         {/* only show add program button to state users */}
@@ -185,20 +216,22 @@ export const DashboardPage = () => {
       <AddEditProgramModal
         activeState={activeState!}
         selectedReport={selectedReport!}
+        newReportData={{
+          reportType: reportType,
+          formTemplate: genericReportJson,
+        }}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
         }}
       />
-      <DeleteProgramModal
-        modalDisclosure={{
-          isOpen: deleteProgramModalIsOpen,
-          onClose: deleteProgramModalOnCloseHandler,
-        }}
-      />
     </PageTemplate>
   );
 };
+
+interface Props {
+  reportType: string;
+}
 
 const sx = {
   layout: {
@@ -209,6 +242,7 @@ const sx = {
     },
   },
   returnLink: {
+    display: "flex",
     width: "8.5rem",
     svg: {
       height: "1.375rem",
@@ -219,6 +253,12 @@ const sx = {
     textDecoration: "none",
     _hover: {
       textDecoration: "underline",
+    },
+    ".returnIcon": {
+      width: "1.25rem",
+      height: "1.25rem",
+      marginTop: "0.25rem",
+      marginRight: "0.5rem",
     },
   },
   leadTextBox: {
@@ -314,9 +354,9 @@ const sxChildStyles = {
   deleteProgramCell: {
     width: "2.5rem",
   },
-  deleteProgramButtonImage: {
-    height: "1.75rem",
-    width: "1.75rem",
-    minWidth: "28px",
+  archiveReportButton: {
+    minWidth: "4.5rem",
+    fontSize: "sm",
+    fontWeight: "normal",
   },
 };

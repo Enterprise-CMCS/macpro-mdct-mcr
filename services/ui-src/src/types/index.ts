@@ -35,14 +35,16 @@ export interface UserContextShape {
 
 export interface ReportJson {
   id?: string;
+  type?: string;
   name: string;
   basePath: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
+  flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
 }
 
-export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
+export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
 
 export interface ReportRouteBase {
   name: string;
@@ -57,7 +59,45 @@ export type ReportRouteWithForm =
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
-  intro?: {
+  verbiage: ReportPageVerbiage;
+}
+
+export interface StandardReportPageShape extends ReportPageShapeBase {
+  form: FormJson;
+  dashboard?: never;
+  modalForm?: never;
+  drawerForm?: never;
+  entityType?: never;
+}
+
+export interface DrawerReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  verbiage: DrawerReportPageVerbiage;
+  drawerForm: FormJson;
+  modalForm?: never;
+  form?: never;
+}
+
+export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  verbiage: ModalDrawerReportPageVerbiage;
+  modalForm: FormJson;
+  drawerForm: FormJson;
+  form?: never;
+}
+
+export interface ReportRouteWithoutForm extends ReportRouteBase {
+  children?: ReportRoute[];
+  pageType?: string;
+  entityType?: never;
+  verbiage?: never;
+  modalForm?: never;
+  drawerForm?: never;
+  form?: never;
+}
+
+export interface ReportPageVerbiage {
+  intro: {
     section: string;
     subsection: string;
     spreadsheet?: string;
@@ -65,53 +105,28 @@ export interface ReportPageShapeBase extends ReportRouteBase {
   };
 }
 
-export interface StandardReportPageShape extends ReportPageShapeBase {
-  form: FormJson;
-  dashboard?: never;
-  modal?: never;
-  drawer?: never;
-  entityType?: never;
+export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
+  dashboardTitle: string;
+  countEntitiesInTitle?: boolean;
+  drawerTitle: string;
+  drawerInfo?: CustomHtmlElement[];
+  missingEntityMessage?: CustomHtmlElement[];
 }
 
-export interface DrawerReportPageShape extends ReportPageShapeBase {
-  entityType: string;
-  dashboard: AnyObject;
-  drawer: ReportPageDrawer;
-  modal?: never;
-  form?: never;
-}
-
-export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
-  entityType: string;
-  dashboard: AnyObject;
-  modal: ReportPageModal;
-  drawer: ReportPageDrawer;
-  form?: never;
-}
-
-export interface ReportRouteWithChildren extends ReportRouteBase {
-  children?: ReportRoute[];
-  pageType?: never;
-  entityType?: never;
-  modal?: never;
-  drawer?: never;
-  form?: never;
-}
-
-export interface ReportPageDrawer {
-  form: FormJson;
-  title: string;
-  info?: CustomHtmlElement[];
-  addEntityButtonText?: string;
-  editEntityButtonText?: string;
-  deleteEntityButtonAltText?: string;
-}
-
-export interface ReportPageModal {
-  form: FormJson;
-  addTitle: string;
-  editTitle: string;
-  message: string;
+export interface ModalDrawerReportPageVerbiage
+  extends DrawerReportPageVerbiage {
+  addEntityButtonText: string;
+  editEntityButtonText: string;
+  addEditModalAddTitle: string;
+  addEditModalEditTitle: string;
+  addEditModalMessage: string;
+  deleteEntityButtonAltText: string;
+  deleteModalTitle: string;
+  deleteModalConfirmButtonText: string;
+  deleteModalWarning: string;
+  entityUnfinishedMessage: string;
+  enterEntityDetailsButtonText: string;
+  editEntityDetailsButtonText: string;
 }
 
 // REPORT PROVIDER/CONTEXT
@@ -137,6 +152,7 @@ export interface ReportShape extends ReportKeys {
   submittedOnDate?: number;
   formTemplate: ReportJson;
   fieldData: AnyObject;
+  archived?: boolean;
 }
 
 export interface ReportContextMethods {
@@ -174,6 +190,7 @@ export enum ModalDrawerEntityTypes {
   QUALITY_MEASURES = "qualityMeasures",
   SANCTIONS = "sanctions",
 }
+
 export interface EntityShape {
   id: string;
   [key: string]: any;
@@ -220,6 +237,7 @@ export interface FormField {
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];
+  repeat?: string;
 }
 
 export interface DropdownOptions {
@@ -249,10 +267,16 @@ export interface Choice {
   value: string; // choice.value
 }
 
+export interface DropdownChoice {
+  label: string;
+  value: string;
+}
+
 export enum PageTypes {
   STANDARD = "standard",
   DRAWER = "drawer",
   MODAL_DRAWER = "modalDrawer",
+  REVIEW_SUBMIT = "reviewSubmit",
 }
 
 // BANNER

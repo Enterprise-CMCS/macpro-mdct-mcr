@@ -1,19 +1,22 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import {
+  mockReportContext,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 import { axe } from "jest-axe";
 //components
-import { Sidebar } from "components";
+import { ReportContext, Sidebar } from "components";
 
-jest.mock("react-router-dom", () => ({
-  useLocation: jest.fn(() => ({
-    pathname: "/mcpar/review-and-submit",
-  })),
+jest.mock("utils/reports/routing", () => ({
+  isReportFormPage: jest.fn(() => true),
 }));
 
 const sidebarComponent = (
   <RouterWrappedComponent>
-    <Sidebar />;
+    <ReportContext.Provider value={mockReportContext}>
+      <Sidebar />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -37,12 +40,19 @@ describe("Test Sidebar", () => {
   });
 
   test("Sidebar section click opens and closes section", async () => {
-    const sectionAFirstChild = screen.getByText("Point of Contact");
-    expect(sectionAFirstChild).not.toBeVisible();
+    const parentSection = screen.getByText("mock-route-2");
+    const childSection = screen.getByText("mock-route-2a");
 
-    const sidebarSectionA = screen.getByText("A: Program Information");
-    await userEvent.click(sidebarSectionA);
-    await expect(sectionAFirstChild).toBeVisible();
+    // child section is not visible to start
+    expect(childSection).not.toBeVisible();
+
+    // click parent section open. now child is visible.
+    await userEvent.click(parentSection);
+    await expect(childSection).toBeVisible();
+
+    // click parent section closed. now child is not visible.
+    await userEvent.click(parentSection);
+    await expect(childSection).not.toBeVisible();
   });
 });
 

@@ -86,7 +86,11 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     field?.props?.choices.forEach((choice: FieldChoice) => {
       // set choice value to choice label string
       choice.value = choice.label;
-      choice.id = choice.name;
+      // if choice id has not already had parent field id appended, do so now
+      if (!choice.id.includes("-")) {
+        choice.id = field.id + "-" + choice.id;
+      }
+      choice.name = choice.id;
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
       // if choice has children, recurse
@@ -94,6 +98,71 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     });
   });
   return fields;
+};
+
+// create repeated fields per entity specified (e.g. one field for each plan)
+export const createRepeatedFields = (
+  fields: FormField[],
+  reportFieldData?: AnyObject
+): FormField[] =>
+  // for each form field, check if it needs to be repeated
+  fields.flatMap((currentField: FormField) => {
+    if (currentField.repeat) {
+      // if so, get entities for which the field is to be repeated
+      const entities = reportFieldData?.[currentField.repeat];
+      if (entities && entities.length) {
+        // for each entity, create and return a new field with entity-linked id
+        return entities?.map((entity: AnyObject) => {
+          const newField = {
+            ...currentField,
+            id: currentField.id + "_" + entity.id,
+            props: {
+              ...currentField.props,
+              label: entity.name + currentField?.props?.label,
+            },
+          };
+          return newField;
+        });
+      } else return []; // if no entities, return blank array (later flattened)
+    } else return currentField; // if field is not to be repeated, return it unchanged
+  });
+
+// returns user-entered data, filtered to only fields in the current form
+export const filterFormData = (
+  enteredData: AnyObject,
+  currentFormFields: FormField[]
+) => {
+  // translate user-entered data to array for filtration
+  const enteredDataEntries = Object.entries(enteredData);
+  // flatten current form fields and create array of the form's field ids
+  const flattenedFormFields = flattenFormFields(currentFormFields);
+  const formFieldArray = flattenedFormFields.map(
+    (field: FormField) => field.id
+  );
+  // filter user-entered data to only fields in the current form
+  const filteredDataEntries = enteredDataEntries.filter((fieldData) => {
+    const [fieldDataKey] = fieldData;
+    return formFieldArray.includes(fieldDataKey);
+  });
+  // translate data array back to a form data object
+  return Object.fromEntries(filteredDataEntries);
+};
+
+// returns all fields in a given form, flattened to a single level array
+export const flattenFormFields = (formFields: FormField[]): FormField[] => {
+  const flattenedFields: any = [];
+  const compileFields = (formFields: FormField[]) => {
+    formFields.forEach((field: FormField) => {
+      // push field to flattened fields array
+      flattenedFields.push(field);
+      // if choice has children, recurse
+      field?.props?.choices?.forEach((choice: FieldChoice) => {
+        if (choice.children) compileFields(choice.children);
+      });
+    });
+  };
+  compileFields(formFields);
+  return flattenedFields;
 };
 
 export const sortFormErrors = (
