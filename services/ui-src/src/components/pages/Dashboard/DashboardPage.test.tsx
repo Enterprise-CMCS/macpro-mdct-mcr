@@ -35,6 +35,9 @@ const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
+  useLocation: jest.fn(() => ({
+    pathname: "/mcpar",
+  })),
 }));
 
 const mockReportContextNoReports = {
@@ -50,7 +53,7 @@ const mockReportContextWithError = {
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <DashboardPage />
+      <DashboardPage reportType="MOCK" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -58,7 +61,7 @@ const dashboardViewWithReports = (
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextNoReports}>
-      <DashboardPage />
+      <DashboardPage reportType="MOCK" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -66,7 +69,7 @@ const dashboardViewNoReports = (
 const dashboardViewWithError = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithError}>
-      <DashboardPage />
+      <DashboardPage reportType="MOCK" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -99,9 +102,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
     await userEvent.click(enterReportButton);
     expect(mockReportContext.setReportSelection).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toBeCalledTimes(1);
-    expect(mockUseNavigate).toBeCalledWith(
-      "/mcpar/program-information/point-of-contact"
-    );
+    expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
   });
 
   test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {
@@ -146,9 +147,7 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
-    expect(mockUseNavigate).toBeCalledWith(
-      "/mcpar/program-information/point-of-contact"
-    );
+    expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
   });
 
   test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {

@@ -1,39 +1,41 @@
-import { useLocation } from "react-router-dom";
 import { useFindRoute } from "./routing";
+import { mockReportJson } from "utils/testing/setupJest";
 
-jest.mock("react-router-dom");
-const mockUseLocation = useLocation as jest.MockedFunction<typeof useLocation>;
+const mockFallbackRoute = mockReportJson.basePath;
+const mockFlatRoutesArray = mockReportJson.flatRoutes;
 
-const mockLocation = {
-  pathname: "/test-path",
-  state: undefined,
-  key: "",
-  search: "",
-  hash: "",
-};
+jest.mock("react-router-dom", () => ({
+  useLocation: jest
+    .fn()
+    .mockReturnValueOnce({ pathname: "/mock/mock-route-1" })
+    .mockReturnValueOnce({ pathname: "/mock/mock-route-2a" })
+    .mockReturnValueOnce({ pathname: "/mock/mock-route-2b" }),
+}));
 
-const mockMcparLocation = {
-  pathname: "/mcpar/program-information/point-of-contact",
-  state: undefined,
-  key: "",
-  search: "",
-  hash: "",
-};
-
-describe("Test useFindRoute behavior", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+describe("Test useFindRoute behavior at first route in array (with no previous routes)", () => {
+  it("Returns fallback as previousRoute when there are no preceding routes", () => {
+    const { previousRoute } = useFindRoute(
+      mockFlatRoutesArray,
+      mockFallbackRoute
+    );
+    expect(previousRoute).toEqual(mockFallbackRoute);
   });
-  it("Returns fallback as previousRoute when there are no preceding routes and when there are no subsequent routes", () => {
-    mockUseLocation.mockReturnValue(mockLocation);
-    const { previousRoute, nextRoute } = useFindRoute();
-    expect(previousRoute).toEqual("/");
-    expect(nextRoute).toEqual("/");
-  });
+});
+
+describe("Test useFindRoute behavior at middle route in array (with both previous and next routes)", () => {
   it("Returns previous path when there are preceding routes and next path when there are subsequent routes", () => {
-    mockUseLocation.mockReturnValue(mockMcparLocation);
-    const { previousRoute, nextRoute } = useFindRoute();
-    expect(previousRoute).toEqual("/mcpar");
-    expect(nextRoute).toEqual("/mcpar/program-information/reporting-period");
+    const { previousRoute, nextRoute } = useFindRoute(
+      mockFlatRoutesArray,
+      mockFallbackRoute
+    );
+    expect(previousRoute).toEqual("/mock/mock-route-1");
+    expect(nextRoute).toEqual("/mock/mock-route-2b");
+  });
+});
+
+describe("Test useFindRoute behavior at last route in array (with no subsequent routes)", () => {
+  it("Returns fallback if there are no subsequent routes", () => {
+    const { nextRoute } = useFindRoute(mockFlatRoutesArray, mockFallbackRoute);
+    expect(nextRoute).toEqual(mockFallbackRoute);
   });
 });

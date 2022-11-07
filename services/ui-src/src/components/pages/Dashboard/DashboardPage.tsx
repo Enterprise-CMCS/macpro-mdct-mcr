@@ -20,6 +20,8 @@ import {
 import { DashboardList } from "./DashboardProgramList";
 import { MobileDashboardList } from "./DashboardProgramListMobile";
 import { Spinner } from "@cmsgov/design-system";
+// forms
+import { mcparReportJson } from "forms/mcpar";
 // utils
 import { AnyObject, ReportShape } from "types";
 import {
@@ -33,7 +35,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
-export const DashboardPage = () => {
+export const DashboardPage = ({ reportType }: Props) => {
   const {
     errorMessage,
     fetchReportsByState,
@@ -62,6 +64,11 @@ export const DashboardPage = () => {
     undefined
   );
 
+  const genericReportJsonMap: any = {
+    MCPAR: mcparReportJson,
+  };
+  const genericReportJson = genericReportJsonMap[reportType]!;
+
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
   const activeState = userState || adminSelectedState;
@@ -88,9 +95,8 @@ export const DashboardPage = () => {
   const enterSelectedReport = async (report: ReportShape) => {
     // set active report to selected report
     setReportSelection(report);
-
-    const reportFirstPagePath = "/mcpar/program-information/point-of-contact";
-    navigate(reportFirstPagePath);
+    const firstReportPagePath = report.formTemplate.flatRoutes![0].path;
+    navigate(firstReportPagePath);
   };
 
   const openAddEditProgramModal = (report?: ReportShape) => {
@@ -210,6 +216,10 @@ export const DashboardPage = () => {
       <AddEditProgramModal
         activeState={activeState!}
         selectedReport={selectedReport!}
+        newReportData={{
+          reportType: reportType,
+          formTemplate: genericReportJson,
+        }}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,
@@ -218,6 +228,10 @@ export const DashboardPage = () => {
     </PageTemplate>
   );
 };
+
+interface Props {
+  reportType: string;
+}
 
 const sx = {
   layout: {

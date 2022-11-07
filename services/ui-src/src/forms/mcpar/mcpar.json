@@ -1,5 +1,6 @@
 {
-  "name": "MCPAR",
+  "type": "MCPAR",
+  "name": "MCPAR Report Submission Form",
   "basePath": "/mcpar",
   "version": "MCPAR_2022-09-08",
   "adminDisabled": true,
@@ -3398,7 +3399,8 @@
     },
     {
       "name": "Review & Submit",
-      "path": "/mcpar/review-and-submit"
+      "path": "/mcpar/review-and-submit",
+      "pageType": "reviewSubmit"
     }
   ]
 }

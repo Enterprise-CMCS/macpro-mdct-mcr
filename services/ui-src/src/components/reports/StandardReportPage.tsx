@@ -18,7 +18,10 @@ export const StandardReportPage = ({ route }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   const navigate = useNavigate();
-  const { nextRoute } = useFindRoute();
+  const { nextRoute } = useFindRoute(
+    report!.formTemplate.flatRoutes!,
+    report!.formTemplate.basePath
+  );
 
   const onSubmit = async (enteredData: AnyObject) => {
     if (userIsStateUser || userIsStateRep) {

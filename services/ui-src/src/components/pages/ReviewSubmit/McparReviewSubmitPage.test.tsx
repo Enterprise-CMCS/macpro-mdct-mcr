@@ -52,7 +52,7 @@ describe("Test McparReviewSubmitPage functionality", () => {
     render(McparReviewSubmitPage_InProgress);
     const { review } = reviewVerbiage;
     const { intro } = review;
-    expect(screen.getByText(intro.header)).toBeVisible();
+    expect(screen.getByText(intro.infoHeader)).toBeVisible();
   });
 
   test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
@@ -90,7 +90,7 @@ describe("Success Message Generator", () => {
     expect(
       SuccessMessageGenerator(programName, submittedDate, submittersName)
     ).toBe(
-      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}`
+      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
   it("should give a reduced version if not given all params", () => {
