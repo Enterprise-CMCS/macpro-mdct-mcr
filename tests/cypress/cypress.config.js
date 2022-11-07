@@ -18,11 +18,6 @@ module.exports = defineConfig({
     ADMIN_USER_EMAIL: "adminuser@test.com",
   },
   e2e: {
-    baseUrl: "http://localhost:3000/",
-    experimentalSessionAndOrigin: true,
-    testIsolation: "off",
-    specPattern: "tests/**/*.spec.js",
-    supportFile: "support/index.js",
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setupNodeEvents(on, config) {
       on("file:preprocessor", cucumber());
@@ -48,5 +43,10 @@ module.exports = defineConfig({
         pa11y: pa11y(),
       });
     },
+    baseUrl: "http://localhost:3000/",
+    experimentalSessionAndOrigin: true,
+    testIsolation: "off",
+    specPattern: "tests/**/*.spec.js",
+    supportFile: "support/index.js",
   },
 });
