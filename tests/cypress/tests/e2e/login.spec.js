@@ -4,7 +4,7 @@ const menuButton = '[data-testid="header-menu-dropdown-button"]';
 const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
 
 beforeEach(() => {
-  cy.navigateToHomePage();
+  cy.visit("/");
 });
 
 describe("Login integration tests", () => {
