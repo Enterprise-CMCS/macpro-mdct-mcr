@@ -14,8 +14,6 @@ export default {
     MCPAR: {
       title: "Managed Care Program Annual Report (MCPAR)",
       body: {
-        unavailable:
-          "The MCPAR online form will be available on this website in November 2022. Note: Every state must complete one report per program.",
         available:
           "The MCPAR online form is now available. Note: Every state must submit one report per program, through the online form.",
       },
@@ -46,7 +44,6 @@ export default {
       body: {
         unavailable:
           "The requirement for states to submit this information to CMS began for rating periods starting on or after July 1, 2017. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, it should be submitted as additional documentation when the annual rate certification is submitted.",
-        available: "",
       },
       downloadText: "Download MLR Template",
       accordion: {
@@ -59,7 +56,6 @@ export default {
       body: {
         unavailable:
           "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, CMS recommends that the report be submitted as supporting documentation at the same time a state submits the associated managed care contract to CMS for approval, including a new contract, a renewal, or an amendment.",
-        available: "",
       },
       downloadText: "Download NAAAR Template",
       accordion: {
