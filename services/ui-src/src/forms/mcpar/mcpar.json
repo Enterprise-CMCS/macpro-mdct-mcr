@@ -524,7 +524,7 @@
                       "children": [
                         {
                           "id": "state_ownershipControlDisclosureWebsiteLink",
-                          "type": "textarea",
+                          "type": "text",
                           "validation": {
                             "type": "url",
                             "nested": true,
