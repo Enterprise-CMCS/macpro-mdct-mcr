@@ -4,8 +4,8 @@ const menuOptionManageAccount =
   '[data-testid="header-menu-option-manage-account"]';
 const adminButton = '[data-testid="banner-admin-button"]';
 
-beforeEach(() => {
-  cy.visit("/");
+afterEach(() => {
+  cy.navigateToHomePage();
 });
 
 describe("Profile integration tests", () => {

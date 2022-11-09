@@ -6,7 +6,6 @@ const subsectionText = ".chakra-link .level-2";
 const sectionLink = ".chakra-link .level-1";
 
 beforeEach(() => {
-  cy.visit("/");
   cy.authenticate("stateUser");
   cy.findByRole("button", { name: "Enter MCPAR online" }).click();
   cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
@@ -21,6 +20,10 @@ beforeEach(() => {
   cy.findByRole("checkbox").focus().click();
   cy.get("button[type=submit]").contains("Save").click();
   cy.findAllByRole("button", { name: "Enter" }).first().click();
+});
+
+afterEach(() => {
+  cy.navigateToHomePage();
 });
 
 describe("Sidebar integration tests", () => {
