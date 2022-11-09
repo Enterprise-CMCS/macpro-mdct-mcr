@@ -188,7 +188,7 @@ export const nested = (
       // look for parentOptionId in checked choices
       value?.find((option: Choice) => option.key === parentOptionId),
     then: () => fieldSchema(), // returns standard field schema (required)
-    otherwise: () => fieldSchema().notRequired().min(0), // returns not-required field schema
+    otherwise: () => baseSchema, // returns not-required Yup base schema
   });
 };
 
