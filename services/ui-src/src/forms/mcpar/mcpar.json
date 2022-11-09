@@ -526,7 +526,7 @@
                           "id": "state_ownershipControlDisclosureWebsiteLink",
                           "type": "textarea",
                           "validation": {
-                            "type": "text",
+                            "type": "url",
                             "nested": true,
                             "parentFieldName": "state_ownershipControlDisclosureWebsite"
                           },
