@@ -15,7 +15,24 @@
 
 ## Configuration
 
-`cypress.json` may use any of [these](https://docs.cypress.io/guides/references/configuration#Global) config options.
+`cypress.config.js` may use any of [these](https://docs.cypress.io/guides/references/configuration#Global) config options.
+
+## Writing tests
+
+There are two primary syntaxes for writing tests for Cypress.
+
+- JavaScript
+  - uses extension `*.spec.js` located in `tests` directory
+- Gherkin (Cucumber)
+  - uses extension `*.feature` located in `tests` directory
+  - requires suitable JavaScript/TypeScript step definitions be added to `support/step_definitions` directory
+  - VS Code plugins available, [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) recommended
+
+Relevant Documentation
+- [Cypress Documentation](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#What-you-ll-learn)
+- [Cucumber Preprocessor Documentation](https://github.com/badeball/cypress-cucumber-preprocessor/blob/master/docs/readme.md)
+- [Gherkin Documentation](https://cucumber.io/docs/gherkin/reference/)
+- [Step Definitions Documentation](https://cucumber.io/docs/cucumber/step-definitions/?lang=javascript)
 
 ## Running tests
 
