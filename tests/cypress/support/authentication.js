@@ -34,6 +34,10 @@ Cypress.Commands.add("navigateToHomePage", () => {
   if (cy.location("pathname") !== "/") cy.visit("/");
 });
 
+Cypress.Commands.add("clearSession", () => {
+  cy.session([], () => {});
+});
+
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   cy.session([userType, userCredentials], () => {
     cy.visit("/");

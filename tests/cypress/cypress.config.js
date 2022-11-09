@@ -1,5 +1,6 @@
 const { defineConfig } = require("cypress");
-const cucumber = require("cypress-cucumber-preprocessor").default;
+const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
+const browserify = require("@badeball/cypress-cucumber-preprocessor/browserify");
 const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
 
 module.exports = defineConfig({
@@ -21,11 +22,12 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:3000/",
     experimentalSessionAndOrigin: true,
     testIsolation: "off",
-    specPattern: "tests/**/*.spec.js",
+    specPattern: ["tests/**/*.spec.js", "tests/**/*.feature"],
     supportFile: "support/index.js",
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setupNodeEvents(on, config) {
-      on("file:preprocessor", cucumber());
+    async setupNodeEvents(on, config) {
+      await preprocessor.addCucumberPreprocessorPlugin(on, config);
+      on("file:preprocessor", browserify.default(config));
 
       on("task", {
         log(message) {
@@ -47,6 +49,7 @@ module.exports = defineConfig({
       on("task", {
         pa11y: pa11y(),
       });
+      return config;
     },
   },
 });
