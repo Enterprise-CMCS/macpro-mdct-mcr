@@ -5,6 +5,7 @@
 
 import "cypress-xpath";
 import "cypress-axe";
+import "cypress-wait-until";
 import "./accessibility";
 import "./authentication";
 import "@testing-library/cypress/add-commands";
