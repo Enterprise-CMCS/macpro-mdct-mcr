@@ -25,7 +25,7 @@ There are two primary syntaxes for writing tests for Cypress.
   - uses extension `*.spec.js` located in `tests` directory
 - Gherkin (Cucumber)
   - uses extension `*.feature` located in `tests` directory
-  - requires suitable JavaScript/TypeScript step definitions be added to `support/step_definitions` directory
+  - requires suitable JavaScript step definitions be added to `support/step_definitions` directory
   - VS Code plugins available, [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) recommended
 
 Relevant Documentation

@@ -25,7 +25,9 @@
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true,
     "stepDefinitions": [
-      "support/step_definitions/**/*.{js,ts}"
+      "support/step_definitions/**/*.js",
+      "tests/[filepath].stepdef.js",
+      "tests/[filepath]/**/*.stepdef.js"
     ]
   },
   "dependencies": {
