@@ -19,12 +19,12 @@ Feature: Admin Page E2E Testing
         And the banner starts on "<startDate>"
         And the banner ends on "<endDate>"
         And no errors are present
-
+    
         When the delete button is clicked
         Then there is no banner
         And no errors are present
 
-        Examples:
+        Examples: #Form Data
             | title      | description      | startDate  | endDate    |
             | test-title | test-description | 07/14/2022 | 07/14/2026 |
 
