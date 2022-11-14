@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
 import {
+  ErrorAlert,
   ReportContext,
   McparReviewSubmitPage,
   ModalDrawerReportPage,
@@ -24,7 +25,7 @@ import {
 
 export const ReportPageWrapper = ({ route }: Props) => {
   const { state } = useUser().user ?? {};
-  const { report } = useContext(ReportContext);
+  const { errorMessage, report } = useContext(ReportContext);
   const navigate = useNavigate();
 
   // get state and id from context or storage
@@ -63,6 +64,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
           <>
             <Sidebar />
             <Flex id="report-content" sx={sx.reportContainer}>
+              {errorMessage && <ErrorAlert error={errorMessage} />}
               {renderPageSection(route)}
             </Flex>
           </>
