@@ -7,12 +7,11 @@ import {
   HelpPage,
   HomePage,
   McparGetStartedPage,
-  McparReviewSubmitPage,
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
 } from "components";
-import { mcparReportRoutesFlat } from "forms/mcpar";
+import { mcparReportJson } from "forms/mcpar";
 // utils
 import { ReportRoute } from "types";
 import { ScrollToTopComponent, useUser } from "utils";
@@ -32,20 +31,13 @@ export const AppRoutes = () => {
           <Route path="/help" element={<HelpPage />} />
 
           {/* MCPAR ROUTES */}
-          <Route path="/mcpar" element={<DashboardPage />} />
+          <Route path="/mcpar" element={<DashboardPage reportType="MCPAR" />} />
           <Route path="/mcpar/get-started" element={<McparGetStartedPage />} />
-          {mcparReportRoutesFlat.map((route: ReportRoute) => (
+          {mcparReportJson.flatRoutes.map((route: ReportRoute) => (
             <Route
               key={route.path}
               path={route.path}
-              element={
-                route.pageType ? (
-                  // if report route with form
-                  <ReportPageWrapper route={route} />
-                ) : (
-                  <McparReviewSubmitPage />
-                )
-              }
+              element={<ReportPageWrapper route={route} />}
             />
           ))}
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
