@@ -53,7 +53,6 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           ) : (
             <Button
               onClick={() => navigate(nextRoute)}
-              sx={sx.button}
               rightIcon={
                 !submitting ? (
                   <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
@@ -80,9 +79,6 @@ const sx = {
   footerBox: {
     marginTop: "3.5rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
-  },
-  button: {
-    width: "11.5rem",
   },
   buttonFlex: {
     justifyContent: "space-between",
