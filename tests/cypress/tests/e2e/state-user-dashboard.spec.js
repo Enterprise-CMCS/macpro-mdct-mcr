@@ -1,8 +1,11 @@
 beforeEach(() => {
-  cy.visit("/");
   cy.authenticate("stateUser");
   cy.findByRole("button", { name: "Enter MCPAR online" }).click();
   cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
+});
+
+afterEach(() => {
+  cy.navigateToHomePage();
 });
 
 describe("state user creates a program", () => {

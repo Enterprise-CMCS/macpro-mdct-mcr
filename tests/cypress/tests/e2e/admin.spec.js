@@ -13,11 +13,14 @@ const bannerDeleteErrorMessage =
 const noCurrentBannerMessage = "There is no current banner";
 
 beforeEach(() => {
-  cy.visit("/");
   cy.authenticate("adminUser");
   cy.get(menuButton).click();
   cy.get(menuOptionManageAccount).click();
   cy.get(adminButton).click();
+});
+
+afterEach(() => {
+  cy.navigateToHomePage();
 });
 
 describe("Admin banner integration tests", () => {

@@ -4,14 +4,17 @@ import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { FaqAccordion } from "components";
-import verbiage from "verbiage/pages/help";
+
+const accordionItems = [
+  {
+    question: "Question?",
+    answer: "Answer!",
+  },
+];
 
 const faqAccordionComponent = (
   <RouterWrappedComponent>
-    <FaqAccordion
-      accordionItems={verbiage.accordionItems}
-      data-testid="faq-accordion"
-    />
+    <FaqAccordion accordionItems={accordionItems} data-testid="faq-accordion" />
   </RouterWrappedComponent>
 );
 

@@ -9,8 +9,11 @@ const menuOptionLogOut = '[data-testid="header-menu-option-log-out"]';
 const cognitoLoginButton = "[data-testid='cognito-login-button']";
 
 beforeEach(() => {
-  cy.visit("/");
   cy.authenticate("stateUser");
+});
+
+afterEach(() => {
+  cy.navigateToHomePage();
 });
 
 describe("Header integration tests", () => {
