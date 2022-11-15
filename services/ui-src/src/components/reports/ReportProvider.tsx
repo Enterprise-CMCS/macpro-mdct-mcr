@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 // utils
 import {
+  getLocalHourMinuteTime,
   getReport,
   getReportsByState,
   isReportFormPage,
@@ -28,11 +29,13 @@ export const ReportContext = createContext<ReportContextShape>({
   clearReportSelection: Function,
   setReportSelection: Function,
   errorMessage: undefined as string | undefined,
+  lastSavedTime: undefined as string | undefined,
 });
 
 export const ReportProvider = ({ children }: Props) => {
   const { pathname } = useLocation();
   const { state: userState } = useUser().user ?? {};
+  const [lastSavedTime, setLastSavedTime] = useState<string>();
   const [error, setError] = useState<string>();
 
   // REPORT
@@ -64,6 +67,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await postReport(state, report);
       setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -73,6 +77,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await putReport(reportKeys, report);
       setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -82,6 +87,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const clearReportSelection = () => {
     setReport(undefined);
+    setLastSavedTime(undefined);
     localStorage.setItem("selectedReport", "");
   };
 
@@ -118,8 +124,9 @@ export const ReportProvider = ({ children }: Props) => {
       clearReportSelection,
       setReportSelection,
       errorMessage: error,
+      lastSavedTime,
     }),
-    [report, reportsByState, error]
+    [report, reportsByState, error, lastSavedTime]
   );
 
   return (

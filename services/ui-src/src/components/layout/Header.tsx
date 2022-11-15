@@ -17,11 +17,14 @@ import { isReportFormPage, useBreakpoint } from "utils";
 // assets
 import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
+import checkIcon from "assets/icons/icon_check_gray.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
-  const { report } = useContext(ReportContext);
+  const { lastSavedTime, report } = useContext(ReportContext);
+
+  const saveStatusText = "Last saved " + lastSavedTime;
 
   return (
     <Box sx={sx.root} id="header">
@@ -65,6 +68,16 @@ export const Header = ({ handleLogout }: Props) => {
                 </Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
+                {lastSavedTime && (
+                  <>
+                    <Image
+                      src={checkIcon}
+                      alt="gray checkmark icon"
+                      sx={sx.checkIcon}
+                    />
+                    <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
+                  </>
+                )}
                 {!isMobile && (
                   <Link
                     as={RouterLink}
@@ -150,7 +163,14 @@ const sx = {
     alignItems: "center",
     paddingRight: ".5rem",
   },
+  checkIcon: {
+    marginRight: "0.5rem",
+    boxSize: "1rem",
+  },
+  saveStatusText: {
+    fontSize: "sm",
+  },
   leaveFormLink: {
-    marginLeft: "2rem",
+    marginLeft: "1rem",
   },
 };
