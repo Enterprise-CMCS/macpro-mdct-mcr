@@ -61,7 +61,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
                 ) : undefined
               }
             >
-              {submitting ? <Spinner size="small" /> : "Save & continue"}
+              {submitting ? <Spinner size="small" /> : "Continue"}
             </Button>
           )}
         </Flex>
