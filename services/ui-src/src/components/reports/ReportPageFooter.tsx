@@ -37,7 +37,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           >
             Previous
           </Button>
-          {!form?.id || formIsDisabled ? (
+          {formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
               rightIcon={
@@ -52,8 +52,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             </Button>
           ) : (
             <Button
-              form={form.id}
-              type="submit"
+              onClick={() => navigate(nextRoute)}
               sx={sx.button}
               rightIcon={
                 !submitting ? (
