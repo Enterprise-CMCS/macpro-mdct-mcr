@@ -87,6 +87,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const clearReportSelection = () => {
     setReport(undefined);
+    setLastSavedTime(undefined);
     localStorage.setItem("selectedReport", "");
   };
 

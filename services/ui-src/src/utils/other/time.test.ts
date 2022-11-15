@@ -19,7 +19,7 @@ const testDate = {
   etFormattedString: "01/01/2022",
 };
 
-const getLocalHourMinuteTimeRegex = /[0-2][0-9]:[0-5][0-9](a|p)m/;
+const getLocalHourMinuteTimeRegex = /[0-2]?[0-9]:[0-5][0-9](a|p)m/;
 
 describe("Test getLocalHourMinuteTime", () => {
   test("returns correct hourminute format", () => {

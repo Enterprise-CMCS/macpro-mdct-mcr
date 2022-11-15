@@ -26,8 +26,8 @@ export const calculateTimeByType = (timeType?: string): TimeShape => {
  * ex: 12:02pm
  */
 export const getLocalHourMinuteTime = () => {
-  const currentTimeUtc = Date.now();
-  const localTime = new Date(currentTimeUtc).toLocaleTimeString();
+  const currentUtcTime = Date.now();
+  const localTime = new Date(currentUtcTime).toLocaleTimeString();
   const localTimeHourMinute = localTime.substring(
     0,
     localTime.lastIndexOf(":")
