@@ -22,6 +22,21 @@ export const calculateTimeByType = (timeType?: string): TimeShape => {
 };
 
 /*
+ * Returns local time in HH:mm format with the "am/pm" indicator
+ * ex: 12:02pm
+ */
+export const getLocalHourMinuteTime = () => {
+  const currentTimeUtc = Date.now();
+  const localTime = new Date(currentTimeUtc).toLocaleTimeString();
+  const localTimeHourMinute = localTime.substring(
+    0,
+    localTime.lastIndexOf(":")
+  );
+  const twelveHourIndicator = localTime.includes("AM") ? "am" : "pm";
+  return localTimeHourMinute.concat(twelveHourIndicator);
+};
+
+/*
  * Converts passed ET datetime to UTC
  * returns -> UTC datetime in format 'ms since Unix epoch'
  */
