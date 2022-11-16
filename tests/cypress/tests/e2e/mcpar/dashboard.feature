@@ -1,0 +1,84 @@
+Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
+
+    Scenario: State users can create programs
+        Given I am logged in as an state user
+        And I am on "/mcpar"
+
+        When I click the "Add managed care program" button
+        And these form elements are filled:
+            | programName              | text           | <title>        |
+            | reportingPeriodStartDate | text           | <startDate>    |
+            | reportingPeriodEndDate   | text           | <endDate>      |
+            | combinedData             | singleCheckbox | <combinedData> |
+        And I click the "Save" button
+        Then there is the active program with "<title>"
+
+        Examples: #New Program Data
+            | title          | startDate  | endDate    | combinedData |
+            | Test Program   | 07/11/2022 | 11/07/2026 | true         |
+            | Test Program 2 | 01012022   | 12212024   | false        |
+
+    Scenario: State users can Edit programs
+        Given I am on "/mcpar"
+        And I click the "Edit Program" button
+        And these form elements are prefilled:
+            | programName              | text           | Test Program 2 |
+            | reportingPeriodStartDate | text           | 01/01/2022     |
+            | reportingPeriodEndDate   | text           | 12/21/2024     |
+            | combinedData             | singleCheckbox | false          |
+
+        When these form elements are edited:
+            | programName              | text           | <title>        |
+            | reportingPeriodStartDate | text           | <startDate>    |
+            | reportingPeriodEndDate   | text           | <endDate>      |
+            | combinedData             | singleCheckbox | <combinedData> |
+        And I click the "Save" button
+        Then there is the active program with "<title>"
+
+        Examples: #Edited Data
+            | title           | startDate  | endDate    | combinedData |
+            | Editted Program | 06/22/2021 | 12/05/2025 | true         |
+
+    Scenario: Admin users can not create programs
+        Given I am logged in as an admin user
+        And I am on "/"
+        And these form elements are filled:
+            | state | dropdown | Minnesota |
+
+        When I click the "Go to Report Dashboard" button
+        Then there is no way to create a program
+
+    Scenario: Admin users can archive programs
+        Given I am on "/"
+        And these form elements are filled:
+            | state | dropdown | Minnesota |
+
+        When I click the "Go to Report Dashboard" button
+        And I click the "Archive" button
+        And I click the "Archive" button
+        Then the program is archived
+
+    Scenario: Admin users can unarchive programs
+        Given I am on "/"
+        And these form elements are filled:
+            | state | dropdown | Minnesota |
+
+        When I click the "Go to Report Dashboard" button
+        And I click the "Unarchive" button
+        Then one program is archived and the other is unarchived
+
+    Scenario: Admin users can rearchive programs
+        Given I am on "/"
+        And these form elements are filled:
+            | state | dropdown | Minnesota |
+
+        When I click the "Go to Report Dashboard" button
+        And I click the "Archive" button
+        Then the program is archived
+
+    Scenario: State users can't see archived programs
+        Given I am on "/mcpar"
+        Then there are no active programs
+
+
+
