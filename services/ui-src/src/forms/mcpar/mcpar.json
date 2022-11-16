@@ -2983,7 +2983,7 @@
                 }
               },
               {
-                "id": "sanction_remediationCorrected",
+                "id": "sanction_remediationCompleted",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -2995,12 +2995,12 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "sanction_remediationCorrectedDate",
+                          "id": "sanction_remediationDate",
                           "type": "date",
                           "validation": {
                             "type": "date",
                             "nested": true,
-                            "parentFieldName": "sanction_remediationCorrected"
+                            "parentFieldName": "sanction_remediationCompleted"
                           },
                           "props": {
                             "hint": "When was the non-compliance corrected? Select a date."
