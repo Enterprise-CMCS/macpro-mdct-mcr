@@ -516,7 +516,7 @@ export const mockSanctionsEntity = {
   sanction_noncomplianceInstances: "mock-instances",
   sanction_dollarAmount: "mock-dollar-amount",
   sanction_assessmentDate: "mock-date",
-  sanction_remediationCorrectedDate: "mock-date",
+  sanction_remediationDate: "mock-date",
   sanction_correctiveActionPlan: [{ value: "mock-answer" }],
 };
 
@@ -532,6 +532,6 @@ export const mockCompletedSanctionsFormattedEntityData = {
   noncomplianceInstances: "mock-instances",
   dollarAmount: "mock-dollar-amount",
   assessmentDate: "mock-date",
-  remediationCorrectedDate: "mock-date",
+  remediationDate: "mock-date",
   correctiveActionPlan: "mock-answer",
 };
