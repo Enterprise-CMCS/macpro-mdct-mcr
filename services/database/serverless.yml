@@ -3,9 +3,12 @@ service: database
 frameworkVersion: "2"
 
 plugins:
+  - serverless-plugin-typescript
   - serverless-dynamodb-local
   - serverless-stack-termination-protection
   - serverless-s3-bucket-helper
+  - serverless-plugin-scripts
+  - serverless-offline
 
 s3BucketHelper:
   loggingConfiguration:
@@ -22,6 +25,14 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
+  dataTransformEnabled: ${env:DATA_TRANSFORM_ENABLED, ssm:/configuration/${self:custom.stage}/runDataTransform, ssm:/configuration/default/runDataTransform}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        if [ ${self:custom.dataTransformEnabled} = "true" ];
+        then
+          serverless invoke --stage ${self:custom.stage} --function dataTransform
+        fi
   dynamodb:
     stages:
       - local
@@ -34,6 +45,28 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: us-east-1
+  iam:
+    role:
+      path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "*"
+
+functions:
+  dataTransform:
+    handler: handlers/dataTransform/dataTransform.handler
+    timeout: 120
+    environment:
+      dynamoPrefix: ${self:custom.stage}
 
 resources:
   Resources:
