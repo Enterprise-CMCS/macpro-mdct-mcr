@@ -15,6 +15,9 @@ When("these form elements are filled:", (dataTable) => {
       case "dropdown":
         cy.get(`[name='${row[0]}']`).select(row[2]);
         break;
+      case "repeated":
+        cy.get(`input[name^="${row[0]}"]`).eq(row[3]).type(row[2]);
+        break;
       default:
         cy.get(`[name='${row[0]}']`).type(row[2]);
         break;
@@ -37,6 +40,9 @@ When("these form elements are edited:", (dataTable) => {
         break;
       case "dropdown":
         cy.get(`[name='${row[0]}']`).select(row[2]);
+        break;
+      case "repeated":
+        cy.get(`input[name^="${row[0]}"]`).eq(row[3]).clear().type(row[2]);
         break;
       default:
         cy.get(`[name='${row[0]}']`).clear().type(row[2]);
