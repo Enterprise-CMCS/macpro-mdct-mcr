@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
@@ -22,6 +23,9 @@ import {
 } from "utils";
 
 export const App = () => {
+  // LaunchDarkly flags
+  const { saddavid } = useFlags();
+
   const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
@@ -59,6 +63,7 @@ export const App = () => {
             <Heading as="h1" size="xl" sx={sx.loginHeading}>
               Managed Care Reporting
             </Heading>
+            {saddavid && <span>Now with Auto-Save</span>}
           </Container>
           <Container sx={sx.loginContainer} data-testid="login-container">
             <Stack spacing={8}>
