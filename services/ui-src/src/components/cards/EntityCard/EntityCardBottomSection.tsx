@@ -67,7 +67,7 @@ export const EntityCardBottomSection = ({
                   Remediation date non-compliance was corrected
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.remediationDate}
+                  {formattedEntityData?.remediationCorrectedDate}
                 </Text>
               </Box>
             </Flex>
