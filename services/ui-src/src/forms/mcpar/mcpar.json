@@ -2983,12 +2983,36 @@
                 }
               },
               {
-                "id": "sanction_remediationDate",
-                "type": "date",
-                "validation": "date",
+                "id": "sanction_remediationCorrected",
+                "type": "radio",
+                "validation": "radio",
                 "props": {
                   "label": "D3.VIII.8 Remediation date non-compliance was corrected",
-                  "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
+                  "hint": "Was the non-compliance remediated?",
+                  "choices": [
+                    {
+                      "id": "J9FTVN9fJpgXX6X2xJiAiP",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "sanction_remediationCorrectedDate",
+                          "type": "date",
+                          "validation": {
+                            "type": "date",
+                            "nested": true,
+                            "parentFieldName": "sanction_remediationCorrected"
+                          },
+                          "props": {
+                            "hint": "When was the non-compliance corrected? Select a date."
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "oAcvChnL6FLUJorh8XfgyR",
+                      "label": "No"
+                    }
+                  ]
                 }
               },
               {
