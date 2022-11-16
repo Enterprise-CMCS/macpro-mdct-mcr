@@ -37,7 +37,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           >
             Previous
           </Button>
-          {!form?.id || formIsDisabled ? (
+          {formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
               rightIcon={
@@ -52,16 +52,14 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             </Button>
           ) : (
             <Button
-              form={form.id}
-              type="submit"
-              sx={sx.button}
+              onClick={() => navigate(nextRoute)}
               rightIcon={
                 !submitting ? (
                   <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
                 ) : undefined
               }
             >
-              {submitting ? <Spinner size="small" /> : "Save & continue"}
+              {submitting ? <Spinner size="small" /> : "Continue"}
             </Button>
           )}
         </Flex>
@@ -81,9 +79,6 @@ const sx = {
   footerBox: {
     marginTop: "3.5rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
-  },
-  button: {
-    width: "11.5rem",
   },
   buttonFlex: {
     justifyContent: "space-between",

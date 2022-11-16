@@ -1,16 +1,14 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-import { Form, ReportContext, ReportPageFooter } from "components";
+import { ReportContext, ReportPageFooter } from "components";
 import {
-  mockForm,
   mockReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
 const mockUseNavigate = jest.fn();
-const mockOnSubmit = jest.fn();
 const mockRoutes = {
   previousRoute: "/mock-previous-route",
   nextRoute: "/mock-next-route",
@@ -55,55 +53,9 @@ describe("Test ReportPageFooter without form", () => {
   });
 });
 
-const mockPropsWithForm = {
-  form: mockForm,
-};
-
-const reportPageComponentWithForm = (
-  <RouterWrappedComponent>
-    <Form
-      id={mockForm.id}
-      formJson={mockForm}
-      onSubmit={mockOnSubmit}
-      data-testid="test-form"
-    />
-    <ReportPageFooter {...mockPropsWithForm} data-testid="report-page-footer" />
-  </RouterWrappedComponent>
-);
-
-describe("Test ReportPageFooter with form", () => {
-  test("Check that ReportPageFooter with form renders", () => {
-    const { getByTestId } = render(reportPageComponentWithForm);
-    expect(getByTestId("report-page-footer")).toBeVisible();
-  });
-
-  test("ReportPageFooter with form previous navigation works", async () => {
-    const result = render(reportPageComponentWithForm);
-    const previousNavigationButton = result.getByText("Previous");
-    await userEvent.click(previousNavigationButton);
-    expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-previous-route");
-  });
-
-  test("ReportPageFooter with form 'Save & continue' functionality works", async () => {
-    const result = render(reportPageComponentWithForm);
-    const form = result.container;
-    const textField = form.querySelector("[name='mock-text-field']")!;
-    await userEvent.type(textField, "valid fill");
-    const saveAndContinueButton = result.getByText("Save & continue");
-    await userEvent.click(saveAndContinueButton);
-    expect(mockOnSubmit).toHaveBeenCalled();
-  });
-});
-
 describe("Test ReportPageFooter accessibility", () => {
   test("ReportPageFooter without form should not have basic accessibility issues", async () => {
     const { container } = render(reportPageComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  test("ReportPageFooter with form should not have basic accessibility issues", async () => {
-    const { container } = render(reportPageComponentWithForm);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
