@@ -44,6 +44,11 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
+  // ON BLUR
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    // TODO: SUBMIT ONLY THIS FIELD DATA HERE
+  };
+
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
@@ -60,6 +65,7 @@ export const TextField = ({
         hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
+        onBlur={(e) => onBlurHandler(e)}
         errorMessage={errorMessage}
         value={displayValue}
         {...props}

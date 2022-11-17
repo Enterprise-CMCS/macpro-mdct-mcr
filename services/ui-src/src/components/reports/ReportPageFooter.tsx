@@ -52,7 +52,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             </Button>
           ) : (
             <Button
-              onClick={() => navigate(nextRoute)}
+              // onClick={() => navigate(nextRoute)}
               rightIcon={
                 !submitting ? (
                   <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
