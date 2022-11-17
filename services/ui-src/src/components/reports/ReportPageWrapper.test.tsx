@@ -24,26 +24,29 @@ jest.mock("utils", () => ({
   useUser: () => mockStateUser,
 }));
 
+const mockRouteKey_Standard = mockReportJson.flatRoutes[0].path;
 const ReportPageWrapper_StandardPage = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[0]} />
+      <ReportPageWrapper routeKey={mockRouteKey_Standard} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
+const mockRouteKey_Drawer = mockReportJson.flatRoutes[1].path;
 const ReportPageWrapper_Drawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[1]} />
+      <ReportPageWrapper routeKey={mockRouteKey_Drawer} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
+const mockRouteKey_ModalDrawer = mockReportJson.flatRoutes[2].path;
 const ReportPageWrapper_ModalDrawer = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[2]} />
+      <ReportPageWrapper routeKey={mockRouteKey_ModalDrawer} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -51,13 +54,7 @@ const ReportPageWrapper_ModalDrawer = (
 const ReportPageWrapper_ReviewSubmit = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper
-        route={{
-          name: "mock-route-3",
-          path: "/mock/mock-review-and-submit",
-          pageType: "reviewSubmit",
-        }}
-      />
+      <ReportPageWrapper routeKey="/mock/mock-review-and-submit" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -74,7 +71,7 @@ const mockReportContextWithoutReport = {
 const ReportPageWrapper_WithoutReport = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[0]} />
+      <ReportPageWrapper routeKey={mockRouteKey_Standard} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );

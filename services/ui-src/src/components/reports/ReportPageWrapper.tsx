@@ -22,10 +22,14 @@ import {
   StandardReportPageShape,
 } from "types";
 
-export const ReportPageWrapper = ({ route }: Props) => {
+export const ReportPageWrapper = ({ routeKey }: Props) => {
   const { state } = useUser().user ?? {};
   const { report } = useContext(ReportContext);
   const navigate = useNavigate();
+
+  const route = report?.formTemplate.flatRoutes!.find(
+    (route: ReportRoute) => route.path === routeKey
+  );
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -63,7 +67,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
           <>
             <Sidebar />
             <Flex id="report-content" sx={sx.reportContainer}>
-              {renderPageSection(route)}
+              {renderPageSection(route!)}
             </Flex>
           </>
         ) : (
@@ -77,7 +81,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
 };
 
 interface Props {
-  route: ReportRoute;
+  routeKey: string;
 }
 
 const sx = {
