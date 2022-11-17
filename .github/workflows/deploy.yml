@@ -193,16 +193,3 @@ jobs:
         with:
           name: cypress-screenshots
           path: tests/cypress/screenshots/
-
-  launchDarklyCodeReferences:
-    name: LaunchDarkly Code References
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 11
-      - name: LaunchDarkly Code References
-        uses: launchdarkly/find-code-references@v2.7.0
-        with:
-          accessToken: ${{ secrets.LD_ACCESS_TOKEN }}
-          projKey: mdct-mcr
