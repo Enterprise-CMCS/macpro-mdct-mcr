@@ -24,7 +24,7 @@ export const checkCurrentRouteAccessibility = () => {
 // ***** ACCESSIBILITY COMMANDS *****
 
 Cypress.Commands.add("runAccessibilityTests", () => {
-  cy.wait(3000);
+  cy.wait(1500);
 
   // run cypress-axe accessibility tests (https://bit.ly/3HnJT9H)
   cy.injectAxe();
