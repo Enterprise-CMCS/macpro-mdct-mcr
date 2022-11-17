@@ -10,19 +10,19 @@ const REPLACEMENT_TEXT =
   "Enter the percentage of the plan’s encounter data file submissions (submitted during the reporting year) that met state requirements for timely submission. If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.";
 const EXECUTE_UPDATE = true;
 
+let dynamoClient: any;
+let tableName: any;
+
 export const handler = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
   // CONFIGURE DYNAMODB
-  const { dynamoClient, tableName } = initializeDynamoDb();
+  initializeDynamoDb();
 
   // READ EXISTING DYNAMODB DATA
-  const scanParams = {
-    TableName: tableName,
-  };
-  const existingData = await dynamoClient.scan(scanParams).promise();
-  const existingItems = existingData?.Items;
+  const existingItems = await fetchExistingItems();
+
   console.log({ existingItems });
 
   // for each item find which ones match the change case
@@ -39,7 +39,7 @@ export const handler = async (
 
     // UPLOAD BACK TO DYNAMODB
     if (EXECUTE_UPDATE) {
-      writeItemsToDb(itemsToChange, tableName, dynamoClient);
+      writeItemsToDb(itemsToChange);
     }
   }
 
@@ -51,11 +51,8 @@ export const handler = async (
   };
 };
 
-const writeItemsToDb = (
-  updatedItems: any,
-  tableName: string,
-  dynamoClient: any
-) => {
+const writeItemsToDb = (updatedItems: any) => {
+  console.log("Writing changes to table: ", tableName);
   updatedItems.forEach(async (item: any) => {
     const params = {
       TableName: tableName,
@@ -87,6 +84,50 @@ const filterReportsOnCondition = (itemsToChange: any) => {
   return itemsToChange;
 };
 
+const scanTable = async (
+  tableName: string,
+  keepSearching: boolean,
+  startingKey?: string
+) => {
+  let results = await dynamoClient
+    .scan({
+      TableName: tableName,
+      ExclusiveStartKey: startingKey,
+    })
+    .promise();
+  if (results.LastEvaluatedKey) {
+    startingKey = results.LastEvaluatedKey;
+    return [startingKey, keepSearching, results];
+  } else {
+    keepSearching = false;
+    return [null, keepSearching, results];
+  }
+};
+const fetchExistingItems = async () => {
+  let startingKey;
+  let keepSearching = true;
+  let existingItems = [];
+  let results;
+
+  // Looping to perform complete scan of tables due to 1 mb limit per iteration
+  while (keepSearching) {
+    try {
+      [startingKey, keepSearching, results] = await scanTable(
+        tableName,
+        keepSearching,
+        startingKey
+      );
+      existingItems.push(results.Items);
+    } catch (err) {
+      console.error(`Database scan failed for the table ${tableName}
+                     with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}.
+                     Error: ${err}`);
+      throw err;
+    }
+  }
+  return existingItems;
+};
+
 const initializeDynamoDb = () => {
   let dynamoPrefix;
   const dynamoConfig: any = {};
@@ -100,10 +141,8 @@ const initializeDynamoDb = () => {
     dynamoConfig["region"] = "us-east-1";
     dynamoPrefix = process.env.dynamoPrefix;
   }
-  const dynamoClient = new DynamoDB.DocumentClient(dynamoConfig);
-
-  const tableName = dynamoPrefix + "-mcpar-reports";
-  return { dynamoClient, tableName };
+  dynamoClient = new DynamoDB.DocumentClient(dynamoConfig);
+  tableName = dynamoPrefix + "-mcpar-reports";
 };
 
 // adjust string
