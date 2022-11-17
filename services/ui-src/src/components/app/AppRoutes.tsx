@@ -37,7 +37,7 @@ export const AppRoutes = () => {
             <Route
               key={route.path}
               path={route.path}
-              element={<ReportPageWrapper routeKey={route.path} />}
+              element={<ReportPageWrapper />}
             />
           ))}
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />

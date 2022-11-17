@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // components
 import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
@@ -22,14 +22,11 @@ import {
   StandardReportPageShape,
 } from "types";
 
-export const ReportPageWrapper = ({ routeKey }: Props) => {
+export const ReportPageWrapper = () => {
   const { state } = useUser().user ?? {};
   const { report } = useContext(ReportContext);
   const navigate = useNavigate();
-
-  const route = report?.formTemplate.flatRoutes!.find(
-    (route: ReportRoute) => route.path === routeKey
-  );
+  const { pathname } = useLocation();
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -60,6 +57,10 @@ export const ReportPageWrapper = ({ routeKey }: Props) => {
     }
   };
 
+  const reportTemplate = report?.formTemplate.flatRoutes!.find(
+    (route: ReportRoute) => route.path === pathname
+  );
+
   return (
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
@@ -67,7 +68,7 @@ export const ReportPageWrapper = ({ routeKey }: Props) => {
           <>
             <Sidebar />
             <Flex id="report-content" sx={sx.reportContainer}>
-              {renderPageSection(route!)}
+              {reportTemplate && renderPageSection(reportTemplate)}
             </Flex>
           </>
         ) : (
@@ -79,10 +80,6 @@ export const ReportPageWrapper = ({ routeKey }: Props) => {
     </PageTemplate>
   );
 };
-
-interface Props {
-  routeKey: string;
-}
 
 const sx = {
   pageContainer: {
