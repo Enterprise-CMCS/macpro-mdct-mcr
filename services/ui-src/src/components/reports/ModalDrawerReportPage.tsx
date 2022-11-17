@@ -137,16 +137,17 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
 
+  const addEntityButton = (
+    <Button sx={sx.addEntityButton} onClick={addEditEntityModalOnOpenHandler}>
+      {verbiage.addEntityButtonText}
+    </Button>
+  );
+
   return (
     <Box data-testid="modal-drawer-report-page">
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
-        <Button
-          sx={sx.addEntityButton}
-          onClick={addEditEntityModalOnOpenHandler}
-        >
-          {verbiage.addEntityButtonText}
-        </Button>
+        {addEntityButton}
         {reportFieldDataEntities.length !== 0 && (
           <Heading as="h3" sx={sx.dashboardTitle}>
             {dashTitle}
@@ -207,6 +208,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           }}
           data-testid="report-drawer"
         />
+        {reportFieldDataEntities.length > 1 && addEntityButton}
       </Box>
       <ReportPageFooter />
     </Box>
