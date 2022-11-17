@@ -67,7 +67,6 @@ TEMPLATE_BUCKET=local-uploads
 DISABLE_ESLINT_PLUGIN=true
 COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
 COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
-DATA_TRANSFORM_ENABLED=false
 ```
 
 /services/ui-src `.env`

@@ -40,7 +40,9 @@ export const handler = async (
     // console.log({ updatedItems });
 
     // UPLOAD BACK TO DYNAMODB
-    writeItemsToDb(updatedItems, tableName, dynamoClient);
+    if (EXECUTE_UPDATE) {
+      writeItemsToDb(updatedItems, tableName, dynamoClient);
+    }
   }
 
   return {
