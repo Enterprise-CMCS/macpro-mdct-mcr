@@ -1,13 +1,13 @@
+/* eslint-disable no-console */
 import { DynamoDB } from "aws-sdk";
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
-let UPDATE_ARCHIVED = false;
-let UPDATE_SUBMITTED = false;
-// let BAD_VALUE = "DO NOT TOUCH";
-let GOOD_VALUE = "NEW PROGRAM NAME";
-
-const thingToRemove =
+const UPDATE_ARCHIVED = false;
+const UPDATE_SUBMITTED = false;
+const TEXT_TO_REPLACE =
   "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year.";
+const REPLACEMENT_TEXT = "HAHAHAHAHAH WIN!!!";
+const EXECUTE_UPDATE = false;
 
 export const handler = async (
   _event: APIGatewayEvent,
@@ -22,33 +22,30 @@ export const handler = async (
   };
   const existingData = await dynamoClient.scan(scanParams).promise();
   const existingItems = existingData?.Items;
-  // console.log({ existingItems });
+  console.log({ existingItems });
 
   // for each item find which ones match the change case
   if (existingItems) {
     let itemsToChange = filterReportsOnCondition(existingItems);
     // GET ITEMS TO CHANGE
-    itemsToChange = filterItemsMatchingCondition(itemsToChange);
 
-    // console.log({ itemsToChange });
+    console.log("List of items to change", itemsToChange);
 
     // TRANSFORM DATA
-    const updatedItems = itemsToChange.map((item: any) => {
-      item.programName = GOOD_VALUE;
-      return item;
-    });
-    // console.log({ updatedItems });
+    itemsToChange = filterItemsMatchingCondition(itemsToChange);
+
+    console.log("Items after change", itemsToChange);
 
     // UPLOAD BACK TO DYNAMODB
     if (EXECUTE_UPDATE) {
-      writeItemsToDb(updatedItems, tableName, dynamoClient);
+      writeItemsToDb(itemsToChange, tableName, dynamoClient);
     }
   }
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: "hello world",
+      message: "finished data transform script",
     }),
   };
 };
@@ -71,12 +68,8 @@ const writeItemsToDb = (
 
 const filterItemsMatchingCondition = (itemsToChange: any) => {
   return itemsToChange.filter((item: any) => {
-    // item.programName !== BAD_VALUE
-
     const newTemplate = adjustObject(item.formTemplate);
-
     item.formTemplate = newTemplate;
-
     return item;
   });
 };
@@ -112,13 +105,9 @@ const initializeDynamoDb = () => {
   return { dynamoClient, tableName };
 };
 
-/****/
-/****/
-/****/
-/****/
 // adjust string
 const adjustString = (string: string) => {
-  return string.replace(thingToRemove, "HAHAHAHAHAH WIN!!!");
+  return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
 };
 
 // iterates over array items, sanitizing items recursively
