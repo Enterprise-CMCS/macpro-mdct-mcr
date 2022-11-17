@@ -53,7 +53,10 @@ class AuthManager {
    * Timer function for idle timeout, keeps track of an idle timer that triggers a forced logout timer if not reset.
    */
   setTimer = () => {
-    const expiration = moment().add(IDLE_WINDOW, "milliseconds").toString();
+    const expiration = moment()
+      .add(IDLE_WINDOW, "milliseconds")
+      .format()
+      .toString();
     localStorage.setItem("mdctmcr_session_exp", expiration);
   };
 }
