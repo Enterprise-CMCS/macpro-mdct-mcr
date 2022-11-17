@@ -41,6 +41,8 @@ export const mockNoUser: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockStateUser: UserContextShape = {
@@ -56,6 +58,8 @@ export const mockStateUser: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockStateRep: UserContextShape = {
@@ -71,6 +75,8 @@ export const mockStateRep: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockStateApprover: UserContextShape = {
@@ -86,6 +92,8 @@ export const mockStateApprover: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockHelpDeskUser: UserContextShape = {
@@ -101,6 +109,8 @@ export const mockHelpDeskUser: UserContextShape = {
   showLocalLogins: false,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockAdminUser: UserContextShape = {
@@ -116,6 +126,8 @@ export const mockAdminUser: UserContextShape = {
   showLocalLogins: false,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 // AUTH

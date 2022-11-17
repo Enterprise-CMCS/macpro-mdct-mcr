@@ -68,3 +68,8 @@ export enum States {
   WI = "Wisconsin",
   WY = "Wyoming",
 }
+
+// TIMEOUT PARAMS
+
+export const IDLE_WINDOW = 2 * 60 * 1000; // ms
+export const PROMPT_AT = 1 * 60 * 1000; //ms

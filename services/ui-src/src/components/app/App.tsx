@@ -12,6 +12,7 @@ import {
   LoginIDM,
   ReportProvider,
   SkipNav,
+  Timeout,
 } from "components";
 // utils
 import { isMcparReportFormPage } from "forms/mcpar";
@@ -41,6 +42,7 @@ export const App = () => {
     <div id="app-wrapper" className={mqClasses}>
       {user && (
         <Flex sx={sx.appLayout}>
+          <Timeout />
           <SkipNav
             id="skip-nav-main"
             href={isReportPage ? "#skip-nav-sidebar" : "#main-content"}
