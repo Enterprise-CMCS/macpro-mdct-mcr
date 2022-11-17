@@ -92,7 +92,6 @@ export const DropdownField = ({
   return (
     <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
       <CmsdsDropdown
-        data-testid="admin-dropdown"
         name={name}
         id={name}
         label={label || ""}
