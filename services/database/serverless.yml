@@ -25,12 +25,14 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
-  dataTransformEnabled: ${env:DATA_TRANSFORM_ENABLED, ssm:/configuration/${self:custom.stage}/runDataTransform, ssm:/configuration/default/runDataTransform}
+  dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/runDataTransform, ssm:/configuration/default/runDataTransform}
   scripts:
     hooks:
       deploy:finalize: |
+        echo "IM IN THE SCRIPT"
         if [ ${self:custom.dataTransformEnabled} = "true" ];
         then
+          echo "IM IFFIN IT"
           serverless invoke --stage ${self:custom.stage} --function dataTransform
         fi
   dynamodb:

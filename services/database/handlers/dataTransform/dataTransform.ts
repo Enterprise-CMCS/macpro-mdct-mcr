@@ -3,6 +3,7 @@ import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
 let UPDATE_ARCHIVED = false;
 let UPDATE_SUBMITTED = false;
+let EXECUTE_UPDATE = false;
 let BAD_VALUE = "DO NOT TOUCH";
 let GOOD_VALUE = "NEW PROGRAM NAME";
 
@@ -37,7 +38,9 @@ export const handler = async (
     console.log({ updatedItems });
 
     // UPLOAD BACK TO DYNAMODB
-    writeItemsToDb(updatedItems, tableName, dynamoClient);
+    if (EXECUTE_UPDATE) {
+      writeItemsToDb(updatedItems, tableName, dynamoClient);
+    }
   }
 
   return {
@@ -73,12 +76,16 @@ const filterItemsMatchingCondition = (itemsToChange: any) => {
       "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year."
     );
     console.log({ indexOfText });
-    stringTemplate.replace(
+    const replacedStringTemplate = stringTemplate.replace(
       "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year.",
       "HAHAHAHAHAHAH WIN!"
     );
-    console.log("parse", JSON.parse(stringTemplate));
-    item.formTemplate = JSON.parse(stringTemplate);
+    console.log("original index", stringTemplate.indexOf("HAHAHAHAHAHAH WIN!"));
+    console.log(
+      "new index",
+      replacedStringTemplate.indexOf("HAHAHAHAHAHAH WIN!")
+    );
+    item.formTemplate = JSON.parse(replacedStringTemplate);
     return item;
   });
 };
