@@ -25,7 +25,7 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
-  dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/runDataTransform, ssm:/configuration/default/runDataTransform}
+  dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/runDataTransform, ssm:/configuration/default/runDataTransform, "false"}
   scripts:
     hooks:
       deploy:finalize: |
