@@ -29,10 +29,8 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        echo "IM IN THE SCRIPT"
         if [ ${self:custom.dataTransformEnabled} = "true" ];
         then
-          echo "IM IFFIN IT"
           serverless invoke --stage ${self:custom.stage} --function dataTransform
         fi
   dynamodb:
