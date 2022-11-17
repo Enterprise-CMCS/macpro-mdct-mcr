@@ -11,65 +11,107 @@ import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
-  if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
-  } else if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  let status, body;
+  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(error.NO_KEY);
+  } else if (
+    !hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])
+  ) {
+    // if they have admin permissions, attempt the archive function
+    if (hasPermissions(event, [UserRoles.ADMIN])) {
+      const { statusCode: archiveStatus, body: archiveBody } =
+        await archiveReport(event, context);
+      status = archiveStatus;
+      body = JSON.parse(archiveBody);
+    } else {
+      status = StatusCodes.UNAUTHORIZED;
+      body = error.UNAUTHORIZED;
+    }
+  } else {
+    const unvalidatedPayload = JSON.parse(event!.body!);
+
+    // get current report
+    const reportEvent = { ...event, body: "" };
+    const getCurrentReport = await fetchReport(reportEvent, context);
+    const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
+
+    if (getCurrentReport?.body) {
+      const currentReport = JSON.parse(getCurrentReport.body);
+      const isArchived = currentReport.archived;
+      if (!isArchived) {
+        if (unvalidatedFieldData) {
+          // validate report metadata
+          const validatedMetadata = await validateData(
+            metadataValidationSchema,
+            unvalidatedPayload
+          );
+
+          // validate report field data
+          const { formTemplate } = currentReport;
+          const validatedFieldData = await validateFieldData(
+            formTemplate.validationJson,
+            unvalidatedFieldData
+          );
+
+          const reportParams = {
+            TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+            Item: {
+              ...currentReport,
+              ...validatedMetadata,
+              lastAltered: Date.now(),
+              fieldData: {
+                ...currentReport.fieldData,
+                ...validatedFieldData,
+              },
+            },
+          };
+          await dynamoDb.put(reportParams);
+          status = StatusCodes.SUCCESS;
+          body = reportParams.Item;
+        } else {
+          status = StatusCodes.BAD_REQUEST;
+          body = error.MISSING_DATA;
+        }
+      } else {
+        status = StatusCodes.UNAUTHORIZED;
+        body = error.UNAUTHORIZED;
+      }
+    } else {
+      status = StatusCodes.NOT_FOUND;
+      body = error.NO_MATCHING_RECORD;
+    }
   }
 
-  const unvalidatedPayload = JSON.parse(event!.body!);
+  return {
+    status: status,
+    body: body,
+  };
+});
 
+export const archiveReport = handler(async (event, context) => {
+  let status, body;
   // get current report
   const reportEvent = { ...event, body: "" };
   const getCurrentReport = await fetchReport(reportEvent, context);
-  const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
 
-  let status, body;
   if (getCurrentReport?.body) {
-    if (unvalidatedFieldData) {
-      // validate report metadata
-      const validatedMetadata = await validateData(
-        metadataValidationSchema,
-        unvalidatedPayload
-      );
-
-      // validate report field data
-      const currentReport = JSON.parse(getCurrentReport.body);
-      const { formTemplate } = currentReport;
-      const validatedFieldData = await validateFieldData(
-        formTemplate.validationJson,
-        unvalidatedFieldData
-      );
-
-      const { state, id } = event.pathParameters;
-      const reportParams = {
-        TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-        Item: {
-          ...currentReport,
-          ...validatedMetadata,
-          state,
-          id,
-          lastAltered: Date.now(),
-          fieldData: {
-            ...currentReport.fieldData,
-            ...validatedFieldData,
-          },
-        },
-      };
-      await dynamoDb.put(reportParams);
-      status = StatusCodes.SUCCESS;
-      body = reportParams.Item;
-    } else {
-      status = StatusCodes.BAD_REQUEST;
-      body = error.MISSING_DATA;
-    }
+    const currentReport = JSON.parse(getCurrentReport.body);
+    const currentArchivedStatus = currentReport?.archived;
+    const reportParams = {
+      TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+      Item: {
+        ...currentReport,
+        archived: !currentArchivedStatus,
+      },
+    };
+    await dynamoDb.put(reportParams);
+    status = StatusCodes.SUCCESS;
+    body = reportParams.Item;
   } else {
     status = StatusCodes.NOT_FOUND;
     body = error.NO_MATCHING_RECORD;
   }
+
   return {
     status: status,
     body: body,

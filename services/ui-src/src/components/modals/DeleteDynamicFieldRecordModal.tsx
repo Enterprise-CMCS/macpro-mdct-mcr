@@ -7,24 +7,24 @@ import { EntityShape, EntityType } from "types";
 
 export const DeleteDynamicFieldRecordModal = ({
   selectedRecord,
-  removeRecord,
+  deleteRecord,
   entityType,
   modalDisclosure,
 }: Props) => {
   const [deleting, setDeleting] = useState<boolean>(false);
   const fieldTypeMap: any = {
-    plans: "Plan",
-    bssEntities: "BSS Entity",
-  };
-
-  const deleteProgramHandler = async () => {
-    setDeleting(true);
-    removeRecord(selectedRecord);
-    setDeleting(false);
-    modalDisclosure.onClose();
+    plans: "plan",
+    bssEntities: "BSS entity",
   };
 
   const entityName = fieldTypeMap[entityType];
+
+  const deleteProgramHandler = async () => {
+    setDeleting(true);
+    await deleteRecord(selectedRecord);
+    setDeleting(false);
+    modalDisclosure.onClose();
+  };
 
   return (
     <Modal
@@ -48,7 +48,7 @@ export const DeleteDynamicFieldRecordModal = ({
 
 interface Props {
   selectedRecord?: EntityShape;
-  removeRecord: Function;
+  deleteRecord: Function;
   entityType: EntityType;
   modalDisclosure: {
     isOpen: boolean;

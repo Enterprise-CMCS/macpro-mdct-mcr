@@ -37,14 +37,16 @@ export interface UserContextShape {
 
 export interface ReportJson {
   id?: string;
+  type?: string;
   name: string;
   basePath: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
+  flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
 }
 
-export type ReportRoute = ReportRouteWithForm | ReportRouteWithChildren;
+export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
 
 export interface ReportRouteBase {
   name: string;
@@ -86,9 +88,9 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
-export interface ReportRouteWithChildren extends ReportRouteBase {
+export interface ReportRouteWithoutForm extends ReportRouteBase {
   children?: ReportRoute[];
-  pageType?: never;
+  pageType?: string;
   entityType?: never;
   verbiage?: never;
   modalForm?: never;
@@ -107,8 +109,10 @@ export interface ReportPageVerbiage {
 
 export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
+  countEntitiesInTitle?: boolean;
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
+  missingEntityMessage?: CustomHtmlElement[];
 }
 
 export interface ModalDrawerReportPageVerbiage
@@ -150,6 +154,7 @@ export interface ReportShape extends ReportKeys {
   submittedOnDate?: number;
   formTemplate: ReportJson;
   fieldData: AnyObject;
+  archived?: boolean;
 }
 
 export interface ReportContextMethods {
@@ -187,6 +192,7 @@ export enum ModalDrawerEntityTypes {
   QUALITY_MEASURES = "qualityMeasures",
   SANCTIONS = "sanctions",
 }
+
 export interface EntityShape {
   id: string;
   [key: string]: any;
@@ -233,6 +239,7 @@ export interface FormField {
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];
+  repeat?: string;
 }
 
 export interface DropdownOptions {
@@ -271,6 +278,7 @@ export enum PageTypes {
   STANDARD = "standard",
   DRAWER = "drawer",
   MODAL_DRAWER = "modalDrawer",
+  REVIEW_SUBMIT = "reviewSubmit",
 }
 
 // BANNER

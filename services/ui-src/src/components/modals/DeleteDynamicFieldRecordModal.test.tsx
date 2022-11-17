@@ -7,7 +7,7 @@ import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 import { mockReportContext } from "utils/testing/setupJest";
 
 const mockCloseHandler = jest.fn();
-const mockRemoveRecord = jest.fn();
+const mockDeleteRecord = jest.fn();
 
 const modalComponent = (
   <ReportContext.Provider value={mockReportContext}>
@@ -16,8 +16,8 @@ const modalComponent = (
         isOpen: true,
         onClose: mockCloseHandler,
       }}
-      removeRecord={mockRemoveRecord}
-      entityType={"plans"}
+      deleteRecord={mockDeleteRecord}
+      entityType="plans"
     />
   </ReportContext.Provider>
 );
@@ -34,8 +34,8 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
   });
 
   test("DeleteDynamicFieldRecordModal shows the contents", () => {
-    expect(screen.queryAllByText("Delete Plan")[0]).toBeTruthy();
-    expect(screen.getByText("Yes, delete Plan")).toBeTruthy();
+    expect(screen.queryAllByText("Delete plan")[0]).toBeTruthy();
+    expect(screen.getByText("Yes, delete plan")).toBeTruthy();
     expect(screen.getByText("Cancel")).toBeTruthy();
   });
 
@@ -50,13 +50,14 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
   });
 
   test("DeleteDynamicFieldRecordModal delete plan button can be clicked", async () => {
-    fireEvent.click(screen.getByText("Yes, delete Plan"));
-    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-    await expect(mockRemoveRecord).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      fireEvent.click(screen.getByText("Yes, delete plan"));
+      expect(mockDeleteRecord).toHaveBeenCalledTimes(1);
+    });
   });
 });
 
-describe("Test deleteProgramModal accessibility", () => {
+describe("Test DeleteDynamicFieldRecordModal accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(modalComponent);
     const results = await axe(container);

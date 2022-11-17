@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 // utils
-import { isMcparReportFormPage } from "forms/mcpar";
 import {
   getReport,
   getReportsByState,
+  isReportFormPage,
   postReport,
   putReport,
   sortReportsOldestToNewest,
@@ -88,14 +88,18 @@ export const ReportProvider = ({ children }: Props) => {
   const setReportSelection = async (report: ReportShape) => {
     setReport(report);
     localStorage.setItem("selectedReport", report.id);
+    localStorage.setItem(
+      "selectedReportBasePath",
+      report.formTemplate.basePath
+    );
   };
 
-  // on mount, if report page, fetch report
+  // on first mount, if on report page, fetch report
   useEffect(() => {
     const state =
       report?.state || userState || localStorage.getItem("selectedState");
     const id = report?.id || localStorage.getItem("selectedReport");
-    if (isMcparReportFormPage(pathname) && state && id) {
+    if (isReportFormPage(pathname) && state && id) {
       fetchReport({ state, id });
     }
   }, []);

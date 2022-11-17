@@ -1,7 +1,8 @@
 {
-  "name": "MCPAR",
+  "type": "MCPAR",
+  "name": "MCPAR Report Submission Form",
   "basePath": "/mcpar",
-  "version": "MCPAR_2022-09-08",
+  "version": "MCPAR_2022-11-17",
   "adminDisabled": true,
   "routes": [
     {
@@ -301,11 +302,11 @@
                             "hint": "Were the system(s) utilized fully HIPAA compliant? Select one.",
                             "choices": [
                               {
-                                "name": "DeRYxSPAg0aZpPgqHfUcGA",
+                                "id": "DeRYxSPAg0aZpPgqHfUcGA",
                                 "label": "Yes"
                               },
                               {
-                                "name": "CJVUudlBrEGWZAv7CVqKrQ",
+                                "id": "CJVUudlBrEGWZAv7CVqKrQ",
                                 "label": "No"
                               }
                             ]
@@ -314,7 +315,7 @@
                       ]
                     },
                     {
-                      "name": "Gxk89QOgQkmMTaNHH9WznQ",
+                      "id": "Gxk89QOgQkmMTaNHH9WznQ",
                       "label": "Other, specify",
                       "children": [
                         {
@@ -523,9 +524,9 @@
                       "children": [
                         {
                           "id": "state_ownershipControlDisclosureWebsiteLink",
-                          "type": "textarea",
+                          "type": "text",
                           "validation": {
-                            "type": "text",
+                            "type": "url",
                             "nested": true,
                             "parentFieldName": "state_ownershipControlDisclosureWebsite"
                           },
@@ -995,7 +996,8 @@
                     }
                   ]
                 },
-                "dashboardTitle": "Add measures for monitoring access standards",
+                "dashboardTitle": "Access measure total count:",
+                "countEntitiesInTitle": true,
                 "addEntityButtonText": "Add access measure",
                 "editEntityButtonText": "Edit measure",
                 "addEditModalAddTitle": "Add access measure",
@@ -1458,7 +1460,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report program characteristics & enrollment for each plan",
-            "drawerTitle": "Report program characteristics & enrollment for"
+            "drawerTitle": "Report program characteristics & enrollment for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dpc",
@@ -1508,7 +1523,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report financial performance for each plan",
-            "drawerTitle": "Report financial performance for"
+            "drawerTitle": "Report financial performance for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dfp",
@@ -1637,7 +1665,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on encounter data for each plan",
-            "drawerTitle": "Report encounter data for"
+            "drawerTitle": "Report encounter data for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dedr",
@@ -1687,10 +1728,30 @@
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set"
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Appeals Overview"
+                    }
+                  ]
                 },
                 "dashboardTitle": "Report on appeals for each plan",
-                "drawerTitle": "Report on appeals for"
+                "drawerTitle": "Report on appeals for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dao",
@@ -1851,7 +1912,20 @@
                   ]
                 },
                 "dashboardTitle": "Report on appeals by service for each plan",
-                "drawerTitle": "Report appeals by service for"
+                "drawerTitle": "Report appeals by service for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dabs",
@@ -1978,7 +2052,20 @@
                   ]
                 },
                 "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
-                "drawerTitle": "Report state fair hearings and external medical reviews for"
+                "drawerTitle": "Report state fair hearings and external medical reviews for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dsfh",
@@ -2029,7 +2116,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
-                      "hint": "If your state does offers an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+                      "hint": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
                       "mask": "comma-separated"
                     }
                   },
@@ -2055,10 +2142,30 @@
                 "intro": {
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set"
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h3",
+                      "content": "Grievances Overview"
+                    }
+                  ]
                 },
                 "dashboardTitle": "Report on grievances for each plan",
-                "drawerTitle": "Report on grievances for"
+                "drawerTitle": "Report on grievances for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dgo",
@@ -2089,7 +2196,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed).</p>",
+                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.</p>",
                       "mask": "comma-separated"
                     }
                   },
@@ -2099,7 +2206,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
-                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed grievances in the reporting year.</p><p>If the managed care plan does not cover LTSS, enter \"N/A\". Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p><p>The grievance and critical incident do not have to have been \"related\" to the same issue — they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.</p>",
+                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been \"related\" to the same issue  - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>If the managed care plan does not cover LTSS, the state should enter \"N/A\" in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter \"N/A\" in this field.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.</p>",
                       "mask": "comma-separated"
                     }
                   },
@@ -2139,7 +2246,20 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
-                "drawerTitle": "Report encounter data for"
+                "drawerTitle": "Report encounter data for",
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               },
               "drawerForm": {
                 "id": "dgbs",
@@ -2276,6 +2396,19 @@
                     "type": "p",
                     "content": "A single grievance may be related to multiple reasons and may therefore be counted in multiple categories."
                   }
+                ],
+                "missingEntityMessage": [
+                  {
+                    "type": "span",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
                 ]
               },
               "drawerForm": {
@@ -2404,33 +2537,34 @@
           "verbiage": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic VII: Quality Measures",
+              "subsection": "Topic VII: Quality & Performance Measures",
               "spreadsheet": "D2_Plan_Measures",
               "info": [
                 {
                   "type": "html",
-                  "content": "<p><b>Add Quality & Performance Measures</b></p>"
-                },
-                {
-                  "type": "html",
-                  "content": "</br><p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other.</p>"
+                  "content": "<p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component.</p>"
                 }
               ]
             },
-            "dashboardTitle": "replace me in json",
-            "addEntityButtonText": "replace me in json",
-            "editEntityButtonText": "replace me in json",
-            "addEditModalAddTitle": "replace me in json",
-            "addEditModalEditTitle": "replace me in json",
-            "addEditModalMessage": "replace me in json",
-            "deleteEntityButtonAltText": "replace me in json",
-            "deleteModalTitle": "replace me in json",
-            "deleteModalConfirmButtonText": "replace me in json",
-            "deleteModalWarning": "replace me in json",
-            "entityUnfinishedMessage": "replace me in json",
-            "enterEntityDetailsButtonText": "replace me in json",
-            "editEntityDetailsButtonText": "replace me in json",
-            "drawerTitle": "replace me in json"
+            "dashboardTitle": "Quality & performance measure total count:",
+            "countEntitiesInTitle": true,
+            "addEntityButtonText": "Add quality & performance measure",
+            "editEntityButtonText": "Edit measure",
+            "addEditModalAddTitle": "Add a quality & performance measure",
+            "addEditModalEditTitle": "Edit quality & performance measure",
+            "addEditModalMessage": "Complete the remaining indicators for this measure by saving the measure and selecting \"Enter measure results\".",
+            "deleteEntityButtonAltText": "Delete quality & performance measure",
+            "deleteModalTitle": "Delete quality measure?",
+            "deleteModalConfirmButtonText": "Yes, delete measure",
+            "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
+            "entityMissingResponseMessage": "Missing measure results for one or more plans.",
+            "entityEmptyResponseMessage": "Error: no results entered",
+            "entityUnfinishedMessage": "Add the plan-level details for this quality and performance measure by entering measure results.",
+            "enterEntityDetailsButtonText": "Enter measure results",
+            "editEntityDetailsButtonText": "Edit measure results",
+            "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
+            "drawerTitle": "Add plan-level measure results",
+            "drawerNoFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
           },
           "modalForm": {
             "id": "dqm-modal",
@@ -2500,8 +2634,8 @@
               },
               {
                 "id": "qualityMeasure_nqfNumber",
-                "type": "number",
-                "validation": "number",
+                "type": "text",
+                "validation": "text",
                 "props": {
                   "label": "D2.VII.3 National Quality Forum (NQF) number",
                   "hint": "What is the NQF number?"
@@ -2533,8 +2667,7 @@
                           },
                           "props": {
                             "label": "D2.VII.5 Measure reporting: List programs",
-                            "hint": "What are the programs? Separate program names with a comma.",
-                            "mask": "comma-separated"
+                            "hint": "What are the programs? Separate program names with a comma."
                           }
                         }
                       ]
@@ -2651,6 +2784,7 @@
                 "id": "qualityMeasure_plan_measureResults",
                 "type": "text",
                 "validation": "text",
+                "repeat": "plans",
                 "props": {
                   "label": ": Measure Results",
                   "hint": "What are the measure results or values for this plan? Add free text or enter \"N/A\" if not applicable."
@@ -2672,14 +2806,15 @@
               "info": [
                 {
                   "type": "html",
-                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
+                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
                 }
               ]
             },
-            "dashboardTitle": "Add plan sanctions",
-            "addEntityButtonText": "Add a sanction",
+            "dashboardTitle": "Sanction total count:",
+            "countEntitiesInTitle": true,
+            "addEntityButtonText": "Add sanction",
             "editEntityButtonText": "Edit sanction",
-            "addEditModalAddTitle": "Add a sanction",
+            "addEditModalAddTitle": "Add sanction",
             "addEditModalEditTitle": "Edit sanction",
             "addEditModalMessage": "Complete the remaining indicators for this sanction by saving the sanction and selecting \"Enter sanction details\".",
             "deleteEntityButtonAltText": "Delete sanction",
@@ -2848,12 +2983,36 @@
                 }
               },
               {
-                "id": "sanction_remediationDate",
-                "type": "date",
-                "validation": "date",
+                "id": "sanction_remediationCompleted",
+                "type": "radio",
+                "validation": "radio",
                 "props": {
                   "label": "D3.VIII.8 Remediation date non-compliance was corrected",
-                  "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
+                  "hint": "Was the non-compliance remediated?",
+                  "choices": [
+                    {
+                      "id": "J9FTVN9fJpgXX6X2xJiAiP",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "sanction_remediationDate",
+                          "type": "date",
+                          "validation": {
+                            "type": "date",
+                            "nested": true,
+                            "parentFieldName": "sanction_remediationCompleted"
+                          },
+                          "props": {
+                            "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "oAcvChnL6FLUJorh8XfgyR",
+                      "label": "No"
+                    }
+                  ]
                 }
               },
               {
@@ -2890,7 +3049,20 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on program integrity for each plan",
-            "drawerTitle": "Program integrity for"
+            "drawerTitle": "Program integrity for",
+            "missingEntityMessage": [
+              {
+                "type": "span",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
           },
           "drawerForm": {
             "id": "dpi",
@@ -2918,11 +3090,11 @@
               {
                 "id": "plan_programIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations opened by the plan in the past year per 1,000 beneficiaries enrolled in the plan on the first day of the last month of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
@@ -2938,11 +3110,11 @@
               {
                 "id": "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
                   "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year per 1,000 beneficiaries enrolled in the plan at the beginning of the reporting year?",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {
@@ -3021,7 +3193,7 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.X.8 ratio of program integrity referral to the state",
+                  "label": "D1.X.8 Ratio of program integrity referral to the state",
                   "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
                   "mask": "comma-separated"
                 }
@@ -3104,7 +3276,20 @@
           ]
         },
         "dashboardTitle": "Report on role and type for each BSS entity",
-        "drawerTitle": "Report on"
+        "drawerTitle": "Report on",
+        "missingEntityMessage": [
+          {
+            "type": "span",
+            "content": "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program. "
+          },
+          {
+            "type": "internalLink",
+            "content": "Add BSS entities",
+            "props": {
+              "to": "/mcpar/program-information/add-bss-entities"
+            }
+          }
+        ]
       },
       "drawerForm": {
         "id": "ebssei",
@@ -3238,7 +3423,8 @@
     },
     {
       "name": "Review & Submit",
-      "path": "/mcpar/review-and-submit"
+      "path": "/mcpar/review-and-submit",
+      "pageType": "reviewSubmit"
     }
   ]
 }

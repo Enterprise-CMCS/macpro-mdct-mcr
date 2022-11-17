@@ -3,8 +3,11 @@ const helpLinkText = "Contact Us";
 const accessibilityStatementLinkText = "Accessibility Statement";
 
 beforeEach(() => {
-  cy.visit("/");
   cy.authenticate("stateUser");
+});
+
+afterEach(() => {
+  cy.navigateToHomePage();
 });
 
 describe("Footer integration tests", () => {

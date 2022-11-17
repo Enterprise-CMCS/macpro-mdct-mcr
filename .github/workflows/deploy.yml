@@ -22,7 +22,7 @@ jobs:
         run: ./.github/build-vars.sh set_values
         env:
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-          CODE_CLIMATE_CMS_ID: ${{secrets.CODE_CLIMATE_CMS_ID}}
+          CODE_CLIMATE_CMS_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
       - name: read .nvmrc
         id: node_version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
@@ -90,6 +90,7 @@ jobs:
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+          CODE_CLIMATE_CMS_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -143,7 +144,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run Cypress Tests
-        uses: cypress-io/github-action@v3.0.3
+        uses: cypress-io/github-action@v4.2.0
         with:
           working-directory: tests/cypress
           spec: tests/e2e/*.spec.js
@@ -172,10 +173,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Check Project A11y
-        uses: cypress-io/github-action@v3.0.3
+        uses: cypress-io/github-action@v4.2.0
         with:
           working-directory: tests/cypress
-          spec: tests/accessibility/*.spec.js
+          spec: tests/accessibility/*.feature
           browser: chrome
           headless: true
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}

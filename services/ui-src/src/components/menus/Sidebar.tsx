@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
-import { ArrowIcon } from "@cmsgov/design-system";
-import { Box, Collapse, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { SkipNav } from "components";
+import {
+  Box,
+  Collapse,
+  Flex,
+  Image,
+  Heading,
+  Link,
+  Text,
+} from "@chakra-ui/react";
+import { ReportContext, SkipNav } from "components";
 // utils
 import { useBreakpoint } from "utils";
-import { isMcparReportFormPage, mcparReportJson } from "forms/mcpar";
+// assets
+import arrowDownIcon from "assets/icons/icon_arrow_down_gray.png";
+import arrowUpIcon from "assets/icons/icon_arrow_up_gray.png";
 
 interface LinkItemProps {
   name: string;
@@ -17,11 +26,12 @@ interface LinkItemProps {
 export const Sidebar = () => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
-  const { pathname } = useLocation();
+  const { report } = useContext(ReportContext);
+  const reportJson = report?.formTemplate;
 
   return (
     <>
-      {isMcparReportFormPage(pathname) && (
+      {reportJson && (
         <>
           <SkipNav
             id="skip-nav-sidebar"
@@ -43,16 +53,18 @@ export const Sidebar = () => {
               onClick={() => toggleSidebar(!isOpen)}
               aria-label="Open/Close sidebar menu"
             >
-              <ArrowIcon
-                title="closeNavBarButton"
-                direction={isOpen ? "left" : "right"}
+              <Image
+                src={arrowDownIcon}
+                alt={isOpen ? "Arrow left" : "Arrow right"}
+                sx={sx.sidebarIcon}
+                className={isOpen ? "left" : "right"}
               />
             </Box>
             <Box id="sidebar-title-box" sx={sx.topBox}>
-              <Heading sx={sx.title}>MCPAR Report Submission Form</Heading>
+              <Heading sx={sx.title}>{reportJson.name}</Heading>
             </Box>
             <Box sx={sx.navSectionsBox} className="nav-sections-box">
-              {mcparReportJson.routes.map((section) => (
+              {reportJson.routes.map((section) => (
                 <NavSection key={section.name} section={section} level={1} />
               ))}
             </Box>
@@ -149,9 +161,10 @@ const NavItem = ({
         {name}
       </Text>
       {!!hasChildren && (
-        <ArrowIcon
-          title="openNavItemsArrow"
-          direction={isOpen ? "up" : "down"}
+        <Image
+          src={isOpen ? arrowUpIcon : arrowDownIcon}
+          alt={isOpen ? "Collapse subitems" : "Expand subitems"}
+          sx={sx.navItemArrow}
         />
       )}
     </Flex>
@@ -223,7 +236,7 @@ const sx = {
     },
   },
   navItemFlex: {
-    flexDirection: "column",
+    flexDirection: "row",
     width: "20rem",
     minHeight: "2.5rem",
     position: "relative",
@@ -246,7 +259,7 @@ const sx = {
       borderInlineStartWidth: "0.125rem",
       borderInlineStartColor: "palette.secondary",
       ".chakra-text": {
-        color: "palette.secondary_darker",
+        color: "palette.secondary_darkest",
       },
     },
   },
@@ -285,6 +298,20 @@ const sx = {
       ".desktop &": {
         marginLeft: "4rem",
       },
+    },
+  },
+  navItemArrow: {
+    width: "1rem",
+    height: "1rem",
+    margin: "0.75rem 0.75rem 0 auto",
+  },
+  sidebarIcon: {
+    width: "1rem",
+    "&.left": {
+      transform: "rotate(90deg)",
+    },
+    "&.right": {
+      transform: "rotate(270deg)",
     },
   },
 };

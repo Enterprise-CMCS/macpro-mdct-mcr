@@ -86,7 +86,10 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
     field?.props?.choices.forEach((choice: FieldChoice) => {
       // set choice value to choice label string
       choice.value = choice.label;
-      choice.id = `${field.id}-${choice.id}`;
+      // if choice id has not already had parent field id appended, do so now
+      if (!choice.id.includes("-")) {
+        choice.id = field.id + "-" + choice.id;
+      }
       choice.name = choice.id;
       // initialize choice as controlled component in unchecked state
       if (choice.checked != true) choice.checked = false;
@@ -96,6 +99,33 @@ export const initializeChoiceListFields = (fields: FormField[]) => {
   });
   return fields;
 };
+
+// create repeated fields per entity specified (e.g. one field for each plan)
+export const createRepeatedFields = (
+  fields: FormField[],
+  reportFieldData?: AnyObject
+): FormField[] =>
+  // for each form field, check if it needs to be repeated
+  fields.flatMap((currentField: FormField) => {
+    if (currentField.repeat) {
+      // if so, get entities for which the field is to be repeated
+      const entities = reportFieldData?.[currentField.repeat];
+      if (entities && entities.length) {
+        // for each entity, create and return a new field with entity-linked id
+        return entities?.map((entity: AnyObject) => {
+          const newField = {
+            ...currentField,
+            id: currentField.id + "_" + entity.id,
+            props: {
+              ...currentField.props,
+              label: entity.name + currentField?.props?.label,
+            },
+          };
+          return newField;
+        });
+      } else return []; // if no entities, return blank array (later flattened)
+    } else return currentField; // if field is not to be repeated, return it unchanged
+  });
 
 // returns user-entered data, filtered to only fields in the current form
 export const filterFormData = (

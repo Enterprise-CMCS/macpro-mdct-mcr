@@ -1,10 +1,6 @@
-export const fireTealiumPageView = (
-  user,
-  url,
-  contentType,
-  sectionName,
-  pathname
-) => {
+export const fireTealiumPageView = (user, url, pathname, isReportPage) => {
+  const contentType = isReportPage ? "form" : "app";
+  const sectionName = isReportPage ? pathname.split("/")[1] : "main app";
   const { host: siteDomain } = url ? new URL(url) : null;
   if (window.utag) {
     window.utag.view({

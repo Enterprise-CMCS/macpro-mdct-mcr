@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, ReviewSubmitPage } from "components";
-import { SuccessMessageGenerator } from "./ReviewSubmitPage";
+import { ReportContext, McparReviewSubmitPage } from "components";
+import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
 // types
 import { ReportStatus } from "types";
 // utils
@@ -21,10 +21,10 @@ jest.mock("utils", () => ({
   useUser: () => mockStateUser,
 }));
 
-const ReviewSubmitPage_InProgress = (
+const McparReviewSubmitPage_InProgress = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReviewSubmitPage />
+      <McparReviewSubmitPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -39,31 +39,31 @@ const mockedReportContext_Submitted = {
   report: mockSubmittedReport,
 };
 
-const ReviewSubmitPage_Submitted = (
+const McparReviewSubmitPage_Submitted = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedReportContext_Submitted}>
-      <ReviewSubmitPage />
+      <McparReviewSubmitPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test ReviewSubmitPage functionality", () => {
-  test("ReviewSubmitPage renders pre-submit state when report status is 'in progress'", () => {
-    render(ReviewSubmitPage_InProgress);
+describe("Test McparReviewSubmitPage functionality", () => {
+  test("McparReviewSubmitPage renders pre-submit state when report status is 'in progress'", () => {
+    render(McparReviewSubmitPage_InProgress);
     const { review } = reviewVerbiage;
     const { intro } = review;
-    expect(screen.getByText(intro.header)).toBeVisible();
+    expect(screen.getByText(intro.infoHeader)).toBeVisible();
   });
 
-  test("ReviewSubmitPage renders success state when report status is 'submitted'", () => {
-    render(ReviewSubmitPage_Submitted);
+  test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
+    render(McparReviewSubmitPage_Submitted);
     const { submitted } = reviewVerbiage;
     const { intro } = submitted;
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
-  test("ReviewSubmitPage shows modal on submit button click", async () => {
-    render(ReviewSubmitPage_InProgress);
+  test("McparReviewSubmitPage shows modal on submit button click", async () => {
+    render(McparReviewSubmitPage_InProgress);
     const { review } = reviewVerbiage;
     const { modal, pageLink } = review;
     const submitCheckButton = screen.getByText(pageLink.text)!;
@@ -72,8 +72,8 @@ describe("Test ReviewSubmitPage functionality", () => {
     expect(modalTitle).toBeVisible();
   });
 
-  test("ReviewSubmitPage updates report status on submit confirmation", async () => {
-    render(ReviewSubmitPage_InProgress);
+  test("McparReviewSubmitPage updates report status on submit confirmation", async () => {
+    render(McparReviewSubmitPage_InProgress);
     const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
@@ -90,7 +90,7 @@ describe("Success Message Generator", () => {
     expect(
       SuccessMessageGenerator(programName, submittedDate, submittersName)
     ).toBe(
-      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}`
+      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
   it("should give a reduced version if not given all params", () => {
@@ -103,15 +103,15 @@ describe("Success Message Generator", () => {
   });
 });
 
-describe("Test ReviewSubmitPage view accessibility", () => {
+describe("Test McparReviewSubmitPage view accessibility", () => {
   it("Should not have basic accessibility issues when report status is 'in progress", async () => {
-    const { container } = render(ReviewSubmitPage_InProgress);
+    const { container } = render(McparReviewSubmitPage_InProgress);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   it("Should not have basic accessibility issues when report status is 'submitted", async () => {
-    const { container } = render(ReviewSubmitPage_Submitted);
+    const { container } = render(McparReviewSubmitPage_Submitted);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

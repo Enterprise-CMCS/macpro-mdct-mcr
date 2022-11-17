@@ -1,13 +1,11 @@
 import { useContext, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 // components
 import {
   Box,
   Button,
   Flex,
+  Image,
   Heading,
-  Link,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -17,13 +15,15 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, useUser } from "utils";
+import { filterFormData, parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   EntityShape,
   DrawerReportPageShape,
   ReportStatus,
+  FormField,
 } from "types";
+import completedIcon from "assets/icons/icon_check_circle.png";
 
 export const DrawerReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -38,27 +38,6 @@ export const DrawerReportPage = ({ route }: Props) => {
 
   const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
-
-  const missingEntitiesVerbiage: any = {
-    plans: {
-      message:
-        "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7.",
-      link: {
-        text: "Add Plans.",
-        href: "/mcpar/program-information/add-plans",
-      },
-    },
-    bssEntities: {
-      message:
-        "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program.",
-      link: {
-        text: "Add BSS entities.",
-        href: "/mcpar/program-information/add-bss-entities",
-      },
-    },
-  };
-  const { message: missingEntitiesMessage, link: missingEntitiesLink } =
-    missingEntitiesVerbiage[entityType];
 
   const openRowDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
@@ -96,37 +75,53 @@ export const DrawerReportPage = ({ route }: Props) => {
     onClose();
   };
 
-  const entityRows = (entities: EntityShape[]) =>
-    entities.map((entity) => (
-      <Flex key={entity.id} sx={sx.entityRow}>
-        <Heading as="h4" sx={sx.entityName}>
-          {entity.name}
-        </Heading>
-        <Button
-          sx={sx.enterButton}
-          onClick={() => openRowDrawer(entity)}
-          variant="outline"
-        >
-          Enter
-        </Button>
-      </Flex>
-    ));
+  const entityRows = (entities: EntityShape[]) => {
+    return entities.map((entity) => {
+      /*
+       * If the entity has the same fields from drawerForms fields, it was completed
+       * at somepoint.
+       */
+      const isEntityCompleted = drawerForm.fields?.every(
+        (field: FormField) => field.id in entity
+      );
+      return (
+        <Flex key={entity.id} sx={sx.entityRow}>
+          {isEntityCompleted && (
+            <Image
+              src={completedIcon}
+              alt={"Entity is complete"}
+              sx={sx.statusIcon}
+            />
+          )}
+          <Heading as="h4" sx={sx.entityName}>
+            {entity.name}
+          </Heading>
+          <Button
+            sx={sx.enterButton}
+            onClick={() => openRowDrawer(entity)}
+            variant="outline"
+          >
+            {isEntityCompleted ? "Edit" : "Enter"}
+          </Button>
+        </Flex>
+      );
+    });
+  };
   return (
     <Box data-testid="drawer-report-page">
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Heading as="h3" sx={sx.dashboardTitle}>
         {verbiage.dashboardTitle}
       </Heading>
-      {entities ? (
-        entityRows(entities)
-      ) : (
-        <Text sx={sx.emptyEntityMessage}>
-          {missingEntitiesMessage}{" "}
-          <Link as={RouterLink} to={missingEntitiesLink.href}>
-            {missingEntitiesLink.text}
-          </Link>
-        </Text>
-      )}
+      <Box>
+        {entities?.length ? (
+          entityRows(entities)
+        ) : (
+          <Box sx={sx.missingEntityMessage}>
+            {parseCustomHtml(verbiage.missingEntityMessage || "")}
+          </Box>
+        )}
+      </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
         verbiage={{
@@ -152,6 +147,10 @@ interface Props {
 }
 
 const sx = {
+  statusIcon: {
+    height: "1.25rem",
+    position: "absolute",
+  },
   dashboardTitle: {
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
@@ -170,10 +169,19 @@ const sx = {
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
+    flexGrow: 1,
+    marginLeft: "2.25rem",
   },
-  emptyEntityMessage: {
+  missingEntityMessage: {
     paddingTop: "1rem",
     fontWeight: "bold",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
   },
   enterButton: {
     width: "4.25rem",

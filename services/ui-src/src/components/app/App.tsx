@@ -15,28 +15,23 @@ import {
   Timeout,
 } from "components";
 // utils
-import { isMcparReportFormPage } from "forms/mcpar";
-import { fireTealiumPageView, makeMediaQueryClasses, useUser } from "utils";
+import {
+  fireTealiumPageView,
+  isReportFormPage,
+  makeMediaQueryClasses,
+  useUser,
+} from "utils";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
+  const isReportPage = isReportFormPage(pathname);
 
   // fire tealium page view on route change
   useEffect(() => {
-    const contentType = pathname.includes("/mcpar") ? "form" : "app";
-    const sectionName = pathname.includes("/mcpar") ? "MCPAR form" : "Main app";
-    fireTealiumPageView(
-      user,
-      window.location.href,
-      contentType,
-      sectionName,
-      pathname
-    );
+    fireTealiumPageView(user, window.location.href, pathname, isReportPage);
   }, [key]);
-
-  const isReportPage = isMcparReportFormPage(pathname);
 
   return (
     <div id="app-wrapper" className={mqClasses}>

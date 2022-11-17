@@ -1,15 +1,19 @@
 // components
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
+// utils
 import { AnyObject, ReportShape } from "types";
 import { convertDateUtcToEt } from "utils";
-import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import editIcon from "assets/icons/icon_edit-square.png";
+// assets
+import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const MobileDashboardList = ({
   reportsByState,
   openAddEditProgramModal,
   enterSelectedReport,
-  openDeleteProgramModal,
+  archiveReport,
+  archiving,
+  archivingReportId,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -52,26 +56,33 @@ export const MobileDashboardList = ({
         </Box>
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>Status</Text>
-          <Text>{report?.status}</Text>
+          <Text>{report?.archived ? "Archived" : report?.status}</Text>
         </Box>
         <Flex alignContent="flex-start" gap={2}>
           <Box sx={sxOverride.editReportButtonCell}>
             <Button
               variant="outline"
               onClick={() => enterSelectedReport(report)}
+              isDisabled={report?.archived}
             >
               Enter
             </Button>
           </Box>
           <Box sx={sxOverride.deleteProgramCell}>
             {isAdmin && (
-              <button onClick={() => openDeleteProgramModal(report)}>
-                <Image
-                  src={cancelIcon}
-                  alt="Delete Program"
-                  sx={sxOverride.deleteProgramButtonImage}
-                />
-              </button>
+              <Button
+                variant="link"
+                sx={sxOverride.archiveReportButton}
+                onClick={() => archiveReport(report)}
+              >
+                {archiving && archivingReportId === report.id ? (
+                  <Spinner size="small" />
+                ) : report?.archived ? (
+                  "Unarchive"
+                ) : (
+                  "Archive"
+                )}
+              </Button>
             )}
           </Box>
         </Flex>
@@ -84,7 +95,9 @@ interface MobileDashboardListProps {
   reportsByState: ReportShape[];
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
-  openDeleteProgramModal: Function;
+  archiveReport: Function;
+  archiving: boolean;
+  archivingReportId: string | undefined;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
