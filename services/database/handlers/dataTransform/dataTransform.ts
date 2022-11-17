@@ -5,7 +5,7 @@ import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 const UPDATE_ARCHIVED = false;
 const UPDATE_SUBMITTED = false;
 const TEXT_TO_REPLACE =
-  "What percent of the plan’s encounter data file submissions (submitted during the reporting period) met state requirements for timely submission?</br>If the state has not yet received any encounter data file submissions for the entire contract period when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting period.";
+  "What percent of the plan’s encounter data file submissions (submitted during the reporting period) met state requirements for timely submission?<br>If the state has not yet received any encounter data file submissions for the entire contract period when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting period.";
 const REPLACEMENT_TEXT =
   "Enter the percentage of the plan’s encounter data file submissions (submitted during the reporting year) that met state requirements for timely submission. If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.";
 const EXECUTE_UPDATE = true;
@@ -117,7 +117,7 @@ const fetchExistingItems = async () => {
         keepSearching,
         startingKey
       );
-      existingItems.push(results.Items);
+      existingItems.push(...results.Items);
     } catch (err) {
       console.error(`Database scan failed for the table ${tableName}
                      with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}.
