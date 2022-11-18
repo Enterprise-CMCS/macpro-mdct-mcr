@@ -1,6 +1,6 @@
 Feature: MCPAR E2E Form Submission
 
-    Scenario: A State user creates a program
+    Scenario Outline: A State user creates a program
         Given I am logged in as a state user
         And I am on "/mcpar"
 
@@ -17,7 +17,7 @@ Feature: MCPAR E2E Form Submission
             | title        | startDate  | endDate    | combinedData |
             | Test Program | 07/11/2022 | 11/07/2026 | true         |
 
-    Scenario Outline: Fills out Section A: Program Information
+    Scenario: Fills out Section A: Program Information
         Given I am on "/mcpar"
         And I click the "Enter" button
         Then the "/mcpar/program-information/point-of-contact" page is loaded
@@ -31,7 +31,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-information/reporting-period" page is loaded
 
-    Scenario Outline: Fills out Section A: Reporting Period
+    Scenario: Fills out Section A: Reporting Period
         Given I am on "/mcpar/program-information/reporting-period"
 
         When these form elements are prefilled and disabled:
@@ -43,7 +43,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-information/reporting-period" page is loaded
 
-    Scenario Outline: Fills out Section A: Add Plans
+    Scenario: Fills out Section A: Add Plans
         Given I am on "/mcpar/program-information/add-plans"
 
         When these form elements are filled:
@@ -56,7 +56,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-information/add-bss-entities" page is loaded
 
-    Scenario Outline: Fills out Section A: Add BSS Entities
+    Scenario: Fills out Section A: Add BSS Entities
         Given I am on "/mcpar/program-information/add-bss-entities"
 
         When these form elements are filled:
@@ -69,7 +69,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/state-level-indicators/program-characteristics" page is loaded
 
-    Scenario Outline: Fills out Section B: State Level Indicators/Program Characteristics
+    Scenario: Fills out Section B: State Level Indicators/Program Characteristics
         Given I am on "/mcpar/state-level-indicators/program-characteristics"
 
         When these form elements are filled:
@@ -80,7 +80,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/state-level-indicators/encounter-data-report" page is loaded
 
-    Scenario Outline: Fills out Section B: Encounter Data Report
+    Scenario: Fills out Section B: Encounter Data Report
         Given I am on "/mcpar/state-level-indicators/encounter-data-report"
 
         When these form elements are filled:
@@ -98,7 +98,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/state-level-indicators/program-integrity" page is loaded
 
-    Scenario Outline: Fills out Section B: Program Integrity
+    Scenario: Fills out Section B: Program Integrity
         Given I am on "/mcpar/state-level-indicators/program-integrity"
 
         When these form elements are filled:
@@ -121,7 +121,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-level-indicators/program-characteristics" page is loaded
 
-    Scenario Outline: Fills out Section C: Program Characteristics
+    Scenario: Fills out Section C: Program Characteristics
         Given I am on "/mcpar/program-level-indicators/program-characteristics"
 
         When these form elements are filled:
@@ -139,7 +139,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-level-indicators/encounter-data-report" page is loaded
 
-    Scenario Outline: Fills out Section C: Encounter Data Report
+    Scenario: Fills out Section C: Encounter Data Report
         Given I am on "/mcpar/program-level-indicators/encounter-data-report"
 
         When these form elements are filled:
@@ -157,7 +157,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances" page is loaded
 
-    Scenario Outline: Fills out Section C: Appeals, State Fair Hearings & Grievances
+    Scenario: Fills out Section C: Appeals, State Fair Hearings & Grievances
         Given I am on "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances"
 
         When these form elements are filled:
@@ -170,7 +170,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy" page is loaded
 
-    Scenario Outline: Fills out Section C: Availability, Accessibility: Network Adequacy
+    Scenario: Fills out Section C: Availability, Accessibility: Network Adequacy
         Given I am on "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy"
 
         When these form elements are filled:
@@ -263,7 +263,7 @@ Feature: MCPAR E2E Form Submission
             | type              | region         | population | method               | frequency |
             | Behavioral health | Large counties | Adult      | Secret shopper calls | Quarterly |
 
-    Scenario Outline: Fills out Section C: BSS
+    Scenario: Fills out Section C: BSS
         Given I am on "/mcpar/program-level-indicators/bss"
 
         When these form elements are filled:
@@ -276,7 +276,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/program-level-indicators/program-integrity" page is loaded
 
-    Scenario Outline: Fills out Section C: Program Integrity
+    Scenario: Fills out Section C: Program Integrity
         Given I am on "/mcpar/program-level-indicators/program-integrity"
 
         When these form elements are filled:
@@ -286,7 +286,7 @@ Feature: MCPAR E2E Form Submission
 
         Then the "/mcpar/plan-level-indicators/program-characteristics" page is loaded
 
-    Scenario Outline: Fills out Section D: Program Characteristics - Entering Data
+    Scenario: Fills out Section D: Program Characteristics - Entering Data
         Given I am on "/mcpar/plan-level-indicators/program-characteristics"
 
         When I click the "Enter" button
@@ -296,7 +296,7 @@ Feature: MCPAR E2E Form Submission
             | plan_medicaidManagedCareEnrollmentSharePercentage | text | 5      |
         And I click the "Save & Close" button
 
-    Scenario Outline: Fills out Section D: Program Characteristics - Editing Data
+    Scenario: Fills out Section D: Program Characteristics - Editing Data
         Given I am on "/mcpar/plan-level-indicators/program-characteristics"
 
         When I click the "Edit" button
@@ -307,7 +307,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Save & Close" button
         Then I have completed "1" drawer reports
 
-    Scenario Outline: Fills out Section D: Program Characteristics - Enter Additional Data
+    Scenario: Fills out Section D: Program Characteristics - Enter Additional Data
         Given I am on "/mcpar/plan-level-indicators/program-characteristics"
 
         When I click the "Enter" button
@@ -344,7 +344,7 @@ Feature: MCPAR E2E Form Submission
             | 100        | Other, specify | Other Levels of aggregation | MLD Description | Yes    | 12/14/2022 | 12/15/2022 |
 
 
-    Scenario Outline: Fills out Section D: Encounter Data Report
+    Scenario: Fills out Section D: Encounter Data Report
         Given I am on "/mcpar/plan-level-indicators/encounter-data-report"
 
         When I click the "Enter" button
@@ -358,7 +358,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview" page is loaded
 
-    Scenario Outline: Fills out Section D: Appeals Overview
+    Scenario: Fills out Section D: Appeals Overview
         Given I am on "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview"
 
         When I click the "Enter" button
@@ -382,7 +382,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service" page is loaded
 
-    Scenario Outline: Fills out Section D: Appeals By Service
+    Scenario: Fills out Section D: Appeals By Service
         Given I am on "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service"
 
         When I click the "Enter" button
@@ -403,7 +403,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings" page is loaded
 
-    Scenario Outline: Fills out Section D: State Fair Hearings
+    Scenario: Fills out Section D: State Fair Hearings
         Given I am on "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings"
 
         When I click the "Enter" button
@@ -420,7 +420,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview" page is loaded
 
-    Scenario Outline: Fills out Section D: Grievances Overview
+    Scenario: Fills out Section D: Grievances Overview
         Given I am on "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview"
 
         When I click the "Enter" button
@@ -436,7 +436,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service" page is loaded
 
-    Scenario Outline: Fills out Section D: Grievances By Service
+    Scenario: Fills out Section D: Grievances By Service
         Given I am on "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service"
 
         When I click the "Enter" button
@@ -457,7 +457,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason" page is loaded
 
-    Scenario Outline: Fills out Section D: Grievances By Reason
+    Scenario: Fills out Section D: Grievances By Reason
         Given I am on "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason"
 
         When I click the "Enter" button
@@ -650,7 +650,7 @@ Feature: MCPAR E2E Form Submission
             | instances | amount | dateAssessed | remedCompleted | remedDate  | actionPlan |
             | 3         | 911    | 08/05/2022   | Yes            | 09/06/2022 | Yes        |
 
-    Scenario Outline: Fills out Section D: Program Integrity
+    Scenario: Fills out Section D: Program Integrity
         Given I am on "/mcpar/plan-level-indicators/program-integrity"
 
         When I click the "Enter" button
@@ -671,7 +671,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/bss-entity-indicators" page is loaded
 
-    Scenario Outline: Fills out Section E: BSS Entity Indicators
+    Scenario: Fills out Section E: BSS Entity Indicators
         Given I am on "/mcpar/bss-entity-indicators"
 
         When I click the "Enter" button
@@ -684,7 +684,7 @@ Feature: MCPAR E2E Form Submission
         And I click the "Continue" button
         And the "/mcpar/review-and-submit" page is loaded
 
-    Scenario Outline: Submits the Form
+    Scenario: Submits the Form
         Given I am on "/mcpar/review-and-submit"
 
         When I click the "Submit MCPAR" button
@@ -693,7 +693,7 @@ Feature: MCPAR E2E Form Submission
         Then the "/mcpar/review-and-submit" page is loaded
         And the page shows "Successfully Submitted"
 
-    Scenario Outline: Submission shows on dashboard
+    Scenario: Submission shows on dashboard
         Given I am on "/mcpar/review-and-submit"
 
         When I click the "Leave form" button
