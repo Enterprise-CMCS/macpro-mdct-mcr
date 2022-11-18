@@ -143,7 +143,6 @@ jest.mock("aws-amplify", () => ({
     configure: () => {},
     signOut: async () => {},
     federatedSignIn: () => {},
-    currentAuthenticatedUser: jest.fn().mockReturnValue({}),
   },
   API: {
     get: () => {},

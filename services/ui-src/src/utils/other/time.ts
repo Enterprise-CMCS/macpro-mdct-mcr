@@ -144,7 +144,7 @@ export const calculateDueDate = (date: string) => {
 /*
  * Calculates time remaining for things like timeout
  */
-export const calculateRemainingSeconds = (expiresAt: any) => {
+export const calculateRemainingSeconds = (expiresAt?: any) => {
   if (!expiresAt) return 0;
   return moment(expiresAt).diff(moment()) / 1000;
 };
