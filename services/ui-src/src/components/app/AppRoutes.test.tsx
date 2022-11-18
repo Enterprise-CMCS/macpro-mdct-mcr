@@ -20,7 +20,7 @@ const appRoutesComponent = (history: any) => (
 let history: any;
 const tempScroll = window.HTMLElement.prototype.scrollIntoView;
 
-describe("brax Test AppRoutes for admin-specific routes", () => {
+describe("Test AppRoutes for admin-specific routes", () => {
   beforeEach(async () => {
     window.HTMLElement.prototype.scrollIntoView = function () {};
     mockedUseUser.mockReturnValue(mockAdminUser);
@@ -39,7 +39,7 @@ describe("brax Test AppRoutes for admin-specific routes", () => {
   });
 });
 
-describe("brax Test AppRoutes for non-admin-specific routes", () => {
+describe("Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
@@ -55,7 +55,7 @@ describe("brax Test AppRoutes for non-admin-specific routes", () => {
   });
 });
 
-describe("brax Test AppRoutes for non-admin-specific routes", () => {
+describe("Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
@@ -71,7 +71,7 @@ describe("brax Test AppRoutes for non-admin-specific routes", () => {
   });
 });
 
-describe("brax Test AppRoutes 404 handling", () => {
+describe("Test AppRoutes 404 handling", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
