@@ -13,7 +13,7 @@ Feature: Site Accessibility Audit
             Given I am logged in as an admin user
 
         Scenario Outline: Accessibility Verification
-            When I visit "<URI>"
+            When I visit <URI>
             Then the page is accessible on all device types
 
             Examples:
@@ -27,7 +27,7 @@ Feature: Site Accessibility Audit
             Given I am logged in as a state user
 
         Scenario Outline: Accessibility Verification
-            When I visit "<URI>"
+            When I visit <URI>
             Then the page is accessible on all device types
 
             Examples:
