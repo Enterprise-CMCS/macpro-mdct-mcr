@@ -39,7 +39,7 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
             | title           | startDate  | endDate    | combinedData |
             | Edited Program | 06/22/2021 | 12/05/2025 | true         |
 
-    Scenario: Admin users can not create programs
+    Scenario: Admin users cannot create programs
         Given I am logged in as an admin user
         And I am on "/"
         And these form elements are filled:
