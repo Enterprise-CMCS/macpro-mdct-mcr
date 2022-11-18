@@ -137,17 +137,16 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
 
-  const addEntityButton = (
-    <Button sx={sx.addEntityButton} onClick={addEditEntityModalOnOpenHandler}>
-      {verbiage.addEntityButtonText}
-    </Button>
-  );
-
   return (
     <Box data-testid="modal-drawer-report-page">
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
-        {addEntityButton}
+        <Button
+          sx={sx.topAddEntityButton}
+          onClick={addEditEntityModalOnOpenHandler}
+        >
+          {verbiage.addEntityButtonText}
+        </Button>
         {reportFieldDataEntities.length !== 0 && (
           <Heading as="h3" sx={sx.dashboardTitle}>
             {dashTitle}
@@ -208,7 +207,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           }}
           data-testid="report-drawer"
         />
-        {reportFieldDataEntities.length > 1 && addEntityButton}
+        {reportFieldDataEntities.length > 1 && (
+          <Button
+            sx={sx.bottomAddEntityButton}
+            onClick={addEditEntityModalOnOpenHandler}
+          >
+            {verbiage.addEntityButtonText}
+          </Button>
+        )}
       </Box>
       <ReportPageFooter />
     </Box>
@@ -226,8 +232,12 @@ const sx = {
     fontWeight: "bold",
     color: "palette.gray_medium",
   },
-  addEntityButton: {
+  topAddEntityButton: {
     marginTop: "1.5rem",
     marginBottom: "2rem",
+  },
+  bottomAddEntityButton: {
+    marginTop: "2rem",
+    marginBottom: "0",
   },
 };
