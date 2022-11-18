@@ -5,6 +5,7 @@ import { Amplify } from "aws-amplify";
 import config from "config";
 // utils
 import { ApiProvider, UserProvider } from "utils";
+import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 // components
 import { App, Error } from "components";
 // styles
@@ -20,17 +21,26 @@ Amplify.configure({
   },
 });
 
-ReactDOM.render(
-  <ErrorBoundary FallbackComponent={Error}>
-    <Router>
-      <UserProvider>
-        <ApiProvider>
-          <ChakraProvider theme={theme}>
-            <App />
-          </ChakraProvider>
-        </ApiProvider>
-      </UserProvider>
-    </Router>
-  </ErrorBoundary>,
-  document.getElementById("root")
-);
+const ldClientId = process.env.REACT_APP_LD_CLIENT_ID;
+async () => {
+  const LDProvider = await asyncWithLDProvider({
+    clientSideID: ldClientId!,
+  });
+
+  ReactDOM.render(
+    <LDProvider>
+      <ErrorBoundary FallbackComponent={Error}>
+        <Router>
+          <UserProvider>
+            <ApiProvider>
+              <ChakraProvider theme={theme}>
+                <App />
+              </ChakraProvider>
+            </ApiProvider>
+          </UserProvider>
+        </Router>
+      </ErrorBoundary>
+    </LDProvider>,
+    document.getElementById("root")
+  );
+};
