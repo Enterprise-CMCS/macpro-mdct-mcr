@@ -42,9 +42,7 @@ export const formFieldFactory = (
       key: field.id,
       name: field.id,
       hydrate: field.props?.hydrate,
-      disabled: options?.disabled || undefined,
-      nested: options?.nested || undefined,
-      autosave: options?.autosave || undefined,
+      ...options,
       ...field?.props,
     };
     return React.createElement(componentFieldType, fieldProps);
