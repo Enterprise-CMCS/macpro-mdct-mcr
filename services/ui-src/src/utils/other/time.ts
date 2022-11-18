@@ -1,5 +1,6 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import { DateShape, TimeShape } from "types";
+import moment from "moment";
 
 export const midnight: TimeShape = { hour: 0, minute: 0, second: 0 };
 export const oneSecondToMidnight: TimeShape = {
@@ -138,4 +139,12 @@ export const calculateDueDate = (date: string) => {
     noon
   );
   return reportingPeriodEndDate + gracePeriod;
+};
+
+/*
+ * Calculates time remaining for things like timeout
+ */
+export const calculateRemainingSeconds = (expiresAt: any) => {
+  if (!expiresAt) return 0;
+  return moment(expiresAt).diff(moment()) / 1000;
 };

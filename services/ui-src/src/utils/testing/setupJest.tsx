@@ -139,6 +139,7 @@ jest.mock("aws-amplify", () => ({
         getJwtToken: () => "eyJLongToken",
       }),
     }),
+    currentAuthenticatedUser: () => {},
     configure: () => {},
     signOut: async () => {},
     federatedSignIn: () => {},

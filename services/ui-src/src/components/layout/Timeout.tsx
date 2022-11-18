@@ -6,30 +6,33 @@ import {
   ModalBody,
   ModalFooter,
   ModalContent,
+  Text,
 } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
-import { refreshCredentials, updateTimeout, useUser } from "utils";
+import {
+  calculateRemainingSeconds,
+  refreshCredentials,
+  updateTimeout,
+  useUser,
+} from "utils";
 import { PROMPT_AT } from "../../constants";
 import moment from "moment";
 
-const calculateTimeLeft = (expiresAt: any) => {
-  if (!expiresAt) return 0;
-  return moment(expiresAt).diff(moment()) / 1000;
-};
-
 export const Timeout = () => {
   const { logout, getExpiration } = useUser();
-  const initialExpiration = getExpiration();
-  const [expiration, setExpiration] = useState(initialExpiration);
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(expiration));
+  const initialExpirationTime = getExpiration();
+  const [expirationTime, setExpirationTime] = useState(initialExpirationTime);
+  const [timeLeft, setTimeLeft] = useState(
+    calculateRemainingSeconds(expirationTime)
+  );
   const [showTimeout, setShowTimeout] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     updateTimeout();
-    const newExpiration = getExpiration();
-    setExpiration(newExpiration);
-    setTimeLeft(calculateTimeLeft(newExpiration));
+    const newExpirationTime = getExpiration();
+    setExpirationTime(newExpirationTime);
+    setTimeLeft(calculateRemainingSeconds(newExpirationTime));
   }, [location]);
 
   useEffect(() => {
@@ -38,26 +41,21 @@ export const Timeout = () => {
     }
 
     if (timeLeft <= 0) {
-      localStorage.removeItem("mdctmcr_session_exp");
       logout();
     }
-    // eslint-disable-next-line no-unused-vars
+
     const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft(expiration));
+      setTimeLeft(calculateRemainingSeconds(expirationTime));
     }, 1000);
     return () => {
       clearInterval(timer);
     };
   });
 
-  const logoutClick = () => {
-    logout();
-  };
-
   const refreshAuth = async () => {
-    const newExpiration = await refreshCredentials();
-    setExpiration(newExpiration);
-    setTimeLeft(calculateTimeLeft(newExpiration));
+    const newExpirationTime = await refreshCredentials();
+    setExpirationTime(newExpirationTime);
+    setTimeLeft(calculateRemainingSeconds(newExpirationTime));
     setShowTimeout(false);
   };
 
@@ -68,33 +66,31 @@ export const Timeout = () => {
     return `${Math.floor(time)} seconds`;
   };
 
-  if (!showTimeout) return <></>;
-
   return (
-    <Modal isOpen={true} onClose={() => {}}>
+    <Modal isOpen={showTimeout} onClose={refreshAuth}>
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
         <ModalBody>
-          <p>
+          <Text>
             Due to inactivity, you will be logged out in {formatTime(timeLeft)}.
-          </p>
+          </Text>
         </ModalBody>
         <ModalFooter sx={sx.modalFooter}>
           <Button
             sx={sx.stayActive}
             onClick={refreshAuth}
             type="submit"
-            data-testid="modal-submit-button"
+            data-testid="modal-refresh-button"
           >
-            Stay active
+            Stay Logged In
           </Button>
           <Button
             sx={sx.close}
-            onClick={logoutClick}
+            onClick={logout}
             type="submit"
-            data-testid="modal-submit-button"
+            data-testid="modal-logout-button"
           >
-            Logout
+            Log Out
           </Button>
         </ModalFooter>
       </ModalContent>
