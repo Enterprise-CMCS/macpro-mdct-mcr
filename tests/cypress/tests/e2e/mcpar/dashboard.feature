@@ -1,7 +1,7 @@
 Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
 
     Scenario: State users can create programs
-        Given I am logged in as an state user
+        Given I am logged in as a state user
         And I am on "/mcpar"
 
         When I click the "Add managed care program" button
@@ -37,7 +37,7 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
 
         Examples: #Edited Data
             | title           | startDate  | endDate    | combinedData |
-            | Editted Program | 06/22/2021 | 12/05/2025 | true         |
+            | Edited Program | 06/22/2021 | 12/05/2025 | true         |
 
     Scenario: Admin users can not create programs
         Given I am logged in as an admin user

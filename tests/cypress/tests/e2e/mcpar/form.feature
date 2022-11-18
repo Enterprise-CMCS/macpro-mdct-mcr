@@ -1,7 +1,7 @@
 Feature: MCPAR E2E Form Submission
 
     Scenario: A State user creates a program
-        Given I am logged in as an state user
+        Given I am logged in as a state user
         And I am on "/mcpar"
 
         When I click the "Add managed care program" button
