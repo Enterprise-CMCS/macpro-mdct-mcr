@@ -150,6 +150,9 @@ jest.mock("aws-amplify", () => ({
     del: () => {},
     configure: () => {},
   },
+  Hub: {
+    listen: jest.fn()
+  }
 }));
 
 // ROUTER

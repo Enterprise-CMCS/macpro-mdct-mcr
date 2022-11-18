@@ -10,36 +10,9 @@ import {
 import { useUser, UserProvider } from "utils";
 //components
 import { App } from "components";
-import { UserRoles } from "types";
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
-
-const mockAuthPayload = {
-  email: "test@email.com",
-  given_name: "Test",
-  family_name: "IsMe",
-  ["custom:cms_roles"]: UserRoles.STATE_USER,
-  ["custom:cms_state"]: "AL",
-};
-
-jest.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: jest.fn().mockReturnValue({
-      getIdToken: () => ({
-        payload: mockAuthPayload,
-        getJwtToken: jest.fn().mockReturnValue("")
-      }),
-    }),
-    configure: () => {},
-    signOut: jest.fn().mockImplementation(() => {}),
-    federatedSignIn: () => {},
-  },
-  Hub: {
-    listen: jest.fn()
-  }
-}));
-
 
 const appComponent = (
   <RouterWrappedComponent>
