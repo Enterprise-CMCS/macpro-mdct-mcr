@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
-import { parseCustomHtml } from "utils";
-import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { parseCustomHtml, useUser } from "utils";
+import {
+  InputChangeEvent,
+  AnyObject,
+  CustomHtmlElement,
+  ReportStatus,
+} from "types";
 
 export const TextField = ({
   name,
@@ -17,6 +23,10 @@ export const TextField = ({
   ...props
 }: Props) => {
   const [displayValue, setDisplayValue] = useState<string>("");
+
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+  const { report, updateReport } = useContext(ReportContext);
 
   // get form context and register field
   const form = useFormContext();
@@ -44,9 +54,26 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  // ON BLUR
+  // submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
-    // TODO: SUBMIT ONLY THIS FIELD DATA HERE
+    const { name, value } = event.target;
+    if (userIsStateUser || userIsStateRep) {
+      // check field data validity
+      const fieldDataIsValid = await form.trigger(name);
+      // if valid, use; if not, reset to default
+      const fieldValue = fieldDataIsValid ? value : "";
+
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+      const dataToWrite = {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+        fieldData: { [name]: fieldValue },
+      };
+      await updateReport(reportKeys, dataToWrite);
+    }
   };
 
   // prepare error message, hint, and classes

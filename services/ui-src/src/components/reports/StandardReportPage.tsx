@@ -23,8 +23,8 @@ export const StandardReportPage = ({ route }: Props) => {
     report!.formTemplate.basePath
   );
 
+  // TODO: remove entirely
   const onSubmit = async (enteredData: AnyObject) => {
-    console.log("submitting");
     if (userIsStateUser || userIsStateRep) {
       setSubmitting(true);
       const reportKeys = {
@@ -40,7 +40,7 @@ export const StandardReportPage = ({ route }: Props) => {
       await updateReport(reportKeys, dataToWrite);
       setSubmitting(false);
     }
-    // navigate(nextRoute);
+    navigate(nextRoute);
   };
 
   return (

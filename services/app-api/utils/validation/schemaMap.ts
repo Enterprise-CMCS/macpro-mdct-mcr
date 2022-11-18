@@ -21,8 +21,7 @@ const error = {
 };
 
 // TEXT
-export const text = (): StringSchema =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+export const text = (): StringSchema => string();
 export const textOptional = () => text().notRequired();
 
 // NUMBER - Helpers

@@ -21,7 +21,6 @@ export const formFieldFactory = (
   isNested?: boolean
 ) => {
   // define form field components
-  console.log("fff running");
   const fieldToComponentMap: AnyObject = {
     checkboxSingle: ChoiceField,
     checkbox: CheckboxField,
