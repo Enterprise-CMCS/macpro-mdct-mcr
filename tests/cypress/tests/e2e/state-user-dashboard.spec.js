@@ -22,7 +22,8 @@ describe("state user creates a program", () => {
 
   it("hydrates modal correctly", () => {
     cy.contains("tr", "program title")
-      .findByRole("button", { name: "Edit Program" })
+      .findAllByRole("button", { name: "Edit Program" })
+      .last()
       .click();
     cy.findByLabelText("Program name").should("have.value", "program title");
     cy.get('input[name="reportingPeriodStartDate"]').should(
