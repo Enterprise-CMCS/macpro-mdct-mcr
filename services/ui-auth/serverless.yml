@@ -129,13 +129,13 @@ resources:
           - email
           - openid
           - profile
-        AccessTokenValidity: 2
-        IdTokenValidity: 2
-        RefreshTokenValidity: 5
+        AccessTokenValidity: 30
+        IdTokenValidity: 30
+        RefreshTokenValidity: 24
         TokenValidityUnits: 
           AccessToken: "minutes"
           IdToken: "minutes"
-          RefreshToken: "minutes"
+          RefreshToken: "hours"
         CallbackURLs:
           - ${self:custom.application_endpoint_url}
           - http://localhost:3000/
