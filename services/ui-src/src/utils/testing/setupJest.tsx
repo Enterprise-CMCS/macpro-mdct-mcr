@@ -298,6 +298,12 @@ export const mockModalDrawerReportPageJson = {
   drawerForm: mockDrawerForm,
 };
 
+export const mockReviewSubmitPageJson = {
+  name: "mock-route-3",
+  path: "/mock/mock-review-and-submit",
+  pageType: "reviewSubmit",
+};
+
 // REPORT
 
 export const mockReportRoutes = [
@@ -307,12 +313,14 @@ export const mockReportRoutes = [
     path: "/mock/mock-route-2",
     children: [mockDrawerReportPageJson, mockModalDrawerReportPageJson],
   },
+  mockReviewSubmitPageJson,
 ];
 
 export const mockFlattenedReportRoutes = [
   mockStandardReportPageJson,
   mockDrawerReportPageJson,
   mockModalDrawerReportPageJson,
+  mockReviewSubmitPageJson,
 ];
 
 export const mockReportJson = {
