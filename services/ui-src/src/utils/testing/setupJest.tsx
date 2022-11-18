@@ -140,8 +140,9 @@ jest.mock("aws-amplify", () => ({
       }),
     }),
     configure: () => {},
-    signOut: () => {},
+    signOut: async () => {},
     federatedSignIn: () => {},
+    currentAuthenticatedUser: jest.fn().mockReturnValue({}),
   },
   API: {
     get: () => {},
@@ -151,8 +152,8 @@ jest.mock("aws-amplify", () => ({
     configure: () => {},
   },
   Hub: {
-    listen: jest.fn()
-  }
+    listen: jest.fn(),
+  },
 }));
 
 // ROUTER
