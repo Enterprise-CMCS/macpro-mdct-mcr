@@ -7,16 +7,25 @@ import {
   mockNoUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils";
+import { useUser, UserProvider } from "utils";
 //components
 import { App } from "components";
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
+jest.mock("aws-amplify", () => ({
+  ...jest.requireActual("aws-amplify"),
+  Hub: {
+    listen: jest.fn(),
+  },
+}));
+
 const appComponent = (
   <RouterWrappedComponent>
-    <App />
+    <UserProvider>
+      <App />
+    </UserProvider>
   </RouterWrappedComponent>
 );
 

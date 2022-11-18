@@ -3,22 +3,33 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { AppRoutes } from "components";
-import { useUser } from "utils";
+import { useUser, UserProvider } from "utils";
 import { mockAdminUser, mockStateUser } from "utils/testing/setupJest";
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
+jest.mock("aws-amplify", () => ({
+  ...jest.requireActual("aws-amplify"),
+  Hub: {
+    listen: jest.fn(),
+  },
+}));
+
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
-    <AppRoutes />
+    <UserProvider>
+      <AppRoutes />
+    </UserProvider>
   </Router>
 );
 
 let history: any;
+const tempScroll = window.HTMLElement.prototype.scrollIntoView;
 
-describe("Test AppRoutes for admin-specific routes", () => {
+describe("brax Test AppRoutes for admin-specific routes", () => {
   beforeEach(async () => {
+    window.HTMLElement.prototype.scrollIntoView = function () {};
     mockedUseUser.mockReturnValue(mockAdminUser);
     history = createMemoryHistory();
     history.push("/admin");
@@ -26,13 +37,16 @@ describe("Test AppRoutes for admin-specific routes", () => {
       await render(appRoutesComponent(history));
     });
   });
+  afterEach(async () => {
+    window.HTMLElement.prototype.scrollIntoView = tempScroll;
+  });
   test("/admin is visible for admin user", async () => {
     const currentPath = history.location.pathname;
     expect(currentPath).toEqual("/admin");
   });
 });
 
-describe("Test AppRoutes for non-admin-specific routes", () => {
+describe("brax Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
@@ -48,7 +62,7 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
   });
 });
 
-describe("Test AppRoutes for non-admin-specific routes", () => {
+describe("brax Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
@@ -64,7 +78,7 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
   });
 });
 
-describe("Test AppRoutes 404 handling", () => {
+describe("brax Test AppRoutes 404 handling", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     history = createMemoryHistory();
