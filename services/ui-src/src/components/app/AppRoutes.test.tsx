@@ -5,16 +5,35 @@ import { createMemoryHistory } from "history";
 import { AppRoutes } from "components";
 import { useUser, UserProvider } from "utils";
 import { mockAdminUser, mockStateUser } from "utils/testing/setupJest";
+import { UserRoles } from "types";
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+const mockAuthPayload = {
+  email: "test@email.com",
+  given_name: "Test",
+  family_name: "IsMe",
+  ["custom:cms_roles"]: UserRoles.STATE_USER,
+  ["custom:cms_state"]: "AL",
+};
 
 jest.mock("aws-amplify", () => ({
-  ...jest.requireActual("aws-amplify"),
-  Hub: {
-    listen: jest.fn(),
+  Auth: {
+    currentSession: jest.fn().mockReturnValue({
+      getIdToken: () => ({
+        payload: mockAuthPayload,
+        getJwtToken: jest.fn().mockReturnValue("")
+      }),
+    }),
+    configure: () => {},
+    signOut: jest.fn().mockImplementation(() => {}),
+    federatedSignIn: () => {},
   },
+  Hub: {
+    listen: jest.fn()
+  }
 }));
+
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
