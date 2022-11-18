@@ -18,6 +18,7 @@ import { isReportFormPage, useBreakpoint } from "utils";
 import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
 import checkIcon from "assets/icons/icon_check_gray.png";
+import closeIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -70,27 +71,31 @@ export const Header = ({ handleLogout }: Props) => {
               <Flex sx={sx.subnavFlexRight}>
                 {lastSavedTime && (
                   <>
-                    <Image
-                      src={checkIcon}
-                      alt="gray checkmark icon"
-                      sx={sx.checkIcon}
-                    />
+                    {!isMobile && (
+                      <Image
+                        src={checkIcon}
+                        alt="gray checkmark icon"
+                        sx={sx.checkIcon}
+                      />
+                    )}
                     <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
                   </>
                 )}
-                {!isMobile && (
-                  <Link
-                    as={RouterLink}
-                    to={report?.formTemplate.basePath || "/"}
-                    sx={sx.leaveFormLink}
-                    variant="unstyled"
-                    tabIndex={-1}
-                  >
+                <Link
+                  as={RouterLink}
+                  to={report?.formTemplate.basePath || "/"}
+                  sx={sx.leaveFormLink}
+                  variant="unstyled"
+                  tabIndex={-1}
+                >
+                  {!isMobile ? (
                     <Button variant="outline" data-testid="leave-form-button">
                       Leave form
                     </Button>
-                  </Link>
-                )}
+                  ) : (
+                    <Image src={closeIcon} alt="Close" sx={sx.closeIcon} />
+                  )}
+                </Link>
               </Flex>
             </Flex>
           </Container>
@@ -169,8 +174,15 @@ const sx = {
   },
   saveStatusText: {
     fontSize: "sm",
+    ".mobile &": {
+      width: "5rem",
+      textAlign: "right",
+    },
   },
   leaveFormLink: {
     marginLeft: "1rem",
+  },
+  closeIcon: {
+    width: "2rem",
   },
 };
