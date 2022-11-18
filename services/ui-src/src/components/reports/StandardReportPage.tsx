@@ -28,6 +28,7 @@ export const StandardReportPage = ({ route }: Props) => {
         formJson={route.form}
         onSubmit={() => navigate(nextRoute)}
         formData={report?.fieldData}
+        autosave
       />
       <ReportPageFooter form={route.form} />
     </Box>

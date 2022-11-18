@@ -21,6 +21,7 @@ export const ChoiceListField = ({
   choices,
   hint,
   nested,
+  autosave,
   sxOverride,
   ...props
 }: Props) => {
@@ -64,11 +65,11 @@ export const ChoiceListField = ({
       const choiceChildren = choice?.children;
       if (choiceChildren) {
         const isNested = true;
-        const formattedChildren = formFieldFactory(
-          choiceChildren,
-          shouldDisableChildFields,
-          isNested
-        );
+        const formattedChildren = formFieldFactory(choiceChildren, {
+          disabled: shouldDisableChildFields,
+          nested: isNested,
+          autosave,
+        });
         choiceObject.checkedChildren = formattedChildren;
       }
       delete choiceObject.children;
@@ -169,6 +170,7 @@ interface Props {
   choices: FieldChoice[];
   hint?: CustomHtmlElement[];
   nested?: boolean;
+  autosave?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

@@ -13,6 +13,7 @@ export const DateField = ({
   hint,
   sxOverride,
   nested,
+  autosave, // eslint-disable-line @typescript-eslint/no-unused-vars
   ...props
 }: Props) => {
   const [displayValue, setDisplayValue] = useState<string>("");
@@ -83,6 +84,7 @@ interface Props {
   hint?: CustomHtmlElement[];
   timetype?: string;
   nested?: boolean;
+  autosave?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

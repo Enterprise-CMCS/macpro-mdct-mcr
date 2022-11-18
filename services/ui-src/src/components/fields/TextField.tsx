@@ -20,9 +20,11 @@ export const TextField = ({
   placeholder,
   sxOverride,
   nested,
+  autosave,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState<string>("");
+  const defaultValue = "";
+  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -54,25 +56,27 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  // submit field data to database on blur
+  // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
-    const { name, value } = event.target;
-    if (userIsStateUser || userIsStateRep) {
-      // check field data validity
-      const fieldDataIsValid = await form.trigger(name);
-      // if valid, use; if not, reset to default
-      const fieldValue = fieldDataIsValid ? value : "";
+    if (autosave) {
+      const { name, value } = event.target;
+      if (userIsStateUser || userIsStateRep) {
+        // check field data validity
+        const fieldDataIsValid = await form.trigger(name);
+        // if valid, use; if not, reset to default
+        const fieldValue = fieldDataIsValid ? value : defaultValue;
 
-      const reportKeys = {
-        state: state,
-        id: report?.id,
-      };
-      const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-        fieldData: { [name]: fieldValue },
-      };
-      await updateReport(reportKeys, dataToWrite);
+        const reportKeys = {
+          state: state,
+          id: report?.id,
+        };
+        const dataToWrite = {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+          fieldData: { [name]: fieldValue },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
     }
   };
 
@@ -108,5 +112,6 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
+  autosave?: boolean;
   [key: string]: any;
 }
