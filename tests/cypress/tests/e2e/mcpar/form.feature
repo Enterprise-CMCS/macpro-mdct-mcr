@@ -609,20 +609,21 @@ Feature: MCPAR E2E Form Submission
         And I click the "Enter sanction details" button
 
         When these form elements are filled:
-            | sanction_noncomplianceInstances | text  | <instances>    |
-            | sanction_dollarAmount           | text  | <amount>       |
-            | sanction_assessmentDate         | text  | <dateAssessed> |
-            | sanction_remediationDate        | text  | <remedDate>    |
-            | sanction_correctiveActionPlan   | radio | <actionPlan>   |
+            | sanction_noncomplianceInstances | text  | <instances>      |
+            | sanction_dollarAmount           | text  | <amount>         |
+            | sanction_assessmentDate         | text  | <dateAssessed>   |
+            | sanction_remediationCompleted   | radio | <remedCompleted> |
+            | sanction_remediationDate        | text  | <remedDate>      |
+            | sanction_correctiveActionPlan   | radio | <actionPlan>     |
 
         And I click the "Save & Close" button
 
         Then the sanction is completed with "<instances>", "<amount>", "<dateAssessed>", "<remedDate>", and "<actionPlan>"
 
         Examples: #Sanctions Details Data
-            | instances | amount | dateAssessed | remedDate  | actionPlan |
-            | 1         | 1,109  | 04/05/2022   | 05/06/2022 | No         |
-            | 2         | 1,776  | 04/05/2022   | 05/06/2022 | No         |
+            | instances | amount | dateAssessed | remedCompleted | remedDate  | actionPlan |
+            | 1         | 1,109  | 04/05/2022   | Yes            | 05/06/2022 | No         |
+            | 2         | 1,776  | 04/05/2022   | Yes            | 05/06/2022 | No         |
 
     Scenario Outline: Fills out Section D: Sanctions - Edit Measure Details
         Given I am on "/mcpar/plan-level-indicators/sanctions"
@@ -630,11 +631,12 @@ Feature: MCPAR E2E Form Submission
         And I click the "Edit sanction details" button
 
         When these form elements are edited:
-            | sanction_noncomplianceInstances | text  | <instances>    |
-            | sanction_dollarAmount           | text  | <amount>       |
-            | sanction_assessmentDate         | text  | <dateAssessed> |
-            | sanction_remediationDate        | text  | <remedDate>    |
-            | sanction_correctiveActionPlan   | radio | <actionPlan>   |
+            | sanction_noncomplianceInstances | text  | <instances>      |
+            | sanction_dollarAmount           | text  | <amount>         |
+            | sanction_assessmentDate         | text  | <dateAssessed>   |
+            | sanction_remediationCompleted   | radio | <remedCompleted> |
+            | sanction_remediationDate        | text  | <remedDate>      |
+            | sanction_correctiveActionPlan   | radio | <actionPlan>     |
 
         And I click the "Save & Close" button
 
@@ -645,8 +647,8 @@ Feature: MCPAR E2E Form Submission
         And the "/mcpar/plan-level-indicators/program-integrity" page is loaded
 
         Examples: #Sanctions Edited Data
-            | instances | amount | dateAssessed | remedDate  | actionPlan |
-            | 3         | 911    | 08/05/2022   | 09/06/2022 | Yes        |
+            | instances | amount | dateAssessed | remedCompleted | remedDate  | actionPlan |
+            | 3         | 911    | 08/05/2022   | Yes            | 09/06/2022 | Yes        |
 
     Scenario Outline: Fills out Section D: Program Integrity
         Given I am on "/mcpar/plan-level-indicators/program-integrity"
