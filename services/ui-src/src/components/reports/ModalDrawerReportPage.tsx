@@ -142,7 +142,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         <Button
-          sx={sx.addEntityButton}
+          sx={sx.topAddEntityButton}
           onClick={addEditEntityModalOnOpenHandler}
         >
           {verbiage.addEntityButtonText}
@@ -207,6 +207,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
           }}
           data-testid="report-drawer"
         />
+        {reportFieldDataEntities.length > 1 && (
+          <Button
+            sx={sx.bottomAddEntityButton}
+            onClick={addEditEntityModalOnOpenHandler}
+          >
+            {verbiage.addEntityButtonText}
+          </Button>
+        )}
       </Box>
       <ReportPageFooter />
     </Box>
@@ -224,8 +232,12 @@ const sx = {
     fontWeight: "bold",
     color: "palette.gray_medium",
   },
-  addEntityButton: {
+  topAddEntityButton: {
     marginTop: "1.5rem",
     marginBottom: "2rem",
+  },
+  bottomAddEntityButton: {
+    marginTop: "2rem",
+    marginBottom: "0",
   },
 };
