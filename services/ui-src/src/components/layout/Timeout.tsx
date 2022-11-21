@@ -15,7 +15,7 @@ import {
   updateTimeout,
   useUser,
 } from "utils";
-import { PROMPT_AT } from "../../constants";
+import { PROMPT_AT, IDLE_WINDOW } from "../../constants";
 import moment from "moment";
 
 export const Timeout = () => {
@@ -26,6 +26,9 @@ export const Timeout = () => {
     calculateRemainingSeconds(expirationTime)
   );
   const [showTimeout, setShowTimeout] = useState(false);
+  const [timeoutPromptId, setTimeoutPromptId] = useState<number>();
+  const [timeoutForceId, setTimeoutForceId] = useState<number>();
+  const [updateTextIntervalId, setUpdateTextIntervalId] = useState<number>();
   const location = useLocation();
 
   useEffect(() => {
@@ -35,22 +38,63 @@ export const Timeout = () => {
     setTimeLeft(calculateRemainingSeconds(newExpirationTime));
   }, [location]);
 
+  /*
+   * TODO: When autosave is implemented, set up a callback function to listen to calls to update in authLifecycle
+   * subscribeToUpdateTimeout(() => {
+   *   setTimer();
+   * });
+   */
+
   useEffect(() => {
-    if (timeLeft * 1000 < PROMPT_AT) {
-      setShowTimeout(true);
-    }
+    setTimer();
 
-    if (timeLeft <= 0) {
-      logout();
-    }
-
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateRemainingSeconds(expirationTime));
-    }, 1000);
     return () => {
-      clearInterval(timer);
+      clearTimers();
     };
-  });
+  }, []);
+
+  const setTimer = () => {
+    const expiration = moment().add(IDLE_WINDOW, "milliseconds");
+    if (timeoutPromptId) {
+      clearTimers();
+    }
+    updateTimeout();
+    setExpirationTime(expirationTime);
+    setShowTimeout(false);
+
+    // Set the initial timer for when a prompt appears
+    setTimeoutPromptId(
+      window.setTimeout(
+        (exp: string) => {
+          // Once the prompt appears, set timers for logging out, and for updating text on screen
+          promptTimeout(exp);
+          setTimeoutForceId(() => {
+            return window.setTimeout(() => {
+              logout();
+            }, IDLE_WINDOW - PROMPT_AT);
+          });
+          setUpdateTextIntervalId(() => {
+            return window.setInterval(() => {
+              setTimeLeft(calculateRemainingSeconds(expirationTime));
+            }, 500);
+          });
+        },
+        PROMPT_AT,
+        expiration
+      )
+    );
+  };
+
+  const promptTimeout = (expirationTime: string) => {
+    setExpirationTime(expirationTime);
+    setShowTimeout(true);
+  };
+
+  const clearTimers = () => {
+    window.clearTimeout(timeoutPromptId);
+    window.clearTimeout(timeoutForceId);
+    window.clearTimeout(updateTextIntervalId);
+  };
 
   const refreshAuth = async () => {
     const newExpirationTime = await refreshCredentials();
