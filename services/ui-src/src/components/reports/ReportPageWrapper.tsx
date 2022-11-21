@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // components
 import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
@@ -23,10 +23,11 @@ import {
   StandardReportPageShape,
 } from "types";
 
-export const ReportPageWrapper = ({ route }: Props) => {
+export const ReportPageWrapper = () => {
   const { state } = useUser().user ?? {};
   const { errorMessage, report } = useContext(ReportContext);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -57,6 +58,10 @@ export const ReportPageWrapper = ({ route }: Props) => {
     }
   };
 
+  const reportTemplate = report?.formTemplate.flatRoutes!.find(
+    (route: ReportRoute) => route.path === pathname
+  );
+
   return (
     <PageTemplate type="report">
       <Flex sx={sx.pageContainer}>
@@ -65,7 +70,7 @@ export const ReportPageWrapper = ({ route }: Props) => {
             <Sidebar />
             <Flex id="report-content" sx={sx.reportContainer}>
               {errorMessage && <ErrorAlert error={errorMessage} />}
-              {renderPageSection(route)}
+              {reportTemplate && renderPageSection(reportTemplate)}
             </Flex>
           </>
         ) : (
@@ -77,10 +82,6 @@ export const ReportPageWrapper = ({ route }: Props) => {
     </PageTemplate>
   );
 };
-
-interface Props {
-  route: ReportRoute;
-}
 
 const sx = {
   pageContainer: {
