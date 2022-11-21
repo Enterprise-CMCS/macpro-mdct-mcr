@@ -1,51 +1,35 @@
 import { When } from "@badeball/cypress-cucumber-preprocessor";
-When("these form elements are filled:", (dataTable) => {
+When("these form elements are edited:/filled:", (dataTable) => {
   dataTable.rawTable.forEach((row) => {
-    switch (row[1]) {
+    /*
+     * Repeated inputs have the same name, so it comes back as an array. Thus we need to grab
+     * which input in the array we need. Otherwise we can just query the name of the input
+     */
+    const repeatedInput = row?.[3];
+    const input = repeatedInput
+      ? cy.get(`input[name^="${row[0]}"]`)
+      : cy.get(`[name='${row[0]}']`);
+    const inputType = row[1];
+    const inputValue = row[2];
+    switch (inputType) {
       case "singleCheckbox":
-        if (row[2] == "true") cy.get(`[name='${row[0]}']`).check();
-        else cy.get(`[name='${row[0]}']`).uncheck();
+        if (inputValue == "true") input.check();
+        else input.uncheck();
         break;
       case "radio":
-        cy.get(`[name='${row[0]}']`).check(row[2]);
+        input.check(inputValue);
         break;
       case "checkbox":
-        cy.get(`[name='${row[0]}']`).check(row[2]);
+        input.check(inputValue);
         break;
       case "dropdown":
-        cy.get(`[name='${row[0]}']`).select(row[2]);
+        input.select(inputValue);
         break;
       case "repeated":
-        cy.get(`input[name^="${row[0]}"]`).eq(row[3]).type(row[2]);
+        input.eq(repeatedInput).clear().type(inputValue);
         break;
       default:
-        cy.get(`[name='${row[0]}']`).type(row[2]);
-        break;
-    }
-  });
-});
-
-When("these form elements are edited:", (dataTable) => {
-  dataTable.rawTable.forEach((row) => {
-    switch (row[1]) {
-      case "singleCheckbox":
-        if (row[2] == "true") cy.get(`[name='${row[0]}']`).check();
-        else cy.get(`[name='${row[0]}']`).uncheck();
-        break;
-      case "radio":
-        cy.get(`[name='${row[0]}']`).check(row[2]);
-        break;
-      case "checkbox":
-        cy.get(`[name='${row[0]}']`).check(row[2]);
-        break;
-      case "dropdown":
-        cy.get(`[name='${row[0]}']`).select(row[2]);
-        break;
-      case "repeated":
-        cy.get(`input[name^="${row[0]}"]`).eq(row[3]).clear().type(row[2]);
-        break;
-      default:
-        cy.get(`[name='${row[0]}']`).clear().type(row[2]);
+        input.clear().type(inputValue);
         break;
     }
   });
