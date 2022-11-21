@@ -46,6 +46,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await getReport(reportKeys);
       setReport(result);
+      setError(undefined);
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }
@@ -55,6 +56,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await getReportsByState(selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
+      setError(undefined);
     } catch (e: any) {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
@@ -64,6 +66,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await postReport(state, report);
       setReport(result);
+      setError(undefined);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -73,6 +76,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await putReport(reportKeys, report);
       setReport(result);
+      setError(undefined);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
