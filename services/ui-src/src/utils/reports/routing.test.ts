@@ -7,9 +7,9 @@ const mockFlatRoutesArray = mockReportJson.flatRoutes;
 jest.mock("react-router-dom", () => ({
   useLocation: jest
     .fn()
-    .mockReturnValueOnce({ pathname: "/mock/mock-route-1" })
-    .mockReturnValueOnce({ pathname: "/mock/mock-route-2a" })
-    .mockReturnValueOnce({ pathname: "/mock/mock-route-2b" }),
+    .mockReturnValueOnce({ pathname: "/mock/mock-route-1" }) // first path
+    .mockReturnValueOnce({ pathname: "/mock/mock-route-2a" }) // middle path
+    .mockReturnValueOnce({ pathname: "/mock/mock-route-3" }), // last path
 }));
 
 describe("Test useFindRoute behavior at first route in array (with no previous routes)", () => {
