@@ -4,11 +4,11 @@ import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
 const UPDATE_ARCHIVED = false;
 const UPDATE_SUBMITTED = false;
+const OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE = 1669044195182;
 const TEXT_TO_REPLACE =
   "What percent of the plan’s encounter data file submissions (submitted during the reporting period) met state requirements for timely submission?<br>If the state has not yet received any encounter data file submissions for the entire contract period when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting period.";
 const REPLACEMENT_TEXT =
   "Enter the percentage of the plan’s encounter data file submissions (submitted during the reporting year) that met state requirements for timely submission. If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.";
-const EXECUTE_UPDATE = true;
 
 let dynamoClient: any;
 let tableName: any;
@@ -38,7 +38,7 @@ export const handler = async (
     console.log("Items after change", itemsToChange);
 
     // UPLOAD BACK TO DYNAMODB
-    if (EXECUTE_UPDATE) {
+    if (process.env.DATA_TRANSFORM_UPDATE_ENABLED === "true") {
       writeItemsToDb(itemsToChange);
     }
   }
@@ -81,6 +81,14 @@ const filterReportsOnCondition = (itemsToChange: any) => {
   if (!UPDATE_SUBMITTED) {
     itemsToChange = itemsToChange.filter((item: any) => !item.submittedBy);
   }
+  // filter out reports older than the provided start date
+  if (OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE) {
+    itemsToChange = itemsToChange.filter(
+      (item: any) =>
+        item.reportingPeriodStartDate >
+        OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE
+    );
+  }
   return itemsToChange;
 };
 
@@ -103,6 +111,7 @@ const scanTable = async (
     return [null, keepSearching, results];
   }
 };
+
 const fetchExistingItems = async () => {
   let startingKey;
   let keepSearching = true;
@@ -139,7 +148,7 @@ const initializeDynamoDb = () => {
     dynamoPrefix = "local";
   } else {
     dynamoConfig["region"] = "us-east-1";
-    dynamoPrefix = process.env.dynamoPrefix;
+    dynamoPrefix = process.env.DYNAMO_PREFIX;
   }
   dynamoClient = new DynamoDB.DocumentClient(dynamoConfig);
   tableName = dynamoPrefix + "-mcpar-reports";

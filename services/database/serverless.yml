@@ -25,7 +25,8 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
-  dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/runDataTransform, ssm:/configuration/default/runDataTransform, "false"}
+  dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
+  dataTransformUpdateEnabled: ${ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
   scripts:
     hooks:
       deploy:finalize: |
@@ -66,7 +67,8 @@ functions:
     handler: handlers/dataTransform/dataTransform.handler
     timeout: 120
     environment:
-      dynamoPrefix: ${self:custom.stage}
+      DYNAMO_PREFIX: ${self:custom.stage}
+      DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
 
 resources:
   Resources:
