@@ -74,6 +74,9 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
 export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
+export { McparPdfPrintPage } from "./pages/ReviewSubmit/McparPdfPrintPage";
+// print
+export { StickyBanner } from "./print/StickyBanner";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";

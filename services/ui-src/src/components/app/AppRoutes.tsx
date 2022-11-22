@@ -10,6 +10,7 @@ import {
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
+  McparPdfPrintPage,
 } from "components";
 import { mcparReportJson } from "forms/mcpar";
 // utils
@@ -40,8 +41,13 @@ export const AppRoutes = () => {
               element={<ReportPageWrapper />}
             />
           ))}
+          <Route
+            path="/mcpar/review-and-submit/print"
+            element={<McparPdfPrintPage />}
+          />
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -18,6 +18,7 @@ import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
+import printIcon from "assets/icons/icon_print.png";
 
 export const McparReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
@@ -186,6 +187,13 @@ export const SuccessMessage = ({
       <Box>
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
+        <Button
+          variant="outline"
+          sx={sx.printButton}
+          leftIcon={<Image src={printIcon} alt="Print" />}
+        >
+          Print
+        </Button>
       </Box>
     </Flex>
   );
@@ -241,5 +249,11 @@ const sx = {
   },
   additionalInfo: {
     color: "palette.gray",
+  },
+  printButton: {
+    marginTop: "2rem",
+    img: {
+      width: "1.5rem",
+    },
   },
 };
