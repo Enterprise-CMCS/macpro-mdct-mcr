@@ -13,56 +13,56 @@ permissions:
   actions: read
 
 jobs:
-  # unit-tests:
-  #   name: Unit Tests
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: set variable values
-  #       run: ./.github/build-vars.sh set_values
-  #       env:
-  #         CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-  #         CODE_CLIMATE_CMS_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
-  #     - name: read .nvmrc
-  #       id: node_version
-  #       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: |
-  #           **/node_modules
-  #           ~/.cache/Cypress
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-  #     - name: set path
-  #       run: |
-  #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-  #     - name: run unit tests
-  #       run: ./scripts/test-unit.sh
-  #     - name: publish test coverage to code climate
-  #       if: env.CODE_CLIMATE_ID != ''
-  #       uses: paambaati/codeclimate-action@v2.7.5
-  #       env:
-  #         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-  #       with:
-  #         coverageLocations: |
-  #           ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-  #     - name: publish test coverage to code climate CMS org view
-  #       if: env.CODE_CLIMATE_CMS_ID != ''
-  #       uses: paambaati/codeclimate-action@v2.7.5
-  #       env:
-  #         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
-  #       with:
-  #         coverageLocations: |
-  #           ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-  #     - name: Store unit test reults
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: unit_test_results
-  #         path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set variable values
+        run: ./.github/build-vars.sh set_values
+        env:
+          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+          CODE_CLIMATE_CMS_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
+      - name: read .nvmrc
+        id: node_version
+        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+      - uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: run unit tests
+        run: ./scripts/test-unit.sh
+      - name: publish test coverage to code climate
+        if: env.CODE_CLIMATE_ID != ''
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: publish test coverage to code climate CMS org view
+        if: env.CODE_CLIMATE_CMS_ID != ''
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Store unit test reults
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_results
+          path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
 
   deploy:
     needs: unit-tests
