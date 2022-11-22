@@ -10,6 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
 // utils
+import { initAuthManager, updateTimeout, getExpiration } from "utils";
 import { PRODUCTION_HOST_DOMAIN } from "../../constants";
 // types
 import { MCRUser, UserContextShape, UserRoles } from "types";
@@ -17,6 +18,8 @@ import { MCRUser, UserContextShape, UserRoles } from "types";
 export const UserContext = createContext<UserContextShape>({
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: () => {},
+  getExpiration: () => {},
 });
 
 const authenticateWithIDM = async () => {
@@ -30,6 +33,9 @@ export const UserProvider = ({ children }: Props) => {
 
   const [user, setUser] = useState<any>(null);
   const [showLocalLogins, setShowLocalLogins] = useState(false);
+
+  // initialize the authentication manager that oversees timeouts
+  initAuthManager();
 
   const logout = useCallback(async () => {
     try {
@@ -91,7 +97,7 @@ export const UserProvider = ({ children }: Props) => {
         redirectSignIn: config.cognito.REDIRECT_SIGNIN,
         redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
         scope: ["email", "openid", "profile"],
-        responseType: "token",
+        responseType: "code",
       },
     });
   }, []);
@@ -107,6 +113,8 @@ export const UserProvider = ({ children }: Props) => {
       logout,
       showLocalLogins,
       loginWithIDM: authenticateWithIDM,
+      updateTimeout,
+      getExpiration,
     }),
     [user, logout, showLocalLogins]
   );

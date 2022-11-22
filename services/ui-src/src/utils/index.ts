@@ -7,6 +7,7 @@ export * from "./api/requestMethods/report";
 // auth
 export * from "./auth/useUser";
 export * from "./auth/UserProvider";
+export * from "./auth/authLifecycle";
 // forms
 export * from "./forms/forms";
 // reports
