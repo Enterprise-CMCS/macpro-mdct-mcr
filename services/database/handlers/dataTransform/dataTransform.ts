@@ -63,7 +63,7 @@ const writeItemsToDb = async (updatedItems: any) => {
       },
     };
     try {
-      const response = dynamoClient.put(params).promise();
+      const response = await dynamoClient.put(params).promise();
       responses.push(response);
     } catch (e) {
       console.log("error", e);
