@@ -39,7 +39,8 @@ export const handler = async (
 
     // UPLOAD BACK TO DYNAMODB
     if (process.env.DATA_TRANSFORM_UPDATE_ENABLED === "true") {
-      await writeItemsToDb(itemsToChange);
+      const responses = await writeItemsToDb(itemsToChange);
+      console.log("responses", responses);
     }
   }
 
@@ -53,6 +54,7 @@ export const handler = async (
 
 const writeItemsToDb = async (updatedItems: any) => {
   console.log("Writing changes to table: ", tableName);
+  let responses: any = [];
   updatedItems.forEach(async (item: any) => {
     const params = {
       TableName: tableName,
@@ -60,8 +62,14 @@ const writeItemsToDb = async (updatedItems: any) => {
         ...item,
       },
     };
-    await dynamoClient.put(params).promise();
+    try {
+      const response = dynamoClient.put(params).promise();
+      responses.push(response);
+    } catch (e) {
+      console.log("error", e);
+    }
   });
+  return responses;
 };
 
 const filterItemsMatchingCondition = (itemsToChange: any) => {
