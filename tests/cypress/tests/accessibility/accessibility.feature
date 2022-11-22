@@ -17,9 +17,9 @@ Feature: Site Accessibility Audit
             Then the page is accessible on all device types
 
             Examples:
-                | URI        |
-                | "/admin"   |
-                | "/profile" |
+                | URI      |
+                | /admin   |
+                | /profile |
 
 
     Rule: State User
@@ -31,7 +31,7 @@ Feature: Site Accessibility Audit
             Then the page is accessible on all device types
 
             Examples:
-                | URI        |
-                | "/"        |
-                | "/profile" |
-                | "/help"    |
+                | URI      |
+                | /        |
+                | /profile |
+                | /help    |
