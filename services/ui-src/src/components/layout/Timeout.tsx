@@ -49,30 +49,27 @@ export const Timeout = () => {
     setShowTimeout(false);
 
     // Set the initial timer for when a prompt appears
-    setTimeoutPromptId(
-      window.setTimeout(() => {
-        // Once the prompt appears, set timers for logging out, and for updating text on screen
+    const promptTimer = window.setTimeout(() => {
+      // Once the prompt appears, set timers for logging out, and for updating text on screen
+      setTimeLeft(calculateRemainingSeconds(expiration));
+      setShowTimeout(true);
+      const forceLogoutTimer = window.setTimeout(() => {
+        clearTimers();
+        logout();
+      }, IDLE_WINDOW - PROMPT_AT);
+      const updateTextTimer = window.setInterval(() => {
         setTimeLeft(calculateRemainingSeconds(expiration));
-        setShowTimeout(true);
-        setTimeoutForceId(() => {
-          return window.setTimeout(() => {
-            clearTimers();
-            logout();
-          }, IDLE_WINDOW - PROMPT_AT);
-        });
-        setUpdateTextIntervalId(() => {
-          return window.setInterval(() => {
-            setTimeLeft(calculateRemainingSeconds(expiration));
-          }, 500);
-        });
-      }, PROMPT_AT)
-    );
+      }, 500);
+      setTimeoutForceId(forceLogoutTimer);
+      setUpdateTextIntervalId(updateTextTimer);
+    }, PROMPT_AT);
+    setTimeoutPromptId(promptTimer);
   };
 
   const clearTimers = () => {
     clearTimeout(timeoutPromptId);
     clearTimeout(timeoutForceId);
-    clearInterval(updateTextIntervalId);
+    clearTimeout(updateTextIntervalId);
   };
 
   const refreshAuth = async () => {
@@ -82,9 +79,6 @@ export const Timeout = () => {
   };
 
   const formatTime = (time: number) => {
-    if (time > 60) {
-      return `${moment.utc(time * 1000).format("mm:ss")} minutes`;
-    }
     return `${Math.floor(time)} seconds`;
   };
 

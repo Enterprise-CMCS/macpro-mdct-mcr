@@ -6,7 +6,7 @@ import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
 import { initAuthManager, useUser } from "utils";
 //components
 import { Timeout } from "components";
-import { PROMPT_AT } from "../../constants";
+import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
 
 const timeoutComponent = (
   <RouterWrappedComponent>
@@ -52,7 +52,7 @@ describe("Test Timeout Modal", () => {
 
   test("Timeout modal refresh button is clickable and closes modal", async () => {
     await act(async () => {
-      jest.runAllTimers();
+      jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
     const refreshButton = screen.getByTestId("modal-refresh-button");
     await act(async () => {
@@ -66,12 +66,20 @@ describe("Test Timeout Modal", () => {
 
   test("Timeout modal logout button is clickable and triggers logout", async () => {
     await act(async () => {
-      jest.runAllTimers();
+      jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
     const logoutButton = screen.getByTestId("modal-logout-button");
     mockLogout.mockReset();
     await act(async () => {
       await fireEvent.click(logoutButton);
+    });
+    expect(mockLogout).toHaveBeenCalledTimes(1);
+  });
+  test("Timeout modal executes logout on timeout", async () => {
+    mockLogout.mockReset();
+
+    await act(async () => {
+      jest.advanceTimersByTime(10 * IDLE_WINDOW);
     });
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
