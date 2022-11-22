@@ -61,6 +61,7 @@ const writeItemsToDb = async (updatedItems: any) => {
       Item: {
         ...item,
       },
+      ReturnValues: "ALL_OLD",
     };
     try {
       const response = await dynamoClient.put(params).promise();
