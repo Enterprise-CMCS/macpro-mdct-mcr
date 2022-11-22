@@ -37,14 +37,9 @@ export const handler = async (
 
     console.log("Items after change", itemsToChange);
 
-    console.log(
-      "Items to change contains change",
-      JSON.stringify(itemsToChange[0].formTemplate).includes(REPLACEMENT_TEXT)
-    );
-
     // UPLOAD BACK TO DYNAMODB
     if (process.env.DATA_TRANSFORM_UPDATE_ENABLED === "true") {
-      writeItemsToDb(itemsToChange);
+      await writeItemsToDb(itemsToChange);
     }
   }
 
@@ -56,9 +51,8 @@ export const handler = async (
   };
 };
 
-const writeItemsToDb = (updatedItems: any) => {
+const writeItemsToDb = async (updatedItems: any) => {
   console.log("Writing changes to table: ", tableName);
-  console.log("Dynamo-client", dynamoClient);
   updatedItems.forEach(async (item: any) => {
     const params = {
       TableName: tableName,
@@ -162,12 +156,7 @@ const initializeDynamoDb = () => {
 
 // adjust string
 const adjustString = (string: string) => {
-  if (string.includes(TEXT_TO_REPLACE)) {
-    console.log("Text matches!");
-    return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
-  } else {
-    return string;
-  }
+  return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
 };
 
 // iterates over array items, sanitizing items recursively
