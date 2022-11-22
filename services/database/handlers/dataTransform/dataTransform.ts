@@ -69,8 +69,8 @@ const writeItemsToDb = async (updatedItems: any) => {
     } catch (e) {
       console.log("error", e);
     }
-    return responses;
   }
+  return responses;
 };
 
 const filterItemsMatchingCondition = (itemsToChange: any) => {
