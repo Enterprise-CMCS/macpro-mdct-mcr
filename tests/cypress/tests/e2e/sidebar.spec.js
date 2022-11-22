@@ -9,6 +9,7 @@ describe("Sidebar integration tests", () => {
   it("The sidebar can be navigated at multiple depths, references the selected items, and can be", () => {
     // Sign in as a state user
     cy.authenticate("stateUser");
+    cy.navigateToHomePage();
     cy.findByRole("button", { name: "Enter MCPAR online" }).click();
     cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
 
