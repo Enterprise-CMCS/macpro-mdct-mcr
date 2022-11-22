@@ -37,6 +37,11 @@ export const handler = async (
 
     console.log("Items after change", itemsToChange);
 
+    console.log(
+      "Items to change contains change",
+      JSON.stringify(itemsToChange[0].formTemplate).includes(REPLACEMENT_TEXT)
+    );
+
     // UPLOAD BACK TO DYNAMODB
     if (process.env.DATA_TRANSFORM_UPDATE_ENABLED === "true") {
       writeItemsToDb(itemsToChange);
@@ -53,6 +58,7 @@ export const handler = async (
 
 const writeItemsToDb = (updatedItems: any) => {
   console.log("Writing changes to table: ", tableName);
+  console.log("Dynamo-client", dynamoClient);
   updatedItems.forEach(async (item: any) => {
     const params = {
       TableName: tableName,
