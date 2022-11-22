@@ -1,5 +1,6 @@
 import {
   calculateDueDate,
+  calculateRemainingSeconds,
   calculateTimeByType,
   checkDateRangeStatus,
   convertDateEtToUtc,
@@ -119,5 +120,16 @@ describe("Test twoDigitCalendarDate", () => {
   it("should set 12 to 12", () => {
     const startMonth = 12;
     expect(twoDigitCalendarDate(startMonth)).toBe("12");
+  });
+});
+
+describe("Test calculateTimeLeft", () => {
+  it("returns 0 when no value is given", () => {
+    expect(calculateRemainingSeconds()).toBeCloseTo(0);
+  });
+
+  it("something else", () => {
+    const expirationTime = "2050-11-18T12:53:11-05:00";
+    expect(calculateRemainingSeconds(expirationTime)).toBeGreaterThan(0);
   });
 });
