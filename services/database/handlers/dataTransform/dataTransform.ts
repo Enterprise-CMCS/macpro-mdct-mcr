@@ -156,7 +156,12 @@ const initializeDynamoDb = () => {
 
 // adjust string
 const adjustString = (string: string) => {
-  return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
+  if (string.includes(TEXT_TO_REPLACE)) {
+    console.log("Text matches!");
+    return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
+  } else {
+    return string;
+  }
 };
 
 // iterates over array items, sanitizing items recursively
