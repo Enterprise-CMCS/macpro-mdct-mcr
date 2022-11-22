@@ -5,6 +5,7 @@ import {
   convertDateEtToUtc,
   convertDateTimeEtToUtc,
   convertDateUtcToEt,
+  getLocalHourMinuteTime,
   midnight,
   noon,
   oneSecondToMidnight,
@@ -17,6 +18,15 @@ const testDate = {
   utcString: "Sat, 01 Jan 2022 05:00:00 GMT",
   etFormattedString: "01/01/2022",
 };
+
+const getLocalHourMinuteTimeRegex = /[0-2]?[0-9]:[0-5][0-9](a|p)m/;
+
+describe("Test getLocalHourMinuteTime", () => {
+  test("returns correct hourminute format", () => {
+    const localHourMinuteTime = getLocalHourMinuteTime();
+    expect(localHourMinuteTime).toMatch(getLocalHourMinuteTimeRegex);
+  });
+});
 
 describe("Test calculateTimeByType", () => {
   test("known timeType returns correct datetime", () => {

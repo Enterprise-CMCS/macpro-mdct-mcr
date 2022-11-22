@@ -17,11 +17,15 @@ import { isReportFormPage, useBreakpoint } from "utils";
 // assets
 import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
+import checkIcon from "assets/icons/icon_check_gray.png";
+import closeIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
-  const { report } = useContext(ReportContext);
+  const { lastSavedTime, report } = useContext(ReportContext);
+
+  const saveStatusText = "Last saved " + lastSavedTime;
 
   return (
     <Box sx={sx.root} id="header">
@@ -65,19 +69,33 @@ export const Header = ({ handleLogout }: Props) => {
                 </Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
-                {!isMobile && (
-                  <Link
-                    as={RouterLink}
-                    to={report?.formTemplate.basePath || "/"}
-                    sx={sx.leaveFormLink}
-                    variant="unstyled"
-                    tabIndex={-1}
-                  >
+                {lastSavedTime && (
+                  <>
+                    {!isMobile && (
+                      <Image
+                        src={checkIcon}
+                        alt="gray checkmark icon"
+                        sx={sx.checkIcon}
+                      />
+                    )}
+                    <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
+                  </>
+                )}
+                <Link
+                  as={RouterLink}
+                  to={report?.formTemplate.basePath || "/"}
+                  sx={sx.leaveFormLink}
+                  variant="unstyled"
+                  tabIndex={-1}
+                >
+                  {!isMobile ? (
                     <Button variant="outline" data-testid="leave-form-button">
                       Leave form
                     </Button>
-                  </Link>
-                )}
+                  ) : (
+                    <Image src={closeIcon} alt="Close" sx={sx.closeIcon} />
+                  )}
+                </Link>
               </Flex>
             </Flex>
           </Container>
@@ -150,7 +168,21 @@ const sx = {
     alignItems: "center",
     paddingRight: ".5rem",
   },
+  checkIcon: {
+    marginRight: "0.5rem",
+    boxSize: "1rem",
+  },
+  saveStatusText: {
+    fontSize: "sm",
+    ".mobile &": {
+      width: "5rem",
+      textAlign: "right",
+    },
+  },
   leaveFormLink: {
-    marginLeft: "2rem",
+    marginLeft: "1rem",
+  },
+  closeIcon: {
+    width: "2rem",
   },
 };
