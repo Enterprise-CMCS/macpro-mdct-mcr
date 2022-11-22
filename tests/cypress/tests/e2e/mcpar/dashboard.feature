@@ -3,7 +3,9 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
     Rule: State User Logged In
         Background: State User on MCPAR page
             Given I am logged in as a state user
-            And I am on "/mcpar"
+            And I am on "/"
+            And I click the "Enter MCPAR online" button
+            And I click the "Enter MCPAR online" button
 
         Scenario Outline: State users can create programs
             When I click the "Add managed care program" button
