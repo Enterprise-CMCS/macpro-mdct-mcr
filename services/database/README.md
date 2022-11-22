@@ -34,6 +34,8 @@ The following variables determine key aspects of the expected outcome.
 
 `UPDATE_SUBMITTED` - Whether or not to update database records that have been submitted (marked as finished) by the state users
 
+`OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE` - The oldest reporting period start date you wish to include in the update (given in UTC time). If you wish to update all dates, set this to 0.
+
 `TEXT_TO_REPLACE` - A string containing the text within the `formTemplate` column to replace\*
 
 `REPLACEMENT_TEXT` - A string containing the replacement text
