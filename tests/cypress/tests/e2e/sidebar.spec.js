@@ -25,7 +25,7 @@ beforeEach(() => {
 afterEach(() => {
   cy.navigateToHomePage();
   cy.authenticate("adminUser");
-  cy.get(`[name='state']`).select("Minnesota");
+  cy.get("[name='state']").select("Minnesota");
   cy.findAllByRole("button", { name: "Go to Report Dashboard" }).last().click();
   cy.findAllByRole("button", { name: "Archive" }).last().click();
   cy.contains("Archive").should("not.exist");
