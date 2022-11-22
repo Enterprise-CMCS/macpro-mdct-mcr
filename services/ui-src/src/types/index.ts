@@ -29,6 +29,8 @@ export interface UserContextShape {
   showLocalLogins?: boolean;
   logout: () => Promise<void>;
   loginWithIDM: () => void;
+  updateTimeout: () => void;
+  getExpiration: Function;
 }
 
 // REPORT STRUCTURE

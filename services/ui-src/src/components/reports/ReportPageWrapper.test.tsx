@@ -12,11 +12,10 @@ import {
 } from "utils/testing/setupJest";
 
 const mockUseNavigate = jest.fn();
+const mockUseLocation = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
-  useLocation: jest.fn(() => ({
-    pathname: "/mock/mock-route-2",
-  })),
+  useLocation: () => mockUseLocation(),
 }));
 
 jest.mock("utils", () => ({
@@ -24,40 +23,17 @@ jest.mock("utils", () => ({
   useUser: () => mockStateUser,
 }));
 
-const ReportPageWrapper_StandardPage = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[0]} />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
+const mockLocations = {
+  standard: { pathname: mockReportJson.flatRoutes[0].path },
+  drawer: { pathname: mockReportJson.flatRoutes[1].path },
+  modalDrawer: { pathname: mockReportJson.flatRoutes[2].path },
+  reviewSubmit: { pathname: mockReportJson.flatRoutes[3].path },
+};
 
-const ReportPageWrapper_Drawer = (
+const ReportPageWrapperComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[1]} />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const ReportPageWrapper_ModalDrawer = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[2]} />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const ReportPageWrapper_ReviewSubmit = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
-      <ReportPageWrapper
-        route={{
-          name: "mock-route-3",
-          path: "/mock/mock-review-and-submit",
-          pageType: "reviewSubmit",
-        }}
-      />
+      <ReportPageWrapper />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -74,29 +50,33 @@ const mockReportContextWithoutReport = {
 const ReportPageWrapper_WithoutReport = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutReport}>
-      <ReportPageWrapper route={mockReportJson.flatRoutes[0]} />
+      <ReportPageWrapper />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 describe("Test ReportPageWrapper view", () => {
   test("ReportPageWrapper StandardFormSection view renders", () => {
-    render(ReportPageWrapper_StandardPage);
+    mockUseLocation.mockReturnValue(mockLocations.standard);
+    render(ReportPageWrapperComponent);
     expect(screen.getByTestId("standard-page")).toBeVisible();
   });
 
   test("ReportPageWrapper DrawerSection view renders", () => {
-    render(ReportPageWrapper_Drawer);
+    mockUseLocation.mockReturnValue(mockLocations.drawer);
+    render(ReportPageWrapperComponent);
     expect(screen.getByTestId("drawer-report-page")).toBeVisible();
   });
 
   test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
-    render(ReportPageWrapper_ModalDrawer);
+    mockUseLocation.mockReturnValue(mockLocations.modalDrawer);
+    render(ReportPageWrapperComponent);
     expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
   });
 
   test("ReportPageWrapper ReviewSubmitPage view renders", () => {
-    render(ReportPageWrapper_ReviewSubmit);
+    mockUseLocation.mockReturnValue(mockLocations.reviewSubmit);
+    render(ReportPageWrapperComponent);
     expect(screen.getByTestId("review-submit-page")).toBeVisible();
   });
 });
@@ -104,33 +84,47 @@ describe("Test ReportPageWrapper view", () => {
 describe("Test ReportPageWrapper functionality", () => {
   afterEach(() => jest.clearAllMocks());
 
-  test("ReportPageWrapper navigates to dashboard if no id", () => {
+  test("ReportPageWrapper navigates to dashboard if no report", () => {
+    mockUseLocation.mockReturnValue(mockLocations.standard);
     render(ReportPageWrapper_WithoutReport);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mock");
+  });
+
+  test("ReportPageWrapper doesn't display report if no matching report route template", () => {
+    mockUseLocation.mockReturnValue({ pathname: "" });
+    render(ReportPageWrapperComponent);
+    expect(screen.queryByTestId("standard-page")).toBeNull();
+    expect(screen.queryByTestId("drawer-report-page")).toBeNull();
+    expect(screen.queryByTestId("modal-drawer-report-page")).toBeNull();
+    expect(screen.queryByTestId("review-submit-page")).toBeNull();
   });
 });
 
 describe("Test ReportPageWrapper accessibility", () => {
   test("Standard page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_StandardPage);
+    mockUseLocation.mockReturnValue(mockLocations.standard);
+    const { container } = render(ReportPageWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   test("Drawer page should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_Drawer);
+    mockUseLocation.mockReturnValue(mockLocations.drawer);
+    const { container } = render(ReportPageWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   test("ModalDrawer should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_ModalDrawer);
+    mockUseLocation.mockReturnValue(mockLocations.modalDrawer);
+    const { container } = render(ReportPageWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   test("ReviewSubmit should not have basic accessibility issues", async () => {
-    const { container } = render(ReportPageWrapper_ReviewSubmit);
+    mockUseLocation.mockReturnValue(mockLocations.reviewSubmit);
+    const { container } = render(ReportPageWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

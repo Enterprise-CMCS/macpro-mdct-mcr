@@ -41,6 +41,8 @@ export const mockNoUser: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockStateUser: UserContextShape = {
@@ -56,6 +58,8 @@ export const mockStateUser: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockStateRep: UserContextShape = {
@@ -71,6 +75,8 @@ export const mockStateRep: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockStateApprover: UserContextShape = {
@@ -86,6 +92,8 @@ export const mockStateApprover: UserContextShape = {
   showLocalLogins: true,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockHelpDeskUser: UserContextShape = {
@@ -101,6 +109,8 @@ export const mockHelpDeskUser: UserContextShape = {
   showLocalLogins: false,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 export const mockAdminUser: UserContextShape = {
@@ -116,6 +126,8 @@ export const mockAdminUser: UserContextShape = {
   showLocalLogins: false,
   logout: async () => {},
   loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
 };
 
 // AUTH
@@ -127,8 +139,9 @@ jest.mock("aws-amplify", () => ({
         getJwtToken: () => "eyJLongToken",
       }),
     }),
+    currentAuthenticatedUser: () => {},
     configure: () => {},
-    signOut: () => {},
+    signOut: async () => {},
     federatedSignIn: () => {},
   },
   API: {
@@ -137,6 +150,9 @@ jest.mock("aws-amplify", () => ({
     put: () => {},
     del: () => {},
     configure: () => {},
+  },
+  Hub: {
+    listen: jest.fn(),
   },
 }));
 
@@ -298,6 +314,12 @@ export const mockModalDrawerReportPageJson = {
   drawerForm: mockDrawerForm,
 };
 
+export const mockReviewSubmitPageJson = {
+  name: "mock-route-3",
+  path: "/mock/mock-review-and-submit",
+  pageType: "reviewSubmit",
+};
+
 // REPORT
 
 export const mockReportRoutes = [
@@ -307,12 +329,14 @@ export const mockReportRoutes = [
     path: "/mock/mock-route-2",
     children: [mockDrawerReportPageJson, mockModalDrawerReportPageJson],
   },
+  mockReviewSubmitPageJson,
 ];
 
 export const mockFlattenedReportRoutes = [
   mockStandardReportPageJson,
   mockDrawerReportPageJson,
   mockModalDrawerReportPageJson,
+  mockReviewSubmitPageJson,
 ];
 
 export const mockReportJson = {
