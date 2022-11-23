@@ -22,25 +22,20 @@ export const handler = async (
 
   // READ EXISTING DYNAMODB DATA
   const existingItems = await fetchExistingItems();
-
   console.log({ existingItems });
 
-  // for each item find which ones match the change case
+  // GET ITEMS TO CHANGE
   if (existingItems) {
-    let itemsToChange = filterReportsOnCondition(existingItems);
-    // GET ITEMS TO CHANGE
-
+    let itemsToChange = filterReportsOnConditions(existingItems);
     console.log("List of items to change", itemsToChange);
 
     // TRANSFORM DATA
-    itemsToChange = filterItemsMatchingCondition(itemsToChange);
-
-    console.log("Items after change", itemsToChange);
+    itemsToChange = modifyItemsMatchingChangeCase(itemsToChange);
 
     // UPLOAD BACK TO DYNAMODB
     if (process.env.DATA_TRANSFORM_UPDATE_ENABLED === "true") {
-      const responses = await writeItemsToDb(itemsToChange);
-      console.log(responses);
+      const modifiedItems = await writeItemsToDb(itemsToChange);
+      console.log({ modifiedItems });
     }
   }
 
@@ -73,15 +68,15 @@ const writeItemsToDb = async (updatedItems: any) => {
   return responses;
 };
 
-const filterItemsMatchingCondition = (itemsToChange: any) => {
+const modifyItemsMatchingChangeCase = (itemsToChange: any) => {
   return itemsToChange.filter((item: any) => {
-    const newTemplate = adjustObject(item.formTemplate);
+    const newTemplate = parseObject(item.formTemplate);
     item.formTemplate = newTemplate;
     return item;
   });
 };
 
-const filterReportsOnCondition = (itemsToChange: any) => {
+const filterReportsOnConditions = (itemsToChange: any) => {
   // filter out archived reports
   if (!UPDATE_ARCHIVED) {
     itemsToChange = itemsToChange.filter((item: any) => !item.archived);
@@ -164,34 +159,34 @@ const initializeDynamoDb = () => {
 };
 
 // adjust string
-const adjustString = (string: string) => {
+const modifyString = (string: string) => {
   return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
 };
 
 // iterates over array items, sanitizing items recursively
-const adjustArray = (array: unknown[]): unknown[] =>
-  array.map((entry: unknown) => adjustEntry(entry));
+const parseArray = (array: unknown[]): unknown[] =>
+  array.map((entry: unknown) => parseEntry(entry));
 
 // iterates over object key-value pairs, sanitizing values recursively
-const adjustObject = (object: { [key: string]: unknown }) => {
+const parseObject = (object: { [key: string]: unknown }) => {
   if (object) {
     const entries = Object.entries(object);
     const adjustedEntries = entries.map((entry: [string, unknown]) => {
       const [key, value] = entry;
-      return [key, adjustEntry(value)];
+      return [key, parseEntry(value)];
     });
     return Object.fromEntries(adjustedEntries);
   }
 };
 
 const adjusterMap: any = {
-  string: adjustString,
-  array: adjustArray,
-  object: adjustObject,
+  string: modifyString,
+  array: parseArray,
+  object: parseObject,
 };
 
 // return adjusted entry, or if safe type, return entry
-const adjustEntry = (entry: unknown) => {
+const parseEntry = (entry: unknown) => {
   const entryType = Array.isArray(entry) ? "array" : typeof entry;
   const adjuster = adjusterMap[entryType];
   return adjuster?.(entry) || entry;
