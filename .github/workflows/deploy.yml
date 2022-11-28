@@ -151,7 +151,6 @@ jobs:
             tests/e2e/*.spec.js
             tests/e2e/admin/admin.feature
           browser: chrome
-          headless: true
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
           env: true
@@ -182,7 +181,6 @@ jobs:
           working-directory: tests/cypress
           spec: tests/accessibility/*.feature
           browser: chrome
-          headless: true
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
           env: true
