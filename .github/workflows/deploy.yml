@@ -149,7 +149,7 @@ jobs:
           working-directory: tests/cypress
           spec: |
             tests/e2e/*.spec.js
-            tests/e2e/**/*.feature
+            tests/e2e/admin/admin.feature
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
