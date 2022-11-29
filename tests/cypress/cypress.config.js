@@ -6,13 +6,13 @@ const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
 module.exports = defineConfig({
   experimentalStudio: true,
   redirectionLimit: 20,
-  retries: 2,
+  retries: 1,
   watchForFileChanges: true,
   fixturesFolder: "fixtures",
   screenshotsFolder: "screenshots",
   videosFolder: "videos",
   downloadsFolder: "downloads",
-  defaultCommandTimeout: 20000,
+  pageLoadTimeout: 10000,
   types: ["cypress", "cypress-axe"],
   env: {
     STATE_USER_EMAIL: "stateuser@test.com",
