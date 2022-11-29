@@ -123,11 +123,19 @@ resources:
         GenerateSecret: false # pragma: allowlist secret
         AllowedOAuthFlows:
           - implicit
+          - code
         AllowedOAuthFlowsUserPoolClient: true
         AllowedOAuthScopes:
           - email
           - openid
           - profile
+        AccessTokenValidity: 30
+        IdTokenValidity: 30
+        RefreshTokenValidity: 24
+        TokenValidityUnits: 
+          AccessToken: "minutes"
+          IdToken: "minutes"
+          RefreshToken: "hours"
         CallbackURLs:
           - ${self:custom.application_endpoint_url}
           - http://localhost:3000/

@@ -13,13 +13,13 @@ Feature: Site Accessibility Audit
             Given I am logged in as an admin user
 
         Scenario Outline: Accessibility Verification
-            When I visit <URI>
+            When I visit "<URI>"
             Then the page is accessible on all device types
 
             Examples:
-                | URI        |
-                | "/admin"   |
-                | "/profile" |
+                | URI      |
+                | /admin   |
+                | /profile |
 
 
     Rule: State User
@@ -27,11 +27,11 @@ Feature: Site Accessibility Audit
             Given I am logged in as a state user
 
         Scenario Outline: Accessibility Verification
-            When I visit <URI>
+            When I visit "<URI>"
             Then the page is accessible on all device types
 
             Examples:
-                | URI        |
-                | "/"        |
-                | "/profile" |
-                | "/help"    |
+                | URI      |
+                | /        |
+                | /profile |
+                | /help    |
