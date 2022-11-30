@@ -30,7 +30,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   if (!event?.pathParameters?.state!) {
     throw new Error(error.NO_KEY);
   }
-  const queryParams = {
+  let queryParams: any = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
@@ -40,10 +40,39 @@ export const fetchReportsByState = handler(async (event, _context) => {
       "#state": "state",
     },
   };
-  const reportQueryResponse = await dynamoDb.query(queryParams);
 
+  let startingKey;
+  let keepSearching = true;
+  let existingItems = [];
+  let results;
+  let count = 0;
+
+  const queryTable = async (keepSearching: boolean, startingKey?: any) => {
+    queryParams.ExclusiveStartKey = startingKey;
+    let results = await dynamoDb.query(queryParams);
+    if (results.LastEvaluatedKey) {
+      startingKey = results.LastEvaluatedKey;
+      return [startingKey, keepSearching, results];
+    } else {
+      keepSearching = false;
+      return [null, keepSearching, results];
+    }
+  };
+
+  // Looping to perform complete scan of tables due to 1 mb limit per iteration
+  while (keepSearching) {
+    count++;
+    if (count > 5) {
+      break;
+    }
+    [startingKey, keepSearching, results] = await queryTable(
+      keepSearching,
+      startingKey
+    );
+    existingItems.push(...results.Items);
+  }
   return {
     status: StatusCodes.SUCCESS,
-    body: reportQueryResponse.Items,
+    body: existingItems,
   };
 });
