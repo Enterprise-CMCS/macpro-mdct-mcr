@@ -63,18 +63,14 @@ export const fetchReportsByState = handler(async (event, _context) => {
   while (keepSearching) {
     count++;
     if (count > 4) {
-      console.log("breaking! count is ", count);
       break;
     }
-    console.log("querying for the ", count, "th time");
     [startingKey, keepSearching, results] = await queryTable(
       keepSearching,
       startingKey
     );
     existingItems.push(...results.Items);
   }
-  console.log("loop broken or queries complete");
-  console.log("number of items to return: ", existingItems.length);
   return {
     status: StatusCodes.SUCCESS,
     body: existingItems,
