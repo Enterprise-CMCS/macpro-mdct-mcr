@@ -2,12 +2,13 @@ import { Table, SpreadsheetWidget } from "components";
 import { Box, Heading } from "@chakra-ui/react";
 import { parseCustomHtml, pdfPreviewTableNumberParse } from "utils";
 import { sxDataTable } from "components/pages/ReviewSubmit/McparPdfExport";
+import { CustomHtmlElement } from "types";
 
 const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
   const sectionHeading = content.verbiage?.intro.subsection || content.name;
 
   return (
-    <Box mt="2rem" key={content.path}>
+    <Box data-testid="fieldsSubSection" mt="2rem" key={content.path}>
       <Heading as="h3" sx={sx.childHeading}>
         {sectionHeading}
       </Heading>
@@ -44,7 +45,25 @@ const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
 export { FieldsSubsection };
 
 interface FieldsSubsectionProps {
-  content: any;
+  content: {
+    path: string;
+    name: string;
+    form?: {
+      fields: {
+        props?: {
+          label: string;
+          hint?: string;
+        };
+      }[];
+    };
+    verbiage?: {
+      intro: {
+        subsection?: string;
+        info?: string | CustomHtmlElement[];
+        spreadsheet?: string;
+      };
+    };
+  };
 }
 
 const sx = {

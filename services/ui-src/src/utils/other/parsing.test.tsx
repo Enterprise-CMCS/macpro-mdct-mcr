@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { parseCustomHtml } from "./parsing";
+import { parseCustomHtml, pdfPreviewTableNumberParse } from "./parsing";
 import DOMPurify from "dompurify";
 
 jest.mock("dompurify", () => ({
@@ -55,5 +55,22 @@ describe("Test parseCustomHtml", () => {
 
   test("Type 'html' is sanitized and parsed", () => {
     expect(sanitizationSpy).toHaveBeenCalled();
+  });
+});
+
+describe("Test Parsing for PDF Preview Fields", () => {
+  test("The field names are separated properly", () => {
+    expect(
+      pdfPreviewTableNumberParse({ label: "A.1 Label", hint: "Hint" })
+    ).toEqual({
+      prefix: "A.1",
+      suffix: '<p class="heading">Label</p><p>Hint</p>',
+    });
+  });
+  test("The field names are separated properly without the hint", () => {
+    expect(pdfPreviewTableNumberParse({ label: "A.1 Label" })).toEqual({
+      prefix: "A.1",
+      suffix: '<p class="heading">Label</p>',
+    });
   });
 });

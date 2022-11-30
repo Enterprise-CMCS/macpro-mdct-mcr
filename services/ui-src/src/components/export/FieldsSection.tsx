@@ -1,14 +1,14 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { FieldsSubsection } from "components";
 
-const FieldsSection = ({ route }: FieldsSectionProps) => {
+const FieldsSection = ({ section }: FieldsSectionProps) => {
   return (
-    <Box mt="5rem" key={route.path}>
+    <Box data-testid="fieldsSection" mt="5rem" key={section.path}>
       <Heading as="h2" sx={sx.sectionHeading}>
-        {`Section ${route.name}`}
+        {`Section ${section.name}`}
       </Heading>
 
-      {route.children?.map((child: any) => {
+      {section.children?.map((child) => {
         return <FieldsSubsection key={child.path} content={child} />;
       })}
     </Box>
@@ -18,7 +18,12 @@ const FieldsSection = ({ route }: FieldsSectionProps) => {
 export { FieldsSection };
 
 interface FieldsSectionProps {
-  route: any;
+  section: {
+    path: string;
+    name: string;
+    pageType?: string;
+    children?: any[];
+  };
 }
 
 const sx = {

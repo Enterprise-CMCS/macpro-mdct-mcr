@@ -3,7 +3,7 @@ import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const StickyBanner = () => {
   return (
-    <Box sx={sx.container}>
+    <Box data-testid="stickyBanner" sx={sx.container}>
       <p>Click below to export or print MCPAR shown here</p>
       <Button sx={sx.pdfButton}>
         <Image src={pdfIcon} w={5} />

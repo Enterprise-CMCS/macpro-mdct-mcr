@@ -13,13 +13,14 @@ export const McparPdfExport = () => {
   )[0];
 
   return (
-    <Box sx={sx.container}>
+    <Box data-testid="mcparPdfExport" sx={sx.container}>
       <StickyBanner />
       {data.report && (
         <Box sx={sx.innerContainer}>
           <Heading as="h1" sx={sx.heading}>
             {`Managed Care Program Annual Report (MCPAR) for ${data.report.fieldData.stateName}: ${data.report.programName}`}
           </Heading>
+
           <Table
             shrinkCells
             sx={sx.metaTable}
@@ -48,8 +49,8 @@ export const McparPdfExport = () => {
               ],
             }}
           />
-          {data.report.formTemplate.routes.map((route) => (
-            <FieldsSection route={route} key={route.path} />
+          {data.report.formTemplate.routes.map((section) => (
+            <FieldsSection section={section} key={section.path} />
           ))}
         </Box>
       )}
