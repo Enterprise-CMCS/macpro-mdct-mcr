@@ -1,13 +1,8 @@
 import { Box, Heading } from "@chakra-ui/react";
-import {
-  StickyBanner,
-  ReportContext,
-  Table,
-  SpreadsheetWidget,
-} from "components";
+import { StickyBanner, ReportContext, Table, FieldsSection } from "components";
 
 import { useContext } from "react";
-import { convertDateUtcToEt, parseCustomHtml } from "utils";
+import { convertDateUtcToEt } from "utils";
 
 import addEditProgram from "../../../forms/addEditProgram/addEditProgram.json";
 
@@ -26,7 +21,6 @@ export const McparPdfExport = () => {
             {`Managed Care Program Annual Report (MCPAR) for ${data.report.fieldData.stateName}: ${data.report.programName}`}
           </Heading>
           <Table
-            noDivider
             shrinkCells
             sx={sx.metaTable}
             content={{
@@ -42,7 +36,7 @@ export const McparPdfExport = () => {
             }}
           />
           <Table
-            sx={sx.dataTable}
+            sx={sxDataTable}
             className="short"
             content={{
               headRow: ["Indicator", "Response"],
@@ -55,35 +49,7 @@ export const McparPdfExport = () => {
             }}
           />
           {data.report.formTemplate.routes.map((route) => (
-            <Box mt="5rem" key={route.path}>
-              <Heading as="h2" sx={sx.sectionHeading}>
-                {`Section ${route.name}`}
-              </Heading>
-
-              {route.children?.map((child) => {
-                const sectionHeading =
-                  child.verbiage?.intro.subsection || child.name;
-                return (
-                  <Box mt="2rem" key={child.path}>
-                    <Heading as="h3" sx={sx.childHeading}>
-                      {sectionHeading}
-                    </Heading>
-
-                    {child.verbiage?.intro.info && (
-                      <Box sx={sx.intro}>
-                        {parseCustomHtml(child.verbiage?.intro.info)}
-                      </Box>
-                    )}
-
-                    {child.verbiage?.intro.spreadsheet && (
-                      <SpreadsheetWidget
-                        description={child.verbiage?.intro.spreadsheet}
-                      />
-                    )}
-                  </Box>
-                );
-              })}
-            </Box>
+            <FieldsSection route={route} key={route.path} />
           ))}
         </Box>
       )}
@@ -107,16 +73,6 @@ const sx = {
     lineHeight: "lineHeights.heading",
     fontSize: "2rem",
   },
-  sectionHeading: {
-    fontWeight: "bold",
-    fontSize: "1.5rem",
-    marginBottom: "1.5rem",
-  },
-  childHeading: {
-    fontWeight: "bold",
-    fontSize: "1.3rem",
-    marginBottom: "1.5rem",
-  },
   metaTable: {
     margin: "3rem 0",
     maxWidth: "reportPageWidth",
@@ -124,47 +80,43 @@ const sx = {
       border: "none",
     },
   },
-  intro: {
-    p: {
-      margin: "1.5rem 0",
+};
+
+export const sxDataTable = {
+  marginBottom: "1rem",
+  p: {
+    "&.heading": {
+      fontWeight: "bold",
+      fontSize: "1rem",
+      marginBottom: "0.5rem",
     },
   },
-  dataTable: {
-    marginBottom: "1rem",
-    p: {
-      "&.heading": {
-        fontWeight: "bold",
-        fontSize: "1rem",
-        marginBottom: "1rem",
-      },
-    },
+  "th, td": {
+    verticalAlign: "top",
+    lineHeight: "base",
+    borderBottom: "1px solid",
+    borderColor: "palette.gray_lighter",
+  },
+  "&.standard": {
     "th, td": {
-      verticalAlign: "top",
-      lineHeight: "base",
-      borderBottom: "1px solid",
-      borderColor: "palette.gray_lighter",
-    },
-    "&.standard": {
-      "th, td": {
-        "&:first-child": {
-          width: "5.5rem",
-        },
-        "&:nth-last-child(2)": {
-          width: "14.5rem",
-        },
+      "&:first-of-type": {
+        width: "5.5rem",
+      },
+      "&:nth-last-of-type(2)": {
+        width: "14.5rem",
       },
     },
-    "&.short": {
-      tr: {
-        "th, td": {
-          "&:first-child": {
-            ".desktop &": {
-              paddingLeft: "6rem",
-            },
+  },
+  "&.short": {
+    tr: {
+      "th, td": {
+        "&:first-of-type": {
+          ".desktop &": {
+            paddingLeft: "6rem",
           },
-          "&:nth-last-child(2)": {
-            width: "20rem",
-          },
+        },
+        "&:nth-last-of-type(2)": {
+          width: "20rem",
         },
       },
     },

@@ -1,8 +1,6 @@
 import { Image, Box, Button } from "@chakra-ui/react";
 import pdfIcon from "assets/icons/icon_pdf_white.png";
 
-import React from "react";
-
 export const StickyBanner = () => {
   return (
     <Box sx={sx.container}>
@@ -21,6 +19,9 @@ const sx = {
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     padding: "3rem 2rem",
     margin: "2rem 0",
+    position: "sticky",
+    top: "11.1rem",
+    background: "white",
 
     ".mobile &": {
       padding: "2rem 1rem",
