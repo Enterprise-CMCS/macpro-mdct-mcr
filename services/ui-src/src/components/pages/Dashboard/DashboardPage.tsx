@@ -94,7 +94,6 @@ export const DashboardPage = ({ reportType }: Props) => {
   }, [reportsByState]);
 
   const enterSelectedReport = async (report: ReportShape) => {
-    // Get report details here maybe?
     const reportKeys: ReportKeys = {
       state: report.state,
       id: report.id,
