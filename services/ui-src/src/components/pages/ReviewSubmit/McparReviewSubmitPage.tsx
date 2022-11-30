@@ -1,4 +1,5 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -18,6 +19,7 @@ import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
+import printIcon from "assets/icons/icon_print.png";
 
 export const McparReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
@@ -162,8 +164,9 @@ export const SuccessMessage = ({
   date,
   submittedBy,
 }: SuccessMessageProps) => {
+  const navigate = useNavigate();
   const { submitted } = reviewVerbiage;
-  const { intro } = submitted;
+  const { intro, printButton } = submitted;
   const submissionMessage = SuccessMessageGenerator(
     programName,
     date,
@@ -186,6 +189,16 @@ export const SuccessMessage = ({
       <Box>
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
+      </Box>
+      <Box sx={sx.infoTextBox}>
+        <Button
+          sx={sx.printButton}
+          leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+          onClick={() => navigate(printButton.printPageUrl)}
+          variant="outline"
+        >
+          {printButton.printButtonText}
+        </Button>
       </Box>
     </Flex>
   );
@@ -241,5 +254,11 @@ const sx = {
   },
   additionalInfo: {
     color: "palette.gray",
+  },
+  printButton: {
+    width: "5rem",
+    height: "1.75rem",
+    fontSize: "sm",
+    fontWeight: "normal",
   },
 };
