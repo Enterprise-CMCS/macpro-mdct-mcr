@@ -46,6 +46,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await getReport(reportKeys);
       setReport(result);
+      return result;
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }

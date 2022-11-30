@@ -42,35 +42,29 @@ export const fetchReportsByState = handler(async (event, _context) => {
   };
 
   let startingKey;
-  let keepSearching = true;
   let existingItems = [];
   let results;
-  let count = 0;
 
-  const queryTable = async (keepSearching: boolean, startingKey?: any) => {
+  const queryTable = async (startingKey?: any) => {
     queryParams.ExclusiveStartKey = startingKey;
     let results = await dynamoDb.query(queryParams);
     if (results.LastEvaluatedKey) {
       startingKey = results.LastEvaluatedKey;
-      return [startingKey, keepSearching, results];
+      return [startingKey, results];
     } else {
-      keepSearching = false;
-      return [null, keepSearching, results];
+      return [null, results];
     }
   };
 
   // Looping to perform complete scan of tables due to 1 mb limit per iteration
-  while (keepSearching) {
-    count++;
-    if (count > 4) {
-      break;
-    }
-    [startingKey, keepSearching, results] = await queryTable(
-      keepSearching,
-      startingKey
+  do {
+    [startingKey, results] = await queryTable(startingKey);
+    existingItems.push(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ...results.Items.map(({ formTemplate, fieldData, ...item }) => item)
     );
-    existingItems.push(...results.Items);
-  }
+  } while (startingKey);
+
   return {
     status: StatusCodes.SUCCESS,
     body: existingItems,
