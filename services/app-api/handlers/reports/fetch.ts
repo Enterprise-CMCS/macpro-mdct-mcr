@@ -45,6 +45,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   let keepSearching = true;
   let existingItems = [];
   let results;
+  let count = 0;
 
   const queryTable = async (keepSearching: boolean, startingKey?: any) => {
     queryParams.ExclusiveStartKey = startingKey;
@@ -60,13 +61,16 @@ export const fetchReportsByState = handler(async (event, _context) => {
 
   // Looping to perform complete scan of tables due to 1 mb limit per iteration
   while (keepSearching) {
+    count++;
+    if (count > 4) {
+      break;
+    }
     [startingKey, keepSearching, results] = await queryTable(
       keepSearching,
       startingKey
     );
     existingItems.push(...results.Items);
   }
-
   return {
     status: StatusCodes.SUCCESS,
     body: existingItems,
