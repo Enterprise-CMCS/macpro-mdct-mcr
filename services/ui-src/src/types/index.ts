@@ -103,7 +103,7 @@ export interface ReportPageVerbiage {
     section: string;
     subsection: string;
     spreadsheet?: string;
-    info?: string | AnyObject[];
+    info?: string | CustomHtmlElement[];
   };
 }
 
