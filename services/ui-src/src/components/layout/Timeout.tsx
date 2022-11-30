@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Button,
   Modal,
+  ModalHeader,
   ModalOverlay,
   ModalBody,
   ModalFooter,
@@ -86,9 +87,12 @@ export const Timeout = () => {
     <Modal isOpen={showTimeout} onClose={refreshAuth}>
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
-        <ModalBody>
+        <ModalHeader sx={sx.modalHeader}>Session timeout</ModalHeader>
+        <ModalBody sx={sx.modalBody}>
           <Text>
             Due to inactivity, you will be logged out in {formatTime(timeLeft)}.
+            Choose to stay logged in or log out. Otherwise, you will be logged
+            out automatically.
           </Text>
         </ModalBody>
         <ModalFooter sx={sx.modalFooter}>
@@ -98,15 +102,16 @@ export const Timeout = () => {
             type="submit"
             data-testid="modal-refresh-button"
           >
-            Stay Logged In
+            Stay logged in
           </Button>
           <Button
             sx={sx.close}
             onClick={logout}
             type="submit"
+            variant="outline"
             data-testid="modal-logout-button"
           >
-            Log Out
+            Log out
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -120,20 +125,25 @@ const sx = {
     borderRadius: "0",
     maxWidth: "30rem",
     marginX: "4rem",
-    padding: "2rem",
+    padding: "0",
+  },
+  modalHeader: {
+    padding: "2rem 2rem 0 2rem",
+  },
+  modalBody: {
+    padding: "1rem 2rem 0 2rem",
   },
   modalFooter: {
     justifyContent: "flex-start",
-    padding: "0",
-    paddingTop: "2rem",
+    padding: "0 2rem 2rem 2rem",
   },
   stayActive: {
     justifyContent: "center",
     marginTop: "1rem",
-    marginRight: "2rem",
+    marginRight: "1rem",
     minWidth: "7.5rem",
     span: {
-      marginLeft: "0.5rem",
+      marginLeft: "1rem",
       marginRight: "-0.25rem",
       "&.ds-c-spinner": {
         marginLeft: 0,
