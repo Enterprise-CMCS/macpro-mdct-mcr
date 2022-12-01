@@ -10,7 +10,12 @@ import {
   sortReportsOldestToNewest,
   useUser,
 } from "utils";
-import { ReportKeys, ReportContextShape, ReportShape } from "types";
+import {
+  ReportKeys,
+  ReportContextShape,
+  ReportShape,
+  DashboardReportShape,
+} from "types";
 import { reportErrors } from "verbiage/errors";
 
 // CONTEXT DECLARATION
@@ -22,7 +27,7 @@ export const ReportContext = createContext<ReportContextShape>({
   createReport: Function,
   updateReport: Function,
   // reports by state
-  reportsByState: undefined as ReportShape[] | undefined,
+  reportsByState: undefined as DashboardReportShape[] | undefined,
   fetchReportsByState: Function,
   // selected report
   clearReportSelection: Function,

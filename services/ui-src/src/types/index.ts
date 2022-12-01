@@ -172,7 +172,7 @@ export interface ReportContextMethods {
 
 export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
-  reportsByState: ReportShape[] | undefined;
+  reportsByState: DashboardReportShape[] | undefined;
   errorMessage?: string | undefined;
 }
 
