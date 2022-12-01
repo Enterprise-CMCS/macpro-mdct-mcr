@@ -14,7 +14,7 @@ import {
   ReportKeys,
   ReportContextShape,
   ReportShape,
-  DashboardReportShape,
+  ReportMetadataShape,
 } from "types";
 import { reportErrors } from "verbiage/errors";
 
@@ -27,7 +27,7 @@ export const ReportContext = createContext<ReportContextShape>({
   createReport: Function,
   updateReport: Function,
   // reports by state
-  reportsByState: undefined as DashboardReportShape[] | undefined,
+  reportsByState: undefined as ReportMetadataShape[] | undefined,
   fetchReportsByState: Function,
   // selected report
   clearReportSelection: Function,

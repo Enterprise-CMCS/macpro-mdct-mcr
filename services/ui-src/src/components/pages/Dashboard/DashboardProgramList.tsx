@@ -3,7 +3,7 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 import { Spinner } from "@cmsgov/design-system";
 // utils
-import { AnyObject, DashboardReportShape } from "types";
+import { AnyObject, ReportMetadataShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -68,7 +68,7 @@ export const DashboardList = ({
 );
 
 interface DashboardTableProps {
-  reportsByState: DashboardReportShape[];
+  reportsByState: ReportMetadataShape[];
   body: { table: AnyObject };
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;

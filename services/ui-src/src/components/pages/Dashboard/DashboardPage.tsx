@@ -23,12 +23,7 @@ import { Spinner } from "@cmsgov/design-system";
 // forms
 import { mcparReportJson } from "forms/mcpar";
 // utils
-import {
-  AnyObject,
-  DashboardReportShape,
-  ReportKeys,
-  ReportShape,
-} from "types";
+import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -60,7 +55,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   const { isTablet, isMobile } = useBreakpoint();
   const { intro, body } = verbiage;
   const [reportsToDisplay, setReportsToDisplay] = useState<
-    DashboardReportShape[] | undefined
+    ReportMetadataShape[] | undefined
   >(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
   const [archivingReportId, setArchivingReportId] = useState<
@@ -92,21 +87,21 @@ export const DashboardPage = ({ reportType }: Props) => {
     let newReportsToDisplay = reportsByState;
     if (!userIsAdmin) {
       newReportsToDisplay = reportsByState?.filter(
-        (report: DashboardReportShape) => !report?.archived
+        (report: ReportMetadataShape) => !report?.archived
       );
     }
     setReportsToDisplay(newReportsToDisplay);
   }, [reportsByState]);
 
-  const enterSelectedReport = async (report: DashboardReportShape) => {
+  const enterSelectedReport = async (report: ReportMetadataShape) => {
     const reportKeys: ReportKeys = {
       state: report.state,
       id: report.id,
     };
-    const foundReport: ReportShape = await fetchReport(reportKeys);
+    const selectedReport: ReportShape = await fetchReport(reportKeys);
     // set active report to selected report
-    setReportSelection(foundReport);
-    const firstReportPagePath = foundReport.formTemplate.flatRoutes![0].path;
+    setReportSelection(selectedReport);
+    const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
     navigate(firstReportPagePath);
   };
 

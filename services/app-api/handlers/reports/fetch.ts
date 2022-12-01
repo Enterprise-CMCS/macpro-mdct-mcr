@@ -66,8 +66,8 @@ export const fetchReportsByState = handler(async (event, _context) => {
      */
     const items: AnyObject[] = results.Items;
     items.forEach((item: any) => {
-      delete item["formTemplate"];
-      delete item["formData"];
+      delete item.formTemplate;
+      delete item.formData;
     });
     existingItems.push(...items);
   } while (startingKey);

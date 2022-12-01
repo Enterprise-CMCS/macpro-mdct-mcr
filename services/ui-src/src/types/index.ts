@@ -138,7 +138,7 @@ export interface ReportKeys {
   id: string;
 }
 
-export interface DashboardReportShape extends ReportKeys {
+export interface ReportMetadataShape extends ReportKeys {
   reportType: string;
   programName: string;
   status: ReportStatus;
@@ -152,11 +152,10 @@ export interface DashboardReportShape extends ReportKeys {
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
-  formTemplate?: ReportJson;
-  fieldData?: AnyObject;
   archived?: boolean;
 }
-export interface ReportShape extends DashboardReportShape {
+
+export interface ReportShape extends ReportMetadataShape {
   formTemplate: ReportJson;
   fieldData: AnyObject;
 }
@@ -172,7 +171,7 @@ export interface ReportContextMethods {
 
 export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
-  reportsByState: DashboardReportShape[] | undefined;
+  reportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
 }
 
