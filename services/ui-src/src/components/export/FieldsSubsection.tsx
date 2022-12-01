@@ -6,6 +6,24 @@ import { CustomHtmlElement } from "types";
 
 const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
   const sectionHeading = content.verbiage?.intro.subsection || content.name;
+  const isNotDynamicField =
+    content.form?.fields.filter((f) => f.type !== "dynamic").length !== 0;
+
+  const headRowItems = isNotDynamicField
+    ? ["Number", "Indicator", "Response"]
+    : ["Indicator", "Response"];
+
+  const fieldRowsItems = (field: any) => {
+    if (isNotDynamicField) {
+      return [
+        `<strong>${pdfPreviewTableNumberParse(field.props).prefix}</strong>`,
+        pdfPreviewTableNumberParse(field.props).suffix,
+        "response",
+      ];
+    }
+
+    return [`<strong>${field.props.label}</strong>`, "response"];
+  };
 
   return (
     <Box data-testid="fieldsSubSection" mt="2rem" key={content.path}>
@@ -28,19 +46,11 @@ const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
       {content.form?.fields && (
         <Table
           sx={sxDataTable}
-          className="standard"
+          className={isNotDynamicField ? "standard" : "short"}
           content={{
-            headRow: ["Number", "Indicator", "Response"],
+            headRow: headRowItems,
             bodyRows: content.form?.fields.map((field: any) =>
-              field.props
-                ? [
-                    `<strong>${
-                      pdfPreviewTableNumberParse(field.props).prefix
-                    }</strong>`,
-                    pdfPreviewTableNumberParse(field.props).suffix,
-                    "response",
-                  ]
-                : []
+              field.props ? fieldRowsItems(field) : []
             ),
           }}
         />
@@ -57,6 +67,7 @@ interface FieldsSubsectionProps {
     name: string;
     form?: {
       fields: {
+        type?: string;
         props?: {
           label: string;
           hint?: string;
