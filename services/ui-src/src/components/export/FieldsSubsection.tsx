@@ -18,18 +18,25 @@ const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
       )}
 
       {content.verbiage?.intro.spreadsheet && (
-        <SpreadsheetWidget description={content.verbiage?.intro.spreadsheet} />
+        <Box sx={sx.spreadSheet}>
+          <SpreadsheetWidget
+            description={content.verbiage?.intro.spreadsheet}
+          />
+        </Box>
       )}
 
       {content.form?.fields && (
         <Table
           sx={sxDataTable}
+          className="standard"
           content={{
             headRow: ["Number", "Indicator", "Response"],
             bodyRows: content.form?.fields.map((field: any) =>
               field.props
                 ? [
-                    pdfPreviewTableNumberParse(field.props).prefix,
+                    `<strong>${
+                      pdfPreviewTableNumberParse(field.props).prefix
+                    }</strong>`,
                     pdfPreviewTableNumberParse(field.props).suffix,
                     "response",
                   ]
@@ -71,6 +78,9 @@ const sx = {
     p: {
       margin: "1.5rem 0",
     },
+  },
+  spreadSheet: {
+    marginBottom: "1.5rem",
   },
   childHeading: {
     fontWeight: "bold",

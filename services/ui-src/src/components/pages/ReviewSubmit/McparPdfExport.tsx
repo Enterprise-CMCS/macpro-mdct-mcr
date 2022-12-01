@@ -43,7 +43,7 @@ export const McparPdfExport = () => {
               headRow: ["Indicator", "Response"],
               bodyRows: [
                 [
-                  `<p class='heading'>${chipCopy.props.label}</p><p class='message'>${chipCopy.props.hint}</p>`,
+                  `<p><strong>${chipCopy.props.label}</strong></p><p class='message'>${chipCopy.props.hint}</p>`,
                   data.report.combinedData ? "Selected" : "Not Selected",
                 ],
               ],
@@ -86,8 +86,8 @@ const sx = {
 export const sxDataTable = {
   marginBottom: "1rem",
   p: {
-    "&.heading": {
-      fontWeight: "bold",
+    strong: {
+      display: "inline-block",
       fontSize: "1rem",
       marginBottom: "0.5rem",
     },
@@ -104,7 +104,7 @@ export const sxDataTable = {
         width: "5.5rem",
       },
       "&:nth-last-of-type(2)": {
-        width: "14.5rem",
+        width: "14rem",
       },
     },
   },
@@ -117,7 +117,7 @@ export const sxDataTable = {
           },
         },
         "&:nth-last-of-type(2)": {
-          width: "20rem",
+          width: "19.5rem",
         },
       },
     },

@@ -57,7 +57,7 @@ export const pdfPreviewTableNumberParse = (labelObject: any) => {
   const labelArray = labelObject.label.split(" ");
   const prefix = labelArray[0];
   labelArray.shift();
-  const suffix = `<p class="heading">${labelArray.join(" ")}</p>${
+  const suffix = `<p><strong>${labelArray.join(" ")}</strong></p>${
     labelObject.hint ? `<p>${labelObject.hint}</p>` : ""
   }`;
 
