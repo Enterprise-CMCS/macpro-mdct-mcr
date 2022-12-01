@@ -193,6 +193,15 @@ functions:
             parameters:
               paths:
                 templateName: true
+  printPdf:
+    handler: handlers/print/printPdf.printPdf
+    timeout: 30
+    events:
+      - http:
+          path: print_pdf
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
 resources:
   Resources:
     GatewayResponseDefault4XX:
