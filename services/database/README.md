@@ -30,6 +30,8 @@ This file contains a script hook that triggers when the pipeline completes the d
 
 The following variables determine key aspects of the expected outcome.
 
+`TABLE_SUFFIX` - Which table to make updates to. Table names are comprised of the environment prefix (main, val, production) and the table name suffix (mcpar-reports, banners)
+
 `UPDATE_ARCHIVED` - Whether or not to update database records that have been archived by an admin
 
 `UPDATE_SUBMITTED` - Whether or not to update database records that have been submitted (marked as finished) by the state users

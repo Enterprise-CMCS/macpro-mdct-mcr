@@ -2,6 +2,7 @@
 import { DynamoDB } from "aws-sdk";
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
+const TABLE_SUFFIX = "mcpar-reports";
 const UPDATE_ARCHIVED = false;
 const UPDATE_SUBMITTED = false;
 const OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE = 0;
@@ -47,53 +48,21 @@ export const handler = async (
   };
 };
 
-const writeItemsToDb = async (updatedItems: any) => {
-  console.log("Writing changes to table: ", tableName);
-  let responses: any = [];
-  for (const item of updatedItems) {
-    const params = {
-      TableName: tableName,
-      Item: {
-        ...item,
-      },
-      ReturnValues: "ALL_OLD",
-    };
-    try {
-      const response = await dynamoClient.put(params).promise();
-      responses.push(response);
-    } catch (e) {
-      console.log("error", e);
-    }
+const initializeDynamoDb = () => {
+  let environmentPrefix;
+  const dynamoConfig: any = {};
+  const endpoint = process.env.DYNAMODB_URL;
+  if (endpoint) {
+    dynamoConfig.endpoint = endpoint;
+    dynamoConfig.accessKeyId = "LOCAL_FAKE_KEY"; // pragma: allowlist secret
+    dynamoConfig.secretAccessKey = "LOCAL_FAKE_SECRET"; // pragma: allowlist secret
+    environmentPrefix = "local";
+  } else {
+    dynamoConfig["region"] = "us-east-1";
+    environmentPrefix = process.env.DYNAMO_PREFIX;
   }
-  return responses;
-};
-
-const modifyItemsMatchingChangeCase = (itemsToChange: any) => {
-  return itemsToChange.filter((item: any) => {
-    const newTemplate = parseObject(item.formTemplate);
-    item.formTemplate = newTemplate;
-    return item;
-  });
-};
-
-const filterReportsOnConditions = (itemsToChange: any) => {
-  // filter out archived reports
-  if (!UPDATE_ARCHIVED) {
-    itemsToChange = itemsToChange.filter((item: any) => !item.archived);
-  }
-  // filter out submitted reports
-  if (!UPDATE_SUBMITTED) {
-    itemsToChange = itemsToChange.filter((item: any) => !item.submittedBy);
-  }
-  // filter out reports older than the provided start date
-  if (OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE) {
-    itemsToChange = itemsToChange.filter(
-      (item: any) =>
-        item.reportingPeriodStartDate >
-        OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE
-    );
-  }
-  return itemsToChange;
+  dynamoClient = new DynamoDB.DocumentClient(dynamoConfig);
+  tableName = environmentPrefix + "-" + TABLE_SUFFIX;
 };
 
 const scanTable = async (
@@ -141,31 +110,54 @@ const fetchExistingItems = async () => {
   return existingItems;
 };
 
-const initializeDynamoDb = () => {
-  let dynamoPrefix;
-  const dynamoConfig: any = {};
-  const endpoint = process.env.DYNAMODB_URL;
-  if (endpoint) {
-    dynamoConfig.endpoint = endpoint;
-    dynamoConfig.accessKeyId = "LOCAL_FAKE_KEY"; // pragma: allowlist secret
-    dynamoConfig.secretAccessKey = "LOCAL_FAKE_SECRET"; // pragma: allowlist secret
-    dynamoPrefix = "local";
-  } else {
-    dynamoConfig["region"] = "us-east-1";
-    dynamoPrefix = process.env.DYNAMO_PREFIX;
+const writeItemsToDb = async (updatedItems: any) => {
+  console.log("Writing changes to table: ", tableName);
+  let responses: any = [];
+  for (const item of updatedItems) {
+    const params = {
+      TableName: tableName,
+      Item: {
+        ...item,
+      },
+      ReturnValues: "ALL_OLD",
+    };
+    try {
+      const response = await dynamoClient.put(params).promise();
+      responses.push(response);
+    } catch (e) {
+      console.log("error", e);
+    }
   }
-  dynamoClient = new DynamoDB.DocumentClient(dynamoConfig);
-  tableName = dynamoPrefix + "-mcpar-reports";
+  return responses;
 };
 
-// adjust string
-const modifyString = (string: string) => {
-  return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
+const filterReportsOnConditions = (itemsToChange: any) => {
+  // filter out archived reports
+  if (!UPDATE_ARCHIVED) {
+    itemsToChange = itemsToChange.filter((item: any) => !item.archived);
+  }
+  // filter out submitted reports
+  if (!UPDATE_SUBMITTED) {
+    itemsToChange = itemsToChange.filter((item: any) => !item.submittedBy);
+  }
+  // filter out reports older than the provided start date
+  if (OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE) {
+    itemsToChange = itemsToChange.filter(
+      (item: any) =>
+        item.reportingPeriodStartDate >
+        OLDEST_REPORTING_PERIOD_START_DATE_TO_UPDATE
+    );
+  }
+  return itemsToChange;
 };
 
-// iterates over array items, sanitizing items recursively
-const parseArray = (array: unknown[]): unknown[] =>
-  array.map((entry: unknown) => parseEntry(entry));
+const modifyItemsMatchingChangeCase = (itemsToChange: any) => {
+  return itemsToChange.filter((item: any) => {
+    const newTemplate = parseObject(item.formTemplate);
+    item.formTemplate = newTemplate;
+    return item;
+  });
+};
 
 // iterates over object key-value pairs, sanitizing values recursively
 const parseObject = (object: { [key: string]: unknown }) => {
@@ -177,6 +169,15 @@ const parseObject = (object: { [key: string]: unknown }) => {
     });
     return Object.fromEntries(adjustedEntries);
   }
+};
+
+// iterates over array items, sanitizing items recursively
+const parseArray = (array: unknown[]): unknown[] =>
+  array.map((entry: unknown) => parseEntry(entry));
+
+// adjust string
+const modifyString = (string: string) => {
+  return string.replace(TEXT_TO_REPLACE, REPLACEMENT_TEXT);
 };
 
 const adjusterMap: any = {
