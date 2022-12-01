@@ -92,7 +92,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     let newReportsToDisplay = reportsByState;
     if (!userIsAdmin) {
       newReportsToDisplay = reportsByState?.filter(
-        (report: ReportShape) => !report?.archived
+        (report: DashboardReportShape) => !report?.archived
       );
     }
     setReportsToDisplay(newReportsToDisplay);
