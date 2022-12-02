@@ -1,4 +1,3 @@
-import { useLDClient } from "launchdarkly-react-client-sdk";
 // components
 import { Box, Button, Image, Heading, Text, Flex } from "@chakra-ui/react";
 import { InfoSection, PageTemplate, SpreadsheetWidget } from "components";
@@ -14,21 +13,6 @@ export const McparGetStartedPage = () => {
   const { intro, body, pageLink } = verbiage;
   const navigate = useNavigate();
 
-  const ldClient = useLDClient();
-  const sadKarla = ldClient?.variation("sadKarla", true);
-
-  // using Promise then() and catch() handlers
-  ldClient
-    ?.waitForInitialization()
-    .then(() => {
-      // eslint-disable-next-line no-console
-      console.log("initialized");
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log(err);
-    });
-
   const [section1, section2, section3] = body.sections;
 
   return (
@@ -36,17 +20,6 @@ export const McparGetStartedPage = () => {
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
-          {sadKarla ? (
-            <span>
-              {" "}
-              <br /> LaunchDarkly is ON
-            </span>
-          ) : (
-            <span>
-              {" "}
-              <br /> LaunchDarkly is OFF
-            </span>
-          )}
         </Heading>
       </Box>
       <div>
