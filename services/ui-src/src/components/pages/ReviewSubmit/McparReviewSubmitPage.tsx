@@ -166,7 +166,7 @@ export const SuccessMessage = ({
 }: SuccessMessageProps) => {
   const navigate = useNavigate();
   const { submitted } = reviewVerbiage;
-  const { intro, printButton } = submitted;
+  const { intro } = submitted;
   const submissionMessage = SuccessMessageGenerator(
     programName,
     date,
@@ -194,10 +194,10 @@ export const SuccessMessage = ({
         <Button
           sx={sx.printButton}
           leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
-          onClick={() => navigate(printButton.printPageUrl)}
+          onClick={() => navigate(intro.printPageUrl)}
           variant="outline"
         >
-          {printButton.printButtonText}
+          {intro.printButtonText}
         </Button>
       </Box>
     </Flex>
