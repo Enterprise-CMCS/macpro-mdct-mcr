@@ -26,7 +26,7 @@ export default {
         "No further action is needed at this point. CMS will reach out if in the case they have any questions.",
     },
     printButton: {
-      printPageUrl: "/mcpar/review-and-submit/print",
+      printPageUrl: "/mcpar/export",
       printButtonText: "Print",
     },
   },
