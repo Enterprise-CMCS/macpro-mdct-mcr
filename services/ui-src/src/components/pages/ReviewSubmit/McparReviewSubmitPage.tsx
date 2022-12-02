@@ -1,4 +1,5 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -163,6 +164,7 @@ export const SuccessMessage = ({
   date,
   submittedBy,
 }: SuccessMessageProps) => {
+  const navigate = useNavigate();
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
   const submissionMessage = SuccessMessageGenerator(
@@ -193,6 +195,16 @@ export const SuccessMessage = ({
           leftIcon={<Image src={printIcon} alt="Print" />}
         >
           Print
+        </Button>
+      </Box>
+      <Box sx={sx.infoTextBox}>
+        <Button
+          sx={sx.printButton}
+          leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+          onClick={() => navigate(intro.printPageUrl)}
+          variant="outline"
+        >
+          {intro.printButtonText}
         </Button>
       </Box>
     </Flex>
@@ -251,9 +263,9 @@ const sx = {
     color: "palette.gray",
   },
   printButton: {
-    marginTop: "2rem",
-    img: {
-      width: "1.5rem",
-    },
+    width: "5rem",
+    height: "1.75rem",
+    fontSize: "sm",
+    fontWeight: "normal",
   },
 };
