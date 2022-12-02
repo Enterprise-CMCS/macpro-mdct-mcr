@@ -11,7 +11,12 @@ import {
   sortReportsOldestToNewest,
   useUser,
 } from "utils";
-import { ReportKeys, ReportContextShape, ReportShape } from "types";
+import {
+  ReportKeys,
+  ReportContextShape,
+  ReportShape,
+  ReportMetadataShape,
+} from "types";
 import { reportErrors } from "verbiage/errors";
 
 // CONTEXT DECLARATION
@@ -23,7 +28,7 @@ export const ReportContext = createContext<ReportContextShape>({
   createReport: Function,
   updateReport: Function,
   // reports by state
-  reportsByState: undefined as ReportShape[] | undefined,
+  reportsByState: undefined as ReportMetadataShape[] | undefined,
   fetchReportsByState: Function,
   // selected report
   clearReportSelection: Function,
@@ -49,6 +54,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await getReport(reportKeys);
       setReport(result);
+      return result;
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }

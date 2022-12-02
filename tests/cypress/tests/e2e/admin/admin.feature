@@ -6,12 +6,12 @@ Feature: Admin Page E2E Testing
 
         When I navigate to the admin page
         Then the "/admin" page is loaded
-        
+
         When these form elements are filled:
-            | bannerTitle       | <title>       |
-            | bannerDescription | <description> |
-            | bannerStartDate   | <startDate>   |
-            | bannerEndDate     | <endDate>     |
+            | bannerTitle       | text | <title>       |
+            | bannerDescription | text | <description> |
+            | bannerStartDate   | text | <startDate>   |
+            | bannerEndDate     | text | <endDate>     |
         And the form is submitted
         Then there is an active banner
         And the banner has the title "<title>"
@@ -19,7 +19,7 @@ Feature: Admin Page E2E Testing
         And the banner starts on "<startDate>"
         And the banner ends on "<endDate>"
         And no errors are present
-    
+
         When the delete button is clicked
         Then there is no banner
         And no errors are present
