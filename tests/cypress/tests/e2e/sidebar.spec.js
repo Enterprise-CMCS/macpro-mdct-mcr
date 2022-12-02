@@ -1,4 +1,4 @@
-// element selectors
+//element selectors
 const expandButton = '[alt="Expand subitems"]';
 const collapseButton = '[alt="Collapse subitems"]';
 const expandCollapseSidebar = "Open/Close sidebar menu";
