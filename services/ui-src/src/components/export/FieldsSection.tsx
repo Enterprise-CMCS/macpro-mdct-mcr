@@ -8,8 +8,8 @@ const FieldsSection = ({ section }: FieldsSectionProps) => {
         {`Section ${section.name}`}
       </Heading>
 
-      {section.children?.map((child) => {
-        return <FieldsSubsection key={child.path} content={child} />;
+      {section.children?.map((child, index) => {
+        return <FieldsSubsection key={child.path + index} content={child} />;
       })}
     </Box>
   );

@@ -1,5 +1,11 @@
 import { FieldsSubsection } from "./FieldsSubsection";
-import { render } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
+
+afterEach(cleanup);
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 const mockContent = {
   path: "test",
@@ -8,18 +14,15 @@ const mockContent = {
     fields: [
       {
         id: "fieldId",
+        type: "text",
         props: {
-          type: "dynamic",
           label: "Test Label",
           hint: "Test Hint",
         },
       },
       {
-        id: "fieldId",
-        props: {
-          label: "Test Label",
-          hint: "Test Hint",
-        },
+        id: "fieldId2",
+        type: "text",
       },
     ],
   },
@@ -38,9 +41,20 @@ const mockContentAlt = {
   form: {
     fields: [
       {
-        id: "fieldId",
+        id: "dynamicTest",
+        type: "dynamic",
+        props: {
+          label: "label test",
+        },
       },
     ],
+  },
+  verbiage: {
+    intro: {
+      subsection: "test",
+      info: "test",
+      spreadsheet: "test",
+    },
   },
 };
 
@@ -50,6 +64,7 @@ describe("Fields Subsection", () => {
     const section = getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
   });
+
   test("Is Fields Subsection present without optional fields", () => {
     const { getByTestId } = render(
       <FieldsSubsection content={mockContentAlt} />

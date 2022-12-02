@@ -6,7 +6,7 @@ import {
   parseCustomHtml,
   pdfPreviewTableNumberParse,
 } from "utils";
-import { sxDataTable } from "components/pages/ReviewSubmit/McparPdfExport";
+import { sxDataTable } from "components/pages/Export/McparPdfExport";
 import { CustomHtmlElement } from "types";
 
 const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {

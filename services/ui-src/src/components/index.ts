@@ -74,7 +74,7 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
 export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
-export { McparPdfExport } from "./pages/ReviewSubmit/McparPdfExport";
+export { McparPdfExport } from "./pages/Export/McparPdfExport";
 // print
 export { FieldsSection } from "./export/FieldsSection";
 export { FieldsSubsection } from "./export/FieldsSubsection";
