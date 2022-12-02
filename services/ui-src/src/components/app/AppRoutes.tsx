@@ -45,7 +45,6 @@ export const AppRoutes = () => {
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AdminBannerProvider>

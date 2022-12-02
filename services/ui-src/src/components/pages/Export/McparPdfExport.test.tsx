@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 import { ReportContext } from "components";
 import { McparPdfExport } from "./McparPdfExport";
+import { axe } from "jest-axe";
 
 const mockContext = {
   report: {
@@ -56,14 +57,18 @@ const mcparPdfExport = (context: any) => (
 );
 
 describe("Test McparPdfExport Functionality", () => {
-  test("Is the export page visible", () => {
+  test("Is the export page visible", async () => {
     const { getByTestId } = render(mcparPdfExport(mockContext));
     const page = getByTestId("mcparPdfExport");
     expect(page).toBeVisible();
+    const results = await axe(page);
+    expect(results).toHaveNoViolations();
   });
-  test("Is the export page visible w/Combined Data", () => {
+  test("Is the export page visible w/Combined Data", async () => {
     const { getByTestId } = render(mcparPdfExport(mockContextCombinedData));
     const page = getByTestId("mcparPdfExport");
     expect(page).toBeVisible();
+    const results = await axe(page);
+    expect(results).toHaveNoViolations();
   });
 });

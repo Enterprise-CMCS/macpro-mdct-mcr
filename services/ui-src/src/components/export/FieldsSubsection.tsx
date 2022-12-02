@@ -1,12 +1,14 @@
 import { useContext } from "react";
-import { Table, SpreadsheetWidget, ReportContext } from "components";
+// components
 import { Box, Heading } from "@chakra-ui/react";
+import { Table, SpreadsheetWidget, ReportContext } from "components";
+// utils
 import {
   pareseFieldData,
   parseCustomHtml,
   pdfPreviewTableNumberParse,
 } from "utils";
-import { sxDataTable } from "components/pages/Export/McparPdfExport";
+// types
 import { CustomHtmlElement } from "types";
 
 const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
@@ -33,9 +35,11 @@ const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
 
   return (
     <Box data-testid="fieldsSubSection" mt="2rem" key={content.path}>
-      <Heading as="h3" sx={sx.childHeading}>
-        {sectionHeading}
-      </Heading>
+      {sectionHeading && (
+        <Heading as="h3" sx={sx.childHeading}>
+          {sectionHeading}
+        </Heading>
+      )}
 
       {content.verbiage?.intro.info && (
         <Box sx={sx.intro}>{parseCustomHtml(content.verbiage?.intro.info)}</Box>
@@ -51,13 +55,13 @@ const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
 
       {content.form?.fields && (
         <Table
-          sx={sxDataTable}
+          sx={sx.dataTable}
           className={isNotDynamicField ? "standard" : "short"}
           content={{
             headRow: headRowItems,
-            bodyRows: content.form?.fields.map((field: any) =>
-              field.props ? fieldRowsItems(field) : []
-            ),
+            bodyRows: content.form?.fields
+              .filter((f) => f.props)
+              .map((field: any) => fieldRowsItems(field)),
           }}
         />
       )}
@@ -73,8 +77,8 @@ interface FieldsSubsectionProps {
     name: string;
     form?: {
       fields: {
-        type?: string;
         id: string;
+        type?: string;
         props?: {
           label: string;
           hint?: string;
@@ -92,6 +96,46 @@ interface FieldsSubsectionProps {
 }
 
 const sx = {
+  dataTable: {
+    marginBottom: "1rem",
+    p: {
+      strong: {
+        display: "inline-block",
+        fontSize: "1rem",
+        marginBottom: "0.5rem",
+      },
+    },
+    "th, td": {
+      verticalAlign: "top",
+      lineHeight: "base",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_lighter",
+    },
+    "&.standard": {
+      "th, td": {
+        "&:first-of-type": {
+          width: "5.5rem",
+        },
+        "&:nth-last-of-type(2)": {
+          width: "14rem",
+        },
+      },
+    },
+    "&.short": {
+      tr: {
+        "th, td": {
+          "&:first-of-type": {
+            ".desktop &": {
+              paddingLeft: "6rem",
+            },
+          },
+          "&:nth-last-of-type(2)": {
+            width: "19.5rem",
+          },
+        },
+      },
+    },
+  },
   intro: {
     p: {
       margin: "1.5rem 0",

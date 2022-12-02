@@ -1,13 +1,14 @@
+import { useContext } from "react";
+// components
 import { Box, Heading } from "@chakra-ui/react";
 import { StickyBanner, ReportContext, Table, FieldsSection } from "components";
-
-import { useContext } from "react";
+// verbiage
+import addEditProgram from "../../../forms/addEditProgram/addEditProgram.json";
+// utils
 import { convertDateUtcToEt } from "utils";
 
-import addEditProgram from "../../../forms/addEditProgram/addEditProgram.json";
-
 export const McparPdfExport = () => {
-  const data = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   const chipCopy = addEditProgram.fields.filter(
     (f) => f.id === "combinedData"
   )[0];
@@ -15,10 +16,10 @@ export const McparPdfExport = () => {
   return (
     <Box data-testid="mcparPdfExport" sx={sx.container}>
       <StickyBanner />
-      {data.report && (
+      {report && (
         <Box sx={sx.innerContainer}>
           <Heading as="h1" sx={sx.heading}>
-            {`Managed Care Program Annual Report (MCPAR) for ${data.report.fieldData.stateName}: ${data.report.programName}`}
+            {`Managed Care Program Annual Report (MCPAR) for ${report.fieldData.stateName}: ${report.programName}`}
           </Heading>
 
           <Table
@@ -28,29 +29,29 @@ export const McparPdfExport = () => {
               headRow: ["Due Date", "Last edited", "Edited By", "Status"],
               bodyRows: [
                 [
-                  `${convertDateUtcToEt(data.report.dueDate)}`,
-                  `${convertDateUtcToEt(data.report.lastAltered)}`,
-                  `${data.report.lastAlteredBy}`,
-                  `${data.report.status}`,
+                  `${convertDateUtcToEt(report.dueDate)}`,
+                  `${convertDateUtcToEt(report.lastAltered)}`,
+                  `${report.lastAlteredBy}`,
+                  `${report.status}`,
                 ],
               ],
             }}
           />
           <Table
-            sx={sxDataTable}
+            sx={sx.chipTable}
             className="short"
             content={{
               headRow: ["Indicator", "Response"],
               bodyRows: [
                 [
                   `<p><strong>${chipCopy.props.label}</strong></p><p class='message'>${chipCopy.props.hint}</p>`,
-                  data.report.combinedData ? "Selected" : "Not Selected",
+                  report.combinedData ? "Selected" : "Not Selected",
                 ],
               ],
             }}
           />
 
-          {data.report.formTemplate.routes.map((section) => (
+          {report.formTemplate.routes.map((section) => (
             <FieldsSection section={section} key={section.path} />
           ))}
         </Box>
@@ -59,7 +60,7 @@ export const McparPdfExport = () => {
   );
 };
 
-const sx = {
+export const sx = {
   container: {
     width: "100%",
     maxWidth: "55.25rem",
@@ -82,34 +83,21 @@ const sx = {
       border: "none",
     },
   },
-};
-
-export const sxDataTable = {
-  marginBottom: "1rem",
-  p: {
-    strong: {
-      display: "inline-block",
-      fontSize: "1rem",
-      marginBottom: "0.5rem",
+  chipTable: {
+    marginBottom: "1rem",
+    p: {
+      strong: {
+        display: "inline-block",
+        fontSize: "1rem",
+        marginBottom: "0.5rem",
+      },
     },
-  },
-  "th, td": {
-    verticalAlign: "top",
-    lineHeight: "base",
-    borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
-  },
-  "&.standard": {
     "th, td": {
-      "&:first-of-type": {
-        width: "5.5rem",
-      },
-      "&:nth-last-of-type(2)": {
-        width: "14rem",
-      },
+      verticalAlign: "top",
+      lineHeight: "base",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_lighter",
     },
-  },
-  "&.short": {
     tr: {
       "th, td": {
         "&:first-of-type": {

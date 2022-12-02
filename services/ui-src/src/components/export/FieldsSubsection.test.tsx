@@ -1,5 +1,6 @@
 import { FieldsSubsection } from "./FieldsSubsection";
 import { render, cleanup } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 afterEach(cleanup);
 
@@ -23,6 +24,10 @@ const mockContent = {
       {
         id: "fieldId2",
         type: "text",
+        props: {
+          label: "Test Label 2",
+          hint: "Test Hint 2",
+        },
       },
     ],
   },
@@ -59,17 +64,21 @@ const mockContentAlt = {
 };
 
 describe("Fields Subsection", () => {
-  test("Is Fields Subsection present with all optional fields", () => {
+  test("Is Fields Subsection present with all optional fields", async () => {
     const { getByTestId } = render(<FieldsSubsection content={mockContent} />);
     const section = getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
+    const results = await axe(section);
+    expect(results).toHaveNoViolations();
   });
 
-  test("Is Fields Subsection present without optional fields", () => {
+  test("Is Fields Subsection present without optional fields", async () => {
     const { getByTestId } = render(
       <FieldsSubsection content={mockContentAlt} />
     );
     const section = getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
+    const results = await axe(section);
+    expect(results).toHaveNoViolations();
   });
 });
