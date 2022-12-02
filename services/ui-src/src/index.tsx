@@ -21,26 +21,35 @@ Amplify.configure({
   },
 });
 
-const ldClientId = process.env.REACT_APP_LD_CLIENT_ID;
-async () => {
+// LaunchDarkly configuration
+const ldClientId = "63581e3edf884e5943647584";
+(async () => {
   const LDProvider = await asyncWithLDProvider({
     clientSideID: ldClientId!,
+    options: {
+      baseUrl: "https://clientsdk.launchdarkly.us",
+      streamUrl: "https://clientstream.launchdarkly.us",
+      eventsUrl: "https://events.launchdarkly.us",
+    },
+    deferInitialization: false,
   });
 
   ReactDOM.render(
-    <LDProvider>
-      <ErrorBoundary FallbackComponent={Error}>
-        <Router>
-          <UserProvider>
-            <ApiProvider>
-              <ChakraProvider theme={theme}>
+    <ErrorBoundary FallbackComponent={Error}>
+      <Router>
+        <UserProvider>
+          <ApiProvider>
+            <ChakraProvider theme={theme}>
+              <LDProvider>
                 <App />
-              </ChakraProvider>
-            </ApiProvider>
-          </UserProvider>
-        </Router>
-      </ErrorBoundary>
-    </LDProvider>,
+              </LDProvider>
+            </ChakraProvider>
+          </ApiProvider>
+        </UserProvider>
+      </Router>
+    </ErrorBoundary>,
     document.getElementById("root")
   );
-};
+})().catch((e) => {
+  throw e;
+});
