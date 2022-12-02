@@ -27,6 +27,9 @@ jest.mock("aws-amplify", () => ({
     signOut: jest.fn().mockImplementation(() => {}),
     federatedSignIn: () => {},
   },
+  Hub: {
+    listen: jest.fn(),
+  },
 }));
 
 // COMPONENTS
