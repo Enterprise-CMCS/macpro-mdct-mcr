@@ -189,13 +189,6 @@ export const SuccessMessage = ({
       <Box>
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
-        <Button
-          variant="outline"
-          sx={sx.printButton}
-          leftIcon={<Image src={printIcon} alt="Print" />}
-        >
-          Print
-        </Button>
       </Box>
       <Box sx={sx.infoTextBox}>
         <Button
