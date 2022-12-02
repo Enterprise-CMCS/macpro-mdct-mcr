@@ -151,7 +151,6 @@ jobs:
             tests/e2e/*.spec.js
             tests/e2e/**/*.feature
           browser: chrome
-          headless: true
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
           env: true
@@ -165,7 +164,9 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: tests/cypress/screenshots/
+          path: |
+            tests/cypress/screenshots/
+            tests/cypress/videos/
 
   a11y-tests:
     name: E2E A11y Tests
@@ -180,7 +181,6 @@ jobs:
           working-directory: tests/cypress
           spec: tests/accessibility/*.feature
           browser: chrome
-          headless: true
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
           env: true
@@ -194,4 +194,6 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: tests/cypress/screenshots/
+          path: |
+            tests/cypress/screenshots/
+            tests/cypress/videos/
