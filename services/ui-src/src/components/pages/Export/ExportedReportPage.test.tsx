@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { ReportContext } from "components";
-import { McparPdfExport } from "./McparPdfExport";
+import { ExportedReportPage } from "./ExportedReportPage";
 import { axe } from "jest-axe";
 
 const mockContext = {
@@ -50,23 +50,23 @@ const mockContextCombinedData = {
   },
 };
 
-const mcparPdfExport = (context: any) => (
+const exportedReportPage = (context: any) => (
   <ReportContext.Provider value={context}>
-    <McparPdfExport />
+    <ExportedReportPage />
   </ReportContext.Provider>
 );
 
-describe("Test McparPdfExport Functionality", () => {
+describe("Test ExportedReportPage Functionality", () => {
   test("Is the export page visible", async () => {
-    const { getByTestId } = render(mcparPdfExport(mockContext));
-    const page = getByTestId("mcparPdfExport");
+    const { getByTestId } = render(exportedReportPage(mockContext));
+    const page = getByTestId("exportedReportPage");
     expect(page).toBeVisible();
     const results = await axe(page);
     expect(results).toHaveNoViolations();
   });
   test("Is the export page visible w/Combined Data", async () => {
-    const { getByTestId } = render(mcparPdfExport(mockContextCombinedData));
-    const page = getByTestId("mcparPdfExport");
+    const { getByTestId } = render(exportedReportPage(mockContextCombinedData));
+    const page = getByTestId("exportedReportPage");
     expect(page).toBeVisible();
     const results = await axe(page);
     expect(results).toHaveNoViolations();

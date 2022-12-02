@@ -9,9 +9,9 @@ import {
   pdfPreviewTableNumberParse,
 } from "utils";
 // types
-import { CustomHtmlElement } from "types";
+import { FormJson, ReportPageVerbiage } from "types";
 
-const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
+export const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
   const data = useContext(ReportContext);
   const sectionHeading = content.verbiage?.intro.subsection || content.name;
   const isNotDynamicField =
@@ -69,29 +69,12 @@ const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
   );
 };
 
-export { FieldsSubsection };
-
 interface FieldsSubsectionProps {
   content: {
     path: string;
     name: string;
-    form?: {
-      fields: {
-        id: string;
-        type?: string;
-        props?: {
-          label: string;
-          hint?: string;
-        };
-      }[];
-    };
-    verbiage?: {
-      intro: {
-        subsection?: string;
-        info?: string | CustomHtmlElement[];
-        spreadsheet?: string;
-      };
-    };
+    form?: FormJson;
+    verbiage?: ReportPageVerbiage;
   };
 }
 

@@ -2,11 +2,11 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { FieldsSubsection } from "components";
 
-const FieldsSection = ({ section }: FieldsSectionProps) => {
+export const FieldsSection = ({ section }: FieldsSectionProps) => {
   return (
-    <Box data-testid="fieldsSection" mt="5rem" key={section.path}>
+    <Box data-testid="fieldsSection" mt="5rem">
       <Heading as="h2" sx={sx.sectionHeading}>
-        {`Section ${section.name}`}
+        Section {section.name}
       </Heading>
 
       {section.children?.map((child, index) => {
@@ -15,8 +15,6 @@ const FieldsSection = ({ section }: FieldsSectionProps) => {
     </Box>
   );
 };
-
-export { FieldsSection };
 
 interface FieldsSectionProps {
   section: {

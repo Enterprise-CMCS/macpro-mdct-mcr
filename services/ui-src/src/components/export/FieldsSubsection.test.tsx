@@ -12,10 +12,12 @@ const mockContent = {
   path: "test",
   name: "test",
   form: {
+    id: "formId",
     fields: [
       {
         id: "fieldId",
         type: "text",
+        validation: "test",
         props: {
           label: "Test Label",
           hint: "Test Hint",
@@ -24,6 +26,7 @@ const mockContent = {
       {
         id: "fieldId2",
         type: "text",
+        validation: "test",
         props: {
           label: "Test Label 2",
           hint: "Test Hint 2",
@@ -36,6 +39,7 @@ const mockContent = {
       subsection: "test",
       info: "test",
       spreadsheet: "test",
+      section: "test",
     },
   },
 };
@@ -44,10 +48,12 @@ const mockContentAlt = {
   path: "test",
   name: "test",
   form: {
+    id: "formId",
     fields: [
       {
         id: "dynamicTest",
         type: "dynamic",
+        validation: "test",
         props: {
           label: "label test",
         },
@@ -58,6 +64,7 @@ const mockContentAlt = {
     intro: {
       subsection: "test",
       info: "test",
+      section: "test",
       spreadsheet: "test",
     },
   },

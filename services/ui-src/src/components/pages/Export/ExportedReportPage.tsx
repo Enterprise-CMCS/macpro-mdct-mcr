@@ -3,23 +3,22 @@ import { useContext } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import { StickyBanner, ReportContext, Table, FieldsSection } from "components";
 // verbiage
-import addEditProgram from "../../../forms/addEditProgram/addEditProgram.json";
+import verbiage from "verbiage/pages/exportedReport";
 // utils
 import { convertDateUtcToEt } from "utils";
 
-export const McparPdfExport = () => {
+export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
-  const chipCopy = addEditProgram.fields.filter(
-    (f) => f.id === "combinedData"
-  )[0];
+  const { combinedData } = verbiage;
 
   return (
-    <Box data-testid="mcparPdfExport" sx={sx.container}>
+    <Box data-testid="exportedReportPage" sx={sx.container}>
       <StickyBanner />
       {report && (
         <Box sx={sx.innerContainer}>
           <Heading as="h1" sx={sx.heading}>
-            {`Managed Care Program Annual Report (MCPAR) for ${report.fieldData.stateName}: ${report.programName}`}
+            Managed Care Program Annual Report (MCPAR) for{" "}
+            {report.fieldData.stateName}: {report.programName}
           </Heading>
 
           <Table
@@ -29,10 +28,10 @@ export const McparPdfExport = () => {
               headRow: ["Due Date", "Last edited", "Edited By", "Status"],
               bodyRows: [
                 [
-                  `${convertDateUtcToEt(report.dueDate)}`,
-                  `${convertDateUtcToEt(report.lastAltered)}`,
-                  `${report.lastAlteredBy}`,
-                  `${report.status}`,
+                  convertDateUtcToEt(report.dueDate),
+                  convertDateUtcToEt(report.lastAltered),
+                  report.lastAlteredBy,
+                  report.status,
                 ],
               ],
             }}
@@ -44,7 +43,7 @@ export const McparPdfExport = () => {
               headRow: ["Indicator", "Response"],
               bodyRows: [
                 [
-                  `<p><strong>${chipCopy.props.label}</strong></p><p class='message'>${chipCopy.props.hint}</p>`,
+                  `<p><strong>${combinedData.label}</strong></p><p class='message'>${combinedData.hint}</p>`,
                   report.combinedData ? "Selected" : "Not Selected",
                 ],
               ],
