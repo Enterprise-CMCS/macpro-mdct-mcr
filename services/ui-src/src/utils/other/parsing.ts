@@ -66,3 +66,17 @@ export const pdfPreviewTableNumberParse = (labelObject: any) => {
     suffix,
   };
 };
+
+export const pareseFieldData = (data: string) => {
+  const typeOfData = typeof data;
+
+  if (typeOfData === "string") {
+    return data;
+  }
+
+  if (typeOfData === "undefined") {
+    return "";
+  }
+
+  return "PUT DATA HERE";
+};

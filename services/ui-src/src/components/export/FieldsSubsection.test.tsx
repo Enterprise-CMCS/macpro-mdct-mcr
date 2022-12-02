@@ -7,6 +7,15 @@ const mockContent = {
   form: {
     fields: [
       {
+        id: "fieldId",
+        props: {
+          type: "dynamic",
+          label: "Test Label",
+          hint: "Test Hint",
+        },
+      },
+      {
+        id: "fieldId",
         props: {
           label: "Test Label",
           hint: "Test Hint",
@@ -27,7 +36,11 @@ const mockContentAlt = {
   path: "test",
   name: "test",
   form: {
-    fields: [{}],
+    fields: [
+      {
+        id: "fieldId",
+      },
+    ],
   },
 };
 

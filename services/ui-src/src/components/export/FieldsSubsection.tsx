@@ -1,10 +1,16 @@
-import { Table, SpreadsheetWidget } from "components";
+import { useContext } from "react";
+import { Table, SpreadsheetWidget, ReportContext } from "components";
 import { Box, Heading } from "@chakra-ui/react";
-import { parseCustomHtml, pdfPreviewTableNumberParse } from "utils";
+import {
+  pareseFieldData,
+  parseCustomHtml,
+  pdfPreviewTableNumberParse,
+} from "utils";
 import { sxDataTable } from "components/pages/ReviewSubmit/McparPdfExport";
 import { CustomHtmlElement } from "types";
 
 const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
+  const data = useContext(ReportContext);
   const sectionHeading = content.verbiage?.intro.subsection || content.name;
   const isNotDynamicField =
     content.form?.fields.filter((f) => f.type !== "dynamic").length !== 0;
@@ -18,11 +24,11 @@ const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
       return [
         `<strong>${pdfPreviewTableNumberParse(field.props).prefix}</strong>`,
         pdfPreviewTableNumberParse(field.props).suffix,
-        "response",
+        pareseFieldData(data.report?.fieldData[field.id]),
       ];
     }
 
-    return [`<strong>${field.props.label}</strong>`, "response"];
+    return [`<strong>${field.props.label}</strong>`, pareseFieldData(field.id)];
   };
 
   return (
@@ -68,6 +74,7 @@ interface FieldsSubsectionProps {
     form?: {
       fields: {
         type?: string;
+        id: string;
         props?: {
           label: string;
           hint?: string;
