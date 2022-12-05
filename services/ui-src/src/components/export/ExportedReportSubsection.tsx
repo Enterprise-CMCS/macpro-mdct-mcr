@@ -8,7 +8,7 @@ import { pareseFieldData, parseCustomHtml, parseFieldLabel } from "utils";
 import { FormJson, ReportPageVerbiage } from "types";
 
 export const ExportedReportSubsection = ({
-  content: { verbiage, form },
+  content: { verbiage, form, name },
 }: ExportedReportSubsectionProps) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;

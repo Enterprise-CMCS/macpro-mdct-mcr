@@ -1,49 +1,42 @@
 import { ExportedReportSection } from "./ExportedReportSection";
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
+import {
+  mockStandardReportPageJson,
+  mockVerbiageIntro,
+} from "utils/testing/setupJest";
 
 const mockContent = {
-  path: "test",
-  name: "test",
-  pageType: "test",
+  ...mockStandardReportPageJson,
   children: [
     {
-      name: "Point of Contact",
-      path: "/mcpar/program-information/point-of-contact",
-      pageType: "standard",
+      ...mockStandardReportPageJson,
       verbiage: {
         intro: {
           spreadsheet: "A_Program_Info",
-          section: "Section A: Program Information",
-          subsection: "Point of Contact",
+          ...mockVerbiageIntro,
         },
-      },
-      form: {
-        fields: [
-          {
-            id: "stateName",
-            type: "text",
-            validation: "text",
-            props: {
-              disabled: true,
-              label: "A.1 State name",
-              hint: "Auto-populated from your account profile.",
-            },
-          },
-        ],
-        id: "apoc",
       },
     },
   ],
 };
 
-describe("Fields Section", () => {
+describe("ExportedReportSection", () => {
   test("Is Fields Section present", async () => {
     const { getByTestId } = render(
       <ExportedReportSection section={mockContent} />
     );
     const section = getByTestId("fieldsSection");
     expect(section).toBeVisible();
+  });
+});
+
+describe("Test ExportedReportSection accessibility", () => {
+  it("Should not have basic accessibility issues", async () => {
+    const { getByTestId } = render(
+      <ExportedReportSection section={mockContent} />
+    );
+    const section = getByTestId("fieldsSection");
     const results = await axe(section);
     expect(results).toHaveNoViolations();
   });

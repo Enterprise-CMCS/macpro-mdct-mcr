@@ -1,6 +1,7 @@
 //components
 import { Box, Heading } from "@chakra-ui/react";
 import { ExportedReportSubsection } from "components";
+import { ReportRouteBase } from "types";
 
 export const ExportedReportSection = ({
   section,
@@ -18,13 +19,12 @@ export const ExportedReportSection = ({
   );
 };
 
+interface SectionProps extends ReportRouteBase {
+  children?: any[];
+}
+
 interface ExportedReportSectionProps {
-  section: {
-    path: string;
-    name: string;
-    pageType?: string;
-    children?: any[];
-  };
+  section: SectionProps;
 }
 
 const sx = {
