@@ -3,11 +3,7 @@ import { useContext } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import { Table, SpreadsheetWidget, ReportContext } from "components";
 // utils
-import {
-  pareseFieldData,
-  parseCustomHtml,
-  pdfPreviewTableNumberParse,
-} from "utils";
+import { pareseFieldData, parseCustomHtml, parseFieldLabel } from "utils";
 // types
 import { FormJson, ReportPageVerbiage } from "types";
 
@@ -24,8 +20,8 @@ export const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
   const fieldRowsItems = (field: any) => {
     if (isNotDynamicField) {
       return [
-        `<strong>${pdfPreviewTableNumberParse(field.props).prefix}</strong>`,
-        pdfPreviewTableNumberParse(field.props).suffix,
+        `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
+        parseFieldLabel(field.props).label,
         pareseFieldData(data.report?.fieldData[field.id]),
       ];
     }

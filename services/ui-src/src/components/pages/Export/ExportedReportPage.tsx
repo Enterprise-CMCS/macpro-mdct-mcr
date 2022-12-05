@@ -1,7 +1,12 @@
 import { useContext } from "react";
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { StickyBanner, ReportContext, Table, FieldsSection } from "components";
+import {
+  StickyBanner,
+  ReportContext,
+  Table,
+  ExportedReportSection,
+} from "components";
 // verbiage
 import verbiage from "verbiage/pages/exportedReport";
 // utils
@@ -51,7 +56,7 @@ export const ExportedReportPage = () => {
           />
 
           {report.formTemplate.routes.map((section) => (
-            <FieldsSection section={section} key={section.path} />
+            <ExportedReportSection section={section} key={section.path} />
           ))}
         </Box>
       )}

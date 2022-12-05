@@ -1,4 +1,4 @@
-import { FieldsSection } from "./FieldsSection";
+import { ExportedReportSection } from "./ExportedReportSection";
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 
@@ -39,7 +39,9 @@ const mockContent = {
 
 describe("Fields Section", () => {
   test("Is Fields Section present", async () => {
-    const { getByTestId } = render(<FieldsSection section={mockContent} />);
+    const { getByTestId } = render(
+      <ExportedReportSection section={mockContent} />
+    );
     const section = getByTestId("fieldsSection");
     expect(section).toBeVisible();
     const results = await axe(section);

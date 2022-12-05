@@ -53,30 +53,24 @@ export const sanitizeAndParseHtml = (html: string) => {
 };
 
 // parsing the field name numbers for the PDF preview page
-export const pdfPreviewTableNumberParse = (labelObject: any) => {
+export const parseFieldLabel = (labelObject: {
+  label: string;
+  hint?: string;
+}) => {
   const labelArray = labelObject.label.split(" ");
-  const prefix = labelArray[0];
+  const indicator = labelArray[0];
   labelArray.shift();
-  const suffix = `<p><strong>${labelArray.join(" ")}</strong></p>${
+  const label = `<p><strong>${labelArray.join(" ")}</strong></p>${
     labelObject.hint ? `<p>${labelObject.hint}</p>` : ""
   }`;
 
   return {
-    prefix,
-    suffix,
+    indicator,
+    label,
   };
 };
 
 export const pareseFieldData = (data: string) => {
-  const typeOfData = typeof data;
-
-  if (typeOfData === "string") {
-    return data;
-  }
-
-  if (typeOfData === "undefined") {
-    return "";
-  }
-
-  return "PUT DATA HERE";
+  // const typeOfData = typeof data;
+  return data || "";
 };

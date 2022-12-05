@@ -76,7 +76,7 @@ export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
 export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // print
-export { FieldsSection } from "./export/FieldsSection";
+export { ExportedReportSection } from "./export/ExportedReportSection";
 export { FieldsSubsection } from "./export/FieldsSubsection";
 export { StickyBanner } from "./export/StickyBanner";
 // reports
