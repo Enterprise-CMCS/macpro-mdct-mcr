@@ -11,7 +11,7 @@ export const StickyBanner = () => {
     <Box data-testid="stickyBanner" sx={sx.container}>
       <Text>{banner.heading}</Text>
       <Button sx={sx.pdfButton}>
-        <Image src={pdfIcon} w={5} alt={banner.buttonCopy} />
+        <Image src={pdfIcon} w={5} alt="PDF Icon" />
         {banner.buttonCopy}
       </Button>
     </Box>
