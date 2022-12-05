@@ -77,7 +77,7 @@ export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPag
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // print
 export { ExportedReportSection } from "./export/ExportedReportSection";
-export { FieldsSubsection } from "./export/FieldsSubsection";
+export { ExportedReportSubsection } from "./export/ExportedReportSubsection";
 export { StickyBanner } from "./export/StickyBanner";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";

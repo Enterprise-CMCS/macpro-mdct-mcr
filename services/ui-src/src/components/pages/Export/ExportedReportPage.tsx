@@ -78,7 +78,7 @@ export const sx = {
   heading: {
     fontWeight: "300",
     lineHeight: "lineHeights.heading",
-    fontSize: "2rem",
+    fontSize: "4xl",
   },
   metaTable: {
     margin: "3rem 0",
@@ -92,7 +92,7 @@ export const sx = {
     p: {
       strong: {
         display: "inline-block",
-        fontSize: "1rem",
+        fontSize: "md",
         marginBottom: "0.5rem",
       },
     },

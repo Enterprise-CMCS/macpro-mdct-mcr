@@ -7,11 +7,13 @@ import { pareseFieldData, parseCustomHtml, parseFieldLabel } from "utils";
 // types
 import { FormJson, ReportPageVerbiage } from "types";
 
-export const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
-  const data = useContext(ReportContext);
-  const sectionHeading = content.verbiage?.intro.subsection || content.name;
+export const ExportedReportSubsection = ({
+  content: { verbiage, form },
+}: ExportedReportSubsectionProps) => {
+  const { report } = useContext(ReportContext);
+  const sectionHeading = verbiage?.intro.subsection || name;
   const isNotDynamicField =
-    content.form?.fields.filter((f) => f.type !== "dynamic").length !== 0;
+    form?.fields.filter((f) => f.type !== "dynamic").length !== 0;
 
   const headRowItems = isNotDynamicField
     ? ["Number", "Indicator", "Response"]
@@ -22,7 +24,7 @@ export const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
       return [
         `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
         parseFieldLabel(field.props).label,
-        pareseFieldData(data.report?.fieldData[field.id]),
+        pareseFieldData(report?.fieldData[field.id]),
       ];
     }
 
@@ -30,32 +32,30 @@ export const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
   };
 
   return (
-    <Box data-testid="fieldsSubSection" mt="2rem" key={content.path}>
+    <Box data-testid="fieldsSubSection" mt="2rem">
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
         </Heading>
       )}
 
-      {content.verbiage?.intro.info && (
-        <Box sx={sx.intro}>{parseCustomHtml(content.verbiage?.intro.info)}</Box>
+      {verbiage?.intro.info && (
+        <Box sx={sx.intro}>{parseCustomHtml(verbiage?.intro.info)}</Box>
       )}
 
-      {content.verbiage?.intro.spreadsheet && (
+      {verbiage?.intro.spreadsheet && (
         <Box sx={sx.spreadSheet}>
-          <SpreadsheetWidget
-            description={content.verbiage?.intro.spreadsheet}
-          />
+          <SpreadsheetWidget description={verbiage?.intro.spreadsheet} />
         </Box>
       )}
 
-      {content.form?.fields && (
+      {form?.fields && (
         <Table
           sx={sx.dataTable}
           className={isNotDynamicField ? "standard" : "short"}
           content={{
             headRow: headRowItems,
-            bodyRows: content.form?.fields
+            bodyRows: form?.fields
               .filter((f) => f.props)
               .map((field: any) => fieldRowsItems(field)),
           }}
@@ -65,7 +65,7 @@ export const FieldsSubsection = ({ content }: FieldsSubsectionProps) => {
   );
 };
 
-interface FieldsSubsectionProps {
+interface ExportedReportSubsectionProps {
   content: {
     path: string;
     name: string;

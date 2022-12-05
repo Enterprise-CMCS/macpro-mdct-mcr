@@ -1,4 +1,4 @@
-import { FieldsSubsection } from "./FieldsSubsection";
+import { ExportedReportSubsection } from "./ExportedReportSubsection";
 import { render, cleanup } from "@testing-library/react";
 import { axe } from "jest-axe";
 
@@ -72,7 +72,9 @@ const mockContentAlt = {
 
 describe("Fields Subsection", () => {
   test("Is Fields Subsection present with all optional fields", async () => {
-    const { getByTestId } = render(<FieldsSubsection content={mockContent} />);
+    const { getByTestId } = render(
+      <ExportedReportSubsection content={mockContent} />
+    );
     const section = getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
     const results = await axe(section);
@@ -81,7 +83,7 @@ describe("Fields Subsection", () => {
 
   test("Is Fields Subsection present without optional fields", async () => {
     const { getByTestId } = render(
-      <FieldsSubsection content={mockContentAlt} />
+      <ExportedReportSubsection content={mockContentAlt} />
     );
     const section = getByTestId("fieldsSubSection");
     expect(section).toBeVisible();

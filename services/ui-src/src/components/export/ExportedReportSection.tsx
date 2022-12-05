@@ -1,6 +1,6 @@
 //components
 import { Box, Heading } from "@chakra-ui/react";
-import { FieldsSubsection } from "components";
+import { ExportedReportSubsection } from "components";
 
 export const ExportedReportSection = ({
   section,
@@ -12,7 +12,7 @@ export const ExportedReportSection = ({
       </Heading>
 
       {section.children?.map((child, index) => (
-        <FieldsSubsection key={child.path + index} content={child} />
+        <ExportedReportSubsection key={child.path + index} content={child} />
       ))}
     </Box>
   );

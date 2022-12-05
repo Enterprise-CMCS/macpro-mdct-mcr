@@ -2,14 +2,17 @@
 import { Image, Box, Button, Text } from "@chakra-ui/react";
 // images
 import pdfIcon from "assets/icons/icon_pdf_white.png";
+//content
+import verbiage from "verbiage/pages/exportedReport";
 
 export const StickyBanner = () => {
+  const { banner } = verbiage;
   return (
     <Box data-testid="stickyBanner" sx={sx.container}>
-      <Text>Click below to export or print MCPAR shown here</Text>
+      <Text>{banner.heading}</Text>
       <Button sx={sx.pdfButton}>
-        <Image src={pdfIcon} w={5} alt="Download PDF Icon" />
-        Download PDF
+        <Image src={pdfIcon} w={5} alt={banner.buttonCopy} />
+        {banner.buttonCopy}
       </Button>
     </Box>
   );
@@ -17,13 +20,13 @@ export const StickyBanner = () => {
 
 const sx = {
   container: {
-    textAlign: "center",
-    boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
-    padding: "3rem 2rem",
-    margin: "2rem 0",
     position: "sticky",
     top: "11.125rem",
+    margin: "2rem 0",
+    padding: "3rem 2rem",
     background: "white",
+    boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
+    textAlign: "center",
 
     ".mobile &": {
       padding: "2rem 1rem",
