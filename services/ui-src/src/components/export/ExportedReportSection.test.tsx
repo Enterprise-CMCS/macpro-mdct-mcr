@@ -1,6 +1,8 @@
-import { ExportedReportSection } from "./ExportedReportSection";
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
+// components
+import { ExportedReportSection } from "./ExportedReportSection";
+// utils
 import {
   mockStandardReportPageJson,
   mockVerbiageIntro,
@@ -21,11 +23,13 @@ const mockContent = {
   ],
 };
 
+const exportedReportSectionComponent = (
+  <ExportedReportSection section={mockContent} />
+);
+
 describe("ExportedReportSection", () => {
-  test("Is Fields Section present", async () => {
-    const { getByTestId } = render(
-      <ExportedReportSection section={mockContent} />
-    );
+  test("Is Fields Section present", () => {
+    const { getByTestId } = render(exportedReportSectionComponent);
     const section = getByTestId("fieldsSection");
     expect(section).toBeVisible();
   });
@@ -33,11 +37,8 @@ describe("ExportedReportSection", () => {
 
 describe("Test ExportedReportSection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { getByTestId } = render(
-      <ExportedReportSection section={mockContent} />
-    );
-    const section = getByTestId("fieldsSection");
-    const results = await axe(section);
+    const { container } = render(exportedReportSectionComponent);
+    const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 });

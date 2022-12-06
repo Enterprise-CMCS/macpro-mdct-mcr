@@ -70,7 +70,6 @@ export const parseFieldLabel = (labelObject: {
   };
 };
 
-export const pareseFieldData = (data: string) => {
-  // const typeOfData = typeof data;
+export const parseFieldData = (data: string) => {
   return data || "";
 };

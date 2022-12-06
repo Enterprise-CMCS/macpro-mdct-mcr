@@ -1,13 +1,9 @@
-import { ExportedReportSubsection } from "./ExportedReportSubsection";
-import { render, cleanup } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+// components
+import { ExportedReportSubsection } from "./ExportedReportSubsection";
+// utils
 import { mockStandardReportPageJson } from "utils/testing/setupJest";
-
-afterEach(cleanup);
-
-afterEach(() => {
-  jest.clearAllMocks();
-});
 
 const mockContentAlt = {
   ...mockStandardReportPageJson,
@@ -34,31 +30,38 @@ const mockContentAlt = {
   },
 };
 
+const exportedReportSubsectionComponent = (
+  <ExportedReportSubsection content={mockStandardReportPageJson} />
+);
+
+const exportedReportSubsectionAltComponent = (
+  <ExportedReportSubsection content={mockContentAlt} />
+);
+
+afterEach(cleanup);
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("ExportedReportSubsection", () => {
-  test("Is ExportedReportSubsection present with all optional fields", async () => {
-    const { getByTestId } = render(
-      <ExportedReportSubsection content={mockStandardReportPageJson} />
-    );
-    const section = getByTestId("fieldsSubSection");
+  test("Is ExportedReportSubsection present with all optional fields", () => {
+    render(exportedReportSubsectionComponent);
+    const section = screen.getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
   });
 
-  test("Is ExportedReportSubsection present without optional fields", async () => {
-    const { getByTestId } = render(
-      <ExportedReportSubsection content={mockContentAlt} />
-    );
-    const section = getByTestId("fieldsSubSection");
+  test("Is ExportedReportSubsection present without optional fields", () => {
+    render(exportedReportSubsectionAltComponent);
+    const section = screen.getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
   });
 });
 
 describe("Test ExportedReportSubsection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { getByTestId } = render(
-      <ExportedReportSubsection content={mockStandardReportPageJson} />
-    );
-    const section = getByTestId("fieldsSubSection");
-    const results = await axe(section);
+    const { container } = render(exportedReportSubsectionComponent);
+    const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 });

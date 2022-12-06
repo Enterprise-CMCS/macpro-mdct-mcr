@@ -1,6 +1,7 @@
-//components
+// components
 import { Box, Heading } from "@chakra-ui/react";
 import { ExportedReportSubsection } from "components";
+// utils
 import { ReportRouteBase } from "types";
 
 export const ExportedReportSection = ({

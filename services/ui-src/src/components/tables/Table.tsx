@@ -10,6 +10,7 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
+// utils
 import { AnyObject, TableContentShape } from "types";
 import { sanitizeAndParseHtml } from "utils";
 
@@ -88,7 +89,7 @@ const sx = {
     letterSpacing: "normal",
     color: "black",
     ".shrink &": {
-      padding: "0.4rem 0rem",
+      padding: "0.375rem 0rem",
     },
     ".mobile &": {
       fontSize: "xs",
@@ -100,7 +101,7 @@ const sx = {
     fontWeight: "normal",
     color: "black",
     ".shrink &": {
-      padding: "0.4rem 0rem",
+      padding: "0.375rem 0rem",
     },
     ".mobile &": {
       fontSize: "xs",

@@ -4,13 +4,13 @@ import {
   AdminBannerProvider,
   AdminPage,
   DashboardPage,
+  ExportedReportPage,
   HelpPage,
   HomePage,
   McparGetStartedPage,
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
-  ExportedReportPage,
 } from "components";
 import { mcparReportJson } from "forms/mcpar";
 // utils

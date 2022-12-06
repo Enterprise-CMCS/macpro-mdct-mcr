@@ -1,34 +1,37 @@
 import { useContext } from "react";
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { Table, SpreadsheetWidget, ReportContext } from "components";
+import { ReportContext, SpreadsheetWidget, Table } from "components";
 // utils
-import { pareseFieldData, parseCustomHtml, parseFieldLabel } from "utils";
+import { parseCustomHtml, parseFieldData, parseFieldLabel } from "utils";
 // types
 import { FormJson, ReportPageVerbiage } from "types";
 
 export const ExportedReportSubsection = ({
-  content: { verbiage, form, name },
+  content: { form, name, verbiage },
 }: ExportedReportSubsectionProps) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
-  const isNotDynamicField =
-    form?.fields.filter((f) => f.type !== "dynamic").length !== 0;
+  const isDynamicField =
+    form?.fields.filter((f) => f.type === "dynamic").length !== 0;
 
-  const headRowItems = isNotDynamicField
-    ? ["Number", "Indicator", "Response"]
-    : ["Indicator", "Response"];
+  const headRowItems = isDynamicField
+    ? ["Indicator", "Response"]
+    : ["Number", "Indicator", "Response"];
 
   const fieldRowsItems = (field: any) => {
-    if (isNotDynamicField) {
+    if (isDynamicField) {
       return [
-        `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
-        parseFieldLabel(field.props).label,
-        pareseFieldData(report?.fieldData[field.id]),
+        `<strong>${field.props.label}</strong>`,
+        parseFieldData(field.id),
       ];
     }
 
-    return [`<strong>${field.props.label}</strong>`, pareseFieldData(field.id)];
+    return [
+      `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
+      parseFieldLabel(field.props).label,
+      parseFieldData(report?.fieldData[field.id]),
+    ];
   };
 
   return (
@@ -39,20 +42,20 @@ export const ExportedReportSubsection = ({
         </Heading>
       )}
 
-      {verbiage?.intro.info && (
-        <Box sx={sx.intro}>{parseCustomHtml(verbiage?.intro.info)}</Box>
+      {verbiage?.intro?.info && (
+        <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
       )}
 
-      {verbiage?.intro.spreadsheet && (
+      {verbiage?.intro?.spreadsheet && (
         <Box sx={sx.spreadSheet}>
-          <SpreadsheetWidget description={verbiage?.intro.spreadsheet} />
+          <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
         </Box>
       )}
 
       {form?.fields && (
         <Table
           sx={sx.dataTable}
-          className={isNotDynamicField ? "standard" : "short"}
+          className={isDynamicField ? "short" : "standard"}
           content={{
             headRow: headRowItems,
             bodyRows: form?.fields
@@ -80,8 +83,8 @@ const sx = {
     p: {
       strong: {
         display: "inline-block",
-        fontSize: "1rem",
         marginBottom: "0.5rem",
+        fontSize: "1rem",
       },
     },
     "th, td": {
@@ -124,8 +127,8 @@ const sx = {
     marginBottom: "1.5rem",
   },
   childHeading: {
-    fontWeight: "bold",
-    fontSize: "1.3rem",
     marginBottom: "1.5rem",
+    fontSize: "xl",
+    fontWeight: "bold",
   },
 };

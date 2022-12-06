@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { parseCustomHtml, parseFieldLabel } from "./parsing";
 import DOMPurify from "dompurify";
+// utils
+import { parseCustomHtml, parseFieldLabel } from "./parsing";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),

@@ -1,13 +1,22 @@
-import { StickyBanner } from "./StickyBanner";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+// components
+import { StickyBanner } from "./StickyBanner";
+
+const stickyBannerComponent = <StickyBanner />;
 
 describe("Sticky Banner", () => {
   test("Is Sticky Banner present", async () => {
-    const { getByTestId } = render(<StickyBanner />);
-    const banner = getByTestId("stickyBanner");
+    render(stickyBannerComponent);
+    const banner = screen.getByTestId("stickyBanner");
     expect(banner).toBeVisible();
-    const results = await axe(banner);
+  });
+});
+
+describe("Test Sticky Banner accessibility", () => {
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(stickyBannerComponent);
+    const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 });

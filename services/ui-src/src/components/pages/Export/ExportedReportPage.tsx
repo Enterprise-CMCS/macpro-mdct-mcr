@@ -2,10 +2,10 @@ import { useContext } from "react";
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import {
-  StickyBanner,
-  ReportContext,
-  Table,
   ExportedReportSection,
+  ReportContext,
+  StickyBanner,
+  Table,
 } from "components";
 // verbiage
 import verbiage from "verbiage/pages/exportedReport";
@@ -92,8 +92,8 @@ export const sx = {
     p: {
       strong: {
         display: "inline-block",
-        fontSize: "md",
         marginBottom: "0.5rem",
+        fontSize: "md",
       },
     },
     "th, td": {

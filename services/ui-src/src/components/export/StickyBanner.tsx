@@ -1,9 +1,9 @@
 // components
-import { Image, Box, Button, Text } from "@chakra-ui/react";
-// images
-import pdfIcon from "assets/icons/icon_pdf_white.png";
-//content
+import { Box, Button, Image, Text } from "@chakra-ui/react";
+// verbiage
 import verbiage from "verbiage/pages/exportedReport";
+// assets
+import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const StickyBanner = () => {
   const { banner } = verbiage;
@@ -32,9 +32,9 @@ const sx = {
       padding: "2rem 1rem",
     },
     p: {
+      marginBottom: "1rem",
       fontSize: "xl",
       fontWeight: "bold",
-      marginBottom: "1rem",
       ".mobile &": {
         fontSize: "lg",
       },
