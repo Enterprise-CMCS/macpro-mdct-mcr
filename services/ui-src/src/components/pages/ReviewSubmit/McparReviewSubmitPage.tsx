@@ -1,5 +1,6 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLDClient } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -164,6 +165,10 @@ export const SuccessMessage = ({
   date,
   submittedBy,
 }: SuccessMessageProps) => {
+  // LaunchDarkly feature flags
+  const launchDarklyClient = useLDClient();
+  const pdfExport = launchDarklyClient?.variation("pdfExport", true);
+
   const navigate = useNavigate();
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
@@ -190,16 +195,20 @@ export const SuccessMessage = ({
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
       </Box>
-      <Box sx={sx.infoTextBox}>
-        <Button
-          sx={sx.printButton}
-          leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
-          onClick={() => navigate(intro.printPageUrl)}
-          variant="outline"
-        >
-          {intro.printButtonText}
-        </Button>
-      </Box>
+      {pdfExport && (
+        <Box sx={sx.infoTextBox}>
+          <Button
+            sx={sx.printButton}
+            leftIcon={
+              <Image src={printIcon} alt="Print Icon" height="1.25rem" />
+            }
+            onClick={() => navigate(intro.printPageUrl)}
+            variant="outline"
+          >
+            {intro.printButtonText}
+          </Button>
+        </Box>
+      )}
     </Flex>
   );
 };
