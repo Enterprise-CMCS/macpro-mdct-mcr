@@ -75,9 +75,9 @@ export const parseFieldData = (data: string) => {
 };
 
 export const parseDynamicFieldData = (data: any) => {
-  const dynamicValues = data.map((item: any) => item.name);
+  const dynamicValues = data?.map((item: any) => item?.name);
   const formattedValues = dynamicValues
-    .map((value: string) => `<ul>${value}</ul>`)
+    ?.map((value: string) => `<ul>${value}</ul>`)
     .join(" ");
   return formattedValues;
 };
