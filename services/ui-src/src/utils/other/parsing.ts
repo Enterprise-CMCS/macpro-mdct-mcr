@@ -73,3 +73,11 @@ export const parseFieldLabel = (labelObject: {
 export const parseFieldData = (data: string) => {
   return data || "";
 };
+
+export const parseDynamicFieldData = (data: any) => {
+  const dynamicValues = data.map((item: any) => item.name);
+  const formatted = `<ul>${dynamicValues
+    .map((value: string) => `<ul style="padding-bottom: 16px">${value}</ul>`)
+    .join(" ")}</ul>`;
+  return formatted;
+};
