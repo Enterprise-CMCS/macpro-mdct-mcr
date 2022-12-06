@@ -74,6 +74,11 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
 export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
+export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
+// print
+export { ExportedReportSection } from "./export/ExportedReportSection";
+export { ExportedReportSubsection } from "./export/ExportedReportSubsection";
+export { StickyBanner } from "./export/StickyBanner";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";

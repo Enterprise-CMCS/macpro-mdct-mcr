@@ -10,12 +10,15 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
+// utils
 import { AnyObject, TableContentShape } from "types";
+import { sanitizeAndParseHtml } from "utils";
 
 export const Table = ({
   content,
   variant,
   sxOverride,
+  shrinkCells,
   children,
   ...props
 }: Props) => {
@@ -23,6 +26,7 @@ export const Table = ({
     <TableRoot
       variant={variant}
       size="sm"
+      className={shrinkCells ? "shrink" : undefined}
       sx={{ ...sx.root, ...sxOverride }}
       {...props}
     >
@@ -50,7 +54,7 @@ export const Table = ({
             <Tr key={row[0] + index}>
               {row.map((cell: string, index: number) => (
                 <Td key={cell + index} sx={sx.tableCell}>
-                  {cell}
+                  {sanitizeAndParseHtml(cell)}
                 </Td>
               ))}
             </Tr>
@@ -84,6 +88,9 @@ const sx = {
     textTransform: "none",
     letterSpacing: "normal",
     color: "black",
+    ".shrink &": {
+      padding: "0.375rem 0rem",
+    },
     ".mobile &": {
       fontSize: "xs",
     },
@@ -93,6 +100,9 @@ const sx = {
     borderStyle: "none",
     fontWeight: "normal",
     color: "black",
+    ".shrink &": {
+      padding: "0.375rem 0rem",
+    },
     ".mobile &": {
       fontSize: "xs",
     },

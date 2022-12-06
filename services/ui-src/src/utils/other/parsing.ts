@@ -51,3 +51,25 @@ export const sanitizeAndParseHtml = (html: string) => {
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;
 };
+
+// parsing the field name numbers for the PDF preview page
+export const parseFieldLabel = (labelObject: {
+  label: string;
+  hint?: string;
+}) => {
+  const labelArray = labelObject.label.split(" ");
+  const indicator = labelArray[0];
+  labelArray.shift();
+  const label = `<p><strong>${labelArray.join(" ")}</strong></p>${
+    labelObject.hint ? `<p>${labelObject.hint}</p>` : ""
+  }`;
+
+  return {
+    indicator,
+    label,
+  };
+};
+
+export const parseFieldData = (data: string) => {
+  return data || "";
+};
