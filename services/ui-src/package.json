@@ -63,6 +63,7 @@
     "babel": "^6.23.0",
     "babel-jest": "^26.6.3",
     "jest-axe": "^6.0.0",
+    "jest-launchdarkly-mock": "^2.0.0",
     "pa11y": "^6.2.3",
     "pa11y-runner-htmlcs": "^2.0.1",
     "patch-package": "^6.4.7",

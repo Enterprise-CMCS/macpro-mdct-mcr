@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+import { mockFlags } from "jest-launchdarkly-mock";
 // components
 import { ReportContext, McparReviewSubmitPage } from "components";
 import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
@@ -109,6 +110,7 @@ describe("Success Message Generator", () => {
   });
   it("should navigate to the print preview page on button click", async () => {
     render(McparReviewSubmitPage_Submitted);
+    mockFlags({ pdfExport: true });
     const printButton = screen.getByText("Print");
     await userEvent.click(printButton);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar/export");
