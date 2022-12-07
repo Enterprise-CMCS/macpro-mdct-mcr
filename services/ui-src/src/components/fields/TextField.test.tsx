@@ -123,6 +123,7 @@ describe("Test TextField component autosaves", () => {
   test("TextField autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(true);
+    mockGetValues(undefined);
     render(textFieldAutosavingComponent);
     const textField = screen.getByTestId("test-text-field-autosave");
     expect(textField).toBeVisible();
@@ -145,6 +146,7 @@ describe("Test TextField component autosaves", () => {
   test("TextField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(false);
+    mockGetValues(undefined);
     render(textFieldAutosavingComponent);
     const textField = screen.getByTestId("test-text-field-autosave");
     expect(textField).toBeVisible();
@@ -167,6 +169,7 @@ describe("Test TextField component autosaves", () => {
   test("TextField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(false);
+    mockGetValues(undefined);
     render(textFieldAutosavingComponent);
     const textField = screen.getByTestId("test-text-field-autosave");
     expect(textField).toBeVisible();
@@ -188,6 +191,7 @@ describe("Test TextField component autosaves", () => {
 
   test("TextField does not autosave when not stateuser", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
+    mockGetValues(undefined);
     render(textFieldAutosavingComponent);
     const textField = screen.getByTestId("test-text-field-autosave");
     expect(textField).toBeVisible();
@@ -198,6 +202,7 @@ describe("Test TextField component autosaves", () => {
 
   test("TextField does not autosave when not autosave not set to true", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     render(textFieldComponent);
     const textField = screen.getByTestId("test-text-field");
     expect(textField).toBeVisible();
