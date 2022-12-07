@@ -35,7 +35,11 @@ export const ExportedReportSubsection = ({
     return [
       `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
       parseFieldLabel(field.props).label,
-      parseFieldData(report?.fieldData[field.id]),
+      parseFieldData({
+        data: report?.fieldData[field.id],
+        mask: field.props.mask,
+        validation: field.validation,
+      }),
     ];
   };
 

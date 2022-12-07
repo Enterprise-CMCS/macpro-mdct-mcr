@@ -70,8 +70,32 @@ export const parseFieldLabel = (labelObject: {
   };
 };
 
-export const parseFieldData = (data: string) => {
-  return data || "";
+export const parseFieldData = ({
+  data,
+  mask,
+  validation,
+}: {
+  data: string;
+  mask?: string;
+  validation?: string;
+}) => {
+  if (mask) {
+    return mask === "percentage"
+      ? `${data}%`
+      : mask === "currency"
+      ? `$${data}`
+      : data;
+  }
+
+  if ((validation === "email" || validation === "emailOptional") && data) {
+    return `<a href="mailto:${data}">${data}</a>`;
+  }
+
+  if (typeof data === "string" && data.indexOf("http") >= 0) {
+    return `<a href="${data}">${data}</a>`;
+  }
+
+  return data;
 };
 
 export const parseDynamicFieldData = (data: any) => {
