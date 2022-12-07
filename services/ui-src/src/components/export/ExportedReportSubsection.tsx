@@ -3,7 +3,12 @@ import { useContext } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import { ReportContext, SpreadsheetWidget, Table } from "components";
 // utils
-import { parseCustomHtml, parseFieldData, parseFieldLabel } from "utils";
+import {
+  parseCustomHtml,
+  parseDynamicFieldData,
+  parseFieldData,
+  parseFieldLabel,
+} from "utils";
 // types
 import { FormJson, ReportPageVerbiage } from "types";
 
@@ -23,7 +28,7 @@ export const ExportedReportSubsection = ({
     if (isDynamicField) {
       return [
         `<strong>${field.props.label}</strong>`,
-        parseFieldData(field.id),
+        parseDynamicFieldData(report?.fieldData[field.id]),
       ];
     }
 
@@ -105,6 +110,12 @@ const sx = {
     },
     "&.short": {
       tr: {
+        p: {
+          marginBottom: "1rem",
+          "&:last-of-type": {
+            marginBottom: 0,
+          },
+        },
         "th, td": {
           "&:first-of-type": {
             ".desktop &": {
