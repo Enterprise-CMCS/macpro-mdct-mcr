@@ -110,6 +110,12 @@ const sx = {
     },
     "&.short": {
       tr: {
+        p: {
+          marginBottom: "1rem",
+          "&:last-of-type": {
+            marginBottom: 0,
+          },
+        },
         "th, td": {
           "&:first-of-type": {
             ".desktop &": {
