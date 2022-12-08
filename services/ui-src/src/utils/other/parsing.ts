@@ -70,6 +70,7 @@ export const parseFieldLabel = (labelObject: {
   };
 };
 
+// parsing the field data for the PDF preview page
 export const parseFieldData = ({
   data,
   mask,
