@@ -75,7 +75,11 @@ export const parseFieldData = ({
   mask,
   validation,
 }: {
-  data: string;
+  data:
+    | string
+    | {
+        value: string;
+      }[];
   mask?: string;
   validation?: string;
 }) => {
@@ -89,6 +93,15 @@ export const parseFieldData = ({
 
   if ((validation === "email" || validation === "emailOptional") && data) {
     return `<a href="mailto:${data}">${data}</a>`;
+  }
+
+  if (validation === "radio" || validation === "checkbox") {
+    if (typeof data !== "string") {
+      const dataItems = data?.map(({ value }: { value: string }) => {
+        return `<p>${value}</p>`;
+      });
+      return dataItems?.join(" ") || "";
+    }
   }
 
   if (typeof data === "string" && data.indexOf("http") >= 0) {
