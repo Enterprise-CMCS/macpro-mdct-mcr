@@ -35,7 +35,17 @@ export const ExportedReportSubsection = ({
     return [
       `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
       parseFieldLabel(field.props).label,
-      parseFieldData(report?.fieldData[field.id]),
+      parseFieldData({
+        data:
+          field.validation === "dropdown"
+            ? report?.fieldData[field.props.options].find(
+                (obj: { id: string }) =>
+                  obj.id === report?.fieldData[field.id].value
+              ).name
+            : report?.fieldData[field.id],
+        mask: field.props.mask,
+        validation: field.validation,
+      }),
     ];
   };
 
