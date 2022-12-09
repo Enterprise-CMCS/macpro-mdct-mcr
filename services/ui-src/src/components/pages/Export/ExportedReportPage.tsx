@@ -19,6 +19,7 @@ export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
   const { combinedData } = verbiage;
 
+  // metadata
   const getFullStateName = (state: string) => {
     return States[state as keyof typeof States];
   };
@@ -30,8 +31,9 @@ export const ExportedReportPage = () => {
         <Box sx={sx.innerContainer}>
           <Helmet>
             <title>
-              Managed Care Program Annual Report (MCPAR) for{" "}
-              {getFullStateName(report.state)}: {report.programName}
+              {`Managed Care Program Annual Report (MCPAR) for ${getFullStateName(
+                report.state
+              )}: ${report.programName}`}
             </title>
             <meta name="author" content="CMS" />
             <meta name="subject" content="Managed Care Program Annual Report" />
