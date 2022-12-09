@@ -70,6 +70,8 @@ export const parseFieldLabel = (labelObject: {
   };
 };
 
+const noResponse = `<p style="color:#9F142B">No Response</p>`;
+
 // parsing the field data for the PDF preview page
 export const parseFieldData = ({
   data,
@@ -84,7 +86,7 @@ export const parseFieldData = ({
   mask?: string;
   validation?: string;
 }) => {
-  if (mask) {
+  if (data && mask) {
     return mask === "percentage"
       ? `${data}%`
       : mask === "currency"
@@ -97,24 +99,25 @@ export const parseFieldData = ({
   }
 
   if (validation === "radio" || validation === "checkbox") {
-    if (typeof data !== "string") {
+    if (data && typeof data !== "string") {
       const dataItems = data?.map(({ value }: { value: string }) => {
         return `<p>${value}</p>`;
       });
       return dataItems?.join(" ") || "";
     }
+    return data ? data : noResponse;
   }
 
   if (typeof data === "string" && data.indexOf("http") >= 0) {
     return `<a href="${data}">${data}</a>`;
   }
 
-  return data;
+  return data ? data : noResponse;
 };
 
 export const parseDynamicFieldData = (data: any) => {
   const formattedValues = data
     ?.map((value: any) => `<p>${value?.name}</p>`)
     .join(" ");
-  return formattedValues;
+  return data ? formattedValues : noResponse;
 };
