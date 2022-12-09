@@ -105,19 +105,19 @@ export const parseFieldData = ({
       });
       return dataItems?.join(" ") || "";
     }
-    return data ? data : noResponse;
+    return data ?? noResponse;
   }
 
   if (typeof data === "string" && data.indexOf("http") >= 0) {
     return `<a href="${data}">${data}</a>`;
   }
 
-  return data ? data : noResponse;
+  return data ?? noResponse;
 };
 
 export const parseDynamicFieldData = (data: any) => {
   const formattedValues = data
     ?.map((value: any) => `<p>${value?.name}</p>`)
     .join(" ");
-  return data ? formattedValues : noResponse;
+  return formattedValues ?? noResponse;
 };
