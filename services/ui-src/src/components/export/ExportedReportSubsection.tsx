@@ -13,18 +13,31 @@ import {
 import { FormJson, ReportPageVerbiage } from "types";
 
 export const ExportedReportSubsection = ({
-  content: { form, name, verbiage },
+  content: { drawerForm, pageType, form, name, verbiage },
 }: ExportedReportSubsectionProps) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
-  const isDynamicField =
-    form?.fields.filter((f) => f.type === "dynamic").length !== 0;
+  const isDynamicField = form?.fields.filter(
+    (f) => f.type === "dynamic"
+  ).length;
 
   const headRowItems = isDynamicField
     ? ["Indicator", "Response"]
     : ["Number", "Indicator", "Response"];
 
   const fieldRowsItems = (field: any) => {
+    const drawerData =
+      pageType === "drawer" &&
+      report?.fieldData.plans !== undefined &&
+      report?.fieldData.plans
+        .map((plan: any) => {
+          return `<p><strong>{${plan.name}}</strong></p><p>${parseFieldData({
+            data: plan[field.id],
+            mask: field.props.mask,
+            validation: field.validation,
+          })}</p><br />`;
+        })
+        .join(" ");
     if (isDynamicField) {
       return [
         `<strong>${field.props.label}</strong>`,
@@ -35,19 +48,25 @@ export const ExportedReportSubsection = ({
     return [
       `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
       parseFieldLabel(field.props).label,
-      parseFieldData({
-        data:
-          field.validation === "dropdown"
-            ? report?.fieldData[field.props.options].find(
-                (obj: { id: string }) =>
-                  obj.id === report?.fieldData[field.id].value
-              ).name
-            : report?.fieldData[field.id],
-        mask: field.props.mask,
-        validation: field.validation,
-      }),
+      parseFieldData(
+        pageType === "drawer"
+          ? { data: drawerData }
+          : {
+              data:
+                field.validation === "dropdown"
+                  ? report?.fieldData[field.props.options].find(
+                      (obj: { id: string }) =>
+                        obj.id === report?.fieldData[field.id].value
+                    ).name
+                  : report?.fieldData[field.id],
+              mask: field.props.mask,
+              validation: field.validation,
+            }
+      ),
     ];
   };
+
+  const formFields = pageType === "drawer" ? drawerForm?.fields : form?.fields;
 
   return (
     <Box data-testid="fieldsSubSection" mt="2rem">
@@ -67,15 +86,17 @@ export const ExportedReportSubsection = ({
         </Box>
       )}
 
-      {form?.fields && (
+      {formFields && (
         <Table
           sx={sx.dataTable}
           className={isDynamicField ? "short" : "standard"}
           content={{
             headRow: headRowItems,
-            bodyRows: form?.fields
+            bodyRows: formFields
               .filter((f) => f.props)
-              .map((field: any) => fieldRowsItems(field)),
+              .map((field: any) => {
+                return fieldRowsItems(field);
+              }),
           }}
         />
       )}
@@ -85,10 +106,12 @@ export const ExportedReportSubsection = ({
 
 interface ExportedReportSubsectionProps {
   content: {
+    pageType: string;
     path: string;
     name: string;
     form?: FormJson;
     verbiage?: ReportPageVerbiage;
+    drawerForm?: FormJson;
   };
 }
 
