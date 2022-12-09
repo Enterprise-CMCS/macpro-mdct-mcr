@@ -70,7 +70,7 @@ export const parseFieldLabel = (labelObject: {
   };
 };
 
-const noResponse = `<p style="color:#9F142B">No Response</p>`;
+const noResponse = `<p style="color:#9F142B">Not Answered</p>`;
 
 // parsing the field data for the PDF preview page
 export const parseFieldData = ({
