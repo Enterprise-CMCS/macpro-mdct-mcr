@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Helmet } from "react-helmet";
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import {
@@ -7,6 +8,8 @@ import {
   StickyBanner,
   Table,
 } from "components";
+// constants
+import { States } from "../../../constants";
 // verbiage
 import verbiage from "verbiage/pages/exportedReport";
 // utils
@@ -16,11 +19,25 @@ export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
   const { combinedData } = verbiage;
 
+  const getFullStateName = (state: string) => {
+    return States[state as keyof typeof States];
+  };
+
   return (
     <Box data-testid="exportedReportPage" sx={sx.container}>
       <StickyBanner />
       {report && (
         <Box sx={sx.innerContainer}>
+          <Helmet>
+            <title>
+              Managed Care Program Annual Report (MCPAR) for{" "}
+              {getFullStateName(report.state)}: {report.programName}
+            </title>
+            <meta name="author" content="CMS" />
+            <meta name="subject" content="Managed Care Program Annual Report" />
+            <meta name="language" content="English" />
+          </Helmet>
+
           <Heading as="h1" sx={sx.heading}>
             Managed Care Program Annual Report (MCPAR) for{" "}
             {report.fieldData.stateName}: {report.programName}
