@@ -37,6 +37,8 @@ custom:
   mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
+  princeApiHost: ${env:PRINCE_API_HOST, ssm:/${self:custom.stage}/prince_api_host, ssm:/default/prince_api_host}
+  princeApiPath: ${env:PRINCE_API_PATH, ssm:/${self:custom.stage}/prince_api_path, ssm:/default/prince_api_path}
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
@@ -83,6 +85,10 @@ provider:
           Resource: "*"
         - Effect: "Allow"
           Action:
+            - execute-api:Invoke
+          Resource: "*"
+        - Effect: "Allow"
+          Action:
             - "s3:GetObject"
             - "s3:ListBucket"
           Resource:
@@ -93,6 +99,8 @@ provider:
     MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     STAGE: ${self:custom.stage}
+    PRINCE_API_HOST: ${self:custom.princeApiHost}
+    PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
   fetchBanner:
@@ -193,6 +201,15 @@ functions:
             parameters:
               paths:
                 templateName: true
+  printPdf:
+    handler: handlers/print/printPdf.printPdf
+    timeout: 30
+    events:
+      - http:
+          path: print_pdf
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
 resources:
   Resources:
     GatewayResponseDefault4XX:
