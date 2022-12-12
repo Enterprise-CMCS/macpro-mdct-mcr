@@ -35,7 +35,7 @@ export const ExportedReportSubsection = ({
             data: plan[field.id],
             mask: field.props.mask,
             validation: field.validation,
-          })}</p><br />`;
+          })}</p><br>`;
         })
         .join(" ");
     if (isDynamicField) {
