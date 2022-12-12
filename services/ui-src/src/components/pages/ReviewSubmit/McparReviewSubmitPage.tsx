@@ -100,6 +100,7 @@ const ReadyToSubmit = ({
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
+  const navigate = useNavigate();
 
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
@@ -113,6 +114,14 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
+        <Button
+          sx={sx.printButton}
+          leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+          onClick={() => navigate(intro.printPageUrl)}
+          variant="outline"
+        >
+          {intro.printButtonText}
+        </Button>
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -239,9 +248,6 @@ const sx = {
     fontWeight: "bold",
     marginBottom: ".5rem",
   },
-  submitContainer: {
-    justifyContent: "flex-end",
-  },
   headerImage: {
     display: "inline-block",
     marginRight: "1rem",
@@ -260,5 +266,9 @@ const sx = {
     height: "1.75rem",
     fontSize: "sm",
     fontWeight: "normal",
+  },
+  submitContainer: {
+    width: "100%",
+    justifyContent: "space-between",
   },
 };
