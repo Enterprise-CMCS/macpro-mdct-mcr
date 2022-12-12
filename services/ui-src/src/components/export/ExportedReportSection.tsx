@@ -2,7 +2,7 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { ExportedReportSubsection } from "components";
 // utils
-import { ReportRouteBase } from "types";
+import { FormJson, ReportPageVerbiage, ReportRouteBase } from "types";
 
 export const ExportedReportSection = ({
   section,
@@ -12,10 +12,20 @@ export const ExportedReportSection = ({
       <Heading as="h2" sx={sx.sectionHeading}>
         Section {section.name}
       </Heading>
+      <RecursiveReportSection section={section} />
+    </Box>
+  );
+};
 
-      {section.children?.map((child, index) => (
-        <ExportedReportSubsection key={child.path + index} content={child} />
-      ))}
+const RecursiveReportSection = ({ section }: RecursiveReportSectionProps) => {
+  return (
+    <Box>
+      {section?.children?.map((child) => {
+        return <RecursiveReportSection section={child} />;
+      })}
+      {!section?.children && (
+        <ExportedReportSubsection key={section.path} content={section} />
+      )}
     </Box>
   );
 };
@@ -26,6 +36,16 @@ interface SectionProps extends ReportRouteBase {
 
 interface ExportedReportSectionProps {
   section: SectionProps;
+}
+
+interface RecursiveReportSectionProps {
+  section: {
+    children?: any[];
+    name: string;
+    path: string;
+    form?: FormJson;
+    verbiage?: ReportPageVerbiage;
+  };
 }
 
 const sx = {
