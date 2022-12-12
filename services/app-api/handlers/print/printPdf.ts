@@ -1,6 +1,7 @@
 import handler from "../handler-lib";
 import AWS from "aws-sdk";
 import axios from "axios";
+import { StatusCodes } from "../../utils/types/types";
 
 /**
  * Calls the CMS Prince PDF Generator to generate a PDF of the provided HTML
@@ -23,6 +24,7 @@ export const printPdf = handler(async (event, _context) => {
     path: path,
     region: "us-east-1",
     service: "execute-api",
+    data: body.encodedHtml, // aws4 looks for body; axios for data
     body: body.encodedHtml,
   };
 
@@ -32,7 +34,8 @@ export const printPdf = handler(async (event, _context) => {
   if (!credentials) {
     throw new Error("No config found to make request to PDF API");
   }
-  var signedRequest = aws4.sign(params, {
+
+  let signedRequest = aws4.sign(params, {
     secretAccessKey: credentials.secretAccessKey,
     accessKeyId: credentials.accessKeyId,
     sessionToken: credentials.sessionToken,
@@ -41,6 +44,12 @@ export const printPdf = handler(async (event, _context) => {
   delete signedRequest.body; // Remove body after signing, contained in data, don't need to duplicate it
 
   // Execute
-  let response = await axios(signedRequest);
-  return { data: response.data };
+  try {
+    let response = await axios(signedRequest);
+    return { body: response.data };
+  } catch (error: any) {
+    if (error.response.status === StatusCodes.UNAUTHORIZED) {
+      throw new Error("You do not have access to the CMS PDF Generator");
+    }
+  }
 });

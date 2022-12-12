@@ -83,6 +83,10 @@ provider:
           Resource: "*"
         - Effect: "Allow"
           Action:
+            - execute-api:Invoke
+          Resource: "*"
+        - Effect: "Allow"
+          Action:
             - "s3:GetObject"
             - "s3:ListBucket"
           Resource:
