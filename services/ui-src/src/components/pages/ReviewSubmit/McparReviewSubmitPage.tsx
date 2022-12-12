@@ -90,6 +90,22 @@ export const McparReviewSubmitPage = () => {
   );
 };
 
+const printButton = () => {
+  const navigate = useNavigate();
+  const { bothStates } = reviewVerbiage;
+  const { intro } = bothStates;
+  return (
+    <Button
+      sx={sx.printButton}
+      leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+      onClick={() => navigate(intro.printPageUrl)}
+      variant="outline"
+    >
+      {intro.printButtonText}
+    </Button>
+  );
+};
+
 const ReadyToSubmit = ({
   submitForm,
   isOpen,
@@ -100,7 +116,6 @@ const ReadyToSubmit = ({
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
-  const navigate = useNavigate();
 
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
@@ -114,14 +129,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        <Button
-          sx={sx.printButton}
-          leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
-          onClick={() => navigate(intro.printPageUrl)}
-          variant="outline"
-        >
-          {intro.printButtonText}
-        </Button>
+        {printButton()}
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -173,7 +181,6 @@ export const SuccessMessage = ({
   date,
   submittedBy,
 }: SuccessMessageProps) => {
-  const navigate = useNavigate();
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
   const submissionMessage = SuccessMessageGenerator(
@@ -199,16 +206,7 @@ export const SuccessMessage = ({
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
       </Box>
-      <Box sx={sx.infoTextBox}>
-        <Button
-          sx={sx.printButton}
-          leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
-          onClick={() => navigate(intro.printPageUrl)}
-          variant="outline"
-        >
-          {intro.printButtonText}
-        </Button>
-      </Box>
+      <Box sx={sx.infoTextBox}>{printButton()}</Box>
     </Flex>
   );
 };
