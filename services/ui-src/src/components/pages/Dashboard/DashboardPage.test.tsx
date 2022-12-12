@@ -14,6 +14,7 @@ import {
   mockStateUser,
   mockReportContext,
   RouterWrappedComponent,
+  mockReport,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
@@ -50,9 +51,20 @@ const mockReportContextWithError = {
   errorMessage: "test error",
 };
 
+const mockDashboardReportContext = {
+  ...mockReportContext,
+  reportsByState: [
+    {
+      ...mockReport,
+      formTemplate: undefined,
+      fieldData: undefined,
+    },
+  ],
+};
+
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockDashboardReportContext}>
       <DashboardPage reportType="MOCK" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -97,6 +109,7 @@ describe("Test Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Enter' button on a report row fetches the field data, then navigates to report", async () => {
+    mockReportContext.fetchReport.mockReturnValueOnce(mockReport);
     const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
@@ -143,6 +156,7 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
   });
 
   test("Clicking 'Enter' button on a report navigates to first page of report", async () => {
+    mockReportContext.fetchReport.mockReturnValueOnce(mockReport);
     const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);

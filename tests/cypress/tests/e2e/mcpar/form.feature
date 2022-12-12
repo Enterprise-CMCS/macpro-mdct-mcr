@@ -1,35 +1,42 @@
 Feature: MCPAR E2E Form Submission
 
-    Scenario Outline: A State user creates a program
+    Scenario: A state user can fully create a form and submit it
         Given I am logged in as a state user
-        And I am on "/mcpar"
+        When I submit a new MCPAR program
+        Then the program is submitted
 
-        When I click the "Add managed care program" button
-        And these form elements are filled:
-            | programName              | text           | <title>        |
-            | reportingPeriodStartDate | text           | <startDate>    |
-            | reportingPeriodEndDate   | text           | <endDate>      |
-            | combinedData             | singleCheckbox | <combinedData> |
-        And I click the "Save" button
-        Then there is an active program
+# Feature: MCPAR E2E Form Submission
 
-        Examples: #Form Data
-            | title        | startDate  | endDate    | combinedData |
-            | Test Program | 07/11/2022 | 11/07/2026 | true         |
+#     Scenario Outline: A State user creates a program
+#         Given I am logged in as a state user
+#         And I am on "/mcpar"
 
-    Scenario: Fills out Section A: Program Information
-        Given I am on "/mcpar"
-        And I click the "Enter" button
-        Then the "/mcpar/program-information/point-of-contact" page is loaded
+#         When I click the "Add managed care program" button
+#         And these form elements are filled:
+#             | programName              | text           | <title>        |
+#             | reportingPeriodStartDate | text           | <startDate>    |
+#             | reportingPeriodEndDate   | text           | <endDate>      |
+#             | combinedData             | singleCheckbox | <combinedData> |
+#         And I click the "Save" button
+#         Then there is an active program
 
-        When these form elements are filled:
-            | contactName         | text | Mary Poppins                              |
-            | contactEmailAddress | text | aspoonfullofsuger@themedicinegoesdown.com |
-        And these form elements are prefilled and disabled:
-            | stateName | text | Minnesota |
-        And I click the "Save & continue" button
+#         Examples: #Form Data
+#             | title        | startDate  | endDate    | combinedData |
+#             | Test Program | 07/11/2022 | 11/07/2026 | true         |
 
-        Then the "/mcpar/program-information/reporting-period" page is loaded
+#     Scenario: Fills out Section A: Program Information
+#         Given I am on "/mcpar"
+#         And I click the "Enter" button
+#         Then the "/mcpar/program-information/point-of-contact" page is loaded
+
+#         When these form elements are filled:
+#             | contactName         | text | Mary Poppins                              |
+#             | contactEmailAddress | text | aspoonfullofsuger@themedicinegoesdown.com |
+#         And these form elements are prefilled and disabled:
+#             | stateName | text | Minnesota |
+#         And I click the "Save & continue" button
+
+#         Then the "/mcpar/program-information/reporting-period" page is loaded
 
 # Scenario: Fills out Section A: Reporting Period
 #     Given I am on "/mcpar/program-information/reporting-period"

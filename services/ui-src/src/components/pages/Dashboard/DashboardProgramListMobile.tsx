@@ -2,7 +2,7 @@
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
-import { AnyObject, ReportShape } from "types";
+import { AnyObject, ReportMetadataShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -92,7 +92,7 @@ export const MobileDashboardList = ({
 );
 
 interface MobileDashboardListProps {
-  reportsByState: ReportShape[];
+  reportsByState: ReportMetadataShape[];
   openAddEditProgramModal: Function;
   enterSelectedReport: Function;
   archiveReport: Function;
