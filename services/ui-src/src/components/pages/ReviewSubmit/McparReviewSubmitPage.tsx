@@ -16,6 +16,7 @@ import { Modal, ReportContext } from "components";
 import { ReportStatus } from "types";
 // utils
 import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
+import { featureFlags } from "utils/featureFlags/featureFlags";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
@@ -167,7 +168,10 @@ export const SuccessMessage = ({
 }: SuccessMessageProps) => {
   // LaunchDarkly feature flags
   const launchDarklyClient = useLDClient();
-  const pdfExport = launchDarklyClient?.variation("pdfExport", true);
+  const pdfExport: boolean = launchDarklyClient?.variation(
+    featureFlags.PDF_EXPORT.flag,
+    featureFlags.PDF_EXPORT.defaultValue
+  );
 
   const navigate = useNavigate();
   const { submitted } = reviewVerbiage;
