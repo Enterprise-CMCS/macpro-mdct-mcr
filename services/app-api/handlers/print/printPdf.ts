@@ -49,7 +49,10 @@ export const printPdf = handler(async (event, _context) => {
     return { body: response.data };
   } catch (error: any) {
     if (error.response.status === StatusCodes.UNAUTHORIZED) {
+    if (error.response && error.response.status === StatusCodes.UNAUTHORIZED) {
       throw new Error("You do not have access to the CMS PDF Generator");
+    } else {
+      throw new Error("Something went wrong");
     }
   }
 });
