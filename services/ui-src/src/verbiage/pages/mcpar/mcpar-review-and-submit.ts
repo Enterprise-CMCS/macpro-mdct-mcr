@@ -28,4 +28,10 @@ export default {
       printButtonText: "Print",
     },
   },
+  bothStates: {
+    intro: {
+      printPageUrl: "/mcpar/export",
+      printButtonText: "Print",
+    },
+  },
 };
