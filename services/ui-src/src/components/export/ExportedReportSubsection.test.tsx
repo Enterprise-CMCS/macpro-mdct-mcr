@@ -1,9 +1,34 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
 import { ExportedReportSubsection } from "./ExportedReportSubsection";
+import { ReportContext } from "components";
 // utils
-import { mockStandardReportPageJson } from "utils/testing/setupJest";
+import { mockForm, mockStandardReportPageJson } from "utils/testing/setupJest";
+
+const mockContext = {
+  report: {
+    fieldData: {
+      test_dropdown: {
+        value: "test_dropdown",
+        label: "test_dropdown",
+      },
+      plans: [
+        {
+          id: "123-123-123-123",
+          name: "plan 1",
+          "mock-text-field": "test",
+        },
+      ],
+    },
+  },
+};
+
+const mockDrawerForm = {
+  ...mockStandardReportPageJson,
+  pageType: "drawer",
+  drawerForm: mockForm,
+};
 
 const mockContentAlt = {
   ...mockStandardReportPageJson,
@@ -38,7 +63,11 @@ const exportedReportSubsectionAltComponent = (
   <ExportedReportSubsection content={mockContentAlt} />
 );
 
-afterEach(cleanup);
+const exportedReportSubsectionDrawerComponent = (context: any) => (
+  <ReportContext.Provider value={context}>
+    <ExportedReportSubsection content={mockDrawerForm} />
+  </ReportContext.Provider>
+);
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -53,6 +82,12 @@ describe("ExportedReportSubsection", () => {
 
   test("Is ExportedReportSubsection present without optional fields", () => {
     render(exportedReportSubsectionAltComponent);
+    const section = screen.getByTestId("fieldsSubSection");
+    expect(section).toBeVisible();
+  });
+
+  test("Is ExportedReportSubsection with present drawer form", () => {
+    render(exportedReportSubsectionDrawerComponent(mockContext));
     const section = screen.getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
   });
