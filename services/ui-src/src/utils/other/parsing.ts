@@ -112,7 +112,7 @@ export const parseFieldData = ({
     return `<a href="${data}">${data}</a>`;
   }
 
-  return data ?? noResponse;
+  return data || noResponse;
 };
 
 export const parseDynamicFieldData = (data: any) => {
