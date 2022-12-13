@@ -48,7 +48,6 @@ export const printPdf = handler(async (event, _context) => {
     let response = await axios(signedRequest);
     return { body: response.data };
   } catch (error: any) {
-    if (error.response.status === StatusCodes.UNAUTHORIZED) {
     if (error.response && error.response.status === StatusCodes.UNAUTHORIZED) {
       throw new Error("You do not have access to the CMS PDF Generator");
     } else {
