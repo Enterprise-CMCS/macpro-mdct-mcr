@@ -106,7 +106,7 @@ export const ExportedReportSubsection = ({
 
 interface ExportedReportSubsectionProps {
   content: {
-    pageType: string;
+    pageType?: string;
     path: string;
     name: string;
     form?: FormJson;

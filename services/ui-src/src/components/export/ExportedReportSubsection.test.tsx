@@ -4,13 +4,17 @@ import { axe } from "jest-axe";
 import { ExportedReportSubsection } from "./ExportedReportSubsection";
 import { ReportContext } from "components";
 // utils
-import { mockForm, mockStandardReportPageJson } from "utils/testing/setupJest";
+import {
+  mockForm,
+  mockFormField,
+  mockStandardReportPageJson,
+} from "utils/testing/setupJest";
 
 const mockContext = {
   report: {
     fieldData: {
       test_dropdown: {
-        value: "test_dropdown",
+        value: "456-456-456-456",
         label: "test_dropdown",
       },
       plans: [
@@ -18,6 +22,10 @@ const mockContext = {
           id: "123-123-123-123",
           name: "plan 1",
           "mock-text-field": "test",
+        },
+        {
+          name: "test 3",
+          id: "456-456-456-456",
         },
       ],
     },
@@ -55,12 +63,37 @@ const mockContentAlt = {
   },
 };
 
+const mockContentDropdown = {
+  ...mockStandardReportPageJson,
+  form: {
+    ...mockForm,
+    fields: [
+      mockFormField,
+      {
+        id: "test_dropdown",
+        type: "dropdown",
+        validation: "dropdown",
+        props: {
+          options: "plans",
+          label: "test label",
+        },
+      },
+    ],
+  },
+};
+
 const exportedReportSubsectionComponent = (
   <ExportedReportSubsection content={mockStandardReportPageJson} />
 );
 
 const exportedReportSubsectionAltComponent = (
   <ExportedReportSubsection content={mockContentAlt} />
+);
+
+const exportedReportSubsectionWithDropdownComponent = (context: any) => (
+  <ReportContext.Provider value={context}>
+    <ExportedReportSubsection content={mockContentDropdown} />
+  </ReportContext.Provider>
 );
 
 const exportedReportSubsectionDrawerComponent = (context: any) => (
@@ -88,6 +121,12 @@ describe("ExportedReportSubsection", () => {
 
   test("Is ExportedReportSubsection with present drawer form", () => {
     render(exportedReportSubsectionDrawerComponent(mockContext));
+    const section = screen.getByTestId("fieldsSubSection");
+    expect(section).toBeVisible();
+  });
+
+  test("Is ExportedReportSubsection present with dropdown field", () => {
+    render(exportedReportSubsectionWithDropdownComponent(mockContext));
     const section = screen.getByTestId("fieldsSubSection");
     expect(section).toBeVisible();
   });
