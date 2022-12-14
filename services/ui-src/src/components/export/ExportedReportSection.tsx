@@ -1,6 +1,6 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { ExportedReportSubsection } from "components";
+import { ExportedReportWrapper } from "components";
 // utils
 import { FormJson, ReportPageVerbiage, ReportRouteBase } from "types";
 
@@ -24,7 +24,7 @@ const RecursiveReportSection = ({ section }: RecursiveReportSectionProps) => {
         return <RecursiveReportSection section={child} />;
       })}
       {!section?.children && (
-        <ExportedReportSubsection key={section.path} content={section} />
+        <ExportedReportWrapper key={section.path} section={section} />
       )}
     </Box>
   );
