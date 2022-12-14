@@ -114,7 +114,10 @@
     "globals": {
       "_env_": {}
     },
-    "testEnvironment": "jest-environment-jsdom"
+    "testEnvironment": "jest-environment-jsdom",
+    "setupFiles": [
+      "jest-launchdarkly-mock"
+    ]
   },
   "browserslist": {
     "production": [

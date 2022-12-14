@@ -109,8 +109,8 @@ describe("Success Message Generator", () => {
     ).toBe(`MCPAR report for ${programName} was submitted.`);
   });
   it("should navigate to the print preview page on button click", async () => {
-    render(McparReviewSubmitPage_Submitted);
     mockFlags({ pdfExport: true });
+    render(McparReviewSubmitPage_Submitted);
     const printButton = screen.getByText("Print");
     await userEvent.click(printButton);
     expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar/export");

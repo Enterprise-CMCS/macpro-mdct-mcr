@@ -2,14 +2,10 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
-import * as LaunchDarkly from "launchdarkly-react-client-sdk";
+import "jest-launchdarkly-mock";
 // utils
 import { ReportStatus, UserContextShape, UserRoles } from "types";
 import { bannerId } from "../../constants";
-import {
-  FeatureFlagTypes,
-  FlagValueTypes,
-} from "utils/featureFlags/featureFlags";
 
 // GLOBALS
 
@@ -563,39 +559,4 @@ export const mockCompletedSanctionsFormattedEntityData = {
   assessmentDate: "mock-date",
   remediationDate: "mock-date",
   correctiveActionPlan: "mock-answer",
-};
-
-// LAUNCHDARKLY
-
-export const ldUseClientSpy = (
-  featureFlags: Partial<Record<FeatureFlagTypes, FlagValueTypes>>
-) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  jest.spyOn(LaunchDarkly, "useLDClient").mockImplementation((): any => {
-    return {
-      /*
-       * Checks to see if flag passed into useLDClient exists in the featureFlag passed in ldUseClientSpy
-       * If flag passed in useLDClient does not exist, then use defaultValue that was also passed into useLDClient.
-       * If flag does exist the featureFlag value passed into ldUseClientSpy then use the value in featureFlag.
-       *
-       * This is done because testing components may contain more than one instance of useLDClient for a different
-       * flag. We do not want to apply the value passed in featureFlags to each useLDClient especially if the flag
-       * passed in useLDClient does not exist in featureFlags passed into ldUseClientSpy.
-       */
-      variation: (
-        flag: FeatureFlagTypes,
-        defaultValue: FlagValueTypes | undefined
-      ) => {
-        if (featureFlags[flag] === undefined && defaultValue === undefined) {
-          //ldClient.variation doesn't require a default value, throwing error here if a defaultValue was not provided.
-          throw new Error(
-            "ldUseClientSpy returned an invalid value of undefined"
-          );
-        }
-        return featureFlags[flag] === undefined
-          ? defaultValue
-          : featureFlags[flag];
-      },
-    };
-  });
 };
