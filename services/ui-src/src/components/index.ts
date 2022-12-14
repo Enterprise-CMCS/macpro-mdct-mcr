@@ -77,7 +77,10 @@ export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPag
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // print
 export { ExportedReportSection } from "./export/ExportedReportSection";
-export { ExportedReportSubsection } from "./export/ExportedReportSubsection";
+export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
+export { ExportedDrawerReportSection } from "./export/ExportedDrawerReportSection";
+export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";
+export { ExportedStandardReportSection } from "./export/ExportedStandardReportSection";
 export { StickyBanner } from "./export/StickyBanner";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
