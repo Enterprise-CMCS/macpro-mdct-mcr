@@ -2,12 +2,11 @@ import { API } from "aws-amplify";
 import { printPdf } from "utils";
 import config from "config";
 
-const testBody = "<h1>Hello</h1>";
+const testBody = "<noscript>removed</noscript><h1>Hello</h1><";
 const mockPost = jest.fn().mockResolvedValue(btoa(testBody));
 API.post = mockPost;
 const originalURLConfig = config.DEV_API_URL;
 window.open = jest.fn();
-
 describe("Print Utility functions", () => {
   beforeEach(() => {
     global.URL.createObjectURL = jest.fn();

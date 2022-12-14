@@ -8,9 +8,6 @@ export const printPdf = async () => {
   if (noscriptTag) {
     noscriptTag.remove();
   }
-  document.querySelectorAll(".remove-from-pdf").forEach((element) => {
-    element.remove();
-  });
   const htmlString = document!
     .querySelector("html")!
     .outerHTML.replaceAll(
