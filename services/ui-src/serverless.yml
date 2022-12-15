@@ -36,7 +36,6 @@ custom:
   cognito_user_pool_client_domain: ${cf:ui-auth-${self:custom.stage}.UserPoolClientDomain}
   s3_attachments_bucket_region: ${cf:uploads-${self:custom.stage}.Region}
   s3_attachments_bucket_name: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName}
-  mcpar_form_s3_bucket_name: ${cf:app-api-${self:custom.stage}.MCPARFormS3BucketName}
   ui_s3_bucket_name: ${cf:ui-${self:custom.stage}.S3BucketName}
   ui_cloudfront_distribution_id: ${cf:ui-${self:custom.stage}.CloudFrontDistributionId}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
@@ -65,7 +64,6 @@ custom:
         export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
         export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
         export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}
-        export MCPAR_FORM_S3_BUCKET_NAME=${self:custom.mcpar_form_bucket_name}
         export STAGE=${self:custom.stage}
         export LOCAL_LOGIN=false
         ./scripts/configure-env.sh
