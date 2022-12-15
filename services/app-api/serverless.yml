@@ -265,7 +265,7 @@ resources:
           MetricName: ${self:custom.stage}-webacl
   Outputs:
     ApiGatewayRestApiName:
-      Value: !Ref ApiGatewayRestApi1
+      Value: !Ref ApiGatewayRestApi
     ApiGatewayRestApiUrl:
       Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
     Region:
