@@ -29,7 +29,7 @@ export const ExportedDrawerReportSection = ({
       report?.fieldData.plans !== undefined &&
       report?.fieldData.plans
         .map((plan: any) => {
-          return `<p><strong>{${plan.name}}</strong></p><p>${parseFieldData({
+          return `<p><strong>${plan.name}</strong></p><p>${parseFieldData({
             data: plan[field.id],
             mask: field.props.mask,
             validation: field.validation,

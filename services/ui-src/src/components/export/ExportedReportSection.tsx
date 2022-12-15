@@ -20,8 +20,10 @@ export const ExportedReportSection = ({
 const RecursiveReportSection = ({ section }: RecursiveReportSectionProps) => {
   return (
     <Box>
-      {section?.children?.map((child) => {
-        return <RecursiveReportSection section={child} />;
+      {section?.children?.map((child, index) => {
+        return (
+          <RecursiveReportSection key={section.path + index} section={child} />
+        );
       })}
       {!section?.children && (
         <ExportedReportWrapper key={section.path} section={section} />
