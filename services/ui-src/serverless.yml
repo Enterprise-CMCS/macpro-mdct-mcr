@@ -36,7 +36,7 @@ custom:
   cognito_user_pool_client_domain: ${cf:ui-auth-${self:custom.stage}.UserPoolClientDomain}
   s3_attachments_bucket_region: ${cf:uploads-${self:custom.stage}.Region}
   s3_attachments_bucket_name: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName}
-  mcpar_form_s3_bucket_name: ${cf:api-api-${self:custom.stage}.MCPARFormS3BucketName}
+  mcpar_form_s3_bucket_name: ${cf:app-api-${self:custom.stage}.MCPARFormS3BucketName}
   ui_s3_bucket_name: ${cf:ui-${self:custom.stage}.S3BucketName}
   ui_cloudfront_distribution_id: ${cf:ui-${self:custom.stage}.CloudFrontDistributionId}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
