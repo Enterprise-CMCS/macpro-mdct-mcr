@@ -129,5 +129,5 @@ resources:
       Value: !GetAtt McparReportTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}
-    MCPARFormBucketName:
+    McparFormBucketName:
       Value: !Ref McparFormBucket
