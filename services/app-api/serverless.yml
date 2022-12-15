@@ -97,7 +97,7 @@ provider:
             - "arn:aws:s3:::${self:custom.templateBucket}"
             - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
             - "arn:aws:s3:::${self:custom.mcparFormBucket}"
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}/template/*"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}/templates/*"
             - "arn:aws:s3:::${self:custom.mcparFormBucket}/data/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
