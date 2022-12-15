@@ -106,6 +106,14 @@ resources:
           - AttributeName: id
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    MCPARFormBucketName:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub ${self:service.name}-${self:custom.stage}-mcpar-${AWS::AccountId}
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
@@ -121,3 +129,5 @@ resources:
       Value: !GetAtt McparReportTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}
+    MCPARFormBucketName:
+      Value: !Ref MCPARFormBucketName
