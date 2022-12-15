@@ -29,7 +29,6 @@ describe("Print Utility functions", () => {
     config.DEV_API_URL = null;
     await printPdf();
 
-    console.log(mockPost.mock.calls[0][0]);
     expect(mockPost.mock.calls[0][0]).not.toEqual("mcrDev");
     expect(window.open).toBeCalled();
   });
