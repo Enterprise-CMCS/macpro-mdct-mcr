@@ -41,9 +41,7 @@ export const ExportedModalDrawerReportSection = ({
             report?.fieldData
           )}
           verbiage={verbiage}
-          openAddEditEntityModal={() => {}}
-          openDeleteEntityModal={() => {}}
-          openDrawer={() => {}}
+          printVersion
         />
       ))}
     </Box>

@@ -6,6 +6,7 @@ import { AnyObject, ModalDrawerEntityTypes } from "types";
 export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
+  printVersion,
   verbiage,
 }: Props) => {
   switch (entityType) {
@@ -15,41 +16,53 @@ export const EntityCardBottomSection = ({
           <Box sx={sx.highlightContainer}>
             <Flex>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Provider</Text>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "C2.V.4 "} Provider
+                </Text>
                 <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
               </Box>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Region</Text>
+                <Text sx={sx.subtitle}>{printVersion && "C2.V.5 "} Region</Text>
                 <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
               </Box>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Population</Text>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "C2.V.5 "} Population
+                </Text>
                 <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
               </Box>
             </Flex>
           </Box>
-          <Text sx={sx.subtitle}>Monitoring Methods</Text>
-          <Text sx={sx.subtext}>
-            {formattedEntityData?.monitoringMethods.join(", ")}
+          <Text sx={sx.subtitle}>
+            {printVersion && "C2.V.7 "} Monitoring Methods
           </Text>
-          <Text sx={sx.subtitle}>Frequency of oversight methods</Text>
+          <Text sx={sx.subtext}>
+            {formattedEntityData?.monitoringMethods?.join(", ")}
+          </Text>
+          <Text sx={sx.subtitle}>
+            {printVersion && "C2.V.8 "} Frequency of oversight methods
+          </Text>
           <Text sx={sx.subtext}>{formattedEntityData.methodFrequency}</Text>
         </>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
       return (
         <>
-          <Text sx={sx.subtitle}>Sanction Details</Text>
+          <Text sx={sx.subtitle}>Sanction details</Text>
           <Box sx={sx.highlightContainer}>
             <Flex>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Instances of non-compliance</Text>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "D3.VIII.5 "} Instances of non-compliance
+                </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.noncomplianceInstances}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Sanction amount</Text>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "D3.VIII.6 "} Sanction amount
+                </Text>
                 <Text sx={sx.subtext}>
                   $ {formattedEntityData?.dollarAmount}
                 </Text>
@@ -57,21 +70,26 @@ export const EntityCardBottomSection = ({
             </Flex>
             <Flex>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Date assessed</Text>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "D3.VIII.7 "} Date assessed
+                </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.assessmentDate}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  Remediation date non-compliance was corrected
+                  {printVersion && "D3.VIII.8 "} Remediation date non-compliance
+                  was corrected
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.remediationDate || ""}
                 </Text>
               </Box>
             </Flex>
-            <Text sx={sx.subtitle}>Corrective action plan</Text>
+            <Text sx={sx.subtitle}>
+              {printVersion && "D3.VIII.9 "} Corrective action plan
+            </Text>
             <Text sx={sx.subtext}>
               {formattedEntityData?.correctiveActionPlan}
             </Text>
@@ -115,6 +133,7 @@ export const EntityCardBottomSection = ({
 interface Props {
   entityType: string;
   formattedEntityData: AnyObject;
+  printVersion?: boolean;
   verbiage?: {
     entityMissingResponseMessage?: string;
     entityEmptyResponseMessage?: string;
