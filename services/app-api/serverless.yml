@@ -36,7 +36,7 @@ custom:
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
-  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.MCPARFormS3BucketName}
+  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.MCPARFormBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   princeApiHost: ${env:PRINCE_API_HOST, ssm:/${self:custom.stage}/prince_api_host, ssm:/default/prince_api_host}
   princeApiPath: ${env:PRINCE_API_PATH, ssm:/${self:custom.stage}/prince_api_path, ssm:/default/prince_api_path}

@@ -106,7 +106,7 @@ resources:
           - AttributeName: id
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-  MCPARFormS3BucketName:
+  MCPARFormBucketName:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${self:service.name}-${self:custom.stage}-mcpar-${AWS::AccountId}
@@ -129,5 +129,5 @@ resources:
       Value: !GetAtt McparReportTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}
-    MCPARFormS3BucketName:
-      Value: !Ref MCPARFormS3BucketName
+    MCPARFormBucketName:
+      Value: !Ref MCPARFormBucketName
