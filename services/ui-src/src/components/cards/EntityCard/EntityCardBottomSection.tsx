@@ -21,14 +21,14 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.provider ??
-                    (printVersion && "No Response")}
+                    (printVersion && "Not Answered")}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>{printVersion && "C2.V.5 "} Region</Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.region ??
-                    (printVersion && "No Response")}
+                    (printVersion && "Not Answered")}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -37,7 +37,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.population ??
-                    (printVersion && "No Response")}
+                    (printVersion && "Not Answered")}
                 </Text>
               </Box>
             </Flex>
@@ -47,14 +47,14 @@ export const EntityCardBottomSection = ({
           </Text>
           <Text sx={sx.subtext}>
             {formattedEntityData?.monitoringMethods?.join(", ") ??
-              (printVersion && "No Response")}
+              (printVersion && "Not Answered")}
           </Text>
           <Text sx={sx.subtitle}>
             {printVersion && "C2.V.8 "} Frequency of oversight methods
           </Text>
           <Text sx={sx.subtext}>
             {formattedEntityData.methodFrequency ??
-              (printVersion && "No Response")}
+              (printVersion && "Not Answered")}
           </Text>
         </>
       );
@@ -70,7 +70,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.noncomplianceInstances ??
-                    (printVersion && "No Response")}
+                    (printVersion && "Not Answered")}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -80,7 +80,7 @@ export const EntityCardBottomSection = ({
                 <Text sx={sx.subtext}>
                   ${" "}
                   {formattedEntityData?.dollarAmount ??
-                    (printVersion && "No Response")}
+                    (printVersion && "Not Answered")}
                 </Text>
               </Box>
             </Flex>
@@ -91,7 +91,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.assessmentDate ??
-                    (printVersion && "No Response")}
+                    (printVersion && "Not Answered")}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -101,7 +101,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {(formattedEntityData?.remediationDate || "") ??
-                    (printVersion && "No Response")}
+                    (printVersion && "Not Answered")}
                 </Text>
               </Box>
             </Flex>
@@ -110,7 +110,7 @@ export const EntityCardBottomSection = ({
             </Text>
             <Text sx={sx.subtext}>
               {formattedEntityData?.correctiveActionPlan ??
-                (printVersion && "No Response")}
+                (printVersion && "Not Answered")}
             </Text>
           </Box>
         </>
@@ -122,7 +122,7 @@ export const EntityCardBottomSection = ({
           {formattedEntityData?.isPartiallyComplete && (
             <Text sx={sx.missingResponseMessage}>
               {verbiage?.entityMissingResponseMessage ??
-                (printVersion && "No Response")}
+                (printVersion && "Not Answered")}
             </Text>
           )}
           {formattedEntityData?.perPlanResponses?.map(
@@ -135,12 +135,13 @@ export const EntityCardBottomSection = ({
                 <Flex>
                   <Box sx={sx.highlightSection}>
                     <Text sx={sx.planTitle}>{plan.name}</Text>
-                    <Text sx={sx.planText}>
-                      {plan.response ||
-                        (!printVersion
-                          ? verbiage?.entityEmptyResponseMessage
-                          : "No Response")}
-                    </Text>
+                    {printVersion && !plan.response ? (
+                      <Text sx={sx.notAnswered}>Not Answered</Text>
+                    ) : (
+                      <Text sx={sx.planText}>
+                        {plan.response || verbiage?.entityEmptyResponseMessage}
+                      </Text>
+                    )}
                   </Box>
                 </Flex>
               </Box>
@@ -209,5 +210,9 @@ const sx = {
   },
   planText: {
     fontSize: "sm",
+  },
+  notAnswered: {
+    fontSize: "sm",
+    color: "#9F142B",
   },
 };
