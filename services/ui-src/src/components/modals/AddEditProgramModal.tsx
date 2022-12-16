@@ -17,7 +17,8 @@ import {
 export const AddEditProgramModal = ({
   activeState,
   selectedReport,
-  newReportData,
+  formTemplate,
+  reportType,
   modalDisclosure,
 }: Props) => {
   const { createReport, fetchReportsByState, updateReport } =
@@ -43,12 +44,15 @@ export const AddEditProgramModal = ({
     );
 
     const dataToWrite = {
-      programName,
-      reportingPeriodStartDate,
-      reportingPeriodEndDate,
-      dueDate,
-      lastAlteredBy: full_name,
-      combinedData,
+      metadata: {
+        programName,
+        reportType,
+        reportingPeriodStartDate,
+        reportingPeriodEndDate,
+        dueDate,
+        lastAlteredBy: full_name,
+        combinedData,
+      },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
@@ -69,7 +73,7 @@ export const AddEditProgramModal = ({
       // create new report
       await createReport(activeState, {
         ...dataToWrite,
-        ...newReportData,
+        ...formTemplate,
         status: ReportStatus.NOT_STARTED,
         fieldData: {
           ...dataToWrite.fieldData,
@@ -106,11 +110,9 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
+  formTemplate: ReportJson;
+  reportType: string;
   selectedReport?: AnyObject;
-  newReportData: {
-    reportType: string;
-    formTemplate: ReportJson;
-  };
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
