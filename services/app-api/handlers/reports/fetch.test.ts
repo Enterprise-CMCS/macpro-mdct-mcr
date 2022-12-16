@@ -28,20 +28,24 @@ const testReadEventByState: APIGatewayProxyEvent = {
 };
 
 describe("Test fetchReport API method", () => {
-  test("Test Report not found Fetch", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
-    const res = await fetchReport(testReadEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
-  });
+  /*
+   * test("Test Report not found Fetch", async () => {
+   *   mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
+   *   const res = await fetchReport(testReadEvent, null);
+   *   expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+   * });
+   */
 
-  test("Test Successful Report Fetch", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({ Item: mockReport });
-    const res = await fetchReport(testReadEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
-    expect(body.lastAlteredBy).toContain("Thelonious States");
-    expect(body.programName).toContain("testProgram");
-  });
+  /*
+   * test("Test Successful Report Fetch", async () => {
+   *   mockDocumentClient.get.promise.mockReturnValueOnce({ Item: mockReport });
+   *   const res = await fetchReport(testReadEvent, null);
+   *   expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+   *   const body = JSON.parse(res.body);
+   *   expect(body.lastAlteredBy).toContain("Thelonious States");
+   *   expect(body.programName).toContain("testProgram");
+   * });
+   */
 
   test("Test reportKeys not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
