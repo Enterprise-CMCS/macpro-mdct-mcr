@@ -80,6 +80,57 @@ export const parseFieldLabel = (labelObject: {
 
 const noResponse = `<p style="color:#9F142B">Not Answered</p>`;
 
+const returnChoices = (choiceItem: any, fieldData: any) => {
+  // loop through all choices
+  const dataItems: any[] = choiceItem.fieldData.map(
+    ({ value, key }: { value: string; key: string }) => {
+      const childItems: any[] = [];
+      // get ID of each choice
+      const choiceId = key.split("-")[1];
+      // check if choice has children
+      const children = choiceItem.parent.props.choices.find(
+        (choice: any) => choice.id === choiceId
+      ).children;
+
+      if (children) {
+        // loop through all children
+        children.map((childField: any) => {
+          if (typeof fieldData[childField.id] !== "string") {
+            if (childField.props) {
+              childItems.push(
+                `${
+                  parseFieldLabel({ ...childField.props, hideHint: true }).label
+                }${returnChoices(
+                  {
+                    parent: childField,
+                    fieldData: fieldData[childField.id],
+                  },
+                  fieldData
+                )}`
+              );
+              return;
+            }
+          }
+
+          childItems.push(
+            `${
+              childField.props
+                ? parseFieldLabel({ ...childField.props, hideHint: true }).label
+                : ""
+            }${parseAllLevels({ ...childField, fieldData })}`
+          );
+          return;
+        });
+      }
+
+      return `<p>${value}</p>${childItems.join(" ") || ""}`;
+    }
+  );
+
+  // Default return
+  return dataItems?.join(" ") || noResponse;
+};
+
 export const parseAllLevels = ({
   fieldData,
   id,
@@ -87,56 +138,6 @@ export const parseAllLevels = ({
   type,
   validation,
 }: any) => {
-  const returnChoices = (choiceItem: any) => {
-    // loop through all choices
-    const dataItems: any[] = choiceItem.fieldData.map(
-      ({ value, key }: { value: string; key: string }) => {
-        const childItems: any[] = [];
-        // get ID of each choice
-        const choiceId = key.split("-")[1];
-        // check if choice has children
-        const children = choiceItem.parent.props.choices.find(
-          (choice: any) => choice.id === choiceId
-        ).children;
-
-        if (children) {
-          // loop through all children
-          children.map((childField: any) => {
-            if (typeof fieldData[childField.id] !== "string") {
-              if (childField.props) {
-                childItems.push(
-                  `${
-                    parseFieldLabel({ ...childField.props, hideHint: true })
-                      .label
-                  }${returnChoices({
-                    parent: childField,
-                    fieldData: fieldData[childField.id],
-                  })}`
-                );
-                return;
-              }
-            }
-
-            childItems.push(
-              `${
-                childField.props
-                  ? parseFieldLabel({ ...childField.props, hideHint: true })
-                      .label
-                  : ""
-              }${parseAllLevels({ ...childField, fieldData })}`
-            );
-            return;
-          });
-        }
-
-        return `<p>${value}</p>${childItems.join(" ") || ""}`;
-      }
-    );
-
-    // Default return
-    return dataItems?.join(" ") || noResponse;
-  };
-
   if (fieldData && fieldData[id]) {
     const qualifier = props
       ? props.mask || validation || type
@@ -158,59 +159,19 @@ export const parseAllLevels = ({
         return fieldData[id];
       case "checkbox":
       case "radio":
-        return returnChoices({
-          parent: { id, props, type, validation },
-          fieldData: fieldData[id],
-        });
+        return returnChoices(
+          {
+            parent: { id, props, type, validation },
+            fieldData: fieldData[id],
+          },
+          fieldData
+        );
       default:
         return fieldData[id];
     }
   }
 
   return noResponse;
-};
-
-// parsing the field data for the PDF preview page
-export const parseFieldData = ({
-  data,
-  mask,
-  validation,
-}: {
-  data:
-    | string
-    | {
-        value: string;
-      }[];
-  mask?: string;
-  validation?: string;
-}) => {
-  if (data && mask) {
-    return mask === "percentage"
-      ? `${data}%`
-      : mask === "currency"
-      ? `$${data}`
-      : data;
-  }
-
-  if ((validation === "email" || validation === "emailOptional") && data) {
-    return `<a href="mailto:${data}">${data}</a>`;
-  }
-
-  if (validation === "radio" || validation === "checkbox") {
-    if (data && typeof data !== "string") {
-      const dataItems = data?.map(({ value }: { value: string }) => {
-        return `<p>${value}</p>`;
-      });
-      return dataItems?.join(" ") || "";
-    }
-    return data ?? noResponse;
-  }
-
-  if (typeof data === "string" && data.indexOf("http") >= 0) {
-    return `<a href="${data}">${data}</a>`;
-  }
-
-  return data || noResponse;
 };
 
 export const parseDynamicFieldData = (data: any) => {
