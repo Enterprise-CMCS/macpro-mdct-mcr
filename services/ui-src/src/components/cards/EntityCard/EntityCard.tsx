@@ -176,8 +176,9 @@ const sx = {
       },
     },
     ".print-version-icon-div": {
+      marginLeft: "-1rem",
       position: "absolute",
-      left: "-2rem",
+      left: "-1.5rem",
       ".mobile &": {
         left: "-1.5rem",
       },
@@ -185,14 +186,17 @@ const sx = {
     ".error-text": {
       color: "red",
       fontSize: ".75rem",
+      textAlign: "center",
     },
     ".completed-text": {
       color: "green",
       fontSize: ".75rem",
+      textAlign: "center",
     },
   },
   printVersionIcon: {
     height: "1rem",
+    margin: "0 auto",
   },
   statusIcon: {
     position: "absolute",
@@ -228,9 +232,5 @@ const sx = {
     ".mobile &": {
       right: "-1.5rem",
     },
-  },
-  ".error": {
-    position: "absolute",
-    display: "inline-block",
   },
 };
