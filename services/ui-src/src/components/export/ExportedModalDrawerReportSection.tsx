@@ -1,8 +1,8 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { EntityCard, SpreadsheetWidget } from "components";
 import { ReportContext } from "components/reports/ReportProvider";
 import { useContext } from "react";
-import { EntityShape, ReportPageVerbiage } from "types";
+import { EntityShape, ModalDrawerEntityTypes, ReportPageVerbiage } from "types";
 import { getFormattedEntityData, parseCustomHtml } from "utils";
 // utils
 
@@ -11,6 +11,24 @@ export const ExportedModalDrawerReportSection = ({
 }: ExportedModalDrawerReportSectionProps) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
+  const entityCount = report?.fieldData?.[entityType].length;
+  const emptyEntity = entityCount < 1;
+
+  let emptyEntityMessage = "";
+  switch (entityType) {
+    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+      emptyEntityMessage = `No access and adequacy measures have been entered for this program report.`;
+      break;
+    case ModalDrawerEntityTypes.SANCTIONS:
+      emptyEntityMessage = `No plan-level sanctions or corrective actions have been entered for this program report.`;
+      break;
+    case ModalDrawerEntityTypes.QUALITY_MEASURES: {
+      emptyEntityMessage = `No quality measures and plan-level quality measure results have been entered for this program report.`;
+      break;
+    }
+    default:
+      break;
+  }
 
   return (
     <Box mt="2rem">
@@ -19,17 +37,17 @@ export const ExportedModalDrawerReportSection = ({
           {sectionHeading}
         </Heading>
       )}
-
-      {verbiage?.intro?.info && (
+      {!emptyEntity && verbiage?.intro?.info && (
         <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
       )}
 
-      {verbiage?.intro?.spreadsheet && (
+      {!emptyEntity && verbiage?.intro?.spreadsheet && (
         <Box sx={sx.spreadSheet}>
           <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
         </Box>
       )}
 
+      {emptyEntity && <Text>{emptyEntityMessage}</Text>}
       {report?.fieldData?.[entityType]?.map((entity: EntityShape) => (
         <EntityCard
           key={entity.id}
