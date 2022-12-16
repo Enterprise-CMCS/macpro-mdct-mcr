@@ -35,10 +35,10 @@ export const ExportedStandardReportSection = ({
     return [
       `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
       parseFieldLabel(field.props).label,
-      parseAllLevels({
+      `<div class="answers">${parseAllLevels({
         ...field,
         fieldData: report?.fieldData,
-      }),
+      })}</div>`,
     ];
   };
 
@@ -89,6 +89,11 @@ interface ExportedStandardReportSectionProps {
 const sx = {
   dataTable: {
     marginBottom: "1rem",
+    ".answers": {
+      p: {
+        margin: "0 0 1rem",
+      },
+    },
     p: {
       strong: {
         display: "inline-block",

@@ -1,15 +1,16 @@
+import { useContext } from "react";
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import { ReportContext, SpreadsheetWidget, Table } from "components";
-import { useContext } from "react";
+// types
 import { FormJson, ReportPageVerbiage } from "types";
+// utils
 import {
+  parseAllLevels,
   parseCustomHtml,
   parseDynamicFieldData,
-  parseFieldData,
   parseFieldLabel,
 } from "utils";
-// utils
 
 export const ExportedDrawerReportSection = ({
   section: { drawerForm, form, name, verbiage },
@@ -29,11 +30,12 @@ export const ExportedDrawerReportSection = ({
       report?.fieldData.plans !== undefined &&
       report?.fieldData.plans
         .map((plan: any) => {
-          return `<p><strong>${plan.name}</strong></p><p>${parseFieldData({
-            data: plan[field.id],
-            mask: field.props.mask,
-            validation: field.validation,
-          })}</p><br>`;
+          return `<div class="plan-answers"><p><strong>${
+            plan.name
+          }</strong></p>${parseAllLevels({
+            ...field,
+            fieldData: plan,
+          })}</div>`;
         })
         .join(" ");
 
@@ -47,7 +49,7 @@ export const ExportedDrawerReportSection = ({
     return [
       `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
       parseFieldLabel(field.props).label,
-      parseFieldData({ data: drawerData }),
+      drawerData,
     ];
   };
 
@@ -102,6 +104,9 @@ interface ExportedDrawerReportSectionProps {
 const sx = {
   dataTable: {
     marginBottom: "1rem",
+    ".plan-answers": {
+      marginBottom: "1.5rem",
+    },
     p: {
       strong: {
         display: "inline-block",

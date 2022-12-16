@@ -58,18 +58,23 @@ export const parseFieldLabel = (labelObject: {
   hint?: string;
   hideHint?: boolean;
 }) => {
-  const labelArray = labelObject.label.split(" ");
-  const indicator = labelArray[0];
-  labelArray.shift();
-  const label = `<p><strong>${labelArray.join(" ")}</strong></p>${
-    labelObject.hint && !labelObject.hideHint
-      ? `<p>${labelObject.hint}</p>`
-      : ""
-  }`;
-
+  const labelArray = labelObject.label?.split(" ");
+  if (labelArray) {
+    const indicator = labelArray[0];
+    labelArray.shift();
+    const label = `<p><strong>${labelArray.join(" ")}</strong></p>${
+      labelObject.hint && !labelObject.hideHint
+        ? `<p>${labelObject.hint}</p>`
+        : ""
+    }`;
+    return {
+      indicator,
+      label,
+    };
+  }
   return {
-    indicator,
-    label,
+    indicator: "",
+    label: "",
   };
 };
 
@@ -100,7 +105,7 @@ export const parseAllLevels = ({
             if (typeof fieldData[childField.id] !== "string") {
               if (childField.props) {
                 childItems.push(
-                  `<br >${
+                  `${
                     parseFieldLabel({ ...childField.props, hideHint: true })
                       .label
                   }${returnChoices({
@@ -113,7 +118,7 @@ export const parseAllLevels = ({
             }
 
             childItems.push(
-              `<br>${
+              `${
                 childField.props
                   ? parseFieldLabel({ ...childField.props, hideHint: true })
                       .label
@@ -132,7 +137,7 @@ export const parseAllLevels = ({
     return dataItems?.join(" ") || noResponse;
   };
 
-  if (fieldData[id]) {
+  if (fieldData && fieldData[id]) {
     const qualifier = props
       ? props.mask || validation || type
       : validation || type;
