@@ -12,7 +12,7 @@ export const ExportedModalDrawerReportSection = ({
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
   const entityCount = report?.fieldData?.[entityType]?.length;
-  const emptyEntity = entityCount < 1;
+  const existingEntity = entityCount >= 1;
 
   let emptyEntityMessage = "";
   switch (entityType) {
@@ -29,7 +29,6 @@ export const ExportedModalDrawerReportSection = ({
     default:
       break;
   }
-
   return (
     <Box mt="2rem">
       {sectionHeading && (
@@ -37,17 +36,17 @@ export const ExportedModalDrawerReportSection = ({
           {sectionHeading}
         </Heading>
       )}
-      {!emptyEntity && verbiage?.intro?.info && (
+      {existingEntity && verbiage?.intro?.info && (
         <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
       )}
 
-      {!emptyEntity && verbiage?.intro?.spreadsheet && (
+      {existingEntity && verbiage?.intro?.spreadsheet && (
         <Box sx={sx.spreadSheet}>
           <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
         </Box>
       )}
 
-      {emptyEntity && <Text>{emptyEntityMessage}</Text>}
+      {!existingEntity && <Text>{emptyEntityMessage}</Text>}
       {report?.fieldData?.[entityType]?.map((entity: EntityShape) => (
         <EntityCard
           key={entity.id}
