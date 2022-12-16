@@ -5,8 +5,13 @@ import { hasPermissions } from "../../utils/auth/authorization";
 import {
   validateData,
   validateFieldData,
+  validateFormTemplate,
 } from "../../utils/validation/validation";
-import { metadataValidationSchema } from "../../utils/validation/schemas";
+import {
+  fieldDataValidationSchema,
+  formTemplateValidationSchema,
+  metadataValidationSchema,
+} from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
@@ -21,19 +26,28 @@ export const createReport = handler(async (event, _context) => {
   }
 
   const unvalidatedPayload = JSON.parse(event!.body!);
-  const { fieldData: unvalidatedFieldData, formTemplate } = unvalidatedPayload;
+  const {
+    metadata,
+    fieldData: unvalidatedFieldData,
+    formTemplate,
+  } = unvalidatedPayload;
   const fieldDataValidationJson = formTemplate.validationJson;
   if (unvalidatedFieldData && fieldDataValidationJson) {
     // validate report metadata
     const validatedMetadata = await validateData(
       metadataValidationSchema,
-      unvalidatedPayload
+      metadata
     );
 
     // validate report field data
     const validatedFieldData = await validateFieldData(
-      fieldDataValidationJson,
+      fieldDataValidationSchema,
       unvalidatedFieldData
+    );
+
+    const validatedFormTemplate = await validateFormTemplate(
+      formTemplateValidationSchema,
+      formTemplate
     );
 
     const state: string = event.pathParameters.state;
@@ -41,12 +55,13 @@ export const createReport = handler(async (event, _context) => {
     let reportParams = {
       TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
       Item: {
-        ...validatedMetadata,
+        metadata: validatedMetadata,
         state,
         id,
         createdAt: Date.now(),
         lastAltered: Date.now(),
         fieldData: validatedFieldData,
+        formTemplate: validatedFormTemplate,
       },
     };
     await dynamoDb.put(reportParams);
