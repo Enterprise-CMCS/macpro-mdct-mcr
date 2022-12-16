@@ -4,13 +4,14 @@ import { Box, Button, Image, Text } from "@chakra-ui/react";
 import verbiage from "verbiage/pages/exportedReport";
 // assets
 import pdfIcon from "assets/icons/icon_pdf_white.png";
+import { printPdf } from "utils";
 
 export const StickyBanner = () => {
   const { banner } = verbiage;
   return (
     <Box data-testid="stickyBanner" sx={sx.container}>
       <Text>{banner.heading}</Text>
-      <Button sx={sx.pdfButton}>
+      <Button sx={sx.pdfButton} onClick={printPdf}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
         {banner.buttonCopy}
       </Button>
