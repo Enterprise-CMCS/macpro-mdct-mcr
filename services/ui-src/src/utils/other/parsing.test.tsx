@@ -4,7 +4,6 @@ import DOMPurify from "dompurify";
 import {
   parseCustomHtml,
   parseDynamicFieldData,
-  parseFieldData,
   parseFieldLabel,
 } from "./parsing";
 
@@ -76,40 +75,6 @@ describe("Test Parsing for PDF Preview Fields", () => {
       indicator: "A.1",
       label: "<p><strong>Label</strong></p>",
     });
-  });
-  test("If an basic string is rendered correctly", () => {
-    expect(parseFieldData({ data: "test@test.com" })).toEqual("test@test.com");
-  });
-  test("If an email is rendered correctly", () => {
-    expect(
-      parseFieldData({ data: "test@test.com", validation: "email" })
-    ).toEqual('<a href="mailto:test@test.com">test@test.com</a>');
-  });
-  test("If an percentage is rendered correctly", () => {
-    expect(parseFieldData({ data: "13", mask: "percentage" })).toEqual("13%");
-  });
-  test("If an currency is rendered correctly", () => {
-    expect(parseFieldData({ data: "13", mask: "currency" })).toEqual("$13");
-  });
-  test("If an radio is rendered correctly", () => {
-    expect(
-      parseFieldData({ data: [{ value: "test" }], validation: "radio" })
-    ).toEqual("<p>test</p>");
-  });
-  test("If an checkbox is rendered correctly", () => {
-    expect(
-      parseFieldData({
-        data: [{ value: "test" }, { value: "test2" }],
-        validation: "checkbox",
-      })
-    ).toEqual("<p>test</p> <p>test2</p>");
-  });
-  test("If an url is rendered correctly", () => {
-    expect(
-      parseFieldData({
-        data: "https://google.com",
-      })
-    ).toEqual('<a href="https://google.com">https://google.com</a>');
   });
   test("If dynamic fields rendered correctly", () => {
     expect(
