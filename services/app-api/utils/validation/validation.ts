@@ -105,26 +105,3 @@ export const validateFieldData = async (
   }
   return validatedFieldData;
 };
-
-export const validateFormTemplate = async (
-  validationJson: AnyObject,
-  unvalidatedFormTemplate: AnyObject
-) => {
-  let validatedFormTemplate: AnyObject | undefined = undefined;
-  // filter field validation to just what's needed for the passed fields
-  const filteredFormTemplateValidationJson = filterValidationSchema(
-    validationJson,
-    unvalidatedFormTemplate
-  );
-  // transform field validation instructions to yup validation schema
-  const formTemplateValidationSchema = yup
-    .object()
-    .shape(mapValidationTypesToSchema(filteredFormTemplateValidationJson));
-  if (formTemplateValidationSchema) {
-    validatedFormTemplate = await validateData(
-      formTemplateValidationSchema,
-      unvalidatedFormTemplate
-    );
-  }
-  return validatedFormTemplate;
-};

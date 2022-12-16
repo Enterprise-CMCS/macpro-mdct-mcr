@@ -11,16 +11,10 @@ export const metadataValidationSchema = yup.object().shape({
   lastAlteredBy: yup.string(),
   submittedBy: yup.string(),
   submittedOnDate: yup.string(),
+  fieldDataId: yup.string(),
+  formTemplateid: yup.string(),
 });
 
 export const archiveValidationSchema = yup.object().shape({
   archived: yup.boolean(),
-});
-
-export const fieldDataValidationSchema = yup.object().shape({
-  fieldData: yup.mixed(),
-});
-
-export const formTemplateValidationSchema = yup.object().shape({
-  formTemplate: yup.mixed(),
 });

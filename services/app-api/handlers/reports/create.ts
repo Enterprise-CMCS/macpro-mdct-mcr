@@ -1,3 +1,4 @@
+import { S3 } from "aws-sdk";
 import KSUID from "ksuid";
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
@@ -22,17 +23,18 @@ export const createReport = handler(async (event, _context) => {
 
   const unvalidatedPayload = JSON.parse(event!.body!);
   const {
-    metadata,
+    metadata: unvalidatedMetadata,
     fieldData: unvalidatedFieldData,
     formTemplate,
   } = unvalidatedPayload;
+
   const fieldDataValidationJson = formTemplate.validationJson;
+
   if (unvalidatedFieldData && fieldDataValidationJson) {
-    // validate report metadata
-    const validatedMetadata = await validateData(
-      metadataValidationSchema,
-      metadata
-    );
+    const s3 = new S3();
+    const state: string = event.pathParameters.state;
+    const fieldDataId: string = KSUID.randomSync().string;
+    const formTemplateId: string = KSUID.randomSync().string;
 
     // validate report field data
     const validatedFieldData = await validateFieldData(
@@ -40,18 +42,44 @@ export const createReport = handler(async (event, _context) => {
       unvalidatedFieldData
     );
 
-    const state: string = event.pathParameters.state;
-    const id: string = KSUID.randomSync().string;
+    // post field data to s3 bucket
+    const fieldDataParams = {
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Key: "/fieldData/" + state + "/" + fieldDataId,
+      Body: JSON.stringify(validatedFieldData),
+      ContentType: "application/json",
+    };
+    await s3.putObject(fieldDataParams, () => {
+      throw new Error(error.S3_OBJECT_CREATION_ERROR);
+    });
+
+    // post form template to s3 bucket
+    const formTemplateParams = {
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Key: "/formTemplates/" + state + "/" + formTemplateId,
+      Body: JSON.stringify(formTemplate),
+      ContentType: "application/json",
+    };
+    await s3.putObject(formTemplateParams, () => {
+      throw new Error(error.S3_OBJECT_CREATION_ERROR);
+    });
+
+    // validate report metadata
+    const validatedMetadata = await validateData(metadataValidationSchema, {
+      ...unvalidatedMetadata,
+      fieldDataId,
+      formTemplateId,
+    });
+
+    // create record in report table
     let reportParams = {
       TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
       Item: {
-        metadata: validatedMetadata,
+        ...validatedMetadata,
         state,
-        id,
+        id: KSUID.randomSync().string,
         createdAt: Date.now(),
         lastAltered: Date.now(),
-        fieldData: validatedFieldData,
-        formTemplate: formTemplate,
       },
     };
     await dynamoDb.put(reportParams);
