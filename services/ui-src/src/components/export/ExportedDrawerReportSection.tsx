@@ -5,25 +5,13 @@ import { ReportContext, SpreadsheetWidget, Table } from "components";
 // types
 import { FormJson, ReportPageVerbiage } from "types";
 // utils
-import {
-  parseAllLevels,
-  parseCustomHtml,
-  parseDynamicFieldData,
-  parseFieldLabel,
-} from "utils";
+import { parseAllLevels, parseCustomHtml, parseFieldLabel } from "utils";
 
 export const ExportedDrawerReportSection = ({
-  section: { drawerForm, form, name, verbiage },
+  section: { drawerForm, name, verbiage },
 }: ExportedDrawerReportSectionProps) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
-  const isDynamicField = form?.fields.filter(
-    (f) => f.type === "dynamic"
-  ).length;
-
-  const headRowItems = isDynamicField
-    ? ["Indicator", "Response"]
-    : ["Number", "Indicator", "Response"];
 
   const fieldRowsItems = (field: any) => {
     const drawerData =
@@ -38,13 +26,6 @@ export const ExportedDrawerReportSection = ({
           })}</div>`;
         })
         .join(" ");
-
-    if (isDynamicField) {
-      return [
-        `<strong>${field.props.label}</strong>`,
-        parseDynamicFieldData(report?.fieldData[field.id]),
-      ];
-    }
 
     return [
       `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
@@ -77,9 +58,9 @@ export const ExportedDrawerReportSection = ({
       {formFields && (
         <Table
           sx={sx.dataTable}
-          className={isDynamicField ? "short" : "standard"}
+          className="standard"
           content={{
-            headRow: headRowItems,
+            headRow: ["Number", "Indicator", "Response"],
             bodyRows: formFields
               .filter((f) => f.props)
               .map((field: any) => {
