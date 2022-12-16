@@ -142,39 +142,29 @@ export const parseAllLevels = ({
       ? props.mask || validation || type
       : validation || type;
 
-    if (qualifier === "percentage") {
-      return `${fieldData[id]}%`;
+    switch (qualifier) {
+      case "percentage":
+        return `${fieldData[id]}%`;
+      case "currency":
+        return `$${fieldData[id]}`;
+      case "email":
+      case "emailOptional":
+        return `<a href="mailto:${fieldData[id]}">${fieldData[id]}</a>`;
+      case "text":
+      case "textOptional":
+        if (fieldData[id].indexOf("http") >= 0) {
+          return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
+        }
+        return fieldData[id];
+      case "checkbox":
+      case "radio":
+        return returnChoices({
+          parent: { id, props, type, validation },
+          fieldData: fieldData[id],
+        });
+      default:
+        return fieldData[id];
     }
-    if (qualifier === "currency") {
-      return `$${fieldData[id]}`;
-    }
-    if (qualifier === "email" || qualifier === "emailOptional") {
-      return `<a href="mailto:${fieldData[id]}">${fieldData[id]}</a>`;
-    }
-
-    if (
-      (qualifier === "text" && fieldData[id].indexOf("http") >= 0) ||
-      (qualifier === "textOptional" && fieldData[id].indexOf("http") >= 0)
-    ) {
-      return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
-    }
-
-    if (
-      typeof fieldData[id] === "string" &&
-      fieldData[id].indexOf("http") >= 0
-    ) {
-      return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
-    }
-
-    if (qualifier === "checkbox" || qualifier === "radio") {
-      return returnChoices({
-        parent: { id, props, type, validation },
-        fieldData: fieldData[id],
-      });
-    }
-
-    // Default return
-    return fieldData[id];
   }
 
   return noResponse;
