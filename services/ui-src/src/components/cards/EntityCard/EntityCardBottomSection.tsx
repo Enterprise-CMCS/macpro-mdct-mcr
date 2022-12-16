@@ -9,6 +9,7 @@ export const EntityCardBottomSection = ({
   printVersion,
   verbiage,
 }: Props) => {
+  const notAnswered = <Text sx={sx.notAnswered}>Not Answered</Text>;
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (
@@ -21,14 +22,13 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.provider ??
-                    (printVersion && "Not Answered")}
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>{printVersion && "C2.V.5 "} Region</Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.region ??
-                    (printVersion && "Not Answered")}
+                  {formattedEntityData?.region ?? (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -37,7 +37,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.population ??
-                    (printVersion && "Not Answered")}
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
             </Flex>
@@ -47,14 +47,14 @@ export const EntityCardBottomSection = ({
           </Text>
           <Text sx={sx.subtext}>
             {formattedEntityData?.monitoringMethods?.join(", ") ??
-              (printVersion && "Not Answered")}
+              (printVersion && notAnswered)}
           </Text>
           <Text sx={sx.subtitle}>
             {printVersion && "C2.V.8 "} Frequency of oversight methods
           </Text>
           <Text sx={sx.subtext}>
             {formattedEntityData.methodFrequency ??
-              (printVersion && "Not Answered")}
+              (printVersion && notAnswered)}
           </Text>
         </>
       );
@@ -70,7 +70,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.noncomplianceInstances ??
-                    (printVersion && "Not Answered")}
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -80,7 +80,7 @@ export const EntityCardBottomSection = ({
                 <Text sx={sx.subtext}>
                   ${" "}
                   {formattedEntityData?.dollarAmount ??
-                    (printVersion && "Not Answered")}
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
             </Flex>
@@ -91,7 +91,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.assessmentDate ??
-                    (printVersion && "Not Answered")}
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -100,8 +100,8 @@ export const EntityCardBottomSection = ({
                   was corrected
                 </Text>
                 <Text sx={sx.subtext}>
-                  {(formattedEntityData?.remediationDate || "") ??
-                    (printVersion && "Not Answered")}
+                  {formattedEntityData?.remediationDate ??
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
             </Flex>
@@ -110,7 +110,7 @@ export const EntityCardBottomSection = ({
             </Text>
             <Text sx={sx.subtext}>
               {formattedEntityData?.correctiveActionPlan ??
-                (printVersion && "Not Answered")}
+                (printVersion && notAnswered)}
             </Text>
           </Box>
         </>
@@ -122,7 +122,7 @@ export const EntityCardBottomSection = ({
           {formattedEntityData?.isPartiallyComplete && (
             <Text sx={sx.missingResponseMessage}>
               {verbiage?.entityMissingResponseMessage ??
-                (printVersion && "Not Answered")}
+                (printVersion && notAnswered)}
             </Text>
           )}
           {formattedEntityData?.perPlanResponses?.map(
