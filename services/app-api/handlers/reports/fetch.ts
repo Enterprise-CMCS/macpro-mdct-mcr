@@ -2,27 +2,35 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { AnyObject, StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
+import { S3 } from "aws-sdk";
 
 export const fetchReport = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  if (!event?.pathParameters?.state! || !event?.pathParameters?.id) {
     throw new Error(error.NO_KEY);
   }
-  const params = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Key: {
-      state: event.pathParameters.state,
-      id: event.pathParameters.id,
-    },
-  };
-  const response = await dynamoDb.get(params);
 
-  let status = StatusCodes.SUCCESS;
-  if (!response?.Item) {
-    status = StatusCodes.NOT_FOUND;
-  }
+  const s3 = new S3();
+  const templateParams = {
+    Bucket: process.env.MCPAR_FORM_BUCKET! + "/formTemplate",
+    Key: event?.pathParameters?.id,
+  };
+
+  const template = s3.getObject(templateParams);
+
+  const dataParams = {
+    Bucket: process.env.MCPAR_FORM_BUCKET! + "/formData",
+    Key: event?.pathParameters?.id,
+  };
+  const data = s3.getObject(dataParams);
+  /*
+   * console.log("Output:");
+   * console.log("Template params", templateParams, "Data params", dataParams);
+   * console.log("Template", template, "Data", data);
+   */
+
   return {
-    status: status,
-    body: response.Item,
+    status: StatusCodes.SUCCESS,
+    body: [template, data],
   };
 });
 
