@@ -5,13 +5,8 @@ import { hasPermissions } from "../../utils/auth/authorization";
 import {
   validateData,
   validateFieldData,
-  validateFormTemplate,
 } from "../../utils/validation/validation";
-import {
-  fieldDataValidationSchema,
-  formTemplateValidationSchema,
-  metadataValidationSchema,
-} from "../../utils/validation/schemas";
+import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
@@ -41,13 +36,8 @@ export const createReport = handler(async (event, _context) => {
 
     // validate report field data
     const validatedFieldData = await validateFieldData(
-      fieldDataValidationSchema,
+      fieldDataValidationJson,
       unvalidatedFieldData
-    );
-
-    const validatedFormTemplate = await validateFormTemplate(
-      formTemplateValidationSchema,
-      formTemplate
     );
 
     const state: string = event.pathParameters.state;
@@ -61,7 +51,7 @@ export const createReport = handler(async (event, _context) => {
         createdAt: Date.now(),
         lastAltered: Date.now(),
         fieldData: validatedFieldData,
-        formTemplate: validatedFormTemplate,
+        formTemplate: formTemplate,
       },
     };
     await dynamoDb.put(reportParams);

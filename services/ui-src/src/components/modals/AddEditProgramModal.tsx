@@ -58,6 +58,7 @@ export const AddEditProgramModal = ({
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
         programName,
       },
+      formTemplate,
     };
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
@@ -65,6 +66,8 @@ export const AddEditProgramModal = ({
         state: activeState,
         id: selectedReport.id,
       };
+      // TODO: FIX THIS
+
       // edit existing report
       await updateReport(reportKeys, {
         ...dataToWrite,
