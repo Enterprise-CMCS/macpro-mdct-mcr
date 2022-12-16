@@ -67,16 +67,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   // Looping to perform complete scan of tables due to 1 mb limit per iteration
   do {
     [startingKey, results] = await queryTable(startingKey);
-
-    /*
-     * Remove formTemplate and formData to get rid of excessive size that isn't needed
-     * on the dashboard when this call is used
-     */
     const items: AnyObject[] = results.Items;
-    items.forEach((item: any) => {
-      delete item.formTemplate;
-      delete item.formData;
-    });
     existingItems.push(...items);
   } while (startingKey);
 
