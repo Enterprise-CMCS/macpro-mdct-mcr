@@ -11,7 +11,7 @@ export const ExportedModalDrawerReportSection = ({
 }: ExportedModalDrawerReportSectionProps) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
-  const entityCount = report?.fieldData?.[entityType].length;
+  const entityCount = report?.fieldData?.[entityType]?.length;
   const emptyEntity = entityCount < 1;
 
   let emptyEntityMessage = "";
