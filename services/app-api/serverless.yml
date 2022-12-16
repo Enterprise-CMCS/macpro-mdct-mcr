@@ -97,8 +97,8 @@ provider:
             - "arn:aws:s3:::${self:custom.templateBucket}"
             - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
             - "arn:aws:s3:::${self:custom.mcparFormBucket}"
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}/templates/*"
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}/data/*"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}/formTemplates/*"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}/fieldData/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
