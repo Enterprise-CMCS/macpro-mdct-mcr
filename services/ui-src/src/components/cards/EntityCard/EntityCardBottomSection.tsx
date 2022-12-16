@@ -18,7 +18,7 @@ export const EntityCardBottomSection = ({
             <Flex>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  {printVersion && "C2.V.4 "} Provider
+                  {printVersion && "C2.V.4"} Provider
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.provider ??
@@ -185,8 +185,9 @@ const sx = {
     color: "palette.error_dark",
   },
   highlightContainer: {
+    marginTop: "1rem",
     marginBottom: "1rem",
-    padding: "1rem 1.5rem",
+    padding: "0 1.5rem 1rem",
     background: "palette.secondary_lightest",
     borderRadius: "3px",
     "&.error": {

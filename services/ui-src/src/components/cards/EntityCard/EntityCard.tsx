@@ -100,7 +100,7 @@ export const EntityCard = ({
         <EntityCardTopSection
           entityType={entityType}
           formattedEntityData={formattedEntityData}
-          printVersion
+          printVersion={!!printVersion}
         />
         {openAddEditEntityModal && (
           <Button
@@ -121,7 +121,7 @@ export const EntityCard = ({
               ...formattedEntityData,
               isPartiallyComplete: entityStarted && !entityCompleted,
             }}
-            printVersion
+            printVersion={!!printVersion}
           />
         ) : (
           <Text sx={sx.unfinishedMessage}>
