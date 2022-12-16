@@ -19,17 +19,26 @@ export const EntityCardBottomSection = ({
                 <Text sx={sx.subtitle}>
                   {printVersion && "C2.V.4 "} Provider
                 </Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.provider ??
+                    (printVersion && "No Response")}
+                </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>{printVersion && "C2.V.5 "} Region</Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.region ??
+                    (printVersion && "No Response")}
+                </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
                   {printVersion && "C2.V.5 "} Population
                 </Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.population ??
+                    (printVersion && "No Response")}
+                </Text>
               </Box>
             </Flex>
           </Box>
@@ -37,12 +46,16 @@ export const EntityCardBottomSection = ({
             {printVersion && "C2.V.7 "} Monitoring Methods
           </Text>
           <Text sx={sx.subtext}>
-            {formattedEntityData?.monitoringMethods?.join(", ")}
+            {formattedEntityData?.monitoringMethods?.join(", ") ??
+              (printVersion && "No Response")}
           </Text>
           <Text sx={sx.subtitle}>
             {printVersion && "C2.V.8 "} Frequency of oversight methods
           </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.methodFrequency}</Text>
+          <Text sx={sx.subtext}>
+            {formattedEntityData.methodFrequency ??
+              (printVersion && "No Response")}
+          </Text>
         </>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
@@ -56,7 +69,8 @@ export const EntityCardBottomSection = ({
                   {printVersion && "D3.VIII.5 "} Instances of non-compliance
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.noncomplianceInstances}
+                  {formattedEntityData?.noncomplianceInstances ??
+                    (printVersion && "No Response")}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -64,7 +78,9 @@ export const EntityCardBottomSection = ({
                   {printVersion && "D3.VIII.6 "} Sanction amount
                 </Text>
                 <Text sx={sx.subtext}>
-                  $ {formattedEntityData?.dollarAmount}
+                  ${" "}
+                  {formattedEntityData?.dollarAmount ??
+                    (printVersion && "No Response")}
                 </Text>
               </Box>
             </Flex>
@@ -74,7 +90,8 @@ export const EntityCardBottomSection = ({
                   {printVersion && "D3.VIII.7 "} Date assessed
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.assessmentDate}
+                  {formattedEntityData?.assessmentDate ??
+                    (printVersion && "No Response")}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -83,7 +100,8 @@ export const EntityCardBottomSection = ({
                   was corrected
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.remediationDate || ""}
+                  {(formattedEntityData?.remediationDate || "") ??
+                    (printVersion && "No Response")}
                 </Text>
               </Box>
             </Flex>
@@ -91,7 +109,8 @@ export const EntityCardBottomSection = ({
               {printVersion && "D3.VIII.9 "} Corrective action plan
             </Text>
             <Text sx={sx.subtext}>
-              {formattedEntityData?.correctiveActionPlan}
+              {formattedEntityData?.correctiveActionPlan ??
+                (printVersion && "No Response")}
             </Text>
           </Box>
         </>
@@ -102,7 +121,8 @@ export const EntityCardBottomSection = ({
           <Text sx={sx.resultsHeader}>Measure results</Text>
           {formattedEntityData?.isPartiallyComplete && (
             <Text sx={sx.missingResponseMessage}>
-              {verbiage?.entityMissingResponseMessage}
+              {verbiage?.entityMissingResponseMessage ??
+                (printVersion && "No Response")}
             </Text>
           )}
           {formattedEntityData?.perPlanResponses?.map(
@@ -116,7 +136,10 @@ export const EntityCardBottomSection = ({
                   <Box sx={sx.highlightSection}>
                     <Text sx={sx.planTitle}>{plan.name}</Text>
                     <Text sx={sx.planText}>
-                      {plan.response || verbiage?.entityEmptyResponseMessage}
+                      {plan.response ||
+                        (!printVersion
+                          ? verbiage?.entityEmptyResponseMessage
+                          : "No Response")}
                     </Text>
                   </Box>
                 </Flex>
