@@ -20,6 +20,7 @@ export const StickyBanner = () => {
 
 const sx = {
   container: {
+    zIndex: "1",
     position: "sticky",
     top: "11.125rem",
     margin: "2rem 0",
