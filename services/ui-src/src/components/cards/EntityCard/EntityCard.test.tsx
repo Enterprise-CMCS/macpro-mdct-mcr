@@ -40,6 +40,7 @@ const UnfinishedAccessMeasuresEntityCardComponent = (
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
+    printVersion={false}
   />
 );
 
@@ -52,6 +53,20 @@ const AccessMeasuresEntityCardComponent = (
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
+    printVersion={false}
+  />
+);
+
+const AccessMeasuresEntityCardPrintComponent = (
+  <EntityCard
+    entity={mockAccessMeasuresEntity}
+    entityType="accessMeasures"
+    formattedEntityData={mockCompletedAccessMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    printVersion={true}
   />
 );
 
@@ -124,6 +139,24 @@ describe("Test AccessMeasures EntityCard accessibility", () => {
     const { container } = render(AccessMeasuresEntityCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+});
+
+describe("Test Print Version EntityCard", () => {
+  beforeEach(() => {
+    render(AccessMeasuresEntityCardPrintComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard in print version displays entity count", () => {
+    expect(screen.getByTestId("entities-count")).toBeVisible();
+  });
+
+  test("EntityCard in print version displays status indicator", () => {
+    expect(screen.getByTestId("print-status-indicator")).toBeVisible();
   });
 });
 
