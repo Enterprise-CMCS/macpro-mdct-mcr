@@ -44,6 +44,19 @@ const UnfinishedAccessMeasuresEntityCardComponent = (
   />
 );
 
+const UnfinishedAccessMeasuresEntityCardPrintComponent = (
+  <EntityCard
+    entity={mockAccessMeasuresEntity}
+    entityType="mock-entity-type"
+    formattedEntityData={mockUnfinishedAccessMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    printVersion={true}
+  />
+);
+
 const AccessMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockAccessMeasuresEntity}
@@ -142,7 +155,7 @@ describe("Test AccessMeasures EntityCard accessibility", () => {
   });
 });
 
-describe("Test Print Version EntityCard", () => {
+describe("Test Completed Print Version EntityCard", () => {
   beforeEach(() => {
     render(AccessMeasuresEntityCardPrintComponent);
   });
@@ -155,8 +168,26 @@ describe("Test Print Version EntityCard", () => {
     expect(screen.getByTestId("entities-count")).toBeVisible();
   });
 
-  test("EntityCard in print version displays status indicator", () => {
+  test("EntityCard in print version displays print version status indicator", () => {
     expect(screen.getByTestId("print-status-indicator")).toBeVisible();
+  });
+
+  test("Finished EntityCard in print version displays completed ", () => {
+    expect(screen.getByText("Complete")).toBeVisible();
+  });
+});
+
+describe("Test Uncmpleted Print Version EntityCard", () => {
+  beforeEach(() => {
+    render(UnfinishedAccessMeasuresEntityCardPrintComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard in print version displays error", () => {
+    expect(screen.getByText("Error!")).toBeVisible();
   });
 });
 
