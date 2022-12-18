@@ -27,9 +27,25 @@ export const fetchReport = handler(async (event, _context) => {
   };
   const data = await getObjectWrapper(s3, dataParams);
 
+  const params = {
+    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    Key: {
+      state: event.pathParameters.state,
+      id: event.pathParameters.id,
+    },
+  };
+  const response = await dynamoDb.get(params);
+
+  let status = StatusCodes.SUCCESS;
+  if (!response?.Item || !template || !data) {
+    status = StatusCodes.NOT_FOUND;
+  }
+
+  const report: any = response.Item;
+
   return {
-    status: StatusCodes.SUCCESS,
-    body: { formTemplate: template, fieldData: data },
+    status: status,
+    body: { ...report, formTemplate: template, fieldData: data },
   };
 });
 

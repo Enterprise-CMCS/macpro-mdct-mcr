@@ -99,7 +99,6 @@ export const DashboardPage = ({ reportType }: Props) => {
       id: report.id,
     };
     const selectedReport: ReportShape = await fetchReport(reportKeys);
-
     // set active report to selected report
     setReportSelection(selectedReport);
     const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
