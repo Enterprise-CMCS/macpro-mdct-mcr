@@ -33,8 +33,11 @@ export const createReport = handler(async (event, _context) => {
   if (unvalidatedFieldData && fieldDataValidationJson) {
     const s3 = new S3();
     const state: string = event.pathParameters.state;
-    const fieldDataId: string = KSUID.randomSync().string;
-    const formTemplateId: string = KSUID.randomSync().string;
+    const id: string = KSUID.randomSync().string;
+    /*
+     * const fieldDataId: string = KSUID.randomSync().string;
+     * const formTemplateId: string = KSUID.randomSync().string;
+     */
 
     // validate report field data
     const validatedFieldData = await validateFieldData(
@@ -44,31 +47,26 @@ export const createReport = handler(async (event, _context) => {
 
     // post field data to s3 bucket
     const fieldDataParams = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
-      Key: "/fieldData/" + state + "/" + fieldDataId,
+      Bucket: "database-winter-storm-create-mcpar-446712541566",
+      Key: "/fieldData/" + state + "/" + id,
       Body: JSON.stringify(validatedFieldData),
       ContentType: "application/json",
     };
-    await s3.putObject(fieldDataParams, () => {
-      throw new Error(error.S3_OBJECT_CREATION_ERROR);
-    });
+
+    await putObjectWrapper(s3, fieldDataParams);
 
     // post form template to s3 bucket
     const formTemplateParams = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
-      Key: "/formTemplates/" + state + "/" + formTemplateId,
+      Bucket: "database-winter-storm-create-mcpar-446712541566",
+      Key: "/formTemplates/" + state + "/" + id,
       Body: JSON.stringify(formTemplate),
       ContentType: "application/json",
     };
-    await s3.putObject(formTemplateParams, () => {
-      throw new Error(error.S3_OBJECT_CREATION_ERROR);
-    });
+    await putObjectWrapper(s3, formTemplateParams);
 
     // validate report metadata
     const validatedMetadata = await validateData(metadataValidationSchema, {
       ...unvalidatedMetadata,
-      fieldDataId,
-      formTemplateId,
     });
 
     // create record in report table
@@ -77,7 +75,7 @@ export const createReport = handler(async (event, _context) => {
       Item: {
         ...validatedMetadata,
         state,
-        id: KSUID.randomSync().string,
+        id: id,
         createdAt: Date.now(),
         lastAltered: Date.now(),
       },
@@ -89,3 +87,21 @@ export const createReport = handler(async (event, _context) => {
     };
   } else throw new Error(error.MISSING_DATA);
 });
+
+const putObjectWrapper = (
+  s3: S3,
+  params: { Bucket: string; Key: string; Body: string; ContentType: string }
+) => {
+  return new Promise((resolve, reject) => {
+    s3.putObject(params, function (err: any, result: any) {
+      if (err) {
+        // console.log("Put Error", err);
+        reject(err);
+      }
+      if (result) {
+        // console.log("Put Result", result);
+        resolve(result);
+      }
+    });
+  });
+};

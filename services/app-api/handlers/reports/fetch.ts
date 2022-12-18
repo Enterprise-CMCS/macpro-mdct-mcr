@@ -2,31 +2,39 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { AnyObject, StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
+import { S3 } from "aws-sdk";
 
 export const fetchReport = handler(async (event, _context) => {
+  // console.log("Fetching Report");
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(error.NO_KEY);
   }
-  const params = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Key: {
-      state: event.pathParameters.state,
-      id: event.pathParameters.id,
-    },
-  };
-  const response = await dynamoDb.get(params);
+  const state = event.pathParameters.state;
+  const id = event.pathParameters.id;
 
-  let status = StatusCodes.SUCCESS;
-  if (!response?.Item) {
-    status = StatusCodes.NOT_FOUND;
-  }
+  const s3 = new S3();
+  const templateParams = {
+    Bucket: "database-winter-storm-create-mcpar-446712541566",
+    Key: "/formTemplates/" + state + "/" + id,
+  };
+
+  const template = await getObjectWrapper(s3, templateParams);
+  // console.log("template", template);
+
+  const dataParams = {
+    Bucket: "database-winter-storm-create-mcpar-446712541566",
+    Key: "/fieldData/" + state + "/" + id,
+  };
+  const data = await getObjectWrapper(s3, dataParams);
+
   return {
-    status: status,
-    body: response.Item,
+    status: StatusCodes.SUCCESS,
+    body: { formTemplate: template, fieldData: data },
   };
 });
 
 export const fetchReportsByState = handler(async (event, _context) => {
+  // console.log("Fetching Reports By State");
   if (!event?.pathParameters?.state!) {
     throw new Error(error.NO_KEY);
   }
@@ -60,15 +68,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   do {
     [startingKey, results] = await queryTable(startingKey);
 
-    /*
-     * Remove formTemplate and formData to get rid of excessive size that isn't needed
-     * on the dashboard when this call is used
-     */
     const items: AnyObject[] = results.Items;
-    items.forEach((item: any) => {
-      delete item.formTemplate;
-      delete item.formData;
-    });
     existingItems.push(...items);
   } while (startingKey);
 
@@ -77,3 +77,18 @@ export const fetchReportsByState = handler(async (event, _context) => {
     body: existingItems,
   };
 });
+
+const getObjectWrapper = (s3: S3, params: { Bucket: string; Key: string }) => {
+  return new Promise((resolve, reject) => {
+    s3.getObject(params, function (err: any, result: any) {
+      if (err) {
+        // console.log("Get Error", err);
+        reject(err);
+      }
+      if (result) {
+        // console.log("Get Result", result);
+        resolve(JSON.parse(result.Body));
+      }
+    });
+  });
+};
