@@ -1,6 +1,7 @@
 import { S3 } from "aws-sdk";
 import handler from "../handler-lib";
 import { fetchReport } from "./fetch";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
@@ -10,6 +11,7 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
+import { putObjectWrapper } from "../../utils/s3/objectWrappers";
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
@@ -166,25 +168,6 @@ export const archiveReport = handler(async (event, context) => {
     body: body,
   };
 });
-
-// TODO: compare to other branches and export to utility function
-const putObjectWrapper = (
-  s3: S3,
-  params: { Bucket: string; Key: string; Body: string; ContentType: string }
-) => {
-  return new Promise((resolve, reject) => {
-    s3.putObject(params, function (err: any, result: any) {
-      if (err) {
-        // console.log("Put Error", err);
-        reject(err);
-      }
-      if (result) {
-        // console.log("Put Result", result);
-        resolve(result);
-      }
-    });
-  });
-};
 
 // TODO: compare to other branches and export to utility function
 const getObjectWrapper = (s3: S3, params: { Bucket: string; Key: string }) => {
