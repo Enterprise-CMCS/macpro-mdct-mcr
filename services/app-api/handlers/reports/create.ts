@@ -8,7 +8,7 @@ import {
   validateFieldData,
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
-import { StatusCodes, UserRoles } from "../../utils/types/types";
+import { S3Put, StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 
 export const createReport = handler(async (event, _context) => {
@@ -32,10 +32,9 @@ export const createReport = handler(async (event, _context) => {
   if (unvalidatedFieldData && fieldDataValidationJson) {
     const state: string = event.pathParameters.state;
     const id: string = KSUID.randomSync().string;
-    /*
-     * const fieldDataId: string = KSUID.randomSync().string;
-     * const formTemplateId: string = KSUID.randomSync().string;
-     */
+
+    const fieldDataId: string = KSUID.randomSync().string;
+    const formTemplateId: string = KSUID.randomSync().string;
 
     // validate report field data
     const validatedFieldData = await validateFieldData(
@@ -44,23 +43,19 @@ export const createReport = handler(async (event, _context) => {
     );
 
     // post field data to s3 bucket
-    const fieldDataParams = {
+    const fieldDataParams: S3Put = {
       Bucket: process.env.MCPAR_FORM_BUCKET || "",
-      Key: `fieldData/${state}/${KSUID.randomSync().string}`,
+      Key: `fieldData/${state}/${fieldDataId}.json`,
       Body: JSON.stringify(validatedFieldData),
       ContentType: "application/json",
     };
 
-    //console.log("create fieldDataParam", { fieldDataParams });
-
     await s3Lib.put(fieldDataParams);
 
-    //console.log("put fieldDataParam");
-
     // post form template to s3 bucket
-    const formTemplateParams = {
-      Bucket: process.env.TEMPLATE_BUCKET || "",
-      Key: `formTemplates/${state}/${KSUID.randomSync().string}`,
+    const formTemplateParams: S3Put = {
+      Bucket: process.env.MCPAR_FORM_BUCKET || "",
+      Key: `formTemplates/${state}/${formTemplateId}.json`,
       Body: JSON.stringify(formTemplate),
       ContentType: "application/json",
     };
@@ -79,6 +74,8 @@ export const createReport = handler(async (event, _context) => {
         ...validatedMetadata,
         state,
         id: id,
+        fieldDataId,
+        formTemplateId,
         createdAt: Date.now(),
         lastAltered: Date.now(),
       },

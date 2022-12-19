@@ -1,5 +1,6 @@
 import { Credentials, S3, Endpoint } from "aws-sdk";
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
+import { S3Get, S3Put } from "../types/types";
 
 export const createS3Client = () => {
   const s3Config: S3.ClientConfiguration &
@@ -22,31 +23,34 @@ export const createS3Client = () => {
   return new S3(s3Config);
 };
 
+const s3Client = createS3Client();
+
 export default {
-  put: async (params: s3Params) => {
+  put: async (params: S3Put) => {
     return new Promise((resolve, reject) => {
-      const s3Client = createS3Client();
       s3Client.putObject(params, function (err: any, result: any) {
-        //console.log({ err, result });
+        //console.log({ params, err, result });
         if (err) {
-          //console.error("Put Error", err);
           reject(err);
         }
         if (result) {
-          //console.log("Put Result", result);
           resolve(result);
         }
       });
     });
   },
-  get: async () => {
-    //console.log("TODO GET", params.Bucket);
+  get: async (params: S3Get) => {
+    return new Promise((resolve, reject) => {
+      s3Client.getObject(params, function (err: any, result: any) {
+        if (err) {
+          // console.log("Get Error", err);
+          reject(err);
+        }
+        if (result) {
+          // console.log("Get Result", result);
+          resolve(JSON.parse(result.Body));
+        }
+      });
+    });
   },
 };
-
-export interface s3Params {
-  Bucket: string;
-  Key: string;
-  Body?: string;
-  ContentType: string;
-}

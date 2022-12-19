@@ -1,8 +1,8 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
-import { AnyObject, StatusCodes } from "../../utils/types/types";
+import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
-import { S3 } from "aws-sdk";
+import s3Lib from "../../utils/s3/s3-lib";
 
 export const fetchReport = handler(async (event, _context) => {
   // console.log("Fetching Report");
@@ -10,38 +10,35 @@ export const fetchReport = handler(async (event, _context) => {
     throw new Error(error.NO_KEY);
   }
   const state = event.pathParameters.state;
-  const id = event.pathParameters.id;
-
-  const s3 = new S3();
-  const templateParams = {
-    Bucket: "database-winter-storm-create-mcpar-446712541566",
-    Key: "/formTemplates/" + state + "/" + id,
-  };
-
-  const template = await getObjectWrapper(s3, templateParams);
-  // console.log("template", template);
-
-  const dataParams = {
-    Bucket: "database-winter-storm-create-mcpar-446712541566",
-    Key: "/fieldData/" + state + "/" + id,
-  };
-  const data = await getObjectWrapper(s3, dataParams);
+  const reportId = event.pathParameters.id;
 
   const params = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
     Key: {
-      state: event.pathParameters.state,
-      id: event.pathParameters.id,
+      state: state,
+      id: reportId,
     },
   };
   const response = await dynamoDb.get(params);
+  const report: any = response.Item;
+
+  const templateParams: S3Get = {
+    Bucket: process.env.MCPAR_FORM_BUCKET || "",
+    Key: `formTemplates/${state}/${report?.formTemplateId as string}.json`,
+  };
+
+  const template: any = await s3Lib.get(templateParams);
+
+  const dataParams = {
+    Bucket: process.env.MCPAR_FORM_BUCKET || "",
+    Key: `fieldData/${state}/${report?.fieldDataId as string}.json`,
+  };
+  const data: any = await s3Lib.get(dataParams);
 
   let status = StatusCodes.SUCCESS;
   if (!response?.Item || !template || !data) {
     status = StatusCodes.NOT_FOUND;
   }
-
-  const report: any = response.Item;
 
   return {
     status: status,
@@ -93,18 +90,3 @@ export const fetchReportsByState = handler(async (event, _context) => {
     body: existingItems,
   };
 });
-
-const getObjectWrapper = (s3: S3, params: { Bucket: string; Key: string }) => {
-  return new Promise((resolve, reject) => {
-    s3.getObject(params, function (err: any, result: any) {
-      if (err) {
-        // console.log("Get Error", err);
-        reject(err);
-      }
-      if (result) {
-        // console.log("Get Result", result);
-        resolve(JSON.parse(result.Body));
-      }
-    });
-  });
-};
