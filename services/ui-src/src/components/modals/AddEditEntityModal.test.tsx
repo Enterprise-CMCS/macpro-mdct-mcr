@@ -35,8 +35,10 @@ const mockedReportContext = {
 
 const mockUpdateCallPayload = {
   fieldData: mockedReportContext.report.fieldData,
-  lastAlteredBy: undefined,
-  reportStatus: "In progress",
+  metadata: {
+    lastAlteredBy: undefined,
+    status: "In progress",
+  },
 };
 
 const modalComponent = (
@@ -115,8 +117,10 @@ describe("Test AddEditEntityModal functionality", () => {
 
     const mockUpdateCallPayload = {
       fieldData: mockedReportContext.report.fieldData,
-      lastAlteredBy: undefined,
-      reportStatus: "In progress",
+      metadata: {
+        lastAlteredBy: undefined,
+        status: "In progress",
+      },
     };
 
     mockUpdateCallPayload.fieldData.accessMeasures.push({
