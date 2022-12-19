@@ -33,7 +33,9 @@ const updateEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     ...mockReport,
-    status: "in progress",
+    metadata: {
+      status: "in progress",
+    },
     fieldData: {},
   }),
 };
@@ -50,8 +52,10 @@ const submissionEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     ...mockReport,
-    status: "submitted",
-    submittedBy: mockReport.lastAlteredBy,
+    metadata: {
+      status: "submitted",
+    },
+    submittedBy: mockReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
     fieldData: {},
   }),
@@ -92,7 +96,6 @@ describe("Test updateReport API method", () => {
       body: JSON.stringify(mockReport),
     });
     const res = await updateReport(updateEvent, null);
-
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.status).toContain("in progress");

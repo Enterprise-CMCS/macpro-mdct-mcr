@@ -42,17 +42,19 @@ export const mockReportFieldData = {
 
 export const mockReport = {
   ...mockReportKeys,
-  reportType: "mock-type",
+  metadata: {
+    reportType: "mock-type",
+    programName: "testProgram",
+    status: "Not started",
+    reportingPeriodStartDate: 162515200000,
+    reportingPeriodEndDate: 168515200000,
+    dueDate: 168515200000,
+    combinedData: false,
+    lastAlteredBy: "Thelonious States",
+  },
   formTemplate: mockReportJson,
-  programName: "testProgram",
-  status: "Not started",
-  dueDate: 168515200000,
-  reportingPeriodStartDate: 162515200000,
-  reportingPeriodEndDate: 168515200000,
   createdAt: 162515200000,
   lastAltered: 162515200000,
-  lastAlteredBy: "Thelonious States",
-  combinedData: false,
   fieldData: mockReportFieldData,
 };
 
