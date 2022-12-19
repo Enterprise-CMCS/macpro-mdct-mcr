@@ -1,59 +1,52 @@
-import KSUID from "ksuid";
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
-import { AnyObject, StatusCodes } from "../../utils/types/types";
+import s3Lib from "../../utils/s3/s3-lib";
+import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
-import { S3 } from "aws-sdk";
 
 export const fetchReport = handler(async (event, _context) => {
-  // console.log("Fetching Report");
+  let status, body;
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(error.NO_KEY);
   }
   const state = event.pathParameters.state;
   const reportId = event.pathParameters.id;
 
-  const fieldDataId: string = KSUID.randomSync().string;
-  const formTemplateId: string = KSUID.randomSync().string;
-
-  const s3 = new S3();
-  const templateParams = {
-    Bucket: "database-winter-storm-create-mcpar-446712541566",
-    Key: "/formTemplates/" + state + "/" + formTemplateId,
-  };
-
-  const template = await getObjectWrapper(s3, templateParams);
-
-  const dataParams = {
-    Bucket: "database-winter-storm-create-mcpar-446712541566",
-    Key: "/fieldData/" + state + "/" + fieldDataId,
-  };
-  const data = await getObjectWrapper(s3, dataParams);
-
-  const params = {
+  // get current report metadata
+  const reportMetadataParams = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Key: {
-      state: event.pathParameters.state,
-      id: reportId,
-    },
+    Key: { state, id: reportId },
   };
-  const response = await dynamoDb.get(params);
+  const response = await dynamoDb.get(reportMetadataParams);
+  const reportMetadata: any = response.Item; // TODO: strict typing
+  const { formTemplateId, fieldDataId } = reportMetadata;
 
-  let status = StatusCodes.SUCCESS;
-  if (!response?.Item || !template || !data) {
+  // get formTemplate from s3 bucket
+  const formTemplateParams: S3Get = {
+    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Key: `formTemplates/${state}/${formTemplateId}.json`,
+  };
+  const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
+
+  // get fieldData from s3 bucket
+  const fieldDataParams = {
+    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Key: `fieldData/${state}/${fieldDataId}.json`,
+  };
+  const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
+
+  // if any of the three could not be found, return error
+  if (!response?.Item || !formTemplate || !fieldData) {
     status = StatusCodes.NOT_FOUND;
+    body = error.NO_MATCHING_RECORD;
+  } else {
+    status = StatusCodes.SUCCESS;
+    body = { ...reportMetadata, formTemplate, fieldData };
   }
-
-  const report: any = response.Item;
-
-  return {
-    status: status,
-    body: { ...report, formTemplate: template, fieldData: data },
-  };
+  return { status, body };
 });
 
 export const fetchReportsByState = handler(async (event, _context) => {
-  // console.log("Fetching Reports By State");
   if (!event?.pathParameters?.state!) {
     throw new Error(error.NO_KEY);
   }
@@ -86,7 +79,6 @@ export const fetchReportsByState = handler(async (event, _context) => {
   // Looping to perform complete scan of tables due to 1 mb limit per iteration
   do {
     [startingKey, results] = await queryTable(startingKey);
-
     const items: AnyObject[] = results.Items;
     existingItems.push(...items);
   } while (startingKey);
@@ -96,16 +88,3 @@ export const fetchReportsByState = handler(async (event, _context) => {
     body: existingItems,
   };
 });
-
-const getObjectWrapper = (s3: S3, params: { Bucket: string; Key: string }) => {
-  return new Promise((resolve, reject) => {
-    s3.getObject(params, function (err: any, result: any) {
-      if (err) {
-        reject(err);
-      }
-      if (result) {
-        resolve(JSON.parse(result.Body));
-      }
-    });
-  });
-};

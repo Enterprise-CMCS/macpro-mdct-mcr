@@ -66,6 +66,8 @@ export const AddEditProgramModal = ({
         state: activeState,
         id: selectedReport.id,
       };
+      // TODO: FIX THIS
+
       // edit existing report
       await updateReport(reportKeys, {
         ...dataToWrite,
@@ -75,6 +77,7 @@ export const AddEditProgramModal = ({
       await createReport(activeState, {
         ...dataToWrite,
         status: ReportStatus.NOT_STARTED,
+        formTemplate,
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
@@ -110,9 +113,9 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
-  selectedReport?: AnyObject;
-  reportType: string;
   formTemplate: ReportJson;
+  reportType: string;
+  selectedReport?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
