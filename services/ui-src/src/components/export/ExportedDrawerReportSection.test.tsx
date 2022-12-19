@@ -7,32 +7,24 @@ import {
   mockDrawerReportPageJson,
   mockReportContext,
 } from "utils/testing/setupJest";
+// types
+import { AnyObject } from "yup/lib/types";
 
-const mockContentNoSubsection = {
+const mockContent = (modifiedFields?: AnyObject) => ({
   ...mockDrawerReportPageJson,
-  verbiage: {
-    intro: {
-      spreadsheet: "MOCK_SPREADSHEET",
-      section: "mock section",
-      info: "<p>This is some info.</p>",
-    },
-  },
-};
+  ...modifiedFields,
+});
 
-const exportedReportSectionComponent = (context: any, subsection: boolean) => (
+const exportedReportSectionComponent = (context: any, content: any) => (
   <ReportContext.Provider value={context}>
-    {subsection ? (
-      <ExportedDrawerReportSection section={mockDrawerReportPageJson} />
-    ) : (
-      <ExportedDrawerReportSection section={mockContentNoSubsection} />
-    )}
+    <ExportedDrawerReportSection section={content} />
   </ReportContext.Provider>
 );
 
 describe("ExportedDrawerReportSection", () => {
   test("Is Exported Drawer Report Section present", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(mockReportContext, true)
+      exportedReportSectionComponent(mockReportContext, mockContent())
     );
     const section = getByTestId("exportedDrawerReportSection");
     expect(section).toBeVisible();
@@ -42,7 +34,18 @@ describe("ExportedDrawerReportSection", () => {
 describe("ExportedDrawerReportSection Section Heading", () => {
   test("Exported Drawer Report Section section heading defaults to name field.", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(mockReportContext, false)
+      exportedReportSectionComponent(
+        mockReportContext,
+        mockContent({
+          verbiage: {
+            intro: {
+              spreadsheet: "MOCK_SPREADSHEET",
+              section: "mock section",
+              info: "<p>This is some info.</p>",
+            },
+          },
+        })
+      )
     );
     const section = getByTestId("exportedDrawerReportSection");
     const sectionHeading = section.querySelector("h3")?.innerHTML;
@@ -53,7 +56,7 @@ describe("ExportedDrawerReportSection Section Heading", () => {
 describe("Test ExportedDrawerReportSection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(
-      exportedReportSectionComponent(mockReportContext, true)
+      exportedReportSectionComponent(mockReportContext, mockContent())
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();

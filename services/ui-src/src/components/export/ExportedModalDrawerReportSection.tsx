@@ -7,7 +7,7 @@ import { getFormattedEntityData, parseCustomHtml } from "utils";
 // utils
 
 export const ExportedModalDrawerReportSection = ({
-  section: { entityType, verbiage },
+  section: { entityType, verbiage, name },
 }: ExportedModalDrawerReportSectionProps) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
@@ -30,7 +30,7 @@ export const ExportedModalDrawerReportSection = ({
       break;
   }
   return (
-    <Box mt="2rem">
+    <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
@@ -46,7 +46,9 @@ export const ExportedModalDrawerReportSection = ({
         </Box>
       )}
 
-      {!existingEntity && <Text>{emptyEntityMessage}</Text>}
+      {!existingEntity && (
+        <Text data-testid="entityMessage">{emptyEntityMessage}</Text>
+      )}
       {report?.fieldData?.[entityType]?.map((entity: EntityShape) => (
         <EntityCard
           key={entity.id}
