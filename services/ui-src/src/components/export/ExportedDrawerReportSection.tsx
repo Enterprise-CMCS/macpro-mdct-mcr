@@ -37,7 +37,7 @@ export const ExportedDrawerReportSection = ({
   const formFields = drawerForm.fields;
 
   return (
-    <Box data-testid="fieldsSubSection" mt="2rem">
+    <Box data-testid="exportedDrawerReportSection" mt="2rem">
       <p>Drawer Report Section</p>
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
