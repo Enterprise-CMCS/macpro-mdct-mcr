@@ -33,11 +33,11 @@ export const createReport = handler(async (event, _context) => {
   if (unvalidatedFieldData && fieldDataValidationJson) {
     const s3 = new S3();
     const state: string = event.pathParameters.state;
-    const id: string = KSUID.randomSync().string;
-    /*
-     * const fieldDataId: string = KSUID.randomSync().string;
-     * const formTemplateId: string = KSUID.randomSync().string;
-     */
+
+    // generate UUIDs for field data and form templates
+    const reportId: string = KSUID.randomSync().string;
+    const fieldDataId: string = KSUID.randomSync().string;
+    const formTemplateId: string = KSUID.randomSync().string;
 
     // validate report field data
     const validatedFieldData = await validateFieldData(
@@ -48,7 +48,7 @@ export const createReport = handler(async (event, _context) => {
     // post field data to s3 bucket
     const fieldDataParams = {
       Bucket: "database-winter-storm-create-mcpar-446712541566",
-      Key: "/fieldData/" + state + "/" + id,
+      Key: "/fieldData/" + state + "/" + fieldDataId,
       Body: JSON.stringify(validatedFieldData),
       ContentType: "application/json",
     };
@@ -58,7 +58,7 @@ export const createReport = handler(async (event, _context) => {
     // post form template to s3 bucket
     const formTemplateParams = {
       Bucket: "database-winter-storm-create-mcpar-446712541566",
-      Key: "/formTemplates/" + state + "/" + id,
+      Key: "/formTemplates/" + state + "/" + formTemplateId,
       Body: JSON.stringify(formTemplate),
       ContentType: "application/json",
     };
@@ -75,7 +75,7 @@ export const createReport = handler(async (event, _context) => {
       Item: {
         ...validatedMetadata,
         state,
-        id: id,
+        id: reportId,
         createdAt: Date.now(),
         lastAltered: Date.now(),
       },
