@@ -1,5 +1,7 @@
+import { S3 } from "aws-sdk";
 import handler from "../handler-lib";
 import { fetchReport } from "./fetch";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
@@ -10,7 +12,6 @@ import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 import { putObjectWrapper } from "../../utils/s3/objectWrappers";
-import { S3 } from "aws-sdk";
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
