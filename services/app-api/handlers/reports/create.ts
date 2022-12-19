@@ -29,10 +29,12 @@ export const createReport = handler(async (event, _context) => {
   } = unvalidatedPayload;
 
   const fieldDataValidationJson = formTemplate.validationJson;
+
   if (unvalidatedFieldData && fieldDataValidationJson) {
     const state: string = event.pathParameters.state;
-    const id: string = KSUID.randomSync().string;
 
+    // generate UUIDs for field data and form templates
+    const reportId: string = KSUID.randomSync().string;
     const fieldDataId: string = KSUID.randomSync().string;
     const formTemplateId: string = KSUID.randomSync().string;
 
@@ -42,9 +44,11 @@ export const createReport = handler(async (event, _context) => {
       unvalidatedFieldData
     );
 
+    // TODO: handle potential fieldData validation failure
+
     // post field data to s3 bucket
     const fieldDataParams: S3Put = {
-      Bucket: process.env.MCPAR_FORM_BUCKET || "",
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
       Key: `fieldData/${state}/${fieldDataId}.json`,
       Body: JSON.stringify(validatedFieldData),
       ContentType: "application/json",
@@ -54,7 +58,7 @@ export const createReport = handler(async (event, _context) => {
 
     // post form template to s3 bucket
     const formTemplateParams: S3Put = {
-      Bucket: process.env.MCPAR_FORM_BUCKET || "",
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
       Key: `formTemplates/${state}/${formTemplateId}.json`,
       Body: JSON.stringify(formTemplate),
       ContentType: "application/json",
@@ -67,13 +71,15 @@ export const createReport = handler(async (event, _context) => {
       ...unvalidatedMetadata,
     });
 
+    // TODO: handle potential metadata validation failure
+
     // create record in report table
     let reportParams = {
       TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
       Item: {
         ...validatedMetadata,
         state,
-        id: id,
+        id: reportId,
         fieldDataId,
         formTemplateId,
         createdAt: Date.now(),
