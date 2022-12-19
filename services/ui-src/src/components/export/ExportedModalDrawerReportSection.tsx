@@ -2,7 +2,11 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import { EntityCard, SpreadsheetWidget } from "components";
 import { ReportContext } from "components/reports/ReportProvider";
 import { useContext } from "react";
-import { EntityShape, ModalDrawerEntityTypes, ReportPageVerbiage } from "types";
+import {
+  EntityShape,
+  ModalDrawerEntityTypes,
+  ModalDrawerReportPageShape,
+} from "types";
 import { getFormattedEntityData, parseCustomHtml } from "utils";
 // utils
 
@@ -67,11 +71,8 @@ export const ExportedModalDrawerReportSection = ({
   );
 };
 
-interface ExportedModalDrawerReportSectionProps {
-  section: {
-    entityType: string;
-    verbiage: ReportPageVerbiage;
-  };
+export interface ExportedModalDrawerReportSectionProps {
+  section: ModalDrawerReportPageShape;
 }
 
 const sx = {

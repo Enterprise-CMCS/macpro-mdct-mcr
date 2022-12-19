@@ -4,7 +4,12 @@ import {
   ExportedModalDrawerReportSection,
   ExportedStandardReportSection,
 } from "components";
-import { PageTypes } from "types";
+import {
+  DrawerReportPageShape,
+  ModalDrawerReportPageShape,
+  PageTypes,
+  StandardReportPageShape,
+} from "types";
 // utils
 
 export const ExportedReportWrapper = ({
@@ -12,16 +17,31 @@ export const ExportedReportWrapper = ({
 }: ExportedReportWrapperProps) => {
   switch (section.pageType) {
     case PageTypes.DRAWER:
-      return <ExportedDrawerReportSection section={section} />;
+      return (
+        <ExportedDrawerReportSection
+          section={section as DrawerReportPageShape}
+        />
+      );
     case PageTypes.MODAL_DRAWER:
-      return <ExportedModalDrawerReportSection section={section} />;
+      return (
+        <ExportedModalDrawerReportSection
+          section={section as ModalDrawerReportPageShape}
+        />
+      );
     case PageTypes.REVIEW_SUBMIT:
       return <></>;
     default:
-      return <ExportedStandardReportSection section={section} />;
+      return (
+        <ExportedStandardReportSection
+          section={section as StandardReportPageShape}
+        />
+      );
   }
 };
 
 interface ExportedReportWrapperProps {
-  section: any;
+  section:
+    | DrawerReportPageShape
+    | StandardReportPageShape
+    | ModalDrawerReportPageShape;
 }
