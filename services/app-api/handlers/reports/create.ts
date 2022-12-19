@@ -46,8 +46,8 @@ export const createReport = handler(async (event, _context) => {
     // post field data to s3 bucket
     const fieldDataParams = {
       Bucket: process.env.MCPAR_FORM_BUCKET || "",
-      Key: `/fieldData/${state}/${KSUID.randomSync().string}`,
-      Body: JSON.stringify(validatedFieldData).replace("\ufeff", ""),
+      Key: `fieldData/${state}/${KSUID.randomSync().string}`,
+      Body: JSON.stringify(validatedFieldData),
       ContentType: "application/json",
     };
 
@@ -60,7 +60,7 @@ export const createReport = handler(async (event, _context) => {
     // post form template to s3 bucket
     const formTemplateParams = {
       Bucket: process.env.TEMPLATE_BUCKET || "",
-      Key: `/formTemplates/${state}/${KSUID.randomSync().string}`,
+      Key: `formTemplates/${state}/${KSUID.randomSync().string}`,
       Body: JSON.stringify(formTemplate),
       ContentType: "application/json",
     };

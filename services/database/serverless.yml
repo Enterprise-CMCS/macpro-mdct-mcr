@@ -9,7 +9,6 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-plugin-scripts
   - serverless-offline
-  - serverless-s3-local
 
 s3BucketHelper:
   loggingConfiguration:
@@ -42,12 +41,6 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
-  s3:
-    port: 45691
-    directory: ./local_buckets
-    cors: ../local_cors.xml
-    buckets:
-      - local-mcpar-form
 provider:
   name: aws
   runtime: nodejs14.x

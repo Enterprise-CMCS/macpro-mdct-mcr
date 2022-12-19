@@ -13,8 +13,8 @@ export const createS3Client = () => {
     s3Config.region = "localhost";
     s3Config.s3ForcePathStyle = true;
     s3Config.credentials = new Credentials({
-      accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
-      secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+      accessKeyId: "S3RVER", // pragma: allowlist secret
+      secretAccessKey: "S3RVER", // pragma: allowlist secret
     });
   } else {
     s3Config.region = "us-east-1";
