@@ -41,7 +41,6 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
-
 provider:
   name: aws
   runtime: nodejs14.x
@@ -131,3 +130,5 @@ resources:
       Value: !Sub ${AWS::Region}
     McparFormBucketName:
       Value: !Ref McparFormBucket
+    McparFormBucketArn:
+      Value: !GetAtt McparFormBucket.Arn

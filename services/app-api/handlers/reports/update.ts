@@ -1,9 +1,9 @@
-import { S3 } from "aws-sdk";
 import handler from "../handler-lib";
 import { fetchReport } from "./fetch";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
+import s3Lib from "../../utils/s3/s3-lib";
 import {
   validateData,
   validateFieldData,
@@ -11,7 +11,6 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
-import { putObjectWrapper } from "../../utils/s3/objectWrappers";
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
@@ -34,7 +33,6 @@ export const updateReport = handler(async (event, context) => {
     // get current report (so we can get the fieldDataId and formTemplateId)
     const reportEvent = { ...event, body: "" };
     const getCurrentReport = await fetchReport(reportEvent, context);
-
     if (getCurrentReport?.body) {
       const currentReport = JSON.parse(getCurrentReport.body);
       const { formTemplateId, fieldDataId } = currentReport;
@@ -42,7 +40,6 @@ export const updateReport = handler(async (event, context) => {
       // check if report is archived (if not, we can proceed with updates)
       const isArchived = currentReport.archived;
       if (!isArchived) {
-        const s3 = new S3();
         const state: string = event.pathParameters.state;
 
         // get formTemplate from s3 bucket for fieldData validation
@@ -50,20 +47,14 @@ export const updateReport = handler(async (event, context) => {
           Bucket: process.env.MCPAR_FORM_BUCKET!,
           Key: "formTemplates/" + state + "/" + formTemplateId,
         };
-        const formTemplate: any = await getObjectWrapper(
-          s3,
-          formTemplateParams
-        );
+        const formTemplate: any = await s3Lib.get(formTemplateParams);
 
         // get existing fieldData from s3 bucket for update
         const fieldDataParams = {
           Bucket: process.env.MCPAR_FORM_BUCKET!,
           Key: "fieldDatas/" + state + "/" + fieldDataId,
         };
-        const existingFieldData: any = await getObjectWrapper(
-          s3,
-          fieldDataParams
-        );
+        const existingFieldData: any = await s3Lib.get(fieldDataParams);
 
         // parse the passed payload
         const unvalidatedPayload = JSON.parse(event!.body!);
@@ -72,15 +63,15 @@ export const updateReport = handler(async (event, context) => {
           fieldData: unvalidatedFieldData,
         } = unvalidatedPayload;
 
+        // validate passed field data
         if (unvalidatedFieldData) {
-          // validate passed field data
           const validatedFieldData = await validateFieldData(
             formTemplate?.validationJson,
             unvalidatedFieldData
           );
 
+          // post fieldData to S3 bucket
           if (validatedFieldData) {
-            // post fieldData to S3 bucket
             const fieldData = {
               ...existingFieldData,
               ...validatedFieldData,
@@ -91,7 +82,7 @@ export const updateReport = handler(async (event, context) => {
               Body: JSON.stringify(fieldData),
               ContentType: "application/json",
             };
-            await putObjectWrapper(s3, fieldDataParams);
+            await s3Lib.put(fieldDataParams);
           } else {
             status = StatusCodes.BAD_REQUEST;
             body = error.INVALID_DATA;
@@ -102,8 +93,8 @@ export const updateReport = handler(async (event, context) => {
             metadataValidationSchema,
             { ...unvalidatedMetadata }
           );
+          // update report metadata
           if (validatedMetadata) {
-            // update report metadata
             const reportParams = {
               TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
               Item: {
@@ -114,7 +105,7 @@ export const updateReport = handler(async (event, context) => {
             };
             await dynamoDb.put(reportParams);
 
-            // return status and body
+            // set response status and body
             status = StatusCodes.SUCCESS;
             body = reportParams.Item;
           } else {
@@ -168,17 +159,3 @@ export const archiveReport = handler(async (event, context) => {
     body: body,
   };
 });
-
-// TODO: compare to other branches and export to utility function
-const getObjectWrapper = (s3: S3, params: { Bucket: string; Key: string }) => {
-  return new Promise((resolve, reject) => {
-    s3.getObject(params, function (err: any, result: any) {
-      if (err) {
-        reject(err);
-      }
-      if (result) {
-        resolve(JSON.parse(result.Body));
-      }
-    });
-  });
-};
