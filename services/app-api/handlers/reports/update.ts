@@ -9,6 +9,7 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
+import { putObjectWrapper } from "../../utils/s3/objectWrappers";
 import { S3 } from "aws-sdk";
 
 export const updateReport = handler(async (event, context) => {
@@ -41,12 +42,14 @@ export const updateReport = handler(async (event, context) => {
       if (!isArchived) {
         // define s3 stuff
         const s3 = new S3();
-        const state: string = event.pathParameters.state;
+        //const state: string = event.pathParameters.state;
 
         // use the form template id from the report metadata to get the form template from the s3 bucket for validation
+
         // TODO: use s3.getObject util to get the formTemplate by formTemplateId
 
         // use the field data id from the report metadata to get the existing field data from the s3 bucket
+
         // TODO: use s3.getObject util to get the fieldData by fieldDataId
 
         const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
@@ -82,7 +85,7 @@ export const updateReport = handler(async (event, context) => {
           // post field data to s3 bucket
           const fieldDataParams = {
             Bucket: "database-winter-storm-create-mcpar-446712541566",
-            // Key: "/fieldData/" + state + "/" + fieldDataId,
+            Key: "/fieldData/" + "state" + "/" + "fieldDataId",
             Body: JSON.stringify(fieldData),
             ContentType: "application/json",
           };
@@ -139,21 +142,3 @@ export const archiveReport = handler(async (event, context) => {
     body: body,
   };
 });
-
-const putObjectWrapper = (
-  s3: S3,
-  params: { Bucket: string; Key: string; Body: string; ContentType: string }
-) => {
-  return new Promise((resolve, reject) => {
-    s3.putObject(params, function (err: any, result: any) {
-      if (err) {
-        // console.log("Put Error", err);
-        reject(err);
-      }
-      if (result) {
-        // console.log("Put Result", result);
-        resolve(result);
-      }
-    });
-  });
-};
