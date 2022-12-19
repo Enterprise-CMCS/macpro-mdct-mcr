@@ -222,10 +222,8 @@ export const DashboardPage = ({ reportType }: Props) => {
       <AddEditProgramModal
         activeState={activeState!}
         selectedReport={selectedReport!}
-        newReportData={{
-          reportType: reportType,
-          formTemplate: genericReportJson,
-        }}
+        reportType={reportType}
+        formTemplate={genericReportJson}
         modalDisclosure={{
           isOpen: addEditProgramModalIsOpen,
           onClose: addEditProgramModalOnCloseHandler,

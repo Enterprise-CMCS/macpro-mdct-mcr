@@ -17,7 +17,8 @@ import {
 export const AddEditProgramModal = ({
   activeState,
   selectedReport,
-  newReportData,
+  formTemplate,
+  reportType,
   modalDisclosure,
 }: Props) => {
   const { createReport, fetchReportsByState, updateReport } =
@@ -42,8 +43,26 @@ export const AddEditProgramModal = ({
       formData["reportingPeriodEndDate"]
     );
 
-    const dataToWrite = {
+    const createDataToWrite = {
+      metadata: {
+        programName,
+        reportType,
+        reportingPeriodStartDate,
+        reportingPeriodEndDate,
+        dueDate,
+        lastAlteredBy: full_name,
+        combinedData,
+      },
+      fieldData: {
+        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
+        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
+        programName,
+      },
+      formTemplate,
+    };
+    const updateDataToWrite = {
       programName,
+      reportType,
       reportingPeriodStartDate,
       reportingPeriodEndDate,
       dueDate,
@@ -54,6 +73,7 @@ export const AddEditProgramModal = ({
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
         programName,
       },
+      formTemplate,
     };
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
@@ -61,18 +81,20 @@ export const AddEditProgramModal = ({
         state: activeState,
         id: selectedReport.id,
       };
+      // TODO: FIX THIS
+
       // edit existing report
       await updateReport(reportKeys, {
-        ...dataToWrite,
+        ...updateDataToWrite,
       });
     } else {
       // create new report
       await createReport(activeState, {
-        ...dataToWrite,
-        ...newReportData,
+        ...createDataToWrite,
         status: ReportStatus.NOT_STARTED,
+        formTemplate,
         fieldData: {
-          ...dataToWrite.fieldData,
+          ...createDataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
         },
       });
@@ -106,11 +128,9 @@ export const AddEditProgramModal = ({
 
 interface Props {
   activeState: string;
+  formTemplate: ReportJson;
+  reportType: string;
   selectedReport?: AnyObject;
-  newReportData: {
-    reportType: string;
-    formTemplate: ReportJson;
-  };
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
