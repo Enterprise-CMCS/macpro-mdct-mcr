@@ -1,32 +1,53 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
-import { AnyObject, StatusCodes } from "../../utils/types/types";
+import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
+import s3Lib from "../../utils/s3/s3-lib";
 
 export const fetchReport = handler(async (event, _context) => {
+  // console.log("Fetching Report");
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(error.NO_KEY);
   }
+  const state = event.pathParameters.state;
+  const reportId = event.pathParameters.id;
+
   const params = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
     Key: {
-      state: event.pathParameters.state,
-      id: event.pathParameters.id,
+      state: state,
+      id: reportId,
     },
   };
   const response = await dynamoDb.get(params);
+  const report: any = response.Item;
+
+  const templateParams: S3Get = {
+    Bucket: process.env.MCPAR_FORM_BUCKET || "",
+    Key: `formTemplates/${state}/${report?.formTemplateId as string}.json`,
+  };
+
+  const template: any = await s3Lib.get(templateParams);
+
+  const dataParams = {
+    Bucket: process.env.MCPAR_FORM_BUCKET || "",
+    Key: `fieldData/${state}/${report?.fieldDataId as string}.json`,
+  };
+  const data: any = await s3Lib.get(dataParams);
 
   let status = StatusCodes.SUCCESS;
-  if (!response?.Item) {
+  if (!response?.Item || !template || !data) {
     status = StatusCodes.NOT_FOUND;
   }
+
   return {
     status: status,
-    body: response.Item,
+    body: { ...report, formTemplate: template, fieldData: data },
   };
 });
 
 export const fetchReportsByState = handler(async (event, _context) => {
+  // console.log("Fetching Reports By State");
   if (!event?.pathParameters?.state!) {
     throw new Error(error.NO_KEY);
   }
@@ -60,15 +81,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   do {
     [startingKey, results] = await queryTable(startingKey);
 
-    /*
-     * Remove formTemplate and formData to get rid of excessive size that isn't needed
-     * on the dashboard when this call is used
-     */
     const items: AnyObject[] = results.Items;
-    items.forEach((item: any) => {
-      delete item.formTemplate;
-      delete item.formData;
-    });
     existingItems.push(...items);
   } while (startingKey);
 
