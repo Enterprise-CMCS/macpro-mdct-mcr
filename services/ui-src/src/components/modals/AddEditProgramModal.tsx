@@ -43,37 +43,20 @@ export const AddEditProgramModal = ({
       formData["reportingPeriodEndDate"]
     );
 
-    const createDataToWrite = {
+    const dataToWrite = {
       metadata: {
         programName,
-        reportType,
         reportingPeriodStartDate,
         reportingPeriodEndDate,
         dueDate,
-        lastAlteredBy: full_name,
         combinedData,
+        lastAlteredBy: full_name,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
         programName,
       },
-      formTemplate,
-    };
-    const updateDataToWrite = {
-      programName,
-      reportType,
-      reportingPeriodStartDate,
-      reportingPeriodEndDate,
-      dueDate,
-      lastAlteredBy: full_name,
-      combinedData,
-      fieldData: {
-        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
-        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
-        programName,
-      },
-      formTemplate,
     };
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
@@ -81,22 +64,28 @@ export const AddEditProgramModal = ({
         state: activeState,
         id: selectedReport.id,
       };
-      // TODO: FIX THIS
-
       // edit existing report
       await updateReport(reportKeys, {
-        ...updateDataToWrite,
+        ...dataToWrite,
+        metadata: {
+          ...dataToWrite.metadata,
+          status: ReportStatus.NOT_STARTED,
+        },
       });
     } else {
       // create new report
       await createReport(activeState, {
-        ...createDataToWrite,
-        status: ReportStatus.NOT_STARTED,
-        formTemplate,
+        ...dataToWrite,
+        metadata: {
+          ...dataToWrite.metadata,
+          reportType,
+          status: ReportStatus.NOT_STARTED,
+        },
         fieldData: {
-          ...createDataToWrite.fieldData,
+          ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
         },
+        formTemplate,
       });
     }
     await fetchReportsByState(activeState);

@@ -48,7 +48,7 @@ export const createReport = handler(async (event, _context) => {
     // post field data to s3 bucket
     const fieldDataParams = {
       Bucket: "database-winter-storm-create-mcpar-446712541566",
-      Key: "/fieldData/" + state + "/" + fieldDataId,
+      Key: "fieldData/" + state + "/" + fieldDataId,
       Body: JSON.stringify(validatedFieldData),
       ContentType: "application/json",
     };
@@ -58,7 +58,7 @@ export const createReport = handler(async (event, _context) => {
     // post form template to s3 bucket
     const formTemplateParams = {
       Bucket: "database-winter-storm-create-mcpar-446712541566",
-      Key: "/formTemplates/" + state + "/" + formTemplateId,
+      Key: "formTemplates/" + state + "/" + formTemplateId,
       Body: JSON.stringify(formTemplate),
       ContentType: "application/json",
     };
