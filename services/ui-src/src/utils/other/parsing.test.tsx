@@ -2,10 +2,12 @@ import { render, screen } from "@testing-library/react";
 import DOMPurify from "dompurify";
 // utils
 import {
+  parseAllLevels,
   parseCustomHtml,
   parseDynamicFieldData,
   parseFieldLabel,
 } from "./parsing";
+import { mockExportParsingDataChoices } from "utils/testing/setupJest";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -63,7 +65,7 @@ describe("Test parseCustomHtml", () => {
   });
 });
 
-describe("Test Parsing for PDF Preview Fields", () => {
+describe("PDF Preview Field Labels", () => {
   test("The field names are separated properly", () => {
     expect(parseFieldLabel({ label: "A.1 Label", hint: "Hint" })).toEqual({
       indicator: "A.1",
@@ -76,6 +78,91 @@ describe("Test Parsing for PDF Preview Fields", () => {
       label: "<p><strong>Label</strong></p>",
     });
   });
+
+  test("The field names is blank", () => {
+    expect(parseFieldLabel({})).toEqual({
+      indicator: "",
+      label: "",
+    });
+  });
+});
+
+describe("Export: Returning Nested Choices", () => {
+  test("Parsing Nested Choices", () => {
+    const dataReturn = parseAllLevels(mockExportParsingDataChoices);
+
+    expect(dataReturn).toEqual(
+      "<p>Value 1</p><p><strong>Test Label</strong></p><p>Value 2</p><p><strong>Test Label 2</strong></p>Testing Double Nested"
+    );
+  });
+});
+
+describe("Export: Number masks", () => {
+  test("Percent Mask", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "123",
+      },
+      id: "test_Field",
+      type: "number",
+      validation: "number",
+      props: {
+        mask: "percentage",
+      },
+    });
+
+    expect(dataReturn).toEqual("123%");
+  });
+
+  test("Currency Mask", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "123",
+      },
+      id: "test_Field",
+      type: "number",
+      validation: "number",
+      props: {
+        mask: "currency",
+      },
+    });
+
+    expect(dataReturn).toEqual("$123");
+  });
+});
+
+describe("Export: String Parsing", () => {
+  test("Email Link", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "test@email.com",
+      },
+      id: "test_Field",
+      type: "text",
+      validation: "email",
+    });
+
+    expect(dataReturn).toEqual(
+      '<a href="mailto:test@email.com">test@email.com</a>'
+    );
+  });
+  test("URL Link", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "http://website.com",
+      },
+      id: "test_Field",
+      type: "text",
+      validation: "url",
+    });
+
+    expect(dataReturn).toEqual(
+      '<a href="http://website.com">http://website.com</a>'
+    );
+  });
+});
+
+describe("Test Parsing for PDF Preview Fields", () => {
   test("If dynamic fields rendered correctly", () => {
     expect(
       parseDynamicFieldData([
