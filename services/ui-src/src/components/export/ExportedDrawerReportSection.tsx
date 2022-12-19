@@ -38,7 +38,6 @@ export const ExportedDrawerReportSection = ({
 
   return (
     <Box data-testid="exportedDrawerReportSection" mt="2rem">
-      <p>Drawer Report Section</p>
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
