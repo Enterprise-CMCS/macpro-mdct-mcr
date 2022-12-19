@@ -1,5 +1,6 @@
 import handler from "../handler-lib";
 import { fetchReport } from "./fetch";
+import { archiveReport } from "./archive";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -30,31 +31,32 @@ export const updateReport = handler(async (event, context) => {
       body = error.UNAUTHORIZED;
     }
   } else {
-    // get current report (so we can get the fieldDataId and formTemplateId)
+    // get current report
     const reportEvent = { ...event, body: "" };
     const getCurrentReport = await fetchReport(reportEvent, context);
+
+    // if current report exists, get formTemplateId and fieldDataId
     if (getCurrentReport?.body) {
       const currentReport = JSON.parse(getCurrentReport.body);
       const { formTemplateId, fieldDataId } = currentReport;
 
-      // check if report is archived (if not, we can proceed with updates)
-      const isArchived = currentReport.archived;
-      if (!isArchived) {
+      // if report not in archived state, proceed with updates
+      if (!currentReport.archived) {
         const state: string = event.pathParameters.state;
 
-        // get formTemplate from s3 bucket for fieldData validation
+        // get formTemplate from s3 bucket (for passed fieldData validation)
         const formTemplateParams = {
           Bucket: process.env.MCPAR_FORM_BUCKET!,
           Key: "formTemplates/" + state + "/" + formTemplateId,
         };
-        const formTemplate: any = await s3Lib.get(formTemplateParams);
+        const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
 
-        // get existing fieldData from s3 bucket for update
+        // get existing fieldData from s3 bucket (for patching with passed data)
         const fieldDataParams = {
           Bucket: process.env.MCPAR_FORM_BUCKET!,
           Key: "fieldDatas/" + state + "/" + fieldDataId,
         };
-        const existingFieldData: any = await s3Lib.get(fieldDataParams);
+        const existingFieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
 
         // parse the passed payload
         const unvalidatedPayload = JSON.parse(event!.body!);
@@ -63,15 +65,15 @@ export const updateReport = handler(async (event, context) => {
           fieldData: unvalidatedFieldData,
         } = unvalidatedPayload;
 
-        // validate passed field data
         if (unvalidatedFieldData) {
+          // validate passed field data
           const validatedFieldData = await validateFieldData(
             formTemplate?.validationJson,
             unvalidatedFieldData
           );
-
-          // post fieldData to S3 bucket
+          // if field data passes validation,
           if (validatedFieldData) {
+            // post validated field data to s3 bucket
             const fieldData = {
               ...existingFieldData,
               ...validatedFieldData,
@@ -83,31 +85,32 @@ export const updateReport = handler(async (event, context) => {
               ContentType: "application/json",
             };
             await s3Lib.put(fieldDataParams);
-          } else {
-            status = StatusCodes.BAD_REQUEST;
-            body = error.INVALID_DATA;
-          }
 
-          // validate report metadata
-          const validatedMetadata = await validateData(
-            metadataValidationSchema,
-            { ...unvalidatedMetadata }
-          );
-          // update report metadata
-          if (validatedMetadata) {
-            const reportParams = {
-              TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-              Item: {
-                ...currentReport,
-                ...validatedMetadata,
-                lastAltered: Date.now(),
-              },
-            };
-            await dynamoDb.put(reportParams);
+            // validate report metadata
+            const validatedMetadata = await validateData(
+              metadataValidationSchema,
+              { ...unvalidatedMetadata }
+            );
+            // if metadata passes validation,
+            if (validatedMetadata) {
+              // update record in report metadata table
+              const reportMetadataParams = {
+                TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+                Item: {
+                  ...currentReport,
+                  ...validatedMetadata,
+                  lastAltered: Date.now(),
+                },
+              };
+              await dynamoDb.put(reportMetadataParams);
 
-            // set response status and body
-            status = StatusCodes.SUCCESS;
-            body = reportParams.Item;
+              // set response status and body
+              status = StatusCodes.SUCCESS;
+              body = reportMetadataParams.Item;
+            } else {
+              status = StatusCodes.BAD_REQUEST;
+              body = error.INVALID_DATA;
+            }
           } else {
             status = StatusCodes.BAD_REQUEST;
             body = error.INVALID_DATA;
@@ -125,37 +128,5 @@ export const updateReport = handler(async (event, context) => {
       body = error.NO_MATCHING_RECORD;
     }
   }
-  return {
-    status: status,
-    body: body,
-  };
-});
-
-export const archiveReport = handler(async (event, context) => {
-  let status, body;
-  // get current report
-  const reportEvent = { ...event, body: "" };
-  const getCurrentReport = await fetchReport(reportEvent, context);
-
-  if (getCurrentReport?.body) {
-    const currentReport = JSON.parse(getCurrentReport.body);
-    const currentArchivedStatus = currentReport?.archived;
-    const reportParams = {
-      TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-      Item: {
-        ...currentReport,
-        archived: !currentArchivedStatus,
-      },
-    };
-    await dynamoDb.put(reportParams);
-    status = StatusCodes.SUCCESS;
-    body = reportParams.Item;
-  } else {
-    status = StatusCodes.NOT_FOUND;
-    body = error.NO_MATCHING_RECORD;
-  }
-  return {
-    status: status,
-    body: body,
-  };
+  return { status, body };
 });

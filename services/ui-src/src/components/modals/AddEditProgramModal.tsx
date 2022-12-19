@@ -72,7 +72,7 @@ export const AddEditProgramModal = ({
         ...dataToWrite,
         metadata: {
           ...dataToWrite.metadata,
-          status: ReportStatus.NOT_STARTED,
+          status: ReportStatus.IN_PROGRESS,
         },
       });
     } else {
