@@ -9,7 +9,6 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
-import { S3 } from "aws-sdk";
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
@@ -29,9 +28,6 @@ export const updateReport = handler(async (event, context) => {
       body = error.UNAUTHORIZED;
     }
   } else {
-    const s3 = new S3();
-    const state: string = event.pathParameters.state;
-    const id: string = event.pathParameters.id;
     const unvalidatedPayload = JSON.parse(event!.body!);
 
     // get current report
@@ -63,23 +59,13 @@ export const updateReport = handler(async (event, context) => {
               ...currentReport,
               ...validatedMetadata,
               lastAltered: Date.now(),
+              fieldData: {
+                ...currentReport.fieldData,
+                ...validatedFieldData,
+              },
             },
           };
           await dynamoDb.put(reportParams);
-
-          const fieldData = {
-            ...currentReport.fieldData,
-            ...validatedFieldData,
-          };
-          // post field data to s3 bucket
-          const fieldDataParams = {
-            Bucket: "database-winter-storm-create-mcpar-446712541566",
-            Key: "/fieldData/" + state + "/" + id,
-            Body: JSON.stringify(fieldData),
-            ContentType: "application/json",
-          };
-
-          await putObjectWrapper(s3, fieldDataParams);
           status = StatusCodes.SUCCESS;
           body = reportParams.Item;
         } else {
@@ -131,21 +117,3 @@ export const archiveReport = handler(async (event, context) => {
     body: body,
   };
 });
-
-const putObjectWrapper = (
-  s3: S3,
-  params: { Bucket: string; Key: string; Body: string; ContentType: string }
-) => {
-  return new Promise((resolve, reject) => {
-    s3.putObject(params, function (err: any, result: any) {
-      if (err) {
-        // console.log("Put Error", err);
-        reject(err);
-      }
-      if (result) {
-        // console.log("Put Result", result);
-        resolve(result);
-      }
-    });
-  });
-};
