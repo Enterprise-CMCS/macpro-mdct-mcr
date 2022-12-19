@@ -29,20 +29,28 @@ export const updateReport = handler(async (event, context) => {
       body = error.UNAUTHORIZED;
     }
   } else {
-    const s3 = new S3();
-    const state: string = event.pathParameters.state;
-    const fieldDataId: string = event.pathParameters.id;
     const unvalidatedPayload = JSON.parse(event!.body!);
 
-    // get current report
+    // get current report (so we can get the fieldDataId and formTemplateId)
     const reportEvent = { ...event, body: "" };
     const getCurrentReport = await fetchReport(reportEvent, context);
-    const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
 
     if (getCurrentReport?.body) {
       const currentReport = JSON.parse(getCurrentReport.body);
       const isArchived = currentReport.archived;
       if (!isArchived) {
+        // define s3 stuff
+        const s3 = new S3();
+        const state: string = event.pathParameters.state;
+
+        // use the form template id from the report metadata to get the form template from the s3 bucket for validation
+        // TODO: use s3.getObject util to get the formTemplate by formTemplateId
+
+        // use the field data id from the report metadata to get the existing field data from the s3 bucket
+        // TODO: use s3.getObject util to get the fieldData by fieldDataId
+
+        const { fieldData: unvalidatedFieldData } = unvalidatedPayload;
+
         if (unvalidatedFieldData) {
           // validate report metadata
           const validatedMetadata = await validateData(
@@ -74,7 +82,7 @@ export const updateReport = handler(async (event, context) => {
           // post field data to s3 bucket
           const fieldDataParams = {
             Bucket: "database-winter-storm-create-mcpar-446712541566",
-            Key: "/fieldData/" + state + "/" + fieldDataId,
+            // Key: "/fieldData/" + state + "/" + fieldDataId,
             Body: JSON.stringify(fieldData),
             ContentType: "application/json",
           };
