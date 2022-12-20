@@ -62,7 +62,11 @@ export const EntityCard = ({
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox}>
-        {printVersion && <Text sx={sx.entitiesCount}>{entitiesCount}</Text>}
+        {printVersion && (
+          <Text sx={sx.entitiesCount} data-testid="entities-count">
+            {entitiesCount}
+          </Text>
+        )}
         {!printVersion ? (
           <Image
             src={entityCompleted ? completedIcon : unfinishedIcon}
@@ -76,6 +80,7 @@ export const EntityCard = ({
                 ? "print-version-icon-div-complete"
                 : "print-version-icon-div-incomplete"
             }
+            data-testid="print-status-indicator"
           >
             <Image
               src={entityCompleted ? completedIcon : unfinishedIcon}

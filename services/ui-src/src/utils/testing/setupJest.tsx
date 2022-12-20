@@ -354,6 +354,69 @@ export const mockReportKeys = {
   id: "mock-report-id",
 };
 
+export const mockExportParsingDataChoices = {
+  fieldData: {
+    test_FieldChoice1: [
+      {
+        value: "Value 1",
+        key: "test_FieldChoice1-123",
+      },
+    ],
+    test_FieldChoice2: [
+      {
+        value: "Value 2",
+        key: "test_FieldChoice2-456",
+      },
+    ],
+    test_FieldChoice3: "Testing Double Nested",
+  },
+  id: "test_FieldChoice1",
+  type: "radio",
+  validation: "radio",
+  props: {
+    choices: [
+      {
+        children: [
+          {
+            id: "test_FieldChoice2",
+            type: "radio",
+            validation: {
+              type: "radio",
+              parentFieldName: "test_FieldChoice1",
+            },
+            props: {
+              choices: [
+                {
+                  children: [
+                    {
+                      id: "test_FieldChoice3",
+                      type: "textarea",
+                      validation: {
+                        type: "text",
+                        parentFieldName: "test_FieldChoice2",
+                      },
+                      props: {
+                        label: "123. Test Label 2",
+                        hint: "Test Hint",
+                      },
+                    },
+                  ],
+                  id: "456",
+                  label: "Choice 2",
+                },
+              ],
+              label: "456. Test Label",
+              hint: "Parent Hint",
+            },
+          },
+        ],
+        id: "123",
+        label: "Choice 1",
+      },
+    ],
+  },
+};
+
 export const mockReportFieldData = {
   plans: [
     { id: 123, name: "example-plan1" },

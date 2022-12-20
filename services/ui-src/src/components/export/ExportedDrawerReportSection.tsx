@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import { ReportContext, SpreadsheetWidget, Table } from "components";
 // types
-import { FormJson, ReportPageVerbiage } from "types";
+import { DrawerReportPageShape } from "types";
 // utils
 import { parseAllLevels, parseCustomHtml, parseFieldLabel } from "utils";
 
@@ -37,8 +37,7 @@ export const ExportedDrawerReportSection = ({
   const formFields = drawerForm.fields;
 
   return (
-    <Box data-testid="fieldsSubSection" mt="2rem">
-      <p>Drawer Report Section</p>
+    <Box data-testid="exportedDrawerReportSection" mt="2rem">
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
@@ -73,13 +72,8 @@ export const ExportedDrawerReportSection = ({
   );
 };
 
-interface ExportedDrawerReportSectionProps {
-  section: {
-    drawerForm: FormJson;
-    name: string;
-    form?: FormJson;
-    verbiage?: ReportPageVerbiage;
-  };
+export interface ExportedDrawerReportSectionProps {
+  section: DrawerReportPageShape;
 }
 
 const sx = {
