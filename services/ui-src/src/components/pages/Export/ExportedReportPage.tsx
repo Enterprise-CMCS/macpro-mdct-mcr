@@ -8,46 +8,37 @@ import {
   StickyBanner,
   Table,
 } from "components";
-// constants
-import { States } from "../../../constants";
-// verbiage
-import verbiage from "verbiage/pages/exportedReport";
 // utils
 import { convertDateUtcToEt } from "utils";
+import { States } from "../../../constants";
 
 export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
-  const { combinedData } = verbiage;
-
-  // metadata
-  const getFullStateName = (state: string) => {
-    return States[state as keyof typeof States];
-  };
+  const fullStateName = States[report?.state as keyof typeof States];
 
   return (
     <Box data-testid="exportedReportPage" sx={sx.container}>
       <StickyBanner />
       {report && (
         <Box sx={sx.innerContainer}>
+          {/* pdf metadata */}
           <Helmet>
             <title>
-              {`Managed Care Program Annual Report (MCPAR) for ${getFullStateName(
-                report.state
-              )}: ${report.programName}`}
+              {`Managed Care Program Annual Report (MCPAR) for ${fullStateName}: ${report.programName}`}
             </title>
             <meta name="author" content="CMS" />
             <meta name="subject" content="Managed Care Program Annual Report" />
             <meta name="language" content="English" />
           </Helmet>
-
+          {/* report heading */}
           <Heading as="h1" sx={sx.heading}>
             Managed Care Program Annual Report (MCPAR) for{" "}
             {report.fieldData.stateName}: {report.programName}
           </Heading>
-
+          {/* report metadata tables */}
           <Table
             shrinkCells
-            sx={sx.metaTable}
+            sx={sx.metadataTable}
             content={{
               headRow: ["Due Date", "Last edited", "Edited By", "Status"],
               bodyRows: [
@@ -61,19 +52,19 @@ export const ExportedReportPage = () => {
             }}
           />
           <Table
-            sx={sx.chipTable}
+            sx={sx.combinedDataTable}
             className="short"
             content={{
               headRow: ["Indicator", "Response"],
               bodyRows: [
                 [
-                  `<p><strong>${combinedData.label}</strong></p><p class='message'>${combinedData.hint}</p>`,
+                  "<p><strong>Exclusion of CHIP from MCPAR</strong></p><p class='message'>$Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program.</p>",
                   report.combinedData ? "Selected" : "Not Selected",
                 ],
               ],
             }}
           />
-
+          {/* report sections */}
           {report.formTemplate.routes.map((section) => (
             <ExportedReportSection section={section} key={section.path} />
           ))}
@@ -99,14 +90,14 @@ export const sx = {
     lineHeight: "lineHeights.heading",
     fontSize: "4xl",
   },
-  metaTable: {
+  metadataTable: {
     margin: "3rem 0",
     maxWidth: "reportPageWidth",
     th: {
       border: "none",
     },
   },
-  chipTable: {
+  combinedDataTable: {
     marginBottom: "1rem",
     p: {
       strong: {

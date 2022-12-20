@@ -3,20 +3,21 @@ import { useContext } from "react";
 import { Box } from "@chakra-ui/react";
 import { ExportedSectionHeading, ReportContext, Table } from "components";
 // types
-import { DrawerReportPageShape } from "types";
+import { DrawerReportPageShape, FormField } from "types";
 // utils
 import { parseAllLevels, parseFieldLabel } from "utils";
 
 export const ExportedDrawerReportSection = ({
+  section,
   section: { drawerForm, name, verbiage },
-}: ExportedDrawerReportSectionProps) => {
+}: Props) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
 
-  const fieldRowsItems = (field: any) => {
+  const renderFieldRow = (field: FormField, entityType: string) => {
     const drawerData =
-      report?.fieldData.plans !== undefined &&
-      report?.fieldData.plans
+      report?.fieldData[entityType] !== undefined &&
+      report?.fieldData[entityType]
         .map((plan: any) => {
           return `<div class="plan-answers"><p><strong>${
             plan.name
@@ -28,8 +29,10 @@ export const ExportedDrawerReportSection = ({
         .join(" ");
 
     return [
-      `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
-      parseFieldLabel(field.props).label,
+      field.props
+        ? `<strong>${parseFieldLabel(field.props).indicator}</strong>`
+        : "",
+      field.props ? parseFieldLabel(field.props).label : "",
       drawerData,
     ];
   };
@@ -47,11 +50,9 @@ export const ExportedDrawerReportSection = ({
           className="standard"
           content={{
             headRow: ["Number", "Indicator", "Response"],
-            bodyRows: formFields
-              .filter((f) => f.props)
-              .map((field: any) => {
-                return fieldRowsItems(field);
-              }),
+            bodyRows: formFields.map((field: FormField) =>
+              renderFieldRow(field, section.entityType)
+            ),
           }}
         />
       )}
@@ -59,7 +60,7 @@ export const ExportedDrawerReportSection = ({
   );
 };
 
-export interface ExportedDrawerReportSectionProps {
+export interface Props {
   section: DrawerReportPageShape;
 }
 

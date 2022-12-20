@@ -30,6 +30,48 @@ describe("ExportedStandardReportSection", () => {
     expect(section).toBeVisible();
   });
 
+  test("Is Exported Standard Report Section present with a field without props", () => {
+    const { getByTestId } = render(
+      exportedReportSectionComponent(
+        mockReportContext,
+        mockContent({
+          form: {
+            fields: [
+              {
+                id: "test_id",
+                type: "text",
+                validation: "text",
+              },
+            ],
+          },
+        })
+      )
+    );
+    const section = getByTestId("exportedStandardReportSection");
+    expect(section).toBeVisible();
+  });
+
+  test("Is Exported Standard Report Section present with dynamic field without props", () => {
+    const { getByTestId } = render(
+      exportedReportSectionComponent(
+        mockReportContext,
+        mockContent({
+          form: {
+            fields: [
+              {
+                id: "test_id",
+                type: "dynamic",
+                validation: "dynamic",
+              },
+            ],
+          },
+        })
+      )
+    );
+    const section = getByTestId("exportedStandardReportSection");
+    expect(section).toBeVisible();
+  });
+
   test("Is Exported Standard Report Section with a two column layout.", () => {
     const { getByTestId } = render(
       exportedReportSectionComponent(
@@ -66,7 +108,7 @@ describe("ExportedStandardReportSection Section Heading", () => {
             intro: {
               spreadsheet: "MOCK_SPREADSHEET",
               section: "mock section",
-              info: "<p>This is some info.</p>",
+              info: "This is some info.",
             },
           },
         })

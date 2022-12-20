@@ -1,22 +1,21 @@
-import { Box, Text } from "@chakra-ui/react";
-import { EntityCard, ExportedSectionHeading } from "components";
-import { ReportContext } from "components/reports/ReportProvider";
 import { useContext } from "react";
+// components
+import { Box, Text } from "@chakra-ui/react";
+import { EntityCard, ExportedSectionHeading, ReportContext } from "components";
+// utils
+import { getFormattedEntityData } from "utils";
 import {
   EntityShape,
   ModalDrawerEntityTypes,
   ModalDrawerReportPageShape,
 } from "types";
-import { getFormattedEntityData } from "utils";
-// utils
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage, name },
-}: ExportedModalDrawerReportSectionProps) => {
+}: Props) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
   const entityCount = report?.fieldData?.[entityType]?.length;
-  const existingEntity = entityCount >= 1;
 
   let emptyEntityMessage = "";
   switch (entityType) {
@@ -39,11 +38,10 @@ export const ExportedModalDrawerReportSection = ({
         <ExportedSectionHeading
           heading={sectionHeading}
           verbiage={verbiage}
-          existingEntity={existingEntity}
+          existingEntity={!!entityCount}
         />
       )}
-
-      {!existingEntity && (
+      {!entityCount && (
         <Text data-testid="entityMessage">{emptyEntityMessage}</Text>
       )}
       {report?.fieldData?.[entityType]?.map((entity: EntityShape) => (
@@ -64,6 +62,6 @@ export const ExportedModalDrawerReportSection = ({
   );
 };
 
-export interface ExportedModalDrawerReportSectionProps {
+export interface Props {
   section: ModalDrawerReportPageShape;
 }

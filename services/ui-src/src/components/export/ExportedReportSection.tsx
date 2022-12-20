@@ -2,16 +2,9 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { ExportedReportWrapper } from "components";
 // utils
-import {
-  FormJson,
-  PageTypes,
-  ReportPageVerbiage,
-  ReportRouteBase,
-} from "types";
+import { PageTypes, ReportRoute, ReportRouteWithForm } from "types";
 
-export const ExportedReportSection = ({
-  section,
-}: ExportedReportSectionProps) => {
+export const ExportedReportSection = ({ section }: Props) => {
   return (
     <Box data-testid="fieldsSection" mt="5rem">
       {section?.pageType !== PageTypes.REVIEW_SUBMIT && (
@@ -19,42 +12,30 @@ export const ExportedReportSection = ({
           Section {section.name}
         </Heading>
       )}
+      {/* render report sections */}
       <RecursiveReportSection section={section} />
     </Box>
   );
 };
 
-const RecursiveReportSection = ({ section }: RecursiveReportSectionProps) => {
-  return (
-    <Box>
-      {section?.children?.map((child, index) => {
-        return (
-          <RecursiveReportSection key={section.path + index} section={child} />
-        );
-      })}
-      {!section?.children && (
-        <ExportedReportWrapper key={section.path} section={section} />
-      )}
-    </Box>
-  );
-};
+const RecursiveReportSection = ({ section }: Props) => (
+  <Box>
+    {/* if section has children, recurse */}
+    {section?.children?.map((child) => (
+      <RecursiveReportSection key={child.path} section={child} />
+    ))}
+    {/* if section does not have children, render it */}
+    {!section?.children && (
+      <ExportedReportWrapper
+        key={section.path}
+        section={section as ReportRouteWithForm}
+      />
+    )}
+  </Box>
+);
 
-interface SectionProps extends ReportRouteBase {
-  children?: any[];
-}
-
-interface ExportedReportSectionProps {
-  section: SectionProps;
-}
-
-interface RecursiveReportSectionProps {
-  section: {
-    children?: any[];
-    name: string;
-    path: string;
-    form?: FormJson;
-    verbiage?: ReportPageVerbiage;
-  };
+interface Props {
+  section: ReportRoute;
 }
 
 const sx = {

@@ -20,12 +20,6 @@ export const printPdf = async () => {
     .replaceAll("\u2013", "-")
     .replaceAll("\u2014", "-");
   const base64String = btoa(unescape(encodeURIComponent(htmlString)));
-  /**
-   * const base64String = Buffer.from(
-   * decodeURI(encodeURIComponent(htmlString))
-   * ).toString("base64");
-   */
-
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
