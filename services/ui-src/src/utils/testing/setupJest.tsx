@@ -376,6 +376,8 @@ export const mockReportFieldDataWithNestedFields = {
   props: {
     choices: [
       {
+        id: "123",
+        label: "Choice 1",
         children: [
           {
             id: "test_FieldChoice2",
@@ -410,6 +412,124 @@ export const mockReportFieldDataWithNestedFields = {
             },
           },
         ],
+      },
+    ],
+  },
+};
+
+export const mockReportFieldDataWithNestedFieldsNotAnswered = {
+  fieldData: {
+    test_FieldChoice1: [],
+    test_FieldChoice2: [],
+  },
+  id: "test_FieldChoice1",
+  type: "radio",
+  validation: "radio",
+  props: {
+    choices: [
+      {
+        id: "123",
+        label: "Choice 1",
+        type: "radio",
+        validation: "radio",
+        children: [
+          {
+            id: "test_FieldChoice2",
+            type: "radio",
+            validation: {
+              type: "radio",
+              parentFieldName: "test_FieldChoice1",
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+
+export const mockReportFieldDataWithNestedFieldsIncomplete = {
+  fieldData: {
+    test_FieldChoice1: [
+      {
+        value: "Value 1 test",
+        key: "test_FieldChoice1-123",
+      },
+    ],
+    test_FieldChoice2: [],
+  },
+  id: "test_FieldChoice1",
+  type: "radio",
+  validation: "radio",
+  props: {
+    choices: [
+      {
+        id: "123",
+        label: "Choice 1",
+        type: "radio",
+        validation: "radio",
+        children: [
+          {
+            id: "test_FieldChoice2",
+            type: "radio",
+            validation: {
+              type: "radio",
+              parentFieldName: "test_FieldChoice1",
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+
+export const mockReportFieldDataWithNestedFieldsNoChildProps = {
+  fieldData: {
+    test_FieldChoice1: [
+      {
+        value: "Value 1",
+        key: "test_FieldChoice1-123",
+      },
+    ],
+    test_FieldChoice2: "Testing Double Nested",
+  },
+  id: "test_FieldChoice1",
+  type: "radio",
+  validation: "radio",
+  props: {
+    choices: [
+      {
+        id: "123",
+        label: "Choice 1",
+        children: [
+          {
+            id: "test_FieldChoice2",
+            type: "textarea",
+            validation: {
+              type: "text",
+              parentFieldName: "test_FieldChoice1",
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+
+export const mockReportFieldDataWithNestedFieldsNoChildren = {
+  fieldData: {
+    test_FieldChoice1: [
+      {
+        value: "Value 1",
+        key: "test_FieldChoice1-123",
+      },
+    ],
+  },
+  id: "test_FieldChoice1",
+  type: "radio",
+  validation: "radio",
+  props: {
+    choices: [
+      {
         id: "123",
         label: "Choice 1",
       },
