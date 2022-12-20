@@ -106,7 +106,7 @@ export const updateReport = handler(async (event, context) => {
 
               // set response status and body
               status = StatusCodes.SUCCESS;
-              body = reportMetadataParams.Item;
+              body = { ...reportMetadataParams.Item, fieldData, formTemplate };
             } else {
               status = StatusCodes.BAD_REQUEST;
               body = error.INVALID_DATA;

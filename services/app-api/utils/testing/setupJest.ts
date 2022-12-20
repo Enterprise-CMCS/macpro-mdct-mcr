@@ -80,6 +80,8 @@ export const mockReport = {
     fieldDataId: "mockReportFieldData",
     formTemplateId: "mockReportJson",
   },
+  formTemplate: { ...mockReportJson },
+  fieldData: { ...mockReportFieldData },
   createdAt: 162515200000,
   lastAltered: 162515200000,
 };

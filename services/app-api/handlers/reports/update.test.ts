@@ -3,7 +3,7 @@ import { updateReport } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import { mockReport } from "../../utils/testing/setupJest";
+import { mockDynamoData, mockReport } from "../../utils/testing/setupJest";
 import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/auth/authorization", () => ({
@@ -85,7 +85,7 @@ describe("Test updateReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(mockReport),
+      body: JSON.stringify(mockDynamoData),
     });
     const res = await updateReport(updateEvent, null);
     const body = JSON.parse(res.body);
@@ -101,7 +101,7 @@ describe("Test updateReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(mockReport),
+      body: JSON.stringify(mockDynamoData),
     });
     const response = await updateReport(submissionEvent, null);
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
