@@ -1,10 +1,11 @@
+import { S3Get } from "../types/types";
+
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
   query: { promise: jest.fn() },
   put: { promise: jest.fn() },
   delete: { promise: jest.fn() },
 };
-
 jest.mock("aws-sdk", () => {
   return {
     DynamoDB: {
@@ -19,6 +20,15 @@ jest.mock("aws-sdk", () => {
     },
   };
 });
+
+jest.mock("../../utils/s3/s3-lib", () => ({
+  put: jest.fn(),
+  get: jest.fn().mockImplementation((params: S3Get) => {
+    if (params.Key.includes("mockReportFieldData")) return mockReportFieldData;
+    if (params.Key.includes("mockReportJson")) return mockReportJson;
+    return;
+  }),
+}));
 
 export const mockReportJson = {
   name: "mock-report",
@@ -40,6 +50,22 @@ export const mockReportFieldData = {
   dropdown: "dropdown-selection",
 };
 
+export const mockDynamoReport = {
+  ...mockReportKeys,
+  reportType: "mock-type",
+  programName: "testProgram",
+  status: "Not started",
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  dueDate: 168515200000,
+  combinedData: false,
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+};
+
 export const mockReport = {
   ...mockReportKeys,
   metadata: {
@@ -51,11 +77,11 @@ export const mockReport = {
     dueDate: 168515200000,
     combinedData: false,
     lastAlteredBy: "Thelonious States",
+    fieldDataId: "mockReportFieldData",
+    formTemplateId: "mockReportJson",
   },
-  formTemplate: mockReportJson,
   createdAt: 162515200000,
   lastAltered: 162515200000,
-  fieldData: mockReportFieldData,
 };
 
 export const mockBannerResponse = {

@@ -17,31 +17,33 @@ export const fetchReport = handler(async (event, _context) => {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
     Key: { state, id: reportId },
   };
-  const response = await dynamoDb.get(reportMetadataParams);
-  const reportMetadata: any = response.Item; // TODO: strict typing
-  const { formTemplateId, fieldDataId } = reportMetadata;
+  try {
+    const response = await dynamoDb.get(reportMetadataParams);
+    if (!response?.Item) throw "Record not found in database";
+    const reportMetadata: any = response.Item; // TODO: strict typing
+    const { formTemplateId, fieldDataId } = reportMetadata;
 
-  // get formTemplate from s3 bucket
-  const formTemplateParams: S3Get = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
-    Key: `formTemplates/${state}/${formTemplateId}.json`,
-  };
-  const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
+    // get formTemplate from s3 bucket
+    const formTemplateParams: S3Get = {
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Key: `formTemplates/${state}/${formTemplateId}.json`,
+    };
+    const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
+    if (!formTemplate) throw "Form Template not found in S3";
 
-  // get fieldData from s3 bucket
-  const fieldDataParams = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
-    Key: `fieldData/${state}/${fieldDataId}.json`,
-  };
-  const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
+    // get fieldData from s3 bucket
+    const fieldDataParams = {
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Key: `fieldData/${state}/${fieldDataId}.json`,
+    };
+    const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
+    if (!fieldData) throw "Field Data not found in S3";
 
-  // if any of the three could not be found, return error
-  if (!response?.Item || !formTemplate || !fieldData) {
-    status = StatusCodes.NOT_FOUND;
-    body = error.NO_MATCHING_RECORD;
-  } else {
     status = StatusCodes.SUCCESS;
     body = { ...reportMetadata, formTemplate, fieldData };
+  } catch (err) {
+    status = StatusCodes.NOT_FOUND;
+    body = error.NO_MATCHING_RECORD;
   }
   return { status, body };
 });
