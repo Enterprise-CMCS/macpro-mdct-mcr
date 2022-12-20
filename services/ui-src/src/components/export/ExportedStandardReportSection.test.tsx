@@ -51,9 +51,22 @@ describe("ExportedStandardReportSection", () => {
     expect(section).toBeVisible();
   });
 
-  test("Is Exported Standard Report Section present with a field with props", () => {
+  test("Is Exported Standard Report Section present with dynamic field without props", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(mockReportContext, mockContent())
+      exportedReportSectionComponent(
+        mockReportContext,
+        mockContent({
+          form: {
+            fields: [
+              {
+                id: "test_id",
+                type: "dynamic",
+                validation: "dynamic",
+              },
+            ],
+          },
+        })
+      )
     );
     const section = getByTestId("exportedStandardReportSection");
     expect(section).toBeVisible();
