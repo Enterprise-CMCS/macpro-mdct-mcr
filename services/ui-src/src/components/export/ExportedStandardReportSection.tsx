@@ -43,7 +43,7 @@ export const ExportedStandardReportSection = ({
   };
 
   return (
-    <Box data-testid="fieldsSubSection" mt="2rem">
+    <Box data-testid="exportedStandardReportSection" mt="2rem">
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
