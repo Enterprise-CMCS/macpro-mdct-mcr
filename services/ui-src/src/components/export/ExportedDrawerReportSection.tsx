@@ -3,17 +3,17 @@ import { useContext } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import { ReportContext, SpreadsheetWidget, Table } from "components";
 // types
-import { DrawerReportPageShape } from "types";
+import { DrawerReportPageShape, FormField } from "types";
 // utils
 import { parseAllLevels, parseCustomHtml, parseFieldLabel } from "utils";
 
 export const ExportedDrawerReportSection = ({
   section: { drawerForm, name, verbiage },
-}: ExportedDrawerReportSectionProps) => {
+}: Props) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
 
-  const fieldRowsItems = (field: any) => {
+  const renderFieldRow = (field: FormField) => {
     const drawerData =
       report?.fieldData.plans !== undefined &&
       report?.fieldData.plans
@@ -40,31 +40,30 @@ export const ExportedDrawerReportSection = ({
 
   return (
     <Box data-testid="exportedDrawerReportSection" mt="2rem">
+      {/* section header */}
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
         </Heading>
       )}
-
       {verbiage?.intro?.info && (
         <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
       )}
-
       {verbiage?.intro?.spreadsheet && (
         <Box sx={sx.spreadSheet}>
           <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
         </Box>
       )}
-
+      {/* section table */}
       {formFields && (
         <Table
           sx={sx.dataTable}
           className="standard"
           content={{
             headRow: ["Number", "Indicator", "Response"],
-            bodyRows: formFields.map((field: any) => {
-              return fieldRowsItems(field);
-            }),
+            bodyRows: formFields.map((field: FormField) =>
+              renderFieldRow(field)
+            ),
           }}
         />
       )}
@@ -72,7 +71,7 @@ export const ExportedDrawerReportSection = ({
   );
 };
 
-export interface ExportedDrawerReportSectionProps {
+export interface Props {
   section: DrawerReportPageShape;
 }
 

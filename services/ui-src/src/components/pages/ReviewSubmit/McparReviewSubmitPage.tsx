@@ -90,18 +90,17 @@ export const McparReviewSubmitPage = () => {
   );
 };
 
-const printButton = () => {
+const PrintButton = () => {
   const navigate = useNavigate();
-  const { bothStates } = reviewVerbiage;
-  const { intro } = bothStates;
+  const { print } = reviewVerbiage;
   return (
     <Button
       sx={sx.printButton}
       leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
-      onClick={() => navigate(intro.printPageUrl)}
+      onClick={() => navigate(print.printPageUrl)}
       variant="outline"
     >
-      {intro.printButtonText}
+      {print.printButtonText}
     </Button>
   );
 };
@@ -129,7 +128,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        {printButton()}
+        <PrintButton />
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -206,7 +205,9 @@ export const SuccessMessage = ({
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
       </Box>
-      <Box sx={sx.infoTextBox}>{printButton()}</Box>
+      <Box sx={sx.infoTextBox}>
+        <PrintButton />
+      </Box>
     </Flex>
   );
 };

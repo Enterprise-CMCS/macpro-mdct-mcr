@@ -74,7 +74,7 @@ export const EntityCard = ({
             sx={sx.statusIcon}
           />
         ) : (
-          <div
+          <Box
             className={
               entityCompleted
                 ? "print-version-icon-div-complete"
@@ -88,11 +88,11 @@ export const EntityCard = ({
               sx={sx.printVersionIcon}
             />
             {entityCompleted ? (
-              <p className="completed-text">Complete</p>
+              <Text className="completed-text">Complete</Text>
             ) : (
-              <p className="error-text">Error!</p>
+              <Text className="error-text">Error!</Text>
             )}
-          </div>
+          </Box>
         )}
         {openDeleteEntityModal && (
           <button
@@ -176,31 +176,31 @@ interface Props {
 
 const sx = {
   contentBox: {
+    position: "relative",
     marginX: "1.25rem",
     paddingLeft: "2.5rem",
-    position: "relative",
     ".delete-entity-button": {
       position: "absolute",
-      height: "1rem",
       right: "-2rem",
+      height: "1rem",
       ".mobile &": {
         right: "-1.5rem",
       },
     },
     ".print-version-icon-div-complete": {
-      marginLeft: "-0.75rem",
       position: "absolute",
-      left: "-1.5rem",
       top: "0.25rem",
+      left: "-1.5rem",
+      marginLeft: "-0.75rem",
       ".mobile &": {
         left: "-1.5rem",
       },
     },
     ".print-version-icon-div-incomplete": {
-      marginLeft: "-0.25rem",
       position: "absolute",
-      left: "-1.5rem",
       top: "0.25rem",
+      left: "-1.5rem",
+      marginLeft: "-0.25rem",
       ".mobile &": {
         left: "-1.5rem",
       },
@@ -247,10 +247,10 @@ const sx = {
     fontWeight: "normal",
   },
   entitiesCount: {
-    fontSize: ".75rem",
-    color: "gray",
     position: "absolute",
     right: "-2rem",
+    fontSize: ".75rem",
+    color: "palette.gray_light",
     ".mobile &": {
       right: "-1.5rem",
     },
