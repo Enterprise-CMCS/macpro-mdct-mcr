@@ -28,13 +28,15 @@ export const ExportedStandardReportSection = ({
   const fieldRowsItems = (field: any) => {
     if (isDynamicField) {
       return [
-        `<strong>${field.props.label}</strong>`,
+        field.props ? `<strong>${field.props.label}</strong>` : "",
         parseDynamicFieldData(report?.fieldData[field.id]),
       ];
     }
     return [
-      `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
-      parseFieldLabel(field.props).label,
+      field.props
+        ? `<strong>${parseFieldLabel(field.props).indicator}</strong>`
+        : "",
+      field.props ? parseFieldLabel(field.props).label : "",
       `<div class="answers">${parseAllLevels({
         ...field,
         fieldData: report?.fieldData,
@@ -66,11 +68,9 @@ export const ExportedStandardReportSection = ({
           className={isDynamicField ? "short" : "standard"}
           content={{
             headRow: headRowItems,
-            bodyRows: formFields
-              .filter((f) => f.props)
-              .map((field: any) => {
-                return fieldRowsItems(field);
-              }),
+            bodyRows: formFields.map((field: any) => {
+              return fieldRowsItems(field);
+            }),
           }}
         />
       )}

@@ -28,8 +28,10 @@ export const ExportedDrawerReportSection = ({
         .join(" ");
 
     return [
-      `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
-      parseFieldLabel(field.props).label,
+      field.props
+        ? `<strong>${parseFieldLabel(field.props).indicator}</strong>`
+        : "",
+      field.props ? parseFieldLabel(field.props).label : "",
       drawerData,
     ];
   };
@@ -60,11 +62,9 @@ export const ExportedDrawerReportSection = ({
           className="standard"
           content={{
             headRow: ["Number", "Indicator", "Response"],
-            bodyRows: formFields
-              .filter((f) => f.props)
-              .map((field: any) => {
-                return fieldRowsItems(field);
-              }),
+            bodyRows: formFields.map((field: any) => {
+              return fieldRowsItems(field);
+            }),
           }}
         />
       )}

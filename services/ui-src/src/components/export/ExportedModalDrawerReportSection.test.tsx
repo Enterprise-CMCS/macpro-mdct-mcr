@@ -90,7 +90,7 @@ describe("ExportedModalDrawerReportSection Section Heading", () => {
             intro: {
               spreadsheet: "MOCK_SPREADSHEET",
               section: "mock section",
-              info: "<p>This is some info.</p>",
+              info: "This is some info.",
             },
           },
         })

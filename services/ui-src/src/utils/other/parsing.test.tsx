@@ -93,9 +93,55 @@ describe("PDF Preview Field Labels", () => {
   });
 });
 
-describe("Export: Returning Choices", () => {
+describe("Export: Parsing Data", () => {
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  test("Parsing Percentage", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_field: "12",
+      },
+      props: {
+        mask: "percentage",
+      },
+      id: "test_field",
+      type: "number",
+      validation: "number",
+    });
+
+    expect(dataReturn).toEqual("12%");
+  });
+  test("Parsing currency", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_field: "12",
+      },
+      props: {
+        mask: "currency",
+      },
+      id: "test_field",
+      type: "number",
+      validation: "number",
+    });
+
+    expect(dataReturn).toEqual("$12");
+  });
+
+  test("Parsing email", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_field: "test@test.com",
+      },
+      id: "test_field",
+      type: "text",
+      validation: "email",
+    });
+
+    expect(dataReturn).toEqual(
+      '<a href="mailto:test@test.com">test@test.com</a>'
+    );
   });
 
   test("Parsing Nested Choices", () => {

@@ -29,6 +29,27 @@ describe("ExportedDrawerReportSection", () => {
     const section = getByTestId("exportedDrawerReportSection");
     expect(section).toBeVisible();
   });
+
+  test("Is Exported Drawer Report Section present with a field without props", () => {
+    const { getByTestId } = render(
+      exportedReportSectionComponent(
+        mockReportContext,
+        mockContent({
+          drawerForm: {
+            fields: [
+              {
+                id: "mock-drawer-text-field",
+                type: "text",
+                validation: "text",
+              },
+            ],
+          },
+        })
+      )
+    );
+    const section = getByTestId("exportedDrawerReportSection");
+    expect(section).toBeVisible();
+  });
 });
 
 describe("ExportedDrawerReportSection Section Heading", () => {
@@ -41,7 +62,7 @@ describe("ExportedDrawerReportSection Section Heading", () => {
             intro: {
               spreadsheet: "MOCK_SPREADSHEET",
               section: "mock section",
-              info: "<p>This is some info.</p>",
+              info: "This is some info.",
             },
           },
         })
