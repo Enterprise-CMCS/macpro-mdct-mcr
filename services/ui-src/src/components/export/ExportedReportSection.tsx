@@ -2,16 +2,23 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { ExportedReportWrapper } from "components";
 // utils
-import { FormJson, ReportPageVerbiage, ReportRouteBase } from "types";
+import {
+  FormJson,
+  PageTypes,
+  ReportPageVerbiage,
+  ReportRouteBase,
+} from "types";
 
 export const ExportedReportSection = ({
   section,
 }: ExportedReportSectionProps) => {
   return (
     <Box data-testid="fieldsSection" mt="5rem">
-      <Heading as="h2" sx={sx.sectionHeading}>
-        Section {section.name}
-      </Heading>
+      {section?.pageType !== PageTypes.REVIEW_SUBMIT && (
+        <Heading as="h2" sx={sx.sectionHeading}>
+          Section {section.name}
+        </Heading>
+      )}
       <RecursiveReportSection section={section} />
     </Box>
   );
