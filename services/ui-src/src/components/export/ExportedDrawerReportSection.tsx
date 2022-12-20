@@ -8,15 +8,16 @@ import { DrawerReportPageShape, FormField } from "types";
 import { parseAllLevels, parseCustomHtml, parseFieldLabel } from "utils";
 
 export const ExportedDrawerReportSection = ({
+  section,
   section: { drawerForm, name, verbiage },
 }: Props) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
 
-  const renderFieldRow = (field: FormField) => {
+  const renderFieldRow = (field: FormField, entityType: string) => {
     const drawerData =
-      report?.fieldData.plans !== undefined &&
-      report?.fieldData.plans
+      report?.fieldData[entityType] !== undefined &&
+      report?.fieldData[entityType]
         .map((plan: any) => {
           return `<div class="plan-answers"><p><strong>${
             plan.name
@@ -54,6 +55,7 @@ export const ExportedDrawerReportSection = ({
           <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
         </Box>
       )}
+
       {/* section table */}
       {formFields && (
         <Table
@@ -62,7 +64,7 @@ export const ExportedDrawerReportSection = ({
           content={{
             headRow: ["Number", "Indicator", "Response"],
             bodyRows: formFields.map((field: FormField) =>
-              renderFieldRow(field)
+              renderFieldRow(field, section.entityType)
             ),
           }}
         />
