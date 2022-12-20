@@ -29,8 +29,10 @@ export const AddEditEntityModal = ({
       id: report?.id,
     };
     let dataToWrite = {
-      lastAlteredBy: full_name,
-      reportStatus: ReportStatus.IN_PROGRESS,
+      metadata: {
+        lastAlteredBy: full_name,
+        status: ReportStatus.IN_PROGRESS,
+      },
       fieldData: {},
     };
     const currentEntities = report?.fieldData?.[entityType] || [];

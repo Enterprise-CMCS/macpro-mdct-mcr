@@ -43,31 +43,15 @@ export const AddEditProgramModal = ({
       formData["reportingPeriodEndDate"]
     );
 
-    const createDataToWrite = {
+    const dataToWrite = {
       metadata: {
         programName,
-        reportType,
         reportingPeriodStartDate,
         reportingPeriodEndDate,
         dueDate,
-        lastAlteredBy: full_name,
         combinedData,
+        lastAlteredBy: full_name,
       },
-      fieldData: {
-        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
-        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
-        programName,
-      },
-      formTemplate,
-    };
-    const updateDataToWrite = {
-      programName,
-      reportType,
-      reportingPeriodStartDate,
-      reportingPeriodEndDate,
-      dueDate,
-      lastAlteredBy: full_name,
-      combinedData,
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
@@ -85,18 +69,26 @@ export const AddEditProgramModal = ({
 
       // edit existing report
       await updateReport(reportKeys, {
-        ...updateDataToWrite,
+        ...dataToWrite,
+        metadata: {
+          ...dataToWrite.metadata,
+          status: ReportStatus.IN_PROGRESS,
+        },
       });
     } else {
       // create new report
       await createReport(activeState, {
-        ...createDataToWrite,
-        status: ReportStatus.NOT_STARTED,
-        formTemplate,
+        ...dataToWrite,
+        metadata: {
+          ...dataToWrite.metadata,
+          reportType,
+          status: ReportStatus.NOT_STARTED,
+        },
         fieldData: {
-          ...createDataToWrite.fieldData,
+          ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
         },
+        formTemplate,
       });
     }
     await fetchReportsByState(activeState);

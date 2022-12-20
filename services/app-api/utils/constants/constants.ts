@@ -7,6 +7,7 @@ export default {
   NO_MATCHING_RECORD: "No matching record found",
   // bucket errors
   S3_OBJECT_CREATION_ERROR: "Report could not be created due to an S3 error.",
+  S3_OBJECT_UPDATE_ERROR: "Report could not be updated due to an S3 error.",
   // template errors
   NO_TEMPLATE_NAME: "Must request template for download",
   INVALID_TEMPLATE_NAME: "Requested template does not exist or does not match",

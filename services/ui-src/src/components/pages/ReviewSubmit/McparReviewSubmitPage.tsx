@@ -51,10 +51,12 @@ export const McparReviewSubmitPage = () => {
     if (isPermittedToSubmit) {
       const submissionDate = Date.now();
       await updateReport(reportKeys, {
-        status: ReportStatus.SUBMITTED,
-        lastAlteredBy: full_name,
-        submittedBy: full_name,
-        submittedOnDate: submissionDate,
+        metadata: {
+          status: ReportStatus.SUBMITTED,
+          lastAlteredBy: full_name,
+          submittedBy: full_name,
+          submittedOnDate: submissionDate,
+        },
         fieldData: {
           submitterName: full_name,
           submitterEmailAddress: email,

@@ -33,16 +33,10 @@ const updateEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     ...mockReport,
-    status: "in progress",
+    metadata: {
+      status: "in progress",
+    },
     fieldData: {},
-  }),
-};
-
-const archiveEvent: APIGatewayProxyEvent = {
-  ...mockProxyEvent,
-  body: JSON.stringify({
-    ...mockReport,
-    archived: true,
   }),
 };
 
@@ -50,8 +44,10 @@ const submissionEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     ...mockReport,
-    status: "submitted",
-    submittedBy: mockReport.lastAlteredBy,
+    metadata: {
+      status: "submitted",
+    },
+    submittedBy: mockReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
     fieldData: {},
   }),
@@ -92,7 +88,6 @@ describe("Test updateReport API method", () => {
       body: JSON.stringify(mockReport),
     });
     const res = await updateReport(updateEvent, null);
-
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.status).toContain("in progress");
@@ -175,47 +170,5 @@ describe("Test updateReport API method", () => {
 
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
-  });
-});
-
-describe("Test archiveReport method", () => {
-  beforeEach(() => {
-    // fail state and pass admin auth checks
-    mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(true);
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Test archive report passes with valid data", async () => {
-    mockedFetchReport.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(mockReport),
-    });
-    const res: any = await updateReport(archiveEvent, null);
-
-    const body = JSON.parse(res.body);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.archived).toBe(true);
-  });
-
-  test("Test archive report with no existing record throws 404", async () => {
-    mockedFetchReport.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: undefined!,
-    });
-    const res = await updateReport(archiveEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
-    expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
 });
