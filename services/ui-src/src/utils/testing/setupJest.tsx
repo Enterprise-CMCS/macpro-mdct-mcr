@@ -354,7 +354,7 @@ export const mockReportKeys = {
   id: "mock-report-id",
 };
 
-export const mockExportParsingDataChoices = {
+export const mockReportFieldDataWithNestedFields = {
   fieldData: {
     test_FieldChoice1: [
       {
@@ -417,7 +417,7 @@ export const mockExportParsingDataChoices = {
   },
 };
 
-export const mockExportParsingDataChoicesNotAnswered = {
+export const mockReportFieldDataWithNestedFieldsNotAnswered = {
   fieldData: {
     test_FieldChoice1: [],
     test_FieldChoice2: [],
@@ -447,7 +447,7 @@ export const mockExportParsingDataChoicesNotAnswered = {
   },
 };
 
-export const mockExportParsingDataChoicesIncomplete = {
+export const mockReportFieldDataWithNestedFieldsIncomplete = {
   fieldData: {
     test_FieldChoice1: [
       {
@@ -482,7 +482,7 @@ export const mockExportParsingDataChoicesIncomplete = {
   },
 };
 
-export const mockExportParsingDataChoicesNoChildProps = {
+export const mockReportFieldDataWithNestedFieldsNoChildProps = {
   fieldData: {
     test_FieldChoice1: [
       {
@@ -515,7 +515,7 @@ export const mockExportParsingDataChoicesNoChildProps = {
   },
 };
 
-export const mockExportParsingDataChoicesNoChildren = {
+export const mockReportFieldDataWithNestedFieldsNoChildren = {
   fieldData: {
     test_FieldChoice1: [
       {
