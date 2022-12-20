@@ -354,7 +354,7 @@ export const mockReportKeys = {
   id: "mock-report-id",
 };
 
-export const mockExportParsingDataChoices = {
+export const mockReportFieldDataWithNestedFields = {
   fieldData: {
     test_FieldChoice1: [
       {

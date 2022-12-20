@@ -7,7 +7,7 @@ import {
   parseDynamicFieldData,
   parseFieldLabel,
 } from "./parsing";
-import { mockExportParsingDataChoices } from "utils/testing/setupJest";
+import { mockReportFieldDataWithNestedFields } from "utils/testing/setupJest";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -89,7 +89,7 @@ describe("PDF Preview Field Labels", () => {
 
 describe("Export: Returning Nested Choices", () => {
   test("Parsing Nested Choices", () => {
-    const dataReturn = parseAllLevels(mockExportParsingDataChoices);
+    const dataReturn = parseAllLevels(mockReportFieldDataWithNestedFields);
 
     expect(dataReturn).toEqual(
       "<p>Value 1</p><p><strong>Test Label</strong></p><p>Value 2</p><p><strong>Test Label 2</strong></p>Testing Double Nested"
