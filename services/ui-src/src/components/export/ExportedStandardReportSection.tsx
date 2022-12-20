@@ -2,7 +2,7 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { ReportContext, SpreadsheetWidget, Table } from "components";
 import { useContext } from "react";
-import { FormJson, ReportPageVerbiage } from "types";
+import { StandardReportPageShape } from "types";
 import {
   parseAllLevels,
   parseCustomHtml,
@@ -43,7 +43,7 @@ export const ExportedStandardReportSection = ({
   };
 
   return (
-    <Box data-testid="fieldsSubSection" mt="2rem">
+    <Box data-testid="exportedStandardReportSection" mt="2rem">
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
@@ -78,12 +78,8 @@ export const ExportedStandardReportSection = ({
   );
 };
 
-interface ExportedStandardReportSectionProps {
-  section: {
-    name: string;
-    form?: FormJson;
-    verbiage?: ReportPageVerbiage;
-  };
+export interface ExportedStandardReportSectionProps {
+  section: StandardReportPageShape;
 }
 
 const sx = {

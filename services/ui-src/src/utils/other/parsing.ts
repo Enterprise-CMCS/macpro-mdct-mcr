@@ -54,7 +54,7 @@ export const sanitizeAndParseHtml = (html: string) => {
 
 // parsing the field name numbers for the PDF preview page
 export const parseFieldLabel = (labelObject: {
-  label: string;
+  label?: string;
   hint?: string;
   hideHint?: boolean;
 }) => {
@@ -151,12 +151,8 @@ export const parseAllLevels = ({
       case "email":
       case "emailOptional":
         return `<a href="mailto:${fieldData[id]}">${fieldData[id]}</a>`;
-      case "text":
-      case "textOptional":
-        if (fieldData[id].indexOf("http") >= 0) {
-          return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
-        }
-        return fieldData[id];
+      case "url":
+        return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
       case "checkbox":
       case "radio":
         return returnChoices(
