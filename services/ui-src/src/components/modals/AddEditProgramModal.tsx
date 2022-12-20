@@ -43,7 +43,7 @@ export const AddEditProgramModal = ({
       formData["reportingPeriodEndDate"]
     );
 
-    const createDataToWrite = {
+    const dataToWrite = {
       metadata: {
         programName,
         reportType,
@@ -53,21 +53,6 @@ export const AddEditProgramModal = ({
         lastAlteredBy: full_name,
         combinedData,
       },
-      fieldData: {
-        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
-        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
-        programName,
-      },
-      formTemplate,
-    };
-    const updateDataToWrite = {
-      programName,
-      reportType,
-      reportingPeriodStartDate,
-      reportingPeriodEndDate,
-      dueDate,
-      lastAlteredBy: full_name,
-      combinedData,
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
@@ -85,16 +70,16 @@ export const AddEditProgramModal = ({
 
       // edit existing report
       await updateReport(reportKeys, {
-        ...updateDataToWrite,
+        ...dataToWrite,
       });
     } else {
       // create new report
       await createReport(activeState, {
-        ...createDataToWrite,
+        ...dataToWrite,
         status: ReportStatus.NOT_STARTED,
         formTemplate,
         fieldData: {
-          ...createDataToWrite.fieldData,
+          ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
         },
       });
