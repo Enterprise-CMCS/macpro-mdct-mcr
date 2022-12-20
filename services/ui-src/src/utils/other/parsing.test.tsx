@@ -7,7 +7,13 @@ import {
   parseDynamicFieldData,
   parseFieldLabel,
 } from "./parsing";
-import { mockExportParsingDataChoices } from "utils/testing/setupJest";
+import {
+  mockExportParsingDataChoices,
+  mockExportParsingDataChoicesIncomplete,
+  mockExportParsingDataChoicesNoChildProps,
+  mockExportParsingDataChoicesNoChildren,
+  mockExportParsingDataChoicesNotAnswered,
+} from "utils/testing/setupJest";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -87,13 +93,41 @@ describe("PDF Preview Field Labels", () => {
   });
 });
 
-describe("Export: Returning Nested Choices", () => {
+describe("Export: Returning Choices", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("Parsing Nested Choices", () => {
     const dataReturn = parseAllLevels(mockExportParsingDataChoices);
 
     expect(dataReturn).toEqual(
       "<p>Value 1</p><p><strong>Test Label</strong></p><p>Value 2</p><p><strong>Test Label 2</strong></p>Testing Double Nested"
     );
+  });
+
+  test("Parsing Nested Choices with no Children", () => {
+    const dataReturn = parseAllLevels(mockExportParsingDataChoicesNoChildren);
+
+    expect(dataReturn).toEqual("<p>Value 1</p>");
+  });
+
+  test("Parsing Nested Choices with No Child Props", () => {
+    const dataReturn = parseAllLevels(mockExportParsingDataChoicesNoChildProps);
+
+    expect(dataReturn).toEqual("<p>Value 1</p>Testing Double Nested");
+  });
+
+  test("Parsing Nested Choices Not Answered", () => {
+    const dataReturn = parseAllLevels(mockExportParsingDataChoicesNotAnswered);
+
+    expect(dataReturn).toEqual('<p style="color:#9F142B">Not Answered</p>');
+  });
+
+  test("Parsing Nested Choices Incomplete", () => {
+    const dataReturn = parseAllLevels(mockExportParsingDataChoicesIncomplete);
+
+    expect(dataReturn).toEqual("<p>Value 1 test</p>");
   });
 });
 

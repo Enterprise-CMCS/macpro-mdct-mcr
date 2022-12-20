@@ -44,6 +44,7 @@ const sx = {
   },
   pdfButton: {
     img: {
+      width: "1rem",
       marginRight: "0.5rem",
     },
   },
