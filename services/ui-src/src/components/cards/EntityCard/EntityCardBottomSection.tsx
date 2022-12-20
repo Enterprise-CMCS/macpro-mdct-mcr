@@ -136,7 +136,7 @@ export const EntityCardBottomSection = ({
                   <Box sx={sx.highlightSection}>
                     <Text sx={sx.planTitle}>{plan.name}</Text>
                     {printVersion && !plan.response ? (
-                      <Text sx={sx.notAnswered}>Not Answered</Text>
+                      notAnswered
                     ) : (
                       <Text sx={sx.planText}>
                         {plan.response || verbiage?.entityEmptyResponseMessage}

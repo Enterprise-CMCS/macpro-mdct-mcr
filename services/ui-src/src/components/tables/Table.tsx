@@ -11,8 +11,9 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 // utils
-import { AnyObject, TableContentShape } from "types";
 import { sanitizeAndParseHtml } from "utils";
+// types
+import { AnyObject, TableContentShape } from "types";
 
 export const Table = ({
   content,
@@ -26,7 +27,7 @@ export const Table = ({
     <TableRoot
       variant={variant}
       size="sm"
-      className={shrinkCells ? "shrink" : undefined}
+      className={shrinkCells && "shrink"}
       sx={{ ...sx.root, ...sxOverride }}
       {...props}
     >

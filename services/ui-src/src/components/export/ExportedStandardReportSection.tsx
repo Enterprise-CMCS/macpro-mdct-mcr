@@ -9,6 +9,7 @@ import {
   parseDynamicFieldData,
   parseFieldLabel,
 } from "utils";
+// types
 import { FormField, StandardReportPageShape } from "types";
 
 export const ExportedStandardReportSection = ({
