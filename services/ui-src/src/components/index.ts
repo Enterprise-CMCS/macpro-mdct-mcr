@@ -78,6 +78,7 @@ export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // print
 export { ExportedReportSection } from "./export/ExportedReportSection";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
+export { ExportedSectionHeading } from "./export/ExportedSectionHeading";
 export { ExportedDrawerReportSection } from "./export/ExportedDrawerReportSection";
 export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";
 export { ExportedStandardReportSection } from "./export/ExportedStandardReportSection";

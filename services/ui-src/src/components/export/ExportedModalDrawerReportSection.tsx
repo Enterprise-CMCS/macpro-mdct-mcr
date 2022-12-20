@@ -1,5 +1,5 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
-import { EntityCard, SpreadsheetWidget } from "components";
+import { Box, Text } from "@chakra-ui/react";
+import { EntityCard, ExportedSectionHeading } from "components";
 import { ReportContext } from "components/reports/ReportProvider";
 import { useContext } from "react";
 import {
@@ -7,7 +7,7 @@ import {
   ModalDrawerEntityTypes,
   ModalDrawerReportPageShape,
 } from "types";
-import { getFormattedEntityData, parseCustomHtml } from "utils";
+import { getFormattedEntityData } from "utils";
 // utils
 
 export const ExportedModalDrawerReportSection = ({
@@ -36,18 +36,7 @@ export const ExportedModalDrawerReportSection = ({
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       {sectionHeading && (
-        <Heading as="h3" sx={sx.childHeading}>
-          {sectionHeading}
-        </Heading>
-      )}
-      {existingEntity && verbiage?.intro?.info && (
-        <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
-      )}
-
-      {existingEntity && verbiage?.intro?.spreadsheet && (
-        <Box sx={sx.spreadSheet}>
-          <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
-        </Box>
+        <ExportedSectionHeading heading={sectionHeading} verbiage={verbiage} />
       )}
 
       {!existingEntity && (
@@ -74,22 +63,3 @@ export const ExportedModalDrawerReportSection = ({
 export interface ExportedModalDrawerReportSectionProps {
   section: ModalDrawerReportPageShape;
 }
-
-const sx = {
-  intro: {
-    h3: {
-      fontSize: "lg",
-    },
-    p: {
-      margin: "1.5rem 0",
-    },
-  },
-  spreadSheet: {
-    marginBottom: "1.5rem",
-  },
-  childHeading: {
-    marginBottom: "1.5rem",
-    fontSize: "xl",
-    fontWeight: "bold",
-  },
-};
