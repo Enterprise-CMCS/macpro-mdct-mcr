@@ -1,22 +1,21 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
-import { EntityCard, SpreadsheetWidget } from "components";
-import { ReportContext } from "components/reports/ReportProvider";
 import { useContext } from "react";
+// components
+import { Box, Heading, Text } from "@chakra-ui/react";
+import { EntityCard, ReportContext, SpreadsheetWidget } from "components";
+// utils
+import { getFormattedEntityData, parseCustomHtml } from "utils";
 import {
   EntityShape,
   ModalDrawerEntityTypes,
   ModalDrawerReportPageShape,
 } from "types";
-import { getFormattedEntityData, parseCustomHtml } from "utils";
-// utils
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage, name },
-}: ExportedModalDrawerReportSectionProps) => {
+}: Props) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
   const entityCount = report?.fieldData?.[entityType]?.length;
-  const existingEntity = entityCount >= 1;
 
   let emptyEntityMessage = "";
   switch (entityType) {
@@ -35,24 +34,24 @@ export const ExportedModalDrawerReportSection = ({
   }
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
+      {/* section header */}
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
         </Heading>
       )}
-      {existingEntity && verbiage?.intro?.info && (
+      {entityCount && verbiage?.intro?.info && (
         <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
       )}
-
-      {existingEntity && verbiage?.intro?.spreadsheet && (
+      {entityCount && verbiage?.intro?.spreadsheet && (
         <Box sx={sx.spreadSheet}>
           <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
         </Box>
       )}
-
-      {!existingEntity && (
+      {!entityCount && (
         <Text data-testid="entityMessage">{emptyEntityMessage}</Text>
       )}
+      {/* section cards */}
       {report?.fieldData?.[entityType]?.map((entity: EntityShape) => (
         <EntityCard
           key={entity.id}
@@ -71,7 +70,7 @@ export const ExportedModalDrawerReportSection = ({
   );
 };
 
-export interface ExportedModalDrawerReportSectionProps {
+export interface Props {
   section: ModalDrawerReportPageShape;
 }
 

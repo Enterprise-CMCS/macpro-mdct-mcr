@@ -1,4 +1,8 @@
 export default {
+  print: {
+    printPageUrl: "/mcpar/export",
+    printButtonText: "Print",
+  },
   review: {
     intro: {
       header: "Review & Submit",
@@ -24,14 +28,6 @@ export default {
       additionalInfoHeader: "What happens now?",
       additionalInfo:
         "No further action is needed at this point. CMS will reach out if in the case they have any questions.",
-      printPageUrl: "/mcpar/export",
-      printButtonText: "Print",
-    },
-  },
-  bothStates: {
-    intro: {
-      printPageUrl: "/mcpar/export",
-      printButtonText: "Print",
     },
   },
 };

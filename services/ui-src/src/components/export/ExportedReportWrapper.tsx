@@ -4,17 +4,16 @@ import {
   ExportedModalDrawerReportSection,
   ExportedStandardReportSection,
 } from "components";
+// types
 import {
   DrawerReportPageShape,
   ModalDrawerReportPageShape,
   PageTypes,
+  ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
-// utils
 
-export const ExportedReportWrapper = ({
-  section,
-}: ExportedReportWrapperProps) => {
+export const ExportedReportWrapper = ({ section }: Props) => {
   switch (section.pageType) {
     case PageTypes.DRAWER:
       return (
@@ -39,9 +38,6 @@ export const ExportedReportWrapper = ({
   }
 };
 
-interface ExportedReportWrapperProps {
-  section:
-    | DrawerReportPageShape
-    | StandardReportPageShape
-    | ModalDrawerReportPageShape;
+interface Props {
+  section: ReportRouteWithForm;
 }

@@ -21,14 +21,14 @@ export const EntityCardBottomSection = ({
                   {printVersion && "C2.V.4"} Provider
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.provider ??
+                  {formattedEntityData?.provider ||
                     (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>{printVersion && "C2.V.5 "} Region</Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.region ?? (printVersion && notAnswered)}
+                  {formattedEntityData?.region || (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
@@ -36,7 +36,7 @@ export const EntityCardBottomSection = ({
                   {printVersion && "C2.V.5 "} Population
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.population ??
+                  {formattedEntityData?.population ||
                     (printVersion && notAnswered)}
                 </Text>
               </Box>
@@ -46,14 +46,14 @@ export const EntityCardBottomSection = ({
             {printVersion && "C2.V.7 "} Monitoring Methods
           </Text>
           <Text sx={sx.subtext}>
-            {formattedEntityData?.monitoringMethods?.join(", ") ??
+            {formattedEntityData?.monitoringMethods?.join(", ") ||
               (printVersion && notAnswered)}
           </Text>
           <Text sx={sx.subtitle}>
             {printVersion && "C2.V.8 "} Frequency of oversight methods
           </Text>
           <Text sx={sx.subtext}>
-            {formattedEntityData.methodFrequency ??
+            {formattedEntityData.methodFrequency ||
               (printVersion && notAnswered)}
           </Text>
         </>
@@ -69,7 +69,7 @@ export const EntityCardBottomSection = ({
                   {printVersion && "D3.VIII.5 "} Instances of non-compliance
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.noncomplianceInstances ??
+                  {formattedEntityData?.noncomplianceInstances ||
                     (printVersion && notAnswered)}
                 </Text>
               </Box>
@@ -79,7 +79,7 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   ${" "}
-                  {formattedEntityData?.dollarAmount ??
+                  {formattedEntityData?.dollarAmount ||
                     (printVersion && notAnswered)}
                 </Text>
               </Box>
@@ -90,7 +90,7 @@ export const EntityCardBottomSection = ({
                   {printVersion && "D3.VIII.7 "} Date assessed
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.assessmentDate ??
+                  {formattedEntityData?.assessmentDate ||
                     (printVersion && notAnswered)}
                 </Text>
               </Box>
@@ -100,7 +100,7 @@ export const EntityCardBottomSection = ({
                   was corrected
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.remediationDate ??
+                  {formattedEntityData?.remediationDate ||
                     (printVersion && notAnswered)}
                 </Text>
               </Box>
@@ -109,7 +109,7 @@ export const EntityCardBottomSection = ({
               {printVersion && "D3.VIII.9 "} Corrective action plan
             </Text>
             <Text sx={sx.subtext}>
-              {formattedEntityData?.correctiveActionPlan ??
+              {formattedEntityData?.correctiveActionPlan ||
                 (printVersion && notAnswered)}
             </Text>
           </Box>
@@ -121,7 +121,7 @@ export const EntityCardBottomSection = ({
           <Text sx={sx.resultsHeader}>Measure results</Text>
           {formattedEntityData?.isPartiallyComplete && (
             <Text sx={sx.missingResponseMessage}>
-              {verbiage?.entityMissingResponseMessage ??
+              {verbiage?.entityMissingResponseMessage ||
                 (printVersion && notAnswered)}
             </Text>
           )}
@@ -214,6 +214,6 @@ const sx = {
   },
   notAnswered: {
     fontSize: "sm",
-    color: "#9F142B",
+    color: "palette.error_darker",
   },
 };
