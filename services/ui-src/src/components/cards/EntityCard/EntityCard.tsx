@@ -75,7 +75,11 @@ export const EntityCard = ({
           />
         ) : (
           <div
-            className="print-version-icon-div"
+            className={
+              entityCompleted
+                ? "print-version-icon-div-complete"
+                : "print-version-icon-div-incomplete"
+            }
             data-testid="print-status-indicator"
           >
             <Image
@@ -173,6 +177,7 @@ interface Props {
 const sx = {
   contentBox: {
     marginX: "1.25rem",
+    paddingLeft: "2.5rem",
     position: "relative",
     ".delete-entity-button": {
       position: "absolute",
@@ -182,10 +187,20 @@ const sx = {
         right: "-1.5rem",
       },
     },
-    ".print-version-icon-div": {
-      marginLeft: "-1rem",
+    ".print-version-icon-div-complete": {
+      marginLeft: "-0.75rem",
       position: "absolute",
       left: "-1.5rem",
+      top: "0.25rem",
+      ".mobile &": {
+        left: "-1.5rem",
+      },
+    },
+    ".print-version-icon-div-incomplete": {
+      marginLeft: "-0.25rem",
+      position: "absolute",
+      left: "-1.5rem",
+      top: "0.25rem",
       ".mobile &": {
         left: "-1.5rem",
       },
