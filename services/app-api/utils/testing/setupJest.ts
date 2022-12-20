@@ -50,7 +50,7 @@ export const mockReportFieldData = {
   dropdown: "dropdown-selection",
 };
 
-export const mockDynamoReport = {
+export const mockDynamoData = {
   ...mockReportKeys,
   reportType: "mock-type",
   programName: "testProgram",

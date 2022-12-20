@@ -5,7 +5,7 @@ import { StatusCodes } from "../../utils/types/types";
 import error from "../../utils/constants/constants";
 import {
   mockDocumentClient,
-  mockDynamoReport,
+  mockDynamoData,
   mockReportJson,
   mockReportFieldData,
 } from "../../utils/testing/setupJest";
@@ -41,7 +41,7 @@ describe("Test fetchReport API method", () => {
 
   test("Test Report Form not found in S3", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce({
-      Item: { ...mockDynamoReport, formTemplateId: "badId" },
+      Item: { ...mockDynamoData, formTemplateId: "badId" },
     });
     const res = await fetchReport(testReadEvent, "null");
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
@@ -49,7 +49,7 @@ describe("Test fetchReport API method", () => {
 
   test("Test Field Data not found in S3", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce({
-      Item: { ...mockDynamoReport, fieldDataId: null },
+      Item: { ...mockDynamoData, fieldDataId: null },
     });
     const res = await fetchReport(testReadEvent, "badId");
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
@@ -57,7 +57,7 @@ describe("Test fetchReport API method", () => {
 
   test("Test Successful Report Fetch", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce({
-      Item: mockDynamoReport,
+      Item: mockDynamoData,
     });
     const res = await fetchReport(testReadEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
@@ -92,7 +92,7 @@ describe("Test fetchReport API method", () => {
 describe("Test fetchReportsByState API method", () => {
   test("Test successful call", async () => {
     mockDocumentClient.query.promise.mockReturnValueOnce({
-      Items: [mockDynamoReport],
+      Items: [mockDynamoData],
     });
     const res = await fetchReportsByState(testReadEventByState, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
