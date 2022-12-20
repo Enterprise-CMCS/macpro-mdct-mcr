@@ -1,40 +1,42 @@
+import { useContext } from "react";
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import { ReportContext, SpreadsheetWidget, Table } from "components";
-import { useContext } from "react";
-import { StandardReportPageShape } from "types";
+// utils
 import {
   parseAllLevels,
   parseCustomHtml,
   parseDynamicFieldData,
   parseFieldLabel,
 } from "utils";
-// utils
+import { FormField, StandardReportPageShape } from "types";
 
 export const ExportedStandardReportSection = ({
   section: { form, name, verbiage },
-}: ExportedStandardReportSectionProps) => {
+}: Props) => {
   const { report } = useContext(ReportContext);
   const sectionHeading = verbiage?.intro.subsection || name;
   const formFields = form?.fields;
-  const isDynamicField = form?.fields.filter(
-    (f: { type: string }) => f.type === "dynamic"
-  ).length;
+  const formHasOnlyDynamicFields = form?.fields.every(
+    (field) => field.type === "dynamic"
+  );
 
-  const headRowItems = isDynamicField
+  const headRowItems = formHasOnlyDynamicFields
     ? ["Indicator", "Response"]
     : ["Number", "Indicator", "Response"];
 
-  const fieldRowsItems = (field: any) => {
-    if (isDynamicField) {
+  const renderFieldRow = (field: FormField) => {
+    if (field.type === "dynamic") {
+      // if field is dynamic, return data in 2 columns
       return [
-        `<strong>${field.props.label}</strong>`,
+        `<strong>${field?.props?.label}</strong>`,
         parseDynamicFieldData(report?.fieldData[field.id]),
       ];
     }
+    // otherwise, return data in standard 3 columns
     return [
-      `<strong>${parseFieldLabel(field.props).indicator}</strong>`,
-      parseFieldLabel(field.props).label,
+      `<strong>${parseFieldLabel(field?.props).indicator}</strong>`,
+      parseFieldLabel(field?.props).label,
       `<div class="answers">${parseAllLevels({
         ...field,
         fieldData: report?.fieldData,
@@ -44,33 +46,30 @@ export const ExportedStandardReportSection = ({
 
   return (
     <Box data-testid="exportedStandardReportSection" mt="2rem">
+      {/* section header */}
       {sectionHeading && (
         <Heading as="h3" sx={sx.childHeading}>
           {sectionHeading}
         </Heading>
       )}
-
       {verbiage?.intro?.info && (
         <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
       )}
-
       {verbiage?.intro?.spreadsheet && (
         <Box sx={sx.spreadSheet}>
           <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
         </Box>
       )}
-
+      {/* section table */}
       {formFields && (
         <Table
           sx={sx.dataTable}
-          className={isDynamicField ? "short" : "standard"}
+          className={formHasOnlyDynamicFields ? "two-column" : "three-column"}
           content={{
             headRow: headRowItems,
-            bodyRows: formFields
-              .filter((f) => f.props)
-              .map((field: any) => {
-                return fieldRowsItems(field);
-              }),
+            bodyRows: formFields.map((field: FormField) =>
+              renderFieldRow(field)
+            ),
           }}
         />
       )}
@@ -78,7 +77,7 @@ export const ExportedStandardReportSection = ({
   );
 };
 
-export interface ExportedStandardReportSectionProps {
+export interface Props {
   section: StandardReportPageShape;
 }
 
@@ -103,7 +102,7 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
     },
-    "&.standard": {
+    "&.three-column": {
       "th, td": {
         "&:first-of-type": {
           width: "5.5rem",
@@ -113,7 +112,7 @@ const sx = {
         },
       },
     },
-    "&.short": {
+    "&.two-column": {
       tr: {
         p: {
           marginBottom: "1rem",
