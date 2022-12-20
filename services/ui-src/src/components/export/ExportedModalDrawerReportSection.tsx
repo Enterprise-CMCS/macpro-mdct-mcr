@@ -77,6 +77,9 @@ export interface ExportedModalDrawerReportSectionProps {
 
 const sx = {
   intro: {
+    h3: {
+      fontSize: "lg",
+    },
     p: {
       margin: "1.5rem 0",
     },
