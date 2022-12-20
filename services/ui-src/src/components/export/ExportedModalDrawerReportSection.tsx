@@ -36,7 +36,11 @@ export const ExportedModalDrawerReportSection = ({
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       {sectionHeading && (
-        <ExportedSectionHeading heading={sectionHeading} verbiage={verbiage} />
+        <ExportedSectionHeading
+          heading={sectionHeading}
+          verbiage={verbiage}
+          existingEntity={existingEntity}
+        />
       )}
 
       {!existingEntity && (

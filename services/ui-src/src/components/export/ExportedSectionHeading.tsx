@@ -1,12 +1,14 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import { SpreadsheetWidget } from "components";
-// types
-
 // utils
 import { parseCustomHtml } from "utils";
 
-export const ExportedSectionHeading = ({ heading, verbiage }: any) => {
+export const ExportedSectionHeading = ({
+  heading,
+  verbiage,
+  existingEntity,
+}: any) => {
   const sectionHeading = verbiage?.intro.subsection || heading;
 
   return (
@@ -17,11 +19,11 @@ export const ExportedSectionHeading = ({ heading, verbiage }: any) => {
         </Heading>
       )}
 
-      {verbiage?.intro?.info && (
+      {existingEntity && verbiage?.intro?.info && (
         <Box sx={sx.intro}>{parseCustomHtml(verbiage?.intro.info)}</Box>
       )}
 
-      {verbiage?.intro?.spreadsheet && (
+      {existingEntity && verbiage?.intro?.spreadsheet && (
         <Box sx={sx.spreadSheet}>
           <SpreadsheetWidget description={verbiage?.intro.spreadsheet} />
         </Box>

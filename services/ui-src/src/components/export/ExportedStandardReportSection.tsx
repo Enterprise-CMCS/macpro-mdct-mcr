@@ -11,7 +11,7 @@ export const ExportedStandardReportSection = ({
   section: { form, name, verbiage },
 }: ExportedStandardReportSectionProps) => {
   const { report } = useContext(ReportContext);
-  const sectionHeading = verbiage?.intro.subsection || name;
+  const sectionHeading: string = verbiage?.intro.subsection || name;
   const formFields = form?.fields;
   const isDynamicField = form?.fields.filter(
     (f: { type: string }) => f.type === "dynamic"
