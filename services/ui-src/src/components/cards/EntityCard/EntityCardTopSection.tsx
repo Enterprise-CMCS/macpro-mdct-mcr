@@ -6,6 +6,7 @@ import { AnyObject, ModalDrawerEntityTypes } from "types";
 export const EntityCardTopSection = ({
   entityType,
   formattedEntityData,
+  printVersion,
 }: Props) => {
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
@@ -17,7 +18,9 @@ export const EntityCardTopSection = ({
           <Text sx={sx.description}>
             {formattedEntityData.standardDescription}
           </Text>
-          <Text sx={sx.subtitle}>General category</Text>
+          <Text sx={sx.subtitle}>
+            {printVersion && "C2.V.1 "} General category
+          </Text>
           <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
         </>
       );
@@ -25,21 +28,28 @@ export const EntityCardTopSection = ({
       return (
         <>
           <Heading as="h4" sx={sx.heading}>
+            {printVersion && "D3.VIII.1 Intervention type: "}
             {formattedEntityData.interventionType}
           </Heading>
           <Grid sx={sx.grid}>
             <GridItem>
-              <Text sx={sx.subtitle}>Intervention topic</Text>
+              <Text sx={sx.subtitle}>
+                {printVersion && "D3.VIII.2 "} Intervention topic
+              </Text>
               <Text sx={sx.subtext}>
                 {formattedEntityData.interventionTopic}
               </Text>
             </GridItem>
             <GridItem>
-              <Text sx={sx.subtitle}>Plan name</Text>
+              <Text sx={sx.subtitle}>
+                {printVersion && "D3.VIII.3 "} Plan name
+              </Text>
               <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
             </GridItem>
           </Grid>
-          <Text sx={sx.subtitle}>Reason for intervention</Text>
+          <Text sx={sx.subtitle}>
+            {printVersion && "D3.VIII.4 "} Reason for intervention
+          </Text>
           <Text sx={sx.description}>
             {formattedEntityData.interventionReason}
           </Text>
@@ -49,31 +59,46 @@ export const EntityCardTopSection = ({
       return (
         <>
           <Heading as="h4" sx={sx.heading}>
+            {printVersion && "D2.VII.2 Measure Name: "}
             {formattedEntityData.name}
           </Heading>
-          <Text sx={sx.subtitle}>Measure Domain</Text>
+          <Text sx={sx.subtitle}>
+            {printVersion && "C2.V.2 "} Measure Domain
+          </Text>
           <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
           <Grid sx={sx.grid}>
             <GridItem>
-              <Text sx={sx.subtitle}>NQF</Text>
+              <Text sx={sx.subtitle}>{printVersion && "C2.V.3 "} NQF</Text>
               <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
             </GridItem>
             <GridItem>
-              <Text sx={sx.subtitle}>Measure Reporting and Programs</Text>
+              <Text sx={sx.subtitle}>
+                {printVersion
+                  ? "C2.V.4 Measure Reporting and D2.VII.5 Programs "
+                  : "Measure Reporting and Programs"}
+              </Text>
               <Text sx={sx.subtext}>
                 {formattedEntityData.reportingRateType}
               </Text>
             </GridItem>
             <GridItem>
-              <Text sx={sx.subtitle}>Measure Set</Text>
+              <Text sx={sx.subtitle}>
+                {printVersion && "C2.V.6 "} Measure Set
+              </Text>
               <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
             </GridItem>
             <GridItem>
-              <Text sx={sx.subtitle}>Measure Reporting Period</Text>
+              <Text sx={sx.subtitle}>
+                {printVersion
+                  ? "C2.V.7a Reporting Period and D2.VII.7b Reporting period: Date range "
+                  : "Measure Reporting Period"}
+              </Text>
               <Text sx={sx.subtext}>{formattedEntityData.reportingPeriod}</Text>
             </GridItem>
           </Grid>
-          <Text sx={sx.subtitle}>Measure Description</Text>
+          <Text sx={sx.subtitle}>
+            {printVersion && "C2.V.8 "} Measure Description
+          </Text>
           <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
         </>
       );
@@ -85,6 +110,7 @@ export const EntityCardTopSection = ({
 interface Props {
   entityType: string;
   formattedEntityData: AnyObject;
+  printVersion?: boolean;
 }
 
 const sx = {

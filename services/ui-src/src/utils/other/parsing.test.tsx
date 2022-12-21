@@ -1,6 +1,19 @@
 import { render, screen } from "@testing-library/react";
-import { parseCustomHtml } from "./parsing";
 import DOMPurify from "dompurify";
+// utils
+import {
+  parseAllLevels,
+  parseCustomHtml,
+  parseDynamicFieldData,
+  parseFieldLabel,
+} from "./parsing";
+import {
+  mockReportFieldDataWithNestedFields,
+  mockReportFieldDataWithNestedFieldsIncomplete,
+  mockReportFieldDataWithNestedFieldsNoChildProps,
+  mockReportFieldDataWithNestedFieldsNoChildren,
+  mockReportFieldDataWithNestedFieldsNotAnswered,
+} from "utils/testing/setupJest";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -55,5 +68,199 @@ describe("Test parseCustomHtml", () => {
 
   test("Type 'html' is sanitized and parsed", () => {
     expect(sanitizationSpy).toHaveBeenCalled();
+  });
+});
+
+describe("PDF Preview Field Labels", () => {
+  test("The field names are separated properly", () => {
+    expect(parseFieldLabel({ label: "A.1 Label", hint: "Hint" })).toEqual({
+      indicator: "A.1",
+      label: "<p><strong>Label</strong></p><p>Hint</p>",
+    });
+  });
+  test("The field names are separated properly without the hint", () => {
+    expect(parseFieldLabel({ label: "A.1 Label" })).toEqual({
+      indicator: "A.1",
+      label: "<p><strong>Label</strong></p>",
+    });
+  });
+
+  test("The field names is blank", () => {
+    expect(parseFieldLabel({})).toEqual({
+      indicator: "",
+      label: "",
+    });
+  });
+});
+
+describe("Export: Parsing Data", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Parsing Percentage", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_field: "12",
+      },
+      props: {
+        mask: "percentage",
+      },
+      id: "test_field",
+      type: "number",
+      validation: "number",
+    });
+
+    expect(dataReturn).toEqual("12%");
+  });
+  test("Parsing currency", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_field: "12",
+      },
+      props: {
+        mask: "currency",
+      },
+      id: "test_field",
+      type: "number",
+      validation: "number",
+    });
+
+    expect(dataReturn).toEqual("$12");
+  });
+
+  test("Parsing email", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_field: "test@test.com",
+      },
+      id: "test_field",
+      type: "text",
+      validation: "email",
+    });
+
+    expect(dataReturn).toEqual(
+      '<a href="mailto:test@test.com">test@test.com</a>'
+    );
+  });
+
+  test("Parsing Nested Choices", () => {
+    const dataReturn = parseAllLevels(mockReportFieldDataWithNestedFields);
+
+    expect(dataReturn).toEqual(
+      "<p>Value 1</p><p><strong>Test Label</strong></p><p>Value 2</p><p><strong>Test Label 2</strong></p>Testing Double Nested"
+    );
+  });
+
+  test("Parsing Nested Choices with no Children", () => {
+    const dataReturn = parseAllLevels(
+      mockReportFieldDataWithNestedFieldsNoChildren
+    );
+
+    expect(dataReturn).toEqual("<p>Value 1</p>");
+  });
+
+  test("Parsing Nested Choices with No Child Props", () => {
+    const dataReturn = parseAllLevels(
+      mockReportFieldDataWithNestedFieldsNoChildProps
+    );
+
+    expect(dataReturn).toEqual("<p>Value 1</p>Testing Double Nested");
+  });
+
+  test("Parsing Nested Choices Not Answered", () => {
+    const dataReturn = parseAllLevels(
+      mockReportFieldDataWithNestedFieldsNotAnswered
+    );
+
+    expect(dataReturn).toEqual('<p style="color:#9F142B">Not Answered</p>');
+  });
+
+  test("Parsing Nested Choices Incomplete", () => {
+    const dataReturn = parseAllLevels(
+      mockReportFieldDataWithNestedFieldsIncomplete
+    );
+
+    expect(dataReturn).toEqual("<p>Value 1 test</p>");
+  });
+});
+
+describe("Export: Number masks", () => {
+  test("Percent Mask", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "123",
+      },
+      id: "test_Field",
+      type: "number",
+      validation: "number",
+      props: {
+        mask: "percentage",
+      },
+    });
+
+    expect(dataReturn).toEqual("123%");
+  });
+
+  test("Currency Mask", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "123",
+      },
+      id: "test_Field",
+      type: "number",
+      validation: "number",
+      props: {
+        mask: "currency",
+      },
+    });
+
+    expect(dataReturn).toEqual("$123");
+  });
+});
+
+describe("Export: String Parsing", () => {
+  test("Email Link", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "test@email.com",
+      },
+      id: "test_Field",
+      type: "text",
+      validation: "email",
+    });
+
+    expect(dataReturn).toEqual(
+      '<a href="mailto:test@email.com">test@email.com</a>'
+    );
+  });
+  test("URL Link", () => {
+    const dataReturn = parseAllLevels({
+      fieldData: {
+        test_Field: "http://website.com",
+      },
+      id: "test_Field",
+      type: "text",
+      validation: "url",
+    });
+
+    expect(dataReturn).toEqual(
+      '<a href="http://website.com">http://website.com</a>'
+    );
+  });
+});
+
+describe("Test Parsing for PDF Preview Fields", () => {
+  test("If dynamic fields rendered correctly", () => {
+    expect(
+      parseDynamicFieldData([
+        {
+          name: "test",
+        },
+        {
+          name: "test2",
+        },
+      ])
+    ).toEqual("<p>test</p> <p>test2</p>");
   });
 });
