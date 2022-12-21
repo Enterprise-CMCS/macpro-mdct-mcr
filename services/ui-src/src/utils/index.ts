@@ -8,6 +8,8 @@ export * from "./api/requestMethods/report";
 export * from "./auth/useUser";
 export * from "./auth/UserProvider";
 export * from "./auth/authLifecycle";
+// feature flags
+export * from "./featureFlags/featureFlags";
 // forms
 export * from "./forms/forms";
 // reports
