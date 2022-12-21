@@ -151,8 +151,8 @@ describe("Test updateReport API method", () => {
       body: JSON.stringify(mockReport),
     });
     const res = await updateReport(updateEventWithInvalidData, null);
-    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
-    //expect(res.body).toContain(error.MISSING_DATA);
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.body).toContain(error.MISSING_DATA);
   });
 
   test("Test attempted report update with no existing record throws 404", async () => {

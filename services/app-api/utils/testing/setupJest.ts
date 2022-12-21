@@ -40,17 +40,6 @@ jest.mock("aws-sdk", () => {
   };
 });
 
-/*
- * jest.mock("../../utils/s3/s3-lib", () => ({
- * put: jest.fn(),
- *get: jest.fn().mockImplementation((params: S3Get) => {
- * if (params.Key.includes("mockReportFieldData")) return mockReportFieldData;
- * if (params.Key.includes("mockReportJson")) return mockReportJson;
- * return;
- *}),
- *}));
- */
-
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
