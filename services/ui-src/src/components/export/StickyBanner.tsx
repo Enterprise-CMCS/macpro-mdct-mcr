@@ -16,7 +16,7 @@ export const StickyBanner = () => {
 
   const clickPrint = () => {
     if (printExperience === "prince") {
-      printPdf;
+      printPdf();
     } else {
       window.print();
     }
