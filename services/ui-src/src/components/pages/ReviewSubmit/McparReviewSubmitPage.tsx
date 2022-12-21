@@ -1,5 +1,6 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLDClient } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -14,7 +15,12 @@ import { Modal, ReportContext } from "components";
 // types
 import { ReportStatus } from "types";
 // utils
-import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
+import {
+  featureFlags,
+  useUser,
+  utcDateToReadableDate,
+  convertDateUtcToEt,
+} from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
@@ -116,6 +122,13 @@ const ReadyToSubmit = ({
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
 
+  // LaunchDarkly
+  const ldClient = useLDClient();
+  const pdfExport = ldClient?.variation(
+    featureFlags.PDF_EXPORT.flag,
+    featureFlags.PDF_EXPORT.defaultValue
+  );
+
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
       <Box sx={sx.leadTextBox}>
@@ -128,7 +141,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        <PrintButton />
+        {pdfExport && <PrintButton />}
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -187,6 +200,13 @@ export const SuccessMessage = ({
     date,
     submittedBy
   );
+  // LaunchDarkly
+  const ldClient = useLDClient();
+  const pdfExport = ldClient?.variation(
+    featureFlags.PDF_EXPORT.flag,
+    featureFlags.PDF_EXPORT.defaultValue
+  );
+
   return (
     <Flex sx={sx.contentContainer}>
       <Box sx={sx.leadTextBox}>
@@ -205,9 +225,11 @@ export const SuccessMessage = ({
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
       </Box>
-      <Box sx={sx.infoTextBox}>
-        <PrintButton />
-      </Box>
+      {pdfExport && (
+        <Box sx={sx.infoTextBox}>
+          <PrintButton />
+        </Box>
+      )}
     </Flex>
   );
 };
