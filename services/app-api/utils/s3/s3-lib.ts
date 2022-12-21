@@ -9,7 +9,7 @@ export const createS3Client = () => {
 
   const endpoint = process.env.S3_LOCAL_ENDPOINT;
   if (endpoint) {
-    //We are working locally for testing, so set up appropriately
+    // We are working locally for testing, so set up appropriately
     s3Config.endpoint = new Endpoint(endpoint);
     s3Config.region = "localhost";
     s3Config.s3ForcePathStyle = true;
@@ -27,14 +27,13 @@ const s3Client = createS3Client();
 
 export default {
   put: async (params: S3Put) => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       s3Client.putObject(params, function (err: any, result: any) {
-        //console.log({ params, err, result });
         if (err) {
           reject(err);
         }
         if (result) {
-          resolve(result);
+          resolve();
         }
       });
     });
@@ -43,11 +42,9 @@ export default {
     return new Promise((resolve, reject) => {
       s3Client.getObject(params, function (err: any, result: any) {
         if (err) {
-          // console.log("Get Error", err);
           reject(err);
         }
         if (result) {
-          // console.log("Get Result", result);
           resolve(JSON.parse(result.Body));
         }
       });
