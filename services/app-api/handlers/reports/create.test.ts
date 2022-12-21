@@ -28,12 +28,12 @@ const creationEvent: APIGatewayProxyEvent = {
 
 const creationEventWithNoFieldData: APIGatewayProxyEvent = {
   ...mockProxyEvent,
-  body: `{"formTemplate":{"validationJson":{}}}`,
+  body: JSON.stringify({ ...mockReport, fieldData: undefined }),
 };
 
 const creationEventWithInvalidData: APIGatewayProxyEvent = {
   ...mockProxyEvent,
-  body: `{"dueDate":"invalidString","fieldData":{},"formTemplate":{"validationJson":{}}}`,
+  body: JSON.stringify({ ...mockReport, fieldData: { number: "NAN" } }),
 };
 
 describe("Test createReport API method", () => {
@@ -50,16 +50,22 @@ describe("Test createReport API method", () => {
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(body.status).toContain("Not started");
+    expect(body.fieldDataId).toBeDefined;
+    expect(body.fieldDataId).not.toEqual(mockReport.metadata.fieldDataId);
+    expect(body.formTemplateId).toBeDefined;
+    expect(body.formTemplateId).not.toEqual(mockReport.metadata.formTemplateId);
   });
 
   test("Test attempted report creation with invalid data fails", async () => {
     const res = await createReport(creationEventWithInvalidData, null);
     expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
+    expect(res.body).toContain(error.INVALID_DATA);
   });
 
-  test("Test attempted report creation without field data throws 500 error", async () => {
+  test("Test attempted report creation without field data throws 400 error", async () => {
     const res = await createReport(creationEventWithNoFieldData, null);
-    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.body).toContain(error.MISSING_DATA);
   });
 
   test("Test reportKey not provided throws 500 error", async () => {
@@ -69,7 +75,7 @@ describe("Test createReport API method", () => {
     };
     const res = await createReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
     expect(res.body).toContain(error.NO_KEY);
   });
 
@@ -80,7 +86,7 @@ describe("Test createReport API method", () => {
     };
     const res = await createReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
     expect(res.body).toContain(error.NO_KEY);
   });
 });
