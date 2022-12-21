@@ -1,4 +1,4 @@
-export default {
+export const error = {
   // generic errors
   UNAUTHORIZED: "User is not authorized to access this resource.",
   NO_KEY: "Must provide key for table",
@@ -11,4 +11,12 @@ export default {
   // template errors
   NO_TEMPLATE_NAME: "Must request template for download",
   INVALID_TEMPLATE_NAME: "Requested template does not exist or does not match",
+  NOT_IN_DATABASE: "Record not found in database",
+  MISSING_FORM_TEMPLATE: "Form Template not found in S3",
+  MISSING_FIELD_DATA: "Field Data not found in S3",
+};
+
+export const buckets = {
+  FORM_TEMPLATE: "formTemplates",
+  FIELD_DATA: "fieldData",
 };

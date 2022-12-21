@@ -3,7 +3,7 @@ import { fetchReport } from "./fetch";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 
 export const archiveReport = handler(async (event, context) => {
   let status, body;

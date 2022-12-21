@@ -1,7 +1,7 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 
 export const fetchBanner = handler(async (event, _context) => {
   if (!event?.pathParameters?.bannerId!) {

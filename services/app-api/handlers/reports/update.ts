@@ -11,7 +11,7 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error, buckets } from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
@@ -47,14 +47,14 @@ export const updateReport = handler(async (event, context) => {
           // get formTemplate from s3 bucket (for passed fieldData validation)
           const formTemplateParams = {
             Bucket: process.env.MCPAR_FORM_BUCKET!,
-            Key: "formTemplates/" + state + "/" + formTemplateId,
+            Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           };
           const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
 
           // get existing fieldData from s3 bucket (for patching with passed data)
           const fieldDataParams = {
             Bucket: process.env.MCPAR_FORM_BUCKET!,
-            Key: "fieldDatas/" + state + "/" + fieldDataId,
+            Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           };
           const existingFieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
 
@@ -80,7 +80,7 @@ export const updateReport = handler(async (event, context) => {
               };
               const fieldDataParams = {
                 Bucket: process.env.MCPAR_FORM_BUCKET!,
-                Key: "fieldData/" + state + "/" + fieldDataId,
+                Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
                 Body: JSON.stringify(fieldData),
                 ContentType: "application/json",
               };

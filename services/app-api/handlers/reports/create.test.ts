@@ -3,7 +3,7 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import { mockReport } from "../../utils/testing/setupJest";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),

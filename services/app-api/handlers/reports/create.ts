@@ -9,7 +9,7 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { S3Put, StatusCodes, UserRoles } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error, buckets } from "../../utils/constants/constants";
 
 export const createReport = handler(async (event, _context) => {
   let status, body;
@@ -45,7 +45,7 @@ export const createReport = handler(async (event, _context) => {
         // post validated field data to s3 bucket
         const fieldDataParams: S3Put = {
           Bucket: process.env.MCPAR_FORM_BUCKET!,
-          Key: `fieldData/${state}/${fieldDataId}.json`,
+          Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           Body: JSON.stringify(validatedFieldData),
           ContentType: "application/json",
         };
@@ -53,7 +53,7 @@ export const createReport = handler(async (event, _context) => {
         // post form template to s3 bucket
         const formTemplateParams: S3Put = {
           Bucket: process.env.MCPAR_FORM_BUCKET!,
-          Key: `formTemplates/${state}/${formTemplateId}.json`,
+          Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           Body: JSON.stringify(formTemplate),
           ContentType: "application/json",
         };

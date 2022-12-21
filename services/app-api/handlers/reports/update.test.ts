@@ -8,7 +8,7 @@ import {
   mockReport,
   mockReportFieldData,
 } from "../../utils/testing/setupJest";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),

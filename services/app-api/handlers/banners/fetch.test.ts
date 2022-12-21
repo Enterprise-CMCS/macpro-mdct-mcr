@@ -2,7 +2,7 @@ import { fetchBanner } from "./fetch";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 import {
   mockBannerResponse,
   mockDocumentClient,

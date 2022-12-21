@@ -2,7 +2,7 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error, buckets } from "../../utils/constants/constants";
 
 export const fetchReport = handler(async (event, _context) => {
   let status, body;
@@ -19,25 +19,25 @@ export const fetchReport = handler(async (event, _context) => {
   };
   try {
     const response = await dynamoDb.get(reportMetadataParams);
-    if (!response?.Item) throw "Record not found in database";
+    if (!response?.Item) throw error.NOT_IN_DATABASE;
     const reportMetadata: any = response.Item; // TODO: strict typing
     const { formTemplateId, fieldDataId } = reportMetadata;
 
     // get formTemplate from s3 bucket
     const formTemplateParams: S3Get = {
       Bucket: process.env.MCPAR_FORM_BUCKET!,
-      Key: `formTemplates/${state}/${formTemplateId}.json`,
+      Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
     const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
-    if (!formTemplate) throw "Form Template not found in S3";
+    if (!formTemplate) throw error.MISSING_FORM_TEMPLATE;
 
     // get fieldData from s3 bucket
     const fieldDataParams = {
       Bucket: process.env.MCPAR_FORM_BUCKET!,
-      Key: `fieldData/${state}/${fieldDataId}.json`,
+      Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
     const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
-    if (!fieldData) throw "Field Data not found in S3";
+    if (!fieldData) throw error.MISSING_FIELD_DATA;
 
     status = StatusCodes.SUCCESS;
     body = { ...reportMetadata, formTemplate, fieldData };
