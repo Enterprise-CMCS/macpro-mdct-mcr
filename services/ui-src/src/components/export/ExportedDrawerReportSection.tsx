@@ -1,11 +1,11 @@
 import { useContext } from "react";
 // components
-import { Box, Heading } from "@chakra-ui/react";
-import { ReportContext, SpreadsheetWidget, Table } from "components";
+import { Box } from "@chakra-ui/react";
+import { ExportedSectionHeading, ReportContext, Table } from "components";
 // types
 import { DrawerReportPageShape, FormField } from "types";
 // utils
-import { parseAllLevels, parseCustomHtml, parseFieldLabel } from "utils";
+import { parseAllLevels, parseFieldLabel } from "utils";
 
 export const ExportedDrawerReportSection = ({
   section,
@@ -41,22 +41,9 @@ export const ExportedDrawerReportSection = ({
 
   return (
     <Box data-testid="exportedDrawerReportSection" mt="2rem">
-      {/* section header */}
       {sectionHeading && (
-        <Heading as="h3" sx={sx.childHeading}>
-          {sectionHeading}
-        </Heading>
+        <ExportedSectionHeading heading={sectionHeading} verbiage={verbiage} />
       )}
-      {verbiage?.intro?.info && (
-        <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
-      )}
-      {verbiage?.intro?.spreadsheet && (
-        <Box sx={sx.spreadSheet}>
-          <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
-        </Box>
-      )}
-
-      {/* section table */}
       {formFields && (
         <Table
           sx={sx.dataTable}
@@ -126,18 +113,5 @@ const sx = {
         },
       },
     },
-  },
-  intro: {
-    p: {
-      margin: "1.5rem 0",
-    },
-  },
-  spreadSheet: {
-    marginBottom: "1.5rem",
-  },
-  childHeading: {
-    marginBottom: "1.5rem",
-    fontSize: "xl",
-    fontWeight: "bold",
   },
 };

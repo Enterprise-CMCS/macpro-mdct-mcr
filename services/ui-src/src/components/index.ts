@@ -37,6 +37,7 @@ export { ExportedReportSection } from "./export/ExportedReportSection";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { ExportedDrawerReportSection } from "./export/ExportedDrawerReportSection";
 export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";
+export { ExportedSectionHeading } from "./export/ExportedSectionHeading";
 export { ExportedStandardReportSection } from "./export/ExportedStandardReportSection";
 export { StickyBanner } from "./export/StickyBanner";
 // fields

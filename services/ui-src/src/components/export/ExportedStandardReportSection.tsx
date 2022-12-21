@@ -1,14 +1,9 @@
 import { useContext } from "react";
 // components
-import { Box, Heading } from "@chakra-ui/react";
-import { ReportContext, SpreadsheetWidget, Table } from "components";
+import { Box } from "@chakra-ui/react";
+import { ExportedSectionHeading, ReportContext, Table } from "components";
 // utils
-import {
-  parseAllLevels,
-  parseCustomHtml,
-  parseDynamicFieldData,
-  parseFieldLabel,
-} from "utils";
+import { parseAllLevels, parseDynamicFieldData, parseFieldLabel } from "utils";
 // types
 import { FormField, StandardReportPageShape } from "types";
 
@@ -16,7 +11,7 @@ export const ExportedStandardReportSection = ({
   section: { form, name, verbiage },
 }: Props) => {
   const { report } = useContext(ReportContext);
-  const sectionHeading = verbiage?.intro.subsection || name;
+  const sectionHeading: string = verbiage?.intro.subsection || name;
   const formFields = form?.fields;
   const formHasOnlyDynamicFields = form?.fields.every(
     (field) => field.type === "dynamic"
@@ -49,21 +44,9 @@ export const ExportedStandardReportSection = ({
 
   return (
     <Box data-testid="exportedStandardReportSection" mt="2rem">
-      {/* section header */}
       {sectionHeading && (
-        <Heading as="h3" sx={sx.childHeading}>
-          {sectionHeading}
-        </Heading>
+        <ExportedSectionHeading heading={sectionHeading} verbiage={verbiage} />
       )}
-      {verbiage?.intro?.info && (
-        <Box sx={sx.intro}>{parseCustomHtml(verbiage.intro.info)}</Box>
-      )}
-      {verbiage?.intro?.spreadsheet && (
-        <Box sx={sx.spreadSheet}>
-          <SpreadsheetWidget description={verbiage.intro.spreadsheet} />
-        </Box>
-      )}
-      {/* section table */}
       {formFields && (
         <Table
           sx={sx.dataTable}
@@ -135,18 +118,5 @@ const sx = {
         },
       },
     },
-  },
-  intro: {
-    p: {
-      margin: "1.5rem 0",
-    },
-  },
-  spreadSheet: {
-    marginBottom: "1.5rem",
-  },
-  childHeading: {
-    marginBottom: "1.5rem",
-    fontSize: "xl",
-    fontWeight: "bold",
   },
 };
