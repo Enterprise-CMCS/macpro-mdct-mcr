@@ -1,4 +1,6 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLDClient } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -13,11 +15,17 @@ import { Modal, ReportContext } from "components";
 // types
 import { ReportStatus } from "types";
 // utils
-import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
+import {
+  featureFlags,
+  useUser,
+  utcDateToReadableDate,
+  convertDateUtcToEt,
+} from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
+import printIcon from "assets/icons/icon_print.png";
 
 export const McparReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
@@ -88,6 +96,21 @@ export const McparReviewSubmitPage = () => {
   );
 };
 
+const PrintButton = () => {
+  const navigate = useNavigate();
+  const { print } = reviewVerbiage;
+  return (
+    <Button
+      sx={sx.printButton}
+      leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+      onClick={() => navigate(print.printPageUrl)}
+      variant="outline"
+    >
+      {print.printButtonText}
+    </Button>
+  );
+};
+
 const ReadyToSubmit = ({
   submitForm,
   isOpen,
@@ -98,6 +121,13 @@ const ReadyToSubmit = ({
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
+
+  // LaunchDarkly
+  const ldClient = useLDClient();
+  const pdfExport = ldClient?.variation(
+    featureFlags.PDF_EXPORT.flag,
+    featureFlags.PDF_EXPORT.defaultValue
+  );
 
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
@@ -111,6 +141,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
+        {pdfExport && <PrintButton />}
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -169,6 +200,13 @@ export const SuccessMessage = ({
     date,
     submittedBy
   );
+  // LaunchDarkly
+  const ldClient = useLDClient();
+  const pdfExport = ldClient?.variation(
+    featureFlags.PDF_EXPORT.flag,
+    featureFlags.PDF_EXPORT.defaultValue
+  );
+
   return (
     <Flex sx={sx.contentContainer}>
       <Box sx={sx.leadTextBox}>
@@ -187,6 +225,11 @@ export const SuccessMessage = ({
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
       </Box>
+      {pdfExport && (
+        <Box sx={sx.infoTextBox}>
+          <PrintButton />
+        </Box>
+      )}
     </Flex>
   );
 };
@@ -226,9 +269,6 @@ const sx = {
     fontWeight: "bold",
     marginBottom: ".5rem",
   },
-  submitContainer: {
-    justifyContent: "flex-end",
-  },
   headerImage: {
     display: "inline-block",
     marginRight: "1rem",
@@ -241,5 +281,15 @@ const sx = {
   },
   additionalInfo: {
     color: "palette.gray",
+  },
+  printButton: {
+    width: "5rem",
+    height: "1.75rem",
+    fontSize: "sm",
+    fontWeight: "normal",
+  },
+  submitContainer: {
+    width: "100%",
+    justifyContent: "space-between",
   },
 };
