@@ -7,6 +7,7 @@ import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
 import { ReportStatus } from "types";
 // utils
 import {
+  mockLDClient,
   mockReport,
   mockReportContext,
   mockStateUser,
@@ -25,6 +26,10 @@ jest.mock("react-router-dom", () => ({
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
   useUser: () => mockStateUser,
+}));
+
+jest.mock("launchdarkly-react-client-sdk", () => ({
+  useLDClient: () => mockLDClient,
 }));
 
 const McparReviewSubmitPage_InProgress = (

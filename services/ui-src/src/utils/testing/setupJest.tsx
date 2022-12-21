@@ -163,6 +163,12 @@ export const RouterWrappedComponent: React.FC = ({ children }) => (
   <Router>{children}</Router>
 );
 
+// LAUNCHDARKLY
+
+export const mockLDClient = {
+  variation: jest.fn(() => true),
+};
+
 // BANNER
 
 export const mockBannerData = {
