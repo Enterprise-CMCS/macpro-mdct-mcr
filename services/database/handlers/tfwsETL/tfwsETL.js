@@ -60,6 +60,10 @@ const processReport = (report) => {
   const formTemplate = report.formTemplate?.M;
   const fieldData = report.fieldData?.M;
   if (!formTemplate || !fieldData) {
+    console.error("Report doesn't have fieldData or formTemplate", {
+      state: report.state,
+      id: report.id,
+    });
     return;
   }
   const formTemplateId = KSUID.randomSync().string;
@@ -75,7 +79,11 @@ const processReport = (report) => {
     delete report.fieldData;
     writeToDynamo(report);
   } catch (err) {
-    //console.error(      "Unable to write s3 record",      {        state: report.state,        id: report.id,      },      err    );
+    console.error(
+      "Unable to write s3 record",
+      { state: report.state, id: report.id },
+      err
+    );
   }
 };
 
