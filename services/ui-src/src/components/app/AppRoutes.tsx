@@ -4,6 +4,7 @@ import {
   AdminBannerProvider,
   AdminPage,
   DashboardPage,
+  ExportedReportPage,
   HelpPage,
   HomePage,
   McparGetStartedPage,
@@ -40,8 +41,8 @@ export const AppRoutes = () => {
               element={<ReportPageWrapper />}
             />
           ))}
+          <Route path="/mcpar/export" element={<ExportedReportPage />} />
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
-
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

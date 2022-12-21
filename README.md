@@ -54,36 +54,42 @@ In the root of the project run `./dev local`
 Root `.env`
 
 ```
-SKIP_PREFLIGHT_CHECK=true
-LOCAL_LOGIN=true
-DYNAMODB_URL=http://localhost:8000
 API_URL=http://localhost:3030/local
-S3_LOCAL_ENDPOINT=http://localhost:4569
-S3_ATTACHMENTS_BUCKET_NAME=local-uploads
-URL=http://localhost/3000
 BANNER_TABLE_NAME=local-banners
-MCPAR_REPORT_TABLE_NAME=local-mcpar-reports
-TEMPLATE_BUCKET=local-uploads
-DISABLE_ESLINT_PLUGIN=true
-COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
 COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
+COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
+DISABLE_ESLINT_PLUGIN=true
+DYNAMODB_URL=http://localhost:8000
+LOCAL_LOGIN=true
+MCPAR_FORM_BUCKET=local-mcpar-form
+MCPAR_REPORT_TABLE_NAME=local-mcpar-reports
+PRINCE_API_HOST=macpro-platform-dev.cms.gov
+PRINCE_API_PATH=/doc-conv/508html-to-508pdf
+S3_ATTACHMENTS_BUCKET_NAME=local-uploads
+S3_LOCAL_ENDPOINT=http://localhost:4569
+SKIP_PREFLIGHT_CHECK=true
+TEMPLATE_BUCKET=local-uploads
+URL=http://localhost/3000
 ```
 
 /services/ui-src `.env`
 
 ```
-LOCAL_LOGIN=true
 API_REGION=us-east-1
 API_URL=http://localhost:3030
-COGNITO_REGION=us-east-1
 COGNITO_IDENTITY_POOL_ID=us-east-1:76708bb0-a458-4ea7-b90e-995ff5da5ab6
-COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
-COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
-COGNITO_USER_POOL_CLIENT_DOMAIN=main-login-4n2andd7qumjgdojec3cbqsemu.auth.us-east-1.amazoncognito.com
 COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
 COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
-S3_ATTACHMENTS_BUCKET_REGION=us-east-1
+COGNITO_REGION=us-east-1
+COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
+COGNITO_USER_POOL_CLIENT_DOMAIN=main-login-4n2andd7qumjgdojec3cbqsemu.auth.us-east-1.amazoncognito.com
+COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
+DEV_API_URL=https://umu6q0vjmk.execute-api.us-east-1.amazonaws.com/main
+LD_PROJECT_KEY=mdct-mcr
+LOCAL_LOGIN=true
+REACT_APP_LD_SDK_CLIENT=placeholder
 S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
+S3_ATTACHMENTS_BUCKET_REGION=us-east-1
 S3_LOCAL_ENDPOINT=http://localhost:4569
 STAGE=local
 ```
