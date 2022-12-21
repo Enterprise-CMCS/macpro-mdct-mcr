@@ -1,5 +1,3 @@
-import { S3Get } from "../types/types";
-
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
   query: { promise: jest.fn() },
@@ -18,17 +16,40 @@ jest.mock("aws-sdk", () => {
         };
       }),
     },
+    S3: jest.fn().mockImplementation((_config) => {
+      return {
+        putObject: jest.fn((_params: any, callback: any) => {
+          callback(undefined, { ETag: '"mockedEtag"' });
+        }),
+        getObject: jest.fn().mockImplementation((_params, callback) => {
+          if (_params.Key.includes("mockReportFieldData"))
+            callback(undefined, { Body: JSON.stringify(mockReportFieldData) });
+          else if (_params.Key.includes("mockReportJson"))
+            callback(undefined, { Body: JSON.stringify(mockReportJson) });
+          else callback("Invalid Test Key");
+        }),
+      };
+    }),
+    Credentials: jest.fn().mockImplementation(() => {
+      return {
+        accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
+        secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+      };
+    }),
+    Endpoint: jest.fn().mockImplementation(() => "endPoint"),
   };
 });
 
-jest.mock("../../utils/s3/s3-lib", () => ({
-  put: jest.fn(),
-  get: jest.fn().mockImplementation((params: S3Get) => {
-    if (params.Key.includes("mockReportFieldData")) return mockReportFieldData;
-    if (params.Key.includes("mockReportJson")) return mockReportJson;
-    return;
-  }),
-}));
+/*
+ * jest.mock("../../utils/s3/s3-lib", () => ({
+ * put: jest.fn(),
+ *get: jest.fn().mockImplementation((params: S3Get) => {
+ * if (params.Key.includes("mockReportFieldData")) return mockReportFieldData;
+ * if (params.Key.includes("mockReportJson")) return mockReportJson;
+ * return;
+ *}),
+ *}));
+ */
 
 export const mockReportJson = {
   name: "mock-report",
