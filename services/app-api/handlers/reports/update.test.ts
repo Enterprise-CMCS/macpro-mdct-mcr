@@ -3,7 +3,11 @@ import { updateReport } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import { mockDynamoData, mockReport } from "../../utils/testing/setupJest";
+import {
+  mockDynamoData,
+  mockReport,
+  mockReportFieldData,
+} from "../../utils/testing/setupJest";
 import error from "../../utils/constants/constants";
 
 jest.mock("../../utils/auth/authorization", () => ({
@@ -36,7 +40,7 @@ const updateEvent: APIGatewayProxyEvent = {
     metadata: {
       status: "in progress",
     },
-    fieldData: {},
+    fieldData: { ...mockReportFieldData, number: 1 },
   }),
 };
 
@@ -49,7 +53,20 @@ const submissionEvent: APIGatewayProxyEvent = {
     },
     submittedBy: mockReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
-    fieldData: {},
+    fieldData: { ...mockReportFieldData, number: 2 },
+  }),
+};
+
+const invalidFieldDataSubmissionEvent: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: JSON.stringify({
+    ...mockReport,
+    metadata: {
+      status: "submitted",
+    },
+    submittedBy: mockReport.metadata.lastAlteredBy,
+    submittedOnDate: Date.now(),
+    fieldData: { ...mockReportFieldData, number: "NAN" },
   }),
 };
 
@@ -91,7 +108,7 @@ describe("Test updateReport API method", () => {
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.status).toContain("in progress");
-    expect(body.fieldData.text).toContain("text-input");
+    expect(body.fieldData.number).toBe("1");
   });
 
   test("Test report update submission succeeds", async () => {
@@ -104,7 +121,24 @@ describe("Test updateReport API method", () => {
       body: JSON.stringify(mockDynamoData),
     });
     const response = await updateReport(submissionEvent, null);
+    const body = JSON.parse(response.body);
+    expect(body.status).toContain("submitted");
+    expect(body.fieldData.number).toBe("2");
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
+  });
+
+  test("Test report update with invalid fieldData fails", async () => {
+    mockedFetchReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: JSON.stringify(mockDynamoData),
+    });
+    const response = await updateReport(invalidFieldDataSubmissionEvent, null);
+    expect(response.statusCode).toBe(StatusCodes.SERVER_ERROR);
+    expect(response.body).toContain(error.INVALID_DATA);
   });
 
   test("Test attempted report update with invalid data throws 400", async () => {

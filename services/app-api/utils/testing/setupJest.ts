@@ -34,7 +34,10 @@ export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
   routes: [],
-  validationJson: {},
+  validationJson: {
+    text: "text",
+    number: "number",
+  },
 };
 
 export const mockReportKeys = {
@@ -45,9 +48,6 @@ export const mockReportKeys = {
 export const mockReportFieldData = {
   text: "text-input",
   number: 0,
-  radio: ["option1"],
-  checkbox: ["option1", "option2"],
-  dropdown: "dropdown-selection",
 };
 
 export const mockDynamoData = {
