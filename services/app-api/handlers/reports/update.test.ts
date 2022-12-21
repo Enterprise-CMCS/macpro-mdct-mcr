@@ -176,7 +176,7 @@ describe("Test updateReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify({ ...mockReport, archived: true }),
+      body: JSON.stringify({ ...mockDynamoData, archived: true }),
     });
     const res = await updateReport(updateEvent, null);
 
