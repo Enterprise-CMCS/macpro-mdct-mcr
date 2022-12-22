@@ -93,6 +93,10 @@ export const updateReport = handler(async (event, context) => {
               );
               // if metadata passes validation,
               if (validatedMetadata) {
+                //Delete raw data prior to updating
+                delete currentReport.fieldData;
+                delete currentReport.formTemplate;
+
                 // update record in report metadata table
                 const reportMetadataParams = {
                   TableName: process.env.MCPAR_REPORT_TABLE_NAME!,

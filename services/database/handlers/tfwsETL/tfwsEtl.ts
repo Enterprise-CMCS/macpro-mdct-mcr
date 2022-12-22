@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
-/* eslint-disable */
 import { DynamoDB, S3 } from "aws-sdk";
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
-const KSUID = require("ksuid");
+import KSUID from "ksuid";
 
 const TABLE_NAME = process.env.MCPAR_REPORT_TABLE_NAME!;
 const BUCKET_NAME = process.env.MCPAR_FORM_BUCKET!;
@@ -16,7 +15,6 @@ export const handler = async (
 ): Promise<APIGatewayProxyResult> => {
   initialize();
 
-  // READ EXISTING DYNAMODB DATA
   let keepSearching = true;
   let startingKey;
 
@@ -80,8 +78,18 @@ const writeToS3 = async (
     Key: `${directory}/${state}/${name}.json`,
     Body: JSON.stringify(data),
   };
-  console.debug("Writing to S3", bucketParams);
-  //TODO: await s3Client.putObject(bucketParams);
+
+  console.debug(`Writing to S3 ${bucketParams.Bucket}/${bucketParams.Key}`);
+  await new Promise<void>((resolve, reject) => {
+    s3Client.putObject(bucketParams, function (err: any, result: any) {
+      if (err) {
+        reject(err);
+      }
+      if (result) {
+        resolve();
+      }
+    });
+  });
 };
 
 const writeItemToDb = async (item: any) => {
@@ -95,7 +103,7 @@ const writeItemToDb = async (item: any) => {
     ReturnValues: "ALL_OLD",
   };
   try {
-    const response = await dynamoClient.put(params).promise();
+    await dynamoClient.put(params).promise();
     console.log(`Updated: ${item.state} - ${item.id}`);
   } catch (e) {
     console.error("error", e);
@@ -106,7 +114,7 @@ const initialize = () => {
   const ddbConfig: any = {};
   const s3Config: any = {};
   const ddbEndpoint = process.env.DYNAMODB_URL;
-  const s3Endpoint = process.env.S3_URL;
+  const s3Endpoint = process.env.S3_LOCAL_ENDPOINT;
   if (ddbEndpoint) {
     ddbConfig.endpoint = ddbEndpoint;
     ddbConfig.accessKeyId = "LOCAL_FAKE_KEY"; // pragma: allowlist secret
@@ -125,6 +133,7 @@ const initialize = () => {
   } else {
     s3Config.region = "us-east-1";
   }
+  console.log({ s3Config });
   s3Client = new S3(s3Config);
 };
 

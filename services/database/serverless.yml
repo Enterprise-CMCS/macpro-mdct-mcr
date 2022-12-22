@@ -25,12 +25,13 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
-  mcparFormBucket: local-mcpar-form
+  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
   dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
   dataTransformUpdateEnabled: ${ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
   scripts:
     hooks:
       deploy:finalize: |
+        serverless invoke --stage ${self:custom.stage} --function tfwsEtl
         if [ ${self:custom.dataTransformEnabled} = "true" ];
         then
           serverless invoke --stage ${self:custom.stage} --function dataTransform
