@@ -24,6 +24,7 @@ const config = {
   },
   STAGE: window._env_.STAGE,
   DEV_API_URL: window._env_.DEV_API_URL,
+  REACT_APP_LD_SDK_CLIENT: window._env_.REACT_APP_LD_SDK_CLIENT,
 };
 
 export default config;
