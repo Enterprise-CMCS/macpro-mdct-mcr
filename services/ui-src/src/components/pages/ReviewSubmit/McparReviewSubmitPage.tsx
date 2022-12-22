@@ -8,7 +8,6 @@ import {
   Flex,
   Image,
   Heading,
-  Link,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -100,15 +99,16 @@ export const McparReviewSubmitPage = () => {
 const PrintButton = () => {
   const { print } = reviewVerbiage;
   return (
-    <Link as={RouterLink} to="/mcpar/export" target="_blank" variant="unstyled">
-      <Button
-        sx={sx.printButton}
-        leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
-        variant="outline"
-      >
-        {print.printButtonText}
-      </Button>
-    </Link>
+    <Button
+      as={RouterLink}
+      to="/mcpar/export"
+      target="_blank"
+      sx={sx.printButton}
+      leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+      variant="outline"
+    >
+      {print.printButtonText}
+    </Button>
   );
 };
 

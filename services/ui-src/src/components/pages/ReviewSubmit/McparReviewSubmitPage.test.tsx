@@ -67,6 +67,14 @@ describe("Test McparReviewSubmitPage functionality", () => {
     expect(screen.getByText(intro.header)).toBeVisible();
   });
 
+  it("print button should be visible and correctly formed", async () => {
+    render(McparReviewSubmitPage_InProgress);
+    const printButton = screen.getByText("Print");
+    expect(printButton).toBeVisible();
+    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+    expect(printButton.getAttribute("target")).toEqual("_blank");
+  });
+
   test("McparReviewSubmitPage shows modal on submit button click", async () => {
     render(McparReviewSubmitPage_InProgress);
     const { review } = reviewVerbiage;
