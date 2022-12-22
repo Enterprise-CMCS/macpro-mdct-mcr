@@ -19,7 +19,15 @@ async function run_db_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "db",
-    ["serverless", "dynamodb", "start", "--stage", "local", "--migrate"],
+    [
+      "serverless",
+      "offline",
+      "start",
+      "--stage",
+      "local",
+      "--lambdaPort",
+      "3003",
+    ],
     "services/database"
   );
 }

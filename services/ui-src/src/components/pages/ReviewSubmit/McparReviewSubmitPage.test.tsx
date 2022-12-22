@@ -7,6 +7,7 @@ import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
 import { ReportStatus } from "types";
 // utils
 import {
+  mockLDClient,
   mockReport,
   mockReportContext,
   mockStateUser,
@@ -19,6 +20,10 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
   useUser: () => mockStateUser,
+}));
+
+jest.mock("launchdarkly-react-client-sdk", () => ({
+  useLDClient: () => mockLDClient,
 }));
 
 const McparReviewSubmitPage_InProgress = (
@@ -53,6 +58,14 @@ describe("Test McparReviewSubmitPage functionality", () => {
     const { review } = reviewVerbiage;
     const { intro } = review;
     expect(screen.getByText(intro.infoHeader)).toBeVisible();
+  });
+
+  it("print button should be visible and correctly formed", async () => {
+    render(McparReviewSubmitPage_InProgress);
+    const printButton = screen.getByText("Print");
+    expect(printButton).toBeVisible();
+    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+    expect(printButton.getAttribute("target")).toEqual("_blank");
   });
 
   test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
@@ -100,6 +113,14 @@ describe("Success Message Generator", () => {
     expect(
       SuccessMessageGenerator(programName, submittedDate, submittersName)
     ).toBe(`MCPAR report for ${programName} was submitted.`);
+  });
+
+  it("print button should be visible and correctly formed", async () => {
+    render(McparReviewSubmitPage_InProgress);
+    const printButton = screen.getByText("Print");
+    expect(printButton).toBeVisible();
+    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+    expect(printButton.getAttribute("target")).toEqual("_blank");
   });
 });
 

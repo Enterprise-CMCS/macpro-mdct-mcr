@@ -101,9 +101,9 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
 export interface ReportPageVerbiage {
   intro: {
     section: string;
-    subsection: string;
+    subsection?: string;
     spreadsheet?: string;
-    info?: string | AnyObject[];
+    info?: string | CustomHtmlElement[];
   };
 }
 

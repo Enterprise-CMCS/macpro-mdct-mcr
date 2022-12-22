@@ -23,6 +23,7 @@ const config = {
     REDIRECT_SIGNOUT: window._env_.COGNITO_REDIRECT_SIGNOUT,
   },
   STAGE: window._env_.STAGE,
+  DEV_API_URL: window._env_.DEV_API_URL,
 };
 
 export default config;
