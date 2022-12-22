@@ -1,5 +1,5 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 // components
 import {
@@ -99,13 +99,14 @@ export const McparReviewSubmitPage = () => {
 };
 
 const PrintButton = () => {
-  const navigate = useNavigate();
   const { print } = reviewVerbiage;
   return (
     <Button
+      as={RouterLink}
+      to="/mcpar/export"
+      target="_blank"
       sx={sx.printButton}
       leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
-      onClick={() => navigate(print.printPageUrl)}
       variant="outline"
     >
       {print.printButtonText}
