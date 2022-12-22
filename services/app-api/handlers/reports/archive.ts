@@ -16,6 +16,10 @@ export const archiveReport = handler(async (event, context) => {
     const currentReport = JSON.parse(getCurrentReport.body);
     const currentArchivedStatus = currentReport?.archived;
 
+    // Delete raw data prior to updating
+    delete currentReport.fieldData;
+    delete currentReport.formTemplate;
+
     // toggle archived status in report metadata table
     const reportMetadataParams = {
       TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
