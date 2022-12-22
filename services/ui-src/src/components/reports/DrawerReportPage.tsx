@@ -63,8 +63,10 @@ export const DrawerReportPage = ({ route }: Props) => {
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
         fieldData: {
           [entityType]: newEntities,
         },

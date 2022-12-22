@@ -235,8 +235,10 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
     expect(mockUpdateReport).toHaveBeenCalledWith(
       { ...mockReportKeys, state: mockStateUser.user?.state },
       {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: mockStateUser.user?.full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
         fieldData: {
           plans: [
             {

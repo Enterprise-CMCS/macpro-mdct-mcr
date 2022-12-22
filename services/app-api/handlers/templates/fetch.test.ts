@@ -2,7 +2,7 @@ import { fetchTemplate } from "./fetch";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 
 jest.mock("aws-sdk", () => ({
   S3: jest.fn().mockImplementation(() => ({

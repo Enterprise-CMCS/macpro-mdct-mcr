@@ -35,8 +35,10 @@ const mockedReportContext = {
 
 const mockUpdateCallBaseline = {
   fieldData: mockedReportContext.report.fieldData,
-  lastAlteredBy: undefined,
-  reportStatus: "In progress",
+  metadata: {
+    lastAlteredBy: undefined,
+    status: "In progress",
+  },
 };
 
 const mockBadReportContext = {
@@ -50,8 +52,10 @@ const mockBadReportContext = {
 
 const mockBadUpdateCallBaseline = {
   fieldData: mockBadReportContext.report.fieldData,
-  lastAlteredBy: undefined,
-  reportStatus: "In progress",
+  metadata: {
+    lastAlteredBy: undefined,
+    status: "In progress",
+  },
 };
 
 const modalComponent = (
