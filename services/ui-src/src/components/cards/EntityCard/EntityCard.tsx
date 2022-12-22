@@ -61,7 +61,7 @@ export const EntityCard = ({
   }
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
-      <Box sx={sx.contentBox}>
+      <Box sx={sx.contentBox} className={printVersion ? "print-version" : ""}>
         {printVersion && (
           <Text sx={sx.entitiesCount} data-testid="entities-count">
             {entitiesCount}
@@ -180,7 +180,9 @@ const sx = {
   contentBox: {
     position: "relative",
     marginX: "1.25rem",
-    paddingLeft: "2.5rem",
+    "&.print-version": {
+      paddingLeft: "2.5rem",
+    },
     ".delete-entity-button": {
       position: "absolute",
       right: "-2rem",
@@ -252,7 +254,7 @@ const sx = {
     position: "absolute",
     right: "-2rem",
     fontSize: ".75rem",
-    color: "palette.gray_light",
+    color: "palette.gray_dark",
     ".mobile &": {
       right: "-1.5rem",
     },

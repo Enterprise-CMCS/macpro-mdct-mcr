@@ -90,6 +90,9 @@ const sx = {
       position: "sticky",
       zIndex: "sticky",
     },
+    "@media print": {
+      display: "none",
+    },
   },
   footerTop: {
     bg: "palette.gray_lightest",

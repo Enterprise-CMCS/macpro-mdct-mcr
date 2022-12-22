@@ -37,14 +37,17 @@ const sx = {
   container: {
     position: "sticky",
     zIndex: "sticky",
-    top: "11.125rem",
-    margin: "2rem 0",
+    top: "0",
+    marginBottom: "2rem",
     padding: "3rem 2rem",
     background: "white",
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     textAlign: "center",
     ".mobile &": {
       padding: "2rem 1rem",
+    },
+    "@media print": {
+      display: "none",
     },
     p: {
       marginBottom: "1rem",
