@@ -75,7 +75,11 @@ functions:
     environment:
       DYNAMO_PREFIX: ${self:custom.stage}
       DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
-
+  tfwsEtl:
+    handler: handlers/tfwsEtl/tfwsEtl.handler
+    timeout: 120
+    environment:
+      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
 resources:
   Resources:
     BannerTable:
