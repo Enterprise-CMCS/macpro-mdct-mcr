@@ -25,8 +25,7 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
-  awsAccountId: !Sub ${AWS::AccountId}
-  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, ${self:service.name}-${self:custom.stage}-mcpar-${self:custom.awsAccountId}}
+  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, ${self:service.name}-${self:custom.stage}-mcpar}
   dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
   dataTransformUpdateEnabled: ${ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
   scripts:
@@ -131,7 +130,7 @@ resources:
     McparFormBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: !Sub ${self:service.name}-${self:custom.stage}-mcpar-${AWS::AccountId}
+        BucketName: !Sub ${self:service.name}-${self:custom.stage}-mcpar
         BucketEncryption:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
