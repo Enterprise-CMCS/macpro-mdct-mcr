@@ -90,7 +90,7 @@ functions:
     timeout: 300
     environment:
       MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
-      MCPAR_FORM_BUCKET: ${self.custom.mcparFormBucket}
+      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
 resources:
   Resources:
     BannerTable:
