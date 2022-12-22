@@ -26,7 +26,8 @@ export const handler = async (
         keepSearching,
         startingKey
       );
-      results.Items.forEach((report: any) => {
+
+      for (const report of results.Items) {
         const formTemplate = report.formTemplate;
         const fieldData = report.fieldData;
         if (!formTemplate || !fieldData) {
@@ -34,14 +35,19 @@ export const handler = async (
             state: report.state,
             id: report.id,
           });
-          return;
+          continue;
         }
 
         const formTemplateId = KSUID.randomSync().string;
         const fieldDataId = KSUID.randomSync().string;
 
-        writeToS3("formTemplates", report.state, formTemplateId, formTemplate);
-        writeToS3("fieldData", report.state, fieldDataId, fieldData);
+        await writeToS3(
+          "formTemplates",
+          report.state,
+          formTemplateId,
+          formTemplate
+        );
+        await writeToS3("fieldData", report.state, fieldDataId, fieldData);
 
         //Write new format back into DynamoDB
         delete report.formTemplate;
@@ -49,8 +55,8 @@ export const handler = async (
         report.formTemplateId = formTemplateId;
         report.fieldDataId = fieldDataId;
 
-        writeItemToDb(report);
-      });
+        await writeItemToDb(report);
+      }
     } catch (err) {
       console.error(`Database scan failed for the table ${TABLE_NAME}
                      with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}.
