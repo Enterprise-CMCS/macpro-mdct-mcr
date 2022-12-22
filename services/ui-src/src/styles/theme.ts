@@ -147,12 +147,22 @@ const theme = extendTheme({
           ...theme.components.Button.variants.transparent,
           border: "1px solid",
           borderColor: "palette.primary",
+          textDecoration: "none",
           _hover: {
             ...theme.components.Button.variants.transparent._hover,
             borderColor: "palette.primary_darker",
             span: {
               filter: svgFilters.primary_darker,
             },
+          },
+          _visited: {
+            color: "palette.primary",
+          },
+          ":hover, :visited:hover": {
+            color: "palette.primary_darker",
+          },
+          _focus: {
+            textDecoration: "none",
           },
         }),
         link: () => ({

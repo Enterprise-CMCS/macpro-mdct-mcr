@@ -5,8 +5,18 @@ import { axe } from "jest-axe";
 import { StickyBanner } from "./StickyBanner";
 
 const stickyBannerComponent = <StickyBanner />;
+let mockPrint: any;
 
 describe("Sticky Banner", () => {
+  // temporarily mock window.print for the testing environment
+  beforeEach(() => {
+    mockPrint = window.print;
+    jest.spyOn(window, "print").mockImplementation(() => {});
+  });
+  afterEach(() => {
+    window.print = mockPrint;
+  });
+
   test("Is Sticky Banner present", async () => {
     render(stickyBannerComponent);
     const banner = screen.getByTestId("stickyBanner");

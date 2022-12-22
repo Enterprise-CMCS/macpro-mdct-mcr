@@ -97,6 +97,9 @@ const sx = {
     top: 0,
     zIndex: "sticky",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    "@media print": {
+      display: "none",
+    },
   },
   usaBannerContainer: {
     width: "100%",
