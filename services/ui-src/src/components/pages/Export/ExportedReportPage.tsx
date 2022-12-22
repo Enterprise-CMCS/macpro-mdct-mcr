@@ -2,12 +2,7 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import {
-  ExportedReportSection,
-  ReportContext,
-  StickyBanner,
-  Table,
-} from "components";
+import { ExportedReportSection, ReportContext, Table } from "components";
 // utils
 import { convertDateUtcToEt } from "utils";
 import { States } from "../../../constants";
@@ -18,7 +13,6 @@ export const ExportedReportPage = () => {
 
   return (
     <Box data-testid="exportedReportPage" sx={sx.container}>
-      <StickyBanner />
       {report && (
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
@@ -58,7 +52,7 @@ export const ExportedReportPage = () => {
               headRow: ["Indicator", "Response"],
               bodyRows: [
                 [
-                  "<p><strong>Exclusion of CHIP from MCPAR</strong></p><p class='message'>$Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program.</p>",
+                  "<p><strong>Exclusion of CHIP from MCPAR</strong></p><p class='message'>Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program.</p>",
                   report.combinedData ? "Selected" : "Not Selected",
                 ],
               ],

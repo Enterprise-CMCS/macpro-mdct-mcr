@@ -17,12 +17,6 @@ import userEvent from "@testing-library/user-event";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
-const mockUseNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-}));
-
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
   useUser: () => mockStateUser,
@@ -66,11 +60,12 @@ describe("Test McparReviewSubmitPage functionality", () => {
     expect(screen.getByText(intro.infoHeader)).toBeVisible();
   });
 
-  it("should navigate to the print preview page on button click", async () => {
+  it("print button should be visible and correctly formed", async () => {
     render(McparReviewSubmitPage_InProgress);
     const printButton = screen.getByText("Print");
-    await userEvent.click(printButton);
-    expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar/export");
+    expect(printButton).toBeVisible();
+    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+    expect(printButton.getAttribute("target")).toEqual("_blank");
   });
 
   test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
@@ -119,11 +114,13 @@ describe("Success Message Generator", () => {
       SuccessMessageGenerator(programName, submittedDate, submittersName)
     ).toBe(`MCPAR report for ${programName} was submitted.`);
   });
-  it("should navigate to the print preview page on button click", async () => {
-    render(McparReviewSubmitPage_Submitted);
+
+  it("print button should be visible and correctly formed", async () => {
+    render(McparReviewSubmitPage_InProgress);
     const printButton = screen.getByText("Print");
-    await userEvent.click(printButton);
-    expect(mockUseNavigate).toHaveBeenCalledWith("/mcpar/export");
+    expect(printButton).toBeVisible();
+    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+    expect(printButton.getAttribute("target")).toEqual("_blank");
   });
 });
 
