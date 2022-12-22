@@ -65,7 +65,6 @@ export const AddEditProgramModal = ({
         state: activeState,
         id: selectedReport.id,
       };
-      // TODO: FIX THIS
 
       // edit existing report
       await updateReport(reportKeys, {
