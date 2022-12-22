@@ -31,7 +31,7 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        serverless invoke --stage ${self:custom.stage} --function tfwsEtl
+        serverless invoke --stage ${self:custom.stage} --function s3Etl
         if [ ${self:custom.dataTransformEnabled} = "true" ];
         then
           serverless invoke --stage ${self:custom.stage} --function dataTransform
@@ -85,8 +85,8 @@ functions:
     environment:
       DYNAMO_PREFIX: ${self:custom.stage}
       DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
-  tfwsEtl:
-    handler: handlers/tfwsEtl/tfwsEtl.handler
+  s3Etl:
+    handler: handlers/s3Etl/s3Etl.handler
     timeout: 300
     environment:
       MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
