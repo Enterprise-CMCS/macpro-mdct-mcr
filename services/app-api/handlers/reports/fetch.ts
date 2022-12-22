@@ -1,29 +1,51 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
-import { AnyObject, StatusCodes } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import s3Lib from "../../utils/s3/s3-lib";
+import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
+import { error, buckets } from "../../utils/constants/constants";
 
 export const fetchReport = handler(async (event, _context) => {
+  let status, body;
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(error.NO_KEY);
   }
-  const params = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Key: {
-      state: event.pathParameters.state,
-      id: event.pathParameters.id,
-    },
-  };
-  const response = await dynamoDb.get(params);
+  const state = event.pathParameters.state;
+  const reportId = event.pathParameters.id;
 
-  let status = StatusCodes.SUCCESS;
-  if (!response?.Item) {
-    status = StatusCodes.NOT_FOUND;
-  }
-  return {
-    status: status,
-    body: response.Item,
+  // get current report metadata
+  const reportMetadataParams = {
+    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    Key: { state, id: reportId },
   };
+  try {
+    const response = await dynamoDb.get(reportMetadataParams);
+    if (!response?.Item) throw error.NOT_IN_DATABASE;
+    const reportMetadata: any = response.Item; // TODO: strict typing
+    const { formTemplateId, fieldDataId } = reportMetadata;
+
+    // get formTemplate from s3 bucket
+    const formTemplateParams: S3Get = {
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
+    };
+    const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
+    if (!formTemplate) throw error.MISSING_FORM_TEMPLATE;
+
+    // get fieldData from s3 bucket
+    const fieldDataParams = {
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+    };
+    const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
+    if (!fieldData) throw error.MISSING_FIELD_DATA;
+
+    status = StatusCodes.SUCCESS;
+    body = { ...reportMetadata, formTemplate, fieldData };
+  } catch (err) {
+    status = StatusCodes.NOT_FOUND;
+    body = error.NO_MATCHING_RECORD;
+  }
+  return { status, body };
 });
 
 export const fetchReportsByState = handler(async (event, _context) => {
@@ -59,16 +81,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   // Looping to perform complete scan of tables due to 1 mb limit per iteration
   do {
     [startingKey, results] = await queryTable(startingKey);
-
-    /*
-     * Remove formTemplate and formData to get rid of excessive size that isn't needed
-     * on the dashboard when this call is used
-     */
     const items: AnyObject[] = results.Items;
-    items.forEach((item: any) => {
-      delete item.formTemplate;
-      delete item.formData;
-    });
     existingItems.push(...items);
   } while (startingKey);
 

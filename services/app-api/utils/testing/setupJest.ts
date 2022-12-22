@@ -4,7 +4,6 @@ export const mockDocumentClient = {
   put: { promise: jest.fn() },
   delete: { promise: jest.fn() },
 };
-
 jest.mock("aws-sdk", () => {
   return {
     DynamoDB: {
@@ -17,6 +16,27 @@ jest.mock("aws-sdk", () => {
         };
       }),
     },
+    S3: jest.fn().mockImplementation((_config) => {
+      return {
+        putObject: jest.fn((_params: any, callback: any) => {
+          callback(undefined, { ETag: '"mockedEtag"' });
+        }),
+        getObject: jest.fn().mockImplementation((_params, callback) => {
+          if (_params.Key.includes("mockReportFieldData"))
+            callback(undefined, { Body: JSON.stringify(mockReportFieldData) });
+          else if (_params.Key.includes("mockReportJson"))
+            callback(undefined, { Body: JSON.stringify(mockReportJson) });
+          else callback("Invalid Test Key");
+        }),
+      };
+    }),
+    Credentials: jest.fn().mockImplementation(() => {
+      return {
+        accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
+        secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+      };
+    }),
+    Endpoint: jest.fn().mockImplementation(() => "endPoint"),
   };
 });
 
@@ -24,7 +44,10 @@ export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
   routes: [],
-  validationJson: {},
+  validationJson: {
+    text: "text",
+    number: "number",
+  },
 };
 
 export const mockReportKeys = {
@@ -35,25 +58,42 @@ export const mockReportKeys = {
 export const mockReportFieldData = {
   text: "text-input",
   number: 0,
-  radio: ["option1"],
-  checkbox: ["option1", "option2"],
-  dropdown: "dropdown-selection",
+};
+
+export const mockDynamoData = {
+  ...mockReportKeys,
+  reportType: "mock-type",
+  programName: "testProgram",
+  status: "Not started",
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  dueDate: 168515200000,
+  combinedData: false,
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
 };
 
 export const mockReport = {
   ...mockReportKeys,
-  reportType: "mock-type",
-  formTemplate: mockReportJson,
-  programName: "testProgram",
-  status: "Not started",
-  dueDate: 168515200000,
-  reportingPeriodStartDate: 162515200000,
-  reportingPeriodEndDate: 168515200000,
+  metadata: {
+    reportType: "mock-type",
+    programName: "testProgram",
+    status: "Not started",
+    reportingPeriodStartDate: 162515200000,
+    reportingPeriodEndDate: 168515200000,
+    dueDate: 168515200000,
+    combinedData: false,
+    lastAlteredBy: "Thelonious States",
+    fieldDataId: "mockReportFieldData",
+    formTemplateId: "mockReportJson",
+  },
+  formTemplate: { ...mockReportJson },
+  fieldData: { ...mockReportFieldData },
   createdAt: 162515200000,
   lastAltered: 162515200000,
-  lastAlteredBy: "Thelonious States",
-  combinedData: false,
-  fieldData: mockReportFieldData,
 };
 
 export const mockBannerResponse = {
