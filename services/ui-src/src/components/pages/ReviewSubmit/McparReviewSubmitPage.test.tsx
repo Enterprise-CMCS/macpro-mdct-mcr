@@ -60,19 +60,19 @@ describe("Test McparReviewSubmitPage functionality", () => {
     expect(screen.getByText(intro.infoHeader)).toBeVisible();
   });
 
-  test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
-    render(McparReviewSubmitPage_Submitted);
-    const { submitted } = reviewVerbiage;
-    const { intro } = submitted;
-    expect(screen.getByText(intro.header)).toBeVisible();
-  });
-
   it("print button should be visible and correctly formed", async () => {
     render(McparReviewSubmitPage_InProgress);
     const printButton = screen.getByText("Print");
     expect(printButton).toBeVisible();
     expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
     expect(printButton.getAttribute("target")).toEqual("_blank");
+  });
+
+  test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
+    render(McparReviewSubmitPage_Submitted);
+    const { submitted } = reviewVerbiage;
+    const { intro } = submitted;
+    expect(screen.getByText(intro.header)).toBeVisible();
   });
 
   test("McparReviewSubmitPage shows modal on submit button click", async () => {
@@ -113,6 +113,14 @@ describe("Success Message Generator", () => {
     expect(
       SuccessMessageGenerator(programName, submittedDate, submittersName)
     ).toBe(`MCPAR report for ${programName} was submitted.`);
+  });
+
+  it("print button should be visible and correctly formed", async () => {
+    render(McparReviewSubmitPage_InProgress);
+    const printButton = screen.getByText("Print");
+    expect(printButton).toBeVisible();
+    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+    expect(printButton.getAttribute("target")).toEqual("_blank");
   });
 });
 
