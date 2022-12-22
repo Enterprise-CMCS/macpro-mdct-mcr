@@ -17,7 +17,6 @@ describe("Sticky Banner", () => {
     window.print = mockPrint;
   });
 
-
   test("Is Sticky Banner present", async () => {
     render(stickyBannerComponent);
     const banner = screen.getByTestId("stickyBanner");
