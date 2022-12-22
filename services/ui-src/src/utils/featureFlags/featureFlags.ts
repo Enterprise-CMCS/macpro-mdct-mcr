@@ -19,7 +19,7 @@ export const featureFlags = {
   },
   PRINT_EXPERIENCE: {
     flag: "printExperience",
-    defaultValue: "browser",
+    defaultValue: "prince",
   },
 } as const;
 
