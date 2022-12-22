@@ -25,7 +25,7 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
-  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
+  mcparFormBucket: !Sub ${env:MCPAR_FORM_BUCKET, ${self:service.name}-${self:custom.stage}-mcpar-${AWS::AccountId}}
   dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
   dataTransformUpdateEnabled: ${ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
   scripts:
@@ -87,9 +87,10 @@ functions:
       DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
   tfwsEtl:
     handler: handlers/tfwsEtl/tfwsEtl.handler
-    timeout: 120
+    timeout: 300
     environment:
       MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
+      MCPAR_FORM_BUCKET: ${self.custom.mcparFormBucket}
 resources:
   Resources:
     BannerTable:
