@@ -208,8 +208,4 @@ const sx = {
     fontSize: "sm",
     color: "palette.error_darker",
   },
-  notAnswered: {
-    fontSize: "sm",
-    color: "palette.error_darker",
-  },
 };

@@ -17,12 +17,6 @@ import userEvent from "@testing-library/user-event";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
-const mockUseNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-}));
-
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
   useUser: () => mockStateUser,
