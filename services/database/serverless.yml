@@ -31,7 +31,6 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        serverless invoke --stage ${self:custom.stage} --function s3Etl
         if [ ${self:custom.dataTransformEnabled} = "true" ];
         then
           serverless invoke --stage ${self:custom.stage} --function dataTransform
@@ -43,7 +42,7 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
-      seed: true
+      seed: false
     seed:
       domain:
         sources:
