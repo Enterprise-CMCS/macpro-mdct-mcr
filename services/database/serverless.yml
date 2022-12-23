@@ -25,7 +25,6 @@ custom:
       - production
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
-  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, "${self:service.name}-${self:custom.stage}-mcpar"}
   dataTransformEnabled: ${ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
   dataTransformUpdateEnabled: ${ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
   scripts:
@@ -43,12 +42,6 @@ custom:
       inMemory: true
       migrate: true
       seed: false
-    seed:
-      domain:
-        sources:
-          - table: ${self:custom.mcparReportTableName}
-            sources: [./seed-reports.json]
-
 provider:
   name: aws
   runtime: nodejs14.x
@@ -68,15 +61,6 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "*"
-        - Effect: "Allow"
-          Action:
-            - "s3:GetObject"
-            - "s3:ListBucket"
-            - "s3:PutObject"
-          Resource:
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}"
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}/formTemplates/*"
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}/fieldData/*"
 functions:
   dataTransform:
     handler: handlers/dataTransform/dataTransform.handler
@@ -84,12 +68,6 @@ functions:
     environment:
       DYNAMO_PREFIX: ${self:custom.stage}
       DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
-  s3Etl:
-    handler: handlers/s3Etl/s3Etl.handler
-    timeout: 300
-    environment:
-      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
-      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
 resources:
   Resources:
     BannerTable:
@@ -126,14 +104,6 @@ resources:
           - AttributeName: id
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    McparFormBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: !Sub ${self:service.name}-${self:custom.stage}-mcpar
-        BucketEncryption:
-          ServerSideEncryptionConfiguration:
-            - ServerSideEncryptionByDefault:
-                SSEAlgorithm: AES256
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
