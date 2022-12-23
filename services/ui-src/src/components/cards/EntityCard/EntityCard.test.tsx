@@ -177,7 +177,7 @@ describe("Test Completed Print Version EntityCard", () => {
   });
 });
 
-describe("Test Uncmpleted Print Version EntityCard", () => {
+describe("Test Uncompleted Print Version EntityCard", () => {
   beforeEach(() => {
     render(UnfinishedAccessMeasuresEntityCardPrintComponent);
   });
