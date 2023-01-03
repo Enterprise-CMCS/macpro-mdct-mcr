@@ -42,9 +42,7 @@ describe("ExportedModalDrawerReportSection", () => {
       )
     );
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent(
-      "No quality measures and plan-level quality measure results have been entered for this program report."
-    );
+    expect(entityMessage).toHaveTextContent("0 -- Not answered");
   });
 });
 
@@ -59,9 +57,7 @@ describe("ExportedModalDrawerReportSection", () => {
       )
     );
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent(
-      "No plan-level sanctions or corrective actions have been entered for this program report."
-    );
+    expect(entityMessage).toHaveTextContent("0 -- Not answered");
   });
 });
 
@@ -76,7 +72,7 @@ describe("ExportedModalDrawerReportSection", () => {
       )
     );
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent("");
+    expect(entityMessage).toHaveTextContent("0 -- Not answered");
   });
 });
 
