@@ -1,14 +1,10 @@
 import { useContext } from "react";
 // components
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { EntityCard, ExportedSectionHeading, ReportContext } from "components";
 // utils
 import { getFormattedEntityData } from "utils";
-import {
-  EntityShape,
-  ModalDrawerEntityTypes,
-  ModalDrawerReportPageShape,
-} from "types";
+import { EntityShape, ModalDrawerReportPageShape } from "types";
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage, name },
@@ -17,21 +13,12 @@ export const ExportedModalDrawerReportSection = ({
   const sectionHeading = verbiage?.intro.subsection || name;
   const entityCount = report?.fieldData?.[entityType]?.length;
 
-  let emptyEntityMessage = "";
-  switch (entityType) {
-    case ModalDrawerEntityTypes.ACCESS_MEASURES:
-      emptyEntityMessage = `No access and adequacy measures have been entered for this program report.`;
-      break;
-    case ModalDrawerEntityTypes.SANCTIONS:
-      emptyEntityMessage = `No plan-level sanctions or corrective actions have been entered for this program report.`;
-      break;
-    case ModalDrawerEntityTypes.QUALITY_MEASURES: {
-      emptyEntityMessage = `No quality measures and plan-level quality measure results have been entered for this program report.`;
-      break;
-    }
-    default:
-      break;
-  }
+  const emptyEntityMessage = <Text sx={sx.notAnswered}>0 -- Not answered</Text>;
+
+  const dashTitle = `${verbiage.dashboardTitle}${
+    verbiage.countEntitiesInTitle ? ` ${entityCount}` : ""
+  }`;
+
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       {sectionHeading && (
@@ -41,7 +28,11 @@ export const ExportedModalDrawerReportSection = ({
           existingEntity={!!entityCount}
         />
       )}
-      {!entityCount && (
+      {entityCount ? (
+        <Heading as="h3" sx={sx.dashboardTitle}>
+          {dashTitle}
+        </Heading>
+      ) : (
         <Text data-testid="entityMessage">{emptyEntityMessage}</Text>
       )}
       {report?.fieldData?.[entityType]?.map((entity: EntityShape) => (
@@ -65,3 +56,16 @@ export const ExportedModalDrawerReportSection = ({
 export interface Props {
   section: ModalDrawerReportPageShape;
 }
+
+const sx = {
+  notAnswered: {
+    fontSize: "sm",
+    color: "palette.error_darker",
+  },
+  dashboardTitle: {
+    marginBottom: "1.25rem",
+    fontSize: "md",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
+  },
+};
