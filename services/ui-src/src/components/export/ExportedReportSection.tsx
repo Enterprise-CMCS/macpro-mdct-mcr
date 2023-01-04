@@ -22,7 +22,7 @@ const RecursiveReportSection = ({ section }: Props) => (
   <Box>
     {/* if section has children, recurse */}
     {section?.children?.map((child) => (
-      <RecursiveReportSection key={child.path} section={child} />
+      <RecursiveReportSection key={section.name} section={child} />
     ))}
     {/* if section does not have children, render it */}
     {!section?.children && (
