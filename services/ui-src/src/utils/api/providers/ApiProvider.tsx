@@ -10,7 +10,6 @@ interface Props {
 
 export const ApiProvider = ({ children }: Props) => {
   useEffect(() => {
-    // TODO: fix config to single API
     const endpoints = [
       {
         name: "mcrApi",
