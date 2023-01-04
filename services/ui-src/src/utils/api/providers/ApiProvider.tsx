@@ -12,7 +12,7 @@ export const ApiProvider = ({ children }: Props) => {
   useEffect(() => {
     const endpoints = [
       {
-        name: "mcrApi",
+        name: "mcr",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION,
       },
