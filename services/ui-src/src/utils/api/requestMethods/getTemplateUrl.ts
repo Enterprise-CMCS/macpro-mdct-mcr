@@ -8,7 +8,7 @@ export async function getSignedTemplateUrl(templateName: string) {
   };
 
   const response = await API.get(
-    "templates",
+    "mcrApi",
     `/templates/${templateName}`,
     request
   );

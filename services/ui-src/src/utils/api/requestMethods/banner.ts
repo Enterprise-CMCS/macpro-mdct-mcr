@@ -10,7 +10,7 @@ async function getBanner(bannerKey: string) {
   };
 
   updateTimeout();
-  const response = await API.get("banners", `/banners/${bannerKey}`, request);
+  const response = await API.get("mcrApi", `/banners/${bannerKey}`, request);
   return response;
 }
 
@@ -23,7 +23,7 @@ async function writeBanner(bannerData: AdminBannerData) {
 
   updateTimeout();
   const response = await API.post(
-    "banners",
+    "mcrApi",
     `/banners/${bannerData.key}`,
     request
   );
@@ -37,7 +37,7 @@ async function deleteBanner(bannerKey: string) {
   };
 
   updateTimeout();
-  const response = await API.del("banners", `/banners/${bannerKey}`, request);
+  const response = await API.del("mcrApi", `/banners/${bannerKey}`, request);
   return response;
 }
 
