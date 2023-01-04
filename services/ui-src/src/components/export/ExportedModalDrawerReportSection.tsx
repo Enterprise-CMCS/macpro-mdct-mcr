@@ -20,13 +20,13 @@ export const ExportedModalDrawerReportSection = ({
   let emptyEntityMessage;
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
-      emptyEntityMessage = " 0 -- No access measures entered";
+      emptyEntityMessage = "No access measures entered";
       break;
     case ModalDrawerEntityTypes.SANCTIONS:
-      emptyEntityMessage = " 0 -- No sanctions entered";
+      emptyEntityMessage = "No sanctions entered";
       break;
     case ModalDrawerEntityTypes.QUALITY_MEASURES: {
-      emptyEntityMessage = " 0 -- No quality measures entered";
+      emptyEntityMessage = "No quality measures entered";
       break;
     }
     default:
@@ -35,12 +35,10 @@ export const ExportedModalDrawerReportSection = ({
 
   const headerEntityCount = (
     <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
-      {verbiage.dashboardTitle}
-      {entityCount ? (
-        ` ${entityCount}`
-      ) : (
+      {verbiage.dashboardTitle} {entityCount}
+      {!entityCount && (
         <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
-          {emptyEntityMessage}
+          0 - {emptyEntityMessage}
         </Text>
       )}
     </Heading>
@@ -80,7 +78,8 @@ export interface Props {
 
 const sx = {
   notAnswered: {
-    fontSize: "sm",
+    fontSize: "md",
+    fontWeight: "bold",
     color: "palette.error_darker",
   },
   dashboardTitle: {

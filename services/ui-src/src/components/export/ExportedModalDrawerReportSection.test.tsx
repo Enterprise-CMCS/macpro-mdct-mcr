@@ -29,9 +29,7 @@ describe("ExportedModalDrawerReportSection", () => {
     const section = getByTestId("exportedModalDrawerReportSection");
     expect(section).toBeVisible();
   });
-});
 
-describe("ExportedModalDrawerReportSection", () => {
   test("Checking for appropriate messaging for entityType 'qualityMeasures'", () => {
     const { getByTestId } = render(
       exportedReportSectionComponent(
@@ -41,12 +39,12 @@ describe("ExportedModalDrawerReportSection", () => {
         })
       )
     );
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent("0 -- No quality measures entered");
+    expect(entityMessage).toHaveTextContent("0 - No quality measures entered");
   });
-});
 
-describe("ExportedModalDrawerReportSection", () => {
   test("Checking for appropriate messaging for entityType 'sanctions'", () => {
     const { getByTestId } = render(
       exportedReportSectionComponent(
@@ -56,18 +54,18 @@ describe("ExportedModalDrawerReportSection", () => {
         })
       )
     );
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent("0 -- No sanctions entered");
+    expect(entityMessage).toHaveTextContent("0 - No sanctions entered");
   });
-});
 
-describe("ExportedModalDrawerReportSection", () => {
   test("Checking for appropriate messaging for entityType default", () => {
     const { getByTestId } = render(
       exportedReportSectionComponent(
         mockReportContext,
         mockContent({
-          entityType: undefined,
+          entityType: "accessMeasures",
         })
       )
     );
