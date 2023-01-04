@@ -4,7 +4,11 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import { EntityCard, ExportedSectionHeading, ReportContext } from "components";
 // utils
 import { getFormattedEntityData } from "utils";
-import { EntityShape, ModalDrawerReportPageShape } from "types";
+import {
+  EntityShape,
+  ModalDrawerEntityTypes,
+  ModalDrawerReportPageShape,
+} from "types";
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage, name },
@@ -13,11 +17,34 @@ export const ExportedModalDrawerReportSection = ({
   const sectionHeading = verbiage?.intro.subsection || name;
   const entityCount = report?.fieldData?.[entityType]?.length;
 
-  const emptyEntityMessage = <Text sx={sx.notAnswered}>0 -- Not answered</Text>;
+  let emptyEntityMessage;
+  switch (entityType) {
+    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+      emptyEntityMessage = " 0 -- No access measures entered";
+      break;
+    case ModalDrawerEntityTypes.SANCTIONS:
+      emptyEntityMessage = " 0 -- No sanctions entered";
+      break;
+    case ModalDrawerEntityTypes.QUALITY_MEASURES: {
+      emptyEntityMessage = " 0 -- No quality measures entered";
+      break;
+    }
+    default:
+      break;
+  }
 
-  const dashTitle = `${verbiage.dashboardTitle}${
-    verbiage.countEntitiesInTitle ? ` ${entityCount}` : ""
-  }`;
+  const headerEntityCount = (
+    <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
+      {verbiage.dashboardTitle}
+      {entityCount ? (
+        ` ${entityCount}`
+      ) : (
+        <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
+          {emptyEntityMessage}
+        </Text>
+      )}
+    </Heading>
+  );
 
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
@@ -28,13 +55,7 @@ export const ExportedModalDrawerReportSection = ({
           existingEntity={!!entityCount}
         />
       )}
-      {entityCount ? (
-        <Heading as="h3" sx={sx.dashboardTitle}>
-          {dashTitle}
-        </Heading>
-      ) : (
-        <Text data-testid="entityMessage">{emptyEntityMessage}</Text>
-      )}
+      {headerEntityCount}
       {report?.fieldData?.[entityType]?.map((entity: EntityShape) => (
         <EntityCard
           key={entity.id}

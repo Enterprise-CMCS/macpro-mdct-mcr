@@ -42,7 +42,7 @@ describe("ExportedModalDrawerReportSection", () => {
       )
     );
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent("0 -- Not answered");
+    expect(entityMessage).toHaveTextContent("0 -- No quality measures entered");
   });
 });
 
@@ -57,7 +57,7 @@ describe("ExportedModalDrawerReportSection", () => {
       )
     );
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent("0 -- Not answered");
+    expect(entityMessage).toHaveTextContent("0 -- No sanctions entered");
   });
 });
 
@@ -71,8 +71,8 @@ describe("ExportedModalDrawerReportSection", () => {
         })
       )
     );
-    const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent("0 -- Not answered");
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
   });
 });
 
