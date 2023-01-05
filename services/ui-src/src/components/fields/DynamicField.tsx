@@ -59,6 +59,37 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
+  // if should autosave, submit field data to database on blur
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    if (userIsStateUser || userIsStateRep) {
+      // check field data validity
+      const fieldDataIsValid = await form.trigger(event.target.name);
+      let data = displayValues;
+      // if valid, use; if not, reset to default
+      if (!fieldDataIsValid) {
+        data = displayValues.map((displayValue) => {
+          if (displayValue.id === event.target.id) displayValue.name = "";
+          return displayValue;
+        });
+      }
+
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+      const dataToWrite = {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
+        fieldData: {
+          [name]: data,
+        },
+      };
+      await updateReport(reportKeys, dataToWrite);
+    }
+  };
+
   const appendNewRecord = () => {
     const newEntity = { id: uuid(), name: "" };
     append(newEntity);
@@ -159,6 +190,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               label={label}
               errorMessage={fieldErrorState?.[index]?.name.message}
               onChange={(e) => onChangeHandler(e)}
+              onBlur={(e) => onBlurHandler(e)}
               value={field.name}
               {...props}
             />
