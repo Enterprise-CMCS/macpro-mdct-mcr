@@ -10,20 +10,9 @@ interface Props {
 
 export const ApiProvider = ({ children }: Props) => {
   useEffect(() => {
-    // TODO: fix config to single API
     const endpoints = [
       {
-        name: "banners",
-        endpoint: config.apiGateway.URL,
-        region: config.apiGateway.REGION,
-      },
-      {
-        name: "reports",
-        endpoint: config.apiGateway.URL,
-        region: config.apiGateway.REGION,
-      },
-      {
-        name: "templates",
+        name: "mcr",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION,
       },
