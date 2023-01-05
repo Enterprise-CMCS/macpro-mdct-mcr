@@ -7,10 +7,6 @@ export async function getSignedTemplateUrl(templateName: string) {
     headers: { ...requestHeaders },
   };
 
-  const response = await API.get(
-    "templates",
-    `/templates/${templateName}`,
-    request
-  );
+  const response = await API.get("mcr", `/templates/${templateName}`, request);
   return response;
 }
