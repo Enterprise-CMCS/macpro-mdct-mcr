@@ -10,13 +10,27 @@ import {
 // types
 import { AnyObject } from "yup/lib/types";
 
+const mockReportContextWithoutEntities = {
+  ...mockReportContext,
+  report: undefined,
+};
+
 const mockContent = (modifiedFields?: AnyObject) => ({
   ...mockModalDrawerReportPageJson,
   ...modifiedFields,
 });
 
 const exportedReportSectionComponent = (context: any, content: any) => (
-  <ReportContext.Provider value={context}>
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedModalDrawerReportSection section={content} />
+  </ReportContext.Provider>
+);
+
+const exportedReportSectionComponentWithoutEntities = (
+  context: any,
+  content: any
+) => (
+  <ReportContext.Provider value={mockReportContextWithoutEntities}>
     <ExportedModalDrawerReportSection section={content} />
   </ReportContext.Provider>
 );
@@ -24,7 +38,10 @@ const exportedReportSectionComponent = (context: any, content: any) => (
 describe("ExportedModalDrawerReportSection", () => {
   test("Is Exported Drawer Report Section present", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(mockReportContext, mockContent())
+      exportedReportSectionComponentWithoutEntities(
+        mockReportContext,
+        mockContent()
+      )
     );
     const section = getByTestId("exportedModalDrawerReportSection");
     expect(section).toBeVisible();
@@ -32,7 +49,7 @@ describe("ExportedModalDrawerReportSection", () => {
 
   test("Checking for appropriate messaging for entityType 'qualityMeasures'", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(
+      exportedReportSectionComponentWithoutEntities(
         mockReportContext,
         mockContent({
           entityType: "qualityMeasures",
@@ -47,7 +64,7 @@ describe("ExportedModalDrawerReportSection", () => {
 
   test("Checking for appropriate messaging for entityType 'sanctions'", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(
+      exportedReportSectionComponentWithoutEntities(
         mockReportContext,
         mockContent({
           entityType: "sanctions",
@@ -62,7 +79,7 @@ describe("ExportedModalDrawerReportSection", () => {
 
   test("Checking for appropriate messaging for entityType default", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(
+      exportedReportSectionComponentWithoutEntities(
         mockReportContext,
         mockContent({
           entityType: "accessMeasures",
@@ -71,6 +88,8 @@ describe("ExportedModalDrawerReportSection", () => {
     );
     const headerCount = getByTestId("headerCount");
     expect(headerCount).toHaveTextContent("Mock dashboard title");
+    const entityMessage = getByTestId("entityMessage");
+    expect(entityMessage).toHaveTextContent("0 - No access measures entered");
   });
 });
 
