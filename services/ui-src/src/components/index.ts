@@ -33,7 +33,6 @@ export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
 export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 //export
-export { ExportedReportSection } from "./export/ExportedReportSection";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { ExportedDrawerReportSection } from "./export/ExportedDrawerReportSection";
 export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";

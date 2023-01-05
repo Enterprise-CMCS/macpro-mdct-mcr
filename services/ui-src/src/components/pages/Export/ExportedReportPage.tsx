@@ -2,10 +2,11 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
 import { Box, Heading, Text, Tr, Td } from "@chakra-ui/react";
-import { ExportedReportSection, ReportContext, Table } from "components";
+import { ExportedReportWrapper, ReportContext, Table } from "components";
 // utils
 import { convertDateUtcToEt } from "utils";
 import { States } from "../../../constants";
+import { PageTypes, ReportRoute, ReportRouteWithForm } from "types";
 
 export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
@@ -69,12 +70,39 @@ export const ExportedReportPage = () => {
             </Tr>
           </Table>
           {/* report sections */}
-          {report.formTemplate.routes.map((section) => (
-            <ExportedReportSection section={section} key={section.path} />
-          ))}
+          <Box mt="5rem">
+            {renderReportSections(report.formTemplate.routes)}
+          </Box>
         </Box>
       )}
     </Box>
+  );
+};
+
+export const renderReportSections = (reportRoutes: ReportRoute[]) => {
+  // recursively render subsections
+  const renderSubsection = (subsection: ReportRoute) => (
+    <Box key={subsection.path}>
+      {/* if subsection has children, recurse */}
+      {subsection?.children?.map((child) => renderSubsection(child))}
+      {/* if section does not have children, render it */}
+      {!subsection?.children && (
+        <ExportedReportWrapper section={subsection as ReportRouteWithForm} />
+      )}
+    </Box>
+  );
+
+  // render top-level section headings and subsections
+  return reportRoutes.map(
+    (section: ReportRoute) =>
+      section?.pageType !== PageTypes.REVIEW_SUBMIT && (
+        <Box key={section.path}>
+          <Heading as="h2" sx={sx.sectionHeading}>
+            Section {section.name}
+          </Heading>
+          {renderSubsection(section)}
+        </Box>
+      )
   );
 };
 
@@ -127,5 +155,10 @@ export const sx = {
         },
       },
     },
+  },
+  sectionHeading: {
+    fontWeight: "bold",
+    fontSize: "2xl",
+    marginBottom: "2xl",
   },
 };
