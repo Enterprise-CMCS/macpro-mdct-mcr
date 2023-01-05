@@ -70,9 +70,7 @@ export const ExportedReportPage = () => {
             </Tr>
           </Table>
           {/* report sections */}
-          <Box mt="5rem">
-            {renderReportSections(report.formTemplate.routes)}
-          </Box>
+          {renderReportSections(report.formTemplate.routes)}
         </Box>
       )}
     </Box>
@@ -80,14 +78,14 @@ export const ExportedReportPage = () => {
 };
 
 export const renderReportSections = (reportRoutes: ReportRoute[]) => {
-  // recursively render subsections
-  const renderSubsection = (subsection: ReportRoute) => (
-    <Box key={subsection.path}>
-      {/* if subsection has children, recurse */}
-      {subsection?.children?.map((child) => renderSubsection(child))}
+  // recursively render sections
+  const renderSection = (section: ReportRoute) => (
+    <Box key={section.path}>
+      {/* if section has children, recurse */}
+      {section?.children?.map((child) => renderSection(child))}
       {/* if section does not have children, render it */}
-      {!subsection?.children && (
-        <ExportedReportWrapper section={subsection as ReportRouteWithForm} />
+      {!section?.children && (
+        <ExportedReportWrapper section={section as ReportRouteWithForm} />
       )}
     </Box>
   );
@@ -96,11 +94,11 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
   return reportRoutes.map(
     (section: ReportRoute) =>
       section?.pageType !== PageTypes.REVIEW_SUBMIT && (
-        <Box key={section.path}>
+        <Box key={section.path} mt="5rem">
           <Heading as="h2" sx={sx.sectionHeading}>
             Section {section.name}
           </Heading>
-          {renderSubsection(section)}
+          {renderSection(section)}
         </Box>
       )
   );
