@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text, Tr, Td } from "@chakra-ui/react";
 import { ExportedReportSection, ReportContext, Table } from "components";
 // utils
 import { convertDateUtcToEt } from "utils";
@@ -45,19 +45,29 @@ export const ExportedReportPage = () => {
               ],
             }}
           />
+          {/* combined data table */}
           <Table
             sx={sx.combinedDataTable}
             className="short"
             content={{
               headRow: ["Indicator", "Response"],
-              bodyRows: [
-                [
-                  "<p><strong>Exclusion of CHIP from MCPAR</strong></p><p class='message'>Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program.</p>",
-                  report.combinedData ? "Selected" : "Not Selected",
-                ],
-              ],
             }}
-          />
+          >
+            <Tr>
+              <Td>
+                <Text className="combined-data-title">
+                  Exclusion of CHIP from MCPAR
+                </Text>
+                <Text>
+                  Enrollees in separate CHIP programs funded under Title XXI
+                  should not be reported in the MCPAR. Please check this box if
+                  the state is unable to remove information about Separate CHIP
+                  enrollees from its reporting on this program.
+                </Text>
+              </Td>
+              <Td>{report.combinedData ? "Selected" : "Not Selected"}</Td>
+            </Tr>
+          </Table>
           {/* report sections */}
           {report.formTemplate.routes.map((section) => (
             <ExportedReportSection section={section} key={section.path} />
@@ -93,12 +103,11 @@ export const sx = {
   },
   combinedDataTable: {
     marginBottom: "1rem",
-    p: {
-      strong: {
-        display: "inline-block",
-        marginBottom: "0.5rem",
-        fontSize: "md",
-      },
+    ".combined-data-title": {
+      display: "inline-block",
+      marginBottom: "0.5rem",
+      fontSize: "md",
+      fontWeight: "bold",
     },
     "th, td": {
       verticalAlign: "top",
