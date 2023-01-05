@@ -1,66 +1,83 @@
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 // components
-import { Box } from "@chakra-ui/react";
+import { Box, Tr, Td } from "@chakra-ui/react";
 import { ExportedSectionHeading, ReportContext, Table } from "components";
-// utils
-import { parseAllLevels, parseDynamicFieldData, parseFieldLabel } from "utils";
-// types
-import { FormField, StandardReportPageShape } from "types";
+// types, utils
+import {
+  AnyObject,
+  FormField,
+  FieldChoice,
+  StandardReportPageShape,
+} from "types";
+import { parseFieldLabel } from "utils";
 
 export const ExportedStandardReportSection = ({
   section: { form, name, verbiage },
 }: Props) => {
   const { report } = useContext(ReportContext);
-  const sectionHeading: string = verbiage?.intro.subsection || name;
-  const formFields = form?.fields;
-  const formHasOnlyDynamicFields = form?.fields.every(
-    (field) => field.type === "dynamic"
+  const fieldData = report?.fieldData;
+  const formFields = form.fields;
+
+  const formHasOnlyDynamicFields = formFields.every(
+    (field: FormField) => field.type === "dynamic"
   );
-
+  const twoColumnHeaderItems = ["Indicator", "Response"];
+  const threeColumnHeaderItems = ["Number", "Indicator", "Response"];
   const headRowItems = formHasOnlyDynamicFields
-    ? ["Indicator", "Response"]
-    : ["Number", "Indicator", "Response"];
-
-  const renderFieldRow = (field: FormField) => {
-    if (field.type === "dynamic") {
-      // if field is dynamic, return data in 2 columns
-      return [
-        field.props ? `<strong>${field.props.label}</strong>` : "",
-        parseDynamicFieldData(report?.fieldData[field.id]),
-      ];
-    }
-    // otherwise, return data in standard 3 columns
-    return [
-      field.props
-        ? `<strong>${parseFieldLabel(field.props).indicator}</strong>`
-        : "",
-      field.props ? parseFieldLabel(field.props).label : "",
-      `<div class="answers">${parseAllLevels({
-        ...field,
-        fieldData: report?.fieldData,
-      })}</div>`,
-    ];
-  };
+    ? twoColumnHeaderItems
+    : threeColumnHeaderItems;
 
   return (
     <Box data-testid="exportedStandardReportSection" mt="2rem">
-      {sectionHeading && (
-        <ExportedSectionHeading heading={sectionHeading} verbiage={verbiage} />
-      )}
-      {formFields && (
-        <Table
-          sx={sx.dataTable}
-          className={formHasOnlyDynamicFields ? "two-column" : "three-column"}
-          content={{
-            headRow: headRowItems,
-            bodyRows: formFields.map((field: FormField) =>
-              renderFieldRow(field)
-            ),
-          }}
-        />
-      )}
+      <ExportedSectionHeading
+        heading={verbiage?.intro.subsection || name}
+        verbiage={verbiage}
+      />
+      <Table
+        sx={sx.dataTable}
+        className={formHasOnlyDynamicFields ? "two-column" : "three-column"}
+        content={{
+          headRow: headRowItems,
+        }}
+      >
+        {/* TODO: account for dynamicField */}
+        {renderFieldTableBody(formFields, fieldData!)}
+      </Table>
     </Box>
   );
+};
+
+export const renderFieldTableBody = (
+  formFields: FormField[],
+  fieldData: AnyObject
+) => {
+  const tableRows: ReactElement[] = [];
+
+  // recursively renders field rows
+  const renderFieldRow = (field: FormField) => {
+    const fieldInfo = parseFieldLabel(field?.props!); // TODO: account for dynamicField
+    tableRows.push(
+      <Tr>
+        <Td>{fieldInfo.indicator}</Td>
+        <Td>{fieldInfo.label}</Td>
+        <Td>{fieldData}</Td>
+      </Tr>
+    );
+
+    // check for nested child fields; if any, map through children and render
+    const fieldChoicesWithChildren = field?.props?.choices?.filter(
+      (choice: FieldChoice) => choice?.children
+    );
+    fieldChoicesWithChildren?.map((choice: FieldChoice) =>
+      choice.children?.map((childField: FormField) =>
+        renderFieldRow(childField)
+      )
+    );
+  };
+
+  // map through form fields and call renderer
+  formFields.map((field: FormField) => renderFieldRow(field));
+  return tableRows || <></>;
 };
 
 export interface Props {

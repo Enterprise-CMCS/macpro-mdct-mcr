@@ -18,11 +18,9 @@ export const ExportedSectionHeading = ({
           {sectionHeading}
         </Heading>
       )}
-
       {existingEntity && verbiage?.intro?.info && (
         <Box sx={sx.intro}>{parseCustomHtml(verbiage?.intro.info)}</Box>
       )}
-
       <Box sx={sx.spreadSheet}>
         <SpreadsheetWidget description={verbiage?.intro.spreadsheet} />
       </Box>

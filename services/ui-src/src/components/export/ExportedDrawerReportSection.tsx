@@ -2,9 +2,8 @@ import { useContext } from "react";
 // components
 import { Box } from "@chakra-ui/react";
 import { ExportedSectionHeading, ReportContext, Table } from "components";
-// types
+// types, utils
 import { DrawerReportPageShape, FormField } from "types";
-// utils
 import { parseAllLevels, parseFieldLabel } from "utils";
 
 export const ExportedDrawerReportSection = ({
