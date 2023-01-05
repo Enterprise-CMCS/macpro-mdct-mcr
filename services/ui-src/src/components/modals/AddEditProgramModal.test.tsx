@@ -22,17 +22,13 @@ const mockedReportContext = {
   fetchReportsByState: mockFetchReportsByState,
 };
 
-const mockNewReportData = {
-  reportType: "mock-type",
-  formTemplate: mockReportJson,
-};
-
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditProgramModal
       activeState="AB"
       selectedReport={undefined}
-      newReportData={mockNewReportData}
+      reportType={"mock-type"}
+      formTemplate={mockReportJson}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -46,7 +42,8 @@ const modalComponentWithSelectedReport = (
     <AddEditProgramModal
       activeState="AB"
       selectedReport={mockReport}
-      newReportData={mockNewReportData}
+      reportType={"mock-type"}
+      formTemplate={mockReportJson}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,

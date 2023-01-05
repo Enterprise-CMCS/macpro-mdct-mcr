@@ -25,8 +25,8 @@ describe("Sidebar integration tests", () => {
     cy.findAllByRole("button", { name: "Enter" }).first().click();
 
     // Expand next section, collapse first, nav to new page.
-    cy.get(expandButton).first().click();
     cy.get(collapseButton).first().click();
+    cy.get(expandButton).first().click();
     cy.wait(600);
 
     cy.get(subsectionText).filter(":visible").first().parent().parent().click();
@@ -58,8 +58,8 @@ describe("Sidebar integration tests", () => {
       .parent()
       .should("have.class", "open");
 
-    cy.navigateToHomePage();
     cy.authenticate("adminUser");
+    cy.navigateToHomePage();
     cy.get('[name="state"]').select("Minnesota");
     cy.findAllByRole("button", { name: "Go to Report Dashboard" })
       .last()

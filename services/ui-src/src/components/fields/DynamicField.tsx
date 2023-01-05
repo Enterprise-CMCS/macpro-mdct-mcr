@@ -98,8 +98,10 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       );
 
       const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
         fieldData: {
           [name]: filteredEntities,
           sanctions: filteredSanctions,
