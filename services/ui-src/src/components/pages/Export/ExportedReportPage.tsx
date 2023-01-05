@@ -90,7 +90,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
     </Box>
   );
 
-  // render top-level section headings and subsections
+  // render top-level section headings
   return reportRoutes.map(
     (section: ReportRoute) =>
       section?.pageType !== PageTypes.REVIEW_SUBMIT && (

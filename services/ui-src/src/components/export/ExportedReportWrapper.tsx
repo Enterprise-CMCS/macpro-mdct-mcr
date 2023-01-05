@@ -15,6 +15,12 @@ import {
 
 export const ExportedReportWrapper = ({ section }: Props) => {
   switch (section.pageType) {
+    case PageTypes.STANDARD:
+      return (
+        <ExportedStandardReportSection
+          section={section as StandardReportPageShape}
+        />
+      );
     case PageTypes.DRAWER:
       return (
         <ExportedDrawerReportSection
@@ -27,17 +33,11 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           section={section as ModalDrawerReportPageShape}
         />
       );
-    case PageTypes.REVIEW_SUBMIT:
-      return <></>;
     default:
-      return (
-        <ExportedStandardReportSection
-          section={section as StandardReportPageShape}
-        />
-      );
+      return <></>;
   }
 };
 
-interface Props {
+export interface Props {
   section: ReportRouteWithForm;
 }

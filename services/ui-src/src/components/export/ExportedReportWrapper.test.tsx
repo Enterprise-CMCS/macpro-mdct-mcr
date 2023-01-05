@@ -6,143 +6,66 @@ import { ReportContext, ExportedReportWrapper } from "components";
 import {
   mockDrawerReportPageJson,
   mockModalDrawerReportPageJson,
-  mockReviewSubmitPageJson,
   mockStandardReportPageJson,
   mockReportContext,
 } from "utils/testing/setupJest";
-// types
-import { AnyObject } from "yup/lib/types";
 
-const mockDrawerContent = (modifiedFields?: AnyObject) => ({
-  ...mockDrawerReportPageJson,
-  ...modifiedFields,
-});
-
-const exportedDrawerReportWrapperComponent = (context: any, content: any) => (
-  <ReportContext.Provider value={context}>
-    <ExportedReportWrapper section={content} />
+const exportedDrawerReportWrapperComponent = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedReportWrapper section={mockDrawerReportPageJson} />
   </ReportContext.Provider>
 );
-
-const mockModalDrawerContent = (modifiedFields?: AnyObject) => ({
-  ...mockModalDrawerReportPageJson,
-  ...modifiedFields,
-});
 
 const exportedModalDrawerReportWrapperComponent = (
-  context: any,
-  content: any
-) => (
-  <ReportContext.Provider value={context}>
-    <ExportedReportWrapper section={content} />
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedReportWrapper section={mockModalDrawerReportPageJson} />
   </ReportContext.Provider>
 );
 
-const mockStandardContent = (modifiedFields?: AnyObject) => ({
-  ...mockStandardReportPageJson,
-  ...modifiedFields,
-});
-
-const exportedStandardReportWrapperComponent = (context: any, content: any) => (
-  <ReportContext.Provider value={context}>
-    <ExportedReportWrapper section={content} />
-  </ReportContext.Provider>
-);
-
-const mockReviewAndSubmitContent = (modifiedFields?: AnyObject) => ({
-  ...mockReviewSubmitPageJson,
-  ...modifiedFields,
-});
-
-const exportedReviewAndSubmitReportWrapperComponent = (
-  context: any,
-  content: any
-) => (
-  <ReportContext.Provider value={context}>
-    <ExportedReportWrapper section={content} />
+const exportedStandardReportWrapperComponent = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedReportWrapper section={mockStandardReportPageJson} />
   </ReportContext.Provider>
 );
 
 describe("ExportedReportWrapper", () => {
   test("Is Exported Drawer Report Section present", () => {
-    render(
-      exportedDrawerReportWrapperComponent(
-        mockReportContext,
-        mockDrawerContent()
-      )
-    );
+    render(exportedDrawerReportWrapperComponent);
     expect(
-      screen.getByText(mockDrawerContent().verbiage.intro.subsection)
+      screen.getByText(mockDrawerReportPageJson.verbiage.intro.subsection)
     ).toBeVisible();
   });
 
   test("Is Exported Modal Drawer Report Section present", () => {
-    render(
-      exportedModalDrawerReportWrapperComponent(
-        mockReportContext,
-        mockModalDrawerContent()
-      )
-    );
+    render(exportedModalDrawerReportWrapperComponent);
     expect(
-      screen.getByText(mockModalDrawerContent().verbiage.intro.subsection)
+      screen.getByText(mockModalDrawerReportPageJson.verbiage.intro.subsection)
     ).toBeVisible();
   });
 
   test("Is Exported Standard Report Section present", () => {
-    render(
-      exportedStandardReportWrapperComponent(
-        mockReportContext,
-        mockStandardContent()
-      )
-    );
+    render(exportedStandardReportWrapperComponent);
     expect(
-      screen.getByText(mockStandardContent().verbiage.intro.subsection)
+      screen.getByText(mockStandardReportPageJson.verbiage.intro.subsection)
     ).toBeVisible();
-  });
-
-  test("Is Review and Submit Section NOT present", () => {
-    render(
-      exportedReviewAndSubmitReportWrapperComponent(
-        mockReportContext,
-        mockReviewAndSubmitContent()
-      )
-    );
-    expect(
-      screen.queryByText(mockReviewAndSubmitContent().name)
-    ).not.toBeInTheDocument();
   });
 });
 
 describe("Test ExportedReportWrapper accessibility", () => {
   it("ExportedDrawerReportWrapper should not have basic accessibility issues", async () => {
-    const { container } = render(
-      exportedDrawerReportWrapperComponent(
-        mockReportContext,
-        mockDrawerContent()
-      )
-    );
+    const { container } = render(exportedDrawerReportWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   it("ExportedModalDrawerReportWrapper should not have basic accessibility issues", async () => {
-    const { container } = render(
-      exportedModalDrawerReportWrapperComponent(
-        mockReportContext,
-        mockModalDrawerContent()
-      )
-    );
+    const { container } = render(exportedModalDrawerReportWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   it("ExportedStandardDrawerReportWrapper should not have basic accessibility issues", async () => {
-    const { container } = render(
-      exportedStandardReportWrapperComponent(
-        mockReportContext,
-        mockStandardContent()
-      )
-    );
+    const { container } = render(exportedStandardReportWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
