@@ -9,7 +9,11 @@ export const EntityCardBottomSection = ({
   printVersion,
   verbiage,
 }: Props) => {
-  const notAnswered = <Text sx={sx.notAnswered}>Not Answered</Text>;
+  const notAnswered = (
+    <Text as="span" sx={sx.notAnswered}>
+      Not Answered
+    </Text>
+  );
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (

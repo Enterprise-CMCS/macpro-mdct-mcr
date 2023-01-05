@@ -89,12 +89,21 @@ const sx = {
       borderColor: "palette.gray_lighter",
     },
     "&.three-column": {
-      "th, td": {
+      th: {
         "&:first-of-type": {
           width: "5.5rem",
         },
         "&:nth-last-of-type(2)": {
           width: "14rem",
+        },
+      },
+      td: {
+        "&:first-of-type": {
+          width: "5.5rem",
+        },
+        "&:nth-last-of-type(2)": {
+          width: "14rem",
+          paddingTop: "0.5rem",
         },
       },
     },
