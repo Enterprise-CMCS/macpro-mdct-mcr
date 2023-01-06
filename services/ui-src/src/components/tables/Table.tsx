@@ -88,10 +88,6 @@ const sx = {
     fontWeight: "semibold",
     textTransform: "none",
     letterSpacing: "normal",
-    color: "black",
-    ".shrink &": {
-      padding: "0.375rem 0rem",
-    },
     ".mobile &": {
       fontSize: "xs",
     },
@@ -100,10 +96,6 @@ const sx = {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
     fontWeight: "normal",
-    color: "black",
-    ".shrink &": {
-      padding: "0.375rem 0rem",
-    },
     ".mobile &": {
       fontSize: "xs",
     },

@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import { Link as RouterLink } from "react-router-dom";
 import { Heading, Link, Text } from "@chakra-ui/react";
 // types
-import { CustomHtmlElement } from "types";
+import { AnyObject, CustomHtmlElement } from "types";
 
 // return created elements from custom html array
 export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
@@ -49,6 +49,15 @@ export const sanitizeAndParseHtml = (html: string) => {
   const sanitizedHtml = sanitize(html);
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;
+};
+
+export const newParseFieldInfo = (fieldProps: AnyObject) => {
+  const labelArray = fieldProps?.label?.split(" ");
+  return {
+    number: labelArray?.[0],
+    label: labelArray?.slice(1)?.join(" "),
+    hint: fieldProps?.hint,
+  };
 };
 
 // parsing the field name numbers for the PDF preview page
