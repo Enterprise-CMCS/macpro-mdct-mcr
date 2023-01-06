@@ -17,7 +17,7 @@ export const ExportedModalDrawerReportSection = ({
   const sectionHeading = verbiage?.intro.subsection || name;
   const entityCount = report?.fieldData?.[entityType]?.length;
 
-  let emptyEntityMessage;
+  let emptyEntityMessage = "";
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       emptyEntityMessage = "No access measures entered";
