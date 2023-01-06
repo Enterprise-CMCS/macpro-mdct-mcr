@@ -43,12 +43,6 @@ custom:
       inMemory: true
       migrate: true
       seed: true
-    seed:
-      domain:
-        sources:
-          - table: ${self:custom.mcparReportTableName}
-            sources: [./seed-reports.json]
-
 provider:
   name: aws
   runtime: nodejs14.x
