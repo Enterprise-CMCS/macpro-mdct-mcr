@@ -10,13 +10,27 @@ import {
 // types
 import { AnyObject } from "yup/lib/types";
 
+const mockReportContextWithoutEntities = {
+  ...mockReportContext,
+  report: undefined,
+};
+
 const mockContent = (modifiedFields?: AnyObject) => ({
   ...mockModalDrawerReportPageJson,
   ...modifiedFields,
 });
 
 const exportedReportSectionComponent = (context: any, content: any) => (
-  <ReportContext.Provider value={context}>
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedModalDrawerReportSection section={content} />
+  </ReportContext.Provider>
+);
+
+const exportedReportSectionComponentWithoutEntities = (
+  context: any,
+  content: any
+) => (
+  <ReportContext.Provider value={mockReportContextWithoutEntities}>
     <ExportedModalDrawerReportSection section={content} />
   </ReportContext.Provider>
 );
@@ -29,54 +43,64 @@ describe("ExportedModalDrawerReportSection", () => {
     const section = getByTestId("exportedModalDrawerReportSection");
     expect(section).toBeVisible();
   });
-});
 
-describe("ExportedModalDrawerReportSection", () => {
-  test("Checking for appropriate messaging for entityType 'qualityMeasures'", () => {
+  test("Checking for appropriate messaging for entityType 'qualityMeasures' if no entities", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(
+      exportedReportSectionComponentWithoutEntities(
         mockReportContext,
         mockContent({
           entityType: "qualityMeasures",
         })
       )
     );
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent(
-      "No quality measures and plan-level quality measure results have been entered for this program report."
-    );
+    expect(entityMessage).toHaveTextContent("0 - No quality measures entered");
   });
-});
 
-describe("ExportedModalDrawerReportSection", () => {
-  test("Checking for appropriate messaging for entityType 'sanctions'", () => {
+  test("Checking for appropriate messaging for entityType 'sanctions' if no entities", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponent(
+      exportedReportSectionComponentWithoutEntities(
         mockReportContext,
         mockContent({
           entityType: "sanctions",
         })
       )
     );
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
     const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent(
-      "No plan-level sanctions or corrective actions have been entered for this program report."
-    );
+    expect(entityMessage).toHaveTextContent("0 - No sanctions entered");
   });
-});
 
-describe("ExportedModalDrawerReportSection", () => {
-  test("Checking for appropriate messaging for entityType default", () => {
+  test("Checking for appropriate messaging for entityType 'accessMeasures' if no entities", () => {
+    const { getByTestId } = render(
+      exportedReportSectionComponentWithoutEntities(
+        mockReportContext,
+        mockContent({
+          entityType: "accessMeasures",
+        })
+      )
+    );
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
+    const entityMessage = getByTestId("entityMessage");
+    expect(entityMessage).toHaveTextContent("0 - No access measures entered");
+  });
+
+  test("Checking for appropriate messaging for entityType 'accessMeasures' if there are entities", () => {
     const { getByTestId } = render(
       exportedReportSectionComponent(
         mockReportContext,
         mockContent({
-          entityType: undefined,
+          entityType: "accessMeasures",
         })
       )
     );
-    const entityMessage = getByTestId("entityMessage");
-    expect(entityMessage).toHaveTextContent("");
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
+    expect(headerCount).toHaveTextContent("1");
   });
 });
 
