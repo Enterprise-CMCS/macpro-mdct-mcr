@@ -38,16 +38,13 @@ const exportedReportSectionComponentWithoutEntities = (
 describe("ExportedModalDrawerReportSection", () => {
   test("Is Exported Drawer Report Section present", () => {
     const { getByTestId } = render(
-      exportedReportSectionComponentWithoutEntities(
-        mockReportContext,
-        mockContent()
-      )
+      exportedReportSectionComponent(mockReportContext, mockContent())
     );
     const section = getByTestId("exportedModalDrawerReportSection");
     expect(section).toBeVisible();
   });
 
-  test("Checking for appropriate messaging for entityType 'qualityMeasures'", () => {
+  test("Checking for appropriate messaging for entityType 'qualityMeasures' if no entities", () => {
     const { getByTestId } = render(
       exportedReportSectionComponentWithoutEntities(
         mockReportContext,
@@ -62,7 +59,7 @@ describe("ExportedModalDrawerReportSection", () => {
     expect(entityMessage).toHaveTextContent("0 - No quality measures entered");
   });
 
-  test("Checking for appropriate messaging for entityType 'sanctions'", () => {
+  test("Checking for appropriate messaging for entityType 'sanctions' if no entities", () => {
     const { getByTestId } = render(
       exportedReportSectionComponentWithoutEntities(
         mockReportContext,
@@ -77,7 +74,7 @@ describe("ExportedModalDrawerReportSection", () => {
     expect(entityMessage).toHaveTextContent("0 - No sanctions entered");
   });
 
-  test("Checking for appropriate messaging for entityType default", () => {
+  test("Checking for appropriate messaging for entityType 'accessMeasures' if no entities", () => {
     const { getByTestId } = render(
       exportedReportSectionComponentWithoutEntities(
         mockReportContext,
@@ -90,6 +87,20 @@ describe("ExportedModalDrawerReportSection", () => {
     expect(headerCount).toHaveTextContent("Mock dashboard title");
     const entityMessage = getByTestId("entityMessage");
     expect(entityMessage).toHaveTextContent("0 - No access measures entered");
+  });
+
+  test("Checking for appropriate messaging for entityType 'accessMeasures' if there are entities", () => {
+    const { getByTestId } = render(
+      exportedReportSectionComponent(
+        mockReportContext,
+        mockContent({
+          entityType: "accessMeasures",
+        })
+      )
+    );
+    const headerCount = getByTestId("headerCount");
+    expect(headerCount).toHaveTextContent("Mock dashboard title");
+    expect(headerCount).toHaveTextContent("1");
   });
 });
 
