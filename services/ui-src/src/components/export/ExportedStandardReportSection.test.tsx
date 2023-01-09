@@ -10,11 +10,9 @@ import {
 
 const mockContentWithNoSubsection = {
   ...mockStandardReportPageJson,
-  ...{
-    verbiage: {
-      intro: {
-        section: "mock",
-      },
+  verbiage: {
+    intro: {
+      section: "mock",
     },
   },
 };

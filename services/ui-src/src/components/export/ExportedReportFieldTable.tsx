@@ -34,14 +34,15 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
       }}
     >
       {/* TODO: account for dynamicField */}
-      {renderFieldTableBody(formFields, fieldData!)}
+      {renderFieldTableBody(formFields, fieldData!, entityType)}
     </Table>
   );
 };
 
 export const renderFieldTableBody = (
   formFields: FormField[],
-  fieldData: AnyObject
+  fieldData: AnyObject,
+  entityType?: string
 ) => {
   const tableRows: ReactElement[] = [];
 
@@ -67,7 +68,7 @@ export const renderFieldTableBody = (
             <Text>—</Text>
           )}
         </Td>
-        <Td>data coming</Td>
+        {entityType === "drawer" ? <Td>drawer version here</Td> : <Td>{JSON.stringify(fieldData)}</Td>}
       </Tr>
     );
 
