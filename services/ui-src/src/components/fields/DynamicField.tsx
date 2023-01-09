@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+import { TextField } from "./TextField";
 import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 import { svgFilters } from "styles/theme";
 // utils
@@ -192,13 +192,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       {displayValues.map((field: EntityShape, index: number) => {
         return (
           <Flex key={field.id} sx={sx.textField}>
-            <CmsdsTextField
+            <TextField
               id={field.id}
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={fieldErrorState?.[index]?.name.message}
-              onChange={(e) => onChangeHandler(e)}
-              onBlur={(e) => onBlurHandler(e)}
+              errorMessage={fieldErrorState?.[index]?.name?.message}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
               value={field.name}
               {...props}
             />
@@ -268,6 +268,11 @@ const sx = {
   textField: {
     alignItems: "flex-end",
     width: "32rem",
+
+    ".css-0": {
+      width: "100%",
+    },
+
     ".ds-u-clearfix": {
       width: "100%",
     },
