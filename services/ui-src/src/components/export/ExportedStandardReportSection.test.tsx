@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
 import { ReportContext, ExportedStandardReportSection } from "components";
@@ -7,124 +7,49 @@ import {
   mockReportContext,
   mockStandardReportPageJson,
 } from "utils/testing/setupJest";
-// types
-import { AnyObject } from "yup/lib/types";
 
-const mockContent = (modifiedFields?: AnyObject) => ({
+const mockContentWithNoSubsection = {
   ...mockStandardReportPageJson,
-  ...modifiedFields,
-});
+  ...{
+    verbiage: {
+      intro: {
+        section: "mock",
+      },
+    },
+  },
+};
 
-const exportedReportSectionComponent = (context: any, content: any) => (
-  <ReportContext.Provider value={context}>
-    <ExportedStandardReportSection section={content} />
+const exportedReportSectionComponent = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedStandardReportSection section={mockStandardReportPageJson} />
   </ReportContext.Provider>
 );
 
-describe("ExportedStandardReportSection", () => {
-  test("Is Exported Standard Report Section present", () => {
-    const { getByTestId } = render(
-      exportedReportSectionComponent(mockReportContext, mockContent())
-    );
+const exportedReportSectionComponentWithNoSubsection = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedStandardReportSection section={mockContentWithNoSubsection} />
+  </ReportContext.Provider>
+);
+
+describe("ExportedStandardReportSection renders", () => {
+  test("ExportedStandardReportSection renders", () => {
+    const { getByTestId } = render(exportedReportSectionComponent);
     const section = getByTestId("exportedStandardReportSection");
     expect(section).toBeVisible();
-  });
-
-  test("Is Exported Standard Report Section present with a field without props", () => {
-    const { getByTestId } = render(
-      exportedReportSectionComponent(
-        mockReportContext,
-        mockContent({
-          form: {
-            fields: [
-              {
-                id: "test_id",
-                type: "text",
-                validation: "text",
-              },
-            ],
-          },
-        })
-      )
-    );
-    const section = getByTestId("exportedStandardReportSection");
-    expect(section).toBeVisible();
-  });
-
-  test("Is Exported Standard Report Section present with dynamic field without props", () => {
-    const { getByTestId } = render(
-      exportedReportSectionComponent(
-        mockReportContext,
-        mockContent({
-          form: {
-            fields: [
-              {
-                id: "test_id",
-                type: "dynamic",
-                validation: "dynamic",
-              },
-            ],
-          },
-        })
-      )
-    );
-    const section = getByTestId("exportedStandardReportSection");
-    expect(section).toBeVisible();
-  });
-
-  test("Is Exported Standard Report Section with a two column layout.", () => {
-    const { getByTestId } = render(
-      exportedReportSectionComponent(
-        mockReportContext,
-        mockContent({
-          form: {
-            fields: [
-              {
-                id: "test_id",
-                type: "dynamic",
-                validation: "dynamic",
-                props: {
-                  label: "Test Dynamic Field",
-                },
-              },
-            ],
-          },
-        })
-      )
-    );
-    const section = getByTestId("exportedStandardReportSection");
-    const columns = section.getElementsByTagName("th")?.length;
-    expect(columns).toBe(2);
   });
 });
 
 describe("ExportedStandardReportSection Section Heading", () => {
-  test("Exported Drawer Report Section section heading defaults to name field.", () => {
-    const { getByTestId } = render(
-      exportedReportSectionComponent(
-        mockReportContext,
-        mockContent({
-          verbiage: {
-            intro: {
-              spreadsheet: "MOCK_SPREADSHEET",
-              section: "mock section",
-              info: "This is some info.",
-            },
-          },
-        })
-      )
-    );
-    const section = getByTestId("exportedStandardReportSection");
-    const sectionHeading = section.querySelector("h3")?.innerHTML;
-    expect(sectionHeading).toEqual("mock-route-1");
+  test("ExportedSectionHeading defaults to name field", () => {
+    render(exportedReportSectionComponentWithNoSubsection);
+    const sectionHeading = screen.getByText("mock-route-1");
+    expect(sectionHeading).toBeVisible();
   });
 });
 
 describe("Test ExportedStandardReportSection accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(
-      exportedReportSectionComponent(mockReportContext, mockContent())
-    );
+    const { container } = render(exportedReportSectionComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
