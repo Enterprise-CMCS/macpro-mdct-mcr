@@ -60,6 +60,7 @@ export const ExportedReportPage = () => {
                   Exclusion of CHIP from MCPAR
                 </Text>
                 <Text>
+                  {/* TODO: Extract out verbiage */}
                   Enrollees in separate CHIP programs funded under Title XXI
                   should not be reported in the MCPAR. Please check this box if
                   the state is unable to remove information about Separate CHIP
@@ -94,6 +95,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
   return reportRoutes.map(
     (section: ReportRoute) =>
       section?.pageType !== PageTypes.REVIEW_SUBMIT && (
+        // TODO: Remove in-line CSS
         <Box key={section.path} mt="5rem">
           <Heading as="h2" sx={sx.sectionHeading}>
             Section {section.name}

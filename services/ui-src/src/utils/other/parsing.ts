@@ -136,7 +136,7 @@ const returnChoices = (choiceItem: any, fieldData: any) => {
   );
 
   // Default return
-  return dataItems?.join(" ") || noResponse;
+  return dataItems?.join(" ") || sanitizeAndParseHtml(noResponse);
 };
 
 export const parseAllLevels = ({
@@ -175,12 +175,12 @@ export const parseAllLevels = ({
     }
   }
 
-  return noResponse;
+  return sanitizeAndParseHtml(noResponse);
 };
 
 export const parseDynamicFieldData = (data: any) => {
   const formattedValues = data
     ?.map((value: any) => `<p>${value?.name}</p>`)
     .join(" ");
-  return formattedValues ?? noResponse;
+  return formattedValues ?? sanitizeAndParseHtml(noResponse);
 };

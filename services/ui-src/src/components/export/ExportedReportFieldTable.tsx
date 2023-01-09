@@ -8,15 +8,19 @@ import {
   FormField,
   FieldChoice,
   StandardReportPageShape,
+  DrawerReportPageShape,
 } from "types";
-import { newParseFieldInfo, parseCustomHtml } from "utils";
+import { newParseFieldInfo, parseAllLevels, parseCustomHtml } from "utils";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
   const { report } = useContext(ReportContext);
   const fieldData = report?.fieldData;
-  const formFields = section.form.fields;
+  const pageType = section?.pageType;
+  const formFields =
+    pageType === "drawer" ? section.drawerForm!.fields : section.form!.fields;
+  const entityType = section.entityType;
 
-  const formHasOnlyDynamicFields = formFields.every(
+  const formHasOnlyDynamicFields = formFields?.every(
     (field: FormField) => field.type === "dynamic"
   );
   const twoColumnHeaderItems = ["Indicator", "Response"];
@@ -34,7 +38,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
       }}
     >
       {/* TODO: account for dynamicField */}
-      {renderFieldTableBody(formFields, fieldData!, entityType)}
+      {renderFieldTableBody(formFields, fieldData!, pageType, entityType)}
     </Table>
   );
 };
@@ -42,6 +46,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 export const renderFieldTableBody = (
   formFields: FormField[],
   fieldData: AnyObject,
+  pageType?: string,
   entityType?: string
 ) => {
   const tableRows: ReactElement[] = [];
@@ -49,6 +54,25 @@ export const renderFieldTableBody = (
   // recursively renders field rows
   const renderFieldRow = (field: FormField) => {
     const fieldInfo = newParseFieldInfo(field?.props!); // TODO: account for dynamicField
+    let drawerData;
+
+    if (pageType === "drawer") {
+      drawerData =
+        fieldData[entityType!] !== undefined &&
+        fieldData[entityType!].map((entity: any) => {
+          return (
+            <Box sx={sx.entityAnswers}>
+              <span>{entity.name}</span>
+              <br />
+              {parseAllLevels({
+                ...field,
+                fieldData: entity,
+              })}
+            </Box>
+          );
+        });
+    }
+
     tableRows.push(
       <Tr key={field.id}>
         {field.type !== "dynamic" && (
@@ -68,7 +92,12 @@ export const renderFieldTableBody = (
             <Text>—</Text>
           )}
         </Td>
-        {entityType === "drawer" ? <Td>drawer version here</Td> : <Td>{JSON.stringify(fieldData)}</Td>}
+        {pageType === "drawer" ? (
+          <Td> {drawerData} </Td>
+        ) : (
+          // TODO: Handle standard form data here
+          <Td>{JSON.stringify(fieldData)}</Td>
+        )}
       </Tr>
     );
 
@@ -84,12 +113,12 @@ export const renderFieldTableBody = (
   };
 
   // map through form fields and call renderer
-  formFields.map((field: FormField) => renderFieldRow(field));
+  formFields?.map((field: FormField) => renderFieldRow(field));
   return tableRows || <></>;
 };
 
 export interface Props {
-  section: StandardReportPageShape;
+  section: StandardReportPageShape | DrawerReportPageShape;
 }
 
 const sx = {
@@ -157,5 +186,14 @@ const sx = {
     marginTop: "0.5rem",
     lineHeight: "lg",
     color: "palette.gray_medium",
+  },
+  entityAnswers: {
+    marginBottom: "1.5rem",
+    span: {
+      display: "inline-block",
+      marginBottom: "1rem",
+      fontSize: "1rem",
+      fontWeight: "bold",
+    },
   },
 };
