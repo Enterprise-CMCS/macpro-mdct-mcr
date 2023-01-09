@@ -13,6 +13,7 @@ import {
   mockSanctionsEntity,
   mockStateUser,
   mockQualityMeasuresEntity,
+  mockAdminUser,
 } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
@@ -281,6 +282,58 @@ describe("Test typing into DynamicField component", () => {
     expect(firstDynamicField).toBeVisible();
     await userEvent.type(firstDynamicField, "123");
     expect(firstDynamicField.value).toEqual("123");
+  });
+});
+
+describe("Test DynamicField Autosave Functionality", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("DynamicField does not autosave when not stateuser", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    const result = render(dynamicFieldComponent());
+    const firstDynamicField: HTMLInputElement =
+      result.container.querySelector("[name='plans[0]']")!;
+    expect(firstDynamicField).toBeVisible();
+    await userEvent.type(firstDynamicField, "123");
+    await userEvent.tab();
+    expect(mockUpdateReport).toHaveBeenCalledTimes(0);
+    expect(firstDynamicField.value).toBe("123");
+  });
+
+  test("DynamicField autosaves when a stateuser", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const result = render(dynamicFieldComponent());
+    const firstDynamicField: HTMLInputElement =
+      result.container.querySelector("[name='plans[0]']")!;
+    expect(firstDynamicField).toBeVisible();
+    await userEvent.type(firstDynamicField, "123");
+    await userEvent.tab();
+    expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    expect(firstDynamicField.value).toBe("123");
+  });
+
+  test("DynamicField sets empty value when given a bad input for autosaving", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const result = render(dynamicFieldComponent());
+    const firstDynamicField: HTMLInputElement =
+      result.container.querySelector("[name='plans[0]']")!;
+    expect(firstDynamicField).toBeVisible();
+    firstDynamicField.value = "   ";
+    expect(firstDynamicField.value).toBe("   ");
+    await userEvent.click(firstDynamicField);
+    await userEvent.tab();
+    expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    expect(mockUpdateReport).lastCalledWith(
+      { id: "mock-report-id", state: "MN" },
+      {
+        fieldData: {
+          plans: [{ id: firstDynamicField.id, name: "" }],
+        },
+        metadata: { lastAlteredBy: "Thelonious States", status: "In progress" },
+      }
+    );
   });
 });
 
