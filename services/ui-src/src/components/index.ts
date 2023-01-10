@@ -36,10 +36,8 @@ export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { ExportedReportFieldTable } from "./export/ExportedReportFieldTable";
 export { ExportedReportFieldRow } from "./export/ExportedReportFieldRow";
-export { ExportedDrawerReportSection } from "./export/ExportedDrawerReportSection";
 export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";
 export { ExportedSectionHeading } from "./export/ExportedSectionHeading";
-export { ExportedStandardReportSection } from "./export/ExportedStandardReportSection";
 export { StickyBanner } from "./export/StickyBanner";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";

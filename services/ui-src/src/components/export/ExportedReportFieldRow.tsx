@@ -17,7 +17,7 @@ const renderDataCell = (
   if (pageType === "drawer") {
     const entityData = reportData[entityType!];
     return entityData?.map((entity: EntityShape) => {
-      const fieldData = entityData[field.id];
+      const fieldData = entityData[0][field.id];
       return (
         <Box key={entity.id + field.id}>
           <Text sx={sx.entityName}>{entity.name}</Text>
