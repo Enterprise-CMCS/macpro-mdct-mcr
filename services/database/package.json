@@ -16,7 +16,5 @@
     "serverless-s3-local": "^0.7.1",
     "typescript": "^4.9.3"
   },
-  "dependencies": {
-    "ksuid": "^3.0.0"
-  }
+  "dependencies": {}
 }
