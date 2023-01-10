@@ -6,6 +6,8 @@ import { ReportContext, ExportedReportWrapper } from "components";
 import {
   mockDrawerReportPageJson,
   mockModalDrawerReportPageJson,
+  mockDynamicReportPageJson,
+  mockNestedReportPageJson,
   mockStandardReportPageJson,
   mockReportContext,
 } from "utils/testing/setupJest";
@@ -16,9 +18,21 @@ const exportedStandardReportWrapperComponent = (
   </ReportContext.Provider>
 );
 
+const exportedDynamicReportWrapperComponent = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedReportWrapper section={mockDynamicReportPageJson} />
+  </ReportContext.Provider>
+);
+
 const exportedDrawerReportWrapperComponent = (
   <ReportContext.Provider value={mockReportContext}>
     <ExportedReportWrapper section={mockDrawerReportPageJson} />
+  </ReportContext.Provider>
+);
+
+const exportedNestedReportWrapperComponent = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedReportWrapper section={mockNestedReportPageJson} />
   </ReportContext.Provider>
 );
 
@@ -36,8 +50,22 @@ describe("ExportedReportWrapper rendering", () => {
     ).toBeInTheDocument();
   });
 
+  test("ExportedStandardReportSection with dynamic fields renders", () => {
+    render(exportedDynamicReportWrapperComponent);
+    expect(
+      screen.getByTestId("exportedStandardReportSection")
+    ).toBeInTheDocument();
+  });
+
   test("ExportedDrawerReportSection renders", () => {
     render(exportedDrawerReportWrapperComponent);
+    expect(
+      screen.getByTestId("exportedDrawerReportSection")
+    ).toBeInTheDocument();
+  });
+
+  test("ExportedDrawerReportSection with nested fields renders", () => {
+    render(exportedNestedReportWrapperComponent);
     expect(
       screen.getByTestId("exportedDrawerReportSection")
     ).toBeInTheDocument();

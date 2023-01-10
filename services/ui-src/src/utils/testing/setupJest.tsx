@@ -265,6 +265,16 @@ export const mockPlanFilledForm = {
   fields: [mockPlanField],
 };
 
+export const mockNestedForm = {
+  id: "mock-nested-form-id",
+  fields: [mockNestedFormField],
+};
+
+export const mockDynamicForm = {
+  id: "mock-dynamic-form-id",
+  fields: [mockPlanField],
+};
+
 export const mockVerbiageIntro = {
   section: "mock section",
   subsection: "mock subsection",
@@ -287,6 +297,16 @@ export const mockStandardReportPageJson = {
   form: mockForm,
 };
 
+export const mockDynamicReportPageJson = {
+  name: "mock-route-1",
+  path: "/mock/mock-route-1",
+  pageType: "standard",
+  verbiage: {
+    intro: mockVerbiageIntro,
+  },
+  form: mockDynamicForm,
+};
+
 export const mockDrawerReportPageJson = {
   name: "mock-route-2a",
   path: "/mock/mock-route-2a",
@@ -298,6 +318,19 @@ export const mockDrawerReportPageJson = {
     drawerTitle: "Mock drawer title",
   },
   drawerForm: mockDrawerForm,
+};
+
+export const mockNestedReportPageJson = {
+  name: "mock-route-2a",
+  path: "/mock/mock-route-2a",
+  pageType: "drawer",
+  entityType: "plans",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+  },
+  drawerForm: mockNestedForm,
 };
 
 export const mockModalDrawerReportPageVerbiage = {
