@@ -1,23 +1,18 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
 // components
-import { Box, Tr, Td, Text } from "@chakra-ui/react";
-import { ReportContext, Table } from "components";
+import { ExportedReportFieldRow, Table } from "components";
 // types, utils
 import {
-  AnyObject,
-  FormField,
   FieldChoice,
+  FormField,
   StandardReportPageShape,
   DrawerReportPageShape,
 } from "types";
-import { newParseFieldInfo, parseAllLevels, parseCustomHtml } from "utils";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
-  const { report } = useContext(ReportContext);
-  const fieldData = report?.fieldData;
-  const pageType = section?.pageType;
+  const pageType = section.pageType;
   const formFields =
-    pageType === "drawer" ? section.drawerForm!.fields : section.form!.fields;
+    pageType === "drawer" ? section.drawerForm?.fields : section.form?.fields;
   const entityType = section.entityType;
 
   const formHasOnlyDynamicFields = formFields?.every(
@@ -37,70 +32,27 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
         headRow: headRowItems,
       }}
     >
-      {/* TODO: account for dynamicField */}
-      {renderFieldTableBody(formFields, fieldData!, pageType, entityType)}
+      {renderFieldTableBody(formFields!, pageType!, entityType)}
     </Table>
   );
 };
 
 export const renderFieldTableBody = (
   formFields: FormField[],
-  fieldData: AnyObject,
-  pageType?: string,
+  pageType: string,
   entityType?: string
 ) => {
   const tableRows: ReactElement[] = [];
-
   // recursively renders field rows
   const renderFieldRow = (field: FormField) => {
-    const fieldInfo = newParseFieldInfo(field?.props!); // TODO: account for dynamicField
-    let drawerData;
-
-    if (pageType === "drawer") {
-      drawerData =
-        fieldData[entityType!] !== undefined &&
-        fieldData[entityType!].map((entity: any) => {
-          return (
-            <Box sx={sx.entityAnswers}>
-              <span>{entity.name}</span>
-              <br />
-              {parseAllLevels({
-                ...field,
-                fieldData: entity,
-              })}
-            </Box>
-          );
-        });
-    }
-
     tableRows.push(
-      <Tr key={field.id}>
-        {field.type !== "dynamic" && (
-          <Td sx={sx.numberColumn}>
-            <Text sx={sx.fieldNumber}>{fieldInfo.number || "—"}</Text>
-          </Td>
-        )}
-        <Td sx={sx.labelColumn}>
-          {fieldInfo.label ? (
-            <Box>
-              <Text sx={sx.fieldLabel}>{fieldInfo.label}</Text>
-              {fieldInfo.hint && (
-                <Text sx={sx.fieldHint}>{parseCustomHtml(fieldInfo.hint)}</Text>
-              )}
-            </Box>
-          ) : (
-            <Text>—</Text>
-          )}
-        </Td>
-        {pageType === "drawer" ? (
-          <Td> {drawerData} </Td>
-        ) : (
-          // TODO: Handle standard form data here
-          <Td>{JSON.stringify(fieldData)}</Td>
-        )}
-      </Tr>
+      <ExportedReportFieldRow
+        key={field.id}
+        field={field}
+        pageType={pageType}
+        entityType={entityType}
+      />
     );
-
     // check for nested child fields; if any, map through children and render
     const fieldChoicesWithChildren = field?.props?.choices?.filter(
       (choice: FieldChoice) => choice?.children
@@ -111,7 +63,6 @@ export const renderFieldTableBody = (
       )
     );
   };
-
   // map through form fields and call renderer
   formFields?.map((field: FormField) => renderFieldRow(field));
   return tableRows || <></>;
@@ -160,40 +111,6 @@ const sx = {
           paddingLeft: "6rem",
         },
       },
-    },
-  },
-  numberColumn: {
-    width: "5.5rem",
-    paddingLeft: 0,
-  },
-  fieldNumber: {
-    fontSize: "md",
-    fontWeight: "bold",
-  },
-  labelColumn: {
-    width: "14rem",
-    ".two-column &": {
-      ".desktop &": {
-        paddingLeft: "6rem",
-      },
-    },
-  },
-  fieldLabel: {
-    fontSize: "md",
-    fontWeight: "bold",
-  },
-  fieldHint: {
-    marginTop: "0.5rem",
-    lineHeight: "lg",
-    color: "palette.gray_medium",
-  },
-  entityAnswers: {
-    marginBottom: "1.5rem",
-    span: {
-      display: "inline-block",
-      marginBottom: "1rem",
-      fontSize: "1rem",
-      fontWeight: "bold",
     },
   },
 };

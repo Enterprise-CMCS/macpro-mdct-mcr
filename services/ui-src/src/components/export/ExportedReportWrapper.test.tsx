@@ -10,6 +10,12 @@ import {
   mockReportContext,
 } from "utils/testing/setupJest";
 
+const exportedStandardReportWrapperComponent = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ExportedReportWrapper section={mockStandardReportPageJson} />
+  </ReportContext.Provider>
+);
+
 const exportedDrawerReportWrapperComponent = (
   <ReportContext.Provider value={mockReportContext}>
     <ExportedReportWrapper section={mockDrawerReportPageJson} />
@@ -22,36 +28,36 @@ const exportedModalDrawerReportWrapperComponent = (
   </ReportContext.Provider>
 );
 
-const exportedStandardReportWrapperComponent = (
-  <ReportContext.Provider value={mockReportContext}>
-    <ExportedReportWrapper section={mockStandardReportPageJson} />
-  </ReportContext.Provider>
-);
-
-describe("ExportedReportWrapper", () => {
-  test("Is Exported Drawer Report Section present", () => {
-    render(exportedDrawerReportWrapperComponent);
-    expect(
-      screen.getByText(mockDrawerReportPageJson.verbiage.intro.subsection)
-    ).toBeVisible();
-  });
-
-  test("Is Exported Modal Drawer Report Section present", () => {
-    render(exportedModalDrawerReportWrapperComponent);
-    expect(
-      screen.getByText(mockModalDrawerReportPageJson.verbiage.intro.subsection)
-    ).toBeVisible();
-  });
-
-  test("Is Exported Standard Report Section present", () => {
+describe("ExportedReportWrapper rendering", () => {
+  test("ExportedStandardReportSection renders", () => {
     render(exportedStandardReportWrapperComponent);
     expect(
-      screen.getByText(mockStandardReportPageJson.verbiage.intro.subsection)
-    ).toBeVisible();
+      screen.getByTestId("exportedStandardReportSection")
+    ).toBeInTheDocument();
+  });
+
+  test("ExportedDrawerReportSection renders", () => {
+    render(exportedDrawerReportWrapperComponent);
+    expect(
+      screen.getByTestId("exportedDrawerReportSection")
+    ).toBeInTheDocument();
+  });
+
+  test("ExportedModalDrawerReportSection renders", () => {
+    render(exportedModalDrawerReportWrapperComponent);
+    expect(
+      screen.getByTestId("exportedModalDrawerReportSection")
+    ).toBeInTheDocument();
   });
 });
 
 describe("Test ExportedReportWrapper accessibility", () => {
+  it("ExportedStandardDrawerReportWrapper should not have basic accessibility issues", async () => {
+    const { container } = render(exportedStandardReportWrapperComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("ExportedDrawerReportWrapper should not have basic accessibility issues", async () => {
     const { container } = render(exportedDrawerReportWrapperComponent);
     const results = await axe(container);
@@ -60,12 +66,6 @@ describe("Test ExportedReportWrapper accessibility", () => {
 
   it("ExportedModalDrawerReportWrapper should not have basic accessibility issues", async () => {
     const { container } = render(exportedModalDrawerReportWrapperComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it("ExportedStandardDrawerReportWrapper should not have basic accessibility issues", async () => {
-    const { container } = render(exportedStandardReportWrapperComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

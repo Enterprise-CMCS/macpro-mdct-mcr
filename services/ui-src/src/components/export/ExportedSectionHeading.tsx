@@ -3,43 +3,44 @@ import { Box, Heading } from "@chakra-ui/react";
 import { SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
+import { ReportPageVerbiage } from "types";
 
-export const ExportedSectionHeading = ({
-  heading,
-  verbiage,
-  existingEntity,
-}: any) => {
-  const sectionHeading = verbiage?.intro.subsection || heading;
-
+export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
+  const sectionHeading = verbiage?.intro?.subsection || heading;
+  const sectionInfo = verbiage?.intro?.info;
+  const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
   return (
     <Box>
-      {sectionHeading && (
-        <Heading as="h3" sx={sx.childHeading}>
-          {sectionHeading}
-        </Heading>
+      <Heading as="h3" sx={sx.heading}>
+        {sectionHeading}
+      </Heading>
+      {sectionInfo && <Box sx={sx.info}>{parseCustomHtml(sectionInfo)}</Box>}
+      {sectionSpreadsheet && (
+        <Box sx={sx.spreadsheet}>
+          <SpreadsheetWidget description={sectionSpreadsheet} />
+        </Box>
       )}
-      {existingEntity && verbiage?.intro?.info && (
-        <Box sx={sx.intro}>{parseCustomHtml(verbiage?.intro.info)}</Box>
-      )}
-      <Box sx={sx.spreadSheet}>
-        <SpreadsheetWidget description={verbiage?.intro.spreadsheet} />
-      </Box>
     </Box>
   );
 };
 
+export interface Props {
+  heading: string;
+  verbiage?: ReportPageVerbiage;
+}
+
 const sx = {
-  intro: {
+  heading: {
+    marginBottom: "1.5rem",
+    fontSize: "xl",
+    fontWeight: "bold",
+  },
+  info: {
     p: {
       margin: "1.5rem 0",
     },
   },
-  spreadSheet: {
+  spreadsheet: {
     marginBottom: "1.5rem",
-  },
-  childHeading: {
-    marginBottom: "1.5rem",
-    fontSize: "xl",
-    fontWeight: "bold",
   },
 };

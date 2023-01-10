@@ -51,7 +51,8 @@ export const sanitizeAndParseHtml = (html: string) => {
   return parsedHtml;
 };
 
-export const newParseFieldInfo = (fieldProps: AnyObject) => {
+// parse field info from field props
+export const parseFieldInfo = (fieldProps: AnyObject) => {
   const labelArray = fieldProps?.label?.split(" ");
   return {
     number: labelArray?.[0],
@@ -60,81 +61,16 @@ export const newParseFieldInfo = (fieldProps: AnyObject) => {
   };
 };
 
-// parsing the field name numbers for the PDF preview page
-export const parseFieldLabel = (labelObject: {
-  label?: string;
-  hint?: string;
-  hideHint?: boolean;
-}) => {
-  const labelArray = labelObject.label?.split(" ");
-  if (labelArray) {
-    const indicator = labelArray[0];
-    labelArray.shift();
-    const label = `<p><strong>${labelArray.join(" ")}</strong></p>${
-      labelObject.hint && !labelObject.hideHint
-        ? `<p>${labelObject.hint}</p>`
-        : ""
-    }`;
-    return {
-      indicator,
-      label,
-    };
-  }
-  return {
-    indicator: "",
-    label: "",
-  };
-};
-
 const noResponse = `<p style="color:#9F142B">Not Answered</p>`;
 
-const returnChoices = (choiceItem: any, fieldData: any) => {
+const returnChoices = (choiceItem: any) => {
   // loop through all choices
   const dataItems: any[] = choiceItem.fieldData.map(
-    ({ value, key }: { value: string; key: string }) => {
+    ({ value }: { value: string; key: string }) => {
       const childItems: any[] = [];
-      // get ID of each choice
-      const choiceId = key.split("-")[1];
-      // check if choice has children
-      const children = choiceItem.parent.props.choices.find(
-        (choice: any) => choice.id === choiceId
-      ).children;
-
-      if (children) {
-        // loop through all children
-        children.map((childField: any) => {
-          if (typeof fieldData[childField.id] !== "string") {
-            if (childField.props) {
-              childItems.push(
-                `${
-                  parseFieldLabel({ ...childField.props, hideHint: true }).label
-                }${returnChoices(
-                  {
-                    parent: childField,
-                    fieldData: fieldData[childField.id],
-                  },
-                  fieldData
-                )}`
-              );
-              return;
-            }
-          }
-
-          childItems.push(
-            `${
-              childField.props
-                ? parseFieldLabel({ ...childField.props, hideHint: true }).label
-                : ""
-            }${parseAllLevels({ ...childField, fieldData })}`
-          );
-          return;
-        });
-      }
-
       return `<p>${value}</p>${childItems.join(" ") || ""}`;
     }
   );
-
   // Default return
   return dataItems?.join(" ") || sanitizeAndParseHtml(noResponse);
 };
@@ -163,13 +99,10 @@ export const parseAllLevels = ({
         return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
       case "checkbox":
       case "radio":
-        return returnChoices(
-          {
-            parent: { id, props, type, validation },
-            fieldData: fieldData[id],
-          },
-          fieldData
-        );
+        return returnChoices({
+          parent: { id, props, type, validation },
+          fieldData: fieldData[id],
+        });
       default:
         return fieldData[id];
     }

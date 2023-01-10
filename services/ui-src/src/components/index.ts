@@ -35,6 +35,7 @@ export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 //export
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { ExportedReportFieldTable } from "./export/ExportedReportFieldTable";
+export { ExportedReportFieldRow } from "./export/ExportedReportFieldRow";
 export { ExportedDrawerReportSection } from "./export/ExportedDrawerReportSection";
 export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";
 export { ExportedSectionHeading } from "./export/ExportedSectionHeading";

@@ -5,7 +5,6 @@ import { ReportContext, ExportedModalDrawerReportSection } from "components";
 // utils
 import {
   mockModalDrawerReportPageJson,
-  mockModalDrawerReportPageVerbiage,
   mockReport,
   mockReportContext,
 } from "utils/testing/setupJest";
@@ -70,24 +69,6 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
       "No plan-level sanctions or corrective actions have been entered for this program report."
     );
     expect(entityMessage).toBeVisible();
-  });
-});
-
-describe("ExportedModalDrawerReportSection Section Heading", () => {
-  test("Exported Drawer Report Section section heading defaults to name field.", () => {
-    render(
-      exportedReportSectionComponent(mockReportContext, {
-        ...mockModalDrawerReportPageJson,
-        verbiage: {
-          ...mockModalDrawerReportPageVerbiage,
-          intro: {
-            section: "mock",
-          },
-        },
-      })
-    );
-    const sectionHeading = screen.getByText("mock-route-2b");
-    expect(sectionHeading).toBeVisible();
   });
 });
 

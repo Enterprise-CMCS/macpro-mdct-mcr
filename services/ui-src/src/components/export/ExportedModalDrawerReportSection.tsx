@@ -1,7 +1,7 @@
 import { useContext } from "react";
 // components
 import { Box, Text } from "@chakra-ui/react";
-import { EntityCard, ExportedSectionHeading, ReportContext } from "components";
+import { EntityCard, ReportContext } from "components";
 // utils
 import { getFormattedEntityData } from "utils";
 import {
@@ -11,7 +11,7 @@ import {
 } from "types";
 
 export const ExportedModalDrawerReportSection = ({
-  section: { entityType, verbiage, name },
+  section: { entityType, verbiage },
 }: Props) => {
   const { report } = useContext(ReportContext);
   const entities = report?.fieldData?.[entityType];
@@ -37,11 +37,6 @@ export const ExportedModalDrawerReportSection = ({
   }
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
-      <ExportedSectionHeading
-        heading={verbiage?.intro.subsection || name}
-        verbiage={verbiage}
-        existingEntity={!!entityCount}
-      />
       {!entityCount && (
         <Text data-testid="entityMessage">{emptyEntityMessage}</Text>
       )}

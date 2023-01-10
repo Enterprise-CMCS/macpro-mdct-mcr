@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
 import { ReportContext, ExportedStandardReportSection } from "components";
@@ -8,24 +8,9 @@ import {
   mockStandardReportPageJson,
 } from "utils/testing/setupJest";
 
-const mockContentWithNoSubsection = {
-  ...mockStandardReportPageJson,
-  verbiage: {
-    intro: {
-      section: "mock",
-    },
-  },
-};
-
 const exportedReportSectionComponent = (
   <ReportContext.Provider value={mockReportContext}>
     <ExportedStandardReportSection section={mockStandardReportPageJson} />
-  </ReportContext.Provider>
-);
-
-const exportedReportSectionComponentWithNoSubsection = (
-  <ReportContext.Provider value={mockReportContext}>
-    <ExportedStandardReportSection section={mockContentWithNoSubsection} />
   </ReportContext.Provider>
 );
 
@@ -34,14 +19,6 @@ describe("ExportedStandardReportSection renders", () => {
     const { getByTestId } = render(exportedReportSectionComponent);
     const section = getByTestId("exportedStandardReportSection");
     expect(section).toBeVisible();
-  });
-});
-
-describe("ExportedStandardReportSection Section Heading", () => {
-  test("ExportedSectionHeading defaults to name field", () => {
-    render(exportedReportSectionComponentWithNoSubsection);
-    const sectionHeading = screen.getByText("mock-route-1");
-    expect(sectionHeading).toBeVisible();
   });
 });
 

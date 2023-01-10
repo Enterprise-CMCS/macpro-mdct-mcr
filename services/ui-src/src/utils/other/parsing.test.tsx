@@ -5,7 +5,7 @@ import {
   parseAllLevels,
   parseCustomHtml,
   parseDynamicFieldData,
-  parseFieldLabel,
+  parseFieldInfo,
 } from "./parsing";
 import {
   mockReportFieldDataWithNestedFields,
@@ -71,25 +71,20 @@ describe("Test parseCustomHtml", () => {
   });
 });
 
-describe("PDF Preview Field Labels", () => {
-  test("The field names are separated properly", () => {
-    expect(parseFieldLabel({ label: "A.1 Label", hint: "Hint" })).toEqual({
-      indicator: "A.1",
-      label: "<p><strong>Label</strong></p><p>Hint</p>",
-    });
-  });
-  test("The field names are separated properly without the hint", () => {
-    expect(parseFieldLabel({ label: "A.1 Label" })).toEqual({
-      indicator: "A.1",
-      label: "<p><strong>Label</strong></p>",
-    });
+describe("Test parseFieldInfo", () => {
+  test("Correctly parses field info when full props are provided", () => {
+    const input = { label: "A.1 Label", hint: "Hint" };
+    const result = parseFieldInfo(input);
+    expect(result.number).toEqual("A.1");
+    expect(result.label).toEqual("Label");
+    expect(result.hint).toEqual("Hint");
   });
 
-  test("The field names is blank", () => {
-    expect(parseFieldLabel({})).toEqual({
-      indicator: "",
-      label: "",
-    });
+  test("Correctly parses field info when empty props are provided", () => {
+    const result = parseFieldInfo({});
+    expect(result.number).toEqual(undefined);
+    expect(result.label).toEqual(undefined);
+    expect(result.hint).toEqual(undefined);
   });
 });
 
@@ -142,46 +137,6 @@ describe("Export: Parsing Data", () => {
     expect(dataReturn).toEqual(
       '<a href="mailto:test@test.com">test@test.com</a>'
     );
-  });
-
-  test("Parsing Nested Choices", () => {
-    const dataReturn = parseAllLevels(mockReportFieldDataWithNestedFields);
-
-    expect(dataReturn).toEqual(
-      "<p>Value 1</p><p><strong>Test Label</strong></p><p>Value 2</p><p><strong>Test Label 2</strong></p>Testing Double Nested"
-    );
-  });
-
-  test("Parsing Nested Choices with no Children", () => {
-    const dataReturn = parseAllLevels(
-      mockReportFieldDataWithNestedFieldsNoChildren
-    );
-
-    expect(dataReturn).toEqual("<p>Value 1</p>");
-  });
-
-  test("Parsing Nested Choices with No Child Props", () => {
-    const dataReturn = parseAllLevels(
-      mockReportFieldDataWithNestedFieldsNoChildProps
-    );
-
-    expect(dataReturn).toEqual("<p>Value 1</p>Testing Double Nested");
-  });
-
-  test("Parsing Nested Choices Not Answered", () => {
-    const dataReturn = parseAllLevels(
-      mockReportFieldDataWithNestedFieldsNotAnswered
-    );
-
-    expect(dataReturn).toEqual('<p style="color:#9F142B">Not Answered</p>');
-  });
-
-  test("Parsing Nested Choices Incomplete", () => {
-    const dataReturn = parseAllLevels(
-      mockReportFieldDataWithNestedFieldsIncomplete
-    );
-
-    expect(dataReturn).toEqual("<p>Value 1 test</p>");
   });
 });
 

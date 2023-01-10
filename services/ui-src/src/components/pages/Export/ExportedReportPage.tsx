@@ -2,7 +2,12 @@ import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
 import { Box, Heading, Text, Tr, Td } from "@chakra-ui/react";
-import { ExportedReportWrapper, ReportContext, Table } from "components";
+import {
+  ExportedReportWrapper,
+  ExportedSectionHeading,
+  ReportContext,
+  Table,
+} from "components";
 // utils
 import { convertDateUtcToEt } from "utils";
 import { States } from "../../../constants";
@@ -11,10 +16,13 @@ import { PageTypes, ReportRoute, ReportRouteWithForm } from "types";
 export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
   const fullStateName = States[report?.state as keyof typeof States];
+  const routesToRender = report?.formTemplate.routes.filter(
+    (route: ReportRoute) => route
+  );
 
   return (
     <Box data-testid="exportedReportPage" sx={sx.container}>
-      {report && (
+      {report && routesToRender && (
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
           <Helmet>
@@ -32,7 +40,6 @@ export const ExportedReportPage = () => {
           </Heading>
           {/* report metadata tables */}
           <Table
-            shrinkCells
             sx={sx.metadataTable}
             content={{
               headRow: ["Due Date", "Last edited", "Edited By", "Status"],
@@ -80,23 +87,31 @@ export const ExportedReportPage = () => {
 
 export const renderReportSections = (reportRoutes: ReportRoute[]) => {
   // recursively render sections
-  const renderSection = (section: ReportRoute) => (
-    <Box key={section.path}>
-      {/* if section has children, recurse */}
-      {section?.children?.map((child) => renderSection(child))}
-      {/* if section does not have children, render it */}
-      {!section?.children && (
-        <ExportedReportWrapper section={section as ReportRouteWithForm} />
-      )}
-    </Box>
-  );
+  const renderSection = (section: ReportRoute) => {
+    const childSections = section?.children;
+    return (
+      <Box key={section.path}>
+        {/* if section has children, recurse */}
+        {childSections?.map((child: ReportRoute) => renderSection(child))}
+        {/* if section does not have children and has content to render, render it */}
+        {!childSections && (
+          <Box>
+            <ExportedSectionHeading
+              heading={section.verbiage?.intro?.subsection || section.name}
+              verbiage={section.verbiage}
+            />
+            <ExportedReportWrapper section={section as ReportRouteWithForm} />
+          </Box>
+        )}
+      </Box>
+    );
+  };
 
-  // render top-level section headings
   return reportRoutes.map(
     (section: ReportRoute) =>
       section?.pageType !== PageTypes.REVIEW_SUBMIT && (
-        // TODO: Remove in-line CSS
         <Box key={section.path} mt="5rem">
+          {/*  render top-level section headings */}
           <Heading as="h2" sx={sx.sectionHeading}>
             Section {section.name}
           </Heading>
