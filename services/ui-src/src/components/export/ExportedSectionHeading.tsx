@@ -10,7 +10,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionInfo = verbiage?.intro?.info;
   const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
   return (
-    <Box>
+    <Box data-testid="exportedSectionHeading">
       <Heading as="h3" sx={sx.heading}>
         {sectionHeading}
       </Heading>

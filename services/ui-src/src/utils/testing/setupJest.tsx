@@ -270,6 +270,13 @@ export const mockVerbiageIntro = {
   subsection: "mock subsection",
 };
 
+export const mockSectionHeading = {
+  heading: "mock-heading",
+  verbiage: {
+    intro: mockVerbiageIntro,
+  },
+};
+
 export const mockStandardReportPageJson = {
   name: "mock-route-1",
   path: "/mock/mock-route-1",
