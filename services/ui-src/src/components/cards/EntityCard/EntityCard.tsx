@@ -32,10 +32,8 @@ export const EntityCard = ({
   let entityCompleted = false;
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-  const entityIndex = reportFieldDataEntities.indexOf(entity, 0);
-  const entitiesCount = `${entityIndex + 1} / ${
-    reportFieldDataEntities.length
-  }`;
+  const entityIndex = reportFieldDataEntities.indexOf(entity, 1);
+  const entitiesCount = `${entityIndex} / ${reportFieldDataEntities.length}`;
 
   // any drawer-based field will do for this check
   switch (entityType) {

@@ -67,7 +67,6 @@ export const ExportedReportPage = () => {
                   Exclusion of CHIP from MCPAR
                 </Text>
                 <Text>
-                  {/* TODO: Extract out verbiage */}
                   Enrollees in separate CHIP programs funded under Title XXI
                   should not be reported in the MCPAR. Please check this box if
                   the state is unable to remove information about Separate CHIP
