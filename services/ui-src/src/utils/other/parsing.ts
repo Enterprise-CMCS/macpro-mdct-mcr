@@ -61,20 +61,7 @@ export const parseFieldInfo = (fieldProps: AnyObject) => {
   };
 };
 
-const noResponse = `<p style="color:#9F142B">Not Answered</p>`;
-
-const returnChoices = (choiceItem: any) => {
-  // loop through all choices
-  const dataItems: any[] = choiceItem.fieldData.map(
-    ({ value }: { value: string; key: string }) => {
-      const childItems: any[] = [];
-      return `<p>${value}</p>${childItems.join(" ") || ""}`;
-    }
-  );
-  // Default return
-  return dataItems?.join(" ") || sanitizeAndParseHtml(noResponse);
-};
-
+// TODO: refactor to something like: formatFieldData
 export const parseAllLevels = ({
   fieldData,
   id,
@@ -99,21 +86,14 @@ export const parseAllLevels = ({
         return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
       case "checkbox":
       case "radio":
-        return returnChoices({
-          parent: { id, props, type, validation },
-          fieldData: fieldData[id],
-        });
+        return fieldData[id]
+          .map(({ value }: { value: string; key: string }) => {
+            const childItems: any[] = [];
+            return `<p>${value}</p>${childItems.join(" ") || ""}`;
+          })
+          .join(" ");
       default:
         return fieldData[id];
     }
   }
-
-  return sanitizeAndParseHtml(noResponse);
-};
-
-export const parseDynamicFieldData = (data: any) => {
-  const formattedValues = data
-    ?.map((value: any) => `<p>${value?.name}</p>`)
-    .join(" ");
-  return formattedValues ?? sanitizeAndParseHtml(noResponse);
 };

@@ -204,18 +204,3 @@ describe("Export: String Parsing", () => {
     );
   });
 });
-
-describe("Test Parsing for PDF Preview Fields", () => {
-  test("If dynamic fields rendered correctly", () => {
-    expect(
-      parseDynamicFieldData([
-        {
-          name: "test",
-        },
-        {
-          name: "test2",
-        },
-      ])
-    ).toEqual("<p>test</p> <p>test2</p>");
-  });
-});
