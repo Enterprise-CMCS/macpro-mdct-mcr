@@ -32,8 +32,10 @@ export const StandardReportPage = ({ route }: Props) => {
       };
       const filteredFormData = filterFormData(enteredData, route.form.fields);
       const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
         fieldData: filteredFormData,
       };
       await updateReport(reportKeys, dataToWrite);
