@@ -29,7 +29,7 @@ export const printPdf = async () => {
   if (config.DEV_API_URL) {
     response = await API.post("mcrDev", `/print_pdf`, request);
   } else {
-    response = await API.post("reports", `/print_pdf`, request);
+    response = await API.post("mcr", `/print_pdf`, request);
   }
   openPdf(response);
 };
