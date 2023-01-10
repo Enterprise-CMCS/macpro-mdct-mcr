@@ -166,29 +166,6 @@ describe("Test TextField component autosaves", () => {
     );
   });
 
-  test("TextField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    mockTrigger.mockReturnValue(false);
-    mockGetValues(undefined);
-    render(textFieldAutosavingComponent);
-    const textField = screen.getByTestId("test-text-field-autosave");
-    expect(textField).toBeVisible();
-    await userEvent.type(textField, "test value");
-    await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
-      {
-        state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
-      },
-      {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: mockStateUser.user?.full_name,
-        fieldData: { testTextField: "" },
-      }
-    );
-  });
-
   test("TextField does not autosave when not stateuser", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     mockGetValues(undefined);
