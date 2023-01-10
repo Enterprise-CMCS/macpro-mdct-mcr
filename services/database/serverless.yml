@@ -31,7 +31,6 @@ custom:
   scripts:
     hooks:
       deploy:finalize: |
-        serverless invoke --stage ${self:custom.stage} --function s3Etl
         if [ ${self:custom.dataTransformEnabled} = "true" ];
         then
           serverless invoke --stage ${self:custom.stage} --function dataTransform
@@ -44,12 +43,6 @@ custom:
       inMemory: true
       migrate: true
       seed: true
-    seed:
-      domain:
-        sources:
-          - table: ${self:custom.mcparReportTableName}
-            sources: [./seed-reports.json]
-
 provider:
   name: aws
   runtime: nodejs14.x
@@ -85,12 +78,6 @@ functions:
     environment:
       DYNAMO_PREFIX: ${self:custom.stage}
       DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
-  s3Etl:
-    handler: handlers/s3Etl/s3Etl.handler
-    timeout: 300
-    environment:
-      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
-      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
 resources:
   Resources:
     BannerTable:
