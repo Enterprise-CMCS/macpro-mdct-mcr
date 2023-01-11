@@ -14,6 +14,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
+import { mockFlags } from "jest-launchdarkly-mock";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
@@ -121,6 +122,15 @@ describe("Success Message Generator", () => {
     expect(printButton).toBeVisible();
     expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
     expect(printButton.getAttribute("target")).toEqual("_blank");
+  });
+
+  it("should mock LaunchDarkly flags", () => {
+    mockFlags({
+      pdfExport: true,
+    });
+    render(McparReviewSubmitPage_InProgress);
+    const printButton = screen.getByText("Print");
+    expect(printButton).toBeVisible();
   });
 });
 
