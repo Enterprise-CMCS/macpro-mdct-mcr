@@ -9,6 +9,7 @@ export const CheckboxField = ({
   label,
   choices,
   sxOverride,
+  autoSave,
   ...props
 }: ChoiceFieldProps) => {
   return (
@@ -18,6 +19,7 @@ export const CheckboxField = ({
         name={name}
         label={label}
         choices={choices}
+        autosave={autoSave}
         {...props}
       />
     </Box>
