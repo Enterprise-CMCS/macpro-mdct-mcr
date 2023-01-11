@@ -42,7 +42,7 @@ export const ExportedReportPage = () => {
           <Table
             sx={sx.metadataTable}
             content={{
-              headRow: ["Due Date", "Last edited", "Edited By", "Status"],
+              headRow: ["Due date", "Last edited", "Edited by", "Status"],
               bodyRows: [
                 [
                   convertDateUtcToEt(report.dueDate),
