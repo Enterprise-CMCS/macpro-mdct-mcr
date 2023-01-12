@@ -77,6 +77,9 @@ export const DateField = ({
           await updateReport(reportKeys, dataToWrite);
         }
       }
+    } else {
+      const fieldValue = event.target.value;
+      form.setValue(name, fieldValue, { shouldValidate: true });
     }
   };
 
