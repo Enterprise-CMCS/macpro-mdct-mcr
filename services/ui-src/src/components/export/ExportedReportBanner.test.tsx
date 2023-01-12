@@ -4,7 +4,6 @@ import { axe } from "jest-axe";
 // components
 import { ExportedReportBanner } from "./ExportedReportBanner";
 
-const exportedReporBanner = <ExportedReportBanner />;
 let mockPrint: any;
 
 describe("ExportedReportBanner", () => {
@@ -18,13 +17,13 @@ describe("ExportedReportBanner", () => {
   });
 
   test("Is ExportedReportBanner present", async () => {
-    render(exportedReporBanner);
+    render(<ExportedReportBanner />);
     const banner = screen.getByTestId("exportedReportBanner");
     expect(banner).toBeVisible();
   });
 
   test("Download PDF button should be visible", async () => {
-    render(exportedReporBanner);
+    render(<ExportedReportBanner />);
     const printButton = screen.getByText("Download PDF");
     expect(printButton).toBeVisible();
     await userEvent.click(printButton);
@@ -33,7 +32,7 @@ describe("ExportedReportBanner", () => {
 
 describe("Test Sticky Banner accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(exportedReporBanner);
+    const { container } = render(<ExportedReportBanner />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
