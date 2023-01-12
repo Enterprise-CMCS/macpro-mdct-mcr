@@ -3,8 +3,11 @@ import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
-import { TextField } from "./TextField";
-import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
+import {
+  DeleteDynamicFieldRecordModal,
+  ReportContext,
+  TextField,
+} from "components";
 import { svgFilters } from "styles/theme";
 // utils
 import {
