@@ -20,16 +20,13 @@ export const ExportedModalDrawerReportSection = ({
   let emptyEntityMessage = "";
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
-      emptyEntityMessage =
-        "No access and adequacy measures have been entered for this program report.";
+      emptyEntityMessage = "0  - No access measures entered";
       break;
     case ModalDrawerEntityTypes.SANCTIONS:
-      emptyEntityMessage =
-        "No plan-level sanctions or corrective actions have been entered for this program report.";
+      emptyEntityMessage = "0 - No sanctions entered";
       break;
     case ModalDrawerEntityTypes.QUALITY_MEASURES: {
-      emptyEntityMessage =
-        "No quality measures and plan-level quality measure results have been entered for this program report.";
+      emptyEntityMessage = "0 - No quality & performance measures entered";
       break;
     }
     default:
