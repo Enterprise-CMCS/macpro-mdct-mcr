@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // components
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { EntityCard, ReportContext } from "components";
 // utils
 import { getFormattedEntityData } from "utils";
@@ -35,11 +35,17 @@ export const ExportedModalDrawerReportSection = ({
     default:
       break;
   }
+
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
-      {!entityCount && (
-        <Text data-testid="entityMessage">{emptyEntityMessage}</Text>
-      )}
+      <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
+        {verbiage.dashboardTitle} {entityCount}
+        {!entityCount && (
+          <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
+            0 - {emptyEntityMessage}
+          </Text>
+        )}
+      </Heading>
       {entities?.map((entity: EntityShape) => (
         <EntityCard
           key={entity.id}
@@ -61,3 +67,17 @@ export const ExportedModalDrawerReportSection = ({
 export interface Props {
   section: ModalDrawerReportPageShape;
 }
+
+const sx = {
+  notAnswered: {
+    fontSize: "md",
+    fontWeight: "bold",
+    color: "palette.error_darker",
+  },
+  dashboardTitle: {
+    marginBottom: "1.25rem",
+    fontSize: "md",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
+  },
+};
