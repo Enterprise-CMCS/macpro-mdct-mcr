@@ -39,9 +39,7 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
         },
       })
     );
-    const entityMessage = screen.getByText(
-      "No access and adequacy measures have been entered for this program report."
-    );
+    const entityMessage = screen.getByText("0 - No access measures entered");
     expect(entityMessage).toBeVisible();
   });
 
@@ -53,7 +51,7 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
       })
     );
     const entityMessage = screen.getByText(
-      "No quality measures and plan-level quality measure results have been entered for this program report."
+      "0 - No quality & performance measures entered"
     );
     expect(entityMessage).toBeVisible();
   });
@@ -65,9 +63,7 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
         entityType: "sanctions",
       })
     );
-    const entityMessage = screen.getByText(
-      "No plan-level sanctions or corrective actions have been entered for this program report."
-    );
+    const entityMessage = screen.getByText("0 - No sanctions entered");
     expect(entityMessage).toBeVisible();
   });
 });

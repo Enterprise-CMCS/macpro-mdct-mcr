@@ -35,6 +35,61 @@ const testElementArray = [
     content: mockHtmlString,
   },
 ];
+
+const percentageField = {
+  fieldData: {
+    test_field: "12",
+  },
+  props: {
+    mask: "percentage",
+  },
+  id: "test_field",
+  type: "number",
+  validation: "number",
+};
+
+const currencyField = {
+  fieldData: {
+    test_field: "12",
+  },
+  props: {
+    mask: "currency",
+  },
+  id: "test_field",
+  type: "number",
+  validation: "number",
+};
+
+const emailField = {
+  fieldData: {
+    test_field: "test@test.com",
+  },
+  id: "test_field",
+  type: "text",
+  validation: "email",
+};
+
+const urlField = {
+  fieldData: {
+    test_field: "http://website.com",
+  },
+  id: "test_field",
+  type: "text",
+  validation: "url",
+};
+
+const radioField = {
+  id: "test_field",
+  type: "radio",
+  validation: "radio",
+};
+const radioFieldData = [
+  {
+    key: "test_key",
+    value: "Yes",
+  },
+];
+
 const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
 
 describe("Test parseCustomHtml", () => {
@@ -82,113 +137,74 @@ describe("Export: Parsing Data", () => {
   });
 
   test("Parsing Percentage", () => {
-    const dataReturn = formatFieldData({
-      fieldData: {
-        test_field: "12",
-      },
-      props: {
-        mask: "percentage",
-      },
-      id: "test_field",
-      type: "number",
-      validation: "number",
-    });
-
+    const dataReturn = formatFieldData(
+      percentageField,
+      percentageField.fieldData.test_field
+    );
     expect(dataReturn).toEqual("12%");
   });
   test("Parsing currency", () => {
-    const dataReturn = formatFieldData({
-      fieldData: {
-        test_field: "12",
-      },
-      props: {
-        mask: "currency",
-      },
-      id: "test_field",
-      type: "number",
-      validation: "number",
-    });
-
+    const dataReturn = formatFieldData(
+      currencyField,
+      currencyField.fieldData.test_field
+    );
     expect(dataReturn).toEqual("$12");
   });
 
   test("Parsing email", () => {
-    const dataReturn = formatFieldData({
-      fieldData: {
-        test_field: "test@test.com",
-      },
-      id: "test_field",
-      type: "text",
-      validation: "email",
-    });
-
-    expect(dataReturn).toEqual(
-      '<a href="mailto:test@test.com">test@test.com</a>'
+    const dataReturn = formatFieldData(
+      emailField,
+      emailField.fieldData.test_field
     );
+    expect(dataReturn).toEqual(
+      <span>
+        <a href="mailto:test@test.com">test@test.com</a>
+      </span>
+    );
+  });
+
+  test("Parsing radio choices", () => {
+    const dataReturn = formatFieldData(radioField, radioFieldData);
+    expect(dataReturn).toEqual("Yes");
   });
 });
 
 describe("Export: Number masks", () => {
   test("Percent Mask", () => {
-    const dataReturn = formatFieldData({
-      fieldData: {
-        test_Field: "123",
-      },
-      id: "test_Field",
-      type: "number",
-      validation: "number",
-      props: {
-        mask: "percentage",
-      },
-    });
-
-    expect(dataReturn).toEqual("123%");
+    const dataReturn = formatFieldData(
+      percentageField,
+      percentageField.fieldData.test_field
+    );
+    expect(dataReturn).toEqual("12%");
   });
 
   test("Currency Mask", () => {
-    const dataReturn = formatFieldData({
-      fieldData: {
-        test_Field: "123",
-      },
-      id: "test_Field",
-      type: "number",
-      validation: "number",
-      props: {
-        mask: "currency",
-      },
-    });
-
-    expect(dataReturn).toEqual("$123");
+    const dataReturn = formatFieldData(
+      currencyField,
+      currencyField.fieldData.test_field
+    );
+    expect(dataReturn).toEqual("$12");
   });
 });
 
 describe("Export: String Parsing", () => {
   test("Email Link", () => {
-    const dataReturn = formatFieldData({
-      fieldData: {
-        test_Field: "test@email.com",
-      },
-      id: "test_Field",
-      type: "text",
-      validation: "email",
-    });
-
+    const dataReturn = formatFieldData(
+      emailField,
+      emailField.fieldData.test_field
+    );
     expect(dataReturn).toEqual(
-      '<a href="mailto:test@email.com">test@email.com</a>'
+      <span>
+        <a href="mailto:test@test.com">test@test.com</a>
+      </span>
     );
   });
   test("URL Link", () => {
-    const dataReturn = formatFieldData({
-      fieldData: {
-        test_Field: "http://website.com",
-      },
-      id: "test_Field",
-      type: "text",
-      validation: "url",
-    });
-
+    const dataReturn = formatFieldData(urlField, urlField.fieldData.test_field);
     expect(dataReturn).toEqual(
-      '<a href="http://website.com">http://website.com</a>'
+      <span>
+        <a href="http://website.com">http://website.com</a>
+      </span>
     );
   });
 });

@@ -67,16 +67,19 @@ export const formatFieldData = (field: FormField, fieldData: any) => {
     const { validation, type, props } = field;
     const qualifier = props?.mask || validation || type;
 
+    let link;
+
     switch (qualifier) {
       case "percentage":
         return fieldData + "%";
       case "currency":
         return "$" + fieldData;
-      case "email":
-      case "emailOptional":
-        return "<a href='mailto:'" + fieldData + ">" + fieldData + "</a>";
-      case "url":
-        return "<a href=" + fieldData + ">" + fieldData + "</a>";
+      case "email" || "emailOptional":
+        link = '<a href="mailto:' + fieldData + '">' + fieldData + "</a>";
+        return parseCustomHtml(link);
+      case "url" || "urlOptional":
+        link = '<a href="' + fieldData + '">' + fieldData + "</a>";
+        return parseCustomHtml(link);
       case "checkbox":
       case "radio":
         return fieldData.map(({ value }: { value: string; key: string }) => {
