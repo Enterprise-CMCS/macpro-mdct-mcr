@@ -116,7 +116,7 @@ export const dropdown = () => object({ label: text(), value: text() });
 // CHECKBOX
 export const checkbox = () =>
   array()
-    .min(0, error.REQUIRED_CHECKBOX)
+    .min(0)
     .of(object({ key: text(), value: text() }));
 export const checkboxOptional = () => checkbox();
 export const checkboxSingle = () => boolean();
@@ -124,7 +124,7 @@ export const checkboxSingle = () => boolean();
 // RADIO
 export const radio = () =>
   array()
-    .min(0, error.REQUIRED_GENERIC)
+    .min(0)
     .of(object({ key: text(), value: text() }));
 export const radioOptional = () => radio();
 
