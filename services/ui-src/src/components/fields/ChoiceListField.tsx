@@ -61,7 +61,7 @@ export const ChoiceListField = ({
     }
   }, [displayValue]);
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (clickedOption: any) => {
     const reportKeys = {
       state: state,
       id: report?.id,
@@ -69,7 +69,7 @@ export const ChoiceListField = ({
     const dataToWrite = {
       status: ReportStatus.IN_PROGRESS,
       lastAlteredBy: full_name,
-      fieldData: { [name]: displayValue },
+      fieldData: { [name]: clickedOption },
     };
     await updateReport(reportKeys, dataToWrite);
   };
@@ -138,10 +138,11 @@ export const ChoiceListField = ({
     const clickedOption = { key: event.target.id, value: event.target.value };
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
-
+    let selectedOptions = null;
     // handle radio
     if (type === "radio") {
-      setDisplayValue([clickedOption]);
+      selectedOptions = [clickedOption];
+      setDisplayValue(selectedOptions);
     }
     // handle checkbox
     if (type === "checkbox") {
@@ -149,14 +150,15 @@ export const ChoiceListField = ({
       const uncheckedOptionValues = preChangeFieldValues.filter(
         (field) => field.value !== clickedOption.value
       );
-      setDisplayValue(
-        isOptionChecked ? checkedOptionValues : uncheckedOptionValues
-      );
+      selectedOptions = isOptionChecked
+        ? checkedOptionValues
+        : uncheckedOptionValues;
+      setDisplayValue(selectedOptions);
     }
 
     if (autosave) {
       if (userIsStateUser || userIsStateRep) {
-        handleUpdate();
+        handleUpdate(selectedOptions);
       }
     }
   };
