@@ -4,7 +4,7 @@ import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types, utils
 import { AnyObject, EntityShape, FormField } from "types";
-import { parseFieldInfo, parseCustomHtml, sanitizeAndParseHtml } from "utils";
+import { formatFieldData, parseFieldInfo, parseCustomHtml } from "utils";
 
 const renderDataCell = (
   field: FormField,
@@ -13,6 +13,7 @@ const renderDataCell = (
   entityType?: string
 ) => {
   const noAnswerMessage = "Not Answered";
+
   // render drawer (aka entity) data cell
   if (pageType === "drawer") {
     const entityData = reportData[entityType!];
@@ -22,7 +23,7 @@ const renderDataCell = (
         <Box key={entity.id + field.id}>
           <Text sx={sx.entityName}>{entity.name}</Text>
           <Text sx={fieldData ? sx.entityData : sx.noAnswer}>
-            {fieldData ? sanitizeAndParseHtml(fieldData) : noAnswerMessage}
+            {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
           </Text>
         </Box>
       );
@@ -44,7 +45,7 @@ const renderDataCell = (
     const fieldData = reportData[field.id];
     return (
       <Text sx={!fieldData ? sx.noAnswer : undefined}>
-        {fieldData ? sanitizeAndParseHtml(fieldData) : noAnswerMessage}
+        {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
       </Text>
     );
   }
@@ -135,5 +136,6 @@ const sx = {
   },
   noAnswer: {
     color: "palette.error_darker",
+    marginBottom: "1rem",
   },
 };

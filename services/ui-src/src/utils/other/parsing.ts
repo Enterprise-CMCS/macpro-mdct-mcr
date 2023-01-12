@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import { Link as RouterLink } from "react-router-dom";
 import { Heading, Link, Text } from "@chakra-ui/react";
 // types
-import { AnyObject, CustomHtmlElement } from "types";
+import { AnyObject, CustomHtmlElement, FormField } from "types";
 
 // return created elements from custom html array
 export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
@@ -58,42 +58,32 @@ export const parseFieldInfo = (fieldProps: AnyObject) => {
     number: labelArray?.[0],
     label: labelArray?.slice(1)?.join(" "),
     hint: fieldProps?.hint,
+    indicator: fieldProps?.indicator,
   };
 };
 
-// TODO: refactor to something like: formatFieldData
-export const parseAllLevels = ({
-  fieldData,
-  id,
-  props,
-  type,
-  validation,
-}: any) => {
-  if (fieldData && fieldData[id]) {
-    const qualifier = props
-      ? props.mask || validation || type
-      : validation || type;
+export const formatFieldData = (field: FormField, fieldData: any) => {
+  if (field) {
+    const { validation, type, props } = field;
+    const qualifier = props?.mask || validation || type;
 
     switch (qualifier) {
       case "percentage":
-        return `${fieldData[id]}%`;
+        return fieldData + "%";
       case "currency":
-        return `$${fieldData[id]}`;
+        return "$" + fieldData;
       case "email":
       case "emailOptional":
-        return `<a href="mailto:${fieldData[id]}">${fieldData[id]}</a>`;
+        return "<a href='mailto:'" + fieldData + ">" + fieldData + "</a>";
       case "url":
-        return `<a href="${fieldData[id]}">${fieldData[id]}</a>`;
+        return "<a href=" + fieldData + ">" + fieldData + "</a>";
       case "checkbox":
       case "radio":
-        return fieldData[id]
-          .map(({ value }: { value: string; key: string }) => {
-            const childItems: any[] = [];
-            return `<p>${value}</p>${childItems.join(" ") || ""}`;
-          })
-          .join(" ");
+        return fieldData.map(({ value }: { value: string; key: string }) => {
+          return value;
+        });
       default:
-        return fieldData[id];
+        return fieldData;
     }
   }
 };

@@ -39,7 +39,7 @@ export const ExportedModalDrawerReportSection = ({
         {verbiage.dashboardTitle} {entityCount}
         {!entityCount && (
           <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
-            0 - {emptyEntityMessage}
+            {emptyEntityMessage}
           </Text>
         )}
       </Heading>

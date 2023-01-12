@@ -1,19 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import DOMPurify from "dompurify";
 // utils
-import {
-  parseAllLevels,
-  parseCustomHtml,
-  parseDynamicFieldData,
-  parseFieldInfo,
-} from "./parsing";
-import {
-  mockReportFieldDataWithNestedFields,
-  mockReportFieldDataWithNestedFieldsIncomplete,
-  mockReportFieldDataWithNestedFieldsNoChildProps,
-  mockReportFieldDataWithNestedFieldsNoChildren,
-  mockReportFieldDataWithNestedFieldsNotAnswered,
-} from "utils/testing/setupJest";
+import { formatFieldData, parseCustomHtml, parseFieldInfo } from "./parsing";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -94,7 +82,7 @@ describe("Export: Parsing Data", () => {
   });
 
   test("Parsing Percentage", () => {
-    const dataReturn = parseAllLevels({
+    const dataReturn = formatFieldData({
       fieldData: {
         test_field: "12",
       },
@@ -109,7 +97,7 @@ describe("Export: Parsing Data", () => {
     expect(dataReturn).toEqual("12%");
   });
   test("Parsing currency", () => {
-    const dataReturn = parseAllLevels({
+    const dataReturn = formatFieldData({
       fieldData: {
         test_field: "12",
       },
@@ -125,7 +113,7 @@ describe("Export: Parsing Data", () => {
   });
 
   test("Parsing email", () => {
-    const dataReturn = parseAllLevels({
+    const dataReturn = formatFieldData({
       fieldData: {
         test_field: "test@test.com",
       },
@@ -142,7 +130,7 @@ describe("Export: Parsing Data", () => {
 
 describe("Export: Number masks", () => {
   test("Percent Mask", () => {
-    const dataReturn = parseAllLevels({
+    const dataReturn = formatFieldData({
       fieldData: {
         test_Field: "123",
       },
@@ -158,7 +146,7 @@ describe("Export: Number masks", () => {
   });
 
   test("Currency Mask", () => {
-    const dataReturn = parseAllLevels({
+    const dataReturn = formatFieldData({
       fieldData: {
         test_Field: "123",
       },
@@ -176,7 +164,7 @@ describe("Export: Number masks", () => {
 
 describe("Export: String Parsing", () => {
   test("Email Link", () => {
-    const dataReturn = parseAllLevels({
+    const dataReturn = formatFieldData({
       fieldData: {
         test_Field: "test@email.com",
       },
@@ -190,7 +178,7 @@ describe("Export: String Parsing", () => {
     );
   });
   test("URL Link", () => {
-    const dataReturn = parseAllLevels({
+    const dataReturn = formatFieldData({
       fieldData: {
         test_Field: "http://website.com",
       },
