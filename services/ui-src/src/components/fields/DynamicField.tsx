@@ -168,16 +168,12 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue?.length) {
-      if (
-        hydrationValue.length != displayValues.length &&
-        displayValues.length > hydrationValue.length
-      ) {
-        setDisplayValues(displayValues);
-        append(displayValues);
-      } else {
-        setDisplayValues(hydrationValue);
-        append(hydrationValue);
-      }
+      // guard against autosave refresh error (https://bit.ly/3kiE2eE)
+      const displayValuesEntered = displayValues.length > hydrationValue.length;
+      const valuesToSet = displayValuesEntered ? displayValues : hydrationValue;
+      // set and append values
+      setDisplayValues(valuesToSet);
+      append(valuesToSet);
     } else {
       appendNewRecord();
     }
