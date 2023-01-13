@@ -119,7 +119,7 @@ const ReadyToSubmit = ({
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
-  const { pdfExport } = useFlags();
+  const pdfExport = useFlags()?.pdfExport;
 
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
@@ -192,7 +192,7 @@ export const SuccessMessage = ({
     date,
     submittedBy
   );
-  const { pdfExport } = useFlags();
+  const pdfExport = useFlags()?.pdfExport;
 
   return (
     <Flex sx={sx.contentContainer}>

@@ -7,19 +7,17 @@ import { printPdf } from "utils";
 import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const StickyBanner = () => {
-  const { printExperience } = useFlags();
-  const clickPrint = () => {
-    if (printExperience === "prince") {
-      printPdf();
-    } else {
-      window?.print();
-    }
+  const printExperience = useFlags()?.printExperience;
+
+  const onClickHandler = () => {
+    if (printExperience === "prince") printPdf();
+    else window?.print();
   };
 
   return (
     <Box data-testid="stickyBanner" sx={sx.container}>
       <Text>Click below to export or print MCPAR shown here</Text>
-      <Button sx={sx.pdfButton} onClick={clickPrint}>
+      <Button sx={sx.pdfButton} onClick={onClickHandler}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
         Download PDF
       </Button>
