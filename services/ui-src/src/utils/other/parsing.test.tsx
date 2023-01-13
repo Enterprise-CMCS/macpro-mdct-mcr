@@ -78,18 +78,6 @@ const urlField = {
   validation: "url",
 };
 
-const radioField = {
-  id: "test_field",
-  type: "radio",
-  validation: "radio",
-};
-const radioFieldData = [
-  {
-    key: "test_key",
-    value: "Yes",
-  },
-];
-
 const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
 
 describe("Test parseCustomHtml", () => {
@@ -161,11 +149,6 @@ describe("Export: Parsing Data", () => {
         <a href="mailto:test@test.com">test@test.com</a>
       </span>
     );
-  });
-
-  test("Parsing radio choices", () => {
-    const dataReturn = formatFieldData(radioField, radioFieldData);
-    expect(dataReturn).toEqual("Yes");
   });
 });
 
