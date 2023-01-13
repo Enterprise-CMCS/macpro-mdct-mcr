@@ -46,7 +46,9 @@ const renderDataCell = (
     // handle checkboxes and radio buttons
     if (field.type === "checkbox" || field.type === "radio") {
       return fieldData?.map((field: FieldChoice) => (
-        <Text key={field.id}>{field.value}</Text>
+        <Text key={field.id} sx={sx.fieldChoice}>
+          {field.value}
+        </Text>
       ));
     } else {
       return (
@@ -130,6 +132,9 @@ const sx = {
     marginTop: "0.5rem",
     lineHeight: "lg",
     color: "palette.gray_medium",
+  },
+  fieldChoice: {
+    marginBottom: "1rem",
   },
   entityItem: {
     marginBottom: "1.5rem",
