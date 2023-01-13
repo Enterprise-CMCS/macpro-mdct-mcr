@@ -87,9 +87,9 @@ const returnChoices = (choiceItem: any, fieldData: any) => {
       // get ID of each choice
       const choiceId = key.split("-")[1];
       // check if choice has children
-      const children = choiceItem.parent.props.choices.find(
+      const children = choiceItem.parent.props.choices?.find(
         (choice: any) => choice.id === choiceId
-      ).children;
+      )?.children;
 
       if (children) {
         // loop through all children
