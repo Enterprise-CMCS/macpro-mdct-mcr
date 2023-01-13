@@ -58,6 +58,7 @@ describe("Test McparReviewSubmitPage functionality", () => {
 
   it("print button should be visible and correctly formed", async () => {
     render(McparReviewSubmitPage_InProgress);
+    mockFlags({ pdfExport: true });
     const printButton = screen.getByText("Print");
     expect(printButton).toBeVisible();
     expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
@@ -113,9 +114,7 @@ describe("Success Message Generator", () => {
 
   it("Print button should be visible and correctly formed", async () => {
     render(McparReviewSubmitPage_InProgress);
-    mockFlags({
-      pdfExport: true,
-    });
+    mockFlags({ pdfExport: true });
     const printButton = screen.getByText("Print");
     expect(printButton).toBeVisible();
     expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
