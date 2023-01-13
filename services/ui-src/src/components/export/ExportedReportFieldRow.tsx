@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types, utils
-import { AnyObject, EntityShape, FormField } from "types";
+import { AnyObject, EntityShape, FieldChoice, FormField } from "types";
 import { formatFieldData, parseFieldInfo, parseCustomHtml } from "utils";
 
 const renderDataCell = (
@@ -43,12 +43,11 @@ const renderDataCell = (
   // render standard data cell
   else {
     const fieldData = reportData[field.id];
+    // handle checkboxes and radio buttons
     if (field.type === "checkbox" || field.type === "radio") {
-      return (
-        <Text sx={!fieldData ? sx.noAnswer : undefined}>
-          {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
-        </Text>
-      );
+      return fieldData?.map((field: FieldChoice) => (
+        <Text key={field.id}>{field.value}</Text>
+      ));
     } else {
       return (
         <Text sx={!fieldData ? sx.noAnswer : undefined}>

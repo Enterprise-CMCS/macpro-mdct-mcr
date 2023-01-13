@@ -80,11 +80,6 @@ export const formatFieldData = (field: FormField, fieldData: any) => {
       case "url" || "urlOptional":
         link = '<a href="' + fieldData + '">' + fieldData + "</a>";
         return parseCustomHtml(link);
-      case "checkbox":
-      case "radio":
-        return fieldData.map(({ value }: { value: string; key: string }) => {
-          return value;
-        });
       default:
         return fieldData;
     }
