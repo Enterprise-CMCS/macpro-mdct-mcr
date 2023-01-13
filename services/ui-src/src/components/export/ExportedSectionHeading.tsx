@@ -31,6 +31,7 @@ export interface Props {
 
 const sx = {
   heading: {
+    marginTop: "1.5rem",
     marginBottom: "1.5rem",
     fontSize: "xl",
     fontWeight: "bold",
