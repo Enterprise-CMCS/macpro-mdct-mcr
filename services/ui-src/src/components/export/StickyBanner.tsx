@@ -1,18 +1,15 @@
-import { useLDClient } from "launchdarkly-react-client-sdk";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 // utils
-import { featureFlags, printPdf } from "utils";
+import { printPdf } from "utils";
 // assets
 import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const StickyBanner = () => {
   // LaunchDarkly
-  const ldClient = useLDClient();
-  const printExperience = ldClient?.variation(
-    featureFlags.PRINT_EXPERIENCE.flag,
-    featureFlags.PRINT_EXPERIENCE.defaultValue
-  );
+
+  const { printExperience } = useFlags();
 
   const clickPrint = () => {
     if (printExperience === "prince") {

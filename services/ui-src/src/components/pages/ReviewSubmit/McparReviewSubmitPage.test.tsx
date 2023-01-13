@@ -7,7 +7,6 @@ import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
 import { ReportStatus } from "types";
 // utils
 import {
-  mockLDClient,
   mockReport,
   mockReportContext,
   mockStateUser,
@@ -21,10 +20,6 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
   useUser: () => mockStateUser,
-}));
-
-jest.mock("launchdarkly-react-client-sdk", () => ({
-  useLDClient: () => mockLDClient,
 }));
 
 const McparReviewSubmitPage_InProgress = (
@@ -116,21 +111,15 @@ describe("Success Message Generator", () => {
     ).toBe(`MCPAR report for ${programName} was submitted.`);
   });
 
-  it("print button should be visible and correctly formed", async () => {
+  it("Print button should be visible and correctly formed", async () => {
     render(McparReviewSubmitPage_InProgress);
+    mockFlags({
+      pdfExport: true,
+    });
     const printButton = screen.getByText("Print");
     expect(printButton).toBeVisible();
     expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
     expect(printButton.getAttribute("target")).toEqual("_blank");
-  });
-
-  it("should mock LaunchDarkly flags", () => {
-    mockFlags({
-      pdfExport: true,
-    });
-    render(McparReviewSubmitPage_InProgress);
-    const printButton = screen.getByText("Print");
-    expect(printButton).toBeVisible();
   });
 });
 
