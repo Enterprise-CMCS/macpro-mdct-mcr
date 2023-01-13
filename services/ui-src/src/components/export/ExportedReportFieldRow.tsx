@@ -43,11 +43,19 @@ const renderDataCell = (
   // render standard data cell
   else {
     const fieldData = reportData[field.id];
-    return (
-      <Text sx={!fieldData ? sx.noAnswer : undefined}>
-        {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
-      </Text>
-    );
+    if (field.type === "checkbox" || field.type === "radio") {
+      return (
+        <Text sx={!fieldData ? sx.noAnswer : undefined}>
+          {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
+        </Text>
+      );
+    } else {
+      return (
+        <Text sx={!fieldData ? sx.noAnswer : undefined}>
+          {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
+        </Text>
+      );
+    }
   }
 };
 
