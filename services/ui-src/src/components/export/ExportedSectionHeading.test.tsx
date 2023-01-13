@@ -3,22 +3,25 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext, ExportedSectionHeading } from "components";
 // utils
-import { mockReportContext, mockSectionHeading } from "utils/testing/setupJest";
-// types
-import { ReportContextShape } from "types";
+import { mockReportContext, mockVerbiageIntro } from "utils/testing/setupJest";
+
+const mockSectionHeading = {
+  heading: "mock-heading",
+  verbiage: {
+    intro: mockVerbiageIntro,
+  },
+};
+const { heading, verbiage } = mockSectionHeading;
 
 const exportedReportSectionHeadingComponent = (
-  context: ReportContextShape = mockReportContext,
-  { heading, verbiage } = mockSectionHeading
-) => (
-  <ReportContext.Provider value={context}>
+  <ReportContext.Provider value={mockReportContext}>
     <ExportedSectionHeading heading={heading} verbiage={verbiage} />
   </ReportContext.Provider>
 );
 
 describe("ExportedSectionHeading renders", () => {
   test("ExportedSectionHeading renders", () => {
-    const { getByTestId } = render(exportedReportSectionHeadingComponent());
+    const { getByTestId } = render(exportedReportSectionHeadingComponent);
     const sectionHeading = getByTestId("exportedSectionHeading");
     expect(sectionHeading).toBeVisible();
   });
@@ -26,7 +29,7 @@ describe("ExportedSectionHeading renders", () => {
 
 describe("ExportedSectionHeading displays correct heading", () => {
   test("Correct heading text is shown", () => {
-    render(exportedReportSectionHeadingComponent());
+    render(exportedReportSectionHeadingComponent);
     const sectionHeading = screen.getByText("mock subsection");
     expect(sectionHeading).toBeVisible();
   });
@@ -34,7 +37,7 @@ describe("ExportedSectionHeading displays correct heading", () => {
 
 describe("Test ExportedSectionHeading accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(exportedReportSectionHeadingComponent());
+    const { container } = render(exportedReportSectionHeadingComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
