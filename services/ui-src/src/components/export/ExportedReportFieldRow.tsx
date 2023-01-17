@@ -19,6 +19,7 @@ const renderDataCell = (
     const entityData = reportData[entityType!];
     return entityData?.map((entity: EntityShape) => {
       const fieldData = entity[field.id];
+
       return (
         <Box key={entity.id + field.id}>
           <Text sx={sx.entityName}>{entity.name}</Text>
@@ -42,28 +43,19 @@ const renderDataCell = (
   }
   // render standard data cell
   else {
-    let fieldData = reportData[field.id];
-    let childId = "";
+    const fieldData = reportData[field.id];
+
     // handle checkboxes and radio buttons
     if (field.type === "checkbox" || field.type === "radio") {
-      // handle "Other, specify" case
-      field.props?.choices?.map((choice: any) => {
-        if (choice.label === "Other, specify") {
-          childId = choice.children[0].id;
-        }
-      });
+      return field.props?.choices?.map((choice: FieldChoice) => {
+        const fieldId = field.id + "-" + choice.id;
 
-      return fieldData?.map((fieldChoice: FieldChoice) =>
-        childId ? (
-          <Text>
-            {fieldChoice.value} - {reportData[childId]}
+        return (
+          <Text key={choice.id} sx={sx.fieldChoice}>
+            {fieldData?.[fieldId]}
           </Text>
-        ) : (
-          <Text key={fieldChoice.id} sx={sx.fieldChoice}>
-            {fieldChoice.value}
-          </Text>
-        )
-      );
+        );
+      });
     } else {
       return (
         <Text sx={!fieldData ? sx.noAnswer : undefined}>
@@ -83,13 +75,13 @@ export const ExportedReportFieldRow = ({
   const reportData = report?.fieldData;
   const isDynamicField = field.type === "dynamic";
   const fieldInfo = parseFieldInfo(field?.props!);
-  const emptyCellValue = "—";
+
   return (
     <Tr>
       {/* number column */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
-          <Text sx={sx.fieldNumber}>{fieldInfo.number || emptyCellValue}</Text>
+          <Text sx={sx.fieldNumber}>{fieldInfo.number || "—"}</Text>
         </Td>
       )}
       {/* label column */}
@@ -104,7 +96,7 @@ export const ExportedReportFieldRow = ({
             )}
           </Box>
         ) : (
-          <Text>{emptyCellValue}</Text>
+          <Text>{"—"}</Text>
         )}
       </Td>
       {/* data column */}
