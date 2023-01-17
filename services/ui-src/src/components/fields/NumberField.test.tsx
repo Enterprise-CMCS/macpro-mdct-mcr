@@ -317,7 +317,7 @@ describe("Test NumberField component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
-  test("NumberField does not autosave when not autosave not set to true", async () => {
+  test("NumberField does not autosave if autosave is false", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(numberFieldComponent);
