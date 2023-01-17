@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types, utils
-import { AnyObject, EntityShape, FieldChoice, FormField } from "types";
+import { AnyObject, EntityShape, FieldChoice, FormField, Choice } from "types";
 import { formatFieldData, parseFieldInfo, parseCustomHtml } from "utils";
 
 const renderDataCell = (
@@ -44,16 +44,28 @@ const renderDataCell = (
   // render standard data cell
   else {
     const fieldData = reportData[field.id];
-
     // handle checkboxes and radio buttons
     if (field.type === "checkbox" || field.type === "radio") {
-      return field.props?.choices?.map((choice: FieldChoice) => {
-        const fieldId = field.id + "-" + choice.id;
+      const potentialFieldChoices = field.props?.choices;
 
+      return potentialFieldChoices?.map((potentialChoice: FieldChoice) => {
+        console.log("field", field);
+        console.log("fieldData", fieldData);
+        console.log("potentialChoice", potentialChoice);
+        const combinedFieldChoiceId = field.id + "-" + potentialChoice.id;
+        // should display if there is data for the potential choice
+
+        const shouldDisplayChoice = fieldData?.map(
+          (selectedChoice: Choice) =>
+            selectedChoice.key === combinedFieldChoiceId
+        );
+        console.log("shouldDisplayChoice", shouldDisplayChoice);
         return (
-          <Text key={choice.id} sx={sx.fieldChoice}>
-            {fieldData?.[fieldId]}
-          </Text>
+          shouldDisplayChoice && (
+            <Text key={potentialChoice.id} sx={sx.fieldChoice}>
+              {potentialChoice.value}
+            </Text>
+          )
         );
       });
     } else {
