@@ -66,7 +66,7 @@ const renderDataCell = (
         // get "Other, specify" text area value (always a single child element here)
         let choiceChild = "";
         if (
-          potentialChoice.label === "Other, specify" &&
+          (potentialChoice.label === "Other, specify" || "None of the above") &&
           potentialChoice.children &&
           potentialChoice.children[0].type === "textarea"
         ) {
