@@ -47,7 +47,6 @@ const renderDataCell = (
     // handle checkboxes and radio buttons
     if (field.type === "checkbox" || field.type === "radio") {
       const potentialFieldChoices = field.props?.choices;
-
       const filteredChoices = potentialFieldChoices.filter(
         (potentialChoice: FieldChoice) => {
           return fieldData?.find((element: any) => {
