@@ -33,7 +33,7 @@ export const ExportedDrawerReportSection = ({
         ? `<strong>${parseFieldLabel(field.props).indicator}</strong>`
         : "",
       field.props ? parseFieldLabel(field.props).label : "",
-      drawerData,
+      drawerData || `<p style="color:#9F142B">Not Answered</p>`,
     ];
   };
 
