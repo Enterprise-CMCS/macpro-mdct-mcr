@@ -190,7 +190,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     <Box>
       {displayValues.map((field: EntityShape, index: number) => {
         return (
-          <Flex key={field.id} sx={sx.textField}>
+          <Flex key={field.id} sx={sx.dynamicField}>
             <TextField
               id={field.id}
               name={`${name}[${index}]`}
@@ -199,6 +199,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={field.name}
+              sxOverride={sx.textField}
               {...props}
             />
             <Box sx={sx.removeBox}>
@@ -264,16 +265,15 @@ const sx = {
     height: "2.5rem",
     marginTop: "2rem",
   },
-  textField: {
+  dynamicField: {
     alignItems: "flex-end",
     width: "32rem",
-
-    ".css-0": {
-      width: "100%",
-    },
 
     ".ds-u-clearfix": {
       width: "100%",
     },
+  },
+  textField: {
+    width: "100%",
   },
 };
