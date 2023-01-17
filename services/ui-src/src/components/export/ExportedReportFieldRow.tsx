@@ -48,22 +48,39 @@ const renderDataCell = (
     if (field.type === "checkbox" || field.type === "radio") {
       const potentialFieldChoices = field.props?.choices;
 
-      return potentialFieldChoices?.map((potentialChoice: FieldChoice) => {
-        console.log("field", field);
-        console.log("fieldData", fieldData);
-        console.log("potentialChoice", potentialChoice);
+      const filteredChoices = potentialFieldChoices.filter(
+        (potentialChoice: FieldChoice) => {
+          return fieldData?.find((element: any) => {
+            return element.key.includes(potentialChoice.id);
+          });
+        }
+      );
+
+      return filteredChoices?.map((potentialChoice: FieldChoice) => {
         const combinedFieldChoiceId = field.id + "-" + potentialChoice.id;
         // should display if there is data for the potential choice
-
         const shouldDisplayChoice = fieldData?.map(
           (selectedChoice: Choice) =>
             selectedChoice.key === combinedFieldChoiceId
         );
-        console.log("shouldDisplayChoice", shouldDisplayChoice);
+
+        // get "Other, specify" text area value (always a single child element here)
+        let choiceChild = "";
+        if (
+          potentialChoice.label === "Other, specify" &&
+          potentialChoice.children &&
+          potentialChoice.children[0].type === "textarea"
+        ) {
+          choiceChild =
+            potentialChoice.label +
+            " - " +
+            reportData[potentialChoice.children[0].id];
+        }
+
         return (
           shouldDisplayChoice && (
             <Text key={potentialChoice.id} sx={sx.fieldChoice}>
-              {potentialChoice.value}
+              {choiceChild ? choiceChild : potentialChoice.label}
             </Text>
           )
         );
