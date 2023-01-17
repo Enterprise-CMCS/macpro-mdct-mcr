@@ -42,14 +42,28 @@ const renderDataCell = (
   }
   // render standard data cell
   else {
-    const fieldData = reportData[field.id];
+    let fieldData = reportData[field.id];
+    let childId = "";
     // handle checkboxes and radio buttons
     if (field.type === "checkbox" || field.type === "radio") {
-      return fieldData?.map((field: FieldChoice) => (
-        <Text key={field.id} sx={sx.fieldChoice}>
-          {field.value}
-        </Text>
-      ));
+      // handle "Other, specify" case
+      field.props?.choices?.map((choice: any) => {
+        if (choice.label === "Other, specify") {
+          childId = choice.children[0].id;
+        }
+      });
+
+      return fieldData?.map((fieldChoice: FieldChoice) =>
+        childId ? (
+          <Text>
+            {fieldChoice.value} - {reportData[childId]}
+          </Text>
+        ) : (
+          <Text key={fieldChoice.id} sx={sx.fieldChoice}>
+            {fieldChoice.value}
+          </Text>
+        )
+      );
     } else {
       return (
         <Text sx={!fieldData ? sx.noAnswer : undefined}>
