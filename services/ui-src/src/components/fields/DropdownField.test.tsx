@@ -151,7 +151,7 @@ describe("Test DropdownField hydration functionality", () => {
     mockGetValues(undefined);
     render(dropdownComponentWithHydrationValue);
     const dropdownField: HTMLSelectElement = screen.getByLabelText(
-      "test-dropdown-label"
+      "test-dropdown-field-to-hydrate"
     );
     const displayValue = dropdownField.value;
     expect(displayValue).toEqual(mockHydrationValue.value);
