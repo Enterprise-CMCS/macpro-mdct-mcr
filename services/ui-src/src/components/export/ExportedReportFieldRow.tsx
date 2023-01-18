@@ -47,41 +47,22 @@ const renderDataCell = (
     // handle checkboxes and radio buttons
     if (field.type === "checkbox" || field.type === "radio") {
       const potentialFieldChoices = field.props?.choices;
-      const filteredChoices = potentialFieldChoices.filter(
-        (potentialChoice: FieldChoice) => {
-          return fieldData?.find((element: any) => {
-            return element.key.includes(potentialChoice.id);
-          });
-        }
-      );
-
-      return filteredChoices?.map((potentialChoice: FieldChoice) => {
-        const combinedFieldChoiceId = field.id + "-" + potentialChoice.id;
-        // should display if there is data for the potential choice
-        const shouldDisplayChoice = fieldData?.map(
-          (selectedChoice: Choice) =>
-            selectedChoice.key === combinedFieldChoiceId
-        );
-
-        // get "Other, specify" text area value (always a single child element here)
-        let choiceChild = "";
-        if (
-          (potentialChoice.label === "Other, specify" || "None of the above") &&
-          potentialChoice.children &&
-          potentialChoice.children[0].type === "textarea"
-        ) {
-          choiceChild =
-            potentialChoice.label +
-            " - " +
-            reportData[potentialChoice.children[0].id];
-        }
-
-        return (
-          shouldDisplayChoice && (
-            <Text key={potentialChoice.id} sx={sx.fieldChoice}>
-              {choiceChild ? choiceChild : potentialChoice.label}
-            </Text>
+      // filter potential choices to just those that are selected
+      const selectedChoices = potentialFieldChoices.filter(
+        (potentialChoice: FieldChoice) =>
+          fieldData?.find((element: Choice) =>
+            element.key.includes(potentialChoice.id)
           )
+      );
+      return selectedChoices?.map((choice: FieldChoice) => {
+        // get "otherText" value, if present (always only a single child element here)
+        const hasRelatedNestedEntry =
+          choice.children?.[0]?.id.endsWith("otherText");
+        const relatedNestedEntry = reportData?.[choice?.children?.[0]?.id!];
+        return (
+          <Text key={choice.id} sx={sx.fieldChoice}>
+            {choice.label} {hasRelatedNestedEntry && " – " + relatedNestedEntry}
+          </Text>
         );
       });
     } else {
