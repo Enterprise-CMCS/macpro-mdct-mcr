@@ -1,15 +1,18 @@
-import { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
 // components
-import { ExportedReportFieldRow, Table } from "components";
+import { ExportedReportFieldRow, ReportContext, Table } from "components";
 // types, utils
 import {
   FieldChoice,
   FormField,
   StandardReportPageShape,
   DrawerReportPageShape,
+  ReportShape,
 } from "types";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
+  const { report } = useContext(ReportContext);
+
   const pageType = section.pageType;
   const formFields =
     pageType === "drawer" ? section.drawerForm?.fields : section.form?.fields;
@@ -32,7 +35,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
         headRow: headRowItems,
       }}
     >
-      {renderFieldTableBody(formFields!, pageType!, entityType)}
+      {renderFieldTableBody(formFields!, pageType!, report, entityType)}
     </Table>
   );
 };
@@ -40,6 +43,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 export const renderFieldTableBody = (
   formFields: FormField[],
   pageType: string,
+  report: ReportShape | undefined,
   entityType?: string
 ) => {
   const tableRows: ReactElement[] = [];
@@ -55,8 +59,16 @@ export const renderFieldTableBody = (
     );
     // check for nested child fields; if any, map through children and render
     const fieldChoicesWithChildren = formField?.props?.choices?.filter(
-      (choice: FieldChoice) => choice?.children
+      (choice: FieldChoice) => {
+        // Only render nested items for checked choices
+        const selected = report?.fieldData[formField.id];
+        const entryExists = selected?.find((selectedChoice: any) =>
+          selectedChoice.key.endsWith(choice.id)
+        );
+        return entryExists && choice?.children;
+      }
     );
+
     fieldChoicesWithChildren?.map((choice: FieldChoice) =>
       choice.children?.map((childField: FormField) =>
         renderFieldRow(childField)
