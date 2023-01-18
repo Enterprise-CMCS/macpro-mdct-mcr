@@ -4,14 +4,22 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 //components
 import { useFormContext } from "react-hook-form";
-import { ChoiceListField } from "components";
-import { formFieldFactory } from "utils";
+import { ChoiceListField, ReportContext } from "components";
+import { formFieldFactory, useUser } from "utils";
+import {
+  mockReportContext,
+  mockStateUser,
+  mockAdminUser,
+} from "utils/testing/setupJest";
+import { ReportStatus } from "types";
 
+const mockTrigger = jest.fn();
 const mockSetValue = jest.fn();
 const mockRhfMethods = {
   register: () => {},
   setValue: mockSetValue,
   getValues: jest.fn(),
+  trigger: mockTrigger,
 };
 const mockUseFormContext = useFormContext as unknown as jest.Mock<
   typeof useFormContext
@@ -25,9 +33,12 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValue(returnValue),
   }));
 
-jest.mock("utils", () => ({
+jest.mock("utils/forms/forms", () => ({
   formFieldFactory: jest.fn(),
 }));
+
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const mockChoices = [
   {
@@ -88,46 +99,71 @@ const mockChoiceWithChild = {
 };
 
 const CheckboxComponent = (
-  <ChoiceListField
-    choices={mockChoices}
-    label="Checkbox example"
-    name="checkbox-field"
-    type="checkbox"
-    onChangeHandler={() => jest.fn()}
-  />
+  <ReportContext.Provider value={mockReportContext}>
+    <ChoiceListField
+      choices={mockChoices}
+      label="Checkbox example"
+      name="checkbox-field"
+      type="checkbox"
+      onChangeHandler={() => jest.fn()}
+    />
+  </ReportContext.Provider>
 );
 
 const CheckboxComponentWithNestedChildren = (
-  <ChoiceListField
-    choices={[...mockChoices, mockChoiceWithChild]}
-    label="Radio example"
-    name="checkbox-field-with-nested-children"
-    type="checkbox"
-    onChangeHandler={() => jest.fn()}
-  />
+  <ReportContext.Provider value={mockReportContext}>
+    <ChoiceListField
+      choices={[...mockChoices, mockChoiceWithChild]}
+      label="Radio example"
+      name="checkbox-field-with-nested-children"
+      type="checkbox"
+      onChangeHandler={() => jest.fn()}
+    />
+  </ReportContext.Provider>
 );
 
 const RadioComponent = (
-  <ChoiceListField
-    choices={mockChoices}
-    label="Radio example"
-    name="radio-field"
-    type="radio"
-    onChangeHandler={() => jest.fn()}
-  />
+  <ReportContext.Provider value={mockReportContext}>
+    <ChoiceListField
+      choices={mockChoices}
+      label="Radio example"
+      name="radio-field"
+      type="radio"
+      onChangeHandler={() => jest.fn()}
+    />
+  </ReportContext.Provider>
 );
 
 const RadioComponentWithNestedChildren = (
-  <ChoiceListField
-    choices={[...mockChoices, mockChoiceWithChild]}
-    label="Radio example"
-    name="radio-field-with-nested-children"
-    type="radio"
-    onChangeHandler={() => jest.fn()}
-  />
+  <ReportContext.Provider value={mockReportContext}>
+    <ChoiceListField
+      choices={[...mockChoices, mockChoiceWithChild]}
+      label="Radio example"
+      name="radio-field-with-nested-children"
+      type="radio"
+      onChangeHandler={() => jest.fn()}
+    />
+  </ReportContext.Provider>
+);
+
+const CheckboxComponentAutosave = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ChoiceListField
+      choices={mockChoices}
+      label="Checkbox example"
+      name="autosaveCheckboxField"
+      type="checkbox"
+      onChangeHandler={() => jest.fn()}
+      autosave
+    />
+  </ReportContext.Provider>
 );
 
 describe("Test ChoiceListField component rendering", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+  });
+
   it("RadioField should render nested child fields for choices with children", () => {
     render(RadioComponentWithNestedChildren);
     expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, {
@@ -171,6 +207,10 @@ describe("Test ChoiceListField hydration functionality", () => {
       onChangeHandler={() => jest.fn()}
     />
   );
+
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+  });
 
   test("For CheckboxField, if only formFieldValue exists, displayValue is set to it", () => {
     mockGetValues(mockFormFieldValue);
@@ -252,7 +292,99 @@ describe("Test ChoiceListField hydration functionality", () => {
   });
 });
 
+describe("Test Choicelist component autosaves", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Choicelist Checkbox autosaves with checked value when stateuser, autosave true, and form is valid", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    const mockHydrationValue = [{ key: "Choice 1", value: "Choice 1" }];
+    render(CheckboxComponentAutosave);
+    const checkBox1 = screen.getByText("Choice 1");
+    expect(checkBox1).toBeVisible();
+
+    await act(async () => {
+      await userEvent.click(checkBox1);
+    });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "autosaveCheckboxField",
+      mockHydrationValue,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+      {
+        state: mockStateUser.user?.state,
+        id: mockReportContext.report.id,
+      },
+      {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: mockStateUser.user?.full_name,
+        fieldData: {
+          autosaveCheckboxField: mockHydrationValue,
+        },
+      }
+    );
+  });
+
+  test("Choicelist Checkbox does NOT autosaves with checked value when adminuser, autosave true, and form is valid", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockGetValues(undefined);
+    const mockHydrationValue = [{ key: "Choice 1", value: "Choice 1" }];
+    render(CheckboxComponentAutosave);
+    const checkBox1 = screen.getByText("Choice 1");
+    expect(checkBox1).toBeVisible();
+
+    await act(async () => {
+      await userEvent.click(checkBox1);
+    });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "autosaveCheckboxField",
+      mockHydrationValue,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+
+  test("Choicelist Checkbox does NOT autosaves with checked value when stateuser, autosave false, and form is valid", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    const mockHydrationValue = [{ key: "Choice 1", value: "Choice 1" }];
+    render(CheckboxComponent);
+    const checkBox1 = screen.getByText("Choice 1");
+    expect(checkBox1).toBeVisible();
+
+    await act(async () => {
+      await userEvent.click(checkBox1);
+    });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "checkbox-field",
+      mockHydrationValue,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+});
+
 describe("Test ChoiceListField accessibility", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+  });
+
   it("Should not have basic accessibility issues when given CheckboxField", async () => {
     const { container } = render(CheckboxComponent);
     const results = await axe(container);

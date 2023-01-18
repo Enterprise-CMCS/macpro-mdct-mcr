@@ -18,6 +18,7 @@ export const CheckboxField = ({
         name={name}
         label={label}
         choices={choices}
+        autosave
         {...props}
       />
     </Box>

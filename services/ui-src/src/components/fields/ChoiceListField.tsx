@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
-import { formFieldFactory, parseCustomHtml } from "utils";
+import { formFieldFactory, parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   Choice,
   CustomHtmlElement,
   FieldChoice,
   InputChangeEvent,
+  ReportStatus,
 } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
@@ -26,7 +28,9 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const [displayValue, setDisplayValue] = useState<Choice[] | null>(null);
-
+  const { report, updateReport } = useContext(ReportContext);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
   form.register(name);
@@ -56,6 +60,19 @@ export const ChoiceListField = ({
       clearNestedValues(choices);
     }
   }, [displayValue]);
+
+  const handleUpdate = async (clickedOption: any) => {
+    const reportKeys = {
+      state: state,
+      id: report?.id,
+    };
+    const dataToWrite = {
+      status: ReportStatus.IN_PROGRESS,
+      lastAlteredBy: full_name,
+      fieldData: { [name]: clickedOption },
+    };
+    await updateReport(reportKeys, dataToWrite);
+  };
 
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) => {
@@ -121,9 +138,11 @@ export const ChoiceListField = ({
     const clickedOption = { key: event.target.id, value: event.target.value };
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
+    let selectedOptions = null;
     // handle radio
     if (type === "radio") {
-      setDisplayValue([clickedOption]);
+      selectedOptions = [clickedOption];
+      setDisplayValue(selectedOptions);
     }
     // handle checkbox
     if (type === "checkbox") {
@@ -131,9 +150,16 @@ export const ChoiceListField = ({
       const uncheckedOptionValues = preChangeFieldValues.filter(
         (field) => field.value !== clickedOption.value
       );
-      setDisplayValue(
-        isOptionChecked ? checkedOptionValues : uncheckedOptionValues
-      );
+      selectedOptions = isOptionChecked
+        ? checkedOptionValues
+        : uncheckedOptionValues;
+      setDisplayValue(selectedOptions);
+    }
+
+    if (autosave) {
+      if (userIsStateUser || userIsStateRep) {
+        handleUpdate(selectedOptions);
+      }
     }
   };
 
