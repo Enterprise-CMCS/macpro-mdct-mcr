@@ -335,6 +335,29 @@ describe("Test DynamicField Autosave Functionality", () => {
       }
     );
   });
+
+  test("DynamicField handles blanked fields after it was filled out", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const result = render(dynamicFieldComponent());
+    const firstDynamicField: HTMLInputElement =
+      result.container.querySelector("[name='plans[0]']")!;
+    expect(firstDynamicField).toBeVisible();
+    firstDynamicField.value = "Plans";
+    expect(firstDynamicField.value).toBe("Plans");
+    await userEvent.click(firstDynamicField);
+    await userEvent.clear(firstDynamicField);
+    await userEvent.tab();
+    expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    expect(mockUpdateReport).lastCalledWith(
+      { id: "mock-report-id", state: "MN" },
+      {
+        fieldData: {
+          plans: [{ id: firstDynamicField.id, name: "" }],
+        },
+        metadata: { lastAlteredBy: "Thelonious States", status: "In progress" },
+      }
+    );
+  });
 });
 
 describe("Test DynamicField accessibility", () => {

@@ -3,8 +3,11 @@ import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
-import { TextField } from "./TextField";
-import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
+import {
+  DeleteDynamicFieldRecordModal,
+  ReportContext,
+  TextField,
+} from "components";
 import { svgFilters } from "styles/theme";
 // utils
 import {
@@ -165,16 +168,12 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue?.length) {
-      if (
-        hydrationValue.length != displayValues.length &&
-        displayValues.length > hydrationValue.length
-      ) {
-        setDisplayValues(displayValues);
-        append(displayValues);
-      } else {
-        setDisplayValues(hydrationValue);
-        append(hydrationValue);
-      }
+      // guard against autosave refresh error (https://bit.ly/3kiE2eE)
+      const displayValuesEntered = displayValues.length > hydrationValue.length;
+      const valuesToSet = displayValuesEntered ? displayValues : hydrationValue;
+      // set and append values
+      setDisplayValues(valuesToSet);
+      append(valuesToSet);
     } else {
       appendNewRecord();
     }
@@ -191,7 +190,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     <Box>
       {displayValues.map((field: EntityShape, index: number) => {
         return (
-          <Flex key={field.id} sx={sx.textField}>
+          <Flex key={field.id} sx={sx.dynamicField}>
             <TextField
               id={field.id}
               name={`${name}[${index}]`}
@@ -200,6 +199,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={field.name}
+              sxOverride={sx.textField}
               {...props}
             />
             <Box sx={sx.removeBox}>
@@ -265,16 +265,15 @@ const sx = {
     height: "2.5rem",
     marginTop: "2rem",
   },
-  textField: {
+  dynamicField: {
     alignItems: "flex-end",
     width: "32rem",
-
-    ".css-0": {
-      width: "100%",
-    },
 
     ".ds-u-clearfix": {
       width: "100%",
     },
+  },
+  textField: {
+    width: "100%",
   },
 };

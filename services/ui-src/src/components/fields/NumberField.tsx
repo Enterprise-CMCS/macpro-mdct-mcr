@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
 import { TextField } from "./TextField";
 // utils
-import { applyCustomMask, customMaskMap, validCmsdsMask } from "utils";
-import { InputChangeEvent, AnyObject } from "types";
+import { applyCustomMask, customMaskMap, useUser, validCmsdsMask } from "utils";
+import { InputChangeEvent, AnyObject, ReportStatus } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
+import { ReportContext } from "components";
 
 export const NumberField = ({
   name,
@@ -14,12 +15,18 @@ export const NumberField = ({
   placeholder,
   mask,
   sxOverride,
+  autosave,
   ...props
 }: Props) => {
   const [displayValue, setDisplayValue] = useState("");
 
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+
   // get form context
   const form = useFormContext();
+
+  const { report, updateReport } = useContext(ReportContext);
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -46,11 +53,30 @@ export const NumberField = ({
   };
 
   // update form data and display value on blur, using masked value
-  const onBlurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onBlurHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);
     form.setValue(name, maskedFieldValue, { shouldValidate: true });
+    if (autosave) {
+      if (userIsStateUser || userIsStateRep) {
+        // check field data validity
+        const fieldDataIsValid = await form.trigger(name);
+        // if valid, use; if not, reset to default
+        const fieldValue = fieldDataIsValid ? maskedFieldValue : "";
+
+        const reportKeys = {
+          state: state,
+          id: report?.id,
+        };
+        const dataToWrite = {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+          fieldData: { [name]: fieldValue },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
+    }
   };
 
   return (
@@ -87,6 +113,7 @@ interface Props {
   mask?: ValidCmsdsMask | keyof typeof customMaskMap;
   nested?: boolean;
   sxOverride?: AnyObject;
+  autosave?: boolean;
   [key: string]: any;
 }
 
