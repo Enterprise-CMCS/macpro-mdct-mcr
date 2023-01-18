@@ -5,13 +5,14 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { parseCustomHtml } from "utils";
+import { parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   DropdownChoice,
   DropdownOptions,
   EntityShape,
   InputChangeEvent,
+  ReportStatus,
 } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
@@ -25,7 +26,9 @@ export const DropdownField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const { report } = useContext(ReportContext);
+  const { report, updateReport } = useContext(ReportContext);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
@@ -83,9 +86,36 @@ export const DropdownField = ({
     form.setValue(name, selectedOption, { shouldValidate: true });
   };
 
+  // update form field data on blur
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    if (autosave) {
+      const selectedOption = {
+        label: event.target.id,
+        value: event.target.value,
+      };
+      if (userIsStateUser || userIsStateRep) {
+        // check field data validity
+        const fieldDataIsValid = await form.trigger(label);
+        // if valid, use; if not, reset to default
+        if (fieldDataIsValid) {
+          const reportKeys = {
+            state: state,
+            id: report?.id,
+          };
+          const dataToWrite = {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+            fieldData: { [name]: selectedOption },
+          };
+          await updateReport(reportKeys, dataToWrite);
+        }
+      }
+    }
+  };
+
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[name]?.value.message;
+  const errorMessage = formErrorState?.[name]?.value?.message;
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
@@ -99,6 +129,7 @@ export const DropdownField = ({
         options={formatOptions(options)}
         hint={parsedHint}
         onChange={onChangeHandler}
+        onBlur={onBlurHandler}
         errorMessage={errorMessage}
         value={displayValue?.value}
         {...props}

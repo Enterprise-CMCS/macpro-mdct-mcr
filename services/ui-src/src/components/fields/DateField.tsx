@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
-import { checkDateCompleteness, parseCustomHtml } from "utils";
+import {
+  AnyObject,
+  CustomHtmlElement,
+  InputChangeEvent,
+  ReportStatus,
+} from "types";
+import { checkDateCompleteness, parseCustomHtml, useUser } from "utils";
+import { ReportContext } from "components";
 
 export const DateField = ({
   name,
@@ -13,10 +19,14 @@ export const DateField = ({
   hint,
   sxOverride,
   nested,
-  autosave, // eslint-disable-line @typescript-eslint/no-unused-vars
+  autosave,
   ...props
 }: Props) => {
   const [displayValue, setDisplayValue] = useState<string>("");
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+
+  const { report, updateReport } = useContext(ReportContext);
 
   // get form context and register form field
   const form = useFormContext();
@@ -47,9 +57,30 @@ export const DateField = ({
   };
 
   // update form field data on blur
-  const onBlurHandler = (event: InputChangeEvent) => {
-    const fieldValue = event.target.value;
-    form.setValue(name, fieldValue, { shouldValidate: true });
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    if (autosave) {
+      const { name, value } = event.target;
+      if (userIsStateUser || userIsStateRep) {
+        // check field data validity
+        const fieldDataIsValid = await form.trigger(name);
+        // if valid, use; if not, reset to default
+        if (fieldDataIsValid) {
+          const reportKeys = {
+            state: state,
+            id: report?.id,
+          };
+          const dataToWrite = {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+            fieldData: { [name]: value },
+          };
+          await updateReport(reportKeys, dataToWrite);
+        }
+      }
+    } else {
+      const fieldValue = event.target.value;
+      form.setValue(name, fieldValue, { shouldValidate: true });
+    }
   };
 
   // prepare error message, hint, and classes
