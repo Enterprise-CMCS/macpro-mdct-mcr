@@ -41,7 +41,6 @@ const dropdownComponentWithOptions = (
   <DropdownField
     name="testDropdown"
     label="test-dropdown-label"
-    data-testid="test-dropdown-field"
     options={[
       { label: dropdownDefaultOptionText, value: "" },
       { label: "Option 1", value: "a" },
@@ -57,7 +56,6 @@ const dropdownComponentWithOptionsAndAutosave = (
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
-        data-testid="test-dropdown-autosave-field"
         options={[
           { label: dropdownDefaultOptionText, value: "" },
           { label: "Option 1", value: "a" },
@@ -76,7 +74,6 @@ const dropdownComponentWithDynamicOptions = (
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
-        data-testid="test-dropdown-field"
         options={"plans"}
       />
     </ReportContext.Provider>
@@ -153,8 +150,8 @@ describe("Test DropdownField hydration functionality", () => {
   test("If only hydrationValue exists, displayValue is set to it", () => {
     mockGetValues(undefined);
     render(dropdownComponentWithHydrationValue);
-    const dropdownField: HTMLSelectElement = screen.getByTestId(
-      "test-dropdown-field-to-hydrate"
+    const dropdownField: HTMLSelectElement = screen.getByLabelText(
+      "test-dropdown-label"
     );
     const displayValue = dropdownField.value;
     expect(displayValue).toEqual(mockHydrationValue.value);
@@ -181,7 +178,7 @@ describe("Test Dropdown component autosaves", () => {
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(dropdownComponentWithOptionsAndAutosave);
-    const dropDown = screen.getByTestId("test-dropdown-autosave-field");
+    const dropDown = screen.getByLabelText("test-dropdown-label");
     expect(dropDown).toBeVisible();
     const option2 = dropDown.children.item(2) as HTMLOptionElement;
     await userEvent.selectOptions(dropDown, "b");
@@ -206,7 +203,7 @@ describe("Test Dropdown component autosaves", () => {
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(dropdownComponentWithOptionsAndAutosave);
-    const dropDown = screen.getByTestId("test-dropdown-autosave-field");
+    const dropDown = screen.getByLabelText("test-dropdown-label");
     expect(dropDown).toBeVisible();
     const option2 = dropDown.children.item(2) as HTMLOptionElement;
     await userEvent.selectOptions(dropDown, "b");
@@ -219,7 +216,7 @@ describe("Test Dropdown component autosaves", () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     mockGetValues(undefined);
     render(dropdownComponentWithOptionsAndAutosave);
-    const dropDown = screen.getByTestId("test-dropdown-autosave-field");
+    const dropDown = screen.getByLabelText("test-dropdown-label");
     expect(dropDown).toBeVisible();
     const option2 = dropDown.children.item(2) as HTMLOptionElement;
     await userEvent.selectOptions(dropDown, "b");

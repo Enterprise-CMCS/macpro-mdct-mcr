@@ -36,21 +36,12 @@ jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const dateFieldComponent = (
-  <DateField
-    name="testDateField"
-    label="test-date-field"
-    data-testid="test-date-field"
-  />
+  <DateField name="testDateField" label="test-date-field" />
 );
 
 const dateFieldAutosavingComponent = (
   <ReportContext.Provider value={mockReportContext}>
-    <DateField
-      name="testDateField"
-      label="test-date-field"
-      data-testid="test-autosave-date-field"
-      autosave
-    />
+    <DateField name="testDateField" label="test-date-field" autosave />
   </ReportContext.Provider>
 );
 
