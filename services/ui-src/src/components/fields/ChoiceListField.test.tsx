@@ -6,7 +6,11 @@ import { act } from "react-dom/test-utils";
 import { useFormContext } from "react-hook-form";
 import { ChoiceListField, ReportContext } from "components";
 import { formFieldFactory, useUser } from "utils";
-import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
+import {
+  mockReportContext,
+  mockStateUser,
+  mockAdminUser,
+} from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -327,6 +331,52 @@ describe("Test Choicelist component autosaves", () => {
         },
       }
     );
+  });
+
+  test("Choicelist Checkbox does NOT autosaves with checked value when adminuser, autosave true, and form is valid", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockGetValues(undefined);
+    const mockHydrationValue = [{ key: "Choice 1", value: "Choice 1" }];
+    render(CheckboxComponentAutosave);
+    const checkBox1 = screen.getByText("Choice 1");
+    expect(checkBox1).toBeVisible();
+
+    await act(async () => {
+      await userEvent.click(checkBox1);
+    });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "autosaveCheckboxField",
+      mockHydrationValue,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+
+  test("Choicelist Checkbox does NOT autosaves with checked value when stateuser, autosave false, and form is valid", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    const mockHydrationValue = [{ key: "Choice 1", value: "Choice 1" }];
+    render(CheckboxComponent);
+    const checkBox1 = screen.getByText("Choice 1");
+    expect(checkBox1).toBeVisible();
+
+    await act(async () => {
+      await userEvent.click(checkBox1);
+    });
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "checkbox-field",
+      mockHydrationValue,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 
