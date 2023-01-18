@@ -69,8 +69,8 @@ export const renderFieldTableBody = (
       }
     );
 
-    fieldChoicesWithChildren?.map((choice: FieldChoice) =>
-      choice.children?.map((childField: FormField) =>
+    fieldChoicesWithChildren?.forEach((choice: FieldChoice) =>
+      choice.children?.forEach((childField: FormField) =>
         renderFieldRow(childField)
       )
     );
