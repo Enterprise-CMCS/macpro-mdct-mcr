@@ -133,7 +133,7 @@ describe("Test Datefield component autosaves", () => {
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(dateFieldAutosavingComponent);
-    const dateField = screen.getByTestId("test-autosave-date-field");
+    const dateField = screen.getByLabelText("test-date-field");
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
@@ -156,7 +156,7 @@ describe("Test Datefield component autosaves", () => {
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(dateFieldAutosavingComponent);
-    const dateField = screen.getByTestId("test-autosave-date-field");
+    const dateField = screen.getByLabelText("test-date-field");
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, " ");
     await userEvent.tab();
@@ -167,7 +167,7 @@ describe("Test Datefield component autosaves", () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     mockGetValues(undefined);
     render(dateFieldAutosavingComponent);
-    const dateField = screen.getByTestId("test-autosave-date-field");
+    const dateField = screen.getByLabelText("test-date-field");
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
@@ -178,7 +178,7 @@ describe("Test Datefield component autosaves", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(dateFieldComponent);
-    const dateField = screen.getByTestId("test-date-field");
+    const dateField = screen.getByLabelText("test-date-field");
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
