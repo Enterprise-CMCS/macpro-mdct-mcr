@@ -21,9 +21,8 @@ const error = {
 };
 
 // TEXT
-export const text = (): StringSchema =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
-export const textOptional = () => text().notRequired();
+export const text = (): StringSchema => string();
+export const textOptional = () => text();
 
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
@@ -36,20 +35,18 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
 
 // NUMBER - Number or Valid Strings
 export const number = () =>
-  string()
-    .required(error.REQUIRED_GENERIC)
-    .test({
-      message: error.INVALID_NUMBER_OR_NA,
-      test: (value) => {
-        const validNumberRegex = /[0-9,.]/;
-        if (value) {
-          const isValidStringValue = validNAValues.includes(value);
-          const isValidNumberValue = validNumberRegex.test(value);
-          return isValidStringValue || isValidNumberValue;
-        } else return true;
-      },
-    });
-export const numberOptional = () => number().notRequired();
+  string().test({
+    message: error.INVALID_NUMBER_OR_NA,
+    test: (value) => {
+      const validNumberRegex = /[0-9,.]/;
+      if (value) {
+        const isValidStringValue = validNAValues.includes(value);
+        const isValidNumberValue = validNumberRegex.test(value);
+        return isValidStringValue || isValidNumberValue;
+      } else return true;
+    },
+  });
+export const numberOptional = () => number();
 
 // Number - Ratio
 export const ratio = () =>
@@ -58,7 +55,6 @@ export const ratio = () =>
       message: error.REQUIRED_GENERIC,
       test: (val) => val != "",
     })
-    .required(error.REQUIRED_GENERIC)
     .test({
       message: error.INVALID_RATIO,
       test: (val) => {
@@ -93,18 +89,15 @@ export const ratio = () =>
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
-export const emailOptional = () => email().notRequired();
+export const emailOptional = () => email();
 
 // URL
 export const url = () => text().url(error.INVALID_URL);
-export const urlOptional = () => url().notRequired();
+export const urlOptional = () => url();
 
 // DATE
-export const date = () =>
-  string()
-    .required(error.REQUIRED_GENERIC)
-    .matches(dateFormatRegex, error.INVALID_DATE);
-export const dateOptional = () => date().notRequired();
+export const date = () => string().matches(dateFormatRegex, error.INVALID_DATE);
+export const dateOptional = () => date();
 export const endDate = (startDateField: string) =>
   date().test(
     "is-after-start-date",
@@ -118,30 +111,26 @@ export const endDate = (startDateField: string) =>
   );
 
 // DROPDOWN
-export const dropdown = () =>
-  object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
+export const dropdown = () => object({ label: text(), value: text() });
 
 // CHECKBOX
 export const checkbox = () =>
   array()
-    .min(1, error.REQUIRED_CHECKBOX)
-    .of(object({ key: text(), value: text() }))
-    .required(error.REQUIRED_CHECKBOX);
-export const checkboxOptional = () => checkbox().notRequired();
+    .min(0)
+    .of(object({ key: text(), value: text() }));
+export const checkboxOptional = () => checkbox();
 export const checkboxSingle = () => boolean();
 
 // RADIO
 export const radio = () =>
   array()
-    .min(1, error.REQUIRED_GENERIC)
-    .of(object({ key: text(), value: text() }))
-    .required(error.REQUIRED_GENERIC);
-export const radioOptional = () => radio().notRequired();
+    .min(0)
+    .of(object({ key: text(), value: text() }));
+export const radioOptional = () => radio();
 
 // DYNAMIC
-export const dynamic = () =>
-  array().min(0).of(mixed()).required(error.REQUIRED_GENERIC);
-export const dynamicOptional = () => dynamic().notRequired();
+export const dynamic = () => array().min(0).of(mixed());
+export const dynamicOptional = () => dynamic();
 
 // NESTED
 export const nested = (

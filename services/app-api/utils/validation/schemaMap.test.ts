@@ -4,6 +4,7 @@ import { number, ratio } from "./schemaMap";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
+    "",
     "123",
     "123.00",
     "123..00",
@@ -14,7 +15,7 @@ describe("Schemas", () => {
     "N/A",
     "Data not available",
   ];
-  const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
+  const badNumberTestCases = ["abc", "N", "!@#!@%"];
 
   const goodRatioTestCases = [
     "1:1",

@@ -21,6 +21,7 @@ export const DropdownField = ({
   options,
   hint,
   nested,
+  autosave, // eslint-disable-line @typescript-eslint/no-unused-vars
   sxOverride,
   ...props
 }: Props) => {
@@ -112,6 +113,7 @@ interface Props {
   hint?: any;
   options: DropdownOptions[] | string;
   nested?: boolean;
+  autosave?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

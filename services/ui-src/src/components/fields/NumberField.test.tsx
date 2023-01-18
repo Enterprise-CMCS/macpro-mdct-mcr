@@ -1,14 +1,23 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
-import { NumberField } from "components";
+import { NumberField, ReportContext } from "components";
+import { useUser } from "utils";
+import {
+  mockAdminUser,
+  mockReportContext,
+  mockStateUser,
+} from "utils/testing/setupJest";
+import { ReportStatus } from "types";
 
+const mockTrigger = jest.fn();
 const mockRhfMethods = {
   register: () => {},
   setValue: () => {},
   getValues: jest.fn(),
+  trigger: mockTrigger,
 };
 const mockUseFormContext = useFormContext as unknown as jest.Mock<
   typeof useFormContext
@@ -22,8 +31,15 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValue(returnValue),
   }));
 
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+
 const numberFieldComponent = (
-  <NumberField name="testNumberField" label="test-label" />
+  <NumberField
+    name="testNumberField"
+    label="test-label"
+    data-testid="test-number-field"
+  />
 );
 
 const commaMaskedNumberFieldComponent = (
@@ -46,7 +62,26 @@ const ratioMaskedNumberFieldComponent = (
   <NumberField name="testNumberField" label="test-label" mask="ratio" />
 );
 
+const numberFieldAutosavingComponent = (
+  <ReportContext.Provider value={mockReportContext}>
+    <NumberField
+      name="testNumberField"
+      label="test-label"
+      placeholder="test-placeholder"
+      data-testid="test-number-field-autosave"
+      autosave
+    />
+  </ReportContext.Provider>
+);
+
 describe("Test Maskless NumberField", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("NumberField is visible", () => {
     const result = render(numberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
@@ -68,7 +103,12 @@ describe("Test Maskless NumberField", () => {
 });
 
 describe("Test Comma-Separated Masked NumberField", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("onChangeHandler updates masked field value", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(commaMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -89,7 +129,11 @@ describe("Test Comma-Separated Masked NumberField", () => {
 });
 
 describe("Test Currency Masked NumberField", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("onChangeHandler updates masked field value", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(currencyMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -109,7 +153,11 @@ describe("Test Currency Masked NumberField", () => {
 });
 
 describe("Test Percentage Masked NumberField", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("onChangeHandler updates masked field value", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(percentageMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -130,7 +178,11 @@ describe("Test Percentage Masked NumberField", () => {
 });
 
 describe("Test Ratio Masked NumberField", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("onChangeHandler updates ratio field value", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(ratioMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -166,6 +218,13 @@ describe("Test NumberField hydration functionality", () => {
     />
   );
 
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("If only formFieldValue exists, displayValue is set to it", () => {
     mockGetValues(mockFormFieldValue);
     const result = render(numberFieldComponent);
@@ -194,6 +253,79 @@ describe("Test NumberField hydration functionality", () => {
     )!;
     const displayValue = numberField.value;
     expect(displayValue).toEqual(mockFormFieldValue);
+  });
+});
+
+describe("Test NumberField component autosaves", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  test("NumberField autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockTrigger.mockReturnValue(true);
+    mockGetValues(undefined);
+    render(numberFieldAutosavingComponent);
+    const textField = screen.getByTestId("test-number-field-autosave");
+    expect(textField).toBeVisible();
+    await userEvent.type(textField, "1234");
+    await userEvent.tab();
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+      {
+        state: mockStateUser.user?.state,
+        id: mockReportContext.report.id,
+      },
+      {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: mockStateUser.user?.full_name,
+        fieldData: { testNumberField: "1234" },
+      }
+    );
+  });
+
+  test("NumberField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockTrigger.mockReturnValue(false);
+    mockGetValues(undefined);
+    render(numberFieldAutosavingComponent);
+    const textField = screen.getByTestId("test-number-field-autosave");
+    expect(textField).toBeVisible();
+    await userEvent.type(textField, "    ");
+    await userEvent.tab();
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+      {
+        state: mockStateUser.user?.state,
+        id: mockReportContext.report.id,
+      },
+      {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: mockStateUser.user?.full_name,
+        fieldData: { testNumberField: "" },
+      }
+    );
+  });
+
+  test("NumberField does not autosave when not stateuser", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockGetValues(undefined);
+    render(numberFieldAutosavingComponent);
+    const textField = screen.getByTestId("test-number-field-autosave");
+    expect(textField).toBeVisible();
+    await userEvent.type(textField, "test value");
+    await userEvent.tab();
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+
+  test("NumberField does not autosave if autosave is false", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponent);
+    const textField = screen.getByTestId("test-number-field");
+    expect(textField).toBeVisible();
+    await userEvent.type(textField, "test value");
+    await userEvent.tab();
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 

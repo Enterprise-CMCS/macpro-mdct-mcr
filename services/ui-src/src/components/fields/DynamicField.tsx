@@ -3,8 +3,11 @@ import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
+import {
+  DeleteDynamicFieldRecordModal,
+  ReportContext,
+  TextField,
+} from "components";
 import { svgFilters } from "styles/theme";
 // utils
 import {
@@ -57,6 +60,37 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     const newDisplayValues = [...displayValues];
     newDisplayValues[currentEntityIndex].name = value;
     setDisplayValues(newDisplayValues);
+  };
+
+  // if should autosave, submit field data to database on blur
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    if (userIsStateUser || userIsStateRep) {
+      // check field data validity
+      const fieldDataIsValid = await form.trigger(event.target.name);
+      let data = displayValues;
+      // if valid, use; if not, reset to default
+      if (!fieldDataIsValid) {
+        data = displayValues.map((displayValue) => {
+          if (displayValue.id === event.target.id) displayValue.name = "";
+          return displayValue;
+        });
+      }
+
+      const reportKeys = {
+        state: state,
+        id: report?.id,
+      };
+      const dataToWrite = {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
+        fieldData: {
+          [name]: data,
+        },
+      };
+      await updateReport(reportKeys, dataToWrite);
+    }
   };
 
   const appendNewRecord = () => {
@@ -134,8 +168,12 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue?.length) {
-      setDisplayValues(hydrationValue);
-      append(hydrationValue);
+      // guard against autosave refresh error (https://bit.ly/3kiE2eE)
+      const displayValuesEntered = displayValues.length > hydrationValue.length;
+      const valuesToSet = displayValuesEntered ? displayValues : hydrationValue;
+      // set and append values
+      setDisplayValues(valuesToSet);
+      append(valuesToSet);
     } else {
       appendNewRecord();
     }
@@ -152,14 +190,16 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     <Box>
       {displayValues.map((field: EntityShape, index: number) => {
         return (
-          <Flex key={field.id} sx={sx.textField}>
-            <CmsdsTextField
+          <Flex key={field.id} sx={sx.dynamicField}>
+            <TextField
               id={field.id}
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={fieldErrorState?.[index]?.name.message}
-              onChange={(e) => onChangeHandler(e)}
+              errorMessage={fieldErrorState?.[index]?.name?.message}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
               value={field.name}
+              sxOverride={sx.textField}
               {...props}
             />
             <Box sx={sx.removeBox}>
@@ -225,11 +265,15 @@ const sx = {
     height: "2.5rem",
     marginTop: "2rem",
   },
-  textField: {
+  dynamicField: {
     alignItems: "flex-end",
     width: "32rem",
+
     ".ds-u-clearfix": {
       width: "100%",
     },
+  },
+  textField: {
+    width: "100%",
   },
 };

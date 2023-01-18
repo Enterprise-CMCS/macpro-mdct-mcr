@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
-import { parseCustomHtml } from "utils";
-import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { parseCustomHtml, useUser } from "utils";
+import {
+  InputChangeEvent,
+  AnyObject,
+  CustomHtmlElement,
+  ReportStatus,
+} from "types";
 
 export const TextField = ({
   name,
@@ -14,9 +20,15 @@ export const TextField = ({
   placeholder,
   sxOverride,
   nested,
+  autosave,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState<string>("");
+  const defaultValue = "";
+  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+  const { report, updateReport } = useContext(ReportContext);
 
   // get form context and register field
   const form = useFormContext();
@@ -44,6 +56,30 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
+  // if should autosave, submit field data to database on blur
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    if (autosave) {
+      const { name, value } = event.target;
+      if (userIsStateUser || userIsStateRep) {
+        // check field data validity
+        const fieldDataIsValid = await form.trigger(name);
+        // if valid, use; if not, reset to default
+        const fieldValue = fieldDataIsValid ? value : defaultValue;
+
+        const reportKeys = {
+          state: state,
+          id: report?.id,
+        };
+        const dataToWrite = {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+          fieldData: { [name]: fieldValue },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
+    }
+  };
+
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
@@ -60,6 +96,7 @@ export const TextField = ({
         hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
+        onBlur={(e) => onBlurHandler(e)}
         errorMessage={errorMessage}
         value={displayValue}
         {...props}
@@ -75,5 +112,6 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
+  autosave?: boolean;
   [key: string]: any;
 }
