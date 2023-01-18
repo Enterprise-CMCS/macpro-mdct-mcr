@@ -44,17 +44,17 @@ export const renderFieldTableBody = (
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
-  const renderFieldRow = (field: FormField) => {
+  const renderFieldRow = (formField: FormField) => {
     tableRows.push(
       <ExportedReportFieldRow
-        key={field.id}
-        field={field}
+        key={formField.id}
+        formField={formField}
         pageType={pageType}
         entityType={entityType}
       />
     );
     // check for nested child fields; if any, map through children and render
-    const fieldChoicesWithChildren = field?.props?.choices?.filter(
+    const fieldChoicesWithChildren = formField?.props?.choices?.filter(
       (choice: FieldChoice) => choice?.children
     );
     fieldChoicesWithChildren?.map((choice: FieldChoice) =>

@@ -3,121 +3,97 @@ import { useContext } from "react";
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types, utils
-import { AnyObject, EntityShape, FieldChoice, FormField, Choice } from "types";
-import { formatFieldData, parseFieldInfo, parseCustomHtml } from "utils";
+import { AnyObject, FormField } from "types";
+import {
+  parseFormFieldInfo,
+  parseCustomHtml,
+  renderDrawerDataCell,
+  renderDynamicDataCell,
+  renderStandardDataCell,
+} from "utils";
 
 const renderDataCell = (
-  field: FormField,
-  reportData: AnyObject,
+  formField: FormField,
+  allResponseData: AnyObject,
   pageType: string,
   entityType?: string
 ) => {
-  const noAnswerMessage = "Not Answered";
+  const noResponseVerbiage = "Not Answered";
 
   // render drawer (aka entity) data cell
   if (pageType === "drawer") {
-    const entityData = reportData[entityType!];
-    return entityData?.map((entity: EntityShape) => {
-      const fieldData = entity[field.id];
-
-      return (
-        <Box key={entity.id + field.id}>
-          <Text sx={sx.entityName}>{entity.name}</Text>
-          <Text sx={fieldData ? sx.entityData : sx.noAnswer}>
-            {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
-          </Text>
-        </Box>
-      );
-    });
-  }
-  // render dynamic field data cell
-  else if (field.type === "dynamic") {
-    const fieldData = reportData[field.id];
-    return (
-      fieldData?.map((entity: EntityShape) => (
-        <Text key={entity.id} sx={sx.entityItem}>
-          {entity.name}
-        </Text>
-      )) ?? <Text sx={sx.noAnswer}>{noAnswerMessage}</Text>
+    const entityResponseData = allResponseData[entityType!];
+    return renderDrawerDataCell(
+      formField,
+      entityResponseData,
+      noResponseVerbiage
     );
   }
-  // render standard data cell
-  else {
-    const fieldData = reportData[field.id];
-    // handle checkboxes and radio buttons
-    if (field.type === "checkbox" || field.type === "radio") {
-      const potentialFieldChoices = field.props?.choices;
-      // filter potential choices to just those that are selected
-      const selectedChoices = potentialFieldChoices.filter(
-        (potentialChoice: FieldChoice) =>
-          fieldData?.find((element: Choice) =>
-            element.key.includes(potentialChoice.id)
-          )
-      );
-      return selectedChoices?.map((choice: FieldChoice) => {
-        // get "otherText" value, if present (always only a single child element here)
-        const hasRelatedNestedEntry =
-          choice.children?.[0]?.id.endsWith("otherText");
-        const relatedNestedEntry = reportData?.[choice?.children?.[0]?.id!];
-        return (
-          <Text key={choice.id} sx={sx.fieldChoice}>
-            {choice.label} {hasRelatedNestedEntry && " – " + relatedNestedEntry}
-          </Text>
-        );
-      });
-    } else {
-      return (
-        <Text sx={!fieldData ? sx.noAnswer : undefined}>
-          {fieldData ? formatFieldData(field, fieldData) : noAnswerMessage}
-        </Text>
-      );
-    }
+  // render dynamic field data cell
+  if (formField.type === "dynamic") {
+    const fieldResponseData = allResponseData[formField.id];
+    return renderDynamicDataCell(fieldResponseData, noResponseVerbiage);
   }
+  // else render standard data cell
+  const fieldResponseData = allResponseData[formField.id];
+  return renderStandardDataCell(
+    formField,
+    fieldResponseData,
+    allResponseData,
+    noResponseVerbiage
+  );
 };
 
 export const ExportedReportFieldRow = ({
-  field,
+  formField,
   pageType,
   entityType,
 }: Props) => {
   const { report } = useContext(ReportContext);
   const reportData = report?.fieldData;
-  const isDynamicField = field.type === "dynamic";
-  const fieldInfo = parseFieldInfo(field?.props!);
+  const isDynamicField = formField.type === "dynamic";
+  const formFieldInfo = parseFormFieldInfo(formField?.props!);
+
+  // guard against double-rendering "otherText" response
+  const isOtherTextEntry = formField.id.endsWith("-otherText");
+  if (isOtherTextEntry) return null;
 
   return (
     <Tr>
-      {/* number column */}
+      {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
-          <Text sx={sx.fieldNumber}>{fieldInfo.number || "—"}</Text>
+          <Text sx={sx.fieldNumber}>{formFieldInfo.number || "—"}</Text>
         </Td>
       )}
-      {/* label column */}
+
+      {/* label column/cell */}
       <Td sx={sx.labelColumn}>
-        {fieldInfo.label ? (
+        {formFieldInfo.label ? (
           <Box>
             <Text sx={sx.fieldLabel}>
-              {!isDynamicField ? fieldInfo.label : field?.props?.label}
+              {!isDynamicField ? formFieldInfo.label : formField?.props?.label}
             </Text>
-            {fieldInfo.hint && (
-              <Box sx={sx.fieldHint}>{parseCustomHtml(fieldInfo.hint)}</Box>
+            {formFieldInfo.hint && (
+              <Box sx={sx.fieldHint}>{parseCustomHtml(formFieldInfo.hint)}</Box>
             )}
           </Box>
         ) : (
           <Text>{"—"}</Text>
         )}
       </Td>
-      {/* data column */}
+
+      {/* data column/cell */}
       <Td>
-        {reportData && renderDataCell(field, reportData, pageType, entityType)}
+        {reportData &&
+          renderDataCell(formField, reportData, pageType, entityType)}
       </Td>
     </Tr>
   );
 };
 
 export interface Props {
-  field: FormField;
+  formField: FormField;
   pageType: string;
   entityType?: string;
 }
@@ -136,6 +112,7 @@ const sx = {
     ".two-column &": {
       ".desktop &": {
         paddingLeft: "6rem",
+        width: "19.5rem",
       },
     },
   },
@@ -158,10 +135,10 @@ const sx = {
     marginBottom: "1rem",
     fontWeight: "bold",
   },
-  entityData: {
+  regularResponse: {
     marginBottom: "1rem",
   },
-  noAnswer: {
+  noResponse: {
     color: "palette.error_darker",
     marginBottom: "1rem",
   },

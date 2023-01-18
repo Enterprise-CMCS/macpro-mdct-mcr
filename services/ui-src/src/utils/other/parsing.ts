@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import { Link as RouterLink } from "react-router-dom";
 import { Heading, Link, Text } from "@chakra-ui/react";
 // types
-import { AnyObject, CustomHtmlElement, FormField } from "types";
+import { CustomHtmlElement } from "types";
 
 // return created elements from custom html array
 export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
@@ -49,39 +49,4 @@ export const sanitizeAndParseHtml = (html: string) => {
   const sanitizedHtml = sanitize(html);
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;
-};
-
-// parse field info from field props
-export const parseFieldInfo = (fieldProps: AnyObject) => {
-  const labelArray = fieldProps?.label?.split(" ");
-  return {
-    number: labelArray?.[0],
-    label: labelArray?.slice(1)?.join(" "),
-    hint: fieldProps?.hint,
-    indicator: fieldProps?.indicator,
-  };
-};
-
-export const formatFieldData = (field: FormField, fieldData: any) => {
-  if (field) {
-    const { validation, type, props } = field;
-    const qualifier = props?.mask || validation || type;
-
-    let link;
-
-    switch (qualifier) {
-      case "percentage":
-        return fieldData + "%";
-      case "currency":
-        return "$" + fieldData;
-      case "email" || "emailOptional":
-        link = '<a href="mailto:' + fieldData + '">' + fieldData + "</a>";
-        return parseCustomHtml(link);
-      case "url" || "urlOptional":
-        link = '<a href="' + fieldData + '">' + fieldData + "</a>";
-        return parseCustomHtml(link);
-      default:
-        return fieldData;
-    }
-  }
 };
