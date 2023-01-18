@@ -57,9 +57,9 @@ export const ExportedReportFieldRow = ({
   // guard against double-rendering "otherText" response
   const isOtherTextEntry = formField.id.endsWith("-otherText");
   if (isOtherTextEntry) return null;
-
+  const skipBorder = !formField.props;
   return (
-    <Tr>
+    <Tr sx={skipBorder ? sx.skipBorder : undefined}>
       {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
@@ -102,6 +102,9 @@ const sx = {
   numberColumn: {
     width: "5.5rem",
     paddingLeft: 0,
+  },
+  skipBorder: {
+    "border-top": "hidden",
   },
   fieldNumber: {
     fontSize: "md",
