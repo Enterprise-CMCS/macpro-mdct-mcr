@@ -28,13 +28,44 @@ export const renderRegularFieldResponse = (
   formField: FormField,
   fieldResponseData: AnyObject,
   noResponseVerbiage: string
-) => (
-  <Text sx={fieldResponseData ? sx.regularResponse : sx.noResponse}>
-    {fieldResponseData
-      ? maskResponseData(formField, fieldResponseData)
-      : noResponseVerbiage}
-  </Text>
-);
+) => {
+  // check for and handle link fields (email, url)
+  const emailTypes = ["email", "emailOptional"];
+  const urlTypes = ["url", "urlOptional"];
+  const linkTypes = [...emailTypes, ...urlTypes];
+  const fieldValidationType =
+    typeof formField?.validation === "string"
+      ? formField.validation
+      : formField.validation.type;
+  if (linkTypes.includes(fieldValidationType)) {
+    return renderLinkFieldResponse(
+      fieldResponseData,
+      emailTypes.includes(formField.type),
+      noResponseVerbiage
+    );
+  }
+  // handle all other field types
+  return (
+    <Text sx={fieldResponseData ? sx.regularResponse : sx.noResponse}>
+      {fieldResponseData
+        ? maskResponseData(formField, fieldResponseData)
+        : noResponseVerbiage}
+    </Text>
+  );
+};
+
+export const renderLinkFieldResponse = (
+  fieldResponseData: AnyObject,
+  isEmail: boolean,
+  noResponseVerbiage: string
+) =>
+  fieldResponseData ? (
+    <Link href={(isEmail ? "mailto:" : "") + fieldResponseData} target="_blank">
+      {fieldResponseData}
+    </Link>
+  ) : (
+    <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>
+  );
 
 export const renderChoiceListFieldResponse = (
   formField: FormField,
@@ -51,10 +82,7 @@ export const renderChoiceListFieldResponse = (
       )
   );
   const choicesToDisplay = selectedChoices?.map((choice: FieldChoice) => {
-    /*
-     * get related "otherText" value, if present (always only a single child element here)
-     * TODO: consider ETL operation to remove the "magic" here
-     */
+    // get related "otherText" value, if present (always only a single child element here)
     const shouldDisplayRelatedOtherTextEntry =
       choice.children?.[0]?.id.endsWith("-otherText");
     const relatedOtherTextEntry = allResponseData?.[choice?.children?.[0]?.id!];
@@ -72,44 +100,19 @@ export const renderChoiceListFieldResponse = (
   );
 };
 
-export const renderLinkFieldResponse = (
-  fieldResponseData: AnyObject,
-  isEmail: boolean,
-  noResponseVerbiage: string
-) =>
-  fieldResponseData ? (
-    <Link href={(isEmail ? "mailto:" : "") + fieldResponseData} target="_blank">
-      {fieldResponseData}
-    </Link>
-  ) : (
-    <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>
-  );
-
 export const renderStandardDataCell = (
   formField: FormField,
   fieldResponseData: AnyObject,
   allResponseData: AnyObject,
   noResponseVerbiage: string
 ) => {
-  // handle checkboxes and radio buttons
+  // check for and handle choice list fields (checkbox, radio)
   const choiceListFields = ["checkbox", "radio"];
   if (choiceListFields.includes(formField.type)) {
     return renderChoiceListFieldResponse(
       formField,
       fieldResponseData,
       allResponseData,
-      noResponseVerbiage
-    );
-  }
-  // handle link fields (email, url)
-  const emailTypes = ["email", "emailOptional"];
-  const urlTypes = ["url", "urlOptional"];
-  const linkTypes = [...emailTypes, ...urlTypes];
-  const fieldValidationType = JSON.stringify(formField?.validation);
-  if (linkTypes.includes(fieldValidationType)) {
-    return renderLinkFieldResponse(
-      fieldResponseData,
-      emailTypes.includes(formField.type),
       noResponseVerbiage
     );
   }
@@ -145,7 +148,7 @@ export const renderDrawerDataCell = (
       <Box key={entity.id + formField.id}>
         <Text sx={sx.entityName}>{entity.name}</Text>
         {formField.type === "checkbox" || formField.type === "radio"
-          ? /* handle radio/checkbox fields */
+          ? /* handle choice list fields (radio, checkbox) */
             renderChoiceListFieldResponse(
               formField,
               fieldResponseData,

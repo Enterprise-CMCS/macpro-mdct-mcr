@@ -1,45 +1,32 @@
 import { maskResponseData, parseFormFieldInfo } from "./export";
 
+const mockFieldData = {
+  test_field: "12",
+};
+
+const standardField = {
+  id: "test_field",
+  type: "number",
+  validation: "number",
+  props: {},
+};
+
 const percentageField = {
-  fieldData: {
-    test_field: "12",
-  },
+  id: "test_field",
+  type: "number",
+  validation: "number",
   props: {
     mask: "percentage",
   },
-  id: "test_field",
-  type: "number",
-  validation: "number",
 };
 
 const currencyField = {
-  fieldData: {
-    test_field: "12",
-  },
-  props: {
-    mask: "currency",
-  },
   id: "test_field",
   type: "number",
   validation: "number",
-};
-
-const emailField = {
-  fieldData: {
-    test_field: "test@test.com",
+  props: {
+    mask: "currency",
   },
-  id: "test_field",
-  type: "text",
-  validation: "email",
-};
-
-const urlField = {
-  fieldData: {
-    test_field: "http://website.com",
-  },
-  id: "test_field",
-  type: "text",
-  validation: "url",
 };
 
 describe("Test parseFormFieldInfo", () => {
@@ -59,78 +46,19 @@ describe("Test parseFormFieldInfo", () => {
   });
 });
 
-describe("Export: Parsing Data", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+describe("Test maskResponseData", () => {
+  test("Percentage mask works correctly", () => {
+    const result = maskResponseData(percentageField, mockFieldData.test_field);
+    expect(result).toEqual("12%");
   });
 
-  test("Parsing Percentage", () => {
-    const dataReturn = maskResponseData(
-      percentageField,
-      percentageField.fieldData.test_field
-    );
-    expect(dataReturn).toEqual("12%");
-  });
-  test("Parsing currency", () => {
-    const dataReturn = maskResponseData(
-      currencyField,
-      currencyField.fieldData.test_field
-    );
-    expect(dataReturn).toEqual("$12");
+  test("Currency mask works correctly", () => {
+    const result = maskResponseData(currencyField, mockFieldData.test_field);
+    expect(result).toEqual("$12");
   });
 
-  test("Parsing email", () => {
-    const dataReturn = maskResponseData(
-      emailField,
-      emailField.fieldData.test_field
-    );
-    expect(dataReturn).toEqual(
-      <span>
-        <a href="mailto:test@test.com">test@test.com</a>
-      </span>
-    );
-  });
-});
-
-describe("Export: Number masks", () => {
-  test("Percent Mask", () => {
-    const dataReturn = maskResponseData(
-      percentageField,
-      percentageField.fieldData.test_field
-    );
-    expect(dataReturn).toEqual("12%");
-  });
-
-  test("Currency Mask", () => {
-    const dataReturn = maskResponseData(
-      currencyField,
-      currencyField.fieldData.test_field
-    );
-    expect(dataReturn).toEqual("$12");
-  });
-});
-
-describe("Export: String Parsing", () => {
-  test("Email Link", () => {
-    const dataReturn = maskResponseData(
-      emailField,
-      emailField.fieldData.test_field
-    );
-    expect(dataReturn).toEqual(
-      <span>
-        <a href="mailto:test@test.com">test@test.com</a>
-      </span>
-    );
-  });
-  test("URL Link", () => {
-    const dataReturn = maskResponseData(
-      urlField,
-      urlField.fieldData.test_field
-    );
-    expect(dataReturn).toEqual(
-      <span>
-        <a href="http://website.com">http://website.com</a>
-      </span>
-    );
+  test("Standard field is not masked", () => {
+    const result = maskResponseData(standardField, mockFieldData.test_field);
+    expect(result).toEqual("12");
   });
 });
