@@ -30,7 +30,7 @@ describe("ExportedReportBanner", () => {
   });
 });
 
-describe("Test Sticky Banner accessibility", () => {
+describe("Test ExportedReportBanner accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(<ExportedReportBanner />);
     const results = await axe(container);

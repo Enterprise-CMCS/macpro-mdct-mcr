@@ -1,34 +1,5 @@
 import { maskResponseData, parseFormFieldInfo } from "./export";
 
-const mockFieldData = {
-  test_field: "12",
-};
-
-const standardField = {
-  id: "test_field",
-  type: "number",
-  validation: "number",
-  props: {},
-};
-
-const percentageField = {
-  id: "test_field",
-  type: "number",
-  validation: "number",
-  props: {
-    mask: "percentage",
-  },
-};
-
-const currencyField = {
-  id: "test_field",
-  type: "number",
-  validation: "number",
-  props: {
-    mask: "currency",
-  },
-};
-
 describe("Test parseFormFieldInfo", () => {
   test("Correctly parses field info when full props are provided", () => {
     const input = { label: "A.1 Label", hint: "Hint" };
@@ -48,17 +19,17 @@ describe("Test parseFormFieldInfo", () => {
 
 describe("Test maskResponseData", () => {
   test("Percentage mask works correctly", () => {
-    const result = maskResponseData(percentageField, mockFieldData.test_field);
+    const result = maskResponseData("percentage", "12");
     expect(result).toEqual("12%");
   });
 
   test("Currency mask works correctly", () => {
-    const result = maskResponseData(currencyField, mockFieldData.test_field);
+    const result = maskResponseData("currency", "12");
     expect(result).toEqual("$12");
   });
 
   test("Standard field is not masked", () => {
-    const result = maskResponseData(standardField, mockFieldData.test_field);
+    const result = maskResponseData("mock", "12");
     expect(result).toEqual("12");
   });
 });

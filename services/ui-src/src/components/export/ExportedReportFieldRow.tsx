@@ -15,6 +15,7 @@ export const ExportedReportFieldRow = ({
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
   const formFieldInfo = parseFormFieldInfo(formField?.props!);
+  const noResponseVerbiage = "Not Answered";
 
   // guard against double-rendering "otherText" response
   const isOtherTextEntry = formField.id.endsWith("-otherText");
@@ -48,7 +49,13 @@ export const ExportedReportFieldRow = ({
       {/* data column/cell */}
       <Td>
         {reportData &&
-          renderDataCell(formField, reportData, pageType, entityType)}
+          renderDataCell(
+            formField,
+            reportData,
+            pageType,
+            noResponseVerbiage,
+            entityType
+          )}
       </Td>
     </Tr>
   );

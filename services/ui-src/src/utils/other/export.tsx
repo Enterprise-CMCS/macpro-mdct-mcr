@@ -1,13 +1,14 @@
 import { Box, Link, Text } from "@chakra-ui/react";
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 
+// checks for type of data cell to be render and calls the appropriate renderer
 export const renderDataCell = (
   formField: FormField,
   allResponseData: AnyObject,
   pageType: string,
+  noResponseVerbiage: string,
   entityType?: string
 ) => {
-  const noResponseVerbiage = "Not Answered";
   // render drawer data cell (list entities & per-entity responses)
   if (pageType === "drawer") {
     const entityResponseData = allResponseData[entityType!];
@@ -32,31 +33,35 @@ export const renderDataCell = (
   );
 };
 
-// parse field info from field props
-export const parseFormFieldInfo = (formFieldProps: AnyObject) => {
-  const labelArray = formFieldProps?.label?.split(" ");
-  return {
-    number: labelArray?.[0],
-    label: labelArray?.slice(1)?.join(" "),
-    hint: formFieldProps?.hint,
-    indicator: formFieldProps?.indicator,
-  };
-};
-
-// masks response data as necessary
-export const maskResponseData = (
+export const renderDrawerDataCell = (
   formField: FormField,
-  fieldResponseData: any
-) => {
-  switch (formField.props?.mask) {
-    case "percentage":
-      return fieldResponseData + "%";
-    case "currency":
-      return "$" + fieldResponseData;
-    default:
-      return fieldResponseData;
-  }
-};
+  entityResponseData: AnyObject | undefined,
+  noResponseVerbiage: string
+) =>
+  entityResponseData?.map((entity: EntityShape) => {
+    const fieldResponseData = entity[formField.id];
+    return (
+      <Box key={entity.id + formField.id} sx={sx.entityBox}>
+        <Text sx={sx.entityName}>{entity.name}</Text>
+        {renderResponseData(
+          formField,
+          fieldResponseData,
+          entityResponseData,
+          noResponseVerbiage
+        )}
+      </Box>
+    );
+  }) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
+
+export const renderDynamicDataCell = (
+  fieldResponseData: AnyObject,
+  noResponseVerbiage: string
+) =>
+  fieldResponseData?.map((entity: EntityShape) => (
+    <Text key={entity.id} sx={sx.dynamicItem}>
+      {entity.name}
+    </Text>
+  )) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
 
 export const renderResponseData = (
   formField: FormField,
@@ -64,79 +69,31 @@ export const renderResponseData = (
   widerResponseData: AnyObject,
   noResponseVerbiage: string
 ) => {
-  // check for and handle choice list fields (checkbox, radio)
-  if (["checkbox", "radio"].includes(formField.type)) {
+  const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
+  // check for and handle no response
+  const hasResponse: boolean = isChoiceListField
+    ? fieldResponseData?.length
+    : fieldResponseData;
+  if (!hasResponse) return <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
+  // chandle choice list fields (checkbox, radio)
+  if (isChoiceListField) {
     return renderChoiceListFieldResponse(
       formField,
       fieldResponseData,
-      widerResponseData,
-      noResponseVerbiage
+      widerResponseData
     );
   }
   // check for and handle link fields (email, url)
   const { isLink, isEmail } = checkLinkTypes(formField);
-  if (isLink) {
-    return renderLinkFieldResponse(
-      fieldResponseData,
-      isEmail,
-      noResponseVerbiage
-    );
-  }
+  if (isLink) return renderLinkFieldResponse(fieldResponseData, isEmail);
   // handle all other field types
-  return renderDefaultFieldResponse(
-    formField,
-    fieldResponseData,
-    noResponseVerbiage
-  );
-};
-
-// check for and handle link fields (email, url)
-export const checkLinkTypes = (formField: FormField) => {
-  const emailTypes = ["email", "emailOptional"];
-  const urlTypes = ["url", "urlOptional"];
-  const linkTypes = [...emailTypes, ...urlTypes];
-  const fieldValidationType =
-    typeof formField?.validation === "string"
-      ? formField.validation
-      : formField.validation.type;
-  return {
-    isLink: linkTypes.includes(fieldValidationType),
-    isEmail: emailTypes.includes(fieldValidationType),
-  };
-};
-
-export const renderLinkFieldResponse = (
-  fieldResponseData: AnyObject,
-  isEmail: boolean,
-  noResponseVerbiage: string
-) =>
-  fieldResponseData ? (
-    <Link href={(isEmail ? "mailto:" : "") + fieldResponseData} target="_blank">
-      {fieldResponseData}
-    </Link>
-  ) : (
-    <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>
-  );
-
-export const renderDefaultFieldResponse = (
-  formField: FormField,
-  fieldResponseData: AnyObject,
-  noResponseVerbiage: string
-) => {
-  return (
-    <Text sx={fieldResponseData ? sx.regularResponse : sx.noResponse}>
-      {fieldResponseData
-        ? maskResponseData(formField, fieldResponseData)
-        : noResponseVerbiage}
-    </Text>
-  );
+  return renderDefaultFieldResponse(formField, fieldResponseData);
 };
 
 export const renderChoiceListFieldResponse = (
   formField: FormField,
   fieldResponseData: AnyObject,
-  allResponseData: AnyObject,
-  noResponseVerbiage: string
+  allResponseData: AnyObject
 ) => {
   // filter potential choices to just those that are selected
   const potentialFieldChoices = formField.props?.choices;
@@ -158,59 +115,87 @@ export const renderChoiceListFieldResponse = (
       </Text>
     );
   });
-  return selectedChoices.length ? (
-    choicesToDisplay
-  ) : (
-    <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>
-  );
+  return choicesToDisplay;
 };
 
-export const renderDynamicDataCell = (
+export const renderLinkFieldResponse = (
   fieldResponseData: AnyObject,
-  noResponseVerbiage: string
-) =>
-  fieldResponseData?.map((entity: EntityShape) => (
-    <Text key={entity.id} sx={sx.entityItem}>
-      {entity.name}
-    </Text>
-  )) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
+  isEmail: boolean
+) => (
+  <Link href={(isEmail ? "mailto:" : "") + fieldResponseData} target="_blank">
+    {fieldResponseData}
+  </Link>
+);
 
-export const renderDrawerDataCell = (
+export const renderDefaultFieldResponse = (
   formField: FormField,
-  entityResponseData: AnyObject | undefined,
-  noResponseVerbiage: string
-) =>
-  entityResponseData?.map((entity: EntityShape) => {
-    const fieldResponseData = entity[formField.id];
-    return (
-      <Box key={entity.id + formField.id}>
-        <Text sx={sx.entityName}>{entity.name}</Text>
-        {renderResponseData(
-          formField,
-          fieldResponseData,
-          entityResponseData,
-          noResponseVerbiage
-        )}
-      </Box>
-    );
-  }) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
+  fieldResponseData: AnyObject
+) => {
+  // check and handle fields that need a mask applied
+  const fieldMask = formField.props?.mask;
+  if (fieldMask)
+    return <Text>{maskResponseData(fieldMask, fieldResponseData)}</Text>;
+  // render all other fields
+  return <Text>{fieldResponseData}</Text>;
+};
 
+// check for and handle link fields (email, url)
+export const checkLinkTypes = (formField: FormField) => {
+  const emailTypes = ["email", "emailOptional"];
+  const urlTypes = ["url", "urlOptional"];
+  const linkTypes = [...emailTypes, ...urlTypes];
+  const fieldValidationType =
+    typeof formField?.validation === "string"
+      ? formField.validation
+      : formField.validation.type;
+  return {
+    isLink: linkTypes.includes(fieldValidationType),
+    isEmail: emailTypes.includes(fieldValidationType),
+  };
+};
+
+// mask response data as necessary
+export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
+  switch (fieldMask) {
+    case "percentage":
+      return fieldResponseData + "%";
+    case "currency":
+      return "$" + fieldResponseData;
+    default:
+      return fieldResponseData;
+  }
+};
+
+// parse field info from field props
+export const parseFormFieldInfo = (formFieldProps: AnyObject) => {
+  const labelArray = formFieldProps?.label?.split(" ");
+  return {
+    number: labelArray?.[0],
+    label: labelArray?.slice(1)?.join(" "),
+    hint: formFieldProps?.hint,
+    indicator: formFieldProps?.indicator,
+  };
+};
+
+// style object for rendered elements
 const sx = {
   fieldChoice: {
     marginBottom: "1rem",
   },
-  entityItem: {
-    marginBottom: "1.5rem",
+  dynamicItem: {
+    marginBottom: "1rem",
+  },
+  entityBox: {
+    marginBottom: "1rem",
+    "&:last-of-type": {
+      marginBottom: 0,
+    },
   },
   entityName: {
     marginBottom: "1rem",
     fontWeight: "bold",
   },
-  regularResponse: {
-    marginBottom: "1rem",
-  },
   noResponse: {
     color: "palette.error_darker",
-    marginBottom: "1rem",
   },
 };
