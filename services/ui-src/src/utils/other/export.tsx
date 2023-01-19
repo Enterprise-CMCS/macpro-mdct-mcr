@@ -1,6 +1,37 @@
 import { Box, Link, Text } from "@chakra-ui/react";
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 
+export const renderDataCell = (
+  formField: FormField,
+  allResponseData: AnyObject,
+  pageType: string,
+  entityType?: string
+) => {
+  const noResponseVerbiage = "Not Answered";
+  // render drawer data cell (list entities & per-entity responses)
+  if (pageType === "drawer") {
+    const entityResponseData = allResponseData[entityType!];
+    return renderDrawerDataCell(
+      formField,
+      entityResponseData,
+      noResponseVerbiage
+    );
+  }
+  // render dynamic field data cell (list dynamic field entities)
+  if (formField.type === "dynamic") {
+    const fieldResponseData = allResponseData[formField.id];
+    return renderDynamicDataCell(fieldResponseData, noResponseVerbiage);
+  }
+  // render standard data cell (just field response data)
+  const fieldResponseData = allResponseData[formField.id];
+  return renderResponseData(
+    formField,
+    fieldResponseData,
+    allResponseData,
+    noResponseVerbiage
+  );
+};
+
 // parse field info from field props
 export const parseFormFieldInfo = (formFieldProps: AnyObject) => {
   const labelArray = formFieldProps?.label?.split(" ");
@@ -13,23 +44,54 @@ export const parseFormFieldInfo = (formFieldProps: AnyObject) => {
 };
 
 // masks response data as necessary
-export const maskResponseData = (formField: FormField, responseData: any) => {
+export const maskResponseData = (
+  formField: FormField,
+  fieldResponseData: any
+) => {
   switch (formField.props?.mask) {
     case "percentage":
-      return responseData + "%";
+      return fieldResponseData + "%";
     case "currency":
-      return "$" + responseData;
+      return "$" + fieldResponseData;
     default:
-      return responseData;
+      return fieldResponseData;
   }
 };
 
-export const renderRegularFieldResponse = (
+export const renderResponseData = (
   formField: FormField,
-  fieldResponseData: AnyObject,
+  fieldResponseData: any,
+  widerResponseData: AnyObject,
   noResponseVerbiage: string
 ) => {
+  // check for and handle choice list fields (checkbox, radio)
+  if (["checkbox", "radio"].includes(formField.type)) {
+    return renderChoiceListFieldResponse(
+      formField,
+      fieldResponseData,
+      widerResponseData,
+      noResponseVerbiage
+    );
+  }
   // check for and handle link fields (email, url)
+  const { isLink, isEmail } = checkLinkTypes(formField);
+  if (isLink) {
+    return renderLinkFieldResponse(
+      fieldResponseData,
+      isEmail,
+      noResponseVerbiage
+    );
+  }
+  // handle all other field types
+  return renderDefaultFieldResponse(
+    formField,
+    fieldResponseData,
+    noResponseVerbiage
+  );
+};
+
+// check for and handle link fields (email, url)
+export const checkLinkTypes = (formField: FormField) => {
   const emailTypes = ["email", "emailOptional"];
   const urlTypes = ["url", "urlOptional"];
   const linkTypes = [...emailTypes, ...urlTypes];
@@ -37,21 +99,10 @@ export const renderRegularFieldResponse = (
     typeof formField?.validation === "string"
       ? formField.validation
       : formField.validation.type;
-  if (linkTypes.includes(fieldValidationType)) {
-    return renderLinkFieldResponse(
-      fieldResponseData,
-      emailTypes.includes(formField.type),
-      noResponseVerbiage
-    );
-  }
-  // handle all other field types
-  return (
-    <Text sx={fieldResponseData ? sx.regularResponse : sx.noResponse}>
-      {fieldResponseData
-        ? maskResponseData(formField, fieldResponseData)
-        : noResponseVerbiage}
-    </Text>
-  );
+  return {
+    isLink: linkTypes.includes(fieldValidationType),
+    isEmail: emailTypes.includes(fieldValidationType),
+  };
 };
 
 export const renderLinkFieldResponse = (
@@ -66,6 +117,20 @@ export const renderLinkFieldResponse = (
   ) : (
     <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>
   );
+
+export const renderDefaultFieldResponse = (
+  formField: FormField,
+  fieldResponseData: AnyObject,
+  noResponseVerbiage: string
+) => {
+  return (
+    <Text sx={fieldResponseData ? sx.regularResponse : sx.noResponse}>
+      {fieldResponseData
+        ? maskResponseData(formField, fieldResponseData)
+        : noResponseVerbiage}
+    </Text>
+  );
+};
 
 export const renderChoiceListFieldResponse = (
   formField: FormField,
@@ -100,42 +165,15 @@ export const renderChoiceListFieldResponse = (
   );
 };
 
-export const renderStandardDataCell = (
-  formField: FormField,
-  fieldResponseData: AnyObject,
-  allResponseData: AnyObject,
-  noResponseVerbiage: string
-) => {
-  // check for and handle choice list fields (checkbox, radio)
-  const choiceListFields = ["checkbox", "radio"];
-  if (choiceListFields.includes(formField.type)) {
-    return renderChoiceListFieldResponse(
-      formField,
-      fieldResponseData,
-      allResponseData,
-      noResponseVerbiage
-    );
-  }
-  // handle all other field types
-  return renderRegularFieldResponse(
-    formField,
-    fieldResponseData,
-    noResponseVerbiage
-  );
-};
-
 export const renderDynamicDataCell = (
   fieldResponseData: AnyObject,
   noResponseVerbiage: string
-) => {
-  return (
-    fieldResponseData?.map((entity: EntityShape) => (
-      <Text key={entity.id} sx={sx.entityItem}>
-        {entity.name}
-      </Text>
-    )) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>
-  );
-};
+) =>
+  fieldResponseData?.map((entity: EntityShape) => (
+    <Text key={entity.id} sx={sx.entityItem}>
+      {entity.name}
+    </Text>
+  )) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
 
 export const renderDrawerDataCell = (
   formField: FormField,
@@ -147,20 +185,12 @@ export const renderDrawerDataCell = (
     return (
       <Box key={entity.id + formField.id}>
         <Text sx={sx.entityName}>{entity.name}</Text>
-        {formField.type === "checkbox" || formField.type === "radio"
-          ? /* handle choice list fields (radio, checkbox) */
-            renderChoiceListFieldResponse(
-              formField,
-              fieldResponseData,
-              entityResponseData,
-              noResponseVerbiage
-            )
-          : /* handle all other field types */
-            renderRegularFieldResponse(
-              formField,
-              fieldResponseData,
-              noResponseVerbiage
-            )}
+        {renderResponseData(
+          formField,
+          fieldResponseData,
+          entityResponseData,
+          noResponseVerbiage
+        )}
       </Box>
     );
   }) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
