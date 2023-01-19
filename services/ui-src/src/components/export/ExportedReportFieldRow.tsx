@@ -26,23 +26,27 @@ export const ExportedReportFieldRow = ({
       {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
-          <Text sx={sx.fieldNumber}>{formFieldInfo.number || "—"}</Text>
+          <Text sx={sx.fieldNumber}>{formFieldInfo.number || "N/A"}</Text>
         </Td>
       )}
 
       {/* label column/cell */}
       <Td sx={sx.labelColumn}>
-        {formFieldInfo.label ? (
+        {formFieldInfo.label || formFieldInfo.hint ? (
           <Box>
-            <Text sx={sx.fieldLabel}>
-              {!isDynamicField ? formFieldInfo.label : formField?.props?.label}
-            </Text>
+            {formFieldInfo.label && (
+              <Text sx={sx.fieldLabel}>
+                {!isDynamicField
+                  ? formFieldInfo.label
+                  : formField?.props?.label}
+              </Text>
+            )}
             {formFieldInfo.hint && (
               <Box sx={sx.fieldHint}>{parseCustomHtml(formFieldInfo.hint)}</Box>
             )}
           </Box>
         ) : (
-          <Text>{"—"}</Text>
+          <Text>{"N/A"}</Text>
         )}
       </Td>
 
@@ -88,9 +92,9 @@ const sx = {
   fieldLabel: {
     fontSize: "md",
     fontWeight: "bold",
+    marginBottom: "0.5rem",
   },
   fieldHint: {
-    marginTop: "0.5rem",
     lineHeight: "lg",
     color: "palette.gray_medium",
   },
