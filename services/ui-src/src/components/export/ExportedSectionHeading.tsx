@@ -9,6 +9,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionHeading = verbiage?.intro?.subsection || heading;
   const sectionInfo = verbiage?.intro?.info;
   const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
+
   return (
     <Box data-testid="exportedSectionHeading">
       <Heading as="h3" sx={sx.heading}>
@@ -31,8 +32,7 @@ export interface Props {
 
 const sx = {
   heading: {
-    marginTop: "1.5rem",
-    marginBottom: "1.5rem",
+    margin: "1.5rem 0",
     fontSize: "xl",
     fontWeight: "bold",
   },
@@ -40,8 +40,11 @@ const sx = {
     p: {
       margin: "1.5rem 0",
     },
+    h3: {
+      fontSize: "lg",
+    },
   },
   spreadsheet: {
-    marginBottom: "1.5rem",
+    margin: "1.5rem 0",
   },
 };
