@@ -15,7 +15,8 @@ export const renderDataCell = (
     return renderDrawerDataCell(
       formField,
       entityResponseData,
-      noResponseVerbiage
+      noResponseVerbiage,
+      pageType
     );
   }
   // render dynamic field data cell (list dynamic field entities)
@@ -29,16 +30,18 @@ export const renderDataCell = (
     formField,
     fieldResponseData,
     allResponseData,
-    noResponseVerbiage
+    noResponseVerbiage,
+    pageType
   );
 };
 
 export const renderDrawerDataCell = (
   formField: FormField,
   entityResponseData: AnyObject | undefined,
-  noResponseVerbiage: string
+  noResponseVerbiage: string,
+  pageType: string
 ) =>
-  entityResponseData?.map((entity: EntityShape) => {
+  entityResponseData?.map((entity: EntityShape, entityIndex: number) => {
     const fieldResponseData = entity[formField.id];
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
@@ -47,7 +50,9 @@ export const renderDrawerDataCell = (
           formField,
           fieldResponseData,
           entityResponseData,
-          noResponseVerbiage
+          noResponseVerbiage,
+          pageType,
+          entityIndex
         )}
       </Box>
     );
@@ -67,7 +72,9 @@ export const renderResponseData = (
   formField: FormField,
   fieldResponseData: any,
   widerResponseData: AnyObject,
-  noResponseVerbiage: string
+  noResponseVerbiage: string,
+  pageType: string,
+  entityIndex?: number
 ) => {
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
   // check for and handle no response
@@ -80,7 +87,9 @@ export const renderResponseData = (
     return renderChoiceListFieldResponse(
       formField,
       fieldResponseData,
-      widerResponseData
+      widerResponseData,
+      pageType,
+      entityIndex
     );
   }
   // check for and handle link fields (email, url)
@@ -93,7 +102,9 @@ export const renderResponseData = (
 export const renderChoiceListFieldResponse = (
   formField: FormField,
   fieldResponseData: AnyObject,
-  allResponseData: AnyObject
+  widerResponseData: AnyObject,
+  pageType: string,
+  entityIndex?: number
 ) => {
   // filter potential choices to just those that are selected
   const potentialFieldChoices = formField.props?.choices;
@@ -107,7 +118,10 @@ export const renderChoiceListFieldResponse = (
     // get related "otherText" value, if present (always only a single child element here)
     const shouldDisplayRelatedOtherTextEntry =
       choice.children?.[0]?.id.endsWith("-otherText");
-    const relatedOtherTextEntry = allResponseData?.[choice?.children?.[0]?.id!];
+    const relatedOtherTextEntry =
+      pageType === "drawer"
+        ? widerResponseData[entityIndex!]?.[choice?.children?.[0]?.id!]
+        : widerResponseData?.[choice?.children?.[0]?.id!];
     return (
       <Text key={choice.id} sx={sx.fieldChoice}>
         {choice.label}

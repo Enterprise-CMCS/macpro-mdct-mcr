@@ -58,7 +58,8 @@ export const renderFieldTableBody = (
       />
     );
     // check for nested child fields; if any, map through children and render
-    const fieldChoicesWithChildren = formField?.props?.choices?.filter(
+    let fieldChoicesWithChildren: FieldChoice[] = [];
+    const nestedChildren = formField?.props?.choices?.filter(
       (choice: FieldChoice) => {
         // Only render nested items for checked choices
         const selected = report?.fieldData[formField.id];
@@ -68,6 +69,34 @@ export const renderFieldTableBody = (
         return entryExists && choice?.children;
       }
     );
+    if (nestedChildren?.length > 0) {
+      fieldChoicesWithChildren =
+        fieldChoicesWithChildren.concat(nestedChildren);
+    }
+    // Special handling for questions that repeat multiple times
+    if (pageType === "drawer") {
+      const drawerItems = report?.fieldData[entityType!];
+      const drawerChildren = formField?.props?.choices?.filter(
+        (choice: FieldChoice) => {
+          // Only render nested items for checked choices
+          const entryExists = drawerItems?.find((drawerItem: any) =>
+            Object.keys(drawerItem)?.find((drawerItemKey: any) => {
+              return (
+                Array.isArray(drawerItem[drawerItemKey]) &&
+                drawerItem[drawerItemKey].find((entry: any) =>
+                  entry.key?.endsWith(choice.id)
+                )
+              );
+            })
+          );
+          return entryExists && choice?.children;
+        }
+      );
+      if (drawerChildren?.length > 0) {
+        fieldChoicesWithChildren =
+          fieldChoicesWithChildren.concat(drawerChildren);
+      }
+    }
 
     fieldChoicesWithChildren?.forEach((choice: FieldChoice) =>
       choice.children?.forEach((childField: FormField) =>
