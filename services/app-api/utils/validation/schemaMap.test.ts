@@ -1,6 +1,6 @@
 import { MixedSchema } from "yup/lib/mixed";
 import { AnyObject } from "yup/lib/types";
-import { number, ratio } from "./schemaMap";
+import { number, ratio, date, endDate } from "./schemaMap";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -38,24 +38,40 @@ describe("Schemas", () => {
     "%@#$!ASDF",
   ];
 
-  const testNumberSchema = (
+  const goodDateTestCases = ["01/01/1990", "12/31/2020", "01012000"];
+  const badDateTestCases = ["01-01-1990", "13/13/1990", "12/32/1990"];
+
+  const testSchema = (
     schemaToUse: MixedSchema<any, AnyObject, any>,
     testCases: Array<string>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
       let test = schemaToUse.isValidSync(testCase);
+
       expect(test).toEqual(expectedReturn);
     }
   };
 
   test("Evaluate Number Schema using number scheme", () => {
-    testNumberSchema(number(), goodNumberTestCases, true);
-    testNumberSchema(number(), badNumberTestCases, false);
+    testSchema(number(), goodNumberTestCases, true);
+    testSchema(number(), badNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
-    testNumberSchema(ratio(), goodRatioTestCases, true);
-    testNumberSchema(ratio(), badRatioTestCases, false);
+    testSchema(ratio(), goodRatioTestCases, true);
+    testSchema(ratio(), badRatioTestCases, false);
+  });
+
+  test("Evaluate Date Schema using date scheme", () => {
+    testSchema(date(), goodDateTestCases, true);
+    testSchema(date(), badDateTestCases, false);
+  });
+
+  test.skip("Evaluate End Date Schema using date scheme", () => {
+    //TODO: figure out testing with startDate context
+    testSchema(endDate("startDate"), goodDateTestCases, true);
+    testSchema(endDate("startDate"), badDateTestCases, false);
+    testSchema(endDate("startDate"), ["01/01/1989"], false);
   });
 });

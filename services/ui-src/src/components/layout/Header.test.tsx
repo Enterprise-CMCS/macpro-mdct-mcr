@@ -23,6 +23,7 @@ describe("Test Header", () => {
   test("Header is visible", () => {
     const header = screen.getByRole("navigation");
     expect(header).toBeVisible();
+    screen.debug();
   });
 
   test("Logo is visible", () => {
