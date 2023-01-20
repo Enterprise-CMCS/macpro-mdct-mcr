@@ -22,13 +22,14 @@ export const DropdownField = ({
   options,
   hint,
   nested,
-  autosave, // eslint-disable-line @typescript-eslint/no-unused-vars
+  autosave,
   sxOverride,
   ...props
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
+
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
@@ -53,9 +54,9 @@ export const DropdownField = ({
     return dropdownOptions;
   };
 
-  const [displayValue, setDisplayValue] = useState<DropdownChoice>(
-    formatOptions(options)[0]
-  );
+  const defaultValue = formatOptions(options)[0];
+  const [displayValue, setDisplayValue] =
+    useState<DropdownChoice>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
@@ -86,7 +87,7 @@ export const DropdownField = ({
     form.setValue(name, selectedOption, { shouldValidate: true });
   };
 
-  // update form field data on blur
+  // update form field data & database data on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
     if (autosave) {
       const selectedOption = {
@@ -97,18 +98,20 @@ export const DropdownField = ({
         // check field data validity
         const fieldDataIsValid = await form.trigger(label);
         // if valid, use; if not, reset to default
-        if (fieldDataIsValid) {
-          const reportKeys = {
-            state: state,
-            id: report?.id,
-          };
-          const dataToWrite = {
+        const fieldValue = fieldDataIsValid ? selectedOption : defaultValue;
+
+        const reportKeys = {
+          state: state,
+          id: report?.id,
+        };
+        const dataToWrite = {
+          metadata: {
             status: ReportStatus.IN_PROGRESS,
             lastAlteredBy: full_name,
-            fieldData: { [name]: selectedOption },
-          };
-          await updateReport(reportKeys, dataToWrite);
-        }
+          },
+          fieldData: { [name]: fieldValue },
+        };
+        await updateReport(reportKeys, dataToWrite);
       }
     }
   };

@@ -61,15 +61,17 @@ export const ChoiceListField = ({
     }
   }, [displayValue]);
 
-  const handleUpdate = async (clickedOption: any) => {
+  const autosaveSelections = async (selectedOptions: Choice[] | null) => {
     const reportKeys = {
       state: state,
       id: report?.id,
     };
     const dataToWrite = {
-      status: ReportStatus.IN_PROGRESS,
-      lastAlteredBy: full_name,
-      fieldData: { [name]: clickedOption },
+      metadata: {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      },
+      fieldData: { [name]: selectedOptions },
     };
     await updateReport(reportKeys, dataToWrite);
   };
@@ -158,7 +160,7 @@ export const ChoiceListField = ({
 
     if (autosave) {
       if (userIsStateUser || userIsStateRep) {
-        handleUpdate(selectedOptions);
+        autosaveSelections(selectedOptions);
       }
     }
   };

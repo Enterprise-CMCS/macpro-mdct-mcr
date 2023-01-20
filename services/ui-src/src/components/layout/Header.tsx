@@ -71,13 +71,11 @@ export const Header = ({ handleLogout }: Props) => {
               <Flex sx={sx.subnavFlexRight}>
                 {lastSavedTime && (
                   <>
-                    {!isMobile && (
-                      <Image
-                        src={checkIcon}
-                        alt="gray checkmark icon"
-                        sx={sx.checkIcon}
-                      />
-                    )}
+                    <Image
+                      src={checkIcon}
+                      alt="gray checkmark icon"
+                      sx={sx.checkIcon}
+                    />
                     <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
                   </>
                 )}
@@ -174,6 +172,9 @@ const sx = {
   checkIcon: {
     marginRight: "0.5rem",
     boxSize: "1rem",
+    ".mobile &": {
+      display: "none",
+    },
   },
   saveStatusText: {
     fontSize: "sm",

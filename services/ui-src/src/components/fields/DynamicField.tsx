@@ -63,19 +63,14 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   };
 
   // if should autosave, submit field data to database on blur
-  const onBlurHandler = async (event: InputChangeEvent) => {
+  const onBlurHandler = async () => {
     if (userIsStateUser || userIsStateRep) {
-      // check field data validity
-      const fieldDataIsValid = await form.trigger(event.target.name);
-      let data = displayValues;
-      // if valid, use; if not, reset to default
-      if (!fieldDataIsValid) {
-        data = displayValues.map((displayValue) => {
-          if (displayValue.id === event.target.id) displayValue.name = "";
-          return displayValue;
-        });
-      }
-
+      /*
+       *  unlike other field components, dynamic field data does not need to be checked for
+       *  validity before saving to the database.the only invalid value for dynamic field inputs
+       *  is "" because they are required, but checking for validity and saving default value of ""
+       *  would have the same effect as leaving it unchecked and unaltered.
+       */
       const reportKeys = {
         state: state,
         id: report?.id,
@@ -86,7 +81,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           lastAlteredBy: full_name,
         },
         fieldData: {
-          [name]: data,
+          [name]: displayValues,
         },
       };
       await updateReport(reportKeys, dataToWrite);
@@ -268,7 +263,6 @@ const sx = {
   dynamicField: {
     alignItems: "flex-end",
     width: "32rem",
-
     ".ds-u-clearfix": {
       width: "100%",
     },

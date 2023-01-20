@@ -22,7 +22,8 @@ export const DateField = ({
   autosave,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState<string>("");
+  const defaultValue = "";
+  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
 
@@ -64,23 +65,23 @@ export const DateField = ({
         // check field data validity
         const fieldDataIsValid = await form.trigger(name);
         // if valid, use; if not, reset to default
-        if (fieldDataIsValid) {
-          const reportKeys = {
-            state: state,
-            id: report?.id,
-          };
-          const dataToWrite = {
+        const fieldValue = fieldDataIsValid ? value : defaultValue;
+        const reportKeys = {
+          state: state,
+          id: report?.id,
+        };
+        const dataToWrite = {
+          metadata: {
             status: ReportStatus.IN_PROGRESS,
             lastAlteredBy: full_name,
-            fieldData: { [name]: value },
-          };
-          await updateReport(reportKeys, dataToWrite);
-        }
+          },
+          fieldData: { [name]: fieldValue },
+        };
+        await updateReport(reportKeys, dataToWrite);
       }
-    } else {
-      const fieldValue = event.target.value;
-      form.setValue(name, fieldValue, { shouldValidate: true });
     }
+    const fieldValue = event.target.value;
+    form.setValue(name, fieldValue, { shouldValidate: true });
   };
 
   // prepare error message, hint, and classes

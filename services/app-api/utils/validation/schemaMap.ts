@@ -9,9 +9,6 @@ import {
 } from "yup";
 
 const error = {
-  REQUIRED_GENERIC: "A response is required",
-  REQUIRED_CHECKBOX: "Select at least one response",
-  INVALID_GENERIC: "Response must be valid",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
@@ -50,42 +47,40 @@ export const numberOptional = () => number();
 
 // Number - Ratio
 export const ratio = () =>
-  mixed()
-    .test({
-      message: error.REQUIRED_GENERIC,
-      test: (val) => val != "",
-    })
-    .test({
-      message: error.INVALID_RATIO,
-      test: (val) => {
-        const replaceCharsRegex = /[,.:]/g;
-        const ratio = val.split(":");
+  mixed().test({
+    message: error.INVALID_RATIO,
+    test: (val) => {
+      // allow if blank
+      if (val === "") return true;
 
-        // Double check and make sure that a ratio contains numbers on both sides
-        if (
-          ratio.length != 2 ||
-          ratio[0].trim().length == 0 ||
-          ratio[1].trim().length == 0
-        ) {
-          return false;
-        }
+      const replaceCharsRegex = /[,.:]/g;
+      const ratio = val.split(":");
 
-        // Check if the left side of the ratio is a valid number
-        const firstTest = valueCleaningNumberSchema(
-          ratio[0],
-          replaceCharsRegex
-        ).isValidSync(val);
+      // Double check and make sure that a ratio contains numbers on both sides
+      if (
+        ratio.length != 2 ||
+        ratio[0].trim().length == 0 ||
+        ratio[1].trim().length == 0
+      ) {
+        return false;
+      }
 
-        // Check if the right side of the ratio is a valid number
-        const secondTest = valueCleaningNumberSchema(
-          ratio[1],
-          replaceCharsRegex
-        ).isValidSync(val);
+      // Check if the left side of the ratio is a valid number
+      const firstTest = valueCleaningNumberSchema(
+        ratio[0],
+        replaceCharsRegex
+      ).isValidSync(val);
 
-        // If both sides are valid numbers, return true!
-        return firstTest && secondTest;
-      },
-    });
+      // Check if the right side of the ratio is a valid number
+      const secondTest = valueCleaningNumberSchema(
+        ratio[1],
+        replaceCharsRegex
+      ).isValidSync(val);
+
+      // If both sides are valid numbers, return true!
+      return firstTest && secondTest;
+    },
+  });
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
@@ -96,7 +91,12 @@ export const url = () => text().url(error.INVALID_URL);
 export const urlOptional = () => url();
 
 // DATE
-export const date = () => string().matches(dateFormatRegex, error.INVALID_DATE);
+export const date = () =>
+  string().test({
+    message: error.INVALID_DATE,
+    test: (value) => !!value?.match(dateFormatRegex) || value === "",
+  });
+
 export const dateOptional = () => date();
 export const endDate = (startDateField: string) =>
   date().test(
@@ -160,7 +160,7 @@ export const objectArray = () => array().of(mixed());
 
 // REGEX
 export const dateFormatRegex =
-  /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
+  /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})|\s$/;
 
 // SCHEMA MAP
 export const schemaMap: any = {

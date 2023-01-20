@@ -114,12 +114,12 @@ describe("Test DateField hydration functionality", () => {
   });
 });
 
-describe("Test Datefield component autosaves", () => {
+describe("Test DateField autosave functionality", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("Datefield autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
+  test("Autosaves entered date when state user, autosave true, and field is valid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
@@ -135,14 +135,16 @@ describe("Test Datefield component autosaves", () => {
         id: mockReportContext.report.id,
       },
       {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: mockStateUser.user?.full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
         fieldData: { testDateField: "07/14/2022" },
       }
     );
   });
 
-  test("Datefield does not autosave with default value when stateuser, autosave true, and form invalid", async () => {
+  test("Autosaves default value when state user, autosave true, and field invalid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
@@ -151,10 +153,23 @@ describe("Test Datefield component autosaves", () => {
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, " ");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+      {
+        state: mockStateUser.user?.state,
+        id: mockReportContext.report.id,
+      },
+      {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
+        fieldData: { testDateField: "" },
+      }
+    );
   });
 
-  test("DateField does not autosave when not stateuser", async () => {
+  test("Does not autosave when not state user", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     mockGetValues(undefined);
     render(dateFieldAutosavingComponent);
@@ -165,7 +180,7 @@ describe("Test Datefield component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
-  test("DateField does not autosave when not autosave not set to true", async () => {
+  test("Does not autosave if autosave is false", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(dateFieldComponent);

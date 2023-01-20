@@ -168,12 +168,12 @@ describe("Test DropdownField hydration functionality", () => {
   });
 });
 
-describe("Test Dropdown component autosaves", () => {
+describe("Test DropdownField autosaves", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("Dropdown autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
+  test("Autosaves selected value when stateuser, autosave true, and field is valid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
@@ -191,14 +191,16 @@ describe("Test Dropdown component autosaves", () => {
         id: mockReportContext.report.id,
       },
       {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: mockStateUser.user?.full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
         fieldData: { testDropdown: { label: "testDropdown", value: "b" } },
       }
     );
   });
 
-  test("Dropdown does not autosave with default value when stateuser, autosave true, and form invalid", async () => {
+  test("Autosaves default value when stateuser, autosave true, and field invalid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
@@ -209,10 +211,25 @@ describe("Test Dropdown component autosaves", () => {
     await userEvent.selectOptions(dropDown, "b");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+      {
+        state: mockStateUser.user?.state,
+        id: mockReportContext.report.id,
+      },
+      {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
+        fieldData: {
+          testDropdown: { label: "- Select an option -", value: "" },
+        },
+      }
+    );
   });
 
-  test("DateField does not autosave when not stateuser", async () => {
+  test("Does not autosave when not stateuser", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     mockGetValues(undefined);
     render(dropdownComponentWithOptionsAndAutosave);
@@ -225,7 +242,7 @@ describe("Test Dropdown component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
-  test("DateField does not autosave when not autosave not set to true", async () => {
+  test("Does not autosave if autosave is false", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(dropdownComponentWithOptions);

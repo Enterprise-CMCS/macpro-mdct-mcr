@@ -71,8 +71,10 @@ export const TextField = ({
           id: report?.id,
         };
         const dataToWrite = {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
           fieldData: { [name]: fieldValue },
         };
         await updateReport(reportKeys, dataToWrite);

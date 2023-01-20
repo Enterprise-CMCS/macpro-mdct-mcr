@@ -18,7 +18,8 @@ export const NumberField = ({
   autosave,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState("");
+  const defaultValue = "";
+  const [displayValue, setDisplayValue] = useState(defaultValue);
 
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -52,7 +53,7 @@ export const NumberField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  // update form data and display value on blur, using masked value
+  // update form data, display value, and database on blur
   const onBlurHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const maskedFieldValue = applyCustomMask(value, mask);
@@ -63,15 +64,17 @@ export const NumberField = ({
         // check field data validity
         const fieldDataIsValid = await form.trigger(name);
         // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? maskedFieldValue : "";
+        const fieldValue = fieldDataIsValid ? maskedFieldValue : defaultValue;
 
         const reportKeys = {
           state: state,
           id: report?.id,
         };
         const dataToWrite = {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
           fieldData: { [name]: fieldValue },
         };
         await updateReport(reportKeys, dataToWrite);

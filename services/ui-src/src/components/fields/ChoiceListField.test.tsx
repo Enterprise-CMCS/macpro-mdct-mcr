@@ -324,8 +324,10 @@ describe("Test Choicelist component autosaves", () => {
         id: mockReportContext.report.id,
       },
       {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: mockStateUser.user?.full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
         fieldData: {
           autosaveCheckboxField: mockHydrationValue,
         },

@@ -136,8 +136,10 @@ describe("Test TextField component autosaves", () => {
         id: mockReportContext.report.id,
       },
       {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: mockStateUser.user?.full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
         fieldData: { testTextField: "test value" },
       }
     );
@@ -159,8 +161,10 @@ describe("Test TextField component autosaves", () => {
         id: mockReportContext.report.id,
       },
       {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: mockStateUser.user?.full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUser.user?.full_name,
+        },
         fieldData: { testTextField: "" },
       }
     );

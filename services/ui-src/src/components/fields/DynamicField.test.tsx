@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { FormProvider, useForm } from "react-hook-form";
@@ -103,9 +104,11 @@ const dynamicFieldComponent = (hydrationValue?: any) => (
 );
 
 describe("Test DynamicField component", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    render(dynamicFieldComponent());
+    await act(async () => {
+      await render(dynamicFieldComponent());
+    });
   });
 
   afterEach(() => {
@@ -222,9 +225,12 @@ describe("Test DynamicField component", () => {
 });
 
 describe("Test DynamicField entity deletion and deletion of associated data", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     render(dynamicFieldComponent(mockHydrationPlans));
+    await act(async () => {
+      await render(dynamicFieldComponent(mockHydrationPlans));
+    });
   });
   it("Deletes entity and associated sanctions and quality measure responses", async () => {
     // delete mock-plan-1
@@ -276,6 +282,7 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
 
 describe("Test typing into DynamicField component", () => {
   test("DynamicField accepts input", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
       result.container.querySelector("[name='plans[0]']")!;
@@ -290,7 +297,7 @@ describe("Test DynamicField Autosave Functionality", () => {
     jest.clearAllMocks();
   });
 
-  test("DynamicField does not autosave when not stateuser", async () => {
+  test("Does not autosave when not state user", async () => {
     mockedUseUser.mockReturnValue(mockAdminUser);
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
@@ -302,7 +309,7 @@ describe("Test DynamicField Autosave Functionality", () => {
     expect(firstDynamicField.value).toBe("123");
   });
 
-  test("DynamicField autosaves when a stateuser", async () => {
+  test("Autosaves when state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
