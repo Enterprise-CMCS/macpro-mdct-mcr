@@ -103,14 +103,17 @@ export const endDate = (startDateField: string) =>
     "is-after-start-date",
     error.INVALID_END_DATE,
     (endDateString, context) => {
-      return endDateTest(
+      return isEndDateAfterStartDate(
         context.parent[startDateField],
         endDateString as string
       );
     }
   );
 
-export const endDateTest = (startDateString: string, endDateString: string) => {
+export const isEndDateAfterStartDate = (
+  startDateString: string,
+  endDateString: string
+) => {
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString!);
   return endDate >= startDate;

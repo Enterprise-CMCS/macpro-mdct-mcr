@@ -1,6 +1,6 @@
 import { MixedSchema } from "yup/lib/mixed";
 import { AnyObject } from "yup/lib/types";
-import { number, ratio, date, endDateTest } from "./schemaMap";
+import { number, ratio, date, isEndDateAfterStartDate } from "./schemaMap";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -69,7 +69,7 @@ describe("Schemas", () => {
   });
 
   test("Evaluate End Date Schema using date scheme", () => {
-    expect(endDateTest("01/01/1989", "01/01/1990")).toBeTruthy();
-    expect(endDateTest("01/01/1990", "01/01/1989")).toBeFalsy();
+    expect(isEndDateAfterStartDate("01/01/1989", "01/01/1990")).toBeTruthy();
+    expect(isEndDateAfterStartDate("01/01/1990", "01/01/1989")).toBeFalsy();
   });
 });
