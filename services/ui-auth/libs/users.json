@@ -249,19 +249,19 @@
     ]
   },
   {
-    "username": "stateuserCA@test.com",
+    "username": "cypressadminuser@test.com",
     "attributes": [
       {
         "Name": "email",
-        "Value": "stateuserCA@test.com"
+        "Value": "cypressadminuser@test.com"
       },
       {
         "Name": "given_name",
-        "Value": "Carol"
+        "Value": "CypressAutomatedIntegrationTests"
       },
       {
         "Name": "family_name",
-        "Value": "California"
+        "Value": "Admin"
       },
       {
         "Name": "email_verified",
@@ -269,28 +269,24 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdctmcr-state-user"
-      },
-      {
-        "Name": "custom:cms_state",
-        "Value": "CA"
+        "Value": "mdctmcr-bor"
       }
     ]
   },
   {
-    "username": "stateuserDC@test.com",
+    "username": "cypressstateuser@test.com",
     "attributes": [
       {
         "Name": "email",
-        "Value": "stateuserDC@test.com"
+        "Value": "cypressstateuser@test.com"
       },
       {
         "Name": "given_name",
-        "Value": "David"
+        "Value": "CypressAutomatedIntegrationTests"
       },
       {
         "Name": "family_name",
-        "Value": "DC"
+        "Value": "State"
       },
       {
         "Name": "email_verified",
@@ -303,35 +299,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "DC"
-      }
-    ]
-  },
-  {
-    "username": "stateuserME@test.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "stateuserME@test.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "Mary"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Maine"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:cms_roles",
-        "Value": "mdctmcr-state-user"
-      },
-      {
-        "Name": "custom:cms_state",
-        "Value": "ME"
       }
     ]
   }
