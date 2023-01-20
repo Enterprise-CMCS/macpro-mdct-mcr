@@ -12,9 +12,12 @@ import {
 import { convertDateUtcToEt } from "utils";
 import { States } from "../../../constants";
 import { PageTypes, ReportRoute, ReportRouteWithForm } from "types";
+// verbiage
+import verbiage from "verbiage/pages/export";
 
 export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
+  const { metadata, reportPage, tableHeaders } = verbiage;
   const fullStateName = States[report?.state as keyof typeof States];
   const routesToRender = report?.formTemplate.routes.filter(
     (route: ReportRoute) => route
@@ -27,22 +30,27 @@ export const ExportedReportPage = () => {
           {/* pdf metadata */}
           <Helmet>
             <title>
-              {`Managed Care Program Annual Report (MCPAR) for ${fullStateName}: ${report.programName}`}
+              {reportPage.heading} {fullStateName}: {report.programName}
             </title>
-            <meta name="author" content="CMS" />
-            <meta name="subject" content="Managed Care Program Annual Report" />
-            <meta name="language" content="English" />
+            <meta name="author" content={metadata.author} />
+            <meta name="subject" content={metadata.subject} />
+            <meta name="language" content={metadata.language} />
           </Helmet>
           {/* report heading */}
           <Heading as="h1" sx={sx.heading}>
-            Managed Care Program Annual Report (MCPAR) for{" "}
+            {reportPage.heading}
             {report.fieldData.stateName}: {report.programName}
           </Heading>
           {/* report metadata tables */}
           <Table
             sx={sx.metadataTable}
             content={{
-              headRow: ["Due date", "Last edited", "Edited by", "Status"],
+              headRow: [
+                reportPage.metadataTableHeaders.dueDate,
+                reportPage.metadataTableHeaders.lastEdited,
+                reportPage.metadataTableHeaders.editedBy,
+                reportPage.metadataTableHeaders.status,
+              ],
               bodyRows: [
                 [
                   convertDateUtcToEt(report.dueDate),
@@ -58,20 +66,15 @@ export const ExportedReportPage = () => {
             sx={sx.combinedDataTable}
             className="short"
             content={{
-              headRow: ["Indicator", "Response"],
+              headRow: [tableHeaders.indicator, tableHeaders.response],
             }}
           >
             <Tr>
               <Td>
                 <Text className="combined-data-title">
-                  Exclusion of CHIP from MCPAR
+                  {reportPage.combinedDataTable.title}
                 </Text>
-                <Text>
-                  Enrollees in separate CHIP programs funded under Title XXI
-                  should not be reported in the MCPAR. Please check this box if
-                  the state is unable to remove information about Separate CHIP
-                  enrollees from its reporting on this program.
-                </Text>
+                <Text>{reportPage.combinedDataTable.subtitle}</Text>
               </Td>
               <Td>{report.combinedData ? "Selected" : "Not Selected"}</Td>
             </Tr>
