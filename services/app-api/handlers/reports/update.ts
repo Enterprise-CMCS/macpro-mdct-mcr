@@ -71,7 +71,6 @@ export const updateReport = handler(async (event, context) => {
               formTemplate?.validationJson,
               unvalidatedFieldData
             );
-
             // if field data passes validation,
             if (validatedFieldData) {
               // post validated field data to s3 bucket
