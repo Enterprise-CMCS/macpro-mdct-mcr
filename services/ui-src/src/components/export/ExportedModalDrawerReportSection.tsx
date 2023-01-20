@@ -43,11 +43,12 @@ export const ExportedModalDrawerReportSection = ({
           </Text>
         )}
       </Heading>
-      {entities?.map((entity: EntityShape) => (
+      {entities?.map((entity: EntityShape, entityIndex: number) => (
         <EntityCard
           key={entity.id}
           entity={entity}
           entityType={entityType}
+          entityIndex={entityIndex}
           formattedEntityData={getFormattedEntityData(
             entityType,
             entity,
