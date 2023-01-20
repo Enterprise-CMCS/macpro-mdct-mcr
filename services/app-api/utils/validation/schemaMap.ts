@@ -103,12 +103,18 @@ export const endDate = (startDateField: string) =>
     "is-after-start-date",
     error.INVALID_END_DATE,
     (endDateString, context) => {
-      const startDateString = context.parent[startDateField];
-      const startDate = new Date(startDateString);
-      const endDate = new Date(endDateString!);
-      return endDate >= startDate;
+      return endDateTest(
+        context.parent[startDateField],
+        endDateString as string
+      );
     }
   );
+
+export const endDateTest = (startDateString: string, endDateString: string) => {
+  const startDate = new Date(startDateString);
+  const endDate = new Date(endDateString!);
+  return endDate >= startDate;
+};
 
 // DROPDOWN
 export const dropdown = () => object({ label: text(), value: text() });
