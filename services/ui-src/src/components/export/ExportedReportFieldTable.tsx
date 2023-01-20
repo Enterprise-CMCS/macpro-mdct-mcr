@@ -9,9 +9,12 @@ import {
   DrawerReportPageShape,
   ReportShape,
 } from "types";
+// verbiage
+import verbiage from "verbiage/pages/export";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
   const { report } = useContext(ReportContext);
+  const { tableHeaders } = verbiage;
 
   const pageType = section.pageType;
   const formFields =
@@ -21,8 +24,12 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   const formHasOnlyDynamicFields = formFields?.every(
     (field: FormField) => field.type === "dynamic"
   );
-  const twoColumnHeaderItems = ["Indicator", "Response"];
-  const threeColumnHeaderItems = ["Number", "Indicator", "Response"];
+  const twoColumnHeaderItems = [tableHeaders.indicator, tableHeaders.response];
+  const threeColumnHeaderItems = [
+    tableHeaders.number,
+    tableHeaders.indicator,
+    tableHeaders.response,
+  ];
   const headRowItems = formHasOnlyDynamicFields
     ? twoColumnHeaderItems
     : threeColumnHeaderItems;

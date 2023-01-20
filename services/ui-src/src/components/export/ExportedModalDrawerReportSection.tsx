@@ -9,29 +9,16 @@ import {
   ModalDrawerEntityTypes,
   ModalDrawerReportPageShape,
 } from "types";
+// verbiage
+import exportVerbiage from "verbiage/pages/export";
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage },
 }: Props) => {
   const { report } = useContext(ReportContext);
+  const { emptyEntityMessage } = exportVerbiage;
   const entities = report?.fieldData?.[entityType];
   const entityCount = entities?.length;
-
-  let emptyEntityMessage = "";
-  switch (entityType) {
-    case ModalDrawerEntityTypes.ACCESS_MEASURES:
-      emptyEntityMessage = "0  - No access measures entered";
-      break;
-    case ModalDrawerEntityTypes.SANCTIONS:
-      emptyEntityMessage = "0 - No sanctions entered";
-      break;
-    case ModalDrawerEntityTypes.QUALITY_MEASURES: {
-      emptyEntityMessage = "0 - No quality & performance measures entered";
-      break;
-    }
-    default:
-      break;
-  }
 
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
@@ -39,7 +26,12 @@ export const ExportedModalDrawerReportSection = ({
         {verbiage.dashboardTitle} {entityCount}
         {!entityCount && (
           <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
-            {emptyEntityMessage}
+            {entityType === ModalDrawerEntityTypes.ACCESS_MEASURES
+              ? emptyEntityMessage.accessMeasures
+              : entityType === ModalDrawerEntityTypes.SANCTIONS
+              ? emptyEntityMessage.sanctions
+              : entityType === ModalDrawerEntityTypes.QUALITY_MEASURES &&
+                emptyEntityMessage.qualityMeasures}
           </Text>
         )}
       </Heading>

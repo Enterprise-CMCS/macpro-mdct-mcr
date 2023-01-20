@@ -2,9 +2,12 @@ import { useContext } from "react";
 // components
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
-// types, utils
+// types
 import { FormField } from "types";
+// utils
 import { parseFormFieldInfo, parseCustomHtml, renderDataCell } from "utils";
+// verbiage
+import verbiage from "verbiage/pages/export";
 
 export const ExportedReportFieldRow = ({
   formField,
@@ -12,10 +15,10 @@ export const ExportedReportFieldRow = ({
   entityType,
 }: Props) => {
   const { report } = useContext(ReportContext);
+  const { noResponse } = verbiage;
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
   const formFieldInfo = parseFormFieldInfo(formField?.props!);
-  const noResponseVerbiage = "Not Answered";
 
   // guard against double-rendering "otherText" response
   const isOtherTextEntry = formField.id.endsWith("-otherText");
@@ -57,7 +60,7 @@ export const ExportedReportFieldRow = ({
             formField,
             reportData,
             pageType,
-            noResponseVerbiage,
+            noResponse,
             entityType
           )}
       </Td>
