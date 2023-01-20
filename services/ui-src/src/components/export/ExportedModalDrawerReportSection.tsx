@@ -30,8 +30,7 @@ export const ExportedModalDrawerReportSection = ({
               ? emptyEntityMessage.accessMeasures
               : entityType === ModalDrawerEntityTypes.SANCTIONS
               ? emptyEntityMessage.sanctions
-              : entityType === ModalDrawerEntityTypes.QUALITY_MEASURES &&
-                emptyEntityMessage.qualityMeasures}
+              : emptyEntityMessage.qualityMeasures}
           </Text>
         )}
       </Heading>
