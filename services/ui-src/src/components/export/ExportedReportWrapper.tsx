@@ -22,10 +22,12 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     <Box data-testid="exportedDrawerReportSection" mt="2rem">
       <ExportedReportFieldTable section={section as DrawerReportPageShape} />
     </Box>
-  ) : (
+  ) : section.pageType === PageTypes.MODAL_DRAWER ? (
     <ExportedModalDrawerReportSection
       section={section as ModalDrawerReportPageShape}
     />
+  ) : (
+    <></>
   );
 };
 
