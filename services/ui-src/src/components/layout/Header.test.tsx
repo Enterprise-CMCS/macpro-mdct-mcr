@@ -1,13 +1,26 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import {
+  RouterWrappedComponent,
+  mockReportContext,
+} from "utils/testing/setupJest";
 //components
 import { Header } from "components";
+import { ReportContext, ReportPageWrapper } from "../";
 
 const headerComponent = (
   <RouterWrappedComponent>
     <Header handleLogout={() => {}} />
+  </RouterWrappedComponent>
+);
+
+const reportComponent = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockReportContext}>
+      <Header handleLogout={() => {}} />
+      <ReportPageWrapper />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -23,7 +36,6 @@ describe("Test Header", () => {
   test("Header is visible", () => {
     const header = screen.getByRole("navigation");
     expect(header).toBeVisible();
-    screen.debug();
   });
 
   test("Logo is visible", () => {
@@ -41,6 +53,14 @@ describe("Test Header", () => {
   test("Subnav is visible on report screens; navigates to dashboard", async () => {
     const leaveFormButton = screen.getByTestId("leave-form-button");
     expect(leaveFormButton).toBeVisible();
+  });
+});
+
+describe("Report Context", () => {
+  test("Report Data is visible", () => {
+    render(reportComponent);
+    expect(screen.getByText("Program: testProgram")).toBeVisible();
+    expect(screen.getByText("Last saved 1:58 PM")).toBeVisible();
   });
 });
 
