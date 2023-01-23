@@ -1,4 +1,58 @@
-import { maskResponseData, parseFormFieldInfo } from "./export";
+// types
+import { FormField } from "types";
+import {
+  checkLinkTypes,
+  maskResponseData,
+  parseFormFieldInfo,
+  renderChoiceListFieldResponse,
+} from "./export";
+import {
+  mockNestedFormField,
+  mockReportFieldDataWithNestedFields,
+} from "utils/testing/setupJest";
+
+describe("Test rendering methods", () => {
+  test("Correctly renders choice list field response", () => {
+    const response = [
+      {
+        id: "option1uuid",
+        label: "option 1",
+      },
+    ];
+    const result = renderChoiceListFieldResponse(
+      mockNestedFormField,
+      response,
+      mockReportFieldDataWithNestedFields.fieldData,
+      "standard"
+    );
+    //console.log(result);
+  });
+});
+
+// TODO: remove this, unnecessary
+describe("Test checkLinkTypes", () => {
+  test("Correctly checks email link types", () => {
+    const input: FormField = {
+      id: "field-id",
+      type: "text",
+      validation: "email",
+    };
+    const result = checkLinkTypes(input);
+    expect(result.isLink).toBeTruthy;
+    expect(result.isEmail).toBeTruthy;
+  });
+
+  test("Correctly checks url link types", () => {
+    const input: FormField = {
+      id: "field-id",
+      type: "text",
+      validation: "url",
+    };
+    const result = checkLinkTypes(input);
+    expect(result.isLink).toBeTruthy;
+    expect(result.isEmail).toBeFalsy;
+  });
+});
 
 describe("Test parseFormFieldInfo", () => {
   test("Correctly parses field info when full props are provided", () => {
