@@ -23,7 +23,7 @@ export const ExportedReportFieldRow = ({
   if (isOtherTextEntry) return null;
 
   return (
-    <Tr>
+    <Tr data-testid="export-row">
       {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
