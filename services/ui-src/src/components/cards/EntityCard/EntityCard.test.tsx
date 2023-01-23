@@ -187,7 +187,7 @@ describe("Test Uncompleted Print Version EntityCard", () => {
   });
 
   test("EntityCard in print version displays error", () => {
-    expect(screen.getByText("Error!")).toBeVisible();
+    expect(screen.getByText("Error")).toBeVisible();
   });
 });
 

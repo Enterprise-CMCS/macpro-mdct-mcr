@@ -88,7 +88,7 @@ export const EntityCard = ({
             {entityCompleted ? (
               <Text className="completed-text">Complete</Text>
             ) : (
-              <Text className="error-text">Error!</Text>
+              <Text className="error-text">Error</Text>
             )}
           </Box>
         )}
@@ -208,7 +208,7 @@ const sx = {
       },
     },
     ".error-text": {
-      color: "red",
+      color: "palette.error_darker",
       fontSize: ".75rem",
       textAlign: "center",
     },
