@@ -14,7 +14,6 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
-import { dropdownDefaultOptionText } from "../../constants";
 
 export const ChoiceListField = ({
   name,
@@ -62,6 +61,35 @@ export const ChoiceListField = ({
   }, [displayValue]);
 
   const autosaveSelections = async (selectedOptions: Choice[] | null) => {
+    let dataToSend: any = { [name]: selectedOptions };
+    const clearChildren = (choices: FieldChoice[]) => {
+      choices.forEach((choice: FieldChoice) => {
+        // if a choice is not selected and there are children, clear out any saved data
+        if (!choice.checked && choice.children) {
+          choice.children.forEach((child) => {
+            switch (child.type) {
+              case "radio":
+              case "checkbox":
+                dataToSend[child.id] = [];
+                if (child.props?.choices) {
+                  child.props.choices.forEach((choice: FieldChoice) => {
+                    choice.checked = false;
+                  });
+                  clearChildren(child.props.choices);
+                }
+                break;
+              default:
+                dataToSend[child.id] = "";
+                form.setValue(child.id, "", { shouldValidate: true });
+                break;
+            }
+          });
+        }
+      });
+    };
+
+    clearChildren(choices);
+
     const reportKeys = {
       state: state,
       id: report?.id,
@@ -71,8 +99,9 @@ export const ChoiceListField = ({
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
       },
-      fieldData: { [name]: selectedOptions },
+      fieldData: dataToSend,
     };
+
     await updateReport(reportKeys, dataToWrite);
   };
 
@@ -97,17 +126,6 @@ export const ChoiceListField = ({
   };
 
   const clearNestedValues = (choices: FieldChoice[]) => {
-    const reportKeys = {
-      state: state,
-      id: report?.id,
-    };
-    const dataToWrite = (id: string, value: string | string[]) => ({
-      metadata: {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-      },
-      fieldData: { [id]: value },
-    });
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
       if (!choice.checked && choice.children) {
@@ -122,18 +140,9 @@ export const ChoiceListField = ({
                 });
                 clearNestedValues(child.props.choices);
               }
-              updateReport(reportKeys, dataToWrite(child.id, []));
-              break;
-            case "dropdown":
-              form.setValue(
-                child.id,
-                { label: dropdownDefaultOptionText, value: "" },
-                { shouldValidate: true }
-              );
               break;
             default:
               form.setValue(child.id, "", { shouldValidate: true });
-              updateReport(reportKeys, dataToWrite(child.id, ""));
               break;
           }
         });
