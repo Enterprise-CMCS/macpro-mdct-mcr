@@ -8,6 +8,7 @@ import {
   StandardReportPageShape,
   DrawerReportPageShape,
   ReportShape,
+  AnyObject,
 } from "types";
 // verbiage
 import verbiage from "verbiage/pages/export";
@@ -55,17 +56,20 @@ export const renderFieldTableBody = (
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
-  const renderFieldRow = (formField: FormField) => {
+  const renderFieldRow = (
+    formField: FormField,
+    applicableDrawers?: string[]
+  ) => {
     tableRows.push(
       <ExportedReportFieldRow
         key={formField.id}
         formField={formField}
         pageType={pageType}
         entityType={entityType}
+        applicableDrawers={applicableDrawers}
       />
     );
     // check for nested child fields; if any, map through children and render
-    let fieldChoicesWithChildren: FieldChoice[] = [];
     const nestedChildren = formField?.props?.choices?.filter(
       (choice: FieldChoice) => {
         // Only render nested items for checked choices
@@ -76,40 +80,41 @@ export const renderFieldTableBody = (
         return entryExists && choice?.children;
       }
     );
-    if (nestedChildren?.length > 0) {
-      fieldChoicesWithChildren =
-        fieldChoicesWithChildren.concat(nestedChildren);
-    }
-    // Special handling for questions that repeat multiple times
-    if (pageType === "drawer") {
-      const drawerItems = report?.fieldData[entityType!];
-      const drawerChildren = formField?.props?.choices?.filter(
-        (choice: FieldChoice) => {
-          // Only render nested items for checked choices
-          const entryExists = drawerItems?.find((drawerItem: any) =>
-            Object.keys(drawerItem)?.find((drawerItemKey: any) => {
-              return (
-                Array.isArray(drawerItem[drawerItemKey]) &&
-                drawerItem[drawerItemKey].find((entry: any) =>
-                  entry.key?.endsWith(choice.id)
-                )
-              );
-            })
-          );
-          return entryExists && choice?.children;
-        }
-      );
-      if (drawerChildren?.length > 0) {
-        fieldChoicesWithChildren =
-          fieldChoicesWithChildren.concat(drawerChildren);
-      }
-    }
-
-    fieldChoicesWithChildren?.forEach((choice: FieldChoice) =>
+    nestedChildren?.forEach((choice: FieldChoice) =>
       choice.children?.forEach((childField: FormField) =>
         renderFieldRow(childField)
       )
     );
+    // Special handling for questions that repeat multiple times
+    if (pageType === "drawer") {
+      const drawerItems = report?.fieldData[entityType!];
+      formField?.props?.choices?.forEach((choice: FieldChoice) => {
+        // Only render nested items for checked choices
+        const parentsWithChoice = drawerItems?.filter((drawerItem: any) =>
+          Object.keys(drawerItem)?.find((drawerItemKey: any) => {
+            return (
+              Array.isArray(drawerItem[drawerItemKey]) &&
+              drawerItem[drawerItemKey].find((entry: any) =>
+                entry.key?.endsWith(choice.id)
+              )
+            );
+          })
+        );
+        const applicableEntries = parentsWithChoice?.map(
+          (parent: AnyObject) => parent.id
+        );
+
+        if (
+          parentsWithChoice &&
+          parentsWithChoice.length > 0 &&
+          choice?.children
+        ) {
+          choice.children?.forEach((childField: FormField) =>
+            renderFieldRow(childField, applicableEntries)
+          );
+        }
+      });
+    }
   };
   // map through form fields and call renderer
   formFields?.map((field: FormField) => renderFieldRow(field));

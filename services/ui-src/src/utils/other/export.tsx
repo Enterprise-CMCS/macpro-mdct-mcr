@@ -1,13 +1,14 @@
 import { Box, Link, Text } from "@chakra-ui/react";
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
+import verbiage from "verbiage/pages/export";
 
 // checks for type of data cell to be render and calls the appropriate renderer
 export const renderDataCell = (
   formField: FormField,
   allResponseData: AnyObject,
   pageType: string,
-  noResponseVerbiage: string,
-  entityType?: string
+  entityType?: string,
+  applicableDrawers?: string[]
 ) => {
   // render drawer data cell (list entities & per-entity responses)
   if (pageType === "drawer") {
@@ -15,14 +16,14 @@ export const renderDataCell = (
     return renderDrawerDataCell(
       formField,
       entityResponseData,
-      noResponseVerbiage,
-      pageType
+      pageType,
+      applicableDrawers
     );
   }
   // render dynamic field data cell (list dynamic field entities)
   if (formField.type === "dynamic") {
     const fieldResponseData = allResponseData[formField.id];
-    return renderDynamicDataCell(fieldResponseData, noResponseVerbiage);
+    return renderDynamicDataCell(fieldResponseData);
   }
   // render standard data cell (just field response data)
   const fieldResponseData = allResponseData[formField.id];
@@ -30,7 +31,6 @@ export const renderDataCell = (
     formField,
     fieldResponseData,
     allResponseData,
-    noResponseVerbiage,
     pageType
   );
 };
@@ -38,10 +38,12 @@ export const renderDataCell = (
 export const renderDrawerDataCell = (
   formField: FormField,
   entityResponseData: AnyObject | undefined,
-  noResponseVerbiage: string,
-  pageType: string
+  pageType: string,
+  applicableDrawers?: string[]
 ) =>
   entityResponseData?.map((entity: EntityShape, entityIndex: number) => {
+    const notApplicable =
+      applicableDrawers && !applicableDrawers.includes(entity.id);
     const fieldResponseData = entity[formField.id];
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
@@ -50,38 +52,40 @@ export const renderDrawerDataCell = (
           formField,
           fieldResponseData,
           entityResponseData,
-          noResponseVerbiage,
           pageType,
-          entityIndex
+          entityIndex,
+          notApplicable
         )}
       </Box>
     );
-  }) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
+  }) ?? <Text sx={sx.noResponse}>{verbiage.missingEntry.noResponse}</Text>;
 
-export const renderDynamicDataCell = (
-  fieldResponseData: AnyObject,
-  noResponseVerbiage: string
-) =>
+export const renderDynamicDataCell = (fieldResponseData: AnyObject) =>
   fieldResponseData?.map((entity: EntityShape) => (
     <Text key={entity.id} sx={sx.dynamicItem}>
       {entity.name}
     </Text>
-  )) ?? <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
+  )) ?? <Text sx={sx.noResponse}>{verbiage.missingEntry.noResponse}</Text>;
 
 export const renderResponseData = (
   formField: FormField,
   fieldResponseData: any,
   widerResponseData: AnyObject,
-  noResponseVerbiage: string,
   pageType: string,
-  entityIndex?: number
+  entityIndex?: number,
+  notApplicable?: boolean
 ) => {
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
   // check for and handle no response
   const hasResponse: boolean = isChoiceListField
     ? fieldResponseData?.length
     : fieldResponseData;
-  if (!hasResponse) return <Text sx={sx.noResponse}>{noResponseVerbiage}</Text>;
+  const missingEntryVerbiage = notApplicable
+    ? verbiage.missingEntry.notApplicable
+    : verbiage.missingEntry.noResponse;
+  const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
+  if (!hasResponse)
+    return <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>;
   // chandle choice list fields (checkbox, radio)
   if (isChoiceListField) {
     return renderChoiceListFieldResponse(
@@ -211,5 +215,8 @@ const sx = {
   },
   noResponse: {
     color: "palette.error_darker",
+  },
+  notApplicable: {
+    color: "palette.gray_medium",
   },
 };

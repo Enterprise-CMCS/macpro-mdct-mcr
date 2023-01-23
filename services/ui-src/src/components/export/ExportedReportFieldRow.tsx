@@ -6,16 +6,14 @@ import { ReportContext } from "components";
 import { FormField } from "types";
 // utils
 import { parseFormFieldInfo, parseCustomHtml, renderDataCell } from "utils";
-// verbiage
-import verbiage from "verbiage/pages/export";
 
 export const ExportedReportFieldRow = ({
   formField,
   pageType,
   entityType,
+  applicableDrawers,
 }: Props) => {
   const { report } = useContext(ReportContext);
-  const { noResponse } = verbiage;
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
   const formFieldInfo = parseFormFieldInfo(formField?.props!);
@@ -60,8 +58,8 @@ export const ExportedReportFieldRow = ({
             formField,
             reportData,
             pageType,
-            noResponse,
-            entityType
+            entityType,
+            applicableDrawers
           )}
       </Td>
     </Tr>
@@ -72,6 +70,7 @@ export interface Props {
   formField: FormField;
   pageType: string;
   entityType?: string;
+  applicableDrawers?: string[];
 }
 
 const sx = {

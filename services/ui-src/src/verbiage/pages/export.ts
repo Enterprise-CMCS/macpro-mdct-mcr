@@ -1,5 +1,8 @@
 export default {
-  noResponse: "Not Answered",
+  missingEntry: {
+    noResponse: "Not Answered",
+    notApplicable: "Not Applicable",
+  },
   reportBanner: {
     intro: "Click below to export or print MCPAR shown here",
     pdfButton: "Download PDF",
