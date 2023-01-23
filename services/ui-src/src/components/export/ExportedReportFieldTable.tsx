@@ -135,6 +135,9 @@ const sx = {
       borderColor: "palette.gray_lighter",
     },
     td: {
+      p: {
+        lineHeight: "1.25rem",
+      },
       padding: "0.75rem 0.5rem",
       borderStyle: "none",
       fontWeight: "normal",
