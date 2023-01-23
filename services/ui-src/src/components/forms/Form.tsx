@@ -20,7 +20,7 @@ export const Form = ({
   formJson,
   onSubmit,
   formData,
-  autosave,
+  // autosave,
   children,
   ...props
 }: Props) => {
@@ -62,7 +62,7 @@ export const Form = ({
     const fieldsToRender = hydrateFormFields(fields, formData);
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,
-      autosave,
+      autosave: true,
     });
   };
 

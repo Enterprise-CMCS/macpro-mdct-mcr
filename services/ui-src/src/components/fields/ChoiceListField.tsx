@@ -97,6 +97,17 @@ export const ChoiceListField = ({
   };
 
   const clearNestedValues = (choices: FieldChoice[]) => {
+    const reportKeys = {
+      state: state,
+      id: report?.id,
+    };
+    const dataToWrite = (id: string, value: string | string[]) => ({
+      metadata: {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      },
+      fieldData: { [id]: value },
+    });
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
       if (!choice.checked && choice.children) {
@@ -111,6 +122,7 @@ export const ChoiceListField = ({
                 });
                 clearNestedValues(child.props.choices);
               }
+              updateReport(reportKeys, dataToWrite(child.id, []));
               break;
             case "dropdown":
               form.setValue(
@@ -121,6 +133,7 @@ export const ChoiceListField = ({
               break;
             default:
               form.setValue(child.id, "", { shouldValidate: true });
+              updateReport(reportKeys, dataToWrite(child.id, ""));
               break;
           }
         });
