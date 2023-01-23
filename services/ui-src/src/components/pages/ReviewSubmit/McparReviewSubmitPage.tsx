@@ -1,6 +1,6 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useLDClient } from "launchdarkly-react-client-sdk";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -15,12 +15,7 @@ import { Modal, ReportContext } from "components";
 // types
 import { ReportStatus } from "types";
 // utils
-import {
-  featureFlags,
-  useUser,
-  utcDateToReadableDate,
-  convertDateUtcToEt,
-} from "utils";
+import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
@@ -124,13 +119,7 @@ const ReadyToSubmit = ({
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
-
-  // LaunchDarkly
-  const ldClient = useLDClient();
-  const pdfExport = ldClient?.variation(
-    featureFlags.PDF_EXPORT.flag,
-    featureFlags.PDF_EXPORT.defaultValue
-  );
+  const pdfExport = useFlags()?.pdfExport;
 
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
@@ -203,12 +192,7 @@ export const SuccessMessage = ({
     date,
     submittedBy
   );
-  // LaunchDarkly
-  const ldClient = useLDClient();
-  const pdfExport = ldClient?.variation(
-    featureFlags.PDF_EXPORT.flag,
-    featureFlags.PDF_EXPORT.defaultValue
-  );
+  const pdfExport = useFlags()?.pdfExport;
 
   return (
     <Flex sx={sx.contentContainer}>
