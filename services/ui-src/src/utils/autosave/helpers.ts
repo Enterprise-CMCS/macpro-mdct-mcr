@@ -2,7 +2,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import { ReportStatus } from "types";
 
 export const valueChanged = (currentValue: string, storedValue: string) => {
-  return currentValue == storedValue;
+  return currentValue !== storedValue;
 };
 
 export const shouldAutosave = (
