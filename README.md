@@ -225,8 +225,6 @@ When a pull request is approved and merged into main the deploy script will spin
 ```text
 Structure of app - React frontend that renders a form for a user to fill out, Node backend that uses S3 and Dynamo to store and validate forms.
 
-Include latest architecture diagram
-
 MCPAR - (Managed Care Program Annual Report) report for states to complete annually for each Medicaid managed care program
 
 MLR - (Medical Loss Ratio) report for states to complete annually or when contract terms change
