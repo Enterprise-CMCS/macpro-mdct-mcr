@@ -234,7 +234,34 @@ When a pull request is approved and merged into main the deploy script will spin
 
 **Custom JSON & form field creation engine (formFieldFactory)** - each report has a custom JSON object, stored in a JSON file, written using a custom schema. This JSON object is referred to as the form template and it is the blueprint from which report form fields are created. It is also used to create routes and navigation elements throughout the app. When provided form fields from this template, the formFieldFactory renders the appropriate form fields. A similar process occurs when a report is exported in PDF preview format. 
 
-**Page and Form Structure** Each page has a name, path, and pageType, for example the first page a user sees in the form will be have ‘pageType: standard’ with a ‘verbiage’ object that includes all of the text that precedes the form fields. The the ‘form’ object follows with a unique id and ‘fields’ array that holds one or more objects that represent the individual questions in a form. There are different types of forms as well. If there is a "pageType": "modalDrawer", then instead of a ‘form’ object, it will have a ‘modalForm’ object.
+**Page and Form Structure** Each page has a name, path, and pageType, for example the first page a user sees in the form will be have ‘pageType: standard’ with a ‘verbiage’ object that includes all of the text that precedes the form fields. The the ‘form’ object follows with a unique id and ‘fields’ array that holds one or more objects that represent the individual questions in a form. There are different types of forms as well. If there is a "pageType": "modalDrawer", then instead of a ‘form’ object, it will have a ‘modalForm’ object. Here is an example of a standard page with one field:
+`       {
+          "name": "Add Plans",
+          "path": "/mcpar/program-information/add-plans",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Add plans (A.7)",
+              "info": "Enter the name of each plan that participates in the program for which the state is reporting data.",
+              "spreadsheet": "A_Program_Info"
+            }
+          },
+          "form": {
+            "id": "aap",
+            "fields": [
+              {
+                "id": "plans",
+                "type": "dynamic",
+                "validation": "dynamic",
+                "props": {
+                  "label": "Plan name"
+                }
+              }
+            ]
+          }
+        },
+`
 
 **Storage and retrieval of the form template** when a report is created, the form template is stored alongside it in an S3 bucket and reference to that form template’s location is stored in report metadata in Dynamo. This ensures that future changes to the form template do not break existing forms. However, it also means that changes to the form template are generally only forward looking unless an ETL operation is undertaken.
 
@@ -255,7 +282,7 @@ When a pull request is approved and merged into main the deploy script will spin
 
 **CustomHTML parser** - function checks if element is a string, if so then the element will be passed in the function “sanitize” from "dompurify", and then the result from that process gets passed into the function “parse” from "html-react-parser" and the result gets returned. If the element is not a string, then the elements are treated as an array and get mapped over returning a key, as, and spread the props. The last check is in this else block, checking whether the element is ‘html’, in which case the content will get passed through ‘sanitize’ and ‘parse’ and the ‘as’ prop gets deleted before returning the modified element type, element props, and content.
 
-**File in the bucket, vs high level db entry for a form** - When a user creates a form, it is stored in Dynamo and tracks user information such as when the program was last edited and by whom, date submitted’ report period start and end date, program name, report type, the state, id, and status. The file in the S3 bucket is the entire form of user inputted data, and this is a pattern that is unique to this project. S3 is mainly used for attachments, data for virus scans on attachments, mathematica integration. We decided to store the programs in S3 because these data can get so large that we can’t reliably store it all in Dynamo, nor search through them without the app breaking.
+**Dynamo macpar-reports vs macpar-form in S3 Storage** - When a user creates a form, it is stored in Dynamo and tracks user information such as when the program was last edited and by whom, date submitted’ report period start and end date, program name, report type, the state, id, and status. The file in the S3 bucket is the entire form of user inputted data, and this is a pattern that is unique to this project. S3 is mainly used for attachments, data for virus scans on attachments, mathematica integration. We decided to store the programs in S3 because these data can get so large that we can’t reliably store it all in Dynamo, nor search through them without the app breaking.
 ```
 ## Copyright and license
 
