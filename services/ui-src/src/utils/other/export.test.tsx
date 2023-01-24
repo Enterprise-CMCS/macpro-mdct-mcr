@@ -1,65 +1,57 @@
 // types
 import { FormField } from "types";
-import { check } from "yargs";
+// utils
 import {
-  checkLinkTypes,
   maskResponseData,
   parseFormFieldInfo,
-  //renderChoiceListFieldResponse,
+  renderResponseData,
 } from "./export";
-/*
- * import {
- *  mockNestedFormField,
- *  mockReportFieldDataWithNestedFields,
- * } from "utils/testing/setupJest";
- */
+import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
+
+const emailInput: FormField = {
+  id: "email-field-id",
+  type: "text",
+  validation: "email",
+};
 
 describe("Test rendering methods", () => {
   test("Correctly renders choice list field response", () => {
-    const fieldResponse = [
-      {
-        key: "test_option1uuid",
-        value: "option 1 value",
-      },
+    const fieldResponseData = [
       {
         key: "test_option3uuid",
         value: "option 3 value",
+        children: [
+          {
+            id: "test_option3uuid-otherText",
+            type: "text",
+          },
+        ],
       },
     ];
 
-    // /*
-    // const result = renderChoiceListFieldResponse(
-    //   mockNestedFormField,
-    //   fieldResponse,
-    //   mockReportFieldDataWithNestedFields.fieldData,
-    //   "standard"
-    // );
-    // */
-  });
-});
-
-// TODO: remove this, unnecessary
-describe("Test checkLinkTypes", () => {
-  test("Correctly checks email link types", () => {
-    const input: FormField = {
-      id: "field-id",
-      type: "text",
-      validation: "email",
+    const widerResponseData = {
+      "test_option3uuid-otherText": "other text",
     };
-    const result = checkLinkTypes(input);
-    expect(result.isLink).toBeTruthy;
-    expect(result.isEmail).toBeTruthy;
+
+    const result = renderResponseData(
+      mockNestedFormField,
+      fieldResponseData,
+      widerResponseData,
+      "drawer"
+    );
+
+    expect(result[0].key).toEqual("option3uuid");
+    expect(result[0].props.children[0]).toEqual("option 3");
   });
 
-  test("Correctly checks url link types", () => {
-    const input: FormField = {
-      id: "field-id",
-      type: "text",
-      validation: "url",
-    };
-    const result = checkLinkTypes(input);
-    expect(result.isLink).toBeTruthy;
-    expect(result.isEmail).toBeFalsy;
+  test("Correctly renders a link or url field", () => {
+    const result = renderResponseData(
+      mockFormField,
+      emailInput,
+      emailInput,
+      "standard"
+    );
+    expect(result.props.children.id).toEqual("email-field-id");
   });
 });
 

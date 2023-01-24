@@ -283,6 +283,8 @@ export const mockDynamicForm = {
   fields: [mockPlanField],
 };
 
+export const mockLinksForm = {};
+
 export const mockVerbiageIntro = {
   section: "mock section",
   subsection: "mock subsection",
