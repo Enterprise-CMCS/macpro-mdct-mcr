@@ -33,6 +33,12 @@ export const TextField = ({
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
+  /*
+   * Last value is the last value that was submitted to Autosave. We only want to submit
+   * To autosave if theres been a change
+   */
+  const [lastValue, setLastValue] = useState<string>(defaultValue);
+
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
@@ -68,12 +74,13 @@ export const TextField = ({
     const { name, value } = event.target;
     const willAutosave = shouldAutosave(
       value,
-      displayValue,
+      lastValue,
       autosave,
       userIsStateRep,
       userIsStateUser
     );
     if (willAutosave) {
+      setLastValue(displayValue);
       const submissionValue = await getFieldValue(form, name, value);
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
