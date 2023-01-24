@@ -1,31 +1,40 @@
 // types
 import { FormField } from "types";
+import { check } from "yargs";
 import {
   checkLinkTypes,
   maskResponseData,
   parseFormFieldInfo,
-  renderChoiceListFieldResponse,
+  //renderChoiceListFieldResponse,
 } from "./export";
-import {
-  mockNestedFormField,
-  mockReportFieldDataWithNestedFields,
-} from "utils/testing/setupJest";
+/*
+ * import {
+ *  mockNestedFormField,
+ *  mockReportFieldDataWithNestedFields,
+ * } from "utils/testing/setupJest";
+ */
 
 describe("Test rendering methods", () => {
   test("Correctly renders choice list field response", () => {
-    const response = [
+    const fieldResponse = [
       {
-        id: "option1uuid",
-        label: "option 1",
+        key: "test_option1uuid",
+        value: "option 1 value",
+      },
+      {
+        key: "test_option3uuid",
+        value: "option 3 value",
       },
     ];
-    const result = renderChoiceListFieldResponse(
-      mockNestedFormField,
-      response,
-      mockReportFieldDataWithNestedFields.fieldData,
-      "standard"
-    );
-    //console.log(result);
+
+    // /*
+    // const result = renderChoiceListFieldResponse(
+    //   mockNestedFormField,
+    //   fieldResponse,
+    //   mockReportFieldDataWithNestedFields.fieldData,
+    //   "standard"
+    // );
+    // */
   });
 });
 

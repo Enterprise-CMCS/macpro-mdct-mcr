@@ -112,15 +112,13 @@ export const renderChoiceListFieldResponse = (
 ) => {
   // filter potential choices to just those that are selected
   const potentialFieldChoices = formField.props?.choices;
-  //console.log(potentialFieldChoices);
   const selectedChoices = potentialFieldChoices.filter(
-    (potentialChoice: FieldChoice) =>
-      fieldResponseData?.find((element: Choice) => {
-        //console.log(potentialChoice),
-        element.key.includes(potentialChoice.id);
-      })
+    (potentialChoice: FieldChoice) => {
+      return fieldResponseData?.find((element: Choice) =>
+        element.key.includes(potentialChoice.id)
+      );
+    }
   );
-  //console.log(selectedChoices);
   const choicesToDisplay = selectedChoices?.map((choice: FieldChoice) => {
     // get related "otherText" value, if present (always only a single child element here)
     const shouldDisplayRelatedOtherTextEntry =
