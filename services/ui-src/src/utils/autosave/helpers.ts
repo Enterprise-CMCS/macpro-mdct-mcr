@@ -1,13 +1,13 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { ReportStatus } from "types";
+import { DropdownChoice, ReportStatus } from "types";
 
-const valueChanged = (currentValue: string, storedValue: string) => {
+const valueChanged = (currentValue: any, storedValue: any) => {
   return currentValue !== storedValue;
 };
 
 export const shouldAutosave = (
-  currentValue: string,
-  storedValue: string,
+  currentValue: any,
+  storedValue: any,
   autosave?: boolean,
   isStateRep?: boolean,
   isStateUser?: boolean
@@ -22,7 +22,7 @@ export const shouldAutosave = (
 export const getFieldValue = async (
   form: UseFormReturn<FieldValues, any>,
   fieldName: string,
-  fieldValue: string,
+  fieldValue: string | DropdownChoice,
   defaultValue = ""
 ) => {
   // check field data validity
@@ -39,7 +39,7 @@ export const createReportKeys = (id?: string, state?: string) => ({
 export const createDataToWrite = (
   status: ReportStatus,
   fieldName: string,
-  fieldValue: string,
+  fieldValue: string | DropdownChoice,
   lastAlteredBy?: string
 ) => ({
   metadata: {

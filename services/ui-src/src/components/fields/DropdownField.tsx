@@ -5,7 +5,14 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { parseCustomHtml, useUser } from "utils";
+import {
+  createDataToWrite,
+  createReportKeys,
+  getFieldValue,
+  parseCustomHtml,
+  shouldAutosave,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   DropdownChoice,
@@ -57,6 +64,7 @@ export const DropdownField = ({
   const defaultValue = formatOptions(options)[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
+  const [lastValue, setLastValue] = useState<DropdownChoice>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
@@ -89,30 +97,29 @@ export const DropdownField = ({
 
   // update form field data & database data on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
-    if (autosave) {
-      const selectedOption = {
-        label: event.target.id,
-        value: event.target.value,
-      };
-      if (userIsStateUser || userIsStateRep) {
-        // check field data validity
-        const fieldDataIsValid = await form.trigger(label);
-        // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? selectedOption : defaultValue;
+    const selectedOption = {
+      label: event.target.id,
+      value: event.target.value,
+    };
 
-        const reportKeys = {
-          state: state,
-          id: report?.id,
-        };
-        const dataToWrite = {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: full_name,
-          },
-          fieldData: { [name]: fieldValue },
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
+    const willAutosave = shouldAutosave(
+      selectedOption,
+      lastValue,
+      autosave,
+      userIsStateRep,
+      userIsStateUser
+    );
+    if (willAutosave) {
+      setLastValue(selectedOption);
+      const submissionValue = await getFieldValue(form, name, selectedOption);
+      const reportKeys = createReportKeys(report?.id, state);
+      const dataToWrite = createDataToWrite(
+        ReportStatus.IN_PROGRESS,
+        name,
+        submissionValue,
+        full_name
+      );
+      await updateReport(reportKeys, dataToWrite);
     }
   };
 
