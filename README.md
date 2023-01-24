@@ -8,6 +8,14 @@ MDCT-MCR is an application meant to collect state report data to help the health
 
 Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and Managed Care Organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
 
+There are three reports that users complete:
+
+**MCPAR** - (Managed Care Program Annual Report) report for states to complete annually for each Medicaid managed care program
+
+**MLR** - (Medical Loss Ratio) report for states to complete annually or when contract terms change
+
+**NAAAR** - 
+
 Project Goals:
 
 - Improve monitoring and oversight of managed care as the dominant delivery system for Medicaid/CHIP.
@@ -224,17 +232,12 @@ When a pull request is approved and merged into main the deploy script will spin
 
 ```text
 
-**MCPAR** - (Managed Care Program Annual Report) report for states to complete annually for each Medicaid managed care program
-
-**MLR** - (Medical Loss Ratio) report for states to complete annually or when contract terms change
-
-**NAAAR** - 
-
 **General Structure** - React frontend that renders a form for a user to fill out, Node backend that uses S3 and Dynamo to store and validate forms.
 
 **Custom JSON & form field creation engine (formFieldFactory)** - each report has a custom JSON object, stored in a JSON file, written using a custom schema. This JSON object is referred to as the form template and it is the blueprint from which report form fields are created. It is also used to create routes and navigation elements throughout the app. When provided form fields from this template, the formFieldFactory renders the appropriate form fields. A similar process occurs when a report is exported in PDF preview format. 
 
 **Page and Form Structure** Each page has a name, path, and pageType, for example the first page a user sees in the form will be have ‘pageType: standard’ with a ‘verbiage’ object that includes all of the text that precedes the form fields. The the ‘form’ object follows with a unique id and ‘fields’ array that holds one or more objects that represent the individual questions in a form. There are different types of forms as well. If there is a "pageType": "modalDrawer", then instead of a ‘form’ object, it will have a ‘modalForm’ object. Here is an example of a standard page with one field:
+
 `       {
           "name": "Add Plans",
           "path": "/mcpar/program-information/add-plans",
@@ -278,7 +281,6 @@ When a pull request is approved and merged into main the deploy script will spin
 **Server-side validation** Anytime an API call to write data is triggered, the unvalidated payload is first validated using a custom yup validation method. The schema used for validation varies depending on the data being written. If the data being written is field data, the validation schema is retrieved from the associated fetched form template. Other metadata has a locally stored longterm validation schema that is used. If the data is valid, the operation continues; if the data is invalid, the operation fails and returns an error. 
 
 **Form Hydration** Any time data is stored in Dynamo or S3 we also pull the latest field data and update the DOM with it through the reportProvider/reportContext. This uses the form hydration engine to ensure that the latest data is shown to the user whether that data comes from the database or the user’s entered but as-of-yet unsaved input.
-
 
 **CustomHTML parser** - function checks if element is a string, if so then the element will be passed in the function “sanitize” from "dompurify", and then the result from that process gets passed into the function “parse” from "html-react-parser" and the result gets returned. If the element is not a string, then the elements are treated as an array and get mapped over returning a key, as, and spread the props. The last check is in this else block, checking whether the element is ‘html’, in which case the content will get passed through ‘sanitize’ and ‘parse’ and the ‘as’ prop gets deleted before returning the modified element type, element props, and content.
 
