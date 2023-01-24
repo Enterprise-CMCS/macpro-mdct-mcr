@@ -284,7 +284,7 @@ When a pull request is approved and merged into main the deploy script will spin
 **CustomHTML parser** - function checks if element is a string, if so then the element will be passed in the function “sanitize” from "dompurify", and then the result from that process gets passed into the function “parse” from "html-react-parser" and the result gets returned. If the element is not a string, then the elements are treated as an array and get mapped over returning a key, as, and spread the props. The last check is in this else block, checking whether the element is ‘html’, in which case the content will get passed through ‘sanitize’ and ‘parse’ and the ‘as’ prop gets deleted before returning the modified element type, element props, and content.
 
 **Dynamo macpar-reports vs macpar-form in S3 Storage** - When a user creates a form, it is stored in Dynamo and tracks user information such as when the program was last edited and by whom, date submitted’ report period start and end date, program name, report type, the state, id, and status. The file in the S3 bucket is the entire form of user inputted data, and this is a pattern that is unique to this project. S3 is mainly used for attachments, data for virus scans on attachments, mathematica integration. We decided to store the programs in S3 because these data can get so large that we can’t reliably store it all in Dynamo, nor search through them without the app breaking.
-```
+
 ## Copyright and license
 
 [![License](https://img.shields.io/badge/License-CC0--1.0--Universal-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/legalcode)
