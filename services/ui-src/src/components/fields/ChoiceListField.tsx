@@ -60,16 +60,24 @@ export const ChoiceListField = ({
     }
   }, [displayValue]);
 
-  const autosaveSelections = async (selectedOptions: Choice[] | null) => {
+  const autosaveSelections = async (
+    selectedOptions: Choice[] | null,
+    clickedOption: Choice,
+    optionChecked: boolean
+  ) => {
     let dataToSend: any = { [name]: selectedOptions };
     const clearChildren = (choices: FieldChoice[]) => {
       choices.forEach((choice: FieldChoice) => {
         // if a choice is not selected and there are children, clear out any saved data
-        if (!choice.checked && choice.children) {
+        if (
+          (!choice.checked && choice.children) ||
+          (!optionChecked && choice.id == clickedOption.key && choice.children)
+        ) {
           choice.children.forEach((child) => {
             switch (child.type) {
               case "radio":
               case "checkbox":
+                form.setValue(child.id, [], { shouldValidate: true });
                 dataToSend[child.id] = [];
                 if (child.props?.choices) {
                   child.props.choices.forEach((choice: FieldChoice) => {
@@ -79,8 +87,8 @@ export const ChoiceListField = ({
                 }
                 break;
               default:
-                dataToSend[child.id] = "";
                 form.setValue(child.id, "", { shouldValidate: true });
+                dataToSend[child.id] = "";
                 break;
             }
           });
@@ -182,7 +190,7 @@ export const ChoiceListField = ({
 
     if (autosave) {
       if (userIsStateUser || userIsStateRep) {
-        autosaveSelections(selectedOptions);
+        autosaveSelections(selectedOptions, clickedOption, isOptionChecked);
       }
     }
   };
