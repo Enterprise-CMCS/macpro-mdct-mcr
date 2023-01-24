@@ -77,10 +77,12 @@ export const DropdownField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
+      setLastValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
+      setLastValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
