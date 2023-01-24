@@ -5,7 +5,12 @@ import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { formFieldFactory, parseCustomHtml, useUser } from "utils";
+import {
+  formFieldFactory,
+  parseCustomHtml,
+  shouldAutosave,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   Choice,
@@ -27,6 +32,9 @@ export const ChoiceListField = ({
   ...props
 }: Props) => {
   const [displayValue, setDisplayValue] = useState<Choice[] | null>(null);
+  const [lastAutosaveValue, setLastAutosaveValue] = useState<Choice[] | null>(
+    null
+  );
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -43,10 +51,12 @@ export const ChoiceListField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
+      setLastAutosaveValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
+      setLastAutosaveValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -60,19 +70,12 @@ export const ChoiceListField = ({
     }
   }, [displayValue]);
 
-  const autosaveSelections = async (
-    selectedOptions: Choice[] | null,
-    clickedOption: Choice,
-    optionChecked: boolean
-  ) => {
+  const autosaveSelections = async (selectedOptions: Choice[] | null) => {
     let dataToSend: any = { [name]: selectedOptions };
     const clearChildren = (choices: FieldChoice[]) => {
       choices.forEach((choice: FieldChoice) => {
         // if a choice is not selected and there are children, clear out any saved data
-        if (
-          (!choice.checked && choice.children) ||
-          (!optionChecked && choice.id == clickedOption.key && choice.children)
-        ) {
+        if (!choice.checked && choice.children) {
           choice.children.forEach((child) => {
             switch (child.type) {
               case "radio":
@@ -187,11 +190,20 @@ export const ChoiceListField = ({
         : uncheckedOptionValues;
       setDisplayValue(selectedOptions);
     }
+  };
 
-    if (autosave) {
-      if (userIsStateUser || userIsStateRep) {
-        autosaveSelections(selectedOptions, clickedOption, isOptionChecked);
-      }
+  // update field values
+  const onComponentBlurHandler = async () => {
+    const willAutosave = shouldAutosave(
+      displayValue,
+      lastAutosaveValue,
+      autosave,
+      userIsStateRep,
+      userIsStateUser
+    );
+    if (willAutosave) {
+      setLastAutosaveValue(displayValue);
+      autosaveSelections(displayValue);
     }
   };
 
@@ -215,6 +227,7 @@ export const ChoiceListField = ({
         hint={parsedHint}
         errorMessage={errorMessage}
         onChange={onChangeHandler}
+        onComponentBlur={onComponentBlurHandler}
         {...props}
       />
     </Box>

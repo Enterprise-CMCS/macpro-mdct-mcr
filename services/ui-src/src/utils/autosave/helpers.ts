@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { DropdownChoice, EntityShape, ReportStatus } from "types";
+import { Choice, DropdownChoice, EntityShape, ReportStatus } from "types";
 
 const valueChanged = (currentValue: any, storedValue: any) => {
   return currentValue !== storedValue;
@@ -22,7 +22,7 @@ export const shouldAutosave = (
 export const getFieldValue = async (
   form: UseFormReturn<FieldValues, any>,
   fieldName: string,
-  fieldValue: string | DropdownChoice,
+  fieldValue: string | DropdownChoice | Choice[] | null,
   defaultValue = ""
 ) => {
   // check field data validity
@@ -39,7 +39,7 @@ export const createReportKeys = (id?: string, state?: string) => ({
 export const createDataToWrite = (
   status: ReportStatus,
   fieldName: string,
-  fieldValue: string | DropdownChoice | EntityShape[],
+  fieldValue: string | DropdownChoice | EntityShape[] | Choice[] | null,
   lastAlteredBy?: string
 ) => ({
   metadata: {
