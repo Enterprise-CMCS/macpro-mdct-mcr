@@ -230,14 +230,13 @@ When a pull request is approved and merged into main the deploy script will spin
 
 ![Architecture Diagram](./.images/architecture.svg?raw=true)
 
-```text
 
 **General Structure** - React frontend that renders a form for a user to fill out, Node backend that uses S3 and Dynamo to store and validate forms.
 
 **Custom JSON & form field creation engine (formFieldFactory)** - each report has a custom JSON object, stored in a JSON file, written using a custom schema. This JSON object is referred to as the form template and it is the blueprint from which report form fields are created. It is also used to create routes and navigation elements throughout the app. When provided form fields from this template, the formFieldFactory renders the appropriate form fields. A similar process occurs when a report is exported in PDF preview format. 
 
 **Page and Form Structure** Each page has a name, path, and pageType, for example the first page a user sees in the form will be have ‘pageType: standard’ with a ‘verbiage’ object that includes all of the text that precedes the form fields. The the ‘form’ object follows with a unique id and ‘fields’ array that holds one or more objects that represent the individual questions in a form. There are different types of forms as well. If there is a "pageType": "modalDrawer", then instead of a ‘form’ object, it will have a ‘modalForm’ object. Here is an example of a standard page with one field:
-```
+```json
         {
           "name": "Add Plans",
           "path": "/mcpar/program-information/add-plans",
