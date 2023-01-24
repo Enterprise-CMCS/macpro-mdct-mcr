@@ -103,7 +103,7 @@ const sx = {
         },
         "&:nth-last-of-type(2)": {
           width: "14rem",
-          paddingTop: "0.6rem",
+          paddingTop: "0.5rem",
         },
       },
     },
