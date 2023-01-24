@@ -37,7 +37,8 @@ export const TextField = ({
    * Last value is the last value that was submitted to Autosave. We only want to submit
    * To autosave if theres been a change
    */
-  const [lastValue, setLastValue] = useState<string>(defaultValue);
+  const [lastAutosaveValue, setLastAutosaveValue] =
+    useState<string>(defaultValue);
 
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -54,12 +55,12 @@ export const TextField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      setLastValue(fieldValue);
+      setLastAutosaveValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      setLastValue(hydrationValue);
+      setLastAutosaveValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -76,13 +77,13 @@ export const TextField = ({
     const { name, value } = event.target;
     const willAutosave = shouldAutosave(
       value,
-      lastValue,
+      lastAutosaveValue,
       autosave,
       userIsStateRep,
       userIsStateUser
     );
     if (willAutosave) {
-      setLastValue(displayValue);
+      setLastAutosaveValue(displayValue);
       const submissionValue = await getFieldValue(form, name, value);
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(

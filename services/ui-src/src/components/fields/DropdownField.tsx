@@ -64,7 +64,8 @@ export const DropdownField = ({
   const defaultValue = formatOptions(options)[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
-  const [lastValue, setLastValue] = useState<DropdownChoice>(defaultValue);
+  const [lastAutosaveValue, setLastAutosaveValue] =
+    useState<DropdownChoice>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
@@ -77,12 +78,12 @@ export const DropdownField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      setLastValue(fieldValue);
+      setLastAutosaveValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      setLastValue(hydrationValue);
+      setLastAutosaveValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -106,13 +107,13 @@ export const DropdownField = ({
 
     const willAutosave = shouldAutosave(
       selectedOption,
-      lastValue,
+      lastAutosaveValue,
       autosave,
       userIsStateRep,
       userIsStateUser
     );
     if (willAutosave) {
-      setLastValue(selectedOption);
+      setLastAutosaveValue(selectedOption);
       const submissionValue = await getFieldValue(form, name, selectedOption);
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(

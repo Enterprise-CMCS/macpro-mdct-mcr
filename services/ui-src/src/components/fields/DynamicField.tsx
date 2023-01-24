@@ -32,7 +32,9 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
 
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
-  const [lastValues, setLastValues] = useState<EntityShape[]>([]);
+  const [lastAutosaveValues, setLastAutosaveValues] = useState<EntityShape[]>(
+    []
+  );
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
   );
@@ -72,13 +74,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const onBlurHandler = async () => {
     const willAutosave = shouldAutosave(
       displayValues,
-      lastValues,
+      lastAutosaveValues,
       true,
       userIsStateRep,
       userIsStateUser
     );
     if (willAutosave) {
-      setLastValues(displayValues);
+      setLastAutosaveValues(displayValues);
       /*
        *  unlike other field components, dynamic field data does not need to be checked for
        *  validity before saving to the database.the only invalid value for dynamic field inputs
@@ -176,7 +178,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       const valuesToSet = displayValuesEntered ? displayValues : hydrationValue;
       // set and append values
       setDisplayValues(valuesToSet);
-      setLastValues(valuesToSet);
+      setLastAutosaveValues(valuesToSet);
       append(valuesToSet);
     } else {
       appendNewRecord();

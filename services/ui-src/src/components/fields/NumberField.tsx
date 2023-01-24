@@ -29,7 +29,7 @@ export const NumberField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
-  const [lastValue, setLastValue] = useState(defaultValue);
+  const [lastAutosaveValue, setLastAutosaveValue] = useState(defaultValue);
 
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -47,13 +47,13 @@ export const NumberField = ({
     if (fieldValue) {
       const maskedFieldValue = applyCustomMask(fieldValue, mask);
       setDisplayValue(maskedFieldValue);
-      setLastValue(maskedFieldValue);
+      setLastAutosaveValue(maskedFieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
       setDisplayValue(maskedHydrationValue);
-      setLastValue(maskedHydrationValue);
+      setLastAutosaveValue(maskedHydrationValue);
       form.setValue(name, maskedHydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -73,13 +73,13 @@ export const NumberField = ({
     form.setValue(name, maskedFieldValue, { shouldValidate: true });
     const willAutosave = shouldAutosave(
       value,
-      lastValue,
+      lastAutosaveValue,
       autosave,
       userIsStateRep,
       userIsStateUser
     );
     if (willAutosave) {
-      setLastValue(maskedFieldValue);
+      setLastAutosaveValue(maskedFieldValue);
       const submissionValue = await getFieldValue(form, name, value);
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
