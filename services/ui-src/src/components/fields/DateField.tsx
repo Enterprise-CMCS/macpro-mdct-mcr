@@ -10,7 +10,15 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
-import { checkDateCompleteness, parseCustomHtml, useUser } from "utils";
+import {
+  checkDateCompleteness,
+  createDataToWrite,
+  createReportKeys,
+  getFieldValue,
+  parseCustomHtml,
+  shouldAutosave,
+  useUser,
+} from "utils";
 import { ReportContext } from "components";
 
 export const DateField = ({
@@ -24,6 +32,7 @@ export const DateField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [lastValue, setLastValue] = useState<string>(defaultValue);
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
 
@@ -59,29 +68,28 @@ export const DateField = ({
 
   // update form field data on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
-    if (autosave) {
-      const { name, value } = event.target;
-      if (userIsStateUser || userIsStateRep) {
-        // check field data validity
-        const fieldDataIsValid = await form.trigger(name);
-        // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? value : defaultValue;
-        const reportKeys = {
-          state: state,
-          id: report?.id,
-        };
-        const dataToWrite = {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: full_name,
-          },
-          fieldData: { [name]: fieldValue },
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
+    const { name, value } = event.target;
+    form.setValue(name, value, { shouldValidate: true });
+
+    const willAutosave = shouldAutosave(
+      value,
+      lastValue,
+      autosave,
+      userIsStateRep,
+      userIsStateUser
+    );
+    if (willAutosave) {
+      setLastValue(value);
+      const submissionValue = await getFieldValue(form, name, value);
+      const reportKeys = createReportKeys(report?.id, state);
+      const dataToWrite = createDataToWrite(
+        ReportStatus.IN_PROGRESS,
+        name,
+        submissionValue,
+        full_name
+      );
+      await updateReport(reportKeys, dataToWrite);
     }
-    const fieldValue = event.target.value;
-    form.setValue(name, fieldValue, { shouldValidate: true });
   };
 
   // prepare error message, hint, and classes
