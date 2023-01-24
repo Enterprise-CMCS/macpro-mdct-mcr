@@ -17,7 +17,12 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
-import { useUser } from "utils";
+import {
+  createDataToWrite,
+  createReportKeys,
+  shouldAutosave,
+  useUser,
+} from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
@@ -27,6 +32,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
 
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
+  const [lastValues, setLastValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
   );
@@ -64,26 +70,28 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   // if should autosave, submit field data to database on blur
   const onBlurHandler = async () => {
-    if (userIsStateUser || userIsStateRep) {
+    const willAutosave = shouldAutosave(
+      displayValues,
+      lastValues,
+      true,
+      userIsStateRep,
+      userIsStateUser
+    );
+    if (willAutosave) {
+      setLastValues(displayValues);
       /*
        *  unlike other field components, dynamic field data does not need to be checked for
        *  validity before saving to the database.the only invalid value for dynamic field inputs
        *  is "" because they are required, but checking for validity and saving default value of ""
        *  would have the same effect as leaving it unchecked and unaltered.
        */
-      const reportKeys = {
-        state: state,
-        id: report?.id,
-      };
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [name]: displayValues,
-        },
-      };
+      const reportKeys = createReportKeys(report?.id, state);
+      const dataToWrite = createDataToWrite(
+        ReportStatus.IN_PROGRESS,
+        name,
+        displayValues,
+        full_name
+      );
       await updateReport(reportKeys, dataToWrite);
     }
   };
@@ -168,6 +176,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       const valuesToSet = displayValuesEntered ? displayValues : hydrationValue;
       // set and append values
       setDisplayValues(valuesToSet);
+      setLastValues(valuesToSet);
       append(valuesToSet);
     } else {
       appendNewRecord();

@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { DropdownChoice, ReportStatus } from "types";
+import { DropdownChoice, EntityShape, ReportStatus } from "types";
 
 const valueChanged = (currentValue: any, storedValue: any) => {
   return currentValue !== storedValue;
@@ -39,7 +39,7 @@ export const createReportKeys = (id?: string, state?: string) => ({
 export const createDataToWrite = (
   status: ReportStatus,
   fieldName: string,
-  fieldValue: string | DropdownChoice,
+  fieldValue: string | DropdownChoice | EntityShape[],
   lastAlteredBy?: string
 ) => ({
   metadata: {
