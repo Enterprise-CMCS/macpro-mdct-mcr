@@ -4,7 +4,16 @@ import { useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
 import { TextField } from "./TextField";
 // utils
-import { applyCustomMask, customMaskMap, useUser, validCmsdsMask } from "utils";
+import {
+  applyCustomMask,
+  createDataToWrite,
+  createReportKeys,
+  customMaskMap,
+  getFieldValue,
+  shouldAutosave,
+  useUser,
+  validCmsdsMask,
+} from "utils";
 import { InputChangeEvent, AnyObject, ReportStatus } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 import { ReportContext } from "components";
@@ -20,6 +29,7 @@ export const NumberField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
+  const [lastValue, setLastValue] = useState(defaultValue);
 
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
@@ -59,26 +69,24 @@ export const NumberField = ({
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);
     form.setValue(name, maskedFieldValue, { shouldValidate: true });
-    if (autosave) {
-      if (userIsStateUser || userIsStateRep) {
-        // check field data validity
-        const fieldDataIsValid = await form.trigger(name);
-        // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? maskedFieldValue : defaultValue;
-
-        const reportKeys = {
-          state: state,
-          id: report?.id,
-        };
-        const dataToWrite = {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: full_name,
-          },
-          fieldData: { [name]: fieldValue },
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
+    const willAutosave = shouldAutosave(
+      value,
+      lastValue,
+      autosave,
+      userIsStateRep,
+      userIsStateUser
+    );
+    if (willAutosave) {
+      setLastValue(maskedFieldValue);
+      const submissionValue = await getFieldValue(form, name, value);
+      const reportKeys = createReportKeys(report?.id, state);
+      const dataToWrite = createDataToWrite(
+        ReportStatus.IN_PROGRESS,
+        name,
+        submissionValue,
+        full_name
+      );
+      await updateReport(reportKeys, dataToWrite);
     }
   };
 
