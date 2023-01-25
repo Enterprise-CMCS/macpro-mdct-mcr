@@ -42,6 +42,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
       content={{
         headRow: headRowItems,
       }}
+      data-testid={"exportTable"}
     >
       {renderFieldTableBody(formFields!, pageType!, report, entityType)}
     </Table>
@@ -74,6 +75,8 @@ export const renderFieldTableBody = (
       (choice: FieldChoice) => {
         // Only render nested items for checked choices
         const selected = report?.fieldData[formField.id];
+        console.log(choice);
+        console.log(selected);
         const entryExists = selected?.find((selectedChoice: any) =>
           selectedChoice.key.endsWith(choice.id)
         );
