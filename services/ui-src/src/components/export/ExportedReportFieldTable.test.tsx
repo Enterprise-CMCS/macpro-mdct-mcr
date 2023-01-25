@@ -11,16 +11,17 @@ import { ReportContext } from "components";
 import { ExportedReportFieldTable } from "./ExportedReportFieldTable";
 import { DrawerReportPageShape } from "types";
 
-const mockStandardContext = { ...mockReportContext };
+// Contexts
+const reportJsonFields = [{ ...mockNestedFormField, id: "parent" }];
 const fieldData = {
   parent: [{ key: "parent-option3uuid", value: "option 3" }],
   child: "testAnswer",
 };
+
 const nestedParent = mockNestedFormField;
 nestedParent.props.choices[2].children = [{ ...mockFormField, id: "child" }];
 
-const reportJsonFields = [{ ...mockNestedFormField, id: "parent" }];
-
+const mockStandardContext = { ...mockReportContext };
 mockStandardContext.report.fieldData = {
   ...mockStandardContext.report.fieldData,
   ...fieldData,
@@ -39,6 +40,7 @@ mockDrawerContext.report.fieldData = {
   ],
 };
 
+// Report JSON
 const mockStandardPageJson = {
   ...mockStandardReportPageJson,
   form: {
@@ -46,17 +48,23 @@ const mockStandardPageJson = {
     fields: reportJsonFields,
   },
 };
-
 const mockDrawerPageJson = {
   ...mockDrawerReportPageJson,
   drawerForm: { id: "drawer", fields: reportJsonFields },
 };
+const mockEmptyPageJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "standard",
+    fields: [],
+  },
+};
+
 const exportedStandardTableComponent = (
   <ReportContext.Provider value={mockStandardContext}>
     <ExportedReportFieldTable section={mockStandardPageJson} />
   </ReportContext.Provider>
 );
-
 const exportedDrawerTableComponent = (
   <ReportContext.Provider value={mockDrawerContext}>
     <ExportedReportFieldTable
@@ -64,7 +72,11 @@ const exportedDrawerTableComponent = (
     />
   </ReportContext.Provider>
 );
-
+const emptyTableComponent = (
+  <ReportContext.Provider value={mockDrawerContext}>
+    <ExportedReportFieldTable section={mockEmptyPageJson} />
+  </ReportContext.Provider>
+);
 describe("ExportedReportFieldRow", () => {
   test("Is present", async () => {
     render(exportedStandardTableComponent);
@@ -74,6 +86,12 @@ describe("ExportedReportFieldRow", () => {
 
   test("handles drawer pages with children", async () => {
     render(exportedDrawerTableComponent);
+    const row = screen.getByTestId("exportTable");
+    expect(row).toBeVisible();
+  });
+
+  test("handles a table with no form fields", async () => {
+    render(emptyTableComponent);
     const row = screen.getByTestId("exportTable");
     expect(row).toBeVisible();
   });

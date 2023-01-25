@@ -61,7 +61,6 @@ export const renderFieldTableBody = (
     formField: FormField,
     applicableDrawers?: string[]
   ) => {
-    console.log(formField);
     tableRows.push(
       <ExportedReportFieldRow
         key={formField.id}
@@ -120,7 +119,7 @@ export const renderFieldTableBody = (
   };
   // map through form fields and call renderer
   formFields?.map((field: FormField) => renderFieldRow(field));
-  return tableRows || <></>;
+  return tableRows;
 };
 
 export interface Props {
