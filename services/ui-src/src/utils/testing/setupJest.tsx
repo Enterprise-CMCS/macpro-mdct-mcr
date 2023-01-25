@@ -198,16 +198,6 @@ export const mockFormField = {
   },
 };
 
-export const mockRepeatedFormField = {
-  id: "mock-text-field",
-  type: "text",
-  validation: "text",
-  repeat: "plans",
-  props: {
-    label: "mock text field",
-  },
-};
-
 export const mockModalFormField = {
   id: "mock-modal-text-field",
   type: "text",
