@@ -2,12 +2,8 @@ import { createDataToWrite, getFieldValue, shouldAutosave } from "./helpers";
 import { ReportStatus } from "types";
 import { useFormContext } from "react-hook-form";
 
-const mockTrigger = jest.fn();
 const mockRhfMethods = {
-  register: () => {},
-  setValue: () => {},
-  getValues: jest.fn(),
-  trigger: mockTrigger,
+  trigger: jest.fn(),
 };
 const mockUseFormContext = useFormContext as unknown as jest.Mock<
   typeof useFormContext
@@ -16,10 +12,10 @@ const mockUseFormContext = useFormContext as unknown as jest.Mock<
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => mockRhfMethods),
 }));
-const mockGetValues = (returnValue: any) =>
+const mockTrigger = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    trigger: jest.fn().mockReturnValue(returnValue),
   }));
 
 describe("Should Autosave", () => {
@@ -45,12 +41,20 @@ describe("Should Autosave", () => {
   });
 });
 
-describe("Get Field Value", () => {
-  const mockFormFieldValue = "mock-form-field-value";
-  test("", async () => {
-    mockGetValues(mockFormFieldValue);
+describe("GetFieldValue", () => {
+  const validFieldValue = "mock-form-field-value";
+  const invalidFieldValue = "    ";
+  test("Get the VALID field value from the form", async () => {
+    mockTrigger(true);
     expect(
-      await getFieldValue(useFormContext(), "fieldName", "fieldValue", "")
+      await getFieldValue(useFormContext(), "fieldName", validFieldValue)
+    ).toEqual(validFieldValue);
+  });
+
+  test("Get the INVALID field value from the form", async () => {
+    mockTrigger(false);
+    expect(
+      await getFieldValue(useFormContext(), "fieldName", invalidFieldValue)
     ).toEqual("");
   });
 });

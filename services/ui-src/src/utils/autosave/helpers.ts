@@ -27,6 +27,7 @@ export const getFieldValue = async (
 ) => {
   // check field data validity
   const fieldDataIsValid = await form.trigger(fieldName);
+
   // if valid, use; if not, reset to default
   return fieldDataIsValid ? fieldValue : defaultValue;
 };
