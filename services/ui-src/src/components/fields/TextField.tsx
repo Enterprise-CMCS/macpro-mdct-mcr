@@ -53,7 +53,7 @@ export const TextField = ({
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue) {
+    if (fieldValue || fieldValue == "") {
       setDisplayValue(fieldValue);
       setLastAutosaveValue(fieldValue);
     }
