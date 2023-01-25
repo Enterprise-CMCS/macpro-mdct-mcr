@@ -61,6 +61,7 @@ export const renderFieldTableBody = (
     formField: FormField,
     applicableDrawers?: string[]
   ) => {
+    console.log(formField);
     tableRows.push(
       <ExportedReportFieldRow
         key={formField.id}
@@ -75,8 +76,6 @@ export const renderFieldTableBody = (
       (choice: FieldChoice) => {
         // Only render nested items for checked choices
         const selected = report?.fieldData[formField.id];
-        console.log(choice);
-        console.log(selected);
         const entryExists = selected?.find((selectedChoice: any) =>
           selectedChoice.key.endsWith(choice.id)
         );
