@@ -37,7 +37,9 @@ const exportRow = (
 const otherTextRow = (
   <ReportContext.Provider value={mockReportContext}>
     <Table sx={{}}>
-      <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
+      <tbody>
+        <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
+      </tbody>
     </Table>
   </ReportContext.Provider>
 );
@@ -45,7 +47,9 @@ const otherTextRow = (
 const dynamicRow = (
   <ReportContext.Provider value={mockReportContext}>
     <Table sx={{}}>
-      <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />
+      <tbody>
+        <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />
+      </tbody>
     </Table>
   </ReportContext.Provider>
 );
@@ -73,7 +77,6 @@ describe("ExportedReportFieldRow", () => {
 describe("Test ExportedReportFieldRow accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(exportRow);
-    screen.debug();
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
