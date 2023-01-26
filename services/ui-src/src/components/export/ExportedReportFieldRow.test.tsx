@@ -27,7 +27,9 @@ const fieldWithLabel = {
 const exportRow = (
   <ReportContext.Provider value={mockReportContext}>
     <Table sx={{}}>
-      <ExportedReportFieldRow formField={field} pageType="drawer" />
+      <tbody>
+        <ExportedReportFieldRow formField={field} pageType="drawer" />
+      </tbody>
     </Table>
   </ReportContext.Provider>
 );
@@ -71,6 +73,7 @@ describe("ExportedReportFieldRow", () => {
 describe("Test ExportedReportFieldRow accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(exportRow);
+    screen.debug();
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
