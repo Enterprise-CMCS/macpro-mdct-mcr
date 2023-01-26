@@ -18,6 +18,7 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({
   entity,
+  entityIndex,
   entityType,
   formattedEntityData,
   verbiage,
@@ -32,7 +33,6 @@ export const EntityCard = ({
   let entityCompleted = false;
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-  const entityIndex = reportFieldDataEntities.indexOf(entity, 0);
   const entitiesCount = `${entityIndex + 1} / ${
     reportFieldDataEntities.length
   }`;
@@ -90,7 +90,7 @@ export const EntityCard = ({
             {entityCompleted ? (
               <Text className="completed-text">Complete</Text>
             ) : (
-              <Text className="error-text">Error!</Text>
+              <Text className="error-text">Error</Text>
             )}
           </Box>
         )}
@@ -166,6 +166,7 @@ export const EntityCard = ({
 
 interface Props {
   entity: EntityShape;
+  entityIndex: number;
   entityType: string;
   formattedEntityData: AnyObject;
   verbiage: AnyObject;
@@ -210,7 +211,7 @@ const sx = {
       },
     },
     ".error-text": {
-      color: "red",
+      color: "palette.error_darker",
       fontSize: ".75rem",
       textAlign: "center",
     },
