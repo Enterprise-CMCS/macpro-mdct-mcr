@@ -6,6 +6,8 @@ import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
 import {
+  createDataToWrite,
+  createReportKeys,
   formFieldFactory,
   parseCustomHtml,
   shouldAutosave,
@@ -66,52 +68,21 @@ export const ChoiceListField = ({
     if (displayValue) {
       form.setValue(name, displayValue, { shouldValidate: true });
       // update DOM choices checked status
-      clearNestedValues(choices);
+      clearChildren(choices);
     }
   }, [displayValue]);
 
   const autosaveSelections = async (selectedOptions: Choice[] | null) => {
-    let dataToSend: any = { [name]: selectedOptions };
-    const clearChildren = (choices: FieldChoice[]) => {
-      choices.forEach((choice: FieldChoice) => {
-        // if a choice is not selected and there are children, clear out any saved data
-        if (!choice.checked && choice.children) {
-          choice.children.forEach((child) => {
-            switch (child.type) {
-              case "radio":
-              case "checkbox":
-                form.setValue(child.id, [], { shouldValidate: true });
-                dataToSend[child.id] = [];
-                if (child.props?.choices) {
-                  child.props.choices.forEach((choice: FieldChoice) => {
-                    choice.checked = false;
-                  });
-                  clearChildren(child.props.choices);
-                }
-                break;
-              default:
-                form.setValue(child.id, "", { shouldValidate: true });
-                dataToSend[child.id] = "";
-                break;
-            }
-          });
-        }
-      });
-    };
+    const initialDataToSend: any = { [name]: selectedOptions };
+    const cleanedDataToSend = clearChildren(choices, initialDataToSend);
 
-    clearChildren(choices);
-
-    const reportKeys = {
-      state: state,
-      id: report?.id,
-    };
-    const dataToWrite = {
-      metadata: {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-      },
-      fieldData: dataToSend,
-    };
+    const reportKeys = createReportKeys(report?.id, state);
+    const dataToWrite = createDataToWrite(
+      ReportStatus.IN_PROGRESS,
+      name,
+      cleanedDataToSend,
+      full_name
+    );
 
     await updateReport(reportKeys, dataToWrite);
   };
@@ -136,7 +107,11 @@ export const ChoiceListField = ({
     });
   };
 
-  const clearNestedValues = (choices: FieldChoice[]) => {
+  const autosaveContainsParentChoice = (value: string) =>
+    lastAutosaveValue &&
+    lastAutosaveValue.some((autosave) => autosave.value === value);
+
+  const clearChildren = (choices: FieldChoice[], dataToSend?: AnyObject) => {
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
       if (!choice.checked && choice.children) {
@@ -145,20 +120,27 @@ export const ChoiceListField = ({
             case "radio":
             case "checkbox":
               form.setValue(child.id, [], { shouldValidate: true });
+              if (dataToSend && autosaveContainsParentChoice(choice.value)) {
+                dataToSend[child.id] = [];
+              }
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
                 });
-                clearNestedValues(child.props.choices);
+                clearChildren(child.props.choices);
               }
               break;
             default:
               form.setValue(child.id, "", { shouldValidate: true });
+              if (dataToSend && autosaveContainsParentChoice(choice.value)) {
+                dataToSend[child.id] = "";
+              }
               break;
           }
         });
       }
     });
+    return dataToSend;
   };
 
   const setCheckedOrUnchecked = (choice: FieldChoice) => {
