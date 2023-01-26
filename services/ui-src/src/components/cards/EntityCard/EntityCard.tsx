@@ -18,6 +18,7 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({
   entity,
+  entityIndex,
   entityType,
   formattedEntityData,
   verbiage,
@@ -32,8 +33,9 @@ export const EntityCard = ({
   let entityCompleted = false;
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-  const entityIndex = props.entityIndex + 1;
-  const entitiesCount = `${entityIndex} / ${reportFieldDataEntities.length}`;
+  const entitiesCount = `${entityIndex + 1} / ${
+    reportFieldDataEntities.length
+  }`;
 
   // any drawer-based field will do for this check
   switch (entityType) {
@@ -164,6 +166,7 @@ export const EntityCard = ({
 
 interface Props {
   entity: EntityShape;
+  entityIndex: number;
   entityType: string;
   formattedEntityData: AnyObject;
   verbiage: AnyObject;

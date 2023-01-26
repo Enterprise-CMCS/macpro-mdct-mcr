@@ -3,12 +3,13 @@ import { ReactElement, useContext } from "react";
 import { ExportedReportFieldRow, ReportContext, Table } from "components";
 // types, utils
 import {
+  Choice,
+  EntityShape,
   FieldChoice,
   FormField,
   StandardReportPageShape,
   DrawerReportPageShape,
   ReportShape,
-  AnyObject,
 } from "types";
 // verbiage
 import verbiage from "verbiage/pages/export";
@@ -42,7 +43,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
       content={{
         headRow: headRowItems,
       }}
-      data-testid={"exportTable"}
+      data-testid="exportTable"
     >
       {renderFieldTableBody(formFields!, pageType!, report, entityType)}
     </Table>
@@ -59,7 +60,7 @@ export const renderFieldTableBody = (
   // recursively renders field rows
   const renderFieldRow = (
     formField: FormField,
-    applicableDrawers?: string[]
+    parentFieldCheckedChoiceIds?: string[]
   ) => {
     tableRows.push(
       <ExportedReportFieldRow
@@ -67,54 +68,53 @@ export const renderFieldTableBody = (
         formField={formField}
         pageType={pageType}
         entityType={entityType}
-        applicableDrawers={applicableDrawers}
+        parentFieldCheckedChoiceIds={parentFieldCheckedChoiceIds}
       />
     );
-    // check for nested child fields; if any, map through children and render
-    const nestedChildren = formField?.props?.choices?.filter(
-      (choice: FieldChoice) => {
-        // Only render nested items for checked choices
-        const selected = report?.fieldData[formField.id];
-        const entryExists = selected?.find((selectedChoice: any) =>
-          selectedChoice.key.endsWith(choice.id)
-        );
-        return entryExists && choice?.children;
-      }
-    );
-    nestedChildren?.forEach((choice: FieldChoice) =>
-      choice.children?.forEach((childField: FormField) =>
-        renderFieldRow(childField)
-      )
-    );
-    // Special handling for questions that repeat multiple times
+    // for drawer pages, render nested child field if any entity has a checked parent choice
     if (pageType === "drawer") {
-      const drawerItems = report?.fieldData[entityType!];
+      const entityData = report?.fieldData[entityType!];
       formField?.props?.choices?.forEach((choice: FieldChoice) => {
-        // Only render nested items for checked choices
-        const parentsWithChoice = drawerItems?.filter((drawerItem: any) =>
-          Object.keys(drawerItem)?.find((drawerItemKey: any) => {
-            return (
-              Array.isArray(drawerItem[drawerItemKey]) &&
-              drawerItem[drawerItemKey].find((entry: any) =>
-                entry.key?.endsWith(choice.id)
-              )
-            );
-          })
+        // filter to only entities where this choice is checked
+        const entitiesWithCheckedChoice = entityData?.filter(
+          (entity: EntityShape) =>
+            Object.keys(entity)?.find((fieldDataKey: string) => {
+              const fieldDataValue = entity[fieldDataKey];
+              return (
+                Array.isArray(fieldDataValue) &&
+                fieldDataValue.find((selectedChoice: Choice) =>
+                  selectedChoice.key?.endsWith(choice.id)
+                )
+              );
+            })
         );
-        const applicableEntries = parentsWithChoice?.map(
-          (parent: AnyObject) => parent.id
+        // get all checked parent field choices
+        const parentFieldCheckedChoiceIds = entitiesWithCheckedChoice?.map(
+          (entity: EntityShape) => entity.id
         );
-
-        if (
-          parentsWithChoice &&
-          parentsWithChoice.length > 0 &&
-          choice?.children
-        ) {
+        // if choice is checked in any entity, and the choice has children to display, render them
+        if (entitiesWithCheckedChoice?.length > 0 && choice?.children) {
           choice.children?.forEach((childField: FormField) =>
-            renderFieldRow(childField, applicableEntries)
+            renderFieldRow(childField, parentFieldCheckedChoiceIds)
           );
         }
       });
+    } else {
+      // for standard pages, render nested child field if parent choice is checked
+      const nestedChildren = formField?.props?.choices?.filter(
+        (choice: FieldChoice) => {
+          const selected = report?.fieldData[formField.id];
+          const entryExists = selected?.find((selectedChoice: Choice) =>
+            selectedChoice.key.endsWith(choice.id)
+          );
+          return entryExists && choice?.children;
+        }
+      );
+      nestedChildren?.forEach((choice: FieldChoice) =>
+        choice.children?.forEach((childField: FormField) =>
+          renderFieldRow(childField)
+        )
+      );
     }
   };
   // map through form fields and call renderer

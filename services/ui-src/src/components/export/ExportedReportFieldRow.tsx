@@ -11,7 +11,7 @@ export const ExportedReportFieldRow = ({
   formField,
   pageType,
   entityType,
-  applicableDrawers,
+  parentFieldCheckedChoiceIds,
 }: Props) => {
   const { report } = useContext(ReportContext);
   const reportData = report?.fieldData;
@@ -59,7 +59,7 @@ export const ExportedReportFieldRow = ({
             reportData,
             pageType,
             entityType,
-            applicableDrawers
+            parentFieldCheckedChoiceIds
           )}
       </Td>
     </Tr>
@@ -70,7 +70,7 @@ export interface Props {
   formField: FormField;
   pageType: string;
   entityType?: string;
-  applicableDrawers?: string[];
+  parentFieldCheckedChoiceIds?: string[];
 }
 
 const sx = {

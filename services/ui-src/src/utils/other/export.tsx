@@ -8,7 +8,7 @@ export const renderDataCell = (
   allResponseData: AnyObject,
   pageType: string,
   entityType?: string,
-  applicableDrawers?: string[]
+  parentFieldCheckedChoiceIds?: string[]
 ) => {
   // render drawer data cell (list entities & per-entity responses)
   if (pageType === "drawer") {
@@ -17,7 +17,7 @@ export const renderDataCell = (
       formField,
       entityResponseData,
       pageType,
-      applicableDrawers
+      parentFieldCheckedChoiceIds
     );
   }
   // render dynamic field data cell (list dynamic field entities)
@@ -39,11 +39,12 @@ export const renderDrawerDataCell = (
   formField: FormField,
   entityResponseData: AnyObject | undefined,
   pageType: string,
-  applicableDrawers?: string[]
+  parentFieldCheckedChoiceIds?: string[]
 ) =>
   entityResponseData?.map((entity: EntityShape, entityIndex: number) => {
     const notApplicable =
-      applicableDrawers && !applicableDrawers.includes(entity.id);
+      parentFieldCheckedChoiceIds &&
+      !parentFieldCheckedChoiceIds?.includes(entity.id);
     const fieldResponseData = entity[formField.id];
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
@@ -121,12 +122,13 @@ export const renderChoiceListFieldResponse = (
   );
   const choicesToDisplay = selectedChoices?.map((choice: FieldChoice) => {
     // get related "otherText" value, if present (always only a single child element here)
+    const firstChildId = choice?.children?.[0]?.id!;
     const shouldDisplayRelatedOtherTextEntry =
       choice.children?.[0]?.id.endsWith("-otherText");
     const relatedOtherTextEntry =
       pageType === "drawer"
-        ? widerResponseData[entityIndex!]?.[choice?.children?.[0]?.id!]
-        : widerResponseData?.[choice?.children?.[0]?.id!];
+        ? widerResponseData[entityIndex!]?.[firstChildId]
+        : widerResponseData?.[firstChildId];
     return (
       <Text key={choice.id} sx={sx.fieldChoice}>
         {choice.label}
