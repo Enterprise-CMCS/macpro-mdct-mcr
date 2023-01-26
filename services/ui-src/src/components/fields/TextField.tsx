@@ -85,6 +85,7 @@ export const TextField = ({
     if (willAutosave) {
       setLastAutosaveValue(displayValue);
       const submissionValue = await getFieldValue(form, name, value);
+      form.setValue(name, submissionValue, { shouldValidate: true });
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
         ReportStatus.IN_PROGRESS,

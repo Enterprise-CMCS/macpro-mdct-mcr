@@ -70,7 +70,6 @@ export const NumberField = ({
     const { name, value } = e.target;
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);
-    form.setValue(name, maskedFieldValue, { shouldValidate: true });
     const willAutosave = shouldAutosave(
       value,
       lastAutosaveValue,
@@ -81,6 +80,7 @@ export const NumberField = ({
     if (willAutosave) {
       setLastAutosaveValue(maskedFieldValue);
       const submissionValue = await getFieldValue(form, name, value);
+      form.setValue(name, submissionValue, { shouldValidate: true });
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
         ReportStatus.IN_PROGRESS,

@@ -72,8 +72,6 @@ export const DateField = ({
   // update form field data on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
-    form.setValue(name, value, { shouldValidate: true });
-
     const willAutosave = shouldAutosave(
       value,
       lastAutosaveValue,
