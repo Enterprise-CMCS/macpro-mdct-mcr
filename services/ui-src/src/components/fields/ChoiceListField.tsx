@@ -19,7 +19,6 @@ import {
   CustomHtmlElement,
   FieldChoice,
   InputChangeEvent,
-  ReportStatus,
 } from "types";
 
 export const ChoiceListField = ({
@@ -78,9 +77,7 @@ export const ChoiceListField = ({
 
     const reportKeys = createReportKeys(report?.id, state);
     const dataToWrite = createDataToWrite(
-      ReportStatus.IN_PROGRESS,
-      name,
-      cleanedDataToSend,
+      { [name]: cleanedDataToSend },
       full_name
     );
 

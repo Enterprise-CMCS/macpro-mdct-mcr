@@ -9,7 +9,7 @@ export * from "./auth/useUser";
 export * from "./auth/UserProvider";
 export * from "./auth/authLifecycle";
 // autosave
-export * from "./autosave/helpers";
+export * from "./autosave/autosave";
 // forms
 export * from "./forms/forms";
 // reports

@@ -1,29 +1,30 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { Choice, DropdownChoice, ReportStatus } from "types";
+import { AnyObject } from "yup/lib/types";
 
-const valueChanged = (currentValue: any, storedValue: any) => {
-  return currentValue !== storedValue;
+const valueChanged = (displayValue: any, databaseValue: any) => {
+  return displayValue !== databaseValue;
 };
 
 export const shouldAutosave = (
-  currentValue: any,
-  storedValue: any,
+  displayValue: any,
+  databaseValue: any,
   autosave?: boolean,
   isStateRep?: boolean,
   isStateUser?: boolean
 ) => {
   return (
-    valueChanged(currentValue, storedValue) &&
+    valueChanged(displayValue, databaseValue) &&
     autosave &&
     (isStateRep || isStateUser)
   );
 };
 
-export const getFieldValue = async (
+export const validateAndSetValue = async (
   form: UseFormReturn<FieldValues, any>,
   fieldName: string,
   fieldValue: string | DropdownChoice | Choice[] | null,
-  defaultValue = ""
+  defaultValue: any
 ) => {
   // check field data validity
   const fieldDataIsValid = await form.trigger(fieldName);
@@ -38,14 +39,12 @@ export const createReportKeys = (id?: string, state?: string) => ({
 });
 
 export const createDataToWrite = (
-  status: ReportStatus,
-  fieldName: string,
-  fieldValue: any,
+  fieldData: AnyObject,
   lastAlteredBy?: string
 ) => ({
   metadata: {
-    status,
+    status: ReportStatus.IN_PROGRESS,
     lastAlteredBy,
   },
-  fieldData: { [fieldName]: fieldValue },
+  fieldData,
 });

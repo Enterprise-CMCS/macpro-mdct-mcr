@@ -8,17 +8,12 @@ import { ReportContext } from "components";
 import {
   createDataToWrite,
   createReportKeys,
-  getFieldValue,
   parseCustomHtml,
   shouldAutosave,
   useUser,
+  validateAndSetValue,
 } from "utils";
-import {
-  InputChangeEvent,
-  AnyObject,
-  CustomHtmlElement,
-  ReportStatus,
-} from "types";
+import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,
@@ -84,13 +79,11 @@ export const TextField = ({
     );
     if (willAutosave) {
       setLastAutosaveValue(displayValue);
-      const submissionValue = await getFieldValue(form, name, value);
+      const submissionValue = await validateAndSetValue(form, name, value, "");
       form.setValue(name, submissionValue, { shouldValidate: true });
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
-        ReportStatus.IN_PROGRESS,
-        name,
-        submissionValue,
+        { [name]: submissionValue },
         full_name
       );
       await updateReport(reportKeys, dataToWrite);

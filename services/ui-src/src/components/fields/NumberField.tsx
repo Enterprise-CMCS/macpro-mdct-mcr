@@ -9,12 +9,12 @@ import {
   createDataToWrite,
   createReportKeys,
   customMaskMap,
-  getFieldValue,
   shouldAutosave,
   useUser,
+  validateAndSetValue,
   validCmsdsMask,
 } from "utils";
-import { InputChangeEvent, AnyObject, ReportStatus } from "types";
+import { InputChangeEvent, AnyObject } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 import { ReportContext } from "components";
 
@@ -79,13 +79,11 @@ export const NumberField = ({
     );
     if (willAutosave) {
       setLastAutosaveValue(maskedFieldValue);
-      const submissionValue = await getFieldValue(form, name, value);
+      const submissionValue = await validateAndSetValue(form, name, value, "");
       form.setValue(name, submissionValue, { shouldValidate: true });
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
-        ReportStatus.IN_PROGRESS,
-        name,
-        submissionValue,
+        { [name]: submissionValue },
         full_name
       );
       await updateReport(reportKeys, dataToWrite);

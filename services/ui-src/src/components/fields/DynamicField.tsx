@@ -83,15 +83,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       setLastAutosaveValues(displayValues);
       /*
        *  unlike other field components, dynamic field data does not need to be checked for
-       *  validity before saving to the database.the only invalid value for dynamic field inputs
+       *  validity before saving to the database. The only invalid value for dynamic field inputs
        *  is "" because they are required, but checking for validity and saving default value of ""
        *  would have the same effect as leaving it unchecked and unaltered.
        */
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
-        ReportStatus.IN_PROGRESS,
-        name,
-        displayValues,
+        { [name]: displayValues },
         full_name
       );
       await updateReport(reportKeys, dataToWrite);

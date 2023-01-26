@@ -8,10 +8,10 @@ import { ReportContext } from "components";
 import {
   createDataToWrite,
   createReportKeys,
-  getFieldValue,
   parseCustomHtml,
   shouldAutosave,
   useUser,
+  validateAndSetValue,
 } from "utils";
 import {
   AnyObject,
@@ -19,7 +19,6 @@ import {
   DropdownOptions,
   EntityShape,
   InputChangeEvent,
-  ReportStatus,
 } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
@@ -114,12 +113,15 @@ export const DropdownField = ({
     );
     if (willAutosave) {
       setLastAutosaveValue(selectedOption);
-      const submissionValue = await getFieldValue(form, name, selectedOption);
+      const submissionValue = await validateAndSetValue(
+        form,
+        name,
+        selectedOption,
+        ""
+      );
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
-        ReportStatus.IN_PROGRESS,
-        name,
-        submissionValue,
+        { [name]: submissionValue },
         full_name
       );
       await updateReport(reportKeys, dataToWrite);

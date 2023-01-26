@@ -4,20 +4,15 @@ import { useFormContext } from "react-hook-form";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
-import {
-  AnyObject,
-  CustomHtmlElement,
-  InputChangeEvent,
-  ReportStatus,
-} from "types";
+import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
 import {
   checkDateCompleteness,
   createDataToWrite,
   createReportKeys,
-  getFieldValue,
   parseCustomHtml,
   shouldAutosave,
   useUser,
+  validateAndSetValue,
 } from "utils";
 import { ReportContext } from "components";
 
@@ -81,12 +76,10 @@ export const DateField = ({
     );
     if (willAutosave) {
       setLastAutosaveValue(value);
-      const submissionValue = await getFieldValue(form, name, value);
+      const submissionValue = await validateAndSetValue(form, name, value, "");
       const reportKeys = createReportKeys(report?.id, state);
       const dataToWrite = createDataToWrite(
-        ReportStatus.IN_PROGRESS,
-        name,
-        submissionValue,
+        { [name]: submissionValue },
         full_name
       );
       await updateReport(reportKeys, dataToWrite);

@@ -1,5 +1,8 @@
-import { createDataToWrite, getFieldValue, shouldAutosave } from "./helpers";
-import { ReportStatus } from "types";
+import {
+  createDataToWrite,
+  validateAndSetValue,
+  shouldAutosave,
+} from "./autosave";
 import { useFormContext } from "react-hook-form";
 
 const mockRhfMethods = {
@@ -41,20 +44,30 @@ describe("Should Autosave", () => {
   });
 });
 
-describe("GetFieldValue", () => {
+describe("Validate and Set Value", () => {
   const validFieldValue = "mock-form-field-value";
   const invalidFieldValue = "    ";
   test("Get the VALID field value from the form", async () => {
     mockTrigger(true);
     expect(
-      await getFieldValue(useFormContext(), "fieldName", validFieldValue)
+      await validateAndSetValue(
+        useFormContext(),
+        "fieldName",
+        validFieldValue,
+        ""
+      )
     ).toEqual(validFieldValue);
   });
 
   test("Get the INVALID field value from the form", async () => {
     mockTrigger(false);
     expect(
-      await getFieldValue(useFormContext(), "fieldName", invalidFieldValue)
+      await validateAndSetValue(
+        useFormContext(),
+        "fieldName",
+        invalidFieldValue,
+        ""
+      )
     ).toEqual("");
   });
 });
@@ -62,25 +75,20 @@ describe("GetFieldValue", () => {
 describe("Create Data To Write", () => {
   test("Writable Data Object with String", () => {
     expect(
-      createDataToWrite(
-        ReportStatus.NOT_STARTED,
-        "fieldName",
-        "fieldValue",
-        "Jan 1, 2023"
-      )
+      createDataToWrite({ fieldName: "fieldValue" }, "Jan 1, 2023")
     ).toEqual({
       fieldData: { fieldName: "fieldValue" },
-      metadata: { lastAlteredBy: "Jan 1, 2023", status: "Not started" },
+      metadata: { lastAlteredBy: "Jan 1, 2023", status: "In progress" },
     });
   });
   test("Writable Data Object with DropdownChoice", () => {
     expect(
       createDataToWrite(
-        ReportStatus.IN_PROGRESS,
-        "fieldName",
         {
-          label: "fieldLabel",
-          value: "fieldValue",
+          fieldName: {
+            label: "fieldLabel",
+            value: "fieldValue",
+          },
         },
         "Jan 1, 2023"
       )
