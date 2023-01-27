@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { Choice, DropdownChoice, ReportStatus } from "types";
+import { AnyObject, Choice, DropdownChoice, ReportStatus } from "types";
 
 type FieldValue = string | DropdownChoice | Choice[] | null;
 
@@ -34,26 +34,24 @@ export const autosaveFieldData = async ({
   const { id, updateReport } = report;
   const { userName, state, isAuthorizedUser } = user;
 
-  // fields.reduce(async (obj, field: FieldInfo) => {
-  //   console.log("field im mappin", field);
-
-  //   const { name, defaultValue } = field;
-
-  //   // if field value hasn't changed from database value, don't autosave field
-  //   const fieldValueChanged = field?.value !== field?.hydrationValue;
-  //   if (!fieldValueChanged) return;
-  //   console.log("fieldValueChanged", fieldValueChanged);
-
-  //   // if field value is not valid or explicitly told to clear, revert to default value
-  //   const fieldValueIsValid = await form.trigger(name);
-  //   const fieldValueToSet =
-  //     field.shouldClear || !fieldValueIsValid ? defaultValue : field?.value;
-
-  //   return (obj[name] = fieldValueToSet, obj), {});
-
   // for each passed field, prepare for autosave payload if necessary
   const fieldDataToSave = await Promise.all(
-    fields.reduce((obj, field: FieldInfo) => ((obj[item.key] = item.value), obj), {})
+    fields.map(async (field: FieldInfo) => {
+      const { name, defaultValue } = field;
+
+      // if field value hasn't changed from database value, don't autosave field
+      const fieldValueChanged = field?.value !== field?.hydrationValue;
+      if (!fieldValueChanged) return;
+
+      // if field value is not valid or explicitly told to clear, revert to default value
+      const fieldValueIsValid = await form.trigger(name);
+      const fieldValueToSet =
+        field.shouldClear || !fieldValueIsValid ? defaultValue : field?.value;
+
+      // add field data to payload
+      const fieldObjectToSet = { [name]: fieldValueToSet };
+      return fieldObjectToSet;
+    })
   );
 
   // check authorization and if any passed fields should be saved
