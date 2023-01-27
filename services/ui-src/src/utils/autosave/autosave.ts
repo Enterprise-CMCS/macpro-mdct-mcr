@@ -1,50 +1,53 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { Choice, DropdownChoice, ReportStatus } from "types";
-import { AnyObject } from "yup/lib/types";
 
-const valueChanged = (displayValue: any, databaseValue: any) => {
-  return displayValue !== databaseValue;
+interface Props {
+  form: UseFormReturn<FieldValues, any>;
+  field: {
+    name: string;
+    value: string | DropdownChoice | Choice[] | null;
+    hydrationValue: string | DropdownChoice | Choice[] | null;
+    defaultValue: string | DropdownChoice | Choice[] | null;
+  };
+  report: {
+    id: string | undefined;
+    state: string | undefined;
+    updateReport: Function;
+  };
+  user: {
+    userName: string | undefined;
+    isAuthorizedUser: boolean;
+  };
+}
+
+export const autosaveFieldData = async ({
+  form,
+  field,
+  report,
+  user,
+}: Props) => {
+  const { name, value: currentValue, hydrationValue, defaultValue } = field;
+  const { id, state, updateReport } = report;
+  const { userName, isAuthorizedUser } = user;
+
+  // check authorization and compare field value to database value
+  const fieldValueChanged = currentValue !== hydrationValue;
+  const shouldAutosave = isAuthorizedUser && fieldValueChanged;
+
+  if (shouldAutosave) {
+    // if field value is valid, use; if not, revert to default value
+    const fieldValueIsValid = await form.trigger(name);
+    const fieldValueToSet = fieldValueIsValid ? currentValue : defaultValue;
+
+    // create payload
+    const reportKeys = { id, state };
+    const dataToWrite = {
+      metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
+      fieldData: { [name]: fieldValueToSet },
+    };
+    await updateReport(reportKeys, dataToWrite);
+
+    // set field value in form state
+    form.setValue(name, fieldValueToSet, { shouldValidate: true });
+  }
 };
-
-export const shouldAutosave = (
-  displayValue: any,
-  databaseValue: any,
-  autosave?: boolean,
-  isStateRep?: boolean,
-  isStateUser?: boolean
-) => {
-  return (
-    valueChanged(displayValue, databaseValue) &&
-    autosave &&
-    (isStateRep || isStateUser)
-  );
-};
-
-export const validateAndSetValue = async (
-  form: UseFormReturn<FieldValues, any>,
-  fieldName: string,
-  fieldValue: string | DropdownChoice | Choice[] | null,
-  defaultValue: any
-) => {
-  // check field data validity
-  const fieldDataIsValid = await form.trigger(fieldName);
-
-  // if valid, use; if not, reset to default
-  return fieldDataIsValid ? fieldValue : defaultValue;
-};
-
-export const createReportKeys = (id?: string, state?: string) => ({
-  state,
-  id,
-});
-
-export const createDataToWrite = (
-  fieldData: AnyObject,
-  lastAlteredBy?: string
-) => ({
-  metadata: {
-    status: ReportStatus.IN_PROGRESS,
-    lastAlteredBy,
-  },
-  fieldData,
-});
