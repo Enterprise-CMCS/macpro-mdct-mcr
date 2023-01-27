@@ -144,7 +144,7 @@ export const ChoiceListField = ({
     }
   };
 
-  const getNestedFields = (choices: FieldChoice[]) => {
+  const getNestedChildFieldsOfUncheckedParent = (choices: FieldChoice[]) => {
     // set up nested field compilation
     const nestedFields: any = [];
     const compileNestedFields = (fields: FormField[]) => {
@@ -179,10 +179,9 @@ export const ChoiceListField = ({
   // if should autosave, submit field data to database on component blur
   const onComponentBlurHandler = async () => {
     if (autosave) {
-      const uncheckedNestedFields = getNestedFields(choices);
       let fields = [
         { name, value: displayValue, hydrationValue, defaultValue },
-        ...uncheckedNestedFields,
+        ...getNestedChildFieldsOfUncheckedParent(choices),
       ];
       const reportArgs = { id: report?.id, updateReport };
       const user = {
