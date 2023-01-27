@@ -5,14 +5,7 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import {
-  createDataToWrite,
-  createReportKeys,
-  parseCustomHtml,
-  shouldAutosave,
-  useUser,
-  validateAndSetValue,
-} from "utils";
+import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   DropdownChoice,
@@ -63,8 +56,6 @@ export const DropdownField = ({
   const defaultValue = formatOptions(options)[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
-  const [lastAutosaveValue, setLastAutosaveValue] =
-    useState<DropdownChoice>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
@@ -77,12 +68,10 @@ export const DropdownField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      setLastAutosaveValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      setLastAutosaveValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -103,28 +92,17 @@ export const DropdownField = ({
       label: event.target.id,
       value: event.target.value,
     };
-
-    const willAutosave = shouldAutosave(
-      selectedOption,
-      lastAutosaveValue,
-      autosave,
-      userIsStateRep,
-      userIsStateUser
-    );
-    if (willAutosave) {
-      setLastAutosaveValue(selectedOption);
-      const submissionValue = await validateAndSetValue(
-        form,
-        name,
-        selectedOption,
-        ""
-      );
-      const reportKeys = createReportKeys(report?.id, state);
-      const dataToWrite = createDataToWrite(
-        { [name]: submissionValue },
-        full_name
-      );
-      await updateReport(reportKeys, dataToWrite);
+    if (autosave) {
+      const fields = [
+        { name, value: selectedOption, hydrationValue, defaultValue },
+      ];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = {
+        userName: full_name,
+        state,
+        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
+      };
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
 
