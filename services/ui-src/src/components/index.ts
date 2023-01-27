@@ -33,13 +33,12 @@ export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
 export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 //export
-export { ExportedReportSection } from "./export/ExportedReportSection";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
-export { ExportedDrawerReportSection } from "./export/ExportedDrawerReportSection";
+export { ExportedReportFieldTable } from "./export/ExportedReportFieldTable";
+export { ExportedReportFieldRow } from "./export/ExportedReportFieldRow";
 export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";
 export { ExportedSectionHeading } from "./export/ExportedSectionHeading";
-export { ExportedStandardReportSection } from "./export/ExportedStandardReportSection";
-export { StickyBanner } from "./export/StickyBanner";
+export { ExportedReportBanner } from "./export/ExportedReportBanner";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";
