@@ -1,8 +1,7 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { AnyObject, Choice, DropdownChoice, ReportStatus } from "types";
+import { Choice, DropdownChoice, ReportStatus } from "types";
 
 type FieldValue = string | DropdownChoice | Choice[] | null;
-type FieldDataObject = { [key: string]: FieldValue };
 
 interface FieldInfo {
   name: string;
@@ -46,6 +45,7 @@ export const autosaveFieldData = async ({
 
       // if field value is not valid or explicitly told to clear, revert to default value
       const fieldValueIsValid = await form.trigger(name);
+
       const fieldValueToSet =
         field.shouldClear || !fieldValueIsValid ? defaultValue : field?.value;
 
@@ -54,22 +54,20 @@ export const autosaveFieldData = async ({
       return fieldObjectToSet;
     })
   );
-  console.log("fieldDataToSaveArray", fieldDataToSaveArray);
 
   // check authorization and if any passed fields should be saved
   const shouldAutosave = isAuthorizedUser && fieldDataToSaveArray.flat().length;
-  console.log({ shouldAutosave });
 
   // convert fieldDataToSave array to an object
-  const fieldDataToSaveObject = fieldDataToSaveArray.reduce(
-    (obj: any, item: any) => ((obj[item.key] = item.value), obj),
-    {}
-  );
-  console.log("fieldDataToSaveObject", fieldDataToSaveObject);
+  const fieldDataToSaveObject = fieldDataToSaveArray.reduce((obj, item) => {
+    const entries = Object.entries(item);
+    entries.map(([key, val]) => {
+      Object.assign(obj, { [key]: val });
+    });
+    return obj;
+  }, {});
 
   if (shouldAutosave) {
-    console.log("behold, i autosave");
-
     // finalize payload and save
     const reportKeys = { id, state };
     const dataToWrite = {
@@ -79,9 +77,9 @@ export const autosaveFieldData = async ({
     await updateReport(reportKeys, dataToWrite);
 
     // after successful autosave, set field values in form state
-    // fieldDataToSaveArray.forEach((name: string) => {
-    //   const fieldValue = fieldDataToSaveArray[name];
-    //   form.setValue(name, fieldValue, { shouldValidate: true });
-    // });
+    fieldDataToSaveArray.forEach((field: any) => {
+      const fieldValue = fieldDataToSaveArray[field.name];
+      form.setValue(field.name, fieldValue, { shouldValidate: true });
+    });
   }
 };
