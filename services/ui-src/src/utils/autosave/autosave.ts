@@ -31,32 +31,40 @@ export const autosaveFieldData = async ({
   report,
   user,
 }: Props) => {
-  let fieldDataToSave: any = {};
   const { id, updateReport } = report;
   const { userName, state, isAuthorizedUser } = user;
 
+  // fields.reduce(async (obj, field: FieldInfo) => {
+  //   console.log("field im mappin", field);
+
+  //   const { name, defaultValue } = field;
+
+  //   // if field value hasn't changed from database value, don't autosave field
+  //   const fieldValueChanged = field?.value !== field?.hydrationValue;
+  //   if (!fieldValueChanged) return;
+  //   console.log("fieldValueChanged", fieldValueChanged);
+
+  //   // if field value is not valid or explicitly told to clear, revert to default value
+  //   const fieldValueIsValid = await form.trigger(name);
+  //   const fieldValueToSet =
+  //     field.shouldClear || !fieldValueIsValid ? defaultValue : field?.value;
+
+  //   return (obj[name] = fieldValueToSet, obj), {});
+
   // for each passed field, prepare for autosave payload if necessary
-  fields.forEach(async (field: FieldInfo) => {
-    const { name, defaultValue } = field;
-
-    // if field value hasn't changed from database value, don't autosave field
-    const fieldValueChanged = field?.value !== field?.hydrationValue;
-    if (!fieldValueChanged) return;
-
-    // if field value is not valid or explicitly told to clear, revert to default value
-    const fieldValueIsValid = await form.trigger(name);
-    const fieldValueToSet =
-      field.shouldClear || !fieldValueIsValid ? defaultValue : field?.value;
-
-    // add field data to payload
-    fieldDataToSave[name] = fieldValueToSet;
-  });
+  const fieldDataToSave = await Promise.all(
+    fields.reduce((obj, field: FieldInfo) => ((obj[item.key] = item.value), obj), {})
+  );
 
   // check authorization and if any passed fields should be saved
-  const fieldsToSave = Object.keys(fieldDataToSave);
-  const shouldAutosave = isAuthorizedUser && fieldsToSave.length;
+  const shouldAutosave = isAuthorizedUser && fieldDataToSave.length;
+  console.log("fieldDataToSave", fieldDataToSave);
+
+  console.log({ shouldAutosave });
 
   if (shouldAutosave) {
+    console.log("behold, i autosave");
+
     // finalize payload and save
     const reportKeys = { id, state };
     const dataToWrite = {
@@ -66,9 +74,9 @@ export const autosaveFieldData = async ({
     await updateReport(reportKeys, dataToWrite);
 
     // after successful autosave, set field values in form state
-    fieldsToSave.forEach((name: string) => {
-      const fieldValue = fieldDataToSave[name];
-      form.setValue(name, fieldValue, { shouldValidate: true });
-    });
+    // fieldDataToSave.forEach((name: string) => {
+    //   const fieldValue = fieldDataToSave[name];
+    //   form.setValue(name, fieldValue, { shouldValidate: true });
+    // });
   }
 };

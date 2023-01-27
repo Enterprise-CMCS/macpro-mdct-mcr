@@ -52,6 +52,7 @@ export const TextField = ({
 
   // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
+    console.log("blurred field");
     const { name, value } = event.target;
     if (autosave) {
       const fields = [{ name, value, hydrationValue, defaultValue }];

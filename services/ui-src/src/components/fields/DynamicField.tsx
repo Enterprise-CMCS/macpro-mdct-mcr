@@ -17,12 +17,7 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
-import {
-  createDataToWrite,
-  createReportKeys,
-  shouldAutosave,
-  useUser,
-} from "utils";
+import { autosaveFieldData, useUser } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
@@ -32,9 +27,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
 
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
-  const [lastAutosaveValues, setLastAutosaveValues] = useState<EntityShape[]>(
-    []
-  );
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
   );
@@ -70,30 +62,19 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
-  // if should autosave, submit field data to database on blur
+  // submit field data to database on blur (these TextFields are always autosave)
   const onBlurHandler = async () => {
-    const willAutosave = shouldAutosave(
-      displayValues,
-      lastAutosaveValues,
-      true,
-      userIsStateRep,
-      userIsStateUser
-    );
-    if (willAutosave) {
-      setLastAutosaveValues(displayValues);
-      /*
-       *  unlike other field components, dynamic field data does not need to be checked for
-       *  validity before saving to the database. The only invalid value for dynamic field inputs
-       *  is "" because they are required, but checking for validity and saving default value of ""
-       *  would have the same effect as leaving it unchecked and unaltered.
-       */
-      const reportKeys = createReportKeys(report?.id, state);
-      const dataToWrite = createDataToWrite(
-        { [name]: displayValues },
-        full_name
-      );
-      await updateReport(reportKeys, dataToWrite);
-    }
+    const defaultValue = "";
+    // proceed with other stuff
+    const fields = [{ name, displayValues, hydrationValue, defaultValue }];
+    console.log("fields arg object", fields);
+    const reportArgs = { id: report?.id, updateReport };
+    const user = {
+      userName: full_name,
+      state,
+      isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
+    };
+    await autosaveFieldData({ form, fields, report: reportArgs, user });
   };
 
   const appendNewRecord = () => {
@@ -176,7 +157,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       const valuesToSet = displayValuesEntered ? displayValues : hydrationValue;
       // set and append values
       setDisplayValues(valuesToSet);
-      setLastAutosaveValues(valuesToSet);
       append(valuesToSet);
     } else {
       appendNewRecord();
