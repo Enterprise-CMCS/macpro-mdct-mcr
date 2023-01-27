@@ -2,6 +2,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import { AnyObject, Choice, DropdownChoice, ReportStatus } from "types";
 
 type FieldValue = string | DropdownChoice | Choice[] | null;
+type FieldDataObject = { [key: string]: FieldValue };
 
 interface FieldInfo {
   name: string;
@@ -35,13 +36,13 @@ export const autosaveFieldData = async ({
   const { userName, state, isAuthorizedUser } = user;
 
   // for each passed field, prepare for autosave payload if necessary
-  const fieldDataToSave = await Promise.all(
+  const fieldDataToSaveArray = await Promise.all(
     fields.map(async (field: FieldInfo) => {
       const { name, defaultValue } = field;
 
       // if field value hasn't changed from database value, don't autosave field
       const fieldValueChanged = field?.value !== field?.hydrationValue;
-      if (!fieldValueChanged) return;
+      if (!fieldValueChanged) return [];
 
       // if field value is not valid or explicitly told to clear, revert to default value
       const fieldValueIsValid = await form.trigger(name);
@@ -53,12 +54,18 @@ export const autosaveFieldData = async ({
       return fieldObjectToSet;
     })
   );
+  console.log("fieldDataToSaveArray", fieldDataToSaveArray);
 
   // check authorization and if any passed fields should be saved
-  const shouldAutosave = isAuthorizedUser && fieldDataToSave.length;
-  console.log("fieldDataToSave", fieldDataToSave);
-
+  const shouldAutosave = isAuthorizedUser && fieldDataToSaveArray.flat().length;
   console.log({ shouldAutosave });
+
+  // convert fieldDataToSave array to an object
+  const fieldDataToSaveObject = fieldDataToSaveArray.reduce(
+    (obj: any, item: any) => ((obj[item.key] = item.value), obj),
+    {}
+  );
+  console.log("fieldDataToSaveObject", fieldDataToSaveObject);
 
   if (shouldAutosave) {
     console.log("behold, i autosave");
@@ -67,13 +74,13 @@ export const autosaveFieldData = async ({
     const reportKeys = { id, state };
     const dataToWrite = {
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
-      fieldData: fieldDataToSave,
+      fieldData: fieldDataToSaveObject,
     };
     await updateReport(reportKeys, dataToWrite);
 
     // after successful autosave, set field values in form state
-    // fieldDataToSave.forEach((name: string) => {
-    //   const fieldValue = fieldDataToSave[name];
+    // fieldDataToSaveArray.forEach((name: string) => {
+    //   const fieldValue = fieldDataToSaveArray[name];
     //   form.setValue(name, fieldValue, { shouldValidate: true });
     // });
   }
