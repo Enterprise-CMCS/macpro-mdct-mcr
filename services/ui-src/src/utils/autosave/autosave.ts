@@ -8,7 +8,7 @@ interface FieldInfo {
   value?: FieldValue;
   hydrationValue?: FieldValue;
   shouldClear?: boolean;
-  defaultValue: "" | null;
+  defaultValue: any;
 }
 
 interface Props {
