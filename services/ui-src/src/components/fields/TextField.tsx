@@ -54,13 +54,14 @@ export const TextField = ({
   const onBlurHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
     if (autosave) {
-      const field = { name, value, hydrationValue, defaultValue };
-      const reportData = { id: report?.id, state, updateReport };
+      const fields = [{ name, value, hydrationValue, defaultValue }];
+      const reportArgs = { id: report?.id, updateReport };
       const user = {
         userName: full_name,
+        state,
         isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
       };
-      await autosaveFieldData({ form, field, report: reportData, user });
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
 

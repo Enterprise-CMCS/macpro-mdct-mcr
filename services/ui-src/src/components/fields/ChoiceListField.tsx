@@ -6,11 +6,9 @@ import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
 import {
-  createDataToWrite,
-  createReportKeys,
+  autosaveFieldData,
   formFieldFactory,
   parseCustomHtml,
-  shouldAutosave,
   useUser,
 } from "utils";
 import {
@@ -18,6 +16,7 @@ import {
   Choice,
   CustomHtmlElement,
   FieldChoice,
+  FormField,
   InputChangeEvent,
 } from "types";
 
@@ -32,9 +31,9 @@ export const ChoiceListField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState<Choice[] | null>(null);
-  const [lastAutosaveValue, setLastAutosaveValue] = useState<Choice[] | null>(
-    null
+  const defaultValue = null;
+  const [displayValue, setDisplayValue] = useState<Choice[] | null>(
+    defaultValue
   );
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state, userIsStateUser, userIsStateRep } =
@@ -52,12 +51,10 @@ export const ChoiceListField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      setLastAutosaveValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      setLastAutosaveValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -67,22 +64,9 @@ export const ChoiceListField = ({
     if (displayValue) {
       form.setValue(name, displayValue, { shouldValidate: true });
       // update DOM choices checked status
-      clearChildren(choices);
+      clearUncheckedNestedFields(choices);
     }
   }, [displayValue]);
-
-  const autosaveSelections = async (selectedOptions: Choice[] | null) => {
-    const initialDataToSend: any = { [name]: selectedOptions };
-    const cleanedDataToSend = clearChildren(choices, initialDataToSend);
-
-    const reportKeys = createReportKeys(report?.id, state);
-    const dataToWrite = createDataToWrite(
-      { [name]: cleanedDataToSend },
-      full_name
-    );
-
-    await updateReport(reportKeys, dataToWrite);
-  };
 
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) => {
@@ -104,11 +88,7 @@ export const ChoiceListField = ({
     });
   };
 
-  const autosaveContainsParentChoice = (value: string) =>
-    lastAutosaveValue &&
-    lastAutosaveValue.some((autosave) => autosave.value === value);
-
-  const clearChildren = (choices: FieldChoice[], dataToSend?: AnyObject) => {
+  const clearUncheckedNestedFields = (choices: FieldChoice[]) => {
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
       if (!choice.checked && choice.children) {
@@ -117,27 +97,20 @@ export const ChoiceListField = ({
             case "radio":
             case "checkbox":
               form.setValue(child.id, [], { shouldValidate: true });
-              if (dataToSend && autosaveContainsParentChoice(choice.value)) {
-                dataToSend[child.id] = [];
-              }
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
                 });
-                clearChildren(child.props.choices);
+                clearUncheckedNestedFields(child.props.choices);
               }
               break;
             default:
               form.setValue(child.id, "", { shouldValidate: true });
-              if (dataToSend && autosaveContainsParentChoice(choice.value)) {
-                dataToSend[child.id] = "";
-              }
               break;
           }
         });
       }
     });
-    return dataToSend;
   };
 
   const setCheckedOrUnchecked = (choice: FieldChoice) => {
@@ -171,18 +144,53 @@ export const ChoiceListField = ({
     }
   };
 
-  // update field values
+  const getNestedFields = (choices: FieldChoice[]) => {
+    // set up nested field compilation
+    const nestedFields: any = [];
+    const compileNestedFields = (fields: FormField[]) => {
+      fields.forEach((field: FormField) => {
+        // for each child field, get field info
+        const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
+          ? null
+          : "";
+        const fieldInfo = {
+          name: field.id,
+          shouldClear: true,
+          defaultValue: fieldDefaultValue,
+        };
+        // add to nested fields to be autosaved
+        nestedFields.push(fieldInfo);
+        // recurse through additional nested children as needed
+        const nestedChildren = field?.props?.choices;
+        if (nestedChildren) compileNestedFields(nestedChildren);
+      });
+    };
+
+    choices.forEach((choice: FieldChoice) => {
+      // if choice is not selected and there are children
+      if (!choice.checked && choice.children) {
+        compileNestedFields(choice.children);
+      }
+    });
+
+    return nestedFields; // TODO: just map here?
+  };
+
+  // if should autosave, submit field data to database on component blur
   const onComponentBlurHandler = async () => {
-    const willAutosave = shouldAutosave(
-      displayValue,
-      lastAutosaveValue,
-      autosave,
-      userIsStateRep,
-      userIsStateUser
-    );
-    if (willAutosave) {
-      setLastAutosaveValue(displayValue);
-      autosaveSelections(displayValue);
+    if (autosave) {
+      const uncheckedNestedFields = getNestedFields(choices);
+      let fields = [
+        { name, value: displayValue, hydrationValue, defaultValue },
+        ...uncheckedNestedFields,
+      ];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = {
+        userName: full_name,
+        state,
+        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
+      };
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
 
