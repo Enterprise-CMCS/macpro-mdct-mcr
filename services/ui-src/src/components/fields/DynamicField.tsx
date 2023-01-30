@@ -67,7 +67,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     const defaultValue = "";
     // proceed with other stuff
     const fields = [{ name, displayValues, hydrationValue, defaultValue }];
-    console.log("fields arg object", fields);
     const reportArgs = { id: report?.id, updateReport };
     const user = {
       userName: full_name,
