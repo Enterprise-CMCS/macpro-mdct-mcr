@@ -8,6 +8,14 @@ MDCT-MCR is an application meant to collect state report data to help the health
 
 Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and Managed Care Organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
 
+There are three reports that users complete:
+
+**MCPAR** - (Managed Care Program Annual Report) A report for states to complete annually for each Medicaid managed care program
+
+**MLR** - (Medical Loss Ratio) A report for states to complete annually or when contract terms change
+
+**NAAAR** - (Network Adequacy and Access Assurances Report) A report that focuses on determining assurance of compliance to CMS that the each MCO, PIHP, and PAHP meets the state’s requirement for availability of services
+
 Project Goals:
 
 - Improve monitoring and oversight of managed care as the dominant delivery system for Medicaid/CHIP.
@@ -109,6 +117,8 @@ In order to run DynamoDB locally you will need to have java installed on your sy
 To view your database after the application is up and running you can install the [dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
 
 - Install and run `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin` in a new terminal window
+
+In the terminal, any changes made to a program will show up as S3 updates with a path that includes a unique KSUID. You can use that KSUID to see the fieldData structure in your code. `services/uploads/local_buckets/local-mcpar-form/fieldData/{state}/{KSUID}`
 
 ### Local Development Additional Info
 
@@ -218,10 +228,91 @@ When a pull request is approved and merged into main the deploy script will spin
 - Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Production
 - Deploy script runs and will deploy to [http://mdctmcr.cms.gov/](http://mdctmcr.cms.gov/).
 
+If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. click on `deploy`, then click to exapnd the `deploy` section on the right. Search for `Application endpoint` and click on the generated site. 
+
 ## Architecture
 
 ![Architecture Diagram](./.images/architecture.svg?raw=true)
 
+
+**General Structure** - React frontend that renders a form for a user to fill out, Node backend that uses S3 and Dynamo to store and validate forms.
+
+**Custom JSON & form field creation engine (formFieldFactory)** - Each report has a custom JSON object, stored in a JSON file, written using a custom schema. This JSON object is referred to as the form template and it is the blueprint from which report form fields are created. It is also used to create routes and navigation elements throughout the app. When provided form fields from this template, the formFieldFactory renders the appropriate form fields. A similar process occurs when a report is exported in PDF preview format. 
+
+**Page and Form Structure** Each page has a name, path, and pageType, for example the first page a user sees in the form will be have ‘pageType: standard’ with a ‘verbiage’ object that includes all of the text that precedes the form fields. The the ‘form’ object follows with a unique id and ‘fields’ array that holds one or more objects that represent the individual questions in a form. There are different types of forms as well. If there is a "pageType": "modalDrawer", then instead of a ‘form’ object, it will have a ‘modalForm’ object. Here is an example of a standard page with one field:
+```json
+        {
+          "name": "Standard Page",
+          "path": "/standard-page",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section I: Standard Page",
+            }
+          },
+          "form": {
+            "id": "abc",
+            "fields": [
+              {
+                "id": "textFieldId",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "field label",
+                  "hint": "Field hint.",
+                }
+              },
+            ]
+          }
+        },
+```
+
+**Storage and retrieval of fieldData** When a report is created, the fieldData is stored alongside it in an S3 bucket and reference to that fieldData’s location is stored in report metadata in Dynamo. FieldData is a large object whose structure has all of the non-entity-related data (fields that apply to the entire report) stored at the root level and all entity-related data (fields that are answered once per entity) is stored in an array of entity data objects, as shown below.
+
+```
+const fieldData = {
+  // non-entity-related data
+  textFieldId: "textFieldValue",
+  ...
+  // entity-related data
+  entityName: [
+    {
+     id: "entity1Id",
+     name: "entity1",
+     otherField: "otherFieldValue",
+     ... 
+    },
+    {
+     id: "entity2Id",
+     name: "entity2",
+     otherField: "otherFieldValue",
+     ... 
+    },
+  ]
+}
+```
+
+Dropdown and dynamic fields are not currently supported as nested child fields. All other field types are.
+
+**Storage and retrieval of the form template** When a report is created, the form template is stored alongside it in an S3 bucket and reference to that form template’s location is stored in report metadata in Dynamo. This ensures that future changes to the form template do not break existing forms. However, it also means that changes to the form template are generally only forward looking unless an ETL operation is undertaken.
+
+**Field ids** Field ids are immutable, or should at least be treated that way. They should be descriptive of the data captured and should never change so that they can be relied on and referenced by downstream data analysts.
+
+**Choice ids** Fields which accept a list of choices (radio, checkbox, dropdown) require choices with unique, immutable ids. These ids must remain immutable even across versions of the form template to ensure they can be relied on and referenced by downstream data analysts. We have chosen to manually generate these ids.
+
+**Nuanced behaviors like the “-otherText”** flag on a question’s id  Most of the structure of the form template schema is captured in the types contained in types/index.tsx however there are some behaviors like the otherText flag that are not. For example, when a report is exported to PDF, subquestions like nested optional text area fields for the purpose of providing additional information must have ids that end in -otherText or they will not render the entered answer correctly.
+
+**Form** We use react-hook-form for form state management. The formFieldFactory renders individual field inputs and registers them with RHF which exposes an onSubmit callback hook that is used to check error states and display inline validation messaging. 
+
+**Form Hydration** Any time data is stored in Dynamo or S3 we also pull the latest field data and update the DOM with it through the reportProvider/reportContext. This uses the form hydration engine to ensure that the latest data is shown to the user whether that data comes from the database or the user’s entered but as-of-yet unsaved input.
+
+**Validation** We use yup for data schema validation. In the form template each field is assigned a validation type corresponding to a custom validation type defined using yup as a baseline. A version of this validation schema exists on the frontend and the backend. While not identical, they are similar and updates to one should often be made to the other. Frontend validation schema is primarily used for inline validation and backend validation schema is primarily used for pre-submission validation. When a form field’s validation type is read, it is matched to the appropriate validation schema. 
+
+**Server-side validation** Anytime an API call to write data is triggered, the unvalidated payload is first validated using a custom yup validation method. The schema used for validation varies depending on the data being written. If the data being written is field data, the validation schema is retrieved from the associated fetched form template. Other metadata has a locally stored longterm validation schema that is used. If the data is valid, the operation continues; if the data is invalid, the operation fails and returns an error. 
+
+**CustomHTML parser** - function checks if element is a string, if so then the element will be passed in the function “sanitize” from "dompurify", and then the result from that process gets passed into the function “parse” from "html-react-parser" and the result gets returned. If the element is not a string, then the elements are treated as an array and get mapped over returning a key, as, and spread the props. The last check is in this else block, checking whether the element is ‘html’, in which case the content will get passed through ‘sanitize’ and ‘parse’ and the ‘as’ prop gets deleted before returning the modified element type, element props, and content.
+
+**Dynamo macpar-reports vs macpar-form in S3 Storage** - When a user creates a form, it is stored in Dynamo and tracks user information such as when the program was last edited and by whom, date submitted’ report period start and end date, program name, report type, the state, id, and status. The file in the S3 bucket is the entire form of user inputted data, and this is a pattern that is unique to this project. S3 is mainly used for attachments, data for virus scans on attachments, mathematica integration. We decided to store the programs in S3 because these data can get so large that we can’t reliably store it all in Dynamo, nor search through them without the app breaking.
 ## Copyright and license
 
 [![License](https://img.shields.io/badge/License-CC0--1.0--Universal-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/legalcode)

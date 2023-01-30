@@ -19,7 +19,6 @@ export const Table = ({
   content,
   variant,
   sxOverride,
-  shrinkCells,
   children,
   ...props
 }: Props) => {
@@ -27,7 +26,6 @@ export const Table = ({
     <TableRoot
       variant={variant}
       size="sm"
-      className={shrinkCells && "shrink"}
       sx={{ ...sx.root, ...sxOverride }}
       {...props}
     >
@@ -88,10 +86,6 @@ const sx = {
     fontWeight: "semibold",
     textTransform: "none",
     letterSpacing: "normal",
-    color: "black",
-    ".shrink &": {
-      padding: "0.375rem 0rem",
-    },
     ".mobile &": {
       fontSize: "xs",
     },
@@ -100,12 +94,9 @@ const sx = {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
     fontWeight: "normal",
-    color: "black",
-    ".shrink &": {
-      padding: "0.375rem 0rem",
-    },
     ".mobile &": {
       fontSize: "xs",
     },
   },
+  ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed
 };
