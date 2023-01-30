@@ -5,14 +5,7 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import {
-  createDataToWrite,
-  createReportKeys,
-  parseCustomHtml,
-  shouldAutosave,
-  useUser,
-  validateAndSetValue,
-} from "utils";
+import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
@@ -27,14 +20,6 @@ export const TextField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-
-  /*
-   * Last value is the last value that was submitted to Autosave. We only want to submit
-   * To autosave if theres been a change
-   */
-  const [lastAutosaveValue, setLastAutosaveValue] =
-    useState<string>(defaultValue);
-
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
@@ -50,12 +35,10 @@ export const TextField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue || fieldValue == "") {
       setDisplayValue(fieldValue);
-      setLastAutosaveValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      setLastAutosaveValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -70,23 +53,15 @@ export const TextField = ({
   // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
-    const willAutosave = shouldAutosave(
-      value,
-      lastAutosaveValue,
-      autosave,
-      userIsStateRep,
-      userIsStateUser
-    );
-    if (willAutosave) {
-      setLastAutosaveValue(displayValue);
-      const submissionValue = await validateAndSetValue(form, name, value, "");
-      form.setValue(name, submissionValue, { shouldValidate: true });
-      const reportKeys = createReportKeys(report?.id, state);
-      const dataToWrite = createDataToWrite(
-        { [name]: submissionValue },
-        full_name
-      );
-      await updateReport(reportKeys, dataToWrite);
+    if (autosave) {
+      const fields = [{ name, value, hydrationValue, defaultValue }];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = {
+        userName: full_name,
+        state,
+        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
+      };
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
 
