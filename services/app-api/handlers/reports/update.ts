@@ -64,7 +64,6 @@ export const updateReport = handler(async (event, context) => {
             metadata: unvalidatedMetadata,
             fieldData: unvalidatedFieldData,
           } = unvalidatedPayload;
-          console.log({ unvalidatedPayload });
 
           if (unvalidatedFieldData) {
             // validate passed field data
@@ -72,7 +71,6 @@ export const updateReport = handler(async (event, context) => {
               formTemplate?.validationJson,
               unvalidatedFieldData
             );
-            console.log({ validatedFieldData });
 
             // if field data passes validation,
             if (validatedFieldData) {
