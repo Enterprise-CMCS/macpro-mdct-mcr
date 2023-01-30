@@ -64,7 +64,7 @@ export const autosaveFieldData = async ({
   const fieldDataToSaveArray: FieldTuple[] = await Promise.all(
     onlyChangedFields.map(async (field: FieldInfo) => {
       const { name, defaultValue, value, displayValues } = field;
-      const toSetValue = displayValues ? displayValues : value;
+      const toSetValue = fieldType === "dynamic" ? displayValues : value;
       // if field value is not valid or explicitly told to clear, revert to default value
       const fieldValueIsValid = await form.trigger(name);
       const fieldValueToSet =
