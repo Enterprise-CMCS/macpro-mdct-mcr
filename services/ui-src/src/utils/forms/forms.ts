@@ -42,6 +42,7 @@ export const formFieldFactory = (
       key: field.id,
       name: field.id,
       hydrate: field.props?.hydrate,
+      fieldType: field.type,
       ...options,
       ...field?.props,
     };

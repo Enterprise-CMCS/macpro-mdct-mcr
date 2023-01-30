@@ -189,7 +189,13 @@ export const ChoiceListField = ({
         state,
         isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
       };
-      await autosaveFieldData({ form, fields, report: reportArgs, user });
+      await autosaveFieldData({
+        form,
+        fields,
+        report: reportArgs,
+        user,
+        fieldType: props?.fieldType,
+      });
     }
   };
 

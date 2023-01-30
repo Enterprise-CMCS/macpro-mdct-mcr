@@ -64,7 +64,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   // submit field data to database on blur (these TextFields are always autosave)
   const onBlurHandler = async () => {
-    const defaultValue = "";
+    const defaultValue: any[] = [];
     // proceed with other stuff
     const fields = [{ name, displayValues, hydrationValue, defaultValue }];
     const reportArgs = { id: report?.id, updateReport };
@@ -73,7 +73,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       state,
       isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
     };
-    await autosaveFieldData({ form, fields, report: reportArgs, user });
+    await autosaveFieldData({
+      form,
+      fields,
+      report: reportArgs,
+      user,
+      fieldType: props?.fieldType,
+    });
   };
 
   const appendNewRecord = () => {

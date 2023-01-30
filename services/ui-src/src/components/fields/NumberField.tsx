@@ -71,7 +71,13 @@ export const NumberField = ({
         state,
         isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
       };
-      await autosaveFieldData({ form, fields, report: reportArgs, user });
+      await autosaveFieldData({
+        form,
+        fields,
+        report: reportArgs,
+        user,
+        fieldType: props?.fieldType,
+      });
     }
   };
 
