@@ -1,5 +1,6 @@
+import { isEqual } from "lodash";
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { Choice, DropdownChoice, ReportStatus } from "types";
+import { Choice, DropdownChoice, EntityShape, ReportStatus } from "types";
 
 type FieldValue = string | DropdownChoice | Choice[] | null;
 
@@ -8,6 +9,7 @@ type FieldTuple = [string, FieldValue];
 interface FieldInfo {
   name: string;
   value?: FieldValue;
+  displayValues?: EntityShape[];
   hydrationValue?: FieldValue;
   shouldClear?: boolean;
   defaultValue: any;
@@ -39,7 +41,8 @@ export const autosaveFieldData = async ({
   const onlyChangedFields = fields.filter(
     // TODO: do we need a deeper equality check here?
     (field: FieldInfo) => {
-      return field?.value !== field?.hydrationValue;
+      const { value, hydrationValue, defaultValue } = field;
+      return value !== defaultValue && !isEqual(value, hydrationValue);
     }
   );
 
