@@ -4,13 +4,13 @@ import { useFormContext } from "react-hook-form";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
+import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
 import {
-  AnyObject,
-  CustomHtmlElement,
-  InputChangeEvent,
-  ReportStatus,
-} from "types";
-import { checkDateCompleteness, parseCustomHtml, useUser } from "utils";
+  autosaveFieldData,
+  checkDateCompleteness,
+  parseCustomHtml,
+  useUser,
+} from "utils";
 import { ReportContext } from "components";
 
 export const DateField = ({
@@ -57,31 +57,19 @@ export const DateField = ({
     }
   };
 
-  // update form field data on blur
+  // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
+    const { name, value } = event.target;
     if (autosave) {
-      const { name, value } = event.target;
-      if (userIsStateUser || userIsStateRep) {
-        // check field data validity
-        const fieldDataIsValid = await form.trigger(name);
-        // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? value : defaultValue;
-        const reportKeys = {
-          state: state,
-          id: report?.id,
-        };
-        const dataToWrite = {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: full_name,
-          },
-          fieldData: { [name]: fieldValue },
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
+      const fields = [{ name, value, hydrationValue, defaultValue }];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = {
+        userName: full_name,
+        state,
+        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
+      };
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
-    const fieldValue = event.target.value;
-    form.setValue(name, fieldValue, { shouldValidate: true });
   };
 
   // prepare error message, hint, and classes

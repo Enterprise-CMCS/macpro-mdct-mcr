@@ -5,14 +5,13 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { parseCustomHtml, useUser } from "utils";
+import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
 import {
   AnyObject,
   DropdownChoice,
   DropdownOptions,
   EntityShape,
   InputChangeEvent,
-  ReportStatus,
 } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
 
@@ -89,30 +88,21 @@ export const DropdownField = ({
 
   // update form field data & database data on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
+    const selectedOption = {
+      label: event.target.id,
+      value: event.target.value,
+    };
     if (autosave) {
-      const selectedOption = {
-        label: event.target.id,
-        value: event.target.value,
+      const fields = [
+        { name, value: selectedOption, hydrationValue, defaultValue },
+      ];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = {
+        userName: full_name,
+        state,
+        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
       };
-      if (userIsStateUser || userIsStateRep) {
-        // check field data validity
-        const fieldDataIsValid = await form.trigger(label);
-        // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? selectedOption : defaultValue;
-
-        const reportKeys = {
-          state: state,
-          id: report?.id,
-        };
-        const dataToWrite = {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: full_name,
-          },
-          fieldData: { [name]: fieldValue },
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
 

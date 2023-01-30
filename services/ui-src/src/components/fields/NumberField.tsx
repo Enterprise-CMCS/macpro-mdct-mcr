@@ -2,12 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
-import { TextField } from "./TextField";
+import { ReportContext, TextField } from "components";
 // utils
-import { applyCustomMask, customMaskMap, useUser, validCmsdsMask } from "utils";
-import { InputChangeEvent, AnyObject, ReportStatus } from "types";
+import {
+  applyCustomMask,
+  autosaveFieldData,
+  customMaskMap,
+  useUser,
+  validCmsdsMask,
+} from "utils";
+import { InputChangeEvent, AnyObject } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
-import { ReportContext } from "components";
 
 export const NumberField = ({
   name,
@@ -21,13 +26,11 @@ export const NumberField = ({
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
 
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
-
   // get form context
   const form = useFormContext();
-
   const { report, updateReport } = useContext(ReportContext);
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -53,32 +56,22 @@ export const NumberField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  // update form data, display value, and database on blur
+  // update display value with masked value; if should autosave, submit field data to database on blur
   const onBlurHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    // mask value and set as display value
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);
-    form.setValue(name, maskedFieldValue, { shouldValidate: true });
+    // autosave value
     if (autosave) {
-      if (userIsStateUser || userIsStateRep) {
-        // check field data validity
-        const fieldDataIsValid = await form.trigger(name);
-        // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? maskedFieldValue : defaultValue;
-
-        const reportKeys = {
-          state: state,
-          id: report?.id,
-        };
-        const dataToWrite = {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: full_name,
-          },
-          fieldData: { [name]: fieldValue },
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
+      const fields = [{ name, value, hydrationValue, defaultValue }];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = {
+        userName: full_name,
+        state,
+        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
+      };
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
 

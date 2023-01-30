@@ -5,13 +5,8 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { parseCustomHtml, useUser } from "utils";
-import {
-  InputChangeEvent,
-  AnyObject,
-  CustomHtmlElement,
-  ReportStatus,
-} from "types";
+import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
+import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,
@@ -25,7 +20,6 @@ export const TextField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
@@ -39,7 +33,7 @@ export const TextField = ({
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue) {
+    if (fieldValue || fieldValue == "") {
       setDisplayValue(fieldValue);
     }
     // else if hydration value exists, set as display value
@@ -58,27 +52,16 @@ export const TextField = ({
 
   // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
+    const { name, value } = event.target;
     if (autosave) {
-      const { name, value } = event.target;
-      if (userIsStateUser || userIsStateRep) {
-        // check field data validity
-        const fieldDataIsValid = await form.trigger(name);
-        // if valid, use; if not, reset to default
-        const fieldValue = fieldDataIsValid ? value : defaultValue;
-
-        const reportKeys = {
-          state: state,
-          id: report?.id,
-        };
-        const dataToWrite = {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: full_name,
-          },
-          fieldData: { [name]: fieldValue },
-        };
-        await updateReport(reportKeys, dataToWrite);
-      }
+      const fields = [{ name, value, hydrationValue, defaultValue }];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = {
+        userName: full_name,
+        state,
+        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
+      };
+      await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
 
