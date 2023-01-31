@@ -35,11 +35,14 @@ export const autosaveFieldData = async ({
   const { id, updateReport } = report;
   const { userName, state } = user;
 
+  // filter to only fields with changed values
+  const changedFields = fields.filter(
+    (field: FieldInfo) => field.value !== field.hydrationValue
+  );
+
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
-    fields
-      // filter to only fields with changed values
-      .filter((field: FieldInfo) => field.value !== field.hydrationValue)
+    changedFields
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
         const { name, value, defaultValue, overrideCheck } = field;
@@ -52,7 +55,7 @@ export const autosaveFieldData = async ({
   );
 
   // if there are fields to save, create and send payload
-  if (fieldsToSave.length) {
+  if (changedFields.length) {
     const reportKeys = { id, state };
     const dataToWrite = {
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
