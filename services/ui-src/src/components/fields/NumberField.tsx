@@ -32,7 +32,7 @@ export const NumberField = ({
   const { full_name, state } = useUser().user ?? {};
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue = props?.hydrate || defaultValue;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
@@ -40,7 +40,7 @@ export const NumberField = ({
       const maskedFieldValue = applyCustomMask(fieldValue, mask);
       setDisplayValue(maskedFieldValue);
     }
-    // else if hydration value exists, set as display value
+    // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
       const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
       setDisplayValue(maskedHydrationValue);

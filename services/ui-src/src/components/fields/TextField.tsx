@@ -28,14 +28,14 @@ export const TextField = ({
   form.register(name);
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue = props?.hydrate || defaultValue;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
     }
-    // else if hydration value exists, set as display value
+    // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
