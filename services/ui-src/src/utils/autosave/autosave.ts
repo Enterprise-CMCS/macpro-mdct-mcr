@@ -35,40 +35,34 @@ export const autosaveFieldData = async ({
   const { id, updateReport } = report;
   const { userName, state } = user;
 
-  // getChangedFields -- if field value hasn't changed from database value, don't autosave field
-  const changedFields = fields.filter((field: FieldInfo) => {
-    const { value, hydrationValue } = field;
-    const comparison = value !== hydrationValue;
-    return comparison;
-  });
-
-  // determineFieldDataToSave -- for each passed field, prepare for autosave payload if necessary
-  const fieldDataToSaveArray: FieldDataTuple[] = await Promise.all(
-    changedFields.map(async (field: FieldInfo) => {
-      const { name, value, defaultValue, overrideCheck } = field;
-      // check field value validity
-      const fieldValueIsValid = await form.trigger(name);
-      // if field value is valid or validity check overriden, use field value
-      if (fieldValueIsValid || overrideCheck) return [name, value];
-      // otherwise, revert field to default value
-      return [name, defaultValue];
-    })
+  // for each passed field, format for autosave payload (if changed)
+  const fieldsToSave: FieldDataTuple[] = await Promise.all(
+    fields
+      // filter to only fields with changed values
+      .filter((field: FieldInfo) => field.value !== field.hydrationValue)
+      // determine appropriate field value to set and return as tuple
+      .map(async (field: FieldInfo) => {
+        const { name, value, defaultValue, overrideCheck } = field;
+        const fieldValueIsValid = await form.trigger(name);
+        // if field value is valid or validity check overriden, use field value
+        if (fieldValueIsValid || overrideCheck) return [name, value];
+        // otherwise, revert field to default value
+        return [name, defaultValue];
+      })
   );
 
   // if there are fields to save, create and send payload
-  if (changedFields.length) {
+  if (fieldsToSave.length) {
     const reportKeys = { id, state };
     const dataToWrite = {
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
-      // create field data object from array of field data to save
-      fieldData: Object.fromEntries(fieldDataToSaveArray),
+      fieldData: Object.fromEntries(fieldsToSave), // create field data object
     };
     await updateReport(reportKeys, dataToWrite);
 
     // after successful autosave, update field values in form state
-    fieldDataToSaveArray.forEach((field: FieldDataTuple) => {
-      const [fieldName, fieldValue] = field;
-      form.setValue(fieldName, fieldValue, { shouldValidate: true });
+    fieldsToSave.forEach(([name, value]: FieldDataTuple) => {
+      form.setValue(name, value);
     });
   }
 };
