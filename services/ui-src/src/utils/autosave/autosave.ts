@@ -35,14 +35,18 @@ export const autosaveFieldData = async ({
   const { id, updateReport } = report;
   const { userName, state } = user;
 
-  // filter to only fields with changed values
-  const changedFields = fields.filter(
-    (field: FieldInfo) => field.value !== field.hydrationValue
-  );
-
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
-    changedFields
+    fields
+      .filter(
+        (field: FieldInfo) =>
+          // Handles most cases for autosaving
+          field.value !== field.defaultValue ||
+          // Handles case where a user deletes their entry and blurs out
+          (field.value === field.defaultValue &&
+            field.hydrationValue !== undefined &&
+            field.value !== field.hydrationValue)
+      )
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
         const { name, value, defaultValue, overrideCheck } = field;
@@ -55,7 +59,7 @@ export const autosaveFieldData = async ({
   );
 
   // if there are fields to save, create and send payload
-  if (changedFields.length) {
+  if (fieldsToSave.length) {
     const reportKeys = { id, state };
     const dataToWrite = {
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
