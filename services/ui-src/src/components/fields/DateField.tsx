@@ -59,6 +59,9 @@ export const DateField = ({
   // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
+    // if blanking field, trigger client-side field validation error
+    if (value === defaultValue) form.trigger(name);
+    // submit field data to database
     if (autosave) {
       const fields = [{ name, value, hydrationValue, defaultValue }];
       const reportArgs = { id: report?.id, updateReport };

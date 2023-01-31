@@ -91,6 +91,9 @@ export const DropdownField = ({
       label: event.target.id,
       value: event.target.value,
     };
+    // if blanking field, trigger client-side field validation error
+    if (selectedOption === defaultValue) form.trigger(name);
+    // submit field data to database
     if (autosave) {
       const fields = [
         { name, value: selectedOption, hydrationValue, defaultValue },
