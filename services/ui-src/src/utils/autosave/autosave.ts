@@ -13,7 +13,7 @@ interface FieldInfo {
   overrideCheck?: boolean;
 }
 
-interface AutosaveFieldDataProps {
+interface Props {
   form: UseFormReturn<FieldValues, any>;
   fields: FieldInfo[];
   report: {
@@ -31,7 +31,7 @@ export const autosaveFieldData = async ({
   fields,
   report,
   user,
-}: AutosaveFieldDataProps) => {
+}: Props) => {
   const { id, updateReport } = report;
   const { userName, state } = user;
 
