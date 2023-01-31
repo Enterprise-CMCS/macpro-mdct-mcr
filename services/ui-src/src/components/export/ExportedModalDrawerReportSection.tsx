@@ -18,7 +18,7 @@ export const ExportedModalDrawerReportSection = ({
   const { report } = useContext(ReportContext);
   const { emptyEntityMessage } = exportVerbiage;
   const entities = report?.fieldData?.[entityType];
-  const entityCount = entities ? entities?.length : undefined;
+  const entityCount = entities?.length;
 
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
