@@ -208,6 +208,9 @@ const sx = {
   },
   entityBox: {
     marginBottom: "1rem",
+    "td, p": {
+      marginBottom: "0.25rem",
+    },
     "&:last-of-type": {
       marginBottom: 0,
     },
