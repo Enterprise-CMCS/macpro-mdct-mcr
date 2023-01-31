@@ -18,12 +18,12 @@ export const ExportedModalDrawerReportSection = ({
   const { report } = useContext(ReportContext);
   const { emptyEntityMessage } = exportVerbiage;
   const entities = report?.fieldData?.[entityType];
-  const entityCount = entities?.length;
+  const entityCount = entities ? entities?.length : undefined;
 
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
-        {verbiage.dashboardTitle} {entityCount > 0 && entityCount}
+        {verbiage.dashboardTitle} {entityCount}
         {!entityCount && (
           <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
             <br />
