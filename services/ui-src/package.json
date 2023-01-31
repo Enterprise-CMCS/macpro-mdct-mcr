@@ -27,7 +27,6 @@
     "framer-motion": "^4",
     "html-react-parser": "^3.0.1",
     "launchdarkly-react-client-sdk": "^3.0.1",
-    "lodash": "^4.17.21",
     "object-path": "^0.11.8",
     "react": "^17.0.1",
     "react-bootstrap": "^2.0.1",
