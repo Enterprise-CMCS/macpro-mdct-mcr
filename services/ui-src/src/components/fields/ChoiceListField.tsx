@@ -154,8 +154,8 @@ export const ChoiceListField = ({
           : "";
         const fieldInfo = {
           name: field.id,
-          shouldClear: true,
-          defaultValue: fieldDefaultValue,
+          value: fieldDefaultValue,
+          overrideCheck: true,
         };
         // add to nested fields to be autosaved
         nestedFields.push(fieldInfo);

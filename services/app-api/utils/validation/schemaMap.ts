@@ -138,7 +138,15 @@ export const radio = () =>
 export const radioOptional = () => radio();
 
 // DYNAMIC
-export const dynamic = () => array().min(0).of(mixed());
+export const dynamic = () =>
+  array()
+    .min(0)
+    .of(
+      object().shape({
+        id: text(),
+        name: text(),
+      })
+    );
 export const dynamicOptional = () => dynamic();
 
 // NESTED

@@ -1,21 +1,19 @@
-import { isEqual } from "lodash";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { Choice, DropdownChoice, EntityShape, ReportStatus } from "types";
 
-type FieldValue = string | DropdownChoice | Choice[] | null;
+type FieldValue = string | Choice[] | DropdownChoice | EntityShape[] | null;
 
-type FieldTuple = [string, FieldValue];
+type FieldDataTuple = [string, FieldValue];
 
 interface FieldInfo {
   name: string;
   value?: FieldValue;
-  displayValues?: EntityShape[];
+  defaultValue?: any;
   hydrationValue?: FieldValue;
-  shouldClear?: boolean;
-  defaultValue: any;
+  overrideCheck?: boolean;
 }
 
-interface Props {
+interface AutosaveFieldDataProps {
   form: UseFormReturn<FieldValues, any>;
   fields: FieldInfo[];
   report: {
@@ -33,47 +31,42 @@ export const autosaveFieldData = async ({
   fields,
   report,
   user,
-}: Props) => {
+}: AutosaveFieldDataProps) => {
   const { id, updateReport } = report;
   const { userName, state } = user;
 
-  // if field value hasn't changed from database value, don't autosave field
-  const onlyChangedFields = fields.filter(
-    // TODO: do we need a deeper equality check here?
-    (field: FieldInfo) => {
-      const { value, hydrationValue, defaultValue } = field;
-      return value !== defaultValue && !isEqual(value, hydrationValue);
-    }
-  );
+  // getChangedFields -- if field value hasn't changed from database value, don't autosave field
+  const changedFields = fields.filter((field: FieldInfo) => {
+    const { value, hydrationValue } = field;
+    const comparison = value !== hydrationValue;
+    return comparison;
+  });
 
-  // for each passed field, prepare for autosave payload if necessary
-  const fieldDataToSaveArray: FieldTuple[] = await Promise.all(
-    onlyChangedFields.map(async (field: FieldInfo) => {
-      const { name, defaultValue } = field;
-
-      // if field value is not valid or explicitly told to clear, revert to default value
+  // determineFieldDataToSave -- for each passed field, prepare for autosave payload if necessary
+  const fieldDataToSaveArray: FieldDataTuple[] = await Promise.all(
+    changedFields.map(async (field: FieldInfo) => {
+      const { name, value, defaultValue, overrideCheck } = field;
+      // check field value validity
       const fieldValueIsValid = await form.trigger(name);
-      const fieldValueToSet =
-        field.shouldClear || !fieldValueIsValid ? defaultValue : field?.value;
-
-      // add field data to payload
-      return [name, fieldValueToSet];
+      // if field value is valid or validity check overriden, use field value
+      if (fieldValueIsValid || overrideCheck) return [name, value];
+      // otherwise, revert field to default value
+      return [name, defaultValue];
     })
   );
 
-  const fieldDataToSaveObject = Object.fromEntries(fieldDataToSaveArray);
-
-  if (fieldDataToSaveArray.length) {
-    // finalize payload and save
+  // if there are fields to save, create and send payload
+  if (changedFields.length) {
     const reportKeys = { id, state };
     const dataToWrite = {
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
-      fieldData: fieldDataToSaveObject,
+      // create field data object from array of field data to save
+      fieldData: Object.fromEntries(fieldDataToSaveArray),
     };
     await updateReport(reportKeys, dataToWrite);
 
-    // after successful autosave, set field values in form state
-    fieldDataToSaveArray.forEach((field: FieldTuple) => {
+    // after successful autosave, update field values in form state
+    fieldDataToSaveArray.forEach((field: FieldDataTuple) => {
       const [fieldName, fieldValue] = field;
       form.setValue(fieldName, fieldValue, { shouldValidate: true });
     });
