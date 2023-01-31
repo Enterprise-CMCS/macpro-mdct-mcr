@@ -39,11 +39,43 @@ export const autosaveFieldData = async ({
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
       .filter((field: FieldInfo) => {
+        // This needs to be updated to a switch type
+
+        /*
+         * Dynamic Field wants this case
+         *  if (field.defaultValue === undefined) return field.value !== field.hydrationValue;
+         */
+
+        /*
+         * Choicelist wants this case
+         * (
+         *   // Handles most cases where a user wants to update a field
+         *   (field.value !== field.defaultValue &&
+         *     field.value !== field.hydrationValue
+         *   (field.value === field.defaultValue &&
+         *     field.hydrationValue !== undefined &&
+         *     field.value !== field.hydrationValue)
+         * );
+         */
+
+        /*
+         * And everything else wants this case
+         * (
+         *   // Handles most cases where a user wants to update a field
+         *   field.value !== field.defaultValue ||
+         *   // Handles case where a user deletes their entry and blurs out of the field
+         *   (field.value === field.defaultValue &&
+         *     field.hydrationValue !== undefined &&
+         *     field.value !== field.hydrationValue)
+         * );
+         */
+
         /*
          * If the field doesn't have a default value, compare against the hydration value
          * (DynamicFields has this case)
          */
-        if (!field?.defaultValue) return field.value !== field.hydrationValue;
+        if (field.defaultValue === undefined)
+          return field.value !== field.hydrationValue;
         return (
           // Handles most cases where a user wants to update a field
           field.value !== field.defaultValue ||

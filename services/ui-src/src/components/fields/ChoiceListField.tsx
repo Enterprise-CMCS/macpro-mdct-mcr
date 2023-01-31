@@ -31,10 +31,9 @@ export const ChoiceListField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const defaultValue = null;
-  const [displayValue, setDisplayValue] = useState<Choice[] | null>(
-    defaultValue
-  );
+  const defaultValue: Choice[] = [];
+  const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
+
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
   // get form context and register field
@@ -44,7 +43,7 @@ export const ChoiceListField = ({
   const shouldDisableChildFields = !!props?.disabled;
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue: Choice[] = props?.hydrate;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
@@ -150,7 +149,7 @@ export const ChoiceListField = ({
       fields.forEach((field: FormField) => {
         // for each child field, get field info
         const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
-          ? null
+          ? []
           : "";
         const fieldInfo = {
           name: field.id,
@@ -160,14 +159,22 @@ export const ChoiceListField = ({
         // add to nested fields to be autosaved
         nestedFields.push(fieldInfo);
         // recurse through additional nested children as needed
-        const nestedChildren = field?.props?.choices;
-        if (nestedChildren) compileNestedFields(nestedChildren);
+        const fieldChoices = field.props?.choices;
+        if (fieldChoices) {
+          fieldChoices.forEach(
+            (choice: FieldChoice) =>
+              !choice.checked &&
+              choice.children &&
+              compileNestedFields(choice.children)
+          );
+        }
       });
     };
 
     choices.forEach((choice: FieldChoice) => {
+      const inHydration = hydrationValue.find((el) => el.key === choice.id);
       // if choice is not selected and there are children
-      if (!choice.checked && choice.children) {
+      if (!choice.checked && inHydration && choice.children) {
         compileNestedFields(choice.children);
       }
     });
