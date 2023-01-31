@@ -24,8 +24,7 @@ export const DateField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state } = useUser().user ?? {};
 
   const { report, updateReport } = useContext(ReportContext);
 
@@ -63,11 +62,7 @@ export const DateField = ({
     if (autosave) {
       const fields = [{ name, value, hydrationValue, defaultValue }];
       const reportArgs = { id: report?.id, updateReport };
-      const user = {
-        userName: full_name,
-        state,
-        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
-      };
+      const user = { userName: full_name, state };
       await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };

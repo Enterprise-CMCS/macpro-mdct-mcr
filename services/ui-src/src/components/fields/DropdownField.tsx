@@ -26,8 +26,7 @@ export const DropdownField = ({
   ...props
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state } = useUser().user ?? {};
 
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
@@ -97,11 +96,7 @@ export const DropdownField = ({
         { name, value: selectedOption, hydrationValue, defaultValue },
       ];
       const reportArgs = { id: report?.id, updateReport };
-      const user = {
-        userName: full_name,
-        state,
-        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
-      };
+      const user = { userName: full_name, state };
       await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };

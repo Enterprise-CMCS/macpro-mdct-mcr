@@ -29,8 +29,7 @@ export const NumberField = ({
   // get form context
   const form = useFormContext();
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state } = useUser().user ?? {};
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -66,11 +65,7 @@ export const NumberField = ({
     if (autosave) {
       const fields = [{ name, value, hydrationValue, defaultValue }];
       const reportArgs = { id: report?.id, updateReport };
-      const user = {
-        userName: full_name,
-        state,
-        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
-      };
+      const user = { userName: full_name, state };
       await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };

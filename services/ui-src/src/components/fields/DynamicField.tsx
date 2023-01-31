@@ -68,11 +68,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     // proceed with other stuff
     const fields = [{ name, displayValues, hydrationValue, defaultValue }];
     const reportArgs = { id: report?.id, updateReport };
-    const user = {
-      userName: full_name,
-      state,
-      isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
-    };
+    const user = { userName: full_name, state };
     await autosaveFieldData({ form, fields, report: reportArgs, user });
   };
 

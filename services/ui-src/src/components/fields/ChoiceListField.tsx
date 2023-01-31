@@ -36,8 +36,7 @@ export const ChoiceListField = ({
     defaultValue
   );
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state } = useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
   form.register(name);
@@ -184,11 +183,7 @@ export const ChoiceListField = ({
         ...getNestedChildFieldsOfUncheckedParent(choices),
       ];
       const reportArgs = { id: report?.id, updateReport };
-      const user = {
-        userName: full_name,
-        state,
-        isAuthorizedUser: !!(userIsStateRep || userIsStateUser),
-      };
+      const user = { userName: full_name, state };
       await autosaveFieldData({ form, fields, report: reportArgs, user });
     }
   };
