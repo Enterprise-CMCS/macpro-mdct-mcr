@@ -23,10 +23,9 @@ export const ExportedModalDrawerReportSection = ({
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
-        {verbiage.dashboardTitle} {entityCount}
+        {verbiage.dashboardTitle} {entityCount > 0 && entityCount}
         {!entityCount && (
           <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
-            <br />
             {entityType === ModalDrawerEntityTypes.ACCESS_MEASURES
               ? emptyEntityMessage.accessMeasures
               : entityType === ModalDrawerEntityTypes.SANCTIONS
@@ -60,9 +59,11 @@ export interface Props {
 
 const sx = {
   notAnswered: {
+    display: "block",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.error_darker",
+    marginTop: "0.5rem",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
