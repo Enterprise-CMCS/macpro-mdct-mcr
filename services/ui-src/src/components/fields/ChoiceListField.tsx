@@ -172,9 +172,8 @@ export const ChoiceListField = ({
     };
 
     choices.forEach((choice: FieldChoice) => {
-      const inHydration = hydrationValue.find((el) => el.key === choice.id);
       // if choice is not selected and there are children
-      if (!choice.checked && inHydration && choice.children) {
+      if (!choice.checked && choice.children) {
         compileNestedFields(choice.children);
       }
     });
