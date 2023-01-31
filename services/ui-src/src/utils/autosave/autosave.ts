@@ -1,7 +1,7 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { Choice, DropdownChoice, EntityShape, ReportStatus } from "types";
+import { EntityShape, ReportStatus } from "types";
 
-type FieldValue = string | Choice[] | DropdownChoice | EntityShape[] | null;
+type FieldValue = any;
 
 type FieldDataTuple = [string, FieldValue];
 
@@ -24,6 +24,7 @@ interface Props {
     userName: string | undefined;
     state: string | undefined;
   };
+  fieldType: string;
 }
 
 export const autosaveFieldData = async ({
@@ -31,6 +32,7 @@ export const autosaveFieldData = async ({
   fields,
   report,
   user,
+  fieldType,
 }: Props) => {
   const { id, updateReport } = report;
   const { userName, state } = user;
@@ -39,51 +41,7 @@ export const autosaveFieldData = async ({
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
       .filter((field: FieldInfo) => {
-        // This needs to be updated to a switch type
-
-        /*
-         * Dynamic Field wants this case
-         *  if (field.defaultValue === undefined) return field.value !== field.hydrationValue;
-         */
-
-        /*
-         * Choicelist wants this case
-         * (
-         *   // Handles most cases where a user wants to update a field
-         *   (field.value !== field.defaultValue &&
-         *     field.value !== field.hydrationValue
-         *   (field.value === field.defaultValue &&
-         *     field.hydrationValue !== undefined &&
-         *     field.value !== field.hydrationValue)
-         * );
-         */
-
-        /*
-         * And everything else wants this case
-         * (
-         *   // Handles most cases where a user wants to update a field
-         *   field.value !== field.defaultValue ||
-         *   // Handles case where a user deletes their entry and blurs out of the field
-         *   (field.value === field.defaultValue &&
-         *     field.hydrationValue !== undefined &&
-         *     field.value !== field.hydrationValue)
-         * );
-         */
-
-        /*
-         * If the field doesn't have a default value, compare against the hydration value
-         * (DynamicFields has this case)
-         */
-        if (field.defaultValue === undefined)
-          return field.value !== field.hydrationValue;
-        return (
-          // Handles most cases where a user wants to update a field
-          field.value !== field.defaultValue ||
-          // Handles case where a user deletes their entry and blurs out of the field
-          (field.value === field.defaultValue &&
-            field.hydrationValue !== undefined &&
-            field.value !== field.hydrationValue)
-        );
+        return ifFieldWasUpdated(field, fieldType);
       })
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
@@ -109,5 +67,27 @@ export const autosaveFieldData = async ({
     fieldsToSave.forEach(([name, value]: FieldDataTuple) => {
       form.setValue(name, value);
     });
+  }
+};
+
+const ifFieldWasUpdated = (field: FieldInfo, fieldType: string) => {
+  if (fieldType === "dynamicField") {
+    const checkedValues = field.value?.filter(
+      (el: EntityShape) =>
+        el.name ||
+        (el.name === "" &&
+          field.hydrationValue !== undefined &&
+          field.value !== field.hydrationValue)
+    );
+    return checkedValues?.length !== 0;
+  } else {
+    return (
+      // Handles most cases where a user wants to update a field
+      field.value !== field.defaultValue ||
+      // Handles case where a user deletes their entry and blurs out of the field
+      (field.value === field.defaultValue &&
+        field.hydrationValue !== undefined &&
+        field.value !== field.hydrationValue)
+    );
   }
 };

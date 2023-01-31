@@ -70,7 +70,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     const reportArgs = { id: report?.id, updateReport };
     const user = { userName: full_name, state };
     // no need to check "autosave" prop; dynamic fields should always autosave
-    await autosaveFieldData({ form, fields, report: reportArgs, user });
+    await autosaveFieldData({
+      form,
+      fields,
+      report: reportArgs,
+      user,
+      fieldType: "dynamicField",
+    });
   };
 
   const appendNewRecord = () => {

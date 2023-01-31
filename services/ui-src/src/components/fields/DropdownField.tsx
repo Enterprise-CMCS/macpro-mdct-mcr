@@ -97,7 +97,13 @@ export const DropdownField = ({
       ];
       const reportArgs = { id: report?.id, updateReport };
       const user = { userName: full_name, state };
-      await autosaveFieldData({ form, fields, report: reportArgs, user });
+      await autosaveFieldData({
+        form,
+        fields,
+        report: reportArgs,
+        user,
+        fieldType: "dropdownField",
+      });
     }
   };
 
