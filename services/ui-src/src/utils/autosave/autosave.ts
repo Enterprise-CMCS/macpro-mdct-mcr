@@ -38,15 +38,21 @@ export const autosaveFieldData = async ({
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
-      .filter(
-        (field: FieldInfo) =>
-          // Handles most cases for autosaving
+      .filter((field: FieldInfo) => {
+        /*
+         * If the field doesn't have a default value, compare against the hydration value
+         * (DynamicFields has this case)
+         */
+        if (!field?.defaultValue) return field.value !== field.hydrationValue;
+        return (
+          // Handles most cases where a user wants to update a field
           field.value !== field.defaultValue ||
-          // Handles case where a user deletes their entry and blurs out
+          // Handles case where a user deletes their entry and blurs out of the field
           (field.value === field.defaultValue &&
             field.hydrationValue !== undefined &&
             field.value !== field.hydrationValue)
-      )
+        );
+      })
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
         const { name, value, defaultValue, overrideCheck } = field;
