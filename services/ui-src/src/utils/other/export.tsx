@@ -218,10 +218,14 @@ const sx = {
       marginTop: "0.25rem",
       listStyle: "none",
       ".entityResponse": {
-        paddingBottom: "0.75rem",
+        paddingBottom: "0.5rem",
+        p: {
+          lineHeight: "1.25rem",
+        },
       },
       p: {
         lineHeight: "0.5rem",
+        marginBottom: "0.5rem",
       },
     },
     "&:last-of-type": {
