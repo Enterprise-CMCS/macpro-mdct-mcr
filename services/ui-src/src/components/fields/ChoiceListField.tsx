@@ -31,13 +31,10 @@ export const ChoiceListField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const defaultValue = null;
-  const [displayValue, setDisplayValue] = useState<Choice[] | null>(
-    defaultValue
-  );
-  const [lastAutosaveValue, setLastAutosaveValue] = useState<Choice[] | null>(
-    defaultValue
-  );
+  const defaultValue: Choice[] = [];
+  const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
+  const [lastDatabaseValue, setLastDatabaseValue] =
+    useState<Choice[]>(defaultValue);
 
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
@@ -48,26 +45,25 @@ export const ChoiceListField = ({
   const shouldDisableChildFields = !!props?.disabled;
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue: Choice[] = props?.hydrate;
+  const hydrationValue = props?.hydrate;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      setLastAutosaveValue(fieldValue);
+      setLastDatabaseValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      setLastAutosaveValue(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: true });
+      setLastDatabaseValue(hydrationValue);
+      form.setValue(name, hydrationValue, { shouldValidate: false });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // update form field data and DOM display checked attribute
   useEffect(() => {
     if (displayValue) {
-      form.setValue(name, displayValue, { shouldValidate: true });
       // update DOM choices checked status
       clearUncheckedNestedFields(choices);
     }
@@ -135,6 +131,7 @@ export const ChoiceListField = ({
     if (type === "radio") {
       selectedOptions = [clickedOption];
       setDisplayValue(selectedOptions);
+      form.setValue(name, selectedOptions, { shouldValidate: false });
     }
     // handle checkbox
     if (type === "checkbox") {
@@ -146,12 +143,13 @@ export const ChoiceListField = ({
         ? checkedOptionValues
         : uncheckedOptionValues;
       setDisplayValue(selectedOptions);
+      form.setValue(name, selectedOptions, { shouldValidate: true });
     }
   };
 
   const autosaveContainsParentChoice = (value: string) =>
-    lastAutosaveValue &&
-    lastAutosaveValue.some((autosave) => autosave.value === value);
+    lastDatabaseValue &&
+    lastDatabaseValue.some((autosave) => autosave.value === value);
 
   const getNestedChildFieldsOfUncheckedParent = (choices: FieldChoice[]) => {
     // set up nested field compilation
