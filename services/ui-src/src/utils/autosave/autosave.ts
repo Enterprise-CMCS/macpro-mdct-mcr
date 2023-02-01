@@ -7,6 +7,7 @@ type FieldDataTuple = [string, FieldValue];
 
 interface FieldInfo {
   name: string;
+  type: string;
   value?: FieldValue;
   defaultValue?: any;
   hydrationValue?: FieldValue;
@@ -24,7 +25,6 @@ interface Props {
     userName: string | undefined;
     state: string | undefined;
   };
-  fieldType: string;
 }
 
 export const autosaveFieldData = async ({
@@ -32,7 +32,6 @@ export const autosaveFieldData = async ({
   fields,
   report,
   user,
-  fieldType,
 }: Props) => {
   const { id, updateReport } = report;
   const { userName, state } = user;
@@ -41,7 +40,7 @@ export const autosaveFieldData = async ({
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
       .filter((field: FieldInfo) => {
-        return ifFieldWasUpdated(field, fieldType);
+        return ifFieldWasUpdated(field);
       })
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
@@ -70,8 +69,8 @@ export const autosaveFieldData = async ({
   }
 };
 
-const ifFieldWasUpdated = (field: FieldInfo, fieldType: string) => {
-  if (fieldType === "dynamicField") {
+const ifFieldWasUpdated = (field: FieldInfo) => {
+  if (field.type === "dynamicField") {
     const checkedValues = field.value?.filter(
       (el: EntityShape) =>
         el.name ||

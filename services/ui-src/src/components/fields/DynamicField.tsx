@@ -65,7 +65,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   // submit changed field data to database on blur
   const onBlurHandler = async () => {
     const fields = [
-      { name, value: displayValues, hydrationValue, overrideCheck: true },
+      {
+        name,
+        type: "dynamicField",
+        value: displayValues,
+        hydrationValue,
+        overrideCheck: true,
+      },
     ];
     const reportArgs = { id: report?.id, updateReport };
     const user = { userName: full_name, state };
@@ -75,7 +81,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       fields,
       report: reportArgs,
       user,
-      fieldType: "dynamicField",
     });
   };
 

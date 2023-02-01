@@ -31,8 +31,13 @@ export const ChoiceListField = ({
   sxOverride,
   ...props
 }: Props) => {
-  const defaultValue: Choice[] = [];
-  const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
+  const defaultValue = null;
+  const [displayValue, setDisplayValue] = useState<Choice[] | null>(
+    defaultValue
+  );
+  const [lastAutosaveValue, setLastAutosaveValue] = useState<Choice[] | null>(
+    defaultValue
+  );
 
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
@@ -49,10 +54,12 @@ export const ChoiceListField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
+      setLastAutosaveValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
+      setLastAutosaveValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -142,6 +149,10 @@ export const ChoiceListField = ({
     }
   };
 
+  const autosaveContainsParentChoice = (value: string) =>
+    lastAutosaveValue &&
+    lastAutosaveValue.some((autosave) => autosave.value === value);
+
   const getNestedChildFieldsOfUncheckedParent = (choices: FieldChoice[]) => {
     // set up nested field compilation
     const nestedFields: any = [];
@@ -153,6 +164,7 @@ export const ChoiceListField = ({
           : "";
         const fieldInfo = {
           name: field.id,
+          type: field.type,
           value: fieldDefaultValue,
           overrideCheck: true,
         };
@@ -173,7 +185,11 @@ export const ChoiceListField = ({
 
     choices.forEach((choice: FieldChoice) => {
       // if choice is not selected and there are children
-      if (!choice.checked && choice.children) {
+      if (
+        !choice.checked &&
+        choice.children &&
+        autosaveContainsParentChoice(choice.value)
+      ) {
         compileNestedFields(choice.children);
       }
     });
@@ -185,7 +201,13 @@ export const ChoiceListField = ({
   const onComponentBlurHandler = async () => {
     if (autosave) {
       let fields = [
-        { name, value: displayValue, hydrationValue, defaultValue },
+        {
+          name,
+          type: "choiceListField",
+          value: displayValue,
+          hydrationValue,
+          defaultValue,
+        },
         ...getNestedChildFieldsOfUncheckedParent(choices),
       ];
       const reportArgs = { id: report?.id, updateReport };
@@ -195,7 +217,6 @@ export const ChoiceListField = ({
         fields,
         report: reportArgs,
         user,
-        fieldType: "choiceListField",
       });
     }
   };

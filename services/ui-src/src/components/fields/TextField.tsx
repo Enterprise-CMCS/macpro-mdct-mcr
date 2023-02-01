@@ -28,14 +28,14 @@ export const TextField = ({
   form.register(name);
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue = props?.hydrate || defaultValue;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue || fieldValue == "") {
       setDisplayValue(fieldValue);
     }
-    // else if hydration value exists, set as display value
+    // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
@@ -49,11 +49,16 @@ export const TextField = ({
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  // if should autosave, submit field data to database on blur
+  // if should autosave, submit field data on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
     const { name, value } = event.target;
+    // if blanking field, trigger client-side field validation error
+    if (value === defaultValue) form.trigger(name);
+    // submit field data to database
     if (autosave) {
-      const fields = [{ name, value, hydrationValue, defaultValue }];
+      const fields = [
+        { name, type: "textField", value, hydrationValue, defaultValue },
+      ];
       const reportArgs = { id: report?.id, updateReport };
       const user = { userName: full_name, state };
       await autosaveFieldData({
@@ -61,7 +66,6 @@ export const TextField = ({
         fields,
         report: reportArgs,
         user,
-        fieldType: "textField",
       });
     }
   };

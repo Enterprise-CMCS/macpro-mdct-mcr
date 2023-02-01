@@ -61,14 +61,14 @@ export const DropdownField = ({
   form.register(name);
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue = props?.hydrate || defaultValue;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
     }
-    // else if hydration value exists, set as display value
+    // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
       form.setValue(name, hydrationValue, { shouldValidate: true });
@@ -91,9 +91,18 @@ export const DropdownField = ({
       label: event.target.id,
       value: event.target.value,
     };
+    // if blanking field, trigger client-side field validation error
+    if (selectedOption === defaultValue) form.trigger(name);
+    // submit field data to database
     if (autosave) {
       const fields = [
-        { name, value: selectedOption, hydrationValue, defaultValue },
+        {
+          name,
+          type: "dropdownField",
+          value: selectedOption,
+          hydrationValue,
+          defaultValue,
+        },
       ];
       const reportArgs = { id: report?.id, updateReport };
       const user = { userName: full_name, state };
@@ -102,7 +111,6 @@ export const DropdownField = ({
         fields,
         report: reportArgs,
         user,
-        fieldType: "dropdownField",
       });
     }
   };
