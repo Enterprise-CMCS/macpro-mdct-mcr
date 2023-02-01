@@ -9,9 +9,18 @@ import {
 import { validationErrors as error } from "verbiage/errors";
 import { Choice } from "types";
 
+// TEXT - Helpers
+const isWhitespaceString = (value?: string) => value?.trim().length === 0;
+
 // TEXT
 export const text = () =>
-  string().typeError(error.INVALID_GENERIC).required(error.REQUIRED_GENERIC);
+  string()
+    .typeError(error.INVALID_GENERIC)
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
 export const textOptional = () => text().notRequired();
 
 // NUMBER - Helpers
@@ -37,6 +46,10 @@ export const number = () =>
           return isValidStringValue || isValidNumberValue;
         } else return true;
       },
+    })
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
     });
 
 export const numberOptional = () => number().notRequired();
@@ -94,7 +107,11 @@ export const urlOptional = () => url().notRequired();
 export const date = () =>
   string()
     .required(error.REQUIRED_GENERIC)
-    .matches(dateFormatRegex, error.INVALID_DATE);
+    .matches(dateFormatRegex, error.INVALID_DATE)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
 
 export const dateOptional = () => date().notRequired();
 export const endDate = (startDateField: string) =>
