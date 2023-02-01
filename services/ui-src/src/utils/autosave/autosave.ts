@@ -79,14 +79,13 @@ const ifFieldWasUpdated = (field: FieldInfo) => {
           field.value !== field.hydrationValue)
     );
     return checkedValues?.length !== 0;
-  } else {
-    return (
-      // Handles most cases where a user wants to update a field
-      field.value !== field.defaultValue ||
-      // Handles case where a user deletes their entry and blurs out of the field
-      (field.value === field.defaultValue &&
-        field.hydrationValue !== undefined &&
-        field.value !== field.hydrationValue)
-    );
   }
+  return (
+    // Handles most cases where a user wants to update a field
+    field.value !== field.defaultValue ||
+    // Handles case where a user deletes their entry and blurs out of the field
+    (field.value === field.defaultValue &&
+      field.hydrationValue !== undefined &&
+      field.value !== field.hydrationValue)
+  );
 };

@@ -192,7 +192,7 @@ export const ChoiceListField = ({
       }
     });
 
-    return nestedFields; // TODO: just map here?
+    return nestedFields;
   };
 
   // if should autosave, submit field data to database on component blur
