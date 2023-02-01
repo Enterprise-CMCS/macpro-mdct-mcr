@@ -1,7 +1,7 @@
 export default {
   missingEntry: {
-    noResponse: "Not Answered",
-    notApplicable: "Not Applicable",
+    noResponse: "Not answered",
+    notApplicable: "Not applicable",
   },
   reportBanner: {
     intro: "Click below to export or print MCPAR shown here",
