@@ -32,7 +32,7 @@ export const TextField = ({
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue || fieldValue == "") {
+    if (fieldValue) {
       setDisplayValue(fieldValue);
     }
     // else set hydrationValue or defaultValue as display value

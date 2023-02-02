@@ -49,7 +49,7 @@ export const ChoiceListField = ({
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue) {
+    if (fieldValue && fieldValue.length > 0) {
       setDisplayValue(fieldValue);
       setLastDatabaseValue(fieldValue);
     }
@@ -200,7 +200,12 @@ export const ChoiceListField = ({
     if (autosave) {
       // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
       setTimeout(async () => {
-        if (document.activeElement?.id.includes(name)) return; // Short circuit if still clicking on elements in this choice list
+        const parentName = document.activeElement?.id.split("-")[0];
+        if (
+          parentName === name &&
+          !document.activeElement?.id.includes("-otherText")
+        )
+          return; // Short circuit if still clicking on elements in this choice list
         let fields = [
           {
             name,
