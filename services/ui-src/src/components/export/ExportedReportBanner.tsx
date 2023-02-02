@@ -1,33 +1,28 @@
-import { useLDClient } from "launchdarkly-react-client-sdk";
+import { useFlags } from "launchdarkly-react-client-sdk";
+// assets
+import pdfIcon from "assets/icons/icon_pdf_white.png";
 // components
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 // utils
-import { featureFlags, printPdf } from "utils";
-// assets
-import pdfIcon from "assets/icons/icon_pdf_white.png";
+import { printPdf } from "utils";
+// verbiage
+import verbiage from "verbiage/pages/export";
 
-export const StickyBanner = () => {
-  // LaunchDarkly
-  const ldClient = useLDClient();
-  const printExperience = ldClient?.variation(
-    featureFlags.PRINT_EXPERIENCE.flag,
-    featureFlags.PRINT_EXPERIENCE.defaultValue
-  );
+export const ExportedReportBanner = () => {
+  const { reportBanner } = verbiage;
+  const printExperience = useFlags()?.printExperience;
 
-  const clickPrint = () => {
-    if (printExperience === "prince") {
-      printPdf();
-    } else {
-      window?.print();
-    }
+  const onClickHandler = () => {
+    if (printExperience === "prince") printPdf();
+    else window?.print();
   };
 
   return (
-    <Box data-testid="stickyBanner" sx={sx.container}>
-      <Text>Click below to export or print MCPAR shown here</Text>
-      <Button sx={sx.pdfButton} onClick={clickPrint}>
+    <Box data-testid="exportedReportBanner" sx={sx.container}>
+      <Text>{reportBanner.intro}</Text>
+      <Button sx={sx.pdfButton} onClick={onClickHandler}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
-        Download PDF
+        {reportBanner.pdfButton}
       </Button>
     </Box>
   );

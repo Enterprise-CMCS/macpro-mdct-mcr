@@ -7,7 +7,7 @@ import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
 import { ReportStatus } from "types";
 // utils
 import {
-  mockLDClient,
+  mockLDFlags,
   mockReport,
   mockReportContext,
   mockStateUser,
@@ -20,10 +20,6 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
   useUser: () => mockStateUser,
-}));
-
-jest.mock("launchdarkly-react-client-sdk", () => ({
-  useLDClient: () => mockLDClient,
 }));
 
 const McparReviewSubmitPage_InProgress = (
@@ -52,6 +48,8 @@ const McparReviewSubmitPage_Submitted = (
   </RouterWrappedComponent>
 );
 
+mockLDFlags.setDefault({ pdfExport: false });
+
 describe("Test McparReviewSubmitPage functionality", () => {
   test("McparReviewSubmitPage renders pre-submit state when report status is 'in progress'", () => {
     render(McparReviewSubmitPage_InProgress);
@@ -60,12 +58,20 @@ describe("Test McparReviewSubmitPage functionality", () => {
     expect(screen.getByText(intro.infoHeader)).toBeVisible();
   });
 
-  it("print button should be visible and correctly formed", async () => {
+  it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {
+    mockLDFlags.set({ pdfExport: true });
     render(McparReviewSubmitPage_InProgress);
     const printButton = screen.getByText("Print");
     expect(printButton).toBeVisible();
     expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
     expect(printButton.getAttribute("target")).toEqual("_blank");
+  });
+
+  it("if pdfExport flag is false, print button should not render", async () => {
+    mockLDFlags.set({ pdfExport: false });
+    render(McparReviewSubmitPage_InProgress);
+    const printButton = screen.queryByText("Print");
+    expect(printButton).not.toBeInTheDocument();
   });
 
   test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
@@ -106,6 +112,7 @@ describe("Success Message Generator", () => {
       `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
+
   it("should give a reduced version if not given all params", () => {
     const programName = "test-program";
     const submittedDate = undefined;
@@ -115,12 +122,20 @@ describe("Success Message Generator", () => {
     ).toBe(`MCPAR report for ${programName} was submitted.`);
   });
 
-  it("print button should be visible and correctly formed", async () => {
+  it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {
+    mockLDFlags.set({ pdfExport: true });
     render(McparReviewSubmitPage_InProgress);
     const printButton = screen.getByText("Print");
     expect(printButton).toBeVisible();
     expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
     expect(printButton.getAttribute("target")).toEqual("_blank");
+  });
+
+  it("if pdfExport flag is false, print button should not render", async () => {
+    mockLDFlags.set({ pdfExport: false });
+    render(McparReviewSubmitPage_InProgress);
+    const printButton = screen.queryByText("Print");
+    expect(printButton).not.toBeInTheDocument();
   });
 });
 

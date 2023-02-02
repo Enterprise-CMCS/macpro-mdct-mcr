@@ -15,8 +15,8 @@ module.exports = defineConfig({
   defaultCommandTimeout: 20000,
   types: ["cypress", "cypress-axe"],
   env: {
-    STATE_USER_EMAIL: "stateuser@test.com",
-    ADMIN_USER_EMAIL: "adminuser@test.com",
+    STATE_USER_EMAIL: "cypressstateuser@test.com",
+    ADMIN_USER_EMAIL: "cypressadminuser@test.com",
   },
   e2e: {
     baseUrl: "http://localhost:3000/",
