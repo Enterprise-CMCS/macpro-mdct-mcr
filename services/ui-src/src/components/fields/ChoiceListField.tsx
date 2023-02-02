@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -196,26 +196,30 @@ export const ChoiceListField = ({
   };
 
   // if should autosave, submit field data to database on component blur
-  const onComponentBlurHandler = async () => {
+  const onComponentBlurHandler = async (e: SyntheticEvent) => {
     if (autosave) {
-      let fields = [
-        {
-          name,
-          type: "choiceListField",
-          value: displayValue,
-          hydrationValue,
-          defaultValue,
-        },
-        ...getNestedChildFieldsOfUncheckedParent(choices),
-      ];
-      const reportArgs = { id: report?.id, updateReport };
-      const user = { userName: full_name, state };
-      await autosaveFieldData({
-        form,
-        fields,
-        report: reportArgs,
-        user,
-      });
+      // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
+      setTimeout(async () => {
+        if (document.activeElement?.id.includes(name)) return; // Short circuit if still clicking on elements in this choice list
+        let fields = [
+          {
+            name,
+            type: "choiceListField",
+            value: displayValue,
+            hydrationValue,
+            defaultValue,
+          },
+          ...getNestedChildFieldsOfUncheckedParent(choices),
+        ];
+        const reportArgs = { id: report?.id, updateReport };
+        const user = { userName: full_name, state };
+        await autosaveFieldData({
+          form,
+          fields,
+          report: reportArgs,
+          user,
+        });
+      }, 200);
     }
   };
 
