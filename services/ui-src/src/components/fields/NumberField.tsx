@@ -44,7 +44,7 @@ export const NumberField = ({
     else if (hydrationValue) {
       const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
       setDisplayValue(maskedHydrationValue);
-      form.setValue(name, maskedHydrationValue, { shouldValidate: true });
+      form.setValue(name, maskedHydrationValue);
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 

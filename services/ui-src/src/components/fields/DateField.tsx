@@ -43,7 +43,7 @@ export const DateField = ({
     // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: true });
+      form.setValue(name, hydrationValue);
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
