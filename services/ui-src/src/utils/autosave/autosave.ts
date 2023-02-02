@@ -61,11 +61,6 @@ export const autosaveFieldData = async ({
       fieldData: Object.fromEntries(fieldsToSave), // create field data object
     };
     await updateReport(reportKeys, dataToWrite);
-
-    // after successful autosave, update field values in form state
-    fieldsToSave.forEach(([name, value]: FieldDataTuple) => {
-      form.setValue(name, value);
-    });
   }
 };
 
