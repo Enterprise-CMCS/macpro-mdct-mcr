@@ -65,7 +65,7 @@ export const autosaveFieldData = async ({
 };
 
 const ifFieldWasUpdated = (field: FieldInfo) => {
-  if (field.type === "dynamicField") {
+  if (field.type === "dynamic") {
     const checkedValues = field.value?.filter(
       (el: EntityShape) =>
         el.name ||
@@ -75,12 +75,5 @@ const ifFieldWasUpdated = (field: FieldInfo) => {
     );
     return checkedValues?.length !== 0;
   }
-  return (
-    // Handles most cases where a user wants to update a field
-    field.value !== field.defaultValue ||
-    // Handles case where a user deletes their entry and blurs out of the field
-    (field.value === field.defaultValue &&
-      field.hydrationValue !== undefined &&
-      field.value !== field.hydrationValue)
-  );
+  return field.value !== field.hydrationValue;
 };

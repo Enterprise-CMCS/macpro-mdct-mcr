@@ -67,7 +67,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     const fields = [
       {
         name,
-        type: "dynamicField",
+        type: "dynamic",
         value: displayValues,
         hydrationValue,
         overrideCheck: true,
