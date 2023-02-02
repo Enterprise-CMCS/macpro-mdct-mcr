@@ -1,4 +1,4 @@
-import { SyntheticEvent, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -49,7 +49,7 @@ export const ChoiceListField = ({
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue && fieldValue.length > 0) {
+    if (fieldValue?.length > 0) {
       setDisplayValue(fieldValue);
       setLastDatabaseValue(fieldValue);
     }
@@ -57,7 +57,7 @@ export const ChoiceListField = ({
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
       setLastDatabaseValue(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: false });
+      form.setValue(name, hydrationValue);
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -131,7 +131,7 @@ export const ChoiceListField = ({
     if (type === "radio") {
       selectedOptions = [clickedOption];
       setDisplayValue(selectedOptions);
-      form.setValue(name, selectedOptions, { shouldValidate: false });
+      form.setValue(name, selectedOptions);
     }
     // handle checkbox
     if (type === "checkbox") {
@@ -146,10 +146,6 @@ export const ChoiceListField = ({
       form.setValue(name, selectedOptions, { shouldValidate: true });
     }
   };
-
-  const autosaveContainsParentChoice = (value: string) =>
-    lastDatabaseValue &&
-    lastDatabaseValue.some((autosave) => autosave.value === value);
 
   const getNestedChildFieldsOfUncheckedParent = (choices: FieldChoice[]) => {
     // set up nested field compilation
@@ -170,23 +166,21 @@ export const ChoiceListField = ({
         nestedFields.push(fieldInfo);
         // recurse through additional nested children as needed
         const fieldChoices = field.props?.choices;
-        if (fieldChoices) {
-          fieldChoices.forEach(
-            (choice: FieldChoice) =>
-              !choice.checked &&
-              choice.children &&
-              compileNestedFields(choice.children)
-          );
-        }
+        fieldChoices?.forEach(
+          (choice: FieldChoice) =>
+            choice.children && compileNestedFields(choice.children)
+        );
       });
     };
 
     choices.forEach((choice: FieldChoice) => {
       // if choice is not selected and there are children
+      const isParentChoiceChecked = (id: string) =>
+        lastDatabaseValue?.some((autosave) => autosave.key === id);
       if (
         !choice.checked &&
         choice.children &&
-        autosaveContainsParentChoice(choice.value)
+        isParentChoiceChecked(choice.id)
       ) {
         compileNestedFields(choice.children);
       }
@@ -196,7 +190,7 @@ export const ChoiceListField = ({
   };
 
   // if should autosave, submit field data to database on component blur
-  const onComponentBlurHandler = async (e: SyntheticEvent) => {
+  const onComponentBlurHandler = async () => {
     if (autosave) {
       // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
       setTimeout(async () => {
