@@ -14,7 +14,7 @@ interface FieldInfo {
   overrideCheck?: boolean;
 }
 
-interface Props {
+export interface autosaveProps {
   form: UseFormReturn<FieldValues, any>;
   fields: FieldInfo[];
   report: {
@@ -32,7 +32,7 @@ export const autosaveFieldData = async ({
   fields,
   report,
   user,
-}: Props) => {
+}: autosaveProps) => {
   const { id, updateReport } = report;
   const { userName, state } = user;
 
@@ -46,7 +46,7 @@ export const autosaveFieldData = async ({
       .map(async (field: FieldInfo) => {
         const { name, value, defaultValue, overrideCheck } = field;
         const fieldValueIsValid = await form.trigger(name);
-        // if field value is valid or validity check overriden, use field value
+        // if field value is valid or validity check overridden, use field value
         if (fieldValueIsValid || overrideCheck) return [name, value];
         // otherwise, revert field to default value
         return [name, defaultValue];
@@ -64,7 +64,7 @@ export const autosaveFieldData = async ({
   }
 };
 
-const ifFieldWasUpdated = (field: FieldInfo) => {
+export const ifFieldWasUpdated = (field: FieldInfo) => {
   if (field.type === "dynamic") {
     const checkedValues = field.value?.filter(
       (el: EntityShape) =>
