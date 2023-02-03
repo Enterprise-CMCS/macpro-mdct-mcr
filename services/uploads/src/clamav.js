@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const AWS = require("aws-sdk");
 const fs = require("fs");
 const child_process = require("child_process");
