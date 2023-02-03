@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
+
 const AWS = require("aws-sdk");
 const fs = require("fs");
-const spawnSync = require("child_process").spawnSync;
+const child_process = require("child_process");
 const path = require("path");
 const constants = require("./constants");
 const utils = require("./utils");
@@ -22,7 +24,7 @@ async function listBucketFiles(bucketName) {
     return keys;
   } catch (err) {
     utils.generateSystemMessage(`Error listing files`);
-    console.log(err); // eslint-disable-line no-console
+    console.log(err);
     throw err;
   }
 }
@@ -34,20 +36,23 @@ async function listBucketFiles(bucketName) {
  */
 function updateAVDefinitonsWithFreshclam() {
   try {
-    let executionResult = spawnSync(constants.PATH_TO_FRESHCLAM, [
-      `--config-file=${constants.FRESHCLAM_CONFIG}`,
-      `--datadir=${constants.FRESHCLAM_WORK_DIR}`,
-    ]);
+    let executionResult = child_process.execSync(
+      `${constants.PATH_TO_FRESHCLAM} --config-file=${constants.FRESHCLAM_CONFIG} --datadir=${constants.FRESHCLAM_WORK_DIR}`
+    );
 
     utils.generateSystemMessage("Update message");
+    console.log(executionResult.toString());
+
+    console.log("Downloaded:", fs.readdirSync(constants.FRESHCLAM_WORK_DIR));
 
     if (executionResult.stderr) {
       utils.generateSystemMessage("stderr");
+      console.log(executionResult.stderr.toString());
     }
 
     return true;
   } catch (err) {
-    console.log(err); // eslint-disable-line no-console
+    console.log(err);
     return false;
   }
 }
@@ -93,7 +98,7 @@ async function downloadAVDefinitions() {
           utils.generateSystemMessage(
             `Error downloading definition file ${filenameToDownload}`
           );
-          console.log(err); // eslint-disable-line no-console
+          console.log(err);
           reject();
         });
 
@@ -137,7 +142,7 @@ async function uploadAVDefinitions() {
       utils.generateSystemMessage(
         `Error deleting current definition files: ${s3DefinitionFileFullKeys}`
       );
-      console.log(err); // eslint-disable-line no-console
+      console.log(err);
       throw err;
     }
   }
@@ -164,7 +169,7 @@ async function uploadAVDefinitions() {
           utils.generateSystemMessage(
             `--- Error uploading ${filenameToUpload} ---`
           );
-          console.log(err); // eslint-disable-line no-console
+          console.log(err);
           reject();
           return;
         }
@@ -192,27 +197,35 @@ async function uploadAVDefinitions() {
  */
 function scanLocalFile(pathToFile) {
   try {
-    let avResult = spawnSync(constants.PATH_TO_CLAMAV, [
+    let avResult = child_process.spawnSync(constants.PATH_TO_CLAMAV, [
       "--stdout",
       "-v",
       "-a",
-      `-d /tmp/ ${pathToFile}`,
+      "-d",
+      "/tmp/",
+      pathToFile,
     ]);
 
-    console.log(avResult.toString()); // eslint-disable-line no-console
+    // Error status 1 means that the file is infected.
+    if (avResult.status === 1) {
+      utils.generateSystemMessage("SUCCESSFUL SCAN, FILE INFECTED");
+      return constants.STATUS_INFECTED_FILE;
+    } else if (avResult.status !== 0) {
+      utils.generateSystemMessage("SCAN FAILED WITH ERROR");
+      console.error("stderror", avResult.stderr.toString());
+      console.error("stdout", avResult.stdout.toString());
+      console.error("err", avResult.error);
+      return constants.STATUS_ERROR_PROCESSING_FILE;
+    }
+
     utils.generateSystemMessage("SUCCESSFUL SCAN, FILE CLEAN");
+    console.info(avResult.stdout.toString());
 
     return constants.STATUS_CLEAN_FILE;
   } catch (err) {
-    // Error status 1 means that the file is infected.
-    if (err.status === 1) {
-      utils.generateSystemMessage("SUCCESSFUL SCAN, FILE INFECTED");
-      return constants.STATUS_INFECTED_FILE;
-    } else {
-      utils.generateSystemMessage("-- SCAN FAILED --");
-      console.log(err); // eslint-disable-line no-console
-      return constants.STATUS_ERROR_PROCESSING_FILE;
-    }
+    utils.generateSystemMessage("-- SCAN FAILED ERR--");
+    console.error(err);
+    return constants.STATUS_ERROR_PROCESSING_FILE;
   }
 }
 
