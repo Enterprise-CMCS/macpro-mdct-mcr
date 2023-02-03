@@ -68,6 +68,22 @@ describe("autosaveFieldData", () => {
     );
   });
 
+  it("should save fieldData with default value if no there are no fields to save", async () => {
+    mockTrigger.mockResolvedValue(false);
+    await autosaveFieldData({ form: mockForm, fields: [], report, user });
+    expect(mockForm.trigger).toHaveBeenCalledWith("field2");
+    expect(report.updateReport).toHaveBeenCalledWith(
+      { id: "reportId", state: "MN" },
+      {
+        metadata: {
+          status: "In progress",
+          lastAlteredBy: "stateuser@test.com",
+        },
+        fieldData: { field2: "defaultValue2" },
+      }
+    );
+  });
+
   it("should save fieldData with value if validity check is overridden", async () => {
     fields[1].overrideCheck = true;
     await autosaveFieldData({ form: mockForm, fields, report, user });
@@ -89,7 +105,7 @@ describe("ifFieldWasUpdated", () => {
     const dynamicField = {
       name: "fieldName",
       type: "dynamic",
-      value: [{ name: "value1" }, { name: "value2" }],
+      value: [{ name: "" }, { name: "value2" }],
       hydrationValue: [
         { name: "hydration-value1" },
         { name: "hydration-value2" },
