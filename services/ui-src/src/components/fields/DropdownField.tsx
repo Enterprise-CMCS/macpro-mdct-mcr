@@ -98,7 +98,7 @@ export const DropdownField = ({
       const fields = [
         {
           name,
-          type: "dropdownField",
+          type: "dropdown",
           value: selectedOption,
           hydrationValue,
           defaultValue,

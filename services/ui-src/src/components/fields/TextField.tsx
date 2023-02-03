@@ -57,7 +57,7 @@ export const TextField = ({
     // submit field data to database
     if (autosave) {
       const fields = [
-        { name, type: "textField", value, hydrationValue, defaultValue },
+        { name, type: "text", value, hydrationValue, defaultValue },
       ];
       const reportArgs = { id: report?.id, updateReport };
       const user = { userName: full_name, state };

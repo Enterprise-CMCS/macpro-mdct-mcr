@@ -201,13 +201,7 @@ export const ChoiceListField = ({
         )
           return; // Short circuit if still clicking on elements in this choice list
         let fields = [
-          {
-            name,
-            type: "choiceListField",
-            value: displayValue,
-            hydrationValue,
-            defaultValue,
-          },
+          { name, type, value: displayValue, hydrationValue, defaultValue },
           ...getNestedChildFieldsOfUncheckedParent(choices),
         ];
         const reportArgs = { id: report?.id, updateReport };

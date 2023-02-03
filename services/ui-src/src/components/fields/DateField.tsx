@@ -63,7 +63,7 @@ export const DateField = ({
     if (value === defaultValue) form.trigger(name);
     if (autosave) {
       const fields = [
-        { name, type: "dateField", value, hydrationValue, defaultValue },
+        { name, type: "date", value, hydrationValue, defaultValue },
       ];
       const reportArgs = { id: report?.id, updateReport };
       const user = { userName: full_name, state };

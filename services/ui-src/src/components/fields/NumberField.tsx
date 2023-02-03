@@ -64,7 +64,7 @@ export const NumberField = ({
     // submit field data to database
     if (autosave) {
       const fields = [
-        { name, type: "numberField", value, hydrationValue, defaultValue },
+        { name, type: "number", value, hydrationValue, defaultValue },
       ];
       const reportArgs = { id: report?.id, updateReport };
       const user = { userName: full_name, state };
