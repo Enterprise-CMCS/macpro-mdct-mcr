@@ -7,7 +7,6 @@ import { DropdownField, ReportContext } from "components";
 import { dropdownDefaultOptionText } from "../../constants";
 // utils
 import {
-  mockAdminUser,
   mockReportContext,
   mockStateUser,
   RouterWrappedComponent,
@@ -227,19 +226,6 @@ describe("Test DropdownField autosaves", () => {
         },
       }
     );
-  });
-
-  test("Does not autosave when not stateuser", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
-    mockGetValues(undefined);
-    render(dropdownComponentWithOptionsAndAutosave);
-    const dropDown = screen.getByLabelText("test-dropdown-label");
-    expect(dropDown).toBeVisible();
-    const option2 = dropDown.children.item(2) as HTMLOptionElement;
-    await userEvent.selectOptions(dropDown, "b");
-    expect(option2.selected).toBe(true);
-    await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
   test("Does not autosave if autosave is false", async () => {

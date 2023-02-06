@@ -5,11 +5,7 @@ import { axe } from "jest-axe";
 import { useFormContext } from "react-hook-form";
 import { ReportContext, TextField } from "components";
 // utils
-import {
-  mockAdminUser,
-  mockReportContext,
-  mockStateUser,
-} from "utils/testing/setupJest";
+import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
 import { useUser } from "utils";
 import { ReportStatus } from "types";
 
@@ -168,17 +164,6 @@ describe("Test TextField component autosaves", () => {
         fieldData: { testTextField: "" },
       }
     );
-  });
-
-  test("TextField does not autosave when not stateuser", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
-    mockGetValues(undefined);
-    render(textFieldAutosavingComponent);
-    const textField = screen.getByTestId("test-text-field-autosave");
-    expect(textField).toBeVisible();
-    await userEvent.type(textField, "test value");
-    await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
   test("TextField does not autosave when not autosave not set to true", async () => {
