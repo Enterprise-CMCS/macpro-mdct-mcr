@@ -26,13 +26,6 @@ custom:
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mcpar"}
-  scripts:
-    hooks:
-      deploy:finalize: |
-        if [ ${self:custom.dataTransformEnabled} = "true" ];
-        then
-          serverless invoke --stage ${self:custom.stage} --function dataTransform
-        fi
   dynamodb:
     stages:
       - local
