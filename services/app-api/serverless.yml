@@ -51,7 +51,7 @@ custom:
       enabled: true
       prewarm: true
       events:
-        - schedule: rate("60 minutes")
+        - schedule: rate(60 minutes)
       concurrency: 5
   authValue:
     main: aws_iam
