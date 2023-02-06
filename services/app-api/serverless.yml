@@ -51,8 +51,8 @@ custom:
       enabled: true
       prewarm: true
       events:
-        - schedule: rate(${env:WARMUP_SCHEDULE, ssm:/configuration/${self:custom.stage}/warmup/schedule, ssm:/configuration/default/warmup/schedule}, "60 minutes")
-      concurrency: ${env:WARMUP_CONCURRENCY, ssm:/configuration/${self:custom.stage}/warmup/concurrency, ssm:/configuration/default/warmup/concurrency, 5}
+        - schedule: rate("60 minutes")
+      concurrency: 5
   authValue:
     main: aws_iam
     val: aws_iam
