@@ -9,48 +9,57 @@ import mcrLogo from "assets/logos/logo_mcr_footer.png";
 import medicaidLogo from "assets/logos/logo_medicaid.svg";
 
 export const Footer = () => {
-  const { isMobile } = useBreakpoint();
+  const { isDesktop } = useBreakpoint();
   return (
     <Box sx={sx.root} id="footer" role="contentinfo">
       <Box sx={sx.footerTop}>
         <Container sx={sx.footerTopContainer}>
           <Flex sx={sx.footerTopFlex}>
-            <Flex sx={sx.footerTopLogoFlex}>
+            <Box sx={sx.footerTopLeftContainer}>
               <Image
                 src={mcrLogo}
                 alt="Managed Care Reporting logo"
                 sx={sx.mcrLogo}
               />
-            </Flex>
-            <Flex sx={sx.footerRightLogosFlex}>
-              {!isMobile && (
-                <Image src={hhsLogo} alt="HHS logo" sx={sx.hhsLogo} />
-              )}
-              <Flex sx={sx.footerRightLogosTextFlex}>
-                {isMobile && (
-                  <Flex sx={sx.hhsMedicaidLogoMobile}>
-                    <Image src={hhsLogo} alt="HHS logo" sx={sx.hhsLogo} />
+            </Box>
+            <Box sx={sx.footerTopRightContainer}>
+              <Flex sx={sx.footerTopRightTopFlex}>
+                <Box sx={sx.footerCMSBrandingLeft}>
+                  <Box sx={sx.hhsLogo}>
+                    <img
+                      src={hhsLogo}
+                      alt="Department of Health and Human Services, USA"
+                    />
+                  </Box>
+
+                  {!isDesktop && (
+                    <Box sx={sx.hhsMedicaidLogoMobile}>
+                      <img
+                        src={medicaidLogo}
+                        alt="Medicaid.gov: Keeping America Healthy"
+                      />
+                    </Box>
+                  )}
+                </Box>
+                <Box sx={sx.footerCMSBrandingRight}>
+                  <Text sx={sx.hhsCopyText}>
+                    A federal government website managed and paid for by the
+                    U.S. Centers for Medicare and Medicaid Services and part of
+                    the MACPro suite.
+                  </Text>
+                </Box>
+              </Flex>
+              {isDesktop && (
+                <Flex sx={sx.footerCMSMedicaid}>
+                  <Box sx={sx.medicaidLogo}>
                     <Image
                       src={medicaidLogo}
-                      alt="Medicaid logo"
-                      sx={sx.medicaidLogo}
+                      alt="Medicaid.gov: Keeping America Healthy"
                     />
-                  </Flex>
-                )}
-                <Text sx={sx.footerText}>
-                  A federal government website managed and paid for by the U.S.
-                  Centers for Medicare and Medicaid Services and part of the
-                  MDCT suite.
-                </Text>
-                {!isMobile && (
-                  <Image
-                    src={medicaidLogo}
-                    alt="Medicaid logo"
-                    sx={sx.medicaidLogo}
-                  />
-                )}
-              </Flex>
-            </Flex>
+                  </Box>
+                </Flex>
+              )}
+            </Box>
           </Flex>
         </Container>
       </Box>
@@ -61,7 +70,6 @@ export const Footer = () => {
               <Link as={RouterLink} to="/help" variant="inverse" sx={sx.link}>
                 Contact Us
               </Link>
-              {!isMobile && <Text sx={sx.divider}>|</Text>}
               <Link
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
@@ -97,6 +105,7 @@ const sx = {
   footerTop: {
     bg: "palette.gray_lightest",
     minHeight: "7rem",
+    padding: "2rem 0",
   },
   footerTopContainer: {
     maxW: "appMax",
@@ -105,57 +114,93 @@ const sx = {
     },
   },
   footerTopFlex: {
-    minH: "12.5rem",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    paddingY: "2rem",
-    ".mobile &": {
-      flexDirection: "column",
-      alignItems: "center",
+    flexWrap: "wrap",
+  },
+  footerTopLeftContainer: {
+    flex: "0 0 50%",
+    maxWidth: "100%",
+    minWidth: "100%",
+    marginBottom: "1em",
+    ".desktop &": {
+      marginBottom: 0,
+      maxWidth: "50%",
+      minWidth: "auto",
     },
   },
-  footerTopLogoFlex: {
-    paddingRight: "1rem",
-    ".mobile &": {
-      minWidth: "200px",
-      paddingRight: 0,
-      justifyContent: "center",
+  footerTopRightContainer: {
+    flex: "0 0 50%",
+    maxWidth: "100%",
+    minWidth: "100%",
+    ".desktop &": {
+      minWidth: "auto",
     },
   },
-  footerRightLogosFlex: {
-    alignItems: "flex-start",
-  },
-  footerRightLogosTextFlex: {
+  footerTopRightTopFlex: {
+    justifyContent: "center",
     flexDirection: "column",
-    gap: "1.375rem",
-    ".mobile &": {
-      gap: "0",
+    alignItems: "center",
+    ".desktop &": {
+      justifyContent: "flex-end",
+      flexDirection: "row",
     },
   },
+  footerCMSBrandingLeft: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    maxWidth: "100%",
+    padding: "0 1rem",
+    minWidth: "100%",
+    width: "100%",
+    marginBottom: "1rem",
+    ".desktop &": {
+      marginBottom: 0,
+      display: "block",
+      width: "auto",
+      maxWidth: "auto",
+      minWidth: "auto",
+    },
+  },
+  footerCMSBrandingRight: {
+    flex: "0 0 75%",
+    maxWidth: "25rem",
+  },
+
   mcrLogo: {
-    maxWidth: "12.125rem",
-    ".mobile &": {
-      maxWidth: "10.125rem",
-    },
-  },
-  medicaidLogo: {
-    maxWidth: "12.875rem",
-    ".mobile &": {
-      maxWidth: "9.375rem",
+    maxHeight: "4.875rem",
+    margin: "0 auto",
+    ".desktop &": {
+      margin: 0,
     },
   },
   hhsLogo: {
-    marginRight: "1.5rem",
-    marginTop: "-0.5rem",
-    ".mobile &": {
-      maxHeight: "4.25rem",
-      marginRight: "0.75rem",
-    },
+    display: "inline-block",
+    width: "4.375rem",
   },
   hhsMedicaidLogoMobile: {
-    marginY: "1.75rem",
-    justifyContent: "center",
+    maxWidth: "12.5rem",
+    marginLeft: "1.25rem",
   },
+  hhsCopyText: {
+    display: "inline-block",
+    textAlign: "left",
+    verticalAlign: "top",
+    fontSize: 14,
+    lineHeight: "21px",
+    marginTop: 0,
+  },
+  footerCMSMedicaid: {
+    justifyContent: "flex-end",
+  },
+  medicaidLogo: {
+    flex: "0 0 75%",
+    maxWidth: "75%",
+    marginTop: ".25rem",
+    ".desktop &": {
+      maxWidth: "25rem",
+    },
+  },
+
   footerText: {
     maxW: "20rem",
     fontSize: "0.875rem",
@@ -178,14 +223,17 @@ const sx = {
   footerBottomFlex: {
     paddingY: "1rem",
     justifyContent: "space-between",
-    ".mobile &": {
-      alignItems: "normal",
-      flexDirection: "column",
+    alignItems: "normal",
+    flexDirection: "column",
+    ".desktop &": {
+      alignItems: "initial",
+      flexDirection: "row",
     },
   },
   footerBottomLinkFlex: {
-    ".mobile &": {
-      flexDirection: "column",
+    flexDirection: "column",
+    ".desktop &": {
+      flexDirection: "row",
     },
     "a:first-of-type > p": {
       marginLeft: 0,
@@ -193,21 +241,24 @@ const sx = {
   },
   link: {
     margin: "0.5rem 0",
-    ".mobile &": {
-      margin: "0.25rem 0",
+    ".desktop &": {
+      "&:first-child": {
+        paddingRight: ".5rem",
+        borderRight: "1px solid",
+        borderColor: "palette.white",
+      },
+      "&:last-child": {
+        paddingLeft: ".5rem",
+      },
     },
-  },
-  divider: {
-    color: "palette.white",
-    margin: "0.5rem",
-    cursor: "default",
   },
   address: {
     color: "palette.white",
     fontWeight: "bold",
     alignSelf: "center",
-    ".mobile &": {
-      margin: "2.25rem 0 0",
+    margin: "2.25rem 0 0",
+    ".desktop &": {
+      margin: 0,
     },
   },
 };
