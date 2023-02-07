@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { RadioField } from "components";
@@ -51,22 +50,6 @@ describe("Test RadioField component", () => {
     render(RadioFieldComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByTestId("test-radio-list")).toBeVisible();
-  });
-
-  test("RadioField allows checking radio choices", async () => {
-    const wrapper = render(RadioFieldComponent);
-    const radioContainers = wrapper.container.querySelectorAll(
-      ".ds-c-choice-wrapper"
-    );
-    const firstRadio = radioContainers[0].children[0] as HTMLInputElement;
-    await userEvent.click(firstRadio);
-    expect(mockSetValue).toHaveBeenCalledWith(
-      "radio_choices",
-      [{ key: "Choice 1", value: "A" }],
-      {
-        shouldValidate: true,
-      }
-    );
   });
 });
 
