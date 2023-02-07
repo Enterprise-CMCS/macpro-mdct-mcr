@@ -26,7 +26,7 @@ export const Footer = () => {
               <Flex sx={sx.footerTopRightTopFlex}>
                 <Box sx={sx.footerCMSBrandingLeft}>
                   <Box sx={sx.hhsLogo}>
-                    <img
+                    <Image
                       src={hhsLogo}
                       alt="Department of Health and Human Services, USA"
                     />
@@ -34,7 +34,7 @@ export const Footer = () => {
 
                   {!isDesktop && (
                     <Box sx={sx.hhsMedicaidLogoMobile}>
-                      <img
+                      <Image
                         src={medicaidLogo}
                         alt="Medicaid.gov: Keeping America Healthy"
                       />
@@ -151,7 +151,6 @@ const sx = {
     maxWidth: "100%",
     padding: "0 1rem",
     minWidth: "100%",
-    width: "100%",
     marginBottom: "1rem",
     ".desktop &": {
       marginBottom: 0,
@@ -185,7 +184,7 @@ const sx = {
     display: "inline-block",
     textAlign: "left",
     verticalAlign: "top",
-    fontSize: 14,
+    fontSize: "sm",
     lineHeight: "21px",
     marginTop: 0,
   },
