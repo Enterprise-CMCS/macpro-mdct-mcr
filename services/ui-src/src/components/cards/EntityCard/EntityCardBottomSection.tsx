@@ -11,14 +11,23 @@ export const EntityCardBottomSection = ({
 }: Props) => {
   const notAnswered = (
     <Text as="span" sx={sx.notAnswered}>
-      Not Answered
+      Not answered
     </Text>
   );
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (
         <>
-          <Box sx={sx.highlightContainer}>
+          <Box
+            sx={sx.highlightContainer}
+            className={
+              !formattedEntityData?.provider ||
+              !formattedEntityData.region ||
+              !formattedEntityData.population
+                ? "error"
+                : ""
+            }
+          >
             <Flex>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
@@ -66,7 +75,18 @@ export const EntityCardBottomSection = ({
       return (
         <>
           <Text sx={sx.subtitle}>Sanction details</Text>
-          <Box sx={sx.highlightContainer}>
+          <Box
+            sx={sx.highlightContainer}
+            className={
+              !formattedEntityData?.noncomplianceInstances ||
+              !formattedEntityData?.dollarAmount ||
+              !formattedEntityData?.assessmentDate ||
+              !formattedEntityData?.remediationDate ||
+              !formattedEntityData?.correctiveActionPlan
+                ? "error"
+                : ""
+            }
+          >
             <Flex>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>

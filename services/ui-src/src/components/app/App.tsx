@@ -6,13 +6,13 @@ import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
   AppRoutes,
   Error,
+  ExportedReportBanner,
   Footer,
   Header,
   LoginCognito,
   LoginIDM,
   ReportProvider,
   SkipNav,
-  StickyBanner,
   Timeout,
 } from "components";
 // utils
@@ -48,7 +48,7 @@ export const App = () => {
           />
           <ReportProvider>
             {!isExportPage && <Header handleLogout={logout} />}
-            {isExportPage && <StickyBanner />}
+            {isExportPage && <ExportedReportBanner />}
             <Container sx={sx.appContainer} data-testid="app-container">
               <ErrorBoundary FallbackComponent={Error}>
                 <AppRoutes />

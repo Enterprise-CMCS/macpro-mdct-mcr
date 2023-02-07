@@ -273,6 +273,18 @@ export const mockPlanFilledForm = {
   fields: [mockPlanField],
 };
 
+export const mockNestedForm = {
+  id: "mock-nested-form-id",
+  fields: [mockNestedFormField],
+};
+
+export const mockDynamicForm = {
+  id: "mock-dynamic-form-id",
+  fields: [mockPlanField],
+};
+
+export const mockLinksForm = {};
+
 export const mockVerbiageIntro = {
   section: "mock section",
   subsection: "mock subsection",
@@ -288,6 +300,16 @@ export const mockStandardReportPageJson = {
   form: mockForm,
 };
 
+export const mockDynamicReportPageJson = {
+  name: "mock-route-1",
+  path: "/mock/mock-route-1",
+  pageType: "standard",
+  verbiage: {
+    intro: mockVerbiageIntro,
+  },
+  form: mockDynamicForm,
+};
+
 export const mockDrawerReportPageJson = {
   name: "mock-route-2a",
   path: "/mock/mock-route-2a",
@@ -299,6 +321,19 @@ export const mockDrawerReportPageJson = {
     drawerTitle: "Mock drawer title",
   },
   drawerForm: mockDrawerForm,
+};
+
+export const mockNestedReportPageJson = {
+  name: "mock-route-2a",
+  path: "/mock/mock-route-2a",
+  pageType: "drawer",
+  entityType: "plans",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+  },
+  drawerForm: mockNestedForm,
 };
 
 export const mockModalDrawerReportPageVerbiage = {
@@ -369,66 +404,19 @@ export const mockReportKeys = {
 };
 
 export const mockReportFieldDataWithNestedFields = {
-  fieldData: {
-    test_FieldChoice1: [
-      {
-        value: "Value 1",
-        key: "test_FieldChoice1-123",
-      },
-    ],
-    test_FieldChoice2: [
-      {
-        value: "Value 2",
-        key: "test_FieldChoice2-456",
-      },
-    ],
-    test_FieldChoice3: "Testing Double Nested",
-  },
-  id: "test_FieldChoice1",
-  type: "radio",
-  validation: "radio",
-  props: {
-    choices: [
-      {
-        id: "123",
-        label: "Choice 1",
-        children: [
-          {
-            id: "test_FieldChoice2",
-            type: "radio",
-            validation: {
-              type: "radio",
-              parentFieldName: "test_FieldChoice1",
-            },
-            props: {
-              choices: [
-                {
-                  children: [
-                    {
-                      id: "test_FieldChoice3",
-                      type: "textarea",
-                      validation: {
-                        type: "text",
-                        parentFieldName: "test_FieldChoice2",
-                      },
-                      props: {
-                        label: "123. Test Label 2",
-                        hint: "Test Hint",
-                      },
-                    },
-                  ],
-                  id: "456",
-                  label: "Choice 2",
-                },
-              ],
-              label: "456. Test Label",
-              hint: "Parent Hint",
-            },
-          },
-        ],
-      },
-    ],
-  },
+  test_FieldChoice1: [
+    {
+      value: "Value 1",
+      key: "test_FieldChoice1-123",
+    },
+  ],
+  test_FieldChoice2: [
+    {
+      value: "Value 2",
+      key: "test_FieldChoice2-456",
+    },
+  ],
+  test_FieldChoice3: "Testing Double Nested",
 };
 
 export const mockReportFieldDataWithNestedFieldsNotAnswered = {

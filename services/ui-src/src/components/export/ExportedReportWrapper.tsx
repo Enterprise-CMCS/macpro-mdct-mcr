@@ -1,8 +1,8 @@
 // components
+import { Box } from "@chakra-ui/react";
 import {
-  ExportedDrawerReportSection,
   ExportedModalDrawerReportSection,
-  ExportedStandardReportSection,
+  ExportedReportFieldTable,
 } from "components";
 // types
 import {
@@ -14,30 +14,23 @@ import {
 } from "types";
 
 export const ExportedReportWrapper = ({ section }: Props) => {
-  switch (section.pageType) {
-    case PageTypes.DRAWER:
-      return (
-        <ExportedDrawerReportSection
-          section={section as DrawerReportPageShape}
-        />
-      );
-    case PageTypes.MODAL_DRAWER:
-      return (
-        <ExportedModalDrawerReportSection
-          section={section as ModalDrawerReportPageShape}
-        />
-      );
-    case PageTypes.REVIEW_SUBMIT:
-      return <></>;
-    default:
-      return (
-        <ExportedStandardReportSection
-          section={section as StandardReportPageShape}
-        />
-      );
-  }
+  return section.pageType === PageTypes.STANDARD ? (
+    <Box data-testid="exportedStandardReportSection" mt="2rem">
+      <ExportedReportFieldTable section={section as StandardReportPageShape} />
+    </Box>
+  ) : section.pageType === PageTypes.DRAWER ? (
+    <Box data-testid="exportedDrawerReportSection" mt="2rem">
+      <ExportedReportFieldTable section={section as DrawerReportPageShape} />
+    </Box>
+  ) : section.pageType === PageTypes.MODAL_DRAWER ? (
+    <ExportedModalDrawerReportSection
+      section={section as ModalDrawerReportPageShape}
+    />
+  ) : (
+    <></>
+  );
 };
 
-interface Props {
+export interface Props {
   section: ReportRouteWithForm;
 }
