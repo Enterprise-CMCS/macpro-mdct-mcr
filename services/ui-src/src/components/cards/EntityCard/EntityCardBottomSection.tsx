@@ -11,7 +11,7 @@ export const EntityCardBottomSection = ({
 }: Props) => {
   const notAnswered = (
     <Text as="span" sx={sx.notAnswered}>
-      Not Answered
+      Not answered
     </Text>
   );
   switch (entityType) {

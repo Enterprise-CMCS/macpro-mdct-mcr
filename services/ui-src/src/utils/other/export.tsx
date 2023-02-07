@@ -48,15 +48,21 @@ export const renderDrawerDataCell = (
     const fieldResponseData = entity[formField.id];
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
-        <Text sx={sx.entityName}>{entity.name}</Text>
-        {renderResponseData(
-          formField,
-          fieldResponseData,
-          entityResponseData,
-          pageType,
-          entityIndex,
-          notApplicable
-        )}
+        <ul>
+          <li>
+            <Text sx={sx.entityName}>{entity.name}</Text>
+          </li>
+          <li className="entityResponse">
+            {renderResponseData(
+              formField,
+              fieldResponseData,
+              entityResponseData,
+              pageType,
+              entityIndex,
+              notApplicable
+            )}
+          </li>
+        </ul>
       </Box>
     );
   }) ?? <Text sx={sx.noResponse}>{verbiage.missingEntry.noResponse}</Text>;
@@ -208,6 +214,20 @@ const sx = {
   },
   entityBox: {
     marginBottom: "1rem",
+    ul: {
+      marginTop: "0.25rem",
+      listStyle: "none",
+      ".entityResponse": {
+        paddingBottom: "0.5rem",
+        p: {
+          lineHeight: "1.25rem",
+        },
+      },
+      p: {
+        lineHeight: "0.5rem",
+        marginBottom: "0.5rem",
+      },
+    },
     "&:last-of-type": {
       marginBottom: 0,
     },

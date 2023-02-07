@@ -4,11 +4,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import { EntityCard, ReportContext } from "components";
 // utils
 import { getFormattedEntityData } from "utils";
-import {
-  EntityShape,
-  ModalDrawerEntityTypes,
-  ModalDrawerReportPageShape,
-} from "types";
+import { EntityShape, ModalDrawerReportPageShape } from "types";
 // verbiage
 import exportVerbiage from "verbiage/pages/export";
 
@@ -23,14 +19,10 @@ export const ExportedModalDrawerReportSection = ({
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
-        {verbiage.dashboardTitle} {entityCount}
+        {verbiage.dashboardTitle} {entityCount > 0 && entityCount}
         {!entityCount && (
           <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
-            {entityType === ModalDrawerEntityTypes.ACCESS_MEASURES
-              ? emptyEntityMessage.accessMeasures
-              : entityType === ModalDrawerEntityTypes.SANCTIONS
-              ? emptyEntityMessage.sanctions
-              : emptyEntityMessage.qualityMeasures}
+            {emptyEntityMessage[entityType as keyof typeof emptyEntityMessage]}
           </Text>
         )}
       </Heading>
@@ -59,9 +51,11 @@ export interface Props {
 
 const sx = {
   notAnswered: {
+    display: "block",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.error_darker",
+    marginTop: "0.5rem",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
