@@ -45,7 +45,7 @@ export const Footer = () => {
                   <Text sx={sx.hhsCopyText}>
                     A federal government website managed and paid for by the
                     U.S. Centers for Medicare and Medicaid Services and part of
-                    the MACPro suite.
+                    the MDCT suite.
                   </Text>
                 </Box>
               </Flex>
