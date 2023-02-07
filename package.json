@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CMSgov/mdct-mcr.git"
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git"
   },
   "author": "",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/CMSgov/mdct-mcr/issues"
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr/issues"
   },
-  "homepage": "https://github.com/CMSgov/mdct-mcr#readme",
+  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

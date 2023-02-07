@@ -1,8 +1,8 @@
 # MDCT-MCR
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/maintainability)](https://codeclimate.com/github/CMSgov/mdct-mcr/maintainability)
-[![CodeQL](https://github.com/CMSgov/mdct-mcr/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/CMSgov/mdct-mcr/actions/workflows/codeql-analysis.yml)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/CMSgov/mdct-mcr/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/maintainability)](https://codeclimate.com/github/Enterprise-CMCS/macpro-mdct-mcr/maintainability)
+[![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0e158d201ebb0e226139/test_coverage)](https://codeclimate.com/github/Enterprise-CMCS/macpro-mdct-mcr/test_coverage)
 
 MDCT-MCR is an application meant to collect state report data to help the health of the program and access to Medicaid Managed Care.
 
@@ -47,7 +47,7 @@ Before starting the project we're going to install some tools. We recommend havi
 
 ### Setting up the project locally
 
-1. Clone the repo: `git clone https://github.com/CMSgov/mdct-mcr.git`
+1. Clone the repo: `git clone https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git`
 2. In the root directory copy the .env_example file and name it .env
 3. In the services/ui-src directory copy the .env_example file and name it .env
 4. Overwrite the values here with the examples in the Environment Configuration below
@@ -188,7 +188,7 @@ ESLint works in a similar manner for all code linting.
 
 ### Github Action Script Checks
 
-On a push to the repository or opening a pull request the [deploy.yml](https://github.com/CMSgov/mdct-mcr/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
+On a push to the repository or opening a pull request the [deploy.yml](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
 
 Upon opening a pull request into the main branch the scripts will also trigger a Cypress E2E and an A11y step to ensure that the code quality is still passing the End-to-End and accessibility tests.
 
@@ -204,9 +204,9 @@ While not necessary, it might be beneficial to have AWS CLI installed/configured
 
 | branch     | status                                                                                                                                                                    | release                                                                                                                                                  |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Main       | [![Deploy](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml)       | [![release to main](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/CMSgov/mdct-mcr/compare?quick_pull=1)                        |
-| Val        | [![Deploy](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=val)](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml)        | [![release to val](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/CMSgov/mdct-mcr/compare/val...main?quick_pull=1)              |
-| Production | [![Deploy](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=production)](https://github.com/CMSgov/mdct-mcr/actions/workflows/deploy.yml) | [![release to production](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/CMSgov/mdct-mcr/compare/production...val?quick_pull=1) |
+| Main       | [![Deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml)       | [![release to main](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/compare?quick_pull=1)                        |
+| Val        | [![Deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=val)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml)        | [![release to val](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/compare/val...main?quick_pull=1)              |
+| Production | [![Deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=production)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml) | [![release to production](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/compare/production...val?quick_pull=1) |
 
 **Please Note: Do Not Squash Your Merge Into Val Or Prod When Submitting Your Pull Request.**
 
@@ -228,7 +228,7 @@ When a pull request is approved and merged into main the deploy script will spin
 - Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Production
 - Deploy script runs and will deploy to [http://mdctmcr.cms.gov/](http://mdctmcr.cms.gov/).
 
-If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. click on `deploy`, then click to exapnd the `deploy` section on the right. Search for `Application endpoint` and click on the generated site. 
+If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. click on `deploy`, then click to exapnd the `deploy` section on the right. Search for `Application endpoint` and click on the generated site.
 
 ## Architecture
 
@@ -237,7 +237,7 @@ If you have a PR that needs Product/Design input, the easiest way to get it to t
 
 **General Structure** - React frontend that renders a form for a user to fill out, Node backend that uses S3 and Dynamo to store and validate forms.
 
-**Custom JSON & form field creation engine (formFieldFactory)** - Each report has a custom JSON object, stored in a JSON file, written using a custom schema. This JSON object is referred to as the form template and it is the blueprint from which report form fields are created. It is also used to create routes and navigation elements throughout the app. When provided form fields from this template, the formFieldFactory renders the appropriate form fields. A similar process occurs when a report is exported in PDF preview format. 
+**Custom JSON & form field creation engine (formFieldFactory)** - Each report has a custom JSON object, stored in a JSON file, written using a custom schema. This JSON object is referred to as the form template and it is the blueprint from which report form fields are created. It is also used to create routes and navigation elements throughout the app. When provided form fields from this template, the formFieldFactory renders the appropriate form fields. A similar process occurs when a report is exported in PDF preview format.
 
 **Page and Form Structure** Each page has a name, path, and pageType, for example the first page a user sees in the form will be have ‘pageType: standard’ with a ‘verbiage’ object that includes all of the text that precedes the form fields. The the ‘form’ object follows with a unique id and ‘fields’ array that holds one or more objects that represent the individual questions in a form. There are different types of forms as well. If there is a "pageType": "modalDrawer", then instead of a ‘form’ object, it will have a ‘modalForm’ object. Here is an example of a standard page with one field:
 ```json
@@ -280,13 +280,13 @@ const fieldData = {
      id: "entity1Id",
      name: "entity1",
      otherField: "otherFieldValue",
-     ... 
+     ...
     },
     {
      id: "entity2Id",
      name: "entity2",
      otherField: "otherFieldValue",
-     ... 
+     ...
     },
   ]
 }
@@ -302,13 +302,13 @@ Dropdown and dynamic fields are not currently supported as nested child fields. 
 
 **Nuanced behaviors like the “-otherText”** flag on a question’s id  Most of the structure of the form template schema is captured in the types contained in types/index.tsx however there are some behaviors like the otherText flag that are not. For example, when a report is exported to PDF, subquestions like nested optional text area fields for the purpose of providing additional information must have ids that end in -otherText or they will not render the entered answer correctly.
 
-**Form** We use react-hook-form for form state management. The formFieldFactory renders individual field inputs and registers them with RHF which exposes an onSubmit callback hook that is used to check error states and display inline validation messaging. 
+**Form** We use react-hook-form for form state management. The formFieldFactory renders individual field inputs and registers them with RHF which exposes an onSubmit callback hook that is used to check error states and display inline validation messaging.
 
 **Form Hydration** Any time data is stored in Dynamo or S3 we also pull the latest field data and update the DOM with it through the reportProvider/reportContext. This uses the form hydration engine to ensure that the latest data is shown to the user whether that data comes from the database or the user’s entered but as-of-yet unsaved input.
 
-**Validation** We use yup for data schema validation. In the form template each field is assigned a validation type corresponding to a custom validation type defined using yup as a baseline. A version of this validation schema exists on the frontend and the backend. While not identical, they are similar and updates to one should often be made to the other. Frontend validation schema is primarily used for inline validation and backend validation schema is primarily used for pre-submission validation. When a form field’s validation type is read, it is matched to the appropriate validation schema. 
+**Validation** We use yup for data schema validation. In the form template each field is assigned a validation type corresponding to a custom validation type defined using yup as a baseline. A version of this validation schema exists on the frontend and the backend. While not identical, they are similar and updates to one should often be made to the other. Frontend validation schema is primarily used for inline validation and backend validation schema is primarily used for pre-submission validation. When a form field’s validation type is read, it is matched to the appropriate validation schema.
 
-**Server-side validation** Anytime an API call to write data is triggered, the unvalidated payload is first validated using a custom yup validation method. The schema used for validation varies depending on the data being written. If the data being written is field data, the validation schema is retrieved from the associated fetched form template. Other metadata has a locally stored longterm validation schema that is used. If the data is valid, the operation continues; if the data is invalid, the operation fails and returns an error. 
+**Server-side validation** Anytime an API call to write data is triggered, the unvalidated payload is first validated using a custom yup validation method. The schema used for validation varies depending on the data being written. If the data being written is field data, the validation schema is retrieved from the associated fetched form template. Other metadata has a locally stored longterm validation schema that is used. If the data is valid, the operation continues; if the data is invalid, the operation fails and returns an error.
 
 **CustomHTML parser** - function checks if element is a string, if so then the element will be passed in the function “sanitize” from "dompurify", and then the result from that process gets passed into the function “parse” from "html-react-parser" and the result gets returned. If the element is not a string, then the elements are treated as an array and get mapped over returning a key, as, and spread the props. The last check is in this else block, checking whether the element is ‘html’, in which case the content will get passed through ‘sanitize’ and ‘parse’ and the ‘as’ prop gets deleted before returning the modified element type, element props, and content.
 
