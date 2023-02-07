@@ -75,14 +75,6 @@ describe("Test DateField hydration functionality", () => {
     />
   );
 
-  const dateFieldComponentWithHydrationValueSame = (
-    <DateField
-      name="testDateFieldWithHydrationValue"
-      label="test-date-field-with-hydration-value"
-      hydrate={mockFormFieldValue}
-    />
-  );
-
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
   });
@@ -99,12 +91,12 @@ describe("Test DateField hydration functionality", () => {
 
   test("If only hydrationValue exists, displayValue is set to it", () => {
     mockGetValues(undefined);
-    const result = render(dateFieldComponentWithHydrationValueSame);
+    const result = render(dateFieldComponentWithHydrationValue);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateFieldWithHydrationValue']"
     )!;
     const displayValue = dateFieldInput.value;
-    expect(displayValue).toEqual(mockFormFieldValue);
+    expect(displayValue).toEqual(mockHydrationValue);
   });
 
   test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
@@ -121,6 +113,18 @@ describe("Test DateField hydration functionality", () => {
 describe("Test DateField autosave functionality", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  test("Blanking field triggers form validation", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const result = render(dateFieldAutosavingComponent);
+    const dateFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testDateField']"
+    )!;
+    await userEvent.click(dateFieldInput);
+    await userEvent.clear(dateFieldInput);
+    await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
   });
 
   test("Autosaves entered date when state user, autosave true, and field is valid", async () => {
