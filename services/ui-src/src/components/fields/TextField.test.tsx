@@ -176,6 +176,17 @@ describe("Test TextField component autosaves", () => {
     await userEvent.tab();
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
+
+  test("Blanking field triggers form validation", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(textFieldComponent);
+    const textField = screen.getByTestId("test-text-field");
+    expect(textField).toBeVisible();
+    await userEvent.clear(textField);
+    await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
 });
 
 describe("Test TextField accessibility", () => {
