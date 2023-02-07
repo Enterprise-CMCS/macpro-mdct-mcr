@@ -31,10 +31,10 @@ custom:
       - main
       - val
       - production
-  route53HostedZoneId: ${ssm:/configuration/${self:custom.stage}/route53/hostedZoneId~true, ssm:/configuration/default/route53/hostedZoneId~true, ""}
-  route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName~true, ""}
-  cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn~true, ssm:/configuration/default/cloudfront/certificateArn~true, ""}
-  cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName~true, ""}
+  route53HostedZoneId: ${ssm:/configuration/${self:custom.stage}/route53/hostedZoneId, ssm:/configuration/default/route53/hostedZoneId, ""}
+  route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName, ""}
+  cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
+  cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName, ""}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
   scripts:
