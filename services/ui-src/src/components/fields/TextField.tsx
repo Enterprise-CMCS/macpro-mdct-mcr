@@ -51,9 +51,9 @@ export const TextField = ({
 
   // if should autosave, submit field data on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
-    const { name, value } = event.target;
-    // if blanking field, trigger client-side field validation error
-    if (value === defaultValue) form.trigger(name);
+    const { value } = event.target;
+    // if field is blank, trigger client-side field validation error
+    if (!value.trim()) form.trigger(name);
     // submit field data to database
     if (autosave) {
       const fields = [

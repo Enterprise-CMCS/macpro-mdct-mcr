@@ -39,9 +39,8 @@ export const autosaveFieldData = async ({
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
-      .filter((field: FieldInfo) => {
-        return ifFieldWasUpdated(field);
-      })
+      // filter to only changed fields
+      .filter((field: FieldInfo) => isFieldChanged(field))
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
         const { name, value, defaultValue, overrideCheck } = field;
@@ -64,16 +63,40 @@ export const autosaveFieldData = async ({
   }
 };
 
-const ifFieldWasUpdated = (field: FieldInfo) => {
-  if (field.type === "dynamic") {
-    const checkedValues = field.value?.filter(
-      (el: EntityShape) =>
-        el.name ||
-        (el.name === "" &&
-          field.hydrationValue !== undefined &&
-          field.value !== field.hydrationValue)
+const isFieldChanged = (field: FieldInfo) => {
+  const { type, value, hydrationValue } = field;
+  if (type === "dynamic") {
+    const changedEntities = value?.filter(
+      (entity: EntityShape, index: number) => {
+        const entityValue = entity.name;
+        const entityHydrationValue = hydrationValue?.[index]?.name;
+        // handle first-time display
+        const isUninitiated = !entityHydrationValue;
+        const isBlank = !entityValue;
+        if (isUninitiated && isBlank) return false;
+        // handle all other conditions
+        const entityValueChanged = entityValue !== entityHydrationValue;
+        /*
+         * note: the value !== hydrationValue check *should* work,
+         * but it doesn't, because the value and hydrationValue passed in
+         * are always the exact same (unless the field is uninitiated,
+         * i.e.the first time display). in DynamicField, there are actually 3 values that are
+         * always the exact same: displayValues, hydrationValue (props.hydrate), and form value
+         * (form.getValues(name)). why is this?
+         *
+         * the old logic here was:
+         * entity.name ||(entity.name === "" && hydrationValue !== undefined && value !== hydrationValue)
+         *
+         * so essentially save the field if one of the following:
+         *     - any of the entity input text fields has text in it, or
+         *     - the dynamic field is uninitiated and the entity field is blank and the value is not equal to the hydration value
+         *
+         * but we already know the hydration value is always gonna be the same as the hydration value, right? so we need to figure out a way to fix that. without breaking anything else.
+         */
+        return entityValueChanged;
+      }
     );
-    return checkedValues?.length !== 0;
+    return changedEntities?.length;
   }
-  return field.value !== field.hydrationValue;
+  return value !== hydrationValue;
 };
