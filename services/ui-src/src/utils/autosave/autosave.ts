@@ -68,32 +68,31 @@ const isFieldChanged = (field: FieldInfo) => {
   if (type === "dynamic") {
     const changedEntities = value?.filter(
       (entity: EntityShape, index: number) => {
+        // if value is solely whitespace (e.g. "   "), coerce to empty string
+        if (!entity.name.trim()) entity.name = "";
+
         const entityValue = entity.name;
         const entityHydrationValue = hydrationValue?.[index]?.name;
-        // handle first-time display
+
+        // handle uninitiated field with blank input
         const isUninitiated = !entityHydrationValue;
         const isBlank = !entityValue;
+
         if (isUninitiated && isBlank) return false;
-        // handle all other conditions
-        const entityValueChanged = entityValue !== entityHydrationValue;
         /*
-         * note: the value !== hydrationValue check *should* work,
-         * but it doesn't, because the value and hydrationValue passed in
-         * are always the exact same (unless the field is uninitiated,
-         * i.e.the first time display). in DynamicField, there are actually 3 values that are
-         * always the exact same: displayValues, hydrationValue (props.hydrate), and form value
-         * (form.getValues(name)). why is this?
+         * note: we should be able to simply check entityValue !== entityHydrationValue here,
+         * but DynamicField's hydrationValue is being partially controlled by react-hook-form
+         * via useFieldArray, which keeps it always in sync with displayValues and form state,
+         * making the check always evaluate to false because they are always equal.
          *
-         * the old logic here was:
-         * entity.name ||(entity.name === "" && hydrationValue !== undefined && value !== hydrationValue)
+         * currently if the field has ever been initiated (saved before), we are triggering an
+         * autosave on blur, regardless of if the field has changed, because we have no easy way
+         * of determining if the field has changed.
          *
-         * so essentially save the field if one of the following:
-         *     - any of the entity input text fields has text in it, or
-         *     - the dynamic field is uninitiated and the entity field is blank and the value is not equal to the hydration value
-         *
-         * but we already know the hydration value is always gonna be the same as the hydration value, right? so we need to figure out a way to fix that. without breaking anything else.
+         * TODO: modify DynamicField hydrationValue lifecycle so we can implement a stricter check,
+         * like entityValue !== entityHydrationValue or equivalent.
          */
-        return entityValueChanged;
+        return true;
       }
     );
     return changedEntities?.length;
