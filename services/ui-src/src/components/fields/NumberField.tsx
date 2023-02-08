@@ -58,6 +58,8 @@ export const NumberField = ({
   // update display value with masked value; if should autosave, submit field data to database on blur
   const onBlurHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    // if field is blank, trigger client-side field validation error
+    if (!value.trim()) form.trigger(name);
     // mask value and set as display value
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);

@@ -64,12 +64,15 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   // submit changed field data to database on blur
   const onBlurHandler = async () => {
+    // trigger client-side validation so blank fields get client-side validation warning
+    form.trigger(name);
+    // prepare args for autosave
     const fields = [
       {
         name,
         type: "dynamic",
         value: displayValues,
-        hydrationValue,
+        hydrationValue: hydrationValue,
         overrideCheck: true,
       },
     ];
@@ -159,9 +162,13 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue?.length) {
-      // guard against autosave refresh error (https://bit.ly/3kiE2eE)
-      const displayValuesEntered = displayValues.length > hydrationValue.length;
-      const valuesToSet = displayValuesEntered ? displayValues : hydrationValue;
+      // guard against autosave refresh error where user can change input values while save operation is still in progress (https://bit.ly/3kiE2eE)
+      const newInputAdded = displayValues?.length > hydrationValue?.length;
+      const existingInputChanged =
+        displayValues?.length === hydrationValue?.length &&
+        displayValues !== hydrationValue;
+      const valuesToSet =
+        newInputAdded || existingInputChanged ? displayValues : hydrationValue;
       // set and append values
       setDisplayValues(valuesToSet);
       append(valuesToSet);

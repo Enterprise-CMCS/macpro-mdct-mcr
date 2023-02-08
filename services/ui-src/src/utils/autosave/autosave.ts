@@ -39,9 +39,8 @@ export const autosaveFieldData = async ({
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
-      .filter((field: FieldInfo) => {
-        return ifFieldWasUpdated(field);
-      })
+      // filter to only changed fields
+      .filter((field: FieldInfo) => isFieldChanged(field))
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
         const { name, value, defaultValue, overrideCheck } = field;
@@ -64,16 +63,39 @@ export const autosaveFieldData = async ({
   }
 };
 
-export const ifFieldWasUpdated = (field: FieldInfo) => {
-  if (field.type === "dynamic") {
-    const checkedValues = field.value?.filter(
-      (el: EntityShape) =>
-        el.name ||
-        (el.name === "" &&
-          field.hydrationValue !== undefined &&
-          field.value !== field.hydrationValue)
+const isFieldChanged = (field: FieldInfo) => {
+  const { type, value, hydrationValue } = field;
+  if (type === "dynamic") {
+    const changedEntities = value?.filter(
+      (entity: EntityShape, index: number) => {
+        // if value is solely whitespace (e.g. "   "), coerce to empty string
+        if (!entity.name.trim()) entity.name = "";
+
+        const entityValue = entity.name;
+        const entityHydrationValue = hydrationValue?.[index]?.name;
+
+        // handle uninitiated field with blank input
+        const isUninitiated = !entityHydrationValue;
+        const isBlank = !entityValue;
+
+        if (isUninitiated && isBlank) return false;
+        /*
+         * note: we should be able to simply check entityValue !== entityHydrationValue here,
+         * but DynamicField's hydrationValue is being partially controlled by react-hook-form
+         * via useFieldArray, which keeps it always in sync with displayValues and form state,
+         * making the check always evaluate to false because they are always equal.
+         *
+         * currently if the field has ever been initiated (saved before), we are triggering an
+         * autosave on blur, regardless of if the field has changed, because we have no easy way
+         * of determining if the field has changed.
+         *
+         * TODO: modify DynamicField hydrationValue lifecycle so we can implement a stricter check,
+         * like entityValue !== entityHydrationValue or equivalent.
+         */
+        return true;
+      }
     );
-    return checkedValues?.length !== 0;
+    return changedEntities?.length;
   }
-  return field.value !== field.hydrationValue;
+  return value !== hydrationValue;
 };
