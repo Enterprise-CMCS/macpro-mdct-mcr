@@ -1,12 +1,15 @@
 import { useFlags } from "launchdarkly-react-client-sdk";
+// assets
+import pdfIcon from "assets/icons/icon_pdf_white.png";
 // components
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 // utils
 import { printPdf } from "utils";
-// assets
-import pdfIcon from "assets/icons/icon_pdf_white.png";
+// verbiage
+import verbiage from "verbiage/pages/export";
 
-export const StickyBanner = () => {
+export const ExportedReportBanner = () => {
+  const { reportBanner } = verbiage;
   const printExperience = useFlags()?.printExperience;
 
   const onClickHandler = () => {
@@ -15,11 +18,11 @@ export const StickyBanner = () => {
   };
 
   return (
-    <Box data-testid="stickyBanner" sx={sx.container}>
-      <Text>Click below to export or print MCPAR shown here</Text>
+    <Box data-testid="exportedReportBanner" sx={sx.container}>
+      <Text>{reportBanner.intro}</Text>
       <Button sx={sx.pdfButton} onClick={onClickHandler}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
-        Download PDF
+        {reportBanner.pdfButton}
       </Button>
     </Box>
   );
