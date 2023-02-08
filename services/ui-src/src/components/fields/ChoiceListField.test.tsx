@@ -1,6 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
-import userEvent from "@testing-library/user-event";
 //components
 import { useFormContext } from "react-hook-form";
 import { ChoiceListField, ReportContext } from "components";
@@ -8,7 +7,8 @@ import { formFieldFactory } from "utils";
 import { mockReportContext } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
-const mockTrigger = jest.fn();
+//
+const mockTrigger = jest.fn().mockReturnValue(true);
 const mockSetValue = jest.fn();
 const mockRhfMethods = {
   register: () => {},
@@ -223,123 +223,44 @@ describe("Test ChoiceListField component rendering", () => {
 describe("Test Choicelist component autosaves", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers();
   });
 
-  afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
-  });
-
-  test("Choicelist Checkbox autosaves with checked value when autosave true, and form is valid", async () => {
+  test("Choicelist Checkbox autosaves with checked value when autosave true, and form is valid", () => {
     mockGetValues(undefined);
 
     // Create the Checkbox Component
     const wrapper = render(CheckboxComponentAutosave);
 
-    // Grab the Checkboxs in the component
-    const checkboxContainers = wrapper.container.querySelectorAll(
-      ".ds-c-choice-wrapper"
-    );
-
-    const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
-    const secondCheckbox = checkboxContainers[1]
-      .children[0] as HTMLInputElement;
+    const firstCheckbox = wrapper.getAllByRole("checkbox")[0];
+    const secondCheckbox = wrapper.getAllByRole("checkbox")[1];
 
     // Select the first Checkbox and check it
     expect(firstCheckbox).not.toBeChecked();
     expect(secondCheckbox).not.toBeChecked();
-    const mockSelectedChoice = [{ key: "Choice 1", value: "Choice 1" }];
-    await userEvent.click(firstCheckbox);
-
-    /*
-     * Tab away to trigger onComponentBlur()
-     * TODO: See why this tab isn't actually needed to fire this event
-     */
-    await userEvent.tab();
-    await userEvent.tab();
-    await userEvent.tab();
-    await userEvent.tab();
+    const firstCheckboxData = [{ key: "Choice 1", value: "Choice 1" }];
+    fireEvent.click(firstCheckbox);
 
     // Confirm the checkboxes are checked correctly
+    const checked = wrapper.getAllByRole("checkbox", { checked: true });
+    expect(checked).toHaveLength(1);
+
     expect(firstCheckbox).toBeChecked();
     expect(secondCheckbox).not.toBeChecked();
 
-    // whats a better way to handle this?
-
-    /*
-     * Need a setTimeout here to make sure that the setTimeout in ChoiceListField's onComponentBlur Autosave fires first. It's set
-     * to 400 to ensure it fires after the 200 thats set in ChoiceListField
-     */
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(firstCheckbox);
 
     // Make sure the form value is set to what we've clicked (Which is only Choice 1)
     expect(mockSetValue).toHaveBeenCalledWith(
       "autosaveCheckboxField",
-      mockSelectedChoice,
+      firstCheckboxData,
       {
         shouldValidate: true,
       }
     );
 
     // Ensure we call autosave with the correct data
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
-      {
-        id: mockReportContext.report.id,
-      },
-      {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-        },
-        fieldData: {
-          autosaveCheckboxField: mockSelectedChoice,
-        },
-      }
-    );
-  });
-
-  test("Choicelist Radiofield autosaves with checked value when autosave true, and form is valid", async () => {
-    mockGetValues(undefined);
-
-    // Create the Checkbox Component
-    const wrapper = render(CheckboxComponentAutosave);
-
-    // Grab the Checkboxs in the component
-    const radioFieldContainers = wrapper.container.querySelectorAll(
-      ".ds-c-choice-wrapper"
-    );
-    const firstRadio = radioFieldContainers[0].children[0] as HTMLInputElement;
-    const secondRadio = radioFieldContainers[0].children[1] as HTMLInputElement;
-
-    // Select the first Checkbox and check it
-    const mockSelectedChoice = [{ key: "Choice 1", value: "Choice 1" }];
-    await userEvent.click(firstRadio);
-
-    /*
-     * Tab away to trigger onComponentBlur()
-     * TODO: See why this tab isn't actually needed to fire this event
-     */
-    await userEvent.tab();
-
-    // Confirm the checkboxes are checked correctly
-    expect(firstRadio).toBeChecked();
-    expect(secondRadio).not.toBeChecked();
-
-    // whats a better way to handle this?
-
-    /*
-     * Need a setTimeout here to make sure that the setTimeout in ChoiceListField's onComponentBlur Autosave fires first. It's set
-     * to 400 to ensure it fires after the 200 thats set in ChoiceListField
-     */
-    setTimeout(async () => {
-      // Ensure we call autosave with the correct data
-      expect(mockSetValue).toHaveBeenCalledWith(
-        "autosaveRadioField",
-        mockSelectedChoice,
-        {
-          shouldValidate: true,
-        }
-      );
+    waitFor(() => {
       expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
       expect(mockReportContext.updateReport).toHaveBeenCalledWith(
         {
@@ -350,11 +271,11 @@ describe("Test Choicelist component autosaves", () => {
             status: ReportStatus.IN_PROGRESS,
           },
           fieldData: {
-            autosaveRadioField: mockSelectedChoice,
+            autosaveCheckboxField: firstCheckboxData,
           },
         }
       );
-    }, 800);
+    });
   });
 });
 

@@ -190,7 +190,7 @@ export const ChoiceListField = ({
   };
 
   // if should autosave, submit field data to database on component blur
-  const onComponentBlurHandler = async () => {
+  const onComponentBlurHandler = () => {
     if (autosave) {
       // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
       setTimeout(async () => {
