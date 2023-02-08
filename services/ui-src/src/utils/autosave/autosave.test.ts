@@ -1,5 +1,5 @@
 import { mockStateUser } from "utils/testing/setupJest";
-import { autosaveFieldData, ifFieldWasUpdated } from "./autosave";
+import { autosaveFieldData, isFieldChanged } from "./autosave";
 
 const mockTrigger = jest.fn();
 
@@ -112,7 +112,7 @@ describe("ifFieldWasUpdated", () => {
       ],
     };
 
-    expect(ifFieldWasUpdated(dynamicField)).toBe(true);
+    expect(isFieldChanged(dynamicField)).toBe(true);
   });
 
   it("should return false if dynamic field has no value", () => {
@@ -126,7 +126,7 @@ describe("ifFieldWasUpdated", () => {
       ],
     };
 
-    expect(ifFieldWasUpdated(dynamicField)).toBe(false);
+    expect(isFieldChanged(dynamicField)).toBe(false);
   });
 
   it("should return true if non-dynamic field value is different from hydrationValue", () => {
@@ -137,7 +137,7 @@ describe("ifFieldWasUpdated", () => {
       hydrationValue: "hydration-value",
     };
 
-    expect(ifFieldWasUpdated(nonDynamicField)).toBe(true);
+    expect(isFieldChanged(nonDynamicField)).toBe(true);
   });
 
   it("should return false if non-dynamic field value is same as hydrationValue", () => {
@@ -148,6 +148,6 @@ describe("ifFieldWasUpdated", () => {
       hydrationValue: "value",
     };
 
-    expect(ifFieldWasUpdated(nonDynamicField)).toBe(false);
+    expect(isFieldChanged(nonDynamicField)).toBe(false);
   });
 });

@@ -63,7 +63,7 @@ export const autosaveFieldData = async ({
   }
 };
 
-const isFieldChanged = (field: FieldInfo) => {
+export const isFieldChanged = (field: FieldInfo) => {
   const { type, value, hydrationValue } = field;
   if (type === "dynamic") {
     const changedEntities = value?.filter(
