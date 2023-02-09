@@ -247,6 +247,19 @@ describe("Test ChoiceListField component rendering", () => {
   });
 });
 
+describe("Test Choicelist uncheckedOptionValues in OnChangeHandler", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Checking for the uncheckedOptionValues", () => {
+    const wrapper = render(CheckboxComponent);
+    const checkBox = wrapper.getByLabelText("Choice 2");
+    fireEvent.click(checkBox);
+    fireEvent.blur(checkBox);
+  });
+});
+
 describe("Test Choicelist component autosaves", () => {
   beforeEach(() => {
     jest.clearAllMocks();
