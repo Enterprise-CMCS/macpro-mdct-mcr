@@ -40,11 +40,7 @@ export const fetchReport = handler(async (event, _context) => {
     // Get form template from S3
     const formTemplateParams: S3Get = {
       // TODO: chain other report types
-      Bucket:
-        // reportType === "MCPAR"
-        //   ? process.env.MCPAR_FORM_BUCKET!
-        //   : process.env.MLR_FORM_BUCKET!,
-        process.env.MCPAR_FORM_BUCKET!,
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
 
@@ -59,11 +55,7 @@ export const fetchReport = handler(async (event, _context) => {
     // Get field data from S3
     const fieldDataParams: S3Get = {
       // TODO: chain other report types
-      Bucket:
-        // reportType === "MCPAR"
-        //   ? process.env.MCPAR_FORM_BUCKET!
-        //   : process.env.MLR_FORM_BUCKET!,
-        process.env.MCPAR_FORM_BUCKET!,
+      Bucket: process.env.MCPAR_FORM_BUCKET!,
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
 
@@ -110,11 +102,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
 
   const queryParams: any = {
     // TODO: chain other report types
-    TableName:
-      //reportType === "MCPAR"
-      // ? process.env.MCPAR_REPORT_TABLE_NAME!
-      // : process.env.MLR_REPORT_TABLE_NAME!,
-      process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,
