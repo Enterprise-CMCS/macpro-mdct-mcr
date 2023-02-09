@@ -163,6 +163,54 @@ const CheckboxComponentAutosave = (
   </ReportContext.Provider>
 );
 
+const CheckboxComponentHydration = (
+  <ReportContext.Provider value={mockReportContext}>
+    <ChoiceListField
+      choices={mockChoices}
+      label="Checkbox example"
+      name="autosaveCheckboxField"
+      type="checkbox"
+      hydrate={[{ key: "Choice 1", value: "Choice 1" }]}
+      autosave
+    />
+  </ReportContext.Provider>
+);
+
+describe("Test Choicelist hydration", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Test Choicelist Hydration Prop", () => {
+    const wrapper = render(CheckboxComponentHydration);
+    const firstCheckBox = wrapper.getAllByRole("checkbox", {
+      checked: true,
+    })[0];
+    const secondCheckBox = wrapper.getAllByRole("checkbox", {
+      checked: false,
+    })[0];
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(firstCheckBox).toBeChecked();
+    expect(screen.getByText("Choice 2")).toBeVisible();
+    expect(secondCheckBox).not.toBeChecked();
+  });
+
+  test("Test Choicelist Hydration w/Field Value", () => {
+    mockGetValues([{ key: "Choice 1", value: "Choice 1" }]);
+    const wrapper = render(CheckboxComponentHydration);
+    const firstCheckBox = wrapper.getAllByRole("checkbox", {
+      checked: true,
+    })[0];
+    const secondCheckBox = wrapper.getAllByRole("checkbox", {
+      checked: false,
+    })[0];
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(firstCheckBox).toBeChecked();
+    expect(screen.getByText("Choice 2")).toBeVisible();
+    expect(secondCheckBox).not.toBeChecked();
+  });
+});
+
 describe("Test ChoiceListField component rendering", () => {
   it("ChoiceList should render a normal Radiofield that doesn't have children", () => {
     render(RadioComponent);
