@@ -22,7 +22,6 @@
     "@types/jsdom": "^20.0.0",
     "aws-lambda": "^1.0.7",
     "jest": "^27.4.7",
-    "ksuid": "^3.0.0",
     "serverless-associate-waf": "^1.2.1",
     "serverless-plugin-typescript": "^2.1.4",
     "ts-jest": "^27.1.3",
