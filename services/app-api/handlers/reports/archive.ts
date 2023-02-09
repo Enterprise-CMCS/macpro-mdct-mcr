@@ -28,6 +28,7 @@ export const archiveReport = handler(async (event, context) => {
 
   const currentReport = JSON.parse(getCurrentReport.body);
   const currentArchivedStatus = currentReport?.archived;
+  const reportType = currentReport?.reportType;
 
   // Delete old data prior to updating
   delete currentReport.fieldData;
@@ -35,7 +36,10 @@ export const archiveReport = handler(async (event, context) => {
 
   // Toggle archived state in DynamoDB.
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_REPORT_TABLE_NAME!
+        : process.env.MLR_REPORT_TABLE_NAME!,
     Item: {
       ...currentReport,
       archived: !currentArchivedStatus,

@@ -48,6 +48,7 @@ export const updateReport = handler(async (event, context) => {
 
   // If current report exists, get formTemplateId and fieldDataId
   const currentReport = JSON.parse(fetchReportRequest.body);
+  const reportType = currentReport.reportType;
 
   if (currentReport.archived) {
     return {
@@ -68,7 +69,10 @@ export const updateReport = handler(async (event, context) => {
   const { state } = event.pathParameters;
 
   const formTemplateParams = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_FORM_BUCKET!
+        : process.env.MLR_FORM_BUCKET!,
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   const formTemplate = (await s3Lib.get(formTemplateParams)) as Record<
@@ -78,7 +82,10 @@ export const updateReport = handler(async (event, context) => {
 
   // Get existing fieldData from s3 bucket (for patching with passed data)
   const fieldDataParams = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_FORM_BUCKET!
+        : process.env.MLR_FORM_BUCKET!,
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
   };
   const existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
@@ -119,7 +126,10 @@ export const updateReport = handler(async (event, context) => {
   };
 
   const updateFieldDataParams = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_FORM_BUCKET!
+        : process.env.MLR_FORM_BUCKET!,
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     Body: JSON.stringify(fieldData),
     ContentType: "application/json",
@@ -156,7 +166,10 @@ export const updateReport = handler(async (event, context) => {
 
   // Update record in report metadata table
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_REPORT_TABLE_NAME!
+        : process.env.MLR_REPORT_TABLE_NAME!,
     Item: {
       ...currentReport,
       ...validatedMetadata,
