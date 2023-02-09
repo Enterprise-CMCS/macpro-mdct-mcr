@@ -111,7 +111,11 @@ export const updateReport = handler(async (event, context) => {
 
                 // update record in report metadata table
                 const reportMetadataParams = {
-                  TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+                  // TODO: chain other report types
+                  TableName:
+                    reportType === "MCPAR"
+                      ? process.env.MCPAR_REPORT_TABLE_NAME!
+                      : process.env.MLR_REPORT_TABLE_NAME!,
                   Item: {
                     ...currentReport,
                     ...validatedMetadata,

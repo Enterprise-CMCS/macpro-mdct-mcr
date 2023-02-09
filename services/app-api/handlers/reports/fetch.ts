@@ -14,7 +14,12 @@ export const fetchReport = handler(async (event, _context) => {
 
   // get current report metadata
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    // TODO: chain other report types
+    TableName:
+      // reportType === "MCPAR"
+      //   ? process.env.MCPAR_REPORT_TABLE_NAME!
+      //   : process.env.MLR_REPORT_TABLE_NAME!,
+      process.env.MCPAR_REPORT_TABLE_NAME!,
     Key: { state, id: reportId },
   };
   try {
@@ -25,7 +30,12 @@ export const fetchReport = handler(async (event, _context) => {
 
     // get formTemplate from s3 bucket
     const formTemplateParams: S3Get = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      // TODO: chain other report types
+      Bucket:
+        // reportType === "MCPAR"
+        //   ? process.env.MCPAR_FORM_BUCKET!
+        //   : process.env.MLR_FORM_BUCKET!,
+        process.env.MCPAR_FORM_BUCKET!,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
     const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
@@ -33,7 +43,12 @@ export const fetchReport = handler(async (event, _context) => {
 
     // get fieldData from s3 bucket
     const fieldDataParams = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      // TODO: chain other report types
+      Bucket:
+        // reportType === "MCPAR"
+        //   ? process.env.MCPAR_FORM_BUCKET!
+        //   : process.env.MLR_FORM_BUCKET!,
+        process.env.MCPAR_FORM_BUCKET!,
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
     const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
@@ -52,8 +67,16 @@ export const fetchReportsByState = handler(async (event, _context) => {
   if (!event?.pathParameters?.state!) {
     throw new Error(error.NO_KEY);
   }
+
+  // const reportType = event.pathParameters.reportType;
+
   let queryParams: any = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    // TODO: chain other report types
+    TableName:
+      //reportType === "MCPAR"
+      // ? process.env.MCPAR_REPORT_TABLE_NAME!
+      // : process.env.MLR_REPORT_TABLE_NAME!,
+      process.env.MCPAR_REPORT_TABLE_NAME!,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,
