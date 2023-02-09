@@ -22,6 +22,7 @@ import { MobileDashboardList } from "./DashboardProgramListMobile";
 import { Spinner } from "@cmsgov/design-system";
 // forms
 import { mcparReportJson } from "forms/mcpar";
+import { mlrReportJson } from "forms/mlr";
 // utils
 import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
 import {
@@ -67,6 +68,7 @@ export const DashboardPage = ({ reportType }: Props) => {
 
   const genericReportJsonMap: any = {
     MCPAR: mcparReportJson,
+    MLR: mlrReportJson,
   };
   const genericReportJson = genericReportJsonMap[reportType]!;
 

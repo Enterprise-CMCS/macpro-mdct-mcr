@@ -29,6 +29,7 @@ export const createReport = handler(async (event, _context) => {
 
   const state: string = event.pathParameters.state;
   const unvalidatedPayload = JSON.parse(event!.body!);
+  const reportType = unvalidatedPayload.metadata.reportType;
   const {
     metadata: unvalidatedMetadata,
     fieldData: unvalidatedFieldData,
@@ -64,14 +65,20 @@ export const createReport = handler(async (event, _context) => {
   }
 
   const fieldDataParams: S3Put = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_FORM_BUCKET!
+        : process.env.MLR_FORM_BUCKET!,
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     Body: JSON.stringify(validatedFieldData),
     ContentType: "application/json",
   };
 
   const formTemplateParams: S3Put = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_FORM_BUCKET!
+        : process.env.MLR_FORM_BUCKET!,
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     Body: JSON.stringify(formTemplate),
     ContentType: "application/json",
@@ -101,7 +108,10 @@ export const createReport = handler(async (event, _context) => {
 
   // Create DyanmoDB record.
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName:
+      reportType === "MCPAR"
+        ? process.env.MCPAR_REPORT_TABLE_NAME!
+        : process.env.MLR_REPORT_TABLE_NAME!,
     Item: {
       ...validatedMetadata,
       state,
