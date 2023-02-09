@@ -38,7 +38,7 @@ export const updateReport = handler(async (event, context) => {
     // if current report exists, get formTemplateId and fieldDataId
     if (getCurrentReport?.body) {
       const currentReport = JSON.parse(getCurrentReport.body);
-      const { formTemplateId, fieldDataId } = currentReport;
+      const { formTemplateId, fieldDataId, reportType } = currentReport;
       if (formTemplateId && fieldDataId) {
         // if report not in archived state, proceed with updates
         if (!currentReport.archived) {
@@ -46,14 +46,22 @@ export const updateReport = handler(async (event, context) => {
 
           // get formTemplate from s3 bucket (for passed fieldData validation)
           const formTemplateParams = {
-            Bucket: process.env.MCPAR_FORM_BUCKET!,
+            // TODO: chain other report types
+            Bucket:
+              reportType === "MCPAR"
+                ? process.env.MCPAR_FORM_BUCKET!
+                : process.env.MLR_FORM_BUCKET!,
             Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           };
           const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
 
           // get existing fieldData from s3 bucket (for patching with passed data)
           const fieldDataParams = {
-            Bucket: process.env.MCPAR_FORM_BUCKET!,
+            // TODO: chain other report types
+            Bucket:
+              reportType === "MCPAR"
+                ? process.env.MCPAR_FORM_BUCKET!
+                : process.env.MLR_FORM_BUCKET!,
             Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           };
           const existingFieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
@@ -79,7 +87,11 @@ export const updateReport = handler(async (event, context) => {
                 ...validatedFieldData,
               };
               const fieldDataParams = {
-                Bucket: process.env.MCPAR_FORM_BUCKET!,
+                // TODO: chain other report types
+                Bucket:
+                  reportType === "MCPAR"
+                    ? process.env.MCPAR_FORM_BUCKET!
+                    : process.env.MLR_FORM_BUCKET!,
                 Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
                 Body: JSON.stringify(fieldData),
                 ContentType: "application/json",
