@@ -178,46 +178,25 @@ describe("Test ChoiceListField component rendering", () => {
 
   it("RadioField should render nested child fields for choices with children", () => {
     render(RadioComponentWithNestedChildren);
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(screen.getByText("Choice 2")).toBeVisible();
+    expect(screen.getByText("Choice 3")).toBeVisible();
     expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, {
       disabled: false,
       nested: true,
     });
+  });
+
+  it("CheckboxField should render nested child fields for choices with children", async () => {
+    render(CheckboxComponentWithNestedChildren);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
     expect(screen.getByText("Choice 3")).toBeVisible();
+    expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, {
+      disabled: false,
+      nested: true,
+    });
   });
-
-  /*
-   * it("CheckboxField should render nested child fields for choices with children", async () => {
-   *   // Create the Checkbox Component
-   *   const wrapper = render(CheckboxComponentWithNestedChildren);
-   */
-
-  /*
-   *   expect(screen.getByText("Choice 1")).toBeVisible();
-   *   expect(screen.getByText("Choice 2")).toBeVisible();
-   *   expect(screen.getByText("Choice 3")).toBeVisible();
-   *   expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, {
-   *     disabled: false,
-   *     nested: true,
-   *   });
-   */
-
-  //   // Also ask about why this isn't showing Choices 4 and 5. Is it because formFieldFactory doesn't do a real render since its a jest.fn()?
-
-  /*
-   *   // Grab the Checkboxes in the component
-   *   const checkboxContainers = wrapper.container.querySelectorAll(
-   *     ".ds-c-choice-wrapper"
-   *   );
-   *   const checkboxWithChildren = checkboxContainers[2]
-   *     .children[0] as HTMLInputElement;
-   *   await userEvent.click(checkboxWithChildren);
-   *   expect(checkboxWithChildren).toBeChecked();
-   *   expect(screen.getByText("Choice 4")).toBeVisible();
-   *   expect(screen.getByText("Choice 5")).toBeVisible();
-   * });
-   */
 });
 
 describe("Test Choicelist component autosaves", () => {
@@ -225,14 +204,14 @@ describe("Test Choicelist component autosaves", () => {
     jest.clearAllMocks();
   });
 
-  test("Choicelist Checkbox autosaves with checked value when autosave true, and form is valid", () => {
+  test("Choicelist Checkbox autosaves with checked value when autosave true, and form is valid", async () => {
     mockGetValues(undefined);
 
     // Create the Checkbox Component
     const wrapper = render(CheckboxComponentAutosave);
 
-    const firstCheckbox = wrapper.getAllByRole("checkbox")[0];
-    const secondCheckbox = wrapper.getAllByRole("checkbox")[1];
+    const firstCheckbox = wrapper.getByLabelText("Choice 1");
+    const secondCheckbox = wrapper.getByLabelText("Choice 2");
 
     // Select the first Checkbox and check it
     expect(firstCheckbox).not.toBeChecked();
@@ -260,8 +239,10 @@ describe("Test Choicelist component autosaves", () => {
     );
 
     // Ensure we call autosave with the correct data
-    waitFor(() => {
+    await waitFor(() => {
       expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    });
+    await waitFor(() =>
       expect(mockReportContext.updateReport).toHaveBeenCalledWith(
         {
           id: mockReportContext.report.id,
@@ -274,8 +255,8 @@ describe("Test Choicelist component autosaves", () => {
             autosaveCheckboxField: firstCheckboxData,
           },
         }
-      );
-    });
+      )
+    );
   });
 });
 
