@@ -1,10 +1,11 @@
 import { useLocation } from "react-router-dom";
 import { isMcparReportFormPage } from "forms/mcpar";
+import { isMlrReportFormPage } from "forms/mlr";
 import { ReportRoute } from "types";
 
 // TODO: Chain future reports here
 export const isReportFormPage = (pathname: string): boolean =>
-  isMcparReportFormPage(pathname);
+  isMcparReportFormPage(pathname) || isMlrReportFormPage(pathname);
 
 export const useFindRoute = (
   flatRouteArray: ReportRoute[] | undefined,
