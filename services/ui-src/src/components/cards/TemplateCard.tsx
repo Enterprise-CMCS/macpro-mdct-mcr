@@ -48,8 +48,8 @@ export const TemplateCard = ({
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
           {/* TODO: Remove LD flag once MLR is released */}
-          {!mlrReport && verbiage.title.includes("MLR") ? (
-            <Text>{verbiage.body?.unavailable}</Text>
+          {!mlrReport && templateName === "MLR" ? (
+            <Text>{verbiage.body.unavailable}</Text>
           ) : (
             <Text>{cardText}</Text>
           )}
