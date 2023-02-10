@@ -14,7 +14,7 @@ import {
   error,
   buckets,
   reportTables,
-  reportFormBuckets,
+  reportBuckets,
 } from "../../utils/constants/constants";
 
 export const createReport = handler(async (event, _context) => {
@@ -71,14 +71,14 @@ export const createReport = handler(async (event, _context) => {
   }
 
   const fieldDataParams: S3Put = {
-    Bucket: reportFormBuckets[reportType as keyof typeof reportFormBuckets],
+    Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     Body: JSON.stringify(validatedFieldData),
     ContentType: "application/json",
   };
 
   const formTemplateParams: S3Put = {
-    Bucket: reportFormBuckets[reportType as keyof typeof reportFormBuckets],
+    Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     Body: JSON.stringify(formTemplate),
     ContentType: "application/json",
@@ -108,7 +108,7 @@ export const createReport = handler(async (event, _context) => {
 
   // Create DyanmoDB record.
   const reportMetadataParams = {
-    TableName: reportTables[reportType as keyof typeof reportFormBuckets],
+    TableName: reportTables[reportType as keyof typeof reportBuckets],
     Item: {
       ...validatedMetadata,
       state,
