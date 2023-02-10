@@ -101,7 +101,7 @@ describe("autosaveFieldData", () => {
 });
 
 describe("ifFieldWasUpdated", () => {
-  it("should return true if dynamic field has value and is different from hydrationValue", () => {
+  it("should return 2 if dynamic field has value and is different from hydrationValue", () => {
     const dynamicField = {
       name: "fieldName",
       type: "dynamic",
@@ -112,10 +112,10 @@ describe("ifFieldWasUpdated", () => {
       ],
     };
 
-    expect(isFieldChanged(dynamicField)).toBe(true);
+    expect(isFieldChanged(dynamicField)).toBe(2);
   });
 
-  it("should return false if dynamic field has no value", () => {
+  it("should return 0 if dynamic field has no value", () => {
     const dynamicField = {
       name: "fieldName",
       type: "dynamic",
@@ -126,7 +126,7 @@ describe("ifFieldWasUpdated", () => {
       ],
     };
 
-    expect(isFieldChanged(dynamicField)).toBe(false);
+    expect(isFieldChanged(dynamicField)).toBe(0);
   });
 
   it("should return true if non-dynamic field value is different from hydrationValue", () => {
