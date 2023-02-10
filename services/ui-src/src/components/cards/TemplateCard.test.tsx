@@ -85,6 +85,8 @@ describe("Test mlrReport feature flag functionality", () => {
     mockLDFlags.set({ mlrReport: true });
     render(mlrTemplateCardComponent);
     expect(screen.getByText(mlrTemplateVerbiage.body.available)).toBeVisible();
+    const enterMlrButton = screen.getByText(mlrTemplateVerbiage.link.text);
+    expect(enterMlrButton).toBeVisible();
   });
 
   test("if mlrReport flag is false, MLR available verbiage should not be visible", async () => {
