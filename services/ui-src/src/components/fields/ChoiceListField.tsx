@@ -147,48 +147,6 @@ export const ChoiceListField = ({
     }
   };
 
-  const getNestedChildFieldsOfUncheckedParent = (choices: FieldChoice[]) => {
-    // set up nested field compilation
-    const nestedFields: any = [];
-    const compileNestedFields = (fields: FormField[]) => {
-      fields.forEach((field: FormField) => {
-        // for each child field, get field info
-        const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
-          ? []
-          : "";
-        const fieldInfo = {
-          name: field.id,
-          type: field.type,
-          value: fieldDefaultValue,
-          overrideCheck: true,
-        };
-        // add to nested fields to be autosaved
-        nestedFields.push(fieldInfo);
-        // recurse through additional nested children as needed
-        const fieldChoices = field.props?.choices;
-        fieldChoices?.forEach(
-          (choice: FieldChoice) =>
-            choice.children && compileNestedFields(choice.children)
-        );
-      });
-    };
-
-    choices.forEach((choice: FieldChoice) => {
-      // if choice is not selected and there are children
-      const isParentChoiceChecked = (id: string) =>
-        lastDatabaseValue?.some((autosave) => autosave.key === id);
-      if (
-        !choice.checked &&
-        choice.children &&
-        isParentChoiceChecked(choice.id)
-      ) {
-        compileNestedFields(choice.children);
-      }
-    });
-
-    return nestedFields;
-  };
-
   // if should autosave, submit field data to database on component blur
   const onComponentBlurHandler = () => {
     if (autosave) {
@@ -202,7 +160,7 @@ export const ChoiceListField = ({
           return; // Short circuit if still clicking on elements in this choice list
         let fields = [
           { name, type, value: displayValue, hydrationValue, defaultValue },
-          ...getNestedChildFieldsOfUncheckedParent(choices),
+          ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
         ];
         const reportArgs = { id: report?.id, updateReport };
         const user = { userName: full_name, state };
@@ -260,4 +218,48 @@ const sx = {
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
   },
+};
+
+export const getNestedChildFieldsOfUncheckedParent = (
+  choices: FieldChoice[],
+  lastDatabaseValue: Choice[]
+) => {
+  // set up nested field compilation
+  const nestedFields: any = [];
+  const compileNestedFields = (fields: FormField[]) => {
+    fields.forEach((field: FormField) => {
+      // for each child field, get field info
+      const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
+        ? []
+        : "";
+      const fieldInfo = {
+        name: field.id,
+        type: field.type,
+        value: fieldDefaultValue,
+        overrideCheck: true,
+      };
+      // add to nested fields to be autosaved
+      nestedFields.push(fieldInfo);
+      // recurse through additional nested children as needed
+      const fieldChoices = field.props?.choices;
+      fieldChoices?.forEach(
+        (choice: FieldChoice) =>
+          choice.children && compileNestedFields(choice.children)
+      );
+    });
+  };
+
+  choices.forEach((choice: FieldChoice) => {
+    // if choice is not selected and there are children
+    const isParentChoiceChecked = (id: string) =>
+      lastDatabaseValue?.some((autosave) => autosave.key === id);
+    if (
+      !choice.checked &&
+      choice.children &&
+      isParentChoiceChecked(choice.id)
+    ) {
+      compileNestedFields(choice.children);
+    }
+  });
+  return nestedFields;
 };
