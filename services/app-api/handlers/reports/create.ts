@@ -35,6 +35,10 @@ export const createReport = handler(async (event, _context) => {
     const reportType = unvalidatedPayload.metadata.reportType;
     const fieldDataValidationJson = formTemplate.validationJson;
 
+    const reportBucket =
+      reportBuckets[reportType as keyof typeof reportBuckets];
+    const reportTable = reportTables[reportType as keyof typeof reportTables];
+
     // if field data and validation json have been passed
     if (unvalidatedFieldData && fieldDataValidationJson) {
       const reportId: string = KSUID.randomSync().string;
@@ -51,7 +55,7 @@ export const createReport = handler(async (event, _context) => {
       if (validatedFieldData) {
         // post validated field data to s3 bucket
         const fieldDataParams: S3Put = {
-          Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+          Bucket: reportBucket,
           Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           Body: JSON.stringify(validatedFieldData),
           ContentType: "application/json",
@@ -59,7 +63,7 @@ export const createReport = handler(async (event, _context) => {
         await s3Lib.put(fieldDataParams);
         // post form template to s3 bucket
         const formTemplateParams: S3Put = {
-          Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+          Bucket: reportBucket,
           Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           Body: JSON.stringify(formTemplate),
           ContentType: "application/json",
@@ -74,7 +78,7 @@ export const createReport = handler(async (event, _context) => {
         if (validatedMetadata) {
           // create record in report metadata table
           let reportMetadataParams = {
-            TableName: reportTables[reportType as keyof typeof reportTables],
+            TableName: reportTable,
             Item: {
               ...validatedMetadata,
               state,

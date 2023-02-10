@@ -17,13 +17,15 @@ export const archiveReport = handler(async (event, context) => {
     const currentArchivedStatus = currentReport?.archived;
     const reportType = currentReport?.reportType;
 
+    const reportTable = reportTables[reportType as keyof typeof reportTables];
+
     // Delete raw data prior to updating
     delete currentReport.fieldData;
     delete currentReport.formTemplate;
 
     // toggle archived status in report metadata table
     const reportMetadataParams = {
-      TableName: reportTables[reportType as keyof typeof reportTables],
+      TableName: reportTable,
       Item: {
         ...currentReport,
         archived: !currentArchivedStatus,

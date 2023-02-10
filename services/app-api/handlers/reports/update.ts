@@ -49,16 +49,21 @@ export const updateReport = handler(async (event, context) => {
         if (!currentReport.archived) {
           const state: string = event.pathParameters.state;
 
+          const reportBucket =
+            reportBuckets[reportType as keyof typeof reportBuckets];
+          const reportTable =
+            reportTables[reportType as keyof typeof reportTables];
+
           // get formTemplate from s3 bucket (for passed fieldData validation)
           const formTemplateParams = {
-            Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+            Bucket: reportBucket,
             Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           };
           const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
 
           // get existing fieldData from s3 bucket (for patching with passed data)
           const fieldDataParams = {
-            Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+            Bucket: reportBucket,
             Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           };
           const existingFieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
@@ -84,7 +89,7 @@ export const updateReport = handler(async (event, context) => {
                 ...validatedFieldData,
               };
               const fieldDataParams = {
-                Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+                Bucket: reportBucket,
                 Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
                 Body: JSON.stringify(fieldData),
                 ContentType: "application/json",
@@ -104,8 +109,7 @@ export const updateReport = handler(async (event, context) => {
 
                 // update record in report metadata table
                 const reportMetadataParams = {
-                  TableName:
-                    reportTables[reportType as keyof typeof reportTables],
+                  TableName: reportTable,
                   Item: {
                     ...currentReport,
                     ...validatedMetadata,
