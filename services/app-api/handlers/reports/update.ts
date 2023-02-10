@@ -11,7 +11,12 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportTables,
+  reportFormBuckets,
+} from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
@@ -46,22 +51,16 @@ export const updateReport = handler(async (event, context) => {
 
           // get formTemplate from s3 bucket (for passed fieldData validation)
           const formTemplateParams = {
-            // TODO: chain other report types
             Bucket:
-              reportType === "MCPAR"
-                ? process.env.MCPAR_FORM_BUCKET!
-                : process.env.MLR_FORM_BUCKET!,
+              reportFormBuckets[reportType as keyof typeof reportFormBuckets],
             Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           };
           const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
 
           // get existing fieldData from s3 bucket (for patching with passed data)
           const fieldDataParams = {
-            // TODO: chain other report types
             Bucket:
-              reportType === "MCPAR"
-                ? process.env.MCPAR_FORM_BUCKET!
-                : process.env.MLR_FORM_BUCKET!,
+              reportFormBuckets[reportType as keyof typeof reportFormBuckets],
             Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           };
           const existingFieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
@@ -87,11 +86,10 @@ export const updateReport = handler(async (event, context) => {
                 ...validatedFieldData,
               };
               const fieldDataParams = {
-                // TODO: chain other report types
                 Bucket:
-                  reportType === "MCPAR"
-                    ? process.env.MCPAR_FORM_BUCKET!
-                    : process.env.MLR_FORM_BUCKET!,
+                  reportFormBuckets[
+                    reportType as keyof typeof reportFormBuckets
+                  ],
                 Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
                 Body: JSON.stringify(fieldData),
                 ContentType: "application/json",
@@ -111,11 +109,8 @@ export const updateReport = handler(async (event, context) => {
 
                 // update record in report metadata table
                 const reportMetadataParams = {
-                  // TODO: chain other report types
                   TableName:
-                    reportType === "MCPAR"
-                      ? process.env.MCPAR_REPORT_TABLE_NAME!
-                      : process.env.MLR_REPORT_TABLE_NAME!,
+                    reportTables[reportType as keyof typeof reportTables],
                   Item: {
                     ...currentReport,
                     ...validatedMetadata,
