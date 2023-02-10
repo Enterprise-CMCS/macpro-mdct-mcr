@@ -1,5 +1,6 @@
 import KSUID from "ksuid";
 import handler from "../handler-lib";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -9,7 +10,12 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { S3Put, StatusCodes, UserRoles } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportTables,
+  reportFormBuckets,
+} from "../../utils/constants/constants";
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
@@ -65,20 +71,14 @@ export const createReport = handler(async (event, _context) => {
   }
 
   const fieldDataParams: S3Put = {
-    Bucket:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_FORM_BUCKET!
-        : process.env.MLR_FORM_BUCKET!,
+    Bucket: reportFormBuckets[reportType as keyof typeof reportFormBuckets],
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     Body: JSON.stringify(validatedFieldData),
     ContentType: "application/json",
   };
 
   const formTemplateParams: S3Put = {
-    Bucket:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_FORM_BUCKET!
-        : process.env.MLR_FORM_BUCKET!,
+    Bucket: reportFormBuckets[reportType as keyof typeof reportFormBuckets],
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     Body: JSON.stringify(formTemplate),
     ContentType: "application/json",
@@ -108,10 +108,7 @@ export const createReport = handler(async (event, _context) => {
 
   // Create DyanmoDB record.
   const reportMetadataParams = {
-    TableName:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_REPORT_TABLE_NAME!
-        : process.env.MLR_REPORT_TABLE_NAME!,
+    TableName: reportTables[reportType as keyof typeof reportFormBuckets],
     Item: {
       ...validatedMetadata,
       state,

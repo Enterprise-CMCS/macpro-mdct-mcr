@@ -25,3 +25,15 @@ export const buckets = {
   FORM_TEMPLATE: "formTemplates",
   FIELD_DATA: "fieldData",
 };
+
+// REPORTS
+
+export const reportTables = {
+  MCPAR: process.env.MCPAR_REPORT_TABLE_NAME!,
+  MLR: process.env.MLR_REPORT_TABLE_NAME!,
+};
+
+export const reportFormBuckets = {
+  MCPAR: process.env.MCPAR_FORM_BUCKET!,
+  MLR: process.env.MLR_FORM_BUCKET!,
+};

@@ -3,7 +3,7 @@ import { fetchReport } from "./fetch";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
-import { error } from "../../utils/constants/constants";
+import { error, reportTables } from "../../utils/constants/constants";
 import { hasPermissions } from "../../utils/auth/authorization";
 
 export const archiveReport = handler(async (event, context) => {
@@ -36,10 +36,7 @@ export const archiveReport = handler(async (event, context) => {
 
   // Toggle archived state in DynamoDB.
   const reportMetadataParams = {
-    TableName:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_REPORT_TABLE_NAME!
-        : process.env.MLR_REPORT_TABLE_NAME!,
+    TableName: reportTables[reportType as keyof typeof reportTables],
     Item: {
       ...currentReport,
       archived: !currentArchivedStatus,

@@ -9,7 +9,12 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportTables,
+  reportFormBuckets,
+} from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
@@ -69,10 +74,7 @@ export const updateReport = handler(async (event, context) => {
   const { state } = event.pathParameters;
 
   const formTemplateParams = {
-    Bucket:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_FORM_BUCKET!
-        : process.env.MLR_FORM_BUCKET!,
+    Bucket: reportFormBuckets[reportType as keyof typeof reportFormBuckets],
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   const formTemplate = (await s3Lib.get(formTemplateParams)) as Record<
@@ -82,10 +84,7 @@ export const updateReport = handler(async (event, context) => {
 
   // Get existing fieldData from s3 bucket (for patching with passed data)
   const fieldDataParams = {
-    Bucket:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_FORM_BUCKET!
-        : process.env.MLR_FORM_BUCKET!,
+    Bucket: reportFormBuckets[reportType as keyof typeof reportFormBuckets],
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
   };
   const existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
@@ -126,10 +125,7 @@ export const updateReport = handler(async (event, context) => {
   };
 
   const updateFieldDataParams = {
-    Bucket:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_FORM_BUCKET!
-        : process.env.MLR_FORM_BUCKET!,
+    Bucket: reportFormBuckets[reportType as keyof typeof reportFormBuckets],
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     Body: JSON.stringify(fieldData),
     ContentType: "application/json",
@@ -166,10 +162,7 @@ export const updateReport = handler(async (event, context) => {
 
   // Update record in report metadata table
   const reportMetadataParams = {
-    TableName:
-      reportType === "MCPAR"
-        ? process.env.MCPAR_REPORT_TABLE_NAME!
-        : process.env.MLR_REPORT_TABLE_NAME!,
+    TableName: reportTables[reportType as keyof typeof reportTables],
     Item: {
       ...currentReport,
       ...validatedMetadata,
