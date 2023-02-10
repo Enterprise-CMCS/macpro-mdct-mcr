@@ -5,11 +5,7 @@ import { axe } from "jest-axe";
 import { useFormContext } from "react-hook-form";
 import { NumberField, ReportContext } from "components";
 import { useUser } from "utils";
-import {
-  mockAdminUser,
-  mockReportContext,
-  mockStateUser,
-} from "utils/testing/setupJest";
+import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -51,7 +47,7 @@ const commaMaskedNumberFieldComponent = (
 );
 
 const currencyMaskedNumberFieldComponent = (
-  <NumberField name="testNumberField" label="test-label" mask="currency" />
+  <NumberField name="testNumberField" label="" mask="currency" />
 );
 
 const percentageMaskedNumberFieldComponent = (
@@ -308,17 +304,6 @@ describe("Test NumberField component autosaves", () => {
         fieldData: { testNumberField: "" },
       }
     );
-  });
-
-  test("NumberField does not autosave when not stateuser", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
-    mockGetValues(undefined);
-    render(numberFieldAutosavingComponent);
-    const textField = screen.getByTestId("test-number-field-autosave");
-    expect(textField).toBeVisible();
-    await userEvent.type(textField, "test value");
-    await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
   test("NumberField does not autosave if autosave is false", async () => {

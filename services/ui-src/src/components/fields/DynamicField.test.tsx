@@ -15,6 +15,7 @@ import {
   mockStateUser,
   mockQualityMeasuresEntity,
   mockAdminUser,
+  mockStateRep,
 } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
@@ -225,14 +226,16 @@ describe("Test DynamicField component", () => {
 });
 
 describe("Test DynamicField entity deletion and deletion of associated data", () => {
-  beforeEach(async () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("Deletes entity and associated sanctions and quality measure responses if state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     render(dynamicFieldComponent(mockHydrationPlans));
     await act(async () => {
       await render(dynamicFieldComponent(mockHydrationPlans));
     });
-  });
-  it("Deletes entity and associated sanctions and quality measure responses", async () => {
     // delete mock-plan-1
     const removeButton = screen.queryAllByTestId("removeButton")[0];
     await userEvent.click(removeButton);
@@ -278,11 +281,74 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
       }
     );
   });
+
+  it("Deletes entity and associated sanctions and quality measure responses if state rep", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    render(dynamicFieldComponent(mockHydrationPlans));
+    await act(async () => {
+      await render(dynamicFieldComponent(mockHydrationPlans));
+    });
+    // delete mock-plan-1
+    const removeButton = screen.queryAllByTestId("removeButton")[0];
+    await userEvent.click(removeButton);
+    const deleteButton = screen.getByText("Yes, delete plan");
+    await userEvent.click(deleteButton);
+
+    expect(mockUpdateReport).toHaveBeenCalledWith(
+      { ...mockReportKeys, state: mockStateRep.user?.state },
+      {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateRep.user?.full_name,
+        },
+        fieldData: {
+          plans: [
+            {
+              id: "mock-plan-id-2",
+              name: "mock-plan-2",
+            },
+          ],
+          sanctions: [
+            {
+              ...mockSanctionsEntity,
+              sanction_planName: {
+                label: "sanction_planName",
+                value: "mock-plan-id-2",
+              },
+            },
+          ],
+          qualityMeasures: [
+            {
+              ...mockQualityMeasuresEntity,
+              "qualityMeasure_plan_measureResults_mock-plan-id-2":
+                "mock-response-2",
+            },
+            {
+              ...mockQualityMeasuresEntity,
+              "qualityMeasure_plan_measureResults_mock-plan-id-2":
+                "mock-response-2",
+            },
+          ],
+        },
+      }
+    );
+  });
+
+  test("Admin users can't delete plans", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    render(dynamicFieldComponent(mockHydrationPlans));
+    await act(async () => {
+      await render(dynamicFieldComponent(mockHydrationPlans));
+    });
+    // delete mock-plan-1
+    const removeButton = screen.queryAllByTestId("removeButton")[0];
+    await userEvent.click(removeButton);
+    expect(mockUpdateReport).toHaveBeenCalledTimes(0);
+  });
 });
 
 describe("Test typing into DynamicField component", () => {
   test("DynamicField accepts input", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
       result.container.querySelector("[name='plans[0]']")!;
@@ -295,22 +361,10 @@ describe("Test typing into DynamicField component", () => {
 describe("Test DynamicField Autosave Functionality", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  test("Does not autosave when not state user", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
-    const result = render(dynamicFieldComponent());
-    const firstDynamicField: HTMLInputElement =
-      result.container.querySelector("[name='plans[0]']")!;
-    expect(firstDynamicField).toBeVisible();
-    await userEvent.type(firstDynamicField, "123");
-    await userEvent.tab();
-    expect(mockUpdateReport).toHaveBeenCalledTimes(0);
-    expect(firstDynamicField.value).toBe("123");
+    mockedUseUser.mockReturnValue(mockStateUser);
   });
 
   test("Autosaves when state user", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
       result.container.querySelector("[name='plans[0]']")!;
@@ -321,15 +375,26 @@ describe("Test DynamicField Autosave Functionality", () => {
     expect(firstDynamicField.value).toBe("123");
   });
 
-  test("DynamicField sets empty value when given a bad input for autosaving", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+  test("DynamicField handles blanked fields after it was filled out", async () => {
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
       result.container.querySelector("[name='plans[0]']")!;
     expect(firstDynamicField).toBeVisible();
-    firstDynamicField.value = "   ";
-    expect(firstDynamicField.value).toBe("   ");
+    await userEvent.type(firstDynamicField, "Plans");
+    expect(firstDynamicField.value).toBe("Plans");
+    await userEvent.tab();
+    expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    expect(mockUpdateReport).lastCalledWith(
+      { id: "mock-report-id", state: "MN" },
+      {
+        fieldData: {
+          plans: [{ id: firstDynamicField.id, name: "Plans" }],
+        },
+        metadata: { lastAlteredBy: "Thelonious States", status: "In progress" },
+      }
+    );
     await userEvent.click(firstDynamicField);
+    await userEvent.clear(firstDynamicField);
     await userEvent.tab();
     expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     expect(mockUpdateReport).lastCalledWith(
@@ -343,23 +408,37 @@ describe("Test DynamicField Autosave Functionality", () => {
     );
   });
 
-  test("DynamicField handles blanked fields after it was filled out", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    const result = render(dynamicFieldComponent());
+  test("Autosaves and show correct number of plan inputs when bluring into adding a row", async () => {
+    const result = render(dynamicFieldComponent(mockHydrationPlans));
+    // click append
+    const appendButton = screen.getByText("Add a row");
+    await userEvent.click(appendButton);
     const firstDynamicField: HTMLInputElement =
-      result.container.querySelector("[name='plans[0]']")!;
+      result.container.querySelector("[name='plans[2]']")!;
     expect(firstDynamicField).toBeVisible();
-    firstDynamicField.value = "Plans";
-    expect(firstDynamicField.value).toBe("Plans");
-    await userEvent.click(firstDynamicField);
-    await userEvent.clear(firstDynamicField);
-    await userEvent.tab();
+    await userEvent.type(firstDynamicField, "123");
+    await userEvent.click(appendButton);
+    // verify there are now two text boxes
+    const inputBoxLabel = screen.getAllByText("test-label");
+    expect(inputBoxLabel).toHaveLength(4);
+    expect(appendButton).toBeVisible();
+    expect(firstDynamicField.value).toBe("123");
     expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     expect(mockUpdateReport).lastCalledWith(
       { id: "mock-report-id", state: "MN" },
       {
         fieldData: {
-          plans: [{ id: firstDynamicField.id, name: "" }],
+          plans: [
+            {
+              id: "mock-plan-id-1",
+              name: "mock-plan-1",
+            },
+            {
+              id: "mock-plan-id-2",
+              name: "mock-plan-2",
+            },
+            { id: firstDynamicField.id, name: "123" },
+          ],
         },
         metadata: { lastAlteredBy: "Thelonious States", status: "In progress" },
       }

@@ -45,7 +45,7 @@ export const autosaveFieldData = async ({
       .map(async (field: FieldInfo) => {
         const { name, value, defaultValue, overrideCheck } = field;
         const fieldValueIsValid = await form.trigger(name);
-        // if field value is valid or validity check overriden, use field value
+        // if field value is valid or validity check overridden, use field value
         if (fieldValueIsValid || overrideCheck) return [name, value];
         // otherwise, revert field to default value
         return [name, defaultValue];
@@ -63,7 +63,7 @@ export const autosaveFieldData = async ({
   }
 };
 
-const isFieldChanged = (field: FieldInfo) => {
+export const isFieldChanged = (field: FieldInfo) => {
   const { type, value, hydrationValue } = field;
   if (type === "dynamic") {
     const changedEntities = value?.filter(

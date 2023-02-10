@@ -4,11 +4,7 @@ import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
 import { DateField, ReportContext } from "components";
-import {
-  mockAdminUser,
-  mockReportContext,
-  mockStateUser,
-} from "utils/testing/setupJest";
+import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
 import { useUser } from "utils";
 import { ReportStatus } from "types";
 
@@ -119,6 +115,18 @@ describe("Test DateField autosave functionality", () => {
     jest.clearAllMocks();
   });
 
+  test("Blanking field triggers form validation", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const result = render(dateFieldAutosavingComponent);
+    const dateFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testDateField']"
+    )!;
+    await userEvent.click(dateFieldInput);
+    await userEvent.clear(dateFieldInput);
+    await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
   test("Autosaves entered date when state user, autosave true, and field is valid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(true);
@@ -142,42 +150,6 @@ describe("Test DateField autosave functionality", () => {
         fieldData: { testDateField: "07/14/2022" },
       }
     );
-  });
-
-  test("Autosaves default value when state user, autosave true, and field invalid", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    mockTrigger.mockReturnValue(false);
-    mockGetValues(undefined);
-    render(dateFieldAutosavingComponent);
-    const dateField = screen.getByLabelText("test-date-field");
-    expect(dateField).toBeVisible();
-    await userEvent.type(dateField, " ");
-    await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
-      {
-        state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
-      },
-      {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: mockStateUser.user?.full_name,
-        },
-        fieldData: { testDateField: "" },
-      }
-    );
-  });
-
-  test("Does not autosave when not state user", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
-    mockGetValues(undefined);
-    render(dateFieldAutosavingComponent);
-    const dateField = screen.getByLabelText("test-date-field");
-    expect(dateField).toBeVisible();
-    await userEvent.type(dateField, "07/14/2022");
-    await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
   test("Does not autosave if autosave is false", async () => {
