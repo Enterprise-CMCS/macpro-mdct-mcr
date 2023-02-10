@@ -15,7 +15,7 @@ export const archiveReport = handler(async (event, context) => {
   if (getCurrentReport?.body) {
     const currentReport = JSON.parse(getCurrentReport.body);
     const currentArchivedStatus = currentReport?.archived;
-    const reportType = currentReport.reportType;
+    const reportType = currentReport?.reportType;
 
     // Delete raw data prior to updating
     delete currentReport.fieldData;
