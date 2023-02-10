@@ -53,7 +53,6 @@ export const TemplateCard = ({
           ) : (
             <Text>{cardText}</Text>
           )}
-
           <Flex sx={sx.actionsFlex}>
             <Button
               variant="link"
@@ -68,7 +67,7 @@ export const TemplateCard = ({
             >
               {verbiage.downloadText}
             </Button>
-            {verbiage.link && (
+            {verbiage.link && !mlrReport && templateName !== "MLR" && (
               <Button
                 sx={sx.formLink}
                 onClick={() => navigate(verbiage.link.route)}
