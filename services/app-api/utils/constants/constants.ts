@@ -33,7 +33,7 @@ export const reportTables = {
   MLR: process.env.MLR_REPORT_TABLE_NAME!,
 };
 
-export const reportFormBuckets = {
+export const reportBuckets = {
   MCPAR: process.env.MCPAR_FORM_BUCKET!,
   MLR: process.env.MLR_FORM_BUCKET!,
 };
