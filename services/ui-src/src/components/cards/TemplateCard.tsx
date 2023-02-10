@@ -67,17 +67,20 @@ export const TemplateCard = ({
             >
               {verbiage.downloadText}
             </Button>
-            {verbiage.link && !mlrReport && templateName !== "MLR" && (
-              <Button
-                sx={sx.formLink}
-                onClick={() => navigate(verbiage.link.route)}
-                rightIcon={
-                  <Image src={nextIcon} alt="Link Icon" height="1rem" />
-                }
-              >
-                {verbiage.link.text}
-              </Button>
-            )}
+            {verbiage.link &&
+              (!mlrReport && templateName === "MLR" ? (
+                <></>
+              ) : (
+                <Button
+                  sx={sx.formLink}
+                  onClick={() => navigate(verbiage.link.route)}
+                  rightIcon={
+                    <Image src={nextIcon} alt="Link Icon" height="1rem" />
+                  }
+                >
+                  {verbiage.link.text}
+                </Button>
+              ))}
           </Flex>
           <TemplateCardAccordion verbiage={verbiage.accordion} />
         </Flex>
