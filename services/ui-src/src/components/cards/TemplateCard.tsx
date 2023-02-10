@@ -1,3 +1,4 @@
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
@@ -29,6 +30,8 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
 
+  const mlrReport = useFlags()?.mlrReport;
+
   const cardText = verbiage.link
     ? verbiage.body?.available
     : verbiage.body?.unavailable;
@@ -44,7 +47,12 @@ export const TemplateCard = ({
         )}
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
-          <Text>{cardText}</Text>
+          {/* TODO: Remove LD flag once MLR is released */}
+          {!mlrReport && verbiage.title.includes("MLR") ? (
+            <Text>{verbiage.body?.unavailable}</Text>
+          ) : (
+            <Text>{cardText}</Text>
+          )}
 
           <Flex sx={sx.actionsFlex}>
             <Button
