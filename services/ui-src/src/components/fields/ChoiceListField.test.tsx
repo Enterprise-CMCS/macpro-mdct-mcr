@@ -3,7 +3,6 @@ import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
 import { ChoiceListField, ReportContext } from "components";
-import { formFieldFactory } from "utils";
 import { mockReportContext } from "utils/testing/setupJest";
 import { Choice, ReportStatus } from "types";
 import { getNestedChildFieldsOfUncheckedParent } from "./ChoiceListField";
@@ -28,10 +27,6 @@ const mockGetValues = (returnValue: any) =>
     ...mockRhfMethods,
     getValues: jest.fn().mockReturnValue(returnValue),
   }));
-
-jest.mock("utils/forms/forms", () => ({
-  formFieldFactory: jest.fn(),
-}));
 
 const mockChoices = [
   {
@@ -80,7 +75,7 @@ const mockDropdownOptions = [
 
 const mockNestedChildren = [
   {
-    id: "test-nested-child-text",
+    id: "Choice 3-otherText",
     type: "text",
   },
   {
@@ -166,25 +161,31 @@ describe("Test ChoiceListField component rendering", () => {
   });
 
   it("RadioField should render nested child fields for choices with children", () => {
+    // Render Initial State and choices
     render(RadioComponentWithNestedChildren);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
     expect(screen.getByText("Choice 3")).toBeVisible();
-    expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, {
-      disabled: false,
-      nested: true,
-    });
+
+    // Choice 3 has 2 children underneath it, we can get them to show by chosing that choice
+    const thirdRadioOption = screen.getByLabelText("Choice 3");
+    fireEvent.click(thirdRadioOption);
+    expect(screen.getByText("Choice 4")).toBeVisible();
+    expect(screen.getByText("Choice 5")).toBeVisible();
   });
 
   it("CheckboxField should render nested child fields for choices with children", async () => {
+    // Render Initial State and choices
     render(CheckboxComponentWithNestedChildren);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
     expect(screen.getByText("Choice 3")).toBeVisible();
-    expect(formFieldFactory).toHaveBeenCalledWith(mockNestedChildren, {
-      disabled: false,
-      nested: true,
-    });
+
+    // Choice 3 has 2 children underneath it, we can get them to show by chosing that choice
+    const thirdCheckbox = screen.getByLabelText("Choice 3");
+    fireEvent.click(thirdCheckbox);
+    expect(screen.getByText("Choice 4")).toBeVisible();
+    expect(screen.getByText("Choice 5")).toBeVisible();
   });
 });
 
