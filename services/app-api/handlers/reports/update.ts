@@ -15,7 +15,7 @@ import {
   error,
   buckets,
   reportTables,
-  reportFormBuckets,
+  reportBuckets,
 } from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
@@ -51,16 +51,14 @@ export const updateReport = handler(async (event, context) => {
 
           // get formTemplate from s3 bucket (for passed fieldData validation)
           const formTemplateParams = {
-            Bucket:
-              reportFormBuckets[reportType as keyof typeof reportFormBuckets],
+            Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
             Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           };
           const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
 
           // get existing fieldData from s3 bucket (for patching with passed data)
           const fieldDataParams = {
-            Bucket:
-              reportFormBuckets[reportType as keyof typeof reportFormBuckets],
+            Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
             Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           };
           const existingFieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
@@ -86,10 +84,7 @@ export const updateReport = handler(async (event, context) => {
                 ...validatedFieldData,
               };
               const fieldDataParams = {
-                Bucket:
-                  reportFormBuckets[
-                    reportType as keyof typeof reportFormBuckets
-                  ],
+                Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
                 Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
                 Body: JSON.stringify(fieldData),
                 ContentType: "application/json",

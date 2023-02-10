@@ -14,7 +14,7 @@ import {
   error,
   buckets,
   reportTables,
-  reportFormBuckets,
+  reportBuckets,
 } from "../../utils/constants/constants";
 
 export const createReport = handler(async (event, _context) => {
@@ -51,8 +51,7 @@ export const createReport = handler(async (event, _context) => {
       if (validatedFieldData) {
         // post validated field data to s3 bucket
         const fieldDataParams: S3Put = {
-          Bucket:
-            reportFormBuckets[reportType as keyof typeof reportFormBuckets],
+          Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
           Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           Body: JSON.stringify(validatedFieldData),
           ContentType: "application/json",
@@ -60,8 +59,7 @@ export const createReport = handler(async (event, _context) => {
         await s3Lib.put(fieldDataParams);
         // post form template to s3 bucket
         const formTemplateParams: S3Put = {
-          Bucket:
-            reportFormBuckets[reportType as keyof typeof reportFormBuckets],
+          Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
           Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           Body: JSON.stringify(formTemplate),
           ContentType: "application/json",
