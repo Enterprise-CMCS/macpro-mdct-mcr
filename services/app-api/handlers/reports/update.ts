@@ -54,7 +54,8 @@ export const updateReport = handler(async (event, context) => {
   // If current report exists, get formTemplateId and fieldDataId
   const currentReport = JSON.parse(fetchReportRequest.body);
   const reportType = currentReport.reportType;
-
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
   if (currentReport.archived) {
     return {
       status: StatusCodes.UNAUTHORIZED,
@@ -74,7 +75,7 @@ export const updateReport = handler(async (event, context) => {
   const { state } = event.pathParameters;
 
   const formTemplateParams = {
-    Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+    Bucket: reportBucket,
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   const formTemplate = (await s3Lib.get(formTemplateParams)) as Record<
@@ -84,7 +85,7 @@ export const updateReport = handler(async (event, context) => {
 
   // Get existing fieldData from s3 bucket (for patching with passed data)
   const fieldDataParams = {
-    Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+    Bucket: reportBucket,
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
   };
   const existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
@@ -125,7 +126,7 @@ export const updateReport = handler(async (event, context) => {
   };
 
   const updateFieldDataParams = {
-    Bucket: reportBuckets[reportType as keyof typeof reportBuckets],
+    Bucket: reportBucket,
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     Body: JSON.stringify(fieldData),
     ContentType: "application/json",
@@ -162,7 +163,7 @@ export const updateReport = handler(async (event, context) => {
 
   // Update record in report metadata table
   const reportMetadataParams = {
-    TableName: reportTables[reportType as keyof typeof reportTables],
+    TableName: reportTable,
     Item: {
       ...currentReport,
       ...validatedMetadata,
