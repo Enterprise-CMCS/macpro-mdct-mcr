@@ -93,8 +93,8 @@ describe("Test mlrReport feature flag functionality", () => {
     mockLDFlags.set({ mlrReport: false });
     render(mlrTemplateCardComponent);
     expect(
-      screen.getByText(mlrTemplateVerbiage.body.unavailable)
-    ).toBeVisible();
+      screen.queryByText(mlrTemplateVerbiage.link.text)
+    ).not.toBeInTheDocument();
   });
 });
 
