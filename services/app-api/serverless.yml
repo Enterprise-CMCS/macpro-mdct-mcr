@@ -188,6 +188,7 @@ functions:
                 state: true
   updateReport:
     handler: handlers/reports/update.updateReport
+    timeout: 30
     events:
       - http:
           path: reports/{state}/{id}
