@@ -10,7 +10,7 @@ import verbiage from "verbiage/pages/export";
 
 export const ExportedReportBanner = () => {
   const { reportBanner } = verbiage;
-  const printExperience = useFlags()?.printExperience;
+  const { printExperience } = useFlags();
 
   const onClickHandler = () => {
     if (printExperience === "prince") printPdf();
