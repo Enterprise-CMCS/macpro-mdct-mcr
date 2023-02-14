@@ -28,10 +28,7 @@ const mlrTemplateVerbiage = verbiage.cards.MLR;
 
 const mcparTemplateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard
-      templateName="testTemplate"
-      verbiage={mcparTemplateVerbiage}
-    />
+    <TemplateCard templateName="MCPAR" verbiage={mcparTemplateVerbiage} />
   </RouterWrappedComponent>
 );
 
@@ -43,16 +40,16 @@ const mlrTemplateCardComponent = (
 
 mockLDFlags.setDefault({ mlrReport: true });
 
-describe("Test TemplateCard", () => {
+describe("Test MCPAR TemplateCard", () => {
   beforeEach(() => {
     render(mcparTemplateCardComponent);
   });
 
-  test("TemplateCard is visible", () => {
+  test("MCPAR TemplateCard is visible", () => {
     expect(screen.getByText(mcparTemplateVerbiage.title)).toBeVisible();
   });
 
-  test("TemplateCard download button is visible and clickable", async () => {
+  test("MCPAR TemplateCard download button is visible and clickable", async () => {
     const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
     const downloadButton = screen.getByText(mcparTemplateVerbiage.downloadText);
     expect(downloadButton).toBeVisible();
@@ -62,17 +59,17 @@ describe("Test TemplateCard", () => {
     await waitFor(() => expect(apiSpy).toHaveBeenCalledTimes(1));
   });
 
-  test("TemplateCard image is visible on desktop", () => {
+  test("MCPAR TemplateCard image is visible on desktop", () => {
     const imageAltText = "Spreadsheet icon";
     expect(screen.getByAltText(imageAltText)).toBeVisible();
   });
 
-  test("TemplateCard link is visible on desktop", () => {
+  test("MCPAR TemplateCard link is visible on desktop", () => {
     const templateCardLink = mcparTemplateVerbiage.link.text;
     expect(screen.getByText(templateCardLink)).toBeVisible();
   });
 
-  test("TemplateCard navigates to next route on link click", async () => {
+  test("MCPAR TemplateCard navigates to next route on link click", async () => {
     const templateCardLink = screen.getByText(mcparTemplateVerbiage.link.text)!;
     await userEvent.click(templateCardLink);
     const expectedRoute = mcparTemplateVerbiage.link.route;

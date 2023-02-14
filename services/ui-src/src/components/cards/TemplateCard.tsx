@@ -30,11 +30,19 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
 
-  const { mlrReport } = useFlags();
+  const mlrReport = useFlags()?.mlrReport;
+
+  const enabledReports = {
+    MCPAR: true,
+    MLR: mlrReport,
+  };
+
+  const reportIndex = templateName as keyof typeof enabledReports;
 
   const cardText = verbiage.link
     ? verbiage.body?.available
     : verbiage.body?.unavailable;
+
   return (
     <Card {...cardprops}>
       <Flex sx={sx.root} {...props}>
@@ -47,11 +55,10 @@ export const TemplateCard = ({
         )}
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
-          {/* TODO: Remove LD flag once MLR is released */}
-          {!mlrReport && templateName === "MLR" ? (
-            <Text>{verbiage.body.unavailable}</Text>
-          ) : (
+          {enabledReports[reportIndex] ? (
             <Text>{cardText}</Text>
+          ) : (
+            <Text>{verbiage.body.unavailable}</Text>
           )}
           <Flex sx={sx.actionsFlex}>
             <Button
@@ -67,7 +74,7 @@ export const TemplateCard = ({
             >
               {verbiage.downloadText}
             </Button>
-            {verbiage.link && !mlrReport && templateName !== "MLR" && (
+            {enabledReports[reportIndex] && (
               <Button
                 sx={sx.formLink}
                 onClick={() => navigate(verbiage.link.route)}
