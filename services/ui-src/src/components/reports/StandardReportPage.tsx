@@ -20,6 +20,28 @@ export const StandardReportPage = ({ route }: Props) => {
     report!.formTemplate.basePath
   );
 
+  const onSubmit = async (enteredData: AnyObject) => {
+    if (userIsStateUser || userIsStateRep) {
+      setSubmitting(true);
+      const reportKeys = {
+        reportType: report?.reportType,
+        state: state,
+        id: report?.id,
+      };
+      const filteredFormData = filterFormData(enteredData, route.form.fields);
+      const dataToWrite = {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
+        fieldData: filteredFormData,
+      };
+      await updateReport(reportKeys, dataToWrite);
+      setSubmitting(false);
+    }
+    navigate(nextRoute);
+  };
+
   return (
     <Box data-testid="standard-page">
       {route.verbiage.intro && <ReportPageIntro text={route.verbiage.intro} />}
