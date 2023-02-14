@@ -97,6 +97,7 @@ export const DashboardPage = ({ reportType }: Props) => {
 
   const enterSelectedReport = async (report: ReportMetadataShape) => {
     const reportKeys: ReportKeys = {
+      reportType: report.reportType,
       state: report.state,
       id: report.id,
     };
@@ -151,6 +152,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       setArchivingReportId(report.id);
       setArchiving(true);
       const reportKeys = {
+        reportType: reportType,
         state: adminSelectedState,
         id: report.id,
       };
