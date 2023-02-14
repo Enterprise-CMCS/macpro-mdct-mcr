@@ -149,7 +149,7 @@ functions:
     handler: handlers/reports/fetch.fetchReport
     events:
       - http:
-          path: reports/{state}/{id}
+          path: reports/{reportType}/{state}/{id}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -162,7 +162,7 @@ functions:
     handler: handlers/reports/fetch.fetchReportsByState
     events:
       - http:
-          path: reports/{state}
+          path: reports/{reportType}/{state}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -176,7 +176,7 @@ functions:
     handler: handlers/reports/create.createReport
     events:
       - http:
-          path: reports/{state}
+          path: reports/{reportType}/{state}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -188,7 +188,7 @@ functions:
     handler: handlers/reports/update.updateReport
     events:
       - http:
-          path: reports/{state}/{id}
+          path: reports/{reportType}/{state}/{id}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}

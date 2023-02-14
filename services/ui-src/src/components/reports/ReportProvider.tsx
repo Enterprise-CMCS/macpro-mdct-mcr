@@ -57,18 +57,25 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
-  const fetchReportsByState = async (selectedState: string) => {
+  const fetchReportsByState = async (
+    reportType: string,
+    selectedState: string
+  ) => {
     try {
-      const result = await getReportsByState(selectedState);
+      const result = await getReportsByState(reportType, selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
     } catch (e: any) {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
 
-  const createReport = async (state: string, report: ReportShape) => {
+  const createReport = async (
+    reportType: string,
+    state: string,
+    report: ReportShape
+  ) => {
     try {
-      const result = await postReport(state, report);
+      const result = await postReport(reportType, state, report);
       setReport(result);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -93,6 +100,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const setReportSelection = async (report: ReportShape) => {
     setReport(report);
+    localStorage.setItem("selectedReportType", report.reportType);
     localStorage.setItem("selectedReport", report.id);
     localStorage.setItem(
       "selectedReportBasePath",
@@ -102,11 +110,13 @@ export const ReportProvider = ({ children }: Props) => {
 
   // on first mount, if on report page, fetch report
   useEffect(() => {
+    const reportType =
+      report?.reportType || localStorage.getItem("selectedReportType");
     const state =
       report?.state || userState || localStorage.getItem("selectedState");
     const id = report?.id || localStorage.getItem("selectedReport");
-    if (isReportFormPage(pathname) && state && id) {
-      fetchReport({ state, id });
+    if (isReportFormPage(pathname) && reportType && state && id) {
+      fetchReport({ reportType, state, id });
     }
   }, []);
 

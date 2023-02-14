@@ -48,6 +48,7 @@ export const DrawerReportPage = ({ route }: Props) => {
     if (userIsStateUser || userIsStateRep) {
       setSubmitting(true);
       const reportKeys = {
+        reportType: report?.reportType,
         state: state,
         id: report?.id,
       };

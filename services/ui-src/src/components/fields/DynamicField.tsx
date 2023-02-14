@@ -70,6 +70,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const deleteRecord = async (selectedRecord: EntityShape) => {
     if (userIsStateUser || userIsStateRep) {
       const reportKeys = {
+        reportType: report?.reportType,
         state: state,
         id: report?.id,
       };
