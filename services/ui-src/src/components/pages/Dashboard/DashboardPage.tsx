@@ -81,7 +81,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     if (!activeState) {
       navigate("/");
     }
-    fetchReportsByState(activeState);
+    fetchReportsByState(reportType, activeState);
     clearReportSelection();
   }, []);
 
