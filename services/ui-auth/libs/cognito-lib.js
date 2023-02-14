@@ -1,5 +1,7 @@
-var aws = require("aws-sdk");
-const COGNITO_CLIENT = new aws.CognitoIdentityServiceProvider({
+var {
+  CognitoIdentityProvider: CognitoIdentityServiceProvider,
+} = require("@aws-sdk/client-cognito-identity-provider");
+const COGNITO_CLIENT = new CognitoIdentityServiceProvider({
   apiVersion: "2016-04-19",
   region: "us-east-1",
 });

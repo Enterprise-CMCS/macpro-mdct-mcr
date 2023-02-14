@@ -1,16 +1,16 @@
 # Refer to the README.md file in within this service directory to configure all ssm parameters required for this service.
 service: ui
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   region: us-east-1
   iam:
     role:
-      path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
-      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, ""}
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
 
 plugins:
   - serverless-plugin-scripts
@@ -20,8 +20,8 @@ plugins:
 
 s3BucketHelper:
   loggingConfiguration:
-    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
-    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
+    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -31,10 +31,10 @@ custom:
       - main
       - val
       - production
-  route53HostedZoneId: ${ssm:/configuration/${self:custom.stage}/route53/hostedZoneId~true, ssm:/configuration/default/route53/hostedZoneId~true, ""}
-  route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName~true, ""}
-  cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn~true, ssm:/configuration/default/cloudfront/certificateArn~true, ""}
-  cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName~true, ""}
+  route53HostedZoneId: ${ssm:/configuration/${self:custom.stage}/route53/hostedZoneId, ssm:/configuration/default/route53/hostedZoneId, ""}
+  route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName, ""}
+  cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
+  cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName, ""}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
   scripts:

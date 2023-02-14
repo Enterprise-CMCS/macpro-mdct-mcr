@@ -16,6 +16,6 @@ tests/cypress/screenshots
 tests/cypress/downloads
 tests/cypress/package-lock.json
 package-lock.json
-.vscode/settings.json
+.vscode/
 *._S3rver_cors.xml
 services/database/local_buckets
