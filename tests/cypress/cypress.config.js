@@ -21,7 +21,7 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "http://localhost:3000/",
     experimentalSessionAndOrigin: true,
-    testIsolation: "off",
+    testIsolation: false,
     specPattern: ["tests/**/*.spec.js", "tests/**/*.feature"],
     supportFile: "support/index.js",
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
