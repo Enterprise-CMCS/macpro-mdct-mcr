@@ -81,7 +81,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     if (!activeState) {
       navigate("/");
     }
-    fetchReportsByState(activeState);
+    fetchReportsByState(reportType, activeState);
     clearReportSelection();
   }, []);
 
@@ -157,7 +157,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         id: report.id,
       };
       await updateReport(reportKeys, {});
-      await fetchReportsByState(activeState);
+      await fetchReportsByState(reportType, activeState);
       setArchivingReportId(undefined);
       setArchiving(false);
     }

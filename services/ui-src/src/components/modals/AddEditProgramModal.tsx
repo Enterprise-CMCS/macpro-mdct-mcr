@@ -91,7 +91,7 @@ export const AddEditProgramModal = ({
         formTemplate,
       });
     }
-    await fetchReportsByState(activeState);
+    await fetchReportsByState(reportType, activeState);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
