@@ -51,8 +51,8 @@ export const DropdownField = ({
     }
     return dropdownOptions;
   };
-
-  const defaultValue = formatOptions(options)[0];
+  const formattedOptions = formatOptions(options);
+  const defaultValue = formattedOptions[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
 
@@ -128,7 +128,7 @@ export const DropdownField = ({
         name={name}
         id={name}
         label={label || ""}
-        options={formatOptions(options)}
+        options={formattedOptions}
         hint={parsedHint}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}

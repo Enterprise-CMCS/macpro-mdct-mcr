@@ -118,9 +118,9 @@ describe("Test DateField autosave functionality", () => {
   test("Blanking field triggers form validation", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(dateFieldAutosavingComponent);
-    const dateFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testDateField']"
-    )!;
+    const dateFieldInput = result.getByRole("textbox", {
+      name: "test-date-field",
+    });
     await userEvent.click(dateFieldInput);
     await userEvent.clear(dateFieldInput);
     await userEvent.tab();
@@ -132,7 +132,7 @@ describe("Test DateField autosave functionality", () => {
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(dateFieldAutosavingComponent);
-    const dateField = screen.getByLabelText("test-date-field");
+    const dateField = screen.getByRole("textbox", { name: "test-date-field" });
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
@@ -156,7 +156,7 @@ describe("Test DateField autosave functionality", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(dateFieldComponent);
-    const dateField = screen.getByLabelText("test-date-field");
+    const dateField = screen.getByRole("textbox", { name: "test-date-field" });
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();

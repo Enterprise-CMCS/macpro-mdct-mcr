@@ -230,8 +230,8 @@ describe("Test Choicelist Hydration", () => {
     // Create the Checkbox Component
     const wrapper = render(CheckboxHydrationComponent);
 
-    const firstCheckbox = wrapper.getByLabelText("Choice 1");
-    const secondCheckbox = wrapper.getByLabelText("Choice 2");
+    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+    const secondCheckbox = wrapper.getByRole("checkbox", { name: "Choice 2" });
 
     // Confirm hydration successfully made the first value checked
     expect(firstCheckbox).toBeChecked();
@@ -247,8 +247,8 @@ describe("Test Choicelist Hydration", () => {
 
     // Create the Checkbox Component
     const wrapper = render(CheckboxHydrationComponent);
-    const firstCheckbox = wrapper.getByLabelText("Choice 1");
-    const secondCheckbox = wrapper.getByLabelText("Choice 2");
+    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+    const secondCheckbox = wrapper.getByRole("checkbox", { name: "Choice 2" });
 
     // Confirm hydration successfully made the first value checked
     expect(firstCheckbox).not.toBeChecked();
@@ -266,8 +266,8 @@ describe("Test Choicelist Hydration", () => {
     // Create the Radio Component
     const wrapper = render(RadioHydrationComponent);
 
-    const firstRadioOption = wrapper.getByLabelText("Choice 1");
-    const secondRadioOption = wrapper.getByLabelText("Choice 2");
+    const firstRadioOption = wrapper.getByRole("radio", { name: "Choice 1" });
+    const secondRadioOption = wrapper.getByRole("radio", { name: "Choice 2" });
 
     // Confirm hydration successfully made the first value checked
     expect(firstRadioOption).toBeChecked();
@@ -283,8 +283,8 @@ describe("Test Choicelist Hydration", () => {
 
     // Create the Radio Component
     const wrapper = render(RadioHydrationComponent);
-    const firstRadioOption = wrapper.getByLabelText("Choice 1");
-    const secondRadioOption = wrapper.getByLabelText("Choice 2");
+    const firstRadioOption = wrapper.getByRole("radio", { name: "Choice 1" });
+    const secondRadioOption = wrapper.getByRole("radio", { name: "Choice 2" });
 
     // Confirm hydration successfully made the first value checked
     expect(firstRadioOption).not.toBeChecked();
@@ -315,8 +315,8 @@ describe("Test Choicelist Autosaving Methods", () => {
     // Create the Checkbox Component
     const wrapper = render(CheckboxWithAutosaveEnabledComponent);
 
-    const firstCheckbox = wrapper.getByLabelText("Choice 1");
-    const secondCheckbox = wrapper.getByLabelText("Choice 2");
+    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+    const secondCheckbox = wrapper.getByRole("checkbox", { name: "Choice 2" });
 
     // Select the first Checkbox and check it
     expect(firstCheckbox).not.toBeChecked();
@@ -382,8 +382,8 @@ describe("Test Choicelist onChangeHandler", () => {
     // Create the Checkbox Component
     const wrapper = render(CheckboxComponent);
 
-    const firstCheckbox = wrapper.getByLabelText("Choice 1");
-    const secondCheckbox = wrapper.getByLabelText("Choice 2");
+    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+    const secondCheckbox = wrapper.getByRole("checkbox", { name: "Choice 2" });
 
     // Make sure default state is set correctly
     expect(firstCheckbox).not.toBeChecked();
@@ -443,8 +443,8 @@ describe("Test Choicelist onChangeHandler", () => {
     // Create the Radio Component
     const wrapper = render(RadioComponent);
 
-    const firstRadioOption = wrapper.getByLabelText("Choice 1");
-    const secondRadioOption = wrapper.getByLabelText("Choice 2");
+    const firstRadioOption = wrapper.getByRole("radio", { name: "Choice 1" });
+    const secondRadioOption = wrapper.getByRole("radio", { name: "Choice 2" });
 
     // Make sure default state is set correctly
     expect(firstRadioOption).not.toBeChecked();

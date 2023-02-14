@@ -121,7 +121,9 @@ describe("Test TextField component autosaves", () => {
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(textFieldAutosavingComponent);
-    const textField = screen.getByTestId("test-text-field-autosave");
+    const textField = screen.getByRole("textbox", {
+      name: "test-label",
+    });
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
@@ -146,7 +148,9 @@ describe("Test TextField component autosaves", () => {
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(textFieldAutosavingComponent);
-    const textField = screen.getByTestId("test-text-field-autosave");
+    const textField = screen.getByRole("textbox", {
+      name: "test-label",
+    });
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
@@ -170,7 +174,9 @@ describe("Test TextField component autosaves", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(textFieldComponent);
-    const textField = screen.getByTestId("test-text-field");
+    const textField = screen.getByRole("textbox", {
+      name: "test-label",
+    });
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
@@ -181,7 +187,9 @@ describe("Test TextField component autosaves", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(textFieldComponent);
-    const textField = screen.getByTestId("test-text-field");
+    const textField = screen.getByRole("textbox", {
+      name: "test-label",
+    });
     expect(textField).toBeVisible();
     await userEvent.clear(textField);
     await userEvent.tab();

@@ -261,7 +261,7 @@ describe("Test NumberField component autosaves", () => {
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(numberFieldAutosavingComponent);
-    const textField = screen.getByTestId("test-number-field-autosave");
+    const textField = screen.getByRole("textbox", { name: "test-label" });
     expect(textField).toBeVisible();
     await userEvent.type(textField, "1234");
     await userEvent.tab();
@@ -286,7 +286,7 @@ describe("Test NumberField component autosaves", () => {
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(numberFieldAutosavingComponent);
-    const textField = screen.getByTestId("test-number-field-autosave");
+    const textField = screen.getByRole("textbox", { name: "test-label" });
     expect(textField).toBeVisible();
     await userEvent.type(textField, "    ");
     await userEvent.tab();
@@ -310,7 +310,7 @@ describe("Test NumberField component autosaves", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(numberFieldComponent);
-    const textField = screen.getByTestId("test-number-field");
+    const textField = screen.getByRole("textbox", { name: "test-label" });
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
