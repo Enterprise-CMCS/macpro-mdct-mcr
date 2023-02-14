@@ -189,6 +189,7 @@ functions:
   updateReport:
     handler: handlers/reports/update.updateReport
     timeout: 30
+    memorySize: 2048
     events:
       - http:
           path: reports/{state}/{id}
