@@ -1,0 +1,17 @@
+{
+  "name": "carts-bigmac-streams",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "kafkajs": "^1.15.0",
+    "lodash": "^4.17.20",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "serverless-bundle": "^3.1.0",
+    "serverless-dotenv-plugin": "^3.0.0",
+    "serverless-online": "CMSgov/serverless-online",
+    "serverless-plugin-scripts": "^1.0.2",
+    "serverless-plugin-warmup": "^4.9.0"
+  }
+}
