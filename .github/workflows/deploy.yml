@@ -21,7 +21,8 @@ jobs:
       - name: set variable values
         run: ./.github/build-vars.sh set_values
         env:
-          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+          CODE_CLIMATE_ID_CMS_ORG: ${{ secrets.CODE_CLIMATE_ID_CMS_ORG }}
+          CODE_CLIMATE_ID_OPEN_SOURCE: ${{ secrets.CODE_CLIMATE_ID_OPEN_SOURCE }}
       - name: read .nvmrc
         id: node_version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
@@ -39,11 +40,20 @@ jobs:
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
       - name: run unit tests
         run: ./scripts/test-unit.sh
-      - name: publish test coverage to code climate
-        if: env.CODE_CLIMATE_ID != ''
+      - name: publish test results/coverage to code climate (cms organization)
+        if: env.CODE_CLIMATE_ID_CMS_ORG != ''
         uses: paambaati/codeclimate-action@v2.7.5
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID_CMS_ORG }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: publish test results/coverage to code climate (open source)
+        if: env.CODE_CLIMATE_ID_OPEN_SOURCE != ''
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID_OPEN_SOURCE }}
         with:
           coverageLocations: |
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
@@ -79,7 +89,8 @@ jobs:
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+          CODE_CLIMATE_ID_CMS_ORG: ${{ secrets.CODE_CLIMATE_ID_CMS_ORG }}
+          CODE_CLIMATE_ID_OPEN_SOURCE: ${{ secrets.CODE_CLIMATE_ID_OPEN_SOURCE }}
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v1
         with:
