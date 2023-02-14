@@ -20,7 +20,11 @@ import {
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  if (
+    !event?.pathParameters?.reportType! ||
+    !event?.pathParameters?.state! ||
+    !event?.pathParameters?.id!
+  ) {
     throw new Error(error.NO_KEY);
   } else if (
     !hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])

@@ -2,20 +2,33 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportBuckets,
+  reportTables,
+} from "../../utils/constants/constants";
 
 export const fetchReport = handler(async (event, _context) => {
   let status, body;
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  if (
+    !event?.pathParameters?.reportType! ||
+    !event?.pathParameters?.state! ||
+    !event?.pathParameters?.id!
+  ) {
     throw new Error(error.NO_KEY);
   }
+
+  const reportType = event.pathParameters.reportType;
   const state = event.pathParameters.state;
   const reportId = event.pathParameters.id;
 
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+
   // get current report metadata
   const reportMetadataParams = {
-    // TODO: chain other report types
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: reportTable,
     Key: { state, id: reportId },
   };
   try {
@@ -26,8 +39,7 @@ export const fetchReport = handler(async (event, _context) => {
 
     // get formTemplate from s3 bucket
     const formTemplateParams: S3Get = {
-      // TODO: chain other report types
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Bucket: reportBucket,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
     const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
@@ -35,8 +47,7 @@ export const fetchReport = handler(async (event, _context) => {
 
     // get fieldData from s3 bucket
     const fieldDataParams = {
-      // TODO: chain other report types
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Bucket: reportBucket,
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
     const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
@@ -52,13 +63,15 @@ export const fetchReport = handler(async (event, _context) => {
 });
 
 export const fetchReportsByState = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state!) {
+  if (!event?.pathParameters?.reportType! || !event?.pathParameters?.state!) {
     throw new Error(error.NO_KEY);
   }
 
+  const reportType = event.pathParameters.reportType;
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+
   let queryParams: any = {
-    // TODO: chain other report types
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,

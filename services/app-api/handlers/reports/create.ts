@@ -22,7 +22,10 @@ export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     status = StatusCodes.UNAUTHORIZED;
     body = error.UNAUTHORIZED;
-  } else if (!event?.pathParameters?.state!) {
+  } else if (
+    !event?.pathParameters?.reportType! ||
+    !event?.pathParameters?.state!
+  ) {
     throw new Error(error.NO_KEY);
   } else {
     const state: string = event.pathParameters.state;
