@@ -77,7 +77,7 @@ export const AddEditProgramModal = ({
       });
     } else {
       // create new report
-      await createReport(activeState, {
+      await createReport(reportType, activeState, {
         ...dataToWrite,
         metadata: {
           ...dataToWrite.metadata,
@@ -91,7 +91,7 @@ export const AddEditProgramModal = ({
         formTemplate,
       });
     }
-    await fetchReportsByState(reportType, activeState);
+    await fetchReportsByState(activeState);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
