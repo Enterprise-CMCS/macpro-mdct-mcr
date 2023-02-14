@@ -265,7 +265,12 @@ const sx = {
   },
   dynamicField: {
     alignItems: "flex-end",
-    width: "32rem",
+    ".desktop &": {
+      width: "32rem",
+    },
+    ".tablet &": {
+      width: "29rem",
+    },
     ".ds-u-clearfix": {
       width: "100%",
     },
