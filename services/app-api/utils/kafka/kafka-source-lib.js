@@ -3,7 +3,7 @@ const { Kafka } = require("kafkajs");
 
 const STAGE = process.env.STAGE;
 const kafka = new Kafka({
-  clientId: `carts-${STAGE}`,
+  clientId: `seds-${STAGE}`,
   brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
   retry: {
     initialRetryTime: 300,
@@ -28,16 +28,16 @@ signalTraps.map((type) => {
 
 class KafkaSourceLib {
   /*
-   *Event types:
-   *cmd – command; restful publish
-   *cdc – change data capture; record upsert/delete in data store
-   *sys – system event; send email, archive logs
-   *fct – fact; user activity, notifications, logs
-   *
-   *topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
-   *version = "some version";
-   *tables = [list of tables];
-   */
+  Event types:
+  cmd – command; restful publish
+  cdc – change data capture; record upsert/delete in data store
+  sys – system event; send email, archive logs
+  fct – fact; user activity, notifications, logs
+
+  topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
+  version = "some version";
+  tables = [list of tables];
+  */
 
   unmarshallOptions = {
     convertEmptyValues: true,
@@ -81,9 +81,9 @@ class KafkaSourceLib {
 
   topic(t) {
     if (this.version) {
-      return `${this.topicPrefix}${t}.${this.version}`;
+      return `${this.topicPrefix}.${t}.${this.version}`;
     } else {
-      return `${this.topicPrefix}${t}`;
+      return `${this.topicPrefix}.${t}`;
     }
   }
 
@@ -111,19 +111,15 @@ class KafkaSourceLib {
 
   async handler(event) {
     if (!connected) {
-      // eslint-disable-next-line no-console
-      console.log("Attempting connection...");
       await producer.connect();
       connected = true;
     }
-    // eslint-disable-next-line no-console
     console.log("Raw event", this.stringify(event, true));
 
     if (event.Records) {
       const outboundEvents = this.createOutboundEvents(event.Records);
 
       const topicMessages = Object.values(outboundEvents);
-      // eslint-disable-next-line no-console
       console.log(
         `Batch configuration: ${this.stringify(topicMessages, true)}`
       );
@@ -131,7 +127,6 @@ class KafkaSourceLib {
       await producer.sendBatch({ topicMessages });
     }
 
-    // eslint-disable-next-line no-console
     console.log(`Successfully processed ${event.Records.length} records.`);
   }
 }
