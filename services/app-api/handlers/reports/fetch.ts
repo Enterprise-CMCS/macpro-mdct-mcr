@@ -2,19 +2,23 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import { error, buckets, reportTables } from "../../utils/constants/constants";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 export const fetchReport = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  if (
+    !event?.pathParameters?.state! ||
+    !event?.pathParameters?.id! ||
+    !event?.pathParameters?.reportType
+  ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
 
-  const { state, id } = event.pathParameters;
-
+  const { state, id, reportType } = event.pathParameters;
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
   // Get current report metadata
   const reportMetadataParams = {
     TableName:
@@ -39,8 +43,7 @@ export const fetchReport = handler(async (event, _context) => {
 
     // Get form template from S3
     const formTemplateParams: S3Get = {
-      // TODO: chain other report types
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Bucket: reportBucket,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
 
@@ -93,16 +96,19 @@ interface DynamoFetchParams {
 }
 
 export const fetchReportsByState = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state!) {
+  if (!event?.pathParameters?.state! || !event?.pathParameters?.reportType!) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
 
+  const reportType = event.pathParameters.reportType;
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+
   const queryParams: any = {
     // TODO: chain other report types
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": event.pathParameters.state,

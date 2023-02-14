@@ -26,7 +26,7 @@ export const createReport = handler(async (event, _context) => {
   }
 
   // Return error if no state is passed.
-  if (!event.pathParameters?.state || !event.pathParameters) {
+  if (!event.pathParameters?.state) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,

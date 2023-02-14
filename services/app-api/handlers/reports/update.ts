@@ -17,7 +17,11 @@ import {
 } from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  if (
+    !event?.pathParameters?.state! ||
+    !event?.pathParameters?.id! ||
+    !event.pathParameters?.reportType!
+  ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
@@ -56,6 +60,7 @@ export const updateReport = handler(async (event, context) => {
   const reportType = currentReport.reportType;
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   const reportTable = reportTables[reportType as keyof typeof reportTables];
+
   if (currentReport.archived) {
     return {
       status: StatusCodes.UNAUTHORIZED,
