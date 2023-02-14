@@ -1,19 +1,16 @@
 import KafkaSourceLib from "../../../utils/kafka/kafka-source-lib";
 
 class PostKafkaData extends KafkaSourceLib {
-  topicPrefix = "aws.mdct.seds.cdc.age-ranges.v0";
+  // TODO: add handler to serverless
+  // TODO: update to typescript
+  // TODO: add triggers for db table &
+  // TODO: post all?
+  // TODO: create topics
+  // TODO: destroy topics
+  topicPrefix = "aws.mdct.mcr";
   version = "v0";
-  tables = [
-    "age-ranges",
-    "auth-user",
-    "form-answers",
-    "form-questions",
-    "form-templates",
-    "forms",
-    "state-forms",
-    "states",
-    "status",
-  ];
+  tables = ["mcpar-reports"];
+  buckets = ["mcpar-form"];
 }
 
 const postKafkaData = new PostKafkaData();
