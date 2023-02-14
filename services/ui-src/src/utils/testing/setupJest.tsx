@@ -399,6 +399,7 @@ export const mockReportJson = {
 };
 
 export const mockReportKeys = {
+  reportType: "mock-type",
   state: "AB",
   id: "mock-report-id",
 };
