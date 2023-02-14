@@ -171,7 +171,6 @@ functions:
               paths:
                 state: true
     timeout: 30
-
   createReport:
     handler: handlers/reports/create.createReport
     events:

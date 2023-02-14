@@ -19,6 +19,7 @@ import {
 } from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
+  console.log("karla", event.pathParameters);
   let status, body;
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     throw new Error(error.NO_KEY);
