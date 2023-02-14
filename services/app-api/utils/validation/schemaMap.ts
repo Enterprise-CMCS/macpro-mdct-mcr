@@ -94,7 +94,7 @@ export const urlOptional = () => url();
 export const date = () =>
   string().test({
     message: error.INVALID_DATE,
-    test: (value) => !!value?.match(dateFormatRegex) || value === "",
+    test: (value) => !!value?.match(dateFormatRegex) || value?.trim() === "",
   });
 
 export const dateOptional = () => date();

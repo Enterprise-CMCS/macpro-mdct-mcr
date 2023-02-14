@@ -557,120 +557,102 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
     jest.clearAllMocks();
   });
 
-  describe("Checkbox Choice that has no children", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  test("Checking the checkbox choice and the user has never filled the field out the form before, it returns empty", async () => {
+    const initialDatabaseValue: Choice[] = [];
+    const choices = [{ ...checkboxChoiceWithNoChildren, checked: true }];
+    const returnedValue = getNestedChildFieldsOfUncheckedParent(
+      choices,
+      initialDatabaseValue
+    );
 
-    test("Checking the choice and the user has never filled the field out the form before, it returns empty", async () => {
-      const initialDatabaseValue: Choice[] = [];
-      const choices = [{ ...checkboxChoiceWithNoChildren, checked: true }];
-      const returnedValue = getNestedChildFieldsOfUncheckedParent(
-        choices,
-        initialDatabaseValue
-      );
-
-      expect(returnedValue).toStrictEqual([]);
-    });
-
-    test("Unchecking the choice and the user HAS filled the field out the form before, it returns empty", async () => {
-      const initialDatabaseValue: Choice[] = [
-        {
-          key: "checkboxWithNoChild",
-          value: "State Medicaid agency staff",
-        },
-      ];
-      const choices = [checkboxChoiceWithNoChildren];
-      const returnedValue = getNestedChildFieldsOfUncheckedParent(
-        choices,
-        initialDatabaseValue
-      );
-
-      expect(returnedValue).toStrictEqual([]);
-    });
+    expect(returnedValue).toStrictEqual([]);
   });
 
-  describe("Checkbox Choice that has a radio choicelist as a child", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  test("Unchecking the checkbox choice and the user HAS filled the field out the form before, it returns empty", async () => {
+    const initialDatabaseValue: Choice[] = [
+      {
+        key: "checkboxWithNoChild",
+        value: "State Medicaid agency staff",
+      },
+    ];
+    const choices = [checkboxChoiceWithNoChildren];
+    const returnedValue = getNestedChildFieldsOfUncheckedParent(
+      choices,
+      initialDatabaseValue
+    );
 
-    test("Checking the choice and the user has never filled the field out the form before, it returns empty", async () => {
-      const initialDatabaseValue: Choice[] = [];
-      const choices = [{ ...checkboxChoiceWithRadioChild, checked: true }];
-      const returnedValue = getNestedChildFieldsOfUncheckedParent(
-        choices,
-        initialDatabaseValue
-      );
-
-      expect(returnedValue).toStrictEqual([]);
-    });
-
-    test("Unchecking the choice and the user HAS filled the field out the form before, it returns the child object", async () => {
-      const initialDatabaseValue: Choice[] = [
-        {
-          key: "checkboxWithRadioChild",
-          value: "Proprietary system(s)",
-        },
-      ];
-      const choices = [checkboxChoiceWithRadioChild];
-      const returnedValue = getNestedChildFieldsOfUncheckedParent(
-        choices,
-        initialDatabaseValue
-      );
-
-      const expectedReturn = [
-        {
-          name: "radioChild",
-          type: "radio",
-          value: [],
-          overrideCheck: true,
-        },
-      ];
-
-      expect(returnedValue).toStrictEqual(expectedReturn);
-    });
+    expect(returnedValue).toStrictEqual([]);
   });
 
-  describe("Checkbox Choice that has a textfield as a child", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  test("Checking the radio choice and the user has never filled the field out the form before, it returns empty", async () => {
+    const initialDatabaseValue: Choice[] = [];
+    const choices = [{ ...checkboxChoiceWithRadioChild, checked: true }];
+    const returnedValue = getNestedChildFieldsOfUncheckedParent(
+      choices,
+      initialDatabaseValue
+    );
 
-    test("Checking the choice and the user has never filled the field out the form before, it returns empty", async () => {
-      const initialDatabaseValue: Choice[] = [];
-      const choices = [{ ...checkboxChoiceWithTextFieldChild, checked: true }];
-      const returnedValue = getNestedChildFieldsOfUncheckedParent(
-        choices,
-        initialDatabaseValue
-      );
+    expect(returnedValue).toStrictEqual([]);
+  });
 
-      expect(returnedValue).toStrictEqual([]);
-    });
+  test("Unchecking the radio choice and the user HAS filled the field out the form before, it returns the child object", async () => {
+    const initialDatabaseValue: Choice[] = [
+      {
+        key: "checkboxWithRadioChild",
+        value: "Proprietary system(s)",
+      },
+    ];
+    const choices = [checkboxChoiceWithRadioChild];
+    const returnedValue = getNestedChildFieldsOfUncheckedParent(
+      choices,
+      initialDatabaseValue
+    );
 
-    test("Unchecking the choice and the user HAS filled the field out the form before, it returns the child object", async () => {
-      const initialDatabaseValue: Choice[] = [
-        {
-          key: "checkboxWithTextChild",
-          value: "Other, specify",
-        },
-      ];
-      const choices = [checkboxChoiceWithTextFieldChild];
-      const returnedValue = getNestedChildFieldsOfUncheckedParent(
-        choices,
-        initialDatabaseValue
-      );
+    const expectedReturn = [
+      {
+        name: "radioChild",
+        type: "radio",
+        value: [],
+        overrideCheck: true,
+      },
+    ];
 
-      const expectedReturn = [
-        {
-          name: "checkboxWithTextChild-otherText",
-          type: "textarea",
-          value: "",
-          overrideCheck: true,
-        },
-      ];
-      expect(returnedValue).toStrictEqual(expectedReturn);
-    });
+    expect(returnedValue).toStrictEqual(expectedReturn);
+  });
+
+  test("Checking the choice and the user has never filled the field out the form before, it returns empty", async () => {
+    const initialDatabaseValue: Choice[] = [];
+    const choices = [{ ...checkboxChoiceWithTextFieldChild, checked: true }];
+    const returnedValue = getNestedChildFieldsOfUncheckedParent(
+      choices,
+      initialDatabaseValue
+    );
+
+    expect(returnedValue).toStrictEqual([]);
+  });
+
+  test("Unchecking the choice and the user HAS filled the field out the form before, it returns the child object", async () => {
+    const initialDatabaseValue: Choice[] = [
+      {
+        key: "checkboxWithTextChild",
+        value: "Other, specify",
+      },
+    ];
+    const choices = [checkboxChoiceWithTextFieldChild];
+    const returnedValue = getNestedChildFieldsOfUncheckedParent(
+      choices,
+      initialDatabaseValue
+    );
+
+    const expectedReturn = [
+      {
+        name: "checkboxWithTextChild-otherText",
+        type: "textarea",
+        value: "",
+        overrideCheck: true,
+      },
+    ];
+    expect(returnedValue).toStrictEqual(expectedReturn);
   });
 });
 

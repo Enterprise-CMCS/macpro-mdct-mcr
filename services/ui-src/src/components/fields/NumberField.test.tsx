@@ -98,12 +98,8 @@ describe("Test Maskless NumberField", () => {
   });
 });
 
-describe("Test Comma-Separated Masked NumberField", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("onChangeHandler updates masked field value", async () => {
+describe("Test Masked NumberField", () => {
+  test("onChangeHandler updates comma masked field value", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(commaMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
@@ -122,13 +118,8 @@ describe("Test Comma-Separated Masked NumberField", () => {
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("12,055.99");
   });
-});
 
-describe("Test Currency Masked NumberField", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-  test("onChangeHandler updates masked field value", async () => {
+  test("onChangeHandler updates Currency masked field value", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(currencyMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
@@ -146,13 +137,8 @@ describe("Test Currency Masked NumberField", () => {
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("1,234");
   });
-});
 
-describe("Test Percentage Masked NumberField", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-  test("onChangeHandler updates masked field value", async () => {
+  test("onChangeHandler updates Percentage masked field value", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(percentageMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
@@ -171,12 +157,7 @@ describe("Test Percentage Masked NumberField", () => {
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("12,055.99");
   });
-});
 
-describe("Test Ratio Masked NumberField", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
   test("onChangeHandler updates ratio field value", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(ratioMaskedNumberFieldComponent);
