@@ -19,7 +19,7 @@ When("these form elements are edited:/filled:", function (dataTable) {
     switch (inputType) {
       case "singleCheckbox":
         if (inputValue == "true") input.check().blur();
-        else input.uncheck().blur();
+        else input.uncheck();
         break;
       case "radio":
         input.check(inputValue).blur();
