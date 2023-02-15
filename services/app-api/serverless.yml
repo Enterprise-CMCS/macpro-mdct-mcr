@@ -158,6 +158,7 @@ functions:
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
                 id: true
   fetchReportsByState:
@@ -171,6 +172,7 @@ functions:
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
     timeout: 30
   createReport:
@@ -184,6 +186,7 @@ functions:
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
   updateReport:
     handler: handlers/reports/update.updateReport
@@ -198,6 +201,7 @@ functions:
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
                 id: true
   fetchTemplate:
