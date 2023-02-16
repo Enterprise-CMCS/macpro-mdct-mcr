@@ -63,7 +63,9 @@ const mockedFormFields = [
 
 describe("Test formFieldFactory", () => {
   it("Correctly generates fields", () => {
-    const generatedFields = formFieldFactory(mockedFormFields, true);
+    const generatedFields = formFieldFactory(mockedFormFields, {
+      disabled: true,
+    });
 
     // Text field matches to component
     const topTextField: any = generatedFields.find(

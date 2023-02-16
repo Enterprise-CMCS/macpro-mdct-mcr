@@ -37,10 +37,7 @@ describe("Test CheckboxField component", () => {
 
   test("CheckboxField allows checking checkbox choices", async () => {
     const wrapper = render(CheckboxFieldComponent);
-    const checkboxContainers = wrapper.container.querySelectorAll(
-      ".ds-c-choice-wrapper"
-    );
-    const firstCheckbox = checkboxContainers[0].children[0] as HTMLInputElement;
+    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
     await userEvent.click(firstCheckbox);
     expect(mockSetValue).toHaveBeenCalledWith(
       "checkbox_choices",
