@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
 import { ReportContext } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
@@ -11,7 +10,7 @@ import { FormJson } from "types";
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
 
-export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
+export const ReportPageFooter = ({ form, ...props }: Props) => {
   const navigate = useNavigate();
   const { report } = useContext(ReportContext);
   const { previousRoute, nextRoute } = useFindRoute(
@@ -40,13 +39,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           {!form?.id || formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
-              rightIcon={
-                submitting ? (
-                  <></>
-                ) : (
-                  <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
-                )
-              }
+              rightIcon={<Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />}
             >
               Continue
             </Button>
@@ -54,14 +47,9 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             <Button
               form={form.id}
               type="submit"
-              sx={sx.button}
-              rightIcon={
-                !submitting ? (
-                  <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
-                ) : undefined
-              }
+              rightIcon={<Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />}
             >
-              {submitting ? <Spinner size="small" /> : "Save & continue"}
+              Continue
             </Button>
           )}
         </Flex>
@@ -73,7 +61,6 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
 
 interface Props {
   form?: FormJson;
-  submitting?: boolean;
   [key: string]: any;
 }
 
@@ -81,9 +68,6 @@ const sx = {
   footerBox: {
     marginTop: "3.5rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
-  },
-  button: {
-    width: "11.5rem",
   },
   buttonFlex: {
     justifyContent: "space-between",
