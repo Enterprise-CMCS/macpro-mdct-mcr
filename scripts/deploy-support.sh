@@ -22,7 +22,7 @@ deploy() {
   service=$1
   pushd services/$service
   install_deps
-  serverless deploy  --stage $stage
+  serverless deploy  --stage $stage --enforce-hash-update
   popd
 }
 
