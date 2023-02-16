@@ -174,6 +174,7 @@ export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
   reportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
+  lastSavedTime?: string | undefined;
 }
 
 export enum ReportStatus {
