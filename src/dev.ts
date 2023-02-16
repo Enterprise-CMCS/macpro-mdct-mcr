@@ -13,6 +13,11 @@ async function run_db_locally(runner: LabeledProcessRunner) {
     "services/database"
   );
   await runner.run_command_and_output(
+    "db svls doc",
+    ["serverless", "doctor"],
+    "services/database"
+  );
+  await runner.run_command_and_output(
     "db svls",
     ["serverless", "dynamodb", "install"],
     "services/database"
@@ -40,6 +45,11 @@ async function run_api_locally(runner: LabeledProcessRunner) {
     "services/app-api"
   );
   runner.run_command_and_output(
+    "api svls doc",
+    ["serverless", "doctor"],
+    "services/app-api"
+  );
+  runner.run_command_and_output(
     "api",
     [
       "serverless",
@@ -64,6 +74,11 @@ async function run_s3_locally(runner: LabeledProcessRunner) {
     "services/uploads"
   );
   runner.run_command_and_output(
+    "s3 svls doc",
+    ["serverless", "doctor"],
+    "services/uploads"
+  );
+  runner.run_command_and_output(
     "s3",
     ["serverless", "s3", "start", "--stage", "local"],
     "services/uploads"
@@ -75,6 +90,11 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
     "ui deps",
     ["yarn", "install"],
+    "services/ui-src"
+  );
+  runner.run_command_and_output(
+    "ui svls doc",
+    ["serverless", "doctor"],
     "services/ui-src"
   );
   await runner.run_command_and_output(
