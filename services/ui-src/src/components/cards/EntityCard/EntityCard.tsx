@@ -18,17 +18,25 @@ import unfinishedIcon from "assets/icons/icon_error_circle.png";
 
 export const EntityCard = ({
   entity,
+  entityIndex,
   entityType,
   formattedEntityData,
   verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openDrawer,
+  printVersion,
   ...props
 }: Props) => {
   const { report } = useContext(ReportContext);
   let entityStarted = false;
   let entityCompleted = false;
+  // get index and length of entities
+  const reportFieldDataEntities = report?.fieldData[entityType] || [];
+  const entitiesCount = `${entityIndex + 1} / ${
+    reportFieldDataEntities.length
+  }`;
+
   // any drawer-based field will do for this check
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
@@ -53,38 +61,70 @@ export const EntityCard = ({
   }
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
-      <Box sx={sx.contentBox}>
-        <Image
-          src={entityCompleted ? completedIcon : unfinishedIcon}
-          alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
-          sx={sx.statusIcon}
-        />
-        <button
-          type="button"
-          className="delete-entity-button"
-          onClick={() => openDeleteEntityModal(entity)}
-          data-testid="delete-entity-button"
-        >
+      <Box sx={sx.contentBox} className={printVersion ? "print-version" : ""}>
+        {printVersion && (
+          <Text sx={sx.entitiesCount} data-testid="entities-count">
+            {entitiesCount}
+          </Text>
+        )}
+        {!printVersion ? (
           <Image
-            src={deleteIcon}
-            alt={verbiage.deleteEntityButtonAltText}
-            sx={sx.deleteButtonImage}
+            src={entityCompleted ? completedIcon : unfinishedIcon}
+            alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
+            sx={sx.statusIcon}
           />
-        </button>
+        ) : (
+          <Box
+            className={
+              entityCompleted
+                ? "print-version-icon-div-complete"
+                : "print-version-icon-div-incomplete"
+            }
+            data-testid="print-status-indicator"
+          >
+            <Image
+              src={entityCompleted ? completedIcon : unfinishedIcon}
+              alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
+              sx={sx.printVersionIcon}
+            />
+            {entityCompleted ? (
+              <Text className="completed-text">Complete</Text>
+            ) : (
+              <Text className="error-text">Error</Text>
+            )}
+          </Box>
+        )}
+        {openDeleteEntityModal && (
+          <button
+            type="button"
+            className="delete-entity-button"
+            onClick={() => openDeleteEntityModal(entity)}
+            data-testid="delete-entity-button"
+          >
+            <Image
+              src={deleteIcon}
+              alt={verbiage.deleteEntityButtonAltText}
+              sx={sx.deleteButtonImage}
+            />
+          </button>
+        )}
         <EntityCardTopSection
           entityType={entityType}
           formattedEntityData={formattedEntityData}
+          printVersion={!!printVersion}
         />
-        <Button
-          variant="outline"
-          size="sm"
-          sx={sx.editButton}
-          leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
-          onClick={() => openAddEditEntityModal(entity)}
-        >
-          {verbiage.editEntityButtonText}
-        </Button>
-        {entityStarted || entityCompleted ? (
+        {openAddEditEntityModal && (
+          <Button
+            variant="outline"
+            size="sm"
+            sx={sx.editButton}
+            leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
+            onClick={() => openAddEditEntityModal(entity)}
+          >
+            {verbiage.editEntityButtonText}
+          </Button>
+        )}
+        {entityStarted || entityCompleted || printVersion ? (
           <EntityCardBottomSection
             entityType={entityType}
             verbiage={verbiage}
@@ -92,28 +132,33 @@ export const EntityCard = ({
               ...formattedEntityData,
               isPartiallyComplete: entityStarted && !entityCompleted,
             }}
+            printVersion={!!printVersion}
           />
         ) : (
           <Text sx={sx.unfinishedMessage}>
             {verbiage.entityUnfinishedMessage}
           </Text>
         )}
-        <Button
-          size="sm"
-          sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
-          variant={entityCompleted ? "outline" : "primary"}
-          onClick={() => openDrawer(entity)}
-          data-testid={`${entityCompleted ? "edit" : "enter"}-details-button`}
-          leftIcon={
-            entityCompleted ? (
-              <Image src={editIcon} alt="edit icon" height="1rem" />
-            ) : undefined
-          }
-        >
-          {entityCompleted
-            ? verbiage.editEntityDetailsButtonText
-            : verbiage.enterEntityDetailsButtonText}
-        </Button>
+        {openDrawer && (
+          <Button
+            size="sm"
+            sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
+            variant={entityCompleted ? "outline" : "primary"}
+            onClick={() => openDrawer(entity)}
+            data-testid={
+              entityCompleted ? "edit-details-button" : "enter-details-button"
+            }
+            leftIcon={
+              entityCompleted ? (
+                <Image src={editIcon} alt="edit icon" height="1rem" />
+              ) : undefined
+            }
+          >
+            {entityCompleted
+              ? verbiage.editEntityDetailsButtonText
+              : verbiage.enterEntityDetailsButtonText}
+          </Button>
+        )}
       </Box>
     </Card>
   );
@@ -121,26 +166,64 @@ export const EntityCard = ({
 
 interface Props {
   entity: EntityShape;
+  entityIndex: number;
   entityType: string;
   formattedEntityData: AnyObject;
   verbiage: AnyObject;
-  openAddEditEntityModal: Function;
-  openDeleteEntityModal: Function;
-  openDrawer: Function;
+  openAddEditEntityModal?: Function;
+  openDeleteEntityModal?: Function;
+  openDrawer?: Function;
+  printVersion?: boolean;
   [key: string]: any;
 }
 
 const sx = {
   contentBox: {
-    marginX: "1.25rem",
     position: "relative",
+    marginX: "1.25rem",
+    "&.print-version": {
+      paddingLeft: "2.5rem",
+    },
     ".delete-entity-button": {
       position: "absolute",
       right: "-2rem",
+      height: "1rem",
       ".mobile &": {
         right: "-1.5rem",
       },
     },
+    ".print-version-icon-div-complete": {
+      position: "absolute",
+      top: "0.25rem",
+      left: "-1.5rem",
+      marginLeft: "-0.75rem",
+      ".mobile &": {
+        left: "-1.5rem",
+      },
+    },
+    ".print-version-icon-div-incomplete": {
+      position: "absolute",
+      top: "0.25rem",
+      left: "-1.5rem",
+      marginLeft: "-0.25rem",
+      ".mobile &": {
+        left: "-1.5rem",
+      },
+    },
+    ".error-text": {
+      color: "palette.error_darker",
+      fontSize: ".75rem",
+      textAlign: "center",
+    },
+    ".completed-text": {
+      color: "green",
+      fontSize: ".75rem",
+      textAlign: "center",
+    },
+  },
+  printVersionIcon: {
+    height: "1rem",
+    margin: "0 auto",
   },
   statusIcon: {
     position: "absolute",
@@ -167,5 +250,14 @@ const sx = {
   openDrawerButton: {
     marginTop: "1rem",
     fontWeight: "normal",
+  },
+  entitiesCount: {
+    position: "absolute",
+    right: "-2rem",
+    fontSize: ".75rem",
+    color: "palette.gray_medium",
+    ".mobile &": {
+      right: "-1.5rem",
+    },
   },
 };

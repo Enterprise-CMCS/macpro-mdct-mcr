@@ -115,6 +115,9 @@ const sx = {
     top: 0,
     zIndex: "sticky",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    "@media print": {
+      display: "none",
+    },
   },
   usaBannerContainer: {
     width: "100%",
@@ -171,6 +174,9 @@ const sx = {
   checkIcon: {
     marginRight: "0.5rem",
     boxSize: "1rem",
+    ".mobile &": {
+      display: "none",
+    },
   },
   saveStatusText: {
     fontSize: "sm",

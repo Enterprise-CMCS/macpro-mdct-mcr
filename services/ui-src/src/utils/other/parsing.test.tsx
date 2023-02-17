@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { parseCustomHtml } from "./parsing";
 import DOMPurify from "dompurify";
+// utils
+import { parseCustomHtml } from "./parsing";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -34,11 +35,11 @@ const testElementArray = [
     content: mockHtmlString,
   },
 ];
+
 const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
 
 describe("Test parseCustomHtml", () => {
   const sanitizationSpy = jest.spyOn(DOMPurify, "sanitize");
-
   beforeEach(() => {
     render(testComponent);
   });

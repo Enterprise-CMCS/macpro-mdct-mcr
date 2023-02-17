@@ -1,7 +1,7 @@
 # Refer to the README.md file in within this service directory to configure all ssm parameters required for this service.
 service: uploads
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 plugins:
   - serverless-plugin-scripts
@@ -12,17 +12,17 @@ plugins:
 
 s3BucketHelper:
   loggingConfiguration:
-    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
-    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
-
+    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
+    
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   region: us-east-1
   iam:
     role:
-      path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
       statements:
         - Sid: ScanUploads
           Effect: "Allow"
@@ -31,7 +31,7 @@ provider:
             - s3:PutObjectTagging
             - s3:PutObjectVersionTagging
           Resource:
-            - !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}/*
+            - !Sub arn:aws:s3:::${self:service}-${self:custom.stage}-attachments-${AWS::AccountId}/*
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -54,6 +54,7 @@ custom:
     directory: ./local_buckets
     cors: ./local_cors.xml
     buckets:
+      - local-mcpar-form
       - local-uploads # This is a little silly, but I've spent enough time on it.
         # the serverless-s3-local plugin starts any bucket with a BucketName
         # the attachments bucket has no name, so we need to make one up on our own
@@ -64,7 +65,7 @@ layers:
 functions:
   avScan:
     handler: src/antivirus.lambdaHandleEvent
-    name: ${self:service.name}-${self:custom.stage}-avScan
+    name: ${self:service}-${self:custom.stage}-avScan
     timeout: 300 # 300 seconds = 5 minutes. Average scan is 25 seconds.
     memorySize: 3008
     layers:
@@ -89,7 +90,7 @@ resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: !Sub ${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}
+        BucketName: !Sub ${self:service}-${self:custom.stage}-attachments-${AWS::AccountId}
         BucketEncryption:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
@@ -207,11 +208,11 @@ resources:
         Action: lambda:InvokeFunction
         Principal: s3.amazonaws.com
         SourceAccount: !Sub ${AWS::AccountId}
-        SourceArn: !Sub arn:aws:s3:::${self:service.name}-${self:custom.stage}-attachments-${AWS::AccountId}
+        SourceArn: !Sub arn:aws:s3:::${self:service}-${self:custom.stage}-attachments-${AWS::AccountId}
     ClamDefsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: !Sub ${self:service.name}-${self:custom.stage}-avscan-${AWS::AccountId}
+        BucketName: !Sub ${self:service}-${self:custom.stage}-avscan-${AWS::AccountId}
         BucketEncryption:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:

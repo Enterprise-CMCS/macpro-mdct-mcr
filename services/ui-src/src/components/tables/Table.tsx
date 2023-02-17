@@ -10,6 +10,9 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
+// utils
+import { sanitizeAndParseHtml } from "utils";
+// types
 import { AnyObject, TableContentShape } from "types";
 
 export const Table = ({
@@ -50,7 +53,7 @@ export const Table = ({
             <Tr key={row[0] + index}>
               {row.map((cell: string, index: number) => (
                 <Td key={cell + index} sx={sx.tableCell}>
-                  {cell}
+                  {sanitizeAndParseHtml(cell)}
                 </Td>
               ))}
             </Tr>
@@ -83,7 +86,6 @@ const sx = {
     fontWeight: "semibold",
     textTransform: "none",
     letterSpacing: "normal",
-    color: "black",
     ".mobile &": {
       fontSize: "xs",
     },
@@ -92,9 +94,9 @@ const sx = {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
     fontWeight: "normal",
-    color: "black",
     ".mobile &": {
       fontSize: "xs",
     },
   },
+  ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed
 };

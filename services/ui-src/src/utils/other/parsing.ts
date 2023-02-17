@@ -9,7 +9,6 @@ import { CustomHtmlElement } from "types";
 
 // return created elements from custom html array
 export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
-  // TODO: consider setting default props here as needed
   const customElementMap: any = {
     externalLink: Link,
     internalLink: RouterLink,

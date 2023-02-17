@@ -52,6 +52,16 @@ export const enum StatusCodes {
   SERVER_ERROR = 500,
 }
 
+export interface S3Put extends S3Get {
+  Body: string;
+  ContentType: string;
+}
+
+export interface S3Get {
+  Bucket: string;
+  Key: string;
+}
+
 // USERS
 
 export const enum UserRoles {

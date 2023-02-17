@@ -121,8 +121,10 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
         fieldData: {
           [entityType]: newEntities,
         },
@@ -152,22 +154,25 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             {dashTitle}
           </Heading>
         )}
-        {reportFieldDataEntities.map((entity: EntityShape) => (
-          <EntityCard
-            key={entity.id}
-            entity={entity}
-            entityType={entityType}
-            verbiage={verbiage}
-            formattedEntityData={getFormattedEntityData(
-              entityType,
-              entity,
-              report?.fieldData
-            )}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openDeleteEntityModal={openDeleteEntityModal}
-            openDrawer={openDrawer}
-          />
-        ))}
+        {reportFieldDataEntities.map(
+          (entity: EntityShape, entityIndex: number) => (
+            <EntityCard
+              key={entity.id}
+              entity={entity}
+              entityIndex={entityIndex}
+              entityType={entityType}
+              verbiage={verbiage}
+              formattedEntityData={getFormattedEntityData(
+                entityType,
+                entity,
+                report?.fieldData
+              )}
+              openAddEditEntityModal={openAddEditEntityModal}
+              openDeleteEntityModal={openDeleteEntityModal}
+              openDrawer={openDrawer}
+            />
+          )
+        )}
         <AddEditEntityModal
           entityType={entityType}
           selectedEntity={selectedEntity}

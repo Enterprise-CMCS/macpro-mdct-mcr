@@ -3,8 +3,11 @@ import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
+import {
+  DeleteDynamicFieldRecordModal,
+  ReportContext,
+  TextField,
+} from "components";
 import { svgFilters } from "styles/theme";
 // utils
 import {
@@ -14,7 +17,7 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
-import { useUser } from "utils";
+import { autosaveFieldData, useUser } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
@@ -59,6 +62,31 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     setDisplayValues(newDisplayValues);
   };
 
+  // submit changed field data to database on blur
+  const onBlurHandler = async () => {
+    // trigger client-side validation so blank fields get client-side validation warning
+    form.trigger(name);
+    // prepare args for autosave
+    const fields = [
+      {
+        name,
+        type: "dynamic",
+        value: displayValues,
+        hydrationValue: hydrationValue,
+        overrideCheck: true,
+      },
+    ];
+    const reportArgs = { id: report?.id, updateReport };
+    const user = { userName: full_name, state };
+    // no need to check "autosave" prop; dynamic fields should always autosave
+    await autosaveFieldData({
+      form,
+      fields,
+      report: reportArgs,
+      user,
+    });
+  };
+
   const appendNewRecord = () => {
     const newEntity = { id: uuid(), name: "" };
     append(newEntity);
@@ -98,8 +126,10 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       );
 
       const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
         fieldData: {
           [name]: filteredEntities,
           sanctions: filteredSanctions,
@@ -132,8 +162,16 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
   const hydrationValue = props?.hydrate;
   useEffect(() => {
     if (hydrationValue?.length) {
-      setDisplayValues(hydrationValue);
-      append(hydrationValue);
+      // guard against autosave refresh error where user can change input values while save operation is still in progress (https://bit.ly/3kiE2eE)
+      const newInputAdded = displayValues?.length > hydrationValue?.length;
+      const existingInputChanged =
+        displayValues?.length === hydrationValue?.length &&
+        displayValues !== hydrationValue;
+      const valuesToSet =
+        newInputAdded || existingInputChanged ? displayValues : hydrationValue;
+      // set and append values
+      setDisplayValues(valuesToSet);
+      append(valuesToSet);
     } else {
       appendNewRecord();
     }
@@ -150,14 +188,16 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     <Box>
       {displayValues.map((field: EntityShape, index: number) => {
         return (
-          <Flex key={field.id} sx={sx.textField}>
-            <CmsdsTextField
+          <Flex key={field.id} sx={sx.dynamicField}>
+            <TextField
               id={field.id}
               name={`${name}[${index}]`}
               label={label}
-              errorMessage={fieldErrorState?.[index]?.name.message}
-              onChange={(e) => onChangeHandler(e)}
+              errorMessage={fieldErrorState?.[index]?.name?.message}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
               value={field.name}
+              sxOverride={sx.textField}
               {...props}
             />
             <Box sx={sx.removeBox}>
@@ -223,11 +263,19 @@ const sx = {
     height: "2.5rem",
     marginTop: "2rem",
   },
-  textField: {
+  dynamicField: {
     alignItems: "flex-end",
-    width: "32rem",
+    ".desktop &": {
+      width: "32rem",
+    },
+    ".tablet &": {
+      width: "29rem",
+    },
     ".ds-u-clearfix": {
       width: "100%",
     },
+  },
+  textField: {
+    width: "100%",
   },
 };

@@ -6,6 +6,7 @@ import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
   AppRoutes,
   Error,
+  ExportedReportBanner,
   Footer,
   Header,
   LoginCognito,
@@ -27,6 +28,7 @@ export const App = () => {
   const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
   const isReportPage = isReportFormPage(pathname);
+  const isExportPage = pathname.includes("/export");
 
   // fire tealium page view on route change
   useEffect(() => {
@@ -45,7 +47,8 @@ export const App = () => {
             sxOverride={sx.skipnav}
           />
           <ReportProvider>
-            <Header handleLogout={logout} />
+            {!isExportPage && <Header handleLogout={logout} />}
+            {isExportPage && <ExportedReportBanner />}
             <Container sx={sx.appContainer} data-testid="app-container">
               <ErrorBoundary FallbackComponent={Error}>
                 <AppRoutes />

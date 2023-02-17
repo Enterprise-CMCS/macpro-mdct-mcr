@@ -1,7 +1,7 @@
 import { S3 } from "aws-sdk";
 import handler from "../handler-lib";
 import { StatusCodes, TemplateKeys } from "../../utils/types/types";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 
 export const fetchTemplate = handler(async (event, _context) => {
   if (!event?.pathParameters?.templateName!) {

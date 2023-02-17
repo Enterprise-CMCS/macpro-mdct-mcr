@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { nested, endDate, schemaMap } from "./schemaMap";
 import { AnyObject } from "../types/types";
-import error from "../constants/constants";
+import { error } from "../constants/constants";
 
 // compare payload data against validation schema
 export const validateData = async (

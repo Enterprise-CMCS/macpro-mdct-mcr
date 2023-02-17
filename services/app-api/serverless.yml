@@ -1,7 +1,7 @@
 # Refer to the README.md file in within this service directory to configure all ssm parameters required for this service.
 service: app-api
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 package:
   individually: true
@@ -20,8 +20,8 @@ plugins:
 
 s3BucketHelper:
   loggingConfiguration:
-    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
-    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
+    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 custom:
   serverlessPluginTypescript:
@@ -33,10 +33,15 @@ custom:
       - main
       - val
       - production
+  dotenv:
+    path: ../../.env
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
+  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
+  princeApiHost: ${env:PRINCE_API_HOST, ssm:/${self:custom.stage}/prince_api_host, ssm:/default/prince_api_host}
+  princeApiPath: ${env:PRINCE_API_PATH, ssm:/${self:custom.stage}/prince_api_path, ssm:/default/prince_api_path}
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
@@ -48,15 +53,15 @@ custom:
       enabled: true
       prewarm: true
       events:
-        - schedule: rate(${ssm:/configuration/${self:custom.stage}/warmup/schedule~true, ssm:/configuration/default/warmup/schedule~true, "60 minutes"})
-      concurrency: ${ssm:/configuration/${self:custom.stage}/warmup/concurrency~true, ssm:/configuration/default/warmup/concurrency~true, 5}
+        - schedule: rate(60 minutes)
+      concurrency: 5
   authValue:
     main: aws_iam
     val: aws_iam
     production: aws_iam
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   region: us-east-1
   tracing:
     apiGateway: true
@@ -64,8 +69,8 @@ provider:
     restApi: true
   iam:
     role:
-      path: ${ssm:/configuration/${self:custom.stage}/iam/path~true, ssm:/configuration/default/iam/path~true, "/"}
-      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy~true, ssm:/configuration/default/iam/permissionsBoundaryPolicy~true, "{}"}
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
       statements:
         - Effect: "Allow"
           Action:
@@ -83,16 +88,27 @@ provider:
           Resource: "*"
         - Effect: "Allow"
           Action:
+            - execute-api:Invoke
+          Resource: "*"
+        - Effect: "Allow"
+          Action:
             - "s3:GetObject"
             - "s3:ListBucket"
+            - "s3:PutObject"
           Resource:
             - "arn:aws:s3:::${self:custom.templateBucket}"
             - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}/formTemplates/*"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}/fieldData/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
+    MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
     STAGE: ${self:custom.stage}
+    PRINCE_API_HOST: ${self:custom.princeApiHost}
+    PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
   fetchBanner:
@@ -156,6 +172,8 @@ functions:
             parameters:
               paths:
                 state: true
+    timeout: 30
+
   createReport:
     handler: handlers/reports/create.createReport
     events:
@@ -170,6 +188,8 @@ functions:
                 state: true
   updateReport:
     handler: handlers/reports/update.updateReport
+    timeout: 30
+    memorySize: 2048
     events:
       - http:
           path: reports/{state}/{id}
@@ -193,6 +213,15 @@ functions:
             parameters:
               paths:
                 templateName: true
+  printPdf:
+    handler: handlers/print/printPdf.printPdf
+    timeout: 30
+    events:
+      - http:
+          path: print_pdf
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
 resources:
   Resources:
     GatewayResponseDefault4XX:

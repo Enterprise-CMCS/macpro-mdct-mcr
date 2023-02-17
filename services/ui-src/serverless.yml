@@ -1,6 +1,6 @@
 service: ui-src
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 plugins:
   - serverless-plugin-scripts
@@ -11,12 +11,12 @@ plugins:
 
 s3BucketHelper:
   loggingConfiguration:
-    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
-    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
+    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   region: us-east-1
 
 custom:
@@ -34,6 +34,7 @@ custom:
   cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId}
   cognito_user_pool_client_id: ${cf:ui-auth-${self:custom.stage}.UserPoolClientId}
   cognito_user_pool_client_domain: ${cf:ui-auth-${self:custom.stage}.UserPoolClientDomain}
+  ldSdkClient: ${env:REACT_APP_LD_SDK_CLIENT, ssm:/${self:custom.stage}/launchdarkly/client, ssm:/default/launchdarkly/client}
   s3_attachments_bucket_region: ${cf:uploads-${self:custom.stage}.Region}
   s3_attachments_bucket_name: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   ui_s3_bucket_name: ${cf:ui-${self:custom.stage}.S3BucketName}
@@ -62,6 +63,7 @@ custom:
         export COGNITO_USER_POOL_CLIENT_DOMAIN=${self:custom.cognito_user_pool_client_domain}
         export COGNITO_REDIRECT_SIGNIN=${self:custom.application_endpoint_url}
         export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
+        export REACT_APP_LD_SDK_CLIENT=${self:custom.ldSdkClient}
         export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
         export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}
         export STAGE=${self:custom.stage}

@@ -1,5 +1,4 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { AnyObject } from "yup/lib/types";
 import { number, ratio } from "./schemas";
 
 describe("Schemas", () => {
@@ -38,7 +37,7 @@ describe("Schemas", () => {
   ];
 
   const testNumberSchema = (
-    schemaToUse: MixedSchema<any, AnyObject, any>,
+    schemaToUse: MixedSchema,
     testCases: Array<string>,
     expectedReturn: boolean
   ) => {

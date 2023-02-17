@@ -1,16 +1,19 @@
 service: database
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 plugins:
+  - serverless-plugin-typescript
   - serverless-dynamodb-local
   - serverless-stack-termination-protection
   - serverless-s3-bucket-helper
+  - serverless-plugin-scripts
+  - serverless-offline
 
 s3BucketHelper:
   loggingConfiguration:
-    destinationBucketName: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket~true, ssm:/configuration/default/s3/accessLogsBucket~true}
-    logFilePrefix: ${ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix~true, ssm:/configuration/default/s3/accessLogsPrefix~true}
+    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -20,8 +23,20 @@ custom:
       - main
       - val
       - production
+  dotenv:
+    path: ../../.env
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
+  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mcpar"}
+  dataTransformEnabled: ${env:DATATRANSFORM_ENABLED,ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
+  dataTransformUpdateEnabled: ${env.DATATRANSFORM_UPDATED_ENABLED:,ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        if [ ${self:custom.dataTransformEnabled} = "true" ];
+        then
+          serverless invoke --stage ${self:custom.stage} --function dataTransform
+        fi
   dynamodb:
     stages:
       - local
@@ -29,12 +44,42 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
-
+      seed: true
 provider:
   name: aws
   runtime: nodejs14.x
   region: us-east-1
-
+  iam:
+    role:
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "*"
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:ListBucket"
+            - "s3:PutObject"
+          Resource:
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}/formTemplates/*"
+            - "arn:aws:s3:::${self:custom.mcparFormBucket}/fieldData/*"
+functions:
+  dataTransform:
+    handler: handlers/dataTransform/dataTransform.handler
+    timeout: 120
+    environment:
+      DYNAMO_PREFIX: ${self:custom.stage}
+      DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
 resources:
   Resources:
     BannerTable:
@@ -71,6 +116,14 @@ resources:
           - AttributeName: id
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    McparFormBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub ${self:service}-${self:custom.stage}-mcpar
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
@@ -86,3 +139,7 @@ resources:
       Value: !GetAtt McparReportTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}
+    McparFormBucketName:
+      Value: !Ref McparFormBucket
+    McparFormBucketArn:
+      Value: !GetAtt McparFormBucket.Arn

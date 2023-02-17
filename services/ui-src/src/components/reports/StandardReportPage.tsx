@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box } from "@chakra-ui/react";
@@ -9,38 +9,16 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, useFindRoute, useUser } from "utils";
-import { AnyObject, StandardReportPageShape, ReportStatus } from "types";
+import { useFindRoute } from "utils";
+import { StandardReportPageShape } from "types";
 
 export const StandardReportPage = ({ route }: Props) => {
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { report } = useContext(ReportContext);
   const navigate = useNavigate();
   const { nextRoute } = useFindRoute(
     report!.formTemplate.flatRoutes!,
     report!.formTemplate.basePath
   );
-
-  const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
-      setSubmitting(true);
-      const reportKeys = {
-        state: state,
-        id: report?.id,
-      };
-      const filteredFormData = filterFormData(enteredData, route.form.fields);
-      const dataToWrite = {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-        fieldData: filteredFormData,
-      };
-      await updateReport(reportKeys, dataToWrite);
-      setSubmitting(false);
-    }
-    navigate(nextRoute);
-  };
 
   return (
     <Box data-testid="standard-page">
@@ -48,10 +26,11 @@ export const StandardReportPage = ({ route }: Props) => {
       <Form
         id={route.form.id}
         formJson={route.form}
-        onSubmit={onSubmit}
+        onSubmit={() => navigate(nextRoute)}
         formData={report?.fieldData}
+        autosave
       />
-      <ReportPageFooter submitting={submitting} form={route.form} />
+      <ReportPageFooter form={route.form} />
     </Box>
   );
 };

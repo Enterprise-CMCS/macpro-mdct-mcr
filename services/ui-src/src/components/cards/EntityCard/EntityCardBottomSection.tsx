@@ -6,74 +6,135 @@ import { AnyObject, ModalDrawerEntityTypes } from "types";
 export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
+  printVersion,
   verbiage,
 }: Props) => {
+  const notAnswered = (
+    <Text as="span" sx={sx.notAnswered}>
+      Not answered
+    </Text>
+  );
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (
         <>
-          <Box sx={sx.highlightContainer}>
+          <Box
+            sx={sx.highlightContainer}
+            className={
+              !formattedEntityData?.provider ||
+              !formattedEntityData.region ||
+              !formattedEntityData.population
+                ? "error"
+                : ""
+            }
+          >
             <Flex>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Provider</Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.provider}</Text>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "C2.V.4 "}Provider
+                </Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.provider ||
+                    (printVersion && notAnswered)}
+                </Text>
               </Box>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Region</Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.region}</Text>
+                <Text sx={sx.subtitle}>{printVersion && "C2.V.5 "}Region</Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.region || (printVersion && notAnswered)}
+                </Text>
               </Box>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Population</Text>
-                <Text sx={sx.subtext}>{formattedEntityData?.population}</Text>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "C2.V.6 "}Population
+                </Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.population ||
+                    (printVersion && notAnswered)}
+                </Text>
               </Box>
             </Flex>
           </Box>
-          <Text sx={sx.subtitle}>Monitoring Methods</Text>
-          <Text sx={sx.subtext}>
-            {formattedEntityData?.monitoringMethods.join(", ")}
+          <Text sx={sx.subtitle}>
+            {printVersion && "C2.V.7 "}Monitoring Methods
           </Text>
-          <Text sx={sx.subtitle}>Frequency of oversight methods</Text>
-          <Text sx={sx.subtext}>{formattedEntityData.methodFrequency}</Text>
+          <Text sx={sx.subtext}>
+            {formattedEntityData?.monitoringMethods?.join(", ") ||
+              (printVersion && notAnswered)}
+          </Text>
+          <Text sx={sx.subtitle}>
+            {printVersion && "C2.V.8 "}Frequency of oversight methods
+          </Text>
+          <Text sx={sx.subtext}>
+            {formattedEntityData.methodFrequency ||
+              (printVersion && notAnswered)}
+          </Text>
         </>
       );
     case ModalDrawerEntityTypes.SANCTIONS:
       return (
         <>
-          <Text sx={sx.subtitle}>Sanction Details</Text>
-          <Box sx={sx.highlightContainer}>
+          <Text sx={sx.subtitle}>Sanction details</Text>
+          <Box
+            sx={sx.highlightContainer}
+            className={
+              !formattedEntityData?.noncomplianceInstances ||
+              !formattedEntityData?.dollarAmount ||
+              !formattedEntityData?.assessmentDate ||
+              !formattedEntityData?.remediationDate ||
+              !formattedEntityData?.correctiveActionPlan
+                ? "error"
+                : ""
+            }
+          >
             <Flex>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Instances of non-compliance</Text>
-                <Text sx={sx.subtext}>
-                  {formattedEntityData?.noncomplianceInstances}
+                <Text sx={sx.subtitle}>
+                  {printVersion && "D3.VIII.5 "}Instances of non-compliance
                 </Text>
-              </Box>
-              <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Sanction amount</Text>
                 <Text sx={sx.subtext}>
-                  $ {formattedEntityData?.dollarAmount}
-                </Text>
-              </Box>
-            </Flex>
-            <Flex>
-              <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>Date assessed</Text>
-                <Text sx={sx.subtext}>
-                  {formattedEntityData?.assessmentDate}
+                  {formattedEntityData?.noncomplianceInstances ||
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  Remediation date non-compliance was corrected
+                  {printVersion && "D3.VIII.6 "}Sanction amount
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.remediationDate || ""}
+                  ${" "}
+                  {formattedEntityData?.dollarAmount ||
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
             </Flex>
-            <Text sx={sx.subtitle}>Corrective action plan</Text>
+            <Flex>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "D3.VIII.7 "}Date assessed
+                </Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.assessmentDate ||
+                    (printVersion && notAnswered)}
+                </Text>
+              </Box>
+              <Box sx={sx.highlightSection}>
+                <Text sx={sx.subtitle}>
+                  {printVersion && "D3.VIII.8 "}Remediation date non-compliance
+                  was corrected
+                </Text>
+                <Text sx={sx.subtext}>
+                  {formattedEntityData?.remediationDate ||
+                    (printVersion && notAnswered)}
+                </Text>
+              </Box>
+            </Flex>
+            <Text sx={sx.subtitle}>
+              {printVersion && "D3.VIII.9 "}Corrective action plan
+            </Text>
             <Text sx={sx.subtext}>
-              {formattedEntityData?.correctiveActionPlan}
+              {formattedEntityData?.correctiveActionPlan ||
+                (printVersion && notAnswered)}
             </Text>
           </Box>
         </>
@@ -84,7 +145,8 @@ export const EntityCardBottomSection = ({
           <Text sx={sx.resultsHeader}>Measure results</Text>
           {formattedEntityData?.isPartiallyComplete && (
             <Text sx={sx.missingResponseMessage}>
-              {verbiage?.entityMissingResponseMessage}
+              {verbiage?.entityMissingResponseMessage ||
+                (printVersion && notAnswered)}
             </Text>
           )}
           {formattedEntityData?.perPlanResponses?.map(
@@ -96,10 +158,14 @@ export const EntityCardBottomSection = ({
               >
                 <Flex>
                   <Box sx={sx.highlightSection}>
-                    <Text sx={sx.planTitle}>{plan.name}</Text>
-                    <Text sx={sx.planText}>
-                      {plan.response || verbiage?.entityEmptyResponseMessage}
-                    </Text>
+                    <Text sx={sx.subtitle}>{plan.name}</Text>
+                    {printVersion && !plan.response ? (
+                      notAnswered
+                    ) : (
+                      <Text sx={sx.subtext}>
+                        {plan.response || verbiage?.entityEmptyResponseMessage}
+                      </Text>
+                    )}
                   </Box>
                 </Flex>
               </Box>
@@ -115,6 +181,7 @@ export const EntityCardBottomSection = ({
 interface Props {
   entityType: string;
   formattedEntityData: AnyObject;
+  printVersion?: boolean;
   verbiage?: {
     entityMissingResponseMessage?: string;
     entityEmptyResponseMessage?: string;
@@ -132,7 +199,7 @@ const sx = {
     fontSize: "sm",
   },
   resultsHeader: {
-    marginBottom: "1rem",
+    marginY: "1rem",
     fontSize: "xs",
     fontWeight: "bold",
   },
@@ -142,8 +209,9 @@ const sx = {
     color: "palette.error_dark",
   },
   highlightContainer: {
+    marginTop: "1rem",
     marginBottom: "1rem",
-    padding: "1rem 1.5rem",
+    padding: "0 1.5rem 1rem",
     background: "palette.secondary_lightest",
     borderRadius: "3px",
     "&.error": {
@@ -160,12 +228,8 @@ const sx = {
       marginLeft: 0,
     },
   },
-  planTitle: {
-    marginBottom: ".25rem",
+  notAnswered: {
     fontSize: "sm",
-    fontWeight: "bold",
-  },
-  planText: {
-    fontSize: "sm",
+    color: "palette.error_darker",
   },
 };

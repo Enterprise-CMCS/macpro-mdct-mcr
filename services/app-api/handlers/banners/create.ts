@@ -3,7 +3,7 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import { validateData } from "../../utils/validation/validation";
-import error from "../../utils/constants/constants";
+import { error } from "../../utils/constants/constants";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 
 export const createBanner = handler(async (event, _context) => {

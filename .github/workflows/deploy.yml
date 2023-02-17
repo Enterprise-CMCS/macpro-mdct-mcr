@@ -22,7 +22,6 @@ jobs:
         run: ./.github/build-vars.sh set_values
         env:
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-          CODE_CLIMATE_CMS_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
       - name: read .nvmrc
         id: node_version
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
@@ -45,15 +44,6 @@ jobs:
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-        with:
-          coverageLocations: |
-            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-      - name: publish test coverage to code climate CMS org view
-        if: env.CODE_CLIMATE_CMS_ID != ''
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
         with:
           coverageLocations: |
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
@@ -90,7 +80,6 @@ jobs:
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-          CODE_CLIMATE_CMS_ID: ${{ secrets.CODE_CLIMATE_CMS_ID }}
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -147,9 +136,10 @@ jobs:
         uses: cypress-io/github-action@v4.2.0
         with:
           working-directory: tests/cypress
-          spec: tests/e2e/*.spec.js
+          spec: |
+            tests/e2e/*.spec.js
+            tests/e2e/**/*.feature
           browser: chrome
-          headless: true
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
           env: true
@@ -163,7 +153,9 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: tests/cypress/screenshots/
+          path: |
+            tests/cypress/screenshots/
+            tests/cypress/videos/
 
   a11y-tests:
     name: E2E A11y Tests
@@ -178,7 +170,6 @@ jobs:
           working-directory: tests/cypress
           spec: tests/accessibility/*.feature
           browser: chrome
-          headless: true
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
           env: true
@@ -192,4 +183,6 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: tests/cypress/screenshots/
+          path: |
+            tests/cypress/screenshots/
+            tests/cypress/videos/

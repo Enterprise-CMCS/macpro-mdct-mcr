@@ -1,4 +1,8 @@
 export default {
+  print: {
+    printPageUrl: "/mcpar/export",
+    printButtonText: "Print",
+  },
   review: {
     intro: {
       header: "Review & Submit",

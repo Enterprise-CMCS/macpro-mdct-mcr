@@ -10,24 +10,23 @@ interface Props {
 
 export const ApiProvider = ({ children }: Props) => {
   useEffect(() => {
+    const endpoints = [
+      {
+        name: "mcr",
+        endpoint: config.apiGateway.URL,
+        region: config.apiGateway.REGION,
+      },
+    ];
+    if (config.DEV_API_URL) {
+      // Add dev endpoint for pdf printing access locally
+      endpoints.push({
+        name: "mcrDev",
+        endpoint: config.DEV_API_URL,
+        region: "us-east-1",
+      });
+    }
     API.configure({
-      endpoints: [
-        {
-          name: "banners",
-          endpoint: config.apiGateway.URL,
-          region: config.apiGateway.REGION,
-        },
-        {
-          name: "reports",
-          endpoint: config.apiGateway.URL,
-          region: config.apiGateway.REGION,
-        },
-        {
-          name: "templates",
-          endpoint: config.apiGateway.URL,
-          region: config.apiGateway.REGION,
-        },
-      ],
+      endpoints: endpoints,
     });
   }, []);
 

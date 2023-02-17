@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
-import { parseCustomHtml } from "utils";
+import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
@@ -14,26 +15,30 @@ export const TextField = ({
   placeholder,
   sxOverride,
   nested,
+  autosave,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState<string>("");
+  const defaultValue = "";
+  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const { full_name, state } = useUser().user ?? {};
+  const { report, updateReport } = useContext(ReportContext);
 
   // get form context and register field
   const form = useFormContext();
   form.register(name);
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue = props?.hydrate || defaultValue;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
     }
-    // else if hydration value exists, set as display value
+    // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: true });
+      form.setValue(name, hydrationValue);
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -42,6 +47,27 @@ export const TextField = ({
     const { name, value } = event.target;
     setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
+  };
+
+  // if should autosave, submit field data on blur
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    const { value } = event.target;
+    // if field is blank, trigger client-side field validation error
+    if (!value.trim()) form.trigger(name);
+    // submit field data to database
+    if (autosave) {
+      const fields = [
+        { name, type: "text", value, hydrationValue, defaultValue },
+      ];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = { userName: full_name, state };
+      await autosaveFieldData({
+        form,
+        fields,
+        report: reportArgs,
+        user,
+      });
+    }
   };
 
   // prepare error message, hint, and classes
@@ -60,6 +86,7 @@ export const TextField = ({
         hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
+        onBlur={(e) => onBlurHandler(e)}
         errorMessage={errorMessage}
         value={displayValue}
         {...props}
@@ -75,5 +102,6 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
+  autosave?: boolean;
   [key: string]: any;
 }

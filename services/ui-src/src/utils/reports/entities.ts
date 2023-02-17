@@ -25,7 +25,7 @@ const getReportingRateType = (entity: EntityShape | undefined) => {
 
 const getReportingPeriod = (entity: EntityShape | undefined) => {
   return entity?.qualityMeasure_reportingPeriod?.[0]?.value === "No"
-    ? `${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`
+    ? `No, ${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`
     : entity?.qualityMeasure_reportingPeriod?.[0]?.value;
 };
 

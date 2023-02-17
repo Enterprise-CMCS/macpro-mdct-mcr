@@ -2,7 +2,7 @@
   "type": "MCPAR",
   "name": "MCPAR Report Submission Form",
   "basePath": "/mcpar",
-  "version": "MCPAR_2022-11-21",
+  "version": "MCPAR_2023-01-19",
   "adminDisabled": true,
   "routes": [
     {
@@ -582,13 +582,16 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.I.1 Program contract",
-                  "hint": "Enter the title and date of the contract between the state and plans participating in the managed care program."
+                  "hint": "Enter the title of the contract between the state and plans participating in the managed care program."
                 }
               },
               {
                 "id": "program_contractDate",
                 "type": "date",
-                "validation": "date"
+                "validation": "date",
+                "props": {
+                  "hint": "Enter the date of the contract between the state and plans participating in the managed care program."
+                }
               },
               {
                 "id": "program_contractUrl",
@@ -3191,11 +3194,11 @@
               {
                 "id": "plan_programIntegrityReferralsPerThousandBeneficiaries",
                 "type": "number",
-                "validation": "number",
+                "validation": "ratio",
                 "props": {
                   "label": "D1.X.8 Ratio of program integrity referral to the state",
                   "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
-                  "mask": "comma-separated"
+                  "mask": "ratio"
                 }
               },
               {

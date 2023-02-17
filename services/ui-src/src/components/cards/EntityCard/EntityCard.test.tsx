@@ -34,24 +34,56 @@ const {
 const UnfinishedAccessMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockAccessMeasuresEntity}
+    entityIndex={0}
     entityType="mock-entity-type"
     formattedEntityData={mockUnfinishedAccessMeasuresFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
+    printVersion={false}
+  />
+);
+
+const UnfinishedAccessMeasuresEntityCardPrintComponent = (
+  <EntityCard
+    entity={mockAccessMeasuresEntity}
+    entityIndex={0}
+    entityType="mock-entity-type"
+    formattedEntityData={mockUnfinishedAccessMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    printVersion={true}
   />
 );
 
 const AccessMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockAccessMeasuresEntity}
+    entityIndex={0}
     entityType="accessMeasures"
     formattedEntityData={mockCompletedAccessMeasuresFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
     openDrawer={mockOpenDrawer}
+    printVersion={false}
+  />
+);
+
+const AccessMeasuresEntityCardPrintComponent = (
+  <EntityCard
+    entity={mockAccessMeasuresEntity}
+    entityIndex={0}
+    entityType="accessMeasures"
+    formattedEntityData={mockCompletedAccessMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+    printVersion={true}
   />
 );
 
@@ -127,11 +159,48 @@ describe("Test AccessMeasures EntityCard accessibility", () => {
   });
 });
 
+describe("Test Completed Print Version EntityCard", () => {
+  beforeEach(() => {
+    render(AccessMeasuresEntityCardPrintComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard in print version displays entity count", () => {
+    expect(screen.getByTestId("entities-count")).toBeVisible();
+  });
+
+  test("EntityCard in print version displays print version status indicator", () => {
+    expect(screen.getByTestId("print-status-indicator")).toBeVisible();
+  });
+
+  test("Finished EntityCard in print version displays completed ", () => {
+    expect(screen.getByText("Complete")).toBeVisible();
+  });
+});
+
+describe("Test Uncompleted Print Version EntityCard", () => {
+  beforeEach(() => {
+    render(UnfinishedAccessMeasuresEntityCardPrintComponent);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("EntityCard in print version displays error", () => {
+    expect(screen.getByText("Error")).toBeVisible();
+  });
+});
+
 // QUALITY MEASURES
 
 const UnstartedQualityMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockQualityMeasuresEntity}
+    entityIndex={0}
     entityType="qualityMeasures"
     formattedEntityData={mockQualityMeasuresFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
@@ -144,6 +213,7 @@ const UnstartedQualityMeasuresEntityCardComponent = (
 const HalfCompletedQualityMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockHalfCompletedQualityMeasuresEntity}
+    entityIndex={0}
     entityType="qualityMeasures"
     formattedEntityData={mockHalfCompletedQualityMeasuresFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
@@ -156,6 +226,7 @@ const HalfCompletedQualityMeasuresEntityCardComponent = (
 const CompletedQualityMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockCompletedQualityMeasuresEntity}
+    entityIndex={0}
     entityType="qualityMeasures"
     formattedEntityData={mockCompletedQualityMeasuresFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
@@ -270,6 +341,7 @@ describe("Test QualityMeasures EntityCard accessibility", () => {
 const UnfinishedSanctionsEntityCardComponent = (
   <EntityCard
     entity={mockSanctionsEntity}
+    entityIndex={0}
     entityType="sanctions"
     formattedEntityData={mockUnfinishedSanctionsFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
@@ -282,6 +354,7 @@ const UnfinishedSanctionsEntityCardComponent = (
 const SanctionsEntityCardComponent = (
   <EntityCard
     entity={mockSanctionsEntity}
+    entityIndex={0}
     entityType="sanctions"
     formattedEntityData={mockCompletedSanctionsFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
