@@ -607,6 +607,7 @@ export const mockReportContext = {
   report: mockReport,
   reportsByState: mockReportsByState,
   errorMessage: "",
+  lastSavedTime: "1:58 PM",
 };
 
 // ENTITIES

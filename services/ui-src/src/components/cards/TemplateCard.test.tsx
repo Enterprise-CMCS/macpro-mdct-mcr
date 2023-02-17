@@ -5,7 +5,7 @@ import { act } from "react-dom/test-utils";
 // components
 import { TemplateCard } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { mockLDFlags, RouterWrappedComponent } from "utils/testing/setupJest";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
@@ -23,26 +23,35 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const templateVerbiage = verbiage.cards.MCPAR;
+const mcparTemplateVerbiage = verbiage.cards.MCPAR;
+const mlrTemplateVerbiage = verbiage.cards.MLR;
 
-const templateCardComponent = (
+const mcparTemplateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard templateName="testTemplate" verbiage={templateVerbiage} />
+    <TemplateCard templateName="MCPAR" verbiage={mcparTemplateVerbiage} />
   </RouterWrappedComponent>
 );
 
-describe("Test TemplateCard", () => {
+const mlrTemplateCardComponent = (
+  <RouterWrappedComponent>
+    <TemplateCard templateName="MLR" verbiage={mlrTemplateVerbiage} />
+  </RouterWrappedComponent>
+);
+
+mockLDFlags.setDefault({ mlrReport: true });
+
+describe("Test MCPAR TemplateCard", () => {
   beforeEach(() => {
-    render(templateCardComponent);
+    render(mcparTemplateCardComponent);
   });
 
-  test("TemplateCard is visible", () => {
-    expect(screen.getByText(templateVerbiage.title)).toBeVisible();
+  test("MCPAR TemplateCard is visible", () => {
+    expect(screen.getByText(mcparTemplateVerbiage.title)).toBeVisible();
   });
 
-  test("TemplateCard download button is visible and clickable", async () => {
+  test("MCPAR TemplateCard download button is visible and clickable", async () => {
     const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
-    const downloadButton = screen.getByText(templateVerbiage.downloadText);
+    const downloadButton = screen.getByText(mcparTemplateVerbiage.downloadText);
     expect(downloadButton).toBeVisible();
     await act(async () => {
       await userEvent.click(downloadButton);
@@ -50,27 +59,45 @@ describe("Test TemplateCard", () => {
     await waitFor(() => expect(apiSpy).toHaveBeenCalledTimes(1));
   });
 
-  test("TemplateCard image is visible on desktop", () => {
+  test("MCPAR TemplateCard image is visible on desktop", () => {
     const imageAltText = "Spreadsheet icon";
     expect(screen.getByAltText(imageAltText)).toBeVisible();
   });
 
-  test("TemplateCard link is visible on desktop", () => {
-    const templateCardLink = templateVerbiage.link.text;
+  test("MCPAR TemplateCard link is visible on desktop", () => {
+    const templateCardLink = mcparTemplateVerbiage.link.text;
     expect(screen.getByText(templateCardLink)).toBeVisible();
   });
 
-  test("TemplateCard navigates to next route on link click", async () => {
-    const templateCardLink = screen.getByText(templateVerbiage.link.text)!;
+  test("MCPAR TemplateCard navigates to next route on link click", async () => {
+    const templateCardLink = screen.getByText(mcparTemplateVerbiage.link.text)!;
     await userEvent.click(templateCardLink);
-    const expectedRoute = templateVerbiage.link.route;
+    const expectedRoute = mcparTemplateVerbiage.link.route;
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
+  });
+});
+
+describe("Test mlrReport feature flag functionality", () => {
+  test("if mlrReport flag is true, MLR available verbiage should be visible", async () => {
+    mockLDFlags.set({ mlrReport: true });
+    render(mlrTemplateCardComponent);
+    expect(screen.getByText(mlrTemplateVerbiage.body.available)).toBeVisible();
+    const enterMlrButton = screen.getByText(mlrTemplateVerbiage.link.text);
+    expect(enterMlrButton).toBeVisible();
+  });
+
+  test("if mlrReport flag is false, MLR available verbiage should not be visible", async () => {
+    mockLDFlags.set({ mlrReport: false });
+    render(mlrTemplateCardComponent);
+    expect(
+      screen.queryByText(mlrTemplateVerbiage.link.text)
+    ).not.toBeInTheDocument();
   });
 });
 
 describe("Test TemplateCard accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(templateCardComponent);
+    const { container } = render(mcparTemplateCardComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
