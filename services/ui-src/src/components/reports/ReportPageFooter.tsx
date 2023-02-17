@@ -45,7 +45,6 @@ export const ReportPageFooter = ({ form, ...props }: Props) => {
             </Button>
           ) : (
             <Button
-              onClick={() => navigate(nextRoute)}
               form={form.id}
               type="submit"
               rightIcon={<Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />}
@@ -54,7 +53,6 @@ export const ReportPageFooter = ({ form, ...props }: Props) => {
             </Button>
           )}
         </Flex>
-        {/* TODO: Add Prince Print Button */}
       </Box>
     </Box>
   );
