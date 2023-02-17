@@ -1,10 +1,10 @@
 import { fetchReport } from "./fetch";
-import { updateReport } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import { mockReport } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
+import { archiveReport } from "./archive";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -57,8 +57,7 @@ describe("Test archiveReport method", () => {
       },
       body: JSON.stringify(mockReport),
     });
-    const res: any = await updateReport(archiveEvent, null);
-
+    const res: any = await archiveReport(archiveEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.archived).toBe(true);
@@ -73,7 +72,7 @@ describe("Test archiveReport method", () => {
       },
       body: undefined!,
     });
-    const res = await updateReport(archiveEvent, null);
+    const res = await archiveReport(archiveEvent, null);
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
