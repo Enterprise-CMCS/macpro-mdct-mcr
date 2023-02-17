@@ -33,7 +33,7 @@ Feature: MCPAR E2E Form Submission
 #             | contactName         | text | Mary Poppins                              |
 #             | contactEmailAddress | text | aspoonfullofsuger@themedicinegoesdown.com |
 #         And these form elements are prefilled and disabled:
-#             | stateName | text | Minnesota |
+#             | stateName | text | District of Columbia |
 #         And I click the "Save & continue" button
 
 #         Then the "/mcpar/program-information/reporting-period" page is loaded
@@ -713,7 +713,7 @@ Feature: MCPAR E2E Form Submission
 #     Given I am logged in as an admin user
 #     And I am on "/mcpar"
 #     And these form elements are filled:
-#         | state | dropdown | Minnesota |
+#         | state | dropdown | District of Columbia |
 
 #     When I click the "Go to Report Dashboard" button
 #     And I click the "Archive" button
