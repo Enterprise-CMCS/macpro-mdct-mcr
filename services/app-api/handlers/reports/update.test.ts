@@ -181,28 +181,28 @@ describe("Test updateReport API method", () => {
     const res = await updateReport(updateEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
-    expect(res.body).toContain(error.UNAUTHORIZED);
+    expect(res.body).toContain(error.ALREADY_ARCHIVED);
   });
 
-  test("Test reportKey not provided throws 500 error", async () => {
+  test("Test reportKey not provided throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...updateEvent,
       pathParameters: {},
     };
     const res = await updateReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 
-  test("Test reportKey empty throws 500 error", async () => {
+  test("Test reportKey empty throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...updateEvent,
       pathParameters: { state: "", id: "" },
     };
     const res = await updateReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 });

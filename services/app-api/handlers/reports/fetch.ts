@@ -8,7 +8,7 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 export const fetchReport = handler(async (event, _context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
     return {
-      status: StatusCodes.SERVER_ERROR,
+      status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
@@ -89,7 +89,7 @@ interface DynamoFetchParams {
 export const fetchReportsByState = handler(async (event, _context) => {
   if (!event?.pathParameters?.state!) {
     return {
-      status: StatusCodes.SERVER_ERROR,
+      status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
