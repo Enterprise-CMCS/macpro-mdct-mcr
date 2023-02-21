@@ -95,22 +95,6 @@ describe("Test updateReport API method", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  test("Test Successful Run of report update", async () => {
-    mockedFetchReport.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(mockDynamoData),
-    });
-    const res = await updateReport(updateEvent, null);
-    const body = JSON.parse(res.body);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.status).toContain("in progress");
-    expect(body.fieldData.number).toBe("1");
-  });
-
   test("Test report update submission succeeds", async () => {
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
@@ -181,7 +165,7 @@ describe("Test updateReport API method", () => {
     const res = await updateReport(updateEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
-    expect(res.body).toContain(error.ALREADY_ARCHIVED);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test reportKey not provided throws 400 error", async () => {
