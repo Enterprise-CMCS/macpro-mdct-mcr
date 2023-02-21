@@ -2,6 +2,7 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
+import { validReport } from "../../utils/validation/validation";
 import {
   error,
   buckets,
@@ -11,17 +12,13 @@ import {
 
 export const fetchReport = handler(async (event, _context) => {
   let status, body;
-  if (
-    !event?.pathParameters?.reportType! ||
-    !event?.pathParameters?.state! ||
-    !event?.pathParameters?.id!
-  ) {
+  if (!validReport(event, "fetch")) {
     throw new Error(error.NO_KEY);
   }
 
-  const reportType = event.pathParameters.reportType;
-  const state = event.pathParameters.state;
-  const reportId = event.pathParameters.id;
+  const reportType = event.pathParameters?.reportType;
+  const state = event.pathParameters?.state;
+  const reportId = event.pathParameters?.id;
 
   const reportTable = reportTables[reportType as keyof typeof reportTables];
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
