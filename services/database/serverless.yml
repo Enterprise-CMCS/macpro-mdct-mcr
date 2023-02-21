@@ -172,8 +172,8 @@ resources:
       Value: !Ref McparFormBucket
     McparFormBucketArn:
       Value: !GetAtt McparFormBucket.Arn
-    MlrReportTableName:
-      Value: !Ref MlrReportTable
+        McparReportTableName:
+      Value: !Ref McparReportTable
     MlrReportTableArn:
       Value: !GetAtt MlrReportTable.Arn
     MlrReportTableStreamArn:
