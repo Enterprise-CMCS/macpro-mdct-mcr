@@ -43,7 +43,6 @@ Cypress.Commands.add("runAccessibilityTests", () => {
   if (process.env.RUN_PA11Y) {
     /*
      * This currently does not work locally with node v18. using env flag to only run via CI
-     * 
      * check accessibility using pa11y (https://bit.ly/2LwFQe6)
      */
     cy.pa11y({
