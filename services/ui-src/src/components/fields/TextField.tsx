@@ -34,7 +34,6 @@ export const TextField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      form.setValue(name, fieldValue);
     }
     // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
