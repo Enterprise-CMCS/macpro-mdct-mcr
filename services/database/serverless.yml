@@ -166,8 +166,6 @@ resources:
       Value: !GetAtt McparReportTable.Arn
     McparReportTableStreamArn:
       Value: !GetAtt McparReportTable.StreamArn
-    Region:
-      Value: !Sub ${AWS::Region}
     McparFormBucketName:
       Value: !Ref McparFormBucket
     McparFormBucketArn:
@@ -178,9 +176,9 @@ resources:
       Value: !GetAtt MlrReportTable.Arn
     MlrReportTableStreamArn:
       Value: !GetAtt MlrReportTable.StreamArn
-    Region:
-      Value: !Sub ${AWS::Region}
     MlrFormBucketName:
       Value: !Ref MlrFormBucket
     MlrFormBucketArn:
       Value: !GetAtt MlrFormBucket.Arn
+    Region:
+      Value: !Sub ${AWS::Region}
