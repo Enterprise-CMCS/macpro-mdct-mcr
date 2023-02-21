@@ -68,7 +68,11 @@ export const NumberField = ({
       const fields = [
         { name, type: "number", value, hydrationValue, defaultValue },
       ];
-      const reportArgs = { id: report?.id, updateReport };
+      const reportArgs = {
+        id: report?.id,
+        reportType: report?.reportType,
+        updateReport,
+      };
       const user = { userName: full_name, state };
       await autosaveFieldData({
         form,
