@@ -76,7 +76,11 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         overrideCheck: true,
       },
     ];
-    const reportArgs = { id: report?.id, updateReport };
+    const reportArgs = {
+      id: report?.id,
+      reportType: report?.reportType,
+      updateReport,
+    };
     const user = { userName: full_name, state };
     // no need to check "autosave" prop; dynamic fields should always autosave
     await autosaveFieldData({

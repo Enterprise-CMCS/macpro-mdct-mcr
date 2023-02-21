@@ -19,6 +19,7 @@ interface Props {
   fields: FieldInfo[];
   report: {
     id: string | undefined;
+    reportType: string | undefined;
     updateReport: Function;
   };
   user: {
@@ -33,7 +34,7 @@ export const autosaveFieldData = async ({
   report,
   user,
 }: Props) => {
-  const { id, updateReport } = report;
+  const { id, reportType, updateReport } = report;
   const { userName, state } = user;
 
   // for each passed field, format for autosave payload (if changed)
@@ -54,7 +55,7 @@ export const autosaveFieldData = async ({
 
   // if there are fields to save, create and send payload
   if (fieldsToSave.length) {
-    const reportKeys = { id, state };
+    const reportKeys = { reportType, id, state };
     const dataToWrite = {
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
       fieldData: Object.fromEntries(fieldsToSave), // create field data object
