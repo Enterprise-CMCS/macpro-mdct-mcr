@@ -28,6 +28,8 @@ custom:
   bannerTableName: ${self:custom.stage}-banners
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mcpar"}
+  mlrReportTableName: ${self:custom.stage}-mlr-reports
+  mlrFormBucket: ${env:MLR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mlr"}
   dataTransformEnabled: ${env:DATATRANSFORM_ENABLED,ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
   dataTransformUpdateEnabled: ${env.DATATRANSFORM_UPDATED_ENABLED:,ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
   scripts:
@@ -124,6 +126,33 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+    MlrReportTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.mlrReportTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: state
+            AttributeType: S
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: state
+            KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    MlrFormBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub ${self:service}-${self:custom.stage}-mlr
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
@@ -137,9 +166,19 @@ resources:
       Value: !GetAtt McparReportTable.Arn
     McparReportTableStreamArn:
       Value: !GetAtt McparReportTable.StreamArn
-    Region:
-      Value: !Sub ${AWS::Region}
     McparFormBucketName:
       Value: !Ref McparFormBucket
     McparFormBucketArn:
       Value: !GetAtt McparFormBucket.Arn
+    MlrReportTableName:
+      Value: !Ref MlrReportTable
+    MlrReportTableArn:
+      Value: !GetAtt MlrReportTable.Arn
+    MlrReportTableStreamArn:
+      Value: !GetAtt MlrReportTable.StreamArn
+    MlrFormBucketName:
+      Value: !Ref MlrFormBucket
+    MlrFormBucketArn:
+      Value: !GetAtt MlrFormBucket.Arn
+    Region:
+      Value: !Sub ${AWS::Region}
