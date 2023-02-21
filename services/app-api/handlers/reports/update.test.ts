@@ -1,5 +1,5 @@
 import { fetchReport } from "./fetch";
-import { updateReport } from "./update";
+import { updateReport, calculateCompletionStatus } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -84,6 +84,29 @@ describe("Test updateReport and archiveReport unauthorized calls", () => {
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
     jest.clearAllMocks();
+  });
+});
+
+describe("Test Completion Status of Report", () => {
+  test("Returns empty object", () => {
+    const testData = {};
+    const formTemplate = {
+      routes: [
+        {
+          name: "A: Program Information",
+          children: [
+            {
+              name: "Point of Contact",
+              pageType: "standard",
+              form: { fields: [] },
+            },
+          ],
+        },
+      ],
+    };
+    expect(calculateCompletionStatus(testData, formTemplate)).toStrictEqual({
+      "A: Program Information": [{ "Point of Contact": "Incomplete" }],
+    });
   });
 });
 

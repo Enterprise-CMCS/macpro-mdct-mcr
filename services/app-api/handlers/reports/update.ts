@@ -13,6 +13,67 @@ import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import { error, buckets } from "../../utils/constants/constants";
 
+export const calculateCompletionStatus = (
+  fieldData: any,
+  formTemplate: any
+) => {
+  /*
+   * test("Returns empty object", () => {
+   *   const testData = {};
+   *   const formTemplate = {
+   *     routes: [
+   *       {
+   *         name: "A: Program Information",
+   *         children: [
+   *           { name: "Point of Contact", pageType: "standard", form: {} },
+   *         ],
+   *       },
+   *     ],
+   *   };
+   *   expect(calculateCompletionStatus(testData, formTemplate)).toStrictEqual({
+   *     "A: Program Information": [{ "Point of Contact": "Incomplete" }],
+   *   });
+   * });
+   */
+
+  const completionData=calculateRoutesCompletion(fieldData, formTemplate.routes);
+  return completionData;
+};
+
+const calculateRoutesCompletion: any = (fieldData: any, routes: [any]) => {
+  let routesCompletionData: any = [];
+  routes.forEach((route) => {
+    routesCompletionData[route.name] = calculateRouteCompletion(
+      fieldData,
+      route
+    );
+  });
+  return routesCompletionData;
+};
+
+const calculateRouteCompletion = (fieldData: any, route: any) => {
+  const routeCompletionData = {status: "Incomplete", children: [] };
+  if (route.form)
+    routeCompletionData.status = calculateStandardFormCompletion(
+      fieldData,
+      route.form
+    );
+  // TODO: non-standard forms
+
+  if (route.children)
+    routeCompletionData.children = calculateRoutesCompletion(
+      fieldData,
+      route.children
+    );
+  return routeCompletionData;
+};
+
+const calculateStandardFormCompletion = (fieldData: any, form: any) => {
+  return form.fields.some((field: any) => fieldData[field])
+    ? "Incomplete"
+    : "Complete";
+};
+
 export const updateReport = handler(async (event, context) => {
   let status, body;
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
@@ -87,10 +148,20 @@ export const updateReport = handler(async (event, context) => {
               };
               await s3Lib.put(fieldDataParams);
 
+              const completionStatus = calculateCompletionStatus(
+                fieldData,
+                formTemplate
+              );
+
+              const unvalidatedMetadataWithStatus = {
+                ...unvalidatedMetadata,
+                completionStatus,
+              };
+
               // validate report metadata
               const validatedMetadata = await validateData(
                 metadataValidationSchema,
-                { ...unvalidatedMetadata }
+                { ...unvalidatedMetadataWithStatus }
               );
               // if metadata passes validation,
               if (validatedMetadata) {
