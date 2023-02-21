@@ -5,6 +5,7 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
+  validReport,
   validateData,
   validateFieldData,
 } from "../../utils/validation/validation";
@@ -22,13 +23,10 @@ export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     status = StatusCodes.UNAUTHORIZED;
     body = error.UNAUTHORIZED;
-  } else if (
-    !event?.pathParameters?.reportType! ||
-    !event?.pathParameters?.state!
-  ) {
+  } else if (!validReport(event, "create")) {
     throw new Error(error.NO_KEY);
   } else {
-    const state: string = event.pathParameters.state;
+    const state: string = event.pathParameters?.state!;
     const unvalidatedPayload = JSON.parse(event!.body!);
     const {
       metadata: unvalidatedMetadata,

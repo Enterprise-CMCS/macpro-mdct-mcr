@@ -8,6 +8,7 @@ import s3Lib from "../../utils/s3/s3-lib";
 import {
   validateData,
   validateFieldData,
+  validReport,
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
@@ -20,11 +21,7 @@ import {
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
-  if (
-    !event?.pathParameters?.reportType! ||
-    !event?.pathParameters?.state! ||
-    !event?.pathParameters?.id!
-  ) {
+  if (!validReport(event, "update")) {
     throw new Error(error.NO_KEY);
   } else if (
     !hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])
@@ -51,7 +48,7 @@ export const updateReport = handler(async (event, context) => {
       if (formTemplateId && fieldDataId) {
         // if report not in archived state, proceed with updates
         if (!currentReport.archived) {
-          const state: string = event.pathParameters.state;
+          const state: string = event.pathParameters?.state!;
 
           const reportBucket =
             reportBuckets[reportType as keyof typeof reportBuckets];
