@@ -34,11 +34,14 @@ export const McparReviewSubmitPage = () => {
 
   const isPermittedToSubmit = userIsStateUser || userIsStateRep;
 
-  // get state and id from context or storage
+  // get report type, state, and id from context or storage
+  const reportType =
+    report?.reportType || localStorage.getItem("selectedReportType");
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
   const reportKeys = {
+    reportType: reportType,
     state: reportState,
     id: reportId,
   };
@@ -96,6 +99,7 @@ export const McparReviewSubmitPage = () => {
 const PrintButton = () => {
   const { print } = reviewVerbiage;
   return (
+    // TODO: make the path route to the correct report type (in the future)
     <Button
       as={RouterLink}
       to="/mcpar/export"

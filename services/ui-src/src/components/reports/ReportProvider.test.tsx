@@ -34,7 +34,7 @@ const TestComponent = () => {
         Fetch Report
       </button>
       <button
-        onClick={() => context.createReport("AB", mockReport)}
+        onClick={() => context.createReport("mock-type", "AB", mockReport)}
         data-testid="create-report-button"
       >
         Create Report
@@ -46,7 +46,7 @@ const TestComponent = () => {
         Update Report
       </button>
       <button
-        onClick={() => context.fetchReportsByState("AB")}
+        onClick={() => context.fetchReportsByState("mock-type", "AB")}
         data-testid="fetch-reports-by-state-button"
       >
         Fetch Reports By State
@@ -224,6 +224,7 @@ describe("Test ReportProvider error states", () => {
 
 describe("Test ReportProvider fetches when loading on report page", () => {
   beforeEach(async () => {
+    localStorage.setItem("selectedReportType", "mock-type");
     localStorage.setItem("selectedState", "AB");
     localStorage.setItem("selectedReport", "mock-report-id");
     localStorage.setItem("selectedReportBasePath", "/mock");

@@ -25,6 +25,7 @@ export const AddEditEntityModal = ({
     submitButton?.setAttribute("disabled", "true");
 
     const reportKeys = {
+      reportType: report?.reportType,
       state: report?.state,
       id: report?.id,
     };

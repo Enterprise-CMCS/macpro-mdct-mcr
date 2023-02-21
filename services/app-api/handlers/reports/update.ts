@@ -11,11 +11,20 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportTables,
+  reportBuckets,
+} from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  if (
+    !event?.pathParameters?.reportType! ||
+    !event?.pathParameters?.state! ||
+    !event?.pathParameters?.id!
+  ) {
     throw new Error(error.NO_KEY);
   } else if (
     !hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])
@@ -38,22 +47,27 @@ export const updateReport = handler(async (event, context) => {
     // if current report exists, get formTemplateId and fieldDataId
     if (getCurrentReport?.body) {
       const currentReport = JSON.parse(getCurrentReport.body);
-      const { formTemplateId, fieldDataId } = currentReport;
+      const { formTemplateId, fieldDataId, reportType } = currentReport;
       if (formTemplateId && fieldDataId) {
         // if report not in archived state, proceed with updates
         if (!currentReport.archived) {
           const state: string = event.pathParameters.state;
 
+          const reportBucket =
+            reportBuckets[reportType as keyof typeof reportBuckets];
+          const reportTable =
+            reportTables[reportType as keyof typeof reportTables];
+
           // get formTemplate from s3 bucket (for passed fieldData validation)
           const formTemplateParams = {
-            Bucket: process.env.MCPAR_FORM_BUCKET!,
+            Bucket: reportBucket,
             Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
           };
           const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
 
           // get existing fieldData from s3 bucket (for patching with passed data)
           const fieldDataParams = {
-            Bucket: process.env.MCPAR_FORM_BUCKET!,
+            Bucket: reportBucket,
             Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
           };
           const existingFieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
@@ -80,7 +94,7 @@ export const updateReport = handler(async (event, context) => {
                 ...validatedFieldData,
               };
               const fieldDataParams = {
-                Bucket: process.env.MCPAR_FORM_BUCKET!,
+                Bucket: reportBucket,
                 Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
                 Body: JSON.stringify(fieldData),
                 ContentType: "application/json",
@@ -100,7 +114,7 @@ export const updateReport = handler(async (event, context) => {
 
                 // update record in report metadata table
                 const reportMetadataParams = {
-                  TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+                  TableName: reportTable,
                   Item: {
                     ...currentReport,
                     ...validatedMetadata,

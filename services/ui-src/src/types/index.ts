@@ -134,6 +134,7 @@ export interface ModalDrawerReportPageVerbiage
 // REPORT PROVIDER/CONTEXT
 
 export interface ReportKeys {
+  reportType: string;
   state: string;
   id: string;
 }

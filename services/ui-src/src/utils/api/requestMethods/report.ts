@@ -8,25 +8,37 @@ async function getReport(reportKeys: ReportKeys) {
   const request = {
     headers: { ...requestHeaders },
   };
-  const { state, id } = reportKeys;
+  const { reportType, state, id } = reportKeys;
 
   updateTimeout();
-  const response = await API.get("mcr", `/reports/${state}/${id}`, request);
+  const response = await API.get(
+    "mcr",
+    `/reports/${reportType}/${state}/${id}`,
+    request
+  );
   return response;
 }
 
-async function getReportsByState(state: string) {
+async function getReportsByState(reportType: string, state: string) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
   };
 
   updateTimeout();
-  const response = await API.get("mcr", `/reports/${state}`, request);
+  const response = await API.get(
+    "mcr",
+    `/reports/${reportType}/${state}`,
+    request
+  );
   return response;
 }
 
-async function postReport(state: string, report: ReportShape) {
+async function postReport(
+  reportType: string,
+  state: string,
+  report: ReportShape
+) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -34,7 +46,11 @@ async function postReport(state: string, report: ReportShape) {
   };
 
   updateTimeout();
-  const response = await API.post("mcr", `/reports/${state}`, request);
+  const response = await API.post(
+    "mcr",
+    `/reports/${reportType}/${state}`,
+    request
+  );
   return response;
 }
 
@@ -44,10 +60,14 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
     headers: { ...requestHeaders },
     body: { ...report },
   };
-  const { state, id } = reportKeys;
+  const { reportType, state, id } = reportKeys;
 
   updateTimeout();
-  const response = await API.put("mcr", `/reports/${state}/${id}`, request);
+  const response = await API.put(
+    "mcr",
+    `/reports/${reportType}/${state}/${id}`,
+    request
+  );
   return response;
 }
 
