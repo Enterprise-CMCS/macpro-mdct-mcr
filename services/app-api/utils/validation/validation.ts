@@ -2,6 +2,22 @@ import * as yup from "yup";
 import { nested, endDate, schemaMap } from "./schemaMap";
 import { AnyObject } from "../types/types";
 import { error } from "../constants/constants";
+import { APIGatewayEvent } from "aws-lambda";
+
+// validate report keys
+export const validReport = (
+  event: APIGatewayEvent,
+  apiMethod: string | undefined
+) => {
+  const pathParameters = event.pathParameters!;
+  if (apiMethod === "create") {
+    return pathParameters.reportType && pathParameters.state;
+  } else {
+    return (
+      pathParameters.reportType && pathParameters.state && pathParameters.id
+    );
+  }
+};
 
 // compare payload data against validation schema
 export const validateData = async (
