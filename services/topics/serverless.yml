@@ -1,4 +1,4 @@
-service: ${self:custom.project}-topics
+service: topics
 
 frameworkVersion: "3"
 
@@ -18,24 +18,21 @@ plugins:
 provider:
   name: aws
   runtime: nodejs16.x
-  region: ${env:REGION_A}
-  stackTags:
-    PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}
+  region: us-east-1
   iam:
     role:
-      path: /delegatedadmin/developer/
-      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
 
 custom:
-  project: ${env:PROJECT}
+  project: "mcr"
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - main
       - val
       - production
-  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
-  brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+  brokerString: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
+  vpc: ${ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
   scripts:
     hooks:
       deploy:finalize: |
