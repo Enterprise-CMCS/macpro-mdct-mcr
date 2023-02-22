@@ -1,13 +1,17 @@
 import AWS from "aws-sdk";
-import s3Lib from "../../utils/s3/s3-lib";
-
-const { Kafka } = require("kafkajs");
+import s3Lib from "../s3/s3-lib";
+import { Kafka } from "kafkajs";
+import { string } from "yargs";
 
 const STAGE = process.env.STAGE;
+const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS
+  ? process.env.BOOTSTRAP_BROKER_STRING_TLS
+  : "";
+
 // TODO: kafka handler clientId, pretty sure this can be anything
 const kafka = new Kafka({
   clientId: `seds-${STAGE}`,
-  brokers: process.env.BOOTSTRAP_BROKER_STRING_TLS.split(","),
+  brokers: brokerStrings.split(","),
   retry: {
     initialRetryTime: 300,
     retries: 8,
@@ -43,31 +47,44 @@ class KafkaSourceLib {
   buckets = [list of buckets];
   */
 
+  topicPrefix: string;
+  version: string;
+  tables: string[];
+  buckets: string[];
+
+
+  constructor(topicPrefix:string, version: string, tables: string[], buckets: string[]) {
+    this.topicPrefix = topicPrefix
+    this.version = version
+    this.tables = tables
+    this.buckets = buckets
+  }
+  
   unmarshallOptions = {
     convertEmptyValues: true,
     wrapNumbers: true,
   };
 
-  stringify(e, prettyPrint) {
+  stringify(e, prettyPrint?: boolean) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
   }
 
-  determineTopicName(streamARN) {
+  determineTopicName(streamARN: string) {
     for (const table of this.tables) {
       if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table);
     }
   }
 
-  unmarshall(r) {
+  unmarshall(r: any) {
     return AWS.DynamoDB.Converter.unmarshall(r, this.unmarshallOptions);
   }
 
-  createPayload(record) {
+  createPayload(record: any) {
     return this.createDynamoPayload(record);
   }
 
-  createDynamoPayload(record) {
+  createDynamoPayload(record: any) {
     const dynamodb = record.dynamodb;
     const { eventID, eventName } = record;
     const dynamoRecord = {
@@ -83,7 +100,7 @@ class KafkaSourceLib {
     };
   }
 
-  topic(t) {
+  topic(t: string) {
     if (this.version) {
       return `${this.topicPrefix}.${t}.${this.version}`;
     } else {
@@ -91,8 +108,8 @@ class KafkaSourceLib {
     }
   }
 
-  createOutboundEvents(records) {
-    let outboundEvents = {};
+  async createOutboundEvents(records: any[]) {
+    let outboundEvents: { [key: string]:  } = {};
     for (const record of records) {
       // if s3 event & json
       // S3 JSON
@@ -122,20 +139,22 @@ class KafkaSourceLib {
 
         payload = this.createPayload(record);
       }
+      if(!topicName) continue; // Table or bucket not configured to write to kafka
+
       //initialize configuration object keyed to topic for quick lookup
       if (!(outboundEvents[topicName] instanceof Object))
         outboundEvents[topicName] = {
           topic: topicName,
           messages: [],
         };
-
+        
       //add messages to messages array for corresponding topic
-      outboundEvents[topicName].messages.push(dynamoPayload);
+      outboundEvents[topicName].messages.push(payload);
     }
     return outboundEvents;
   }
 
-  async handler(event) {
+  async handler(event: any) {
     if (!connected) {
       await producer.connect();
       connected = true;
