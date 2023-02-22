@@ -187,7 +187,19 @@ functions:
               paths:
                 state: true
     timeout: 30
-
+  archiveReport:
+    handler: handlers/reports/archive.archiveReport
+    events:
+      - http:
+          path: reports/archive/{state}/{id}
+          method: put
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                state: true
+                id: true
   createReport:
     handler: handlers/reports/create.createReport
     events:
