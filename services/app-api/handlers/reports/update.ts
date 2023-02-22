@@ -36,7 +36,10 @@ export const calculateCompletionStatus = (
    * });
    */
 
-  const completionData=calculateRoutesCompletion(fieldData, formTemplate.routes);
+  const completionData = calculateRoutesCompletion(
+    fieldData,
+    formTemplate.routes
+  );
   return completionData;
 };
 
@@ -52,7 +55,7 @@ const calculateRoutesCompletion: any = (fieldData: any, routes: [any]) => {
 };
 
 const calculateRouteCompletion = (fieldData: any, route: any) => {
-  const routeCompletionData = {status: "Incomplete", children: [] };
+  const routeCompletionData = { status: "Incomplete", children: [] };
   if (route.form)
     routeCompletionData.status = calculateStandardFormCompletion(
       fieldData,

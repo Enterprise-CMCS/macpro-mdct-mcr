@@ -88,7 +88,9 @@ describe("Test updateReport and archiveReport unauthorized calls", () => {
 });
 
 describe("Test Completion Status of Report", () => {
-  test("Returns empty object", () => {
+  test("Returns empty object", async () => {
+    jest.clearAllMocks();
+
     const testData = {};
     const formTemplate = {
       routes: [
@@ -104,9 +106,13 @@ describe("Test Completion Status of Report", () => {
         },
       ],
     };
-    expect(calculateCompletionStatus(testData, formTemplate)).toStrictEqual({
-      "A: Program Information": [{ "Point of Contact": "Incomplete" }],
-    });
+    const result = await calculateCompletionStatus(testData, formTemplate);
+    expect(result).toHaveLength(1);
+    expect(result).toStrictEqual([
+      {
+        "A: Program Information": [{ "Point of Contact": "Incomplete" }],
+      },
+    ]);
   });
 });
 
