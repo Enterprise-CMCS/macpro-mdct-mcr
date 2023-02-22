@@ -43,3 +43,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: ./scripts/destroy.sh $STAGE_PREFIX$branch_name
+      - name: Delete topics from bigmac
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Delete Topics
+          repo: cmsgov/cms-bigmac
+          token: ${{ secrets.AUTOMATION_ACCESS_TOKEN }}
+          inputs: '{ "topics": "..."}'
+          ref: refs/heads/master # Otherwise workflow-dispatch tries to operate off of our default branch main

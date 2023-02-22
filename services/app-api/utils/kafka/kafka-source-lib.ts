@@ -1,16 +1,14 @@
 import AWS from "aws-sdk";
 import s3Lib from "../s3/s3-lib";
 import { Kafka } from "kafkajs";
-import { string } from "yargs";
 
 const STAGE = process.env.STAGE;
 const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS
   ? process.env.BOOTSTRAP_BROKER_STRING_TLS
   : "";
 
-// TODO: kafka handler clientId, pretty sure this can be anything
 const kafka = new Kafka({
-  clientId: `seds-${STAGE}`,
+  clientId: `mcr-${STAGE}`,
   brokers: brokerStrings.split(","),
   retry: {
     initialRetryTime: 300,
@@ -59,7 +57,7 @@ class KafkaSourceLib {
     this.tables = tables
     this.buckets = buckets
   }
-  
+
   unmarshallOptions = {
     convertEmptyValues: true,
     wrapNumbers: true,
@@ -117,29 +115,25 @@ class KafkaSourceLib {
       let payload, topicName;
       if (record["s3"]) {
         // {"Records": [{"s3": {"bucket": {"name": "%s"}, "object": {"key": "%s"}}}]}
-        const bucket = record["s3"].bucket.name;
-        const key = record["s3"].object.key;
 
-        // TODO: if key does not contain .json
-        // TODO: filter for fieldData, remove formTemplates
+        // TODO: crud event types?
 
         topicName = ""; // convert bucket to topic name
-        // check if bucket is in avail topics
+        if(!topicName || !record["s3"].object.key.includes(".json")) continue; // Kill before accessing any buckets if we know it is invalid
         // Get file contents
-        const formTemplateParams = {
-          Bucket: bucket,
-          Key: key,
-        };
-        payload = await s3Lib.get(formTemplateParams); // TODO: stringify?
+        payload = await s3Lib.get({
+          Bucket: record["s3"].bucket.name,
+          Key: record["s3"].object.key
+        }); // TODO: stringify?
+        // TODO: filter for fieldData, remove formTemplates. Can we know ahead of time?
       } else {
         // DYNAMO
         topicName = this.determineTopicName(
           String(record.eventSourceARN.toString())
         );
-
+        if(!topicName) continue;
         payload = this.createPayload(record);
       }
-      if(!topicName) continue; // Table or bucket not configured to write to kafka
 
       //initialize configuration object keyed to topic for quick lookup
       if (!(outboundEvents[topicName] instanceof Object))
