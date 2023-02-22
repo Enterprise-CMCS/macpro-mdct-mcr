@@ -10,6 +10,7 @@ jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn(() => {}),
 }));
+
 const mockAuthUtil = require("../../utils/auth/authorization");
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
@@ -41,8 +42,9 @@ describe("Test archiveReport method", () => {
   beforeEach(() => {
     // fail state and pass admin auth checks
     mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(true);
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(false);
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -75,5 +77,19 @@ describe("Test archiveReport method", () => {
     const res = await archiveReport(archiveEvent, null);
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
+  });
+
+  test("Test archive report without admin permissions throws 403", async () => {
+    mockedFetchReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: undefined!,
+    });
+    const res = await archiveReport(archiveEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 });
