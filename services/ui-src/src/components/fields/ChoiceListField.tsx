@@ -61,14 +61,6 @@ export const ChoiceListField = ({
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
-  // update form field data and DOM display checked attribute
-  useEffect(() => {
-    if (displayValue) {
-      // update DOM choices checked status
-      clearUncheckedNestedFields(choices);
-    }
-  }, [displayValue]);
-
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) => {
     return choices.map((choice: FieldChoice) => {
@@ -93,7 +85,7 @@ export const ChoiceListField = ({
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
       if (!choice.checked && choice.children) {
-        choice.children.forEach((child) => {
+        choice.children.forEach((child: FormField) => {
           switch (child.type) {
             case "radio":
             case "checkbox":
@@ -127,6 +119,12 @@ export const ChoiceListField = ({
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
     let selectedOptions = null;
+
+    if (!isOptionChecked) {
+      let option = choices.find((choice) => choice.id == clickedOption.key);
+      clearUncheckedNestedFields([option!]);
+    }
+
     // handle radio
     if (type === "radio") {
       selectedOptions = [clickedOption];
