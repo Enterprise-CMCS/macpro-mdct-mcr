@@ -42,30 +42,44 @@ const calculateRouteCompletion = (fieldData: any, route: any) => {
     case "drawer":
     case "modalDrawer":
       //TODO: Refactor magic strings Complete and Incomplete
-      status = "Complete";
+      status = CompletionStatusEnum.COMPLETE;
       break;
     default:
       break;
   }
   if (route.children) {
     children = calculateRoutesCompletion(fieldData, route.children);
-    if (!status || status === "Complete")
-      status = children.every((child: any) => child.status === "Complete")
-        ? "Complete"
-        : "Incomplete";
+    if (!status || status === CompletionStatusEnum.COMPLETE)
+      status = children.every(
+        (child: any) => child.status === CompletionStatusEnum.COMPLETE
+      )
+        ? CompletionStatusEnum.COMPLETE
+        : CompletionStatusEnum.INCOMPLETE;
   }
-  //TODO: There has to be a cleaner way.
-  if (status && children) return { name: route.name, status, children };
-  else if (status) return { name: route.name, status };
-  else if (children) return { name: route.name, children };
-  else return { name: route.name };
+  let result: CompletionStatus = { name: route.name };
+  if (status) result.status = status;
+  if (children) result.children = children;
+  return result;
 };
+interface CompletionStatus {
+  name: string;
+  status?: CompletionStatusEnum;
+  children?: [CompletionStatus];
+}
+const enum CompletionStatusEnum {
+  COMPLETE = "Complete",
+  INCOMPLETE = "Incomplete",
+}
 
 const calculateStandardFormCompletion = (fieldData: any, form: any) => {
+  //todo put these in an array, fire validation json against each field
+
   let areFieldsEmpty = form.fields.some(
     (field: any) => fieldData[field.id] === undefined
   );
-  return areFieldsEmpty ? "Incomplete" : "Complete";
+  return areFieldsEmpty
+    ? CompletionStatusEnum.INCOMPLETE
+    : CompletionStatusEnum.COMPLETE;
 };
 
 export const updateReport = handler(async (event, context) => {
