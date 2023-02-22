@@ -13,12 +13,12 @@ export const fetchReport = handler(async (event, _context) => {
     };
   }
 
-  const { state, reportId } = event.pathParameters;
+  const { state, id } = event.pathParameters;
 
   // Get current report metadata
   const reportMetadataParams = {
     TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Key: { state, id: reportId },
+    Key: { state, id },
   };
 
   try {
