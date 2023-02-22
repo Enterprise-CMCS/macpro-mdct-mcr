@@ -5,7 +5,6 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
-  validReport,
   validateData,
   validateFieldData,
 } from "../../utils/validation/validation";

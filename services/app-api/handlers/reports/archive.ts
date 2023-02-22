@@ -7,6 +7,12 @@ import { error, reportTables } from "../../utils/constants/constants";
 import { hasPermissions } from "../../utils/auth/authorization";
 
 export const archiveReport = handler(async (event, context) => {
+  if (!event.pathParameters?.id) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.MISSING_DATA,
+    };
+  }
   // Return a 403 status if the user is not an admin.
   if (!hasPermissions(event, [UserRoles.ADMIN])) {
     return {

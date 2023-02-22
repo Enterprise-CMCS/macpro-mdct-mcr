@@ -2,7 +2,12 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
-import { error, buckets, reportTables } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportTables,
+  reportBuckets,
+} from "../../utils/constants/constants";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 export const fetchReport = handler(async (event, _context) => {
@@ -19,13 +24,10 @@ export const fetchReport = handler(async (event, _context) => {
 
   const { state, id, reportType } = event.pathParameters;
   const reportTable = reportTables[reportType as keyof typeof reportTables];
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   // Get current report metadata
   const reportMetadataParams = {
-    TableName:
-      // reportType === "MCPAR"
-      //   ? process.env.MCPAR_REPORT_TABLE_NAME!
-      //   : process.env.MLR_REPORT_TABLE_NAME!,
-      process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: reportTable,
     Key: { state, id },
   };
 
@@ -58,7 +60,7 @@ export const fetchReport = handler(async (event, _context) => {
     // Get field data from S3
     const fieldDataParams: S3Get = {
       // TODO: chain other report types
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Bucket: reportBucket,
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
 
@@ -106,7 +108,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   const reportType = event.pathParameters.reportType;
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
-  const queryParams: any = {
+  const queryParams: DynamoFetchParams = {
     // TODO: chain other report types
     TableName: reportTable,
     KeyConditionExpression: "#state = :state",
