@@ -128,14 +128,12 @@ describe("Test Completion Status of Report", () => {
     const mcparComplete = require("../../utils/testing/fixtures/mcpar-complete.json");
     const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json")
     const result = calculateCompletionStatus(mcparComplete, mcparForm);
-    console.log(result);
   })
 
   test("Incomplete MCPAR Report", () => {
     const testData = require("../../utils/testing/fixtures/mcpar-incomplete.json");
     const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json")
     const result = calculateCompletionStatus(testData, mcparForm);
-    console.log(result);
   })
 });
 

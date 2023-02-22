@@ -52,9 +52,8 @@ const calculateRouteCompletion = (fieldData: any, route: any) => {
 };
 
 const calculateStandardFormCompletion = (fieldData: any, form: any) => {
-  return form.fields.some((field: any) => fieldData[field])
-    ? "Incomplete"
-    : "Complete";
+  let areFieldsEmpty = form.fields.some((field: any) => fieldData[field.id] === undefined);
+  return areFieldsEmpty ? "Incomplete" : "Complete";
 };
 
 export const updateReport = handler(async (event, context) => {
