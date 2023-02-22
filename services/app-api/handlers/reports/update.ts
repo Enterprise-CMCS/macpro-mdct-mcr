@@ -28,7 +28,7 @@ export const calculateCompletionStatus = (
 const calculateRoutesCompletion = (fieldData: any, routes: [any]) => {
   //Calculates the completion for all provided routes
   let completionDict: Record<string, boolean> = {};
-  routes.forEach((route) => {
+  routes?.forEach((route) => {
     let routeCompletionDict: Record<string, boolean> = calculateRouteCompletion(
       fieldData,
       route
@@ -50,26 +50,8 @@ const calculateRouteCompletion = (fieldData: any, route: any) => {
       //TODO: implement these
       return { [route.path]: false };
     default:
-      //TODO: figure out the kids
-      return { [route.path]: false };
+      return calculateRoutesCompletion(fieldData, route.children);
   }
-
-  /*
-   *   if (route.children) {
-   *     children = calculateRoutesCompletion(fieldData, route.children);
-   *     if (!status || status === CompletionStatusEnum.COMPLETE)
-   *       status = children.every(
-   *         (child: any) => child.status === CompletionStatusEnum.COMPLETE
-   *       )
-   *         ? CompletionStatusEnum.COMPLETE
-   *         : CompletionStatusEnum.INCOMPLETE;
-   *   }
-   *   let result: CompletionStatus = { name: route.name };
-   *   if (status) result.status = status;
-   *   if (children) result.children = children;
-   *   return result;
-   * }
-   */
 };
 
 const calculateStandardFormCompletion = (fieldData: any, form: any) => {
