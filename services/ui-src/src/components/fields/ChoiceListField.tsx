@@ -57,7 +57,6 @@ export const ChoiceListField = ({
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
       setLastDatabaseValue(hydrationValue);
-      form.setValue(name, hydrationValue);
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -84,16 +83,16 @@ export const ChoiceListField = ({
   const clearUncheckedNestedFields = (choices: FieldChoice[]) => {
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
-      if (!choice.checked && choice.children) {
+      if (choice.children) {
         choice.children.forEach((child: FormField) => {
           switch (child.type) {
             case "radio":
             case "checkbox":
-              form.setValue(child.id, [], { shouldValidate: true });
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
                 });
+                form.setValue(child.id, [], { shouldValidate: true });
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
@@ -144,32 +143,33 @@ export const ChoiceListField = ({
       form.setValue(name, selectedOptions, { shouldValidate: true });
     }
   };
-
+  function timeout(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
   // if should autosave, submit field data to database on component blur
-  const onComponentBlurHandler = () => {
+  const onComponentBlurHandler = async () => {
     if (autosave) {
       const timeInMs = 200;
       // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
-      setTimeout(async () => {
-        const parentName = document.activeElement?.id.split("-")[0];
-        if (
-          parentName === name &&
-          !document.activeElement?.id.includes("-otherText")
-        )
-          return; // Short circuit if still clicking on elements in this choice list
-        let fields = [
-          { name, type, value: displayValue, hydrationValue, defaultValue },
-          ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
-        ];
-        const reportArgs = { id: report?.id, updateReport };
-        const user = { userName: full_name, state };
-        await autosaveFieldData({
-          form,
-          fields,
-          report: reportArgs,
-          user,
-        });
-      }, timeInMs);
+      await timeout(timeInMs);
+      const parentName = document.activeElement?.id.split("-")[0];
+      if (
+        parentName === name &&
+        !document.activeElement?.id.includes("-otherText")
+      )
+        return; // Short circuit if still clicking on elements in this choice list
+      let fields = [
+        { name, type, value: displayValue, hydrationValue, defaultValue },
+        ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
+      ];
+      const reportArgs = { id: report?.id, updateReport };
+      const user = { userName: full_name, state };
+      await autosaveFieldData({
+        form,
+        fields,
+        report: reportArgs,
+        user,
+      });
     }
   };
 

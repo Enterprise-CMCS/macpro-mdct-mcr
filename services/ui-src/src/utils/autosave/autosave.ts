@@ -51,7 +51,6 @@ export const autosaveFieldData = async ({
         return [name, defaultValue];
       })
   );
-
   // if there are fields to save, create and send payload
   if (fieldsToSave.length) {
     const reportKeys = { id, state };
@@ -59,6 +58,9 @@ export const autosaveFieldData = async ({
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
       fieldData: Object.fromEntries(fieldsToSave), // create field data object
     };
+    fieldsToSave.forEach((field: FieldDataTuple) => {
+      form.setValue(field[0], field[1]);
+    });
     await updateReport(reportKeys, dataToWrite);
   }
 };
