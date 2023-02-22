@@ -10,6 +10,7 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 
+
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn(() => {}),
@@ -122,6 +123,20 @@ describe("Test Completion Status of Report", () => {
       },
     ]);
   });
+
+  test("Completed MCPAR Report", () => {
+    const mcparComplete = require("../../utils/testing/fixtures/mcpar-complete.json");
+    const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json")
+    const result = calculateCompletionStatus(mcparComplete, mcparForm);
+    console.log(result);
+  })
+
+  test("Incomplete MCPAR Report", () => {
+    const testData = require("../../utils/testing/fixtures/mcpar-incomplete.json");
+    const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json")
+    const result = calculateCompletionStatus(testData, mcparForm);
+    console.log(result);
+  })
 });
 
 describe("Test updateReport API method", () => {
