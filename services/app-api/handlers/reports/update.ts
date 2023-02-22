@@ -41,18 +41,30 @@ const calculateRouteCompletion = (fieldData: any, route: any) => {
     // TODO: non-standard forms
     case "drawer":
     case "modalDrawer":
-      status = "Unknown";
+      //TODO: Refactor magic strings Complete and Incomplete
+      status = "Complete";
       break;
     default:
       break;
   }
-  if (route.children)
+  if (route.children) {
     children = calculateRoutesCompletion(fieldData, route.children);
-  return { name: route.name, status, children };
+    if (!status || status === "Complete")
+      status = children.every((child: any) => child.status === "Complete")
+        ? "Complete"
+        : "Incomplete";
+  }
+  //TODO: There has to be a cleaner way.
+  if (status && children) return { name: route.name, status, children };
+  else if (status) return { name: route.name, status };
+  else if (children) return { name: route.name, children };
+  else return { name: route.name };
 };
 
 const calculateStandardFormCompletion = (fieldData: any, form: any) => {
-  let areFieldsEmpty = form.fields.some((field: any) => fieldData[field.id] === undefined);
+  let areFieldsEmpty = form.fields.some(
+    (field: any) => fieldData[field.id] === undefined
+  );
   return areFieldsEmpty ? "Incomplete" : "Complete";
 };
 

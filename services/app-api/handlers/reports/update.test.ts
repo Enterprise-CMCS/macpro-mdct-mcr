@@ -10,7 +10,6 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 
-
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn(() => {}),
@@ -89,7 +88,7 @@ describe("Test updateReport and archiveReport unauthorized calls", () => {
 });
 
 describe("Test Completion Status of Report", () => {
-  test("Basic Standard Form", () => {
+  test("Basic Standard Form No Fields", () => {
     jest.clearAllMocks();
 
     const testData = {};
@@ -123,18 +122,118 @@ describe("Test Completion Status of Report", () => {
       },
     ]);
   });
+  test("Basic Standard Form With Fields", () => {
+    jest.clearAllMocks();
+
+    const testData = {};
+    const formTemplate = {
+      routes: [
+        {
+          name: "A: Program Information",
+          children: [
+            {
+              name: "Point of Contact",
+              pageType: "standard",
+              form: {
+                fields: [
+                  {
+                    id: "stateName",
+                    type: "text",
+                    validation: "text",
+                    props: {
+                      label: "A.1 State name",
+                      hint: "Auto-populated from your account profile.",
+                      disabled: true,
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    };
+    const result = calculateCompletionStatus(testData, formTemplate);
+    expect(result).toHaveLength(1);
+    expect(result).toStrictEqual([
+      {
+        name: "A: Program Information",
+        status: undefined,
+        children: [
+          {
+            name: "Point of Contact",
+            status: "Incomplete",
+            children: undefined,
+          },
+        ],
+      },
+    ]);
+  });
+
+  test("Basic Standard Form With Fields", () => {
+    jest.clearAllMocks();
+
+    const testData = {};
+    const formTemplate = {
+      routes: [
+        {
+          name: "A: Program Information",
+          children: [
+            {
+              name: "Point of Contact",
+              pageType: "standard",
+              form: {
+                fields: [
+                  {
+                    id: "stateName",
+                    type: "text",
+                    validation: "text",
+                    props: {
+                      label: "A.1 State name",
+                      hint: "Auto-populated from your account profile.",
+                      disabled: true,
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    };
+    const result = calculateCompletionStatus(testData, formTemplate);
+    expect(result).toHaveLength(1);
+    expect(result).toStrictEqual([
+      {
+        name: "A: Program Information",
+        status: undefined,
+        children: [
+          {
+            name: "Point of Contact",
+            status: "Incomplete",
+            children: undefined,
+          },
+        ],
+      },
+    ]);
+  });
 
   test("Completed MCPAR Report", () => {
     const mcparComplete = require("../../utils/testing/fixtures/mcpar-complete.json");
-    const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json")
+    const mcparCompleteResult = require("../../utils/testing/fixtures/mcpar-complete-result.json");
+
+    const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
     const result = calculateCompletionStatus(mcparComplete, mcparForm);
-  })
+
+    expect(result).toHaveLength(6);
+    expect(result).toMatchObject(mcparCompleteResult);
+  });
 
   test("Incomplete MCPAR Report", () => {
     const testData = require("../../utils/testing/fixtures/mcpar-incomplete.json");
-    const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json")
+    const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
     const result = calculateCompletionStatus(testData, mcparForm);
-  })
+  });
 });
 
 describe("Test updateReport API method", () => {

@@ -1,0 +1,149 @@
+[
+  {
+    "children": [
+      {
+        "name": "Point of Contact",
+        "status": "Complete"
+      },
+      {
+        "name": "Reporting Period",
+        "status": "Complete"
+      },
+      {
+        "name": "Add Plans",
+        "status": "Complete"
+      },
+      {
+        "name": "Add BSS Entities",
+        "status": "Complete"
+      }
+    ],
+    "name": "A: Program Information",
+    "status": "Complete"
+  },
+  {
+    "children": [
+      {
+        "name": "I: Program Characteristics",
+        "status": "Complete"
+      },
+      {
+        "name": "III: Encounter Data Report",
+        "status": "Complete"
+      },
+      {
+        "name": "X: Program Integrity",
+        "status": "Complete"
+      }
+    ],
+    "name": "B: State-Level Indicators",
+    "status": "Complete"
+  },
+  {
+    "children": [
+      {
+        "name": "I: Program Characteristics",
+        "status": "Complete"
+      },
+      {
+        "name": "III: Encounter Data Report",
+        "status": "Complete"
+      },
+      {
+        "name": "IV: Appeals, State Fair Hearings & Grievances",
+        "status": "Complete"
+      },
+      {
+        "children": [
+          {
+            "name": "Network Adequacy",
+            "status": "Complete"
+          },
+          {
+            "name": "Access Measures",
+            "status": "Complete"
+          }
+        ],
+        "name": "V: Availability & Accessibility",
+        "status": "Complete"
+      },
+      {
+        "name": "IX: BSS",
+        "status": "Complete"
+      },
+      {
+        "name": "X: Program Integrity",
+        "status": "Complete"
+      }
+    ],
+    "name": "C: Program-Level Indicators",
+    "status": "Complete"
+  },
+  {
+    "children": [
+      {
+        "name": "I: Program Characteristics",
+        "status": "Complete"
+      },
+      {
+        "name": "II: Financial Performance",
+        "status": "Complete"
+      },
+      {
+        "name": "III: Encounter Data Report",
+        "status": "Complete"
+      },
+      {
+        "children": [
+          {
+            "name": "Appeals Overview",
+            "status": "Complete"
+          },
+          {
+            "name": "Appeals by Service",
+            "status": "Complete"
+          },
+          {
+            "name": "State Fair Hearings",
+            "status": "Complete"
+          },
+          {
+            "name": "Grievances Overview",
+            "status": "Complete"
+          },
+          {
+            "name": "Grievances by Service",
+            "status": "Complete"
+          },
+          {
+            "name": "Grievances by Reason",
+            "status": "Complete"
+          }
+        ],
+        "name": "IV: Appeals, State Fair Hearings & Grievances",
+        "status": "Complete"
+      },
+      {
+        "name": "VII: Quality Measures",
+        "status": "Complete"
+      },
+      {
+        "name": "VIII: Sanctions",
+        "status": "Complete"
+      },
+      {
+        "name": "X: Program Integrity",
+        "status": "Complete"
+      }
+    ],
+    "name": "D: Plan-Level Indicators",
+    "status": "Complete"
+  },
+  {
+    "name": "E: BSS Entity Indicators",
+    "status": "Complete"
+  },
+  {
+    "name": "Review & Submit"
+  }
+]
