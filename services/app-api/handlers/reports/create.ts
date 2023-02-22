@@ -2,10 +2,10 @@ import KSUID from "ksuid";
 import handler from "../handler-lib";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
-  validReport,
   validateData,
   validateFieldData,
 } from "../../utils/validation/validation";
@@ -20,10 +20,11 @@ import {
 
 export const createReport = handler(async (event, _context) => {
   let status, body;
+  const requiredParams = ["reportType", "state"];
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     status = StatusCodes.UNAUTHORIZED;
     body = error.UNAUTHORIZED;
-  } else if (!validReport(event, "create")) {
+  } else if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     throw new Error(error.NO_KEY);
   } else {
     const state: string = event.pathParameters?.state!;

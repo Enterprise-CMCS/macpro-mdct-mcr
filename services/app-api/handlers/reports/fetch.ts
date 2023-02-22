@@ -1,8 +1,8 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
-import { validReport } from "../../utils/validation/validation";
 import {
   error,
   buckets,
@@ -12,7 +12,8 @@ import {
 
 export const fetchReport = handler(async (event, _context) => {
   let status, body;
-  if (!validReport(event, "fetch")) {
+  const requiredParams = ["reportType", "id", "state"];
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     throw new Error(error.NO_KEY);
   }
 
@@ -60,18 +61,19 @@ export const fetchReport = handler(async (event, _context) => {
 });
 
 export const fetchReportsByState = handler(async (event, _context) => {
-  if (!event?.pathParameters?.reportType! || !event?.pathParameters?.state!) {
+  const requiredParams = ["reportType", "state"];
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     throw new Error(error.NO_KEY);
   }
 
-  const reportType = event.pathParameters.reportType;
+  const reportType = event.pathParameters?.reportType;
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
   let queryParams: any = {
     TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
-      ":state": event.pathParameters.state,
+      ":state": event.pathParameters?.state,
     },
     ExpressionAttributeNames: {
       "#state": "state",

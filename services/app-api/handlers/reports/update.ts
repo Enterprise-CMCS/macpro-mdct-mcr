@@ -3,12 +3,12 @@ import { fetchReport } from "./fetch";
 import { archiveReport } from "./archive";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import { hasPermissions } from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
 import {
   validateData,
   validateFieldData,
-  validReport,
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
@@ -21,7 +21,8 @@ import {
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
-  if (!validReport(event, "update")) {
+  const requiredParams = ["reportType", "id", "state"];
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     throw new Error(error.NO_KEY);
   } else if (
     !hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])
