@@ -21,12 +21,16 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   const form: FormJson = formJson;
 
   const onSubmit = (formData: AnyObject) => {
+    let selectedReport = formData["report"][0].key;
+    selectedReport = selectedReport.replace("report-", "").toLowerCase();
+    localStorage.setItem("selectedReportType", selectedReport);
+
     if (userIsAdmin || userIsApprover || userIsHelpDeskUser) {
       const selectedState = formData["state"].value;
       localStorage.setItem("selectedState", selectedState);
     }
 
-    navigate("/mcpar");
+    navigate(`/${selectedReport}`);
   };
 
   return (
