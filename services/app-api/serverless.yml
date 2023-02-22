@@ -158,42 +158,39 @@ functions:
     handler: handlers/reports/fetch.fetchReport
     events:
       - http:
-          path: reports/{reportType}/{state}/{id}
+          path: reports/{state}/{id}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportType: true
                 state: true
                 id: true
   fetchReportsByState:
     handler: handlers/reports/fetch.fetchReportsByState
     events:
       - http:
-          path: reports/{reportType}/{state}
+          path: reports/{state}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportType: true
                 state: true
     timeout: 30
   createReport:
     handler: handlers/reports/create.createReport
     events:
       - http:
-          path: reports/{reportType}/{state}
+          path: reports/{state}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportType: true
                 state: true
   updateReport:
     handler: handlers/reports/update.updateReport
@@ -201,14 +198,13 @@ functions:
     memorySize: 2048
     events:
       - http:
-          path: reports/{reportType}/{state}/{id}
+          path: reports/{state}/{id}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
-                reportType: true
                 state: true
                 id: true
   fetchTemplate:
