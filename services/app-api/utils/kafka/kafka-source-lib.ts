@@ -70,7 +70,7 @@ class KafkaSourceLib {
 
   determineTopicName(streamARN: string) {
     for (const table of this.tables) {
-      if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table);
+      if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table); // TODO: Validate create topics uses this pattern 
     }
   }
 

@@ -5,12 +5,8 @@ const version = "v0";
 const tables = ["mcpar-reports"];
 const buckets = ["mcpar-form"];
 
-// TODO: add handler to serverless
-// TODO: add tests
-// TODO: add triggers for db table &
+// TODO: s3 trigger & new triggers from MLR
 // TODO: sync/post all?
-// TODO: create topics (auto?)
-// TODO: destroy topics (list needs to be updated)
 const postKafkaData = new KafkaSourceLib(topicPrefix, version, tables, buckets);
 
 exports.handler = postKafkaData.handler.bind(postKafkaData);
