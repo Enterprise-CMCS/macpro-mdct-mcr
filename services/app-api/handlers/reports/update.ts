@@ -25,61 +25,59 @@ export const calculateCompletionStatus = (
   return completionData;
 };
 
-const calculateRoutesCompletion: any = (fieldData: any, routes: [any]) => {
+const calculateRoutesCompletion = (fieldData: any, routes: [any]) => {
   //Calculates the completion for all provided routes
-  return routes.map((route) => {
-    return calculateRouteCompletion(fieldData, route);
+  let completionDict: Record<string, boolean> = {};
+  routes.forEach((route) => {
+    let routeCompletionDict: Record<string, boolean> = calculateRouteCompletion(
+      fieldData,
+      route
+    );
+    completionDict = { ...completionDict, ...routeCompletionDict };
   });
+  return completionDict;
 };
 
 const calculateRouteCompletion = (fieldData: any, route: any) => {
-  let status, children;
   switch (route.pageType) {
     case "standard":
-      status = calculateStandardFormCompletion(fieldData, route.form);
-      break;
+      return {
+        [route.path]: calculateStandardFormCompletion(fieldData, route.form),
+      };
     // TODO: non-standard forms
     case "drawer":
     case "modalDrawer":
-      //TODO: Refactor magic strings Complete and Incomplete
-      status = CompletionStatusEnum.COMPLETE;
-      break;
+      //TODO: implement these
+      return { [route.path]: false };
     default:
-      break;
+      //TODO: figure out the kids
+      return { [route.path]: false };
   }
-  if (route.children) {
-    children = calculateRoutesCompletion(fieldData, route.children);
-    if (!status || status === CompletionStatusEnum.COMPLETE)
-      status = children.every(
-        (child: any) => child.status === CompletionStatusEnum.COMPLETE
-      )
-        ? CompletionStatusEnum.COMPLETE
-        : CompletionStatusEnum.INCOMPLETE;
-  }
-  let result: CompletionStatus = { name: route.name };
-  if (status) result.status = status;
-  if (children) result.children = children;
-  return result;
+
+  /*
+   *   if (route.children) {
+   *     children = calculateRoutesCompletion(fieldData, route.children);
+   *     if (!status || status === CompletionStatusEnum.COMPLETE)
+   *       status = children.every(
+   *         (child: any) => child.status === CompletionStatusEnum.COMPLETE
+   *       )
+   *         ? CompletionStatusEnum.COMPLETE
+   *         : CompletionStatusEnum.INCOMPLETE;
+   *   }
+   *   let result: CompletionStatus = { name: route.name };
+   *   if (status) result.status = status;
+   *   if (children) result.children = children;
+   *   return result;
+   * }
+   */
 };
-interface CompletionStatus {
-  name: string;
-  status?: CompletionStatusEnum;
-  children?: [CompletionStatus];
-}
-const enum CompletionStatusEnum {
-  COMPLETE = "Complete",
-  INCOMPLETE = "Incomplete",
-}
 
 const calculateStandardFormCompletion = (fieldData: any, form: any) => {
-  //todo put these in an array, fire validation json against each field
+  //TODO: put these in an array, fire validation json against each field
 
-  let areFieldsEmpty = form.fields.some(
-    (field: any) => fieldData[field.id] === undefined
-  );
-  return areFieldsEmpty
-    ? CompletionStatusEnum.INCOMPLETE
-    : CompletionStatusEnum.COMPLETE;
+  //Oh and do it for every program too. it will be fine.
+  console.log({ fieldData, form });
+  return false;
 };
 
 export const updateReport = handler(async (event, context) => {
