@@ -154,60 +154,60 @@ functions:
             parameters:
               paths:
                 bannerId: true
-  fetchReport:
-    handler: handlers/reports/fetch.fetchReport
-    events:
-      - http:
-          path: reports/{state}/{id}
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                id: true
-  fetchReportsByState:
-    handler: handlers/reports/fetch.fetchReportsByState
-    events:
-      - http:
-          path: reports/{state}
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-    timeout: 30
+  # fetchReport:
+  #   handler: handlers/reports/fetch.fetchReport
+  #   events:
+  #     - http:
+  #         path: reports/{state}/{id}
+  #         method: get
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         request:
+  #           parameters:
+  #             paths:
+  #               state: true
+  #               id: true
+  # fetchReportsByState:
+  #   handler: handlers/reports/fetch.fetchReportsByState
+  #   events:
+  #     - http:
+  #         path: reports/{state}
+  #         method: get
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         request:
+  #           parameters:
+  #             paths:
+  #               state: true
+  #   timeout: 30
 
-  createReport:
-    handler: handlers/reports/create.createReport
-    events:
-      - http:
-          path: reports/{state}
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-  updateReport:
-    handler: handlers/reports/update.updateReport
-    timeout: 30
-    memorySize: 2048
-    events:
-      - http:
-          path: reports/{state}/{id}
-          method: put
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
-                state: true
-                id: true
+  # createReport:
+  #   handler: handlers/reports/create.createReport
+  #   events:
+  #     - http:
+  #         path: reports/{state}
+  #         method: post
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         request:
+  #           parameters:
+  #             paths:
+  #               state: true
+  # updateReport:
+  #   handler: handlers/reports/update.updateReport
+  #   timeout: 30
+  #   memorySize: 2048
+  #   events:
+  #     - http:
+  #         path: reports/{state}/{id}
+  #         method: put
+  #         cors: true
+  #         authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  #         request:
+  #           parameters:
+  #             paths:
+  #               state: true
+  #               id: true
   fetchTemplate:
     handler: handlers/templates/fetch.fetchTemplate
     events:
