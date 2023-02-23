@@ -19,6 +19,13 @@ export const archiveReport = handler(async (event, context) => {
   const reportEvent = { ...event, body: "" };
   const getCurrentReport = await fetchReport(reportEvent, context);
 
+  if (!getCurrentReport.body) {
+    return {
+      status: StatusCodes.NOT_FOUND,
+      body: error.NO_MATCHING_RECORD,
+    };
+  }
+
   // if current report exists, parse for archived status
   if (getCurrentReport?.body) {
     const currentReport = JSON.parse(getCurrentReport.body);
