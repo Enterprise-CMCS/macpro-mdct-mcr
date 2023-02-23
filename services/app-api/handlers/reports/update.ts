@@ -51,31 +51,15 @@ const calculateRouteCompletion = async (
           validationJson
         ),
       };
-    // TODO: non-standard forms
     case "drawer":
+    case "modalDrawer":
       return {
         [route.path]: await calculateDrawerFormCompletion(
           fieldData,
-          route.drawerForm,
+          [route.drawerForm, route.modalForm],
           validationJson,
           route.entityType
         ),
-      };
-    case "modalDrawer":
-      return {
-        [route.path]:
-          (await calculateDrawerFormCompletion(
-            fieldData,
-            route.drawerForm,
-            validationJson,
-            route.entityType
-          )) &&
-          (await calculateDrawerFormCompletion(
-            fieldData,
-            route.modalForm,
-            validationJson,
-            route.entityType
-          )),
       };
     case "reviewSubmit":
       return;
@@ -92,12 +76,18 @@ const calculateRouteCompletion = async (
 
 const calculateDrawerFormCompletion = async (
   fieldData: any,
-  form: any,
+  forms: any[],
   validationJson: any,
   entityType: string
 ) => {
-  return await fieldData[entityType].every(async (entity: any) => {
-    return await calculateStandardFormCompletion(entity, form, validationJson);
+  return fieldData[entityType].every((entity: any) => {
+    return forms.every(async (form) => {
+      return await calculateStandardFormCompletion(
+        entity,
+        form,
+        validationJson
+      );
+    });
   });
 };
 
@@ -107,7 +97,7 @@ const calculateStandardFormCompletion = async (
   validationJson: any
 ) => {
   let unvalidatedFields: Record<string, string> = {};
-  form.fields.forEach((field: any) => {
+  form?.fields.forEach((field: any) => {
     unvalidatedFields[field.id] = fieldData[field.id];
   });
   try {
