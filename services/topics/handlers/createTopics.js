@@ -5,6 +5,7 @@ const condensedTopicList = [
   {
     // topics for the seatool service's debezium connector
     topicPrefix: "aws.mdct.mcr",
+    version: ".v0",
     numPartitions: 1,
     replicationFactor: 3,
     topics: [".mcpar-reports", ".mcpar-form"],
@@ -20,7 +21,7 @@ exports.handler = async function (event, context, callback) {
     topicList.push(
       ..._.map(element.topics, (topic) => {
         return {
-          topic: `${element.topicPrefix}${topic}`,
+          topic: `${element.topicPrefix}${topic}${version}`,
           numPartitions: element.numPartitions,
           replicationFactor: element.replicationFactor,
         };

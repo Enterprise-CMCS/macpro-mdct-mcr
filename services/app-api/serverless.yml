@@ -37,9 +37,11 @@ custom:
     path: ../../.env
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
-  mcparReportTableStreamArn: ${cf:database-${self:custom.stage}.McparReportTableStreamArn, cf:database-master.McparReportTableStreamArn}
+  mcparReportTableStreamArn: ${cf:database-${self:custom.stage}.McparReportTableStreamArn, cf:database-main.McparReportTableStreamArn}
   mlrReportTableName: ${env:MLR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.MlrReportTableName}
+  mlrReportTableStreamArn: ${cf:database-${self:custom.stage}.MlrReportTableStreamArn, cf:database-main.MlrReportTableStreamArn}
   naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.NaaarReportTableName}
+  naaarReportTableStreamArn: ${cf:database-${self:custom.stage}.NaaarReportTableStreamArn, cf:database-main.NaaarReportTableStreamArn}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
@@ -261,6 +263,36 @@ functions:
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.MlrReportTableStreamArn}
+          startingPosition: TRIM_HORIZON
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.NaaarReportTableStreamArn}
+          startingPosition: TRIM_HORIZON
+          maximumRetryAttempts: 2
+          enabled: true
+      - s3:
+          bucket: ${self:custom.mcparFormBucket}
+          event: *
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.mlrFormBucket}
+          event: *
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.naaarFormBucket}
+          event: *
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
     role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
