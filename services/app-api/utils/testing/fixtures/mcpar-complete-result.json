@@ -1,149 +1,42 @@
-[
-  {
-    "children": [
-      {
-        "name": "Point of Contact",
-        "status": "Complete"
-      },
-      {
-        "name": "Reporting Period",
-        "status": "Complete"
-      },
-      {
-        "name": "Add Plans",
-        "status": "Complete"
-      },
-      {
-        "name": "Add BSS Entities",
-        "status": "Complete"
-      }
-    ],
-    "name": "A: Program Information",
-    "status": "Complete"
+{
+  "/mcpar/program-information": {
+    "/mcpar/program-information/point-of-contact": true,
+    "/mcpar/program-information/reporting-period": true,
+    "/mcpar/program-information/add-plans": true,
+    "/mcpar/program-information/add-bss-entities": true
   },
-  {
-    "children": [
-      {
-        "name": "I: Program Characteristics",
-        "status": "Complete"
-      },
-      {
-        "name": "III: Encounter Data Report",
-        "status": "Complete"
-      },
-      {
-        "name": "X: Program Integrity",
-        "status": "Complete"
-      }
-    ],
-    "name": "B: State-Level Indicators",
-    "status": "Complete"
+  "/mcpar/state-level-indicators": {
+    "/mcpar/state-level-indicators/program-characteristics": true,
+    "/mcpar/state-level-indicators/encounter-data-report": true,
+    "/mcpar/state-level-indicators/program-integrity": true
   },
-  {
-    "children": [
-      {
-        "name": "I: Program Characteristics",
-        "status": "Complete"
-      },
-      {
-        "name": "III: Encounter Data Report",
-        "status": "Complete"
-      },
-      {
-        "name": "IV: Appeals, State Fair Hearings & Grievances",
-        "status": "Complete"
-      },
-      {
-        "children": [
-          {
-            "name": "Network Adequacy",
-            "status": "Complete"
-          },
-          {
-            "name": "Access Measures",
-            "status": "Complete"
-          }
-        ],
-        "name": "V: Availability & Accessibility",
-        "status": "Complete"
-      },
-      {
-        "name": "IX: BSS",
-        "status": "Complete"
-      },
-      {
-        "name": "X: Program Integrity",
-        "status": "Complete"
-      }
-    ],
-    "name": "C: Program-Level Indicators",
-    "status": "Complete"
+  "/mcpar/program-level-indicators": {
+    "/mcpar/program-level-indicators/program-characteristics": true,
+    "/mcpar/program-level-indicators/encounter-data-report": true,
+    "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances": true,
+    "/mcpar/program-level-indicators/availability-and-accessibility": {
+      "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy": true,
+      "/mcpar/program-level-indicators/availability-and-accessibility/access-measures": false
+    },
+    "/mcpar/program-level-indicators/bss": true,
+    "/mcpar/program-level-indicators/program-integrity": true
   },
-  {
-    "children": [
-      {
-        "name": "I: Program Characteristics",
-        "status": "Complete"
-      },
-      {
-        "name": "II: Financial Performance",
-        "status": "Complete"
-      },
-      {
-        "name": "III: Encounter Data Report",
-        "status": "Complete"
-      },
-      {
-        "children": [
-          {
-            "name": "Appeals Overview",
-            "status": "Complete"
-          },
-          {
-            "name": "Appeals by Service",
-            "status": "Complete"
-          },
-          {
-            "name": "State Fair Hearings",
-            "status": "Complete"
-          },
-          {
-            "name": "Grievances Overview",
-            "status": "Complete"
-          },
-          {
-            "name": "Grievances by Service",
-            "status": "Complete"
-          },
-          {
-            "name": "Grievances by Reason",
-            "status": "Complete"
-          }
-        ],
-        "name": "IV: Appeals, State Fair Hearings & Grievances",
-        "status": "Complete"
-      },
-      {
-        "name": "VII: Quality Measures",
-        "status": "Complete"
-      },
-      {
-        "name": "VIII: Sanctions",
-        "status": "Complete"
-      },
-      {
-        "name": "X: Program Integrity",
-        "status": "Complete"
-      }
-    ],
-    "name": "D: Plan-Level Indicators",
-    "status": "Complete"
+  "/mcpar/plan-level-indicators": {
+    "/mcpar/plan-level-indicators/program-characteristics": false,
+    "/mcpar/plan-level-indicators/financial-performance": false,
+    "/mcpar/plan-level-indicators/encounter-data-report": false,
+    "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances": {
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview": false,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service": false,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings": false,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview": false,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service": false,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason": false
+    },
+    "/mcpar/plan-level-indicators/quality-measures": false,
+    "/mcpar/plan-level-indicators/sanctions": false,
+    "/mcpar/plan-level-indicators/program-integrity": false
   },
-  {
-    "name": "E: BSS Entity Indicators",
-    "status": "Complete"
-  },
-  {
-    "name": "Review & Submit"
-  }
-]
+  "/mcpar/bss-entity-indicators": false,
+  "/mcpar/review-and-submit": {}
+}

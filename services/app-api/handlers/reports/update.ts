@@ -13,36 +13,43 @@ import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import { error, buckets } from "../../utils/constants/constants";
 
-export const calculateCompletionStatus = (
+export const calculateCompletionStatus = async (
   fieldData: any,
-  formTemplate: any
+  routes: [any],
+  validationJson: any
 ) => {
-  //Entry point for traversing routes
-  const completionData = calculateRoutesCompletion(
-    fieldData,
-    formTemplate.routes
-  );
-  return completionData;
-};
-
-const calculateRoutesCompletion = (fieldData: any, routes: [any]) => {
   //Calculates the completion for all provided routes
-  let completionDict: Record<string, boolean> = {};
-  routes?.forEach((route) => {
-    let routeCompletionDict: Record<string, boolean> = calculateRouteCompletion(
-      fieldData,
-      route
-    );
-    completionDict = { ...completionDict, ...routeCompletionDict };
-  });
+  let completionDict: CompletionData = {};
+  if (routes) {
+    for (const route of routes) {
+      const routeCompletionDict = await calculateRouteCompletion(
+        fieldData,
+        route,
+        validationJson
+      );
+      completionDict = { ...completionDict, ...routeCompletionDict };
+    }
+  }
   return completionDict;
 };
 
-const calculateRouteCompletion = (fieldData: any, route: any) => {
+interface CompletionData {
+  [key: string]: boolean | CompletionData;
+}
+
+const calculateRouteCompletion = async (
+  fieldData: any,
+  route: any,
+  validationJson: any
+) => {
   switch (route.pageType) {
     case "standard":
       return {
-        [route.path]: calculateStandardFormCompletion(fieldData, route.form),
+        [route.path]: await calculateStandardFormCompletion(
+          fieldData,
+          route.form,
+          validationJson
+        ),
       };
     // TODO: non-standard forms
     case "drawer":
@@ -50,16 +57,34 @@ const calculateRouteCompletion = (fieldData: any, route: any) => {
       //TODO: implement these
       return { [route.path]: false };
     default:
-      return calculateRoutesCompletion(fieldData, route.children);
+      return {
+        [route.path]: calculateCompletionStatus(
+          fieldData,
+          route.children,
+          validationJson
+        ),
+      };
   }
 };
 
-const calculateStandardFormCompletion = (fieldData: any, form: any) => {
+const calculateStandardFormCompletion = async (
+  fieldData: any,
+  form: any,
+  validationJson: any
+) => {
   //TODO: put these in an array, fire validation json against each field
 
   //Oh and do it for every program too. it will be fine.
-  console.log({ fieldData, form });
-  return false;
+  let unvalidatedFields: Record<string, string> = {};
+  form.fields.forEach((field: any) => {
+    unvalidatedFields[field.id] = fieldData[field.id];
+  });
+  let validatedFields = await validateFieldData(
+    validationJson,
+    unvalidatedFields
+  );
+
+  return validatedFields !== undefined;
 };
 
 export const updateReport = handler(async (event, context) => {
@@ -138,7 +163,8 @@ export const updateReport = handler(async (event, context) => {
 
               const completionStatus = calculateCompletionStatus(
                 fieldData,
-                formTemplate
+                formTemplate.routes,
+                formTemplate.validationJson
               );
 
               const unvalidatedMetadataWithStatus = {

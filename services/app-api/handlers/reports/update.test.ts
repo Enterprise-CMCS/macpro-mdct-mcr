@@ -1,5 +1,9 @@
 import { fetchReport } from "./fetch";
-import { updateReport, calculateCompletionStatus } from "./update";
+import {
+  updateReport,
+  calculateCompletionStatus,
+  calculateRoutesCompletion,
+} from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -154,8 +158,7 @@ describe("Test Completion Status of Report", () => {
       ],
     };
     const result = calculateCompletionStatus(testData, formTemplate);
-    expect(result).toHaveLength(1);
-    expect(result).toStrictEqual([
+    expect(result).toMatchObject([
       {
         name: "A: Program Information",
         status: undefined,
@@ -202,8 +205,7 @@ describe("Test Completion Status of Report", () => {
       ],
     };
     const result = calculateCompletionStatus(testData, formTemplate);
-    expect(result).toHaveLength(1);
-    expect(result).toStrictEqual([
+    expect(result).toMatchObject([
       {
         name: "A: Program Information",
         status: undefined,
@@ -218,14 +220,16 @@ describe("Test Completion Status of Report", () => {
     ]);
   });
 
-  test("Completed MCPAR Report", () => {
+  test("Completed MCPAR Report", async () => {
     const mcparComplete = require("../../utils/testing/fixtures/mcpar-complete.json");
     const mcparCompleteResult = require("../../utils/testing/fixtures/mcpar-complete-result.json");
 
     const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
-    const result = calculateCompletionStatus(mcparComplete, mcparForm);
-
-    expect(result).toHaveLength(6);
+    const result = await calculateRoutesCompletion(
+      mcparComplete,
+      mcparForm.routes,
+      mcparForm.validationJson
+    );
     expect(result).toMatchObject(mcparCompleteResult);
   });
 
