@@ -110,5 +110,5 @@ export const createReport = handler(async (event, _context) => {
       body = error.MISSING_DATA;
     }
   }
-  return { status, body };
+  return { status: status, body: body };
 });

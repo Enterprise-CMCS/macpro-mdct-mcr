@@ -1,3 +1,4 @@
+import { DynamoDB } from "aws-sdk";
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
@@ -11,7 +12,6 @@ import {
 } from "../../utils/constants/constants";
 
 export const fetchReport = handler(async (event, _context) => {
-  let status, body;
   const requiredParams = ["reportType", "id", "state"];
   if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     throw new Error(error.NO_KEY);
@@ -24,56 +24,94 @@ export const fetchReport = handler(async (event, _context) => {
   const reportTable = reportTables[reportType as keyof typeof reportTables];
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
 
-  // get current report metadata
+  // Get current report metadata
   const reportMetadataParams = {
     TableName: reportTable,
     Key: { state, id: reportId },
   };
+
   try {
     const response = await dynamoDb.get(reportMetadataParams);
-    if (!response?.Item) throw error.NOT_IN_DATABASE;
-    const reportMetadata: any = response.Item; // TODO: strict typing
+    if (!response?.Item) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        body: error.NOT_IN_DATABASE,
+      };
+    }
+
+    const reportMetadata = response.Item as Record<string, any>;
     const { formTemplateId, fieldDataId } = reportMetadata;
 
-    // get formTemplate from s3 bucket
+    // Get form template from S3
     const formTemplateParams: S3Get = {
       Bucket: reportBucket,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
-    const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
-    if (!formTemplate) throw error.MISSING_FORM_TEMPLATE;
 
-    // get fieldData from s3 bucket
-    const fieldDataParams = {
+    const formTemplate = await s3Lib.get(formTemplateParams); // TODO: strict typing
+    if (!formTemplate) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        body: error.MISSING_FORM_TEMPLATE,
+      };
+    }
+
+    // Get field data from S3
+    const fieldDataParams: S3Get = {
       Bucket: reportBucket,
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
-    const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
-    if (!fieldData) throw error.MISSING_FIELD_DATA;
 
-    status = StatusCodes.SUCCESS;
-    body = { ...reportMetadata, formTemplate, fieldData };
+    const fieldData = await s3Lib.get(fieldDataParams); // TODO: strict typing
+
+    if (!fieldData) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        body: error.NO_MATCHING_RECORD,
+      };
+    }
+
+    return {
+      status: StatusCodes.SUCCESS,
+      body: {
+        ...reportMetadata,
+        formTemplate,
+        fieldData,
+      },
+    };
   } catch (err) {
-    status = StatusCodes.NOT_FOUND;
-    body = error.NO_MATCHING_RECORD;
+    return {
+      status: StatusCodes.NOT_FOUND,
+      body: error.NO_MATCHING_RECORD,
+    };
   }
-  return { status, body };
 });
+
+interface DynamoFetchParams {
+  TableName: string;
+  KeyConditionExpression: string;
+  ExpressionAttributeValues: Record<string, string>;
+  ExpressionAttributeNames: Record<string, string>;
+  ExclusiveStartKey?: DynamoDB.DocumentClient.Key;
+}
 
 export const fetchReportsByState = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
   if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
-    throw new Error(error.NO_KEY);
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
   }
 
   const reportType = event.pathParameters?.reportType;
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
-  let queryParams: any = {
+  let queryParams: DynamoFetchParams = {
     TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
-      ":state": event.pathParameters?.state,
+      ":state": event.pathParameters?.state!,
     },
     ExpressionAttributeNames: {
       "#state": "state",
@@ -84,7 +122,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   let existingItems = [];
   let results;
 
-  const queryTable = async (startingKey?: any) => {
+  const queryTable = async (startingKey?: DynamoDB.DocumentClient.Key) => {
     queryParams.ExclusiveStartKey = startingKey;
     let results = await dynamoDb.query(queryParams);
     if (results.LastEvaluatedKey) {
@@ -98,7 +136,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   // Looping to perform complete scan of tables due to 1 mb limit per iteration
   do {
     [startingKey, results] = await queryTable(startingKey);
-    const items: AnyObject[] = results.Items;
+    const items: AnyObject[] = results?.Items;
     existingItems.push(...items);
   } while (startingKey);
 

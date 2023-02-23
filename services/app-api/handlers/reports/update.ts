@@ -1,7 +1,6 @@
 import handler from "../handler-lib";
-import { fetchReport } from "./fetch";
 import { archiveReport } from "./archive";
-// utils
+import { fetchReport } from "./fetch";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -152,6 +151,15 @@ export const updateReport = handler(async (event, context) => {
       status = StatusCodes.NOT_FOUND;
       body = error.NO_MATCHING_RECORD;
     }
+
+    return { status: status, body: body };
   }
-  return { status, body };
+
+  // If request body is missing, return a 400 error.
+  if (!event?.body) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.MISSING_DATA,
+    };
+  }
 });
