@@ -45,7 +45,7 @@ export const fetchReport = handler(async (event, _context) => {
 
     // Get form template from S3
     const formTemplateParams: S3Get = {
-      Bucket: reportTable,
+      Bucket: reportBucket,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
 
