@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Form } from "components";
 // types
-import { AnyObject, FormJson } from "types";
+import { AnyObject, FormJson, InputChangeEvent } from "types";
 // form
 import formJson from "forms/adminDashSelector/adminDashSelector";
 // utils
@@ -19,6 +19,12 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
 
   // add validation to formJson
   const form: FormJson = formJson;
+
+  const onChange = (event: InputChangeEvent) => {
+    if (event.target.name === "report") {
+      setReportSelected(true);
+    }
+  };
 
   const onSubmit = (formData: AnyObject) => {
     let selectedReport = formData["report"][0].key;
@@ -42,7 +48,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
         id={form.id}
         formJson={form}
         onSubmit={onSubmit}
-        onChange={setReportSelected}
+        onChange={onChange}
       />
       <Flex sx={sx.navigationButton}>
         <Button type="submit" form={formJson.id} isDisabled={!reportSelected}>
