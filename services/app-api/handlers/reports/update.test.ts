@@ -88,143 +88,86 @@ describe("Test updateReport and archiveReport unauthorized calls", () => {
 });
 
 describe("Test Completion Status of Report", () => {
-  // test("Basic Standard Form No Fields", () => {
-  //   jest.clearAllMocks();
+  test("Basic Standard Form No Fields", async () => {
+    jest.clearAllMocks();
 
-  /*
-   *   const testData = {};
-   *   const formTemplate = {
-   *     routes: [
-   *       {
-   *         name: "A: Program Information",
-   *         children: [
-   *           {
-   *             name: "Point of Contact",
-   *             pageType: "standard",
-   *             form: { fields: [] },
-   *           },
-   *         ],
-   *       },
-   *     ],
-   *   };
-   *   const result = calculateCompletionStatus(testData, formTemplate.routes, null);
-   *   expect(result).toHaveLength(1);
-   *   expect(result).toStrictEqual([
-   *     {
-   *       name: "A: Program Information",
-   *       status: undefined,
-   *       children: [
-   *         {
-   *           name: "Point of Contact",
-   *           status: "Complete",
-   *           children: undefined,
-   *         },
-   *       ],
-   *     },
-   *   ]);
-   * });
-   * test("Basic Standard Form With Fields", () => {
-   *   jest.clearAllMocks();
-   */
+    const testData = {};
+    const formTemplate = {
+      routes: [
+        {
+          name: "A: Program Information",
+          path: "/mcpar/program-information",
+          children: [
+            {
+              name: "Point of Contact",
+              path: "/mcpar/program-information/point-of-contact",
+              pageType: "standard",
+              form: { fields: [] },
+            },
+          ],
+        },
+      ],
+    };
+    const result = await calculateCompletionStatus(
+      testData,
+      formTemplate.routes,
+      null
+    );
+    expect(result).toStrictEqual({
+      "/mcpar/program-information": {
+        "/mcpar/program-information/point-of-contact": false,
+      },
+    });
+  });
 
-  /*
-   *   const testData = {};
-   *   const formTemplate = {
-   *     routes: [
-   *       {
-   *         name: "A: Program Information",
-   *         children: [
-   *           {
-   *             name: "Point of Contact",
-   *             pageType: "standard",
-   *             form: {
-   *               fields: [
-   *                 {
-   *                   id: "stateName",
-   *                   type: "text",
-   *                   validation: "text",
-   *                   props: {
-   *                     label: "A.1 State name",
-   *                     hint: "Auto-populated from your account profile.",
-   *                     disabled: true,
-   *                   },
-   *                 },
-   *               ],
-   *             },
-   *           },
-   *         ],
-   *       },
-   *     ],
-   *   };
-   *   const result = calculateCompletionStatus(testData, formTemplate, null);
-   *   expect(result).toMatchObject([
-   *     {
-   *       name: "A: Program Information",
-   *       status: undefined,
-   *       children: [
-   *         {
-   *           name: "Point of Contact",
-   *           status: "Incomplete",
-   *           children: undefined,
-   *         },
-   *       ],
-   *     },
-   *   ]);
-   * });
-   */
+  test("Basic Standard Form With Fields", async () => {
+    jest.clearAllMocks();
 
-  // test("Basic Standard Form With Fields", () => {
-  //   jest.clearAllMocks();
-
-  /*
-   *   const testData = {};
-   *   const formTemplate = {
-   *     routes: [
-   *       {
-   *         name: "A: Program Information",
-   *         children: [
-   *           {
-   *             name: "Point of Contact",
-   *             pageType: "standard",
-   *             form: {
-   *               fields: [
-   *                 {
-   *                   id: "stateName",
-   *                   type: "text",
-   *                   validation: "text",
-   *                   props: {
-   *                     label: "A.1 State name",
-   *                     hint: "Auto-populated from your account profile.",
-   *                     disabled: true,
-   *                   },
-   *                 },
-   *               ],
-   *             },
-   *           },
-   *         ],
-   *       },
-   *     ],
-   *   };
-   *   const result = calculateCompletionStatus(testData, formTemplate, null);
-   *   expect(result).toMatchObject([
-   *     {
-   *       name: "A: Program Information",
-   *       status: undefined,
-   *       children: [
-   *         {
-   *           name: "Point of Contact",
-   *           status: "Incomplete",
-   *           children: undefined,
-   *         },
-   *       ],
-   *     },
-   *   ]);
-   * });
-   */
+    const testData = {};
+    const formTemplate = {
+      routes: [
+        {
+          name: "A: Program Information",
+          path: "/mcpar/program-information",
+          children: [
+            {
+              name: "Point of Contact",
+              path: "/mcpar/program-information/point-of-contact",
+              pageType: "standard",
+              form: {
+                fields: [
+                  {
+                    id: "stateName",
+                    type: "text",
+                    validation: "text",
+                    props: {
+                      label: "A.1 State name",
+                      hint: "Auto-populated from your account profile.",
+                      disabled: true,
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    };
+    const result = await calculateCompletionStatus(
+      testData,
+      formTemplate.routes,
+      null
+    );
+    expect(result).toStrictEqual({
+      "/mcpar/program-information": {
+        "/mcpar/program-information/point-of-contact": false,
+      },
+    });
+  });
 
   test("Completed MCPAR Report", async () => {
-    const testData = require("../../utils/testing/fixtures/mcpar-complete.json");
-    const mcparResult = require("../../utils/testing/fixtures/mcpar-complete-result.json");
+    const testData = require("../../utils/testing/fixtures/mcpar-data-complete.json");
+    const mcparResult = require("../../utils/testing/fixtures/mcpar-status-result-complete.json");
 
     const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
     const result = await calculateCompletionStatus(
@@ -236,8 +179,8 @@ describe("Test Completion Status of Report", () => {
   });
 
   test("New Incomplete MCPAR Report", async () => {
-    const testData = require("../../utils/testing/fixtures/mcpar-incomplete.json");
-    const mcparResult = require("../../utils/testing/fixtures/mcpar-incomplete-result.json");
+    const testData = require("../../utils/testing/fixtures/mcpar-data-incomplete.json");
+    const mcparResult = require("../../utils/testing/fixtures/mcpar-status-result-incomplete.json");
     const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
     const result = await calculateCompletionStatus(
       testData,
@@ -246,6 +189,31 @@ describe("Test Completion Status of Report", () => {
     );
     expect(result).toMatchObject(mcparResult);
   });
+});
+
+test("New MCPAR Report With Incomplete Drawer", async () => {
+  const testData = require("../../utils/testing/fixtures/mcpar-data-complete.json");
+  const mcparResult = require("../../utils/testing/fixtures/mcpar-data-partially-complete.json");
+
+  const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
+  const result = await calculateCompletionStatus(
+    testData,
+    mcparForm.routes,
+    mcparForm.validationJson
+  );
+  expect(result).toMatchObject(mcparResult);
+});
+
+test("New Incomplete MCPAR Report", async () => {
+  const testData = require("../../utils/testing/fixtures/mcpar-data-incomplete.json");
+  const mcparResult = require("../../utils/testing/fixtures/mcpar-status-result-incomplete.json");
+  const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
+  const result = await calculateCompletionStatus(
+    testData,
+    mcparForm.routes,
+    mcparForm.validationJson
+  );
+  expect(result).toMatchObject(mcparResult);
 });
 
 describe("Test updateReport API method", () => {

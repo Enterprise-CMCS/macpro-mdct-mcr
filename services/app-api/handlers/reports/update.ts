@@ -15,7 +15,7 @@ import { error, buckets } from "../../utils/constants/constants";
 
 export const calculateCompletionStatus = async (
   fieldData: any,
-  routes: [any],
+  routes: any[],
   validationJson: any
 ) => {
   //Calculates the completion for all provided routes
@@ -80,8 +80,8 @@ const calculateDrawerFormCompletion = async (
   validationJson: any,
   entityType: string
 ) => {
-  return fieldData[entityType].every((entity: any) => {
-    return forms.every(async (form) => {
+  return fieldData[entityType]?.every((entity: any) => {
+    return forms?.every(async (form) => {
       return await calculateStandardFormCompletion(
         entity,
         form,
