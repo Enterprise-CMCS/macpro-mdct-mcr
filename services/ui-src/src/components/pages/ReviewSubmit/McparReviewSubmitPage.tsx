@@ -11,7 +11,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, ReportContext } from "components";
+import { Modal, ReportContext, StatusTable } from "components";
 // types
 import { ReportStatus } from "types";
 // utils
@@ -130,6 +130,9 @@ const ReadyToSubmit = ({
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
           <Text>{intro.info}</Text>
+        </Box>
+        <Box>
+          <StatusTable />
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
