@@ -17,8 +17,11 @@ import { AnyObject, FieldChoice, FormField } from "types";
 // return created elements from provided fields
 export const formFieldFactory = (
   fields: FormField[],
-  shouldDisableAllFields: boolean,
-  isNested?: boolean
+  options?: {
+    disabled?: boolean;
+    nested?: boolean;
+    autosave?: boolean;
+  }
 ) => {
   // define form field components
   const fieldToComponentMap: AnyObject = {
@@ -38,9 +41,8 @@ export const formFieldFactory = (
     const fieldProps = {
       key: field.id,
       name: field.id,
-      nested: isNested,
       hydrate: field.props?.hydrate,
-      disabled: shouldDisableAllFields,
+      ...options,
       ...field?.props,
     };
     return React.createElement(componentFieldType, fieldProps);

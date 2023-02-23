@@ -1,18 +1,24 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // utils
-import { formFieldFactory, parseCustomHtml } from "utils";
+import {
+  autosaveFieldData,
+  formFieldFactory,
+  parseCustomHtml,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   Choice,
   CustomHtmlElement,
   FieldChoice,
+  FormField,
   InputChangeEvent,
 } from "types";
-import { dropdownDefaultOptionText } from "../../constants";
 
 export const ChoiceListField = ({
   name,
@@ -21,11 +27,17 @@ export const ChoiceListField = ({
   choices,
   hint,
   nested,
+  autosave,
   sxOverride,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState<Choice[] | null>(null);
+  const defaultValue: Choice[] = [];
+  const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
+  const [lastDatabaseValue, setLastDatabaseValue] =
+    useState<Choice[]>(defaultValue);
 
+  const { report, updateReport } = useContext(ReportContext);
+  const { full_name, state } = useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
   form.register(name);
@@ -37,22 +49,23 @@ export const ChoiceListField = ({
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue) {
+    if (fieldValue?.length > 0) {
       setDisplayValue(fieldValue);
+      setLastDatabaseValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
       setDisplayValue(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: true });
+      setLastDatabaseValue(hydrationValue);
+      form.setValue(name, hydrationValue);
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // update form field data and DOM display checked attribute
   useEffect(() => {
     if (displayValue) {
-      form.setValue(name, displayValue, { shouldValidate: true });
       // update DOM choices checked status
-      clearNestedValues(choices);
+      clearUncheckedNestedFields(choices);
     }
   }, [displayValue]);
 
@@ -64,11 +77,11 @@ export const ChoiceListField = ({
       const choiceChildren = choice?.children;
       if (choiceChildren) {
         const isNested = true;
-        const formattedChildren = formFieldFactory(
-          choiceChildren,
-          shouldDisableChildFields,
-          isNested
-        );
+        const formattedChildren = formFieldFactory(choiceChildren, {
+          disabled: shouldDisableChildFields,
+          nested: isNested,
+          autosave,
+        });
         choiceObject.checkedChildren = formattedChildren;
       }
       delete choiceObject.children;
@@ -76,7 +89,7 @@ export const ChoiceListField = ({
     });
   };
 
-  const clearNestedValues = (choices: FieldChoice[]) => {
+  const clearUncheckedNestedFields = (choices: FieldChoice[]) => {
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
       if (!choice.checked && choice.children) {
@@ -89,15 +102,8 @@ export const ChoiceListField = ({
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
                 });
-                clearNestedValues(child.props.choices);
+                clearUncheckedNestedFields(child.props.choices);
               }
-              break;
-            case "dropdown":
-              form.setValue(
-                child.id,
-                { label: dropdownDefaultOptionText, value: "" },
-                { shouldValidate: true }
-              );
               break;
             default:
               form.setValue(child.id, "", { shouldValidate: true });
@@ -120,9 +126,12 @@ export const ChoiceListField = ({
     const clickedOption = { key: event.target.id, value: event.target.value };
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
+    let selectedOptions = null;
     // handle radio
     if (type === "radio") {
-      setDisplayValue([clickedOption]);
+      selectedOptions = [clickedOption];
+      setDisplayValue(selectedOptions);
+      form.setValue(name, selectedOptions);
     }
     // handle checkbox
     if (type === "checkbox") {
@@ -130,9 +139,39 @@ export const ChoiceListField = ({
       const uncheckedOptionValues = preChangeFieldValues.filter(
         (field) => field.value !== clickedOption.value
       );
-      setDisplayValue(
-        isOptionChecked ? checkedOptionValues : uncheckedOptionValues
-      );
+      selectedOptions = isOptionChecked
+        ? checkedOptionValues
+        : uncheckedOptionValues;
+      setDisplayValue(selectedOptions);
+      form.setValue(name, selectedOptions, { shouldValidate: true });
+    }
+  };
+
+  // if should autosave, submit field data to database on component blur
+  const onComponentBlurHandler = () => {
+    if (autosave) {
+      const timeInMs = 200;
+      // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
+      setTimeout(async () => {
+        const parentName = document.activeElement?.id.split("-")[0];
+        if (
+          parentName === name &&
+          !document.activeElement?.id.includes("-otherText")
+        )
+          return; // Short circuit if still clicking on elements in this choice list
+        let fields = [
+          { name, type, value: displayValue, hydrationValue, defaultValue },
+          ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
+        ];
+        const reportArgs = { id: report?.id, updateReport };
+        const user = { userName: full_name, state };
+        await autosaveFieldData({
+          form,
+          fields,
+          report: reportArgs,
+          user,
+        });
+      }, timeInMs);
     }
   };
 
@@ -156,6 +195,7 @@ export const ChoiceListField = ({
         hint={parsedHint}
         errorMessage={errorMessage}
         onChange={onChangeHandler}
+        onComponentBlur={onComponentBlurHandler}
         {...props}
       />
     </Box>
@@ -169,6 +209,7 @@ interface Props {
   choices: FieldChoice[];
   hint?: CustomHtmlElement[];
   nested?: boolean;
+  autosave?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }
@@ -178,4 +219,48 @@ const sx = {
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
   },
+};
+
+export const getNestedChildFieldsOfUncheckedParent = (
+  choices: FieldChoice[],
+  lastDatabaseValue: Choice[]
+) => {
+  // set up nested field compilation
+  const nestedFields: any = [];
+  const compileNestedFields = (fields: FormField[]) => {
+    fields.forEach((field: FormField) => {
+      // for each child field, get field info
+      const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
+        ? []
+        : "";
+      const fieldInfo = {
+        name: field.id,
+        type: field.type,
+        value: fieldDefaultValue,
+        overrideCheck: true,
+      };
+      // add to nested fields to be autosaved
+      nestedFields.push(fieldInfo);
+      // recurse through additional nested children as needed
+      const fieldChoices = field.props?.choices;
+      fieldChoices?.forEach(
+        (choice: FieldChoice) =>
+          choice.children && compileNestedFields(choice.children)
+      );
+    });
+  };
+
+  choices.forEach((choice: FieldChoice) => {
+    // if choice is not selected and there are children
+    const isParentChoiceChecked = (id: string) =>
+      lastDatabaseValue?.some((autosave) => autosave.key === id);
+    if (
+      !choice.checked &&
+      choice.children &&
+      isParentChoiceChecked(choice.id)
+    ) {
+      compileNestedFields(choice.children);
+    }
+  });
+  return nestedFields;
 };

@@ -2,6 +2,8 @@ import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 // utils
 import {
+  archiveReport as archiveReportRequest,
+  getLocalHourMinuteTime,
   getReport,
   getReportsByState,
   isReportFormPage,
@@ -23,8 +25,9 @@ import { reportErrors } from "verbiage/errors";
 export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
-  fetchReport: Function,
+  archiveReport: Function,
   createReport: Function,
+  fetchReport: Function,
   updateReport: Function,
   // reports by state
   reportsByState: undefined as ReportMetadataShape[] | undefined,
@@ -33,11 +36,13 @@ export const ReportContext = createContext<ReportContextShape>({
   clearReportSelection: Function,
   setReportSelection: Function,
   errorMessage: undefined as string | undefined,
+  lastSavedTime: undefined as string | undefined,
 });
 
 export const ReportProvider = ({ children }: Props) => {
   const { pathname } = useLocation();
   const { state: userState } = useUser().user ?? {};
+  const [lastSavedTime, setLastSavedTime] = useState<string>();
   const [error, setError] = useState<string>();
 
   // REPORT
@@ -70,6 +75,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await postReport(state, report);
       setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -79,6 +85,17 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await putReport(reportKeys, report);
       setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
+    } catch (e: any) {
+      setError(reportErrors.SET_REPORT_FAILED);
+    }
+  };
+
+  const archiveReport = async (reportKeys: ReportKeys) => {
+    try {
+      const result = await archiveReportRequest(reportKeys);
+      setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -88,6 +105,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const clearReportSelection = () => {
     setReport(undefined);
+    setLastSavedTime(undefined);
     localStorage.setItem("selectedReport", "");
   };
 
@@ -114,6 +132,7 @@ export const ReportProvider = ({ children }: Props) => {
     () => ({
       // report
       report,
+      archiveReport,
       fetchReport,
       createReport,
       updateReport,
@@ -124,8 +143,9 @@ export const ReportProvider = ({ children }: Props) => {
       clearReportSelection,
       setReportSelection,
       errorMessage: error,
+      lastSavedTime,
     }),
-    [report, reportsByState, error]
+    [report, reportsByState, error, lastSavedTime]
   );
 
   return (

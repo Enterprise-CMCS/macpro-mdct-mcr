@@ -594,6 +594,7 @@ export const mockReportsByState = [
 ];
 
 export const mockReportMethods = {
+  archiveReport: jest.fn(),
   fetchReport: jest.fn(),
   fetchReportsByState: jest.fn(),
   createReport: jest.fn(),
@@ -607,6 +608,7 @@ export const mockReportContext = {
   report: mockReport,
   reportsByState: mockReportsByState,
   errorMessage: "",
+  lastSavedTime: "1:58 PM",
 };
 
 // ENTITIES
