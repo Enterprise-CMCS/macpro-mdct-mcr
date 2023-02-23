@@ -38,10 +38,12 @@ custom:
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
   mlrReportTableName: ${env:MLR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.MlrReportTableName}
+  naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.NaaarReportTableName}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
   mlrFormBucket: ${env:MLR_FORM_BUCKET, cf:database-${self:custom.stage}.MlrFormBucketName}
+  naaarFormBucket: ${env:NAAAR_FORM_BUCKET, cf:database-${self:custom.stage}.NaaarFormBucketName}
   princeApiHost: ${env:PRINCE_API_HOST, ssm:/${self:custom.stage}/prince_api_host, ssm:/default/prince_api_host}
   princeApiPath: ${env:PRINCE_API_PATH, ssm:/${self:custom.stage}/prince_api_path, ssm:/default/prince_api_path}
   associateWaf:
@@ -106,13 +108,18 @@ provider:
             - "arn:aws:s3:::${self:custom.mlrFormBucket}"
             - "arn:aws:s3:::${self:custom.mlrFormBucket}/formTemplates/*"
             - "arn:aws:s3:::${self:custom.mlrFormBucket}/fieldData/*"
+            - "arn:aws:s3:::${self:custom.naaarFormBucket}"
+            - "arn:aws:s3:::${self:custom.naaarFormBucket}/formTemplates/*"
+            - "arn:aws:s3:::${self:custom.naaarFormBucket}/fieldData/*"
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
     MLR_REPORT_TABLE_NAME: ${self:custom.mlrReportTableName}
+    NAAAR_REPORT_TABLE_NAME: ${self:custom.naaarReportTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
     MLR_FORM_BUCKET: ${self:custom.mlrFormBucket}
+    NAAAR_FORM_BUCKET: ${self:custom.naaarFormBucket}
     STAGE: ${self:custom.stage}
     PRINCE_API_HOST: ${self:custom.princeApiHost}
     PRINCE_API_PATH: ${self:custom.princeApiPath}
