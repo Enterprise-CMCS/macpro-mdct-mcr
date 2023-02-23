@@ -3,7 +3,17 @@
   "version": "1.0.0",
   "description": "Creates mmdl topics in CMS Bigmac.",
   "author": "",
-  "devDependencies": {},
+  "devDependencies": {
+    "@stratiformdigital/serverless-iam-helper": "^3.2.0",
+    "@stratiformdigital/serverless-idempotency-helper": "^3.2.0",
+    "@stratiformdigital/serverless-online": "^3.2.0",
+    "@stratiformdigital/serverless-s3-security-helper": "^4.0.0",
+    "serverless": "^3.27.0",
+    "serverless-bundle": "^6.0.0",
+    "serverless-disable-functions": "^1.0.0",
+    "serverless-plugin-scripts": "^1.0.2",
+    "serverless-stack-termination-protection": "^2.0.2"
+  },
   "dependencies": {
     "lodash": "^4.17.21"
   }
