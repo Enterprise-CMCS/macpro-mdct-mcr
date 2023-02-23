@@ -58,7 +58,7 @@ const calculateRouteCompletion = async (
       return { [route.path]: false };
     default:
       return {
-        [route.path]: calculateCompletionStatus(
+        [route.path]: await calculateCompletionStatus(
           fieldData,
           route.children,
           validationJson
@@ -72,9 +72,6 @@ const calculateStandardFormCompletion = async (
   form: any,
   validationJson: any
 ) => {
-  //TODO: put these in an array, fire validation json against each field
-
-  //Oh and do it for every program too. it will be fine.
   let unvalidatedFields: Record<string, string> = {};
   form.fields.forEach((field: any) => {
     unvalidatedFields[field.id] = fieldData[field.id];
@@ -83,7 +80,6 @@ const calculateStandardFormCompletion = async (
     validationJson,
     unvalidatedFields
   );
-
   return validatedFields !== undefined;
 };
 
