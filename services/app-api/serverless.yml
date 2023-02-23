@@ -193,7 +193,7 @@ functions:
     handler: handlers/reports/archive.archiveReport
     events:
       - http:
-          path: reports/archive/{state}/{id}
+          path: reports/archive/{reportType}/{state}/{id}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}

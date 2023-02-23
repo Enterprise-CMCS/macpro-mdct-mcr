@@ -8,12 +8,12 @@ async function archiveReport(reportKeys: ReportKeys) {
   const request = {
     headers: { ...requestHeaders },
   };
-  const { state, id } = reportKeys;
+  const { reportType, state, id } = reportKeys;
 
   updateTimeout();
   const response = await API.put(
     "mcr",
-    `/reports/archive/${state}/${id}`,
+    `/reports/archive/${reportType}/${state}/${id}`,
     request
   );
   return response;

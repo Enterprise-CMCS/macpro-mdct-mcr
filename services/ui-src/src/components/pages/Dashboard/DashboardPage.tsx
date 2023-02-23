@@ -157,7 +157,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         id: report.id,
       };
       await archiveReport(reportKeys);
-      await fetchReportsByState(activeState);
+      await fetchReportsByState(reportType, activeState);
       setArchivingReportId(undefined);
       setArchiving(false);
     }
