@@ -1,8 +1,5 @@
 import { fetchReport } from "./fetch";
-import {
-  updateReport,
-  calculateCompletionStatus,
-} from "./update";
+import { updateReport, calculateCompletionStatus } from "./update";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
@@ -226,22 +223,28 @@ describe("Test Completion Status of Report", () => {
    */
 
   test("Completed MCPAR Report", async () => {
-    const mcparComplete = require("../../utils/testing/fixtures/mcpar-complete.json");
-    const mcparCompleteResult = require("../../utils/testing/fixtures/mcpar-complete-result.json");
+    const testData = require("../../utils/testing/fixtures/mcpar-complete.json");
+    const mcparResult = require("../../utils/testing/fixtures/mcpar-complete-result.json");
 
     const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
     const result = await calculateCompletionStatus(
-      mcparComplete,
+      testData,
       mcparForm.routes,
       mcparForm.validationJson
     );
-    expect(result).toMatchObject(mcparCompleteResult);
+    expect(result).toMatchObject(mcparResult);
   });
 
-  test("Incomplete MCPAR Report", () => {
+  test("New Incomplete MCPAR Report", async () => {
     const testData = require("../../utils/testing/fixtures/mcpar-incomplete.json");
+    const mcparResult = require("../../utils/testing/fixtures/mcpar-incomplete-result.json");
     const mcparForm = require("../../utils/testing/fixtures/mcpar-template.json");
-    const result = calculateCompletionStatus(testData, mcparForm.routes,mcparForm.validationJson);
+    const result = await calculateCompletionStatus(
+      testData,
+      mcparForm.routes,
+      mcparForm.validationJson
+    );
+    expect(result).toMatchObject(mcparResult);
   });
 });
 
