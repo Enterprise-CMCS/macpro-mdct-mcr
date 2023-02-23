@@ -164,6 +164,7 @@ export interface ReportShape extends ReportMetadataShape {
 export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
+  archiveReport: Function;
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;
