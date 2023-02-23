@@ -1,4 +1,4 @@
-import * as topics from "../../../libs/topics-lib.js";
+import * as topics from "../libs/topics-lib.js";
 import _ from "lodash";
 
 const condensedTopicList = [

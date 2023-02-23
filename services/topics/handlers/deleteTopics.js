@@ -1,4 +1,4 @@
-import * as topics from "../../../libs/topics-lib.js";
+import * as topics from "../libs/topics-lib.js";
 
 exports.handler = async function (event, context, callback) {
   console.log("Received event:", JSON.stringify(event, null, 2));
