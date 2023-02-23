@@ -68,25 +68,25 @@ describe("Test createReport API method", () => {
     expect(res.body).toContain(error.MISSING_DATA);
   });
 
-  test("Test reportKey not provided throws 500 error", async () => {
+  test("Test reportKey not provided throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...creationEvent,
       pathParameters: {},
     };
     const res = await createReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(res.body).toContain(error.NO_KEY);
   });
 
-  test("Test reportKey empty throws 500 error", async () => {
+  test("Test reportKey empty throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...creationEvent,
       pathParameters: { state: "" },
     };
     const res = await createReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(res.body).toContain(error.NO_KEY);
   });
 });
