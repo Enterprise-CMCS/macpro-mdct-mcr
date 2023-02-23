@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
@@ -11,6 +12,7 @@ import { useUser } from "utils";
 
 export const AdminDashSelector = ({ verbiage }: Props) => {
   const navigate = useNavigate();
+  const [reportSelected, setReportSelected] = useState<boolean>(false);
 
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
@@ -19,12 +21,16 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   const form: FormJson = formJson;
 
   const onSubmit = (formData: AnyObject) => {
+    let selectedReport = formData["report"][0].key;
+    selectedReport = selectedReport.replace("report-", "").toLowerCase();
+    localStorage.setItem("selectedReportType", selectedReport);
+
     if (userIsAdmin || userIsApprover || userIsHelpDeskUser) {
       const selectedState = formData["state"].value;
       localStorage.setItem("selectedState", selectedState);
     }
 
-    navigate("/mcpar");
+    navigate(`/${selectedReport}`);
   };
 
   return (
@@ -32,9 +38,14 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
       <Heading as="h1" sx={sx.headerText}>
         {verbiage.header}
       </Heading>
-      <Form id={form.id} formJson={form} onSubmit={onSubmit} />
+      <Form
+        id={form.id}
+        formJson={form}
+        onSubmit={onSubmit}
+        onChange={setReportSelected}
+      />
       <Flex sx={sx.navigationButton}>
-        <Button type="submit" form={formJson.id}>
+        <Button type="submit" form={formJson.id} isDisabled={!reportSelected}>
           {verbiage.buttonLabel}
         </Button>
       </Flex>
