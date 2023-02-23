@@ -53,11 +53,32 @@ const calculateRouteCompletion = async (
       };
     // TODO: non-standard forms
     case "drawer":
+      return {
+        [route.path]: await calculateDrawerFormCompletion(
+          fieldData,
+          route.drawerForm,
+          validationJson,
+          route.entityType
+        ),
+      };
     case "modalDrawer":
-      //TODO: implement these
-      return { [route.path]: false };
+      return {
+        [route.path]:
+          (await calculateDrawerFormCompletion(
+            fieldData,
+            route.drawerForm,
+            validationJson,
+            route.entityType
+          )) &&
+          (await calculateDrawerFormCompletion(
+            fieldData,
+            route.modalForm,
+            validationJson,
+            route.entityType
+          )),
+      };
     case "reviewSubmit":
-      return ;
+      return;
     default:
       return {
         [route.path]: await calculateCompletionStatus(
@@ -67,6 +88,17 @@ const calculateRouteCompletion = async (
         ),
       };
   }
+};
+
+const calculateDrawerFormCompletion = async (
+  fieldData: any,
+  form: any,
+  validationJson: any,
+  entityType: string
+) => {
+  return await fieldData[entityType].every(async (entity: any) => {
+    return await calculateStandardFormCompletion(entity, form, validationJson);
+  });
 };
 
 const calculateStandardFormCompletion = async (
@@ -163,7 +195,7 @@ export const updateReport = handler(async (event, context) => {
                 ContentType: "application/json",
               };
               await s3Lib.put(fieldDataParams);
-              
+
               const completionStatus = await calculateCompletionStatus(
                 fieldData,
                 formTemplate.routes,
