@@ -33,7 +33,7 @@ export const calculateCompletionStatus = async (
   return completionDict;
 };
 
-interface CompletionData {
+export interface CompletionData {
   [key: string]: boolean | CompletionData;
 }
 
@@ -76,11 +76,16 @@ const calculateStandardFormCompletion = async (
   form.fields.forEach((field: any) => {
     unvalidatedFields[field.id] = fieldData[field.id];
   });
-  let validatedFields = await validateFieldData(
-    validationJson,
-    unvalidatedFields
-  );
-  return validatedFields !== undefined;
+  try {
+    let validatedFields = await validateFieldData(
+      validationJson,
+      unvalidatedFields,
+      true
+    );
+    return validatedFields !== undefined;
+  } catch (err) {
+    return false;
+  }
 };
 
 export const updateReport = handler(async (event, context) => {
@@ -156,29 +161,23 @@ export const updateReport = handler(async (event, context) => {
                 ContentType: "application/json",
               };
               await s3Lib.put(fieldDataParams);
-
-              const completionStatus = calculateCompletionStatus(
+              
+              const completionStatus = await calculateCompletionStatus(
                 fieldData,
                 formTemplate.routes,
                 formTemplate.validationJson
               );
 
-              const unvalidatedMetadataWithStatus = {
-                ...unvalidatedMetadata,
-                completionStatus,
-              };
-
               // validate report metadata
               const validatedMetadata = await validateData(
                 metadataValidationSchema,
-                { ...unvalidatedMetadataWithStatus }
+                { ...unvalidatedMetadata, completionStatus }
               );
               // if metadata passes validation,
               if (validatedMetadata) {
                 //Delete raw data prior to updating
                 delete currentReport.fieldData;
                 delete currentReport.formTemplate;
-
                 // update record in report metadata table
                 const reportMetadataParams = {
                   TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
