@@ -30,6 +30,8 @@ custom:
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mcpar"}
   mlrReportTableName: ${self:custom.stage}-mlr-reports
   mlrFormBucket: ${env:MLR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mlr"}
+  naaarReportTableName: ${self:custom.stage}-naaar-reports
+  naaarFormBucket: ${env:NAAAR_FORM_BUCKET, "${self:service}-${self:custom.stage}-naaar"}
   dataTransformEnabled: ${env:DATATRANSFORM_ENABLED,ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
   dataTransformUpdateEnabled: ${env.DATATRANSFORM_UPDATED_ENABLED:,ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
   scripts:
@@ -153,6 +155,33 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+    NaaarReportTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.naaarReportTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: state
+            AttributeType: S
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: state
+            KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    NaaarFormBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub ${self:service}-${self:custom.stage}-naaar
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
@@ -180,5 +209,15 @@ resources:
       Value: !Ref MlrFormBucket
     MlrFormBucketArn:
       Value: !GetAtt MlrFormBucket.Arn
+    NaaarReportTableName:
+      Value: !Ref NaaarReportTable
+    NaaarReportTableArn:
+      Value: !GetAtt NaaarReportTable.Arn
+    NaaarReportTableStreamArn:
+      Value: !GetAtt NaaarReportTable.StreamArn
+    NaaarFormBucketName:
+      Value: !Ref NaaarFormBucket
+    NaaarFormBucketArn:
+      Value: !GetAtt NaaarFormBucket.Arn
     Region:
       Value: !Sub ${AWS::Region}

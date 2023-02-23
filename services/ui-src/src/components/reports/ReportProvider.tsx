@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 // utils
 import {
+  archiveReport as archiveReportRequest,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
@@ -24,8 +25,9 @@ import { reportErrors } from "verbiage/errors";
 export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
-  fetchReport: Function,
+  archiveReport: Function,
   createReport: Function,
+  fetchReport: Function,
   updateReport: Function,
   // reports by state
   reportsByState: undefined as ReportMetadataShape[] | undefined,
@@ -96,6 +98,16 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
+  const archiveReport = async (reportKeys: ReportKeys) => {
+    try {
+      const result = await archiveReportRequest(reportKeys);
+      setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
+    } catch (e: any) {
+      setError(reportErrors.SET_REPORT_FAILED);
+    }
+  };
+
   // SELECTED REPORT
 
   const clearReportSelection = () => {
@@ -130,6 +142,7 @@ export const ReportProvider = ({ children }: Props) => {
     () => ({
       // report
       report,
+      archiveReport,
       fetchReport,
       createReport,
       updateReport,
