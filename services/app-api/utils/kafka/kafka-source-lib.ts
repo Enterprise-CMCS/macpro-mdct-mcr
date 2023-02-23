@@ -1,6 +1,7 @@
 import AWS from "aws-sdk";
 import s3Lib from "../s3/s3-lib";
 import { Kafka } from "kafkajs";
+import { S3EventRecord } from "aws-lambda";
 
 const STAGE = process.env.STAGE;
 const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS
@@ -50,12 +51,16 @@ class KafkaSourceLib {
   tables: string[];
   buckets: string[];
 
-
-  constructor(topicPrefix:string, version: string, tables: string[], buckets: string[]) {
-    this.topicPrefix = topicPrefix
-    this.version = version
-    this.tables = tables
-    this.buckets = buckets
+  constructor(
+    topicPrefix: string,
+    version: string,
+    tables: string[],
+    buckets: string[]
+  ) {
+    this.topicPrefix = topicPrefix;
+    this.version = version;
+    this.tables = tables;
+    this.buckets = buckets;
   }
 
   unmarshallOptions = {
@@ -68,18 +73,21 @@ class KafkaSourceLib {
     return JSON.stringify(e);
   }
 
-  determineTopicName(streamARN: string) {
+  determineDynamoTopicName(streamARN: string) {
     for (const table of this.tables) {
-      if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table); // TODO: Validate create topics uses this pattern 
+      if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table);
+    }
+  }
+
+  determineS3TopicName(bucketArn: string) {
+    // ARN formatted like 'arn:aws:s3:::{stack}-{stage}-{bucket}' e.g. arn:aws:s3:::database-main-mcpar
+    for (const bucket of this.buckets) {
+      if (bucketArn.includes(`${STAGE}-${bucket}`)) return this.topic(bucket);
     }
   }
 
   unmarshall(r: any) {
     return AWS.DynamoDB.Converter.unmarshall(r, this.unmarshallOptions);
-  }
-
-  createPayload(record: any) {
-    return this.createDynamoPayload(record);
   }
 
   createDynamoPayload(record: any) {
@@ -98,6 +106,21 @@ class KafkaSourceLib {
     };
   }
 
+  async createS3Payload(record: S3EventRecord) {
+    const { eventName, eventTime } = record;
+    const entry = await s3Lib.get({
+      Bucket: record.s3.bucket.name,
+      Key: record.s3.object.key,
+    });
+
+    return {
+      key: record.s3.object.key,
+      value: entry,
+      partition: 0,
+      headers: { eventName, eventTime },
+    };
+  }
+
   topic(t: string) {
     if (this.version) {
       return `${this.topicPrefix}.${t}.${this.version}`;
@@ -107,32 +130,31 @@ class KafkaSourceLib {
   }
 
   async createOutboundEvents(records: any[]) {
-    let outboundEvents: { [key: string]:  } = {};
+    let outboundEvents: { [key: string]: any } = {};
     for (const record of records) {
-      // if s3 event & json
-      // S3 JSON
-
       let payload, topicName;
       if (record["s3"]) {
-        // {"Records": [{"s3": {"bucket": {"name": "%s"}, "object": {"key": "%s"}}}]}
+        // Handle any S3 events
+        const s3Record = record as S3EventRecord;
+        const key: string = s3Record.s3.object.key;
+        topicName = this.determineS3TopicName(s3Record.s3.bucket.arn);
 
-        // TODO: crud event types?
-
-        topicName = ""; // convert bucket to topic name
-        if(!topicName || !record["s3"].object.key.includes(".json")) continue; // Kill before accessing any buckets if we know it is invalid
-        // Get file contents
-        payload = await s3Lib.get({
-          Bucket: record["s3"].bucket.name,
-          Key: record["s3"].object.key
-        }); // TODO: stringify?
-        // TODO: filter for fieldData, remove formTemplates. Can we know ahead of time?
+        // Filter for only the response info
+        if (
+          !topicName ||
+          !key.startsWith("fieldData/") ||
+          !key.includes(".json")
+        ) {
+          continue;
+        }
+        payload = await this.createS3Payload(record);
       } else {
         // DYNAMO
-        topicName = this.determineTopicName(
+        topicName = this.determineDynamoTopicName(
           String(record.eventSourceARN.toString())
         );
-        if(!topicName) continue;
-        payload = this.createPayload(record);
+        if (!topicName) continue;
+        payload = this.createDynamoPayload(record);
       }
 
       //initialize configuration object keyed to topic for quick lookup
@@ -141,7 +163,7 @@ class KafkaSourceLib {
           topic: topicName,
           messages: [],
         };
-        
+
       //add messages to messages array for corresponding topic
       outboundEvents[topicName].messages.push(payload);
     }
