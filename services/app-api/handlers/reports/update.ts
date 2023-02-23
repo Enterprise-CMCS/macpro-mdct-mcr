@@ -56,6 +56,8 @@ const calculateRouteCompletion = async (
     case "modalDrawer":
       //TODO: implement these
       return { [route.path]: false };
+    case "reviewSubmit":
+      return ;
     default:
       return {
         [route.path]: await calculateCompletionStatus(

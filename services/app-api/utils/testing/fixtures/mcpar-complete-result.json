@@ -16,27 +16,26 @@
     "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances": true,
     "/mcpar/program-level-indicators/availability-and-accessibility": {
       "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy": true,
-      "/mcpar/program-level-indicators/availability-and-accessibility/access-measures": false
+      "/mcpar/program-level-indicators/availability-and-accessibility/access-measures": true
     },
     "/mcpar/program-level-indicators/bss": true,
     "/mcpar/program-level-indicators/program-integrity": true
   },
   "/mcpar/plan-level-indicators": {
-    "/mcpar/plan-level-indicators/program-characteristics": false,
-    "/mcpar/plan-level-indicators/financial-performance": false,
-    "/mcpar/plan-level-indicators/encounter-data-report": false,
+    "/mcpar/plan-level-indicators/program-characteristics": true,
+    "/mcpar/plan-level-indicators/financial-performance": true,
+    "/mcpar/plan-level-indicators/encounter-data-report": true,
     "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances": {
-      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview": false,
-      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service": false,
-      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings": false,
-      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview": false,
-      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service": false,
-      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason": false
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason": true
     },
-    "/mcpar/plan-level-indicators/quality-measures": false,
-    "/mcpar/plan-level-indicators/sanctions": false,
-    "/mcpar/plan-level-indicators/program-integrity": false
+    "/mcpar/plan-level-indicators/quality-measures": true,
+    "/mcpar/plan-level-indicators/sanctions": true,
+    "/mcpar/plan-level-indicators/program-integrity": true
   },
-  "/mcpar/bss-entity-indicators": false,
-  "/mcpar/review-and-submit": {}
+  "/mcpar/bss-entity-indicators": true
 }
