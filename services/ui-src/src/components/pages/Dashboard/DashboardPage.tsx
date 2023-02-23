@@ -44,7 +44,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     reportsByState,
     clearReportSelection,
     setReportSelection,
-    updateReport,
+    archiveReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -156,7 +156,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         state: adminSelectedState,
         id: report.id,
       };
-      await updateReport(reportKeys, {});
+      await archiveReport(reportKeys);
       await fetchReportsByState(reportType, activeState);
       setArchivingReportId(undefined);
       setArchiving(false);

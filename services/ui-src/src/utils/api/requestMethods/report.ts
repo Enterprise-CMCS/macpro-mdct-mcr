@@ -3,6 +3,22 @@ import { ReportKeys, ReportShape } from "types";
 import { getRequestHeaders } from "./getRequestHeaders";
 import { updateTimeout } from "utils";
 
+async function archiveReport(reportKeys: ReportKeys) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+  };
+  const { reportType, state, id } = reportKeys;
+
+  updateTimeout();
+  const response = await API.put(
+    "mcr",
+    `/reports/archive/${reportType}/${state}/${id}`,
+    request
+  );
+  return response;
+}
+
 async function getReport(reportKeys: ReportKeys) {
   const requestHeaders = await getRequestHeaders();
   const request = {
@@ -71,4 +87,4 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
   return response;
 }
 
-export { getReport, postReport, putReport, getReportsByState };
+export { archiveReport, getReport, postReport, putReport, getReportsByState };

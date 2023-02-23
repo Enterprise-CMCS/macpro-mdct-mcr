@@ -99,6 +99,7 @@ export const McparReviewSubmitPage = () => {
 const PrintButton = () => {
   const { print } = reviewVerbiage;
   return (
+    // TODO: make the path route to the correct report type (in the future)
     <Button
       as={RouterLink}
       to="/mcpar/export"
