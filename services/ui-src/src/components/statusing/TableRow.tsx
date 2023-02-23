@@ -2,20 +2,26 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle.png";
 import successIcon from "assets/icons/icon_check_circle.png";
+import { useNavigate } from "react-router-dom";
+import { ReportRouteBase } from "types";
+
+interface TableRowProps extends ReportRouteBase {
+  children?: any[];
+  status?: "error" | "success";
+  type: "parent" | "child" | "grandchild";
+}
 
 export const TableRow = ({
   name,
   children,
   type,
   status,
-}: {
-  name: string;
-  children?: any[];
-  status?: "error" | "success";
-  type: "parent" | "child" | "grandchild";
-}) => {
+  path,
+}: TableRowProps) => {
+  const navigate = useNavigate();
+
   return (
-    <Tr sx={sx.row}>
+    <Tr>
       <Td sx={sx[type]}>{name}</Td>
       <Td sx={sx.status}>
         {status === "error" && (
@@ -31,9 +37,14 @@ export const TableRow = ({
           </>
         )}
       </Td>
+
       <Td>
         {!children && (
-          <Button sx={sx.enterButton} variant="outline">
+          <Button
+            sx={sx.enterButton}
+            variant="outline"
+            onClick={() => navigate(path)}
+          >
             <Image src={editIcon} alt="Edit Program" />
             Edit
           </Button>
@@ -62,19 +73,6 @@ const sx = {
     img: {
       width: "1rem",
       marginRight: "0.5rem",
-    },
-  },
-  row: {
-    td: {
-      "&:nth-child(1)": {
-        width: "50%",
-      },
-      "&:nth-child(2)": {
-        width: "40%",
-      },
-      "&:nth-child(3)": {
-        width: "10%",
-      },
     },
   },
   status: {

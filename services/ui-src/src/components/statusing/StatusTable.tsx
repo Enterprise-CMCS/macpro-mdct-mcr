@@ -41,6 +41,21 @@ export const StatusTable = () => {
 
 const sx = {
   container: {
-    marginTop: "5rem",
+    margin: "5rem 0",
+    table: {
+      tr: {
+        borderBottom: "1px solid",
+        borderColor: "palette.gray_lighter",
+      },
+      td: {
+        borderBottom: "none",
+        "&:nth-child(1)": {
+          width: "20rem",
+        },
+        "&:last-child": {
+          textAlign: "right",
+        },
+      },
+    },
   },
 };
