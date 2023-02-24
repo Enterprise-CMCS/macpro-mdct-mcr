@@ -46,10 +46,11 @@ export const ChoiceListField = ({
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
+
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue?.length > 0) {
+    if (fieldValue) {
       setDisplayValue(fieldValue);
       setLastDatabaseValue(fieldValue);
     }
@@ -168,14 +169,6 @@ export const ChoiceListField = ({
           fields,
           report: reportArgs,
           user,
-        });
-        /*
-         * This is used to trigger a final rerender of the fields so that the
-         * database and ui stay insync https://bit.ly/41jIn21
-         */
-        fields.forEach((field) => {
-          const { name, value } = field;
-          form.setValue(name, value, { shouldValidate: true });
         });
       }, timeInMs);
     }
