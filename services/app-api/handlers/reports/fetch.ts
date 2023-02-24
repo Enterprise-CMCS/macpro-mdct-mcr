@@ -41,7 +41,7 @@ export const fetchReport = handler(async (event, _context) => {
     const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
     if (!fieldData) throw error.MISSING_FIELD_DATA;
 
-    // Reports created before MDCT-2054 do not have completion data, so calculate for future use.
+    // TODO: Reports created before MDCT-2054 do not have completion data, so calculate for future use.
     // if (!reportMetadata.completionStatus) {
     //   reportMetadata.completionStatus = await calculateCompletionStatus(
     //     fieldData,

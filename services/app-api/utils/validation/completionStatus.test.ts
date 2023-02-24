@@ -95,23 +95,23 @@ describe("Statusing Tests", () => {
         formTemplate: "mcpar-template",
       },
       {
-        description: "New MCPAR Report With Incomplete Drawer",
-        testData: "mcpar-data-incomplete",
-        expectedResult: "mcpar-status-result-incomplete",
+        description: "Report is missing State Name in point of contact, otherwise complete.",
+        testData: "mcpar-data-missing-pointofcontact",
+        expectedResult: "mcpar-status-result-missing-pointofcontact",
         formTemplate: "mcpar-template",
       },
       {
-        description: "MCPAR Report With 2 Plans, 1 complete and 1 incomplete",
-        testData: "mcpar-data-2plans-incomplete",
-        expectedResult: "mcpar-status-result-2plans-incomplete",
+        description: "MCPAR Report, incomplete due to missing drawer",
+        testData: "mcpar-data-missing-drawer",
+        expectedResult: "mcpar-status-result-missing-drawer",
         formTemplate: "mcpar-template",
       },
       {
-        description: "New Incomplete MCPAR Report", //TODO: This doesn't look right
-        testData: "mcpar-data-complete",
-        expectedResult: "mcpar-data-partially-complete",
+        description: "MCPAR Report, incomplete due to missing modal",
+        testData: "mcpar-data-missing-modal",
+        expectedResult: "mcpar-status-result-missing-modal",
         formTemplate: "mcpar-template",
-      },
+      }
     ];
     runs.forEach((run) => {
       test(run.description, async () => {
@@ -128,10 +128,10 @@ describe("Statusing Tests", () => {
     });
     test("Fixture Testbed", async () => {
       //TODO: Skip this when fixtures are done
-      const run = {
-        description: "New Incomplete MCPAR Report",
-        testData: "mcpar-data-incomplete",
-        expectedResult: "mcpar-status-result-incomplete",
+      const run =  {
+        description: "MCPAR Report, incomplete due to missing modal",
+        testData: "mcpar-data-missing-modal",
+        expectedResult: "mcpar-status-result-missing-modal",
         formTemplate: "mcpar-template",
       };
       const testData = require(`../../utils/testing/fixtures/${run.testData}.json`);
