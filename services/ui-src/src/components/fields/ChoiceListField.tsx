@@ -61,14 +61,6 @@ export const ChoiceListField = ({
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
-  // update form field data and DOM display checked attribute
-  useEffect(() => {
-    if (displayValue) {
-      // update DOM choices checked status
-      clearUncheckedNestedFields(choices);
-    }
-  }, [displayValue]);
-
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) => {
     return choices.map((choice: FieldChoice) => {
@@ -92,15 +84,15 @@ export const ChoiceListField = ({
   const clearUncheckedNestedFields = (choices: FieldChoice[]) => {
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
-      if (!choice.checked && choice.children) {
+      if (choice.children) {
         choice.children.forEach((child) => {
           switch (child.type) {
             case "radio":
             case "checkbox":
-              form.setValue(child.id, [], { shouldValidate: true });
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
+                  form.setValue(child.id, [], { shouldValidate: true });
                 });
                 clearUncheckedNestedFields(child.props.choices);
               }
@@ -127,6 +119,12 @@ export const ChoiceListField = ({
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
     let selectedOptions = null;
+
+    if (!isOptionChecked) {
+      let option = choices.find((choice) => choice.id == clickedOption.key);
+      clearUncheckedNestedFields([option!]);
+    }
+
     // handle radio
     if (type === "radio") {
       selectedOptions = [clickedOption];
@@ -170,6 +168,14 @@ export const ChoiceListField = ({
           fields,
           report: reportArgs,
           user,
+        });
+        /*
+         * This is used to trigger a final rerender of the fields so that the
+         * database and ui stay insync https://bit.ly/41jIn21
+         */
+        fields.forEach((field) => {
+          const { name, value } = field;
+          form.setValue(name, value, { shouldValidate: true });
         });
       }, timeInMs);
     }
