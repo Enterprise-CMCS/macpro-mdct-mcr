@@ -121,19 +121,22 @@ export const ChoiceListField = ({
     const preChangeFieldValues = displayValue || [];
     let selectedOptions = null;
 
-    if (!isOptionChecked) {
-      let option = choices.find((choice) => choice.id == clickedOption.key);
-      clearUncheckedNestedFields([option!]);
-    }
-
     // handle radio
     if (type === "radio") {
+      let everyOtherOption = choices.filter(
+        (choice) => choice.id != clickedOption.key
+      );
+      clearUncheckedNestedFields(everyOtherOption);
       selectedOptions = [clickedOption];
       setDisplayValue(selectedOptions);
-      form.setValue(name, selectedOptions);
+      form.setValue(name, selectedOptions, { shouldValidate: true });
     }
     // handle checkbox
     if (type === "checkbox") {
+      if (!isOptionChecked) {
+        let option = choices.find((choice) => choice.id == clickedOption.key);
+        clearUncheckedNestedFields([option!]);
+      }
       const checkedOptionValues = [...preChangeFieldValues, clickedOption];
       const uncheckedOptionValues = preChangeFieldValues.filter(
         (field) => field.value !== clickedOption.value
