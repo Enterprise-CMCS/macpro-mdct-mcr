@@ -19,6 +19,7 @@ export const Form = ({
   id,
   formJson,
   onSubmit,
+  onError,
   formData,
   autosave,
   children,
@@ -70,7 +71,10 @@ export const Form = ({
     <FormProvider {...form}>
       <form
         id={id}
-        onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
+        onSubmit={form.handleSubmit(
+          onSubmit as any,
+          onError || (onErrorHandler as any)
+        )}
         {...props}
       >
         <Box sx={sx}>{renderFormFields(fields)}</Box>
@@ -84,6 +88,7 @@ interface Props {
   id: string;
   formJson: FormJson;
   onSubmit: Function;
+  onError?: Function;
   formData?: AnyObject;
   autosave?: boolean;
   children?: ReactNode;
