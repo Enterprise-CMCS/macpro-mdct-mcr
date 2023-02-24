@@ -45,7 +45,7 @@ const calculateRouteCompletion = async (
   switch (route.pageType) {
     case "standard":
       return {
-        [route.path]: await calculateStandardFormCompletion(
+        [route.path]: await calculateFormCompletion(
           fieldData,
           route.form,
           validationJson
@@ -54,7 +54,7 @@ const calculateRouteCompletion = async (
     case "drawer":
     case "modalDrawer":
       return {
-        [route.path]: await calculateDrawerFormCompletion(
+        [route.path]: await calculateEntityCompletion(
           fieldData,
           [route.drawerForm, route.modalForm],
           validationJson,
@@ -74,31 +74,38 @@ const calculateRouteCompletion = async (
   }
 };
 
-const calculateDrawerFormCompletion = async (
-  fieldData: any,
-  forms: any[],
+const calculateEntityCompletion = async (
+  reportData: any,
+  formTemplates: any[],
   validationJson: any,
   entityType: string
 ) => {
-  return fieldData[entityType]?.every((entity: any) => {
-    return forms?.every(async (form) => {
-      return await calculateStandardFormCompletion(
-        entity,
-        form,
-        validationJson
-      );
-    });
-  });
+  var areAllFormsComplete = true;
+  for (var formTemplate of formTemplates) {
+    if (formTemplate) {
+      for (var dataForEntity of reportData[entityType]) {
+        const isEntityComplete = await calculateFormCompletion(
+          dataForEntity,
+          formTemplate,
+          validationJson
+        );
+        areAllFormsComplete &&= isEntityComplete;
+        if (!areAllFormsComplete) break;
+      }
+    }
+    if (!areAllFormsComplete) break;
+  }
+  return areAllFormsComplete;
 };
 
-const calculateStandardFormCompletion = async (
-  fieldData: any,
-  form: any,
+const calculateFormCompletion = async (
+  reportData: any,
+  formTemplate: any,
   validationJson: any
 ) => {
   let unvalidatedFields: Record<string, string> = {};
-  form?.fields.forEach((field: any) => {
-    unvalidatedFields[field.id] = fieldData[field.id];
+  formTemplate?.fields.forEach((field: any) => {
+    unvalidatedFields[field.id] = reportData[field.id];
   });
   try {
     let validatedFields = await validateFieldData(

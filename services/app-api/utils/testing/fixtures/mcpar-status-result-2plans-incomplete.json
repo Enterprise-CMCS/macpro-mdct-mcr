@@ -12,7 +12,7 @@
   },
   "/mcpar/plan-level-indicators": {
     "/mcpar/plan-level-indicators/encounter-data-report": false,
-    "/mcpar/plan-level-indicators/sanctions": false,
+    "/mcpar/plan-level-indicators/sanctions": true,
     "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances": {
       "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service": false,
       "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service": false,

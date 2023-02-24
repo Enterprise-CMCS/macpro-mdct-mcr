@@ -214,7 +214,7 @@ describe("Statusing Tests", () => {
       });
     });
     test("Fixture Testbed", async () => {
-      //TODO: Delete this when fixtures are done
+      //TODO: Skip this when fixtures are done
       const run = {
         description: "MCPAR Report With 2 Plans, 1 complete and 1 incomplete",
         testData: "mcpar-data-2plans-incomplete",
