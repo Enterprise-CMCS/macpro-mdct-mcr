@@ -51,6 +51,10 @@ custom:
   princeApiPath: ${env:PRINCE_API_PATH, ssm:/${self:custom.stage}/prince_api_path, ssm:/default/prince_api_path}
   bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
+  privateSubnets:
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id}
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
@@ -303,8 +307,7 @@ functions:
     vpc:
       securityGroupIds:
         - Ref: KafkaSecurityGroup
-      subnetIds: >-
-        ${self:custom.vpcId.privateSubnets}
+      subnetIds: ${self:custom.privateSubnets}
 resources:
   Resources:
     GatewayResponseDefault4XX:
