@@ -12,8 +12,8 @@ const condensedTopicList = [
   },
 ];
 
-exports.handler = async function (event, context, callback) {
-  console.log("Received event:", JSON.stringify(event, null, 2));
+exports.handler = async function (event, _context, _callback) {
+  console.log("Received event:", JSON.stringify(event, null, 2)); // eslint-disable-line no-console
   var topicList = [];
 
   // Generate the complete topic list from the condensed version above.
@@ -21,7 +21,7 @@ exports.handler = async function (event, context, callback) {
     topicList.push(
       ..._.map(element.topics, (topic) => {
         return {
-          topic: `${element.topicPrefix}${topic}${version}`,
+          topic: `${element.topicPrefix}${topic}${element.version}`,
           numPartitions: element.numPartitions,
           replicationFactor: element.replicationFactor,
         };

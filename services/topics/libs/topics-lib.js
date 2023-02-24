@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const _ = require("lodash");
 import { Kafka, ResourceTypes } from "kafkajs";
 
@@ -44,9 +45,9 @@ export async function createTopics(brokerString, topicNamespace, topicsConfig) {
       (topicConfig, topic) => _.get(topicConfig, "topic") == topic
     );
 
-    //find interestion of topics metadata collection with topic configuration collection
-    //where partition count of topic in Kafka is less than what is specified in the topic configuration collection
-    //...can't remove partitions, only add them
+    /* find interestion of topics metadata collection with topic configuration collection
+       where partition count of topic in Kafka is less than what is specified in the topic configuration collection
+       ...can't remove partitions, only add them */
     const topicsToUpdate = _.intersectionWith(
       namespacedTopics,
       topicsMetadata,
