@@ -1,12 +1,10 @@
-import { ReportShape } from "types";
-
-export const getRouteStatus = (report: ReportShape | undefined) => {
+export const getRouteStatus = (report: any) => {
   if (!report) return [];
   const {
     formTemplate: { routes },
   } = report;
-  const validRoutes = routes.filter((r) => r.pageType !== "reviewSubmit");
-  const parent = validRoutes.map((route) => {
+  const validRoutes = routes.filter((r: any) => r.pageType !== "reviewSubmit");
+  const parent = validRoutes.map((route: any) => {
     const children = route.children?.map((child: any) => {
       const grandchildren = child.children?.map((grandchild: any) => {
         return {
