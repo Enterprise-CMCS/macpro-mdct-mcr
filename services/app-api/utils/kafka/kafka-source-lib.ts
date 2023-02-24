@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import AWS from "aws-sdk";
 import s3Lib from "../s3/s3-lib";
 import { Kafka } from "kafkajs";
@@ -34,17 +35,17 @@ signalTraps.map((type) => {
 
 class KafkaSourceLib {
   /*
-  Event types:
-  cmd – command; restful publish
-  cdc – change data capture; record upsert/delete in data store
-  sys – system event; send email, archive logs
-  fct – fact; user activity, notifications, logs
-
-  topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
-  version = "some version";
-  tables = [list of tables];
-  buckets = [list of buckets];
-  */
+   * Event types:
+   * cmd – command; restful publish
+   * cdc – change data capture; record upsert/delete in data store
+   * sys – system event; send email, archive logs
+   * fct – fact; user activity, notifications, logs
+   *
+   * topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
+   * version = "some version";
+   * tables = [list of tables];
+   * buckets = [list of buckets];
+   */
 
   topicPrefix: string;
   version: string;

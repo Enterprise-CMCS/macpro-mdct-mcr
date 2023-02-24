@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import * as topics from "../libs/topics-lib.js";
 
-exports.handler = async function (event, context, callback) {
+exports.handler = async function (event, _context, _callback) {
   console.log("Received event:", JSON.stringify(event, null, 2));
   if (!event.project || !event.stage) {
     throw "ERROR:  project and stage keys must be sent in the event.";
