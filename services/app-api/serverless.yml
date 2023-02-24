@@ -120,6 +120,17 @@ provider:
             - "arn:aws:s3:::${self:custom.naaarFormBucket}"
             - "arn:aws:s3:::${self:custom.naaarFormBucket}/formTemplates/*"
             - "arn:aws:s3:::${self:custom.naaarFormBucket}/fieldData/*"
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DescribeStream
+            - dynamodb:GetRecords
+            - dynamodb:GetShardIterator
+            - dynamodb:ListShards
+            - dynamodb:ListStreams
+          Resource:
+            - ${self:custom.mcparReportTableStreamArn}
+            - ${self:custom.mlrReportTableStreamArn}
+            - ${self:custom.naaarReportTableStreamArn}
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
@@ -315,7 +326,6 @@ functions:
           rules:
             - prefix: fieldData/
             - suffix: .json
-    role: LambdaApiRole
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
