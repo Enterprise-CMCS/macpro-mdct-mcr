@@ -37,11 +37,11 @@ custom:
     path: ../../.env
   bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
   mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
-  mcparReportTableStreamArn: ${cf:database-${self:custom.stage}.McparReportTableStreamArn, cf:database-main.McparReportTableStreamArn}
+  mcparReportTableStreamArn: ${env:MCPAR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.McparReportTableStreamArn, cf:database-main.McparReportTableStreamArn}
   mlrReportTableName: ${env:MLR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.MlrReportTableName}
-  mlrReportTableStreamArn: ${cf:database-${self:custom.stage}.MlrReportTableStreamArn, cf:database-main.MlrReportTableStreamArn}
+  mlrReportTableStreamArn: ${env:MLR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.MlrReportTableStreamArn, cf:database-main.MlrReportTableStreamArn}
   naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.NaaarReportTableName}
-  naaarReportTableStreamArn: ${cf:database-${self:custom.stage}.NaaarReportTableStreamArn, cf:database-main.NaaarReportTableStreamArn}
+  naaarReportTableStreamArn: ${env:NAAAR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.NaaarReportTableStreamArn, cf:database-main.NaaarReportTableStreamArn}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
@@ -49,12 +49,12 @@ custom:
   naaarFormBucket: ${env:NAAAR_FORM_BUCKET, cf:database-${self:custom.stage}.NaaarFormBucketName}
   princeApiHost: ${env:PRINCE_API_HOST, ssm:/${self:custom.stage}/prince_api_host, ssm:/default/prince_api_host}
   princeApiPath: ${env:PRINCE_API_PATH, ssm:/${self:custom.stage}/prince_api_path, ssm:/default/prince_api_path}
-  bootstrapBrokerStringTls: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
-  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
+  bootstrapBrokerStringTls: ${env:BROKER_STRINGS, ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
+  vpcId: ${env:VPC_ID, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
   privateSubnets:
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id}
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id}
-    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id}
+    - ${env:VPC_SUBNET_A, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id}
+    - ${env:VPC_SUBNET_B, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id}
+    - ${env:VPC_SUBNET_C, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id}
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
@@ -263,19 +263,19 @@ functions:
     events:
       - stream:
           type: dynamodb
-          arn: ${self:custom.McparReportTableStreamArn}
+          arn: ${self:custom.mcparReportTableStreamArn}
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
-          arn: ${self:custom.MlrReportTableStreamArn}
+          arn: ${self:custom.mlrReportTableStreamArn}
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
       - stream:
           type: dynamodb
-          arn: ${self:custom.NaaarReportTableStreamArn}
+          arn: ${self:custom.naaarReportTableStreamArn}
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
