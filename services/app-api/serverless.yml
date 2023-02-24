@@ -281,19 +281,37 @@ functions:
           enabled: true
       - s3:
           bucket: ${self:custom.mcparFormBucket}
-          event: *
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.mcparFormBucket}
+          event: s3:ObjectRemoved:*
           rules:
             - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.mlrFormBucket}
-          event: *
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.mlrFormBucket}
+          event: s3:ObjectRemoved:*
           rules:
             - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.naaarFormBucket}
-          event: *
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.naaarFormBucket}
+          event: s3:ObjectRemoved:*
           rules:
             - prefix: fieldData/
             - suffix: .json
