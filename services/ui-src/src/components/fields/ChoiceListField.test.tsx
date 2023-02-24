@@ -468,7 +468,10 @@ describe("Test Choicelist onChangeHandler", () => {
     const firstRadioOptionOptionData = [{ key: "Choice 1", value: "Choice 1" }];
     expect(mockSetValue).toHaveBeenCalledWith(
       "radioField",
-      firstRadioOptionOptionData
+      firstRadioOptionOptionData,
+      {
+        shouldValidate: true,
+      }
     );
 
     // Now check the second radio option to trigger the onChangeHandler
@@ -488,7 +491,10 @@ describe("Test Choicelist onChangeHandler", () => {
     // Make sure the form value is set to default state
     expect(mockSetValue).toHaveBeenCalledWith(
       "radioField",
-      firstRadioOptionOptionData
+      firstRadioOptionOptionData,
+      {
+        shouldValidate: true,
+      }
     );
   });
 });
