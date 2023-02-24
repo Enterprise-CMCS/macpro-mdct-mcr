@@ -86,20 +86,21 @@ export const ChoiceListField = ({
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
       if (choice.children) {
-        choice.children.forEach((child) => {
+        choice.children.forEach((child: FormField) => {
           switch (child.type) {
             case "radio":
             case "checkbox":
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
-                  form.setValue(child.id, [], { shouldValidate: true });
+                  form.setValue(child.id, []);
                 });
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
             default:
-              form.setValue(child.id, "", { shouldValidate: true });
+              child.props = { ...child.props, clear: true };
+              form.setValue(child.id, "");
               break;
           }
         });
