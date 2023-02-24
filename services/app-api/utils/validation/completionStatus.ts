@@ -66,7 +66,7 @@ const calculateEntityCompletion = async (
 ) => {
   var areAllFormsComplete = true;
   for (var formTemplate of formTemplates) {
-    if (formTemplate) {
+    if (formTemplate && reportData[entityType]) {
       for (var dataForEntity of reportData[entityType]) {
         const isEntityComplete = await calculateFormCompletion(
           dataForEntity,

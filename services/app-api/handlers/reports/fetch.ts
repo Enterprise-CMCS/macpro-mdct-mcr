@@ -42,14 +42,14 @@ export const fetchReport = handler(async (event, _context) => {
     if (!fieldData) throw error.MISSING_FIELD_DATA;
 
     // Reports created before MDCT-2054 do not have completion data, so calculate for future use.
-    if (!reportMetadata.completionStatus) {
-      reportMetadata.completionStatus = await calculateCompletionStatus(
-        fieldData,
-        formTemplate.routes,
-        formTemplate.validationJson
-      );
-    }
-    
+    // if (!reportMetadata.completionStatus) {
+    //   reportMetadata.completionStatus = await calculateCompletionStatus(
+    //     fieldData,
+    //     formTemplate.routes,
+    //     formTemplate.validationJson
+    //   );
+    // }
+
     status = StatusCodes.SUCCESS;
     body = { ...reportMetadata, formTemplate, fieldData };
   } catch (err) {

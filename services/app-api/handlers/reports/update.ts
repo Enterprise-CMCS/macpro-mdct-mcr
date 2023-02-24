@@ -12,6 +12,8 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import { error, buckets } from "../../utils/constants/constants";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
