@@ -1,5 +1,6 @@
 export const getRouteStatus = (report: any) => {
   if (!report) return [];
+
   const {
     formTemplate: { routes },
   } = report;
@@ -10,14 +11,17 @@ export const getRouteStatus = (report: any) => {
         return {
           name: grandchild.name,
           path: grandchild.path,
-          status: "error",
+          status:
+            report.completionStatus[route.path][child.path][grandchild.path],
         };
       });
 
       return {
         name: child.name,
         path: child.path,
-        status: undefined,
+        status: child.children
+          ? undefined
+          : report.completionStatus[route.path][child.path],
         children: grandchildren,
       };
     });
@@ -25,7 +29,7 @@ export const getRouteStatus = (report: any) => {
     return {
       name: route.name,
       path: route.path,
-      status: undefined,
+      status: children ? undefined : report.completionStatus[route.path],
       children,
     };
   });

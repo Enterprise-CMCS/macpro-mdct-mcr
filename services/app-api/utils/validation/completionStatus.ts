@@ -79,18 +79,18 @@ const calculateEntityCompletion = async (
   for (var formTemplate of formTemplates) {
     //if valid formTemplate and data for entity
     if (formTemplate && reportData[entityType]) {
-        // iterate over each entity (eg access measure)
-        for (var dataForEntity of reportData[entityType]) {
-          // get completion status for entity, using the correct form template
-          const isEntityComplete = await calculateFormCompletion(
-            dataForEntity,
-            formTemplate,
-            validationJson
-          );
-          // update combined result, breaking if the entity is not complete
-          areAllFormsComplete &&= isEntityComplete;
-          if (!areAllFormsComplete) break;
-        }
+      // iterate over each entity (eg access measure)
+      for (var dataForEntity of reportData[entityType]) {
+        // get completion status for entity, using the correct form template
+        const isEntityComplete = await calculateFormCompletion(
+          dataForEntity,
+          formTemplate,
+          validationJson
+        );
+        // update combined result, breaking if the entity is not complete
+        areAllFormsComplete &&= isEntityComplete;
+        if (!areAllFormsComplete) break;
+      }
     }
     // Break if the form is not complete
     if (!areAllFormsComplete) break;
@@ -112,7 +112,7 @@ const calculateFormCompletion = async (
   });
   // Validate all fields en masse, passing flag that uses required validation schema
   try {
-    let validatedFields:any = await validateFieldData(
+    let validatedFields: any = await validateFieldData(
       validationJson,
       unvalidatedFields,
       true

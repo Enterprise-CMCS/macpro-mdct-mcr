@@ -7,7 +7,7 @@ import { ReportRouteBase } from "types";
 
 interface TableRowProps extends ReportRouteBase {
   children?: any[];
-  status?: "error" | "success";
+  status?: boolean;
   type: "parent" | "child" | "grandchild";
 }
 
@@ -24,16 +24,16 @@ export const TableRow = ({
     <Tr>
       <Td sx={sx[type]}>{name}</Td>
       <Td sx={sx.status}>
-        {status === "error" && (
+        {status && (
+          <>
+            <Image src={successIcon} alt="Success" />
+            Success
+          </>
+        )}
+        {!status && status !== undefined && (
           <>
             <Image src={errorIcon} alt="Error" />
             Error
-          </>
-        )}
-        {status === "success" && (
-          <>
-            <Image src={successIcon} alt="Error" />
-            Success
           </>
         )}
       </Td>
