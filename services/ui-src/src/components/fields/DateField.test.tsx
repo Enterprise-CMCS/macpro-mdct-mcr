@@ -75,6 +75,24 @@ describe("Test DateField hydration functionality", () => {
     />
   );
 
+  const clearPropGivenAndTrueDateField = (
+    <DateField
+      name="testDateFieldWithHydrationValue"
+      label="test-date-field-with-hydration-value"
+      hydrate={mockHydrationValue}
+      clear
+    />
+  );
+
+  const clearPropGivenAndFalseDateField = (
+    <DateField
+      name="testDateFieldWithHydrationValue"
+      label="test-date-field-with-hydration-value"
+      hydrate={mockHydrationValue}
+      clear={false}
+    />
+  );
+
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
   });
@@ -107,6 +125,27 @@ describe("Test DateField hydration functionality", () => {
     )!;
     const displayValue = dateFieldInput.value;
     expect(displayValue).toEqual(mockFormFieldValue);
+  });
+
+  test("should set value to default if given clear prop and clear is set to true", () => {
+    mockGetValues(undefined);
+
+    const result = render(clearPropGivenAndTrueDateField);
+    const dateField: HTMLInputElement = result.container.querySelector(
+      "[name='testDateFieldWithHydrationValue']"
+    )!;
+    const displayValue = dateField.value;
+    expect(displayValue).toEqual("");
+  });
+
+  test("should set value to hydrationvalue if given clear prop and clear is set to false", () => {
+    mockGetValues(undefined);
+    const result = render(clearPropGivenAndFalseDateField);
+    const dateField: HTMLInputElement = result.container.querySelector(
+      "[name='testDateFieldWithHydrationValue']"
+    )!;
+    const displayValue = dateField.value;
+    expect(displayValue).toEqual(mockHydrationValue);
   });
 });
 
