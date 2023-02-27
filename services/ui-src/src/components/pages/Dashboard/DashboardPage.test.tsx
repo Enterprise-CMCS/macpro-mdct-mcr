@@ -199,7 +199,7 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
     const archiveProgramButton = screen.getAllByText("Archive")[0];
     expect(archiveProgramButton).toBeVisible();
     await userEvent.click(archiveProgramButton);
-    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    await expect(mockReportContext.archiveReport).toHaveBeenCalledTimes(1);
     // once for render, once for archive
     await expect(mockReportContext.fetchReportsByState).toHaveBeenCalledTimes(
       2
@@ -258,7 +258,7 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
     const archiveProgramButton = screen.getAllByText("Archive")[0];
     expect(archiveProgramButton).toBeVisible();
     await userEvent.click(archiveProgramButton);
-    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    await expect(mockReportContext.archiveReport).toHaveBeenCalledTimes(1);
     // once for render, once for archive
     await expect(mockReportContext.fetchReportsByState).toHaveBeenCalledTimes(
       2

@@ -71,6 +71,10 @@ DYNAMODB_URL=http://localhost:8000
 LOCAL_LOGIN=true
 MCPAR_FORM_BUCKET=local-mcpar-form
 MCPAR_REPORT_TABLE_NAME=local-mcpar-reports
+MLR_FORM_BUCKET=local-mlr-form
+MLR_REPORT_TABLE_NAME=local-mlr-reports
+NAAAR_FORM_BUCKET=local-naaar-form
+NAAAR_REPORT_TABLE_NAME=local-naaar-reports
 PRINCE_API_HOST=macpro-platform-dev.cms.gov
 PRINCE_API_PATH=/doc-conv/508html-to-508pdf
 S3_ATTACHMENTS_BUCKET_NAME=local-uploads
@@ -209,8 +213,8 @@ While not necessary, it might be beneficial to have AWS CLI installed/configured
 
 ### Deployment Steps
 
-| branch     | status                                                                                                                                                                    | release                                                                                                                                                  |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| branch     | status                                                                                                                                                                                                    | release                                                                                                                                                                  |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Main       | [![Deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml)       | [![release to main](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/compare?quick_pull=1)                        |
 | Val        | [![Deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=val)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml)        | [![release to val](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/compare/val...main?quick_pull=1)              |
 | Production | [![Deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=production)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml) | [![release to production](https://img.shields.io/badge/-Create%20PR-blue.svg)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/compare/production...val?quick_pull=1) |
@@ -241,12 +245,12 @@ If you have a PR that needs Product/Design input, the easiest way to get it to t
 
 ![Architecture Diagram](./.images/architecture.svg?raw=true)
 
-
 **General Structure** - React frontend that renders a form for a user to fill out, Node backend that uses S3 and Dynamo to store and validate forms.
 
 **Custom JSON & form field creation engine (formFieldFactory)** - Each report has a custom JSON object, stored in a JSON file, written using a custom schema. This JSON object is referred to as the form template and it is the blueprint from which report form fields are created. It is also used to create routes and navigation elements throughout the app. When provided form fields from this template, the formFieldFactory renders the appropriate form fields. A similar process occurs when a report is exported in PDF preview format.
 
 **Page and Form Structure** Each page has a name, path, and pageType, for example the first page a user sees in the form will be have ‘pageType: standard’ with a ‘verbiage’ object that includes all of the text that precedes the form fields. The the ‘form’ object follows with a unique id and ‘fields’ array that holds one or more objects that represent the individual questions in a form. There are different types of forms as well. If there is a "pageType": "modalDrawer", then instead of a ‘form’ object, it will have a ‘modalForm’ object. Here is an example of a standard page with one field:
+
 ```json
         {
           "name": "Standard Page",
@@ -307,7 +311,7 @@ Dropdown and dynamic fields are not currently supported as nested child fields. 
 
 **Choice ids** Fields which accept a list of choices (radio, checkbox, dropdown) require choices with unique, immutable ids. These ids must remain immutable even across versions of the form template to ensure they can be relied on and referenced by downstream data analysts. We have chosen to manually generate these ids.
 
-**Nuanced behaviors like the “-otherText”** flag on a question’s id  Most of the structure of the form template schema is captured in the types contained in types/index.tsx however there are some behaviors like the otherText flag that are not. For example, when a report is exported to PDF, subquestions like nested optional text area fields for the purpose of providing additional information must have ids that end in -otherText or they will not render the entered answer correctly.
+**Nuanced behaviors like the “-otherText”** flag on a question’s id Most of the structure of the form template schema is captured in the types contained in types/index.tsx however there are some behaviors like the otherText flag that are not. For example, when a report is exported to PDF, subquestions like nested optional text area fields for the purpose of providing additional information must have ids that end in -otherText or they will not render the entered answer correctly.
 
 **Form** We use react-hook-form for form state management. The formFieldFactory renders individual field inputs and registers them with RHF which exposes an onSubmit callback hook that is used to check error states and display inline validation messaging.
 
@@ -320,6 +324,7 @@ Dropdown and dynamic fields are not currently supported as nested child fields. 
 **CustomHTML parser** - function checks if element is a string, if so then the element will be passed in the function “sanitize” from "dompurify", and then the result from that process gets passed into the function “parse” from "html-react-parser" and the result gets returned. If the element is not a string, then the elements are treated as an array and get mapped over returning a key, as, and spread the props. The last check is in this else block, checking whether the element is ‘html’, in which case the content will get passed through ‘sanitize’ and ‘parse’ and the ‘as’ prop gets deleted before returning the modified element type, element props, and content.
 
 **Dynamo macpar-reports vs macpar-form in S3 Storage** - When a user creates a form, it is stored in Dynamo and tracks user information such as when the program was last edited and by whom, date submitted’ report period start and end date, program name, report type, the state, id, and status. The file in the S3 bucket is the entire form of user inputted data, and this is a pattern that is unique to this project. S3 is mainly used for attachments, data for virus scans on attachments, mathematica integration. We decided to store the programs in S3 because these data can get so large that we can’t reliably store it all in Dynamo, nor search through them without the app breaking.
+
 ## Copyright and license
 
 [![License](https://img.shields.io/badge/License-CC0--1.0--Universal-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/legalcode)
