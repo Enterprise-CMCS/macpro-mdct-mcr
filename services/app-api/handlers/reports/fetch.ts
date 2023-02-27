@@ -3,6 +3,7 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
 import { error, buckets } from "../../utils/constants/constants";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 
 export const fetchReport = handler(async (event, _context) => {
   let status, body;
@@ -21,6 +22,7 @@ export const fetchReport = handler(async (event, _context) => {
     const response = await dynamoDb.get(reportMetadataParams);
     if (!response?.Item) throw error.NOT_IN_DATABASE;
     const reportMetadata: any = response.Item; // TODO: strict typing
+
     const { formTemplateId, fieldDataId } = reportMetadata;
 
     // get formTemplate from s3 bucket
@@ -38,6 +40,15 @@ export const fetchReport = handler(async (event, _context) => {
     };
     const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
     if (!fieldData) throw error.MISSING_FIELD_DATA;
+
+    // TODO: Reports created before MDCT-2054 do not have completion data, so calculate for future use.
+    // if (!reportMetadata.completionStatus) {
+    //   reportMetadata.completionStatus = await calculateCompletionStatus(
+    //     fieldData,
+    //     formTemplate.routes,
+    //     formTemplate.validationJson
+    //   );
+    // }
 
     status = StatusCodes.SUCCESS;
     body = { ...reportMetadata, formTemplate, fieldData };

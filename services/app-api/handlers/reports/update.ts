@@ -12,6 +12,8 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import { error, buckets } from "../../utils/constants/constants";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+
 
 export const updateReport = handler(async (event, context) => {
   let status, body;
@@ -87,17 +89,22 @@ export const updateReport = handler(async (event, context) => {
               };
               await s3Lib.put(fieldDataParams);
 
+              const completionStatus = await calculateCompletionStatus(
+                fieldData,
+                formTemplate.routes,
+                formTemplate.validationJson
+              );
+
               // validate report metadata
               const validatedMetadata = await validateData(
                 metadataValidationSchema,
-                { ...unvalidatedMetadata }
+                { ...unvalidatedMetadata, completionStatus }
               );
               // if metadata passes validation,
               if (validatedMetadata) {
                 //Delete raw data prior to updating
                 delete currentReport.fieldData;
                 delete currentReport.formTemplate;
-
                 // update record in report metadata table
                 const reportMetadataParams = {
                   TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
