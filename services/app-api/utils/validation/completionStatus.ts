@@ -1,3 +1,4 @@
+import { AnyObject } from "yup/lib/types";
 import { CompletionData } from "../types/types";
 import { validateFieldData } from "./validation";
 
@@ -79,18 +80,19 @@ const calculateEntityCompletion = async (
   for (var formTemplate of formTemplates) {
     //if valid formTemplate and data for entity
     if (formTemplate && reportData[entityType]) {
-        // iterate over each entity (eg access measure)
-        for (var dataForEntity of reportData[entityType]) {
-          // get completion status for entity, using the correct form template
-          const isEntityComplete = await calculateFormCompletion(
-            dataForEntity,
-            formTemplate,
-            validationJson
-          );
-          // update combined result, breaking if the entity is not complete
-          areAllFormsComplete &&= isEntityComplete;
-          if (!areAllFormsComplete) break;
-        }
+      // iterate over each entity (eg access measure)
+      for (var dataForEntity of reportData[entityType]) {
+        // get completion status for entity, using the correct form template
+        const isEntityComplete = await calculateFormCompletion(
+          dataForEntity,
+          formTemplate,
+          validationJson,
+          reportData
+        );
+        // update combined result, breaking if the entity is not complete
+        areAllFormsComplete &&= isEntityComplete;
+        if (!areAllFormsComplete) break;
+      }
     }
     // Break if the form is not complete
     if (!areAllFormsComplete) break;
@@ -101,26 +103,49 @@ const calculateEntityCompletion = async (
 const calculateFormCompletion = async (
   reportData: any,
   formTemplate: any,
-  validationJson: any
+  validationJson: any,
+  rootData: AnyObject = reportData
 ) => {
   // Build an object of k:v for fields to validate
-  let unvalidatedFields: Record<string, string> = {};
+  let fieldsToBeValidated: Record<string, string> = {};
+  // Repeat fields can't be validated at same time, so holding their completion status here
+  let repeatersValid = true; //default to true in case of no repeat fields
+
+  const areFieldsValid = async (
+    fieldsToBeValidated: Record<string, string>
+  ) => {
+    try {
+      let validatedFields: any = await validateFieldData(
+        validationJson,
+        fieldsToBeValidated,
+        true
+      );
+      // all fields successfully validated if validatedFields is not undefined
+      return validatedFields !== undefined;
+    } catch (err) {
+      // Validation error occurred, return false
+      return false;
+    }
+  };
+
   // Iterate over all fields in form
-  formTemplate?.fields.forEach((formField: any) => {
-    // Key: Form Field ID, Value: Report Data for field
-    unvalidatedFields[formField.id] = reportData[formField.id];
-  });
-  // Validate all fields en masse, passing flag that uses required validation schema
-  try {
-    let validatedFields:any = await validateFieldData(
-      validationJson,
-      unvalidatedFields,
-      true
-    );
-    // all fields successfully validated if validatedFields is not undefined
-    return validatedFields !== undefined;
-  } catch (err) {
-    // Validation error occurred, return false
-    return false;
+  if (formTemplate?.fields) {
+    for (var formField of formTemplate.fields) {
+      if (formField.repeat) {
+        // This is a repeated field, and must be handled differently
+        for (var repeatEntity of rootData[formField.repeat]) {
+          // Iterate over each entity from the repeat section, build new value id, and validate it
+          repeatersValid &&= await areFieldsValid({
+            [formField.id]: reportData[`${formField.id}_${repeatEntity.id}`],
+          });
+        }
+      } else {
+        // Key: Form Field ID, Value: Report Data for field
+        fieldsToBeValidated[formField.id] = reportData[formField.id];
+      }
+    }
   }
+
+  // Validate all fields en masse, passing flag that uses required validation schema
+  return repeatersValid && areFieldsValid(fieldsToBeValidated);
 };
