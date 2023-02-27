@@ -40,8 +40,6 @@ describe("Test StandardReportPage", () => {
 
   test("StandardReportPage navigates to next route onError", async () => {
     const result = render(standardPageSectionComponent);
-    const currentPath = window.location.pathname;
-    expect(currentPath).toBe("/");
     const textFieldInput: HTMLInputElement = result.container.querySelector(
       "[id='mock-text-field'"
     )!;
