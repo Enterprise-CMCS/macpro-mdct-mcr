@@ -137,7 +137,8 @@ export const updateReport = handler(async (event, context) => {
 
   const completionStatus = await calculateCompletionStatus(
     fieldData,
-    formTemplate
+    formTemplate.routes,
+    formTemplate.validationJson
   );
 
   // validate report metadata
