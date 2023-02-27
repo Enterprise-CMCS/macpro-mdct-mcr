@@ -76,6 +76,7 @@ const mockDropdownOptions = [
 const mockNestedChildren = [
   {
     id: "Choice 3-otherText",
+    name: "Choice 3-otherText",
     type: "text",
   },
   {
@@ -496,6 +497,94 @@ describe("Test Choicelist onChangeHandler", () => {
         shouldValidate: true,
       }
     );
+  });
+
+  test("Checking and unchecking choices that have nested children sets those children to default values", async () => {
+    mockGetValues(undefined);
+
+    // Create the Checkbox Component
+    const wrapper = render(CheckboxComponentWithNestedChildren);
+
+    const parentCheckbox = wrapper.getByRole("checkbox", { name: "Choice 3" });
+
+    // Make sure default state is set correctly
+    expect(parentCheckbox).not.toBeChecked();
+
+    // Select the first Checkbox and check it
+    fireEvent.click(parentCheckbox);
+
+    // Confirm the checkbox options are checked correctly
+    const checkedOptions = wrapper.getAllByRole("checkbox", {
+      checked: true,
+    });
+    expect(checkedOptions).toHaveLength(1);
+    expect(parentCheckbox).toBeChecked();
+
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(parentCheckbox);
+
+    // Make sure the form value is set to what we've clicked (Which is only Choice 3)
+    const parentCheckboxData = [{ key: "Choice 3", value: "Choice 3" }];
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "checkboxFieldWithNestedChildren",
+      parentCheckboxData,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    const childTextBox: HTMLInputElement = wrapper.container.querySelector(
+      "[name='Choice 3-otherText']"
+    )!;
+    // Now type in the child textbox
+    fireEvent.click(childTextBox);
+    fireEvent.change(childTextBox, { target: { value: "Added Text" } });
+
+    // Confirm the text change was made
+    expect(childTextBox.value).toBe("Added Text");
+
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(childTextBox);
+
+    // Make sure the form value is set to with new child text
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "Choice 3-otherText",
+      "Added Text",
+      {
+        shouldValidate: true,
+      }
+    );
+
+    // Now blur the parent and make sure the fields underneath are clean
+    fireEvent.click(parentCheckbox);
+
+    // Confirm the checkbox options are unchecked correctly
+    const uncheckedOptions = wrapper.getAllByRole("checkbox", {
+      checked: false,
+    });
+    expect(uncheckedOptions).toHaveLength(3);
+    expect(parentCheckbox).not.toBeChecked();
+
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(parentCheckbox);
+
+    // Rechecking should show the child textbox doesn't have the 'Added Text' value anymore
+    fireEvent.click(parentCheckbox);
+
+    // Confirm the checkbox options are checked correctly
+    const recheckedOptions = wrapper.getAllByRole("checkbox", {
+      checked: true,
+    });
+    expect(recheckedOptions).toHaveLength(1);
+    expect(parentCheckbox).toBeChecked();
+
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(parentCheckbox);
+
+    const childTextBoxCleared: HTMLInputElement =
+      wrapper.container.querySelector("[name='Choice 3-otherText']")!;
+
+    expect(childTextBoxCleared.value).toBe("");
   });
 });
 
