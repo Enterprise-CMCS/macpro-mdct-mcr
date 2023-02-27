@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { nested, endDate, schemaMap } from "./schemaMap";
+import { nested, endDate, schemaMap, completionSchemaMap } from "./schemaMap";
 import { AnyObject } from "../types/types";
 import { error } from "../constants/constants";
 
@@ -37,25 +37,36 @@ export const filterValidationSchema = (
 };
 
 // map field validation types to validation schema
-export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
+export const mapValidationTypesToSchema = (
+  fieldValidationTypes: AnyObject,
+  isRequired: boolean
+) => {
   let validationSchema: AnyObject = {};
   // for each field to be validated,
+  let schemaMapper = isRequired ? completionSchemaMap : schemaMap;
+
   Object.entries(fieldValidationTypes).forEach(
     (fieldValidationType: [string, string | AnyObject]) => {
       const [key, fieldValidation] = fieldValidationType;
       // if standard validation type, set corresponding schema from map
       if (typeof fieldValidation === "string") {
-        const correspondingSchema = schemaMap[fieldValidation];
+        const correspondingSchema = schemaMapper[fieldValidation];
         if (correspondingSchema) {
           validationSchema[key] = correspondingSchema;
         }
       }
       // else if nested validation type, make and set nested schema
       else if (fieldValidation.nested) {
-        validationSchema[key] = makeNestedFieldSchema(fieldValidation);
+        validationSchema[key] = makeNestedFieldSchema(
+          fieldValidation,
+          isRequired
+        );
         // else if not nested, make and set other dependent field types
       } else if (fieldValidation.type === "endDate") {
-        validationSchema[key] = makeEndDateFieldSchema(fieldValidation);
+        validationSchema[key] = makeEndDateFieldSchema(
+          fieldValidation,
+          isRequired
+        );
       }
     }
   );
@@ -63,29 +74,39 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
 };
 
 // return created endDate schema
-export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
+export const makeEndDateFieldSchema = (
+  fieldValidationObject: AnyObject,
+  isRequired: boolean
+) => {
   const { dependentFieldName } = fieldValidationObject;
-  return endDate(dependentFieldName);
+  return isRequired
+    ? endDate(dependentFieldName).required()
+    : endDate(dependentFieldName);
 };
 
 // return created nested field schema
-export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
+export const makeNestedFieldSchema = (
+  fieldValidationObject: AnyObject,
+  isRequired: boolean
+) => {
   const { type, parentFieldName, parentOptionId } = fieldValidationObject;
+  let schemaMapper = isRequired ? completionSchemaMap : schemaMap;
   if (fieldValidationObject.type === "endDate") {
     return nested(
-      () => makeEndDateFieldSchema(fieldValidationObject),
+      () => makeEndDateFieldSchema(fieldValidationObject, isRequired),
       parentFieldName,
       parentOptionId
     );
   } else {
-    const fieldValidationSchema = schemaMap[type];
+    const fieldValidationSchema = schemaMapper[type];
     return nested(() => fieldValidationSchema, parentFieldName, parentOptionId);
   }
 };
 
 export const validateFieldData = async (
   validationJson: AnyObject,
-  unvalidatedFieldData: AnyObject
+  unvalidatedFieldData: AnyObject,
+  isRequired=false
 ) => {
   let validatedFieldData: AnyObject | undefined = undefined;
   // filter field validation to just what's needed for the passed fields
@@ -96,7 +117,9 @@ export const validateFieldData = async (
   // transform field validation instructions to yup validation schema
   const fieldDataValidationSchema = yup
     .object()
-    .shape(mapValidationTypesToSchema(filteredFieldDataValidationJson));
+    .shape(
+      mapValidationTypesToSchema(filteredFieldDataValidationJson, isRequired)
+    );
   if (fieldDataValidationSchema) {
     validatedFieldData = await validateData(
       fieldDataValidationSchema,
