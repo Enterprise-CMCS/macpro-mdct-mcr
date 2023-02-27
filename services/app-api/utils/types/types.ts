@@ -4,6 +4,10 @@ export interface AnyObject {
   [key: string]: any;
 }
 
+export interface CompletionData {
+  [key: string]: boolean | CompletionData;
+}
+
 export interface DynamoGet {
   TableName: string;
   Key: {

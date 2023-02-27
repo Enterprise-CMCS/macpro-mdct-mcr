@@ -1,0 +1,41 @@
+{
+  "/mcpar/program-level-indicators": {
+    "/mcpar/program-level-indicators/availability-and-accessibility": {
+      "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy": true,
+      "/mcpar/program-level-indicators/availability-and-accessibility/access-measures": true
+    },
+    "/mcpar/program-level-indicators/bss": true,
+    "/mcpar/program-level-indicators/program-characteristics": true,
+    "/mcpar/program-level-indicators/encounter-data-report": true,
+    "/mcpar/program-level-indicators/program-integrity": true,
+    "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances": true
+  },
+  "/mcpar/plan-level-indicators": {
+    "/mcpar/plan-level-indicators/encounter-data-report": true,
+    "/mcpar/plan-level-indicators/sanctions": true,
+    "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances": {
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings": true,
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview": true
+    },
+    "/mcpar/plan-level-indicators/financial-performance": true,
+    "/mcpar/plan-level-indicators/program-integrity": true,
+    "/mcpar/plan-level-indicators/program-characteristics": true,
+    "/mcpar/plan-level-indicators/quality-measures": true
+  },
+  "/mcpar/bss-entity-indicators": true,
+  "/mcpar/program-information": {
+    "/mcpar/program-information/add-bss-entities": true,
+    "/mcpar/program-information/point-of-contact": false,
+    "/mcpar/program-information/add-plans": true,
+    "/mcpar/program-information/reporting-period": true
+  },
+  "/mcpar/state-level-indicators": {
+    "/mcpar/state-level-indicators/encounter-data-report": true,
+    "/mcpar/state-level-indicators/program-integrity": true,
+    "/mcpar/state-level-indicators/program-characteristics": true
+  }
+}
