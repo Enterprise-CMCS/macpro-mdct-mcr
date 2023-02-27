@@ -129,9 +129,9 @@ describe("Statusing Tests", () => {
     test("Fixture Testbed", async () => {
       //TODO: Skip this when fixtures are done
       const run =  {
-        description: "MCPAR Report, incomplete due to missing modal",
-        testData: "mcpar-data-missing-modal",
-        expectedResult: "mcpar-status-result-missing-modal",
+        description: "Completed MCPAR Report",
+        testData: "mcpar-data-complete",
+        expectedResult: "mcpar-status-result-complete",
         formTemplate: "mcpar-template",
       };
       const testData = require(`../../utils/testing/fixtures/${run.testData}.json`);
