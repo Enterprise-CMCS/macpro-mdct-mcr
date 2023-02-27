@@ -104,6 +104,16 @@ describe("Statusing Tests", () => {
         testData: "mcpar-data-missing-modal",
         expectedResult: "mcpar-status-result-missing-modal",
         formTemplate: "mcpar-template",
+      },{
+        description: "Completed MCPAR Report with no Sanction",
+        testData: "mcpar-data-complete-nosanctions",
+        expectedResult: "mcpar-status-result-complete",
+        formTemplate: "mcpar-template",
+      },{
+        description: "Incomplete MCPAR Report due to partial sanction",
+        testData: "mcpar-data-incomplete-partialsanction",
+        expectedResult: "mcpar-status-result-incomplete-partialsanction",
+        formTemplate: "mcpar-template",
       },
     ];
     runs.forEach((run) => {
@@ -118,9 +128,9 @@ describe("Statusing Tests", () => {
     test("Fixture Testbed", async () => {
       //TODO: Skip this when fixtures are done
       const run = {
-        description: "Completed MCPAR Report",
-        testData: "mcpar-data-complete",
-        expectedResult: "mcpar-status-result-complete",
+        description: "Incomplete MCPAR Report due to partial sanction",
+        testData: "mcpar-data-incomplete-partialsanction",
+        expectedResult: "mcpar-status-result-incomplete-partialsanction",
         formTemplate: "mcpar-template",
       };
       const testData = require(`../../utils/testing/fixtures/${run.testData}.json`);

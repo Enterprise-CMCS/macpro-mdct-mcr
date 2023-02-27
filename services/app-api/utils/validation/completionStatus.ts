@@ -14,11 +14,13 @@ export const calculateCompletionStatus = async (
   const calculateRoutesCompletion = async (routes: AnyObject[]) => {
     var completionDict: CompletionData = {};
     // Iterate over each route
-    for (const route of routes) {
-      // Determine the status of each child in the route
-      const routeCompletionDict = await calculateRouteCompletion(route);
-      // Add completion status to parent dictionary
-      completionDict = { ...completionDict, ...routeCompletionDict };
+    if (routes) {
+      for (const route of routes) {
+        // Determine the status of each child in the route
+        const routeCompletionDict = await calculateRouteCompletion(route);
+        // Add completion status to parent dictionary
+        completionDict = { ...completionDict, ...routeCompletionDict };
+      }
     }
     return completionDict;
   };
