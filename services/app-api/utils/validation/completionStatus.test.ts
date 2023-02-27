@@ -22,11 +22,7 @@ describe("Statusing Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(
-        testData,
-        formTemplate.routes,
-        null
-      );
+      const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
@@ -67,11 +63,7 @@ describe("Statusing Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(
-        testData,
-        formTemplate.routes,
-        null
-      );
+      const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
@@ -95,7 +87,8 @@ describe("Statusing Tests", () => {
         formTemplate: "mcpar-template",
       },
       {
-        description: "Report is missing State Name in point of contact, otherwise complete.",
+        description:
+          "Report is missing State Name in point of contact, otherwise complete.",
         testData: "mcpar-data-missing-pointofcontact",
         expectedResult: "mcpar-status-result-missing-pointofcontact",
         formTemplate: "mcpar-template",
@@ -111,24 +104,20 @@ describe("Statusing Tests", () => {
         testData: "mcpar-data-missing-modal",
         expectedResult: "mcpar-status-result-missing-modal",
         formTemplate: "mcpar-template",
-      }
+      },
     ];
     runs.forEach((run) => {
       test(run.description, async () => {
         const testData = require(`../../utils/testing/fixtures/${run.testData}.json`);
         const expectedResult = require(`../../utils/testing/fixtures/${run.expectedResult}.json`);
         const formTemplate = require(`../../utils/testing/fixtures/${run.formTemplate}.json`);
-        const result = await calculateCompletionStatus(
-          testData,
-          formTemplate.routes,
-          formTemplate.validationJson
-        );
+        const result = await calculateCompletionStatus(testData, formTemplate);
         expect(result).toMatchObject(expectedResult);
       });
     });
     test("Fixture Testbed", async () => {
       //TODO: Skip this when fixtures are done
-      const run =  {
+      const run = {
         description: "Completed MCPAR Report",
         testData: "mcpar-data-complete",
         expectedResult: "mcpar-status-result-complete",
@@ -137,11 +126,7 @@ describe("Statusing Tests", () => {
       const testData = require(`../../utils/testing/fixtures/${run.testData}.json`);
       const expectedResult = require(`../../utils/testing/fixtures/${run.expectedResult}.json`);
       const formTemplate = require(`../../utils/testing/fixtures/${run.formTemplate}.json`);
-      const result = await calculateCompletionStatus(
-        testData,
-        formTemplate.routes,
-        formTemplate.validationJson
-      );
+      const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toMatchObject(expectedResult);
     });
   });
