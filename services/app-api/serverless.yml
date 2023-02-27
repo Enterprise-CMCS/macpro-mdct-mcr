@@ -271,6 +271,16 @@ functions:
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   postKafkaData:
     handler: handlers/kafka/post/postKafkaData.handler
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
+    maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
     events:
       - stream:
           type: dynamodb
@@ -290,42 +300,8 @@ functions:
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
-      - s3:
-          bucket: ${self:custom.mcparFormBucket}
-          event: s3:ObjectCreated:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
-      - s3:
-          bucket: ${self:custom.mcparFormBucket}
-          event: s3:ObjectRemoved:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
-      - s3:
-          bucket: ${self:custom.mlrFormBucket}
-          event: s3:ObjectCreated:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
-      - s3:
-          bucket: ${self:custom.mlrFormBucket}
-          event: s3:ObjectRemoved:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
-      - s3:
-          bucket: ${self:custom.naaarFormBucket}
-          event: s3:ObjectCreated:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
-      - s3:
-          bucket: ${self:custom.naaarFormBucket}
-          event: s3:ObjectRemoved:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
+  postNaaarBucketListener:
+    handler: handlers/kafka/post/postKafkaData.handler
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
@@ -336,6 +312,75 @@ functions:
       securityGroupIds:
         - Ref: KafkaSecurityGroup
       subnetIds: ${self:custom.privateSubnets}
+    events:
+      - s3:
+          bucket: ${self:custom.naaarFormBucket}
+          existing: true
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.naaarFormBucket}
+          existing: true
+          event: s3:ObjectRemoved:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+  postMlrBucketListener:
+    handler: handlers/kafka/post/postKafkaData.handler
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
+    maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    events:
+      - s3:
+          bucket: ${self:custom.mlrFormBucket}
+          existing: true
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.mlrFormBucket}
+          existing: true
+          event: s3:ObjectRemoved:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+  postMcparBucketListener:
+    handler: handlers/kafka/post/postKafkaData.handler
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
+    maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    events:
+      - s3:
+          bucket: ${self:custom.mcparFormBucket}
+          existing: true
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+      - s3:
+          bucket: ${self:custom.mcparFormBucket}
+          existing: true
+          event: s3:ObjectRemoved:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
 resources:
   Resources:
     GatewayResponseDefault4XX:
