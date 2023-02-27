@@ -40,16 +40,17 @@ describe("Test StandardReportPage", () => {
 
   test("StandardReportPage navigates to next route onError", async () => {
     const result = render(standardPageSectionComponent);
-    const currentPath = window.location.pathname;
+    let currentPath = window.location.pathname;
+    expect(currentPath).toBe("/");
     const textFieldInput: HTMLInputElement = result.container.querySelector(
       "[id='mock-text-field'"
     )!;
     await userEvent.type(textFieldInput, "      ");
     const continueButton = screen.getByText("Continue")!;
     await userEvent.click(continueButton);
+    currentPath = window.location.pathname;
     // test that form navigates with an error in the field
-    const newPath = window.location.pathname;
-    expect(currentPath).not.toBe(newPath);
+    expect(currentPath).not.toBe("/");
   });
 });
 
