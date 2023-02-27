@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Modal, ReportContext, StatusTable } from "components";
 // types
-import { ReportStatus } from "types";
+import { AlertTypes, ReportStatus } from "types";
 // utils
 import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 // verbiage
@@ -21,12 +21,14 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 import printIcon from "assets/icons/icon_print.png";
+import { Alert } from "components/alerts/Alert";
 
 export const McparReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   // get user information
   const { email, full_name, state, userIsStateUser, userIsStateRep } =
@@ -44,6 +46,8 @@ export const McparReviewSubmitPage = () => {
   };
 
   useEffect(() => {
+    setHasError(!!document.querySelector("img[alt='Error']"));
+
     if (report?.id) {
       fetchReport(reportKeys);
     }
@@ -72,24 +76,33 @@ export const McparReviewSubmitPage = () => {
   };
 
   return (
-    <Flex sx={sx.pageContainer} data-testid="review-submit-page">
-      {report?.status === ReportStatus.SUBMITTED ? (
-        <SuccessMessage
-          programName={report.programName}
-          date={report?.submittedOnDate}
-          submittedBy={report?.submittedBy}
-        />
-      ) : (
-        <ReadyToSubmit
-          submitForm={submitForm}
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          submitting={submitting}
-          isPermittedToSubmit={isPermittedToSubmit}
+    <>
+      {hasError && (
+        <Alert
+          title="Your form is not ready for submission"
+          status={AlertTypes.ERROR}
+          description="Some sections of the MCPAR report have errors or are missing responses. Please ensure all fields are completed with valid responses before submitting."
         />
       )}
-    </Flex>
+      <Flex sx={sx.pageContainer} data-testid="review-submit-page">
+        {report?.status === ReportStatus.SUBMITTED ? (
+          <SuccessMessage
+            programName={report.programName}
+            date={report?.submittedOnDate}
+            submittedBy={report?.submittedBy}
+          />
+        ) : (
+          <ReadyToSubmit
+            submitForm={submitForm}
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            submitting={submitting}
+            isPermittedToSubmit={isPermittedToSubmit}
+          />
+        )}
+      </Flex>
+    </>
   );
 };
 
