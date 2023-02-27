@@ -4,6 +4,13 @@
   "basePath": "/mcpar",
   "version": "MCPAR_2023-01-19",
   "adminDisabled": true,
+  "entities": {
+    "sanctions": { "required": false },
+    "accessMeasures": { "required": true },
+    "qualityMeasures": { "required": true },
+    "plans": { "required": true },
+    "bssEntities": { "required": true }
+  },
   "routes": [
     {
       "name": "A: Program Information",
