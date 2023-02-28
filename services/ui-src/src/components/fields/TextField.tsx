@@ -43,7 +43,7 @@ export const TextField = ({
         form.setValue(name, defaultValue);
       } else {
         setDisplayValue(hydrationValue);
-        form.setValue(name, hydrationValue, { shouldValidate: true });
+        form.setValue(name, hydrationValue);
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
