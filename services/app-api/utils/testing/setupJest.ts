@@ -73,6 +73,9 @@ export const mockDynamoData = {
   fieldDataId: "mockReportFieldData",
   formTemplateId: "mockReportJson",
   isComplete: false,
+  completionStatus: {
+    "step-one": false,
+  },
   createdAt: 162515200000,
   lastAltered: 162515200000,
 };
@@ -90,6 +93,9 @@ export const mockDynamoDataCompleted = {
   fieldDataId: "mockReportFieldData",
   formTemplateId: "mockReportJson",
   isComplete: true,
+  completionStatus: {
+    "step-one": true,
+  },
   createdAt: 162515200000,
   lastAltered: 162515200000,
 };
