@@ -499,7 +499,7 @@ describe("Test Choicelist onChangeHandler", () => {
     );
   });
 
-  test("Checking and unchecking choices that have nested children sets those children to default values", async () => {
+  test("Checking and unchecking choices that have a nested textbox child sets that textbox to its default value", async () => {
     mockGetValues(undefined);
 
     // Create the Checkbox Component
@@ -555,7 +555,7 @@ describe("Test Choicelist onChangeHandler", () => {
       }
     );
 
-    // Now blur the parent and make sure the fields underneath are clean
+    // Now uncheck the parent
     fireEvent.click(parentCheckbox);
 
     // Confirm the checkbox options are unchecked correctly
@@ -578,13 +578,97 @@ describe("Test Choicelist onChangeHandler", () => {
     expect(recheckedOptions).toHaveLength(1);
     expect(parentCheckbox).toBeChecked();
 
-    // Tab away to trigger onComponentBlur()
-    fireEvent.blur(parentCheckbox);
-
     const childTextBoxCleared: HTMLInputElement =
       wrapper.container.querySelector("[name='Choice 3-otherText']")!;
 
     expect(childTextBoxCleared.value).toBe("");
+  });
+
+  test("Checking and unchecking a checkbox that has a nested radio child sets that radio to its default value (Nothing is checked)", async () => {
+    mockGetValues(undefined);
+
+    // Create the Checkbox Component
+    const wrapper = render(CheckboxComponentWithNestedChildren);
+
+    const parentCheckbox = wrapper.getByRole("checkbox", { name: "Choice 3" });
+
+    // Make sure default state is set correctly
+    expect(parentCheckbox).not.toBeChecked();
+
+    // Select the first Checkbox and check it
+    fireEvent.click(parentCheckbox);
+
+    // Confirm the checkbox options are checked correctly
+    const checkedOptions = wrapper.getAllByRole("checkbox", {
+      checked: true,
+    });
+    expect(checkedOptions).toHaveLength(1);
+    expect(parentCheckbox).toBeChecked();
+
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(parentCheckbox);
+
+    // Make sure the form value is set to what we've clicked (Which is only Choice 3)
+    const parentCheckboxData = [{ key: "Choice 3", value: "Choice 3" }];
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "checkboxFieldWithNestedChildren",
+      parentCheckboxData,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    // Now check the child radio field
+    const childRadioField = wrapper.getByRole("radio", {
+      name: "Choice 4",
+    });
+    fireEvent.click(childRadioField);
+
+    // Confirm the option was checked
+    expect(childRadioField).toBeChecked();
+
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(childRadioField);
+
+    // Make sure the form value is set to with new child option
+    const childRadioData = [
+      { key: "test-nested-child-radio-Choice 4", value: "Choice 4" },
+    ];
+    expect(mockSetValue).toHaveBeenCalledWith(
+      "test-nested-child-radio",
+      childRadioData,
+      {
+        shouldValidate: true,
+      }
+    );
+
+    // Now uncheck the parent
+    fireEvent.click(parentCheckbox);
+
+    // Confirm the checkbox options are unchecked correctly
+    const uncheckedOptions = wrapper.getAllByRole("checkbox", {
+      checked: false,
+    });
+    expect(uncheckedOptions).toHaveLength(3);
+    expect(parentCheckbox).not.toBeChecked();
+
+    // Tab away to trigger onComponentBlur()
+    fireEvent.blur(parentCheckbox);
+
+    // Rechecking should show the child radiofield doesn't have any option checked anymore
+    fireEvent.click(parentCheckbox);
+
+    // Confirm the checkbox options are checked correctly
+    const recheckedOptions = wrapper.getAllByRole("checkbox", {
+      checked: true,
+    });
+    expect(recheckedOptions).toHaveLength(1);
+    expect(parentCheckbox).toBeChecked();
+
+    const childRadioCleared: HTMLInputElement =
+      wrapper.container.querySelector("[name='Choice 4']")!;
+
+    expect(childRadioCleared).not.toBeChecked;
   });
 });
 
