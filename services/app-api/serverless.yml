@@ -300,7 +300,7 @@ functions:
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
-  postNaaarBucketListener:
+  postNaaarBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
@@ -327,7 +327,7 @@ functions:
           rules:
             - prefix: fieldData/
             - suffix: .json
-  postMlrBucketListener:
+  postMlrBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
@@ -354,7 +354,7 @@ functions:
           rules:
             - prefix: fieldData/
             - suffix: .json
-  postMcparBucketListener:
+  postMcparBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
