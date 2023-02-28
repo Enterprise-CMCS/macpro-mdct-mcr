@@ -10,6 +10,7 @@ import {
   reportTables,
 } from "../../utils/constants/constants";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -72,6 +73,13 @@ export const fetchReport = handler(async (event, _context) => {
       };
     }
 
+    if (!reportMetadata.completionStatus) {
+      reportMetadata.completionStatus = await calculateCompletionStatus(
+        fieldData,
+        formTemplate
+      );
+    }
+    
     return {
       status: StatusCodes.SUCCESS,
       body: {
