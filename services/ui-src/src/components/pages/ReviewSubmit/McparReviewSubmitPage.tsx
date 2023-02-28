@@ -103,6 +103,7 @@ export const McparReviewSubmitPage = () => {
             onOpen={onOpen}
             onClose={onClose}
             submitting={submitting}
+            hasStarted={report?.status !== "Not started"}
             isPermittedToSubmit={isPermittedToSubmit}
           />
         )}
@@ -133,6 +134,7 @@ const ReadyToSubmit = ({
   onOpen,
   onClose,
   submitting,
+  hasStarted,
   isPermittedToSubmit,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
@@ -150,9 +152,7 @@ const ReadyToSubmit = ({
           <Text>{intro.info}</Text>
         </Box>
 
-        <Box>
-          <StatusTable />
-        </Box>
+        <Box>{hasStarted && <StatusTable />}</Box>
       </Box>
       <Flex sx={sx.submitContainer}>
         {pdfExport && <PrintButton />}
@@ -185,6 +185,7 @@ interface ReadyToSubmitProps {
   onOpen: Function;
   onClose: Function;
   submitting?: boolean;
+  hasStarted?: boolean;
   isPermittedToSubmit?: boolean;
 }
 

@@ -1,7 +1,6 @@
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle.png";
-import successIcon from "assets/icons/icon_check_circle.png";
 import { useNavigate } from "react-router-dom";
 import { ReportRouteBase } from "types";
 
@@ -24,12 +23,6 @@ export const TableRow = ({
     <Tr>
       <Td sx={sx[type]}>{name}</Td>
       <Td sx={sx.status}>
-        {status && (
-          <>
-            <Image src={successIcon} alt="Success" />
-            Success
-          </>
-        )}
         {!status && status !== undefined && (
           <>
             <Image src={errorIcon} alt="Error" />
