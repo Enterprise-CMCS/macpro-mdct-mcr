@@ -1,23 +1,33 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportBuckets,
+  reportTables,
+} from "../../utils/constants/constants";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 export const fetchReport = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  const requiredParams = ["reportType", "id", "state"];
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
 
-  const { state, id } = event.pathParameters;
+  const { reportType, state, id } = event.pathParameters!;
+
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
 
   // Get current report metadata
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: reportTable,
     Key: { state, id },
   };
 
@@ -35,7 +45,7 @@ export const fetchReport = handler(async (event, _context) => {
 
     // Get form template from S3
     const formTemplateParams: S3Get = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Bucket: reportBucket,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
 
@@ -49,7 +59,7 @@ export const fetchReport = handler(async (event, _context) => {
 
     // Get field data from S3
     const fieldDataParams: S3Get = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Bucket: reportBucket,
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
 
@@ -87,18 +97,23 @@ interface DynamoFetchParams {
 }
 
 export const fetchReportsByState = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state!) {
+  const requiredParams = ["reportType", "state"];
+
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
 
+  const reportType = event.pathParameters?.reportType;
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+
   const queryParams: DynamoFetchParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
-      ":state": event.pathParameters.state,
+      ":state": event.pathParameters?.state!,
     },
     ExpressionAttributeNames: {
       "#state": "state",

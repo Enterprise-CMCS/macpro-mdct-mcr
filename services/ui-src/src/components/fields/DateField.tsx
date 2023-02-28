@@ -44,8 +44,13 @@ export const DateField = ({
     }
     // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
-      setDisplayValue(hydrationValue);
-      form.setValue(name, hydrationValue);
+      if (props.clear) {
+        setDisplayValue(defaultValue);
+        form.setValue(name, defaultValue);
+      } else {
+        setDisplayValue(hydrationValue);
+        form.setValue(name, hydrationValue);
+      }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -68,7 +73,11 @@ export const DateField = ({
       const fields = [
         { name, type: "date", value, hydrationValue, defaultValue },
       ];
-      const reportArgs = { id: report?.id, updateReport };
+      const reportArgs = {
+        id: report?.id,
+        reportType: report?.reportType,
+        updateReport,
+      };
       const user = { userName: full_name, state };
       await autosaveFieldData({
         form,

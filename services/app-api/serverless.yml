@@ -165,33 +165,35 @@ functions:
     handler: handlers/reports/fetch.fetchReport
     events:
       - http:
-          path: reports/{state}/{id}
+          path: reporting/{reportType}/{state}/{id}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
                 id: true
   fetchReportsByState:
     handler: handlers/reports/fetch.fetchReportsByState
     events:
       - http:
-          path: reports/{state}
+          path: reporting/{reportType}/{state}
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
     timeout: 30
   archiveReport:
     handler: handlers/reports/archive.archiveReport
     events:
       - http:
-          path: reports/archive/{state}/{id}
+          path: reporting/archive/{reportType}/{state}/{id}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -204,13 +206,14 @@ functions:
     handler: handlers/reports/create.createReport
     events:
       - http:
-          path: reports/{state}
+          path: reporting/{reportType}/{state}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
   updateReport:
     handler: handlers/reports/update.updateReport
@@ -218,13 +221,14 @@ functions:
     memorySize: 2048
     events:
       - http:
-          path: reports/{state}/{id}
+          path: reporting/{reportType}/{state}/{id}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
                 id: true
   fetchTemplate:
