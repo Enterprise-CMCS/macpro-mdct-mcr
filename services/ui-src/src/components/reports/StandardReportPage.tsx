@@ -29,6 +29,7 @@ export const StandardReportPage = ({ route }: Props) => {
   const onSubmit = async (enteredData: AnyObject) => {
     setSubmitting(true);
     const reportKeys = {
+      reportType: report?.reportType,
       state: state,
       id: report?.id,
     };

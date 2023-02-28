@@ -166,7 +166,11 @@ export const ChoiceListField = ({
           { name, type, value: displayValue, hydrationValue, defaultValue },
           ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
         ];
-        const reportArgs = { id: report?.id, updateReport };
+        const reportArgs = {
+          id: report?.id,
+          reportType: report?.reportType,
+          updateReport,
+        };
         const user = { userName: full_name, state };
         await autosaveFieldData({
           form,

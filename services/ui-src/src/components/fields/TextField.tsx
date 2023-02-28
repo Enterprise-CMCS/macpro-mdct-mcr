@@ -65,7 +65,11 @@ export const TextField = ({
       const fields = [
         { name, type: "text", value, hydrationValue, defaultValue },
       ];
-      const reportArgs = { id: report?.id, updateReport };
+      const reportArgs = {
+        id: report?.id,
+        reportType: report?.reportType,
+        updateReport,
+      };
       const user = { userName: full_name, state };
       await autosaveFieldData({
         form,

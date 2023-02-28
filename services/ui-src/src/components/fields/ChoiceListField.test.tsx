@@ -376,6 +376,7 @@ describe("Test Choicelist Autosaving Methods", () => {
     await waitFor(() =>
       expect(mockReportContext.updateReport).toHaveBeenCalledWith(
         {
+          reportType: mockReportContext.report.reportType,
           id: mockReportContext.report.id,
         },
         {

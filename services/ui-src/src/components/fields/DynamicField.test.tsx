@@ -385,7 +385,7 @@ describe("Test DynamicField Autosave Functionality", () => {
     await userEvent.tab();
     expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     expect(mockUpdateReport).lastCalledWith(
-      { id: "mock-report-id", state: "MN" },
+      { reportType: "mock-type", id: "mock-report-id", state: "MN" },
       {
         fieldData: {
           plans: [{ id: firstDynamicField.id, name: "Plans" }],
@@ -398,7 +398,7 @@ describe("Test DynamicField Autosave Functionality", () => {
     await userEvent.tab();
     expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     expect(mockUpdateReport).lastCalledWith(
-      { id: "mock-report-id", state: "MN" },
+      { reportType: "mock-type", id: "mock-report-id", state: "MN" },
       {
         fieldData: {
           plans: [{ id: firstDynamicField.id, name: "" }],
@@ -425,7 +425,7 @@ describe("Test DynamicField Autosave Functionality", () => {
     expect(firstDynamicField.value).toBe("123");
     expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     expect(mockUpdateReport).lastCalledWith(
-      { id: "mock-report-id", state: "MN" },
+      { reportType: "mock-type", id: "mock-report-id", state: "MN" },
       {
         fieldData: {
           plans: [

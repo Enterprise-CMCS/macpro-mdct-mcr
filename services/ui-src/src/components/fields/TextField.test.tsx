@@ -173,6 +173,7 @@ describe("Test TextField component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     expect(mockReportContext.updateReport).toHaveBeenCalledWith(
       {
+        reportType: mockReportContext.report.reportType,
         state: mockStateUser.user?.state,
         id: mockReportContext.report.id,
       },
@@ -200,6 +201,7 @@ describe("Test TextField component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     expect(mockReportContext.updateReport).toHaveBeenCalledWith(
       {
+        reportType: mockReportContext.report.reportType,
         state: mockStateUser.user?.state,
         id: mockReportContext.report.id,
       },

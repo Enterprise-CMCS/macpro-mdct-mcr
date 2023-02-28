@@ -1,6 +1,7 @@
 import handler from "../handler-lib";
 import { fetchReport } from "./fetch";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import { hasPermissions } from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
 import {
@@ -9,10 +10,16 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportTables,
+  reportBuckets,
+} from "../../utils/constants/constants";
 
 export const updateReport = handler(async (event, context) => {
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
+  const requiredParams = ["reportType", "id", "state"];
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
@@ -56,7 +63,10 @@ export const updateReport = handler(async (event, context) => {
     };
   }
 
-  const { formTemplateId, fieldDataId } = currentReport;
+  const { formTemplateId, fieldDataId, reportType } = currentReport;
+
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
 
   if (!formTemplateId || !fieldDataId) {
     return {
@@ -65,10 +75,10 @@ export const updateReport = handler(async (event, context) => {
     };
   }
 
-  const { state } = event.pathParameters;
+  const { state } = event.pathParameters!;
 
   const formTemplateParams = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket: reportBucket,
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   const formTemplate = (await s3Lib.get(formTemplateParams)) as Record<
@@ -78,7 +88,7 @@ export const updateReport = handler(async (event, context) => {
 
   // Get existing fieldData from s3 bucket (for patching with passed data)
   const fieldDataParams = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket: reportBucket,
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
   };
   const existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
@@ -119,7 +129,7 @@ export const updateReport = handler(async (event, context) => {
   };
 
   const updateFieldDataParams = {
-    Bucket: process.env.MCPAR_FORM_BUCKET!,
+    Bucket: reportBucket,
     Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     Body: JSON.stringify(fieldData),
     ContentType: "application/json",
@@ -156,7 +166,7 @@ export const updateReport = handler(async (event, context) => {
 
   // Update record in report metadata table
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+    TableName: reportTable,
     Item: {
       ...currentReport,
       ...validatedMetadata,
