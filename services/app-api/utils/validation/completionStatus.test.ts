@@ -1,5 +1,6 @@
 import { calculateCompletionStatus } from "./completionStatus";
 
+
 describe("Completion Status Tests", () => {
   describe("Test Completion Status of Report", () => {
     test("Basic Standard Form No Fields", async () => {
