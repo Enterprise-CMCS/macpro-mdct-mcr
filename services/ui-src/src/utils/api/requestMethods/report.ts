@@ -13,7 +13,7 @@ async function archiveReport(reportKeys: ReportKeys) {
   updateTimeout();
   const response = await API.put(
     "mcr",
-    `/reports/archive/${reportType}/${state}/${id}`,
+    `/reporting/archive/${reportType}/${state}/${id}`,
     request
   );
   return response;
@@ -29,7 +29,7 @@ async function getReport(reportKeys: ReportKeys) {
   updateTimeout();
   const response = await API.get(
     "mcr",
-    `/reports/${reportType}/${state}/${id}`,
+    `/reporting/${reportType}/${state}/${id}`,
     request
   );
   return response;
@@ -44,7 +44,7 @@ async function getReportsByState(reportType: string, state: string) {
   updateTimeout();
   const response = await API.get(
     "mcr",
-    `/reports/${reportType}/${state}`,
+    `/reporting/${reportType}/${state}`,
     request
   );
   return response;
@@ -64,7 +64,7 @@ async function postReport(
   updateTimeout();
   const response = await API.post(
     "mcr",
-    `/reports/${reportType}/${state}`,
+    `/reporting/${reportType}/${state}`,
     request
   );
   return response;
@@ -81,7 +81,7 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
   updateTimeout();
   const response = await API.put(
     "mcr",
-    `/reports/${reportType}/${state}/${id}`,
+    `/reporting/${reportType}/${state}/${id}`,
     request
   );
   return response;
