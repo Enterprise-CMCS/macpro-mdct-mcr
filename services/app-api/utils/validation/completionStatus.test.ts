@@ -52,8 +52,7 @@ describe("Completion Status Tests", () => {
       };
       const result = await calculateCompletionStatus(
         testData,
-        formTemplate.routes,
-        null
+        formTemplate
       );
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
@@ -97,8 +96,7 @@ describe("Completion Status Tests", () => {
       };
       const result = await calculateCompletionStatus(
         testData,
-        formTemplate.routes,
-        null
+        formTemplate
       );
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
