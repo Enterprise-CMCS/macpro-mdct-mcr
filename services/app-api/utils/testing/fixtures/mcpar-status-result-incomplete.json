@@ -34,7 +34,7 @@
       "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason": false
     },
     "/mcpar/plan-level-indicators/quality-measures": false,
-    "/mcpar/plan-level-indicators/sanctions": true,
+    "/mcpar/plan-level-indicators/sanctions": false,
     "/mcpar/plan-level-indicators/program-integrity": false
   },
   "/mcpar/bss-entity-indicators": false
