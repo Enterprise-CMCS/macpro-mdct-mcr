@@ -4,6 +4,7 @@ import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
 import { error, buckets } from "../../utils/constants/constants";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 
 export const fetchReport = handler(async (event, _context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
@@ -62,6 +63,13 @@ export const fetchReport = handler(async (event, _context) => {
       };
     }
 
+    if (!reportMetadata.completionStatus) {
+      reportMetadata.completionStatus = await calculateCompletionStatus(
+        fieldData,
+        formTemplate
+      );
+    }
+    
     return {
       status: StatusCodes.SUCCESS,
       body: {
