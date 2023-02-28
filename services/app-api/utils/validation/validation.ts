@@ -39,7 +39,7 @@ export const filterValidationSchema = (
 // map field validation types to validation schema
 export const mapValidationTypesToSchema = (
   fieldValidationTypes: AnyObject,
-  isRequired: boolean
+  isRequired: boolean = false
 ) => {
   let validationSchema: AnyObject = {};
   // for each field to be validated,

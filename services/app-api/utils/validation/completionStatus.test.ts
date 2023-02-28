@@ -1,6 +1,7 @@
 import { calculateCompletionStatus } from "./completionStatus";
 
-describe("Statusing Tests", () => {
+
+describe("Completion Status Tests", () => {
   describe("Test Completion Status of Report", () => {
     test("Basic Standard Form No Fields", async () => {
       jest.clearAllMocks();
@@ -22,7 +23,10 @@ describe("Statusing Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(testData, formTemplate);
+      const result = await calculateCompletionStatus(
+        testData,
+        formTemplate
+      );
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
@@ -63,7 +67,10 @@ describe("Statusing Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(testData, formTemplate);
+      const result = await calculateCompletionStatus(
+        testData,
+        formTemplate
+      );
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
@@ -76,68 +83,66 @@ describe("Statusing Tests", () => {
     const runs = [
       {
         description: "Completed MCPAR Report",
-        testData: "mcpar-data-complete",
-        expectedResult: "mcpar-status-result-complete",
+        fixture: "mcpar-complete",
         formTemplate: "mcpar-template",
       },
       {
         description: "New Incomplete MCPAR Report",
-        testData: "mcpar-data-incomplete",
-        expectedResult: "mcpar-status-result-incomplete",
+        fixture: "mcpar-incomplete",
         formTemplate: "mcpar-template",
       },
       {
         description:
           "Report is missing State Name in point of contact, otherwise complete.",
-        testData: "mcpar-data-missing-pointofcontact",
-        expectedResult: "mcpar-status-result-missing-pointofcontact",
+        fixture: "mcpar-missing-pointofcontact",
         formTemplate: "mcpar-template",
       },
       {
         description: "MCPAR Report, incomplete due to missing drawer",
-        testData: "mcpar-data-missing-drawer",
-        expectedResult: "mcpar-status-result-missing-drawer",
+        fixture: "mcpar-missing-drawer",
         formTemplate: "mcpar-template",
       },
       {
         description: "MCPAR Report, incomplete due to missing modal",
-        testData: "mcpar-data-missing-modal",
-        expectedResult: "mcpar-status-result-missing-modal",
+        fixture: "mcpar-missing-modal",
         formTemplate: "mcpar-template",
-      },{
+      },
+      {
         description: "Completed MCPAR Report with no Sanction",
-        testData: "mcpar-data-complete-nosanctions",
-        expectedResult: "mcpar-status-result-complete",
+        fixture: "mcpar-complete-nosanctions",
+        formTemplate: "mcpar-template",
+      },
+      {
+        description: "Incomplete MCPAR Report due to partial sanction",
+        fixture: "mcpar-incomplete-partialsanction",
         formTemplate: "mcpar-template",
       },{
-        description: "Incomplete MCPAR Report due to partial sanction",
-        testData: "mcpar-data-incomplete-partialsanction",
-        expectedResult: "mcpar-status-result-incomplete-partialsanction",
+        description: "Incomplete MCPAR Report due to plan with no entities",
+        fixture: "mcpar-incomplete-plan-noentities",
         formTemplate: "mcpar-template",
       },
     ];
     runs.forEach((run) => {
       test(run.description, async () => {
-        const testData = require(`../../utils/testing/fixtures/${run.testData}.json`);
-        const expectedResult = require(`../../utils/testing/fixtures/${run.expectedResult}.json`);
-        const formTemplate = require(`../../utils/testing/fixtures/${run.formTemplate}.json`);
+        const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.json`);
+        const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.json`);
+        const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.json`);
         const result = await calculateCompletionStatus(testData, formTemplate);
         expect(result).toMatchObject(expectedResult);
       });
     });
-    test("Fixture Testbed", async () => {
-      //TODO: Skip this when fixtures are done
-      const run = {
-        description: "Incomplete MCPAR Report due to partial sanction",
-        testData: "mcpar-data-incomplete-partialsanction",
-        expectedResult: "mcpar-status-result-incomplete-partialsanction",
-        formTemplate: "mcpar-template",
-      };
-      const testData = require(`../../utils/testing/fixtures/${run.testData}.json`);
-      const expectedResult = require(`../../utils/testing/fixtures/${run.expectedResult}.json`);
-      const formTemplate = require(`../../utils/testing/fixtures/${run.formTemplate}.json`);
-      const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject(expectedResult);
-    });
+  });
+  test.skip("Fixture Testbed", async () => {
+    //TODO: Skip this when fixtures are done
+    const run = {
+      description: "Incomplete MCPAR Report due to plan with no entities",
+      fixture: "mcpar-incomplete-plan-noentities",
+      formTemplate: "mcpar-template",
+    };
+    const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.json`);
+    const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.json`);
+    const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.json`);
+    const result = await calculateCompletionStatus(testData, formTemplate);
+    expect(result).toMatchObject(expectedResult);
   });
 });
