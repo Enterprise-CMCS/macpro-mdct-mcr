@@ -34,7 +34,10 @@ export const McparReviewSubmitPage = () => {
   const { email, full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
 
-  const isPermittedToSubmit = userIsStateUser || userIsStateRep;
+  const isPermittedToSubmit =
+    (userIsStateUser || userIsStateRep) &&
+    report?.status !== "Not started" &&
+    !hasError;
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -77,12 +80,14 @@ export const McparReviewSubmitPage = () => {
 
   return (
     <>
-      {hasError && (
-        <Alert
-          title="Your form is not ready for submission"
-          status={AlertTypes.ERROR}
-          description="Some sections of the MCPAR report have errors or are missing responses. Please ensure all fields are completed with valid responses before submitting."
-        />
+      {(hasError || report?.status === "Not started") && (
+        <Box sx={sx.alert}>
+          <Alert
+            title="Your form is not ready for submission"
+            status={AlertTypes.ERROR}
+            description="Some sections of the MCPAR report have errors or are missing responses. Please ensure all fields are completed with valid responses before submitting."
+          />
+        </Box>
       )}
       <Flex sx={sx.pageContainer} data-testid="review-submit-page">
         {report?.status === ReportStatus.SUBMITTED ? (
@@ -144,6 +149,7 @@ const ReadyToSubmit = ({
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
           <Text>{intro.info}</Text>
         </Box>
+
         <Box>
           <StatusTable />
         </Box>
@@ -294,5 +300,8 @@ const sx = {
   submitContainer: {
     width: "100%",
     justifyContent: "space-between",
+  },
+  alert: {
+    marginBottom: "2rem",
   },
 };
