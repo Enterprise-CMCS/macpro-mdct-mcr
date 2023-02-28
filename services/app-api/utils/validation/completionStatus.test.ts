@@ -1,7 +1,34 @@
-import { calculateCompletionStatus } from "./completionStatus";
-
+import { calculateCompletionStatus, isComplete } from "./completionStatus";
 
 describe("Completion Status Tests", () => {
+  describe("Test Nested Completion Check", () => {
+    test("Fails if there are any false", () => {
+      expect(
+        isComplete({
+          foo: true,
+          bar: {
+            baz: true,
+            biz: {
+              buzz: false,
+            },
+          },
+        })
+      ).toBe(false);
+    });
+    test("Succeeds if all true", () => {
+      expect(
+        isComplete({
+          foo: true,
+          bar: {
+            baz: true,
+            biz: {
+              buzz: true,
+            },
+          },
+        })
+      ).toBe(true);
+    });
+  });
   describe("Test Completion Status of Report", () => {
     test("Basic Standard Form No Fields", async () => {
       jest.clearAllMocks();
@@ -23,10 +50,7 @@ describe("Completion Status Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(
-        testData,
-        formTemplate
-      );
+      const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
@@ -67,10 +91,7 @@ describe("Completion Status Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(
-        testData,
-        formTemplate
-      );
+      const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
@@ -116,7 +137,8 @@ describe("Completion Status Tests", () => {
         description: "Incomplete MCPAR Report due to partial sanction",
         fixture: "mcpar-incomplete-partialsanction",
         formTemplate: "mcpar-template",
-      },{
+      },
+      {
         description: "Incomplete MCPAR Report due to plan with no entities",
         fixture: "mcpar-incomplete-plan-noentities",
         formTemplate: "mcpar-template",

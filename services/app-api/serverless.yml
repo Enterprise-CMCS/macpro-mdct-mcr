@@ -262,6 +262,21 @@ functions:
                 reportType: true
                 state: true
                 id: true
+  submitReport:
+    handler: handlers/reports/submit.submitReport
+    timeout: 30
+    memorySize: 2048
+    events:
+      - http:
+          path: reports/{state}/{id}
+          method: post
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                state: true
+                id: true
   fetchTemplate:
     handler: handlers/templates/fetch.fetchTemplate
     events:
