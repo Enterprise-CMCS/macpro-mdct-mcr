@@ -42,9 +42,14 @@ export const NumberField = ({
     }
     // else set hydrationValue or defaultValue display value
     else if (hydrationValue) {
-      const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
-      setDisplayValue(maskedHydrationValue);
-      form.setValue(name, maskedHydrationValue);
+      if (props.clear) {
+        setDisplayValue(defaultValue);
+        form.setValue(name, defaultValue);
+      } else {
+        const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
+        setDisplayValue(maskedHydrationValue);
+        form.setValue(name, maskedHydrationValue);
+      }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
