@@ -3,6 +3,13 @@
   "name": "MCPAR Report Submission Form",
   "basePath": "/mcpar",
   "version": "MCPAR_2023-01-19",
+  "entities": {
+    "sanctions": { "required": false },
+    "accessMeasures": { "required": true },
+    "qualityMeasures": { "required": true },
+    "plans": { "required": true },
+    "bssEntities": { "required": true }
+  },
   "adminDisabled": true,
   "routes": [
     {
