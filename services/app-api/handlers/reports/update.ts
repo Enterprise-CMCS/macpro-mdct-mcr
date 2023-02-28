@@ -10,7 +10,10 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import { error, buckets } from "../../utils/constants/constants";
-import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+import {
+  calculateCompletionStatus,
+  isComplete,
+} from "../../utils/validation/completionStatus";
 
 export const updateReport = handler(async (event, context) => {
   if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
@@ -167,6 +170,7 @@ export const updateReport = handler(async (event, context) => {
     Item: {
       ...currentReport,
       ...validatedMetadata,
+      isComplete: isComplete(completionStatus),
       lastAltered: Date.now(),
     },
   };

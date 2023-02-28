@@ -19,6 +19,7 @@ export const error = {
   MISSING_FORM_TEMPLATE: "Form Template not found in S3.",
   MISSING_FIELD_DATA: "Field Data not found in S3.",
   ALREADY_ARCHIVED: "Cannot update archived report.",
+  REPORT_INCOMPLETE: "Cannot submit report.",
 };
 
 export const buckets = {
