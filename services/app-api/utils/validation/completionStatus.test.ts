@@ -25,8 +25,7 @@ describe("Completion Status Tests", () => {
       };
       const result = await calculateCompletionStatus(
         testData,
-        formTemplate.routes,
-        null
+        formTemplate
       );
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
@@ -70,8 +69,7 @@ describe("Completion Status Tests", () => {
       };
       const result = await calculateCompletionStatus(
         testData,
-        formTemplate.routes,
-        null
+        formTemplate
       );
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
@@ -134,7 +132,7 @@ describe("Completion Status Tests", () => {
       });
     });
   });
-  test("Fixture Testbed", async () => {
+  test.skip("Fixture Testbed", async () => {
     //TODO: Skip this when fixtures are done
     const run = {
       description: "Incomplete MCPAR Report due to plan with no entities",
