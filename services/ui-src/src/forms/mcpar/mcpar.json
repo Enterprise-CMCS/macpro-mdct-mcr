@@ -36,10 +36,11 @@
               {
                 "id": "contactName",
                 "type": "text",
-                "validation": "text",
+                "validation": "textOptional",
                 "props": {
                   "label": "A.2a Contact name",
-                  "hint": "First and last name of the contact person. <br/> States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers."
+                  "hint": "First and last name of the contact person. <br/> States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers.",
+                  "styleAsOptional": true
                 }
               },
               {
@@ -105,7 +106,8 @@
                 "props": {
                   "label": "A.5a Reporting period start date",
                   "hint": "Auto-populated from report dashboard.",
-                  "disabled": true
+                  "disabled": true,
+                  "styleAsOptional": true
                 }
               },
               {
@@ -227,7 +229,8 @@
                 "props": {
                   "label": "B.I.1 Statewide Medicaid enrollment",
                   "hint": "Enter the total number of individuals enrolled in Medicaid as of the first day of the last month of the reporting year.</br>Include all FFS and managed care enrollees, and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
-                  "mask": "comma-separated"
+                  "mask": "comma-separated",
+                  "styleAsOptional":true
                 }
               },
               {
@@ -262,6 +265,7 @@
                 "type": "checkbox",
                 "validation": "checkbox",
                 "props": {
+                  "styleAsOptional": true,
                   "label": "B.III.1 Data validation entity",
                   "hint": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs.</br>Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses. See Glossary in Excel Workbook for more information.",
                   "choices": [
@@ -2939,7 +2943,8 @@
                 "props": {
                   "label": "D3.VIII.3 Plan name",
                   "hint": "What is the name of the plan attached to the sanction or corrective action plan? Select plan name.",
-                  "options": "plans"
+                  "options": "plans",
+                  "styleAsOptional": true
                 }
               },
               {

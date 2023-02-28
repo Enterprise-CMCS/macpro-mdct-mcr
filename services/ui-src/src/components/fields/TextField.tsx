@@ -7,6 +7,7 @@ import { ReportContext } from "components";
 // utils
 import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { labelTextWithOptional } from "utils/other/styleAsOptional";
 
 export const TextField = ({
   name,
@@ -16,6 +17,7 @@ export const TextField = ({
   sxOverride,
   nested,
   autosave,
+  styleAsOptional,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -76,13 +78,17 @@ export const TextField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
+  const labelText = styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
-    <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
+    <Box
+      sx={{ ...sx, ...sxOverride }}
+      className={`${nestedChildClasses} ${labelClass}`}
+    >
       <CmsdsTextField
         id={name}
         name={name}
-        label={label || ""}
+        label={labelText || ""}
         hint={parsedHint}
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
@@ -103,5 +109,12 @@ interface Props {
   sxOverride?: AnyObject;
   nested?: boolean;
   autosave?: boolean;
+  styleAsOptional?: boolean;
   [key: string]: any;
 }
+
+const sx = {
+  ".optional-text": {
+    fontWeight: "lighter",
+  },
+};

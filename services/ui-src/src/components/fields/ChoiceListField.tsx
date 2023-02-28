@@ -19,6 +19,7 @@ import {
   FormField,
   InputChangeEvent,
 } from "types";
+import { labelTextWithOptional } from "utils/other/styleAsOptional";
 
 export const ChoiceListField = ({
   name,
@@ -29,6 +30,7 @@ export const ChoiceListField = ({
   nested,
   autosave,
   sxOverride,
+  styleAsOptional,
   ...props
 }: Props) => {
   const defaultValue: Choice[] = [];
@@ -181,6 +183,7 @@ export const ChoiceListField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
+  const labelText = styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
     <Box
@@ -190,7 +193,7 @@ export const ChoiceListField = ({
       <CmsdsChoiceList
         name={name}
         type={type}
-        label={label || ""}
+        label={labelText || ""}
         choices={formatChoices(choices)}
         hint={parsedHint}
         errorMessage={errorMessage}
@@ -211,6 +214,7 @@ interface Props {
   nested?: boolean;
   autosave?: boolean;
   sxOverride?: AnyObject;
+  styleAsOptional?: boolean;
   [key: string]: any;
 }
 
@@ -218,6 +222,9 @@ const sx = {
   // checkboxes
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
+  },
+  ".optional-text": {
+    fontWeight: "lighter",
   },
 };
 
