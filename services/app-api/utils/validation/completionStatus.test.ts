@@ -109,6 +109,10 @@ describe("Completion Status Tests", () => {
         description: "Incomplete MCPAR Report due to partial sanction",
         fixture: "mcpar-incomplete-partialsanction",
         formTemplate: "mcpar-template",
+      },{
+        description: "Incomplete MCPAR Report due to plan with no entities",
+        fixture: "mcpar-incomplete-plan-noentities",
+        formTemplate: "mcpar-template",
       },
     ];
     runs.forEach((run) => {
@@ -124,8 +128,8 @@ describe("Completion Status Tests", () => {
   test("Fixture Testbed", async () => {
     //TODO: Skip this when fixtures are done
     const run = {
-      description: "Incomplete MCPAR Report due to partial sanction",
-      fixture: "mcpar-incomplete-partialsanction",
+      description: "Incomplete MCPAR Report due to plan with no entities",
+      fixture: "mcpar-incomplete-plan-noentities",
       formTemplate: "mcpar-template",
     };
     const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.json`);
