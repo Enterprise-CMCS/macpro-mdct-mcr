@@ -72,6 +72,24 @@ export const mockDynamoData = {
   lastAlteredBy: "Thelonious States",
   fieldDataId: "mockReportFieldData",
   formTemplateId: "mockReportJson",
+  isComplete: false,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+};
+
+export const mockDynamoDataCompleted = {
+  ...mockReportKeys,
+  reportType: "mock-type",
+  programName: "testProgram",
+  status: "Not started",
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  dueDate: 168515200000,
+  combinedData: false,
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  isComplete: true,
   createdAt: 162515200000,
   lastAltered: 162515200000,
 };
