@@ -2,6 +2,28 @@ import { AnyObject } from "yup/lib/types";
 import { CompletionData } from "../types/types";
 import { validateFieldData } from "./validation";
 
+export const isComplete = (completionStatus: CompletionData): Boolean => {
+  const flatten = (obj: AnyObject, out: AnyObject) => {
+    Object.keys(obj).forEach((key) => {
+      if (typeof obj[key] == "object") {
+        out = flatten(obj[key], out);
+      } else {
+        out[key] = obj[key];
+      }
+    });
+    return out;
+  };
+
+  const flattenedStatus = flatten(completionStatus, {});
+
+  for (const status in flattenedStatus) {
+    if (flattenedStatus[status] === false) {
+      return false;
+    }
+  }
+  return true;
+};
+
 // Entry point for calculating completion status
 export const calculateCompletionStatus = async (
   fieldData: AnyObject,

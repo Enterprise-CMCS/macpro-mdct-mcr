@@ -10,7 +10,10 @@ import {
   reportTables,
 } from "../../utils/constants/constants";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+import {
+  calculateCompletionStatus,
+  isComplete,
+} from "../../utils/validation/completionStatus";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -50,7 +53,7 @@ export const fetchReport = handler(async (event, _context) => {
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
 
-    const formTemplate = await s3Lib.get(formTemplateParams); // TODO: strict typing
+    const formTemplate = (await s3Lib.get(formTemplateParams)) as AnyObject; // TODO: strict typing
     if (!formTemplate) {
       return {
         status: StatusCodes.NOT_FOUND,
@@ -64,7 +67,7 @@ export const fetchReport = handler(async (event, _context) => {
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
 
-    const fieldData = await s3Lib.get(fieldDataParams); // TODO: strict typing
+    const fieldData = (await s3Lib.get(fieldDataParams)) as AnyObject; // TODO: strict typing
 
     if (!fieldData) {
       return {
@@ -78,8 +81,9 @@ export const fetchReport = handler(async (event, _context) => {
         fieldData,
         formTemplate
       );
+      reportMetadata.isComplete = isComplete(reportMetadata.completionStatus);
     }
-    
+
     return {
       status: StatusCodes.SUCCESS,
       body: {
