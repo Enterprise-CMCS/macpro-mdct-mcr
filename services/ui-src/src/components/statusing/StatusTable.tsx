@@ -43,7 +43,7 @@ export const StatusTable = () => {
 
 const sx = {
   container: {
-    margin: "3rem 0",
+    marginTop: "2rem",
     table: {
       tr: {
         borderBottom: "1px solid",
