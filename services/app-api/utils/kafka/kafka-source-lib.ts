@@ -4,14 +4,15 @@ import s3Lib from "../s3/s3-lib";
 import { Kafka } from "kafkajs";
 import { S3EventRecord } from "aws-lambda";
 
+if (process.env.BOOTSTRAP_BROKER_STRING_TLS) {
+  throw new Error("Missing Broker Config. ");
+}
 const STAGE = process.env.STAGE;
-const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS
-  ? process.env.BOOTSTRAP_BROKER_STRING_TLS
-  : "";
+const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
 
 const kafka = new Kafka({
   clientId: `mcr-${STAGE}`,
-  brokers: brokerStrings.split(","),
+  brokers: brokerStrings!.split(","),
   retry: {
     initialRetryTime: 300,
     retries: 8,
@@ -181,18 +182,18 @@ class KafkaSourceLib {
     }
     console.log("Raw event", this.stringify(event, true));
 
-    if (event.Records) {
-      // if dynamo
-      const outboundEvents = this.createOutboundEvents(event.Records);
-
-      const topicMessages = Object.values(outboundEvents);
-      console.log(
-        `Batch configuration: ${this.stringify(topicMessages, true)}`
-      );
-
-      await producer.sendBatch({ topicMessages });
+    // Warmup events have no records.
+    if (!event.Records) {
+      console.log("No records to process. Exiting.");
     }
 
+    // if dynamo
+    const outboundEvents = this.createOutboundEvents(event.Records);
+
+    const topicMessages = Object.values(outboundEvents);
+    console.log(`Batch configuration: ${this.stringify(topicMessages, true)}`);
+
+    await producer.sendBatch({ topicMessages });
     console.log(`Successfully processed ${event.Records.length} records.`);
   }
 }
