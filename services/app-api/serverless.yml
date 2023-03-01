@@ -316,6 +316,7 @@ functions:
       - s3:
           bucket: ${self:custom.naaarFormBucket}
           existing: true
+          forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
             - prefix: fieldData/
@@ -323,6 +324,7 @@ functions:
       - s3:
           bucket: ${self:custom.naaarFormBucket}
           existing: true
+          forceDeploy: true
           event: s3:ObjectRemoved:*
           rules:
             - prefix: fieldData/
@@ -343,6 +345,7 @@ functions:
       - s3:
           bucket: ${self:custom.mlrFormBucket}
           existing: true
+          forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
             - prefix: fieldData/
@@ -350,6 +353,7 @@ functions:
       - s3:
           bucket: ${self:custom.mlrFormBucket}
           existing: true
+          forceDeploy: true
           event: s3:ObjectRemoved:*
           rules:
             - prefix: fieldData/
@@ -370,6 +374,7 @@ functions:
       - s3:
           bucket: ${self:custom.mcparFormBucket}
           existing: true
+          forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
             - prefix: fieldData/
@@ -377,6 +382,7 @@ functions:
       - s3:
           bucket: ${self:custom.mcparFormBucket}
           existing: true
+          forceDeploy: true
           event: s3:ObjectRemoved:*
           rules:
             - prefix: fieldData/
