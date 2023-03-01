@@ -35,11 +35,18 @@ describe("Test AdminDashSelector view", () => {
     expect(screen.getByTestId("read-only-view")).toBeVisible();
   });
 
+  test("Check that submit button is disabled if no report type is selected", () => {
+    render(adminDashSelectorView);
+    expect(screen.getByRole("button").hasAttribute("disabled")).toBeTruthy;
+  });
+
   test("Form submits correctly", async () => {
     const result = render(adminDashSelectorView);
     const form = result.container;
     const dropdownInput = form.querySelector("[name='state']")!;
     await fireEvent.change(dropdownInput, { target: { value: "CA" } });
+    const reportInput = form.querySelector("[name='report']")!;
+    fireEvent.click(reportInput, { target: { value: "MCPAR" } });
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     expect(window.location.pathname).toEqual("/mcpar");

@@ -185,6 +185,7 @@ describe("Test Masked NumberField", () => {
 describe("Test NumberField hydration functionality", () => {
   const mockFormFieldValue = "54321";
   const mockHydrationValue = "12345";
+  const mockCommaMaskedHydrationValue = "12,345";
 
   const numberFieldComponentWithHydrationValue = (
     <NumberField
@@ -192,6 +193,26 @@ describe("Test NumberField hydration functionality", () => {
       label="test-label"
       hydrate={mockHydrationValue}
       data-testid="test-id"
+    />
+  );
+
+  const clearPropGivenAndTrueNumberField = (
+    <NumberField
+      name="testNumberField"
+      label=""
+      mask="currency"
+      hydrate={mockHydrationValue}
+      clear
+    />
+  );
+
+  const clearPropGivenAndFalseNumberField = (
+    <NumberField
+      name="testNumberField"
+      label=""
+      mask="currency"
+      hydrate={mockHydrationValue}
+      clear={false}
     />
   );
 
@@ -231,6 +252,27 @@ describe("Test NumberField hydration functionality", () => {
     const displayValue = numberField.value;
     expect(displayValue).toEqual(mockFormFieldValue);
   });
+
+  test("should set value to default if given clear prop and clear is set to true", () => {
+    mockGetValues(undefined);
+
+    const result = render(clearPropGivenAndTrueNumberField);
+    const numberField: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    const displayValue = numberField.value;
+    expect(displayValue).toEqual("");
+  });
+
+  test("should set value to hydrationvalue if given clear prop and clear is set to false", () => {
+    mockGetValues(undefined);
+    const result = render(clearPropGivenAndFalseNumberField);
+    const numberField: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    const displayValue = numberField.value;
+    expect(displayValue).toEqual(mockCommaMaskedHydrationValue);
+  });
 });
 
 describe("Test NumberField component autosaves", () => {
@@ -249,6 +291,7 @@ describe("Test NumberField component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     expect(mockReportContext.updateReport).toHaveBeenCalledWith(
       {
+        reportType: mockReportContext.report.reportType,
         state: mockStateUser.user?.state,
         id: mockReportContext.report.id,
       },
@@ -274,6 +317,7 @@ describe("Test NumberField component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     expect(mockReportContext.updateReport).toHaveBeenCalledWith(
       {
+        reportType: mockReportContext.report.reportType,
         state: mockStateUser.user?.state,
         id: mockReportContext.report.id,
       },

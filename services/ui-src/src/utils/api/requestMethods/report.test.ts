@@ -14,11 +14,11 @@ describe("Test report status methods", () => {
   });
 
   test("getReportsByState", () => {
-    expect(getReportsByState("AB")).toBeTruthy();
+    expect(getReportsByState("MCPAR", "AB")).toBeTruthy();
   });
 
   test("postReport", () => {
-    expect(postReport("AB", mockReport)).toBeTruthy();
+    expect(postReport("MCPAR", "AB", mockReport)).toBeTruthy();
   });
 
   test("putReport", () => {

@@ -3,7 +3,7 @@ import { fetchReport } from "./fetch";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
-import { error } from "../../utils/constants/constants";
+import { error, reportTables } from "../../utils/constants/constants";
 import { hasPermissions } from "../../utils/auth/authorization";
 
 export const archiveReport = handler(async (event, context) => {
@@ -26,33 +26,39 @@ export const archiveReport = handler(async (event, context) => {
     };
   }
 
-  const currentReport = JSON.parse(getCurrentReport.body);
-  const currentArchivedStatus = currentReport?.archived;
+  // if current report exists, parse for archived status
+  if (getCurrentReport?.body) {
+    const currentReport = JSON.parse(getCurrentReport.body);
+    const currentArchivedStatus = currentReport?.archived;
+    const reportType = currentReport?.reportType;
 
-  // Delete old data prior to updating
-  delete currentReport.fieldData;
-  delete currentReport.formTemplate;
+    const reportTable = reportTables[reportType as keyof typeof reportTables];
 
-  // Toggle archived state in DynamoDB.
-  const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Item: {
-      ...currentReport,
-      archived: !currentArchivedStatus,
-    },
-  };
+    // Delete raw data prior to updating
+    delete currentReport.fieldData;
+    delete currentReport.formTemplate;
 
-  try {
-    await dynamoDb.put(reportMetadataParams);
-  } catch (err) {
+    // toggle archived status in report metadata table
+    const reportMetadataParams = {
+      TableName: reportTable,
+      Item: {
+        ...currentReport,
+        archived: !currentArchivedStatus,
+      },
+    };
+
+    try {
+      await dynamoDb.put(reportMetadataParams);
+    } catch (err) {
+      return {
+        status: StatusCodes.SERVER_ERROR,
+        body: error.DYNAMO_UPDATE_ERROR,
+      };
+    }
+
     return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.DYNAMO_UPDATE_ERROR,
+      status: StatusCodes.SUCCESS,
+      body: reportMetadataParams.Item,
     };
   }
-
-  return {
-    status: StatusCodes.SUCCESS,
-    body: reportMetadataParams.Item,
-  };
 });

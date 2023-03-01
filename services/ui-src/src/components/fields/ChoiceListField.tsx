@@ -46,10 +46,11 @@ export const ChoiceListField = ({
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
+
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
-    if (fieldValue?.length > 0) {
+    if (fieldValue) {
       setDisplayValue(fieldValue);
       setLastDatabaseValue(fieldValue);
     }
@@ -60,14 +61,6 @@ export const ChoiceListField = ({
       form.setValue(name, hydrationValue);
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
-
-  // update form field data and DOM display checked attribute
-  useEffect(() => {
-    if (displayValue) {
-      // update DOM choices checked status
-      clearUncheckedNestedFields(choices);
-    }
-  }, [displayValue]);
 
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) => {
@@ -92,21 +85,22 @@ export const ChoiceListField = ({
   const clearUncheckedNestedFields = (choices: FieldChoice[]) => {
     choices.forEach((choice: FieldChoice) => {
       // if a choice is not selected and there are children, clear out any saved data
-      if (!choice.checked && choice.children) {
-        choice.children.forEach((child) => {
+      if (choice.children) {
+        choice.children.forEach((child: FormField) => {
           switch (child.type) {
             case "radio":
             case "checkbox":
-              form.setValue(child.id, [], { shouldValidate: true });
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
+                  form.setValue(child.id, []);
                 });
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
             default:
-              form.setValue(child.id, "", { shouldValidate: true });
+              child.props = { ...child.props, clear: true };
+              form.setValue(child.id, "");
               break;
           }
         });
@@ -127,14 +121,23 @@ export const ChoiceListField = ({
     const isOptionChecked = event.target.checked;
     const preChangeFieldValues = displayValue || [];
     let selectedOptions = null;
+
     // handle radio
     if (type === "radio") {
+      let everyOtherOption = choices.filter(
+        (choice) => choice.id != clickedOption.key
+      );
+      clearUncheckedNestedFields(everyOtherOption);
       selectedOptions = [clickedOption];
       setDisplayValue(selectedOptions);
-      form.setValue(name, selectedOptions);
+      form.setValue(name, selectedOptions, { shouldValidate: true });
     }
     // handle checkbox
     if (type === "checkbox") {
+      if (!isOptionChecked) {
+        let option = choices.find((choice) => choice.id == clickedOption.key);
+        clearUncheckedNestedFields([option!]);
+      }
       const checkedOptionValues = [...preChangeFieldValues, clickedOption];
       const uncheckedOptionValues = preChangeFieldValues.filter(
         (field) => field.value !== clickedOption.value
@@ -163,7 +166,11 @@ export const ChoiceListField = ({
           { name, type, value: displayValue, hydrationValue, defaultValue },
           ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
         ];
-        const reportArgs = { id: report?.id, updateReport };
+        const reportArgs = {
+          id: report?.id,
+          reportType: report?.reportType,
+          updateReport,
+        };
         const user = { userName: full_name, state };
         await autosaveFieldData({
           form,
