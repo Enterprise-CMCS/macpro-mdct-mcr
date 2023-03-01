@@ -136,7 +136,7 @@ class KafkaSourceLib {
     }
   }
 
-  async createOutboundEvents(records: any[]) {
+  createOutboundEvents(records: any[]) {
     let outboundEvents: { [key: string]: any } = {};
     for (const record of records) {
       let payload, topicName;
@@ -191,7 +191,7 @@ class KafkaSourceLib {
     }
 
     // if dynamo
-    const outboundEvents = this.createOutboundEvents(event.Records);
+    const outboundEvents = await this.createOutboundEvents(event.Records);
 
     const topicMessages = Object.values(outboundEvents);
     console.log(`Batch configuration: ${this.stringify(topicMessages, true)}`);
