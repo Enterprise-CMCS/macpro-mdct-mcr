@@ -4,7 +4,7 @@ import s3Lib from "../s3/s3-lib";
 import { Kafka } from "kafkajs";
 import { S3EventRecord } from "aws-lambda";
 
-if (process.env.BOOTSTRAP_BROKER_STRING_TLS) {
+if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
   throw new Error("Missing Broker Config. ");
 }
 const STAGE = process.env.STAGE;
