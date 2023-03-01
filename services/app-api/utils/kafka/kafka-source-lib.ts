@@ -125,12 +125,13 @@ class KafkaSourceLib {
 
   async createS3Payload(record: S3EventRecord) {
     const { eventName, eventTime } = record;
-    let entry = null;
+    let entry = "";
     if (!eventName.includes("ObjectRemoved")) {
-      entry = await s3Lib.get({
+      const s3Doc = await s3Lib.get({
         Bucket: record.s3.bucket.name,
         Key: record.s3.object.key,
       });
+      entry = this.stringify(s3Doc);
     }
 
     return {
