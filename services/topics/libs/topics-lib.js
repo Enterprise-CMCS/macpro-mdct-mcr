@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const _ = require("lodash");
-import { Kafka, ResourceTypes } from "kafkajs";
+import { ConfigResourceTypes, Kafka } from "kafkajs";
 
 export async function createTopics(brokerString, topicNamespace, topicsConfig) {
   const topics = topicsConfig;
@@ -71,7 +71,7 @@ export async function createTopics(brokerString, topicNamespace, topicsConfig) {
     const configOptions = _.map(topicsMetadata, function (topic) {
       return {
         name: _.get(topic, "name"),
-        type: _.get(ResourceTypes, "TOPIC"),
+        type: _.get(ConfigResourceTypes, "TOPIC"),
       };
     });
 

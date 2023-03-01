@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const condensedTopicList = [
   {
-    // topics for the seatool service's debezium connector
+    // topics for the mcr service's connector
     topicPrefix: "aws.mdct.mcr",
     version: ".v0",
     numPartitions: 1,
