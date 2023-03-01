@@ -1,0 +1,21 @@
+{
+  "id": "aes",
+  "options": {
+    "mode": "onChange"
+  },
+  "heading": {
+    "add": "Add new MLR submission",
+    "edit": "Edit MLR submission"
+  },
+  "fields": [
+    {
+      "id": "submissionName",
+      "type": "text",
+      "validation": "text",
+      "props": {
+        "label": "MLR submission name",
+        "hint": "Name this MLR submission so you can easily refer to it."
+      }
+    }
+  ]
+}
