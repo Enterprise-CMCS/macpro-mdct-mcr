@@ -24,6 +24,7 @@ s3BucketHelper:
     logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 custom:
+  project: "mcr"
   serverlessPluginTypescript:
     tsConfigFileLocation: "./tsconfig.json"
   stage: ${opt:stage, self:provider.stage}
@@ -72,6 +73,15 @@ custom:
     main: aws_iam
     val: aws_iam
     production: aws_iam
+params:
+  main:
+    topicNamespace: ""
+  val:
+    topicNamespace: ""
+  production:
+    topicNamespace: ""
+  default:
+    topicNamespace: --${self:custom.project}--${sls:stage}--
 provider:
   name: aws
   runtime: nodejs18.x

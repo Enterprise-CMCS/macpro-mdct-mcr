@@ -9,6 +9,7 @@ if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
 }
 const STAGE = process.env.STAGE;
 const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
+const topicNamespace = process.env.topicNamespace;
 
 const kafka = new Kafka({
   clientId: `mcr-${STAGE}`,
@@ -130,9 +131,9 @@ class KafkaSourceLib {
 
   topic(t: string) {
     if (this.version) {
-      return `${this.topicPrefix}.${t}.${this.version}`;
+      return `${topicNamespace}${this.topicPrefix}.${t}.${this.version}`;
     } else {
-      return `${this.topicPrefix}.${t}`;
+      return `${topicNamespace}${this.topicPrefix}.${t}`;
     }
   }
 
