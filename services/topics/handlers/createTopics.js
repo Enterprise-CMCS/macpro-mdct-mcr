@@ -8,7 +8,14 @@ const condensedTopicList = [
     version: ".v0",
     numPartitions: 1,
     replicationFactor: 3,
-    topics: [".mcpar-reports", ".mcpar-form"],
+    topics: [
+      ".mcpar-reports",
+      ".mcpar-form",
+      ".mlr-reports",
+      ".mlr-form",
+      ".naaar-reports",
+      ".naaar-form",
+    ],
   },
 ];
 
