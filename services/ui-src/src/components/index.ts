@@ -69,7 +69,7 @@ export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // modals
 export { Modal } from "./modals/Modal";
-export { AddEditProgramModal } from "./modals/AddEditProgramModal";
+export { AddEditReportModal } from "./modals/AddEditReportModal";
 export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
 export { AddEditEntityModal } from "./modals/AddEditEntityModal";
 export { DeleteEntityModal } from "./modals/DeleteEntityModal";

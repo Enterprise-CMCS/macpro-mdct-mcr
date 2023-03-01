@@ -9,7 +9,7 @@ import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const MobileDashboardList = ({
   reportsByState,
-  openAddEditProgramModal,
+  openAddEditReportModal,
   enterSelectedReport,
   archiveReport,
   archiving,
@@ -26,7 +26,7 @@ export const MobileDashboardList = ({
           <Flex alignContent="flex-start">
             {isStateLevelUser && (
               <Box sx={sxOverride.editProgram}>
-                <button onClick={() => openAddEditProgramModal(report)}>
+                <button onClick={() => openAddEditReportModal(report)}>
                   <Image
                     src={editIcon}
                     data-testid="mobile-edit-program"
@@ -93,7 +93,7 @@ export const MobileDashboardList = ({
 
 interface MobileDashboardListProps {
   reportsByState: ReportMetadataShape[];
-  openAddEditProgramModal: Function;
+  openAddEditReportModal: Function;
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;

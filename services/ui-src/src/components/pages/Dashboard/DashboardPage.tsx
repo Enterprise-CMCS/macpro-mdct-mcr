@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  AddEditProgramModal,
+  AddEditReportModal,
   ErrorAlert,
   PageTemplate,
   ReportContext,
@@ -117,7 +117,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     navigate(firstReportPagePath);
   };
 
-  const openAddEditProgramModal = (report?: ReportShape) => {
+  const openAddEditReportModal = (report?: ReportShape) => {
     let formData = undefined;
     let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
@@ -146,14 +146,14 @@ export const DashboardPage = ({ reportType }: Props) => {
     setSelectedReport(formData);
 
     // use disclosure to open modal
-    addEditProgramModalOnOpenHandler();
+    addEditReportModalOnOpenHandler();
   };
 
   // add/edit program modal disclosure
   const {
-    isOpen: addEditProgramModalIsOpen,
-    onOpen: addEditProgramModalOnOpenHandler,
-    onClose: addEditProgramModalOnCloseHandler,
+    isOpen: addEditReportModalIsOpen,
+    onOpen: addEditReportModalOnOpenHandler,
+    onClose: addEditReportModalOnCloseHandler,
   } = useDisclosure();
 
   const toggleReportArchiveStatus = async (report: ReportShape) => {
@@ -190,7 +190,7 @@ export const DashboardPage = ({ reportType }: Props) => {
           isTablet || isMobile ? (
             <MobileDashboardList
               reportsByState={reportsToDisplay}
-              openAddEditProgramModal={openAddEditProgramModal}
+              openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
@@ -202,7 +202,7 @@ export const DashboardPage = ({ reportType }: Props) => {
           ) : (
             <DashboardList
               reportsByState={reportsToDisplay}
-              openAddEditProgramModal={openAddEditProgramModal}
+              openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
@@ -226,20 +226,20 @@ export const DashboardPage = ({ reportType }: Props) => {
         {/* only show add program button to state users */}
         {(userIsStateUser || userIsStateRep) && (
           <Box sx={sx.callToActionContainer}>
-            <Button type="submit" onClick={() => openAddEditProgramModal()}>
+            <Button type="submit" onClick={() => openAddEditReportModal()}>
               {body.callToAction}
             </Button>
           </Box>
         )}
       </Box>
-      <AddEditProgramModal
+      <AddEditReportModal
         activeState={activeState!}
         selectedReport={selectedReport!}
         reportType={reportType}
         formTemplate={genericReportJson}
         modalDisclosure={{
-          isOpen: addEditProgramModalIsOpen,
-          onClose: addEditProgramModalOnCloseHandler,
+          isOpen: addEditReportModalIsOpen,
+          onClose: addEditReportModalOnCloseHandler,
         }}
       />
     </PageTemplate>

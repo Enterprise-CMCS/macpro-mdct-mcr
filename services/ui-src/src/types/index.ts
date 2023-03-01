@@ -207,6 +207,7 @@ export interface EntityShape {
 export interface FormJson {
   id: string;
   fields: FormField[];
+  heading?: AnyObject;
   options?: AnyObject;
   validation?: AnyObject;
   adminDisabled?: boolean;

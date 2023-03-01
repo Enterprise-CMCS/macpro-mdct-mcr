@@ -11,7 +11,7 @@ import editIcon from "assets/icons/icon_edit_square_gray.png";
 export const DashboardList = ({
   reportsByState,
   body,
-  openAddEditProgramModal,
+  openAddEditReportModal,
   enterSelectedReport,
   archiveReport,
   archiving,
@@ -25,8 +25,8 @@ export const DashboardList = ({
       <Tr key={report.id}>
         <Td sx={sxOverride.editProgram}>
           {isStateLevelUser && (
-            <button onClick={() => openAddEditProgramModal(report)}>
-              <Image src={editIcon} alt="Edit Program" />
+            <button onClick={() => openAddEditReportModal(report)}>
+              <Image src={editIcon} alt="Edit Report" />
             </button>
           )}
         </Td>
@@ -38,7 +38,7 @@ export const DashboardList = ({
         <Td sx={sxOverride.editReportButtonCell}>
           <Button
             variant="outline"
-            data-testid="enter-program"
+            data-testid="enter-report"
             onClick={() => enterSelectedReport(report)}
             isDisabled={report?.archived}
           >
@@ -70,7 +70,7 @@ export const DashboardList = ({
 interface DashboardTableProps {
   reportsByState: ReportMetadataShape[];
   body: { table: AnyObject };
-  openAddEditProgramModal: Function;
+  openAddEditReportModal: Function;
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;

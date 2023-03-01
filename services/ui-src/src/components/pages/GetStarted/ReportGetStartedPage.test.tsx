@@ -16,7 +16,7 @@ jest.mock("react-router-dom", () => ({
 
 const dashboardView = (
   <RouterWrappedComponent>
-    <ReportGetStartedPage reportType="mock-type" />
+    <ReportGetStartedPage reportType="MCPAR" />
   </RouterWrappedComponent>
 );
 
