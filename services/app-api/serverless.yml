@@ -321,14 +321,6 @@ functions:
           rules:
             - prefix: fieldData/
             - suffix: .json
-      - s3:
-          bucket: ${self:custom.naaarFormBucket}
-          existing: true
-          forceDeploy: true
-          event: s3:ObjectRemoved:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
   postMlrBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
     environment:
@@ -350,14 +342,6 @@ functions:
           rules:
             - prefix: fieldData/
             - suffix: .json
-      - s3:
-          bucket: ${self:custom.mlrFormBucket}
-          existing: true
-          forceDeploy: true
-          event: s3:ObjectRemoved:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
   postMcparBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
     environment:
@@ -376,14 +360,6 @@ functions:
           existing: true
           forceDeploy: true
           event: s3:ObjectCreated:*
-          rules:
-            - prefix: fieldData/
-            - suffix: .json
-      - s3:
-          bucket: ${self:custom.mcparFormBucket}
-          existing: true
-          forceDeploy: true
-          event: s3:ObjectRemoved:*
           rules:
             - prefix: fieldData/
             - suffix: .json
