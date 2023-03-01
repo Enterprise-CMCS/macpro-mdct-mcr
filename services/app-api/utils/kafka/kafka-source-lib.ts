@@ -79,6 +79,7 @@ class KafkaSourceLib {
     for (const table of this.tables) {
       if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table);
     }
+    console.log(`Topic not found for table arn: ${streamARN}`);
   }
 
   determineS3TopicName(bucketArn: string) {
@@ -86,6 +87,7 @@ class KafkaSourceLib {
     for (const bucket of this.buckets) {
       if (bucketArn.includes(`${STAGE}-${bucket}`)) return this.topic(bucket);
     }
+    console.log(`Topic not found for bucket arn: ${bucketArn}`);
   }
 
   unmarshall(r: any) {
@@ -185,6 +187,7 @@ class KafkaSourceLib {
     // Warmup events have no records.
     if (!event.Records) {
       console.log("No records to process. Exiting.");
+      return;
     }
 
     // if dynamo
