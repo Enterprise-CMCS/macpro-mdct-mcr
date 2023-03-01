@@ -50,14 +50,16 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
 
         Scenario: Admin users cannot create programs
             Given these form elements are filled:
-                | state | dropdown | District of Columbia |
+                | state  | dropdown | District of Columbia                       |
+                | report | radio    | Managed Care Program Annual Report (MCPAR) |
 
             When I click the "Go to Report Dashboard" button
             Then there is no way to create a program
 
         Scenario: Admin users can archive programs
             Given these form elements are filled:
-                | state | dropdown | District of Columbia |
+                | state  | dropdown | District of Columbia                       |
+                | report | radio    | Managed Care Program Annual Report (MCPAR) |
 
             When I click the "Go to Report Dashboard" button
             And I click the "Archive" button
@@ -66,7 +68,8 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
 
         Scenario: Admin users can unarchive programs
             Given these form elements are filled:
-                | state | dropdown | District of Columbia |
+                | state  | dropdown | District of Columbia                       |
+                | report | radio    | Managed Care Program Annual Report (MCPAR) |
 
             When I click the "Go to Report Dashboard" button
             And I click the "Unarchive" button
@@ -74,7 +77,8 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
 
         Scenario: Admin users can rearchive programs
             Given these form elements are filled:
-                | state | dropdown | District of Columbia |
+                | state  | dropdown | District of Columbia                       |
+                | report | radio    | Managed Care Program Annual Report (MCPAR) |
 
             When I click the "Go to Report Dashboard" button
             And I click the "Archive" button
