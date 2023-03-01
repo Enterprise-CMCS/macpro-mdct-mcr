@@ -136,7 +136,7 @@ class KafkaSourceLib {
     }
   }
 
-  createOutboundEvents(records: any[]) {
+  async createOutboundEvents(records: any[]) {
     let outboundEvents: { [key: string]: any } = {};
     for (const record of records) {
       let payload, topicName;
