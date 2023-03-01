@@ -4,6 +4,17 @@ import s3Lib from "../s3/s3-lib";
 import { Kafka } from "kafkajs";
 import { S3EventRecord } from "aws-lambda";
 
+type KafkaPayload = {
+  key: string;
+  value: string;
+  partition: number;
+  headers: {
+    eventName: string;
+    eventTime?: string;
+    eventID?: string;
+  };
+};
+
 if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
   throw new Error("Missing Broker Config. ");
 }
@@ -107,7 +118,7 @@ class KafkaSourceLib {
     return AWS.DynamoDB.Converter.unmarshall(r, this.unmarshallOptions);
   }
 
-  createDynamoPayload(record: any) {
+  createDynamoPayload(record: any): KafkaPayload {
     const dynamodb = record.dynamodb;
     const { eventID, eventName } = record;
     const dynamoRecord = {
@@ -123,7 +134,7 @@ class KafkaSourceLib {
     };
   }
 
-  async createS3Payload(record: S3EventRecord) {
+  async createS3Payload(record: S3EventRecord): Promise<KafkaPayload> {
     const { eventName, eventTime } = record;
     let entry = "";
     if (!eventName.includes("ObjectRemoved")) {
@@ -196,7 +207,6 @@ class KafkaSourceLib {
       await producer.connect();
       connected = true;
     }
-    console.log("Raw event", this.stringify(event, true));
 
     // Warmup events have no records.
     if (!event.Records) {
