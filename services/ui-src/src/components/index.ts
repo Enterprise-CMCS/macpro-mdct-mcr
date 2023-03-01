@@ -79,7 +79,7 @@ export { HelpPage } from "./pages/Help/HelpPage";
 export { HomePage } from "./pages/Home/HomePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
-export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
+export { ReportGetStartedPage } from "./pages/GetStarted/ReportGetStartedPage";
 export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // reports

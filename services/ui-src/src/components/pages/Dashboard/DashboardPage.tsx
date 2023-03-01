@@ -32,7 +32,8 @@ import {
   useUser,
 } from "utils";
 // verbiage
-import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
@@ -54,7 +55,6 @@ export const DashboardPage = ({ reportType }: Props) => {
     userIsAdmin,
   } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
-  const { intro, body } = verbiage;
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined
   >(undefined);
@@ -70,7 +70,16 @@ export const DashboardPage = ({ reportType }: Props) => {
     MCPAR: mcparReportJson,
     MLR: mlrReportJson,
   };
+
   const genericReportJson = genericReportJsonMap[reportType]!;
+
+  const dashboardVerbiageMap: any = {
+    MCPAR: mcparVerbiage,
+    MLR: mlrVerbiage,
+  };
+
+  const dashboardVerbiage = dashboardVerbiageMap[reportType]!;
+  const { intro, body } = dashboardVerbiage;
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
