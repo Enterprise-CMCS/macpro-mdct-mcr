@@ -76,6 +76,11 @@ class KafkaSourceLib {
     return JSON.stringify(e);
   }
 
+  /**
+   * Checks if a streamArn is a valid topic. Returns undefined otherwise
+   * @param streamARN - DynamoDB streamARN
+   * @returns
+   */
   determineDynamoTopicName(streamARN: string) {
     for (const table of this.tables) {
       if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table);

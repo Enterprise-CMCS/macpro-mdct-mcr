@@ -284,6 +284,7 @@ functions:
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
+      topicNamespace: ${param:topicNamespace}
     maximumRetryAttempts: 2
     timeout: 120
     memorySize: 2048
@@ -315,6 +316,7 @@ functions:
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
+      topicNamespace: ${param:topicNamespace}
     maximumRetryAttempts: 2
     timeout: 120
     memorySize: 2048
@@ -336,6 +338,7 @@ functions:
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
+      topicNamespace: ${param:topicNamespace}
     maximumRetryAttempts: 2
     timeout: 120
     memorySize: 2048
@@ -357,6 +360,7 @@ functions:
     environment:
       BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
       STAGE: ${self:custom.stage}
+      topicNamespace: ${param:topicNamespace}
     maximumRetryAttempts: 2
     timeout: 120
     memorySize: 2048

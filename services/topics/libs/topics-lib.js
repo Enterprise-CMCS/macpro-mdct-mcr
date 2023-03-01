@@ -2,6 +2,12 @@
 const _ = require("lodash");
 import { ConfigResourceTypes, Kafka } from "kafkajs";
 
+/**
+ * Generates topics in BigMac given the following
+ * @param {*} brokerString - Comma delimited list of brokers
+ * @param {*} topicNamespace - String in the format of `--${event.project}--${event.stage}--`, only used for temp branches for easy identification and cleanup
+ * @param {*} topicsConfig - array of topics to create or update
+ */
 export async function createTopics(brokerString, topicNamespace, topicsConfig) {
   const topics = topicsConfig;
   const brokers = brokerString.split(",");

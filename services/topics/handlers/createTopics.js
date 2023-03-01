@@ -19,6 +19,12 @@ const condensedTopicList = [
   },
 ];
 
+/**
+ * Handler triggered on deploy by the serverless js to create known topics in bigmac
+ * @param {*} event
+ * @param {*} _context
+ * @param {*} _callback
+ */
 exports.handler = async function (event, _context, _callback) {
   console.log("Received event:", JSON.stringify(event, null, 2)); // eslint-disable-line no-console
   var topicList = [];
