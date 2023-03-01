@@ -83,10 +83,17 @@ class KafkaSourceLib {
     console.log(`Topic not found for table arn: ${streamARN}`);
   }
 
+  /**
+   * Checks if a bucketArn is a valid topic. Returns undefined otherwise.
+   * @param bucketArn - ARN formatted like 'arn:aws:s3:::{stack}-{stage}-{bucket}' e.g. arn:aws:s3:::database-main-mcpar
+   * @returns A formatted topic name with "-form" specified
+   */
   determineS3TopicName(bucketArn: string) {
-    // ARN formatted like 'arn:aws:s3:::{stack}-{stage}-{bucket}' e.g. arn:aws:s3:::database-main-mcpar
     for (const bucket of this.buckets) {
-      if (bucketArn.includes(`${STAGE}-${bucket}`)) return this.topic(bucket);
+      if (bucketArn.includes(`database-${STAGE}-${bucket}`)) {
+        const formTopic = `${bucket}-form`;
+        return this.topic(formTopic);
+      }
     }
     console.log(`Topic not found for bucket arn: ${bucketArn}`);
   }
