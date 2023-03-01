@@ -19,6 +19,7 @@ export const DeleteEntityModal = ({
   const deleteProgramHandler = async () => {
     setDeleting(true);
     const reportKeys = {
+      reportType: report?.reportType,
       state: report?.state,
       id: report?.id,
     };

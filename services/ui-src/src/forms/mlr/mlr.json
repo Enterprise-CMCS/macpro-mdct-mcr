@@ -1,0 +1,8 @@
+{
+  "type": "MLR",
+  "name": "MLR Report Submission Form",
+  "basePath": "/mlr",
+  "version": "MLR_2023-02-08",
+  "adminDisabled": true,
+  "routes": []
+}

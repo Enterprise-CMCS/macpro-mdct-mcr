@@ -42,9 +42,14 @@ export const NumberField = ({
     }
     // else set hydrationValue or defaultValue display value
     else if (hydrationValue) {
-      const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
-      setDisplayValue(maskedHydrationValue);
-      form.setValue(name, maskedHydrationValue);
+      if (props.clear) {
+        setDisplayValue(defaultValue);
+        form.setValue(name, defaultValue);
+      } else {
+        const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
+        setDisplayValue(maskedHydrationValue);
+        form.setValue(name, maskedHydrationValue);
+      }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -68,7 +73,11 @@ export const NumberField = ({
       const fields = [
         { name, type: "number", value, hydrationValue, defaultValue },
       ];
-      const reportArgs = { id: report?.id, updateReport };
+      const reportArgs = {
+        id: report?.id,
+        reportType: report?.reportType,
+        updateReport,
+      };
       const user = { userName: full_name, state };
       await autosaveFieldData({
         form,

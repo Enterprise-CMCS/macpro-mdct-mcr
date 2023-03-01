@@ -29,6 +29,7 @@ export const TextField = ({
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate || defaultValue;
+
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
@@ -37,8 +38,13 @@ export const TextField = ({
     }
     // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
-      setDisplayValue(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: true });
+      if (props.clear) {
+        setDisplayValue(defaultValue);
+        form.setValue(name, defaultValue);
+      } else {
+        setDisplayValue(hydrationValue);
+        form.setValue(name, hydrationValue);
+      }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -59,7 +65,11 @@ export const TextField = ({
       const fields = [
         { name, type: "text", value, hydrationValue, defaultValue },
       ];
-      const reportArgs = { id: report?.id, updateReport };
+      const reportArgs = {
+        id: report?.id,
+        reportType: report?.reportType,
+        updateReport,
+      };
       const user = { userName: full_name, state };
       await autosaveFieldData({
         form,

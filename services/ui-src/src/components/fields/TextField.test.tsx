@@ -83,6 +83,28 @@ describe("Test TextField hydration functionality", () => {
     />
   );
 
+  const clearPropGivenAndTrueTextField = (
+    <TextField
+      name="testTextFieldWithHydrationValue"
+      label="test-label"
+      placeholder="test-placeholder"
+      hydrate={mockHydrationValue}
+      data-testid="test-text-field-with-hydration-value"
+      clear
+    />
+  );
+
+  const clearPropGivenAndFalseTextField = (
+    <TextField
+      name="testTextFieldWithHydrationValue"
+      label="test-label"
+      placeholder="test-placeholder"
+      hydrate={mockHydrationValue}
+      data-testid="test-text-field-with-hydration-value"
+      clear={false}
+    />
+  );
+
   test("If only formFieldValue exists, displayValue is set to it", () => {
     mockGetValues(mockFormFieldValue);
     render(textFieldComponent);
@@ -110,6 +132,27 @@ describe("Test TextField hydration functionality", () => {
     const displayValue = textField.value;
     expect(displayValue).toEqual(mockFormFieldValue);
   });
+
+  test("should set value to default if given clear prop and clear is set to true", () => {
+    mockGetValues(undefined);
+
+    const result = render(clearPropGivenAndTrueTextField);
+    const textField: HTMLInputElement = result.container.querySelector(
+      "[name='testTextFieldWithHydrationValue']"
+    )!;
+    const displayValue = textField.value;
+    expect(displayValue).toEqual("");
+  });
+
+  test("should set value to hydrationvalue if given clear prop and clear is set to false", () => {
+    mockGetValues(undefined);
+    const result = render(clearPropGivenAndFalseTextField);
+    const textField: HTMLInputElement = result.container.querySelector(
+      "[name='testTextFieldWithHydrationValue']"
+    )!;
+    const displayValue = textField.value;
+    expect(displayValue).toEqual(mockHydrationValue);
+  });
 });
 
 describe("Test TextField component autosaves", () => {
@@ -130,6 +173,7 @@ describe("Test TextField component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     expect(mockReportContext.updateReport).toHaveBeenCalledWith(
       {
+        reportType: mockReportContext.report.reportType,
         state: mockStateUser.user?.state,
         id: mockReportContext.report.id,
       },
@@ -157,6 +201,7 @@ describe("Test TextField component autosaves", () => {
     expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
     expect(mockReportContext.updateReport).toHaveBeenCalledWith(
       {
+        reportType: mockReportContext.report.reportType,
         state: mockStateUser.user?.state,
         id: mockReportContext.report.id,
       },
