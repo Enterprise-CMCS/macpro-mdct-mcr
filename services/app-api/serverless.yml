@@ -300,69 +300,69 @@ functions:
           startingPosition: TRIM_HORIZON
           maximumRetryAttempts: 2
           enabled: true
-  # postNaaarBucketData:
-  #   handler: handlers/kafka/post/postKafkaData.handler
-  #   environment:
-  #     BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
-  #     STAGE: ${self:custom.stage}
-  #   maximumRetryAttempts: 2
-  #   timeout: 120
-  #   memorySize: 2048
-  #   vpc:
-  #     securityGroupIds:
-  #       - Ref: KafkaSecurityGroup
-  #     subnetIds: ${self:custom.privateSubnets}
-  #   events:
-  #     - s3:
-  #         bucket: ${self:custom.naaarFormBucket}
-  #         existing: true
-  #         forceDeploy: true
-  #         event: s3:ObjectCreated:*
-  #         rules:
-  #           - prefix: fieldData/
-  #           - suffix: .json
-  # postMlrBucketData:
-  #   handler: handlers/kafka/post/postKafkaData.handler
-  #   environment:
-  #     BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
-  #     STAGE: ${self:custom.stage}
-  #   maximumRetryAttempts: 2
-  #   timeout: 120
-  #   memorySize: 2048
-  #   vpc:
-  #     securityGroupIds:
-  #       - Ref: KafkaSecurityGroup
-  #     subnetIds: ${self:custom.privateSubnets}
-  #   events:
-  #     - s3:
-  #         bucket: ${self:custom.mlrFormBucket}
-  #         existing: true
-  #         forceDeploy: true
-  #         event: s3:ObjectCreated:*
-  #         rules:
-  #           - prefix: fieldData/
-  #           - suffix: .json
-  # postMcparBucketData:
-  #   handler: handlers/kafka/post/postKafkaData.handler
-  #   environment:
-  #     BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
-  #     STAGE: ${self:custom.stage}
-  #   maximumRetryAttempts: 2
-  #   timeout: 120
-  #   memorySize: 2048
-  #   vpc:
-  #     securityGroupIds:
-  #       - Ref: KafkaSecurityGroup
-  #     subnetIds: ${self:custom.privateSubnets}
-  #   events:
-  #     - s3:
-  #         bucket: ${self:custom.mcparFormBucket}
-  #         existing: true
-  #         forceDeploy: true
-  #         event: s3:ObjectCreated:*
-  #         rules:
-  #           - prefix: fieldData/
-  #           - suffix: .json
+  postNaaarBucketData:
+    handler: handlers/kafka/post/postKafkaData.handler
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
+    maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    events:
+      - s3:
+          bucket: ${self:custom.naaarFormBucket}
+          existing: true
+          forceDeploy: true
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+  postMlrBucketData:
+    handler: handlers/kafka/post/postKafkaData.handler
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
+    maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    events:
+      - s3:
+          bucket: ${self:custom.mlrFormBucket}
+          existing: true
+          forceDeploy: true
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
+  postMcparBucketData:
+    handler: handlers/kafka/post/postKafkaData.handler
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
+    maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    events:
+      - s3:
+          bucket: ${self:custom.mcparFormBucket}
+          existing: true
+          forceDeploy: true
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: fieldData/
+            - suffix: .json
 resources:
   Resources:
     GatewayResponseDefault4XX:
