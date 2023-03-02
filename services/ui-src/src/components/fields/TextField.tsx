@@ -5,9 +5,13 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
+import {
+  autosaveFieldData,
+  labelTextWithOptional,
+  parseCustomHtml,
+  useUser,
+} from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
-import { labelTextWithOptional } from "utils/other/styleAsOptional";
 
 export const TextField = ({
   name,
@@ -88,13 +92,11 @@ export const TextField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
-  const labelText = styleAsOptional ? labelTextWithOptional(label) : label;
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
-    <Box
-      sx={{ ...sx, ...sxOverride }}
-      className={`${nestedChildClasses} ${labelClass}`}
-    >
+    <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
       <CmsdsTextField
         id={name}
         name={name}
@@ -122,9 +124,3 @@ interface Props {
   styleAsOptional?: boolean;
   [key: string]: any;
 }
-
-const sx = {
-  ".optional-text": {
-    fontWeight: "lighter",
-  },
-};

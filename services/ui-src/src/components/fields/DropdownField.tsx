@@ -14,7 +14,7 @@ import {
   InputChangeEvent,
 } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
-import { labelTextWithOptional } from "utils/other/styleAsOptional";
+import { labelTextWithOptional } from "utils/other/parsing";
 
 export const DropdownField = ({
   name,
@@ -127,13 +127,11 @@ export const DropdownField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
-  const labelText = styleAsOptional ? labelTextWithOptional(label) : label;
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
-    <Box
-      sx={{ ...sx, ...sxOverride }}
-      className={`${nestedChildClasses} ${labelClass}`}
-    >
+    <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
       <CmsdsDropdown
         name={name}
         id={name}
@@ -161,9 +159,3 @@ interface Props {
   styleAsOptional?: boolean;
   [key: string]: any;
 }
-
-const sx = {
-  ".optional-text": {
-    fontWeight: "lighter",
-  },
-};

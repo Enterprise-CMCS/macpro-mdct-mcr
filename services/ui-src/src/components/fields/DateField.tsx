@@ -7,12 +7,12 @@ import { Box } from "@chakra-ui/react";
 import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
 import {
   autosaveFieldData,
+  labelTextWithOptional,
   checkDateCompleteness,
   parseCustomHtml,
   useUser,
 } from "utils";
 import { ReportContext } from "components";
-import { labelTextWithOptional } from "utils/other/styleAsOptional";
 
 export const DateField = ({
   name,
@@ -94,7 +94,8 @@ export const DateField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
-  const labelText = styleAsOptional ? labelTextWithOptional(label) : label;
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
     <Box

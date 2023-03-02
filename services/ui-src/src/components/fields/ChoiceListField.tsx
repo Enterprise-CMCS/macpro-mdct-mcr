@@ -8,6 +8,7 @@ import { ReportContext } from "components";
 import {
   autosaveFieldData,
   formFieldFactory,
+  labelTextWithOptional,
   parseCustomHtml,
   useUser,
 } from "utils";
@@ -19,7 +20,6 @@ import {
   FormField,
   InputChangeEvent,
 } from "types";
-import { labelTextWithOptional } from "utils/other/styleAsOptional";
 
 export const ChoiceListField = ({
   name,
@@ -190,7 +190,8 @@ export const ChoiceListField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
-  const labelText = styleAsOptional ? labelTextWithOptional(label) : label;
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
     <Box
@@ -229,9 +230,6 @@ const sx = {
   // checkboxes
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
-  },
-  ".optional-text": {
-    fontWeight: "lighter",
   },
 };
 
