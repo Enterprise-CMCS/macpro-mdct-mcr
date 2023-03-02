@@ -22,9 +22,9 @@ jest.mock("kafkajs", () => ({
 
 const stage = "testing";
 const namespace = "--mcr--test-stage--";
-const table = `${stage}-aTable`;
+const table = { sourceName: `${stage}-aTable`, topicName: "aTable-reports" };
 const bucket = {
-  bucketName: `database-${stage}-aBucket`,
+  sourceName: `database-${stage}-aBucket`,
   topicName: "aBucket-forms",
 };
 const brokerString = "brokerA,brokerB,brokerC";
@@ -62,7 +62,7 @@ const dynamoEvent = {
         SizeBytes: 59,
         StreamViewType: "NEW_AND_OLD_IMAGES",
       },
-      eventSourceARN: `somePrefix/${table}/someSuffix`,
+      eventSourceARN: `somePrefix/${table.sourceName}/someSuffix`,
     },
   ],
 };
@@ -83,7 +83,7 @@ const s3Event = {
           ownerIdentity: {
             principalId: "Amazon-customer-ID-of-the-bucket-owner",
           },
-          arn: `somePrefix:${bucket.bucketName}/someSuffix`,
+          arn: `somePrefix:${bucket.sourceName}/someSuffix`,
         },
         object: {
           key: "fieldData/mockReportFieldData.json", // NOTE KEY FORMAT
@@ -116,7 +116,7 @@ const s3IgnoredEvent = {
           ownerIdentity: {
             principalId: "Amazon-customer-ID-of-the-bucket-owner",
           },
-          arn: `somePrefix:${bucket.bucketName}/someSuffix`,
+          arn: `somePrefix:${bucket.sourceName}/someSuffix`,
         },
         object: {
           key: "object-key", // IGNORED DUE TO KEY
@@ -168,11 +168,11 @@ describe("Test Kafka Lib", () => {
     expect(mockSendBatch).toBeCalledTimes(1);
   });
   test("Does not pass through events from unrelated tables or buckets", async () => {
-    const badMaps = [{ bucketName: "bad", topicName: "bad" }];
+    const badMaps = [{ sourceName: "bad", topicName: "bad" }];
     const sourceLib = new KafkaSourceLib(
       "mcr",
       "v0",
-      ["unrelated-table"],
+      [{ sourceName: "unrelated-table", topicName: "unrelated-topic" }],
       badMaps
     );
     await sourceLib.handler(s3Event);
