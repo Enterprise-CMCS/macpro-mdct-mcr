@@ -1,5 +1,6 @@
 // Description: This function takes a report and returns an array of objects that represent the status of each route in the report.
 export const getRouteStatus = (report: any) => {
+  //TODO: make this a recursive function
   if (!report) return [];
 
   const {
