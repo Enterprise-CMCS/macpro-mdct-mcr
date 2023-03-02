@@ -7,17 +7,25 @@ import { ReportRouteBase } from "types";
 interface TableRowProps extends ReportRouteBase {
   children?: any[];
   status?: boolean;
-  type: "parent" | "child" | "grandchild";
 }
 
-export const TableRow = ({
-  name,
-  children,
-  type,
-  status,
-  path,
-}: TableRowProps) => {
+export const TableRow = ({ name, children, status, path }: TableRowProps) => {
   const navigate = useNavigate();
+
+  // This determines the type of row based on the number of slashes in the path
+  function countSlashes(str: string): number {
+    const regex = /\//g;
+    const matches = str.match(regex);
+    return matches ? matches.length : 0;
+  }
+
+  // This is a ternary operator that determines the type of row based on the number of slashes in the path
+  const type =
+    countSlashes(path) === 3
+      ? "child"
+      : countSlashes(path) >= 4
+      ? "grandchild"
+      : "parent";
 
   return (
     <Tr>

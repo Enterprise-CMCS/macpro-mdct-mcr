@@ -39,6 +39,8 @@ export const McparReviewSubmitPage = () => {
     report?.status !== "Not started" &&
     !hasError;
 
+  const { alertBox } = reviewVerbiage;
+
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
@@ -83,9 +85,9 @@ export const McparReviewSubmitPage = () => {
       {(hasError || report?.status === "Not started") && (
         <Box sx={sx.alert}>
           <Alert
-            title="Your form is not ready for submission"
+            title={alertBox.title}
             status={AlertTypes.ERROR}
-            description="Some sections of the MCPAR report have errors or are missing responses. Please ensure all fields are completed with valid responses before submitting."
+            description={alertBox.description}
           />
         </Box>
       )}

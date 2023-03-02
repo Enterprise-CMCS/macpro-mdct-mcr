@@ -3,6 +3,17 @@ import { ReportContext, TableRow } from "components";
 import { Fragment, useContext } from "react";
 import { getRouteStatus } from "utils";
 
+const ChildRow = ({ route }: any) => {
+  return (
+    <Fragment key={route.path}>
+      <TableRow {...route} type="parent" />
+      {route.children?.map((child: any) => (
+        <ChildRow route={child} />
+      ))}
+    </Fragment>
+  );
+};
+
 export const StatusTable = () => {
   const { report } = useContext(ReportContext);
 
@@ -16,24 +27,7 @@ export const StatusTable = () => {
             <Td></Td>
           </Tr>
           {getRouteStatus(report).map((route: any) => {
-            return (
-              <Fragment key={route.path}>
-                <TableRow {...route} type="parent" />
-                {route.children?.map((child: any) => (
-                  <Fragment key={child.path}>
-                    <TableRow {...child} type="child" status={child.status} />
-                    {child.children?.map((grandchild: any) => (
-                      <TableRow
-                        key={grandchild.path}
-                        {...grandchild}
-                        type="grandchild"
-                        status={grandchild.status}
-                      />
-                    ))}
-                  </Fragment>
-                ))}
-              </Fragment>
-            );
+            return <ChildRow route={route} />;
           })}
         </Tbody>
       </Table>
