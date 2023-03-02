@@ -14,6 +14,11 @@ type KafkaPayload = {
     eventID?: string;
   };
 };
+type BucketTopicMapping = {
+  bucketName: string;
+  topicName: string;
+};
+
 let kafka: Kafka;
 let producer: Producer;
 
@@ -28,13 +33,13 @@ class KafkaSourceLib {
    * topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
    * version = "some version";
    * tables = [list of tables];
-   * buckets = [list of buckets];
+   * buckets = [list of bucket mappings];
    */
 
   topicPrefix: string;
   version: string | null;
   tables: string[];
-  buckets: string[];
+  buckets: BucketTopicMapping[];
   connected: boolean;
   topicNamespace: string;
   stage: string;
@@ -42,7 +47,7 @@ class KafkaSourceLib {
     topicPrefix: string,
     version: string | null,
     tables: string[],
-    buckets: string[]
+    buckets: BucketTopicMapping[]
   ) {
     if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
       throw new Error("Missing Broker Config. ");
@@ -99,8 +104,7 @@ class KafkaSourceLib {
    */
   determineDynamoTopicName(streamARN: string) {
     for (const table of this.tables) {
-      if (streamARN.includes(`/${this.stage}-${table}/`))
-        return this.topic(table);
+      if (streamARN.includes(`/${table}/`)) return this.topic(table);
     }
     console.log(`Topic not found for table arn: ${streamARN}`);
   }
@@ -112,9 +116,8 @@ class KafkaSourceLib {
    */
   determineS3TopicName(bucketArn: string) {
     for (const bucket of this.buckets) {
-      if (bucketArn.includes(`database-${this.stage}-${bucket}`)) {
-        const formTopic = `${bucket}-form`;
-        return this.topic(formTopic);
+      if (bucketArn.includes(bucket.bucketName)) {
+        return this.topic(bucket.topicName);
       }
     }
     console.log(`Topic not found for bucket arn: ${bucketArn}`);
