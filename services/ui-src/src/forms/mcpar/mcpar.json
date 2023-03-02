@@ -225,6 +225,7 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
+                  "styleAsOptional": true,
                   "label": "B.I.1 Statewide Medicaid enrollment",
                   "hint": "Enter the total number of individuals enrolled in Medicaid as of the first day of the last month of the reporting year.</br>Include all FFS and managed care enrollees, and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
                   "mask": "comma-separated"
@@ -262,7 +263,6 @@
                 "type": "checkbox",
                 "validation": "checkbox",
                 "props": {
-                  "styleAsOptional": true,
                   "label": "B.III.1 Data validation entity",
                   "hint": "Select the state agency/division or contractor tasked with evaluating the validity of encounter data submitted by MCPs.</br>Encounter data validation includes verifying the accuracy, completeness, timeliness, and/or consistency of encounter data records submitted to the state by Medicaid managed care plans. Validation steps may include pre-acceptance edits and post-acceptance analyses. See Glossary in Excel Workbook for more information.",
                   "choices": [
