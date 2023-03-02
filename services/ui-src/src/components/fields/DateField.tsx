@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 // utils
 import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
-import { checkDateCompleteness, parseCustomHtml } from "utils";
+import {
+  autosaveFieldData,
+  checkDateCompleteness,
+  parseCustomHtml,
+  useUser,
+} from "utils";
+import { ReportContext } from "components";
 
 export const DateField = ({
   name,
@@ -13,26 +19,36 @@ export const DateField = ({
   hint,
   sxOverride,
   nested,
+  autosave,
   ...props
 }: Props) => {
-  const [displayValue, setDisplayValue] = useState<string>("");
+  const defaultValue = "";
+  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const { full_name, state } = useUser().user ?? {};
+
+  const { report, updateReport } = useContext(ReportContext);
 
   // get form context and register form field
   const form = useFormContext();
   form.register(name);
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue = props?.hydrate || defaultValue;
   useEffect(() => {
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
     }
-    // else if hydration value exists, set as display value
+    // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
-      setDisplayValue(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: true });
+      if (props.clear) {
+        setDisplayValue(defaultValue);
+        form.setValue(name, defaultValue);
+      } else {
+        setDisplayValue(hydrationValue);
+        form.setValue(name, hydrationValue);
+      }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -45,10 +61,29 @@ export const DateField = ({
     }
   };
 
-  // update form field data on blur
-  const onBlurHandler = (event: InputChangeEvent) => {
-    const fieldValue = event.target.value;
-    form.setValue(name, fieldValue, { shouldValidate: true });
+  // if should autosave, submit field data to database on blur
+  const onBlurHandler = async (event: InputChangeEvent) => {
+    const { name, value } = event.target;
+    // if field is blank, trigger client-side field validation error
+    if (!value.trim()) form.trigger(name);
+    // submit field data to database
+    if (autosave) {
+      const fields = [
+        { name, type: "date", value, hydrationValue, defaultValue },
+      ];
+      const reportArgs = {
+        id: report?.id,
+        reportType: report?.reportType,
+        updateReport,
+      };
+      const user = { userName: full_name, state };
+      await autosaveFieldData({
+        form,
+        fields,
+        report: reportArgs,
+        user,
+      });
+    }
   };
 
   // prepare error message, hint, and classes
@@ -83,6 +118,7 @@ interface Props {
   hint?: CustomHtmlElement[];
   timetype?: string;
   nested?: boolean;
+  autosave?: boolean;
   sxOverride?: AnyObject;
   [key: string]: any;
 }

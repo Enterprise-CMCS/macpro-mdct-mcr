@@ -1,5 +1,10 @@
 import { ReactNode } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import {
+  FieldValues,
+  FormProvider,
+  SubmitErrorHandler,
+  useForm,
+} from "react-hook-form";
 import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
@@ -19,7 +24,9 @@ export const Form = ({
   id,
   formJson,
   onSubmit,
+  onError,
   formData,
+  autosave,
   children,
   ...props
 }: Props) => {
@@ -45,7 +52,9 @@ export const Form = ({
   });
 
   // will run if any validation errors exist on form submission
-  const onErrorHandler = (errors: AnyObject) => {
+  const onErrorHandler: SubmitErrorHandler<FieldValues> = (
+    errors: AnyObject
+  ) => {
     // sort errors in order of registration/page display
     const sortedErrors: string[] = sortFormErrors(formValidationSchema, errors);
     // focus the first error on the page and scroll to it
@@ -59,14 +68,17 @@ export const Form = ({
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: FormField[]) => {
     const fieldsToRender = hydrateFormFields(fields, formData);
-    return formFieldFactory(fieldsToRender, !!fieldInputDisabled);
+    return formFieldFactory(fieldsToRender, {
+      disabled: !!fieldInputDisabled,
+      autosave,
+    });
   };
 
   return (
     <FormProvider {...form}>
       <form
         id={id}
-        onSubmit={form.handleSubmit(onSubmit as any, onErrorHandler)}
+        onSubmit={form.handleSubmit(onSubmit as any, onError || onErrorHandler)}
         {...props}
       >
         <Box sx={sx}>{renderFormFields(fields)}</Box>
@@ -80,7 +92,9 @@ interface Props {
   id: string;
   formJson: FormJson;
   onSubmit: Function;
+  onError?: SubmitErrorHandler<FieldValues>;
   formData?: AnyObject;
+  autosave?: boolean;
   children?: ReactNode;
   [key: string]: any;
 }

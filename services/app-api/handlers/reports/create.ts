@@ -1,6 +1,8 @@
 import KSUID from "ksuid";
 import handler from "../handler-lib";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
@@ -9,92 +11,132 @@ import {
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import { S3Put, StatusCodes, UserRoles } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportTables,
+  reportBuckets,
+} from "../../utils/constants/constants";
 
 export const createReport = handler(async (event, _context) => {
-  let status, body;
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
-    status = StatusCodes.UNAUTHORIZED;
-    body = error.UNAUTHORIZED;
-  } else if (!event?.pathParameters?.state!) {
-    throw new Error(error.NO_KEY);
-  } else {
-    const state: string = event.pathParameters.state;
-    const unvalidatedPayload = JSON.parse(event!.body!);
-    const {
-      metadata: unvalidatedMetadata,
-      fieldData: unvalidatedFieldData,
-      formTemplate,
-    } = unvalidatedPayload;
-    const fieldDataValidationJson = formTemplate.validationJson;
-
-    // if field data and validation json have been passed
-    if (unvalidatedFieldData && fieldDataValidationJson) {
-      const reportId: string = KSUID.randomSync().string;
-      const fieldDataId: string = KSUID.randomSync().string;
-      const formTemplateId: string = KSUID.randomSync().string;
-
-      // validate field data
-      const validatedFieldData = await validateFieldData(
-        fieldDataValidationJson,
-        unvalidatedFieldData
-      );
-
-      // if field data passes validation,
-      if (validatedFieldData) {
-        // post validated field data to s3 bucket
-        const fieldDataParams: S3Put = {
-          Bucket: process.env.MCPAR_FORM_BUCKET!,
-          Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
-          Body: JSON.stringify(validatedFieldData),
-          ContentType: "application/json",
-        };
-        await s3Lib.put(fieldDataParams);
-        // post form template to s3 bucket
-        const formTemplateParams: S3Put = {
-          Bucket: process.env.MCPAR_FORM_BUCKET!,
-          Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
-          Body: JSON.stringify(formTemplate),
-          ContentType: "application/json",
-        };
-        await s3Lib.put(formTemplateParams);
-
-        // validate report metadata
-        const validatedMetadata = await validateData(metadataValidationSchema, {
-          ...unvalidatedMetadata,
-        });
-        // if metadata passes validation,
-        if (validatedMetadata) {
-          // create record in report metadata table
-          let reportMetadataParams = {
-            TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-            Item: {
-              ...validatedMetadata,
-              state,
-              id: reportId,
-              fieldDataId,
-              formTemplateId,
-              createdAt: Date.now(),
-              lastAltered: Date.now(),
-            },
-          };
-          await dynamoDb.put(reportMetadataParams);
-
-          // set response status and body
-          status = StatusCodes.CREATED;
-          body = { ...reportMetadataParams.Item };
-        } else {
-          status = StatusCodes.BAD_REQUEST;
-          body = error.INVALID_DATA;
-        }
-      } else {
-        status = StatusCodes.BAD_REQUEST;
-        body = error.INVALID_DATA;
-      }
-    } else {
-      status = StatusCodes.BAD_REQUEST;
-      body = error.MISSING_DATA;
-    }
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
   }
-  return { status, body };
+
+  const requiredParams = ["reportType", "state"];
+
+  // Return error if no state is passed.
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
+
+  const state: string = event.pathParameters?.state!;
+  const unvalidatedPayload = JSON.parse(event!.body!);
+  const {
+    metadata: unvalidatedMetadata,
+    fieldData: unvalidatedFieldData,
+    formTemplate,
+  } = unvalidatedPayload;
+  const reportType = unvalidatedPayload.metadata.reportType;
+  const fieldDataValidationJson = formTemplate.validationJson;
+
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+
+  // Return MISSING_DATA error if missing unvalidated data or validators.
+  if (!unvalidatedFieldData || !fieldDataValidationJson) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.MISSING_DATA,
+    };
+  }
+
+  // Create report and field ids.
+  const reportId: string = KSUID.randomSync().string;
+  const fieldDataId: string = KSUID.randomSync().string;
+  const formTemplateId: string = KSUID.randomSync().string;
+
+  // Validate field data
+  const validatedFieldData = await validateFieldData(
+    fieldDataValidationJson,
+    unvalidatedFieldData
+  );
+
+  // Return INVALID_DATA error if field data is not valid.
+  if (!validatedFieldData) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.INVALID_DATA,
+    };
+  }
+
+  const fieldDataParams: S3Put = {
+    Bucket: reportBucket,
+    Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+    Body: JSON.stringify(validatedFieldData),
+    ContentType: "application/json",
+  };
+
+  const formTemplateParams: S3Put = {
+    Bucket: reportBucket,
+    Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
+    Body: JSON.stringify(formTemplate),
+    ContentType: "application/json",
+  };
+
+  try {
+    await s3Lib.put(fieldDataParams);
+    await s3Lib.put(formTemplateParams);
+  } catch (err) {
+    return {
+      status: StatusCodes.SERVER_ERROR,
+      body: error.S3_OBJECT_CREATION_ERROR,
+    };
+  }
+
+  const validatedMetadata = await validateData(metadataValidationSchema, {
+    ...unvalidatedMetadata,
+  });
+
+  // Return INVALID_DATA error if metadata is not valid.
+  if (!validatedMetadata) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.INVALID_DATA,
+    };
+  }
+
+  // Create DyanmoDB record.
+  const reportMetadataParams = {
+    TableName: reportTable,
+    Item: {
+      ...validatedMetadata,
+      state,
+      id: reportId,
+      fieldDataId,
+      formTemplateId,
+      createdAt: Date.now(),
+      lastAltered: Date.now(),
+    },
+  };
+
+  try {
+    await dynamoDb.put(reportMetadataParams);
+  } catch (err) {
+    return {
+      status: StatusCodes.SERVER_ERROR,
+      body: error.DYNAMO_CREATION_ERROR,
+    };
+  }
+
+  return {
+    status: StatusCodes.CREATED,
+    body: { ...reportMetadataParams.Item },
+  };
 });

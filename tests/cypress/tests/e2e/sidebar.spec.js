@@ -60,7 +60,8 @@ describe("Sidebar integration tests", () => {
 
     cy.authenticate("adminUser");
     cy.navigateToHomePage();
-    cy.get('[name="state"]').select("Minnesota");
+    cy.get('[name="state"]').select("District of Columbia");
+    cy.get('[name="report"]').first().check();
     cy.findAllByRole("button", { name: "Go to Report Dashboard" })
       .last()
       .click();

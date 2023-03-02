@@ -23,13 +23,17 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const testReadEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", id: "mock-report-id" },
+  pathParameters: {
+    reportType: "mock-type",
+    state: "AB",
+    id: "mock-report-id",
+  },
 };
 
 const testReadEventByState: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB" },
+  pathParameters: { reportType: "mock-type", state: "AB" },
 };
 
 describe("Test fetchReport API method", () => {
@@ -68,23 +72,23 @@ describe("Test fetchReport API method", () => {
     expect(body.formTemplate).toStrictEqual(mockReportJson);
   });
 
-  test("Test reportKeys not provided throws 500 error", async () => {
+  test("Test reportKeys not provided throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testReadEvent,
       pathParameters: {},
     };
     const res = await fetchReport(noKeyEvent, null);
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 
-  test("Test reportKeys empty throws 500 error", async () => {
+  test("Test reportKeys empty throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testReadEvent,
       pathParameters: { state: "", id: "" },
     };
     const res = await fetchReport(noKeyEvent, null);
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 });
@@ -101,23 +105,23 @@ describe("Test fetchReportsByState API method", () => {
     expect(body[0].programName).toContain("testProgram");
   });
 
-  test("Test reportKeys not provided throws 500 error", async () => {
+  test("Test reportKeys not provided throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testReadEventByState,
       pathParameters: {},
     };
     const res = await fetchReportsByState(noKeyEvent, null);
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 
-  test("Test reportKeys empty throws 500 error", async () => {
+  test("Test reportKeys empty throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testReadEventByState,
       pathParameters: { state: "" },
     };
     const res = await fetchReportsByState(noKeyEvent, null);
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 });

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
 //components
 import { RadioField } from "components";
 
@@ -63,9 +63,7 @@ describe("Test RadioField component", () => {
     expect(mockSetValue).toHaveBeenCalledWith(
       "radio_choices",
       [{ key: "Choice 1", value: "A" }],
-      {
-        shouldValidate: true,
-      }
+      { shouldValidate: true }
     );
   });
 });

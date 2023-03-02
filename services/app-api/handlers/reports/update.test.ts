@@ -29,7 +29,7 @@ const mockedFetchReport = fetchReport as jest.MockedFunction<
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { state: "AB", id: "testReportId" },
+  pathParameters: { reportType: "mock-type", state: "AB", id: "testReportId" },
   body: JSON.stringify(mockReport),
 };
 
@@ -95,22 +95,6 @@ describe("Test updateReport API method", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  test("Test Successful Run of report update", async () => {
-    mockedFetchReport.mockResolvedValue({
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "string",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(mockDynamoData),
-    });
-    const res = await updateReport(updateEvent, null);
-    const body = JSON.parse(res.body);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.status).toContain("in progress");
-    expect(body.fieldData.number).toBe("1");
-  });
-
   test("Test report update submission succeeds", async () => {
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
@@ -184,25 +168,25 @@ describe("Test updateReport API method", () => {
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
-  test("Test reportKey not provided throws 500 error", async () => {
+  test("Test reportKey not provided throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...updateEvent,
       pathParameters: {},
     };
     const res = await updateReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 
-  test("Test reportKey empty throws 500 error", async () => {
+  test("Test reportKey empty throws 400 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...updateEvent,
       pathParameters: { state: "", id: "" },
     };
     const res = await updateReport(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
   });
 });

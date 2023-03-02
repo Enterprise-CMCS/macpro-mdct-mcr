@@ -12,7 +12,3 @@ export const metadataValidationSchema = yup.object().shape({
   submittedBy: yup.string(),
   submittedOnDate: yup.string(),
 });
-
-export const archiveValidationSchema = yup.object().shape({
-  archived: yup.boolean(),
-});

@@ -10,37 +10,40 @@ import {
 } from "components";
 // utils
 import { filterFormData, useFindRoute, useUser } from "utils";
-import { AnyObject, StandardReportPageShape, ReportStatus } from "types";
+import { AnyObject, ReportStatus, StandardReportPageShape } from "types";
 
 export const StandardReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state } = useUser().user ?? {};
   const navigate = useNavigate();
   const { nextRoute } = useFindRoute(
     report!.formTemplate.flatRoutes!,
     report!.formTemplate.basePath
   );
 
+  const onError = () => {
+    navigate(nextRoute);
+  };
+
   const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
-      setSubmitting(true);
-      const reportKeys = {
-        state: state,
-        id: report?.id,
-      };
-      const filteredFormData = filterFormData(enteredData, route.form.fields);
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: filteredFormData,
-      };
-      await updateReport(reportKeys, dataToWrite);
-      setSubmitting(false);
-    }
+    setSubmitting(true);
+    const reportKeys = {
+      reportType: report?.reportType,
+      state: state,
+      id: report?.id,
+    };
+    const filteredFormData = filterFormData(enteredData, route.form.fields);
+    const dataToWrite = {
+      metadata: {
+        status: ReportStatus.IN_PROGRESS,
+        lastAlteredBy: full_name,
+      },
+      fieldData: filteredFormData,
+    };
+    await updateReport(reportKeys, dataToWrite);
+    setSubmitting(false);
+
     navigate(nextRoute);
   };
 
@@ -51,7 +54,9 @@ export const StandardReportPage = ({ route }: Props) => {
         id={route.form.id}
         formJson={route.form}
         onSubmit={onSubmit}
+        onError={onError}
         formData={report?.fieldData}
+        autosave
       />
       <ReportPageFooter submitting={submitting} form={route.form} />
     </Box>
