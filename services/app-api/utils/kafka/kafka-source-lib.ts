@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import AWS from "aws-sdk";
 import s3Lib from "../s3/s3-lib";
-import { Kafka } from "kafkajs";
+import { Kafka, Producer } from "kafkajs";
 import { S3EventRecord } from "aws-lambda";
 
 type KafkaPayload = {
@@ -14,37 +14,8 @@ type KafkaPayload = {
     eventID?: string;
   };
 };
-
-if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
-  throw new Error("Missing Broker Config. ");
-}
-const STAGE = process.env.STAGE;
-const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
-const topicNamespace = process.env.topicNamespace;
-
-const kafka = new Kafka({
-  clientId: `mcr-${STAGE}`,
-  brokers: brokerStrings!.split(","),
-  retry: {
-    initialRetryTime: 300,
-    retries: 8,
-  },
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-const producer = kafka.producer();
-let connected = false;
-const signalTraps = ["SIGTERM", "SIGINT", "SIGUSR2", "beforeExit"];
-
-signalTraps.map((type) => {
-  process.removeListener(type, producer.disconnect);
-});
-
-signalTraps.map((type) => {
-  process.once(type, producer.disconnect);
-});
+let kafka: Kafka;
+let producer: Producer;
 
 class KafkaSourceLib {
   /*
@@ -61,20 +32,54 @@ class KafkaSourceLib {
    */
 
   topicPrefix: string;
-  version: string;
+  version: string | null;
   tables: string[];
   buckets: string[];
-
+  connected: boolean;
+  topicNamespace: string;
+  stage: string;
   constructor(
     topicPrefix: string,
-    version: string,
+    version: string | null,
     tables: string[],
     buckets: string[]
   ) {
+    if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
+      throw new Error("Missing Broker Config. ");
+    }
+    // Setup vars
+    this.stage = process.env.STAGE ? process.env.STAGE : "";
+    this.topicNamespace = process.env.topicNamespace
+      ? process.env.topicNamespace
+      : "";
     this.topicPrefix = topicPrefix;
     this.version = version;
     this.tables = tables;
     this.buckets = buckets;
+
+    const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
+    kafka = new Kafka({
+      clientId: `mcr-${this.stage}`,
+      brokers: brokerStrings!.split(","),
+      retry: {
+        initialRetryTime: 300,
+        retries: 8,
+      },
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // Attach Events
+    producer = kafka.producer();
+    this.connected = false;
+    const signalTraps = ["SIGTERM", "SIGINT", "SIGUSR2", "beforeExit"];
+    signalTraps.map((type) => {
+      process.removeListener(type, producer.disconnect);
+    });
+    signalTraps.map((type) => {
+      process.once(type, producer.disconnect);
+    });
   }
 
   unmarshallOptions = {
@@ -82,7 +87,7 @@ class KafkaSourceLib {
     wrapNumbers: true,
   };
 
-  stringify(e, prettyPrint?: boolean) {
+  stringify(e: any, prettyPrint?: boolean) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
   }
@@ -94,7 +99,8 @@ class KafkaSourceLib {
    */
   determineDynamoTopicName(streamARN: string) {
     for (const table of this.tables) {
-      if (streamARN.includes(`/${STAGE}-${table}/`)) return this.topic(table);
+      if (streamARN.includes(`/${this.stage}-${table}/`))
+        return this.topic(table);
     }
     console.log(`Topic not found for table arn: ${streamARN}`);
   }
@@ -106,7 +112,7 @@ class KafkaSourceLib {
    */
   determineS3TopicName(bucketArn: string) {
     for (const bucket of this.buckets) {
-      if (bucketArn.includes(`database-${STAGE}-${bucket}`)) {
+      if (bucketArn.includes(`database-${this.stage}-${bucket}`)) {
         const formTopic = `${bucket}-form`;
         return this.topic(formTopic);
       }
@@ -155,9 +161,9 @@ class KafkaSourceLib {
 
   topic(t: string) {
     if (this.version) {
-      return `${topicNamespace}${this.topicPrefix}.${t}.${this.version}`;
+      return `${this.topicNamespace}${this.topicPrefix}.${t}.${this.version}`;
     } else {
-      return `${topicNamespace}${this.topicPrefix}.${t}`;
+      return `${this.topicNamespace}${this.topicPrefix}.${t}`;
     }
   }
 
@@ -203,9 +209,9 @@ class KafkaSourceLib {
   }
 
   async handler(event: any) {
-    if (!connected) {
+    if (!this.connected) {
       await producer.connect();
-      connected = true;
+      this.connected = true;
     }
 
     // Warmup events have no records.
@@ -220,7 +226,7 @@ class KafkaSourceLib {
     const topicMessages = Object.values(outboundEvents);
     console.log(`Batch configuration: ${this.stringify(topicMessages, true)}`);
 
-    await producer.sendBatch({ topicMessages });
+    if (topicMessages.length > 0) await producer.sendBatch({ topicMessages });
     console.log(`Successfully processed ${event.Records.length} records.`);
   }
 }
