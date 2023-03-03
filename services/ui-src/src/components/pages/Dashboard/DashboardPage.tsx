@@ -223,7 +223,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         {!reportsToDisplay?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
-        {/* only show add program button to state users */}
+        {/* only show add report button to state users */}
         {(userIsStateUser || userIsStateRep) && (
           <Box sx={sx.callToActionContainer}>
             <Button type="submit" onClick={() => openAddEditReportModal()}>
