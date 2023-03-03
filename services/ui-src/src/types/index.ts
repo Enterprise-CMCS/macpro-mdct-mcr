@@ -142,6 +142,7 @@ export interface ReportKeys {
 export interface ReportMetadataShape extends ReportKeys {
   reportType: string;
   reportName: string;
+  submissionName?: string;
   status: ReportStatus;
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;

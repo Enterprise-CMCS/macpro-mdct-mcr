@@ -2,6 +2,7 @@ import * as yup from "yup";
 
 export const metadataValidationSchema = yup.object().shape({
   reportName: yup.string(),
+  submissionName: yup.string(),
   reportType: yup.string(),
   status: yup.string(),
   reportingPeriodStartDate: yup.number(),
