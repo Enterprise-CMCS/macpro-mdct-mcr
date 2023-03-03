@@ -1,62 +1,119 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
-import { error, buckets } from "../../utils/constants/constants";
+import {
+  error,
+  buckets,
+  reportBuckets,
+  reportTables,
+} from "../../utils/constants/constants";
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 export const fetchReport = handler(async (event, _context) => {
-  let status, body;
-  if (!event?.pathParameters?.state! || !event?.pathParameters?.id!) {
-    throw new Error(error.NO_KEY);
+  const requiredParams = ["reportType", "id", "state"];
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
   }
-  const state = event.pathParameters.state;
-  const reportId = event.pathParameters.id;
 
-  // get current report metadata
+  const { reportType, state, id } = event.pathParameters!;
+
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+
+  // Get current report metadata
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Key: { state, id: reportId },
+    TableName: reportTable,
+    Key: { state, id },
   };
+
   try {
     const response = await dynamoDb.get(reportMetadataParams);
-    if (!response?.Item) throw error.NOT_IN_DATABASE;
-    const reportMetadata: any = response.Item; // TODO: strict typing
+    if (!response?.Item) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        body: error.NOT_IN_DATABASE,
+      };
+    }
+
+    const reportMetadata = response.Item as Record<string, any>;
     const { formTemplateId, fieldDataId } = reportMetadata;
 
-    // get formTemplate from s3 bucket
+    // Get form template from S3
     const formTemplateParams: S3Get = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+      Bucket: reportBucket,
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
-    const formTemplate: any = await s3Lib.get(formTemplateParams); // TODO: strict typing
-    if (!formTemplate) throw error.MISSING_FORM_TEMPLATE;
 
-    // get fieldData from s3 bucket
-    const fieldDataParams = {
-      Bucket: process.env.MCPAR_FORM_BUCKET!,
+    const formTemplate = await s3Lib.get(formTemplateParams); // TODO: strict typing
+    if (!formTemplate) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        body: error.MISSING_FORM_TEMPLATE,
+      };
+    }
+
+    // Get field data from S3
+    const fieldDataParams: S3Get = {
+      Bucket: reportBucket,
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
-    const fieldData: any = await s3Lib.get(fieldDataParams); // TODO: strict typing
-    if (!fieldData) throw error.MISSING_FIELD_DATA;
 
-    status = StatusCodes.SUCCESS;
-    body = { ...reportMetadata, formTemplate, fieldData };
+    const fieldData = await s3Lib.get(fieldDataParams); // TODO: strict typing
+
+    if (!fieldData) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        body: error.NO_MATCHING_RECORD,
+      };
+    }
+
+    return {
+      status: StatusCodes.SUCCESS,
+      body: {
+        ...reportMetadata,
+        formTemplate,
+        fieldData,
+      },
+    };
   } catch (err) {
-    status = StatusCodes.NOT_FOUND;
-    body = error.NO_MATCHING_RECORD;
+    return {
+      status: StatusCodes.NOT_FOUND,
+      body: error.NO_MATCHING_RECORD,
+    };
   }
-  return { status, body };
 });
 
+interface DynamoFetchParams {
+  TableName: string;
+  KeyConditionExpression: string;
+  ExpressionAttributeValues: Record<string, string>;
+  ExpressionAttributeNames: Record<string, string>;
+  ExclusiveStartKey?: DocumentClient.Key;
+}
+
 export const fetchReportsByState = handler(async (event, _context) => {
-  if (!event?.pathParameters?.state!) {
-    throw new Error(error.NO_KEY);
+  const requiredParams = ["reportType", "state"];
+
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
   }
-  let queryParams: any = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+
+  const reportType = event.pathParameters?.reportType;
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
+
+  const queryParams: DynamoFetchParams = {
+    TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
-      ":state": event.pathParameters.state,
+      ":state": event.pathParameters?.state!,
     },
     ExpressionAttributeNames: {
       "#state": "state",
@@ -67,7 +124,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   let existingItems = [];
   let results;
 
-  const queryTable = async (startingKey?: any) => {
+  const queryTable = async (startingKey?: DocumentClient.Key) => {
     queryParams.ExclusiveStartKey = startingKey;
     let results = await dynamoDb.query(queryParams);
     if (results.LastEvaluatedKey) {
@@ -81,7 +138,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   // Looping to perform complete scan of tables due to 1 mb limit per iteration
   do {
     [startingKey, results] = await queryTable(startingKey);
-    const items: AnyObject[] = results.Items;
+    const items: AnyObject[] = results?.Items;
     existingItems.push(...items);
   } while (startingKey);
 

@@ -22,6 +22,7 @@ import { MobileDashboardList } from "./DashboardProgramListMobile";
 import { Spinner } from "@cmsgov/design-system";
 // forms
 import { mcparReportJson } from "forms/mcpar";
+import { mlrReportJson } from "forms/mlr";
 // utils
 import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
 import {
@@ -43,7 +44,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     reportsByState,
     clearReportSelection,
     setReportSelection,
-    updateReport,
+    archiveReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -67,6 +68,7 @@ export const DashboardPage = ({ reportType }: Props) => {
 
   const genericReportJsonMap: any = {
     MCPAR: mcparReportJson,
+    MLR: mlrReportJson,
   };
   const genericReportJson = genericReportJsonMap[reportType]!;
 
@@ -79,7 +81,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     if (!activeState) {
       navigate("/");
     }
-    fetchReportsByState(activeState);
+    fetchReportsByState(reportType, activeState);
     clearReportSelection();
   }, []);
 
@@ -95,6 +97,7 @@ export const DashboardPage = ({ reportType }: Props) => {
 
   const enterSelectedReport = async (report: ReportMetadataShape) => {
     const reportKeys: ReportKeys = {
+      reportType: report.reportType,
       state: report.state,
       id: report.id,
     };
@@ -149,11 +152,12 @@ export const DashboardPage = ({ reportType }: Props) => {
       setArchivingReportId(report.id);
       setArchiving(true);
       const reportKeys = {
+        reportType: reportType,
         state: adminSelectedState,
         id: report.id,
       };
-      await updateReport(reportKeys, {});
-      await fetchReportsByState(activeState);
+      await archiveReport(reportKeys);
+      await fetchReportsByState(reportType, activeState);
       setArchivingReportId(undefined);
       setArchiving(false);
     }

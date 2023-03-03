@@ -1,3 +1,4 @@
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
@@ -29,9 +30,19 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
 
+  const mlrReport = useFlags()?.mlrReport;
+
+  const enabledReports = {
+    MCPAR: true,
+    MLR: mlrReport,
+  };
+
+  const reportIndex = templateName as keyof typeof enabledReports;
+
   const cardText = verbiage.link
     ? verbiage.body?.available
     : verbiage.body?.unavailable;
+
   return (
     <Card {...cardprops}>
       <Flex sx={sx.root} {...props}>
@@ -44,8 +55,11 @@ export const TemplateCard = ({
         )}
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
-          <Text>{cardText}</Text>
-
+          {enabledReports[reportIndex] ? (
+            <Text>{cardText}</Text>
+          ) : (
+            <Text>{verbiage.body.unavailable}</Text>
+          )}
           <Flex sx={sx.actionsFlex}>
             <Button
               variant="link"
@@ -60,7 +74,7 @@ export const TemplateCard = ({
             >
               {verbiage.downloadText}
             </Button>
-            {verbiage.link && (
+            {enabledReports[reportIndex] && (
               <Button
                 sx={sx.formLink}
                 onClick={() => navigate(verbiage.link.route)}

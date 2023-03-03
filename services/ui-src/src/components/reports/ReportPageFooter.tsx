@@ -1,8 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
 import { useFindRoute, useUser } from "utils";
@@ -61,7 +60,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
                 ) : undefined
               }
             >
-              {submitting ? <Spinner size="small" /> : "Save & continue"}
+              {submitting ? <Spinner size="sm" /> : "Continue"}
             </Button>
           )}
         </Flex>
@@ -82,14 +81,14 @@ const sx = {
     marginTop: "3.5rem",
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
   },
-  button: {
-    width: "11.5rem",
-  },
   buttonFlex: {
     justifyContent: "space-between",
     marginY: "1.5rem",
   },
   arrowIcon: {
     width: "1rem",
+  },
+  button: {
+    width: "8.25rem",
   },
 };

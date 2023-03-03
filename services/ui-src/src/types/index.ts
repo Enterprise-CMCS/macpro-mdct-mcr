@@ -134,6 +134,7 @@ export interface ModalDrawerReportPageVerbiage
 // REPORT PROVIDER/CONTEXT
 
 export interface ReportKeys {
+  reportType: string;
   state: string;
   id: string;
 }
@@ -163,6 +164,7 @@ export interface ReportShape extends ReportMetadataShape {
 export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
+  archiveReport: Function;
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;
@@ -173,6 +175,7 @@ export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
   reportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
+  lastSavedTime?: string | undefined;
 }
 
 export enum ReportStatus {

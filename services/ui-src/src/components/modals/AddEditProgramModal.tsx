@@ -62,6 +62,7 @@ export const AddEditProgramModal = ({
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
       const reportKeys = {
+        reportType: reportType,
         state: activeState,
         id: selectedReport.id,
       };
@@ -76,7 +77,7 @@ export const AddEditProgramModal = ({
       });
     } else {
       // create new report
-      await createReport(activeState, {
+      await createReport(reportType, activeState, {
         ...dataToWrite,
         metadata: {
           ...dataToWrite.metadata,
@@ -90,7 +91,7 @@ export const AddEditProgramModal = ({
         formTemplate,
       });
     }
-    await fetchReportsByState(activeState);
+    await fetchReportsByState(reportType, activeState);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
