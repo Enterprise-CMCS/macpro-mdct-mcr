@@ -241,12 +241,12 @@ const sx = {
   link: {
     margin: "0.5rem 0",
     ".desktop &": {
-      "&:first-child": {
+      "&:first-of-type": {
         paddingRight: ".5rem",
         borderRight: "1px solid",
         borderColor: "palette.white",
       },
-      "&:last-child": {
+      "&:last-of-type": {
         paddingLeft: ".5rem",
       },
     },

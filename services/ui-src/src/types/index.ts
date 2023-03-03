@@ -1,3 +1,4 @@
+import { CompletionData } from "./../../../app-api/utils/types/types";
 import React from "react";
 
 // USERS
@@ -157,6 +158,9 @@ export interface ReportMetadataShape extends ReportKeys {
 
 export interface ReportShape extends ReportMetadataShape {
   formTemplate: ReportJson;
+  completionStatus?: {
+    [key: string]: boolean | CompletionData;
+  };
   fieldData: AnyObject;
 }
 
