@@ -5,7 +5,12 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
+import {
+  autosaveFieldData,
+  labelTextWithOptional,
+  parseCustomHtml,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   DropdownChoice,
@@ -14,7 +19,6 @@ import {
   InputChangeEvent,
 } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
-import { labelTextWithOptional } from "utils/other/parsing";
 
 export const DropdownField = ({
   name,
