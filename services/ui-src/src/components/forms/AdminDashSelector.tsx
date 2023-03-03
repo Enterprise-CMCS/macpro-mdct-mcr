@@ -31,7 +31,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   };
 
   // assemble and inject report choices depending on whether report is enabled
-  const { mlrReport } = useFlags();
+  const mlrReport = useFlags()?.mlrReport;
   if (mlrReport) {
     reportChoices.push(mlrReportChoice);
   }
