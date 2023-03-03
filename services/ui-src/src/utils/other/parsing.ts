@@ -50,3 +50,6 @@ export const sanitizeAndParseHtml = (html: string) => {
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;
 };
+
+export const labelTextWithOptional = (label: string) =>
+  parseCustomHtml(label + "<span class='optional-text'> (optional)</span>");

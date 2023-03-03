@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import DOMPurify from "dompurify";
 // utils
-import { parseCustomHtml } from "./parsing";
+import { labelTextWithOptional, parseCustomHtml } from "utils";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -56,5 +56,16 @@ describe("Test parseCustomHtml", () => {
 
   test("Type 'html' is sanitized and parsed", () => {
     expect(sanitizationSpy).toHaveBeenCalled();
+  });
+});
+
+// labelTextWithOptional test
+describe("Test labelTextWithOptional", () => {
+  test("if a string gets passed into labelTextWithOptional, the 'optional' text will appear", () => {
+    const label = "field title";
+    const testComponent = <div>{labelTextWithOptional(label)}</div>;
+    render(testComponent);
+    const optionalText = screen.getByText("(optional)");
+    expect(optionalText).toBeVisible();
   });
 });
