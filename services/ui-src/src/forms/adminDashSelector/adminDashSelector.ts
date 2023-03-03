@@ -9,15 +9,10 @@ const dropdownOptions: DropdownOptions[] = Object.keys(States).map((value) => {
   };
 });
 
-// create radio options
 const reportChoices = [
   {
     id: "MCPAR",
     label: "Managed Care Program Annual Report (MCPAR)",
-  },
-  {
-    id: "MLR",
-    label: "Medicaid Medical Loss Ratio (MLR)",
   },
 ];
 
@@ -45,7 +40,7 @@ export default {
       props: {
         hint: "Select a report:",
         choices: reportChoices,
-        ariaLabel: "Choices of report type, including MCPAR and MLR",
+        ariaLabel: "Choices of report type",
       },
     },
   ],
