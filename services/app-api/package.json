@@ -36,6 +36,7 @@
     "dotenv": "^16.0.3",
     "jsdom": "^20.0.0",
     "jwt-decode": "^3.1.2",
+    "kafkajs": "^2.2.3",
     "ksuid": "^3.0.0",
     "serverless-plugin-warmup": "^8.2.1",
     "yup": "^0.32.11"

@@ -15,6 +15,9 @@ jest.mock("aws-sdk", () => {
           delete: () => mockDocumentClient.delete,
         };
       }),
+      Converter: {
+        unmarshall: (s: any) => s,
+      },
     },
     S3: jest.fn().mockImplementation((_config) => {
       return {

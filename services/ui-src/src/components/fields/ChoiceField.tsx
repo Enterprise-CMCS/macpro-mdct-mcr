@@ -5,12 +5,14 @@ import { Choice as CmsdsChoice } from "@cmsgov/design-system";
 import { Box, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject } from "types";
+import { labelTextWithOptional } from "utils";
 
 export const ChoiceField = ({
   name,
   label,
   hint,
   sxOverride,
+  styleAsOptional,
   ...props
 }: Props) => {
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
@@ -40,10 +42,13 @@ export const ChoiceField = ({
     }
   }, [hydrationValue]);
 
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
+
   return (
     <Box sx={{ ...sx, ...sxOverride }}>
       <Text sx={sx.label} id="label">
-        {label}
+        {labelText}
       </Text>
       <CmsdsChoice
         type="checkbox"
@@ -65,6 +70,7 @@ interface Props {
   label?: string;
   hint: string;
   sxOverride?: AnyObject;
+  styleAsOptional?: boolean;
   [key: string]: any;
 }
 
