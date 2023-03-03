@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
 import { ReportContext, McparReviewSubmitPage } from "components";
-import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
+import { SuccessMessageGenerator } from "./ReviewSubmitPage";
 // types
 import { ReportStatus } from "types";
 // utils
