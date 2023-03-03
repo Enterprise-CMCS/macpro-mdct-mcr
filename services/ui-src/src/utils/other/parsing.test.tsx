@@ -62,12 +62,10 @@ describe("Test parseCustomHtml", () => {
 // labelTextWithOptional test
 describe("Test labelTextWithOptional", () => {
   test("if a string gets passed into labelTextWithOptional, the 'optional' text will appear", () => {
-    const text = "field title";
-    const newText = labelTextWithOptional(text);
-    expect(newText).toContain(
-      <span>
-        field title<span className="optional-text"> (optional)</span>
-      </span>
-    );
+    const label = "field title";
+    const testComponent = <div>{labelTextWithOptional(label)}</div>;
+    render(testComponent);
+    const optionalText = screen.getByText("(optional)");
+    expect(optionalText).toBeVisible();
   });
 });
