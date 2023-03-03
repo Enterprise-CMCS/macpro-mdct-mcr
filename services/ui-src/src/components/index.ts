@@ -80,7 +80,7 @@ export { HomePage } from "./pages/Home/HomePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { ReportGetStartedPage } from "./pages/GetStarted/ReportGetStartedPage";
-export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
+export { McparReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
