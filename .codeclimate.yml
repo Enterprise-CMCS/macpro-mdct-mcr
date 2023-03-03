@@ -28,6 +28,7 @@ exclude_patterns:
   - "src/"
   - "services/.sechub/"
   - "services/database/"
+  - "services/topics/"
   - "services/ui/"
   - "services/ui-src/public/"
   - "services/ui-src/src/libs/"
