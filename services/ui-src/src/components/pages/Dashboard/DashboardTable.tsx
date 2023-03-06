@@ -27,12 +27,14 @@ export const DashboardTable = ({
     {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
         {/* Edit Button */}
-        {isStateLevelUser && (
+        {isStateLevelUser ? (
           <EditReportButton
             report={report}
             openAddEditReportModal={openAddEditReportModal}
             sxOverride={sxOverride}
           />
+        ) : (
+          <Td></Td>
         )}
         {/* Report Name */}
         <Td sx={sxOverride.reportNameText}>{report.reportName}</Td>
@@ -133,36 +135,40 @@ const AdminActionButtons = ({
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
-    <Td sx={sxOverride.deleteReportCell}>
+    <>
       {reportType === "MLR" && (
+        <Td sx={sxOverride.adminActionCell}>
+          <Button
+            variant="link"
+            sx={sxOverride.adminActionButton}
+            onClick={() => lockReport!(report)}
+          >
+            {locking && reportId === report.id ? (
+              <Spinner size="small" />
+            ) : report?.locked ? (
+              "Unlock"
+            ) : (
+              "Lock"
+            )}
+          </Button>
+        </Td>
+      )}
+      <Td sx={sxOverride.adminActionCell}>
         <Button
           variant="link"
           sx={sxOverride.adminActionButton}
-          onClick={() => lockReport!(report)}
+          onClick={() => archiveReport(report)}
         >
-          {locking && reportId === report.id ? (
+          {archiving && reportId === report.id ? (
             <Spinner size="small" />
-          ) : report?.locked ? (
-            "Unlock"
+          ) : report?.archived ? (
+            "Unarchive"
           ) : (
-            "Lock"
+            "Archive"
           )}
         </Button>
-      )}
-      <Button
-        variant="link"
-        sx={sxOverride.adminActionButton}
-        onClick={() => archiveReport(report)}
-      >
-        {archiving && reportId === report.id ? (
-          <Spinner size="small" />
-        ) : report?.archived ? (
-          "Unarchive"
-        ) : (
-          "Archive"
-        )}
-      </Button>
-    </Td>
+      </Td>
+    </>
   );
 };
 

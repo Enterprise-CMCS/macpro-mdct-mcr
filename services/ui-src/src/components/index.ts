@@ -27,7 +27,7 @@ export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";
-export { MobileDashboardList } from "./pages/Dashboard/DashboardProgramListMobile";
+export { MobileDashboardTable } from "./pages/Dashboard/MobileDashboardTable";
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";

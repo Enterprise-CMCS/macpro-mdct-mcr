@@ -18,7 +18,7 @@ import {
   ReportContext,
 } from "components";
 import { DashboardTable } from "./DashboardTable";
-import { MobileDashboardList } from "./DashboardProgramListMobile";
+import { MobileDashboardTable } from "./MobileDashboardTable";
 import { Spinner } from "@cmsgov/design-system";
 // forms
 import { mcparReportJson } from "forms/mcpar";
@@ -204,8 +204,9 @@ export const DashboardPage = ({ reportType }: Props) => {
       <Box sx={sx.bodyBox}>
         {reportsToDisplay ? (
           isTablet || isMobile ? (
-            <MobileDashboardList
+            <MobileDashboardTable
               reportsByState={reportsToDisplay}
+              reportType={reportType}
               reportId={reportId}
               openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
@@ -389,7 +390,7 @@ const sxChildStyles = {
       width: "100%",
     },
   },
-  deleteReportCell: {
+  adminActionCell: {
     width: "2.5rem",
   },
   adminActionButton: {
