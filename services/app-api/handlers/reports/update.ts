@@ -35,6 +35,43 @@ export const updateReport = handler(async (event, context) => {
     };
   }
 
+  // Blacklisted keys
+  const metadataBlacklist = [
+    "submittedBy",
+    "submittedOnDate",
+    "locked",
+    "archive",
+  ];
+  const fieldDataBlacklist = [
+    "submitterName",
+    "submitterEmailAddress",
+    "reportSubmissionDate",
+  ];
+
+  try {
+    const eventBody = JSON.parse(event.body);
+    if (
+      (eventBody.metadata &&
+        Object.keys(eventBody.metadata).some((_) =>
+          metadataBlacklist.includes(_)
+        )) ||
+      (eventBody.fieldData &&
+        Object.keys(eventBody.fieldData).some((_) =>
+          fieldDataBlacklist.includes(_)
+        ))
+    ) {
+      return {
+        status: StatusCodes.BAD_REQUEST,
+        body: error.INVALID_DATA,
+      };
+    }
+  } catch (err) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.INVALID_DATA,
+    };
+  }
+
   // Ensure user has correct permissions to update a report.
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
     return {
