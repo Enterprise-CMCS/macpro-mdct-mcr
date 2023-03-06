@@ -183,6 +183,7 @@ export interface ReportContextShape extends ReportContextMethods {
 export enum ReportStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
+  IN_REVISION = "In revision",
   SUBMITTED = "Submitted",
 }
 
