@@ -27,18 +27,17 @@ export const DashboardTable = ({
     {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
         {/* Edit Button */}
-        <Td sx={sxOverride.editReport}>
-          {isStateLevelUser && (
-            <button onClick={() => openAddEditReportModal(report)}>
-              <Image src={editIcon} alt="Edit Report" />
-            </button>
-          )}
-        </Td>
+        {isStateLevelUser && (
+          <EditReportButton
+            report={report}
+            openAddEditReportModal={openAddEditReportModal}
+            sxOverride={sxOverride}
+          />
+        )}
         {/* Report Name */}
         <Td sx={sxOverride.reportNameText}>{report.reportName}</Td>
         {/* Date Fields */}
-        <Td>{convertDateUtcToEt(report.dueDate)}</Td>
-        <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
+        <DateFields report={report} reportType={reportType} />
         {/* Last Altered By */}
         <Td>{report?.lastAlteredBy || "-"}</Td>
         {/* Report Status */}
@@ -85,6 +84,40 @@ interface DashboardTableProps {
   lockReport?: Function | undefined;
   locking?: boolean | undefined;
   sxOverride: AnyObject;
+}
+
+const EditReportButton = ({
+  report,
+  openAddEditReportModal,
+  sxOverride,
+}: EditReportProps) => {
+  return (
+    <Td sx={sxOverride.editReport}>
+      <button onClick={() => openAddEditReportModal(report)}>
+        <Image src={editIcon} alt="Edit Report" />
+      </button>
+    </Td>
+  );
+};
+
+interface EditReportProps {
+  report: ReportMetadataShape;
+  openAddEditReportModal: Function;
+  sxOverride: AnyObject;
+}
+
+const DateFields = ({ report, reportType }: DateFieldProps) => {
+  return (
+    <>
+      {reportType === "MCPAR" && <Td>{convertDateUtcToEt(report.dueDate)}</Td>}
+      <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
+    </>
+  );
+};
+
+interface DateFieldProps {
+  report: ReportMetadataShape;
+  reportType: string;
 }
 
 const AdminActionButtons = ({
