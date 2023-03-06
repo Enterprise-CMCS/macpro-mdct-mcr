@@ -24,4 +24,4 @@ set -e
 
 # Cleanup bigmac topics for branch
 data='{"project":"mcr","stage":"'"$stage"'"}'
-sls topics --stage main --function deleteTopics --data $data
+sls invoke --stage main --function deleteTopics --data $data
