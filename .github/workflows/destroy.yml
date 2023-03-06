@@ -43,5 +43,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete topics
-        run: run deleteTopics --stage $STAGE_NAME
+        run: sls topics invoke --stage main --function deleteTopics --data '{"project":"mcr","stage":"$branch_name"}'
       - run: ./scripts/destroy.sh $STAGE_PREFIX$branch_name

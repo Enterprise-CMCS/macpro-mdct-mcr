@@ -49,13 +49,11 @@ params:
     deleteTopicsEnabled: true
   val:
     topicNamespace: ""
-    deleteTopicsEnabled: false
   production:
     topicNamespace: ""
-    deleteTopicsEnabled: false
   default:
     topicNamespace: --${self:custom.project}--${sls:stage}--
-    deleteTopicsEnabled: true
+    deleteTopicsEnabled: false
 
 functions:
   createTopics:
