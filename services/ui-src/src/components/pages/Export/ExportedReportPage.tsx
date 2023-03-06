@@ -30,7 +30,7 @@ export const ExportedReportPage = () => {
           {/* pdf metadata */}
           <Helmet>
             <title>
-              {`${reportPage.heading} ${fullStateName}: ${report.programName}`}
+              {`${reportPage.heading} ${fullStateName}: ${report.reportName}`}
             </title>
             <meta name="author" content={metadata.author} />
             <meta name="subject" content={metadata.subject} />
@@ -39,7 +39,7 @@ export const ExportedReportPage = () => {
           {/* report heading */}
           <Heading as="h1" sx={sx.heading}>
             {reportPage.heading}
-            {report.fieldData.stateName}: {report.programName}
+            {report.fieldData.stateName}: {report.reportName}
           </Heading>
           {/* report metadata tables */}
           <Table

@@ -65,7 +65,7 @@ export const Header = ({ handleLogout }: Props) => {
             <Flex sx={sx.subnavFlex}>
               <Flex>
                 <Text sx={sx.programNameText}>
-                  Program: {report?.programName}
+                  Program: {report?.reportName}
                 </Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
