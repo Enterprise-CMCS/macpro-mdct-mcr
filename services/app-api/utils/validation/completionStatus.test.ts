@@ -50,10 +50,7 @@ describe("Completion Status Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(
-        testData,
-        formTemplate
-      );
+      const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
@@ -94,10 +91,7 @@ describe("Completion Status Tests", () => {
           },
         ],
       };
-      const result = await calculateCompletionStatus(
-        testData,
-        formTemplate
-      );
+      const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toStrictEqual({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
