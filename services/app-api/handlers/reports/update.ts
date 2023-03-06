@@ -16,7 +16,10 @@ import {
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
-import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+import {
+  calculateCompletionStatus,
+  isComplete,
+} from "../../utils/validation/completionStatus";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -214,6 +217,7 @@ export const updateReport = handler(async (event, context) => {
     Item: {
       ...currentReport,
       ...validatedMetadata,
+      isComplete: isComplete(completionStatus),
       lastAltered: Date.now(),
     },
   };
