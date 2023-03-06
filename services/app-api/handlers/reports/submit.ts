@@ -1,11 +1,15 @@
 import { hasPermissions } from "../../utils/auth/authorization";
-import { error } from "../../utils/constants/constants";
+import { error, reportTables } from "../../utils/constants/constants";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import { StatusCodes, UserRoles } from "../../utils/types/types";
 import handler from "../handler-lib";
 
 export const submitReport = handler(async (event, _context) => {
-  if (!event.pathParameters?.id || !event.pathParameters?.state) {
+  if (
+    !event.pathParameters?.id ||
+    !event.pathParameters?.state ||
+    !event.pathParameters.reportType
+  ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
@@ -19,12 +23,14 @@ export const submitReport = handler(async (event, _context) => {
     };
   }
 
-  const { id, state } = event.pathParameters;
+  const { id, state, reportType } = event.pathParameters;
+
+  const reportTable = reportTables[reportType as keyof typeof reportTables];
 
   // Get report metadata
   const reportMetadataParams = {
-    TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
-    Key: { id, state },
+    TableName: reportTable,
+    Key: { id, state, reportType },
   };
 
   try {
