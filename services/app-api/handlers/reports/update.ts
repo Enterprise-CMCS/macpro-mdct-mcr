@@ -16,7 +16,10 @@ import {
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
-import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+import {
+  calculateCompletionStatus,
+  isComplete,
+} from "../../utils/validation/completionStatus";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -32,6 +35,43 @@ export const updateReport = handler(async (event, context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.MISSING_DATA,
+    };
+  }
+
+  // Blacklisted keys
+  const metadataBlacklist = [
+    "submittedBy",
+    "submittedOnDate",
+    "locked",
+    "archive",
+  ];
+  const fieldDataBlacklist = [
+    "submitterName",
+    "submitterEmailAddress",
+    "reportSubmissionDate",
+  ];
+
+  try {
+    const eventBody = JSON.parse(event.body);
+    if (
+      (eventBody.metadata &&
+        Object.keys(eventBody.metadata).some((_) =>
+          metadataBlacklist.includes(_)
+        )) ||
+      (eventBody.fieldData &&
+        Object.keys(eventBody.fieldData).some((_) =>
+          fieldDataBlacklist.includes(_)
+        ))
+    ) {
+      return {
+        status: StatusCodes.BAD_REQUEST,
+        body: error.INVALID_DATA,
+      };
+    }
+  } catch (err) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.INVALID_DATA,
     };
   }
 
@@ -177,6 +217,7 @@ export const updateReport = handler(async (event, context) => {
     Item: {
       ...currentReport,
       ...validatedMetadata,
+      isComplete: isComplete(completionStatus),
       lastAltered: Date.now(),
     },
   };
