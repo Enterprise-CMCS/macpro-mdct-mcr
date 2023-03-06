@@ -16,6 +16,7 @@ import {
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -144,9 +145,15 @@ export const updateReport = handler(async (event, context) => {
     };
   }
 
-  // Validate report metadata
+  const completionStatus = await calculateCompletionStatus(
+    fieldData,
+    formTemplate
+  );
+
+  // validate report metadata
   const validatedMetadata = await validateData(metadataValidationSchema, {
     ...unvalidatedMetadata,
+    completionStatus,
   });
 
   // If metadata fails validation, return 400
