@@ -17,7 +17,7 @@ import {
   PageTemplate,
   ReportContext,
 } from "components";
-import { DashboardList } from "./DashboardProgramList";
+import { DashboardTable } from "./DashboardTable";
 import { MobileDashboardList } from "./DashboardProgramListMobile";
 import { Spinner } from "@cmsgov/design-system";
 // forms
@@ -127,7 +127,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       }
       formData = {
         fieldData: {
-          programName: report.programName,
+          programName: report.reportName,
           reportingPeriodEndDate: convertDateUtcToEt(
             report.reportingPeriodEndDate
           ),
@@ -200,8 +200,9 @@ export const DashboardPage = ({ reportType }: Props) => {
               isAdmin={userIsAdmin!}
             />
           ) : (
-            <DashboardList
+            <DashboardTable
               reportsByState={reportsToDisplay}
+              reportType={reportType}
               openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
@@ -345,7 +346,7 @@ const sxChildStyles = {
       color: "palette.primary",
     },
   },
-  editProgram: {
+  editReport: {
     padding: "0",
     width: "2.5rem",
     ".tablet &, .mobile &": {
@@ -360,7 +361,7 @@ const sxChildStyles = {
       },
     },
   },
-  programNameText: {
+  reportNameText: {
     fontSize: "md",
     fontWeight: "bold",
     width: "13rem",

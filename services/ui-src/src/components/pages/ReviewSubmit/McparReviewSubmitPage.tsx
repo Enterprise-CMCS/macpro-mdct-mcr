@@ -78,7 +78,7 @@ export const McparReviewSubmitPage = () => {
     <Flex sx={sx.pageContainer} data-testid="review-submit-page">
       {report?.status === ReportStatus.SUBMITTED ? (
         <SuccessMessage
-          programName={report.programName}
+          reportName={report.reportName}
           date={report?.submittedOnDate}
           submittedBy={report?.submittedBy}
         />
@@ -185,14 +185,14 @@ export const SuccessMessageGenerator = (
 };
 
 export const SuccessMessage = ({
-  programName,
+  reportName,
   date,
   submittedBy,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
   const submissionMessage = SuccessMessageGenerator(
-    programName,
+    reportName,
     date,
     submittedBy
   );
@@ -226,7 +226,7 @@ export const SuccessMessage = ({
 };
 
 interface SuccessMessageProps {
-  programName: string;
+  reportName: string;
   date?: number;
   submittedBy?: string;
 }

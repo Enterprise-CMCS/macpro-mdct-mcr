@@ -8,8 +8,9 @@ import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
 
-export const DashboardList = ({
+export const DashboardTable = ({
   reportsByState,
+  reportType,
   body,
   openAddEditReportModal,
   enterSelectedReport,
@@ -21,20 +22,26 @@ export const DashboardList = ({
   isAdmin,
 }: DashboardTableProps) => (
   <Table content={body.table} data-testid="desktop-table" sx={sx.table}>
-    {reportsByState.map((report: AnyObject) => (
+    {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
-        <Td sx={sxOverride.editProgram}>
+        {/* Edit Button */}
+        <Td sx={sxOverride.editReport}>
           {isStateLevelUser && (
             <button onClick={() => openAddEditReportModal(report)}>
               <Image src={editIcon} alt="Edit Report" />
             </button>
           )}
         </Td>
-        <Td sx={sxOverride.programNameText}>{report.programName}</Td>
+        {/* Report Name */}
+        <Td sx={sxOverride.reportNameText}>{report.reportName}</Td>
+        {/* Date Fields */}
         <Td>{convertDateUtcToEt(report.dueDate)}</Td>
         <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
+        {/* Last Altered By */}
         <Td>{report?.lastAlteredBy || "-"}</Td>
+        {/* Report Status */}
         <Td>{report?.archived ? "Archived" : report?.status}</Td>
+        {/* Action Buttons */}
         <Td sx={sxOverride.editReportButtonCell}>
           <Button
             variant="outline"
@@ -45,31 +52,57 @@ export const DashboardList = ({
             Enter
           </Button>
         </Td>
-        <Td sx={sxOverride.deleteProgramCell}>
-          {isAdmin && (
-            <Button
-              variant="link"
-              sx={sxOverride.archiveReportButton}
-              onClick={() => archiveReport(report)}
-            >
-              {archiving && archivingReportId === report.id ? (
-                <Spinner size="small" />
-              ) : report?.archived ? (
-                "Unarchive"
-              ) : (
-                "Archive"
-              )}
-            </Button>
-          )}
-        </Td>
+        <AdminActionButtons
+          report={report}
+          reportType={reportType}
+          archiveReport={archiveReport}
+          archiving={archiving}
+          archivingReportId={archivingReportId}
+          isAdmin={isAdmin}
+          sxOverride={sxOverride}
+        />
       </Tr>
     ))}
   </Table>
 );
 
+const AdminActionButtons = ({
+  report,
+  reportType,
+  archiveReport,
+  archiving,
+  archivingReportId,
+  isAdmin,
+  sxOverride,
+}: AdminActionButtonProps) => {
+  {
+    /* Archive (only for admins) */
+  }
+  return (
+    <Td sx={sxOverride.deleteProgramCell}>
+      {isAdmin && (
+        <Button
+          variant="link"
+          sx={sxOverride.archiveReportButton}
+          onClick={() => archiveReport(report)}
+        >
+          {archiving && archivingReportId === report.id ? (
+            <Spinner size="small" />
+          ) : report?.archived ? (
+            "Unarchive"
+          ) : (
+            "Archive"
+          )}
+        </Button>
+      )}
+    </Td>
+  );
+};
+
 interface DashboardTableProps {
   reportsByState: ReportMetadataShape[];
   body: { table: AnyObject };
+  reportType: string;
   openAddEditReportModal: Function;
   enterSelectedReport: Function;
   archiveReport: Function;
@@ -78,6 +111,16 @@ interface DashboardTableProps {
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
+}
+
+interface AdminActionButtonProps {
+  report: ReportMetadataShape;
+  reportType: string;
+  archiveReport: Function;
+  archiving: boolean;
+  archivingReportId: string | undefined;
+  sxOverride: AnyObject;
+  isAdmin: boolean;
 }
 
 const sx = {
