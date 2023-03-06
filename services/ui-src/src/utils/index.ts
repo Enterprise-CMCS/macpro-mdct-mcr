@@ -16,8 +16,6 @@ export * from "./forms/forms";
 export * from "./reports/entities";
 export * from "./reports/reports";
 export * from "./reports/routing";
-// statusing
-export * from "./statusing/getRouteStatus";
 // tracking
 export * from "./tracking/tealium";
 // validation
