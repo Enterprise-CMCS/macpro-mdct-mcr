@@ -19,13 +19,14 @@ export default {
   },
   body: {
     table: {
-      caption: "MCPAR Programs",
+      caption: "MLR Submissions",
       headRow: [
         "",
         "Submission name",
         "Last edited",
         "Edited by",
         "Status",
+        "#",
         "",
       ],
     },

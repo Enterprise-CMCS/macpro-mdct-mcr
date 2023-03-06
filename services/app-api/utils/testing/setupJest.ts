@@ -84,7 +84,7 @@ export const mockReport = {
   ...mockReportKeys,
   metadata: {
     reportType: "mock-type",
-    programName: "testProgram",
+    reportName: "testProgram",
     status: "Not started",
     reportingPeriodStartDate: 162515200000,
     reportingPeriodEndDate: 168515200000,

@@ -99,11 +99,11 @@ const AdminActionButtons = ({
 }: AdminActionButtonProps) => {
   return (
     <Td sx={sxOverride.deleteReportCell}>
-      {reportType === "MLR" && lockReport && (
+      {reportType === "MLR" && (
         <Button
           variant="link"
           sx={sxOverride.adminActionButton}
-          onClick={() => lockReport(report)}
+          onClick={() => lockReport!(report)}
         >
           {locking && reportId === report.id ? (
             <Spinner size="small" />

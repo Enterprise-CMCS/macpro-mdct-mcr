@@ -127,7 +127,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       }
       formData = {
         fieldData: {
-          programName: report.reportName,
+          reportName: report.reportName,
           reportingPeriodEndDate: convertDateUtcToEt(
             report.reportingPeriodEndDate
           ),
@@ -181,7 +181,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         state: adminSelectedState,
         id: report.id,
       };
-      await lockReport(reportKeys);
+      await lockReport!(reportKeys);
       await fetchReportsByState(reportType, activeState);
       setReportId(undefined);
       setLocking(false);

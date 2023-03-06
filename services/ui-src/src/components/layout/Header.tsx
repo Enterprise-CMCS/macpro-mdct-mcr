@@ -64,7 +64,7 @@ export const Header = ({ handleLogout }: Props) => {
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
-                <Text sx={sx.programNameText}>
+                <Text sx={sx.reportNameText}>
                   Program: {report?.reportName}
                 </Text>
               </Flex>
@@ -162,7 +162,7 @@ const sx = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-  programNameText: {
+  reportNameText: {
     fontWeight: "bold",
   },
   subnavFlexRight: {
