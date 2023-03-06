@@ -7,6 +7,7 @@ permissions:
   contents: read
   actions: read
 
+
 jobs:
   destroy:
     # Protected branches should be designated as such in the GitHub UI.
@@ -42,6 +43,4 @@ jobs:
         run: ./.github/github-lock.sh $branch_name
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Delete topics
-        run: sls topics invoke --stage main --function deleteTopics --data '{"project":"mcr","stage":"$branch_name"}'
       - run: ./scripts/destroy.sh $STAGE_PREFIX$branch_name
