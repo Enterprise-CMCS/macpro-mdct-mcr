@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - "*"
-      - "dependabot/**"
-      - "!skipci*"
 
 permissions:
   id-token: write
@@ -19,7 +17,6 @@ jobs:
     # This conditional is a backup mechanism to help prevent mistakes from becoming disasters.
     # This is a list of branch names that are commonly used for protected branches/environments.
     # Add/remove names from this list as appropriate.
-    if: github.event.ref_type == 'branch' && !contains(fromJson('["main", "val", "production"]'), github.event.ref)
     runs-on: ubuntu-latest
     steps:
       - name: set branch_name
