@@ -92,8 +92,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const submitReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await submitReportRequest(reportKeys);
-      setReport(result);
+      await submitReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
