@@ -7,6 +7,7 @@ permissions:
   contents: read
   actions: read
 
+
 jobs:
   destroy:
     # Protected branches should be designated as such in the GitHub UI.

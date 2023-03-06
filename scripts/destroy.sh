@@ -162,4 +162,8 @@ fi
 
 # Cleanup bigmac topics for branch
 data='{"project":"mcr","stage":"'"$stage"'"}'
-sls topics invoke --stage main --function deleteTopics --data $data
+pushd services/topics
+install_deps
+sls invoke --stage main --function deleteTopics --data $data
+popd
+
