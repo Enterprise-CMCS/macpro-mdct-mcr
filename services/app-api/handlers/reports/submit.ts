@@ -40,7 +40,7 @@ export const submitReport = handler(async (event, _context) => {
   // Get report metadata
   const reportMetadataParams = {
     TableName: reportTable,
-    Key: { id, state, reportType },
+    Key: { id, state },
   };
 
   try {
