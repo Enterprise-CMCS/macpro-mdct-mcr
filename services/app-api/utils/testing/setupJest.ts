@@ -1,3 +1,5 @@
+import sign from "jwt-encode";
+
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
   query: { promise: jest.fn() },
@@ -103,6 +105,20 @@ export const mockDynamoDataCompleted = {
   createdAt: 162515200000,
   lastAltered: 162515200000,
 };
+
+export const mockApiKey = sign(
+  {
+    sub: "b528a6fa-f58f-4928-8cf0-32c50599821f",
+    email_verified: true,
+    "cognito:username": "",
+    "custom:cms_roles": "mdctmcr-state-user",
+    given_name: "Thelonious",
+    "custom:cms_state": "MN",
+    family_name: "States",
+    email: "stateuser@test.com",
+  },
+  ""
+);
 
 export const mockReport = {
   ...mockReportKeys,

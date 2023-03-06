@@ -167,6 +167,7 @@ export interface ReportContextMethods {
   archiveReport: Function;
   createReport: Function;
   updateReport: Function;
+  submitReport: Function;
   clearReportSelection: Function;
   setReportSelection: Function;
 }

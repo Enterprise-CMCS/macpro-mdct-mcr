@@ -268,7 +268,7 @@ functions:
     memorySize: 2048
     events:
       - http:
-          path: reports/{state}/{id}
+          path: reports/submit/{reportType}/{state}/{id}
           method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
