@@ -127,4 +127,8 @@ const sx = {
       marginTop: 0,
     },
   },
+  // optional text
+  ".optional-text": {
+    fontWeight: "lighter",
+  },
 };

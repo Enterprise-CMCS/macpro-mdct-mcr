@@ -5,7 +5,12 @@ import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { autosaveFieldData, parseCustomHtml, useUser } from "utils";
+import {
+  autosaveFieldData,
+  labelTextWithOptional,
+  parseCustomHtml,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   DropdownChoice,
@@ -23,6 +28,7 @@ export const DropdownField = ({
   nested,
   autosave,
   sxOverride,
+  styleAsOptional,
   ...props
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
@@ -125,13 +131,15 @@ export const DropdownField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
     <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
       <CmsdsDropdown
         name={name}
         id={name}
-        label={label || ""}
+        label={labelText || ""}
         options={formattedOptions}
         hint={parsedHint}
         onChange={onChangeHandler}
@@ -152,5 +160,6 @@ interface Props {
   nested?: boolean;
   autosave?: boolean;
   sxOverride?: AnyObject;
+  styleAsOptional?: boolean;
   [key: string]: any;
 }

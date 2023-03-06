@@ -9,6 +9,13 @@ const dropdownOptions: DropdownOptions[] = Object.keys(States).map((value) => {
   };
 });
 
+const reportChoices = [
+  {
+    id: "MCPAR",
+    label: "Managed Care Program Annual Report (MCPAR)",
+  },
+];
+
 export default {
   id: "adminDashSelector",
   options: {
@@ -24,6 +31,16 @@ export default {
         options: dropdownOptions,
         ariaLabel:
           "List of states, including District of Columbia and Puerto Rico",
+      },
+    },
+    {
+      id: "report",
+      type: "radio",
+      validation: "radio",
+      props: {
+        hint: "Select a report:",
+        choices: reportChoices,
+        ariaLabel: "Choices of report type",
       },
     },
   ],

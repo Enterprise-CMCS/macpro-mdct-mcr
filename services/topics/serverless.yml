@@ -1,0 +1,96 @@
+service: topics
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-plugin-scripts
+  - serverless-disable-functions
+  - serverless-stack-termination-protection
+  - serverless-bundle
+  - "@stratiformdigital/serverless-iam-helper"
+  - "@stratiformdigital/serverless-idempotency-helper"
+  - "@stratiformdigital/serverless-online"
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  iam:
+    role:
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+
+custom:
+  project: "mcr"
+  stage: ${opt:stage, self:provider.stage}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - main
+      - val
+      - production
+  brokerString: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
+  vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
+  privateSubnets:
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id}
+    - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-createTopics --invocation-type RequestResponse /dev/null > /dev/null
+
+params:
+  main:
+    topicNamespace: ""
+    deleteTopicsEnabled: true
+  val:
+    topicNamespace: ""
+    deleteTopicsEnabled: false
+  production:
+    topicNamespace: ""
+    deleteTopicsEnabled: false
+  default:
+    topicNamespace: --${self:custom.project}--${sls:stage}--
+    deleteTopicsEnabled: true
+
+functions:
+  createTopics:
+    handler: handlers/createTopics.handler
+    maximumRetryAttempts: 0
+    environment:
+      brokerString: ${self:custom.brokerString}
+      topicNamespace: ${param:topicNamespace}
+    vpc:
+      securityGroupIds:
+        - Ref: LambdaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    timeout: 60
+  deleteTopics:
+    handler: handlers/deleteTopics.handler
+    maximumRetryAttempts: 0
+    environment:
+      brokerString: ${self:custom.brokerString}
+    vpc:
+      securityGroupIds:
+        - Ref: LambdaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    timeout: 300
+    enabled: ${param:deleteTopicsEnabled}
+
+resources:
+  Resources:
+    LambdaSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security Group for the lambdas
+        VpcId: ${self:custom.vpcId}
+    LambdaSecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref LambdaSecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0

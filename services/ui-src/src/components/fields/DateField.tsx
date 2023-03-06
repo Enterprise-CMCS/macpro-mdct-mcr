@@ -7,6 +7,7 @@ import { Box } from "@chakra-ui/react";
 import { AnyObject, CustomHtmlElement, InputChangeEvent } from "types";
 import {
   autosaveFieldData,
+  labelTextWithOptional,
   checkDateCompleteness,
   parseCustomHtml,
   useUser,
@@ -20,6 +21,7 @@ export const DateField = ({
   sxOverride,
   nested,
   autosave,
+  styleAsOptional,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -92,6 +94,8 @@ export const DateField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
     <Box
@@ -100,7 +104,7 @@ export const DateField = ({
     >
       <CmsdsDateField
         name={name}
-        label={label || ""}
+        label={labelText || ""}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue}
@@ -120,6 +124,7 @@ interface Props {
   nested?: boolean;
   autosave?: boolean;
   sxOverride?: AnyObject;
+  styleAsOptional?: boolean;
   [key: string]: any;
 }
 
@@ -133,5 +138,8 @@ const sx = {
     ".ds-c-field__hint": {
       marginBottom: "0.25rem",
     },
+  },
+  ".optional-text": {
+    fontWeight: "lighter",
   },
 };

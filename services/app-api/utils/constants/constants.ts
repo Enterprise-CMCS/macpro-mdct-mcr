@@ -31,9 +31,22 @@ export const buckets = {
 export const reportTables = {
   MCPAR: process.env.MCPAR_REPORT_TABLE_NAME!,
   MLR: process.env.MLR_REPORT_TABLE_NAME!,
+  NAAAR: process.env.NAAAR_REPORT_TABLE_NAME!,
 };
 
 export const reportBuckets = {
   MCPAR: process.env.MCPAR_FORM_BUCKET!,
   MLR: process.env.MLR_FORM_BUCKET!,
+  NAAAR: process.env.NAAAR_FORM_BUCKET!,
+};
+
+export const tableTopics = {
+  MCPAR: "mcpar-reports",
+  MLR: "mlr-reports",
+  NAAAR: "naaar-reports",
+};
+export const bucketTopics = {
+  MCPAR: "mcpar-form",
+  MLR: "mlr-form",
+  NAAAR: "naaar-form",
 };

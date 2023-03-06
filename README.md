@@ -241,6 +241,16 @@ When a pull request is approved and merged into main the deploy script will spin
 
 If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. click on `deploy`, then click to exapnd the `deploy` section on the right. Search for `Application endpoint` and click on the generated site.
 
+## BigMac Kafka Integration
+
+MCR pipes updates from fieldData and the report object tables to BigMac for downstream consumption. To add a topic for a new report type, update the following locations:
+
+- `services/app-api/serverless.yaml`
+  - Add table streams to postKafkaData's event triggers
+  - Declare another lambda to listen to events from the relevant s3 buckets. The same handler file can be used, but serverless has a limitation of 1 existing bucket per lambda.
+- `services/app-api/handlers/kafka/post/postKafkaData.ts` - Add the bucket and table names into the appropriate arrays. They will be parsed with their event types accordingly.
+- `services/topics/createTopics.js` - Declare the new topic names. Both the stream name for the bucket and table should be added here.
+
 ## Architecture
 
 ![Architecture Diagram](./.images/architecture.svg?raw=true)
