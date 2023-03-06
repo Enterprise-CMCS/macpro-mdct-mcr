@@ -3,8 +3,8 @@ import { useContext, useState } from "react";
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@cmsgov/design-system";
 // form
-import mcparFormJson from "forms/addEditProgram/addEditProgram.json";
-import mlrFormJson from "forms/addEditSubmission/addEditSubmission.json";
+import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
+import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
 import { AnyObject, FormJson, ReportJson, ReportStatus } from "types";
 import { States } from "../../constants";
