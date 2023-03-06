@@ -42,6 +42,6 @@ jobs:
         run: ./.github/github-lock.sh $branch_name
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: ./scripts/destroy.sh $STAGE_PREFIX$branch_name
       - name: Delete topics
         run: run deleteTopics --stage $STAGE_NAME
+      - run: ./scripts/destroy.sh $STAGE_PREFIX$branch_name
