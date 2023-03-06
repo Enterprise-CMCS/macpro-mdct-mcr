@@ -42,6 +42,8 @@ export const DashboardTable = ({
         <Td>{report?.lastAlteredBy || "-"}</Td>
         {/* Report Status */}
         <Td>{report?.archived ? "Archived" : report?.status}</Td>
+        {/* MLR-ONLY: Submission count */}
+        {reportType === "MLR" && <Td></Td>}
         {/* Action Buttons */}
         <Td sx={sxOverride.editReportButtonCell}>
           <Button
