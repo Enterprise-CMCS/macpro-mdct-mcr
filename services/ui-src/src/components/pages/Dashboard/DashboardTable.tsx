@@ -11,12 +11,14 @@ import editIcon from "assets/icons/icon_edit_square_gray.png";
 export const DashboardTable = ({
   reportsByState,
   reportType,
+  reportId,
   body,
   openAddEditReportModal,
   enterSelectedReport,
   archiveReport,
   archiving,
-  archivingReportId,
+  lockReport,
+  locking,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -52,75 +54,92 @@ export const DashboardTable = ({
             Enter
           </Button>
         </Td>
-        <AdminActionButtons
-          report={report}
-          reportType={reportType}
-          archiveReport={archiveReport}
-          archiving={archiving}
-          archivingReportId={archivingReportId}
-          isAdmin={isAdmin}
-          sxOverride={sxOverride}
-        />
+        {isAdmin && (
+          <AdminActionButtons
+            report={report}
+            reportType={reportType}
+            archiveReport={archiveReport}
+            archiving={archiving}
+            lockReport={lockReport}
+            locking={locking}
+            reportId={reportId}
+            sxOverride={sxOverride}
+          />
+        )}
       </Tr>
     ))}
   </Table>
 );
 
-const AdminActionButtons = ({
-  report,
-  reportType,
-  archiveReport,
-  archiving,
-  archivingReportId,
-  isAdmin,
-  sxOverride,
-}: AdminActionButtonProps) => {
-  {
-    /* Archive (only for admins) */
-  }
-  return (
-    <Td sx={sxOverride.deleteProgramCell}>
-      {isAdmin && (
-        <Button
-          variant="link"
-          sx={sxOverride.archiveReportButton}
-          onClick={() => archiveReport(report)}
-        >
-          {archiving && archivingReportId === report.id ? (
-            <Spinner size="small" />
-          ) : report?.archived ? (
-            "Unarchive"
-          ) : (
-            "Archive"
-          )}
-        </Button>
-      )}
-    </Td>
-  );
-};
-
 interface DashboardTableProps {
   reportsByState: ReportMetadataShape[];
   body: { table: AnyObject };
   reportType: string;
+  reportId: string | undefined;
   openAddEditReportModal: Function;
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
-  archivingReportId: string | undefined;
-  sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
+  lockReport?: Function | undefined;
+  locking?: boolean | undefined;
+  sxOverride: AnyObject;
 }
+
+const AdminActionButtons = ({
+  report,
+  reportType,
+  reportId,
+  archiveReport,
+  archiving,
+  locking,
+  lockReport,
+  sxOverride,
+}: AdminActionButtonProps) => {
+  return (
+    <Td sx={sxOverride.deleteReportCell}>
+      {reportType === "MLR" && lockReport && (
+        <Button
+          variant="link"
+          sx={sxOverride.adminActionButton}
+          onClick={() => lockReport(report)}
+        >
+          {locking && reportId === report.id ? (
+            <Spinner size="small" />
+          ) : report?.locked ? (
+            "Unlock"
+          ) : (
+            "Lock"
+          )}
+        </Button>
+      )}
+      <Button
+        variant="link"
+        sx={sxOverride.adminActionButton}
+        onClick={() => archiveReport(report)}
+      >
+        {archiving && reportId === report.id ? (
+          <Spinner size="small" />
+        ) : report?.archived ? (
+          "Unarchive"
+        ) : (
+          "Archive"
+        )}
+      </Button>
+    </Td>
+  );
+};
 
 interface AdminActionButtonProps {
   report: ReportMetadataShape;
   reportType: string;
+  reportId: string | undefined;
   archiveReport: Function;
   archiving: boolean;
-  archivingReportId: string | undefined;
+  locking?: boolean;
+  lockReport?: Function;
   sxOverride: AnyObject;
-  isAdmin: boolean;
 }
 
 const sx = {

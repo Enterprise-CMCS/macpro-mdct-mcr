@@ -19,6 +19,22 @@ async function archiveReport(reportKeys: ReportKeys) {
   return response;
 }
 
+async function lockReport(reportKeys: ReportKeys) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+  };
+  const { reportType, state, id } = reportKeys;
+
+  updateTimeout();
+  const response = await API.put(
+    "mcr",
+    `/reports/lock/${reportType}/${state}/${id}`,
+    request
+  );
+  return response;
+}
+
 async function getReport(reportKeys: ReportKeys) {
   const requestHeaders = await getRequestHeaders();
   const request = {
@@ -87,4 +103,11 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
   return response;
 }
 
-export { archiveReport, getReport, postReport, putReport, getReportsByState };
+export {
+  archiveReport,
+  lockReport,
+  getReport,
+  postReport,
+  putReport,
+  getReportsByState,
+};

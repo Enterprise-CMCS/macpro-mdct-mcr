@@ -46,6 +46,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     clearReportSelection,
     setReportSelection,
     archiveReport,
+    lockReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -58,10 +59,9 @@ export const DashboardPage = ({ reportType }: Props) => {
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined
   >(undefined);
+  const [reportId, setReportId] = useState<string | undefined>(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
-  const [archivingReportId, setArchivingReportId] = useState<
-    string | undefined
-  >(undefined);
+  const [locking, setLocking] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
@@ -158,7 +158,7 @@ export const DashboardPage = ({ reportType }: Props) => {
 
   const toggleReportArchiveStatus = async (report: ReportShape) => {
     if (userIsAdmin) {
-      setArchivingReportId(report.id);
+      setReportId(report.id);
       setArchiving(true);
       const reportKeys = {
         reportType: reportType,
@@ -167,8 +167,24 @@ export const DashboardPage = ({ reportType }: Props) => {
       };
       await archiveReport(reportKeys);
       await fetchReportsByState(reportType, activeState);
-      setArchivingReportId(undefined);
+      setReportId(undefined);
       setArchiving(false);
+    }
+  };
+
+  const toggleReportLockStatus = async (report: ReportShape) => {
+    if (userIsAdmin) {
+      setReportId(report.id);
+      setLocking(true);
+      const reportKeys = {
+        reportType: reportType,
+        state: adminSelectedState,
+        id: report.id,
+      };
+      await lockReport(reportKeys);
+      await fetchReportsByState(reportType, activeState);
+      setReportId(undefined);
+      setLocking(false);
     }
   };
 
@@ -190,28 +206,32 @@ export const DashboardPage = ({ reportType }: Props) => {
           isTablet || isMobile ? (
             <MobileDashboardList
               reportsByState={reportsToDisplay}
+              reportId={reportId}
               openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              archivingReportId={archivingReportId}
-              sxOverride={sxChildStyles}
+              lockReport={toggleReportLockStatus}
+              locking={locking}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
+              sxOverride={sxChildStyles}
             />
           ) : (
             <DashboardTable
               reportsByState={reportsToDisplay}
               reportType={reportType}
+              reportId={reportId}
+              body={body}
               openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              archivingReportId={archivingReportId}
-              body={body}
-              sxOverride={sxChildStyles}
+              lockReport={toggleReportLockStatus}
+              locking={locking}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
+              sxOverride={sxChildStyles}
             />
           )
         ) : (
@@ -369,10 +389,10 @@ const sxChildStyles = {
       width: "100%",
     },
   },
-  deleteProgramCell: {
+  deleteReportCell: {
     width: "2.5rem",
   },
-  archiveReportButton: {
+  adminActionButton: {
     minWidth: "4.5rem",
     fontSize: "sm",
     fontWeight: "normal",

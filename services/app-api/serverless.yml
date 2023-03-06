@@ -233,6 +233,19 @@ functions:
               paths:
                 state: true
                 id: true
+  lockReport:
+    handler: handlers/reports/lock.lockReport
+    events:
+      - http:
+          path: reports/lock/{reportType}/{state}/{id}
+          method: put
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                state: true
+                id: true
   createReport:
     handler: handlers/reports/create.createReport
     events:

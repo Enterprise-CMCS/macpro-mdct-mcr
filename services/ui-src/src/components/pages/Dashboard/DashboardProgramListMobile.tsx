@@ -9,11 +9,11 @@ import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const MobileDashboardList = ({
   reportsByState,
+  reportId,
   openAddEditReportModal,
   enterSelectedReport,
   archiveReport,
   archiving,
-  archivingReportId,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -68,14 +68,14 @@ export const MobileDashboardList = ({
               Enter
             </Button>
           </Box>
-          <Box sx={sxOverride.deleteProgramCell}>
+          <Box sx={sxOverride.deleteReportCell}>
             {isAdmin && (
               <Button
                 variant="link"
                 sx={sxOverride.archiveReportButton}
                 onClick={() => archiveReport(report)}
               >
-                {archiving && archivingReportId === report.id ? (
+                {archiving && reportId === report.id ? (
                   <Spinner size="small" />
                 ) : report?.archived ? (
                   "Unarchive"
@@ -93,14 +93,16 @@ export const MobileDashboardList = ({
 
 interface MobileDashboardListProps {
   reportsByState: ReportMetadataShape[];
+  reportId: string | undefined;
   openAddEditReportModal: Function;
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
-  archivingReportId: string | undefined;
-  sxOverride: AnyObject;
+  lockReport?: Function | undefined;
+  locking?: boolean | undefined;
   isAdmin: boolean;
   isStateLevelUser: boolean;
+  sxOverride: AnyObject;
 }
 
 const sx = {

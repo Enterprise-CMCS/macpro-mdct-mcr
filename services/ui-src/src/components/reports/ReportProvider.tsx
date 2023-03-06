@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 // utils
 import {
   archiveReport as archiveReportRequest,
+  lockReport as lockReportRequest,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
@@ -26,6 +27,7 @@ export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
   archiveReport: Function,
+  lockReport: Function,
   createReport: Function,
   fetchReport: Function,
   updateReport: Function,
@@ -108,6 +110,16 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
+  const lockReport = async (reportKeys: ReportKeys) => {
+    try {
+      const result = await lockReportRequest(reportKeys);
+      setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
+    } catch (e: any) {
+      setError(reportErrors.SET_REPORT_FAILED);
+    }
+  };
+
   // SELECTED REPORT
 
   const clearReportSelection = () => {
@@ -143,6 +155,7 @@ export const ReportProvider = ({ children }: Props) => {
       // report
       report,
       archiveReport,
+      lockReport,
       fetchReport,
       createReport,
       updateReport,
