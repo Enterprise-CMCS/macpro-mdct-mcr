@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 // utils
 import {
   archiveReport as archiveReportRequest,
+  submitReport as submitReportRequest,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
@@ -29,6 +30,7 @@ export const ReportContext = createContext<ReportContextShape>({
   createReport: Function,
   fetchReport: Function,
   updateReport: Function,
+  submitReport: Function,
   // reports by state
   reportsByState: undefined as ReportMetadataShape[] | undefined,
   fetchReportsByState: Function,
@@ -81,6 +83,16 @@ export const ReportProvider = ({ children }: Props) => {
   ) => {
     try {
       const result = await postReport(reportType, state, report);
+      setReport(result);
+      setLastSavedTime(getLocalHourMinuteTime());
+    } catch (e: any) {
+      setError(reportErrors.SET_REPORT_FAILED);
+    }
+  };
+
+  const submitReport = async (reportKeys: ReportKeys) => {
+    try {
+      const result = await submitReportRequest(reportKeys);
       setReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
@@ -146,6 +158,7 @@ export const ReportProvider = ({ children }: Props) => {
       fetchReport,
       createReport,
       updateReport,
+      submitReport,
       // reports by state
       reportsByState,
       fetchReportsByState,
