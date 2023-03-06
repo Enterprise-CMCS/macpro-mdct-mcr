@@ -4,6 +4,7 @@ import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import { error } from "../../utils/constants/constants";
 import {
+  mockApiKey,
   mockDocumentClient,
   mockDynamoData,
   mockDynamoDataCompleted,
@@ -21,8 +22,12 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 
 const testSubmitEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { id: "mock-report-id", state: "AB" },
+  headers: { "cognito-identity-id": "test", "x-api-key": mockApiKey },
+  pathParameters: {
+    id: "testReportId",
+    state: "AB",
+    reportType: "mock-type",
+  },
 };
 
 describe("Test submitReport API method", () => {

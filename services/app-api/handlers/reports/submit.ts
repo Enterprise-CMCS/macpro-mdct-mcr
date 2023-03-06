@@ -53,7 +53,6 @@ export const submitReport = handler(async (event, _context) => {
     }
 
     const reportMetadata = response.Item as Record<string, any>;
-
     const { status, isComplete, fieldDataId } = reportMetadata;
 
     if (status === "Submitted") {
@@ -88,8 +87,7 @@ export const submitReport = handler(async (event, _context) => {
     };
 
     const submitReportParams = {
-      Key: { key: id },
-      TableName: process.env.MCPAR_REPORT_TABLE_NAME!,
+      TableName: reportTable,
       Item: newItem,
     };
     try {
