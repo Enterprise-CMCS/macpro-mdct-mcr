@@ -19,7 +19,7 @@ async function archiveReport(reportKeys: ReportKeys) {
   return response;
 }
 
-async function lockReport(reportKeys: ReportKeys) {
+async function unlockReport(reportKeys: ReportKeys) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -29,7 +29,7 @@ async function lockReport(reportKeys: ReportKeys) {
   updateTimeout();
   const response = await API.put(
     "mcr",
-    `/reports/lock/${reportType}/${state}/${id}`,
+    `/reports/unlock/${reportType}/${state}/${id}`,
     request
   );
   return response;
@@ -105,7 +105,7 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
 
 export {
   archiveReport,
-  lockReport,
+  unlockReport,
   getReport,
   postReport,
   putReport,
