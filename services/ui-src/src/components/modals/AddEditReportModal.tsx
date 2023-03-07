@@ -75,14 +75,14 @@ export const AddEditReportModal = ({
     }
     // prepare MLR payload
     else {
-      const submissionName = formData["submissionName"];
+      const programName = formData["programName"];
       dataToWrite = {
         metadata: {
-          submissionName,
+          programName,
           lastAlteredBy: full_name,
         },
         fieldData: {
-          submissionName,
+          programName,
         },
         formTemplate,
       };
