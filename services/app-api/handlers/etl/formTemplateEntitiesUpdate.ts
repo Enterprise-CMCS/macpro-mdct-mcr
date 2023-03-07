@@ -58,14 +58,7 @@ export const transform = async (
         const updatedFormTemplate = await updateFormTemplate(formTemplate);
 
         console.log({ entities: updatedFormTemplate.entities });
-
-        const formTemplateParams: S3Put = {
-          Bucket: BUCKET_NAME,
-          Key: `${buckets.FORM_TEMPLATE}/${metadata.state}/${formTemplateId}.json`,
-          Body: JSON.stringify(updatedFormTemplate),
-          ContentType: "application/json",
-        };
-        await s3Lib.put(formTemplateParams);
+        await writeFormTemplateToS3(updatedFormTemplate)
       }
     } catch (err) {
       console.error(`Database scan failed for the table ${TABLE_NAME}
@@ -129,7 +122,19 @@ export const getFormTemplateFromS3 = async (
   return (await s3Lib.get(formTemplateParams)) as AnyObject;
 };
 
-export const updateFormTemplate = async (formTemplate: any) => {
+export const updateFormTemplate = (formTemplate: any) => {
   Object.assign(formTemplate, ENTITIES_UPDATE_DATA);
   return formTemplate;
 };
+
+export const writeFormTemplateToS3 = async (formTemplate: any) => {
+
+  const formTemplateParams: S3Put = {
+    Bucket: BUCKET_NAME,
+    Key: `${buckets.FORM_TEMPLATE}/${formTemplate.state}/${formTemplate.id}.json`,
+    Body: JSON.stringify(formTemplate),
+    ContentType: "application/json",
+  };
+  const result = await s3Lib.put(formTemplateParams);
+  console.log("Updated form template ", formTemplate.id, " | ", result)
+}

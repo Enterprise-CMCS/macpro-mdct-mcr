@@ -151,3 +151,7 @@ export const mockBannerResponse = {
   key: "admin-banner-id",
   startDate: 1641013200000,
 };
+
+export const mockFormTemplate = {
+
+}
