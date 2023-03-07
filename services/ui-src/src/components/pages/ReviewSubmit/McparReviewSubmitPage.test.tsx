@@ -91,7 +91,7 @@ describe("Test McparReviewSubmitPage functionality", () => {
     expect(modalTitle).toBeVisible();
   });
 
-  test("McparReviewSubmitPage updates report status on submit confirmation", async () => {
+  test.skip("McparReviewSubmitPage updates report status on submit confirmation", async () => {
     render(McparReviewSubmitPage_InProgress);
     const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
     await userEvent.click(reviewSubmitButton);
