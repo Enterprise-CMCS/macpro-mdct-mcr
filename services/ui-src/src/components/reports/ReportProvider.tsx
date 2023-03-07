@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 // utils
 import {
   archiveReport as archiveReportRequest,
-  lockReport as lockReportRequest,
+  unlockReport as unlockReportRequest,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
@@ -110,9 +110,9 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
-  const lockReport = async (reportKeys: ReportKeys) => {
+  const unlockReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await lockReportRequest(reportKeys);
+      const result = await unlockReportRequest(reportKeys);
       setReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
@@ -155,7 +155,7 @@ export const ReportProvider = ({ children }: Props) => {
       // report
       report,
       archiveReport,
-      lockReport,
+      unlockReport,
       fetchReport,
       createReport,
       updateReport,
