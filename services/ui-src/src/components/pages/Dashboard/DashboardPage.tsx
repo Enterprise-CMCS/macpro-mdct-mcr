@@ -46,7 +46,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     clearReportSelection,
     setReportSelection,
     archiveReport,
-    lockReport,
+    unlockReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -61,7 +61,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   >(undefined);
   const [reportId, setReportId] = useState<string | undefined>(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
-  const [locking, setLocking] = useState<boolean>(false);
+  const [unlocking, setUnlocking] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
@@ -175,16 +175,16 @@ export const DashboardPage = ({ reportType }: Props) => {
   const toggleReportLockStatus = async (report: ReportShape) => {
     if (userIsAdmin) {
       setReportId(report.id);
-      setLocking(true);
+      setUnlocking(true);
       const reportKeys = {
         reportType: reportType,
         state: adminSelectedState,
         id: report.id,
       };
-      await lockReport!(reportKeys);
+      await unlockReport!(reportKeys);
       await fetchReportsByState(reportType, activeState);
       setReportId(undefined);
-      setLocking(false);
+      setUnlocking(false);
     }
   };
 
@@ -212,8 +212,8 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              lockReport={toggleReportLockStatus}
-              locking={locking}
+              unlockReport={toggleReportLockStatus}
+              unlocking={unlocking}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}
@@ -228,8 +228,8 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              lockReport={toggleReportLockStatus}
-              locking={locking}
+              unlockReport={toggleReportLockStatus}
+              unlocking={unlocking}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}

@@ -16,8 +16,8 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  lockReport,
-  locking,
+  unlockReport,
+  unlocking,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -62,8 +62,8 @@ export const DashboardTable = ({
             reportType={reportType}
             archiveReport={archiveReport}
             archiving={archiving}
-            lockReport={lockReport}
-            locking={locking}
+            unlockReport={unlockReport}
+            unlocking={unlocking}
             reportId={reportId}
             sxOverride={sxOverride}
           />
@@ -84,8 +84,8 @@ interface DashboardTableProps {
   archiving: boolean;
   isAdmin: boolean;
   isStateLevelUser: boolean;
-  lockReport?: Function | undefined;
-  locking?: boolean | undefined;
+  unlockReport?: Function | undefined;
+  unlocking?: boolean | undefined;
   sxOverride: AnyObject;
 }
 

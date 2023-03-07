@@ -27,7 +27,7 @@ export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
   archiveReport: Function,
-  lockReport: Function,
+  unlockReport: Function,
   createReport: Function,
   fetchReport: Function,
   updateReport: Function,

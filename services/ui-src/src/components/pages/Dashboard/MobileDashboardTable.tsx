@@ -15,8 +15,8 @@ export const MobileDashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  lockReport,
-  locking,
+  unlockReport,
+  unlocking,
   isStateLevelUser,
   isAdmin,
   sxOverride,
@@ -80,8 +80,8 @@ export const MobileDashboardTable = ({
                 reportId={reportId}
                 archiveReport={archiveReport}
                 archiving={archiving}
-                lockReport={lockReport}
-                locking={locking}
+                unlockReport={unlockReport}
+                unlocking={unlocking}
                 sxOverride={sxOverride}
               />
             )}
@@ -100,8 +100,8 @@ interface MobileDashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
-  lockReport?: Function | undefined;
-  locking?: boolean | undefined;
+  unlockReport?: Function | undefined;
+  unlocking?: boolean | undefined;
   isAdmin: boolean;
   isStateLevelUser: boolean;
   sxOverride: AnyObject;

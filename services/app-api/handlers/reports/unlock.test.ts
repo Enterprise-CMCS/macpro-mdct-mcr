@@ -4,7 +4,7 @@ import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import { mockMcparReport } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
-import { lockReport } from "./lock";
+import { unlockReport } from "./unlock";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -30,7 +30,7 @@ const mockProxyEvent: APIGatewayProxyEvent = {
   body: JSON.stringify(mockMcparReport),
 };
 
-const lockEvent: APIGatewayProxyEvent = {
+const unlockEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     ...mockMcparReport,
@@ -38,7 +38,7 @@ const lockEvent: APIGatewayProxyEvent = {
   }),
 };
 
-describe("Test lockReport method", () => {
+describe("Test unlockReport method", () => {
   beforeEach(() => {
     // fail state and pass admin auth checks
     mockAuthUtil.hasPermissions
@@ -50,7 +50,7 @@ describe("Test lockReport method", () => {
     jest.clearAllMocks();
   });
 
-  test("Test lock report passes with valid data", async () => {
+  test("Test unlock report passes with valid data", async () => {
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -59,13 +59,13 @@ describe("Test lockReport method", () => {
       },
       body: JSON.stringify(mockMcparReport),
     });
-    const res: any = await lockReport(lockEvent, null);
+    const res: any = await unlockReport(unlockEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    expect(body.locked).toBe(true);
+    expect(body.locked).toBe(false);
   });
 
-  test("Test lock report with no existing record throws 404", async () => {
+  test("Test unlock report with no existing record throws 404", async () => {
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -74,12 +74,12 @@ describe("Test lockReport method", () => {
       },
       body: undefined!,
     });
-    const res = await lockReport(lockEvent, null);
+    const res = await unlockReport(unlockEvent, null);
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
 
-  test("Test lock report without admin permissions throws 403", async () => {
+  test("Test unlock report without admin permissions throws 403", async () => {
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -88,7 +88,7 @@ describe("Test lockReport method", () => {
       },
       body: undefined!,
     });
-    const res = await lockReport(lockEvent, null);
+    const res = await unlockReport(unlockEvent, null);
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });

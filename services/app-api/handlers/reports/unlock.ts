@@ -6,7 +6,7 @@ import { StatusCodes, UserRoles } from "../../utils/types/types";
 import { error, reportTables } from "../../utils/constants/constants";
 import { hasPermissions } from "../../utils/auth/authorization";
 
-export const lockReport = handler(async (event, context) => {
+export const unlockReport = handler(async (event, context) => {
   // Return a 403 status if the user is not an admin.
   if (!hasPermissions(event, [UserRoles.ADMIN])) {
     return {

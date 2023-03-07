@@ -166,7 +166,7 @@ export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
   archiveReport: Function;
-  lockReport?: Function;
+  unlockReport?: Function;
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;
