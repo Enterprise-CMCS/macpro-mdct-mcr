@@ -2,8 +2,8 @@
 import { DynamoDB } from "aws-sdk";
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 import s3Lib from "../../utils/s3/s3-lib";
-import {AnyObject, S3Get, S3Put} from "../types/types";
-import { buckets } from "../constants/constants";
+import { AnyObject, S3Get, S3Put } from "../../utils/types/types";
+import { buckets } from "../../utils/constants/constants";
 
 const TABLE_NAME = process.env.MCPAR_REPORT_TABLE_NAME!;
 const BUCKET_NAME = process.env.MCPAR_FORM_BUCKET!;
@@ -20,12 +20,12 @@ const ENTITIES_UPDATE_DATA = {
 
 let dynamoClient: any;
 
-export const handler = async (
+export const transform = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
+  console.log("Starting Lambda");
   initialize();
-
   let keepSearching = true;
   let startingKey;
 
@@ -35,7 +35,7 @@ export const handler = async (
     try {
       [startingKey, keepSearching, metadataResults] =
         await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
-
+      console.log({ metadataResults });
       // get formTemplateId from metadata
       for (const metadata of metadataResults.Items) {
         let formTemplateId = metadata.formTemplateId;
@@ -52,9 +52,12 @@ export const handler = async (
           formTemplateId,
           metadata.state
         );
+        console.log({ entities: formTemplate.entities });
 
         // modify formTemplate > write to s3
         const updatedFormTemplate = await updateFormTemplate(formTemplate);
+
+        console.log({ entities: updatedFormTemplate.entities });
 
         const formTemplateParams: S3Put = {
           Bucket: BUCKET_NAME,
@@ -62,7 +65,7 @@ export const handler = async (
           Body: JSON.stringify(updatedFormTemplate),
           ContentType: "application/json",
         };
-        await s3Lib.put(formTemplateParams)
+        await s3Lib.put(formTemplateParams);
       }
     } catch (err) {
       console.error(`Database scan failed for the table ${TABLE_NAME}
@@ -75,7 +78,7 @@ export const handler = async (
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: "finished TFWS ETL script",
+      message: "finished ETL script",
     }),
   };
 };
@@ -128,7 +131,5 @@ export const getFormTemplateFromS3 = async (
 
 export const updateFormTemplate = async (formTemplate: any) => {
   Object.assign(formTemplate, ENTITIES_UPDATE_DATA);
-  console.log("Updated form template ", formTemplate.id)
-
   return formTemplate;
 };

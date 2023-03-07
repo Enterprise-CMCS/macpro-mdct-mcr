@@ -1,5 +1,5 @@
-import { initialize, scanTableForMetadata } from "./jsonTransform";
-import { mockDocumentClient, mockDynamoData } from "../testing/setupJest";
+import { initialize, scanTableForMetadata } from "./formTemplateEntitiesUpdate";
+import { mockDocumentClient, mockDynamoData } from "../../utils/testing/setupJest";
 
 let mockDynamoDataWithUUID = mockDynamoData;
 mockDynamoDataWithUUID.state = "MN";
@@ -38,14 +38,5 @@ describe("Test ETL script", () => {
     result = await scanTableForMetadata("local-mcpar-reports", true, result[0]);
 
     expect(result[1]).toBeFalsy();
-  });
-
-  test("handler", async () => {
-    mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse1);
-    mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
-
-    initialize();
-
-    let [, , results] = await scanTableForMetadata("local-mcpar-reports", true);
   });
 });
