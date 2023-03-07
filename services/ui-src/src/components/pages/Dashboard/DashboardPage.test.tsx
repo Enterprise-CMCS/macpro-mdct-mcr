@@ -12,9 +12,9 @@ import {
   mockStateRep,
   mockNoUser,
   mockStateUser,
-  mockReportContext,
+  mockMcparReportContext,
   RouterWrappedComponent,
-  mockReport,
+  mockMcparReport,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
@@ -42,20 +42,20 @@ jest.mock("react-router-dom", () => ({
 }));
 
 const mockReportContextNoReports = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   reportsByState: undefined,
 };
 
 const mockReportContextWithError = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   errorMessage: "test error",
 };
 
 const mockDashboardReportContext = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   reportsByState: [
     {
-      ...mockReport,
+      ...mockMcparReport,
       formTemplate: undefined,
       fieldData: undefined,
     },
@@ -111,11 +111,11 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Enter' button on a report row fetches the field data, then navigates to report", async () => {
-    mockReportContext.fetchReport.mockReturnValueOnce(mockReport);
+    mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
     const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
-    expect(mockReportContext.setReportSelection).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
   });
@@ -162,7 +162,7 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
   });
 
   test("Clicking 'Enter' button on a report navigates to first page of report", async () => {
-    mockReportContext.fetchReport.mockReturnValueOnce(mockReport);
+    mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
     const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
@@ -205,11 +205,11 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
     const archiveProgramButton = screen.getAllByText("Archive")[0];
     expect(archiveProgramButton).toBeVisible();
     await userEvent.click(archiveProgramButton);
-    await expect(mockReportContext.archiveReport).toHaveBeenCalledTimes(1);
+    await expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
     // once for render, once for archive
-    await expect(mockReportContext.fetchReportsByState).toHaveBeenCalledTimes(
-      2
-    );
+    await expect(
+      mockMcparReportContext.fetchReportsByState
+    ).toHaveBeenCalledTimes(2);
   });
 
   test("Help desk user cannot archive reports", async () => {
@@ -264,11 +264,11 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
     const archiveProgramButton = screen.getAllByText("Archive")[0];
     expect(archiveProgramButton).toBeVisible();
     await userEvent.click(archiveProgramButton);
-    await expect(mockReportContext.archiveReport).toHaveBeenCalledTimes(1);
+    await expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
     // once for render, once for archive
-    await expect(mockReportContext.fetchReportsByState).toHaveBeenCalledTimes(
-      2
-    );
+    await expect(
+      mockMcparReportContext.fetchReportsByState
+    ).toHaveBeenCalledTimes(2);
   });
 
   test("Help desk user cannot archive reports", async () => {

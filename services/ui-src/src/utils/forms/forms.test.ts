@@ -249,11 +249,11 @@ describe("Test Create Repeated Fields", () => {
       },
     },
   ];
-  const reportFieldData = {
+  const mcparReportFieldData = {
     reportingPeriodStartDate: "07/28/2022",
     reportingPeriodEndDate: "11/24/2022",
     stateName: "California",
-    programName: "Example Program",
+    reportName: "Example Program",
     plans: [
       {
         id: "123-456",
@@ -276,23 +276,26 @@ describe("Test Create Repeated Fields", () => {
   ];
 
   it("should return current field if not repeating", () => {
-    expect(createRepeatedFields(FieldsWithoutRepeat, reportFieldData)).toEqual(
-      FieldsWithoutRepeat
-    );
+    expect(
+      createRepeatedFields(FieldsWithoutRepeat, mcparReportFieldData)
+    ).toEqual(FieldsWithoutRepeat);
   });
 
   it("should return a flattened array if repeating but no found data", () => {
     expect(
       createRepeatedFields(
         FieldsWithRepeatButNoFoundAssociatedData,
-        reportFieldData
+        mcparReportFieldData
       )
     ).toEqual([]);
   });
 
   it("should return a nice array of found repeating fields with combined data", () => {
     expect(
-      createRepeatedFields(FieldsWithRepeatAndAssociatedData, reportFieldData)
+      createRepeatedFields(
+        FieldsWithRepeatAndAssociatedData,
+        mcparReportFieldData
+      )
     ).toEqual(combinedField);
   });
 });

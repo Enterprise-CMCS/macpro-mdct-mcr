@@ -9,8 +9,8 @@ import { DynamicField, ReportContext } from "components";
 import { useUser } from "utils";
 import {
   mockReportKeys,
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockSanctionsEntity,
   mockStateUser,
   mockQualityMeasuresEntity,
@@ -39,10 +39,10 @@ const mockHydrationPlans = [
 ];
 const mockUpdateReport = jest.fn();
 const mockedReportContext = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   updateReport: mockUpdateReport,
   report: {
-    ...mockReport,
+    ...mockMcparReport,
     fieldData: {
       plans: mockHydrationPlans,
       sanctions: [

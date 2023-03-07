@@ -9,7 +9,7 @@
   },
   "fields": [
     {
-      "id": "submissionName",
+      "id": "reportName",
       "type": "text",
       "validation": "text",
       "props": {

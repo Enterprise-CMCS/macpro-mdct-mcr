@@ -67,7 +67,7 @@ export const mockReportFieldData = {
 export const mockDynamoData = {
   ...mockReportKeys,
   reportType: "mock-type",
-  programName: "testProgram",
+  reportName: "testProgram",
   status: "Not started",
   reportingPeriodStartDate: 162515200000,
   reportingPeriodEndDate: 168515200000,
@@ -80,7 +80,7 @@ export const mockDynamoData = {
   lastAltered: 162515200000,
 };
 
-export const mockReport = {
+export const mockMcparReport = {
   ...mockReportKeys,
   metadata: {
     reportType: "mock-type",

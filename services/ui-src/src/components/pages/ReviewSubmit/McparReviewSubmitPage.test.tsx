@@ -8,8 +8,8 @@ import { ReportStatus } from "types";
 // utils
 import {
   mockLDFlags,
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -24,19 +24,19 @@ jest.mock("utils", () => ({
 
 const McparReviewSubmitPage_InProgress = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <McparReviewSubmitPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 const mockSubmittedReport = {
-  ...mockReport,
+  ...mockMcparReport,
   status: ReportStatus.SUBMITTED,
 };
 
 const mockedReportContext_Submitted = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   report: mockSubmittedReport,
 };
 
@@ -97,29 +97,29 @@ describe("Test McparReviewSubmitPage functionality", () => {
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
-    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    await expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("Success Message Generator", () => {
   it("should give the full success date if given all params", () => {
-    const programName = "test-program";
+    const reportName = "test-program";
     const submittedDate = 1663163109045;
     const submittersName = "Carol California";
     expect(
-      SuccessMessageGenerator(programName, submittedDate, submittersName)
+      SuccessMessageGenerator(reportName, submittedDate, submittersName)
     ).toBe(
-      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
+      `MCPAR report for ${reportName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
 
   it("should give a reduced version if not given all params", () => {
-    const programName = "test-program";
+    const reportName = "test-program";
     const submittedDate = undefined;
     const submittersName = "Carol California";
     expect(
-      SuccessMessageGenerator(programName, submittedDate, submittersName)
-    ).toBe(`MCPAR report for ${programName} was submitted.`);
+      SuccessMessageGenerator(reportName, submittedDate, submittersName)
+    ).toBe(`MCPAR report for ${reportName} was submitted.`);
   });
 
   it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {

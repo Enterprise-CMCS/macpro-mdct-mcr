@@ -5,8 +5,8 @@ import { axe } from "jest-axe";
 //components
 import { AddEditReportModal, ReportContext } from "components";
 import {
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockReportJson,
 } from "utils/testing/setupJest";
 
@@ -16,7 +16,7 @@ const mockFetchReportsByState = jest.fn();
 const mockCloseHandler = jest.fn();
 
 const mockedReportContext = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   createReport: mockCreateReport,
   updateReport: mockUpdateReport,
   fetchReportsByState: mockFetchReportsByState,
@@ -41,7 +41,7 @@ const modalComponentWithSelectedReport = (
   <ReportContext.Provider value={mockedReportContext}>
     <AddEditReportModal
       activeState="AB"
-      selectedReport={mockReport}
+      selectedReport={mockMcparReport}
       reportType={"MCPAR"}
       formTemplate={mockReportJson}
       modalDisclosure={{
@@ -86,8 +86,8 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
   });
 
   const fillForm = async (form: any) => {
-    const programNameField = form.querySelector("[name='programName']")!;
-    await userEvent.type(programNameField, "fake program name");
+    const reportNameField = form.querySelector("[name='reportName']")!;
+    await userEvent.type(reportNameField, "fake program name");
     const startDateField = form.querySelector(
       "[name='reportingPeriodStartDate']"
     )!;
