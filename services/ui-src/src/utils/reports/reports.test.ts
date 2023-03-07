@@ -33,17 +33,17 @@ describe("Test sortReportsOldestToNewest", () => {
       {
         ...mockMcparReport,
         createdAt: 1662568568589,
-        programName: "created-today",
+        reportName: "created-today",
       },
       {
         ...mockMcparReport,
         createdAt: 1662568556165,
-        programName: "created-yesterday",
+        reportName: "created-yesterday",
       },
       {
         ...mockMcparReport,
         createdAt: 1652568576322,
-        programName: "created-last-month",
+        reportName: "created-last-month",
       },
     ];
     const sortedReports = [

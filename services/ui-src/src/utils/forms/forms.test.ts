@@ -253,7 +253,7 @@ describe("Test Create Repeated Fields", () => {
     reportingPeriodStartDate: "07/28/2022",
     reportingPeriodEndDate: "11/24/2022",
     stateName: "California",
-    programName: "Example Program",
+    reportName: "Example Program",
     plans: [
       {
         id: "123-456",

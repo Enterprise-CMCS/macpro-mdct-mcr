@@ -171,7 +171,7 @@ interface ReadyToSubmitProps {
 }
 
 export const SuccessMessageGenerator = (
-  programName: string,
+  reportName: string,
   submissionDate?: number,
   submittedBy?: string
 ) => {
@@ -179,9 +179,9 @@ export const SuccessMessageGenerator = (
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
-    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}.`;
+    return `MCPAR report for ${reportName} ${submittedDate} ${submittersName}.`;
   }
-  return `MCPAR report for ${programName} was submitted.`;
+  return `MCPAR report for ${reportName} was submitted.`;
 };
 
 export const SuccessMessage = ({

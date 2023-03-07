@@ -86,8 +86,8 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
   });
 
   const fillForm = async (form: any) => {
-    const programNameField = form.querySelector("[name='programName']")!;
-    await userEvent.type(programNameField, "fake program name");
+    const reportNameField = form.querySelector("[name='reportName']")!;
+    await userEvent.type(reportNameField, "fake program name");
     const startDateField = form.querySelector(
       "[name='reportingPeriodStartDate']"
     )!;

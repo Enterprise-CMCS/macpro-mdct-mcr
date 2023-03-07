@@ -2,7 +2,7 @@ import { fetchReport } from "./fetch";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import { mockReport } from "../../utils/testing/setupJest";
+import { mockMcparReport } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 import { lockReport } from "./lock";
 
@@ -27,13 +27,13 @@ const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { reportType: "mock-type", state: "AB", id: "testReportId" },
-  body: JSON.stringify(mockReport),
+  body: JSON.stringify(mockMcparReport),
 };
 
 const lockEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
-    ...mockReport,
+    ...mockMcparReport,
     locked: true,
   }),
 };
@@ -57,7 +57,7 @@ describe("Test lockReport method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(mockReport),
+      body: JSON.stringify(mockMcparReport),
     });
     const res: any = await lockReport(lockEvent, null);
     const body = JSON.parse(res.body);

@@ -9,7 +9,7 @@
   },
   "fields": [
     {
-      "id": "programName",
+      "id": "reportName",
       "type": "text",
       "validation": "text",
       "props": {

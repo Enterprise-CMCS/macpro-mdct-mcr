@@ -2,7 +2,7 @@
   "type": "MCPAR",
   "name": "MCPAR Report Submission Form",
   "basePath": "/mcpar",
-  "version": "MCPAR_2023-01-19",
+  "version": "MCPAR_2023-03-07",
   "adminDisabled": true,
   "routes": [
     {
@@ -119,7 +119,7 @@
                 }
               },
               {
-                "id": "programName",
+                "id": "reportName",
                 "type": "text",
                 "validation": "text",
                 "props": {

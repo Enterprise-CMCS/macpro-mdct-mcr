@@ -103,23 +103,23 @@ describe("Test McparReviewSubmitPage functionality", () => {
 
 describe("Success Message Generator", () => {
   it("should give the full success date if given all params", () => {
-    const programName = "test-program";
+    const reportName = "test-program";
     const submittedDate = 1663163109045;
     const submittersName = "Carol California";
     expect(
-      SuccessMessageGenerator(programName, submittedDate, submittersName)
+      SuccessMessageGenerator(reportName, submittedDate, submittersName)
     ).toBe(
-      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
+      `MCPAR report for ${reportName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
 
   it("should give a reduced version if not given all params", () => {
-    const programName = "test-program";
+    const reportName = "test-program";
     const submittedDate = undefined;
     const submittersName = "Carol California";
     expect(
-      SuccessMessageGenerator(programName, submittedDate, submittersName)
-    ).toBe(`MCPAR report for ${programName} was submitted.`);
+      SuccessMessageGenerator(reportName, submittedDate, submittersName)
+    ).toBe(`MCPAR report for ${reportName} was submitted.`);
   });
 
   it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {

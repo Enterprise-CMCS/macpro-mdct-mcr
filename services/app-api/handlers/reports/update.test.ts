@@ -72,7 +72,7 @@ const invalidFieldDataSubmissionEvent: APIGatewayProxyEvent = {
 
 const updateEventWithInvalidData: APIGatewayProxyEvent = {
   ...mockProxyEvent,
-  body: `{"programName":{}}`,
+  body: `{"reportName":{}}`,
 };
 
 describe("Test updateReport and archiveReport unauthorized calls", () => {
