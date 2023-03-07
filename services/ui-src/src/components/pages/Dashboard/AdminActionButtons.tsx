@@ -1,5 +1,5 @@
 // components
-import { Button } from "@chakra-ui/react";
+import { Button, Td } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
 import { AnyObject, ReportMetadataShape } from "types";
@@ -10,40 +10,43 @@ export const AdminActionButtons = ({
   reportId,
   archiveReport,
   archiving,
-  locking,
-  lockReport,
+  unlocking,
+  unlockReport,
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
     <>
       {reportType === "MLR" && (
+        <Td>
+          <Button
+            variant="link"
+            disabled={report.locked}
+            sx={sxOverride.adminActionButton}
+            onClick={() => unlockReport!(report)}
+          >
+            {unlocking && reportId === report.id ? (
+              <Spinner size="small" />
+            ) : (
+              "Unlock"
+            )}
+          </Button>
+        </Td>
+      )}
+      <Td>
         <Button
           variant="link"
           sx={sxOverride.adminActionButton}
-          onClick={() => lockReport!(report)}
+          onClick={() => archiveReport(report)}
         >
-          {locking && reportId === report.id ? (
+          {archiving && reportId === report.id ? (
             <Spinner size="small" />
-          ) : report?.locked ? (
-            "Unlock"
+          ) : report?.archived ? (
+            "Unarchive"
           ) : (
-            "Lock"
+            "Archive"
           )}
         </Button>
-      )}
-      <Button
-        variant="link"
-        sx={sxOverride.adminActionButton}
-        onClick={() => archiveReport(report)}
-      >
-        {archiving && reportId === report.id ? (
-          <Spinner size="small" />
-        ) : report?.archived ? (
-          "Unarchive"
-        ) : (
-          "Archive"
-        )}
-      </Button>
+      </Td>
     </>
   );
 };
@@ -54,7 +57,7 @@ interface AdminActionButtonProps {
   reportId: string | undefined;
   archiveReport: Function;
   archiving: boolean;
-  locking?: boolean;
-  lockReport?: Function;
+  unlocking?: boolean;
+  unlockReport?: Function;
   sxOverride: AnyObject;
 }
