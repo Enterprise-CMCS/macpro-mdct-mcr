@@ -9,7 +9,7 @@ When("I submit a new MLR program", () => {
   const programName = "automated test - " + today.toISOString();
   cy.visit(`/mlr`);
   cy.findByRole("button", { name: "Add new MLR submission" }).click();
-  cy.get('input[id="submissionName"]').type(programName);
+  cy.get('input[id="reportName"]').type(programName);
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
