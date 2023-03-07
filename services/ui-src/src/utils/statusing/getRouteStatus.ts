@@ -27,12 +27,12 @@ export const getRouteStatus = (report: ReportShape): ReportPageProgress[] => {
 
   /**
    * Recursively goes through every route and its child to find out the completion of
-   *  each route in a report and create a map
+   * each page in a report and returns the entire forms progress
    * @param {ReportRoute[]} routes
    * @returns {ReportPageProgress[]}
    */
   const createStatusMap = (routes: ReportRoute[]): ReportPageProgress[] => {
-    const list = [];
+    const overallReportProgress = [];
     const routeLength = routes.length;
     for (let i = 0; i < routeLength; i++) {
       const route = routes[i];
@@ -42,17 +42,17 @@ export const getRouteStatus = (report: ReportShape): ReportPageProgress[] => {
           path: route.path,
           children: createStatusMap(route.children),
         };
-        list.push(parentRoute);
+        overallReportProgress.push(parentRoute);
       } else {
         const routeProgress: ReportPageProgress = {
           name: route.name,
           path: route.path,
           status: flattenedStatus[route.path],
         };
-        list.push(routeProgress);
+        overallReportProgress.push(routeProgress);
       }
     }
-    return list;
+    return overallReportProgress;
   };
 
   return createStatusMap(validRoutes);
