@@ -96,10 +96,10 @@ When("I submit a new MCPAR program", () => {
   const today = new Date();
   const lastYear = new Date();
   lastYear.setFullYear(today.getFullYear() - 1);
-  const reportName = "automated test - " + today.toISOString();
+  const programName = "automated test - " + today.toISOString();
   cy.visit(`/mcpar`);
   cy.findByRole("button", { name: "Add managed care program" }).click();
-  cy.findByLabelText("Program name").type(reportName);
+  cy.findByLabelText("Program name").type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -111,7 +111,7 @@ When("I submit a new MCPAR program", () => {
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(reportName)
+  cy.findByText(programName)
     .parent()
     .find('button:contains("Enter")')
     .focus()

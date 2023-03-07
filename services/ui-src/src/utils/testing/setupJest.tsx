@@ -575,7 +575,7 @@ export const mockMcparReport = {
   ...mockReportKeys,
   reportType: "mock-type",
   formTemplate: mockReportJson,
-  reportName: "testProgram",
+  programName: "testProgram",
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,

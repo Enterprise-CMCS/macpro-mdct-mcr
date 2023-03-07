@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const metadataValidationSchema = yup.object().shape({
-  reportName: yup.string(),
+  programName: yup.string(),
   reportType: yup.string(),
   status: yup.string(),
   reportingPeriodStartDate: yup.number(),

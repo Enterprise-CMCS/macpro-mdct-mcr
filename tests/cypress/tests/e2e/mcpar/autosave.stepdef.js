@@ -1,7 +1,7 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-Then("there is an {string} program", (reportName) => {
-  cy.contains(reportName, { matchCase: true }).should("be.visible");
+Then("there is an {string} program", (programName) => {
+  cy.contains(programName, { matchCase: true }).should("be.visible");
 });
 
 When("I leave and come back", () => {

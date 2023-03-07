@@ -44,7 +44,7 @@ export const AddEditReportModal = ({
 
     // prepare MCPAR payload
     if (reportType === "MCPAR") {
-      const reportName = formData["reportName"];
+      const programName = formData["programName"];
       const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
       const combinedData = formData["combinedData"] || false;
       const reportingPeriodStartDate = convertDateEtToUtc(
@@ -56,7 +56,7 @@ export const AddEditReportModal = ({
 
       dataToWrite = {
         metadata: {
-          reportName,
+          programName,
           reportingPeriodStartDate,
           reportingPeriodEndDate,
           dueDate,
@@ -68,21 +68,21 @@ export const AddEditReportModal = ({
             reportingPeriodStartDate
           ),
           reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
-          reportName,
+          programName,
         },
         formTemplate,
       };
     }
     // prepare MLR payload
     else {
-      const reportName = formData["reportName"];
+      const submissionName = formData["submissionName"];
       dataToWrite = {
         metadata: {
-          reportName,
+          submissionName,
           lastAlteredBy: full_name,
         },
         fieldData: {
-          reportName,
+          submissionName,
         },
         formTemplate,
       };

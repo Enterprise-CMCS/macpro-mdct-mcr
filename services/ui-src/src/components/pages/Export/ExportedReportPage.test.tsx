@@ -9,7 +9,7 @@ const mockContext = {
     lastAltered: 1712505600000,
     lastAlteredBy: "Name",
     status: "In Progress",
-    reportName: "test",
+    programName: "test",
     formTemplate: {
       routes: [
         {
@@ -31,7 +31,7 @@ const mockContextCombinedData = {
     lastAltered: 1712505600000,
     lastAlteredBy: "Name",
     status: "In Progress",
-    reportName: "test",
+    programName: "test",
     combinedData: true,
     formTemplate: {
       routes: [

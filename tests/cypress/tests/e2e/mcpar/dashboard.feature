@@ -10,7 +10,7 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
         Scenario Outline: State users can create programs
             When I click the "Add managed care program" button
             And these form elements are filled:
-                | reportName               | text           | <title>        |
+                | programName              | text           | <title>        |
                 | reportingPeriodStartDate | text           | <startDate>    |
                 | reportingPeriodEndDate   | text           | <endDate>      |
                 | combinedData             | singleCheckbox | <combinedData> |
@@ -25,13 +25,13 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
         Scenario Outline: State users can Edit programs
             Given I click the "Edit Report" button
             And these form elements are prefilled:
-                | reportName               | text           | Test Program 2 |
+                | programName              | text           | Test Program 2 |
                 | reportingPeriodStartDate | text           | 01/01/2022     |
                 | reportingPeriodEndDate   | text           | 12/21/2024     |
                 | combinedData             | singleCheckbox | false          |
 
             When these form elements are edited:
-                | reportName               | text           | <title>        |
+                | programName              | text           | <title>        |
                 | reportingPeriodStartDate | text           | <startDate>    |
                 | reportingPeriodEndDate   | text           | <endDate>      |
                 | combinedData             | singleCheckbox | <combinedData> |
