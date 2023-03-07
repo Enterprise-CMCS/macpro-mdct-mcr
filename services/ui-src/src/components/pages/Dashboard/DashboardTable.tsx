@@ -37,7 +37,7 @@ export const DashboardTable = ({
           <Td></Td>
         )}
         {/* Report Name */}
-        <Td sx={sxOverride.reportNameText}>{report.reportName}</Td>
+        <Td sx={sxOverride.reportNameText}>{report.programName}</Td>
         {/* Date Fields */}
         <DateFields report={report} reportType={reportType} />
         {/* Last Altered By */}
