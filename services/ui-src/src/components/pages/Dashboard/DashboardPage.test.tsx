@@ -178,7 +178,7 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
   });
 
   test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
-    const addReportButton = screen.getAllByAltText("Edit Program")[0];
+    const addReportButton = screen.getAllByAltText("Edit Report")[0];
     expect(addReportButton).toBeVisible();
     await userEvent.click(addReportButton);
     await expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
