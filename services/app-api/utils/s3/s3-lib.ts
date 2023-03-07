@@ -28,7 +28,7 @@ const s3Client = createS3Client();
 export default {
   put: async (params: S3Put) => {
     return new Promise<void>((resolve, reject) => {
-      ss3Client.putObject(params, function (err: any, result: any) {
+      s3Client.putObject(params, function (err: any, result: any) {
         if (err) {
           reject(err);
         }
