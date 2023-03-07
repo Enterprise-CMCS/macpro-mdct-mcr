@@ -1,6 +1,6 @@
 // components
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { AdminActionButtons } from "./AdminActionButtons";
+import { Spinner } from "@cmsgov/design-system";
 // utils
 import { AnyObject, ReportMetadataShape } from "types";
 import { convertDateUtcToEt } from "utils";
@@ -82,6 +82,7 @@ export const MobileDashboardTable = ({
                 archiving={archiving}
                 unlockReport={unlockReport}
                 unlocking={unlocking}
+                mobile={true}
                 sxOverride={sxOverride}
               />
             )}
@@ -127,6 +128,62 @@ const DateFields = ({ report, reportType }: DateFieldProps) => {
 interface DateFieldProps {
   report: ReportMetadataShape;
   reportType: string;
+}
+
+const AdminActionButtons = ({
+  report,
+  reportType,
+  reportId,
+  archiveReport,
+  archiving,
+  unlocking,
+  unlockReport,
+  sxOverride,
+}: AdminActionButtonProps) => {
+  return (
+    <>
+      {reportType === "MLR" && (
+        <Button
+          variant="link"
+          disabled={report.locked}
+          sx={sxOverride.adminActionButton}
+          onClick={() => unlockReport!(report)}
+        >
+          {unlocking && reportId === report.id ? (
+            <Spinner size="small" />
+          ) : (
+            "Unlock"
+          )}
+        </Button>
+      )}
+
+      <Button
+        variant="link"
+        sx={sxOverride.adminActionButton}
+        onClick={() => archiveReport(report)}
+      >
+        {archiving && reportId === report.id ? (
+          <Spinner size="small" />
+        ) : report?.archived ? (
+          "Unarchive"
+        ) : (
+          "Archive"
+        )}
+      </Button>
+    </>
+  );
+};
+
+interface AdminActionButtonProps {
+  report: ReportMetadataShape;
+  reportType: string;
+  reportId: string | undefined;
+  archiveReport: Function;
+  archiving: boolean;
+  unlocking?: boolean;
+  unlockReport?: Function;
+  mobile?: boolean;
+  sxOverride: AnyObject;
 }
 
 const sx = {
