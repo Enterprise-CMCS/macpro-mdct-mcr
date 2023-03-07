@@ -25,6 +25,7 @@ export { EntityCardBottomSection } from "./cards/EntityCard/EntityCardBottomSect
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
+export { AdminActionButtons } from "./pages/Dashboard/AdminActionButtons";
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";
 export { MobileDashboardTable } from "./pages/Dashboard/MobileDashboardTable";
