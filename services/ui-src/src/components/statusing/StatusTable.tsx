@@ -1,14 +1,15 @@
 import { Box, Table, Tbody, Td, Tr } from "@chakra-ui/react";
 import { ReportContext, TableRow } from "components";
 import { Fragment, useContext } from "react";
+import { ReportPageProgress } from "types";
 import { getRouteStatus } from "utils";
 
-const ChildRow = ({ route }: any) => {
+const ChildRow = ({ name, path, children, status }: ReportPageProgress) => {
   return (
-    <Fragment key={route.path}>
-      <TableRow {...route} type="parent" />
-      {route.children?.map((child: any) => (
-        <ChildRow route={child} />
+    <Fragment key={name}>
+      <TableRow name={name} path={path} children={children} status={status} />
+      {children?.map((child) => (
+        <ChildRow {...child} />
       ))}
     </Fragment>
   );
@@ -25,8 +26,8 @@ export const StatusTable = () => {
             <Td>Status</Td>
             <Td></Td>
           </Tr>
-          {getRouteStatus(report).map((route: any) => {
-            return <ChildRow route={route} />;
+          {getRouteStatus(report).map((page: ReportPageProgress) => {
+            return <ChildRow {...page} />;
           })}
         </Tbody>
       </Table>
