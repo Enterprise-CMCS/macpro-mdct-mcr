@@ -29,7 +29,6 @@ export const unlockReport = handler(async (event, context) => {
   // if current report exists, parse for locked status
   if (getCurrentReport?.body) {
     const currentReport = JSON.parse(getCurrentReport.body);
-    const currentLockedStatus = currentReport?.locked;
     const reportType = currentReport?.reportType;
 
     const reportTable = reportTables[reportType as keyof typeof reportTables];
@@ -43,7 +42,7 @@ export const unlockReport = handler(async (event, context) => {
       TableName: reportTable,
       Item: {
         ...currentReport,
-        locked: !currentLockedStatus,
+        locked: false,
       },
     };
 

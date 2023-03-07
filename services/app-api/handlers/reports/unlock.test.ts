@@ -34,7 +34,6 @@ const unlockEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     ...mockMcparReport,
-    locked: true,
   }),
 };
 
