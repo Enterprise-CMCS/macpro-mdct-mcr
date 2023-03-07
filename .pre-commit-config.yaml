@@ -27,3 +27,4 @@ repos:
         args:
           - --exclude-files
           - services/uploads/src/test.json
+          - services/app-api/utils/testing/fixtures/*
