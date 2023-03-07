@@ -189,6 +189,13 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
+export interface ReportPageProgress {
+  name: string;
+  path: string;
+  children?: ReportPageProgress[];
+  status?: boolean;
+}
+
 // FORM & FIELD STRUCTURE
 
 export declare type EntityType =

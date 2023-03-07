@@ -2,14 +2,14 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle.png";
 import { useNavigate } from "react-router-dom";
-import { ReportRouteBase } from "types";
+import { ReportPageProgress } from "types";
 
-interface TableRowProps extends ReportRouteBase {
-  children?: any[];
-  status?: boolean;
-}
-
-export const TableRow = ({ name, children, status, path }: TableRowProps) => {
+export const TableRow = ({
+  name,
+  children,
+  status,
+  path,
+}: ReportPageProgress) => {
   const navigate = useNavigate();
 
   // This determines the type of row based on the number of slashes in the path
