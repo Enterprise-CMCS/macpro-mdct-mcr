@@ -159,9 +159,7 @@ export interface ReportMetadataShape extends ReportKeys {
 export interface ReportShape extends ReportMetadataShape {
   formTemplate: ReportJson;
   fieldData: AnyObject;
-  completionStatus?: {
-    [key: string]: boolean | CompletionData;
-  };
+  completionStatus?: CompletionData;
 }
 export interface CompletionData {
   [key: string]: boolean | CompletionData;
