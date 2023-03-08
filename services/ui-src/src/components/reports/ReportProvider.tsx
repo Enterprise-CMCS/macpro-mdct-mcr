@@ -114,7 +114,6 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await unlockReportRequest(reportKeys);
       setReport(result);
-      setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
