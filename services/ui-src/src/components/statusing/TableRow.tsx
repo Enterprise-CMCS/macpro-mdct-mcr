@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
+// components
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
+// types
+import { ReportPageProgress } from "types";
+// assets
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle.png";
-import { useNavigate } from "react-router-dom";
-import { ReportPageProgress } from "types";
 
 export const TableRow = ({
   name,
