@@ -35,6 +35,7 @@ export const AddEditReportModal = ({
   const modalFormJson = modalFormJsonMap[reportType]!;
   const form: FormJson = modalFormJson;
 
+  // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName = formData["programName"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
@@ -46,7 +47,7 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
 
-    const dataToWrite = {
+    return {
       metadata: {
         programName,
         reportingPeriodStartDate,
@@ -62,8 +63,21 @@ export const AddEditReportModal = ({
       },
       formTemplate,
     };
+  };
 
-    return dataToWrite;
+  // MLR report payload
+  const prepareMlrPayload = (formData: any) => {
+    const programName = formData["programName"];
+    return {
+      metadata: {
+        programName,
+        lastAlteredBy: full_name,
+      },
+      fieldData: {
+        programName,
+      },
+      formTemplate,
+    };
   };
 
   const writeReport = async (formData: any) => {
@@ -78,17 +92,7 @@ export const AddEditReportModal = ({
     }
     // prepare MLR payload
     else {
-      const programName = formData["programName"];
-      dataToWrite = {
-        metadata: {
-          programName,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          programName,
-        },
-        formTemplate,
-      };
+      dataToWrite = prepareMlrPayload(formData);
     }
 
     // if an existing program was selected, use that report id
