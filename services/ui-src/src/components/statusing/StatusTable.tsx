@@ -1,7 +1,10 @@
+import { Fragment, useContext } from "react";
+// components
 import { Box, Table, Tbody, Td, Tr } from "@chakra-ui/react";
 import { ReportContext, TableRow } from "components";
-import { Fragment, useContext } from "react";
+// types
 import { ReportPageProgress } from "types";
+// utils
 import { getRouteStatus } from "utils";
 
 const ChildRow = ({ name, path, children, status }: ReportPageProgress) => {
