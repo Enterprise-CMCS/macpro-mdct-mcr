@@ -1,0 +1,94 @@
+import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
+// components
+import { ReportContext, StatusTable } from "components";
+// types
+import { ReportStatus } from "types";
+// utils
+import {
+  mockReport,
+  mockReportContext,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
+
+const mockInProgressReport = {
+  ...mockReport,
+  status: ReportStatus.IN_PROGRESS,
+};
+
+const mockedReportContext_InProgress = {
+  ...mockReportContext,
+  report: mockInProgressReport,
+};
+
+const McparReviewSubmitPage_InProgress = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockedReportContext_InProgress}>
+      <StatusTable />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const mockedReportContext_NoReport = {
+  ...mockReportContext,
+  report: undefined,
+};
+
+const McparReviewSubmitPage_EmptyReportContext = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockedReportContext_NoReport}>
+      <StatusTable />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+describe("Status Table Functionality", () => {
+  test("should not display anything if not given a report", () => {
+    render(McparReviewSubmitPage_EmptyReportContext);
+    expect(screen.queryByText("Section")).not.toBeInTheDocument();
+    expect(screen.queryByText("Status")).not.toBeInTheDocument();
+  });
+
+  test("should show the correct headers when given a report", () => {
+    render(McparReviewSubmitPage_InProgress);
+    expect(screen.getByText("Section")).toBeVisible();
+    expect(screen.getByText("Status")).toBeVisible();
+  });
+
+  test("Should correctly display errors on the page", () => {
+    render(McparReviewSubmitPage_InProgress);
+    const unfilledPageErrorImg = document.querySelectorAll(
+      "img[alt='Error notification']"
+    );
+    expect(unfilledPageErrorImg).toHaveLength(1);
+    expect(unfilledPageErrorImg[0]).toBeVisible();
+  });
+
+  test("should show the correct rows on the page", () => {
+    render(McparReviewSubmitPage_InProgress);
+    expect(screen.getByText("mock-route-1")).toBeVisible();
+
+    expect(screen.getByText("mock-route-2")).toBeVisible();
+    expect(screen.getByText("mock-route-2a")).toBeVisible();
+    const unfilledPageErrorImg = document.querySelectorAll(
+      "img[alt='Error notification']"
+    );
+    expect(unfilledPageErrorImg).toHaveLength(1);
+    expect(unfilledPageErrorImg[0]).toBeVisible();
+    expect(screen.getByText("mock-route-2b")).toBeVisible();
+
+    // Name value is the img's alt tag + the text inside the button
+    const editButtons = screen.getAllByRole("button", {
+      name: "Edit Program Edit",
+    });
+    expect(editButtons).toHaveLength(3);
+  });
+});
+
+describe("Status Table Accessibility", () => {
+  it("Should not have basic accessibility issues when displaying the table", async () => {
+    const { container } = render(McparReviewSubmitPage_InProgress);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+});

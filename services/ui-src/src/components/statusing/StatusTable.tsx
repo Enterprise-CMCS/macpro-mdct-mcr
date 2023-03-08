@@ -9,7 +9,7 @@ const ChildRow = ({ name, path, children, status }: ReportPageProgress) => {
     <Fragment key={name}>
       <TableRow name={name} path={path} children={children} status={status} />
       {children?.map((child) => (
-        <ChildRow {...child} />
+        <ChildRow key={child.path} {...child} />
       ))}
     </Fragment>
   );
@@ -27,7 +27,7 @@ export const StatusTable = () => {
             <Td></Td>
           </Tr>
           {getRouteStatus(report).map((page: ReportPageProgress) => {
-            return <ChildRow {...page} />;
+            return <ChildRow key={page.path} {...page} />;
           })}
         </Tbody>
       </Table>
