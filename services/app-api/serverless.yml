@@ -233,11 +233,11 @@ functions:
               paths:
                 state: true
                 id: true
-  unlockReport:
-    handler: handlers/reports/unlock.unlockReport
+  releaseReport:
+    handler: handlers/reports/release.releaseReport
     events:
       - http:
-          path: reports/unlock/{reportType}/{state}/{id}
+          path: reports/release/{reportType}/{state}/{id}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
