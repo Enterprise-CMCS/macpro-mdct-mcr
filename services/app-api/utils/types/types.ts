@@ -174,11 +174,12 @@ export interface MCPARReportMetadata extends ReportMetadata {
  * @param report any report type
  * @returns
  */
-export function isMLRReport(report: AnyObject): report is MLRReportMetadata {
+export function isMLRReportMetadata(
+  report: unknown
+): report is MLRReportMetadata {
   return (
-    (report as MLRReportMetadata).reportType !== "MLR" &&
+    (report as MLRReportMetadata).reportType === "MLR" &&
     (report as MLRReportMetadata).locked !== undefined &&
-    (report as MLRReportMetadata).reportType !== undefined &&
     (report as MLRReportMetadata).submissionCount !== undefined &&
     (report as MLRReportMetadata).previousRevisions !== undefined
   );
