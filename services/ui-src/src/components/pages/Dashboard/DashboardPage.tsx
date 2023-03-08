@@ -392,6 +392,9 @@ const sxChildStyles = {
   },
   adminActionCell: {
     width: "2.5rem",
+    ".tablet &, .mobile &": {
+      display: "flex",
+    },
   },
   adminActionButton: {
     minWidth: "4.5rem",

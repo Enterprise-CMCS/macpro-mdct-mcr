@@ -140,7 +140,7 @@ const AdminActionButtons = ({
         <Td>
           <Button
             variant="link"
-            disabled={!report.locked}
+            disabled={report.locked === false}
             sx={sxOverride.adminActionButton}
             onClick={() => unlockReport!(report)}
           >

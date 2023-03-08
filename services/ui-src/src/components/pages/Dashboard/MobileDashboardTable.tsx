@@ -82,7 +82,6 @@ export const MobileDashboardTable = ({
                 archiving={archiving}
                 unlockReport={unlockReport}
                 unlocking={unlocking}
-                mobile={true}
                 sxOverride={sxOverride}
               />
             )}
@@ -145,7 +144,7 @@ const AdminActionButtons = ({
       {reportType === "MLR" && (
         <Button
           variant="link"
-          disabled={report.locked}
+          disabled={report.locked === false}
           sx={sxOverride.adminActionButton}
           onClick={() => unlockReport!(report)}
         >
@@ -182,7 +181,6 @@ interface AdminActionButtonProps {
   archiving: boolean;
   unlocking?: boolean;
   unlockReport?: Function;
-  mobile?: boolean;
   sxOverride: AnyObject;
 }
 
