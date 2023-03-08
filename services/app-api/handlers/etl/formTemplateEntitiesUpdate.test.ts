@@ -2,9 +2,14 @@ import {
   getFormTemplateFromS3,
   initialize,
   scanTableForMetadata,
-  updateFormTemplate, writeFormTemplateToS3,
+  updateFormTemplate,
+  writeFormTemplateToS3,
 } from "./formTemplateEntitiesUpdate";
-import {mockDocumentClient, mockDynamoData, mockReportJson} from "../../utils/testing/setupJest";
+import {
+  mockDocumentClient,
+  mockDynamoData,
+  mockReportJson,
+} from "../../utils/testing/setupJest";
 
 const ENTITIES_UPDATE_DATA = {
   entities: {
@@ -24,9 +29,6 @@ let mockDynamoData2 = mockDynamoData;
 mockDynamoData2.state = "MN";
 mockDynamoData2.id = "34234234534";
 
-let mockReportJsonWithId: any = mockReportJson
-mockReportJsonWithId.id = "123423452345435"
-
 const mockMetaDataResponse1 = {
   LastEvaluatedKey: {
     id: mockDynamoDataWithUUID.id,
@@ -39,8 +41,13 @@ const mockMetaDataResponse2 = {
   Items: [mockDynamoData2],
 };
 
-describe("Test Form Template Entities Update", () => {
+let mockReportJsonWithId: any = mockReportJson;
+mockReportJsonWithId.id = "123423452345435";
 
+let mockReportJsonWithEntities: any = mockReportJsonWithId
+mockReportJsonWithEntities.entities = ENTITIES_UPDATE_DATA
+
+describe("Test Form Template Entities Update", () => {
   test("Test Retrieve Metadata", async () => {
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse1);
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
@@ -57,26 +64,25 @@ describe("Test Form Template Entities Update", () => {
   });
 
   test("Test Retrieve Form Template", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson)
+    mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson);
     const result = await getFormTemplateFromS3(
       mockMetaDataResponse1.Items[0].formTemplateId,
-      mockMetaDataResponse1.Items[0].state,
+      mockMetaDataResponse1.Items[0].state
     );
 
-    expect(result).toMatchObject(mockReportJson)
+    expect(result).toMatchObject(mockReportJson);
   });
 
   test("Test Update Form Template", async () => {
-    const result = updateFormTemplate(mockReportJson)
-    expect(result.entities).toMatchObject(ENTITIES_UPDATE_DATA.entities)
+    const result = updateFormTemplate(mockReportJson);
+    expect(result.entities).toMatchObject(ENTITIES_UPDATE_DATA.entities);
   });
 
   test("Test Write Updated Form Template To S3", async () => {
     try {
-      await writeFormTemplateToS3(mockReportJsonWithId)
-    }
-    catch (e) {
-      expect(e).toBeFalsy()
+      await writeFormTemplateToS3(mockReportJsonWithId);
+    } catch (e) {
+      expect(e).toBeFalsy();
     }
   });
 
@@ -91,34 +97,13 @@ describe("Test Form Template Entities Update", () => {
   });
 
   test("Test No Matching Template", async () => {
-    // const result = getFormTemplateFromS3(
-    //   "fakeId",
-    //   "MN",
-    // );
+    let result = getFormTemplateFromS3("fakeId", "MN");
 
-    // expect(result).toThrowError();
-    // expect(async () => {
-    //   await getFormTemplateFromS3(
-    //     "fakeId",
-    //     "MN",
-    //   );
-    // }).toThrowError();
-
-
-    // expect(() => {
-    //   getFormTemplateFromS3(
-    //     'fakeId', 'MN'
-    //   )
-    // }).toThrow();
-
-    await expect( () => {
-      getFormTemplateFromS3(
-        'fakeId', 'MN'
-      );
-    }).rejects.toThrow()
+    await expect(result).rejects.toBe("Invalid Test Key");
   });
 
   test("Test Entities Already Added", async () => {
-
+    const result = updateFormTemplate(mockReportJsonWithEntities);
+    expect(result).toMatchObject(mockReportJsonWithEntities);
   });
 });

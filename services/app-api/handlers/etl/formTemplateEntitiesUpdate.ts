@@ -58,7 +58,7 @@ export const transform = async (
         const updatedFormTemplate = await updateFormTemplate(formTemplate);
 
         console.log({ entities: updatedFormTemplate.entities });
-        await writeFormTemplateToS3(updatedFormTemplate)
+        await writeFormTemplateToS3(updatedFormTemplate);
       }
     } catch (err) {
       console.error(`Database scan failed for the table ${TABLE_NAME}
@@ -121,12 +121,6 @@ export const getFormTemplateFromS3 = async (
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   return (await s3Lib.get(formTemplateParams)) as AnyObject;
-  // }
-  // catch (err) {
-  //     console.error(`Could not find template with ID ${formTemplateId}.
-  //                    Error: ${err}`);
-  //     throw err;
-  // }
 };
 
 export const updateFormTemplate = (formTemplate: any) => {
@@ -137,7 +131,6 @@ export const updateFormTemplate = (formTemplate: any) => {
 };
 
 export const writeFormTemplateToS3 = async (formTemplate: any) => {
-
   const formTemplateParams: S3Put = {
     Bucket: BUCKET_NAME,
     Key: `${buckets.FORM_TEMPLATE}/${formTemplate.state}/${formTemplate.id}.json`,
@@ -145,7 +138,7 @@ export const writeFormTemplateToS3 = async (formTemplate: any) => {
     ContentType: "application/json",
   };
   const result = await s3Lib.put(formTemplateParams);
-  console.log("Updated form template ", formTemplate.id, " | ", result)
+  console.log("Updated form template ", formTemplate.id, " | ", result);
 
-  return result
-}
+  return result;
+};
