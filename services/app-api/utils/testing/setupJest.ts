@@ -31,6 +31,9 @@ jest.mock("aws-sdk", () => {
             callback(undefined, { Body: JSON.stringify(mockReportJson) });
           else callback("Invalid Test Key");
         }),
+        copyObject: jest.fn().mockImplementation((_params, callback) => {
+          callback(undefined, { ETag: '"mockedEtag"' });
+        }),
       };
     }),
     Credentials: jest.fn().mockImplementation(() => {
