@@ -35,6 +35,37 @@ export const AddEditReportModal = ({
   const modalFormJson = modalFormJsonMap[reportType]!;
   const form: FormJson = modalFormJson;
 
+  const prepareMcparPayload = (formData: any) => {
+    const programName = formData["programName"];
+    const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
+    const combinedData = formData["combinedData"] || false;
+    const reportingPeriodStartDate = convertDateEtToUtc(
+      formData["reportingPeriodStartDate"]
+    );
+    const reportingPeriodEndDate = convertDateEtToUtc(
+      formData["reportingPeriodEndDate"]
+    );
+
+    const dataToWrite = {
+      metadata: {
+        programName,
+        reportingPeriodStartDate,
+        reportingPeriodEndDate,
+        dueDate,
+        combinedData,
+        lastAlteredBy: full_name,
+      },
+      fieldData: {
+        reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
+        reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
+        programName,
+      },
+      formTemplate,
+    };
+
+    return dataToWrite;
+  };
+
   const writeReport = async (formData: any) => {
     setSubmitting(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
@@ -42,36 +73,8 @@ export const AddEditReportModal = ({
 
     let dataToWrite;
 
-    // prepare MCPAR payload
     if (reportType === "MCPAR") {
-      const programName = formData["programName"];
-      const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
-      const combinedData = formData["combinedData"] || false;
-      const reportingPeriodStartDate = convertDateEtToUtc(
-        formData["reportingPeriodStartDate"]
-      );
-      const reportingPeriodEndDate = convertDateEtToUtc(
-        formData["reportingPeriodEndDate"]
-      );
-
-      dataToWrite = {
-        metadata: {
-          programName,
-          reportingPeriodStartDate,
-          reportingPeriodEndDate,
-          dueDate,
-          combinedData,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          reportingPeriodStartDate: convertDateUtcToEt(
-            reportingPeriodStartDate
-          ),
-          reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
-          programName,
-        },
-        formTemplate,
-      };
+      dataToWrite = prepareMcparPayload(formData);
     }
     // prepare MLR payload
     else {
