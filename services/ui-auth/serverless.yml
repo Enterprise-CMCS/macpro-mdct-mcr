@@ -44,10 +44,12 @@ custom:
   sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress, ssm:/configuration/default/sesSourceEmailAddress, ""}
   attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
   api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
-  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/okta_metadata_url, ""}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
   bootstrapUsersEnabled: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/enabled, ssm:/configuration/default/cognito/bootstrapUsers/enabled, ""}
   bootstrapUsersPassword: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/password, ssm:/configuration/default/cognito/bootstrapUsers/password, ""}
+  okta_oidc_client_id: ${ssm:/configuration/${self:custom.stage}/okta_client_id, ssm:/configuration/default/okta_client_id, ""}
+  okta_oidc_client_secret: ${ssm:/configuration/${self:custom.stage}/okta_client_secret,ssm:/configuration/default/okta_client_secret, ""}
+  okta_oidc_issuer: ${ssm:/configuration/${self:custom.stage}/oidc_issuer,ssm:/configuration/default/oidc_issuer, ""}
   scripts:
     hooks:
       deploy:finalize: |
@@ -71,11 +73,19 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.sesSourceEmailAddress}
-    BackWithOkta:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.okta_metadata_url}
+    BackWithOkta: !And
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_oidc_client_id}
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_oidc_client_secret}
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_oidc_issuer}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -129,6 +139,7 @@ resources:
           - email
           - openid
           - profile
+          - phone
         AccessTokenValidity: 30
         IdTokenValidity: 30
         RefreshTokenValidity: 24
@@ -171,9 +182,13 @@ resources:
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:
-          MetadataURL: ${self:custom.okta_metadata_url}
+          client_id: ${self:custom.okta_oidc_client_id}
+          client_secret: ${self:custom.okta_oidc_client_secret}
+          oidc_issuer: ${self:custom.okta_oidc_issuer}
+          attributes_request_method: GET
+          authorize_scopes: "email openid profile"
         ProviderName: Okta
-        ProviderType: SAML
+        ProviderType: OIDC
         UserPoolId:
           Ref: CognitoUserPool
     CognitoIdentityPool:
