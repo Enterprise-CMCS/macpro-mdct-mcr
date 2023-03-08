@@ -26,5 +26,4 @@ repos:
       - id: detect-secrets
         args:
           - --exclude-files
-          - services/uploads/src/test.json
-          - services/app-api/utils/testing/fixtures/*
+          - .*test\.json
