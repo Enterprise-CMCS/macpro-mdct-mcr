@@ -75,7 +75,7 @@ describe("Test form template entities update", () => {
 
   test("Test update form template", async () => {
     const result = updateFormTemplate(mockReportJson);
-    expect(result.entities).toMatchObject(ENTITIES_UPDATE_DATA.entities);
+    expect(result.entities).toMatchObject(ENTITIES_UPDATE_DATA);
   });
 
   test("Test write updated form template to S3", async () => {
