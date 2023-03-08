@@ -44,8 +44,8 @@ const mockMetaDataResponse2 = {
 let mockReportJsonWithId: any = mockReportJson;
 mockReportJsonWithId.id = "123423452345435";
 
-let mockReportJsonWithEntities: any = mockReportJsonWithId
-mockReportJsonWithEntities.entities = ENTITIES_UPDATE_DATA
+let mockReportJsonWithEntities: any = mockReportJsonWithId;
+mockReportJsonWithEntities.entities = ENTITIES_UPDATE_DATA;
 
 describe("Test form template entities update", () => {
   test("Test retrieve metadata from DB", async () => {
