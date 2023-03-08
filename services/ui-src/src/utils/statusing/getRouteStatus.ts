@@ -1,6 +1,5 @@
 // utils
-import { flatten } from "utils";
-import { ReportPageProgress, ReportRoute, ReportShape } from "types";
+import { AnyObject, ReportPageProgress, ReportRoute, ReportShape } from "types";
 
 /**
  * This function takes a report and returns an array of objects that represent the
@@ -21,6 +20,21 @@ export const getRouteStatus = (report: ReportShape): ReportPageProgress[] => {
   if (!report.completionStatus) {
     return [];
   }
+
+  /*
+   * Takes the completionStatus from the report and flattens it to get each page
+   * in the report
+   */
+  const flatten = (obj: AnyObject, out: AnyObject) => {
+    Object.keys(obj).forEach((key) => {
+      if (typeof obj[key] == "object") {
+        out = flatten(obj[key], out);
+      } else {
+        out[key] = obj[key];
+      }
+    });
+    return out;
+  };
 
   // Flatten the completion status to get the pages under each section
   const flattenedStatus = flatten(report.completionStatus, {});
