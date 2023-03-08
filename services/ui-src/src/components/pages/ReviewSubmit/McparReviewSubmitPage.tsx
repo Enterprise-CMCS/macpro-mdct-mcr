@@ -48,6 +48,7 @@ export const McparReviewSubmitPage = () => {
   const reportKeys = {
     state: reportState,
     id: reportId,
+    reportType: report?.reportType,
   };
 
   useEffect(() => {
