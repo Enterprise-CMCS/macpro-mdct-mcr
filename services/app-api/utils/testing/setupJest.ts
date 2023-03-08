@@ -83,6 +83,25 @@ export const mockDynamoData = {
   lastAltered: 162515200000,
 };
 
+export const mockDynamoDataMLRLocked = {
+  ...mockReportKeys,
+  reportType: "MLR",
+  programName: "testProgram",
+  status: "Not started",
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  dueDate: 168515200000,
+  combinedData: false,
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  submissionCount: 0,
+  locked: true,
+  previousRevisions: [],
+};
+
 export const mockMcparReport = {
   ...mockReportKeys,
   metadata: {
