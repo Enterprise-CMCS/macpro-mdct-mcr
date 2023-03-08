@@ -47,8 +47,8 @@ mockReportJsonWithId.id = "123423452345435";
 let mockReportJsonWithEntities: any = mockReportJsonWithId
 mockReportJsonWithEntities.entities = ENTITIES_UPDATE_DATA
 
-describe("Test Form Template Entities Update", () => {
-  test("Test Retrieve Metadata", async () => {
+describe("Test form template entities update", () => {
+  test("Test retrieve metadata from DB", async () => {
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse1);
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
 
@@ -63,7 +63,7 @@ describe("Test Form Template Entities Update", () => {
     expect(result[1]).toBeFalsy();
   });
 
-  test("Test Retrieve Form Template", async () => {
+  test("Test retrieve form template", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson);
     const result = await getFormTemplateFromS3(
       mockMetaDataResponse1.Items[0].formTemplateId,
@@ -73,12 +73,12 @@ describe("Test Form Template Entities Update", () => {
     expect(result).toMatchObject(mockReportJson);
   });
 
-  test("Test Update Form Template", async () => {
+  test("Test update form template", async () => {
     const result = updateFormTemplate(mockReportJson);
     expect(result.entities).toMatchObject(ENTITIES_UPDATE_DATA.entities);
   });
 
-  test("Test Write Updated Form Template To S3", async () => {
+  test("Test write updated form template to S3", async () => {
     try {
       await writeFormTemplateToS3(mockReportJsonWithId);
     } catch (e) {
@@ -86,7 +86,7 @@ describe("Test Form Template Entities Update", () => {
     }
   });
 
-  test("Test No Metadata Found", async () => {
+  test("Test no metadata found", async () => {
     mockDocumentClient.scan.promise.mockReturnValueOnce(null);
 
     initialize();
@@ -96,13 +96,13 @@ describe("Test Form Template Entities Update", () => {
     expect(results[2]).toBeNull();
   });
 
-  test("Test No Matching Template", async () => {
+  test("Test no matching template", async () => {
     let result = getFormTemplateFromS3("fakeId", "MN");
 
     await expect(result).rejects.toBe("Invalid Test Key");
   });
 
-  test("Test Entities Already Added", async () => {
+  test("Test entities already added", async () => {
     const result = updateFormTemplate(mockReportJsonWithEntities);
     expect(result).toMatchObject(mockReportJsonWithEntities);
   });
