@@ -33,7 +33,7 @@ export const TableRow = ({
       <Td sx={sx.status}>
         {!status && status !== undefined && (
           <>
-            <Image src={errorIcon} alt="Error" />
+            <Image src={errorIcon} alt="Error notification" />
             Error
           </>
         )}
