@@ -24,7 +24,7 @@ import printIcon from "assets/icons/icon_print.png";
 import { Alert } from "components/alerts/Alert";
 
 export const McparReviewSubmitPage = () => {
-  const { report, fetchReport, updateReport } = useContext(ReportContext);
+  const { report, fetchReport, submitReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -52,7 +52,7 @@ export const McparReviewSubmitPage = () => {
   };
 
   useEffect(() => {
-    setHasError(!!document.querySelector("img[alt='Error']"));
+    setHasError(!!document.querySelector("img[alt='Error notification']"));
 
     if (report?.id) {
       fetchReport(reportKeys);
@@ -63,7 +63,7 @@ export const McparReviewSubmitPage = () => {
     setSubmitting(true);
     if (isPermittedToSubmit) {
       const submissionDate = Date.now();
-      await updateReport(reportKeys, {
+      await submitReport(reportKeys, {
         metadata: {
           status: ReportStatus.SUBMITTED,
           lastAlteredBy: full_name,

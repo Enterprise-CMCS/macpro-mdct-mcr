@@ -586,6 +586,14 @@ export const mockReport = {
   combinedData: false,
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
+  completionStatus: {
+    "/mock/mock-route-1": true,
+    "/mock/mock-route-2": {
+      "/mock/mock-route-2a": false,
+      "/mock/mock-route-2b": true,
+    },
+  },
+  isComplete: false,
 };
 
 export const mockReportsByState = [

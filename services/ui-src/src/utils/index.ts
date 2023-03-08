@@ -26,7 +26,6 @@ export * from "./validation/validation";
 // other
 export * from "./other/email";
 export * from "./other/export";
-export * from "./other/flatten";
 export * from "./other/mask";
 export * from "./other/parsing";
 export * from "./other/print";
