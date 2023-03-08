@@ -40,7 +40,7 @@ export const MobileDashboardTable = ({
                 </button>
               </Box>
             )}
-            <Text sx={sxOverride.reportNameText}>{report.programName}</Text>
+            <Text sx={sxOverride.programNameText}>{report.programName}</Text>
           </Flex>
         </Box>
         <Box sx={sx.labelGroup}>

@@ -127,7 +127,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       }
       formData = {
         fieldData: {
-          reportName: report.programName,
+          programName: report.programName,
           reportingPeriodEndDate: convertDateUtcToEt(
             report.reportingPeriodEndDate
           ),
@@ -382,7 +382,7 @@ const sxChildStyles = {
       },
     },
   },
-  reportNameText: {
+  programNameText: {
     fontSize: "md",
     fontWeight: "bold",
     width: "13rem",
