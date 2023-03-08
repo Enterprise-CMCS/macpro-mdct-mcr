@@ -1,6 +1,6 @@
 import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
-import { AdminBannerData, AdminBannerShape } from "types";
+import { AdminBannerData, AdminBannerShape } from "types/banners";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 // api

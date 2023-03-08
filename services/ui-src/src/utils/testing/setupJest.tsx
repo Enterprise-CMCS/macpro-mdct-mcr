@@ -5,7 +5,8 @@ import "jest-axe/extend-expect";
 import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
 
 // utils
-import { ReportStatus, UserContextShape, UserRoles } from "types";
+import { ReportStatus } from "types";
+import { UserContextShape, UserRoles } from "types/users";
 import { bannerId } from "../../constants";
 
 // GLOBALS
