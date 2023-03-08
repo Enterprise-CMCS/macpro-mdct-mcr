@@ -102,7 +102,7 @@ export const scanTableForMetadata = async (
       ExclusiveStartKey: startingKey,
     })
     .promise();
-  if (results.LastEvaluatedKey) {
+  if (results && results.LastEvaluatedKey) {
     startingKey = results.LastEvaluatedKey;
     return [startingKey, keepSearching, results];
   } else {
@@ -115,15 +115,24 @@ export const getFormTemplateFromS3 = async (
   formTemplateId: string,
   state: string
 ) => {
+  // try {
   const formTemplateParams: S3Get = {
     Bucket: BUCKET_NAME,
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   return (await s3Lib.get(formTemplateParams)) as AnyObject;
+  // }
+  // catch (err) {
+  //     console.error(`Could not find template with ID ${formTemplateId}.
+  //                    Error: ${err}`);
+  //     throw err;
+  // }
 };
 
 export const updateFormTemplate = (formTemplate: any) => {
-  Object.assign(formTemplate, ENTITIES_UPDATE_DATA);
+  if (!formTemplate) {
+    Object.assign(formTemplate, ENTITIES_UPDATE_DATA);
+  }
   return formTemplate;
 };
 
@@ -137,4 +146,6 @@ export const writeFormTemplateToS3 = async (formTemplate: any) => {
   };
   const result = await s3Lib.put(formTemplateParams);
   console.log("Updated form template ", formTemplate.id, " | ", result)
+
+  return result
 }

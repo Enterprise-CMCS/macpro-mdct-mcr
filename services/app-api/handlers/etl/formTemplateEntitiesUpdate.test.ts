@@ -39,12 +39,9 @@ const mockMetaDataResponse2 = {
   Items: [mockDynamoData2],
 };
 
-describe("Test ETL script", () => {
-  test("Test initialize", async () => {
-    initialize();
-  });
+describe("Test Form Template Entities Update", () => {
 
-  test("Test scanTableForMetadata", async () => {
+  test("Test Retrieve Metadata", async () => {
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse1);
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
 
@@ -59,7 +56,7 @@ describe("Test ETL script", () => {
     expect(result[1]).toBeFalsy();
   });
 
-  test("Test getFormTemplateFromS3", async () => {
+  test("Test Retrieve Form Template", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson)
     const result = await getFormTemplateFromS3(
       mockMetaDataResponse1.Items[0].formTemplateId,
@@ -69,13 +66,59 @@ describe("Test ETL script", () => {
     expect(result).toMatchObject(mockReportJson)
   });
 
-  test("Test updateFormTemplate", async () => {
+  test("Test Update Form Template", async () => {
     const result = updateFormTemplate(mockReportJson)
     expect(result.entities).toMatchObject(ENTITIES_UPDATE_DATA.entities)
   });
 
-  test("Test writeFormTemplateToS3", async () => {
-    const result = await writeFormTemplateToS3(mockReportJsonWithId)
-    console.log(result)
+  test("Test Write Updated Form Template To S3", async () => {
+    try {
+      await writeFormTemplateToS3(mockReportJsonWithId)
+    }
+    catch (e) {
+      expect(e).toBeFalsy()
+    }
+  });
+
+  test("Test No Metadata Found", async () => {
+    mockDocumentClient.scan.promise.mockReturnValueOnce(null);
+
+    initialize();
+    let results = await scanTableForMetadata("local-mcpar-reports", true);
+
+    expect(results[0]).toBeNull();
+    expect(results[2]).toBeNull();
+  });
+
+  test("Test No Matching Template", async () => {
+    // const result = getFormTemplateFromS3(
+    //   "fakeId",
+    //   "MN",
+    // );
+
+    // expect(result).toThrowError();
+    // expect(async () => {
+    //   await getFormTemplateFromS3(
+    //     "fakeId",
+    //     "MN",
+    //   );
+    // }).toThrowError();
+
+
+    // expect(() => {
+    //   getFormTemplateFromS3(
+    //     'fakeId', 'MN'
+    //   )
+    // }).toThrow();
+
+    await expect( () => {
+      getFormTemplateFromS3(
+        'fakeId', 'MN'
+      );
+    }).rejects.toThrow()
+  });
+
+  test("Test Entities Already Added", async () => {
+
   });
 });
