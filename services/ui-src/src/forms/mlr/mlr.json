@@ -106,44 +106,38 @@
     {
       "name": "MLR Reporting",
       "path": "/mlr/program-entity-listing",
-      "children": [
-        {
-          "name": "MLR Reporting",
-          "path": "/mlr/program-entity-listing",
-          "pageType": "modalOverlay",
-          "verbiage": {
-            "intro": {
-              "section": "MLR Reporting",
-              "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
-              "widget": {
-                "title": "Instructions",
-                "info": [
-                  {
-                    "type": "html",
-                    "content": ""
-                  }
-                ]
-              },
-              "spreadsheet": "Program Information",
-              "label": "Total reports should match the number of rows sitting at row 31 in Program Information tab.",
-              "info": [
-                {
-                  "type": "html",
-                  "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab.</b>"
-                }
-              ],
-              "dashboardTitle": "Quality & performance measure total count:",
-              "countEntitiesInTitle": true,
-              "addEntityButtonText": "Add program reporting information",
-              "emptyDashboardText": "Add Program Reporting Information for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+      "pageType": "modalOverlay",
+      "verbiage": {
+        "intro": {
+          "section": "MLR Reporting",
+          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+          "spreadsheet": "Program Information",
+          "label": "Total reports should match the number of rows sitting at row 31 in Program Information tab.",
+          "info": [
+            {
+              "type": "html",
+              "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab.</b>"
             }
-          },
-          "modalForm": {
-            "id": "bpel",
-            "fields": []
-          }
+          ],
+          "dashboardTitle": "Quality & performance measure total count:",
+          "countEntitiesInTitle": true,
+          "addEntityButtonText": "Add program reporting information",
+          "emptyDashboardText": "Add Program Reporting Information for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+        },
+        "accordion": {
+          "buttonLabel": "Instructions",
+          "info": [
+            {
+              "type": "html",
+              "content": "<b>Example</b>"
+            }
+          ]
         }
-      ]
+      },
+      "modalForm": {
+        "id": "bpel",
+        "fields": []
+      }
     },
     {
       "name": "Review & Submit",
