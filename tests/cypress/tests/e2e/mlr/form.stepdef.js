@@ -49,21 +49,35 @@ const traverseRoute = (route) => {
     if (route.verbiage?.intro?.subsection)
       cy.contains(route.verbiage?.intro?.subsection);
 
-    //Fill out form
+    //Fill out the 3 different types of forms
     completeFrom(route.form);
+    completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
+    completeDrawerForm(route.drawerForm);
 
-    // Continue to next route
-    cy.get('button:contains("Continue")').focus().click();
+    //Sometimes the button is "Continue" sometimes it is "Save & Continue", this will click either.
+    cy.get('button:contains("ontinue")').focus().click();
   }
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
 };
 
-// TODO: bring in completeDrawerForm if needed
+const completeDrawerForm = (drawerForm) => {
+  if (drawerForm) {
+    //enter the drawer, then fill out the form and save it
+    cy.get('button:contains("Enter")').focus().click();
+    completeFrom(drawerForm);
+    cy.get('button:contains("Save")').focus().click();
+  }
+};
 
-// TODO: bring in completeModalForm if needed
-
-// TODO: bring in completeModalOverlayForm when needed
+const completeModalForm = (modalForm, buttonText) => {
+  //open the modal, then fill out the form and save it
+  if (modalForm && buttonText) {
+    cy.get(`button:contains("${buttonText}")`).focus().click();
+    completeFrom(modalForm);
+    cy.get('button:contains("Save")').focus().click();
+  }
+};
 
 const completeFrom = (form) => {
   //iterate over each field and fill it appropriately
