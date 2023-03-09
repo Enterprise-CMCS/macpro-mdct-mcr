@@ -15,7 +15,16 @@ describe("Schemas", () => {
     "N/A",
     "Data not available",
   ];
-  const badNumberTestCases = ["abc", "N", "!@#!@%"];
+  const badNumberTestCases = [
+    "abc",
+    "N",
+    "!@#!@%",
+    "hello, world",
+    ".",
+    "0x123",
+    "1a",
+    "a1",
+  ];
 
   const goodRatioTestCases = [
     "1:1",
