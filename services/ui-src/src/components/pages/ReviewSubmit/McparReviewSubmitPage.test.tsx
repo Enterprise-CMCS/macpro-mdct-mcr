@@ -8,8 +8,8 @@ import { ReportStatus } from "types";
 // utils
 import {
   mockLDFlags,
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -24,19 +24,19 @@ jest.mock("utils", () => ({
 
 const McparReviewSubmitPage_InProgress = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <McparReviewSubmitPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 const mockSubmittedReport = {
-  ...mockReport,
+  ...mockMcparReport,
   status: ReportStatus.SUBMITTED,
 };
 
 const mockedReportContext_Submitted = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   report: mockSubmittedReport,
 };
 
@@ -97,7 +97,7 @@ describe("Test McparReviewSubmitPage functionality", () => {
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
-    await expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    await expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 });
 

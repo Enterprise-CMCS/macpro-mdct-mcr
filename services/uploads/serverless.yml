@@ -14,7 +14,7 @@ s3BucketHelper:
   loggingConfiguration:
     destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
     logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
-    
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -55,6 +55,8 @@ custom:
     cors: ./local_cors.xml
     buckets:
       - local-mcpar-form
+      - local-mlr-form
+      - local-naaar-form
       - local-uploads # This is a little silly, but I've spent enough time on it.
         # the serverless-s3-local plugin starts any bucket with a BucketName
         # the attachments bucket has no name, so we need to make one up on our own

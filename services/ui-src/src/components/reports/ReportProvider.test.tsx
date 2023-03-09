@@ -6,7 +6,7 @@ import { act } from "react-dom/test-utils";
 import { ReportContext, ReportProvider } from "./ReportProvider";
 import {
   mockReportKeys,
-  mockReport,
+  mockMcparReport,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { isReportFormPage } from "utils/reports/routing";
@@ -34,13 +34,13 @@ const TestComponent = () => {
         Fetch Report
       </button>
       <button
-        onClick={() => context.createReport("mock-type", "AB", mockReport)}
+        onClick={() => context.createReport("mock-type", "AB", mockMcparReport)}
         data-testid="create-report-button"
       >
         Create Report
       </button>
       <button
-        onClick={() => context.updateReport(mockReportKeys, mockReport)}
+        onClick={() => context.updateReport(mockReportKeys, mockMcparReport)}
         data-testid="update-report-button"
       >
         Update Report
@@ -58,7 +58,7 @@ const TestComponent = () => {
         Clear Report Selection
       </button>
       <button
-        onClick={() => context.setReportSelection(mockReport)}
+        onClick={() => context.setReportSelection(mockMcparReport)}
         data-testid="set-report-selection-button"
       >
         Set Report Selection
@@ -121,7 +121,7 @@ describe("Test ReportProvider fetch methods", () => {
     expect(mockReportAPI.putReport).toHaveBeenCalledTimes(1);
     expect(mockReportAPI.putReport).toHaveBeenCalledWith(
       mockReportKeys,
-      mockReport
+      mockMcparReport
     );
   });
 
@@ -144,7 +144,7 @@ describe("Test ReportProvider fetch methods", () => {
       await userEvent.click(setReportSelectionButton);
     });
     // verify report is set in storage
-    expect(localStorage.getItem("selectedReport")).toBe(mockReport.id);
+    expect(localStorage.getItem("selectedReport")).toBe(mockMcparReport.id);
 
     // click button to clear report selection
     await act(async () => {

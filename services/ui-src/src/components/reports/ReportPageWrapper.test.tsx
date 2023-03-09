@@ -4,8 +4,8 @@ import { axe } from "jest-axe";
 import { ReportContext, ReportPageWrapper } from "components";
 // utils
 import {
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockReportJson,
   mockStateUser,
   RouterWrappedComponent,
@@ -32,18 +32,18 @@ const mockLocations = {
 
 const ReportPageWrapperComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ReportPageWrapper />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 const mockedNoReport = {
-  ...mockReport,
+  ...mockMcparReport,
   id: "",
 };
 const mockReportContextWithoutReport = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   report: mockedNoReport,
 };
 

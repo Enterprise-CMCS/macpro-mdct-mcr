@@ -5,7 +5,7 @@ import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
 import {
   mockDynamoData,
-  mockReport,
+  mockMcparReport,
   mockReportFieldData,
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
@@ -30,13 +30,13 @@ const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { reportType: "mock-type", state: "AB", id: "testReportId" },
-  body: JSON.stringify(mockReport),
+  body: JSON.stringify(mockMcparReport),
 };
 
 const updateEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
-    ...mockReport,
+    ...mockMcparReport,
     metadata: {
       status: "in progress",
     },
@@ -47,11 +47,11 @@ const updateEvent: APIGatewayProxyEvent = {
 const submissionEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
-    ...mockReport,
+    ...mockMcparReport,
     metadata: {
       status: "submitted",
     },
-    submittedBy: mockReport.metadata.lastAlteredBy,
+    submittedBy: mockMcparReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
     fieldData: { ...mockReportFieldData, number: 2 },
   }),
@@ -60,11 +60,11 @@ const submissionEvent: APIGatewayProxyEvent = {
 const invalidFieldDataSubmissionEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
-    ...mockReport,
+    ...mockMcparReport,
     metadata: {
       status: "submitted",
     },
-    submittedBy: mockReport.metadata.lastAlteredBy,
+    submittedBy: mockMcparReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
     fieldData: { ...mockReportFieldData, number: "NAN" },
   }),
@@ -132,7 +132,7 @@ describe("Test updateReport API method", () => {
         "Access-Control-Allow-Origin": "string",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify(mockReport),
+      body: JSON.stringify(mockMcparReport),
     });
     const res = await updateReport(updateEventWithInvalidData, null);
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);

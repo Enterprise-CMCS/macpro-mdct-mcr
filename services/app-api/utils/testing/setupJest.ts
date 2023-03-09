@@ -80,7 +80,7 @@ export const mockDynamoData = {
   lastAltered: 162515200000,
 };
 
-export const mockReport = {
+export const mockMcparReport = {
   ...mockReportKeys,
   metadata: {
     reportType: "mock-type",

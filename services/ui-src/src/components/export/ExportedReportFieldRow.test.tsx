@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { ExportedReportFieldRow } from "./ExportedReportFieldRow";
-import { mockReportContext } from "utils/testing/setupJest";
+import { mockMcparReportContext } from "utils/testing/setupJest";
 import { ReportContext } from "components";
 import { Table } from "@chakra-ui/react";
 
@@ -25,7 +25,7 @@ const fieldWithLabel = {
 };
 
 const exportRow = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <Table sx={{}}>
       <tbody>
         <ExportedReportFieldRow formField={field} pageType="drawer" />
@@ -35,7 +35,7 @@ const exportRow = (
 );
 
 const otherTextRow = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <Table sx={{}}>
       <tbody>
         <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
@@ -45,7 +45,7 @@ const otherTextRow = (
 );
 
 const dynamicRow = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <Table sx={{}}>
       <tbody>
         <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />

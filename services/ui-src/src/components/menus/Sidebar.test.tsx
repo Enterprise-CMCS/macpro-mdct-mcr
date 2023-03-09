@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
-  mockReportContext,
+  mockMcparReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { axe } from "jest-axe";
@@ -14,7 +14,7 @@ jest.mock("utils/reports/routing", () => ({
 
 const sidebarComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <Sidebar />
     </ReportContext.Provider>
   </RouterWrappedComponent>
