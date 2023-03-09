@@ -4,5 +4,109 @@
   "basePath": "/mlr",
   "version": "MLR_2023-02-08",
   "adminDisabled": true,
-  "routes": []
+  "routes": [
+    {
+      "name": "Program Information",
+      "path": "/mlr/program-information",
+      "children": [
+        {
+          "name": "Information for Primary Contact",
+          "path": "/mlr/program-information/point-of-contact",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Point of Contact",
+              "spreadsheet": "A_Program_Info"
+            }
+          },
+          "form": {
+            "id": "apoc",
+            "fields": [
+              {
+                "id": "contactName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "A. Contact name",
+                  "hint": "Enter the first and last name of the primary contact for this report."
+                }
+              },
+              {
+                "id": "contactPhone",
+                "type": "text",
+                "validation": "phone",
+                "props": {
+                  "label": "B. Contact phone",
+                  "hint": "Enter phone number as ###-###-####."
+                }
+              },
+              {
+                "id": "contactEmailAddress",
+                "type": "text",
+                "validation": "email",
+                "props": {
+                  "label": "C. Contact email address",
+                  "hint": "Enter email address of the primary contact."
+                }
+              },
+              {
+                "id": "contactTitle",
+                "type": "text",
+                "validation": "email",
+                "props": {
+                  "label": "D. Contact title",
+                  "hint": "Enter the primary contact’s job title."
+                }
+              },
+              {
+                "id": "stateName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "E. State",
+                  "hint": "Auto-populates from your account profile.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "stateAgencyName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "F. State Agency Name",
+                  "hint": "Enter the name of the state/territory Medicaid agency that is submitting this report."
+                }
+              },
+              {
+                "id": "versionControl",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "G. Version control",
+                  "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /><br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
+                  "choices": [
+                    {
+                      "id": "Y",
+                      "label": "Yes, this is a resubmission"
+                    },
+                    {
+                      "id": "N",
+                      "label": "No, this is an initial submission"
+                    }
+                  ],
+                  "disabled": true
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Review & Submit",
+      "path": "/mlr/review-and-submit",
+      "pageType": "reviewSubmit"
+    }
+  ]
 }

@@ -400,7 +400,7 @@ export const mockReportJson = {
 };
 
 export const mockReportKeys = {
-  reportType: "mock-type",
+  reportType: "MCPAR",
   state: "AB",
   id: "mock-report-id",
 };
@@ -564,7 +564,7 @@ export const mockReportFieldData = {
       accessMeasure_standardType: [
         {
           key: "option1",
-          value: "mock-type",
+          value: "MCPAR",
         },
       ],
       "accessMeasure_standardType-otherText": "",
@@ -574,7 +574,7 @@ export const mockReportFieldData = {
 
 export const mockMcparReport = {
   ...mockReportKeys,
-  reportType: "mock-type",
+  reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
   status: ReportStatus.NOT_STARTED,
@@ -724,7 +724,7 @@ export const mockCompletedQualityMeasuresFormattedEntityData = {
 
 export const mockSanctionsEntity = {
   id: "mock-id",
-  sanction_interventionType: [{ value: "mock-type" }],
+  sanction_interventionType: [{ value: "MCPAR" }],
   sanction_interventionTopic: [{ value: "mock-topic" }],
   sanction_planName: { label: "sanction_planName", value: "mock-plan-id-1" },
   sanction_interventionReason: "mock-reason",
@@ -736,7 +736,7 @@ export const mockSanctionsEntity = {
 };
 
 export const mockUnfinishedSanctionsFormattedEntityData = {
-  interventionType: "mock-type",
+  interventionType: "MCPAR",
   interventionTopic: "mock-topic",
   planName: "mock-plan-name-1",
   interventionReason: "mock-reason",
