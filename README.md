@@ -1,20 +1,18 @@
 # MDCT-MCR
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/f3cc1d780ccc07931ba6/maintainability)](https://codeclimate.com/github/Enterprise-CMCS/macpro-mdct-mcr/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/f3cc1d780ccc07931ba6/test_coverage)](https://codeclimate.com/github/Enterprise-CMCS/macpro-mdct-mcr/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1158e44ecfccd96be714/maintainability)](https://codeclimate.com/repos/6403ec9ff2b39a27c393430e/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1158e44ecfccd96be714/test_coverage)](https://codeclimate.com/repos/6403ec9ff2b39a27c393430e/test_coverage)
 
-MDCT-MCR is an application meant to collect state report data to help the health of the program and access to Medicaid Managed Care.
+MCR is the CMCS MDCT application for collecting state data related to Managed Care plans and performance. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
 Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and Managed Care Organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
 
-There are three reports that users complete:
+States submit three reports:
 
-**MCPAR** - (Managed Care Program Annual Report) A report for states to complete annually for each Medicaid managed care program
-
-**MLR** - (Medical Loss Ratio) A report for states to complete annually or when contract terms change
-
-**NAAAR** - (Network Adequacy and Access Assurances Report) A report that focuses on determining assurance of compliance to CMS that the each MCO, PIHP, and PAHP meets the state’s requirement for availability of services
+- MCPAR (Managed Care Program Annual Report): A report for states to complete annually for each Medicaid managed care program
+- MLR (Medical Loss Ratio): A report for states to complete annually or when contract terms change
+- NAAAR (Network Adequacy and Access Assurances Report): A report that focuses on determining assurance of compliance to CMS that the each MCO, PIHP, and PAHP meets the state’s requirement for availability of services
 
 Project Goals:
 
