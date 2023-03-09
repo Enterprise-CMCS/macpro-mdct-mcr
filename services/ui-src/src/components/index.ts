@@ -92,7 +92,6 @@ export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // statusing
 export { StatusTable } from "./statusing/StatusTable";
-export { TableRow } from "./statusing/TableRow";
 // tables
 export { Table } from "./tables/Table";
 // widgets
