@@ -33,6 +33,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   // get form context and register field
   const form = useFormContext();
+
   form.register(name);
 
   const openDeleteProgramModal = (index: number) => {
@@ -176,7 +177,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         newInputAdded || existingInputChanged ? displayValues : hydrationValue;
       // set and append values
       setDisplayValues(valuesToSet);
-      append(valuesToSet);
     } else {
       appendNewRecord();
     }
