@@ -571,7 +571,7 @@ export const mockReportFieldData = {
   ],
 };
 
-export const mockReport = {
+export const mockMcparReport = {
   ...mockReportKeys,
   reportType: "mock-type",
   formTemplate: mockReportJson,
@@ -589,13 +589,14 @@ export const mockReport = {
 };
 
 export const mockReportsByState = [
-  { ...mockReport, id: "mock-report-id-1" },
-  { ...mockReport, id: "mock-report-id-2" },
-  { ...mockReport, id: "mock-report-id-3" },
+  { ...mockMcparReport, id: "mock-report-id-1" },
+  { ...mockMcparReport, id: "mock-report-id-2" },
+  { ...mockMcparReport, id: "mock-report-id-3" },
 ];
 
 export const mockReportMethods = {
   archiveReport: jest.fn(),
+  unlockReport: jest.fn(),
   fetchReport: jest.fn(),
   fetchReportsByState: jest.fn(),
   createReport: jest.fn(),
@@ -604,9 +605,9 @@ export const mockReportMethods = {
   setReportSelection: jest.fn(),
 };
 
-export const mockReportContext = {
+export const mockMcparReportContext = {
   ...mockReportMethods,
-  report: mockReport,
+  report: mockMcparReport,
   reportsByState: mockReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",

@@ -23,7 +23,7 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
                 | Test Program 2 | 01012022   | 12212024   | false        |
 
         Scenario Outline: State users can Edit programs
-            Given I click the "Edit Program" button
+            Given I click the "Edit Report" button
             And these form elements are prefilled:
                 | programName              | text           | Test Program 2 |
                 | reportingPeriodStartDate | text           | 01/01/2022     |

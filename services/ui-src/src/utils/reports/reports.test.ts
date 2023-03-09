@@ -10,7 +10,7 @@ import {
   mockFormField,
   mockNestedFormField,
   mockReportRoutes,
-  mockReport,
+  mockMcparReport,
   mockStandardReportPageJson,
   mockReportJson,
   mockModalDrawerReportPageJson,
@@ -31,17 +31,17 @@ describe("Test sortReportsOldestToNewest", () => {
   it("Should sort reports by oldest to newest", () => {
     const unsortedReports = [
       {
-        ...mockReport,
+        ...mockMcparReport,
         createdAt: 1662568568589,
         programName: "created-today",
       },
       {
-        ...mockReport,
+        ...mockMcparReport,
         createdAt: 1662568556165,
         programName: "created-yesterday",
       },
       {
-        ...mockReport,
+        ...mockMcparReport,
         createdAt: 1652568576322,
         programName: "created-last-month",
       },
