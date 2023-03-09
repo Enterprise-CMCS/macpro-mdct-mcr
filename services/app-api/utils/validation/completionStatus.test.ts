@@ -146,9 +146,9 @@ describe("Completion Status Tests", () => {
     ];
     runs.forEach((run) => {
       test(run.description, async () => {
-        const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.json`);
-        const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.json`);
-        const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.json`);
+        const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
+        const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
+        const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
         const result = await calculateCompletionStatus(testData, formTemplate);
         expect(result).toMatchObject(expectedResult);
       });
@@ -161,9 +161,9 @@ describe("Completion Status Tests", () => {
       fixture: "mcpar-incomplete-plan-noentities",
       formTemplate: "mcpar-template",
     };
-    const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.json`);
-    const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.json`);
-    const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.json`);
+    const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
+    const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
+    const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
     const result = await calculateCompletionStatus(testData, formTemplate);
     expect(result).toMatchObject(expectedResult);
   });
