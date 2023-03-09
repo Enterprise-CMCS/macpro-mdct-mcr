@@ -54,7 +54,7 @@ export const mockReportJson = {
 };
 
 export const mockReportKeys = {
-  reportType: "mock-type",
+  reportType: "MCPAR",
   state: "AB",
   id: "mock-report-id",
 };
@@ -66,7 +66,7 @@ export const mockReportFieldData = {
 
 export const mockDynamoData = {
   ...mockReportKeys,
-  reportType: "mock-type",
+  reportType: "MCPAR",
   programName: "testProgram",
   status: "Not started",
   reportingPeriodStartDate: 162515200000,
@@ -83,7 +83,7 @@ export const mockDynamoData = {
 export const mockMcparReport = {
   ...mockReportKeys,
   metadata: {
-    reportType: "mock-type",
+    reportType: "MCPAR",
     programName: "testProgram",
     status: "Not started",
     reportingPeriodStartDate: 162515200000,

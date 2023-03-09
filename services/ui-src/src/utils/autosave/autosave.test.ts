@@ -9,7 +9,7 @@ const mockForm: any = {
 
 const report = {
   id: "reportId",
-  reportType: "mock-type",
+  reportType: "MCPAR",
   updateReport: jest.fn().mockResolvedValue(true),
 };
 const user = {
@@ -42,7 +42,7 @@ describe("autosaveFieldData", () => {
     await autosaveFieldData({ form: mockForm, fields, report, user });
     expect(mockForm.trigger).toHaveBeenCalledWith("field2");
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
@@ -58,7 +58,7 @@ describe("autosaveFieldData", () => {
     await autosaveFieldData({ form: mockForm, fields, report, user });
     expect(mockForm.trigger).toHaveBeenCalledWith("field2");
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
@@ -74,7 +74,7 @@ describe("autosaveFieldData", () => {
     await autosaveFieldData({ form: mockForm, fields: [], report, user });
     expect(mockForm.trigger).toHaveBeenCalledWith("field2");
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
@@ -89,7 +89,7 @@ describe("autosaveFieldData", () => {
     fields[1].overrideCheck = true;
     await autosaveFieldData({ form: mockForm, fields, report, user });
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
