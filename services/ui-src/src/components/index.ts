@@ -26,8 +26,8 @@ export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // dashboard
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
-export { DashboardList } from "./pages/Dashboard/DashboardProgramList";
-export { MobileDashboardList } from "./pages/Dashboard/DashboardProgramListMobile";
+export { DashboardTable } from "./pages/Dashboard/DashboardTable";
+export { MobileDashboardTable } from "./pages/Dashboard/MobileDashboardTable";
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
@@ -69,7 +69,7 @@ export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // modals
 export { Modal } from "./modals/Modal";
-export { AddEditProgramModal } from "./modals/AddEditProgramModal";
+export { AddEditReportModal } from "./modals/AddEditReportModal";
 export { DeleteDynamicFieldRecordModal } from "./modals/DeleteDynamicFieldRecordModal";
 export { AddEditEntityModal } from "./modals/AddEditEntityModal";
 export { DeleteEntityModal } from "./modals/DeleteEntityModal";
@@ -79,7 +79,7 @@ export { HelpPage } from "./pages/Help/HelpPage";
 export { HomePage } from "./pages/Home/HomePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
-export { McparGetStartedPage } from "./pages/GetStarted/McparGetStartedPage";
+export { ReportGetStartedPage } from "./pages/GetStarted/ReportGetStartedPage";
 export { McparReviewSubmitPage } from "./pages/ReviewSubmit/McparReviewSubmitPage";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // reports

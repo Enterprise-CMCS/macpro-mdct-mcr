@@ -3,15 +3,23 @@ import { Box, Button, Image, Heading, Text, Flex } from "@chakra-ui/react";
 import { InfoSection, PageTemplate, SpreadsheetWidget } from "components";
 import { useNavigate } from "react-router-dom";
 // verbiage
-import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-get-started";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import NavigationSectionsImage from "assets/other/nav_sections.png";
 import NavigationSectionsSubmissionImage from "assets/other/nav_sections_review_submit.png";
 
-export const McparGetStartedPage = () => {
-  const { intro, body, pageLink } = verbiage;
+export const ReportGetStartedPage = ({ reportType }: Props) => {
   const navigate = useNavigate();
+
+  const getStartedVerbiageMap: any = {
+    MCPAR: mcparVerbiage,
+    MLR: mlrVerbiage,
+  };
+
+  const getStartedVerbiage = getStartedVerbiageMap[reportType]!;
+  const { intro, body, pageLink } = getStartedVerbiage;
 
   const [section1, section2, section3] = body.sections;
 
@@ -28,9 +36,11 @@ export const McparGetStartedPage = () => {
             <Box sx={sx.widgetContainer}>
               <Text sx={sx.widgetTitle}>{section1.widget?.title}</Text>
               <Box>
-                {section1.widget?.descriptionList.map((description, index) => (
-                  <Text key={index}>{description}</Text>
-                ))}
+                {section1.widget?.descriptionList.map(
+                  (description: string, index: number) => (
+                    <Text key={index}>{description}</Text>
+                  )
+                )}
               </Box>
             </Box>
           </Flex>
@@ -75,6 +85,10 @@ export const McparGetStartedPage = () => {
     </PageTemplate>
   );
 };
+
+interface Props {
+  reportType: string;
+}
 
 const sx = {
   layout: {

@@ -154,6 +154,7 @@ export interface ReportMetadataShape extends ReportKeys {
   submitterEmail?: string;
   submittedOnDate?: number;
   archived?: boolean;
+  locked?: boolean;
 }
 
 export interface ReportShape extends ReportMetadataShape {
@@ -165,6 +166,7 @@ export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
   archiveReport: Function;
+  unlockReport?: Function;
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;
@@ -207,6 +209,7 @@ export interface EntityShape {
 export interface FormJson {
   id: string;
   fields: (FormField | FormLayoutElement)[];
+  heading?: AnyObject;
   options?: AnyObject;
   validation?: AnyObject;
   adminDisabled?: boolean;
