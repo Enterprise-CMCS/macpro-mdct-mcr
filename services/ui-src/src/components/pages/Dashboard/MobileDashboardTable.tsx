@@ -74,16 +74,24 @@ export const MobileDashboardTable = ({
           </Box>
           <Box sx={sxOverride.adminActionCell}>
             {isAdmin && (
-              <AdminActionButtons
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                archiveReport={archiveReport}
-                archiving={archiving}
-                unlockReport={unlockReport}
-                unlocking={unlocking}
-                sxOverride={sxOverride}
-              />
+              <>
+                {reportType === "MLR" && (
+                  <AdminUnlockButton
+                    report={report}
+                    reportId={reportId}
+                    unlockReport={unlockReport}
+                    unlocking={unlocking}
+                    sxOverride={sxOverride}
+                  />
+                )}
+                <AdminArchiveButton
+                  report={report}
+                  reportId={reportId}
+                  archiveReport={archiveReport}
+                  archiving={archiving}
+                  sxOverride={sxOverride}
+                />
+              </>
             )}
           </Box>
         </Flex>
@@ -129,56 +137,58 @@ interface DateFieldProps {
   reportType: string;
 }
 
-const AdminActionButtons = ({
+const AdminUnlockButton = ({
   report,
-  reportType,
   reportId,
-  archiveReport,
-  archiving,
   unlocking,
   unlockReport,
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
-    <>
-      {reportType === "MLR" && (
-        <Button
-          variant="link"
-          disabled={report.locked === false}
-          sx={sxOverride.adminActionButton}
-          onClick={() => unlockReport!(report)}
-        >
-          {unlocking && reportId === report.id ? (
-            <Spinner size="small" />
-          ) : (
-            "Unlock"
-          )}
-        </Button>
+    <Button
+      variant="link"
+      disabled={report.locked === false}
+      sx={sxOverride.adminActionButton}
+      onClick={() => unlockReport!(report)}
+    >
+      {unlocking && reportId === report.id ? (
+        <Spinner size="small" />
+      ) : (
+        "Unlock"
       )}
+    </Button>
+  );
+};
 
-      <Button
-        variant="link"
-        sx={sxOverride.adminActionButton}
-        onClick={() => archiveReport(report)}
-      >
-        {archiving && reportId === report.id ? (
-          <Spinner size="small" />
-        ) : report?.archived ? (
-          "Unarchive"
-        ) : (
-          "Archive"
-        )}
-      </Button>
-    </>
+const AdminArchiveButton = ({
+  report,
+  reportId,
+  archiveReport,
+  archiving,
+  sxOverride,
+}: AdminActionButtonProps) => {
+  return (
+    <Button
+      variant="link"
+      sx={sxOverride.adminActionButton}
+      onClick={() => archiveReport!(report)}
+    >
+      {archiving && reportId === report.id ? (
+        <Spinner size="small" />
+      ) : report?.archived ? (
+        "Unarchive"
+      ) : (
+        "Archive"
+      )}
+    </Button>
   );
 };
 
 interface AdminActionButtonProps {
   report: ReportMetadataShape;
-  reportType: string;
   reportId: string | undefined;
-  archiveReport: Function;
-  archiving: boolean;
+  archiveReport?: Function;
+  archiving?: boolean;
   unlocking?: boolean;
   unlockReport?: Function;
   sxOverride: AnyObject;
