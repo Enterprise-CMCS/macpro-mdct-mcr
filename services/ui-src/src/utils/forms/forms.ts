@@ -42,6 +42,7 @@ export const formFieldFactory = (
       key: field.id,
       name: field.id,
       hydrate: field.props?.hydrate,
+      autoComplete: "one-time-code", // stops browsers from forcing autofill
       ...options,
       ...field?.props,
     };
