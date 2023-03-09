@@ -85,15 +85,10 @@ export const AddEditReportModal = ({
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
 
-    let dataToWrite;
-
-    if (reportType === "MCPAR") {
-      dataToWrite = prepareMcparPayload(formData);
-    }
-    // prepare MLR payload
-    else {
-      dataToWrite = prepareMlrPayload(formData);
-    }
+    const dataToWrite =
+      reportType === "MCPAR"
+        ? prepareMcparPayload(formData)
+        : prepareMlrPayload(formData);
 
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
@@ -123,6 +118,16 @@ export const AddEditReportModal = ({
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
+          // All new MLR reports are NOT resubmissions by definition.
+          versionControl:
+            reportType === "MLR"
+              ? [
+                  {
+                    key: "versionControl-n",
+                    value: "No, this is an initial submission",
+                  },
+                ]
+              : undefined,
         },
         formTemplate,
       });

@@ -17,10 +17,12 @@ import { ReportStatus } from "types";
 // utils
 import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
 // verbiage
-import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 import printIcon from "assets/icons/icon_print.png";
+import { AnyObject } from "yup/lib/types";
 
 export const McparReviewSubmitPage = () => {
   const { report, fetchReport, updateReport } = useContext(ReportContext);
@@ -39,6 +41,8 @@ export const McparReviewSubmitPage = () => {
     report?.reportType || localStorage.getItem("selectedReportType");
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
+
+  const reviewVerbiage = reportType === "MCPAR" ? MCPARVerbiage : MLRVerbiage;
 
   const reportKeys = {
     reportType: reportType,
@@ -81,6 +85,7 @@ export const McparReviewSubmitPage = () => {
           programName={report.programName}
           date={report?.submittedOnDate}
           submittedBy={report?.submittedBy}
+          reviewVerbiage={reviewVerbiage}
         />
       ) : (
         <ReadyToSubmit
@@ -90,13 +95,14 @@ export const McparReviewSubmitPage = () => {
           onClose={onClose}
           submitting={submitting}
           isPermittedToSubmit={isPermittedToSubmit}
+          reviewVerbiage={reviewVerbiage}
         />
       )}
     </Flex>
   );
 };
 
-const PrintButton = () => {
+const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   return (
     // TODO: make the path route to the correct report type (in the future)
@@ -120,6 +126,7 @@ const ReadyToSubmit = ({
   onClose,
   submitting,
   isPermittedToSubmit,
+  reviewVerbiage,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
@@ -137,7 +144,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        {pdfExport && <PrintButton />}
+        {pdfExport && <PrintButton reviewVerbiage={reviewVerbiage} />}
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -168,6 +175,7 @@ interface ReadyToSubmitProps {
   onClose: Function;
   submitting?: boolean;
   isPermittedToSubmit?: boolean;
+  reviewVerbiage: AnyObject;
 }
 
 export const SuccessMessageGenerator = (
@@ -188,6 +196,7 @@ export const SuccessMessage = ({
   programName,
   date,
   submittedBy,
+  reviewVerbiage,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
@@ -218,7 +227,7 @@ export const SuccessMessage = ({
       </Box>
       {pdfExport && (
         <Box sx={sx.infoTextBox}>
-          <PrintButton />
+          <PrintButton reviewVerbiage={reviewVerbiage} />
         </Box>
       )}
     </Flex>
@@ -229,6 +238,7 @@ interface SuccessMessageProps {
   programName: string;
   date?: number;
   submittedBy?: string;
+  reviewVerbiage: AnyObject;
 }
 
 const sx = {
