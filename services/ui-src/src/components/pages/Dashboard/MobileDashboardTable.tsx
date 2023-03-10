@@ -186,7 +186,6 @@ const AdminArchiveButton = ({
 
 interface AdminActionButtonProps {
   report: ReportMetadataShape;
-  reportType: string;
   reportId: string | undefined;
   archiveReport?: Function;
   archiving?: boolean;
