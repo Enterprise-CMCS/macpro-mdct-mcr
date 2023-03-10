@@ -21,6 +21,7 @@ export const error = {
   // admin action errors
   ALREADY_ARCHIVED: "Cannot update archived report.",
   ALREADY_LOCKED: "Cannot update locked report.",
+  REPORT_INCOMPLETE: "Cannot submit incomplete form.",
 };
 
 export const buckets = {

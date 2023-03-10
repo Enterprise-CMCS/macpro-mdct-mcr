@@ -35,6 +35,22 @@ async function unlockReport(reportKeys: ReportKeys) {
   return response;
 }
 
+async function submitReport(reportKeys: ReportKeys) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+  };
+  const { reportType, state, id } = reportKeys;
+
+  updateTimeout();
+  const response = await API.post(
+    "mcr",
+    `/reports/submit/${reportType}/${state}/${id}`,
+    request
+  );
+  return response;
+}
+
 async function getReport(reportKeys: ReportKeys) {
   const requestHeaders = await getRequestHeaders();
   const request = {
@@ -110,4 +126,5 @@ export {
   postReport,
   putReport,
   getReportsByState,
+  submitReport,
 };
