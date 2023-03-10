@@ -11,11 +11,6 @@ import { getRouteStatus } from "utils";
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle.png";
 
-/*
- * Other possible TODO:
- * See how much effort it is to used the Table Component rather than using our own here
- * The Table Component is found at ui-src/src/components/tables/Table
- */
 export const StatusTable = () => {
   const { report } = useContext(ReportContext);
   const rowDepth = 1;
@@ -73,11 +68,6 @@ const TableRow = ({ page, depth }: RowProps) => {
 
       <Td>
         {!children && (
-          /*
-           * Todo: Write a test to make sure this navigates to the page its supposed to
-           * TemplateCard component has this as an example
-           * TemplateCard is found under ui-src/src/components/cards/TemplateCard
-           */
           <Button
             sx={sx.enterButton}
             variant="outline"
