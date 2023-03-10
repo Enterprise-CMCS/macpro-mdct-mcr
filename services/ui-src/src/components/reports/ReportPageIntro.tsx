@@ -1,12 +1,15 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { SpreadsheetWidget } from "components";
+import { FormIntroAccordion, SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
+// verbiage
+import accordionVerbiage from "../../verbiage/pages/mlr/mlr-accordions";
 
 export const ReportPageIntro = ({ text, ...props }: Props) => {
   const { section, subsection, info, spreadsheet } = text;
+  const { formIntro } = accordionVerbiage;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -15,6 +18,7 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
+      {props.accordion && <FormIntroAccordion verbiage={formIntro.accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget description={spreadsheet} />

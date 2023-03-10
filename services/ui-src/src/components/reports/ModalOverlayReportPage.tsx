@@ -1,16 +1,9 @@
 import { useContext } from "react";
 // components
 import { Box, Button, Heading } from "@chakra-ui/react";
-import {
-  FormIntroAccordion,
-  ReportContext,
-  ReportPageFooter,
-  ReportPageIntro,
-} from "components";
+import { ReportContext, ReportPageFooter, ReportPageIntro } from "components";
 // utils
 import { ModalOverlayReportPageShape } from "types";
-// verbiage
-import accordion from "../../verbiage/pages/mlr/mlr-accordions";
 
 export const ModalOverlayReportPage = ({ route }: Props) => {
   const { verbiage } = route;
@@ -24,7 +17,9 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
 
   return (
     <Box data-testid="modal-overlay-report-page">
-      {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
+      {verbiage.intro && (
+        <ReportPageIntro text={verbiage.intro} accordion={true} />
+      )}
       <Box>
         <Button sx={sx.topAddEntityButton}>
           {verbiage.addEntityButtonText}
@@ -34,7 +29,6 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
             {dashTitle}
           </Heading>
         )}
-        <FormIntroAccordion verbiage={accordion} />
         {reportFieldDataEntities.length > 1 && (
           <Button sx={sx.bottomAddEntityButton}>
             {verbiage.addEntityButtonText}
