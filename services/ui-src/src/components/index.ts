@@ -90,6 +90,8 @@ export { DrawerReportPage } from "./reports/DrawerReportPage";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
+// statusing
+export { StatusTable } from "./statusing/StatusTable";
 // tables
 export { Table } from "./tables/Table";
 // widgets

@@ -11,9 +11,9 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, ReportContext } from "components";
+import { Modal, ReportContext, StatusTable } from "components";
 // types
-import { ReportStatus } from "types";
+import { AlertTypes, ReportStatus } from "types";
 // utils
 import { useUser, utcDateToReadableDate } from "utils";
 // verbiage
@@ -21,17 +21,24 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 import printIcon from "assets/icons/icon_print.png";
+import { Alert } from "components/alerts/Alert";
 
 export const McparReviewSubmitPage = () => {
   const { report, fetchReport, submitReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   // get user information
   const { state, userIsStateUser, userIsStateRep } = useUser().user ?? {};
 
-  const isPermittedToSubmit = userIsStateUser || userIsStateRep;
+  const isPermittedToSubmit =
+    (userIsStateUser || userIsStateRep) &&
+    report?.status !== "Not started" &&
+    !hasError;
+
+  const { alertBox } = reviewVerbiage;
 
   // get report type, state, and id from context or storage
   const reportType =
@@ -46,6 +53,8 @@ export const McparReviewSubmitPage = () => {
   };
 
   useEffect(() => {
+    setHasError(!!document.querySelector("img[alt='Error notification']"));
+
     if (report?.id) {
       fetchReport(reportKeys);
     }
@@ -56,36 +65,48 @@ export const McparReviewSubmitPage = () => {
     if (isPermittedToSubmit) {
       await submitReport(reportKeys);
     }
+    await fetchReport(reportKeys);
     setSubmitting(false);
     onClose();
   };
 
   return (
-    <Flex sx={sx.pageContainer} data-testid="review-submit-page">
-      {report?.status === ReportStatus.SUBMITTED ? (
-        <SuccessMessage
-          programName={report.programName}
-          date={report?.submittedOnDate}
-          submittedBy={report?.submittedBy}
-        />
-      ) : (
-        <ReadyToSubmit
-          submitForm={submitForm}
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          submitting={submitting}
-          isPermittedToSubmit={isPermittedToSubmit}
-        />
+    <>
+      {(hasError || report?.status === "Not started") && (
+        <Box sx={sx.alert}>
+          <Alert
+            title={alertBox.title}
+            status={AlertTypes.ERROR}
+            description={alertBox.description}
+          />
+        </Box>
       )}
-    </Flex>
+      <Flex sx={sx.pageContainer} data-testid="review-submit-page">
+        {report?.status === ReportStatus.SUBMITTED ? (
+          <SuccessMessage
+            programName={report.programName}
+            date={report?.submittedOnDate}
+            submittedBy={report?.submittedBy}
+          />
+        ) : (
+          <ReadyToSubmit
+            submitForm={submitForm}
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            submitting={submitting}
+            hasStarted={report?.status !== "Not started"}
+            isPermittedToSubmit={isPermittedToSubmit}
+          />
+        )}
+      </Flex>
+    </>
   );
 };
 
 const PrintButton = () => {
   const { print } = reviewVerbiage;
   return (
-    // TODO: make the path route to the correct report type (in the future)
     <Button
       as={RouterLink}
       to="/mcpar/export"
@@ -105,6 +126,7 @@ const ReadyToSubmit = ({
   onOpen,
   onClose,
   submitting,
+  hasStarted,
   isPermittedToSubmit,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
@@ -121,6 +143,8 @@ const ReadyToSubmit = ({
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
           <Text>{intro.info}</Text>
         </Box>
+
+        <Box>{hasStarted && <StatusTable />}</Box>
       </Box>
       <Flex sx={sx.submitContainer}>
         {pdfExport && <PrintButton />}
@@ -153,6 +177,7 @@ interface ReadyToSubmitProps {
   onOpen: Function;
   onClose: Function;
   submitting?: boolean;
+  hasStarted?: boolean;
   isPermittedToSubmit?: boolean;
 }
 
@@ -268,5 +293,8 @@ const sx = {
   submitContainer: {
     width: "100%",
     justifyContent: "space-between",
+  },
+  alert: {
+    marginBottom: "2rem",
   },
 };

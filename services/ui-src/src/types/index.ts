@@ -159,6 +159,11 @@ export interface ReportMetadataShape extends ReportKeys {
 export interface ReportShape extends ReportMetadataShape {
   formTemplate: ReportJson;
   fieldData: AnyObject;
+  completionStatus?: CompletionData;
+}
+
+export interface CompletionData {
+  [key: string]: boolean | CompletionData;
 }
 
 export interface ReportContextMethods {
@@ -183,6 +188,13 @@ export enum ReportStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
   SUBMITTED = "Submitted",
+}
+
+export interface ReportPageProgress {
+  name: string;
+  path: string;
+  children?: ReportPageProgress[];
+  status?: boolean;
 }
 
 // FORM & FIELD STRUCTURE

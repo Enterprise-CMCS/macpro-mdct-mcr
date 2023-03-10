@@ -161,6 +161,15 @@ When("I try to submit an incomplete MCPAR program", () => {
   cy.get('a[href*="review-and-submit"]').click();
 });
 
+Then("there is a submission alert", () => {
+  cy.get('div[role*="alert"]').should("exist");
+  cy.contains("Your form is not ready for submission").should("be.visible");
+});
+
+Then("there are errors in the status", () => {
+  cy.get('img[alt="Error notification"]').should("be.visible");
+});
+
 Then("incomplete program cannot submit", () => {
   //Submit the program
   cy.get('button:contains("Submit MCPAR")').should("be.disabled");
