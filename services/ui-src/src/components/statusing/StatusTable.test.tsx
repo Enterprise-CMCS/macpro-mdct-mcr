@@ -10,6 +10,13 @@ import {
   mockReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import userEvent from "@testing-library/user-event";
+
+const mockUseNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  useNavigate: () => mockUseNavigate,
+}));
 
 const mockInProgressReport = {
   ...mockReport,
@@ -82,6 +89,27 @@ describe("Status Table Functionality", () => {
       name: "Edit Program Edit",
     });
     expect(editButtons).toHaveLength(3);
+  });
+
+  test("should be able to navigate to a page on the form by clicking edit", async () => {
+    render(McparReviewSubmitPage_InProgress);
+    // Name value is the img's alt tag + the text inside the button
+    const editButtons = screen.getAllByRole("button", {
+      name: "Edit Program Edit",
+    });
+    expect(editButtons).toHaveLength(3);
+
+    await userEvent.click(editButtons[0]);
+    const expectedRoute1 = "/mock/mock-route-1";
+    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute1);
+
+    await userEvent.click(editButtons[1]);
+    const expectedRoute2 = "/mock/mock-route-2a";
+    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute2);
+
+    await userEvent.click(editButtons[2]);
+    const expectedRoute3 = "/mock/mock-route-2b";
+    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute3);
   });
 });
 
