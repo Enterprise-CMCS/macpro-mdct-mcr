@@ -41,14 +41,16 @@ export const McparReviewSubmitPage = () => {
 
   const { alertBox } = reviewVerbiage;
 
-  // get state and id from context or storage
+  // get report type, state, and id from context or storage
+  const reportType =
+    report?.reportType || localStorage.getItem("selectedReportType");
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
 
   const reportKeys = {
+    reportType: reportType,
     state: reportState,
     id: reportId,
-    reportType: report?.reportType,
   };
 
   useEffect(() => {
@@ -77,6 +79,7 @@ export const McparReviewSubmitPage = () => {
         },
       });
     }
+    await fetchReport(reportKeys);
     setSubmitting(false);
     onClose();
   };
