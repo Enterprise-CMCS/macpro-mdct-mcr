@@ -63,5 +63,8 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+    b: {
+      color: "palette.success_darkest",
+    },
   },
 };
