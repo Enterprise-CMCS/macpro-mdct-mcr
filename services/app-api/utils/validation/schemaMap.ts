@@ -35,7 +35,7 @@ export const number = () =>
   string().test({
     message: error.INVALID_NUMBER_OR_NA,
     test: (value) => {
-      const validNumberRegex = /^[0-9][0-9,.]*$/;
+      const validNumberRegex = /^\-?\.?[0-9][0-9,.]*$/;
       if (value) {
         const isValidStringValue = validNAValues.includes(value);
         const isValidNumberValue = validNumberRegex.test(value);
