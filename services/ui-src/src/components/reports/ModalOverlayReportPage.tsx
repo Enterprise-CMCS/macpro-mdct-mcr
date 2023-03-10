@@ -25,20 +25,15 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
           accordion={accordionVerbiage.formIntro}
         />
       )}
-      <Box>
-        <Button sx={sx.topAddEntityButton}>
-          {verbiage.addEntityButtonText}
-        </Button>
-        {reportFieldDataEntities.length !== 0 && (
-          <Heading as="h3" sx={sx.dashboardTitle}>
-            {dashTitle}
-          </Heading>
+      {/* TODO: Table for MLR reporting programs */}
+      <Box sx={sx.dashboardBox}>
+        <Heading as="h3" sx={sx.dashboardTitle}>
+          {dashTitle}
+        </Heading>
+        {reportFieldDataEntities.length === 0 && (
+          <Box>{verbiage.emptyDashboardText}</Box>
         )}
-        {reportFieldDataEntities.length > 1 && (
-          <Button sx={sx.bottomAddEntityButton}>
-            {verbiage.addEntityButtonText}
-          </Button>
-        )}
+        <Button sx={sx.addEntityButton}>{verbiage.addEntityButtonText}</Button>
       </Box>
       <ReportPageFooter />
     </Box>
@@ -50,13 +45,16 @@ interface Props {
 }
 
 const sx = {
+  dashboardBox: { textAlign: "center" },
   dashboardTitle: {
     marginBottom: "1.25rem",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",
+    textAlign: "left",
   },
-  topAddEntityButton: {
+
+  addEntityButton: {
     marginTop: "1.5rem",
     marginBottom: "2rem",
   },
