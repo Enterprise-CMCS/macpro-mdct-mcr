@@ -4,12 +4,9 @@ import { FormIntroAccordion, SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
-// verbiage
-import accordionVerbiage from "../../verbiage/pages/mlr/mlr-accordions";
 
-export const ReportPageIntro = ({ text, ...props }: Props) => {
+export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
   const { section, subsection, info, spreadsheet } = text;
-  const { formIntro } = accordionVerbiage;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -18,7 +15,7 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {props.accordion && <FormIntroAccordion verbiage={formIntro.accordion} />}
+      {accordion && <FormIntroAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget description={spreadsheet} />
@@ -31,6 +28,7 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
 
 interface Props {
   text: AnyObject;
+  accordion?: AnyObject;
   [key: string]: any;
 }
 
