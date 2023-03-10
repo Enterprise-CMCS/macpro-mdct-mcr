@@ -142,29 +142,35 @@ export type State =
 
 export interface ReportMetadata {
   reportType: string;
-  submittedBy: string;
+  submittedBy?: string;
   createdAt: number;
-  reportName: string;
   lastAltered: number;
   state: State;
   id: string;
-  submittedOnDate: string;
+  submittedOnDate?: string;
   fieldDataId: string;
   formTemplateId: string;
   lastAlteredBy: string;
   status: string;
+  isComplete: boolean;
 }
 
 export interface MLRReportMetadata extends ReportMetadata {
   locked: boolean;
   reportType: "MLR";
+  submissionName: string;
   submissionCount: number;
   previousRevisions: string[];
 }
 
 export interface MCPARReportMetadata extends ReportMetadata {
+  programName: string;
   archived: boolean;
   reportType: "MCPAR";
+  reportingPeriodStartDate: number;
+  reportingPeriodEndDate: number;
+  dueDate: number;
+  combinedData: boolean;
 }
 
 /**

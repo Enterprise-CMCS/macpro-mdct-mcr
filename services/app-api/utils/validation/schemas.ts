@@ -12,4 +12,5 @@ export const metadataValidationSchema = yup.object().shape({
   lastAlteredBy: yup.string(),
   submittedBy: yup.string(),
   submittedOnDate: yup.string(),
+  completionStatus: yup.mixed(),
 });
