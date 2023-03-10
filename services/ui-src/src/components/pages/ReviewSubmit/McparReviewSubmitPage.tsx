@@ -15,7 +15,7 @@ import { Modal, ReportContext, StatusTable } from "components";
 // types
 import { AlertTypes, ReportStatus } from "types";
 // utils
-import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
+import { useUser, utcDateToReadableDate } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
@@ -31,8 +31,7 @@ export const McparReviewSubmitPage = () => {
   const [hasError, setHasError] = useState<boolean>(false);
 
   // get user information
-  const { email, full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { state, userIsStateUser, userIsStateRep } = useUser().user ?? {};
 
   const isPermittedToSubmit =
     (userIsStateUser || userIsStateRep) &&
@@ -64,20 +63,7 @@ export const McparReviewSubmitPage = () => {
   const submitForm = async () => {
     setSubmitting(true);
     if (isPermittedToSubmit) {
-      const submissionDate = Date.now();
-      await submitReport(reportKeys, {
-        metadata: {
-          status: ReportStatus.SUBMITTED,
-          lastAlteredBy: full_name,
-          submittedBy: full_name,
-          submittedOnDate: submissionDate,
-        },
-        fieldData: {
-          submitterName: full_name,
-          submitterEmailAddress: email,
-          reportSubmissionDate: convertDateUtcToEt(submissionDate),
-        },
-      });
+      await submitReport(reportKeys);
     }
     await fetchReport(reportKeys);
     setSubmitting(false);
