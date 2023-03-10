@@ -152,8 +152,7 @@ const traverseRoute = (route) => {
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
     completeDrawerForm(route.drawerForm);
 
-    //Sometimes the button is "Continue" sometimes it is "Save & Continue", this will click either.
-    cy.get('button:contains("ontinue")').focus().click();
+    cy.get('button:contains("Continue")').focus().click();
   }
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
