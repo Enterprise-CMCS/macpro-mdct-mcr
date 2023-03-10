@@ -114,6 +114,7 @@ export const AddEditReportModal = ({
           reportType,
           status: ReportStatus.NOT_STARTED,
           locked: reportType === "MLR" ? false : undefined,
+          isComplete: false,
         },
         fieldData: {
           ...dataToWrite.fieldData,
