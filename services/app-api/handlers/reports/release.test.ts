@@ -4,7 +4,7 @@ import { StatusCodes } from "../../utils/types/types";
 import {
   mockDocumentClient,
   mockDynamoDataMLRLocked,
-  mockReport,
+  mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
 import { releaseReport } from "./release";
 import KSUID from "ksuid";
@@ -26,7 +26,7 @@ const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { reportType: "MLR", state: "AB", id: "testReportId" },
-  body: JSON.stringify(mockReport),
+  body: JSON.stringify(mockDynamoDataMLRComplete),
 };
 
 const releaseEvent: APIGatewayProxyEvent = {

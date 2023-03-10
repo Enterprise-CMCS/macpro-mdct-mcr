@@ -17,7 +17,7 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  unlockReport,
+  releaseReport,
   unlocking,
   sxOverride,
   isStateLevelUser,
@@ -63,7 +63,7 @@ export const DashboardTable = ({
             reportType={reportType}
             archiveReport={archiveReport}
             archiving={archiving}
-            unlockReport={unlockReport}
+            releaseReport={releaseReport}
             unlocking={unlocking}
             reportId={reportId}
             sxOverride={sxOverride}
@@ -85,7 +85,7 @@ interface DashboardTableProps {
   archiving: boolean;
   isAdmin: boolean;
   isStateLevelUser: boolean;
-  unlockReport?: Function | undefined;
+  releaseReport?: Function | undefined;
   unlocking?: boolean | undefined;
   sxOverride: AnyObject;
 }
@@ -131,7 +131,7 @@ const AdminActionButtons = ({
   archiveReport,
   archiving,
   unlocking,
-  unlockReport,
+  releaseReport,
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
@@ -142,7 +142,7 @@ const AdminActionButtons = ({
             variant="link"
             disabled={report.locked === false}
             sx={sxOverride.adminActionButton}
-            onClick={() => unlockReport!(report)}
+            onClick={() => releaseReport!(report)}
           >
             {unlocking && reportId === report.id ? (
               <Spinner size="small" />
@@ -179,7 +179,7 @@ interface AdminActionButtonProps {
   archiveReport: Function;
   archiving: boolean;
   unlocking?: boolean;
-  unlockReport?: Function;
+  releaseReport?: Function;
   mobile?: boolean;
   sxOverride: AnyObject;
 }

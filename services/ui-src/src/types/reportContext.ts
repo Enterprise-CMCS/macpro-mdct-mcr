@@ -35,7 +35,7 @@ export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
   archiveReport: Function;
-  unlockReport?: Function;
+  releaseReport?: Function;
   submitReport: Function;
   createReport: Function;
   updateReport: Function;

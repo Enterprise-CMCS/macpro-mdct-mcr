@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 // utils
 import {
   archiveReport as archiveReportRequest,
-  unlockReport as unlockReportRequest,
+  releaseReport as unlockReportRequest,
   submitReport as submitReportRequest,
   getLocalHourMinuteTime,
   getReport,
@@ -28,7 +28,7 @@ export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
   archiveReport: Function,
-  unlockReport: Function,
+  releaseReport: Function,
   createReport: Function,
   fetchReport: Function,
   updateReport: Function,
@@ -121,7 +121,7 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
-  const unlockReport = async (reportKeys: ReportKeys) => {
+  const releaseReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await unlockReportRequest(reportKeys);
       setReport(result);
@@ -165,7 +165,7 @@ export const ReportProvider = ({ children }: Props) => {
       // report
       report,
       archiveReport,
-      unlockReport,
+      releaseReport,
       fetchReport,
       createReport,
       updateReport,

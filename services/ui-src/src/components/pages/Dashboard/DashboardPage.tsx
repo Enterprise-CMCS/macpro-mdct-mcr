@@ -46,7 +46,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     clearReportSelection,
     setReportSelection,
     archiveReport,
-    unlockReport,
+    releaseReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -181,7 +181,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         state: adminSelectedState,
         id: report.id,
       };
-      await unlockReport!(reportKeys);
+      await releaseReport!(reportKeys);
       await fetchReportsByState(reportType, activeState);
       setReportId(undefined);
       setUnlocking(false);
@@ -212,7 +212,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              unlockReport={toggleReportLockStatus}
+              releaseReport={toggleReportLockStatus}
               unlocking={unlocking}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
@@ -228,7 +228,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              unlockReport={toggleReportLockStatus}
+              releaseReport={toggleReportLockStatus}
               unlocking={unlocking}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}

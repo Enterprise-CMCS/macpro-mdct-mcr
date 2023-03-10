@@ -19,7 +19,7 @@ async function archiveReport(reportKeys: ReportKeys) {
   return response;
 }
 
-async function unlockReport(reportKeys: ReportKeys) {
+async function releaseReport(reportKeys: ReportKeys) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -121,7 +121,7 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
 
 export {
   archiveReport,
-  unlockReport,
+  releaseReport,
   getReport,
   postReport,
   putReport,
