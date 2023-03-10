@@ -19,8 +19,8 @@ export const StatusTable = () => {
       <Table>
         <Tbody>
           <Tr>
-            <Td>Section</Td>
-            <Td>Status</Td>
+            <Td sx={sx.tableHeader}>Section</Td>
+            <Td sx={sx.tableHeader}>Status</Td>
             <Td></Td>
           </Tr>
           {getRouteStatus(report).map((page: ReportPageProgress) => {
@@ -55,7 +55,7 @@ const TableRow = ({ page, depth }: RowProps) => {
       {depth == 1 ? (
         <Td sx={sx.parent}>{name}</Td>
       ) : (
-        <Td pl={`${2.5 * depth}rem`}>{name}</Td>
+        <Td pl={`${1.25 * depth}rem`}>{name}</Td>
       )}
       <Td sx={sx.status}>
         {!status && status !== undefined && (
@@ -107,6 +107,16 @@ const sx = {
           textAlign: "right",
         },
       },
+    },
+  },
+  tableHeader: {
+    fontSize: "md",
+    fontWeight: "semibold",
+    textTransform: "none",
+    letterSpacing: "normal",
+    color: "palette.gray_medium",
+    ".mobile &": {
+      fontSize: "sm",
     },
   },
   parent: {
