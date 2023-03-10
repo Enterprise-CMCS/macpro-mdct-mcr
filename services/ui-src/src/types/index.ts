@@ -161,6 +161,7 @@ export interface ReportShape extends ReportMetadataShape {
   fieldData: AnyObject;
   completionStatus?: CompletionData;
 }
+
 export interface CompletionData {
   [key: string]: boolean | CompletionData;
 }
