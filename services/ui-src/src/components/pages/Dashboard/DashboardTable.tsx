@@ -17,7 +17,7 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  unlockReport,
+  releaseReport,
   unlocking,
   sxOverride,
   isStateLevelUser,
@@ -37,7 +37,9 @@ export const DashboardTable = ({
           <Td></Td>
         )}
         {/* Report Name */}
-        <Td sx={sxOverride.programNameText}>{report.programName}</Td>
+        <Td sx={sxOverride.programNameText}>
+          {report.programName ?? report.submissionName}
+        </Td>
         {/* Date Fields */}
         <DateFields report={report} reportType={reportType} />
         {/* Last Altered By */}
@@ -64,7 +66,7 @@ export const DashboardTable = ({
                 report={report}
                 reportType={reportType}
                 reportId={reportId}
-                unlockReport={unlockReport}
+                releaseReport={releaseReport}
                 unlocking={unlocking}
                 sxOverride={sxOverride}
               />
@@ -75,7 +77,7 @@ export const DashboardTable = ({
               reportId={reportId}
               archiveReport={archiveReport}
               archiving={archiving}
-              unlockReport={unlockReport}
+              releaseReport={releaseReport}
               unlocking={unlocking}
               sxOverride={sxOverride}
             />
@@ -97,7 +99,7 @@ interface DashboardTableProps {
   archiving: boolean;
   isAdmin: boolean;
   isStateLevelUser: boolean;
-  unlockReport?: Function | undefined;
+  releaseReport?: Function | undefined;
   unlocking?: boolean | undefined;
   sxOverride: AnyObject;
 }
@@ -140,7 +142,7 @@ const AdminUnlockButton = ({
   report,
   reportId,
   unlocking,
-  unlockReport,
+  releaseReport,
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
@@ -149,7 +151,7 @@ const AdminUnlockButton = ({
         variant="link"
         disabled={report.locked === false}
         sx={sxOverride.adminActionButton}
-        onClick={() => unlockReport!(report)}
+        onClick={() => releaseReport!(report)}
       >
         {unlocking && reportId === report.id ? (
           <Spinner size="small" />
@@ -194,7 +196,7 @@ interface AdminActionButtonProps {
   archiveReport?: Function;
   archiving?: boolean;
   unlocking?: boolean;
-  unlockReport?: Function;
+  releaseReport?: Function;
   sxOverride: AnyObject;
 }
 

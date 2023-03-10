@@ -15,7 +15,7 @@ export const MobileDashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  unlockReport,
+  releaseReport,
   unlocking,
   isStateLevelUser,
   isAdmin,
@@ -79,7 +79,7 @@ export const MobileDashboardTable = ({
                   <AdminUnlockButton
                     report={report}
                     reportId={reportId}
-                    unlockReport={unlockReport}
+                    releaseReport={releaseReport}
                     unlocking={unlocking}
                     sxOverride={sxOverride}
                   />
@@ -108,7 +108,7 @@ interface MobileDashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
-  unlockReport?: Function | undefined;
+  releaseReport?: Function | undefined;
   unlocking?: boolean | undefined;
   isAdmin: boolean;
   isStateLevelUser: boolean;
@@ -141,7 +141,7 @@ const AdminUnlockButton = ({
   report,
   reportId,
   unlocking,
-  unlockReport,
+  releaseReport,
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
@@ -149,7 +149,7 @@ const AdminUnlockButton = ({
       variant="link"
       disabled={report.locked === false}
       sx={sxOverride.adminActionButton}
-      onClick={() => unlockReport!(report)}
+      onClick={() => releaseReport!(report)}
     >
       {unlocking && reportId === report.id ? (
         <Spinner size="small" />
@@ -190,7 +190,7 @@ interface AdminActionButtonProps {
   archiveReport?: Function;
   archiving?: boolean;
   unlocking?: boolean;
-  unlockReport?: Function;
+  releaseReport?: Function;
   sxOverride: AnyObject;
 }
 
