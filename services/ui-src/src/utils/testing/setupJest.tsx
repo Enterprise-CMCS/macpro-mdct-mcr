@@ -372,6 +372,7 @@ export const mockModalDrawerReportPageVerbiage = {
 export const mockModalOverlayReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
+  countEntitiesInTitle: true,
   addEntityButtonText: "Mock add entity button text",
   emptyDashboardText: "Mock empty dashboard text",
 };
