@@ -218,6 +218,15 @@ export const mockModalFormField = {
   },
 };
 
+export const mockModalOverlayFormField = {
+  id: "mock-modal-overlay-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock modal overlay text field",
+  },
+};
+
 export const mockDrawerFormField = {
   id: "mock-drawer-text-field",
   type: "text",
@@ -267,6 +276,11 @@ export const mockModalForm = {
 export const mockDrawerForm = {
   id: "mock-drawer-form-id",
   fields: [mockDrawerFormField],
+};
+
+export const mockModalOverlayForm = {
+  id: "mock-modal-overlay-form-id",
+  fields: [mockModalOverlayFormField],
 };
 
 export const mockPlanFilledForm = {
@@ -355,6 +369,13 @@ export const mockModalDrawerReportPageVerbiage = {
   drawerTitle: "Mock drawer title",
 };
 
+export const mockModalOverlayReportPageVerbiage = {
+  intro: mockVerbiageIntro,
+  dashboardTitle: "Mock dashboard title",
+  addEntityButtonText: "Mock add entity button text",
+  emptyDashboardText: "Mock empty dashboard text",
+};
+
 export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
@@ -363,6 +384,15 @@ export const mockModalDrawerReportPageJson = {
   verbiage: mockModalDrawerReportPageVerbiage,
   modalForm: mockModalForm,
   drawerForm: mockDrawerForm,
+};
+
+export const mockModalOverlayReportPageJson = {
+  name: "mock-route-2c",
+  path: "/mock/mock-route-2c",
+  pageType: "modalOverlay",
+  entityType: "program",
+  verbiage: mockModalOverlayReportPageVerbiage,
+  modalForm: mockModalForm,
 };
 
 export const mockReviewSubmitPageJson = {
@@ -380,6 +410,7 @@ export const mockReportRoutes = [
     path: "/mock/mock-route-2",
     children: [mockDrawerReportPageJson, mockModalDrawerReportPageJson],
   },
+  mockModalOverlayReportPageJson,
   mockReviewSubmitPageJson,
 ];
 
@@ -387,6 +418,7 @@ export const mockFlattenedReportRoutes = [
   mockStandardReportPageJson,
   mockDrawerReportPageJson,
   mockModalDrawerReportPageJson,
+  mockModalOverlayReportPageJson,
   mockReviewSubmitPageJson,
 ];
 
