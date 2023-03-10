@@ -2,7 +2,7 @@ import { useContext } from "react";
 // components
 import { Box, Button, Heading } from "@chakra-ui/react";
 import {
-  FormIntroAccordion,
+  //   FormIntroAccordion,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
@@ -32,7 +32,7 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
             {dashTitle}
           </Heading>
         )}
-        <FormIntroAccordion verbiage={verbiage.accordion} />
+        {/* <FormIntroAccordion verbiage={verbiage.accordion!} /> */}
         {reportFieldDataEntities.length > 1 && (
           <Button sx={sx.bottomAddEntityButton}>
             {verbiage.addEntityButtonText}
