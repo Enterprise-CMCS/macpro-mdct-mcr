@@ -141,6 +141,7 @@ export type State =
   | "WY";
 
 export interface ReportMetadata {
+  archived: boolean;
   reportType: string;
   submittedBy?: string;
   createdAt: number;
@@ -165,7 +166,6 @@ export interface MLRReportMetadata extends ReportMetadata {
 
 export interface MCPARReportMetadata extends ReportMetadata {
   programName: string;
-  archived: boolean;
   reportType: "MCPAR";
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 // utils
 import {
   archiveReport as archiveReportRequest,
-  releaseReport as unlockReportRequest,
+  releaseReport as releaseReportRequest,
   submitReport as submitReportRequest,
   getLocalHourMinuteTime,
   getReport,
@@ -123,7 +123,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const releaseReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await unlockReportRequest(reportKeys);
+      const result = await releaseReportRequest(reportKeys);
       setReport(result);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
