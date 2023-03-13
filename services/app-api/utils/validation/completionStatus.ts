@@ -98,7 +98,7 @@ export const calculateCompletionStatus = async (
             if (!areAllFormsComplete) break;
           }
         } else {
-          areAllFormsComplete &&= !formTemplate.entities[entityType].required;
+          areAllFormsComplete &&= formTemplate.entities && !formTemplate.entities[entityType]?.required;
         }
       }
       // Break if the form is not complete
@@ -135,7 +135,7 @@ export const calculateCompletionStatus = async (
     };
 
     // Iterate over all fields in form
-    if (nestedFormTemplate?.fields) {
+    if (nestedFormTemplate.fields) {
       for (var formField of nestedFormTemplate.fields) {
         if (formField.repeat) {
           // This is a repeated field, and must be handled differently
