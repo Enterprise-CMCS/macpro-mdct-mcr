@@ -6,7 +6,8 @@ import {
   DynamoWrite,
   isMLRReportMetadata,
   MLRReportMetadata,
-  S3Copy,
+  S3Get,
+  S3Put,
   StatusCodes,
   UserRoles,
 } from "../../utils/types/types";
@@ -100,6 +101,15 @@ export const releaseReport = handler(async (event) => {
     };
   }
 
+  const isArchived = metadata.archived;
+
+  if (isArchived) {
+    return {
+      status: StatusCodes.SERVER_ERROR,
+      body: error.ALREADY_ARCHIVED,
+    };
+  }
+
   const newFieldDataId = KSUID.randomSync().string;
 
   const previousRevisions = Array.isArray(metadata.previousRevisions)
@@ -111,6 +121,7 @@ export const releaseReport = handler(async (event) => {
     fieldDataId: newFieldDataId,
     locked: false,
     previousRevisions,
+    status: "In progress",
     submissionCount: (metadata.submissionCount += 1),
   };
 
@@ -131,17 +142,34 @@ export const releaseReport = handler(async (event) => {
   // Copy the original field data to a new location.
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
 
-  const copyObjectParameters: S3Copy = {
+  const getObjectParameters: S3Get = {
     Bucket: reportBucket,
-    CopySource: `${reportBucket}/${getFieldDataKey(
-      metadata.state,
-      metadata.fieldDataId
-    )}`,
-    Key: getFieldDataKey(metadata.state, newFieldDataId),
+    Key: getFieldDataKey(metadata.state, metadata.fieldDataId),
   };
 
   try {
-    await s3Lib.copy(copyObjectParameters);
+    const fieldData = (await s3Lib.get(getObjectParameters)) as Record<
+      string,
+      any
+    >;
+
+    const putObjectParameters: S3Put = {
+      Bucket: reportBucket,
+      Body: JSON.stringify({
+        ...fieldData,
+        versionControl: [
+          {
+            // pragma: allowlist nextline secret
+            key: "versionControl-cyUSrTH8mWdpqAKExLZAkz",
+            value: "Yes, this is a resubmission",
+          },
+        ],
+      }),
+      ContentType: "application/json",
+      Key: getFieldDataKey(metadata.state, newFieldDataId),
+    };
+
+    await s3Lib.put(putObjectParameters);
   } catch (err) {
     return {
       status: StatusCodes.SERVER_ERROR,

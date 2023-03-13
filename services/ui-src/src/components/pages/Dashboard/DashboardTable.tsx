@@ -149,7 +149,7 @@ const AdminReleaseButton = ({
     <Td>
       <Button
         variant="link"
-        disabled={report.locked === false}
+        disabled={report.locked === false || report.archived === true}
         sx={sxOverride.adminActionButton}
         onClick={() => releaseReport!(report)}
       >
