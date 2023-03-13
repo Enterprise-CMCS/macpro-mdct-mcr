@@ -61,7 +61,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   >(undefined);
   const [reportId, setReportId] = useState<string | undefined>(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
-  const [unlocking, setUnlocking] = useState<boolean>(false);
+  const [releasing, setReleaseing] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
@@ -175,7 +175,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   const toggleReportLockStatus = async (report: ReportShape) => {
     if (userIsAdmin) {
       setReportId(report.id);
-      setUnlocking(true);
+      setReleaseing(true);
       const reportKeys = {
         reportType: reportType,
         state: adminSelectedState,
@@ -184,7 +184,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       await releaseReport!(reportKeys);
       await fetchReportsByState(reportType, activeState);
       setReportId(undefined);
-      setUnlocking(false);
+      setReleaseing(false);
     }
   };
 
@@ -213,7 +213,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
               releaseReport={toggleReportLockStatus}
-              unlocking={unlocking}
+              releasing={releasing}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}
@@ -229,7 +229,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
               releaseReport={toggleReportLockStatus}
-              unlocking={unlocking}
+              releasing={releasing}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}
