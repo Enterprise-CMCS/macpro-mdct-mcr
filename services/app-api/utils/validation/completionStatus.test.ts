@@ -30,6 +30,48 @@ describe("Completion Status Tests", () => {
     });
   });
   describe("Test Completion Status of Report", () => {
+    const entitiesRoutes = [
+      {
+        name: "A: Program Information",
+        path: "/mcpar/program-information",
+        children: [
+          {
+            name: "III: Encounter Data Report",
+            path: "/mcpar/plan-level-indicators/encounter-data-report",
+            pageType: "drawer",
+            entityType: "plans",
+            verbiage: {
+              intro: {
+                section: "Section D: Plan-Level Indicators",
+                subsection: "Topic III. Encounter Data",
+                spreadsheet: "D1_Plan_Set",
+              },
+              dashboardTitle: "Report on encounter data for each plan",
+              drawerTitle: "Report encounter data for",
+              missingEntityMessage: [
+                {
+                  type: "span",
+                  content:
+                    "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. ",
+                },
+                {
+                  type: "internalLink",
+                  content: "Add Plans",
+                  props: {
+                    to: "/mcpar/program-information/add-plans",
+                  },
+                },
+              ],
+            },
+            drawerForm: {
+              id: "dedr",
+              adminDisabled: true,
+              fields: undefined,
+            },
+          },
+        ],
+      },
+    ];
     test("Basic Standard Form No Fields", async () => {
       jest.clearAllMocks();
 
@@ -98,6 +140,41 @@ describe("Completion Status Tests", () => {
         },
       });
     });
+
+    test("Null routes does not cause an exception", async () => {
+      const result = await calculateCompletionStatus({}, {});
+      expect(result).toMatchObject({});
+    });
+
+    test("Missing entities does not cause an exception", async () => {
+      const result = await calculateCompletionStatus(
+        {},
+        { routes: entitiesRoutes }
+      );
+      expect(result).toMatchObject({});
+    });
+    test("Incomplete entities does not cause an exception", async () => {
+      const result = await calculateCompletionStatus(
+        {},
+        { entities: {}, routes: entitiesRoutes }
+      );
+      expect(result).toMatchObject({});
+    });
+
+    test("Missing nested fields does not cause an exception", async () => {
+      const result = await calculateCompletionStatus(
+        {
+          plans: [
+            {
+              id: "cd432-070f-0b5b-4cfb-73c12e6f45",
+              name: "Dynamic Fill",
+            },
+          ],
+        },
+        { entities: { plans: { required: true } }, routes: entitiesRoutes }
+      );
+      expect(result).toMatchObject({});
+    });
   });
 
   describe("Fixture Testing", () => {
@@ -153,18 +230,5 @@ describe("Completion Status Tests", () => {
         expect(result).toMatchObject(expectedResult);
       });
     });
-  });
-  test.skip("Fixture Testbed", async () => {
-    //TODO: Skip this when fixtures are done
-    const run = {
-      description: "Incomplete MCPAR Report due to plan with no entities",
-      fixture: "mcpar-incomplete-plan-noentities",
-      formTemplate: "mcpar-template",
-    };
-    const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
-    const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
-    const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject(expectedResult);
   });
 });
