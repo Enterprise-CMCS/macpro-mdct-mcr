@@ -87,11 +87,63 @@
                   "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /><br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
                   "choices": [
                     {
-                      "id": "Y",
-                      "label": "Yes, this is a resubmission"
+                      "id": "cyUSrTH8mWdpqAKExLZAkz",
+                      "label": "Yes, this is a resubmission",
+                      "children": [
+                        {
+                          "id": "versionControlDescription",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "versionControl"
+                          },
+                          "props": {
+                            "label": "H. Version control description",
+                            "hint": "Select the response(s) that best describes the changes between this version and the prior version of the annual summary MLR Report submission.",
+                            "choices": [
+                              {
+                                "id": "nwq29k5JoRaUiz7CtBZFQN",
+                                "label": "Revise state contact information"
+                              },
+                              {
+                                "id": "BezTBrQf7t3bud7LaAMLqH",
+                                "label": "Revise program or plan information"
+                              },
+                              {
+                                "id": "Kr7HesM9jxDGfP4xDVAXpm",
+                                "label": "Revise amount(s) for MLR calculation"
+                              },
+                              {
+                                "id": "2tdWvZkAkozLqZie6iwXRh",
+                                "label": "Revise amount of remittance"
+                              },
+                              {
+                                "id": "3fbB2pqVnMAQjKtFVZoSXw",
+                                "label": "Revise member months"
+                              },
+                              {
+                                "id": "4V3X7Mmz6VC89k9bgQUoLK",
+                                "label": "Other, specify",
+                                "children": [
+                                  {
+                                    "id": "versionControlDescriptionOther",
+                                    "type": "text",
+                                    "validation": {
+                                      "type": "text",
+                                      "nested": true,
+                                      "parentFieldName": "versionControlDescription"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     },
                     {
-                      "id": "N",
+                      "id": "KFCd3rfEu3eT4UFskUhDtx",
                       "label": "No, this is an initial submission"
                     }
                   ],

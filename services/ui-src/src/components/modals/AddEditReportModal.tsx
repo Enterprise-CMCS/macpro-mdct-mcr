@@ -107,7 +107,6 @@ export const AddEditReportModal = ({
         },
       });
     } else {
-      // create new report
       await createReport(reportType, activeState, {
         ...dataToWrite,
         metadata: {
@@ -123,7 +122,8 @@ export const AddEditReportModal = ({
             reportType === "MLR"
               ? [
                   {
-                    key: "versionControl-n",
+                    // pragma: allowlist nextline secret
+                    key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
                     value: "No, this is an initial submission",
                   },
                 ]
