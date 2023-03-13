@@ -17,6 +17,7 @@ jest.mock("utils/api/requestMethods/report", () => ({
   getReportsByState: jest.fn(() => {}),
   postReport: jest.fn(() => {}),
   putReport: jest.fn(() => {}),
+  submitReport: jest.fn(() => {}),
 }));
 
 jest.mock("utils/reports/routing", () => ({
@@ -44,6 +45,9 @@ const TestComponent = () => {
         data-testid="update-report-button"
       >
         Update Report
+      </button>
+      <button onClick={() => context.submitReport(mockReportKeys)}>
+        Submit Report Selection
       </button>
       <button
         onClick={() => context.fetchReportsByState("mock-type", "AB")}
@@ -131,6 +135,15 @@ describe("Test ReportProvider fetch methods", () => {
       await userEvent.click(createButton);
     });
     expect(mockReportAPI.postReport).toHaveBeenCalledTimes(1);
+  });
+
+  test("submitReport method calls API submitReport method", async () => {
+    await act(async () => {
+      const submitButton = screen.getByText("Submit Report Selection");
+      await userEvent.click(submitButton);
+    });
+    expect(mockReportAPI.submitReport).toHaveBeenCalledTimes(1);
+    expect(mockReportAPI.submitReport).toHaveBeenCalledWith(mockReportKeys);
   });
 
   test("setReportSelection sets report in storage and clearReportSelection clears report in storage", async () => {

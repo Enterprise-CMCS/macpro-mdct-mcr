@@ -1,4 +1,11 @@
-import { getReport, getReportsByState, postReport, putReport } from "./report";
+import {
+  archiveReport,
+  getReport,
+  getReportsByState,
+  postReport,
+  putReport,
+  submitReport,
+} from "./report";
 // utils
 import { mockReportKeys, mockReport } from "utils/testing/setupJest";
 import { initAuthManager } from "utils/auth/authLifecycle";
@@ -9,6 +16,10 @@ describe("Test report status methods", () => {
     initAuthManager();
     jest.runAllTimers();
   });
+  test("archiveReport", () => {
+    expect(archiveReport(mockReportKeys)).toBeTruthy();
+  });
+
   test("getReport", () => {
     expect(getReport(mockReportKeys)).toBeTruthy();
   });
@@ -19,6 +30,10 @@ describe("Test report status methods", () => {
 
   test("postReport", () => {
     expect(postReport("MCPAR", "AB", mockReport)).toBeTruthy();
+  });
+
+  test("submitReport", () => {
+    expect(submitReport(mockReportKeys)).toBeTruthy();
   });
 
   test("putReport", () => {
