@@ -52,6 +52,36 @@ const modalComponentWithSelectedReport = (
   </ReportContext.Provider>
 );
 
+const mlrModalComponent = (
+  <ReportContext.Provider value={mockedReportContext}>
+    <AddEditReportModal
+      activeState="AB"
+      selectedReport={undefined}
+      reportType={"MLR"}
+      formTemplate={mockReportJson}
+      modalDisclosure={{
+        isOpen: true,
+        onClose: mockCloseHandler,
+      }}
+    />
+  </ReportContext.Provider>
+);
+
+const mlrModalComponentWithSelectedReport = (
+  <ReportContext.Provider value={mockedReportContext}>
+    <AddEditReportModal
+      activeState="AB"
+      selectedReport={mockMcparReport}
+      reportType={"MLR"}
+      formTemplate={mockReportJson}
+      modalDisclosure={{
+        isOpen: true,
+        onClose: mockCloseHandler,
+      }}
+    />
+  </ReportContext.Provider>
+);
+
 describe("Test AddEditProgramModal", () => {
   beforeEach(async () => {
     await act(async () => {
@@ -79,7 +109,6 @@ describe("Test AddEditProgramModal", () => {
   });
 });
 
-// todo: MLR
 describe("Test AddEditReportModal functionality for MCPAR", () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -109,6 +138,37 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
 
   test("Editing an existing report", async () => {
     const result = await render(modalComponentWithSelectedReport);
+    const form = result.getByTestId("add-edit-report-form");
+    await fillForm(form);
+    await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Test AddEditReportModal functionality for MLR", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const fillForm = async (form: any) => {
+    const programNameField = form.querySelector("[name='programName']")!;
+    await userEvent.type(programNameField, "fake program name");
+    const submitButton = screen.getByRole("button", { name: "Save" });
+    await userEvent.click(submitButton);
+  };
+
+  test("Adding a new report", async () => {
+    const result = await render(mlrModalComponent);
+    const form = result.getByTestId("add-edit-report-form");
+    await fillForm(form);
+    await expect(mockCreateReport).toHaveBeenCalledTimes(1);
+    await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
+
+  test("Editing an existing report", async () => {
+    const result = await render(mlrModalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-report-form");
     await fillForm(form);
     await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
