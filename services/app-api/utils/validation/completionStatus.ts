@@ -97,7 +97,9 @@ export const calculateCompletionStatus = async (
             areAllFormsComplete &&= isEntityComplete;
           }
         } else {
-          areAllFormsComplete &&= formTemplate.entities && !formTemplate.entities[entityType]?.required;
+          areAllFormsComplete &&=
+            formTemplate.entities &&
+            !formTemplate.entities[entityType]?.required;
         }
       }
     }
