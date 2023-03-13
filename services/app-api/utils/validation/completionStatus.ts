@@ -93,16 +93,13 @@ export const calculateCompletionStatus = async (
               nestedFormTemplate,
               dataForEntity
             );
-            // update combined result, breaking if the entity is not complete
+            // update combined result
             areAllFormsComplete &&= isEntityComplete;
-            if (!areAllFormsComplete) break;
           }
         } else {
           areAllFormsComplete &&= formTemplate.entities && !formTemplate.entities[entityType]?.required;
         }
       }
-      // Break if the form is not complete
-      if (!areAllFormsComplete) break;
     }
     return areAllFormsComplete;
   };
