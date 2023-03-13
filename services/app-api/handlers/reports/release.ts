@@ -133,7 +133,10 @@ export const releaseReport = handler(async (event) => {
 
   const copyObjectParameters: S3Copy = {
     Bucket: reportBucket,
-    CopySource: getFieldDataKey(metadata.state, metadata.fieldDataId),
+    CopySource: `${reportBucket}/${getFieldDataKey(
+      metadata.state,
+      metadata.fieldDataId
+    )}`,
     Key: getFieldDataKey(metadata.state, newFieldDataId),
   };
 
