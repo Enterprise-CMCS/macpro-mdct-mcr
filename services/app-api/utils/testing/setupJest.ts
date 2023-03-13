@@ -108,6 +108,7 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
 
 export const mockDynamoDataMLRComplete: MLRReportMetadata = {
   ...mockReportKeys,
+  archived: false,
   reportType: "MLR",
   submissionName: "testProgram",
   status: "Not started",
@@ -124,6 +125,7 @@ export const mockDynamoDataMLRComplete: MLRReportMetadata = {
 
 export const mockDynamoDataMLRLocked: MLRReportMetadata = {
   ...mockReportKeys,
+  archived: false,
   reportType: "MLR",
   submissionName: "testProgram",
   status: "Not started",
