@@ -1,6 +1,7 @@
 // accordions
 export { AccordionItem } from "./accordions/AccordionItem";
 export { FaqAccordion } from "./accordions/FaqAccordion";
+export { FormIntroAccordion } from "./accordions/FormIntroAccordion";
 export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
 // alerts
 export { Alert } from "./alerts/Alert";
@@ -88,6 +89,7 @@ export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
+export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables
