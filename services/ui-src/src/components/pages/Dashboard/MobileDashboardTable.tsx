@@ -147,7 +147,7 @@ const AdminUnlockButton = ({
   return (
     <Button
       variant="link"
-      disabled={report.locked === false}
+      disabled={report.archived || report.locked}
       sx={sxOverride.adminActionButton}
       onClick={() => unlockReport!(report)}
     >
