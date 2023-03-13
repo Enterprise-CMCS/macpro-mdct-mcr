@@ -18,7 +18,7 @@ export const DashboardTable = ({
   archiveReport,
   archiving,
   releaseReport,
-  unlocking,
+  releasing,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -62,12 +62,12 @@ export const DashboardTable = ({
         {isAdmin && (
           <>
             {reportType === "MLR" && (
-              <AdminUnlockButton
+              <AdminReleaseButton
                 report={report}
                 reportType={reportType}
                 reportId={reportId}
                 releaseReport={releaseReport}
-                unlocking={unlocking}
+                releasing={releasing}
                 sxOverride={sxOverride}
               />
             )}
@@ -78,7 +78,7 @@ export const DashboardTable = ({
               archiveReport={archiveReport}
               archiving={archiving}
               releaseReport={releaseReport}
-              unlocking={unlocking}
+              releasing={releasing}
               sxOverride={sxOverride}
             />
           </>
@@ -100,7 +100,7 @@ interface DashboardTableProps {
   isAdmin: boolean;
   isStateLevelUser: boolean;
   releaseReport?: Function | undefined;
-  unlocking?: boolean | undefined;
+  releasing?: boolean | undefined;
   sxOverride: AnyObject;
 }
 
@@ -138,10 +138,10 @@ interface DateFieldProps {
   reportType: string;
 }
 
-const AdminUnlockButton = ({
+const AdminReleaseButton = ({
   report,
   reportId,
-  unlocking,
+  releasing,
   releaseReport,
   sxOverride,
 }: AdminActionButtonProps) => {
@@ -153,10 +153,10 @@ const AdminUnlockButton = ({
         sx={sxOverride.adminActionButton}
         onClick={() => releaseReport!(report)}
       >
-        {unlocking && reportId === report.id ? (
+        {releasing && reportId === report.id ? (
           <Spinner size="small" />
         ) : (
-          "Unlock"
+          "Release"
         )}
       </Button>
     </Td>
@@ -195,7 +195,7 @@ interface AdminActionButtonProps {
   reportId: string | undefined;
   archiveReport?: Function;
   archiving?: boolean;
-  unlocking?: boolean;
+  releasing?: boolean;
   releaseReport?: Function;
   sxOverride: AnyObject;
 }
