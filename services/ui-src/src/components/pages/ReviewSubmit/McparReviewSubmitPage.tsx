@@ -41,10 +41,9 @@ export const McparReviewSubmitPage = () => {
   const { alertBox } = reviewVerbiage;
 
   // get report type, state, and id from context or storage
-  const reportType =
-    report?.reportType || localStorage.getItem("selectedReportType");
-  const reportId = report?.id || localStorage.getItem("selectedReport");
-  const reportState = state || localStorage.getItem("selectedState");
+  const reportType = report?.reportType;
+  const reportId = report?.id;
+  const reportState = state;
 
   const reportKeys = {
     reportType: reportType,
