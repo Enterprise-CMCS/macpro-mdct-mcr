@@ -27,7 +27,8 @@ const mockLocations = {
   standard: { pathname: mockReportJson.flatRoutes[0].path },
   drawer: { pathname: mockReportJson.flatRoutes[1].path },
   modalDrawer: { pathname: mockReportJson.flatRoutes[2].path },
-  reviewSubmit: { pathname: mockReportJson.flatRoutes[3].path },
+  modalOverlay: { pathname: mockReportJson.flatRoutes[3].path },
+  reviewSubmit: { pathname: mockReportJson.flatRoutes[4].path },
 };
 
 const ReportPageWrapperComponent = (
