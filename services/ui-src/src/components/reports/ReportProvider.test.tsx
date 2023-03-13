@@ -18,6 +18,7 @@ jest.mock("utils/api/requestMethods/report", () => ({
   postReport: jest.fn(() => {}),
   putReport: jest.fn(() => {}),
   submitReport: jest.fn(() => {}),
+  archiveReport: jest.fn(() => {}),
 }));
 
 jest.mock("utils/reports/routing", () => ({
@@ -60,6 +61,9 @@ const TestComponent = () => {
         data-testid="clear-report-selection-button"
       >
         Clear Report Selection
+      </button>
+      <button onClick={() => context.archiveReport(mockReportKeys)}>
+        Archive Report Selection
       </button>
       <button
         onClick={() => context.setReportSelection(mockReport)}
@@ -146,6 +150,15 @@ describe("Test ReportProvider fetch methods", () => {
     expect(mockReportAPI.submitReport).toHaveBeenCalledWith(mockReportKeys);
   });
 
+  test("createReport method calls postReport method", async () => {
+    await act(async () => {
+      const archiveButton = screen.getByText("Archive Report Selection");
+      await userEvent.click(archiveButton);
+    });
+    expect(mockReportAPI.archiveReport).toHaveBeenCalledTimes(1);
+    expect(mockReportAPI.archiveReport).toHaveBeenCalledWith(mockReportKeys);
+  });
+
   test("setReportSelection sets report in storage and clearReportSelection clears report in storage", async () => {
     // start with no report set
     expect(localStorage.getItem("selectedReport")).toBe(null);
@@ -230,6 +243,34 @@ describe("Test ReportProvider error states", () => {
     await act(async () => {
       const updateButton = screen.getByTestId("update-report-button");
       await userEvent.click(updateButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if submitUpdate throws error", async () => {
+    mockReportAPI.submitReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const submitButton = screen.getByText("Submit Report Selection");
+      await userEvent.click(submitButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if archiveReport throws error", async () => {
+    mockReportAPI.archiveReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const archiveButton = screen.getByText("Archive Report Selection");
+      await userEvent.click(archiveButton);
     });
     expect(screen.queryByTestId("error-message")).toBeVisible();
   });
