@@ -33,7 +33,7 @@ export const calculateCompletionStatus = async (
   const validationJson = formTemplate.validationJson;
 
   const calculateFormCompletion = async (
-    nestedFormTemplate: any,
+    nestedFormTemplate: AnyObject,
     dataForObject: AnyObject = fieldData,
     required: boolean = true
   ) => {
@@ -61,8 +61,7 @@ export const calculateCompletionStatus = async (
     };
 
     // Iterate over all fields in form
-    for (let i = 0; i < nestedFormTemplate.fields?.length; i++) {
-      var formField = nestedFormTemplate.fields[i];
+    for (var formField of nestedFormTemplate.fields || []) {
       if (formField.repeat) {
         // This is a repeated field, and must be handled differently
         for (var repeatEntity of fieldData[formField.repeat]) {
@@ -150,9 +149,9 @@ export const calculateCompletionStatus = async (
   const calculateRoutesCompletion = async (routes: AnyObject[]) => {
     var completionDict: CompletionData = {};
     // Iterate over each route
-    for (let i = 0; i < routes?.length; i++) {
+    for (var route of routes || []) {
       // Determine the status of each child in the route
-      const routeCompletionDict = await calculateRouteCompletion(routes[i]);
+      const routeCompletionDict = await calculateRouteCompletion(route);
       // Add completion status to parent dictionary
       completionDict = { ...completionDict, ...routeCompletionDict };
     }
