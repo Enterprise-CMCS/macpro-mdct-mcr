@@ -151,6 +151,7 @@ const ReadyToSubmit = ({
           type="submit"
           onClick={onOpen as MouseEventHandler}
           isDisabled={!isPermittedToSubmit}
+          sx={sx.submitButton}
         >
           {pageLink.text}
         </Button>
@@ -295,5 +296,16 @@ const sx = {
   },
   alert: {
     marginBottom: "2rem",
+  },
+  submitButton: {
+    "&:disabled": {
+      opacity: 1,
+      background: "#d9d9d9",
+      color: "#5A5A5A",
+
+      "&:hover": {
+        background: "#d2d2d2",
+      },
+    },
   },
 };
