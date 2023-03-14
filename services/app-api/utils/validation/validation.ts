@@ -106,7 +106,7 @@ export const makeNestedFieldSchema = (
 export const validateFieldData = async (
   validationJson: AnyObject,
   unvalidatedFieldData: AnyObject,
-  isRequired = false
+  isRequired: boolean = false
 ) => {
   let validatedFieldData: AnyObject | undefined = undefined;
   // filter field validation to just what's needed for the passed fields
