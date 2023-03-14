@@ -1,5 +1,4 @@
-import { AnyObject } from "yup/lib/types";
-import { CompletionData } from "../types/types";
+import { CompletionData, AnyObject } from "../types/types";
 import { validateFieldData } from "./validation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
@@ -32,79 +31,6 @@ export const calculateCompletionStatus = async (
   // Parent Dictionary for holding all route completion status
 
   const validationJson = formTemplate.validationJson;
-
-  const calculateRoutesCompletion = async (routes: AnyObject[]) => {
-    var completionDict: CompletionData = {};
-    // Iterate over each route
-    if (routes) {
-      for (const route of routes) {
-        // Determine the status of each child in the route
-        const routeCompletionDict = await calculateRouteCompletion(route);
-        // Add completion status to parent dictionary
-        completionDict = { ...completionDict, ...routeCompletionDict };
-      }
-    }
-    return completionDict;
-  };
-
-  const calculateRouteCompletion = async (route: any) => {
-    // Determine which type of page we are calculating status for
-    switch (route.pageType) {
-      case "standard":
-        // Standard forms use simple validation
-        return {
-          [route.path]: await calculateFormCompletion(route.form),
-        };
-      case "drawer":
-      case "modalDrawer":
-        // Drawers and Modal Drawers are evaluated similarly, validated against a selected entity
-        return {
-          [route.path]: await calculateEntityCompletion(
-            [route.drawerForm, route.modalForm],
-            route.entityType
-          ),
-        };
-      case "reviewSubmit":
-        // Don't evaluate the review and submit page
-        return;
-      default:
-        // Default behavior indicates that we are not on a form to be evaluated, which implies we have child routes to evaluate
-        return {
-          [route.path]: await calculateRoutesCompletion(route.children),
-        };
-    }
-  };
-
-  const calculateEntityCompletion = async (
-    nestedFormTemplates: any[],
-    entityType: string
-  ) => {
-    //value for holding combined result
-    var areAllFormsComplete = true;
-    // iterate over form templates
-    for (var nestedFormTemplate of nestedFormTemplates) {
-      //if valid formTemplate and data for entity
-      if (nestedFormTemplate) {
-        if (fieldData[entityType]) {
-          // iterate over each entity (eg access measure)
-          for (var dataForEntity of fieldData[entityType]) {
-            // get completion status for entity, using the correct form template
-            const isEntityComplete = await calculateFormCompletion(
-              nestedFormTemplate,
-              dataForEntity
-            );
-            // update combined result
-            areAllFormsComplete &&= isEntityComplete;
-          }
-        } else {
-          areAllFormsComplete &&=
-            formTemplate.entities &&
-            !formTemplate.entities[entityType]?.required;
-        }
-      }
-    }
-    return areAllFormsComplete;
-  };
 
   const calculateFormCompletion = async (
     nestedFormTemplate: any,
@@ -154,6 +80,84 @@ export const calculateCompletionStatus = async (
 
     // Validate all fields en masse, passing flag that uses required validation schema
     return repeatersValid && areFieldsValid(fieldsToBeValidated);
+  };
+
+  const calculateEntityCompletion = async (
+    nestedFormTemplates: AnyObject[],
+    entityType: string
+  ) => {
+    //value for holding combined result
+    var areAllFormsComplete = true;
+    for (var nestedFormTemplate of nestedFormTemplates) {
+      if (fieldData[entityType]) {
+        // iterate over each entity (eg access measure)
+        for (var dataForEntity of fieldData[entityType]) {
+          // get completion status for entity, using the correct form template
+          const isEntityComplete = await calculateFormCompletion(
+            nestedFormTemplate,
+            dataForEntity
+          );
+          // update combined result
+          areAllFormsComplete &&= isEntityComplete;
+        }
+      } else {
+        //Entity not present in report data, so check to see if it is required and update combined result
+        areAllFormsComplete &&=
+          formTemplate.entities && !formTemplate.entities[entityType]?.required;
+      }
+    }
+    return areAllFormsComplete;
+  };
+
+  const calculateRouteCompletion = async (route: AnyObject) => {
+    let routeCompletion;
+    // Determine which type of page we are calculating status for
+    switch (route.pageType) {
+      case "standard":
+        // Standard forms use simple validation
+        routeCompletion = {
+          [route.path]: await calculateFormCompletion(route.form),
+        };
+        break;
+      case "drawer":
+        routeCompletion = {
+          [route.path]: await calculateEntityCompletion(
+            [route.drawerForm],
+            route.entityType
+          ),
+        };
+        break;
+      case "modalDrawer":
+        routeCompletion = {
+          [route.path]: await calculateEntityCompletion(
+            [route.drawerForm, route.modalForm],
+            route.entityType
+          ),
+        };
+        break;
+      case "reviewSubmit":
+        // Don't evaluate the review and submit page
+        break;
+      default:
+        // Default behavior indicates that we are not on a form to be evaluated, which implies we have child routes to evaluate
+        routeCompletion = {
+          [route.path]: await calculateRoutesCompletion(route.children),
+        };
+        break;
+    }
+    return routeCompletion;
+  };
+
+  const calculateRoutesCompletion = async (routes: AnyObject[]) => {
+    var completionDict: CompletionData = {};
+    // Iterate over each route
+    for (let i = 0; i < routes?.length; i++) {
+      // Determine the status of each child in the route
+      const routeCompletionDict = await calculateRouteCompletion(routes[i]);
+      // Add completion status to parent dictionary
+      completionDict = { ...completionDict, ...routeCompletionDict };
+    }
+    return completionDict;
   };
 
   return await calculateRoutesCompletion(formTemplate.routes);
