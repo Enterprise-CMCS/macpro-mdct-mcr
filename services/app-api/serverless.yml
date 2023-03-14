@@ -233,11 +233,11 @@ functions:
               paths:
                 state: true
                 id: true
-  releaseReport:
-    handler: handlers/reports/release.releaseReport
+  unlockReport:
+    handler: handlers/reports/unlock.unlockReport
     events:
       - http:
-          path: reports/release/{reportType}/{state}/{id}
+          path: reports/unlock/{reportType}/{state}/{id}
           method: put
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
@@ -273,21 +273,6 @@ functions:
             parameters:
               paths:
                 reportType: true
-                state: true
-                id: true
-  submitReport:
-    handler: handlers/reports/submit.submitReport
-    timeout: 30
-    memorySize: 2048
-    events:
-      - http:
-          path: reports/submit/{reportType}/{state}/{id}
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
-          request:
-            parameters:
-              paths:
                 state: true
                 id: true
   fetchTemplate:
