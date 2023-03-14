@@ -29,7 +29,7 @@ When("I submit a new MLR program", () => {
 
 Then("the program is submitted", () => {});
 
-const traverseRoutes = (routes) => {
+export const traverseRoutes = (routes) => {
   //iterate over each route
   routes.forEach((route) => {
     traverseRoute(route);
