@@ -50,7 +50,7 @@ export const calculateCompletionStatus = async (
     }
     return areAllFieldsValid;
   };
-  
+
   const calculateFormCompletion = async (
     nestedFormTemplate: AnyObject,
     dataForObject: AnyObject = fieldData,
