@@ -97,7 +97,7 @@ describe("Test McparReviewSubmitPage functionality", () => {
     await userEvent.click(reviewSubmitButton);
     const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
     await userEvent.click(modalSubmitButton);
-    await expect(mockMcparReportContext.submitReport).toHaveBeenCalledTimes(1);
+    await expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 });
 

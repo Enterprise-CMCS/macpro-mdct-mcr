@@ -3,8 +3,7 @@ import { useLocation } from "react-router-dom";
 // utils
 import {
   archiveReport as archiveReportRequest,
-  releaseReport as releaseReportRequest,
-  submitReport as submitReportRequest,
+  unlockReport as unlockReportRequest,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
@@ -28,11 +27,10 @@ export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
   archiveReport: Function,
-  releaseReport: Function,
+  unlockReport: Function,
   createReport: Function,
   fetchReport: Function,
   updateReport: Function,
-  submitReport: Function,
   // reports by state
   reportsByState: undefined as ReportMetadataShape[] | undefined,
   fetchReportsByState: Function,
@@ -92,15 +90,6 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
-  const submitReport = async (reportKeys: ReportKeys) => {
-    try {
-      await submitReportRequest(reportKeys);
-      setLastSavedTime(getLocalHourMinuteTime());
-    } catch (e: any) {
-      setError(reportErrors.SET_REPORT_FAILED);
-    }
-  };
-
   const updateReport = async (reportKeys: ReportKeys, report: ReportShape) => {
     try {
       const result = await putReport(reportKeys, report);
@@ -121,9 +110,9 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
-  const releaseReport = async (reportKeys: ReportKeys) => {
+  const unlockReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await releaseReportRequest(reportKeys);
+      const result = await unlockReportRequest(reportKeys);
       setReport(result);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -165,11 +154,10 @@ export const ReportProvider = ({ children }: Props) => {
       // report
       report,
       archiveReport,
-      releaseReport,
+      unlockReport,
       fetchReport,
       createReport,
       updateReport,
-      submitReport,
       // reports by state
       reportsByState,
       fetchReportsByState,
