@@ -120,6 +120,7 @@ export const AddEditReportModal = ({
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
+          submissionCount: reportType === "MLR" ? 0 : undefined,
           // All new MLR reports are NOT resubmissions by definition.
           versionControl:
             reportType === "MLR"

@@ -58,7 +58,9 @@ export const MobileDashboardTable = ({
         </Box>
         {reportType === "MLR" && (
           <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>#</Text>
+            <Text sx={sx.label}>
+              {report.submissionCount === 0 ? 1 : report.submissionCount}
+            </Text>
             <Text>placeholder</Text>
           </Box>
         )}
