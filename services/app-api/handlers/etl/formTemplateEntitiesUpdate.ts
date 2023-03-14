@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { DynamoDB } from "aws-sdk";
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 import s3Lib from "../../utils/s3/s3-lib";
+import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import { AnyObject, S3Get, S3Put } from "../../utils/types/types";
 import { buckets } from "../../utils/constants/constants";
 
@@ -18,14 +18,10 @@ const ENTITIES_UPDATE_DATA = {
   },
 };
 
-let dynamoClient: any;
-
 export const transform = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
-  console.log("Starting Lambda");
-  initialize();
   let keepSearching = true;
   let startingKey;
 
@@ -35,7 +31,6 @@ export const transform = async (
     try {
       [startingKey, keepSearching, metadataResults] =
         await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
-      console.log({ metadataResults });
       // get formTemplateId from metadata
       for (const metadata of metadataResults.Items) {
         let formTemplateId = metadata.formTemplateId;
@@ -52,13 +47,14 @@ export const transform = async (
           formTemplateId,
           metadata.state
         );
-        console.log({ entities: formTemplate.entities });
-
-        // modify formTemplate > write to s3
-        const updatedFormTemplate = await updateFormTemplate(formTemplate);
-
-        console.log({ entities: updatedFormTemplate.entities });
-        await writeFormTemplateToS3(updatedFormTemplate);
+        if (!formTemplate.entities) {
+          // modify formTemplate > write to s3
+          const updatedFormTemplate = Object.assign(
+            formTemplate,
+            ENTITIES_UPDATE_DATA
+          );
+          await writeFormTemplateToS3(updatedFormTemplate);
+        }
       }
     } catch (err) {
       console.error(`Database scan failed for the table ${TABLE_NAME}
@@ -76,32 +72,15 @@ export const transform = async (
   };
 };
 
-export const initialize = () => {
-  const ddbConfig: any = {};
-  const ddbEndpoint = process.env.DYNAMODB_URL;
-
-  // connect to DB
-  if (ddbEndpoint) {
-    ddbConfig.endpoint = ddbEndpoint;
-    ddbConfig.accessKeyId = "LOCAL_FAKE_KEY"; // pragma: allowlist secret
-    ddbConfig.secretAccessKey = "LOCAL_FAKE_SECRET"; // pragma: allowlist secret
-  } else {
-    ddbConfig.region = "us-east-1";
-  }
-  dynamoClient = new DynamoDB.DocumentClient(ddbConfig);
-};
-
 export const scanTableForMetadata = async (
   tableName: string,
   keepSearching: boolean,
-  startingKey?: string
+  startingKey?: any
 ) => {
-  let results = await dynamoClient
-    .scan({
-      TableName: tableName,
-      ExclusiveStartKey: startingKey,
-    })
-    .promise();
+  let results = await dynamodbLib.scan({
+    TableName: tableName,
+    ExclusiveStartKey: startingKey,
+  });
   if (results && results.LastEvaluatedKey) {
     startingKey = results.LastEvaluatedKey;
     return [startingKey, keepSearching, results];
@@ -121,13 +100,6 @@ export const getFormTemplateFromS3 = async (
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   return (await s3Lib.get(formTemplateParams)) as AnyObject;
-};
-
-export const updateFormTemplate = (formTemplate: any) => {
-  if (!formTemplate) {
-    Object.assign(formTemplate, ENTITIES_UPDATE_DATA);
-  }
-  return formTemplate;
 };
 
 export const writeFormTemplateToS3 = async (formTemplate: any) => {

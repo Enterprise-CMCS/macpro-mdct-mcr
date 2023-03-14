@@ -1,8 +1,6 @@
 import {
   getFormTemplateFromS3,
-  initialize,
   scanTableForMetadata,
-  updateFormTemplate,
   writeFormTemplateToS3,
 } from "./formTemplateEntitiesUpdate";
 import {
@@ -52,7 +50,6 @@ describe("Test form template entities update", () => {
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse1);
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
 
-    initialize();
     let result = await scanTableForMetadata("local-mcpar-reports", true);
 
     expect(result[1]).toBeTruthy();
@@ -72,12 +69,7 @@ describe("Test form template entities update", () => {
 
     expect(result).toMatchObject(mockReportJson);
   });
-
-  test("Test update form template", async () => {
-    const result = updateFormTemplate(mockReportJson);
-    expect(result.entities).toMatchObject(ENTITIES_UPDATE_DATA);
-  });
-
+  
   test("Test write updated form template to S3", async () => {
     try {
       await writeFormTemplateToS3(mockReportJsonWithId);
@@ -89,21 +81,16 @@ describe("Test form template entities update", () => {
   test("Test no metadata found", async () => {
     mockDocumentClient.scan.promise.mockReturnValueOnce(null);
 
-    initialize();
     let results = await scanTableForMetadata("local-mcpar-reports", true);
 
     expect(results[0]).toBeNull();
-    expect(results[2]).toBeNull();
+    expect(results[1]).toBeFalsy();
+    expect(results[2].Items).toBeUndefined();
   });
 
   test("Test no matching template", async () => {
     let result = getFormTemplateFromS3("fakeId", "MN");
 
     await expect(result).rejects.toBe("Invalid Test Key");
-  });
-
-  test("Test entities already added", async () => {
-    const result = updateFormTemplate(mockReportJsonWithEntities);
-    expect(result).toMatchObject(mockReportJsonWithEntities);
   });
 });
