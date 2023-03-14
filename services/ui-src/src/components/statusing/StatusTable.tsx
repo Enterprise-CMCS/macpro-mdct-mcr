@@ -1,32 +1,28 @@
 import { Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Image, Table, Tbody, Td, Tr } from "@chakra-ui/react";
-import { ReportContext } from "components";
+import { Box, Button, Image, Td, Tr } from "@chakra-ui/react";
+import { ReportContext, Table } from "components";
 // types
 import { ReportPageProgress } from "types";
 // utils
 import { getRouteStatus } from "utils";
+// verbiage
+import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const StatusTable = () => {
   const { report } = useContext(ReportContext);
+  const { review } = verbiage;
   const rowDepth = 1;
   return report ? (
     <Box sx={sx.container}>
-      <Table>
-        <Tbody>
-          <Tr>
-            <Td sx={sx.tableHeader}>Section</Td>
-            <Td sx={sx.tableHeader}>Status</Td>
-            <Td></Td>
-          </Tr>
-          {getRouteStatus(report).map((page: ReportPageProgress) => {
-            return <ChildRow key={page.path} page={page} depth={rowDepth} />;
-          })}
-        </Tbody>
+      <Table content={review.table}>
+        {getRouteStatus(report).map((page: ReportPageProgress) => {
+          return <ChildRow key={page.path} page={page} depth={rowDepth} />;
+        })}
       </Table>
     </Box>
   ) : (
@@ -107,16 +103,6 @@ const sx = {
           textAlign: "right",
         },
       },
-    },
-  },
-  tableHeader: {
-    fontSize: "md",
-    fontWeight: "semibold",
-    textTransform: "none",
-    letterSpacing: "normal",
-    color: "palette.gray_medium",
-    ".mobile &": {
-      fontSize: "sm",
     },
   },
   parent: {
