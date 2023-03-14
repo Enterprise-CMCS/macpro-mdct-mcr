@@ -129,7 +129,7 @@
                                 "children": [
                                   {
                                     "id": "versionControlDescriptionOther",
-                                    "type": "text",
+                                    "type": "textarea",
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
