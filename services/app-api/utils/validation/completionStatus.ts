@@ -93,16 +93,15 @@ export const calculateCompletionStatus = async (
               nestedFormTemplate,
               dataForEntity
             );
-            // update combined result, breaking if the entity is not complete
+            // update combined result
             areAllFormsComplete &&= isEntityComplete;
-            if (!areAllFormsComplete) break;
           }
         } else {
-          areAllFormsComplete &&= !formTemplate.entities[entityType].required;
+          areAllFormsComplete &&=
+            formTemplate.entities &&
+            !formTemplate.entities[entityType]?.required;
         }
       }
-      // Break if the form is not complete
-      if (!areAllFormsComplete) break;
     }
     return areAllFormsComplete;
   };
@@ -135,7 +134,7 @@ export const calculateCompletionStatus = async (
     };
 
     // Iterate over all fields in form
-    if (nestedFormTemplate?.fields) {
+    if (nestedFormTemplate.fields) {
       for (var formField of nestedFormTemplate.fields) {
         if (formField.repeat) {
           // This is a repeated field, and must be handled differently
