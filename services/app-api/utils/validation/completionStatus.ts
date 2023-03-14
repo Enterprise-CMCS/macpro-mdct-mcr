@@ -45,36 +45,35 @@ export const calculateCompletionStatus = async (
     const areFieldsValid = async (
       fieldsToBeValidated: Record<string, string>
     ) => {
+      let areAllFieldsValid = false;
       try {
-        let validatedFields: any = await validateFieldData(
-          validationJson,
-          fieldsToBeValidated,
-          required
-        );
         // all fields successfully validated if validatedFields is not undefined
-        return validatedFields !== undefined;
+        areAllFieldsValid =
+          (await validateFieldData(
+            validationJson,
+            fieldsToBeValidated,
+            required
+          )) !== undefined;
       } catch (err) {
-        // Validation error occurred, return false
-        return false;
+        // Silently ignore error, will result in false
       }
+      return areAllFieldsValid;
     };
 
     // Iterate over all fields in form
-    if (nestedFormTemplate.fields) {
-      for (var formField of nestedFormTemplate.fields) {
-        if (formField.repeat) {
-          // This is a repeated field, and must be handled differently
-          for (var repeatEntity of fieldData[formField.repeat]) {
-            // Iterate over each entity from the repeat section, build new value id, and validate it
-            repeatersValid &&= await areFieldsValid({
-              [formField.id]:
-                dataForObject[`${formField.id}_${repeatEntity.id}`],
-            });
-          }
-        } else {
-          // Key: Form Field ID, Value: Report Data for field
-          fieldsToBeValidated[formField.id] = dataForObject[formField.id];
+    for (let i = 0; i < nestedFormTemplate.fields?.length; i++) {
+      var formField = nestedFormTemplate.fields[i];
+      if (formField.repeat) {
+        // This is a repeated field, and must be handled differently
+        for (var repeatEntity of fieldData[formField.repeat]) {
+          // Iterate over each entity from the repeat section, build new value id, and validate it
+          repeatersValid &&= await areFieldsValid({
+            [formField.id]: dataForObject[`${formField.id}_${repeatEntity.id}`],
+          });
         }
+      } else {
+        // Key: Form Field ID, Value: Report Data for field
+        fieldsToBeValidated[formField.id] = dataForObject[formField.id];
       }
     }
 
