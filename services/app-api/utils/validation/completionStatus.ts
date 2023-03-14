@@ -32,6 +32,25 @@ export const calculateCompletionStatus = async (
 
   const validationJson = formTemplate.validationJson;
 
+  const areFieldsValid = async (
+    fieldsToBeValidated: Record<string, string>,
+    required: boolean
+  ) => {
+    let areAllFieldsValid = false;
+    try {
+      // all fields successfully validated if validatedFields is not undefined
+      areAllFieldsValid =
+        (await validateFieldData(
+          validationJson,
+          fieldsToBeValidated,
+          required
+        )) !== undefined;
+    } catch (err) {
+      // Silently ignore error, will result in false
+    }
+    return areAllFieldsValid;
+  };
+  
   const calculateFormCompletion = async (
     nestedFormTemplate: AnyObject,
     dataForObject: AnyObject = fieldData,
@@ -42,33 +61,19 @@ export const calculateCompletionStatus = async (
     // Repeat fields can't be validated at same time, so holding their completion status here
     let repeatersValid = true; //default to true in case of no repeat fields
 
-    const areFieldsValid = async (
-      fieldsToBeValidated: Record<string, string>
-    ) => {
-      let areAllFieldsValid = false;
-      try {
-        // all fields successfully validated if validatedFields is not undefined
-        areAllFieldsValid =
-          (await validateFieldData(
-            validationJson,
-            fieldsToBeValidated,
-            required
-          )) !== undefined;
-      } catch (err) {
-        // Silently ignore error, will result in false
-      }
-      return areAllFieldsValid;
-    };
-
     // Iterate over all fields in form
     for (var formField of nestedFormTemplate.fields || []) {
       if (formField.repeat) {
         // This is a repeated field, and must be handled differently
         for (var repeatEntity of fieldData[formField.repeat]) {
           // Iterate over each entity from the repeat section, build new value id, and validate it
-          repeatersValid &&= await areFieldsValid({
-            [formField.id]: dataForObject[`${formField.id}_${repeatEntity.id}`],
-          });
+          repeatersValid &&= await areFieldsValid(
+            {
+              [formField.id]:
+                dataForObject[`${formField.id}_${repeatEntity.id}`],
+            },
+            required
+          );
         }
       } else {
         // Key: Form Field ID, Value: Report Data for field
@@ -77,7 +82,7 @@ export const calculateCompletionStatus = async (
     }
 
     // Validate all fields en masse, passing flag that uses required validation schema
-    return repeatersValid && areFieldsValid(fieldsToBeValidated);
+    return repeatersValid && areFieldsValid(fieldsToBeValidated, required);
   };
 
   const calculateEntityCompletion = async (
