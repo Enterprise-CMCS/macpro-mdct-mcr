@@ -9,8 +9,10 @@ export interface ReportKeys {
 }
 
 export interface ReportMetadataShape extends ReportKeys {
+  submissionCount?: number;
   reportType: string;
   programName: string;
+  submissionName?: string;
   status: ReportStatus;
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;
@@ -35,7 +37,8 @@ export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
   archiveReport: Function;
-  unlockReport?: Function;
+  releaseReport?: Function;
+  submitReport: Function;
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;
