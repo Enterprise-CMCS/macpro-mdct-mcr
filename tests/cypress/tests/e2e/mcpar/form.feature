@@ -3,13 +3,7 @@ Feature: MCPAR E2E Form Submission
     Scenario: A state user can fully create a form and submit it
         Given I am logged in as a state user
         When I submit a new MCPAR program
-# Then the program is submitted
-
-# Scenario: A state user cannot submit an incomplete form.
-#     Given I am logged in as a state user
-#     When I try to submit an incomplete MCPAR program
-#     Then incomplete program cannot submit
-
+        Then the program is submitted
 
 # Feature: MCPAR E2E Form Submission
 
