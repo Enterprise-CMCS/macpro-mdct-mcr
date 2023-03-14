@@ -99,6 +99,7 @@
                             "parentFieldName": "versionControl"
                           },
                           "props": {
+                            "disabled": false,
                             "label": "H. Version control description",
                             "hint": "Select the response(s) that best describes the changes between this version and the prior version of the annual summary MLR Report submission.",
                             "choices": [
@@ -128,7 +129,7 @@
                                 "children": [
                                   {
                                     "id": "versionControlDescriptionOther",
-                                    "type": "text",
+                                    "type": "textarea",
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
