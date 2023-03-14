@@ -15,8 +15,8 @@ export const MobileDashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  releaseReport,
-  releasing,
+  unlockReport,
+  unlocking,
   isStateLevelUser,
   isAdmin,
   sxOverride,
@@ -58,9 +58,7 @@ export const MobileDashboardTable = ({
         </Box>
         {reportType === "MLR" && (
           <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>
-              {report.submissionCount === 0 ? 1 : report.submissionCount}
-            </Text>
+            <Text sx={sx.label}>#</Text>
             <Text>placeholder</Text>
           </Box>
         )}
@@ -78,11 +76,11 @@ export const MobileDashboardTable = ({
             {isAdmin && (
               <>
                 {reportType === "MLR" && (
-                  <AdminReleaseButton
+                  <AdminUnlockButton
                     report={report}
                     reportId={reportId}
-                    releaseReport={releaseReport}
-                    releasing={releasing}
+                    unlockReport={unlockReport}
+                    unlocking={unlocking}
                     sxOverride={sxOverride}
                   />
                 )}
@@ -110,8 +108,8 @@ interface MobileDashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
-  releaseReport?: Function | undefined;
-  releasing?: boolean | undefined;
+  unlockReport?: Function | undefined;
+  unlocking?: boolean | undefined;
   isAdmin: boolean;
   isStateLevelUser: boolean;
   sxOverride: AnyObject;
@@ -139,24 +137,24 @@ interface DateFieldProps {
   reportType: string;
 }
 
-const AdminReleaseButton = ({
+const AdminUnlockButton = ({
   report,
   reportId,
-  releasing,
-  releaseReport,
+  unlocking,
+  unlockReport,
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
     <Button
       variant="link"
-      disabled={report.locked === false || report.archived === true}
+      disabled={report.locked === false}
       sx={sxOverride.adminActionButton}
-      onClick={() => releaseReport!(report)}
+      onClick={() => unlockReport!(report)}
     >
-      {releasing && reportId === report.id ? (
+      {unlocking && reportId === report.id ? (
         <Spinner size="small" />
       ) : (
-        "Release"
+        "Unlock"
       )}
     </Button>
   );
@@ -191,8 +189,8 @@ interface AdminActionButtonProps {
   reportId: string | undefined;
   archiveReport?: Function;
   archiving?: boolean;
-  releasing?: boolean;
-  releaseReport?: Function;
+  unlocking?: boolean;
+  unlockReport?: Function;
   sxOverride: AnyObject;
 }
 
