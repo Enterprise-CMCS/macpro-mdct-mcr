@@ -241,6 +241,7 @@ functions:
           request:
             parameters:
               paths:
+                reportType: true
                 state: true
                 id: true
   createReport:
