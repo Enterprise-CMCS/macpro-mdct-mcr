@@ -61,7 +61,7 @@ export const submitReport = handler(async (event, _context) => {
     const reportMetadata = response.Item as
       | MLRReportMetadata
       | MCPARReportMetadata;
-    const { status, isComplete, fieldDataId } = reportMetadata;
+    const { status, isComplete, fieldDataId, formTemplateId } = reportMetadata;
 
     if (status === "Submitted") {
       return {
@@ -115,10 +115,19 @@ export const submitReport = handler(async (event, _context) => {
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
 
-    const existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
-      string,
-      any
-    >;
+    let existingFieldData;
+
+    try {
+      existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
+        string,
+        any
+      >;
+    } catch (err) {
+      return {
+        status: StatusCodes.SERVER_ERROR,
+        body: error.NOT_IN_DATABASE,
+      };
+    }
 
     const fieldData = {
       ...existingFieldData,
@@ -134,6 +143,25 @@ export const submitReport = handler(async (event, _context) => {
       ContentType: "application/json",
     };
 
+    const getFormTemplateParams = {
+      Bucket: reportBucket,
+      Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
+    };
+
+    let formTemplate;
+
+    try {
+      formTemplate = (await s3Lib.get(getFormTemplateParams)) as Record<
+        string,
+        any
+      >;
+    } catch (err) {
+      return {
+        status: StatusCodes.SERVER_ERROR,
+        body: error.NOT_IN_DATABASE,
+      };
+    }
+
     try {
       await s3Lib.put(updateFieldDataParams);
     } catch (err) {
@@ -147,6 +175,10 @@ export const submitReport = handler(async (event, _context) => {
       status: StatusCodes.SUCCESS,
       body: {
         ...newItem,
+        fieldData: { ...fieldData },
+        formTemplate: {
+          ...formTemplate,
+        },
       },
     };
   } catch (err) {
