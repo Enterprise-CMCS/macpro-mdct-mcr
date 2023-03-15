@@ -8,11 +8,7 @@ The following values are used to configure the deployment of this service (see b
 | .../iam/path | N | Y | Y | Specifies the [IAM Path](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-friendly-names) at which all IAM objects should be created. The default value is "/". The path variable in IAM is used for grouping related users and groups in a unique namespace, usually for organizational purposes.|
 | .../iam/permissionsBoundaryPolicy | N | Y | Y | Specifies the [IAM Permissions Boundary](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) that should be attached to all IAM objects. A permissions boundary is an advanced feature for using a managed policy to set the maximum permissions that an identity-based policy can grant to an IAM entity. If set, this parmeter should contain the full ARN to the policy.|
 | sesSourceEmailAddress | N | Y | Y | The email address with which the apllication sends the email. This email address must be verified in SES.|
-| okta_provider_type | N | N | Y | The OKTA provider type, accepts "SAML" or "OIDC"|
-| okta_metadata_url | N | N | Y | Used by SAML provider, The Metadata url for Okta, gotten from Okta's admin console from the app.|
-| okta_oidc_client_id | N | N | Y | Used by OIDC provider, The client id for Okta, gotten from Okta's admin console from the app.|
-| okta_oidc_client_secret | N | N | Y | Used by OIDC provider, The client secret for Okta gotten from Okta's admin console from the app.|
-| okta_oidc_issuer | N | N | Y | Used by OIDC provider, The OIDC Issuer for Okta, gotten from Okta's admin console from the app.|
+| okta_metadata_url | N | N | Y | The SAML Metadata url for Okta, gotten from Okta's admin console from the app.|
 
 This project uses [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html), often referred to as simply SSM, to inject environment specific, project specific, and/or sensitive information into the deployment.
 In short, SSM is an AWS service that allows users to store (optionally) encrypted strings in a directory like hierarchy. For example, "/my/first/ssm/param" is a valid path for a parameter. Access to this service and even individual paramters is granted via AWS IAM.
