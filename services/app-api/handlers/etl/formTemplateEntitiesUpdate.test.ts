@@ -69,7 +69,7 @@ describe("Test form template entities update", () => {
 
     expect(result).toMatchObject(mockReportJson);
   });
-  
+
   test("Test write updated form template to S3", async () => {
     try {
       await writeFormTemplateToS3(mockReportJsonWithId);
