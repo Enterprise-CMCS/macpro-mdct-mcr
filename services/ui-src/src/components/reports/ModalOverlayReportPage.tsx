@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
-  AddEditReportModal,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
@@ -15,11 +14,10 @@ import {
   AnyObject,
   EntityShape,
   ModalOverlayReportPageShape,
-  ReportShape,
   ReportStatus,
 } from "types";
 // utils
-import { convertDateUtcToEt, filterFormData, useUser } from "utils";
+import { filterFormData, useUser } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/mlr/mlr-accordions";
 
@@ -27,7 +25,6 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
   const { entityType, verbiage, modalForm } = route;
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
-  const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
@@ -38,40 +35,6 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
   const dashTitle = `${verbiage.dashboardTitle}${
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
-
-  const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
-      setSubmitting(true);
-      const reportKeys = {
-        reportType: report?.reportType,
-        state: state,
-        id: report?.id,
-      };
-      const currentEntities = reportFieldDataEntities;
-      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
-        (entity: EntityShape) => entity.id === selectedEntity?.id
-      );
-      const filteredFormData = filterFormData(enteredData, modalForm.fields);
-      const newEntity = {
-        ...selectedEntity,
-        ...filteredFormData,
-      };
-      let newEntities = currentEntities;
-      newEntities[selectedEntityIndex] = newEntity;
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [entityType]: newEntities,
-        },
-      };
-      await updateReport(reportKeys, dataToWrite);
-      setSubmitting(false);
-    }
-    closeAddEditEntityModal();
-  };
 
   // add/edit entity modal disclosure and methods
   const {
