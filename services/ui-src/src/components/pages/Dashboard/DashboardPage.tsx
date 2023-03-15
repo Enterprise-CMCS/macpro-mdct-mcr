@@ -61,7 +61,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   >(undefined);
   const [reportId, setReportId] = useState<string | undefined>(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
-  const [releasing, setReleaseing] = useState<boolean>(false);
+  const [releasing, setReleasing] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
@@ -175,7 +175,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   const toggleReportLockStatus = async (report: ReportShape) => {
     if (userIsAdmin) {
       setReportId(report.id);
-      setReleaseing(true);
+      setReleasing(true);
       const reportKeys = {
         reportType: reportType,
         state: adminSelectedState,
@@ -184,7 +184,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       await releaseReport!(reportKeys);
       await fetchReportsByState(reportType, activeState);
       setReportId(undefined);
-      setReleaseing(false);
+      setReleasing(false);
     }
   };
 
