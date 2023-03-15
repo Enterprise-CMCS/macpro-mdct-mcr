@@ -21,7 +21,7 @@ When("I create, fill, and submit a report", () => {
     .focus()
     .click();
 
-  //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
+  //Using the mlr.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
 
   //Submit the program
