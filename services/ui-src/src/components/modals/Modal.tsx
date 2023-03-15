@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 // components
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -36,6 +37,7 @@ export const Modal = ({
           <Heading as="h1" sx={sx.modalHeaderText}>
             {content.heading}
           </Heading>
+          {content.subheading && <Box>{content.subheading}</Box>}
         </ModalHeader>
         <Flex sx={sx.modalCloseContainer}>
           <Button
@@ -90,6 +92,7 @@ interface Props {
   };
   content: {
     heading: string;
+    subheading?: string;
     actionButtonText: string | ReactNode;
     closeButtonText?: string;
   };

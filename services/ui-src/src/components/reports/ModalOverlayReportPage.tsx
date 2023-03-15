@@ -1,21 +1,94 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // components
-import { Box, Button, Heading } from "@chakra-ui/react";
-import { ReportContext, ReportPageFooter, ReportPageIntro } from "components";
+import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import {
+  AddEditEntityModal,
+  AddEditReportModal,
+  ReportContext,
+  ReportPageFooter,
+  ReportPageIntro,
+} from "components";
+// forms
+
+// types
+import {
+  AnyObject,
+  EntityShape,
+  ModalOverlayReportPageShape,
+  ReportShape,
+  ReportStatus,
+} from "types";
 // utils
-import { ModalOverlayReportPageShape } from "types";
+import { convertDateUtcToEt, filterFormData, useUser } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/mlr/mlr-accordions";
 
 export const ModalOverlayReportPage = ({ route }: Props) => {
-  const { verbiage } = route;
+  const { entityType, verbiage, modalForm } = route;
+  const { full_name, state, userIsStateUser, userIsStateRep } =
+    useUser().user ?? {};
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
 
-  const { report } = useContext(ReportContext);
-  const reportFieldDataEntities = report?.fieldData["program"] || [];
+  const { report, updateReport } = useContext(ReportContext);
+  const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
   const dashTitle = `${verbiage.dashboardTitle}${
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
+
+  const onSubmit = async (enteredData: AnyObject) => {
+    if (userIsStateUser || userIsStateRep) {
+      setSubmitting(true);
+      const reportKeys = {
+        reportType: report?.reportType,
+        state: state,
+        id: report?.id,
+      };
+      const currentEntities = reportFieldDataEntities;
+      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.id === selectedEntity?.id
+      );
+      const filteredFormData = filterFormData(enteredData, modalForm.fields);
+      const newEntity = {
+        ...selectedEntity,
+        ...filteredFormData,
+      };
+      let newEntities = currentEntities;
+      newEntities[selectedEntityIndex] = newEntity;
+      const dataToWrite = {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
+        fieldData: {
+          [entityType]: newEntities,
+        },
+      };
+      await updateReport(reportKeys, dataToWrite);
+      setSubmitting(false);
+    }
+    closeAddEditEntityModal();
+  };
+
+  // add/edit entity modal disclosure and methods
+  const {
+    isOpen: addEditEntityModalIsOpen,
+    onOpen: addEditEntityModalOnOpenHandler,
+    onClose: addEditEntityModalOnCloseHandler,
+  } = useDisclosure();
+
+  const openAddEditEntityModal = (entity?: EntityShape) => {
+    if (entity) setSelectedEntity(entity);
+    addEditEntityModalOnOpenHandler();
+  };
+
+  const closeAddEditEntityModal = () => {
+    setSelectedEntity(undefined);
+    addEditEntityModalOnCloseHandler();
+  };
 
   return (
     <Box data-testid="modal-overlay-report-page">
@@ -25,7 +98,6 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
           accordion={accordionVerbiage.formIntro}
         />
       )}
-      {/* TODO: Table for MLR reporting programs */}
       <Box sx={sx.dashboardBox}>
         <Heading as="h3" sx={sx.dashboardTitle}>
           {dashTitle}
@@ -33,9 +105,26 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
         {reportFieldDataEntities.length === 0 && (
           <Box>{verbiage.emptyDashboardText}</Box>
         )}
-        <Button sx={sx.addEntityButton}>{verbiage.addEntityButtonText}</Button>
+        <Button
+          sx={sx.addEntityButton}
+          onClick={() => openAddEditEntityModal()}
+        >
+          {verbiage.addEntityButtonText}
+        </Button>
       </Box>
       <ReportPageFooter />
+      {report && (
+        <AddEditEntityModal
+          entityType={entityType}
+          selectedEntity={selectedEntity}
+          verbiage={verbiage}
+          form={modalForm}
+          modalDisclosure={{
+            isOpen: addEditEntityModalIsOpen,
+            onClose: closeAddEditEntityModal,
+          }}
+        />
+      )}
     </Box>
   );
 };

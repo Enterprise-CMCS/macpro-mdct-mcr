@@ -17,7 +17,7 @@
             "intro": {
               "section": "Section A: Program Information",
               "subsection": "Point of Contact",
-              "spreadsheet": "A_Program_Info"
+              "spreadsheet": "Program Information"
             }
           },
           "form": {
@@ -110,7 +110,7 @@
             "intro": {
               "section": "MLR Reporting",
               "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
-              "spreadsheet": "B_Program_Info",
+              "spreadsheet": "Program Information",
               "info": [
                 {
                   "type": "html",
@@ -121,18 +121,142 @@
             "dashboardTitle": "MLR reports total:",
             "countEntitiesInTitle": true,
             "addEntityButtonText": "Add program reporting information",
-            "emptyDashboardText": "Add Program Reporting Information for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+            "emptyDashboardText": "Add Program Reporting Information for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab).",
+            "addEditModalAddTitle": "Add program reporting information",
+            "addEditModalEditTitle": "Edit program reporting information",
+            "addEditModalHint": "Complete this screen once for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
           },
           "modalForm": {
             "id": "bpel-modal",
             "fields": [
               {
-                "id": "placeholder",
+                "id": "programName",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "I. Program name",
+                  "hint": "Enter the name of the program(s) relevant to this set of MLR results. States providing plan-level MLR results separated by program should enter the individual relevant program name in the field below. States providing one set of combined MLR results per plan should list the program names relevant to the respective set of results in the field below, separated by commas. <br/> A program is defined generally by a specified set of benefits and eligibility criteria that is articulated in a contract between the state and a managed care plan."
+                }
+              },
+              {
+                "id": "programType",
+                "type": "checkbox",
+                "validation": "checkbox",
+                "props": {
+                  "label": "J. Program type",
+                  "hint": "Select the program type definition(s) that best describes the program entered in \"I. Program Name\".",
+                  "choices": [
+                    {
+                      "id": "cQhGnyBmiXszLqrx6b2Cp8",
+                      "label": "Behavioral Health Only"
+                    },
+                    {
+                      "id": "G4inXZJWYFsDZYGk75cW7L",
+                      "label": "Comprehensive MCO"
+                    },
+                    {
+                      "id": "J8PmLy8nKxTK55XJch2jDw",
+                      "label": "Comprehensive MCO + MLTSS"
+                    },
+                    {
+                      "id": "PamL56cwvY3Rbdqmnigvve",
+                      "label": "Dental Only"
+                    },
+                    {
+                      "id": "hqjmUS69rVTEKToDxWLXtz",
+                      "label": "MLTSS Only"
+                    },
+                    {
+                      "id": "6krUQZyhpmHHoagQWgUzxx",
+                      "label": "Other PIHP"
+                    },
+                    {
+                      "id": "VNp9mDXgv9ixL2H8JHVBBE",
+                      "label": "Other PAHP"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "eligibilityGroup",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "K. Eligibility group",
+                  "hint": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group. <br/> <ol> <li> <i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in <a href=\"https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10\">42 CFR 457.10</a>.</li> <li><i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\".</li> <li>For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\".</li></ol>",
+                  "choices": [
+                    {
+                      "id": "UgSDECcYDJ4S39QEMmMRcq",
+                      "label": "Standalone CHIP"
+                    },
+                    {
+                      "id": "KWr7SR2JM5UYogD6xZykrN",
+                      "label": "Group VIII Expansion Adult Only"
+                    },
+                    {
+                      "id": "cRi6qE4T5c6BjbGUsiiEof",
+                      "label": "All Populations"
+                    },
+                    {
+                      "id": "4xSRBneHBfUEqSPfrPTRYf",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "eligibilityGroup-otherText",
+                          "type": "textarea",
+                          "nested": true,
+                          "validation": {
+                            "type": "text",
+                            "parentFieldName": "eligibilityGroup"
+                          },
+                          "props": {
+                            "label": "L. Eligibility group description",
+                            "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children <19 years; Aged, Blind, Disabled; Pregnant Women."
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "planName",
                 "type": "text",
                 "validation": "text",
                 "props": {
-                  "label": "",
-                  "hint": ""
+                  "label": "M. MCO, PIHP, or PAHP Name",
+                  "hint": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: \"<a href=\"https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html\">Managed Care Enrollment by Program and Plan</a>\""
+                }
+              },
+              {
+                "id": "reportingPeriodStartDate",
+                "type": "date",
+                "validation": "date",
+                "props": {
+                  "label": "N. MLR reporting period start date",
+                  "hint": "Enter the state date of the MLR Reporting Period. <br/> The MLR reporting period should be a perod of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
+                }
+              },
+              {
+                "id": "reportingPeriodEndDate",
+                "type": "date",
+                "validation": {
+                  "type": "endDate",
+                  "dependentFieldName": "reportingPeriodStartDate"
+                },
+                "props": {
+                  "label": "O. MLR reporting period end date",
+                  "hint": "Enter the end date of the MLR reporting period.",
+                  "timetype": "endDate"
+                }
+              },
+              {
+                "id": "miscellaneousNotes",
+                "type": "textarea",
+                "validation": "textOptional",
+                "props": {
+                  "label": "Q. Miscellaneous notes",
+                  "hint": "Include any other notes or detail for CMS."
                 }
               }
             ]
