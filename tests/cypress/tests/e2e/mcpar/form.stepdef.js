@@ -129,6 +129,44 @@ Then("the program is submitted", () => {
   cy.contains("Successfully Submitted").should("be.visible");
 });
 
+When("I try to submit an incomplete MCPAR program", () => {
+  //Create the program
+  const today = new Date();
+  const lastYear = new Date();
+  lastYear.setFullYear(today.getFullYear() - 1);
+  const programName = "automated test - " + today.toISOString();
+  cy.visit(`/mcpar`);
+  cy.findByRole("button", { name: "Add managed care program" }).click();
+  cy.findByLabelText("Program name").type(programName);
+  cy.get('input[name="reportingPeriodStartDate"]').type(
+    lastYear.toLocaleDateString("en-US")
+  );
+
+  cy.get('input[name="reportingPeriodEndDate"]').type(
+    today.toLocaleDateString("en-US")
+  );
+  cy.findByRole("checkbox").focus().click();
+  cy.get("button[type=submit]").contains("Save").click();
+
+  //Find our new program and open it
+  cy.findByText(programName)
+    .parent()
+    .find('button:contains("Enter")')
+    .focus()
+    .click();
+
+  //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
+  traverseRoutes([template.routes[0]]);
+
+  cy.get('a[href*="review-and-submit"]').click();
+});
+
+Then("incomplete program cannot submit", () => {
+  //Submit the program
+  cy.get('button:contains("Submit MCPAR")').should("be.disabled");
+  cy.get('div[role*="alert"]').should("exist");
+});
+
 const traverseRoutes = (routes) => {
   //iterate over each route
   routes.forEach((route) => {

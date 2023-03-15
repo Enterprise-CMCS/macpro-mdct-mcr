@@ -13,7 +13,7 @@ export const EntityCardTopSection = ({
       return (
         <>
           <Heading as="h4" sx={sx.heading}>
-            {printVersion && "C2.V.3 Standard type: "}
+            {printVersion && "C2.V.1 General category: "}
             {formattedEntityData.category}
           </Heading>
           {printVersion && (
@@ -22,9 +22,7 @@ export const EntityCardTopSection = ({
           <Text sx={printVersion ? sx.subtext : sx.description}>
             {formattedEntityData.standardDescription}
           </Text>
-          <Text sx={sx.subtitle}>
-            {printVersion && "C2.V.1 "}General category
-          </Text>
+          <Text sx={sx.subtitle}>{printVersion && "C2.V.3 "}Standard type</Text>
           <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
         </>
       );

@@ -10,26 +10,16 @@ import {
 // forms
 
 // types
-import {
-  AnyObject,
-  EntityShape,
-  ModalOverlayReportPageShape,
-  ReportStatus,
-} from "types";
-// utils
-import { filterFormData, useUser } from "utils";
+import { EntityShape, ModalOverlayReportPageShape } from "types";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/mlr/mlr-accordions";
 
 export const ModalOverlayReportPage = ({ route }: Props) => {
   const { entityType, verbiage, modalForm } = route;
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
-
-  const { report, updateReport } = useContext(ReportContext);
+  const { report } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
   const dashTitle = `${verbiage.dashboardTitle}${

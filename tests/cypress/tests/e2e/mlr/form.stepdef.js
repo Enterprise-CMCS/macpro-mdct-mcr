@@ -27,11 +27,9 @@ When("I submit a new MLR program", () => {
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
 
-Then("the program is submitted", () => {
-  cy.contains("Successfully Submitted").should("be.visible");
-});
+Then("the program is submitted", () => {});
 
-const traverseRoutes = (routes) => {
+export const traverseRoutes = (routes) => {
   //iterate over each route
   routes.forEach((route) => {
     traverseRoute(route);

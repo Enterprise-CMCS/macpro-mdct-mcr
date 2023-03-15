@@ -17,8 +17,8 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  unlockReport,
-  unlocking,
+  releaseReport,
+  releasing,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -37,7 +37,9 @@ export const DashboardTable = ({
           <Td></Td>
         )}
         {/* Report Name */}
-        <Td sx={sxOverride.programNameText}>{report.programName}</Td>
+        <Td sx={sxOverride.programNameText}>
+          {report.programName ?? report.submissionName}
+        </Td>
         {/* Date Fields */}
         <DateFields report={report} reportType={reportType} />
         {/* Last Altered By */}
@@ -45,7 +47,9 @@ export const DashboardTable = ({
         {/* Report Status */}
         <Td>{report?.archived ? "Archived" : report?.status}</Td>
         {/* MLR-ONLY: Submission count */}
-        {reportType === "MLR" && <Td></Td>}
+        {reportType === "MLR" && (
+          <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
+        )}
         {/* Action Buttons */}
         <Td sx={sxOverride.editReportButtonCell}>
           <Button
@@ -59,13 +63,13 @@ export const DashboardTable = ({
         </Td>
         {isAdmin && (
           <>
-            {reportType === "MLR" && (
-              <AdminUnlockButton
+            {reportType === "MLR" && report.locked && (
+              <AdminReleaseButton
                 report={report}
                 reportType={reportType}
                 reportId={reportId}
-                unlockReport={unlockReport}
-                unlocking={unlocking}
+                releaseReport={releaseReport}
+                releasing={releasing}
                 sxOverride={sxOverride}
               />
             )}
@@ -75,8 +79,8 @@ export const DashboardTable = ({
               reportId={reportId}
               archiveReport={archiveReport}
               archiving={archiving}
-              unlockReport={unlockReport}
-              unlocking={unlocking}
+              releaseReport={releaseReport}
+              releasing={releasing}
               sxOverride={sxOverride}
             />
           </>
@@ -97,8 +101,8 @@ interface DashboardTableProps {
   archiving: boolean;
   isAdmin: boolean;
   isStateLevelUser: boolean;
-  unlockReport?: Function | undefined;
-  unlocking?: boolean | undefined;
+  releaseReport?: Function | undefined;
+  releasing?: boolean | undefined;
   sxOverride: AnyObject;
 }
 
@@ -136,25 +140,25 @@ interface DateFieldProps {
   reportType: string;
 }
 
-const AdminUnlockButton = ({
+const AdminReleaseButton = ({
   report,
   reportId,
-  unlocking,
-  unlockReport,
+  releasing,
+  releaseReport,
   sxOverride,
 }: AdminActionButtonProps) => {
   return (
     <Td>
       <Button
         variant="link"
-        disabled={report.locked === false}
+        disabled={report.locked === false || report.archived === true}
         sx={sxOverride.adminActionButton}
-        onClick={() => unlockReport!(report)}
+        onClick={() => releaseReport!(report)}
       >
-        {unlocking && reportId === report.id ? (
+        {releasing && reportId === report.id ? (
           <Spinner size="small" />
         ) : (
-          "Unlock"
+          "Release"
         )}
       </Button>
     </Td>
@@ -193,8 +197,8 @@ interface AdminActionButtonProps {
   reportId: string | undefined;
   archiveReport?: Function;
   archiving?: boolean;
-  unlocking?: boolean;
-  unlockReport?: Function;
+  releasing?: boolean;
+  releaseReport?: Function;
   sxOverride: AnyObject;
 }
 
