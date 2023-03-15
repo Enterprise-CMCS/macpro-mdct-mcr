@@ -71,6 +71,9 @@ export const AddEditEntityModal = ({
         heading: selectedEntity?.id
           ? verbiage.addEditModalEditTitle
           : verbiage.addEditModalAddTitle,
+        subheading: verbiage.addEditModalHint
+          ? verbiage.addEditModalHint
+          : undefined,
         actionButtonText: submitting ? <Spinner size="small" /> : "Save",
       }}
     >

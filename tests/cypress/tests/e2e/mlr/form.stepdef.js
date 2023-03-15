@@ -49,6 +49,7 @@ const traverseRoute = (route) => {
 
     //Fill out form
     completeFrom(route.form);
+    completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
 
     // Continue to next route
     cy.get('button:contains("Continue")').focus().click();
@@ -61,11 +62,18 @@ const traverseRoute = (route) => {
 
 // TODO: bring in completeModalForm if needed
 
-// TODO: bring in completeModalOverlayForm when needed
-
 const completeFrom = (form) => {
   //iterate over each field and fill it appropriately
   form?.fields?.forEach((field) => processField(field));
+};
+
+const completeModalForm = (modalForm, buttonText) => {
+  //open the modal, then fill out the form and save it
+  if (modalForm && buttonText) {
+    cy.get(`button:contains("${buttonText}")`).focus().click();
+    completeFrom(modalForm);
+    cy.get('button:contains("Save")').focus().click();
+  }
 };
 
 const processField = (field) => {

@@ -1,21 +1,47 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // components
-import { Box, Button, Heading } from "@chakra-ui/react";
-import { ReportContext, ReportPageFooter, ReportPageIntro } from "components";
-// utils
-import { ModalOverlayReportPageShape } from "types";
+import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import {
+  AddEditEntityModal,
+  ReportContext,
+  ReportPageFooter,
+  ReportPageIntro,
+} from "components";
+// forms
+
+// types
+import { EntityShape, ModalOverlayReportPageShape } from "types";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/mlr/mlr-accordions";
 
 export const ModalOverlayReportPage = ({ route }: Props) => {
-  const { verbiage } = route;
-
+  const { entityType, verbiage, modalForm } = route;
+  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+    undefined
+  );
   const { report } = useContext(ReportContext);
-  const reportFieldDataEntities = report?.fieldData["program"] || [];
+  const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
   const dashTitle = `${verbiage.dashboardTitle}${
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
+
+  // add/edit entity modal disclosure and methods
+  const {
+    isOpen: addEditEntityModalIsOpen,
+    onOpen: addEditEntityModalOnOpenHandler,
+    onClose: addEditEntityModalOnCloseHandler,
+  } = useDisclosure();
+
+  const openAddEditEntityModal = (entity?: EntityShape) => {
+    if (entity) setSelectedEntity(entity);
+    addEditEntityModalOnOpenHandler();
+  };
+
+  const closeAddEditEntityModal = () => {
+    setSelectedEntity(undefined);
+    addEditEntityModalOnCloseHandler();
+  };
 
   return (
     <Box data-testid="modal-overlay-report-page">
@@ -25,7 +51,6 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
           accordion={accordionVerbiage.formIntro}
         />
       )}
-      {/* TODO: Table for MLR reporting programs */}
       <Box sx={sx.dashboardBox}>
         <Heading as="h3" sx={sx.dashboardTitle}>
           {dashTitle}
@@ -33,9 +58,26 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
         {reportFieldDataEntities.length === 0 && (
           <Box>{verbiage.emptyDashboardText}</Box>
         )}
-        <Button sx={sx.addEntityButton}>{verbiage.addEntityButtonText}</Button>
+        <Button
+          sx={sx.addEntityButton}
+          onClick={() => openAddEditEntityModal()}
+        >
+          {verbiage.addEntityButtonText}
+        </Button>
       </Box>
       <ReportPageFooter />
+      {report && (
+        <AddEditEntityModal
+          entityType={entityType}
+          selectedEntity={selectedEntity}
+          verbiage={verbiage}
+          form={modalForm}
+          modalDisclosure={{
+            isOpen: addEditEntityModalIsOpen,
+            onClose: closeAddEditEntityModal,
+          }}
+        />
+      )}
     </Box>
   );
 };
