@@ -29,7 +29,7 @@ When("I create, fill, and submit a report", () => {
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
 
-When("the report is submitted successfully", () => {
+Then("the report is submitted successfully", () => {
   cy.get('[data-testid="modal-submit-button"]').should("not.exist");
   cy.contains("Successfully Submitted").should("be.visible");
 });
