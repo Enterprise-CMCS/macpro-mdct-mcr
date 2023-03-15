@@ -2,6 +2,7 @@ import {
   getFormTemplateFromS3,
   scanTableForMetadata,
   writeFormTemplateToS3,
+  processMetadata
 } from "./formTemplateEntitiesUpdate";
 import {
   mockDocumentClient,
@@ -93,4 +94,8 @@ describe("Test form template entities update", () => {
 
     await expect(result).rejects.toBe("Invalid Test Key");
   });
+
+  test("Test Process Metadata", async () => {
+    processMetadata(mockDynamoDataWithUUID);
+  })
 });
