@@ -15,6 +15,13 @@ Feature: MLR E2E Form Submission
         Given I am logged in as an admin user
         When I archive a report
         Then I cannot release that archived report
+
+    Scenario: A report cannot be released if it is unfinished.
+        Given I am logged in as an state user
+        When I create, fill but don't submit a report
+        Given I am logged in as an admin user
+        Then I cannot release that report
+
 # Feature: MCPAR E2E Form Submission
 
 #     Scenario Outline: A State user creates a program
