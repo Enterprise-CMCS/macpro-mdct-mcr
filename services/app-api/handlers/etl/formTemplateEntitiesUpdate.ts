@@ -24,37 +24,14 @@ export const transform = async (
 ): Promise<APIGatewayProxyResult> => {
   let keepSearching = true;
   let startingKey;
-
   let metadataResults;
 
   while (keepSearching) {
     try {
       [startingKey, keepSearching, metadataResults] =
         await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
-      // get formTemplateId from metadata
       for (const metadata of metadataResults.Items) {
-        let formTemplateId = metadata.formTemplateId;
-        if (!formTemplateId) {
-          console.error("Could not find formTemplateId", {
-            state: metadata.state,
-            id: metadata.id,
-          });
-          continue;
-        }
-
-        // get formTemplate with formTemplateID
-        const formTemplate = await getFormTemplateFromS3(
-          formTemplateId,
-          metadata.state
-        );
-        if (!formTemplate.entities) {
-          // modify formTemplate > write to s3
-          const updatedFormTemplate = Object.assign(
-            formTemplate,
-            ENTITIES_UPDATE_DATA
-          );
-          await writeFormTemplateToS3(updatedFormTemplate);
-        }
+        await processMetadata(metadata);
       }
     } catch (err) {
       console.error(`Database scan failed for the table ${TABLE_NAME}
@@ -63,13 +40,37 @@ export const transform = async (
       throw err;
     }
   }
-
   return {
     statusCode: 200,
     body: JSON.stringify({
       message: "finished ETL script",
     }),
   };
+};
+
+export const processMetadata = async (metadata: AnyObject) => {
+  let formTemplateId = metadata.formTemplateId;
+  if (!formTemplateId) {
+    console.error("Could not find formTemplateId", {
+      state: metadata.state,
+      id: metadata.id,
+    });
+    return;
+  }
+
+  // get formTemplate with formTemplateID
+  const formTemplate = await getFormTemplateFromS3(
+    formTemplateId,
+    metadata.state
+  );
+  if (!formTemplate.entities) {
+    // modify formTemplate > write to s3
+    const updatedFormTemplate = Object.assign(
+      formTemplate,
+      ENTITIES_UPDATE_DATA
+    );
+    await writeFormTemplateToS3(updatedFormTemplate);
+  }
 };
 
 export const scanTableForMetadata = async (
