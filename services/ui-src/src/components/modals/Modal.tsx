@@ -37,8 +37,10 @@ export const Modal = ({
           <Heading as="h1" sx={sx.modalHeaderText}>
             {content.heading}
           </Heading>
-          {content.subheading && <Box>{content.subheading}</Box>}
         </ModalHeader>
+        {content.subheading && (
+          <Box sx={sx.modalSubheader}>{content.subheading}</Box>
+        )}
         <Flex sx={sx.modalCloseContainer}>
           <Button
             sx={sx.modalClose}
@@ -118,6 +120,9 @@ const sx = {
     padding: "0 4rem 0 0",
     fontSize: "2xl",
     fontWeight: "bold",
+  },
+  modalSubheader: {
+    margin: "0.5rem auto -1rem auto",
   },
   modalCloseContainer: {
     alignItems: "center",

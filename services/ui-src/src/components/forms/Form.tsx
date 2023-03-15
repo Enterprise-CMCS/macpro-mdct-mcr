@@ -118,6 +118,14 @@ const sx = {
     ul: {
       paddingLeft: "2rem",
     },
+    ol: {
+      margin: "0.25rem 0.5rem",
+      padding: "0.5rem",
+    },
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+    },
   },
   // nested child fields
   ".ds-c-choice__checkedChild.nested": {
