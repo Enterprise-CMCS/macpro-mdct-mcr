@@ -29,7 +29,7 @@ When("I create, fill, and submit a report", () => {
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
 
-When("The report is submitted successfully", () => {
+When("the report is submitted successfully", () => {
   cy.get('[data-testid="modal-submit-button"]').should("not.exist");
   cy.contains("Successfully Submitted").should("be.visible");
 });
@@ -93,7 +93,7 @@ Then("I cannot release that archived report", () => {
     .should("be.disabled");
 });
 
-Then("The report will have the correct content pre-filled", () => {
+Then("the report will have the correct content pre-filled", () => {
   cy.findByText(programName)
     .last()
     .parent()
