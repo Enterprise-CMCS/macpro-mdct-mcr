@@ -204,14 +204,10 @@
                         {
                           "id": "eligibilityGroup-otherText",
                           "type": "textarea",
-                          "nested": true,
                           "validation": {
                             "type": "text",
+                            "nested": true,
                             "parentFieldName": "eligibilityGroup"
-                          },
-                          "props": {
-                            "label": "L. Eligibility group description",
-                            "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children <19 years; Aged, Blind, Disabled; Pregnant Women."
                           }
                         }
                       ]
