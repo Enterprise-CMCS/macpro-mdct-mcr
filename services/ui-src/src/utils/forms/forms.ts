@@ -13,6 +13,7 @@ import {
 } from "components";
 // types
 import { AnyObject, FieldChoice, FormField } from "types";
+import { SectionHeader } from "components/forms/FormLayoutElements";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -34,6 +35,7 @@ export const formFieldFactory = (
     radio: RadioField,
     text: TextField,
     textarea: TextAreaField,
+    sectionHeader: SectionHeader,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {
