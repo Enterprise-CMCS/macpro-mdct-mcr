@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, ModalOverlayReportPage } from "components";
 // utils
@@ -22,6 +23,8 @@ jest.mock("react-router-dom", () => ({
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
+const { addEntityButtonText } = mockModalOverlayReportPageJson.verbiage;
+
 const mockReportContextWithoutEntities = {
   ...mockMcparReportContext,
   report: undefined,
@@ -30,6 +33,14 @@ const mockReportContextWithoutEntities = {
 const modalOverlayReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
+      <ModalOverlayReportPage route={mockModalOverlayReportPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const modalOverlayReportPageComponentWithEntities = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ModalOverlayReportPage route={mockModalOverlayReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -46,7 +57,24 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
   });
 });
 
-// TODO: Test ModalOverlayReportPage with programs
+describe("Test ModalOverlayReportPage (adding new program reporting information)", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(modalOverlayReportPageComponentWithEntities);
+  });
+
+  it("State user should be able to open and close the Add Program Reporting Information modal", async () => {
+    // open the modal
+    const addEntityButton = screen.getByText(addEntityButtonText);
+    await userEvent.click(addEntityButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+
+    // close the modal
+    const closeButton = screen.getByText("Close");
+    await userEvent.click(closeButton);
+    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+  });
+});
 
 describe("Test ModalOverlayReportPage accessibility", () => {
   beforeEach(() => {
