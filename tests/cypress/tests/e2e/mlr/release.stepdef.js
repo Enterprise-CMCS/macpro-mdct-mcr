@@ -83,7 +83,7 @@ Then("I cannot release that report", () => {
     .last()
     .parent()
     .find('button:contains("Release")')
-    .should("not.exist");
+    .should("be.disabled");
 });
 
 Then("I cannot release that archived report", () => {
