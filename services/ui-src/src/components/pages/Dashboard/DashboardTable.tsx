@@ -63,7 +63,7 @@ export const DashboardTable = ({
         </Td>
         {isAdmin && (
           <>
-            {reportType === "MLR" && report.locked && (
+            {reportType === "MLR" && (
               <AdminReleaseButton
                 report={report}
                 reportType={reportType}
