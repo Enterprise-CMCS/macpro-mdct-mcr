@@ -70,6 +70,14 @@ const dashboardViewWithReports = (
   </RouterWrappedComponent>
 );
 
+const mlrDashboardViewWithReports = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockDashboardReportContext}>
+      <DashboardPage reportType="MLR" />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextNoReports}>
@@ -301,6 +309,78 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
       await render(dashboardViewWithReports);
     });
     expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+});
+
+describe("Test Dashboard report releasing privileges (desktop)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Admin user can release reports", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    await act(async () => {
+      await render(mlrDashboardViewWithReports);
+    });
+    const releaseProgramButton = screen.getAllByText("Release")[0];
+    expect(releaseProgramButton).toBeVisible();
+    await userEvent.click(releaseProgramButton);
+    await expect(mockMcparReportContext.releaseReport).toHaveBeenCalledTimes(1);
+    // once for render, once for release
+    await expect(
+      mockMcparReportContext.fetchReportsByState
+    ).toHaveBeenCalledTimes(2);
+  });
+
+  test("State user cannot release reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(mlrDashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Release")).toBeNull();
+  });
+});
+
+describe("Test Dashboard report releasing privileges (mobile)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Admin user can release reports", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    await act(async () => {
+      await render(mlrDashboardViewWithReports);
+    });
+    const releaseProgramButton = screen.getAllByText("Release")[0];
+    expect(releaseProgramButton).toBeVisible();
+    await userEvent.click(releaseProgramButton);
+    await expect(mockMcparReportContext.releaseReport).toHaveBeenCalledTimes(1);
+    // once for render, once for release
+    await expect(
+      mockMcparReportContext.fetchReportsByState
+    ).toHaveBeenCalledTimes(2);
+  });
+
+  test("State user cannot release reports", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    await act(async () => {
+      await render(mlrDashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Release")).toBeNull();
   });
 });
 
