@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   AdminBannerProvider,
@@ -20,6 +21,8 @@ import { ScrollToTopComponent, useUser } from "utils";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useUser().user ?? {};
+  const mlrReport = useFlags()?.mlrReport;
+
   return (
     <main id="main-content" tabIndex={-1}>
       <ScrollToTopComponent />
@@ -51,9 +54,12 @@ export const AppRoutes = () => {
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
           {/* MLR ROUTES */}
-          <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
           <Route
-            path="/mlr/get-started"
+            path={mlrReport ? "/mlr" : "*"}
+            element={<DashboardPage reportType="MLR" />}
+          />
+          <Route
+            path={mlrReport ? "/mlr/get-started" : "*"}
             element={<ReportGetStartedPage reportType="MLR" />}
           />
           {mlrReportJson.flatRoutes.map((route: ReportRoute) => (

@@ -111,5 +111,6 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
   addEntityButtonText: string;
   dashboardTitle: string;
   countEntitiesInTitle: boolean;
+  addEditModalHint: string;
   emptyDashboardText: string;
 }

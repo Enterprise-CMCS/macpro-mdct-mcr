@@ -70,8 +70,11 @@ export const AddEditReportModal = ({
     const programName = formData["programName"];
     return {
       metadata: {
-        programName,
+        submissionName: programName,
         lastAlteredBy: full_name,
+        locked: false,
+        submissionCount: 0,
+        previousRevisions: [],
       },
       fieldData: {
         programName,
@@ -107,7 +110,6 @@ export const AddEditReportModal = ({
         },
       });
     } else {
-      // create new report
       await createReport(reportType, activeState, {
         ...dataToWrite,
         metadata: {
@@ -118,12 +120,14 @@ export const AddEditReportModal = ({
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
+          submissionCount: reportType === "MLR" ? 0 : undefined,
           // All new MLR reports are NOT resubmissions by definition.
           versionControl:
             reportType === "MLR"
               ? [
                   {
-                    key: "versionControl-n",
+                    // pragma: allowlist nextline secret
+                    key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
                     value: "No, this is an initial submission",
                   },
                 ]

@@ -78,6 +78,7 @@ export const Form = ({
     <FormProvider {...form}>
       <form
         id={id}
+        autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit as any, onError || onErrorHandler)}
         {...props}
       >
@@ -117,6 +118,14 @@ const sx = {
     fontSize: "sm",
     ul: {
       paddingLeft: "2rem",
+    },
+    ol: {
+      margin: "0.25rem 0.5rem",
+      padding: "0.5rem",
+    },
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
     },
   },
   // nested child fields
