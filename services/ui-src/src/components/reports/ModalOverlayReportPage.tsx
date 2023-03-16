@@ -7,8 +7,6 @@ import {
   ReportPageFooter,
   ReportPageIntro,
 } from "components";
-// forms
-
 // types
 import { EntityShape, ModalOverlayReportPageShape } from "types";
 // verbiage
