@@ -1,7 +1,7 @@
 import { Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import { ReportContext, Table } from "components";
 // types
 import { ReportPageProgress } from "types";
@@ -53,12 +53,12 @@ const TableRow = ({ page, depth }: RowProps) => {
       ) : (
         <Td pl={`${1.25 * depth}rem`}>{name}</Td>
       )}
-      <Td sx={sx.status}>
+      <Td>
         {!status && status !== undefined && (
-          <Box sx={sx.status.content}>
+          <Flex sx={sx.status}>
             <Image src={errorIcon} alt="Error notification" />
             <Text>Error</Text>
-          </Box>
+          </Flex>
         )}
       </Td>
 
@@ -119,15 +119,12 @@ const sx = {
       marginRight: "0.5rem",
     },
   },
+
   status: {
-    display: "flex",
-    alignItems: "center",
     gap: "0.5rem",
+    alignItems: "center",
     img: {
-      width: "1.5rem",
-    },
-    content: {
-      display: "contents",
+      width: "1.25rem",
     },
   },
 };
