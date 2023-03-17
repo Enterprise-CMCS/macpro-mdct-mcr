@@ -35,7 +35,7 @@ export const McparReviewSubmitPage = () => {
 
   const isPermittedToSubmit =
     (userIsStateUser || userIsStateRep) &&
-    report?.status !== "Not started" &&
+    report?.status === ReportStatus.IN_PROGRESS &&
     !hasError;
 
   const { alertBox } = reviewVerbiage;
@@ -71,7 +71,7 @@ export const McparReviewSubmitPage = () => {
 
   return (
     <>
-      {(hasError || report?.status === "Not started") && (
+      {(hasError || report?.status === ReportStatus.NOT_STARTED) && (
         <Box sx={sx.alert}>
           <Alert
             title={alertBox.title}
@@ -300,12 +300,8 @@ const sx = {
   submitButton: {
     "&:disabled": {
       opacity: 1,
-      background: "#d9d9d9",
-      color: "#5A5A5A",
-
-      "&:hover": {
-        background: "#d2d2d2",
-      },
+      background: "palette.gray_lighter",
+      color: "palette.gray",
     },
   },
 };
