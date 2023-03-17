@@ -58,6 +58,10 @@ export const DashboardPage = ({ reportType }: Props) => {
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined
   >(undefined);
+  const [entering, setEntering] = useState<boolean>(false);
+  const [enteringReportId, setEnterReportId] = useState<string | undefined>(
+    undefined
+  );
   const [archiving, setArchiving] = useState<boolean>(false);
   const [archivingReportId, setArchivingReportId] = useState<
     string | undefined
@@ -96,6 +100,8 @@ export const DashboardPage = ({ reportType }: Props) => {
   }, [reportsByState]);
 
   const enterSelectedReport = async (report: ReportMetadataShape) => {
+    setEntering(true);
+    setEnterReportId(report.id);
     const reportKeys: ReportKeys = {
       reportType: report.reportType,
       state: report.state,
@@ -106,6 +112,8 @@ export const DashboardPage = ({ reportType }: Props) => {
     setReportSelection(selectedReport);
     const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
     navigate(firstReportPagePath);
+    setEntering(false);
+    setEnterReportId(undefined);
   };
 
   const openAddEditProgramModal = (report?: ReportShape) => {
@@ -186,6 +194,8 @@ export const DashboardPage = ({ reportType }: Props) => {
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
               archivingReportId={archivingReportId}
+              entering={entering}
+              enteringReportId={enteringReportId}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
@@ -198,6 +208,8 @@ export const DashboardPage = ({ reportType }: Props) => {
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
               archivingReportId={archivingReportId}
+              entering={entering}
+              enteringReportId={enteringReportId}
               body={body}
               sxOverride={sxChildStyles}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}

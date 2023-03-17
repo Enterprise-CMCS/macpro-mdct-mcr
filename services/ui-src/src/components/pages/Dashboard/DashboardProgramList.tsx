@@ -16,6 +16,8 @@ export const DashboardList = ({
   archiveReport,
   archiving,
   archivingReportId,
+  entering,
+  enteringReportId,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -42,7 +44,11 @@ export const DashboardList = ({
             onClick={() => enterSelectedReport(report)}
             isDisabled={report?.archived}
           >
-            Enter
+            {entering && enteringReportId == report.id ? (
+              <Spinner size="small" />
+            ) : (
+              "Enter"
+            )}
           </Button>
         </Td>
         <Td sx={sxOverride.deleteProgramCell}>
@@ -75,6 +81,8 @@ interface DashboardTableProps {
   archiveReport: Function;
   archiving: boolean;
   archivingReportId: string | undefined;
+  entering: boolean;
+  enteringReportId: string | undefined;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;

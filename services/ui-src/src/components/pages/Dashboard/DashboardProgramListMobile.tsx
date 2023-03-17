@@ -14,6 +14,8 @@ export const MobileDashboardList = ({
   archiveReport,
   archiving,
   archivingReportId,
+  entering,
+  enteringReportId,
   sxOverride,
   isStateLevelUser,
   isAdmin,
@@ -65,7 +67,11 @@ export const MobileDashboardList = ({
               onClick={() => enterSelectedReport(report)}
               isDisabled={report?.archived}
             >
-              Enter
+              {entering && enteringReportId == report.id ? (
+                <Spinner size="small" />
+              ) : (
+                "Enter"
+              )}
             </Button>
           </Box>
           <Box sx={sxOverride.deleteProgramCell}>
@@ -98,6 +104,8 @@ interface MobileDashboardListProps {
   archiveReport: Function;
   archiving: boolean;
   archivingReportId: string | undefined;
+  entering: boolean;
+  enteringReportId: string | undefined;
   sxOverride: AnyObject;
   isAdmin: boolean;
   isStateLevelUser: boolean;
