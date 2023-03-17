@@ -177,7 +177,7 @@ export const SuccessMessageGenerator = (
     const submittersName = `by ${submittedBy}`;
     return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
   }
-  return `MCPAR report for ${name} was submitted.`;
+  return `${reportType} report for ${name} was submitted.`;
 };
 
 export const SuccessMessage = ({

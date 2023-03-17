@@ -94,6 +94,7 @@ Then("I cannot release that archived report", () => {
 });
 
 Then("the report will have the correct content pre-filled", () => {
+  cy.visit("/mlr");
   cy.findByText(programName)
     .last()
     .parent()
