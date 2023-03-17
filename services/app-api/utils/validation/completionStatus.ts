@@ -1,4 +1,4 @@
-import { CompletionData, AnyObject } from "../types/types";
+import { CompletionData, AnyObject, ReportRoute } from "../types/types";
 import { validateFieldData } from "./validation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
@@ -112,17 +112,19 @@ export const calculateCompletionStatus = async (
     return areAllFormsComplete;
   };
 
-  const calculateRouteCompletion = async (route: AnyObject) => {
+  const calculateRouteCompletion = async (route: ReportRoute) => {
     let routeCompletion;
     // Determine which type of page we are calculating status for
     switch (route.pageType) {
       case "standard":
+        if (!route.form) break;
         // Standard forms use simple validation
         routeCompletion = {
           [route.path]: await calculateFormCompletion(route.form),
         };
         break;
       case "drawer":
+        if (!route.drawerForm) break;
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
             [route.drawerForm],
@@ -131,6 +133,7 @@ export const calculateCompletionStatus = async (
         };
         break;
       case "modalDrawer":
+        if (!route.drawerForm || !route.modalForm) break;
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
             [route.drawerForm, route.modalForm],
@@ -142,6 +145,7 @@ export const calculateCompletionStatus = async (
         // Don't evaluate the review and submit page
         break;
       default:
+        if (!route.children) break;
         // Default behavior indicates that we are not on a form to be evaluated, which implies we have child routes to evaluate
         routeCompletion = {
           [route.path]: await calculateRoutesCompletion(route.children),
@@ -151,7 +155,7 @@ export const calculateCompletionStatus = async (
     return routeCompletion;
   };
 
-  const calculateRoutesCompletion = async (routes: AnyObject[]) => {
+  const calculateRoutesCompletion = async (routes: ReportRoute[]) => {
     var completionDict: CompletionData = {};
     // Iterate over each route
     for (var route of routes || []) {
