@@ -53,7 +53,7 @@ export const fetchReport = handler(async (event, _context) => {
       Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
     };
 
-    const formTemplate = (await s3Lib.get(formTemplateParams)) as AnyObject; // TODO: strict typing
+    const formTemplate = (await s3Lib.get(formTemplateParams)) as ReportJson; // TODO: strict typing
     if (!formTemplate) {
       return {
         status: StatusCodes.NOT_FOUND,
