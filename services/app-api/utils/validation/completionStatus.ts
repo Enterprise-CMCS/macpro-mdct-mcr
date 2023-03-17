@@ -1,4 +1,9 @@
-import { CompletionData, AnyObject, ReportRoute } from "../types/types";
+import {
+  CompletionData,
+  AnyObject,
+  ReportRoute,
+  FormJson,
+} from "../types/types";
 import { validateFieldData } from "./validation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
@@ -52,7 +57,7 @@ export const calculateCompletionStatus = async (
   };
 
   const calculateFormCompletion = async (
-    nestedFormTemplate: AnyObject,
+    nestedFormTemplate: FormJson,
     dataForObject: AnyObject = fieldData,
     required: boolean = true
   ) => {
@@ -86,7 +91,7 @@ export const calculateCompletionStatus = async (
   };
 
   const calculateEntityCompletion = async (
-    nestedFormTemplates: AnyObject[],
+    nestedFormTemplates: FormJson[],
     entityType: string
   ) => {
     //value for holding combined result
