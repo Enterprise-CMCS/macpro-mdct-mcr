@@ -302,6 +302,9 @@ const sx = {
       opacity: 1,
       background: "palette.gray_lighter",
       color: "palette.gray",
+      "&:hover": {
+        background: "palette.gray_lighter",
+      },
     },
   },
 };
