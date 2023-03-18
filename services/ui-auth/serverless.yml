@@ -47,7 +47,6 @@ custom:
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
   bootstrapUsersEnabled: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/enabled, ssm:/configuration/default/cognito/bootstrapUsers/enabled, ""}
   bootstrapUsersPassword: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/password, ssm:/configuration/default/cognito/bootstrapUsers/password, ""}
-  okta_provider_type: ${ssm:/configuration/${self:custom.stage}/okta_provider_type, ""}
   okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/okta_metadata_url, ""}
   okta_oidc_client_id: ${ssm:/configuration/${self:custom.stage}/okta_client_id, ""}
   okta_oidc_client_secret: ${ssm:/configuration/${self:custom.stage}/okta_client_secret, ""}
@@ -76,9 +75,6 @@ resources:
             - ""
             - ${self:custom.sesSourceEmailAddress}
     BackWithOktaOIDC: !And
-      - Fn::Equals:
-        - "OIDC"
-        - ${self:custom.okta_provider_type}
       - Fn::Not:
           - Fn::Equals:
               - ""
@@ -151,7 +147,6 @@ resources:
           - email
           - openid
           - profile
-          - phone
         AccessTokenValidity: 30
         IdTokenValidity: 30
         RefreshTokenValidity: 24
