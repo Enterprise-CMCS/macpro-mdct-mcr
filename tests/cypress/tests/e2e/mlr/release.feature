@@ -5,7 +5,8 @@ Feature: MLR E2E Form Submission
         When I create, fill, and submit a report
         Then the report is submitted successfully
         Given I am logged in as an admin user
-        When I release a report
+        Then I release a report
+        Given I am logged in as a state user
         Then the report will have the correct content pre-filled
 
     Scenario: A report cannot be released if it is archived.

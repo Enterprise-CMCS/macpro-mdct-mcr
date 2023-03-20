@@ -68,7 +68,8 @@ export const McparReviewSubmitPage = () => {
     <Flex sx={sx.pageContainer} data-testid="review-submit-page">
       {report?.status === ReportStatus.SUBMITTED ? (
         <SuccessMessage
-          programName={report.programName}
+          reportType={report.reportType}
+          name={report.programName ?? report.submissionName}
           date={report?.submittedOnDate}
           submittedBy={report?.submittedBy}
           reviewVerbiage={reviewVerbiage}
@@ -165,7 +166,8 @@ interface ReadyToSubmitProps {
 }
 
 export const SuccessMessageGenerator = (
-  programName: string,
+  reportType: string,
+  name: string,
   submissionDate?: number,
   submittedBy?: string
 ) => {
@@ -173,13 +175,14 @@ export const SuccessMessageGenerator = (
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
-    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}.`;
+    return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
   }
-  return `MCPAR report for ${programName} was submitted.`;
+  return `${reportType} report for ${name} was submitted.`;
 };
 
 export const SuccessMessage = ({
-  programName,
+  reportType,
+  name,
   date,
   submittedBy,
   reviewVerbiage,
@@ -187,7 +190,8 @@ export const SuccessMessage = ({
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
   const submissionMessage = SuccessMessageGenerator(
-    programName,
+    reportType,
+    name,
     date,
     submittedBy
   );
@@ -221,7 +225,8 @@ export const SuccessMessage = ({
 };
 
 interface SuccessMessageProps {
-  programName: string;
+  reportType: string;
+  name: string;
   date?: number;
   submittedBy?: string;
   reviewVerbiage: AnyObject;
