@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
 export const SectionHeader = ({ content, divider, ...props }: Props) => {
   const sx = {
@@ -9,7 +9,7 @@ export const SectionHeader = ({ content, divider, ...props }: Props) => {
   return (
     <Box sx={sx} {...props}>
       {divider === "top" && <hr></hr>}
-      <h3>{content}</h3>
+      <Heading size="md">{content}</Heading>
       {divider === "bottom" && <hr></hr>}
     </Box>
   );
