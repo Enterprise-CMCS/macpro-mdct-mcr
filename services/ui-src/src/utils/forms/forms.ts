@@ -12,12 +12,18 @@ import {
   ChoiceField,
 } from "components";
 // types
-import { AnyObject, FieldChoice, FormField } from "types";
+import {
+  AnyObject,
+  FieldChoice,
+  FormField,
+  FormLayoutElement,
+  isFieldElement,
+} from "types";
 import { SectionHeader } from "components/forms/FormLayoutElements";
 
 // return created elements from provided fields
 export const formFieldFactory = (
-  fields: FormField[],
+  fields: Array<FormField | FormLayoutElement>,
   options?: {
     disabled?: boolean;
     nested?: boolean;
@@ -83,24 +89,28 @@ export const hydrateFormFields = (
 };
 
 // add data to choice fields in preparation for render
-export const initializeChoiceListFields = (fields: FormField[]) => {
+export const initializeChoiceListFields = (
+  fields: (FormField | FormLayoutElement)[]
+) => {
   const fieldsWithChoices = fields.filter(
-    (field: FormField) => field.props?.choices
+    (field: FormField | FormLayoutElement) => field.props?.choices
   );
-  fieldsWithChoices.forEach((field: FormField) => {
-    field?.props?.choices.forEach((choice: FieldChoice) => {
-      // set choice value to choice label string
-      choice.value = choice.label;
-      // if choice id has not already had parent field id appended, do so now
-      if (!choice.id.includes("-")) {
-        choice.id = field.id + "-" + choice.id;
-      }
-      choice.name = choice.id;
-      // initialize choice as controlled component in unchecked state
-      if (choice.checked != true) choice.checked = false;
-      // if choice has children, recurse
-      if (choice.children) initializeChoiceListFields(choice.children);
-    });
+  fieldsWithChoices.forEach((field: FormField | FormLayoutElement) => {
+    if (isFieldElement(field)) {
+      field?.props?.choices.forEach((choice: FieldChoice) => {
+        // set choice value to choice label string
+        choice.value = choice.label;
+        // if choice id has not already had parent field id appended, do so now
+        if (!choice.id.includes("-")) {
+          choice.id = field.id + "-" + choice.id;
+        }
+        choice.name = choice.id;
+        // initialize choice as controlled component in unchecked state
+        if (choice.checked != true) choice.checked = false;
+        // if choice has children, recurse
+        if (choice.children) initializeChoiceListFields(choice.children);
+      });
+    }
   });
   return fields;
 };
