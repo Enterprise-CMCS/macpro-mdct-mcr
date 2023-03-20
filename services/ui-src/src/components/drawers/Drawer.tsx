@@ -47,6 +47,7 @@ export const Drawer = ({
               {parseCustomHtml(verbiage.drawerInfo)}
             </Box>
           )}
+          <Text sx={sx.drawerReminderText}>{verbiage.drawerReminder}</Text>
           {verbiage.drawerDetails && entityType && (
             <ReportDrawerDetails
               drawerDetails={verbiage.drawerDetails}
@@ -74,6 +75,7 @@ interface Props {
     drawerTitle: string;
     drawerInfo?: CustomHtmlElement[];
     drawerDetails?: AnyObject;
+    drawerReminder?: string;
   };
   drawerDisclosure: {
     isOpen: boolean;
@@ -105,6 +107,12 @@ const sx = {
     paddingRight: "4rem",
     fontSize: "2xl",
     fontWeight: "bold",
+  },
+  drawerReminderText: {
+    marginTop: ".5rem",
+    paddingRight: "4rem",
+    fontSize: "md",
+    fontWeight: "normal",
   },
   drawerCloseButton: {
     position: "absolute",

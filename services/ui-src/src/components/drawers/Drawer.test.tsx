@@ -17,6 +17,7 @@ const mockVerbiage = {
   drawerTitle: "mock title",
   drawerEyebrowTitle: "mock eyebrow title",
   drawerInfo: [{ type: "heading", content: "mock heading" }],
+  drawerReminder: "mock reminder",
 };
 
 const drawerComponent = (

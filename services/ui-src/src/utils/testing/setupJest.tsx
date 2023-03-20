@@ -319,6 +319,7 @@ export const mockDrawerReportPageJson = {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
+    drawerReminder: "Mock drawer reminder",
   },
   drawerForm: mockDrawerForm,
 };
