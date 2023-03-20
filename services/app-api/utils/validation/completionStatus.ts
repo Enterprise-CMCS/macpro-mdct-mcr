@@ -67,8 +67,33 @@ export const calculateCompletionStatus = async (
     let fieldsToBeValidated: Record<string, string> = {};
     // Repeat fields can't be validated at same time, so holding their completion status here
     let repeatersValid = true; //default to true in case of no repeat fields
-    let childrenValid = true; //default to true in case of no children
 
+    const getNestedFields = (
+      fieldChoices: FieldChoice[],
+      selectedChoices: Choice[]
+    ) => {
+      let selectedChoicesIds = selectedChoices
+        .map((choice: Choice) => choice.key)
+        .map((choiceId: string) => choiceId?.split("-").pop());
+      let selectedChoicesWithChildren = fieldChoices?.filter(
+        (fieldChoice: FieldChoice) =>
+          selectedChoicesIds.includes(fieldChoice.id) && fieldChoice.children
+      );
+      let fieldIds: string[] = [];
+      selectedChoicesWithChildren?.forEach((selectedChoice: any) => {
+        selectedChoice.children.forEach((childChoice: any) => {
+          fieldIds.push(childChoice.id);
+          if (childChoice.props?.choices) {
+            let childFields = getNestedFields(
+              childChoice.props?.choices,
+              dataForObject[childChoice.id]
+            );
+            fieldIds.push(...childFields);
+          }
+        });
+      });
+      return fieldIds;
+    };
     // Iterate over all fields in form
     for (var formField of nestedFormTemplate.fields || []) {
       if (formField.repeat) {
@@ -85,52 +110,24 @@ export const calculateCompletionStatus = async (
         }
       } else {
         // Key: Form Field ID, Value: Report Data for field
-        if (formField.id == "state_encounterDataValidationEntity"){
-          console.log(formField.id)
-        }
         if (Array.isArray(dataForObject[formField.id])) {
-          childrenValid &&= await calculateChildrenCompletion(
-            dataForObject[formField.id],
-            formField.props?.choices
+          let nestedFields: string[] = getNestedFields(
+            formField.props?.choices,
+            dataForObject[formField.id]
+          );
+          nestedFields?.forEach(
+            (nestedField: string) =>
+              (fieldsToBeValidated[nestedField] = dataForObject[nestedField])
           );
         }
-        //TODO If
-        fieldsToBeValidated[formField.id] = dataForObject[formField.id];
 
-        console.log("breakpoint")
+        fieldsToBeValidated[formField.id] = dataForObject[formField.id];
       }
     }
-
     // Validate all fields en masse, passing flag that uses required validation schema
-    return (
-      repeatersValid &&
-      childrenValid &&
-      areFieldsValid(fieldsToBeValidated, required)
-    );
+    return repeatersValid && await areFieldsValid(fieldsToBeValidated, required);
   };
-
-  const calculateChildrenCompletion = async (
-    selectedChoices: Choice[],
-    fieldChoice: FieldChoice[]
-  ) => {
-    let areAllChildrenValid = true;
-    let selectedChoicesIds = selectedChoices
-      .map((choice: Choice) => choice.key)
-      .map((choiceId: string) => choiceId?.split("-").pop());
-    let selectedChoicesWithChildren = fieldChoice?.filter(
-      (fieldChoice: FieldChoice) =>
-        selectedChoicesIds.includes(fieldChoice.id) && fieldChoice.children
-    );
-    
-    if (selectedChoices.length > 1)
-      selectedChoicesWithChildren.forEach((child: any) =>
-        console.log(selectedChoicesIds, child.children)
-      );
-
-    // let selectedOption = dataForObject[formField.id]
-    return areAllChildrenValid;
-  };
-
+  
   const calculateEntityCompletion = async (
     nestedFormTemplates: FormJson[],
     entityType: string

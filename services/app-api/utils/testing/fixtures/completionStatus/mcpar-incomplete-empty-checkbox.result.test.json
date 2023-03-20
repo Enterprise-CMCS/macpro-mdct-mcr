@@ -12,7 +12,7 @@
   },
   "/mcpar/program-level-indicators": {
     "/mcpar/program-level-indicators/program-characteristics": true,
-    "/mcpar/program-level-indicators/encounter-data-report": true,
+    "/mcpar/program-level-indicators/encounter-data-report": false,
     "/mcpar/program-level-indicators/appeals-state-fair-hearings-and-grievances": true,
     "/mcpar/program-level-indicators/availability-and-accessibility": {
       "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy": true,

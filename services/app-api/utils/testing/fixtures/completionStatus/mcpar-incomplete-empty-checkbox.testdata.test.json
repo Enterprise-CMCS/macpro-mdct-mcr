@@ -199,16 +199,7 @@
   "program_enrollment": "89",
   "program_enrollmentBenefitChanges": "Text Fill",
   "program_type-otherText": "",
-  "program_encounterDataUses": [
-    {
-      "key": "program_encounterDataUses-eSrOkLMTyEmmixeqNXV1ZA",
-      "value": "Rate setting"
-    },
-    {
-      "key": "program_encounterDataUses-Lxb161V64E27MlzL7boAFw",
-      "value": "Other, specify"
-    }
-  ],
+  "program_encounterDataUses": [],
   "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria": [
     {
       "key": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-kP5W9deIb06jK7SXX8dnRA",

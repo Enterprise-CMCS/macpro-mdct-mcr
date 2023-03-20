@@ -70,6 +70,10 @@ export const mapValidationTypesToSchema = (
       }
     }
   );
+  // if (fieldValidationTypes.state_providerTerminationReportingMonitoringMetricsDescription){
+  // console.log(fieldValidationTypes);
+  // fieldValidationTypes.state_providerTerminationReportingMonitoringMetricsDescription.spec.presence="required";
+  // }
   return validationSchema;
 };
 
