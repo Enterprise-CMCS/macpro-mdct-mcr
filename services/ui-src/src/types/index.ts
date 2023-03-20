@@ -248,6 +248,24 @@ export interface FormField {
   repeat?: string;
 }
 
+export function isFieldElement(
+  field: FormField | FormLayoutElement
+): field is FormLayoutElement {
+  return (field as FormField).validation !== undefined;
+}
+
+export interface FormLayoutElement {
+  id: string;
+  type: string;
+  props?: AnyObject;
+}
+
+export function isLayoutElement(
+  field: FormField | FormLayoutElement
+): field is FormLayoutElement {
+  return (field as FormField).validation === undefined;
+}
+
 export interface DropdownOptions {
   label: string;
   value: string;
