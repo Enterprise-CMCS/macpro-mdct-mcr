@@ -197,7 +197,7 @@ export const schemaMap: any = {
 
 export const completionSchemaMap: any = {
   ...schemaMap,
-  checkbox: checkbox().required(),
+  checkbox: checkbox().min(1),
   checkboxSingle: checkboxSingle().required(),
   date: date().required(),
   dropdown: dropdown().required(),
@@ -205,7 +205,7 @@ export const completionSchemaMap: any = {
   email: email().required(),
   number: number().required(),
   objectArray: objectArray().required(),
-  radio: radio().required(),
+  radio: radio().min(1),
   ratio: ratio().required(),
   text: text().required(),
   url: url().required(),
