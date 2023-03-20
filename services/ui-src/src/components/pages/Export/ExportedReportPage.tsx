@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
-import { Box, Heading, Text, Tr, Td, AbsoluteCenter } from "@chakra-ui/react";
+import { Box, Heading, Text, Tr, Td, Center } from "@chakra-ui/react";
 import {
   ExportedReportWrapper,
   ExportedSectionHeading,
@@ -27,7 +27,7 @@ export const ExportedReportPage = () => {
 
   return (
     <Box data-testid="exportedReportPage" sx={sx.container}>
-      {report && routesToRender && (
+      {(report && routesToRender && (
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
           <Helmet>
@@ -84,13 +84,10 @@ export const ExportedReportPage = () => {
           {/* report sections */}
           {renderReportSections(report.formTemplate.routes)}
         </Box>
-      )}
-      {!report ? (
-        <AbsoluteCenter>
+      )) || (
+        <Center>
           <Spinner size="big" />
-        </AbsoluteCenter>
-      ) : (
-        ""
+        </Center>
       )}
     </Box>
   );
