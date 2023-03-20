@@ -237,7 +237,7 @@ Feature: MCPAR E2E Form Submission
 #         | accessMeasure_monitoringMethods        | checkbox | <method>     |
 #         | accessMeasure_oversightMethodFrequency | radio    | <frequency>  |
 
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then the access measure is completed with "<type>", "<region>", "<population>", "<method>", and "<frequency>"
 
@@ -258,7 +258,7 @@ Feature: MCPAR E2E Form Submission
 #         | accessMeasure_monitoringMethods        | checkbox | <method>     |
 #         | accessMeasure_oversightMethodFrequency | radio    | <frequency>  |
 
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then the access measure is completed with "<type>", "<region>", "<population>", "<method>", and "<frequency>"
 #     And there are "2" "access measures"
@@ -301,7 +301,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_enrollment                                   | text | 123    |
 #         | plan_medicaidEnrollmentSharePercentage            | text | 10.251 |
 #         | plan_medicaidManagedCareEnrollmentSharePercentage | text | 5      |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 # Scenario: Fills out Section D: Program Characteristics - Editing Data
 #     Given I am on "/mcpar/plan-level-indicators/program-characteristics"
@@ -311,7 +311,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_enrollment                                   | text | 456 |
 #         | plan_medicaidEnrollmentSharePercentage            | text | 789 |
 #         | plan_medicaidManagedCareEnrollmentSharePercentage | text | 42  |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 #     Then I have completed "1" drawer reports
 
 # Scenario: Fills out Section D: Program Characteristics - Enter Additional Data
@@ -322,7 +322,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_enrollment                                   | text | 123    |
 #         | plan_medicaidEnrollmentSharePercentage            | text | 10.251 |
 #         | plan_medicaidManagedCareEnrollmentSharePercentage | text | 5      |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "2" drawer reports
 #     And I click the "Continue" button
@@ -340,7 +340,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_medicalLossRatioReportingPeriod                      | radio | <period>        |
 #         | plan_medicalLossRatioReportingPeriodStartDate             | text  | <startDate>     |
 #         | plan_medicalLossRatioReportingPeriodEndDate               | text  | <endDate>       |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -359,7 +359,7 @@ Feature: MCPAR E2E Form Submission
 #         | program_encounterDataSubmissionTimelinessStandardDefinition | text | N/A |
 #         | plan_encounterDataSubmissionTimelinessCompliancePercentage  | text | 123 |
 #         | plan_encounterDataSubmissionHipaaCompliancePercentage       | text | 123 |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -383,7 +383,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_resolvedUntimelyResponseAppeals                                            | text | 123 |
 #         | plan_resolvedRightToRequestOutOfNetworkCareDenialAppeals                        | text | 123 |
 #         | plan_resolvedRequestToDisputeFinancialLiabilityDenialAppeals                    | text | 123 |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -404,7 +404,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_resolvedDentalServiceAppeals                     | text | 1                  |
 #         | plan_resolvedNemtAppeals                              | text | 1                  |
 #         | plan_resolvedOtherServiceAppeals                      | text | 1                  |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -421,7 +421,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_stateFairHearingRequestsRetracted                                      | text | 1                  |
 #         | plan_stateFairHearingRequestsWithExternalMedicalReviewWithFavorableDecision | text | 1                  |
 #         | plan_stateFairHearingRequestsWithExternalMedicalReviewWithAdverseDecision   | text | 1                  |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -437,7 +437,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_ltssUserFieldGrievances                                    | text | 1                  |
 #         | plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance | text | 1                  |
 #         | plan_timyleResolvedGrievances                                   | text | 1                  |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -458,7 +458,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_resolvedDentalServiceGrievances                     | text | 6                  |
 #         | plan_resolvedNemtGrievances                              | text | 7                  |
 #         | plan_resolvedOtherServiceGrievances                      | text | 8                  |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -480,7 +480,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_resolvedUntimelyResponseGrievances         | text | 7                  |
 #         | plan_resolvedDenialOfExpeditedAppealGrievances  | text | 8                  |
 #         | plan_resolvedOtherGrievances                    | text | 9                  |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -541,7 +541,7 @@ Feature: MCPAR E2E Form Submission
 #         | qualityMeasure_plan_measureResults | repeated | <resultOne> | 0 |
 #         | qualityMeasure_plan_measureResults | repeated | <resultTwo> | 1 |
 
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then the quality measure is completed with "<resultOne>" and "<resultTwo>"
 
@@ -559,7 +559,7 @@ Feature: MCPAR E2E Form Submission
 #         | qualityMeasure_plan_measureResults | repeated | <resultOne> | 0 |
 #         | qualityMeasure_plan_measureResults | repeated | <resultTwo> | 1 |
 
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then the quality measure is completed with "<resultOne>" and "<resultTwo>"
 #     And there are "2" "quality measures"
@@ -623,7 +623,7 @@ Feature: MCPAR E2E Form Submission
 #         | sanction_remediationDate        | text  | <remedDate>      |
 #         | sanction_correctiveActionPlan   | radio | <actionPlan>     |
 
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then the sanction is completed with "<instances>", "<amount>", "<dateAssessed>", "<remedDate>", and "<actionPlan>"
 
@@ -645,7 +645,7 @@ Feature: MCPAR E2E Form Submission
 #         | sanction_remediationDate        | text  | <remedDate>      |
 #         | sanction_correctiveActionPlan   | radio | <actionPlan>     |
 
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then the sanction is completed with "<instances>", "<amount>", "<dateAssessed>", "<remedDate>", and "<actionPlan>"
 #     And there are "2" "sanctions"
@@ -672,7 +672,7 @@ Feature: MCPAR E2E Form Submission
 #         | plan_programIntegrityReferralsPerThousandBeneficiaries      | text  | 121                                                            |
 #         | plan_overpaymentRecoveryReportDescription                   | text  | Report Description                                             |
 #         | plan_beneficiaryCircumstanceChangeReportingFrequency        | radio | Daily                                                          |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
@@ -685,7 +685,7 @@ Feature: MCPAR E2E Form Submission
 #     And these form elements are filled:
 #         | bssEntity_entityType | checkbox | State Health Insurance Assistance Program (SHIP) |
 #         | bssEntity_entityRole | checkbox | Enrollment Broker/Choice Counseling              |
-#     And I click the "Save & Close" button
+#     And I click the "Save & close" button
 
 #     Then I have completed "1" drawer reports
 #     And I click the "Continue" button
