@@ -241,7 +241,7 @@ export type FieldValidationObject =
 export interface FormField {
   id: string;
   type: string;
-  validation: string | FieldValidationObject;
+  validation?: string | FieldValidationObject;
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];
