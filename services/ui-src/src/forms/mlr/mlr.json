@@ -303,30 +303,31 @@
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "Is the MLR reporting period less than 12 months?",
+                  "label": "P.1 Reporting period discrepancy",
+                  "hint": "Is the reporting period less than 12 months or does the MCO/PIHP/PAHP have a different reporting period than other MCO/PIHP/PAHPs within the same program?",
                   "choices": [
                     {
                       "id": "2NI2TmkWrS70g3U6adRKklWSv31",
-                      "label": "Yes"
-                    },
-                    {
-                      "id": "2NI2UTNqhvrJLvEv8SORD7vIPRI",
-                      "label": "No",
+                      "label": "Yes",
                       "children": [
                         {
                           "id": "reportingPeriodDiscrepancy-otherText",
                           "type": "textarea",
                           "validation": {
-                            "type": "textoptional",
+                            "type": "text",
                             "nested": true,
                             "parentFieldName": "reportingPeriodDiscrepancy"
                           },
                           "props": {
-                            "label": "P. Explanation of reporting period discrepancy",
-                            "hint": "For reporting periods that are less than 12 months, or for MCO/PIHP/PAHPs that have a different reporting period than other MCO/PIHP/PAHPs within the same program, include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                            "label": "P.2 Explanation of reporting period discrepancy",
+                            "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
                           }
                         }
                       ]
+                    },
+                    {
+                      "id": "2NI2UTNqhvrJLvEv8SORD7vIPRI",
+                      "label": "No"
                     }
                   ]
                 }
