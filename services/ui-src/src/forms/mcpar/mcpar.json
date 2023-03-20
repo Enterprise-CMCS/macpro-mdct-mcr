@@ -1464,7 +1464,7 @@
             },
             "dashboardTitle": "Report program characteristics & enrollment for each plan",
             "drawerTitle": "Report program characteristics & enrollment for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+            "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -1528,7 +1528,7 @@
             },
             "dashboardTitle": "Report financial performance for each plan",
             "drawerTitle": "Report financial performance for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+            "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -1671,7 +1671,7 @@
             },
             "dashboardTitle": "Report on encounter data for each plan",
             "drawerTitle": "Report encounter data for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+            "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -1745,7 +1745,7 @@
                 },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+                "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -1920,7 +1920,7 @@
                 },
                 "dashboardTitle": "Report on appeals by service for each plan",
                 "drawerTitle": "Report appeals by service for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+                "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2061,7 +2061,7 @@
                 },
                 "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
                 "drawerTitle": "Report state fair hearings and external medical reviews for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+                "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2162,7 +2162,7 @@
                 },
                 "dashboardTitle": "Report on grievances for each plan",
                 "drawerTitle": "Report on grievances for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+                "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2257,7 +2257,7 @@
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
                 "drawerTitle": "Report encounter data for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+                "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2402,7 +2402,7 @@
                 },
                 "dashboardTitle": "Report on grievances by reason for each plan",
                 "drawerTitle": "Report on grievances by reason for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+                "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -3062,7 +3062,7 @@
             },
             "dashboardTitle": "Report on program integrity for each plan",
             "drawerTitle": "Program integrity for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+            "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -3290,7 +3290,7 @@
         },
         "dashboardTitle": "Report on role and type for each BSS entity",
         "drawerTitle": "Report on",
-        "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+        "drawerReminder": "Complete all fields and select the Save & Close button to save this section.",
         "missingEntityMessage": [
           {
             "type": "span",
