@@ -134,6 +134,7 @@ export const DrawerReportPage = ({ route }: Props) => {
         verbiage={{
           drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
           drawerInfo: verbiage.drawerInfo,
+          drawerReminder: verbiage.drawerReminder,
         }}
         form={drawerForm}
         onSubmit={onSubmit}
