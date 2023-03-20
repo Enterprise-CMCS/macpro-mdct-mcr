@@ -206,7 +206,7 @@ export interface EntityShape {
 
 export interface FormJson {
   id: string;
-  fields: FormField[];
+  fields: (FormField | FormLayoutElement)[];
   options?: AnyObject;
   validation?: AnyObject;
   adminDisabled?: boolean;
@@ -241,7 +241,7 @@ export type FieldValidationObject =
 export interface FormField {
   id: string;
   type: string;
-  validation?: string | FieldValidationObject;
+  validation: string | FieldValidationObject;
   hydrate?: string;
   props?: AnyObject;
   choices?: FieldChoice[];
@@ -250,7 +250,7 @@ export interface FormField {
 
 export function isFieldElement(
   field: FormField | FormLayoutElement
-): field is FormLayoutElement {
+): field is FormField {
   return (field as FormField).validation !== undefined;
 }
 

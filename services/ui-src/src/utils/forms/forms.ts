@@ -59,10 +59,10 @@ export const formFieldFactory = (
 };
 
 export const hydrateFormFields = (
-  formFields: FormField[],
+  formFields: (FormField | FormLayoutElement)[],
   formData: AnyObject | undefined
 ) => {
-  formFields.forEach((field: FormField) => {
+  formFields.forEach((field: FormField | FormLayoutElement) => {
     const fieldFormIndex = formFields.indexOf(field!);
     const fieldProps = formFields[fieldFormIndex].props!;
     // check for children on each choice in field props
