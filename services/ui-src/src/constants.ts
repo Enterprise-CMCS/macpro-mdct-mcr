@@ -11,7 +11,7 @@ export const noCombinedDataInput =
   "No, the report does not contain items for which the state is unable to remove Separate CHIP information";
 
 export const closeText = "Close";
-export const saveAndCloseText = "Save & Close";
+export const saveAndCloseText = "Save & close";
 
 // STATES
 export enum States {
