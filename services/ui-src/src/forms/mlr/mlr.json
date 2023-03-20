@@ -299,6 +299,15 @@
                 }
               },
               {
+                "id": "reportingPeriodDiscrepancy",
+                "type": "textarea",
+                "validation": "textOptional",
+                "props": {
+                  "label": "P. Explanation of reporting period discrepancy",
+                  "hint": "For reporting periods that are less than 12 months, or for MCO/PIHP/PAHPs that have a different reporting period than other MCO/PIHP/PAHPs within the same program, include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                }
+              },
+              {
                 "id": "miscellaneousNotes",
                 "type": "textarea",
                 "validation": "textOptional",
