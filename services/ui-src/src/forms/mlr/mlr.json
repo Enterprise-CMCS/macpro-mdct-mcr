@@ -300,11 +300,35 @@
               },
               {
                 "id": "reportingPeriodDiscrepancy",
-                "type": "textarea",
-                "validation": "textOptional",
+                "type": "radio",
+                "validation": "radio",
                 "props": {
-                  "label": "P. Explanation of reporting period discrepancy",
-                  "hint": "For reporting periods that are less than 12 months, or for MCO/PIHP/PAHPs that have a different reporting period than other MCO/PIHP/PAHPs within the same program, include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                  "label": "Is the MLR reporting period less than 12 months?",
+                  "choices": [
+                    {
+                      "id": "2NI2TmkWrS70g3U6adRKklWSv31",
+                      "label": "Yes"
+                    },
+                    {
+                      "id": "2NI2UTNqhvrJLvEv8SORD7vIPRI",
+                      "label": "No",
+                      "children": [
+                        {
+                          "id": "reportingPeriodDiscrepancy-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "textoptional",
+                            "nested": true,
+                            "parentFieldName": "reportingPeriodDiscrepancy"
+                          },
+                          "props": {
+                            "label": "P. Explanation of reporting period discrepancy",
+                            "hint": "For reporting periods that are less than 12 months, or for MCO/PIHP/PAHPs that have a different reporting period than other MCO/PIHP/PAHPs within the same program, include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                          }
+                        }
+                      ]
+                    }
+                  ]
                 }
               },
               {
