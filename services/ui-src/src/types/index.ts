@@ -251,7 +251,7 @@ export interface FormField {
 export function isFieldElement(
   field: FormField | FormLayoutElement
 ): field is FormField {
-  return (field as FormField).validation !== undefined;
+  return !formLayoutElementTypes.includes(field.type);
 }
 
 export interface FormLayoutElement {
@@ -259,6 +259,8 @@ export interface FormLayoutElement {
   type: string;
   props?: AnyObject;
 }
+
+const formLayoutElementTypes = ["sectionHeader"];
 
 export function isLayoutElement(
   field: FormField | FormLayoutElement
