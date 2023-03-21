@@ -374,6 +374,7 @@ export const mockModalOverlayReportPageVerbiage = {
   dashboardTitle: "Mock dashboard title",
   addEditModalHint: "Mock modal hint",
   countEntitiesInTitle: true,
+  tableHeader: "Mock table header",
   addEntityButtonText: "Mock add entity button text",
   emptyDashboardText: "Mock empty dashboard text",
 };
