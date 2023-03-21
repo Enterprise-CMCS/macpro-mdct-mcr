@@ -5,6 +5,7 @@ import {
   FormJson,
   Choice,
   FieldChoice,
+  FormField,
 } from "../types/types";
 import { validateFieldData } from "./validation";
 
@@ -80,8 +81,8 @@ export const calculateCompletionStatus = async (
           selectedChoicesIds.includes(fieldChoice.id) && fieldChoice.children
       );
       let fieldIds: string[] = [];
-      selectedChoicesWithChildren?.forEach((selectedChoice: any) => {
-        selectedChoice.children.forEach((childChoice: any) => {
+      selectedChoicesWithChildren?.forEach((selectedChoice: FieldChoice) => {
+        selectedChoice.children?.forEach((childChoice: FormField) => {
           fieldIds.push(childChoice.id);
           if (childChoice.props?.choices) {
             let childFields = getNestedFields(

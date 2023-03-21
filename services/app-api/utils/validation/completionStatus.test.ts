@@ -195,6 +195,11 @@ describe("Completion Status Tests", () => {
         formTemplate: "mcpar-template",
       },
       {
+        description: "Empty Checkbox",
+        fixture: "mcpar-incomplete-empty-checkbox",
+        formTemplate: "mcpar-template",
+      },
+      {
         description:
           "Report is missing State Name in point of contact, otherwise complete.",
         fixture: "mcpar-missing-pointofcontact",
@@ -237,7 +242,7 @@ describe("Completion Status Tests", () => {
     });
   });
 
-  describe.skip("Quick Test", () => {
+  describe.skip("Local Fixture Testing, not used in CI", () => {
     const runs = [
       {
         description: "Missing nested field",
