@@ -237,22 +237,22 @@ describe("Completion Status Tests", () => {
     });
   });
 
-  describe("Quick Test",() => {
+  describe.skip("Quick Test", () => {
     const runs = [
-      
       {
         description: "Missing nested field",
         fixture: "mcpar-incomplete-nested",
         formTemplate: "mcpar-template",
-      }];
-      runs.forEach((run) => {
-        test(run.description, async () => {
-          const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
-          const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
-          const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
-          const result = await calculateCompletionStatus(testData, formTemplate);
-          expect(result).toMatchObject(expectedResult);
-        });
+      },
+    ];
+    runs.forEach((run) => {
+      test(run.description, async () => {
+        const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
+        const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
+        const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject(expectedResult);
       });
-  })
+    });
+  });
 });

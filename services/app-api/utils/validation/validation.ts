@@ -70,10 +70,6 @@ export const mapValidationTypesToSchema = (
       }
     }
   );
-  // if (fieldValidationTypes.state_providerTerminationReportingMonitoringMetricsDescription){
-  // console.log(fieldValidationTypes);
-  // fieldValidationTypes.state_providerTerminationReportingMonitoringMetricsDescription.spec.presence="required";
-  // }
   return validationSchema;
 };
 
@@ -103,7 +99,13 @@ export const makeNestedFieldSchema = (
     );
   } else {
     const fieldValidationSchema = schemaMapper[type];
-    return nested(() => fieldValidationSchema, parentFieldName, parentOptionId);
+    let nestedSchema = nested(
+      () => fieldValidationSchema,
+      parentFieldName,
+      parentOptionId
+    );
+    if (isRequired) nestedSchema = nestedSchema.required();
+    return nestedSchema;
   }
 };
 
