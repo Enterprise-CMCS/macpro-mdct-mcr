@@ -242,11 +242,11 @@ describe("Completion Status Tests", () => {
     });
   });
 
-  describe.skip("Local Fixture Testing, not used in CI", () => {
+  describe("Local Fixture Testing, not used in CI", () => {
     const runs = [
       {
-        description: "Missing nested field",
-        fixture: "mcpar-incomplete-nested",
+        description: "Nested Empty Checkbox",
+        fixture: "mcpar-incomplete-nested-empty-checkbox",
         formTemplate: "mcpar-template",
       },
     ];

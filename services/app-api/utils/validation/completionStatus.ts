@@ -7,7 +7,7 @@ import {
   FieldChoice,
   FormField,
 } from "../types/types";
-import { validateFieldData } from "./validation";
+import { validateFieldData } from "./completionValidation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
   const flatten = (obj: AnyObject, out: AnyObject) => {
@@ -41,8 +41,7 @@ export const calculateCompletionStatus = async (
   const validationJson = formTemplate.validationJson;
 
   const areFieldsValid = async (
-    fieldsToBeValidated: Record<string, string>,
-    required: boolean
+    fieldsToBeValidated: Record<string, string>
   ) => {
     let areAllFieldsValid = false;
     try {
@@ -50,8 +49,8 @@ export const calculateCompletionStatus = async (
       areAllFieldsValid =
         (await validateFieldData(
           validationJson,
-          fieldsToBeValidated,
-          required
+          fieldsToBeValidated
+        
         )) !== undefined;
     } catch (err) {
       // Silently ignore error, will result in false
@@ -61,8 +60,7 @@ export const calculateCompletionStatus = async (
 
   const calculateFormCompletion = async (
     nestedFormTemplate: FormJson,
-    dataForObject: AnyObject = fieldData,
-    required: boolean = true
+    dataForObject: AnyObject = fieldData
   ) => {
     // Build an object of k:v for fields to validate
     let fieldsToBeValidated: Record<string, string> = {};
@@ -105,8 +103,8 @@ export const calculateCompletionStatus = async (
             {
               [formField.id]:
                 dataForObject[`${formField.id}_${repeatEntity.id}`],
-            },
-            required
+            }
+            
           );
         }
       } else {
@@ -131,7 +129,7 @@ export const calculateCompletionStatus = async (
     }
     // Validate all fields en masse, passing flag that uses required validation schema
     return (
-      repeatersValid && (await areFieldsValid(fieldsToBeValidated, required))
+      repeatersValid && (await areFieldsValid(fieldsToBeValidated))
     );
   };
 

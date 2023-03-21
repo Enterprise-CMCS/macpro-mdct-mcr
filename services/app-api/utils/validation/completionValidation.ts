@@ -1,40 +1,9 @@
-import * as yup from "yup";
-import { nested, endDate, schemaMap } from "./schemaMap";
-import { AnyObject } from "../types/types";
+import { nested, endDate } from "./completionSchemas";
+import { schemaMap } from "./schemaMap";
 import { error } from "../constants/constants";
+import * as yup from "yup";
 
-// compare payload data against validation schema
-export const validateData = async (
-  validationSchema: AnyObject,
-  data: AnyObject,
-  options?: AnyObject
-) => {
-  try {
-    // returns valid data to be passed through API
-    return await validationSchema.validate(data, {
-      stripUnknown: true,
-      ...options,
-    });
-  } catch (e: any) {
-    throw new Error(error.INVALID_DATA);
-  }
-};
-
-// filter field validation to just what's needed for the passed fields
-export const filterValidationSchema = (
-  validationObject: AnyObject,
-  data: AnyObject
-): AnyObject => {
-  const validationEntries = Object.entries(validationObject);
-  const dataKeys = Object.keys(data);
-  const filteredEntries = validationEntries.filter(
-    (entry: [string, string | AnyObject]) => {
-      const [entryKey] = entry;
-      return dataKeys.includes(entryKey);
-    }
-  );
-  return Object.fromEntries(filteredEntries);
-};
+import { AnyObject } from "../types/types";
 
 // map field validation types to validation schema
 export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
@@ -84,24 +53,56 @@ export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
 };
 
 export const validateFieldData = async (
-  validationJson: AnyObject,
-  unvalidatedFieldData: AnyObject
-) => {
-  let validatedFieldData: AnyObject | undefined = undefined;
-  // filter field validation to just what's needed for the passed fields
-  const filteredFieldDataValidationJson = filterValidationSchema(
-    validationJson,
-    unvalidatedFieldData
-  );
-  // transform field validation instructions to yup validation schema
-  const fieldDataValidationSchema = yup
-    .object()
-    .shape(mapValidationTypesToSchema(filteredFieldDataValidationJson));
-  if (fieldDataValidationSchema) {
-    validatedFieldData = await validateData(
-      fieldDataValidationSchema,
+    validationJson: AnyObject,
+    unvalidatedFieldData: AnyObject
+  ) => {
+    let validatedFieldData: AnyObject | undefined = undefined;
+    // filter field validation to just what's needed for the passed fields
+    const filteredFieldDataValidationJson = filterValidationSchema(
+      validationJson,
       unvalidatedFieldData
     );
-  }
-  return validatedFieldData;
-};
+    // transform field validation instructions to yup validation schema
+    const fieldDataValidationSchema = yup
+      .object()
+      .shape(mapValidationTypesToSchema(filteredFieldDataValidationJson));
+    if (fieldDataValidationSchema) {
+      validatedFieldData = await validateData(
+        fieldDataValidationSchema,
+        unvalidatedFieldData
+      );
+    }
+    return validatedFieldData;
+  };
+
+  // filter field validation to just what's needed for the passed fields
+export const filterValidationSchema = (
+    validationObject: AnyObject,
+    data: AnyObject
+  ): AnyObject => {
+    const validationEntries = Object.entries(validationObject);
+    const dataKeys = Object.keys(data);
+    const filteredEntries = validationEntries.filter(
+      (entry: [string, string | AnyObject]) => {
+        const [entryKey] = entry;
+        return dataKeys.includes(entryKey);
+      }
+    );
+    return Object.fromEntries(filteredEntries);
+  };
+
+  export const validateData = async (
+    validationSchema: AnyObject,
+    data: AnyObject,
+    options?: AnyObject
+  ) => {
+    try {
+      // returns valid data to be passed through API
+      return await validationSchema.validate(data, {
+        stripUnknown: true,
+        ...options,
+      });
+    } catch (e: any) {
+      throw new Error(error.INVALID_DATA);
+    }
+  };

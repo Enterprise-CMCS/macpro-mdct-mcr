@@ -149,7 +149,7 @@ export const updateReport = handler(async (event, context) => {
       body: error.MISSING_DATA,
     };
   }
-
+  console.log("What is passed on update?",{unvalidatedPayload});
   // Validate passed field data
   const validatedFieldData = await validateFieldData(
     formTemplate?.validationJson,
