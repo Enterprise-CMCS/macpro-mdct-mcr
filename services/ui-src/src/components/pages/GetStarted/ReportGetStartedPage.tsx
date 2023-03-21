@@ -1,6 +1,11 @@
 // components
 import { Box, Button, Image, Heading, Text, Flex } from "@chakra-ui/react";
-import { InfoSection, PageTemplate, SpreadsheetWidget } from "components";
+import {
+  Table,
+  InfoSection,
+  PageTemplate,
+  SpreadsheetWidget,
+} from "components";
 import { useNavigate } from "react-router-dom";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
@@ -60,6 +65,30 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
               <Text sx={sx.additionalInfo}>{section2.additionalInfo}</Text>
             </Box>
           </Flex>
+          {section2.table ? (
+            <Flex sx={sx.sectionContent}>
+              <Box>
+                <Heading sx={sx.smallSectionHeading} size={"sm"}>
+                  {section2.tableHeading}
+                </Heading>
+                <Table content={section2.table}></Table>
+              </Box>
+            </Flex>
+          ) : (
+            <></>
+          )}
+          {section2.autosaveNotice && section2.autosaveHeading ? (
+            <Flex sx={sx.sectionContent}>
+              <Box>
+                <Heading sx={sx.smallSectionHeading} size={"sm"}>
+                  {section2.autosaveHeading}
+                </Heading>
+                <Text>{section2.autosaveNotice}</Text>
+              </Box>
+            </Flex>
+          ) : (
+            <></>
+          )}
         </InfoSection>
         <InfoSection content={section3}>
           <Flex sx={sx.sectionContent}>
@@ -107,6 +136,7 @@ const sx = {
   },
   sectionContent: {
     marginTop: "1rem",
+    marginBottom: "2rem",
     gridGap: "2rem",
     flexDirection: "column",
     ".desktop &": {
@@ -142,5 +172,8 @@ const sx = {
       marginLeft: "0.5rem",
       marginRight: "-0.25rem",
     },
+  },
+  smallSectionHeading: {
+    marginBottom: "1rem",
   },
 };
