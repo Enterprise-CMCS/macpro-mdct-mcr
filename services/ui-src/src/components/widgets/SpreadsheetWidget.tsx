@@ -4,14 +4,14 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 // assets
 import greenSpreadsheetIcon from "../../assets/icons/icon_spreadsheet_green.png";
 
-export const SpreadsheetWidget = ({ description, ...props }: Props) => {
+export const SpreadsheetWidget = ({ description, alt, ...props }: Props) => {
   return (
     <Box {...props}>
       <Flex sx={sx.container}>
         <Flex sx={sx.iconContainer}>
           <Image
             src={greenSpreadsheetIcon}
-            alt="Excel Workbook Icon"
+            alt={alt != undefined ? alt : "Excel Workbook Icon"}
             sx={sx.icon}
           />
         </Flex>
@@ -28,6 +28,7 @@ export const SpreadsheetWidget = ({ description, ...props }: Props) => {
 
 interface Props {
   description: string;
+  alt?: string;
   [key: string]: any;
 }
 

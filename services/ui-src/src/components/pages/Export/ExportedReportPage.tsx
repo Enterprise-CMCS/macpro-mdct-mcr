@@ -38,8 +38,8 @@ export const ExportedReportPage = () => {
           </Helmet>
           {/* report heading */}
           <Heading as="h1" sx={sx.heading}>
-            {reportPage.heading}
-            {report.fieldData.stateName}: {report.programName}
+            {`${reportPage.heading}
+            ${report.fieldData.stateName}: ${report.programName}`}
           </Heading>
           {/* report metadata tables */}
           <Table
@@ -115,7 +115,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
         <Box key={section.path} mt="5rem">
           {/*  render top-level section headings */}
           <Heading as="h2" sx={sx.sectionHeading}>
-            Section {section.name}
+            {`Section ${section.name}`}
           </Heading>
           {renderSection(section)}
         </Box>
