@@ -94,5 +94,6 @@ export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 // tables
 export { Table } from "./tables/Table";
+export { EntityRow } from "./tables/EntityRow";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";

@@ -3,12 +3,15 @@ import { useContext, useState } from "react";
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
+  EntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
 } from "components";
 // types
 import { EntityShape, ModalOverlayReportPageShape } from "types";
+// utils
+import { getFormattedEntityData } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/mlr/mlr-accordions";
 
@@ -64,6 +67,23 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
         </Button>
       </Box>
       <ReportPageFooter />
+      {reportFieldDataEntities.map(
+        (entity: EntityShape, entityIndex: number) => (
+          <EntityRow
+            key={entity.id}
+            entity={entity}
+            entityIndex={entityIndex}
+            entityType={entityType}
+            verbiage={verbiage}
+            formattedEntityData={getFormattedEntityData(
+              entityType,
+              entity,
+              report?.fieldData
+            )}
+            openAddEditEntityModal={openAddEditEntityModal}
+          />
+        )
+      )}
       {report && (
         <AddEditEntityModal
           entityType={entityType}
