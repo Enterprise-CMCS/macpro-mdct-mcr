@@ -219,7 +219,7 @@ export interface EntityShape {
 
 export interface FormJson {
   id: string;
-  fields: FormField[];
+  fields: (FormField | FormLayoutElement)[];
   options?: AnyObject;
   validation?: AnyObject;
   adminDisabled?: boolean;
@@ -259,6 +259,26 @@ export interface FormField {
   props?: AnyObject;
   choices?: FieldChoice[];
   repeat?: string;
+}
+
+export function isFieldElement(
+  field: FormField | FormLayoutElement
+): field is FormField {
+  return !formLayoutElementTypes.includes(field.type);
+}
+
+export interface FormLayoutElement {
+  id: string;
+  type: string;
+  props?: AnyObject;
+}
+
+const formLayoutElementTypes = ["sectionHeader"];
+
+export function isLayoutElement(
+  field: FormField | FormLayoutElement
+): field is FormLayoutElement {
+  return (field as FormField).validation === undefined;
 }
 
 export interface DropdownOptions {

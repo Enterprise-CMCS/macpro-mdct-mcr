@@ -22,6 +22,7 @@ import {
   DrawerReportPageShape,
   ReportStatus,
   FormField,
+  isFieldElement,
 } from "types";
 import completedIcon from "assets/icons/icon_check_circle.png";
 
@@ -56,7 +57,10 @@ export const DrawerReportPage = ({ route }: Props) => {
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.name === selectedEntity?.name
       );
-      const filteredFormData = filterFormData(enteredData, drawerForm.fields);
+      const filteredFormData = filterFormData(
+        enteredData,
+        drawerForm.fields.filter(isFieldElement)
+      );
       const newEntity = {
         ...selectedEntity,
         ...filteredFormData,
@@ -84,9 +88,9 @@ export const DrawerReportPage = ({ route }: Props) => {
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
        */
-      const isEntityCompleted = drawerForm.fields?.every(
-        (field: FormField) => field.id in entity
-      );
+      const isEntityCompleted = drawerForm.fields
+        ?.filter(isFieldElement)
+        .every((field: FormField) => field.id in entity);
       return (
         <Flex key={entity.id} sx={sx.entityRow}>
           {isEntityCompleted && (
