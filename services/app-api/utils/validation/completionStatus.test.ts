@@ -234,7 +234,7 @@ describe("Completion Status Tests", () => {
         description: "Completed MCPAR but not submitted",
         fixture: "mcpar-complete-unsubmitted",
         formTemplate: "mcpar-template",
-      }
+      },
     ];
     runs.forEach((run) => {
       test(run.description, async () => {
@@ -253,7 +253,7 @@ describe("Completion Status Tests", () => {
         description: "Completed MCPAR but not submitted",
         fixture: "mcpar-complete-unsubmitted",
         formTemplate: "mcpar-template",
-      }
+      },
     ];
     runs.forEach((run) => {
       test(run.description, async () => {

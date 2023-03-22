@@ -47,11 +47,8 @@ export const calculateCompletionStatus = async (
     try {
       // all fields successfully validated if validatedFields is not undefined
       areAllFieldsValid =
-        (await validateFieldData(
-          validationJson,
-          fieldsToBeValidated
-        
-        )) !== undefined;
+        (await validateFieldData(validationJson, fieldsToBeValidated)) !==
+        undefined;
     } catch (err) {
       // Silently ignore error, will result in false
     }
@@ -99,13 +96,9 @@ export const calculateCompletionStatus = async (
         // This is a repeated field, and must be handled differently
         for (var repeatEntity of fieldData[formField.repeat]) {
           // Iterate over each entity from the repeat section, build new value id, and validate it
-          repeatersValid &&= await areFieldsValid(
-            {
-              [formField.id]:
-                dataForObject[`${formField.id}_${repeatEntity.id}`],
-            }
-            
-          );
+          repeatersValid &&= await areFieldsValid({
+            [formField.id]: dataForObject[`${formField.id}_${repeatEntity.id}`],
+          });
         }
       } else {
         // Key: Form Field ID, Value: Report Data for field
@@ -128,9 +121,7 @@ export const calculateCompletionStatus = async (
       }
     }
     // Validate all fields en masse, passing flag that uses required validation schema
-    return (
-      repeatersValid && (await areFieldsValid(fieldsToBeValidated))
-    );
+    return repeatersValid && (await areFieldsValid(fieldsToBeValidated));
   };
 
   const calculateEntityCompletion = async (
