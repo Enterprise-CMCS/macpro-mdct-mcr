@@ -3,8 +3,11 @@ import {
   AnyObject,
   ReportRoute,
   FormJson,
+  Choice,
+  FieldChoice,
+  FormField,
 } from "../types/types";
-import { validateFieldData } from "./validation";
+import { validateFieldData } from "./completionValidation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
   const flatten = (obj: AnyObject, out: AnyObject) => {
@@ -38,18 +41,14 @@ export const calculateCompletionStatus = async (
   const validationJson = formTemplate.validationJson;
 
   const areFieldsValid = async (
-    fieldsToBeValidated: Record<string, string>,
-    required: boolean
+    fieldsToBeValidated: Record<string, string>
   ) => {
     let areAllFieldsValid = false;
     try {
       // all fields successfully validated if validatedFields is not undefined
       areAllFieldsValid =
-        (await validateFieldData(
-          validationJson,
-          fieldsToBeValidated,
-          required
-        )) !== undefined;
+        (await validateFieldData(validationJson, fieldsToBeValidated)) !==
+        undefined;
     } catch (err) {
       // Silently ignore error, will result in false
     }
@@ -58,36 +57,71 @@ export const calculateCompletionStatus = async (
 
   const calculateFormCompletion = async (
     nestedFormTemplate: FormJson,
-    dataForObject: AnyObject = fieldData,
-    required: boolean = true
+    dataForObject: AnyObject = fieldData
   ) => {
     // Build an object of k:v for fields to validate
     let fieldsToBeValidated: Record<string, string> = {};
     // Repeat fields can't be validated at same time, so holding their completion status here
     let repeatersValid = true; //default to true in case of no repeat fields
 
+    const getNestedFields = (
+      fieldChoices: FieldChoice[],
+      selectedChoices: Choice[]
+    ) => {
+      let selectedChoicesIds = selectedChoices
+        .map((choice: Choice) => choice.key)
+        .map((choiceId: string) => choiceId?.split("-").pop());
+      let selectedChoicesWithChildren = fieldChoices?.filter(
+        (fieldChoice: FieldChoice) =>
+          selectedChoicesIds.includes(fieldChoice.id) && fieldChoice.children
+      );
+      let fieldIds: string[] = [];
+      selectedChoicesWithChildren?.forEach((selectedChoice: FieldChoice) => {
+        selectedChoice.children?.forEach((childChoice: FormField) => {
+          fieldIds.push(childChoice.id);
+          if (childChoice.props?.choices) {
+            let childFields = getNestedFields(
+              childChoice.props?.choices,
+              dataForObject[childChoice.id]
+            );
+            fieldIds.push(...childFields);
+          }
+        });
+      });
+      return fieldIds;
+    };
     // Iterate over all fields in form
     for (var formField of nestedFormTemplate.fields || []) {
       if (formField.repeat) {
         // This is a repeated field, and must be handled differently
         for (var repeatEntity of fieldData[formField.repeat]) {
           // Iterate over each entity from the repeat section, build new value id, and validate it
-          repeatersValid &&= await areFieldsValid(
-            {
-              [formField.id]:
-                dataForObject[`${formField.id}_${repeatEntity.id}`],
-            },
-            required
-          );
+          repeatersValid &&= await areFieldsValid({
+            [formField.id]: dataForObject[`${formField.id}_${repeatEntity.id}`],
+          });
         }
       } else {
         // Key: Form Field ID, Value: Report Data for field
-        fieldsToBeValidated[formField.id] = dataForObject[formField.id];
+        if (Array.isArray(dataForObject[formField.id])) {
+          let nestedFields: string[] = getNestedFields(
+            formField.props?.choices,
+            dataForObject[formField.id]
+          );
+          nestedFields?.forEach(
+            (nestedField: string) =>
+              (fieldsToBeValidated[nestedField] = dataForObject[nestedField]
+                ? dataForObject[nestedField]
+                : null)
+          );
+        }
+
+        fieldsToBeValidated[formField.id] = dataForObject[formField.id]
+          ? dataForObject[formField.id]
+          : null;
       }
     }
-
     // Validate all fields en masse, passing flag that uses required validation schema
-    return repeatersValid && areFieldsValid(fieldsToBeValidated, required);
+    return repeatersValid && (await areFieldsValid(fieldsToBeValidated));
   };
 
   const calculateEntityCompletion = async (

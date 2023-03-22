@@ -190,6 +190,16 @@ describe("Completion Status Tests", () => {
         formTemplate: "mcpar-template",
       },
       {
+        description: "Missing nested field",
+        fixture: "mcpar-incomplete-nested",
+        formTemplate: "mcpar-template",
+      },
+      {
+        description: "Empty Checkbox",
+        fixture: "mcpar-incomplete-empty-checkbox",
+        formTemplate: "mcpar-template",
+      },
+      {
         description:
           "Report is missing State Name in point of contact, otherwise complete.",
         fixture: "mcpar-missing-pointofcontact",
@@ -218,6 +228,30 @@ describe("Completion Status Tests", () => {
       {
         description: "Incomplete MCPAR Report due to plan with no entities",
         fixture: "mcpar-incomplete-plan-noentities",
+        formTemplate: "mcpar-template",
+      },
+      {
+        description: "Completed MCPAR but not submitted",
+        fixture: "mcpar-complete-unsubmitted",
+        formTemplate: "mcpar-template",
+      },
+    ];
+    runs.forEach((run) => {
+      test(run.description, async () => {
+        const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
+        const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
+        const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject(expectedResult);
+      });
+    });
+  });
+
+  describe("Local Fixture Testing, not used in CI", () => {
+    const runs = [
+      {
+        description: "Completed MCPAR but not submitted",
+        fixture: "mcpar-complete-unsubmitted",
         formTemplate: "mcpar-template",
       },
     ];

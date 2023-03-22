@@ -194,19 +194,3 @@ export const schemaMap: any = {
   url: url(),
   urlOptional: urlOptional(),
 };
-
-export const completionSchemaMap: any = {
-  ...schemaMap,
-  checkbox: checkbox().required(),
-  checkboxSingle: checkboxSingle().required(),
-  date: date().required(),
-  dropdown: dropdown().required(),
-  dynamic: dynamic().required(),
-  email: email().required(),
-  number: number().required(),
-  objectArray: objectArray().required(),
-  radio: radio().required(),
-  ratio: ratio().required(),
-  text: text().required(),
-  url: url().required(),
-};
