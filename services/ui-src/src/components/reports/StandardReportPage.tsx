@@ -10,7 +10,12 @@ import {
 } from "components";
 // utils
 import { filterFormData, useFindRoute, useUser } from "utils";
-import { AnyObject, ReportStatus, StandardReportPageShape } from "types";
+import {
+  AnyObject,
+  isFieldElement,
+  ReportStatus,
+  StandardReportPageShape,
+} from "types";
 
 export const StandardReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -33,7 +38,10 @@ export const StandardReportPage = ({ route }: Props) => {
       state: state,
       id: report?.id,
     };
-    const filteredFormData = filterFormData(enteredData, route.form.fields);
+    const filteredFormData = filterFormData(
+      enteredData,
+      route.form.fields.filter(isFieldElement)
+    );
     const dataToWrite = {
       metadata: {
         status: ReportStatus.IN_PROGRESS,

@@ -5,7 +5,13 @@ import { Form, Modal, ReportContext } from "components";
 import { Text } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 // utils
-import { AnyObject, EntityShape, FormJson, ReportStatus } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  FormJson,
+  isFieldElement,
+  ReportStatus,
+} from "types";
 import { filterFormData, useUser } from "utils";
 
 export const AddEditEntityModal = ({
@@ -37,7 +43,10 @@ export const AddEditEntityModal = ({
       fieldData: {},
     };
     const currentEntities = report?.fieldData?.[entityType] || [];
-    const filteredFormData = filterFormData(enteredData, form.fields);
+    const filteredFormData = filterFormData(
+      enteredData,
+      form.fields.filter(isFieldElement)
+    );
     if (selectedEntity?.id) {
       // if existing entity selected, edit
       const selectedEntityIndex = currentEntities.findIndex(
