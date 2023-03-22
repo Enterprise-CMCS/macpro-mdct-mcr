@@ -33,7 +33,7 @@ export const text = () =>
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
     });
-export const textOptional = () => text().notRequired();
+export const textOptional = () => text().notRequired().nullable();
 
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
@@ -109,7 +109,7 @@ export const ratio = () =>
 
 // EMAIL
 export const email = () => text().email(error.INVALID_EMAIL);
-export const emailOptional = () => email().notRequired();
+export const emailOptional = () => email().notRequired().nullable();
 
 // URL
 export const url = () => text().url(error.INVALID_URL);

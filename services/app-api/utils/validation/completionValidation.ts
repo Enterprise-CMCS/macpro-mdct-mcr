@@ -1,5 +1,5 @@
 import { nested, endDate } from "./completionSchemas";
-import { schemaMap } from "./schemaMap";
+import { completionSchemaMap as schemaMap } from "./completionSchemaMap";
 import { error } from "../constants/constants";
 import * as yup from "yup";
 

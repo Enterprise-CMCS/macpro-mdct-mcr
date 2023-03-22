@@ -230,6 +230,11 @@ describe("Completion Status Tests", () => {
         fixture: "mcpar-incomplete-plan-noentities",
         formTemplate: "mcpar-template",
       },
+      {
+        description: "Completed MCPAR but not submitted",
+        fixture: "mcpar-complete-unsubmitted",
+        formTemplate: "mcpar-template",
+      }
     ];
     runs.forEach((run) => {
       test(run.description, async () => {
@@ -245,10 +250,10 @@ describe("Completion Status Tests", () => {
   describe("Local Fixture Testing, not used in CI", () => {
     const runs = [
       {
-        description: "Nested Empty Checkbox",
-        fixture: "mcpar-incomplete-nested-empty-checkbox",
+        description: "Completed MCPAR but not submitted",
+        fixture: "mcpar-complete-unsubmitted",
         formTemplate: "mcpar-template",
-      },
+      }
     ];
     runs.forEach((run) => {
       test(run.description, async () => {
