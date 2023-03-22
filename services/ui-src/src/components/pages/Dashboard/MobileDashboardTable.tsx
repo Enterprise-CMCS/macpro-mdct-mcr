@@ -156,7 +156,7 @@ const AdminReleaseButton = ({
       {releasing && reportId === report.id ? (
         <Spinner size="small" />
       ) : (
-        "Release"
+        "Unlock"
       )}
     </Button>
   );

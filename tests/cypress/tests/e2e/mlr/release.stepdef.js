@@ -34,7 +34,7 @@ Then("the report is submitted successfully", () => {
   cy.contains("Successfully Submitted").should("be.visible");
 });
 
-When("I release a report", () => {
+When("I unlock a report", () => {
   cy.visit("/");
   cy.get('select[id="state"').focus().select("District of Columbia");
   cy.get('input[id="report-MLR"]').focus().click();
@@ -46,7 +46,7 @@ When("I release a report", () => {
 
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Release")')
+    .find('button:contains("Unlock")')
     .focus()
     .click();
 });
@@ -69,7 +69,7 @@ When("I archive a report", () => {
     .click();
 });
 
-Then("I cannot release that report", () => {
+Then("I cannot unlock that report", () => {
   cy.visit("/");
   cy.get('select[id="state"').focus().select("District of Columbia");
   cy.get('input[id="report-MLR"]').focus().click();
@@ -82,14 +82,14 @@ Then("I cannot release that report", () => {
   cy.findByText(programName)
     .last()
     .parent()
-    .find('button:contains("Release")')
+    .find('button:contains("Unlock")')
     .should("be.disabled");
 });
 
-Then("I cannot release that archived report", () => {
+Then("I cannot unlock that archived report", () => {
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Release")')
+    .find('button:contains("Unlock")')
     .should("be.disabled");
 });
 

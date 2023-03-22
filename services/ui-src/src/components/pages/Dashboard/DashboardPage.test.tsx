@@ -329,7 +329,7 @@ describe("Test Dashboard report releasing privileges (desktop)", () => {
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
-    const releaseProgramButton = screen.getAllByText("Release")[0];
+    const releaseProgramButton = screen.getAllByText("Unlock")[0];
     expect(releaseProgramButton).toBeVisible();
     await userEvent.click(releaseProgramButton);
     await expect(mockMcparReportContext.releaseReport).toHaveBeenCalledTimes(1);
@@ -344,7 +344,7 @@ describe("Test Dashboard report releasing privileges (desktop)", () => {
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
-    expect(screen.queryByAltText("Release")).toBeNull();
+    expect(screen.queryByAltText("Unlock")).toBeNull();
   });
 });
 
@@ -365,7 +365,7 @@ describe("Test Dashboard report releasing privileges (mobile)", () => {
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
-    const releaseProgramButton = screen.getAllByText("Release")[0];
+    const releaseProgramButton = screen.getAllByText("Unlock")[0];
     expect(releaseProgramButton).toBeVisible();
     await userEvent.click(releaseProgramButton);
     await expect(mockMcparReportContext.releaseReport).toHaveBeenCalledTimes(1);
@@ -380,7 +380,7 @@ describe("Test Dashboard report releasing privileges (mobile)", () => {
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
-    expect(screen.queryByAltText("Release")).toBeNull();
+    expect(screen.queryByAltText("Unlock")).toBeNull();
   });
 });
 
