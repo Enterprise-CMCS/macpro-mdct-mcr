@@ -612,6 +612,40 @@ export const mockReportFieldData = {
   ],
 };
 
+export const mockMlrReportFieldData = {
+  programs: [
+    { id: 123, name: "example-program1" },
+    { id: 456, name: "example-program2" },
+  ],
+  text: "text-input",
+  number: 0,
+  radio: ["option1"],
+  checkbox: ["option1", "option2"],
+  dropdown: "dropdown-selection",
+  program: [
+    {
+      id: "mock-id",
+      programType: [
+        {
+          key: "option1",
+          value: "mock-type1",
+        },
+        {
+          key: "option2",
+          value: "mock-type2",
+        },
+      ],
+      eligibilityGroup: [
+        {
+          key: "option1",
+          value: "mock-group",
+        },
+      ],
+      "eligibilityGroup-otherText": "",
+    },
+  ],
+};
+
 export const mockMcparReport = {
   ...mockReportKeys,
   reportType: "MCPAR",
@@ -629,10 +663,33 @@ export const mockMcparReport = {
   fieldData: mockReportFieldData,
 };
 
+export const mockMlrReport = {
+  ...mockReportKeys,
+  reportType: "MLR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: false,
+  submittedOnDate: Date.now(),
+  fieldData: mockMlrReportFieldData,
+};
+
 export const mockReportsByState = [
   { ...mockMcparReport, id: "mock-report-id-1" },
   { ...mockMcparReport, id: "mock-report-id-2" },
   { ...mockMcparReport, id: "mock-report-id-3" },
+];
+
+export const mockMlrReportsByState = [
+  { ...mockMlrReport, id: "mock-report-id-1" },
+  { ...mockMlrReport, id: "mock-report-id-2" },
+  { ...mockMlrReport, id: "mock-report-id-3" },
 ];
 
 export const mockReportMethods = {
@@ -651,6 +708,14 @@ export const mockMcparReportContext = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,
+  errorMessage: "",
+  lastSavedTime: "1:58 PM",
+};
+
+export const mockMlrReportContext = {
+  ...mockReportMethods,
+  report: mockMlrReport,
+  reportsByState: mockMlrReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };

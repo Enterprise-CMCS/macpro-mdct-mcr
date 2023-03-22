@@ -7,9 +7,9 @@ import { ReportContext, ModalOverlayReportPage } from "components";
 import { useUser } from "utils";
 import {
   mockModalOverlayReportPageJson,
-  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
+  mockMlrReportContext,
 } from "utils/testing/setupJest";
 
 const mockUseNavigate = jest.fn();
@@ -23,11 +23,34 @@ jest.mock("react-router-dom", () => ({
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
-const { addEntityButtonText } = mockModalOverlayReportPageJson.verbiage;
+const { addEntityButtonText, deleteModalConfirmButtonText } =
+  mockModalOverlayReportPageJson.verbiage;
 
 const mockReportContextWithoutEntities = {
-  ...mockMcparReportContext,
+  ...mockMlrReportContext,
   report: undefined,
+};
+
+const mockReportWithCompletedEntityContext = {
+  ...mockMlrReportContext,
+  report: {
+    ...mockMlrReportContext.report,
+    fieldData: {
+      ...mockMlrReportContext.report.fieldData,
+      program: [
+        {
+          id: 123,
+          name: "example-program1",
+          eligibilityGroup: [
+            {
+              key: "option1",
+              value: "mock-option",
+            },
+          ],
+        },
+      ],
+    },
+  },
 };
 
 const modalOverlayReportPageComponent = (
@@ -40,7 +63,7 @@ const modalOverlayReportPageComponent = (
 
 const modalOverlayReportPageComponentWithEntities = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMcparReportContext}>
+    <ReportContext.Provider value={mockReportWithCompletedEntityContext}>
       <ModalOverlayReportPage route={mockModalOverlayReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -73,6 +96,20 @@ describe("Test ModalOverlayReportPage (adding new program reporting information)
     const closeButton = screen.getByText("Close");
     await userEvent.click(closeButton);
     expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+  });
+
+  it("State user should be able to delete existing entities", async () => {
+    // delete program entity
+    const closeButton = screen.getByAltText("delete icon");
+    await userEvent.click(closeButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+
+    // click delete in modal
+    const deleteButton = screen.getByText(deleteModalConfirmButtonText);
+    await userEvent.click(deleteButton);
+
+    // verify that the program is removed
+    expect(screen.getByRole("table")).toBeNull;
   });
 });
 

@@ -168,7 +168,7 @@
         },
         "dashboardTitle": "MLR reports total:",
         "countEntitiesInTitle": true,
-        "tableHeader": "<b>Program name <br/> Eligibility group <br/> MLR reporting period <br/> MCO/PIHP/PAHP name</b>",
+        "tableHeader": "Program name <br/> Eligibility group <br/> MLR reporting period <br/> MCO/PIHP/PAHP name",
         "addEntityButtonText": "Add program reporting information",
         "editEntityButtonText": "Edit info",
         "deleteModalTitle": "Delete program reporting information for this report?",
