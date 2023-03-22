@@ -22,6 +22,13 @@ export const EntityRow = ({
     return entity.eligibilityGroup[0].value;
   };
 
+  const programInfo = [
+    programName,
+    eligibilityGroup(),
+    reportingPeriod,
+    planName,
+  ];
+
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.iconColumn}>
@@ -29,10 +36,9 @@ export const EntityRow = ({
       </Td>
       <Td sx={sx.programInfo}>
         <ul>
-          <li>{programName}</li>
-          <li>{eligibilityGroup()}</li>
-          <li>{reportingPeriod}</li>
-          <li>{planName}</li>
+          {programInfo.map((field, index) => (
+            <li key={index}>{field}</li>
+          ))}
         </ul>
       </Td>
       <Td>
