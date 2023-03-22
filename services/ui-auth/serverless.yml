@@ -87,9 +87,7 @@ resources:
           - Fn::Equals:
               - ""
               - ${self:custom.okta_oidc_issuer}
-    BackWithOktaSAML: !And
-      - Fn::Not:
-          - !Condition BackWithOktaOIDC
+    BackWithOktaSAML:
       - Fn::Not:
           - Fn::Equals:
               - ""
@@ -150,7 +148,7 @@ resources:
         AccessTokenValidity: 30
         IdTokenValidity: 30
         RefreshTokenValidity: 24
-        TokenValidityUnits: 
+        TokenValidityUnits:
           AccessToken: "minutes"
           IdToken: "minutes"
           RefreshToken: "hours"
@@ -162,14 +160,15 @@ resources:
           - ${self:custom.application_endpoint_url}
           - http://localhost:3000/
         SupportedIdentityProviders:
+          - COGNITO
           - Fn::If:
               - BackWithOktaOIDC
               - !Ref OktaUserPoolIdentityProviderOIDC
-              - COGNITO
+              - !Ref AWS::NoValue
           - Fn::If:
               - BackWithOktaSAML
               - !Ref OktaUserPoolIdentityProviderSAML
-              - COGNITO
+              - !Ref AWS::NoValue
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
       Properties:
@@ -181,7 +180,6 @@ resources:
         UserPoolId:
           Ref: CognitoUserPool
     OktaUserPoolIdentityProviderOIDC:
-      Condition: BackWithOktaOIDC
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
@@ -198,12 +196,11 @@ resources:
           oidc_issuer: ${self:custom.okta_oidc_issuer}
           attributes_request_method: GET
           authorize_scopes: "email openid profile"
-        ProviderName: Okta
+        ProviderName: OktaOIDC
         ProviderType: OIDC
         UserPoolId:
           Ref: CognitoUserPool
     OktaUserPoolIdentityProviderSAML:
-      Condition: BackWithOktaSAML
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
@@ -297,5 +294,11 @@ resources:
       Value: !Sub ${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com
     IdentityPoolId:
       Value: !Ref CognitoIdentityPool
+    IdentityProvider:
+      Value:
+        - Fn::If:
+            - BackWithOktaOIDC
+            - OktaOIDC
+            - Okta
     Region:
       Value: !Sub ${AWS::Region}
