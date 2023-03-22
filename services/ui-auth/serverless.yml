@@ -87,11 +87,13 @@ resources:
           - Fn::Equals:
               - ""
               - ${self:custom.okta_oidc_issuer}
-    BackWithOktaSAML:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.okta_metadata_url}
+    BackWithOktaSAML: !And
+      - Fn::Not:
+          - !Condition BackWithOktaOIDC
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_metadata_url}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -160,15 +162,14 @@ resources:
           - ${self:custom.application_endpoint_url}
           - http://localhost:3000/
         SupportedIdentityProviders:
-          - COGNITO
           - Fn::If:
               - BackWithOktaOIDC
               - !Ref OktaUserPoolIdentityProviderOIDC
-              - !Ref AWS::NoValue
+              - COGNITO
           - Fn::If:
               - BackWithOktaSAML
               - !Ref OktaUserPoolIdentityProviderSAML
-              - !Ref AWS::NoValue
+              - COGNITO
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
       Properties:
@@ -180,6 +181,7 @@ resources:
         UserPoolId:
           Ref: CognitoUserPool
     OktaUserPoolIdentityProviderOIDC:
+      Condition: BackWithOktaOIDC
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
@@ -201,6 +203,7 @@ resources:
         UserPoolId:
           Ref: CognitoUserPool
     OktaUserPoolIdentityProviderSAML:
+      Condition: BackWithOktaSAML
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
