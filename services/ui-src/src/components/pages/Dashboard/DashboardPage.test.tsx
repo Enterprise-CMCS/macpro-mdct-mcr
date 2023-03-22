@@ -128,8 +128,6 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
     expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
   });
 
-  // TODO: test MLR
-
   test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
     const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
     expect(addReportButton).toBeVisible();
