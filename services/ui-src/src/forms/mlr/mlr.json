@@ -151,7 +151,7 @@
     },
     {
       "name": "MLR Reporting",
-      "path": "/mlr/program-information/program-entity-listing",
+      "path": "/mlr/mlr-reporting",
       "pageType": "modalOverlay",
       "entityType": "program",
       "verbiage": {
