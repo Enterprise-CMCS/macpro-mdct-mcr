@@ -1,13 +1,6 @@
 import { useContext, useState } from "react";
 // components
-import {
-  Box,
-  Button,
-  Heading,
-  Table,
-  Th,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
   DeleteEntityModal,
@@ -15,15 +8,10 @@ import {
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
+  Table,
 } from "components";
 // types
-import {
-  EntityShape,
-  ModalOverlayReportPageShape,
-  ModalOverlayReportPageVerbiage,
-} from "types";
-// utils
-import { sanitizeAndParseHtml } from "utils";
+import { EntityShape, ModalOverlayReportPageShape } from "types";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
 
@@ -38,6 +26,10 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
   const dashTitle = `${verbiage.dashboardTitle}${
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
+
+  const tableHeaders = {
+    headRow: ["", verbiage.tableHeader, "", "", ""],
+  };
 
   // add/edit entity modal disclosure and methods
   const {
@@ -88,21 +80,22 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
         {reportFieldDataEntities.length === 0 ? (
           <Box>{verbiage.emptyDashboardText}</Box>
         ) : (
-          <Table>
-            <TableHeader verbiage={verbiage} />
-            {reportFieldDataEntities.map(
-              (entity: EntityShape, entityIndex: number) => (
-                <EntityRow
-                  key={entity.id}
-                  entity={entity}
-                  entityIndex={entityIndex}
-                  verbiage={verbiage}
-                  openAddEditEntityModal={openAddEditEntityModal}
-                  openDeleteEntityModal={openDeleteEntityModal}
-                />
-              )
-            )}
-          </Table>
+          <>
+            <Table content={tableHeaders}>
+              {reportFieldDataEntities.map(
+                (entity: EntityShape, entityIndex: number) => (
+                  <EntityRow
+                    key={entity.id}
+                    entity={entity}
+                    entityIndex={entityIndex}
+                    verbiage={verbiage}
+                    openAddEditEntityModal={openAddEditEntityModal}
+                    openDeleteEntityModal={openDeleteEntityModal}
+                  />
+                )
+              )}
+            </Table>
+          </>
         )}
         <Button
           sx={sx.addEntityButton}
@@ -141,22 +134,6 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
 
 interface Props {
   route: ModalOverlayReportPageShape;
-}
-
-const TableHeader = ({ verbiage }: TableHeaderProps) => {
-  return (
-    <>
-      <Th></Th>
-      <Th sx={sx.header}>{sanitizeAndParseHtml(verbiage.tableHeader)}</Th>
-      <Th></Th>
-      <Th></Th>
-      <Th></Th>
-    </>
-  );
-};
-
-interface TableHeaderProps {
-  verbiage: ModalOverlayReportPageVerbiage;
 }
 
 const sx = {

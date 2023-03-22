@@ -38,7 +38,7 @@ export const Table = ({
           <Tr>
             {content.headRow.map((headerCell: string, index: number) => (
               <Th key={index} scope="col" sx={sx.tableHeader}>
-                {headerCell}
+                {sanitizeAndParseHtml(headerCell)}
               </Th>
             ))}
           </Tr>
