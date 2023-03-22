@@ -173,7 +173,7 @@ const sx = {
     fontSize: "14px",
     color: "#71767A",
     br: {
-      marginBottom: "0.5rem",
+      marginBottom: "0.25rem",
     },
     "br-last-of-type": {
       marginBottom: "0",

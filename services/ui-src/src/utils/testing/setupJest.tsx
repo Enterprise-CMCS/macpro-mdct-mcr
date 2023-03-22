@@ -377,6 +377,11 @@ export const mockModalOverlayReportPageVerbiage = {
   tableHeader: "Mock table header",
   addEntityButtonText: "Mock add entity button text",
   emptyDashboardText: "Mock empty dashboard text",
+  editEntityButtonText: "Mock edit entity button text",
+  deleteModalTitle: "Mock delete modal title",
+  deleteModalConfirmButtonText: "Mock delete modal confirm button text",
+  deleteModalWarning: "Mock delete modal warning",
+  enterReportText: "Mock enter report text",
 };
 
 export const mockModalDrawerReportPageJson = {
