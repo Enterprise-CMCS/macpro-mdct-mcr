@@ -5,6 +5,7 @@ import {
   ReportShape,
   ReportJson,
   ReportRoute,
+  isFieldElement,
 } from "types";
 
 export const sortReportsOldestToNewest = (
@@ -106,13 +107,13 @@ export const compileValidationJsonFromRoutes = (
       Object.assign(validationSchema, { [route.entityType]: "objectArray" });
     }
     // if standard form present, add validation to schema
-    const standardFormFields = route.form?.fields;
+    const standardFormFields = route.form?.fields.filter(isFieldElement);
     if (standardFormFields) addValidationToAccumulator(standardFormFields);
     // if modal form present, add validation to schema
-    const modalFormFields = route.modalForm?.fields;
+    const modalFormFields = route.modalForm?.fields.filter(isFieldElement);
     if (modalFormFields) addValidationToAccumulator(modalFormFields);
     // if drawer form present, add validation to schema
-    const drawerFormFields = route.drawerForm?.fields;
+    const drawerFormFields = route.drawerForm?.fields.filter(isFieldElement);
     if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
   });
   return validationSchema;
@@ -134,13 +135,13 @@ export const makeFieldIdList = (routes: ReportRoute[]): AnyObject => {
     });
   routes.map((route: ReportRoute) => {
     // if standard form present, map to return object
-    const standardFormFields = route.form?.fields;
+    const standardFormFields = route.form?.fields.filter(isFieldElement);
     if (standardFormFields) mapFieldIdsToObject(standardFormFields);
     // if modal form present, map to return object
-    const modalFormFields = route.modalForm?.fields;
+    const modalFormFields = route.modalForm?.fields.filter(isFieldElement);
     if (modalFormFields) mapFieldIdsToObject(modalFormFields);
     // if drawer form present, map to return object
-    const drawerFormFields = route.drawerForm?.fields;
+    const drawerFormFields = route.drawerForm?.fields.filter(isFieldElement);
     if (drawerFormFields) mapFieldIdsToObject(drawerFormFields);
   });
   return objectToReturn;

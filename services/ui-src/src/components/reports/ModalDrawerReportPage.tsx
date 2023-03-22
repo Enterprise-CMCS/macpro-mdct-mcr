@@ -23,6 +23,7 @@ import {
   EntityShape,
   EntityType,
   FormField,
+  isFieldElement,
   ModalDrawerReportPageShape,
   ReportStatus,
 } from "types";
@@ -42,12 +43,12 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
   // create drawerForm from json with repeated fields
   const drawerForm = { ...drawerFormJson };
-  const formContainsFieldsToRepeat = drawerFormJson.fields.find(
-    (field: FormField) => field.repeat
-  );
+  const formContainsFieldsToRepeat = drawerFormJson.fields
+    .filter(isFieldElement)
+    .find((field: FormField) => field.repeat);
   if (formContainsFieldsToRepeat) {
     drawerForm.fields = createRepeatedFields(
-      drawerFormJson.fields,
+      drawerFormJson.fields.filter(isFieldElement),
       report?.fieldData
     );
   }
@@ -115,7 +116,10 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
-      const filteredFormData = filterFormData(enteredData, drawerForm.fields);
+      const filteredFormData = filterFormData(
+        enteredData,
+        drawerForm.fields.filter(isFieldElement)
+      );
       const newEntity = {
         ...selectedEntity,
         ...filteredFormData,
