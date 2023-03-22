@@ -109,7 +109,7 @@ const sx = {
     fontWeight: "bold",
   },
   drawerReminderText: {
-    marginTop: ".5rem",
+    marginTop: "1rem",
     paddingRight: "4rem",
     fontSize: "md",
     fontWeight: "normal",
@@ -156,6 +156,6 @@ const sx = {
     },
   },
   drawerBody: {
-    padding: "1rem",
+    padding: "0 1rem 1rem 1rem",
   },
 };

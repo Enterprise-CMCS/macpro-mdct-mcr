@@ -1013,7 +1013,8 @@
                 "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
                 "enterEntityDetailsButtonText": "Enter details",
                 "editEntityDetailsButtonText": "Edit details",
-                "drawerTitle": "Add details for access measure"
+                "drawerTitle": "Add details for access measure",
+                "drawerReminder": "Complete all fields and select the Save & close button to save this section."
               },
               "modalForm": {
                 "id": "cam-modal",
@@ -2256,8 +2257,14 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
-                "drawerTitle": "Report encounter data for",
+                "drawerTitle": "Report on grievances by service for",
                 "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
+                "drawerInfo": [
+                  {
+                    "type": "p",
+                    "content": "A single grievance may be related to multiple service types and may therefore be counted in multiple categories."
+                  }
+                ],
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2576,6 +2583,7 @@
             "editEntityDetailsButtonText": "Edit measure results",
             "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
             "drawerTitle": "Add plan-level measure results",
+            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
             "drawerNoFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
           },
           "modalForm": {
@@ -2836,7 +2844,8 @@
             "entityUnfinishedMessage": "Complete the remaining indicators for this plan sanction by selecting \"Enter sanction details\".",
             "enterEntityDetailsButtonText": "Enter sanction details",
             "editEntityDetailsButtonText": "Edit sanction details",
-            "drawerTitle": "Add details for sanction"
+            "drawerTitle": "Add details for sanction",
+            "drawerReminder": "Complete all fields and select the Save & close button to save this section."
           },
           "modalForm": {
             "id": "ds-modal",
