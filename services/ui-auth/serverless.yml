@@ -296,9 +296,9 @@ resources:
       Value: !Ref CognitoIdentityPool
     IdentityProvider:
       Value:
-        - Fn::If:
-            - BackWithOktaOIDC
-            - OktaOIDC
-            - Okta
+        Fn::If:
+          - BackWithOktaOIDC
+          - OktaOIDC
+          - Okta
     Region:
       Value: !Sub ${AWS::Region}
