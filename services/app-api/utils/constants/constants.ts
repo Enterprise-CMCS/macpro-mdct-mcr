@@ -18,8 +18,10 @@ export const error = {
   NOT_IN_DATABASE: "Record not found in database.",
   MISSING_FORM_TEMPLATE: "Form Template not found in S3.",
   MISSING_FIELD_DATA: "Field Data not found in S3.",
+  // admin action errors
   ALREADY_ARCHIVED: "Cannot update archived report.",
-  REPORT_INCOMPLETE: "Cannot submit report.",
+  ALREADY_LOCKED: "Cannot update locked report.",
+  REPORT_INCOMPLETE: "Cannot submit incomplete form.",
 };
 
 export const buckets = {

@@ -97,7 +97,7 @@ export const updateReport = handler(async (event, context) => {
   // If current report exists, get formTemplateId and fieldDataId
   const currentReport = JSON.parse(fetchReportRequest.body);
 
-  if (currentReport.archived) {
+  if (currentReport.archived || currentReport.locked) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,

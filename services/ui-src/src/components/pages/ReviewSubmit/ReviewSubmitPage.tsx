@@ -11,19 +11,19 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, ReportContext, StatusTable } from "components";
+import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
-import { AlertTypes, ReportStatus } from "types";
+import { AlertTypes, AnyObject, ReportStatus } from "types";
 // utils
 import { useUser, utcDateToReadableDate } from "utils";
 // verbiage
-import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 import printIcon from "assets/icons/icon_print.png";
-import { Alert } from "components/alerts/Alert";
 
-export const McparReviewSubmitPage = () => {
+export const ReviewSubmitPage = () => {
   const { report, fetchReport, submitReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -38,18 +38,21 @@ export const McparReviewSubmitPage = () => {
     report?.status === ReportStatus.IN_PROGRESS &&
     !hasError;
 
-  const { alertBox } = reviewVerbiage;
-
   // get report type, state, and id from context or storage
-  const reportType = report?.reportType;
-  const reportId = report?.id;
-  const reportState = state;
+  const reportType =
+    report?.reportType || localStorage.getItem("selectedReportType");
+  const reportId = report?.id || localStorage.getItem("selectedReport");
+  const reportState = state || localStorage.getItem("selectedState");
 
   const reportKeys = {
     reportType: reportType,
     state: reportState,
     id: reportId,
   };
+
+  const reviewVerbiage = reportType === "MCPAR" ? MCPARVerbiage : MLRVerbiage;
+
+  const { alertBox } = reviewVerbiage;
 
   useEffect(() => {
     setHasError(!!document.querySelector("img[alt='Error notification']"));
@@ -83,9 +86,11 @@ export const McparReviewSubmitPage = () => {
       <Flex sx={sx.pageContainer} data-testid="review-submit-page">
         {report?.status === ReportStatus.SUBMITTED ? (
           <SuccessMessage
-            programName={report.programName}
+            reportType={report.reportType}
+            name={report.programName ?? report.submissionName}
             date={report?.submittedOnDate}
             submittedBy={report?.submittedBy}
+            reviewVerbiage={reviewVerbiage}
           />
         ) : (
           <ReadyToSubmit
@@ -94,8 +99,8 @@ export const McparReviewSubmitPage = () => {
             onOpen={onOpen}
             onClose={onClose}
             submitting={submitting}
-            hasStarted={report?.status !== "Not started"}
             isPermittedToSubmit={isPermittedToSubmit}
+            reviewVerbiage={reviewVerbiage}
           />
         )}
       </Flex>
@@ -103,7 +108,7 @@ export const McparReviewSubmitPage = () => {
   );
 };
 
-const PrintButton = () => {
+const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   return (
     <Button
@@ -125,8 +130,8 @@ const ReadyToSubmit = ({
   onOpen,
   onClose,
   submitting,
-  hasStarted,
   isPermittedToSubmit,
+  reviewVerbiage,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
@@ -143,10 +148,12 @@ const ReadyToSubmit = ({
           <Text>{intro.info}</Text>
         </Box>
 
-        <Box>{hasStarted && <StatusTable />}</Box>
+        <Box>
+          <StatusTable />
+        </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        {pdfExport && <PrintButton />}
+        {pdfExport && <PrintButton reviewVerbiage={reviewVerbiage} />}
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -179,10 +186,12 @@ interface ReadyToSubmitProps {
   submitting?: boolean;
   hasStarted?: boolean;
   isPermittedToSubmit?: boolean;
+  reviewVerbiage: AnyObject;
 }
 
 export const SuccessMessageGenerator = (
-  programName: string,
+  reportType: string,
+  name: string,
   submissionDate?: number,
   submittedBy?: string
 ) => {
@@ -190,20 +199,23 @@ export const SuccessMessageGenerator = (
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
-    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}.`;
+    return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
   }
-  return `MCPAR report for ${programName} was submitted.`;
+  return `${reportType} report for ${name} was submitted.`;
 };
 
 export const SuccessMessage = ({
-  programName,
+  reportType,
+  name,
   date,
   submittedBy,
+  reviewVerbiage,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
   const submissionMessage = SuccessMessageGenerator(
-    programName,
+    reportType,
+    name,
     date,
     submittedBy
   );
@@ -229,7 +241,7 @@ export const SuccessMessage = ({
       </Box>
       {pdfExport && (
         <Box sx={sx.infoTextBox}>
-          <PrintButton />
+          <PrintButton reviewVerbiage={reviewVerbiage} />
         </Box>
       )}
     </Flex>
@@ -237,7 +249,9 @@ export const SuccessMessage = ({
 };
 
 interface SuccessMessageProps {
-  programName: string;
+  reportType: string;
+  name: string;
+  reviewVerbiage: AnyObject;
   date?: number;
   submittedBy?: string;
 }

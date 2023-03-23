@@ -6,7 +6,7 @@ import { UserContext, UserProvider } from "utils";
 import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { UserRoles } from "types";
+import { UserRoles } from "types/users";
 
 const mockAuthPayload = {
   email: "test@email.com",

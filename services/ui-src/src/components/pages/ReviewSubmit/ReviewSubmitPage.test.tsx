@@ -1,16 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, McparReviewSubmitPage } from "components";
-import { SuccessMessageGenerator } from "./McparReviewSubmitPage";
+import { ReportContext, ReviewSubmitPage } from "components";
+import { SuccessMessageGenerator } from "./ReviewSubmitPage";
 // types
 import { ReportStatus } from "types";
 // utils
 import {
   mockAdminUser,
   mockLDFlags,
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -35,8 +35,8 @@ describe("MCPAR Review and Submit Page Functionality", () => {
   describe("User has not started filling out the form", () => {
     const McparReviewSubmitPage_NotStarted = (
       <RouterWrappedComponent>
-        <ReportContext.Provider value={mockReportContext}>
-          <McparReviewSubmitPage />
+        <ReportContext.Provider value={mockMcparReportContext}>
+          <ReviewSubmitPage />
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
@@ -63,19 +63,19 @@ describe("MCPAR Review and Submit Page Functionality", () => {
 
   describe("User has errors on the form", () => {
     const mockUnfilledReport = {
-      ...mockReport,
+      ...mockMcparReport,
       status: ReportStatus.IN_PROGRESS,
     };
 
     const mockedReportContext_Unfilled = {
-      ...mockReportContext,
+      ...mockMcparReportContext,
       report: mockUnfilledReport,
     };
 
     const McparReviewSubmitPage_Unfilled = (
       <RouterWrappedComponent>
         <ReportContext.Provider value={mockedReportContext_Unfilled}>
-          <McparReviewSubmitPage />
+          <ReviewSubmitPage />
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
@@ -112,7 +112,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
 
   describe("User has filled out the form correctly", () => {
     const mockFilledReport = {
-      ...mockReport,
+      ...mockMcparReport,
       status: ReportStatus.IN_PROGRESS,
       isComplete: true,
       completionStatus: {
@@ -125,32 +125,32 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     };
 
     const mockedReportContext_Filled = {
-      ...mockReportContext,
+      ...mockMcparReportContext,
       report: mockFilledReport,
     };
 
     const McparReviewSubmitPage_Filled = (
       <RouterWrappedComponent>
         <ReportContext.Provider value={mockedReportContext_Filled}>
-          <McparReviewSubmitPage />
+          <ReviewSubmitPage />
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
 
     const mockSubmittedReport = {
-      ...mockReport,
+      ...mockMcparReport,
       status: ReportStatus.SUBMITTED,
     };
 
     const mockedReportContext_Submitted = {
-      ...mockReportContext,
+      ...mockMcparReportContext,
       report: mockSubmittedReport,
     };
 
     const McparReviewSubmitPage_Submitted = (
       <RouterWrappedComponent>
         <ReportContext.Provider value={mockedReportContext_Submitted}>
-          <McparReviewSubmitPage />
+          <ReviewSubmitPage />
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
@@ -197,7 +197,9 @@ describe("MCPAR Review and Submit Page Functionality", () => {
       await userEvent.click(reviewSubmitButton);
       const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
       await userEvent.click(modalSubmitButton);
-      await expect(mockReportContext.submitReport).toHaveBeenCalledTimes(1);
+      await expect(mockMcparReportContext.submitReport).toHaveBeenCalledTimes(
+        1
+      );
     });
 
     test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
@@ -225,19 +227,19 @@ describe("MCPAR Review and Submit Page Functionality", () => {
 
 describe("MCPAR Review and Submit Page - Launch Darkly", () => {
   const mockInProgressReport = {
-    ...mockReport,
+    ...mockMcparReport,
     status: ReportStatus.IN_PROGRESS,
   };
 
   const mockedReportContext_InProgress = {
-    ...mockReportContext,
+    ...mockMcparReportContext,
     report: mockInProgressReport,
   };
 
   const McparReviewSubmitPage_InProgress = (
     <RouterWrappedComponent>
       <ReportContext.Provider value={mockedReportContext_InProgress}>
-        <McparReviewSubmitPage />
+        <ReviewSubmitPage />
       </ReportContext.Provider>
     </RouterWrappedComponent>
   );
@@ -262,19 +264,19 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
 
   describe("When loading a successfully submitted report", () => {
     const mockSubmittedReport = {
-      ...mockReport,
+      ...mockMcparReport,
       status: ReportStatus.SUBMITTED,
     };
 
     const mockedReportContext_Submitted = {
-      ...mockReportContext,
+      ...mockMcparReportContext,
       report: mockSubmittedReport,
     };
 
     const McparReviewSubmitPage_Submitted = (
       <RouterWrappedComponent>
         <ReportContext.Provider value={mockedReportContext_Submitted}>
-          <McparReviewSubmitPage />
+          <ReviewSubmitPage />
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
@@ -299,66 +301,78 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
 describe("When loading a sucessfully submitted report (Success Message Generator)", () => {
   it("should give the full success date if given all params", () => {
     const programName = "test-program";
+    const reportType = "MCPAR";
     const submittedDate = 1663163109045;
     const submittersName = "Carol California";
     expect(
-      SuccessMessageGenerator(programName, submittedDate, submittersName)
+      SuccessMessageGenerator(
+        reportType,
+        programName,
+        submittedDate,
+        submittersName
+      )
     ).toBe(
-      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
+      `${reportType} report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
 
   it("should give a reduced version if not given all params", () => {
     const programName = "test-program";
+    const reportType = "MLR";
     const submittedDate = undefined;
     const submittersName = "Carol California";
     expect(
-      SuccessMessageGenerator(programName, submittedDate, submittersName)
-    ).toBe(`MCPAR report for ${programName} was submitted.`);
+      SuccessMessageGenerator(
+        reportType,
+        programName,
+        submittedDate,
+        submittersName
+      )
+    ).toBe(`${reportType} report for ${programName} was submitted.`);
   });
 });
 
 describe("Test McparReviewSubmitPage view accessibility", () => {
   const McparReviewSubmitPage_NotStarted = (
     <RouterWrappedComponent>
-      <ReportContext.Provider value={mockReportContext}>
-        <McparReviewSubmitPage />
+      <ReportContext.Provider value={mockMcparReportContext}>
+        <ReviewSubmitPage />
       </ReportContext.Provider>
     </RouterWrappedComponent>
   );
 
   const mockInProgressReport = {
-    ...mockReport,
+    ...mockMcparReport,
     status: ReportStatus.IN_PROGRESS,
   };
 
   const mockedReportContext_InProgress = {
-    ...mockReportContext,
+    ...mockMcparReportContext,
     report: mockInProgressReport,
   };
 
   const McparReviewSubmitPage_InProgress = (
     <RouterWrappedComponent>
       <ReportContext.Provider value={mockedReportContext_InProgress}>
-        <McparReviewSubmitPage />
+        <ReviewSubmitPage />
       </ReportContext.Provider>
     </RouterWrappedComponent>
   );
 
   const mockSubmittedReport = {
-    ...mockReport,
+    ...mockMcparReport,
     status: ReportStatus.SUBMITTED,
   };
 
   const mockedReportContext_Submitted = {
-    ...mockReportContext,
+    ...mockMcparReportContext,
     report: mockSubmittedReport,
   };
 
   const McparReviewSubmitPage_Submitted = (
     <RouterWrappedComponent>
       <ReportContext.Provider value={mockedReportContext_Submitted}>
-        <McparReviewSubmitPage />
+        <ReviewSubmitPage />
       </ReportContext.Provider>
     </RouterWrappedComponent>
   );

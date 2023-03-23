@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { McparGetStartedPage } from "components";
+import { ReportGetStartedPage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // verbiage
@@ -16,16 +16,16 @@ jest.mock("react-router-dom", () => ({
 
 const dashboardView = (
   <RouterWrappedComponent>
-    <McparGetStartedPage />
+    <ReportGetStartedPage reportType="MCPAR" />
   </RouterWrappedComponent>
 );
 
-describe("Test McparGetStartedPage", () => {
+describe("Test ReportGetStartedPage", () => {
   beforeEach(() => {
     render(dashboardView);
   });
 
-  test("Check that McparGetStartedPage renders", () => {
+  test("Check that ReportGetStartedPage renders", () => {
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
   });
 
@@ -37,7 +37,7 @@ describe("Test McparGetStartedPage", () => {
   });
 });
 
-describe("Test McparGetStartedPage accessibility", () => {
+describe("Test ReportGetStartedPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(dashboardView);
     const results = await axe(container);

@@ -8,6 +8,7 @@ import {
   mockDocumentClient,
   mockDynamoData,
   mockDynamoDataCompleted,
+  mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
 
 jest.mock("../../utils/auth/authorization", () => ({
@@ -48,6 +49,29 @@ describe("Test submitReport API method", () => {
     expect(body.programName).toContain("testProgram");
     expect(body.isComplete).toStrictEqual(true);
     expect(body.status).toStrictEqual("Submitted");
+    expect(body.submittedBy).toStrictEqual("Thelonious States");
+    expect(body.submittedOnDate).toBeTruthy();
+    expect(body.locked).toBe(undefined);
+  });
+
+  test("Test MLR reports get locked and have submission count updated.", async () => {
+    mockDocumentClient.get.promise.mockReturnValueOnce({
+      Item: {
+        ...mockDynamoDataMLRComplete,
+        reportType: "MLR",
+      },
+    });
+    const res = await submitReport(testSubmitEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    const body = JSON.parse(res.body);
+    expect(body.lastAlteredBy).toContain("Thelonious States");
+    expect(body.submissionName).toContain("testProgram");
+    expect(body.isComplete).toStrictEqual(true);
+    expect(body.status).toStrictEqual("Submitted");
+    expect(body.submittedBy).toStrictEqual("Thelonious States");
+    expect(body.submittedOnDate).toBeTruthy();
+    expect(body.locked).toBe(true);
+    expect(body.submissionCount).toBe(1);
   });
 
   test("Test report submittal fails if incomplete.", async () => {

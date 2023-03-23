@@ -62,6 +62,12 @@ export interface S3Get {
   Key: string;
 }
 
+export interface S3Copy {
+  Bucket: string;
+  CopySource: string;
+  Key: string;
+}
+
 export interface CompletionData {
   [key: string]: boolean | CompletionData;
 }
@@ -417,4 +423,110 @@ export const enum TemplateKeys {
   MCPAR = "templates/MCPAR_Workbook_AddProgramName_2022.xlsx",
   MLR = "templates/MLR_Workbook_2022.xlsx",
   NAAAR = "templates/NAAAR_Workbook_2022.xlsx",
+}
+
+export type State =
+  | "AL"
+  | "AK"
+  | "AZ"
+  | "AR"
+  | "CA"
+  | "CO"
+  | "CT"
+  | "DE"
+  | "DC"
+  | "FL"
+  | "GA"
+  | "HI"
+  | "ID"
+  | "IL"
+  | "IN"
+  | "IA"
+  | "KS"
+  | "KY"
+  | "LA"
+  | "ME"
+  | "MD"
+  | "MA"
+  | "MI"
+  | "MN"
+  | "MS"
+  | "MO"
+  | "MT"
+  | "NE"
+  | "NV"
+  | "NH"
+  | "NJ"
+  | "NM"
+  | "NY"
+  | "NC"
+  | "ND"
+  | "OH"
+  | "OK"
+  | "OR"
+  | "PA"
+  | "PR"
+  | "RI"
+  | "SC"
+  | "SD"
+  | "TN"
+  | "TX"
+  | "UT"
+  | "VT"
+  | "VA"
+  | "WA"
+  | "WV"
+  | "WI"
+  | "WY";
+
+export interface ReportMetadata {
+  archived: boolean;
+  reportType: string;
+  submittedBy?: string;
+  createdAt: number;
+  lastAltered: number;
+  state: State;
+  id: string;
+  submittedOnDate?: string;
+  fieldDataId: string;
+  formTemplateId: string;
+  lastAlteredBy: string;
+  status: string;
+  isComplete: boolean;
+  completionStatus?: CompletionData;
+}
+
+export interface MLRReportMetadata extends ReportMetadata {
+  locked: boolean;
+  reportType: "MLR";
+  submissionName: string;
+  submissionCount: number;
+  previousRevisions: string[];
+}
+
+export interface MCPARReportMetadata extends ReportMetadata {
+  programName: string;
+  reportType: "MCPAR";
+  reportingPeriodStartDate: number;
+  reportingPeriodEndDate: number;
+  dueDate: number;
+  combinedData: boolean;
+}
+
+/**
+ * Type guard to perform run-time checks on report types.
+ *
+ * Use this function on data retrieved from Dynamo allow your data to be safely typed.
+ * @param report any report type
+ * @returns
+ */
+export function isMLRReportMetadata(
+  report: unknown
+): report is MLRReportMetadata {
+  return (
+    (report as MLRReportMetadata).reportType === "MLR" &&
+    (report as MLRReportMetadata).locked !== undefined &&
+    (report as MLRReportMetadata).submissionCount !== undefined &&
+    (report as MLRReportMetadata).previousRevisions !== undefined
+  );
 }

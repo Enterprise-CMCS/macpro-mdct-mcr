@@ -10,7 +10,13 @@ import {
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { convertDateUtcToEt } from "../../utils/time/time";
-import { StatusCodes, UserRoles } from "../../utils/types/types";
+import {
+  isMLRReportMetadata,
+  MCPARReportMetadata,
+  MLRReportMetadata,
+  StatusCodes,
+  UserRoles,
+} from "../../utils/types/types";
 import handler from "../handler-lib";
 
 export const submitReport = handler(async (event, _context) => {
@@ -52,8 +58,10 @@ export const submitReport = handler(async (event, _context) => {
       };
     }
 
-    const reportMetadata = response.Item as Record<string, any>;
-    const { status, isComplete, fieldDataId } = reportMetadata;
+    const reportMetadata = response.Item as
+      | MLRReportMetadata
+      | MCPARReportMetadata;
+    const { status, isComplete, fieldDataId, formTemplateId } = reportMetadata;
 
     if (status === "Submitted") {
       return {
@@ -64,7 +72,7 @@ export const submitReport = handler(async (event, _context) => {
       };
     }
 
-    if (!isComplete) {
+    if (!isComplete && reportMetadata.reportType === "MCPAR") {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.REPORT_INCOMPLETE,
@@ -78,12 +86,14 @@ export const submitReport = handler(async (event, _context) => {
 
     const date = Date.now();
     const fullName = `${jwt.given_name} ${jwt.family_name}`;
-
+    const isMLR = isMLRReportMetadata(reportMetadata);
     const newItem = {
       ...reportMetadata,
       submittedBy: fullName,
       submittedOnDate: date,
       status: "Submitted",
+      locked: isMLR ? true : undefined,
+      submissionCount: isMLR ? reportMetadata.submissionCount + 1 : undefined,
     };
 
     const submitReportParams = {
@@ -105,10 +115,19 @@ export const submitReport = handler(async (event, _context) => {
       Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
     };
 
-    const existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
-      string,
-      any
-    >;
+    let existingFieldData;
+
+    try {
+      existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
+        string,
+        any
+      >;
+    } catch (err) {
+      return {
+        status: StatusCodes.SERVER_ERROR,
+        body: error.NOT_IN_DATABASE,
+      };
+    }
 
     const fieldData = {
       ...existingFieldData,
@@ -124,6 +143,25 @@ export const submitReport = handler(async (event, _context) => {
       ContentType: "application/json",
     };
 
+    const getFormTemplateParams = {
+      Bucket: reportBucket,
+      Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
+    };
+
+    let formTemplate;
+
+    try {
+      formTemplate = (await s3Lib.get(getFormTemplateParams)) as Record<
+        string,
+        any
+      >;
+    } catch (err) {
+      return {
+        status: StatusCodes.SERVER_ERROR,
+        body: error.NOT_IN_DATABASE,
+      };
+    }
+
     try {
       await s3Lib.put(updateFieldDataParams);
     } catch (err) {
@@ -137,6 +175,10 @@ export const submitReport = handler(async (event, _context) => {
       status: StatusCodes.SUCCESS,
       body: {
         ...newItem,
+        fieldData: { ...fieldData },
+        formTemplate: {
+          ...formTemplate,
+        },
       },
     };
   } catch (err) {

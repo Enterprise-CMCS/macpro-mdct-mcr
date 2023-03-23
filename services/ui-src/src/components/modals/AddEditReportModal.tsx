@@ -3,7 +3,8 @@ import { useContext, useState } from "react";
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@cmsgov/design-system";
 // form
-import formJson from "forms/addEditProgram/addEditProgram.json";
+import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
+import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
 import { AnyObject, FormJson, ReportJson, ReportStatus } from "types";
 import { States } from "../../constants";
@@ -14,7 +15,7 @@ import {
   useUser,
 } from "utils";
 
-export const AddEditProgramModal = ({
+export const AddEditReportModal = ({
   activeState,
   selectedReport,
   formTemplate,
@@ -25,14 +26,17 @@ export const AddEditProgramModal = ({
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const form: FormJson = formJson;
 
-  const writeProgram = async (formData: any) => {
-    setSubmitting(true);
-    const submitButton = document.querySelector("[form=" + form.id + "]");
-    submitButton?.setAttribute("disabled", "true");
+  const modalFormJsonMap: any = {
+    MCPAR: mcparFormJson,
+    MLR: mlrFormJson,
+  };
 
-    // prepare payload
+  const modalFormJson = modalFormJsonMap[reportType]!;
+  const form: FormJson = modalFormJson;
+
+  // MCPAR report payload
+  const prepareMcparPayload = (formData: any) => {
     const programName = formData["programName"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -43,7 +47,7 @@ export const AddEditProgramModal = ({
       formData["reportingPeriodEndDate"]
     );
 
-    const dataToWrite = {
+    return {
       metadata: {
         programName,
         reportingPeriodStartDate,
@@ -59,6 +63,36 @@ export const AddEditProgramModal = ({
       },
       formTemplate,
     };
+  };
+
+  // MLR report payload
+  const prepareMlrPayload = (formData: any) => {
+    const programName = formData["programName"];
+    return {
+      metadata: {
+        submissionName: programName,
+        lastAlteredBy: full_name,
+        locked: false,
+        submissionCount: 0,
+        previousRevisions: [],
+      },
+      fieldData: {
+        programName,
+      },
+      formTemplate,
+    };
+  };
+
+  const writeReport = async (formData: any) => {
+    setSubmitting(true);
+    const submitButton = document.querySelector("[form=" + form.id + "]");
+    submitButton?.setAttribute("disabled", "true");
+
+    const dataToWrite =
+      reportType === "MCPAR"
+        ? prepareMcparPayload(formData)
+        : prepareMlrPayload(formData);
+
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
       const reportKeys = {
@@ -76,7 +110,6 @@ export const AddEditProgramModal = ({
         },
       });
     } else {
-      // create new report
       await createReport(reportType, activeState, {
         ...dataToWrite,
         metadata: {
@@ -88,6 +121,18 @@ export const AddEditProgramModal = ({
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
+          submissionCount: reportType === "MLR" ? 0 : undefined,
+          // All new MLR reports are NOT resubmissions by definition.
+          versionControl:
+            reportType === "MLR"
+              ? [
+                  {
+                    // pragma: allowlist nextline secret
+                    key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+                    value: "No, this is an initial submission",
+                  },
+                ]
+              : undefined,
         },
         formTemplate,
       });
@@ -99,21 +144,21 @@ export const AddEditProgramModal = ({
 
   return (
     <Modal
-      data-testid="add-edit-program-modal"
+      data-testid="add-edit-report-modal"
       formId={form.id}
       modalDisclosure={modalDisclosure}
       content={{
-        heading: selectedReport?.id ? "Edit Program" : "Add a Program",
+        heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         actionButtonText: submitting ? <Spinner size="small" /> : "Save",
         closeButtonText: "Cancel",
       }}
     >
       <Form
-        data-testid="add-edit-program-form"
+        data-testid="add-edit-report-form"
         id={form.id}
         formJson={form}
         formData={selectedReport?.fieldData}
-        onSubmit={writeProgram}
+        onSubmit={writeReport}
       />
     </Modal>
   );

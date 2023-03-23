@@ -244,6 +244,19 @@ functions:
                 reportType: true
                 state: true
                 id: true
+  releaseReport:
+    handler: handlers/reports/release.releaseReport
+    events:
+      - http:
+          path: reports/release/{reportType}/{state}/{id}
+          method: put
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                state: true
+                id: true
   createReport:
     handler: handlers/reports/create.createReport
     events:

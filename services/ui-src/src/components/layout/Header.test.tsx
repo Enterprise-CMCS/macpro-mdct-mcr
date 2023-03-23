@@ -3,7 +3,7 @@ import { axe } from "jest-axe";
 // utils
 import {
   RouterWrappedComponent,
-  mockReportContext,
+  mockMcparReportContext,
 } from "utils/testing/setupJest";
 //components
 import { Header } from "components";
@@ -17,7 +17,7 @@ const headerComponent = (
 
 const reportComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <Header handleLogout={() => {}} />
       <ReportPageWrapper />
     </ReportContext.Provider>
