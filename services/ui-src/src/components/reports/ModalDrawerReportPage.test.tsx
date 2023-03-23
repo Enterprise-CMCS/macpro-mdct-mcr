@@ -8,7 +8,7 @@ import { useUser } from "utils";
 import {
   mockModalDrawerReportPageJson,
   mockRepeatedFormField,
-  mockReportContext,
+  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -27,7 +27,7 @@ jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const mockReportContextWithoutEntities = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   report: undefined,
 };
 
@@ -40,7 +40,7 @@ const {
 
 const modalDrawerReportPageComponentWithEntities = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ModalDrawerReportPage route={mockModalDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -123,7 +123,7 @@ describe("Test ModalDrawerReportPage with entities", () => {
     await userEvent.type(textField, "test");
     const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -137,7 +137,7 @@ const mockRouteWithRepeatedField = {
 
 const modalDrawerReportPageComponentWithRepeatedFieldForm = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ModalDrawerReportPage route={mockRouteWithRepeatedField} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
