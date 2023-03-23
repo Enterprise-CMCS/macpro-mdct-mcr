@@ -150,7 +150,7 @@ resources:
         AccessTokenValidity: 30
         IdTokenValidity: 30
         RefreshTokenValidity: 24
-        TokenValidityUnits: 
+        TokenValidityUnits:
           AccessToken: "minutes"
           IdToken: "minutes"
           RefreshToken: "hours"
@@ -191,14 +191,14 @@ resources:
           custom:cms_roles: cms-roles
           custom:cms_state: state
         IdpIdentifiers:
-          - IdpIdentifier
+          - IdpIdentifierOIDC
         ProviderDetails:
           client_id: ${self:custom.okta_oidc_client_id}
           client_secret: ${self:custom.okta_oidc_client_secret}
           oidc_issuer: ${self:custom.okta_oidc_issuer}
           attributes_request_method: GET
           authorize_scopes: "email openid profile"
-        ProviderName: Okta
+        ProviderName: OktaOIDC
         ProviderType: OIDC
         UserPoolId:
           Ref: CognitoUserPool
@@ -297,5 +297,11 @@ resources:
       Value: !Sub ${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com
     IdentityPoolId:
       Value: !Ref CognitoIdentityPool
+    IdentityProvider:
+      Value:
+        Fn::If:
+          - BackWithOktaOIDC
+          - OktaOIDC
+          - Okta
     Region:
       Value: !Sub ${AWS::Region}
