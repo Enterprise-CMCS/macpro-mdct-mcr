@@ -19,7 +19,7 @@ export const StatusTable = () => {
   const rowDepth = 1;
   return report ? (
     <Box sx={sx.container}>
-      <Table content={review.table}>
+      <Table content={review.table} sx={sx.table}>
         {getRouteStatus(report).map((page: ReportPageProgress) => {
           return <ChildRow key={page.path} page={page} depth={rowDepth} />;
         })}
@@ -51,7 +51,9 @@ const TableRow = ({ page, depth }: RowProps) => {
       {depth == 1 ? (
         <Td sx={sx.parent}>{name}</Td>
       ) : (
-        <Td pl={`${1.25 * depth}rem`}>{name}</Td>
+        <Td sx={sx.subparent} pl={`${1.25 * depth}rem`}>
+          {name}
+        </Td>
       )}
       <Td>
         {!status && status !== undefined && (
@@ -87,32 +89,26 @@ const sx = {
   container: {
     marginTop: "2rem",
     table: {
-      tr: {
-        borderBottom: "1px solid",
-        borderColor: "palette.gray_lighter",
-        "&:last-of-type": {
-          borderBottom: "none",
-        },
-      },
       td: {
         borderBottom: "none",
-        "&:nth-of-type(1)": {
-          width: "20rem",
-        },
-        "&:last-of-type": {
-          textAlign: "right",
-        },
       },
     },
   },
   parent: {
     fontWeight: "bold",
+    lineHeight: "1.75rem",
+  },
+  subparent: {
+    lineHeight: "1.75rem",
   },
   enterButton: {
     width: "4.25rem",
     height: "1.75rem",
     fontSize: "md",
     fontWeight: "normal",
+    border: "1px solid",
+    borderColor: "palette.gray_lighter",
+    color: "palette.primary",
 
     img: {
       width: "1rem",
@@ -125,6 +121,40 @@ const sx = {
     alignItems: "center",
     img: {
       width: "1.25rem",
+    },
+  },
+
+  table: {
+    marginBottom: "2.5rem",
+    th: {
+      padding: "1rem 0 1rem 1rem",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_lighter",
+      color: "palette.gray_medium",
+      fontWeight: "600",
+      fontSize: "sm",
+    },
+    tr: {
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_lighter",
+      color: "palette.base",
+    },
+    td: {
+      minWidth: "6rem",
+      paddingTop: ".5rem",
+      paddingBottom: ".5rem",
+      borderTop: "1px solid",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_lighter",
+      textAlign: "left",
+      color: "palette.base",
+      "&:nth-of-type(1)": {
+        width: "20rem",
+      },
+      "&:last-of-type": {
+        textAlign: "right",
+        paddingRight: ".5rem",
+      },
     },
   },
 };
