@@ -191,7 +191,7 @@ resources:
           custom:cms_roles: cms-roles
           custom:cms_state: state
         IdpIdentifiers:
-          - IdpIdentifier
+          - IdpIdentifierOIDC
         ProviderDetails:
           client_id: ${self:custom.okta_oidc_client_id}
           client_secret: ${self:custom.okta_oidc_client_secret}
