@@ -11,11 +11,13 @@ import {
   PageTemplate,
   Sidebar,
   StandardReportPage,
+  ModalOverlayReportPage,
 } from "components";
 // utils
 import { useUser } from "utils";
 import {
   ModalDrawerReportPageShape,
+  ModalOverlayReportPageShape,
   DrawerReportPageShape,
   PageTypes,
   ReportRoute,
@@ -49,6 +51,12 @@ export const ReportPageWrapper = () => {
       case PageTypes.MODAL_DRAWER:
         return (
           <ModalDrawerReportPage route={route as ModalDrawerReportPageShape} />
+        );
+      case PageTypes.MODAL_OVERLAY:
+        return (
+          <ModalOverlayReportPage
+            route={route as ModalOverlayReportPageShape}
+          />
         );
       case PageTypes.REVIEW_SUBMIT:
         return <McparReviewSubmitPage />;

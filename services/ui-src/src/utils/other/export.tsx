@@ -174,10 +174,10 @@ export const checkLinkTypes = (formField: FormField) => {
   const fieldValidationType =
     typeof formField?.validation === "string"
       ? formField.validation
-      : formField.validation.type;
+      : formField.validation?.type;
   return {
-    isLink: linkTypes.includes(fieldValidationType),
-    isEmail: emailTypes.includes(fieldValidationType),
+    isLink: linkTypes.includes(fieldValidationType ?? ""),
+    isEmail: emailTypes.includes(fieldValidationType ?? ""),
   };
 };
 

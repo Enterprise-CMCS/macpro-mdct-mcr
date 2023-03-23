@@ -6,8 +6,8 @@ import { DeleteEntityModal, ReportContext } from "components";
 // utils
 import {
   mockModalDrawerReportPageVerbiage,
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockReportKeys,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
@@ -23,10 +23,10 @@ const mockEntity = {
 };
 
 const mockedReportContext = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   updateReport: mockUpdateReport,
   report: {
-    ...mockReport,
+    ...mockMcparReport,
     fieldData: {
       accessMeasures: [mockEntity],
     },
@@ -42,10 +42,10 @@ const mockUpdateCallBaseline = {
 };
 
 const mockBadReportContext = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   updateReport: mockUpdateReport,
   report: {
-    ...mockReport,
+    ...mockMcparReport,
     fieldData: {},
   },
 };

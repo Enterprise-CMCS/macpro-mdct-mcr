@@ -2,7 +2,354 @@
   "type": "MLR",
   "name": "MLR Report Submission Form",
   "basePath": "/mlr",
-  "version": "MLR_2023-02-08",
+  "version": "MLR_2023-02-09",
   "adminDisabled": true,
-  "routes": []
+  "routes": [
+    {
+      "name": "Program Information",
+      "path": "/mlr/program-information",
+      "children": [
+        {
+          "name": "Information for Primary Contact",
+          "path": "/mlr/program-information/point-of-contact",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "Point of Contact",
+              "spreadsheet": "Program Information"
+            }
+          },
+          "form": {
+            "id": "apoc",
+            "fields": [
+              {
+                "id": "contactName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "A. Contact name",
+                  "hint": "Enter the first and last name of the primary contact for this report."
+                }
+              },
+              {
+                "id": "contactPhone",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "B. Contact phone",
+                  "hint": "Enter phone number as ###-###-####."
+                }
+              },
+              {
+                "id": "contactEmailAddress",
+                "type": "text",
+                "validation": "email",
+                "props": {
+                  "label": "C. Contact email address",
+                  "hint": "Enter email address of the primary contact."
+                }
+              },
+              {
+                "id": "contactTitle",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "D. Contact title",
+                  "hint": "Enter the primary contact’s job title."
+                }
+              },
+              {
+                "id": "stateName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "E. State",
+                  "hint": "Auto-populates from your account profile.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "stateAgencyName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "F. State Agency Name",
+                  "hint": "Enter the name of the state/territory Medicaid agency that is submitting this report."
+                }
+              },
+              {
+                "id": "versionControl",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "G. Version control",
+                  "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /><br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
+                  "choices": [
+                    {
+                      "id": "cyUSrTH8mWdpqAKExLZAkz",
+                      "label": "Yes, this is a resubmission",
+                      "children": [
+                        {
+                          "id": "versionControlDescription",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "versionControl"
+                          },
+                          "props": {
+                            "label": "H. Version control description",
+                            "hint": "Select the response(s) that best describes the changes between this version and the prior version of the annual summary MLR Report submission.",
+                            "choices": [
+                              {
+                                "id": "nwq29k5JoRaUiz7CtBZFQN",
+                                "label": "Revise state contact information"
+                              },
+                              {
+                                "id": "BezTBrQf7t3bud7LaAMLqH",
+                                "label": "Revise program or plan information"
+                              },
+                              {
+                                "id": "Kr7HesM9jxDGfP4xDVAXpm",
+                                "label": "Revise amount(s) for MLR calculation"
+                              },
+                              {
+                                "id": "2tdWvZkAkozLqZie6iwXRh",
+                                "label": "Revise amount of remittance"
+                              },
+                              {
+                                "id": "3fbB2pqVnMAQjKtFVZoSXw",
+                                "label": "Revise member months"
+                              },
+                              {
+                                "id": "4V3X7Mmz6VC89k9bgQUoLK",
+                                "label": "Other, specify",
+                                "children": [
+                                  {
+                                    "id": "versionControlDescriptionOther",
+                                    "type": "textarea",
+                                    "validation": {
+                                      "type": "text",
+                                      "nested": true,
+                                      "parentFieldName": "versionControlDescription"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "KFCd3rfEu3eT4UFskUhDtx",
+                      "label": "No, this is an initial submission"
+                    }
+                  ],
+                  "disabled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "MLR Reporting",
+          "path": "/mlr/program-information/program-entity-listing",
+          "pageType": "modalOverlay",
+          "entityType": "program",
+          "verbiage": {
+            "intro": {
+              "section": "MLR Reporting",
+              "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+              "spreadsheet": "Program Information",
+              "info": [
+                {
+                  "type": "html",
+                  "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab.</b>"
+                }
+              ]
+            },
+            "dashboardTitle": "MLR reports total:",
+            "countEntitiesInTitle": true,
+            "addEntityButtonText": "Add program reporting information",
+            "emptyDashboardText": "Add Program Reporting Information for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab).",
+            "addEditModalAddTitle": "Add program reporting information",
+            "addEditModalEditTitle": "Edit program reporting information",
+            "addEditModalHint": "Complete this screen once for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+          },
+          "modalForm": {
+            "id": "bpel-modal",
+            "fields": [
+              {
+                "id": "programName",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "I. Program name",
+                  "hint": "Enter the name of the program(s) relevant to this set of MLR results. States providing plan-level MLR results separated by program should enter the individual relevant program name in the field below. States providing one set of combined MLR results per plan should list the program names relevant to the respective set of results in the field below, separated by commas. <br/> A program is defined generally by a specified set of benefits and eligibility criteria that is articulated in a contract between the state and a managed care plan."
+                }
+              },
+              {
+                "id": "programType",
+                "type": "checkbox",
+                "validation": "checkbox",
+                "props": {
+                  "label": "J. Program type",
+                  "hint": "Select the program type definition(s) that best describes the program entered in \"I. Program Name\".",
+                  "choices": [
+                    {
+                      "id": "cQhGnyBmiXszLqrx6b2Cp8",
+                      "label": "Behavioral Health Only"
+                    },
+                    {
+                      "id": "G4inXZJWYFsDZYGk75cW7L",
+                      "label": "Comprehensive MCO"
+                    },
+                    {
+                      "id": "J8PmLy8nKxTK55XJch2jDw",
+                      "label": "Comprehensive MCO + MLTSS"
+                    },
+                    {
+                      "id": "PamL56cwvY3Rbdqmnigvve",
+                      "label": "Dental Only"
+                    },
+                    {
+                      "id": "hqjmUS69rVTEKToDxWLXtz",
+                      "label": "MLTSS Only"
+                    },
+                    {
+                      "id": "6krUQZyhpmHHoagQWgUzxx",
+                      "label": "Other PIHP"
+                    },
+                    {
+                      "id": "VNp9mDXgv9ixL2H8JHVBBE",
+                      "label": "Other PAHP"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "eligibilityGroup",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "K. Eligibility group",
+                  "hint": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group. <br/> <ol> <li> <i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in <a href=\"https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10\">42 CFR 457.10</a>.</li> <li><i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\".</li> <li>For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\".</li></ol>",
+                  "choices": [
+                    {
+                      "id": "UgSDECcYDJ4S39QEMmMRcq",
+                      "label": "Standalone CHIP"
+                    },
+                    {
+                      "id": "KWr7SR2JM5UYogD6xZykrN",
+                      "label": "Group VIII Expansion Adult Only"
+                    },
+                    {
+                      "id": "cRi6qE4T5c6BjbGUsiiEof",
+                      "label": "All Populations"
+                    },
+                    {
+                      "id": "4xSRBneHBfUEqSPfrPTRYf",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "eligibilityGroup-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "eligibilityGroup"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "planName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "M. MCO, PIHP, or PAHP Name",
+                  "hint": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: \"<a href=\"https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html\">Managed Care Enrollment by Program and Plan</a>\""
+                }
+              },
+              {
+                "id": "reportingPeriodStartDate",
+                "type": "date",
+                "validation": "date",
+                "props": {
+                  "label": "N. MLR reporting period start date",
+                  "hint": "Enter the state date of the MLR Reporting Period. <br/> The MLR reporting period should be a perod of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
+                }
+              },
+              {
+                "id": "reportingPeriodEndDate",
+                "type": "date",
+                "validation": {
+                  "type": "endDate",
+                  "dependentFieldName": "reportingPeriodStartDate"
+                },
+                "props": {
+                  "label": "O. MLR reporting period end date",
+                  "hint": "Enter the end date of the MLR reporting period.",
+                  "timetype": "endDate"
+                }
+              },
+              {
+                "id": "reportingPeriodDiscrepancy",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "P.1 Reporting period discrepancy",
+                  "hint": "Is the reporting period less than 12 months or does the MCO/PIHP/PAHP have a different reporting period than other MCO/PIHP/PAHPs within the same program?",
+                  "choices": [
+                    {
+                      "id": "2NI2TmkWrS70g3U6adRKklWSv31",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "reportingPeriodDiscrepancy-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "reportingPeriodDiscrepancy"
+                          },
+                          "props": {
+                            "label": "P.2 Explanation of reporting period discrepancy",
+                            "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "2NI2UTNqhvrJLvEv8SORD7vIPRI",
+                      "label": "No"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "miscellaneousNotes",
+                "type": "textarea",
+                "validation": "textOptional",
+                "props": {
+                  "label": "Q. Miscellaneous notes",
+                  "hint": "Include any other notes or detail for CMS."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Review & Submit",
+      "path": "/mlr/review-and-submit",
+      "pageType": "reviewSubmit"
+    }
+  ]
 }
