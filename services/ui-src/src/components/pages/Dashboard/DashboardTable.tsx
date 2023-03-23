@@ -3,7 +3,7 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 import { Table } from "components";
 // utils
-import { AnyObject, ReportMetadataShape } from "types";
+import { AnyObject, ReportMetadataShape, TableContentShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -23,7 +23,11 @@ export const DashboardTable = ({
   isStateLevelUser,
   isAdmin,
 }: DashboardTableProps) => (
-  <Table content={body.table} data-testid="desktop-table" sx={sx.table}>
+  <Table
+    content={tableBody(body.table, isAdmin)}
+    data-testid="desktop-table"
+    sx={sx.table}
+  >
     {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
         {/* Edit Button */}
@@ -47,7 +51,7 @@ export const DashboardTable = ({
         {/* Report Status */}
         <Td>{report?.archived ? "Archived" : report?.status}</Td>
         {/* MLR-ONLY: Submission count */}
-        {reportType === "MLR" && (
+        {reportType === "MLR" && isAdmin && (
           <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
         )}
         {/* Action Buttons */}
@@ -105,6 +109,15 @@ interface DashboardTableProps {
   releasing?: boolean | undefined;
   sxOverride: AnyObject;
 }
+
+const tableBody = (body: TableContentShape, isAdmin: boolean) => {
+  var tableContent = body;
+  if (!isAdmin) {
+    tableContent.headRow = tableContent.headRow!.filter((e) => e !== "#");
+    return tableContent;
+  }
+  return body;
+};
 
 const EditReportButton = ({
   report,

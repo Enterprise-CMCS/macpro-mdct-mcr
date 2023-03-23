@@ -1,6 +1,6 @@
 export default {
   formIntro: {
-    buttonLabel: "Introduction",
+    buttonLabel: "Instructions",
     intro:
       'States must provide summary MLR report data at the plan level. The summary reports are based on the plans\' annual MLR reports tot he state under <a href="https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)">42 CFR 438.8(k)</a>. States have the option of reporting these data for eac plan by program, statewide, or at another level of aggregation (e.g., eligibility groups). Program is defined by a specified set of benefits and elegibility criteria that are articulated in a contract between the state and managed care plans. <b>MLR data should not be aggregated across multiple plans or across multiple programs; however there is an exception if a managed care plan has more than one contract with the state — the state can report results for each contract separately or combine results for each plan.</b> If a state combines the reporting for plans with multiple contracts, the report must use a consistent MLR reporting year.',
     list: [
