@@ -245,19 +245,19 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
   );
 
   describe("When loading an in-progress report", () => {
-    it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {
+    it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
       mockLDFlags.set({ pdfExport: true });
       render(McparReviewSubmitPage_InProgress);
-      const printButton = screen.getByText("Print");
+      const printButton = screen.getByText("Review PDF");
       expect(printButton).toBeVisible();
       expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
       expect(printButton.getAttribute("target")).toEqual("_blank");
     });
 
-    it("if pdfExport flag is false, print button should not render", async () => {
+    it("if pdfExport flag is false, Review PDF button should not render", async () => {
       mockLDFlags.set({ pdfExport: false });
       render(McparReviewSubmitPage_InProgress);
-      const printButton = screen.queryByText("Print");
+      const printButton = screen.queryByText("Review PDF");
       expect(printButton).not.toBeInTheDocument();
     });
   });
@@ -280,19 +280,19 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
-    it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {
+    it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
       mockLDFlags.set({ pdfExport: true });
       render(McparReviewSubmitPage_Submitted);
-      const printButton = screen.getByText("Print");
+      const printButton = screen.getByText("Review PDF");
       expect(printButton).toBeVisible();
       expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
       expect(printButton.getAttribute("target")).toEqual("_blank");
     });
 
-    it("if pdfExport flag is false, print button should not render", async () => {
+    it("if pdfExport flag is false, Review PDF button should not render", async () => {
       mockLDFlags.set({ pdfExport: false });
       render(McparReviewSubmitPage_Submitted);
-      const printButton = screen.queryByText("Print");
+      const printButton = screen.queryByText("Review PDF");
       expect(printButton).not.toBeInTheDocument();
     });
   });
