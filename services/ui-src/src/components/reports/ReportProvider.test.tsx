@@ -6,7 +6,7 @@ import { act } from "react-dom/test-utils";
 import { ReportContext, ReportProvider } from "./ReportProvider";
 import {
   mockReportKeys,
-  mockReport,
+  mockMcparReport,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { isReportFormPage } from "utils/reports/routing";
@@ -17,6 +17,9 @@ jest.mock("utils/api/requestMethods/report", () => ({
   getReportsByState: jest.fn(() => {}),
   postReport: jest.fn(() => {}),
   putReport: jest.fn(() => {}),
+  archiveReport: jest.fn(() => {}),
+  submitReport: jest.fn(() => {}),
+  releaseReport: jest.fn(() => {}),
 }));
 
 jest.mock("utils/reports/routing", () => ({
@@ -34,19 +37,37 @@ const TestComponent = () => {
         Fetch Report
       </button>
       <button
-        onClick={() => context.createReport("mock-type", "AB", mockReport)}
+        onClick={() => context.createReport("MCPAR", "AB", mockMcparReport)}
         data-testid="create-report-button"
       >
         Create Report
       </button>
       <button
-        onClick={() => context.updateReport(mockReportKeys, mockReport)}
+        onClick={() => context.updateReport(mockReportKeys, mockMcparReport)}
         data-testid="update-report-button"
       >
         Update Report
       </button>
       <button
-        onClick={() => context.fetchReportsByState("mock-type", "AB")}
+        onClick={() => context.archiveReport(mockReportKeys)}
+        data-testid="archive-report-button"
+      >
+        Archive Report
+      </button>
+      <button
+        onClick={() => context.releaseReport!(mockReportKeys)}
+        data-testid="release-report-button"
+      >
+        Release Report
+      </button>
+      <button
+        onClick={() => context.submitReport(mockReportKeys)}
+        data-testid="submit-report-button"
+      >
+        Submit Report
+      </button>
+      <button
+        onClick={() => context.fetchReportsByState("MCPAR", "AB")}
         data-testid="fetch-reports-by-state-button"
       >
         Fetch Reports By State
@@ -58,7 +79,7 @@ const TestComponent = () => {
         Clear Report Selection
       </button>
       <button
-        onClick={() => context.setReportSelection(mockReport)}
+        onClick={() => context.setReportSelection(mockMcparReport)}
         data-testid="set-report-selection-button"
       >
         Set Report Selection
@@ -78,7 +99,7 @@ const testComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test ReportProvider fetch methods", () => {
+describe("Test ReportProvider API methods", () => {
   beforeEach(async () => {
     (isReportFormPage as jest.Mock).mockReturnValue(true);
     await act(async () => {
@@ -121,7 +142,7 @@ describe("Test ReportProvider fetch methods", () => {
     expect(mockReportAPI.putReport).toHaveBeenCalledTimes(1);
     expect(mockReportAPI.putReport).toHaveBeenCalledWith(
       mockReportKeys,
-      mockReport
+      mockMcparReport
     );
   });
 
@@ -131,6 +152,30 @@ describe("Test ReportProvider fetch methods", () => {
       await userEvent.click(createButton);
     });
     expect(mockReportAPI.postReport).toHaveBeenCalledTimes(1);
+  });
+
+  test("archiveReport method calls archiveReport method", async () => {
+    await act(async () => {
+      const archiveButton = screen.getByTestId("archive-report-button");
+      await userEvent.click(archiveButton);
+    });
+    expect(mockReportAPI.archiveReport).toHaveBeenCalledTimes(1);
+  });
+
+  test("submitReport method calls submitReport method", async () => {
+    await act(async () => {
+      const submitButton = screen.getByTestId("submit-report-button");
+      await userEvent.click(submitButton);
+    });
+    expect(mockReportAPI.submitReport).toHaveBeenCalledTimes(1);
+  });
+
+  test("releaseReport method calls releaseReport method", async () => {
+    await act(async () => {
+      const releaseButton = screen.getByTestId("release-report-button");
+      await userEvent.click(releaseButton);
+    });
+    expect(mockReportAPI.releaseReport).toHaveBeenCalledTimes(1);
   });
 
   test("setReportSelection sets report in storage and clearReportSelection clears report in storage", async () => {
@@ -144,7 +189,7 @@ describe("Test ReportProvider fetch methods", () => {
       await userEvent.click(setReportSelectionButton);
     });
     // verify report is set in storage
-    expect(localStorage.getItem("selectedReport")).toBe(mockReport.id);
+    expect(localStorage.getItem("selectedReport")).toBe(mockMcparReport.id);
 
     // click button to clear report selection
     await act(async () => {
@@ -220,11 +265,53 @@ describe("Test ReportProvider error states", () => {
     });
     expect(screen.queryByTestId("error-message")).toBeVisible();
   });
+
+  test("Shows error if archiveReport throws error", async () => {
+    mockReportAPI.archiveReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const archiveButton = screen.getByTestId("archive-report-button");
+      await userEvent.click(archiveButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if releaseReport throws error", async () => {
+    mockReportAPI.releaseReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const releaseButton = screen.getByTestId("release-report-button");
+      await userEvent.click(releaseButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
+
+  test("Shows error if submitReport throws error", async () => {
+    mockReportAPI.submitReport.mockImplementation(() => {
+      throw new Error();
+    });
+    await act(async () => {
+      await render(testComponent);
+    });
+    await act(async () => {
+      const submitButton = screen.getByTestId("submit-report-button");
+      await userEvent.click(submitButton);
+    });
+    expect(screen.queryByTestId("error-message")).toBeVisible();
+  });
 });
 
 describe("Test ReportProvider fetches when loading on report page", () => {
   beforeEach(async () => {
-    localStorage.setItem("selectedReportType", "mock-type");
+    localStorage.setItem("selectedReportType", "MCPAR");
     localStorage.setItem("selectedState", "AB");
     localStorage.setItem("selectedReport", "mock-report-id");
     localStorage.setItem("selectedReportBasePath", "/mock");

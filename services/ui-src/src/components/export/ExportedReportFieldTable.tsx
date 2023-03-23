@@ -10,6 +10,8 @@ import {
   StandardReportPageShape,
   DrawerReportPageShape,
   ReportShape,
+  FormLayoutElement,
+  isFieldElement,
 } from "types";
 // verbiage
 import verbiage from "verbiage/pages/export";
@@ -24,7 +26,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   const entityType = section.entityType;
 
   const formHasOnlyDynamicFields = formFields?.every(
-    (field: FormField) => field.type === "dynamic"
+    (field: FormField | FormLayoutElement) => field.type === "dynamic"
   );
   const twoColumnHeaderItems = [tableHeaders.indicator, tableHeaders.response];
   const threeColumnHeaderItems = [
@@ -51,7 +53,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 };
 
 export const renderFieldTableBody = (
-  formFields: FormField[],
+  formFields: (FormField | FormLayoutElement)[],
   pageType: string,
   report: ReportShape | undefined,
   entityType?: string
@@ -59,7 +61,7 @@ export const renderFieldTableBody = (
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
   const renderFieldRow = (
-    formField: FormField,
+    formField: FormField | FormLayoutElement,
     parentFieldCheckedChoiceIds?: string[]
   ) => {
     tableRows.push(
@@ -118,7 +120,11 @@ export const renderFieldTableBody = (
     }
   };
   // map through form fields and call renderer
-  formFields?.map((field: FormField) => renderFieldRow(field));
+  formFields?.map((field: FormField | FormLayoutElement) => {
+    if (isFieldElement(field)) {
+      renderFieldRow(field);
+    }
+  });
   return tableRows;
 };
 

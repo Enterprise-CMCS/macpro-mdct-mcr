@@ -3,7 +3,10 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext, ExportedSectionHeading } from "components";
 // utils
-import { mockReportContext, mockVerbiageIntro } from "utils/testing/setupJest";
+import {
+  mockMcparReportContext,
+  mockVerbiageIntro,
+} from "utils/testing/setupJest";
 
 const mockSectionHeading = {
   heading: "mock-heading",
@@ -14,7 +17,7 @@ const mockSectionHeading = {
 const { heading, verbiage } = mockSectionHeading;
 
 const exportedReportSectionHeadingComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ExportedSectionHeading heading={heading} verbiage={verbiage} />
   </ReportContext.Provider>
 );

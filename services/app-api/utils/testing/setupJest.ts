@@ -1,3 +1,6 @@
+import sign from "jwt-encode";
+import { MCPARReportMetadata, MLRReportMetadata } from "../types/types";
+
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
   query: { promise: jest.fn() },
@@ -31,6 +34,9 @@ jest.mock("aws-sdk", () => {
             callback(undefined, { Body: JSON.stringify(mockReportJson) });
           else callback("Invalid Test Key");
         }),
+        copyObject: jest.fn().mockImplementation((_params, callback) => {
+          callback(undefined, { ETag: '"mockedEtag"' });
+        }),
       };
     }),
     Credentials: jest.fn().mockImplementation(() => {
@@ -54,8 +60,8 @@ export const mockReportJson = {
 };
 
 export const mockReportKeys = {
-  reportType: "mock-type",
-  state: "AB",
+  reportType: "MCPAR",
+  state: "AK" as const,
   id: "mock-report-id",
 };
 
@@ -66,7 +72,7 @@ export const mockReportFieldData = {
 
 export const mockDynamoData = {
   ...mockReportKeys,
-  reportType: "mock-type",
+  reportType: "MCPAR",
   programName: "testProgram",
   status: "Not started",
   reportingPeriodStartDate: 162515200000,
@@ -80,10 +86,78 @@ export const mockDynamoData = {
   lastAltered: 162515200000,
 };
 
-export const mockReport = {
+export const mockDynamoDataCompleted: MCPARReportMetadata = {
+  ...mockReportKeys,
+  reportType: "MCPAR",
+  programName: "testProgram",
+  status: "Not started",
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  dueDate: 168515200000,
+  combinedData: false,
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  isComplete: true,
+  archived: false,
+  submittedBy: "",
+  submittedOnDate: "",
+};
+
+export const mockDynamoDataMLRComplete: MLRReportMetadata = {
+  ...mockReportKeys,
+  archived: false,
+  reportType: "MLR",
+  submissionName: "testProgram",
+  status: "Not started",
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  submissionCount: 0,
+  locked: false,
+  previousRevisions: [],
+  isComplete: true,
+};
+
+export const mockDynamoDataMLRLocked: MLRReportMetadata = {
+  ...mockReportKeys,
+  archived: false,
+  reportType: "MLR",
+  submissionName: "testProgram",
+  status: "Not started",
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  submissionCount: 0,
+  locked: true,
+  previousRevisions: [],
+  isComplete: false,
+};
+
+export const mockApiKey = sign(
+  {
+    sub: "b528a6fa-f58f-4928-8cf0-32c50599821f",
+    email_verified: true,
+    "cognito:username": "",
+    "custom:cms_roles": "mdctmcr-state-user",
+    given_name: "Thelonious",
+    "custom:cms_state": "MN",
+    family_name: "States",
+    email: "stateuser@test.com",
+  },
+  ""
+);
+
+export const mockMcparReport = {
   ...mockReportKeys,
   metadata: {
-    reportType: "mock-type",
+    reportType: "MCPAR",
     programName: "testProgram",
     status: "Not started",
     reportingPeriodStartDate: 162515200000,

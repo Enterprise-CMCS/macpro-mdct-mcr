@@ -1,11 +1,11 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { SpreadsheetWidget } from "components";
+import { FormIntroAccordion, SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
 
-export const ReportPageIntro = ({ text, ...props }: Props) => {
+export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
   const { section, subsection, info, spreadsheet } = text;
   return (
     <Box sx={sx.introBox} {...props}>
@@ -15,6 +15,7 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
+      {accordion && <FormIntroAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget description={spreadsheet} />
@@ -27,6 +28,7 @@ export const ReportPageIntro = ({ text, ...props }: Props) => {
 
 interface Props {
   text: AnyObject;
+  accordion?: AnyObject;
   [key: string]: any;
 }
 
@@ -60,6 +62,9 @@ const sx = {
       "&:hover": {
         color: "palette.primary_darker",
       },
+    },
+    b: {
+      color: "palette.success_darkest",
     },
   },
 };
