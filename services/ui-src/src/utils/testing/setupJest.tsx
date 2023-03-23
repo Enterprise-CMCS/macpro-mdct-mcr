@@ -5,7 +5,8 @@ import "jest-axe/extend-expect";
 import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
 
 // utils
-import { ReportStatus, UserContextShape, UserRoles } from "types";
+import { ReportStatus } from "types";
+import { UserContextShape, UserRoles } from "types/users";
 import { bannerId } from "../../constants";
 
 // GLOBALS
@@ -217,6 +218,15 @@ export const mockModalFormField = {
   },
 };
 
+export const mockModalOverlayFormField = {
+  id: "mock-modal-overlay-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock modal overlay text field",
+  },
+};
+
 export const mockDrawerFormField = {
   id: "mock-drawer-text-field",
   type: "text",
@@ -266,6 +276,11 @@ export const mockModalForm = {
 export const mockDrawerForm = {
   id: "mock-drawer-form-id",
   fields: [mockDrawerFormField],
+};
+
+export const mockModalOverlayForm = {
+  id: "mock-modal-overlay-form-id",
+  fields: [mockModalOverlayFormField],
 };
 
 export const mockPlanFilledForm = {
@@ -354,6 +369,15 @@ export const mockModalDrawerReportPageVerbiage = {
   drawerTitle: "Mock drawer title",
 };
 
+export const mockModalOverlayReportPageVerbiage = {
+  intro: mockVerbiageIntro,
+  dashboardTitle: "Mock dashboard title",
+  addEditModalHint: "Mock modal hint",
+  countEntitiesInTitle: true,
+  addEntityButtonText: "Mock add entity button text",
+  emptyDashboardText: "Mock empty dashboard text",
+};
+
 export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
@@ -362,6 +386,15 @@ export const mockModalDrawerReportPageJson = {
   verbiage: mockModalDrawerReportPageVerbiage,
   modalForm: mockModalForm,
   drawerForm: mockDrawerForm,
+};
+
+export const mockModalOverlayReportPageJson = {
+  name: "mock-route-2c",
+  path: "/mock/mock-route-2c",
+  pageType: "modalOverlay",
+  entityType: "program",
+  verbiage: mockModalOverlayReportPageVerbiage,
+  modalForm: mockModalOverlayForm,
 };
 
 export const mockReviewSubmitPageJson = {
@@ -379,6 +412,7 @@ export const mockReportRoutes = [
     path: "/mock/mock-route-2",
     children: [mockDrawerReportPageJson, mockModalDrawerReportPageJson],
   },
+  mockModalOverlayReportPageJson,
   mockReviewSubmitPageJson,
 ];
 
@@ -386,6 +420,7 @@ export const mockFlattenedReportRoutes = [
   mockStandardReportPageJson,
   mockDrawerReportPageJson,
   mockModalDrawerReportPageJson,
+  mockModalOverlayReportPageJson,
   mockReviewSubmitPageJson,
 ];
 
@@ -399,7 +434,7 @@ export const mockReportJson = {
 };
 
 export const mockReportKeys = {
-  reportType: "mock-type",
+  reportType: "MCPAR",
   state: "AB",
   id: "mock-report-id",
 };
@@ -563,7 +598,7 @@ export const mockReportFieldData = {
       accessMeasure_standardType: [
         {
           key: "option1",
-          value: "mock-type",
+          value: "MCPAR",
         },
       ],
       "accessMeasure_standardType-otherText": "",
@@ -571,9 +606,9 @@ export const mockReportFieldData = {
   ],
 };
 
-export const mockReport = {
+export const mockMcparReport = {
   ...mockReportKeys,
-  reportType: "mock-type",
+  reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
   status: ReportStatus.NOT_STARTED,
@@ -589,24 +624,26 @@ export const mockReport = {
 };
 
 export const mockReportsByState = [
-  { ...mockReport, id: "mock-report-id-1" },
-  { ...mockReport, id: "mock-report-id-2" },
-  { ...mockReport, id: "mock-report-id-3" },
+  { ...mockMcparReport, id: "mock-report-id-1" },
+  { ...mockMcparReport, id: "mock-report-id-2" },
+  { ...mockMcparReport, id: "mock-report-id-3" },
 ];
 
 export const mockReportMethods = {
   archiveReport: jest.fn(),
+  releaseReport: jest.fn(),
   fetchReport: jest.fn(),
   fetchReportsByState: jest.fn(),
   createReport: jest.fn(),
   updateReport: jest.fn(),
+  submitReport: jest.fn(),
   clearReportSelection: jest.fn(),
   setReportSelection: jest.fn(),
 };
 
-export const mockReportContext = {
+export const mockMcparReportContext = {
   ...mockReportMethods,
-  report: mockReport,
+  report: mockMcparReport,
   reportsByState: mockReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
@@ -722,7 +759,7 @@ export const mockCompletedQualityMeasuresFormattedEntityData = {
 
 export const mockSanctionsEntity = {
   id: "mock-id",
-  sanction_interventionType: [{ value: "mock-type" }],
+  sanction_interventionType: [{ value: "MCPAR" }],
   sanction_interventionTopic: [{ value: "mock-topic" }],
   sanction_planName: { label: "sanction_planName", value: "mock-plan-id-1" },
   sanction_interventionReason: "mock-reason",
@@ -734,7 +771,7 @@ export const mockSanctionsEntity = {
 };
 
 export const mockUnfinishedSanctionsFormattedEntityData = {
-  interventionType: "mock-type",
+  interventionType: "MCPAR",
   interventionTopic: "mock-topic",
   planName: "mock-plan-name-1",
   interventionReason: "mock-reason",

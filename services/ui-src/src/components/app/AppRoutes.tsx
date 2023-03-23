@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   AdminBannerProvider,
@@ -7,18 +8,21 @@ import {
   ExportedReportPage,
   HelpPage,
   HomePage,
-  McparGetStartedPage,
+  ReportGetStartedPage,
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
 } from "components";
 import { mcparReportJson } from "forms/mcpar";
+import { mlrReportJson } from "forms/mlr";
 // utils
 import { ReportRoute } from "types";
 import { ScrollToTopComponent, useUser } from "utils";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useUser().user ?? {};
+  const mlrReport = useFlags()?.mlrReport;
+
   return (
     <main id="main-content" tabIndex={-1}>
       <ScrollToTopComponent />
@@ -30,10 +34,15 @@ export const AppRoutes = () => {
             element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
           />
           <Route path="/help" element={<HelpPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
 
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<DashboardPage reportType="MCPAR" />} />
-          <Route path="/mcpar/get-started" element={<McparGetStartedPage />} />
+          <Route
+            path="/mcpar/get-started"
+            element={<ReportGetStartedPage reportType="MCPAR" />}
+          />
           {mcparReportJson.flatRoutes.map((route: ReportRoute) => (
             <Route
               key={route.path}
@@ -43,8 +52,23 @@ export const AppRoutes = () => {
           ))}
           <Route path="/mcpar/export" element={<ExportedReportPage />} />
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="*" element={<NotFoundPage />} />
+
+          {/* MLR ROUTES */}
+          <Route
+            path={mlrReport ? "/mlr" : "*"}
+            element={<DashboardPage reportType="MLR" />}
+          />
+          <Route
+            path={mlrReport ? "/mlr/get-started" : "*"}
+            element={<ReportGetStartedPage reportType="MLR" />}
+          />
+          {mlrReportJson.flatRoutes.map((route: ReportRoute) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={<ReportPageWrapper />}
+            />
+          ))}
         </Routes>
       </AdminBannerProvider>
     </main>

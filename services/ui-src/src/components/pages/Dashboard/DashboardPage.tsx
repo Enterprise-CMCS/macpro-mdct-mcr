@@ -12,13 +12,13 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  AddEditProgramModal,
+  AddEditReportModal,
   ErrorAlert,
   PageTemplate,
   ReportContext,
 } from "components";
-import { DashboardList } from "./DashboardProgramList";
-import { MobileDashboardList } from "./DashboardProgramListMobile";
+import { DashboardTable } from "./DashboardTable";
+import { MobileDashboardTable } from "./MobileDashboardTable";
 import { Spinner } from "@cmsgov/design-system";
 // forms
 import { mcparReportJson } from "forms/mcpar";
@@ -32,7 +32,8 @@ import {
   useUser,
 } from "utils";
 // verbiage
-import verbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
@@ -45,6 +46,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     clearReportSelection,
     setReportSelection,
     archiveReport,
+    releaseReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
   const {
@@ -54,18 +56,13 @@ export const DashboardPage = ({ reportType }: Props) => {
     userIsAdmin,
   } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
-  const { intro, body } = verbiage;
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined
   >(undefined);
-  const [entering, setEntering] = useState<boolean>(false);
-  const [enteringReportId, setEnterReportId] = useState<string | undefined>(
-    undefined
-  );
+  const [reportId, setReportId] = useState<string | undefined>(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
-  const [archivingReportId, setArchivingReportId] = useState<
-    string | undefined
-  >(undefined);
+  const [entering, setEntering] = useState<boolean>(false);
+  const [releasing, setReleasing] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
@@ -74,7 +71,16 @@ export const DashboardPage = ({ reportType }: Props) => {
     MCPAR: mcparReportJson,
     MLR: mlrReportJson,
   };
+
   const genericReportJson = genericReportJsonMap[reportType]!;
+
+  const dashboardVerbiageMap: any = {
+    MCPAR: mcparVerbiage,
+    MLR: mlrVerbiage,
+  };
+
+  const dashboardVerbiage = dashboardVerbiageMap[reportType]!;
+  const { intro, body } = dashboardVerbiage;
 
   // get active state
   const adminSelectedState = localStorage.getItem("selectedState") || undefined;
@@ -100,8 +106,8 @@ export const DashboardPage = ({ reportType }: Props) => {
   }, [reportsByState]);
 
   const enterSelectedReport = async (report: ReportMetadataShape) => {
+    setReportId(report.id);
     setEntering(true);
-    setEnterReportId(report.id);
     const reportKeys: ReportKeys = {
       reportType: report.reportType,
       state: report.state,
@@ -112,11 +118,11 @@ export const DashboardPage = ({ reportType }: Props) => {
     setReportSelection(selectedReport);
     const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
     navigate(firstReportPagePath);
+    setReportId(undefined);
     setEntering(false);
-    setEnterReportId(undefined);
   };
 
-  const openAddEditProgramModal = (report?: ReportShape) => {
+  const openAddEditReportModal = (report?: ReportShape) => {
     let formData = undefined;
     let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
@@ -145,19 +151,19 @@ export const DashboardPage = ({ reportType }: Props) => {
     setSelectedReport(formData);
 
     // use disclosure to open modal
-    addEditProgramModalOnOpenHandler();
+    addEditReportModalOnOpenHandler();
   };
 
   // add/edit program modal disclosure
   const {
-    isOpen: addEditProgramModalIsOpen,
-    onOpen: addEditProgramModalOnOpenHandler,
-    onClose: addEditProgramModalOnCloseHandler,
+    isOpen: addEditReportModalIsOpen,
+    onOpen: addEditReportModalOnOpenHandler,
+    onClose: addEditReportModalOnCloseHandler,
   } = useDisclosure();
 
   const toggleReportArchiveStatus = async (report: ReportShape) => {
     if (userIsAdmin) {
-      setArchivingReportId(report.id);
+      setReportId(report.id);
       setArchiving(true);
       const reportKeys = {
         reportType: reportType,
@@ -166,8 +172,24 @@ export const DashboardPage = ({ reportType }: Props) => {
       };
       await archiveReport(reportKeys);
       await fetchReportsByState(reportType, activeState);
-      setArchivingReportId(undefined);
+      setReportId(undefined);
       setArchiving(false);
+    }
+  };
+
+  const toggleReportLockStatus = async (report: ReportShape) => {
+    if (userIsAdmin) {
+      setReportId(report.id);
+      setReleasing(true);
+      const reportKeys = {
+        reportType: reportType,
+        state: adminSelectedState,
+        id: report.id,
+      };
+      await releaseReport!(reportKeys);
+      await fetchReportsByState(reportType, activeState);
+      setReportId(undefined);
+      setReleasing(false);
     }
   };
 
@@ -187,33 +209,37 @@ export const DashboardPage = ({ reportType }: Props) => {
       <Box sx={sx.bodyBox}>
         {reportsToDisplay ? (
           isTablet || isMobile ? (
-            <MobileDashboardList
+            <MobileDashboardTable
               reportsByState={reportsToDisplay}
-              openAddEditProgramModal={openAddEditProgramModal}
+              reportType={reportType}
+              reportId={reportId}
+              openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              archivingReportId={archivingReportId}
               entering={entering}
-              enteringReportId={enteringReportId}
-              sxOverride={sxChildStyles}
+              releaseReport={toggleReportLockStatus}
+              releasing={releasing}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
+              sxOverride={sxChildStyles}
             />
           ) : (
-            <DashboardList
+            <DashboardTable
               reportsByState={reportsToDisplay}
-              openAddEditProgramModal={openAddEditProgramModal}
+              reportType={reportType}
+              reportId={reportId}
+              body={body}
+              openAddEditReportModal={openAddEditReportModal}
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              archivingReportId={archivingReportId}
               entering={entering}
-              enteringReportId={enteringReportId}
-              body={body}
-              sxOverride={sxChildStyles}
+              releaseReport={toggleReportLockStatus}
+              releasing={releasing}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
               isAdmin={userIsAdmin!}
+              sxOverride={sxChildStyles}
             />
           )
         ) : (
@@ -226,23 +252,23 @@ export const DashboardPage = ({ reportType }: Props) => {
         {!reportsToDisplay?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
-        {/* only show add program button to state users */}
+        {/* only show add report button to state users */}
         {(userIsStateUser || userIsStateRep) && (
           <Box sx={sx.callToActionContainer}>
-            <Button type="submit" onClick={() => openAddEditProgramModal()}>
+            <Button type="submit" onClick={() => openAddEditReportModal()}>
               {body.callToAction}
             </Button>
           </Box>
         )}
       </Box>
-      <AddEditProgramModal
+      <AddEditReportModal
         activeState={activeState!}
         selectedReport={selectedReport!}
         reportType={reportType}
         formTemplate={genericReportJson}
         modalDisclosure={{
-          isOpen: addEditProgramModalIsOpen,
-          onClose: addEditProgramModalOnCloseHandler,
+          isOpen: addEditReportModalIsOpen,
+          onClose: addEditReportModalOnCloseHandler,
         }}
       />
     </PageTemplate>
@@ -348,7 +374,7 @@ const sxChildStyles = {
       color: "palette.primary",
     },
   },
-  editProgram: {
+  editReport: {
     padding: "0",
     width: "2.5rem",
     ".tablet &, .mobile &": {
@@ -371,10 +397,13 @@ const sxChildStyles = {
       width: "100%",
     },
   },
-  deleteProgramCell: {
+  adminActionCell: {
     width: "2.5rem",
+    ".tablet &, .mobile &": {
+      display: "flex",
+    },
   },
-  archiveReportButton: {
+  adminActionButton: {
     minWidth: "4.5rem",
     fontSize: "sm",
     fontWeight: "normal",
