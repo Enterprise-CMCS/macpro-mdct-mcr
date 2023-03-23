@@ -6,8 +6,12 @@ export const SectionHeader = ({
   ...props
 }: SectionHeaderProps) => {
   const sx = {
+    hr: {
+      marginTop: "2rem",
+      paddingBottom: "1rem",
+    },
     h3: {
-      padding: divider === "bottom" ? "2rem 0 1rem 0" : "1rem 0 2rem 0",
+      padding: divider === "bottom" ? "2rem 0 1rem 0" : "2rem 0 2rem 0",
     },
   };
   return (
