@@ -21,7 +21,7 @@ import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
-import printIcon from "assets/icons/icon_print.png";
+import iconSearch from "assets/icons/icon_search.png";
 
 export const ReviewSubmitPage = () => {
   const { report, fetchReport, submitReport } = useContext(ReportContext);
@@ -116,7 +116,7 @@ const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
       to="/mcpar/export"
       target="_blank"
       sx={sx.printButton}
-      leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+      leftIcon={<Image src={iconSearch} alt="Search Icon" height=".9rem" />}
       variant="outline"
     >
       {print.printButtonText}
@@ -268,10 +268,10 @@ const sx = {
   },
   leadTextBox: {
     width: "100%",
-    paddingBottom: "1.5rem",
+    paddingBottom: ".5rem",
     marginBottom: "1.5rem",
     borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
+    borderColor: "palette.gray_light",
   },
   headerText: {
     marginBottom: "1rem",
@@ -299,10 +299,11 @@ const sx = {
     color: "palette.gray",
   },
   printButton: {
-    width: "5rem",
-    height: "1.75rem",
-    fontSize: "sm",
-    fontWeight: "normal",
+    minWidth: "6rem",
+    height: "2rem",
+    fontSize: "md",
+    fontWeight: "700",
+    border: "1px solid",
   },
   submitContainer: {
     width: "100%",
@@ -312,6 +313,7 @@ const sx = {
     marginBottom: "2rem",
   },
   submitButton: {
+    minHeight: "3rem",
     "&:disabled": {
       opacity: 1,
       background: "palette.gray_lighter",
