@@ -5,7 +5,7 @@ import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  McparReviewSubmitPage,
+  ReviewSubmitPage,
   ModalDrawerReportPage,
   DrawerReportPage,
   PageTemplate,
@@ -59,7 +59,7 @@ export const ReportPageWrapper = () => {
           />
         );
       case PageTypes.REVIEW_SUBMIT:
-        return <McparReviewSubmitPage />;
+        return <ReviewSubmitPage />;
       default:
         return <StandardReportPage route={route as StandardReportPageShape} />;
     }

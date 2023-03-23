@@ -1,9 +1,9 @@
-import { mockReport } from "utils/testing/setupJest";
+import { mockMcparReport } from "utils/testing/setupJest";
 import { getRouteStatus } from "./getRouteStatus";
 
 describe("getRouteStatusFunctionality", () => {
   test("Should return a valid status map for every route in the form other than review and submit", () => {
-    const report = mockReport;
+    const report = mockMcparReport;
     const statusMap = getRouteStatus(report);
     expect(statusMap).toEqual([
       {
@@ -31,9 +31,9 @@ describe("getRouteStatusFunctionality", () => {
   });
   test("Should return an empty array if there is no completionStatus from the API", () => {
     const { completionStatus, ...mockReportWithNoCompletionStatus } =
-      mockReport;
+      mockMcparReport;
     const statusMap = getRouteStatus(mockReportWithNoCompletionStatus);
-    expect(completionStatus).toEqual(mockReport.completionStatus);
+    expect(completionStatus).toEqual(mockMcparReport.completionStatus);
     expect(statusMap).toEqual([]);
   });
 });

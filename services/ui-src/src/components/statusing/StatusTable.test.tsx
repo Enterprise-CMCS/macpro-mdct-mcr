@@ -6,8 +6,8 @@ import { ReportContext, StatusTable } from "components";
 import { ReportStatus } from "types";
 // utils
 import {
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
@@ -19,12 +19,12 @@ jest.mock("react-router-dom", () => ({
 }));
 
 const mockInProgressReport = {
-  ...mockReport,
+  ...mockMcparReport,
   status: ReportStatus.IN_PROGRESS,
 };
 
 const mockedReportContext_InProgress = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   report: mockInProgressReport,
 };
 
@@ -37,7 +37,7 @@ const McparReviewSubmitPage_InProgress = (
 );
 
 const mockedReportContext_NoReport = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   report: undefined,
 };
 
