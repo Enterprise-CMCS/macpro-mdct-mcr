@@ -71,7 +71,7 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
                 <Heading sx={sx.smallSectionHeading} size={"sm"}>
                   {section2.tableHeading}
                 </Heading>
-                <Table content={section2.table}></Table>
+                <Table border={true} content={section2.table}></Table>
               </Box>
             </Flex>
           ) : (

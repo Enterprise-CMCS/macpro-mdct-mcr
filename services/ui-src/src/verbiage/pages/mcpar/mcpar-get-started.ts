@@ -32,7 +32,7 @@ export default {
         table: {
           headRow: ["Excel Workbook Tab", "Location in MCPAR online form"],
           bodyRows: [
-            ["A_Program_Info", "A: Program information"],
+            ["A_Program_Info", "A: Program Information"],
             ["B_State", "B: State-Level Indicators"],
             ["C1_Program_Set", "C: Program-Level Indicators"],
             ["C2_Program_State", "C: Program-Level Indicators"],
