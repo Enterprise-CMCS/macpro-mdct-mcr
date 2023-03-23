@@ -19,7 +19,10 @@ import {
   FormLayoutElement,
   isFieldElement,
 } from "types";
-import { SectionHeader } from "components/forms/FormLayoutElements";
+import {
+  SectionContent,
+  SectionHeader,
+} from "components/forms/FormLayoutElements";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -42,6 +45,7 @@ export const formFieldFactory = (
     text: TextField,
     textarea: TextAreaField,
     sectionHeader: SectionHeader,
+    sectionContent: SectionContent,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {
