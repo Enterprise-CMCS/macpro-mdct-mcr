@@ -86,9 +86,9 @@ describe("Test fetchReport API method", () => {
     const body = JSON.parse(res.body);
     expect(body.lastAlteredBy).toContain("Thelonious States");
     expect(body.programName).toContain("testProgram");
-    expect(body.completionStatus).toMatchObject(
-      mockDynamoDataCompleted.completionStatus
-    );
+    expect(body.completionStatus).toMatchObject({
+      "step-one": true,
+    });
     expect(body.isComplete).toStrictEqual(true);
     expect(body.fieldData).toStrictEqual(mockReportFieldData);
     expect(body.formTemplate).toStrictEqual(mockReportJson);

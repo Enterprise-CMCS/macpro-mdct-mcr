@@ -21,11 +21,11 @@ const ENTITIES_UPDATE_DATA = {
 };
 
 let mockDynamoDataWithUUID = mockDynamoData;
-mockDynamoDataWithUUID.state = "MN";
+mockDynamoDataWithUUID.state = "AK";
 mockDynamoDataWithUUID.id = "1234123452345";
 
 let mockDynamoData2 = mockDynamoData;
-mockDynamoData2.state = "MN";
+mockDynamoData2.state = "AK";
 mockDynamoData2.id = "34234234534";
 
 const mockMetaDataResponse1 = {
