@@ -170,7 +170,7 @@
                 }
               ]
             },
-            "dashboardTitle": "MLR reports total:",
+            "dashboardTitle": "MLR report total count:",
             "countEntitiesInTitle": true,
             "addEntityButtonText": "Add program reporting information",
             "emptyDashboardText": "Add Program Reporting Information for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab).",
