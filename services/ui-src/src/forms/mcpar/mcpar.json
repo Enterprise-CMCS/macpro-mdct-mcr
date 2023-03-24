@@ -1013,8 +1013,7 @@
                 "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
                 "enterEntityDetailsButtonText": "Enter details",
                 "editEntityDetailsButtonText": "Edit details",
-                "drawerTitle": "Add details for access measure",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section."
+                "drawerTitle": "Add details for access measure"
               },
               "modalForm": {
                 "id": "cam-modal",
@@ -1465,7 +1464,6 @@
             },
             "dashboardTitle": "Report program characteristics & enrollment for each plan",
             "drawerTitle": "Report program characteristics & enrollment for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -1529,7 +1527,6 @@
             },
             "dashboardTitle": "Report financial performance for each plan",
             "drawerTitle": "Report financial performance for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -1672,7 +1669,6 @@
             },
             "dashboardTitle": "Report on encounter data for each plan",
             "drawerTitle": "Report encounter data for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -1746,7 +1742,6 @@
                 },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -1921,7 +1916,6 @@
                 },
                 "dashboardTitle": "Report on appeals by service for each plan",
                 "drawerTitle": "Report appeals by service for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2062,7 +2056,6 @@
                 },
                 "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
                 "drawerTitle": "Report state fair hearings and external medical reviews for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2163,7 +2156,6 @@
                 },
                 "dashboardTitle": "Report on grievances for each plan",
                 "drawerTitle": "Report on grievances for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -2258,7 +2250,6 @@
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
                 "drawerTitle": "Report on grievances by service for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -2409,7 +2400,6 @@
                 },
                 "dashboardTitle": "Report on grievances by reason for each plan",
                 "drawerTitle": "Report on grievances by reason for",
-                "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -2583,7 +2573,6 @@
             "editEntityDetailsButtonText": "Edit measure results",
             "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
             "drawerTitle": "Add plan-level measure results",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
             "drawerNoFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
           },
           "modalForm": {
@@ -2844,8 +2833,7 @@
             "entityUnfinishedMessage": "Complete the remaining indicators for this plan sanction by selecting \"Enter sanction details\".",
             "enterEntityDetailsButtonText": "Enter sanction details",
             "editEntityDetailsButtonText": "Edit sanction details",
-            "drawerTitle": "Add details for sanction",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section."
+            "drawerTitle": "Add details for sanction"
           },
           "modalForm": {
             "id": "ds-modal",
@@ -3071,7 +3059,6 @@
             },
             "dashboardTitle": "Report on program integrity for each plan",
             "drawerTitle": "Program integrity for",
-            "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
             "missingEntityMessage": [
               {
                 "type": "span",
@@ -3299,7 +3286,6 @@
         },
         "dashboardTitle": "Report on role and type for each BSS entity",
         "drawerTitle": "Report on",
-        "drawerReminder": "Complete all fields and select the Save & close button to save this section.",
         "missingEntityMessage": [
           {
             "type": "span",

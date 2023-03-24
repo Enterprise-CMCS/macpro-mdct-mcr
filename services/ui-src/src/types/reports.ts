@@ -88,7 +88,6 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   countEntitiesInTitle?: boolean;
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
-  drawerReminder?: string;
   missingEntityMessage?: CustomHtmlElement[];
 }
 

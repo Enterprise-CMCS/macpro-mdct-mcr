@@ -16,6 +16,8 @@ import { ReportDrawerDetails } from "components";
 import { AnyObject, CustomHtmlElement, EntityType } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
+import { drawerReminderText } from "../../constants";
+
 export const Drawer = ({
   entityType,
   verbiage,
@@ -47,7 +49,7 @@ export const Drawer = ({
               {parseCustomHtml(verbiage.drawerInfo)}
             </Box>
           )}
-          <Text sx={sx.drawerReminderText}>{verbiage.drawerReminder}</Text>
+          <Text sx={sx.drawerReminderText}>{drawerReminderText}</Text>
           {verbiage.drawerDetails && entityType && (
             <ReportDrawerDetails
               drawerDetails={verbiage.drawerDetails}
@@ -75,7 +77,6 @@ interface Props {
     drawerTitle: string;
     drawerInfo?: CustomHtmlElement[];
     drawerDetails?: AnyObject;
-    drawerReminder?: string;
   };
   drawerDisclosure: {
     isOpen: boolean;

@@ -81,7 +81,6 @@ interface Props {
     drawerInfo?: CustomHtmlElement[];
     drawerDetails?: AnyObject;
     drawerNoFormMessage?: string;
-    drawerReminder?: string;
   };
   form: FormJson;
   onSubmit: Function;

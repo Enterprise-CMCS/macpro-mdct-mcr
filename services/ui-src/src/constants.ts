@@ -12,6 +12,8 @@ export const noCombinedDataInput =
 
 export const closeText = "Close";
 export const saveAndCloseText = "Save & close";
+export const drawerReminderText =
+  "Complete all fields and select the Save & close button to save this section.";
 
 // STATES
 export enum States {
