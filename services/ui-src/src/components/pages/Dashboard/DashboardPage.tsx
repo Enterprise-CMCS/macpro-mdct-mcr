@@ -61,6 +61,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   >(undefined);
   const [reportId, setReportId] = useState<string | undefined>(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
+  const [entering, setEntering] = useState<boolean>(false);
   const [releasing, setReleasing] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
@@ -105,6 +106,8 @@ export const DashboardPage = ({ reportType }: Props) => {
   }, [reportsByState]);
 
   const enterSelectedReport = async (report: ReportMetadataShape) => {
+    setReportId(report.id);
+    setEntering(true);
     const reportKeys: ReportKeys = {
       reportType: report.reportType,
       state: report.state,
@@ -115,6 +118,8 @@ export const DashboardPage = ({ reportType }: Props) => {
     setReportSelection(selectedReport);
     const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
     navigate(firstReportPagePath);
+    setReportId(undefined);
+    setEntering(false);
   };
 
   const openAddEditReportModal = (report?: ReportShape) => {
@@ -212,6 +217,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
+              entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
@@ -228,6 +234,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
+              entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
               isStateLevelUser={userIsStateUser! || userIsStateRep!}
