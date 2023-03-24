@@ -626,6 +626,7 @@ export const mockMcparReport = {
     "/mock/mock-route-2": {
       "/mock/mock-route-2a": false,
       "/mock/mock-route-2b": true,
+      "/mock/mock-route-2c": true,
     },
   },
   isComplete: false,

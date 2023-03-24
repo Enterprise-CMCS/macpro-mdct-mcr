@@ -88,7 +88,7 @@ describe("Status Table Functionality", () => {
     const editButtons = screen.getAllByRole("button", {
       name: "Edit Program Edit",
     });
-    expect(editButtons).toHaveLength(3);
+    expect(editButtons).toHaveLength(4);
   });
 
   test("should be able to navigate to a page on the form by clicking edit", async () => {
