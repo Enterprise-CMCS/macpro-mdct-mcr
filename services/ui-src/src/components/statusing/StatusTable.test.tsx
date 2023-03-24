@@ -97,7 +97,7 @@ describe("Status Table Functionality", () => {
     const editButtons = screen.getAllByRole("button", {
       name: "Edit Program Edit",
     });
-    expect(editButtons).toHaveLength(3);
+    expect(editButtons).toHaveLength(4);
 
     await userEvent.click(editButtons[0]);
     const expectedRoute1 = "/mock/mock-route-1";
