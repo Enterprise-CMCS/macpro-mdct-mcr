@@ -25,12 +25,12 @@ describe("getRouteStatusFunctionality", () => {
             path: "/mock/mock-route-2b",
             status: true,
           },
-          {
-            name: "mock-route-2c",
-            path: "/mock/mock-route-2c",
-            status: true,
-          },
         ],
+      },
+      {
+        name: "mock-route-2c",
+        path: "/mock/mock-route-2c",
+        status: true,
       },
     ]);
   });
