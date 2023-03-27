@@ -23,7 +23,7 @@ export const UserContext = createContext<UserContextShape>({
 });
 
 const authenticateWithIDM = async () => {
-  await Auth.federatedSignIn({ customProvider: "Okta" });
+  await Auth.federatedSignIn({ customProvider: config.COGNITO_IDP });
 };
 
 export const UserProvider = ({ children }: Props) => {

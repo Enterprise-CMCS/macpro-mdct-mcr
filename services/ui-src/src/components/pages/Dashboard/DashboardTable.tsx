@@ -3,7 +3,7 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 import { Table } from "components";
 // utils
-import { AnyObject, ReportMetadataShape } from "types";
+import { AnyObject, ReportMetadataShape, TableContentShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -17,13 +17,18 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
+  entering,
   releaseReport,
   releasing,
   sxOverride,
   isStateLevelUser,
   isAdmin,
 }: DashboardTableProps) => (
-  <Table content={body.table} data-testid="desktop-table" sx={sx.table}>
+  <Table
+    content={tableBody(body.table, isAdmin)}
+    data-testid="desktop-table"
+    sx={sx.table}
+  >
     {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
         {/* Edit Button */}
@@ -47,7 +52,7 @@ export const DashboardTable = ({
         {/* Report Status */}
         <Td>{report?.archived ? "Archived" : report?.status}</Td>
         {/* MLR-ONLY: Submission count */}
-        {reportType === "MLR" && (
+        {reportType === "MLR" && isAdmin && (
           <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
         )}
         {/* Action Buttons */}
@@ -58,7 +63,11 @@ export const DashboardTable = ({
             onClick={() => enterSelectedReport(report)}
             isDisabled={report?.archived}
           >
-            Enter
+            {entering && reportId == report.id ? (
+              <Spinner size="small" />
+            ) : (
+              "Enter"
+            )}
           </Button>
         </Td>
         {isAdmin && (
@@ -99,12 +108,22 @@ interface DashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
+  entering: boolean;
   isAdmin: boolean;
   isStateLevelUser: boolean;
   releaseReport?: Function | undefined;
   releasing?: boolean | undefined;
   sxOverride: AnyObject;
 }
+
+const tableBody = (body: TableContentShape, isAdmin: boolean) => {
+  var tableContent = body;
+  if (!isAdmin) {
+    tableContent.headRow = tableContent.headRow!.filter((e) => e !== "#");
+    return tableContent;
+  }
+  return body;
+};
 
 const EditReportButton = ({
   report,
