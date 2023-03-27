@@ -153,6 +153,10 @@ const sx = {
     br: {
       marginBottom: "0.25rem",
     },
+    th: {
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_light",
+    },
   },
   emptyDashboard: {
     paddingTop: "2rem",
