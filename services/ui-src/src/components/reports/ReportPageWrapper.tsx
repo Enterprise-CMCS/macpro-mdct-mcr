@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // components
 import { Spinner } from "@cmsgov/design-system";
@@ -27,6 +27,7 @@ import {
 export const ReportPageWrapper = () => {
   const { state } = useUser().user ?? {};
   const { report } = useContext(ReportContext);
+  const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -56,6 +57,7 @@ export const ReportPageWrapper = () => {
         return (
           <ModalOverlayReportPage
             route={route as ModalOverlayReportPageShape}
+            setSidebarHidden={setSidebarHidden}
           />
         );
       case PageTypes.REVIEW_SUBMIT:
@@ -74,7 +76,7 @@ export const ReportPageWrapper = () => {
       <Flex sx={sx.pageContainer}>
         {report ? (
           <>
-            <Sidebar />
+            <Sidebar isHidden={sidebarHidden} />
             <Flex id="report-content" sx={sx.reportContainer}>
               {reportTemplate && renderPageSection(reportTemplate)}
             </Flex>
