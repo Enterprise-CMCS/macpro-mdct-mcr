@@ -159,15 +159,9 @@ export const ChoiceListField = ({
       const timeInMs = 200;
       // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
       setTimeout(async () => {
-        const parentName = document.activeElement?.id.split("-")[0];
-        if (
-          parentName === name &&
-          !document.activeElement?.id.includes("-otherText")
-        )
-          return; // Short circuit if still clicking on elements in this choice list
         let fields = [
           { name, type, value: displayValue, hydrationValue, defaultValue },
-          ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
+          ...getNestedChildFields(choices, lastDatabaseValue),
         ];
         const reportArgs = {
           id: report?.id,
@@ -234,7 +228,7 @@ const sx = {
   },
 };
 
-export const getNestedChildFieldsOfUncheckedParent = (
+export const getNestedChildFields = (
   choices: FieldChoice[],
   lastDatabaseValue: Choice[]
 ) => {
@@ -267,11 +261,7 @@ export const getNestedChildFieldsOfUncheckedParent = (
     // if choice is not selected and there are children
     const isParentChoiceChecked = (id: string) =>
       lastDatabaseValue?.some((autosave) => autosave.key === id);
-    if (
-      !choice.checked &&
-      choice.children &&
-      isParentChoiceChecked(choice.id)
-    ) {
+    if (choice.children && isParentChoiceChecked(choice.id)) {
       compileNestedFields(choice.children);
     }
   });

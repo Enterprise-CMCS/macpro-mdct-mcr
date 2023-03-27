@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { ChoiceListField, ReportContext } from "components";
 import { mockMcparReportContext } from "utils/testing/setupJest";
 import { Choice, ReportStatus } from "types";
-import { getNestedChildFieldsOfUncheckedParent } from "./ChoiceListField";
+import { getNestedChildFields } from "./ChoiceListField";
 
 //
 const mockTrigger = jest.fn().mockReturnValue(true);
@@ -853,10 +853,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
   test("Checking the checkbox choice and the user has never filled the field out the form before, it returns empty", async () => {
     const initialDatabaseValue: Choice[] = [];
     const choices = [{ ...checkboxChoiceWithNoChildren, checked: true }];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -869,10 +866,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     const choices = [checkboxChoiceWithNoChildren];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -880,10 +874,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
   test("Checking the radio choice and the user has never filled the field out the form before, it returns empty", async () => {
     const initialDatabaseValue: Choice[] = [];
     const choices = [{ ...checkboxChoiceWithRadioChild, checked: true }];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -896,10 +887,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     const choices = [checkboxChoiceWithRadioChild];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     const expectedReturn = [
       {
@@ -916,10 +904,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
   test("Checking the choice and the user has never filled the field out the form before, it returns empty", async () => {
     const initialDatabaseValue: Choice[] = [];
     const choices = [{ ...checkboxChoiceWithTextFieldChild, checked: true }];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -932,10 +917,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     const choices = [checkboxChoiceWithTextFieldChild];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     const expectedReturn = [
       {
