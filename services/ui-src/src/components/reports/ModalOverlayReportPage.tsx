@@ -80,22 +80,20 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
         {reportFieldDataEntities.length === 0 ? (
           <Box>{verbiage.emptyDashboardText}</Box>
         ) : (
-          <>
-            <Table content={tableHeaders}>
-              {reportFieldDataEntities.map(
-                (entity: EntityShape, entityIndex: number) => (
-                  <EntityRow
-                    key={entity.id}
-                    entity={entity}
-                    entityIndex={entityIndex}
-                    verbiage={verbiage}
-                    openAddEditEntityModal={openAddEditEntityModal}
-                    openDeleteEntityModal={openDeleteEntityModal}
-                  />
-                )
-              )}
-            </Table>
-          </>
+          <Table content={tableHeaders}>
+            {reportFieldDataEntities.map(
+              (entity: EntityShape, entityIndex: number) => (
+                <EntityRow
+                  key={entity.id}
+                  entity={entity}
+                  entityIndex={entityIndex}
+                  verbiage={verbiage}
+                  openAddEditEntityModal={openAddEditEntityModal}
+                  openDeleteEntityModal={openDeleteEntityModal}
+                />
+              )
+            )}
+          </Table>
         )}
         <Button
           sx={sx.addEntityButton}
@@ -147,8 +145,8 @@ const sx = {
   },
   header: {
     textTransform: "none",
-    fontSize: "14px",
-    color: "#71767A",
+    fontSize: "sm",
+    color: "palette.gray_medium",
     br: {
       marginBottom: "0.25rem",
     },
