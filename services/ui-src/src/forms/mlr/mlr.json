@@ -166,7 +166,7 @@
             }
           ]
         },
-        "dashboardTitle": "MLR reports total:",
+        "dashboardTitle": "MLR report total count:",
         "countEntitiesInTitle": true,
         "tableHeader": "Program name <br/> Eligibility group <br/> MLR reporting period <br/> MCO/PIHP/PAHP name",
         "addEntityButtonText": "Add program reporting information",

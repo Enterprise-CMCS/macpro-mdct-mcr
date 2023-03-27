@@ -1,12 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, McparReviewSubmitPage } from "components";
+import { ReportContext, ReviewSubmitPage } from "components";
 import { SuccessMessageGenerator } from "./ReviewSubmitPage";
 // types
 import { ReportStatus } from "types";
 // utils
 import {
+  mockAdminUser,
   mockLDFlags,
   mockMcparReport,
   mockMcparReportContext,
@@ -16,92 +17,288 @@ import {
 import userEvent from "@testing-library/user-event";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import { useUser } from "utils";
 
-jest.mock("utils", () => ({
-  ...jest.requireActual("utils"),
-  useUser: () => mockStateUser,
-}));
-
-const McparReviewSubmitPage_InProgress = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMcparReportContext}>
-      <McparReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const mockSubmittedReport = {
-  ...mockMcparReport,
-  status: ReportStatus.SUBMITTED,
-};
-
-const mockedReportContext_Submitted = {
-  ...mockMcparReportContext,
-  report: mockSubmittedReport,
-};
-
-const McparReviewSubmitPage_Submitted = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_Submitted}>
-      <McparReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 mockLDFlags.setDefault({ pdfExport: false });
 
-describe("Test McparReviewSubmitPage functionality", () => {
-  test("McparReviewSubmitPage renders pre-submit state when report status is 'in progress'", () => {
-    render(McparReviewSubmitPage_InProgress);
-    const { review } = reviewVerbiage;
-    const { intro } = review;
-    expect(screen.getByText(intro.infoHeader)).toBeVisible();
+describe("MCPAR Review and Submit Page Functionality", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {
-    mockLDFlags.set({ pdfExport: true });
-    render(McparReviewSubmitPage_InProgress);
-    const printButton = screen.getByText("Print");
-    expect(printButton).toBeVisible();
-    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
-    expect(printButton.getAttribute("target")).toEqual("_blank");
+  describe("User has not started filling out the form", () => {
+    const McparReviewSubmitPage_NotStarted = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockMcparReportContext}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
+    test("Show alert message if status is NOT_STARTED and is not able to be submitted", () => {
+      render(McparReviewSubmitPage_NotStarted);
+      const { alertBox } = reviewVerbiage;
+      const { title, description } = alertBox;
+      expect(screen.getByText(title)).toBeVisible();
+      expect(screen.getByText(description)).toBeVisible();
+      expect(screen.getByText("Submit MCPAR")!).toBeDisabled();
+    });
+
+    test("Admin users get same experience and can't submit form", () => {
+      mockedUseUser.mockReturnValue(mockAdminUser);
+      render(McparReviewSubmitPage_NotStarted);
+      const { alertBox } = reviewVerbiage;
+      const { title, description } = alertBox;
+      expect(screen.getByText(title)).toBeVisible();
+      expect(screen.getByText(description)).toBeVisible();
+      expect(screen.getByText("Submit MCPAR")!).toBeDisabled();
+    });
   });
 
-  it("if pdfExport flag is false, print button should not render", async () => {
-    mockLDFlags.set({ pdfExport: false });
-    render(McparReviewSubmitPage_InProgress);
-    const printButton = screen.queryByText("Print");
-    expect(printButton).not.toBeInTheDocument();
+  describe("User has errors on the form", () => {
+    const mockUnfilledReport = {
+      ...mockMcparReport,
+      status: ReportStatus.IN_PROGRESS,
+    };
+
+    const mockedReportContext_Unfilled = {
+      ...mockMcparReportContext,
+      report: mockUnfilledReport,
+    };
+
+    const McparReviewSubmitPage_Unfilled = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Unfilled}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
+    test("Show alert message that form has not been filled out and is not able to be submitted", () => {
+      render(McparReviewSubmitPage_Unfilled);
+      const { alertBox } = reviewVerbiage;
+      const { title, description } = alertBox;
+      expect(screen.getByText(title)).toBeVisible();
+      expect(screen.getByText(description)).toBeVisible();
+      expect(screen.getByText("Submit MCPAR")!).toBeDisabled();
+
+      const unfilledPageImg = document.querySelector(
+        "img[alt='Error notification']"
+      );
+      expect(unfilledPageImg).toBeVisible();
+    });
+
+    test("Admin users get same experience and can't submit form", () => {
+      mockedUseUser.mockReturnValue(mockAdminUser);
+      render(McparReviewSubmitPage_Unfilled);
+      const { alertBox } = reviewVerbiage;
+      const { title, description } = alertBox;
+      expect(screen.getByText(title)).toBeVisible();
+      expect(screen.getByText(description)).toBeVisible();
+      expect(screen.getByText("Submit MCPAR")!).toBeDisabled();
+
+      const unfilledPageImg = document.querySelector(
+        "img[alt='Error notification']"
+      );
+      expect(unfilledPageImg).toBeVisible();
+    });
   });
 
-  test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
-    render(McparReviewSubmitPage_Submitted);
-    const { submitted } = reviewVerbiage;
-    const { intro } = submitted;
-    expect(screen.getByText(intro.header)).toBeVisible();
-  });
+  describe("User has filled out the form correctly", () => {
+    const mockFilledReport = {
+      ...mockMcparReport,
+      status: ReportStatus.IN_PROGRESS,
+      isComplete: true,
+      completionStatus: {
+        "/mock/mock-route-1": true,
+        "/mock/mock-route-2": {
+          "/mock/mock-route-2a": true,
+          "/mock/mock-route-2b": true,
+        },
+      },
+    };
 
-  test("McparReviewSubmitPage shows modal on submit button click", async () => {
-    render(McparReviewSubmitPage_InProgress);
-    const { review } = reviewVerbiage;
-    const { modal, pageLink } = review;
-    const submitCheckButton = screen.getByText(pageLink.text)!;
-    await userEvent.click(submitCheckButton);
-    const modalTitle = screen.getByText(modal.structure.heading)!;
-    expect(modalTitle).toBeVisible();
-  });
+    const mockedReportContext_Filled = {
+      ...mockMcparReportContext,
+      report: mockFilledReport,
+    };
 
-  test("McparReviewSubmitPage updates report status on submit confirmation", async () => {
-    render(McparReviewSubmitPage_InProgress);
-    const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
-    await userEvent.click(reviewSubmitButton);
-    const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
-    await userEvent.click(modalSubmitButton);
-    await expect(mockMcparReportContext.submitReport).toHaveBeenCalledTimes(1);
+    const McparReviewSubmitPage_Filled = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Filled}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
+    const mockSubmittedReport = {
+      ...mockMcparReport,
+      status: ReportStatus.SUBMITTED,
+    };
+
+    const mockedReportContext_Submitted = {
+      ...mockMcparReportContext,
+      report: mockSubmittedReport,
+    };
+
+    const McparReviewSubmitPage_Submitted = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Submitted}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
+    test("Show no alert message or errors and the submit button is enabled", () => {
+      render(McparReviewSubmitPage_Filled);
+      const { alertBox } = reviewVerbiage;
+      const { title, description } = alertBox;
+      expect(screen.queryByText(title)).not.toBeInTheDocument();
+      expect(screen.queryByText(description)).not.toBeInTheDocument();
+      expect(screen.getByText("Submit MCPAR")!).not.toBeDisabled();
+      const unfilledPageImg = document.querySelector(
+        "img[alt='Error notification']"
+      );
+      expect(unfilledPageImg).toBe(null);
+    });
+
+    test("Show no alert message or errors and the submit button is enabled", () => {
+      render(McparReviewSubmitPage_Filled);
+      const { alertBox } = reviewVerbiage;
+      const { title, description } = alertBox;
+      expect(screen.queryByText(title)).not.toBeInTheDocument();
+      expect(screen.queryByText(description)).not.toBeInTheDocument();
+      expect(screen.getByText("Submit MCPAR")!).not.toBeDisabled();
+      const unfilledPageImg = document.querySelector(
+        "img[alt='Error notification']"
+      );
+      expect(unfilledPageImg).toBe(null);
+    });
+
+    test("McparReviewSubmitPage shows modal on submit button click", async () => {
+      render(McparReviewSubmitPage_Filled);
+      const { review } = reviewVerbiage;
+      const { modal, pageLink } = review;
+      const submitCheckButton = screen.getByText(pageLink.text)!;
+      await userEvent.click(submitCheckButton);
+      const modalTitle = screen.getByText(modal.structure.heading)!;
+      expect(modalTitle).toBeVisible();
+    });
+
+    test("McparReviewSubmitPage updates report status on submit confirmation", async () => {
+      render(McparReviewSubmitPage_Filled);
+      const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
+      await userEvent.click(reviewSubmitButton);
+      const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
+      await userEvent.click(modalSubmitButton);
+      await expect(mockMcparReportContext.submitReport).toHaveBeenCalledTimes(
+        1
+      );
+    });
+
+    test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
+      render(McparReviewSubmitPage_Submitted);
+      const { submitted } = reviewVerbiage;
+      const { intro } = submitted;
+      expect(screen.getByText(intro.header)).toBeVisible();
+    });
+
+    test("Admin users see form is filled but can not submit the form", () => {
+      mockedUseUser.mockReturnValue(mockAdminUser);
+      render(McparReviewSubmitPage_Filled);
+      const { alertBox } = reviewVerbiage;
+      const { title, description } = alertBox;
+      expect(screen.queryByText(title)).not.toBeInTheDocument();
+      expect(screen.queryByText(description)).not.toBeInTheDocument();
+      expect(screen.getByText("Submit MCPAR")!).toBeDisabled();
+      const unfilledPageImg = document.querySelector(
+        "img[alt='Error notification']"
+      );
+      expect(unfilledPageImg).toBe(null);
+    });
   });
 });
 
-describe("Success Message Generator", () => {
+describe("MCPAR Review and Submit Page - Launch Darkly", () => {
+  const mockInProgressReport = {
+    ...mockMcparReport,
+    status: ReportStatus.IN_PROGRESS,
+  };
+
+  const mockedReportContext_InProgress = {
+    ...mockMcparReportContext,
+    report: mockInProgressReport,
+  };
+
+  const McparReviewSubmitPage_InProgress = (
+    <RouterWrappedComponent>
+      <ReportContext.Provider value={mockedReportContext_InProgress}>
+        <ReviewSubmitPage />
+      </ReportContext.Provider>
+    </RouterWrappedComponent>
+  );
+
+  describe("When loading an in-progress report", () => {
+    it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
+      mockLDFlags.set({ pdfExport: true });
+      render(McparReviewSubmitPage_InProgress);
+      const printButton = screen.getByText("Review PDF");
+      expect(printButton).toBeVisible();
+      expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+      expect(printButton.getAttribute("target")).toEqual("_blank");
+    });
+
+    it("if pdfExport flag is false, Review PDF button should not render", async () => {
+      mockLDFlags.set({ pdfExport: false });
+      render(McparReviewSubmitPage_InProgress);
+      const printButton = screen.queryByText("Review PDF");
+      expect(printButton).not.toBeInTheDocument();
+    });
+  });
+
+  describe("When loading a successfully submitted report", () => {
+    const mockSubmittedReport = {
+      ...mockMcparReport,
+      status: ReportStatus.SUBMITTED,
+    };
+
+    const mockedReportContext_Submitted = {
+      ...mockMcparReportContext,
+      report: mockSubmittedReport,
+    };
+
+    const McparReviewSubmitPage_Submitted = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Submitted}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+    it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
+      mockLDFlags.set({ pdfExport: true });
+      render(McparReviewSubmitPage_Submitted);
+      const printButton = screen.getByText("Review PDF");
+      expect(printButton).toBeVisible();
+      expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+      expect(printButton.getAttribute("target")).toEqual("_blank");
+    });
+
+    it("if pdfExport flag is false, Review PDF button should not render", async () => {
+      mockLDFlags.set({ pdfExport: false });
+      render(McparReviewSubmitPage_Submitted);
+      const printButton = screen.queryByText("Review PDF");
+      expect(printButton).not.toBeInTheDocument();
+    });
+  });
+});
+
+describe("When loading a sucessfully submitted report (Success Message Generator)", () => {
   it("should give the full success date if given all params", () => {
     const programName = "test-program";
     const reportType = "MCPAR";
@@ -115,7 +312,7 @@ describe("Success Message Generator", () => {
         submittersName
       )
     ).toBe(
-      `MCPAR report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
+      `${reportType} report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
     );
   });
 
@@ -131,27 +328,61 @@ describe("Success Message Generator", () => {
         submittedDate,
         submittersName
       )
-    ).toBe(`MLR report for ${programName} was submitted.`);
-  });
-
-  it("if pdfExport flag is true, print button should be visible and correctly formed", async () => {
-    mockLDFlags.set({ pdfExport: true });
-    render(McparReviewSubmitPage_InProgress);
-    const printButton = screen.getByText("Print");
-    expect(printButton).toBeVisible();
-    expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
-    expect(printButton.getAttribute("target")).toEqual("_blank");
-  });
-
-  it("if pdfExport flag is false, print button should not render", async () => {
-    mockLDFlags.set({ pdfExport: false });
-    render(McparReviewSubmitPage_InProgress);
-    const printButton = screen.queryByText("Print");
-    expect(printButton).not.toBeInTheDocument();
+    ).toBe(`${reportType} report for ${programName} was submitted.`);
   });
 });
 
 describe("Test McparReviewSubmitPage view accessibility", () => {
+  const McparReviewSubmitPage_NotStarted = (
+    <RouterWrappedComponent>
+      <ReportContext.Provider value={mockMcparReportContext}>
+        <ReviewSubmitPage />
+      </ReportContext.Provider>
+    </RouterWrappedComponent>
+  );
+
+  const mockInProgressReport = {
+    ...mockMcparReport,
+    status: ReportStatus.IN_PROGRESS,
+  };
+
+  const mockedReportContext_InProgress = {
+    ...mockMcparReportContext,
+    report: mockInProgressReport,
+  };
+
+  const McparReviewSubmitPage_InProgress = (
+    <RouterWrappedComponent>
+      <ReportContext.Provider value={mockedReportContext_InProgress}>
+        <ReviewSubmitPage />
+      </ReportContext.Provider>
+    </RouterWrappedComponent>
+  );
+
+  const mockSubmittedReport = {
+    ...mockMcparReport,
+    status: ReportStatus.SUBMITTED,
+  };
+
+  const mockedReportContext_Submitted = {
+    ...mockMcparReportContext,
+    report: mockSubmittedReport,
+  };
+
+  const McparReviewSubmitPage_Submitted = (
+    <RouterWrappedComponent>
+      <ReportContext.Provider value={mockedReportContext_Submitted}>
+        <ReviewSubmitPage />
+      </ReportContext.Provider>
+    </RouterWrappedComponent>
+  );
+
+  it("Should not have basic accessibility issues when report status is 'not started", async () => {
+    const { container } = render(McparReviewSubmitPage_NotStarted);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("Should not have basic accessibility issues when report status is 'in progress", async () => {
     const { container } = render(McparReviewSubmitPage_InProgress);
     const results = await axe(container);
