@@ -79,7 +79,7 @@ export const calculateCompletionStatus = async (
       selectedChoicesWithChildren?.forEach((selectedChoice: FieldChoice) => {
         selectedChoice.children?.forEach((childChoice: FormField) => {
           fieldIds.push(childChoice.id);
-          if (childChoice.props?.choices) {
+          if (childChoice.props?.choices && dataForObject?.[childChoice.id]) {
             let childFields = getNestedFields(
               childChoice.props?.choices,
               dataForObject[childChoice.id]
@@ -107,12 +107,14 @@ export const calculateCompletionStatus = async (
             formField.props?.choices,
             dataForObject[formField.id]
           );
-          nestedFields?.forEach(
-            (nestedField: string) =>
-              (fieldsToBeValidated[nestedField] = dataForObject[nestedField]
-                ? dataForObject[nestedField]
-                : null)
-          );
+          // console.log({ nestedFields });
+          nestedFields?.forEach((nestedField: string) => {
+            return (fieldsToBeValidated[nestedField] = dataForObject[
+              nestedField
+            ]
+              ? dataForObject[nestedField]
+              : null);
+          });
         }
 
         fieldsToBeValidated[formField.id] = dataForObject[formField.id]
