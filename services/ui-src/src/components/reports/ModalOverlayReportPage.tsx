@@ -73,7 +73,7 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
           text={verbiage.intro}
           accordion={
             accordionVerbiage[reportType as keyof typeof accordionVerbiage]
-              .formIntro
+              ?.formIntro
           }
         />
       )}
