@@ -73,10 +73,6 @@ custom:
     main: aws_iam
     val: aws_iam
     production: aws_iam
-  scripts:
-    hooks:
-      deploy:finalize: |
-        serverless invoke --stage ${self:custom.stage} --function formTemplateEntitiesUpdate
 params:
   main:
     topicNamespace: ""
