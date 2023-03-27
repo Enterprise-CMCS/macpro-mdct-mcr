@@ -1,17 +1,19 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
-import { Box, Heading, Text, Tr, Td } from "@chakra-ui/react";
+import { Box, Heading, Text, Tr, Td, Center } from "@chakra-ui/react";
 import {
   ExportedReportWrapper,
   ExportedSectionHeading,
   ReportContext,
   Table,
 } from "components";
+import { Spinner } from "@cmsgov/design-system";
 // utils
 import { convertDateUtcToEt } from "utils";
 import { States } from "../../../constants";
 import { PageTypes, ReportRoute, ReportRouteWithForm } from "types";
+
 // verbiage
 import verbiage from "verbiage/pages/export";
 
@@ -25,7 +27,7 @@ export const ExportedReportPage = () => {
 
   return (
     <Box data-testid="exportedReportPage" sx={sx.container}>
-      {report && routesToRender && (
+      {(report && routesToRender && (
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
           <Helmet>
@@ -82,6 +84,10 @@ export const ExportedReportPage = () => {
           {/* report sections */}
           {renderReportSections(report.formTemplate.routes)}
         </Box>
+      )) || (
+        <Center>
+          <Spinner size="big" />
+        </Center>
       )}
     </Box>
   );

@@ -2249,7 +2249,13 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
-                "drawerTitle": "Report encounter data for",
+                "drawerTitle": "Report on grievances by service for",
+                "drawerInfo": [
+                  {
+                    "type": "p",
+                    "content": "A single grievance may be related to multiple service types and may therefore be counted in multiple categories."
+                  }
+                ],
                 "missingEntityMessage": [
                   {
                     "type": "span",
