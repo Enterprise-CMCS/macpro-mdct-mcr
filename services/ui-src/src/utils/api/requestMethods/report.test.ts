@@ -1,11 +1,11 @@
 import {
+  archiveReport,
   getReport,
   getReportsByState,
   postReport,
   putReport,
-  archiveReport,
-  submitReport,
   releaseReport,
+  submitReport,
 } from "./report";
 // utils
 import { mockReportKeys, mockMcparReport } from "utils/testing/setupJest";
@@ -17,6 +17,10 @@ describe("Test report status methods", () => {
     initAuthManager();
     jest.runAllTimers();
   });
+  test("archiveReport", () => {
+    expect(archiveReport(mockReportKeys)).toBeTruthy();
+  });
+
   test("getReport", () => {
     expect(getReport(mockReportKeys)).toBeTruthy();
   });
@@ -32,11 +36,6 @@ describe("Test report status methods", () => {
   test("putReport", () => {
     expect(putReport(mockReportKeys, mockMcparReport)).toBeTruthy();
   });
-
-  test("archiveReport", () => {
-    expect(archiveReport(mockReportKeys)).toBeTruthy();
-  });
-
   test("releaseReport", () => {
     expect(releaseReport(mockReportKeys)).toBeTruthy();
   });

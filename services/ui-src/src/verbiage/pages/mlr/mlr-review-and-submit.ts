@@ -1,7 +1,7 @@
 export default {
   print: {
     printPageUrl: "/mcpar/export",
-    printButtonText: "Print",
+    printButtonText: "Review PDF",
   },
   review: {
     intro: {
@@ -29,5 +29,10 @@ export default {
       additionalInfo:
         "No further action is needed at this point. CMS will reach out if in the case they have any questions.",
     },
+  },
+  alertBox: {
+    title: "Your form is not ready for submission",
+    description:
+      "Some sections of the MLR report have errors or are missing responses. Please ensure all fields are completed with valid responses before submitting.",
   },
 };

@@ -1,0 +1,366 @@
+{
+  "reportingPeriodStartDate": "02/17/2022",
+  "reportingPeriodEndDate": "02/17/2023",
+  "programName": "automated test - 2023-02-17T19:10:51.832Z",
+  "stateName": "District of Columbia",
+  "contactName": "Text Fill",
+  "contactEmailAddress": "email@fill.com",
+  "plans": [
+    {
+      "id": "1e15658-1e01-0531-a8d8-4a620e845c31",
+      "name": "Dynamic Fill",
+      "plan_enrollment": "70",
+      "plan_medicaidEnrollmentSharePercentage": "74",
+      "plan_medicaidManagedCareEnrollmentSharePercentage": "69",
+      "plan_medicalLossRatioPercentage": "53",
+      "plan_medicalLossRatioPercentageAggregationLevel": [
+        {
+          "key": "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
+          "value": "Program-specific statewide"
+        }
+      ],
+      "plan_populationSpecificMedicalLossRatioDescription": "Text Fill",
+      "plan_medicalLossRatioReportingPeriod": [
+        {
+          "key": "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
+          "value": "Yes"
+        }
+      ],
+      "plan_medicalLossRatioPercentageAggregationLevel-otherText": "",
+      "plan_medicalLossRatioReportingPeriodStartDate": "02/17/2023",
+      "plan_medicalLossRatioReportingPeriodEndDate": "02/17/2023",
+      "program_encounterDataSubmissionTimelinessStandardDefinition": "Text Fill",
+      "plan_encounterDataSubmissionTimelinessCompliancePercentage": "68",
+      "plan_encounterDataSubmissionHipaaCompliancePercentage": "78",
+      "plan_resolvedAppeals": "89",
+      "plan_activeAppeals": "55",
+      "plan_ltssUserFiledAppeals": "94",
+      "plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledAppeal": "32",
+      "plan_timelyResolvedStandardAppeals": "18",
+      "plan_timelyResolvedExpeditedAppeals": "55",
+      "plan_resolvedPreServiceAuthorizationDenialAppeals": "1",
+      "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppeals": "55",
+      "plan_resolvedPostServiceAuthorizationDenialAppeals": "3",
+      "plan_resolvedServiceTimelinessAppeals": "85",
+      "plan_resolvedUntimelyResponseAppeals": "65",
+      "plan_resolvedRightToRequestOutOfNetworkCareDenialAppeals": "31",
+      "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppeals": "22",
+      "plan_resolvedGeneralInpatientServiceAppeals": "81",
+      "plan_resolvedGeneralOutpatientServiceAppeals": "34",
+      "plan_resolvedInpatientBehavioralHealthServiceAppeals": "76",
+      "plan_resolvedOutpatientBehavioralHealthServiceAppeals": "95",
+      "plan_resolvedCoveredOutpatientPrescriptionDrugAppeals": "96",
+      "plan_resolvedSnfServiceAppeals": "64",
+      "plan_resolvedLtssServiceAppeals": "7",
+      "plan_resolvedDentalServiceAppeals": "47",
+      "plan_resolvedNemtAppeals": "48",
+      "plan_resolvedOtherServiceAppeals": "11",
+      "plan_stateFairHearingRequestsFiled": "87",
+      "plan_stateFairHearingRequestsWithFavorableDecision": "7",
+      "plan_stateFairHearingRequestsWithAdverseDecision": "62",
+      "plan_stateFairHearingRequestsRetracted": "52",
+      "plan_stateFairHearingRequestsWithExternalMedicalReviewWithFavorableDecision": "41",
+      "plan_stateFairHearingRequestsWithExternalMedicalReviewWithAdverseDecision": "32",
+      "plan_resolvedGrievances": "65",
+      "plan_activeGrievances": "4",
+      "plan_ltssUserFieldGrievances": "67",
+      "plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance": "55",
+      "plan_timyleResolvedGrievances": "86",
+      "plan_resolvedGeneralInpatientServiceGrievances": "85",
+      "plan_resolvedGeneralOutpatientServiceGrievances": "86",
+      "plan_resolvedInpatientBehavioralHealthServiceGrievances": "16",
+      "plan_resolvedOutpatientBehavioralHealthServiceGrievances": "39",
+      "plan_resolvedCoveredOutpatientPrescriptionDrugGrievances": "88",
+      "plan_resolvedSnfServiceGrievances": "67",
+      "plan_resolvedLtssServiceGrievances": "41",
+      "plan_resolvedDentalServiceGrievances": "76",
+      "plan_resolvedNemtGrievances": "31",
+      "plan_resolvedOtherServiceGrievances": "85",
+      "plan_resolvedCustomerServiceGrievances": "2",
+      "plan_resolvedCareCaseManagementGrievances": "54",
+      "plan_resolvedAccessToCareGrievances": "7",
+      "plan_resolvedQualityOfCareGrievances": "83",
+      "plan_resolvedPlanCommunicationGrievances": "15",
+      "plan_resolvedPaymentBillingGrievances": "89",
+      "plan_resolvedSuspectedFraudGrievances": "2",
+      "plan_resolvedAbuseNeglectExploitationGrievances": "7",
+      "plan_resolvedUntimelyResponseGrievances": "5",
+      "plan_resolvedDenialOfExpeditedAppealGrievances": "97",
+      "plan_resolvedOtherGrievances": "43",
+      "plan_dedicatedProgramIntegrityStaff": "79",
+      "plan_openedProgramIntegrityInvestigations": "32",
+      "plan_programIntegrityInvestigationsToEnrolleesRatio": "1:1",
+      "plan_resolvedProgramIntegrityInvestigations": "45",
+      "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio": "1:1",
+      "plan_programIntegrityReferralPath": [
+        {
+          "key": "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
+          "value": "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only"
+        }
+      ],
+      "plan_programIntegrityReferralsPerThousandBeneficiaries": "1:1",
+      "plan_overpaymentRecoveryReportDescription": "Text Fill",
+      "plan_beneficiaryCircumstanceChangeReportingFrequency": [
+        {
+          "key": "plan_beneficiaryCircumstanceChangeReportingFrequency-D79APWVHmkGzLcmBQrRXOA",
+          "value": "Daily"
+        }
+      ],
+      "plan_mfcuProgramIntegrityReferrals": "47",
+      "plan_smaMfcuConcurrentProgramIntegrityReferrals": "",
+      "plan_smaMfcuAggregateProgramIntegrityReferrals": ""
+    }
+  ],
+  "bssEntities": [
+    {
+      "id": "61b33e6-c168-cf5-015c-47d46ca20dd",
+      "name": "Dynamic Fill",
+      "bssEntity_entityType": [
+        {
+          "key": "bssEntity_entityType-b8RT4wLcoU2yb0QgswyAfQ",
+          "value": "State Government Entity"
+        }
+      ],
+      "bssEntity_entityRole": [
+        {
+          "key": "bssEntity_entityRole-aZ0uOjpYOE6zavUNXcZYrw",
+          "value": "Enrollment Broker/Choice Counseling"
+        }
+      ],
+      "bssEntity_entityType-otherText": "",
+      "bssEntity_entityRole-otherText": ""
+    }
+  ],
+  "state_statewideMedicaidEnrollment": "43",
+  "state_statewideMedicaidManagedCareEnrollment": "63",
+  "state_encounterDataValidationEntity": [
+    {
+      "key": "state_encounterDataValidationEntity-2iuXO7C6nk6cuP9JXbdd2w",
+      "value": "State Medicaid agency staff"
+    }
+  ],
+  "state_focusedProgramIntegrityActivitiesConducted": "Text Fill",
+  "state_overpaymentStandard": [
+    {
+      "key": "state_overpaymentStandard-UG7uunqq5UCtUq1is3iyiw",
+      "value": "Allow plans to retain overpayments"
+    }
+  ],
+  "state_overpaymentStandardContractLanguageLocation": "Text Fill",
+  "state_overpaymentStandardDescription": "Text Fill",
+  "state_overpaymentReportingMonitoringEfforts": "Text Fill",
+  "state_beneficiaryCircumstanceChangeReconciliationEfforts": "Text Fill",
+  "state_providerTerminationReportingMonitoringEfforts": [
+    {
+      "key": "state_providerTerminationReportingMonitoringEfforts-WFrdLUutmEujEZkS7rWVqQ",
+      "value": "Yes"
+    }
+  ],
+  "state_providerTerminationReportingMonitoringMetrics": [
+    {
+      "key": "state_providerTerminationReportingMonitoringMetrics-SPqyExyg8UioX6Od1IWvlg",
+      "value": "Yes"
+    }
+  ],
+  "state_providerTerminationReportingMonitoringMetricsDescription": "Text Fill",
+  "state_excludedEntityIdentifiedInFederalDatabaseCheck": [
+    {
+      "key": "state_excludedEntityIdentifiedInFederalDatabaseCheck-zrrv4vmXRkGhSkaS2V2d3A",
+      "value": "Yes"
+    }
+  ],
+  "state_excludedEntityIdentificationInstancesSummary": "Text Fill",
+  "state_ownershipControlDisclosureWebsite": [
+    {
+      "key": "state_ownershipControlDisclosureWebsite-fNiPtEub20Soo1W5FcdU3A",
+      "value": "Yes"
+    }
+  ],
+  "state_ownershipControlDisclosureWebsiteLink": "https://fill.com",
+  "state_submittedDataAuditResults": "Text Fill",
+  "program_contractTitle": "Text Fill",
+  "program_contractDate": "02/17/2023",
+  "program_contractUrl": "https://fill.com",
+  "program_type": [
+    {
+      "key": "program_type-rP1NWfC2jEGDwLSnSZVWDg",
+      "value": "Managed Care Organization (MCO)"
+    }
+  ],
+  "program_coveredSpecialBenefits": [
+    {
+      "key": "program_coveredSpecialBenefits-TXvFpzmNqkCgpLcDckL5QQ",
+      "value": "Behavioral health"
+    }
+  ],
+  "program_specialBenefitsAvailabilityVariation": "Text Fill",
+  "program_enrollment": "38",
+  "program_enrollmentBenefitChanges": "Text Fill",
+  "program_encounterDataUses": [
+    {
+      "key": "program_encounterDataUses-eSrOkLMTyEmmixeqNXV1ZA",
+      "value": "Rate setting"
+    }
+  ],
+  "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria": [
+    {
+      "key": "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-kP5W9deIb06jK7SXX8dnRA",
+      "value": "Timeliness of initial data submissions"
+    }
+  ],
+  "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteriaContractLanguageLocation": "Text Fill",
+  "program_encounterDataSubmissionQualityFinancialPenaltiesContractLanguageLocation": "Text Fill",
+  "program_encounterDataQualityIncentives": "Text Fill",
+  "program_encounterDataCollectionValidationBarriers": "Text Fill",
+  "program_criticalIncidentDefinition": "Text Fill",
+  "program_standardAppealTimelyResolutionDefinition": "Text Fill",
+  "program_expeditedAppealTimelyResolutionDefinition": "Text Fill",
+  "program_grievanceTimelyResolutionDefinition": "Text Fill",
+  "program_networkAdequacyChallenges": "Text Fill",
+  "program_networkAdequacyGapResponseEfforts": "Text Fill",
+  "accessMeasures": [
+    {
+      "id": "6ad73-5718-e0e5-3755-a7234f66348f",
+      "accessMeasure_generalCategory": [
+        {
+          "key": "accessMeasure_generalCategory-XbR70C9iDU2yPtQXBuwZgA",
+          "value": "General quantitative availability and accessibility standard"
+        }
+      ],
+      "accessMeasure_standardDescription": "Text Fill",
+      "accessMeasure_standardType": [
+        {
+          "key": "accessMeasure_standardType-kBady0XnCUG8nxXWSHHeBg",
+          "value": "Maximum time to travel"
+        }
+      ],
+      "accessMeasure_standardType-otherText": "",
+      "accessMeasure_providerType": [
+        {
+          "key": "accessMeasure_providerType-7z1m6zajqUupPe89o3dAGQ",
+          "value": "Primary care"
+        }
+      ],
+      "accessMeasure_applicableRegion": [
+        {
+          "key": "accessMeasure_applicableRegion-X47v2Ee5kkaBERBjXFWGXw",
+          "value": "Urban"
+        }
+      ],
+      "accessMeasure_population": [
+        {
+          "key": "accessMeasure_population-YtRX5yx7NEWkGfU9vDI03g",
+          "value": "Adult"
+        }
+      ],
+      "accessMeasure_monitoringMethods": [
+        {
+          "key": "accessMeasure_monitoringMethods-gbWqxtPWaUC1yUbmhWA0UA",
+          "value": "Geomapping"
+        }
+      ],
+      "accessMeasure_oversightMethodFrequency": [
+        {
+          "key": "accessMeasure_oversightMethodFrequency-tOF04LLPa026mJlHmk0RaA",
+          "value": "At procurement"
+        }
+      ],
+      "accessMeasure_providerType-otherText": "",
+      "accessMeasure_applicableRegion-otherText": "",
+      "accessMeasure_population-otherText": "",
+      "accessMeasure_monitoringMethods-otherText": "",
+      "accessMeasure_oversightMethodFrequency-otherText": ""
+    }
+  ],
+  "state_bssWebsite": "Text Fill",
+  "state_bssEntityServiceAccessibility": "Text Fill",
+  "state_bssEntityLtssProgramDataIssueAssistance": "Text Fill",
+  "state_bssEntityPerformanceEvaluationMethods": "Text Fill",
+  "program_prohibitedAffiliationDisclosure": [
+    {
+      "key": "program_prohibitedAffiliationDisclosure-7emiYPcs60GzXxKS5Pc9bg",
+      "value": "Yes"
+    }
+  ],
+  "qualityMeasures": [
+    {
+      "id": "6402a2f-148d-6e4e-a0bb-8254c620736",
+      "qualityMeasure_domain": [
+        {
+          "key": "qualityMeasure_domain-Y3InqsLp4kSTgAUvTwq0CA",
+          "value": "Primary care access and preventative care"
+        }
+      ],
+      "qualityMeasure_name": "Text Fill",
+      "qualityMeasure_nqfNumber": "Text Fill",
+      "qualityMeasure_reportingRateType": [
+        {
+          "key": "qualityMeasure_reportingRateType-lTIN7GiY2Ui2kJYrWzXqVw",
+          "value": "Program-specific rate"
+        }
+      ],
+      "qualityMeasure_set": [
+        {
+          "key": "qualityMeasure_set-tjSQLCDhgEy7H3VrhtUKxw",
+          "value": "Medicaid Child Core Set"
+        }
+      ],
+      "qualityMeasure_reportingPeriod": [
+        {
+          "key": "qualityMeasure_reportingPeriod-XAalDWT7l0qPz676XFGSGQ",
+          "value": "Yes"
+        }
+      ],
+      "qualityMeasure_description": "Text Fill",
+      "qualityMeasure_domain-otherText": "",
+      "qualityMeasure_crossProgramReportingRateProgramList": "",
+      "qualityMeasure_set-otherText": "",
+      "qualityMeasure_reportingPeriodStartDate": "",
+      "qualityMeasure_reportingPeriodEndDate": "",
+      "qualityMeasure_plan_measureResults_1e15658-1e01-0531-a8d8-4a620e845c31": "Text Fill"
+    }
+  ],
+  "sanctions": [
+    {
+      "id": "35210f-e322-bba2-d38b-16103d5eba2",
+      "sanction_interventionType": [
+        {
+          "key": "sanction_interventionType-lF2t0ruXf0aPrT3EDd3IXA",
+          "value": "Civil monetary penalty"
+        }
+      ],
+      "sanction_interventionTopic": [
+        {
+          "key": "sanction_interventionTopic-x6Cwd4oSrki6De4SnpjrMQ",
+          "value": "Discrimination"
+        }
+      ],
+      "sanction_planName": {
+        "label": "sanction_planName",
+        "value": "1e15658-1e01-0531-a8d8-4a620e845c31"
+      },
+      "sanction_interventionReason": "Text Fill",
+      "sanction_interventionType-otherText": "",
+      "sanction_interventionTopic-otherText": "",
+      "sanction_noncomplianceInstances": "10",
+      "sanction_dollarAmount": "44",
+      "sanction_assessmentDate": "02/17/2023",
+      "sanction_remediationCompleted": [
+        {
+          "key": "sanction_remediationCompleted-J9FTVN9fJpgXX6X2xJiAiP",
+          "value": "Yes"
+        }
+      ],
+      "sanction_correctiveActionPlan": [
+        {
+          "key": "sanction_correctiveActionPlan-doioZOW5CUmcCfO5TQXpbw",
+          "value": "Yes"
+        }
+      ],
+      "sanction_remediationDate": "02/17/2023"
+    }
+  ],
+  "submitterName": "CypressAutomatedIntegrationTests State",
+  "submitterEmailAddress": "cypressstateuser@test.com",
+  "reportSubmissionDate": "02/17/2023"
+}
