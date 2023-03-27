@@ -17,6 +17,7 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
+  entering,
   releaseReport,
   releasing,
   sxOverride,
@@ -62,7 +63,11 @@ export const DashboardTable = ({
             onClick={() => enterSelectedReport(report)}
             isDisabled={report?.archived}
           >
-            Enter
+            {entering && reportId == report.id ? (
+              <Spinner size="small" />
+            ) : (
+              "Enter"
+            )}
           </Button>
         </Td>
         {isAdmin && (
@@ -103,6 +108,7 @@ interface DashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
+  entering: boolean;
   isAdmin: boolean;
   isStateLevelUser: boolean;
   releaseReport?: Function | undefined;

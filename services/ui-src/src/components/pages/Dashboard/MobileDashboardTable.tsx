@@ -15,6 +15,7 @@ export const MobileDashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
+  entering,
   releaseReport,
   releasing,
   isStateLevelUser,
@@ -71,7 +72,11 @@ export const MobileDashboardTable = ({
               onClick={() => enterSelectedReport(report)}
               isDisabled={report?.archived}
             >
-              Enter
+              {entering && reportId == report.id ? (
+                <Spinner size="small" />
+              ) : (
+                "Enter"
+              )}
             </Button>
           </Box>
           <Box sx={sxOverride.adminActionCell}>
@@ -110,6 +115,7 @@ interface MobileDashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
+  entering: boolean;
   releaseReport?: Function | undefined;
   releasing?: boolean | undefined;
   isAdmin: boolean;
