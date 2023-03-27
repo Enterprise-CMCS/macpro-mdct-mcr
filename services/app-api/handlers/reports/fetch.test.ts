@@ -8,6 +8,7 @@ import {
   mockDynamoData,
   mockReportJson,
   mockReportFieldData,
+  mockDynamoDataCompleted,
 } from "../../utils/testing/setupJest";
 
 jest.mock("../../utils/auth/authorization", () => ({
@@ -59,7 +60,7 @@ describe("Test fetchReport API method", () => {
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
   });
 
-  test("Test Successful Report Fetch", async () => {
+  test("Test Successful Report Fetch w/ Incomplete Report", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce({
       Item: mockDynamoData,
     });
@@ -68,6 +69,27 @@ describe("Test fetchReport API method", () => {
     const body = JSON.parse(res.body);
     expect(body.lastAlteredBy).toContain("Thelonious States");
     expect(body.programName).toContain("testProgram");
+    expect(body.completionStatus).toMatchObject(
+      mockDynamoData.completionStatus
+    );
+    expect(body.isComplete).toStrictEqual(false);
+    expect(body.fieldData).toStrictEqual(mockReportFieldData);
+    expect(body.formTemplate).toStrictEqual(mockReportJson);
+  });
+
+  test("Test Successful Report Fetch w/ Complete Report", async () => {
+    mockDocumentClient.get.promise.mockReturnValueOnce({
+      Item: mockDynamoDataCompleted,
+    });
+    const res = await fetchReport(testReadEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    const body = JSON.parse(res.body);
+    expect(body.lastAlteredBy).toContain("Thelonious States");
+    expect(body.programName).toContain("testProgram");
+    expect(body.completionStatus).toMatchObject({
+      "step-one": true,
+    });
+    expect(body.isComplete).toStrictEqual(true);
     expect(body.fieldData).toStrictEqual(mockReportFieldData);
     expect(body.formTemplate).toStrictEqual(mockReportJson);
   });

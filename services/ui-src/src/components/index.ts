@@ -81,7 +81,7 @@ export { HomePage } from "./pages/Home/HomePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { ReportGetStartedPage } from "./pages/GetStarted/ReportGetStartedPage";
-export { McparReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
+export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
@@ -92,6 +92,8 @@ export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
+// statusing
+export { StatusTable } from "./statusing/StatusTable";
 // tables
 export { Table } from "./tables/Table";
 // widgets

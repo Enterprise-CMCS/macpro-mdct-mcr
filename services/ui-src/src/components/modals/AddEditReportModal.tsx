@@ -116,6 +116,7 @@ export const AddEditReportModal = ({
           ...dataToWrite.metadata,
           reportType,
           status: ReportStatus.NOT_STARTED,
+          isComplete: false,
         },
         fieldData: {
           ...dataToWrite.fieldData,
