@@ -17,15 +17,17 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
-import { autosaveFieldData, useUser } from "utils";
+import { autosaveFieldData, getAutosaveFields, useUser } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
   const { full_name, state, userIsStateUser, userIsStateRep } =
     useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
-
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
@@ -68,15 +70,20 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     // trigger client-side validation so blank fields get client-side validation warning
     form.trigger(name);
     // prepare args for autosave
-    const fields = [
-      {
-        name,
-        type: "dynamic",
-        value: displayValues,
-        hydrationValue: hydrationValue,
-        overrideCheck: true,
+    const fields = getAutosaveFields({
+      name,
+      type: "dynamic",
+      value: displayValues,
+      defaultValue: undefined,
+      overrideCheck: true,
+      hydrationValue,
+      entityContext: {
+        selectedEntity,
+        entityType,
+        updateEntities,
+        entities,
       },
-    ];
+    });
     const reportArgs = {
       id: report?.id,
       reportType: report?.reportType,

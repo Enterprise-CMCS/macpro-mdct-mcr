@@ -11,8 +11,10 @@ import {
   checkDateCompleteness,
   parseCustomHtml,
   useUser,
+  getAutosaveFields,
 } from "utils";
 import { ReportContext } from "components";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const DateField = ({
   name,
@@ -29,6 +31,8 @@ export const DateField = ({
   const { full_name, state } = useUser().user ?? {};
 
   const { report, updateReport } = useContext(ReportContext);
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
 
   // get form context and register form field
   const form = useFormContext();
@@ -70,9 +74,20 @@ export const DateField = ({
     if (!value.trim()) form.trigger(name);
     // submit field data to database
     if (autosave) {
-      const fields = [
-        { name, type: "date", value, hydrationValue, defaultValue },
-      ];
+      const fields = getAutosaveFields({
+        name,
+        type: "number",
+        value,
+        defaultValue,
+        hydrationValue,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
+      });
+
       const reportArgs = {
         id: report?.id,
         reportType: report?.reportType,
