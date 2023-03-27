@@ -107,7 +107,6 @@ export const calculateCompletionStatus = async (
             formField.props?.choices,
             dataForObject[formField.id]
           );
-          // console.log({ nestedFields });
           nestedFields?.forEach((nestedField: string) => {
             return (fieldsToBeValidated[nestedField] = dataForObject[
               nestedField

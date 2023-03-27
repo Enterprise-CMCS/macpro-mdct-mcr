@@ -178,7 +178,10 @@ export const nested = (
   parentOptionId: string
 ) => {
   const fieldTypeMap = {
-    array: array(),
+    array: array()
+      .min(1, error.REQUIRED_GENERIC)
+      .of(object({ key: text(), value: text() }))
+      .required(error.REQUIRED_GENERIC),
     string: string(),
     date: date(),
     object: object(),
