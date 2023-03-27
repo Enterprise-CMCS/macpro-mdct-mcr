@@ -108,11 +108,9 @@ export const calculateCompletionStatus = async (
             dataForObject[formField.id]
           );
           nestedFields?.forEach((nestedField: string) => {
-            return (fieldsToBeValidated[nestedField] = dataForObject[
-              nestedField
-            ]
+            fieldsToBeValidated[nestedField] = dataForObject[nestedField]
               ? dataForObject[nestedField]
-              : null);
+              : null;
           });
         }
 
