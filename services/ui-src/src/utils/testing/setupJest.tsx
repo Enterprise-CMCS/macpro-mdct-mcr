@@ -403,6 +403,16 @@ export const mockModalOverlayReportPageJson = {
   modalForm: mockModalOverlayForm,
 };
 
+export const mockModalOverlayReportPageWithOverlayJson = {
+  name: "mock-route-2c",
+  path: "/mock/mock-route-2c",
+  pageType: "modalOverlay",
+  entityType: "program",
+  verbiage: mockModalOverlayReportPageVerbiage,
+  modalForm: mockModalOverlayForm,
+  overlayForm: mockModalOverlayForm,
+};
+
 export const mockReviewSubmitPageJson = {
   name: "mock-route-3",
   path: "/mock/mock-review-and-submit",
