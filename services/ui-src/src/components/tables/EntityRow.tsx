@@ -4,7 +4,7 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { AnyObject, EntityShape } from "types";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle.png";
+import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const EntityRow = ({
   entity,
@@ -31,7 +31,7 @@ export const EntityRow = ({
 
   return (
     <Tr sx={sx.content}>
-      <Td sx={sx.iconColumn}>
+      <Td sx={sx.statusIcon}>
         <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />
       </Td>
       <Td sx={sx.programInfo}>
@@ -41,7 +41,7 @@ export const EntityRow = ({
           ))}
         </ul>
       </Td>
-      <Td>
+      <Td sx={sx.actionButtons}>
         {openAddEditEntityModal && (
           <Button
             variant="none"
@@ -51,14 +51,10 @@ export const EntityRow = ({
             {verbiage.editEntityButtonText}
           </Button>
         )}
-      </Td>
-      <Td>
         {/* TODO: Enter MLR report routing */}
         <Button variant="outline" size="sm" sx={sx.enterButton}>
           {verbiage.enterReportText}
         </Button>
-      </Td>
-      <Td sx={sx.iconColumn}>
         {openDeleteEntityModal && (
           <Button
             sx={sx.deleteButton}
@@ -84,25 +80,38 @@ const sx = {
   content: {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
+    button: {
+      marginLeft: "1rem",
+    },
+    td: {
+      borderColor: "palette.gray_light",
+    },
   },
-  iconColumn: {
-    padding: 0,
+  statusIcon: {
+    paddingLeft: "1rem",
+    img: {
+      maxWidth: "fit-content",
+    },
   },
   programInfo: {
+    maxWidth: "18.75rem",
     ul: {
+      margin: "0.5rem auto",
       listStyleType: "none",
       li: {
-        paddingBottom: "0.5rem",
-        whiteSpace: "nowrap",
+        wordWrap: "break-word",
+        paddingTop: "0.25rem",
+        paddingBottom: "0.25rem",
+        whiteSpace: "break-spaces",
+        "&:last-of-type": {
+          fontWeight: "bold",
+          fontSize: "md",
+        },
       },
     },
   },
-  deleteButton: {
-    background: "none",
-    padding: "0",
-    "&:hover": {
-      background: "white",
-    },
+  actionButtons: {
+    whiteSpace: "nowrap",
   },
   editButton: {
     fontWeight: "normal",
@@ -112,5 +121,12 @@ const sx = {
   enterButton: {
     fontWeight: "normal",
     width: "6.5rem",
+  },
+  deleteButton: {
+    background: "none",
+    padding: "0",
+    "&:hover": {
+      background: "white",
+    },
   },
 };

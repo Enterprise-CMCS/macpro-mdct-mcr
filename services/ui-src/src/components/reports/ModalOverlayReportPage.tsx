@@ -21,6 +21,7 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
     undefined
   );
   const { report } = useContext(ReportContext);
+  const reportType = report?.reportType;
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
   const dashTitle = `${verbiage.dashboardTitle}${
@@ -28,7 +29,7 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
   }`;
 
   const tableHeaders = {
-    headRow: ["", verbiage.tableHeader, "", "", ""],
+    headRow: ["", verbiage.tableHeader, ""],
   };
 
   // add/edit entity modal disclosure and methods
@@ -70,7 +71,10 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
       {verbiage.intro && (
         <ReportPageIntro
           text={verbiage.intro}
-          accordion={accordionVerbiage.MLR.formIntro}
+          accordion={
+            accordionVerbiage[reportType as keyof typeof accordionVerbiage]
+              .formIntro
+          }
         />
       )}
       <Box sx={sx.dashboardBox}>
@@ -78,9 +82,12 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
           {dashTitle}
         </Heading>
         {reportFieldDataEntities.length === 0 ? (
-          <Box>{verbiage.emptyDashboardText}</Box>
+          <>
+            <hr />
+            <Box sx={sx.emptyDashboard}>{verbiage.emptyDashboardText}</Box>
+          </>
         ) : (
-          <Table content={tableHeaders}>
+          <Table sx={sx.header} content={tableHeaders}>
             {reportFieldDataEntities.map(
               (entity: EntityShape, entityIndex: number) => (
                 <EntityRow
@@ -137,29 +144,21 @@ interface Props {
 const sx = {
   dashboardBox: { textAlign: "center" },
   dashboardTitle: {
-    marginBottom: "1.25rem",
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",
     textAlign: "left",
   },
   header: {
-    textTransform: "none",
-    fontSize: "sm",
-    color: "palette.gray_medium",
     br: {
       marginBottom: "0.25rem",
     },
-    "br-last-of-type": {
-      marginBottom: "0",
-    },
+  },
+  emptyDashboard: {
+    paddingTop: "2rem",
   },
   addEntityButton: {
     marginTop: "1.5rem",
     marginBottom: "2rem",
-  },
-  bottomAddEntityButton: {
-    marginTop: "2rem",
-    marginBottom: "0",
   },
 };
