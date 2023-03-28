@@ -156,12 +156,6 @@ provider:
     PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
-  formTemplateEntitiesUpdate:
-    handler: handlers/etl/formTemplateEntitiesUpdate.transform
-    timeout: 300
-    environment:
-      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
-      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:
