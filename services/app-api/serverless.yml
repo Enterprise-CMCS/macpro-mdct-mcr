@@ -72,7 +72,7 @@ custom:
       package:
         individually: true
         patterns:
-          - '!handlers/etl/**'
+          - '!./handlers/etl'
           - '!**'
   authValue:
     main: aws_iam
