@@ -133,3 +133,7 @@ button {
     @include tabbed-focus;
   }
 }
+
+@media print {
+  @page { margin: 30px; } //this will hide the print header & footer.
+}

@@ -18,7 +18,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
       {sectionInfo && <Box sx={sx.info}>{parseCustomHtml(sectionInfo)}</Box>}
       {sectionSpreadsheet && (
         <Box sx={sx.spreadsheet}>
-          <SpreadsheetWidget description={sectionSpreadsheet} />
+          <SpreadsheetWidget description={sectionSpreadsheet} alt="" />
         </Box>
       )}
     </Box>

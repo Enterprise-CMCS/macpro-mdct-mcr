@@ -13,8 +13,9 @@ export const EntityCardTopSection = ({
       return (
         <>
           <Heading as="h4" sx={sx.heading}>
-            {printVersion && "C2.V.1 General category: "}
-            {formattedEntityData.category}
+            {`${printVersion ? "C2.V.1 General category: " : ""}${
+              formattedEntityData.category
+            }`}
           </Heading>
           {printVersion && (
             <Text sx={sx.subtitle}>C2.V.2 Measure standard</Text>
@@ -22,7 +23,9 @@ export const EntityCardTopSection = ({
           <Text sx={printVersion ? sx.subtext : sx.description}>
             {formattedEntityData.standardDescription}
           </Text>
-          <Text sx={sx.subtitle}>{printVersion && "C2.V.3 "}Standard type</Text>
+          <Text sx={sx.subtitle}>
+            {`${printVersion ? "C2.V.3 " : ""}Standard type`}
+          </Text>
           <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
         </>
       );
@@ -30,13 +33,14 @@ export const EntityCardTopSection = ({
       return (
         <>
           <Heading as="h4" sx={sx.heading}>
-            {printVersion && "D3.VIII.1 Intervention type: "}
-            {formattedEntityData.interventionType}
+            {`${printVersion ? "D3.VIII.1 Intervention type: " : ""}${
+              formattedEntityData.interventionType
+            }`}
           </Heading>
           <Grid sx={sx.grid}>
             <GridItem>
               <Text sx={sx.subtitle}>
-                {printVersion && "D3.VIII.2 "}Intervention topic
+                {`${printVersion ? "D3.VIII.2 " : ""}Intervention topic`}
               </Text>
               <Text sx={sx.subtext}>
                 {formattedEntityData.interventionTopic}
@@ -44,13 +48,13 @@ export const EntityCardTopSection = ({
             </GridItem>
             <GridItem>
               <Text sx={sx.subtitle}>
-                {printVersion && "D3.VIII.3 "}Plan name
+                {`${printVersion ? "D3.VIII.3 " : ""}Plan name`}
               </Text>
               <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
             </GridItem>
           </Grid>
           <Text sx={sx.subtitle}>
-            {printVersion && "D3.VIII.4 "}Reason for intervention
+            {`${printVersion ? "D3.VIII.4 " : ""}Reason for intervention`}
           </Text>
           <Text sx={sx.description}>
             {formattedEntityData.interventionReason}
@@ -61,17 +65,20 @@ export const EntityCardTopSection = ({
       return (
         <>
           <Heading as="h4" sx={sx.heading}>
-            {printVersion && "D2.VII.1 Measure Name: "}
-            {formattedEntityData.name}
+            {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
+              formattedEntityData.name
+            }`}
           </Heading>
           <Text sx={sx.subtitle}>
-            {printVersion && "D2.VII.2 "}Measure Domain
+            {`${printVersion ? "D2.VII.2 " : ""}Measure Domain`}
           </Text>
           <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
           <Grid sx={sx.grid}>
             <GridItem>
               <Text sx={sx.subtitle}>
-                {printVersion && "D2.VII.3 "}National Quality Forum (NQF) number
+                {`${
+                  printVersion ? "D2.VII.3 " : ""
+                }National Quality Forum (NQF) number`}
               </Text>
               <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
             </GridItem>
@@ -87,7 +94,7 @@ export const EntityCardTopSection = ({
             </GridItem>
             <GridItem>
               <Text sx={sx.subtitle}>
-                {printVersion && "D2.VII.6 "}Measure Set
+                {`${printVersion ? "D2.VII.6 " : ""}Measure Set`}
               </Text>
               <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
             </GridItem>
@@ -101,7 +108,7 @@ export const EntityCardTopSection = ({
             </GridItem>
           </Grid>
           <Text sx={sx.subtitle}>
-            {printVersion && "D2.VII.8 "}Measure Description
+            {`${printVersion ? "D2.VII.8 " : ""}Measure Description`}
           </Text>
           <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
         </>

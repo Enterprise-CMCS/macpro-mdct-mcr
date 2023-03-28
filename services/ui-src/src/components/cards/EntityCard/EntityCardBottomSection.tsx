@@ -31,7 +31,7 @@ export const EntityCardBottomSection = ({
             <Flex>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  {printVersion && "C2.V.4 "}Provider
+                  {`${printVersion ? "C2.V.4 " : ""}Provider`}
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.provider ||
@@ -39,14 +39,16 @@ export const EntityCardBottomSection = ({
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
-                <Text sx={sx.subtitle}>{printVersion && "C2.V.5 "}Region</Text>
+                <Text sx={sx.subtitle}>
+                  {`${printVersion ? "C2.V.5 " : ""}Region`}
+                </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.region || (printVersion && notAnswered)}
                 </Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  {printVersion && "C2.V.6 "}Population
+                  {`${printVersion ? "C2.V.6 " : ""}Population`}
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.population ||
@@ -56,14 +58,14 @@ export const EntityCardBottomSection = ({
             </Flex>
           </Box>
           <Text sx={sx.subtitle}>
-            {printVersion && "C2.V.7 "}Monitoring Methods
+            {`${printVersion ? "C2.V.7 " : ""}Monitoring Methods`}
           </Text>
           <Text sx={sx.subtext}>
             {formattedEntityData?.monitoringMethods?.join(", ") ||
               (printVersion && notAnswered)}
           </Text>
           <Text sx={sx.subtitle}>
-            {printVersion && "C2.V.8 "}Frequency of oversight methods
+            {`${printVersion ? "C2.V.8 " : ""}Frequency of oversight methods`}
           </Text>
           <Text sx={sx.subtext}>
             {formattedEntityData.methodFrequency ||
@@ -90,7 +92,9 @@ export const EntityCardBottomSection = ({
             <Flex>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  {printVersion && "D3.VIII.5 "}Instances of non-compliance
+                  {`${
+                    printVersion ? "D3.VIII.5 " : ""
+                  }Instances of non-compliance`}
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.noncomplianceInstances ||
@@ -99,7 +103,7 @@ export const EntityCardBottomSection = ({
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  {printVersion && "D3.VIII.6 "}Sanction amount
+                  {`${printVersion ? "D3.VIII.6 " : ""}Sanction amount`}
                 </Text>
                 <Text sx={sx.subtext}>
                   ${" "}
@@ -111,7 +115,7 @@ export const EntityCardBottomSection = ({
             <Flex>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  {printVersion && "D3.VIII.7 "}Date assessed
+                  {`${printVersion ? "D3.VIII.7 " : ""}Date assessed`}
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.assessmentDate ||
@@ -120,8 +124,9 @@ export const EntityCardBottomSection = ({
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>
-                  {printVersion && "D3.VIII.8 "}Remediation date non-compliance
-                  was corrected
+                  {`${
+                    printVersion ? "D3.VIII.8 " : ""
+                  }Remediation date non-compliance was corrected`}
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.remediationDate ||
@@ -130,7 +135,7 @@ export const EntityCardBottomSection = ({
               </Box>
             </Flex>
             <Text sx={sx.subtitle}>
-              {printVersion && "D3.VIII.9 "}Corrective action plan
+              {`${printVersion ? "D3.VIII.9 " : ""}Corrective action plan`}
             </Text>
             <Text sx={sx.subtext}>
               {formattedEntityData?.correctiveActionPlan ||
