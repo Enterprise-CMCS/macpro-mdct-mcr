@@ -105,6 +105,7 @@ const sx = {
         "&:last-of-type": {
           fontWeight: "bold",
           fontSize: "md",
+          marginTop: "0.25rem",
         },
       },
     },
