@@ -72,8 +72,7 @@ custom:
       package:
         individually: true
         patterns:
-          - '!./handlers/etl'
-          - '!**'
+          - '!formTemplateEntitiesUpdate'
   authValue:
     main: aws_iam
     val: aws_iam
