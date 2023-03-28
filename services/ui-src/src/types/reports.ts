@@ -1,5 +1,12 @@
 import { AnyObject, CustomHtmlElement, FormJson } from "types";
 
+// REPORT TYPES
+export enum ReportType {
+  MCPAR = "MCPAR",
+  MLR = "MLR",
+  NAAR = "NAAR",
+}
+
 // REPORT STRUCTURE
 
 export interface ReportJson {

@@ -6,7 +6,7 @@ import { EntityCard, ReportContext } from "components";
 import { getFormattedEntityData } from "utils";
 import { EntityShape, ModalDrawerReportPageShape } from "types";
 // verbiage
-import exportVerbiage from "verbiage/pages/export";
+import exportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage },

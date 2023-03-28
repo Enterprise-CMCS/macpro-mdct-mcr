@@ -6,9 +6,24 @@ import { Box, Button, Image, Text } from "@chakra-ui/react";
 // utils
 import { printPdf } from "utils";
 // verbiage
-import verbiage from "verbiage/pages/export";
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
+import { useContext } from "react";
+import { ReportContext } from "components";
+import { ReportType } from "types";
 
 export const ExportedReportBanner = () => {
+  const { report } = useContext(ReportContext);
+  const reportType = (report?.reportType ||
+    localStorage.getItem("selectedReportType")) as ReportType;
+
+  const verbiageMap: { [key in ReportType]: any } = {
+    MCPAR: mcparVerbiage,
+    MLR: mlrVerbiage,
+    NAAR: undefined,
+  };
+
+  const verbiage = verbiageMap[reportType];
   const { reportBanner } = verbiage;
   const printExperience = useFlags()?.printExperience;
 

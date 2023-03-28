@@ -14,7 +14,7 @@ import {
   isFieldElement,
 } from "types";
 // verbiage
-import verbiage from "verbiage/pages/export";
+import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
   const { report } = useContext(ReportContext);

@@ -12,18 +12,37 @@ import { Spinner } from "@cmsgov/design-system";
 // utils
 import { convertDateUtcToEt } from "utils";
 import { States } from "../../../constants";
-import { PageTypes, ReportRoute, ReportRouteWithForm } from "types";
+import {
+  PageTypes,
+  ReportRoute,
+  ReportRouteWithForm,
+  ReportShape,
+  ReportType,
+} from "types";
 
 // verbiage
-import verbiage from "verbiage/pages/export";
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
+import { assertExhaustive } from "utils/other/typing";
 
 export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
-  const { metadata, reportPage, tableHeaders } = verbiage;
   const fullStateName = States[report?.state as keyof typeof States];
   const routesToRender = report?.formTemplate.routes.filter(
     (route: ReportRoute) => route
   );
+
+  const reportType = (report?.reportType ||
+    localStorage.getItem("selectedReportType")) as ReportType;
+
+  const exportVerbiageMap: { [key in ReportType]: any } = {
+    MCPAR: mcparVerbiage,
+    MLR: mlrVerbiage,
+    NAAR: undefined,
+  };
+
+  const exportVerbiage = exportVerbiageMap[reportType];
+  const { metadata, reportPage } = exportVerbiage;
 
   return (
     <Box data-testid="exportedReportPage" sx={sx.container}>
@@ -39,48 +58,12 @@ export const ExportedReportPage = () => {
             <meta name="language" content={metadata.language} />
           </Helmet>
           {/* report heading */}
-          <Heading as="h1" sx={sx.heading}>
-            {reportPage.heading}
-            {report.fieldData.stateName}: {report.programName}
-          </Heading>
+          {renderReportHeading(reportType, reportPage, report)}
           {/* report metadata tables */}
-          <Table
-            sx={sx.metadataTable}
-            content={{
-              headRow: [
-                reportPage.metadataTableHeaders.dueDate,
-                reportPage.metadataTableHeaders.lastEdited,
-                reportPage.metadataTableHeaders.editedBy,
-                reportPage.metadataTableHeaders.status,
-              ],
-              bodyRows: [
-                [
-                  convertDateUtcToEt(report.dueDate),
-                  convertDateUtcToEt(report.lastAltered),
-                  report.lastAlteredBy,
-                  report.status,
-                ],
-              ],
-            }}
-          />
+          {renderReportMetadataTables(reportType, reportPage, report)}
           {/* combined data table */}
-          <Table
-            sx={sx.combinedDataTable}
-            className="short"
-            content={{
-              headRow: [tableHeaders.indicator, tableHeaders.response],
-            }}
-          >
-            <Tr>
-              <Td>
-                <Text className="combined-data-title">
-                  {reportPage.combinedDataTable.title}
-                </Text>
-                <Text>{reportPage.combinedDataTable.subtitle}</Text>
-              </Td>
-              <Td>{report.combinedData ? "Selected" : "Not Selected"}</Td>
-            </Tr>
-          </Table>
+          {reportType === ReportType.MCPAR &&
+            renderCombinedDataTable(exportVerbiage, report)}
           {/* report sections */}
           {renderReportSections(report.formTemplate.routes)}
         </Box>
@@ -90,6 +73,119 @@ export const ExportedReportPage = () => {
         </Center>
       )}
     </Box>
+  );
+};
+
+export const renderReportHeading = (
+  reportType: ReportType,
+  pageVerbiage: any,
+  report: ReportShape
+): JSX.Element => {
+  switch (reportType) {
+    case ReportType.MCPAR:
+    case ReportType.NAAR:
+      return (
+        <Heading as="h1" sx={sx.heading}>
+          {pageVerbiage.heading}
+          {report.fieldData.stateName}: {report.programName}
+        </Heading>
+      );
+    case ReportType.MLR:
+      return (
+        <Heading as="h1" sx={sx.heading}>
+          {report.fieldData.stateName}: {pageVerbiage.heading}
+        </Heading>
+      );
+    default:
+      assertExhaustive(reportType);
+      throw new Error(
+        `The heading for report type ${reportType} has not been implemented`
+      );
+  }
+};
+
+export const renderReportMetadataTables = (
+  reportType: ReportType,
+  pageVerbiage: any,
+  report: ReportShape
+): JSX.Element => {
+  switch (reportType) {
+    case ReportType.MCPAR:
+    case ReportType.NAAR:
+      return (
+        <Table
+          sx={sx.metadataTable}
+          content={{
+            headRow: [
+              pageVerbiage.metadataTableHeaders.dueDate,
+              pageVerbiage.metadataTableHeaders.lastEdited,
+              pageVerbiage.metadataTableHeaders.editedBy,
+              pageVerbiage.metadataTableHeaders.status,
+            ],
+            bodyRows: [
+              [
+                convertDateUtcToEt(report.dueDate),
+                convertDateUtcToEt(report.lastAltered),
+                report.lastAlteredBy,
+                report.status,
+              ],
+            ],
+          }}
+        />
+      );
+    case ReportType.MLR:
+      return (
+        <Table
+          sx={sx.metadataTable}
+          content={{
+            headRow: [
+              pageVerbiage.metadataTableHeaders.submissionName,
+              pageVerbiage.metadataTableHeaders.lastEdited,
+              pageVerbiage.metadataTableHeaders.editedBy,
+              pageVerbiage.metadataTableHeaders.status,
+            ],
+            bodyRows: [
+              [
+                report.submissionName ?? "",
+                convertDateUtcToEt(report.lastAltered),
+                report.lastAlteredBy,
+                report.status,
+              ],
+            ],
+          }}
+        />
+      );
+    default:
+      assertExhaustive(reportType);
+      throw new Error(
+        `The metadata tables for report type ${reportType} have not been implemented`
+      );
+  }
+};
+
+export const renderCombinedDataTable = (
+  exportVerbiage: any,
+  report: ReportShape
+): JSX.Element => {
+  const { tableHeaders, reportPage } = exportVerbiage;
+  return (
+    <Table
+      sx={sx.combinedDataTable}
+      className="short"
+      content={{
+        headRow: [tableHeaders.indicator, tableHeaders.response],
+      }}
+    >
+      <Tr>
+        <Td>
+          <Text className="combined-data-title">
+            {reportPage.combinedDataTable.title}
+          </Text>
+          <Text>{reportPage.combinedDataTable.subtitle}</Text>
+        </Td>
+        <Td>{report.combinedData ? "Selected" : "Not Selected"}</Td>
+      </Tr>
+    </Table>
   );
 };
 

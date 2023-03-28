@@ -4,6 +4,7 @@ env:
   node: true
   jest/globals: true
   cypress/globals: true
+  JSX: true
 parser: '@typescript-eslint/parser'
 plugins:
   - '@typescript-eslint'
