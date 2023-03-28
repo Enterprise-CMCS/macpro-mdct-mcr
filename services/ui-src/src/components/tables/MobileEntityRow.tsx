@@ -1,5 +1,5 @@
 // components
-import { Box, Button, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
 // types
 import { AnyObject } from "types";
 // utils
@@ -33,44 +33,46 @@ export const MobileEntityRow = ({
   ];
 
   return (
-    <Tr>
-      <Td sx={sx.content}>
-        <Box sx={sx.rowHeader}>
-          <Image src={unfinishedIcon} alt="warning icon" boxSize="lg" />
-          <Text>{parseCustomHtml(tableHeader)}</Text>
-        </Box>
-        <Box sx={sx.programList}>
-          <ul>
-            {programInfo.map((field, index) => (
-              <li key={index}>{field}</li>
-            ))}
-          </ul>
-        </Box>
-        <Box sx={sx.actionButtons}>
-          {openAddEditEntityModal && (
-            <Button
-              variant="none"
-              sx={sx.editButton}
-              onClick={() => openAddEditEntityModal(entity)}
-            >
-              {editEntityButtonText}
+    <Box>
+      <Tr>
+        <Td>
+          <Box sx={sx.rowHeader}>
+            <Image src={unfinishedIcon} alt="warning icon" boxSize="lg" />
+            <Text>{parseCustomHtml(tableHeader)}</Text>
+          </Box>
+          <Box sx={sx.programList}>
+            <ul>
+              {programInfo.map((field, index) => (
+                <li key={index}>{field}</li>
+              ))}
+            </ul>
+          </Box>
+          <Box sx={sx.actionButtons}>
+            {openAddEditEntityModal && (
+              <Button
+                variant="none"
+                sx={sx.editButton}
+                onClick={() => openAddEditEntityModal(entity)}
+              >
+                {editEntityButtonText}
+              </Button>
+            )}
+            {/* TODO: Enter MLR report routing */}
+            <Button variant="outline" size="sm" sx={sx.enterButton}>
+              {enterReportText}
             </Button>
-          )}
-          {/* TODO: Enter MLR report routing */}
-          <Button variant="outline" size="sm" sx={sx.enterButton}>
-            {enterReportText}
-          </Button>
-          {openDeleteEntityModal && (
-            <Button
-              sx={sx.deleteButton}
-              onClick={() => openDeleteEntityModal(entity)}
-            >
-              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
-            </Button>
-          )}
-        </Box>
-      </Td>
-    </Tr>
+            {openDeleteEntityModal && (
+              <Button
+                sx={sx.deleteButton}
+                onClick={() => openDeleteEntityModal(entity)}
+              >
+                <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
+              </Button>
+            )}
+          </Box>
+        </Td>
+      </Tr>
+    </Box>
   );
 };
 
@@ -84,7 +86,7 @@ interface Props {
 
 const sx = {
   content: {
-    paddingLeft: "0rem",
+    padding: "0rem",
   },
   rowHeader: {
     display: "flex",

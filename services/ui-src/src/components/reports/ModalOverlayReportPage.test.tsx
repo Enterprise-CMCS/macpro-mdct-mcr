@@ -4,13 +4,13 @@ import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, ModalOverlayReportPage } from "components";
 // utils
-import { useUser } from "utils";
 import {
   mockModalOverlayReportPageJson,
   mockStateUser,
   RouterWrappedComponent,
   mockMlrReportContext,
 } from "utils/testing/setupJest";
+import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -19,6 +19,14 @@ jest.mock("react-router-dom", () => ({
     pathname: "/mock-route",
   })),
 }));
+
+jest.mock("utils/other/useBreakpoint");
+const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
+  typeof useBreakpoint
+>;
+const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
+  typeof makeMediaQueryClasses
+>;
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
@@ -69,8 +77,29 @@ const modalOverlayReportPageComponentWithEntities = (
   </RouterWrappedComponent>
 );
 
-describe("Test ModalOverlayReportPage (empty state)", () => {
+describe("Test ModalOverlayReportPage (empty state, desktop)", () => {
   beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(modalOverlayReportPageComponent);
+  });
+
+  it("should render the view", () => {
+    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+  });
+});
+
+describe("Test ModalOverlayReportPage (empty state, mobile & tablet)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: true,
+      isTablet: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
     mockedUseUser.mockReturnValue(mockStateUser);
     render(modalOverlayReportPageComponent);
   });
@@ -100,12 +129,14 @@ describe("Test ModalOverlayReportPage (adding new program reporting information)
 
   it("State user should be able to delete existing entities", async () => {
     // delete program entity
-    const closeButton = screen.getByAltText("delete icon");
+    const closeButton = screen.getByRole("button", { name: "delete icon" });
     await userEvent.click(closeButton);
     expect(screen.getByRole("dialog")).toBeVisible();
 
     // click delete in modal
-    const deleteButton = screen.getByText(deleteModalConfirmButtonText);
+    const deleteButton = screen.getByRole("button", {
+      name: deleteModalConfirmButtonText,
+    });
     await userEvent.click(deleteButton);
 
     // verify that the program is removed
@@ -119,13 +150,13 @@ describe("Test ModalOverlayReportPage accessibility", () => {
     render(modalOverlayReportPageComponent);
   });
 
-  it("Should not have basic accessibility issues", async () => {
+  it("Should not have basic accessibility issues (desktop)", async () => {
     const { container } = render(modalOverlayReportPageComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("Should not have basic accessibility issues", async () => {
+  it("Should not have basic accessibility issues (mobile)", async () => {
     const { container } = render(modalOverlayReportPageComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
