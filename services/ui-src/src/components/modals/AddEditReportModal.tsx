@@ -70,7 +70,7 @@ export const AddEditReportModal = ({
     const programName = formData["programName"];
     return {
       metadata: {
-        submissionName: programName,
+        programName: programName,
         lastAlteredBy: full_name,
         locked: false,
         submissionCount: 0,
@@ -116,6 +116,7 @@ export const AddEditReportModal = ({
           ...dataToWrite.metadata,
           reportType,
           status: ReportStatus.NOT_STARTED,
+          isComplete: false,
         },
         fieldData: {
           ...dataToWrite.fieldData,

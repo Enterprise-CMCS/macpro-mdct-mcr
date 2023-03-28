@@ -1,5 +1,7 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import template from "../../../../../services/ui-src/src/forms/mcpar/mcpar.json";
+import mcparTemplate from "../../../../../services/ui-src/src/forms/mcpar/mcpar.json";
+
+const templateMap = { MCPAR: mcparTemplate };
 
 Then("there is an active program", () => {
   cy.contains("Test Program", { matchCase: true }).should("be.visible");
@@ -91,13 +93,13 @@ Then("the page shows {string}", (text) => {
   cy.contains(text).should("be.visible");
 });
 
-When("I submit a new MCPAR program", () => {
+When("I completely fill out a {string} form", (form) => {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
-  cy.visit(`/mcpar`);
+  cy.visit(`/${form.toLowerCase()}`);
   cy.findByRole("button", { name: "Add managed care program" }).click();
   cy.findByLabelText("Program name").type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
@@ -117,25 +119,33 @@ When("I submit a new MCPAR program", () => {
     .focus()
     .click();
 
-  //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
+  //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
+  const template = templateMap[form];
   traverseRoutes(template.routes);
+});
 
+When("I submit the {string} form", (form) => {
   //Submit the program
-  cy.get('button:contains("Submit MCPAR")').focus().click();
+  cy.get(`button:contains("Submit ${form}")`).focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
+});
+
+Then("the {string} form is submittable", (form) => {
+  cy.get('div[role*="alert"]').should("not.exist");
+  cy.get(`button:contains("Submit ${form}")`).should("not.be.disabled");
 });
 
 Then("the program is submitted", () => {
   cy.contains("Successfully Submitted").should("be.visible");
 });
 
-When("I try to submit an incomplete MCPAR program", () => {
+When("I try to submit an incomplete {string} program", (form) => {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
-  cy.visit(`/mcpar`);
+  cy.visit(`/${form.toLowerCase()}`);
   cy.findByRole("button", { name: "Add managed care program" }).click();
   cy.findByLabelText("Program name").type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
@@ -155,10 +165,20 @@ When("I try to submit an incomplete MCPAR program", () => {
     .focus()
     .click();
 
-  //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
+  //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
+  const template = templateMap[form];
   traverseRoutes([template.routes[0]]);
 
   cy.get('a[href*="review-and-submit"]').click();
+});
+
+Then("there is a submission alert", () => {
+  cy.get('div[role*="alert"]').should("exist");
+  cy.contains("Your form is not ready for submission").should("be.visible");
+});
+
+Then("there are errors in the status", () => {
+  cy.get('img[alt="Error notification"]').should("be.visible");
 });
 
 Then("incomplete program cannot submit", () => {
