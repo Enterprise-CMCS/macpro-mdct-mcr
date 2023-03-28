@@ -5,6 +5,7 @@ import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityRow,
+  MobileEntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
@@ -12,10 +13,14 @@ import {
 } from "components";
 // types
 import { EntityShape, ModalOverlayReportPageShape } from "types";
+// utils
+import { useBreakpoint } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
 
 export const ModalOverlayReportPage = ({ route }: Props) => {
+  const { isTablet, isMobile } = useBreakpoint();
+
   const { entityType, verbiage, modalForm } = route;
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
@@ -28,8 +33,9 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
 
-  const tableHeaders = {
-    headRow: ["", verbiage.tableHeader, ""],
+  const tableHeaders = () => {
+    if (isTablet || isMobile) return { headRow: [""] };
+    return { headRow: ["", verbiage.tableHeader, ""] };
   };
 
   // add/edit entity modal disclosure and methods
@@ -67,7 +73,7 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
   };
 
   return (
-    <Box data-testid="modal-overlay-report-page">
+    <Box sx={sx.content} data-testid="modal-overlay-report-page">
       {verbiage.intro && (
         <ReportPageIntro
           text={verbiage.intro}
@@ -87,18 +93,26 @@ export const ModalOverlayReportPage = ({ route }: Props) => {
             <Box sx={sx.emptyDashboard}>{verbiage.emptyDashboardText}</Box>
           </>
         ) : (
-          <Table sx={sx.header} content={tableHeaders}>
+          <Table sx={sx.header} content={tableHeaders()}>
             {reportFieldDataEntities.map(
-              (entity: EntityShape, entityIndex: number) => (
-                <EntityRow
-                  key={entity.id}
-                  entity={entity}
-                  entityIndex={entityIndex}
-                  verbiage={verbiage}
-                  openAddEditEntityModal={openAddEditEntityModal}
-                  openDeleteEntityModal={openDeleteEntityModal}
-                />
-              )
+              (entity: EntityShape, entityIndex: number) =>
+                isMobile || isTablet ? (
+                  <MobileEntityRow
+                    key={entityIndex}
+                    entity={entity}
+                    verbiage={verbiage}
+                    openAddEditEntityModal={openAddEditEntityModal}
+                    openDeleteEntityModal={openDeleteEntityModal}
+                  />
+                ) : (
+                  <EntityRow
+                    key={entity.id}
+                    entity={entity}
+                    verbiage={verbiage}
+                    openAddEditEntityModal={openAddEditEntityModal}
+                    openDeleteEntityModal={openDeleteEntityModal}
+                  />
+                )
             )}
           </Table>
         )}
@@ -142,20 +156,36 @@ interface Props {
 }
 
 const sx = {
-  dashboardBox: { textAlign: "center" },
+  content: {
+    ".tablet &, .mobile &": {
+      width: "70%",
+    },
+  },
+  dashboardBox: {
+    textAlign: "center",
+  },
   dashboardTitle: {
     fontSize: "md",
     fontWeight: "bold",
     color: "palette.gray_medium",
     textAlign: "left",
+    ".tablet &, .mobile &": {
+      paddingBottom: "0",
+    },
   },
   header: {
+    ".tablet &, .mobile &": {
+      width: "25%",
+    },
     br: {
       marginBottom: "0.25rem",
     },
     th: {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
+      ".tablet &, .mobile &": {
+        border: "none",
+      },
     },
   },
   emptyDashboard: {
@@ -164,5 +194,9 @@ const sx = {
   addEntityButton: {
     marginTop: "1.5rem",
     marginBottom: "2rem",
+    ".tablet &, .mobile &": {
+      wordBreak: "break-word",
+      whiteSpace: "break-spaces",
+    },
   },
 };

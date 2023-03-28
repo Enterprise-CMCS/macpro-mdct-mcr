@@ -97,5 +97,6 @@ export { StatusTable } from "./statusing/StatusTable";
 // tables
 export { Table } from "./tables/Table";
 export { EntityRow } from "./tables/EntityRow";
+export { MobileEntityRow } from "./tables/MobileEntityRow";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
