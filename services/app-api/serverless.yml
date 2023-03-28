@@ -69,6 +69,11 @@ custom:
       events:
         - schedule: rate(60 minutes)
       concurrency: 5
+      package:
+        individually: true
+        patterns:
+          - '!handlers/etl/**'
+          - '!**'
   authValue:
     main: aws_iam
     val: aws_iam
@@ -156,6 +161,12 @@ provider:
     PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
+  formTemplateEntitiesUpdate:
+    handler: handlers/etl/formTemplateEntitiesUpdate.transform
+    timeout: 300
+    environment:
+      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
+      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:

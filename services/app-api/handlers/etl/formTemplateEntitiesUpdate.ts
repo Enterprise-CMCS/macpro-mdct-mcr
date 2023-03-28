@@ -25,13 +25,20 @@ export const transform = async (
   let keepSearching = true;
   let startingKey;
   let metadataResults;
-
+  console.log("Performing ETL with params", { TABLE_NAME, BUCKET_NAME });
   while (keepSearching) {
     try {
       [startingKey, keepSearching, metadataResults] =
         await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
-      for (const metadata of metadataResults.Items) {
-        await processMetadata(metadata);
+      console.log("Iterating over fetched items:", {
+        startingKey,
+        keepSearching,
+        recordCount: metadataResults?.Items.length,
+      });
+      if (metadataResults?.Items) {
+        for (const metadata of metadataResults.Items) {
+          await processMetadata(metadata);
+        }
       }
     } catch (err) {
       console.error(`Database scan failed for the table ${TABLE_NAME}
@@ -111,7 +118,10 @@ export const writeFormTemplateToS3 = async (formTemplate: any) => {
     ContentType: "application/json",
   };
   const result = await s3Lib.put(formTemplateParams);
-  console.log("Updated form template ", formTemplate.id, " | ", result);
+  console.log("Updated form template ", {
+    key: formTemplateParams.Key,
+    result,
+  });
 
   return result;
 };
