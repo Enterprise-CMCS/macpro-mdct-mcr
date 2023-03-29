@@ -27,6 +27,24 @@ export default {
         spreadsheet: "A_Program_Info",
         additionalInfo:
           "Use these guides to understand which sections match specific tabs in the Excel workbook.",
+        tableHeading:
+          "Excel workbook tabs are located in these sections in the online form:",
+        table: {
+          headRow: ["Excel Workbook Tab", "Location in MCPAR online form"],
+          bodyRows: [
+            ["A_Program_Info", "A: Program Information"],
+            ["B_State", "B: State-Level Indicators"],
+            ["C1_Program_Set", "C: Program-Level Indicators"],
+            ["C2_Program_State", "C: Program-Level Indicators"],
+            ["D1_Plan_Set", "D: Plan-Level Indicators"],
+            ["D2_Plan_Measures", "D: Plan-Level Indicators"],
+            ["D3_Plan_Sanctions", "D: Plan-Level Indicators"],
+            ["E_BSS_Entities", "E: BSS Entity Indicators"],
+          ],
+        },
+        autosaveHeading: "Saving your work",
+        autosaveNotice:
+          "Your responses will be saved automatically except for pop-up or sidebar portions of the form, noted with a “Save” button.",
       },
       {
         sectionNumber: 3,

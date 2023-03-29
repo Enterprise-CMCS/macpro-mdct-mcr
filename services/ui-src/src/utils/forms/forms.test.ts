@@ -12,6 +12,7 @@ import {
   mockFormField,
   mockNestedFormField,
 } from "utils/testing/setupJest";
+import { isEntityType } from "types";
 
 const mockedFormFields = [
   {
@@ -368,5 +369,16 @@ describe("Test sortFormErrors", () => {
     const sortedErrors = sortFormErrors(mockFormObject, mockErrorsObject);
     expect(sortedErrors.indexOf("stateName")).toEqual(-1);
     expect(sortedErrors).toEqual(sortedArray);
+  });
+});
+
+describe("Test form related type guards", () => {
+  describe("Entity Type type guard", () => {
+    it("should reject bad entity types", () => {
+      expect(isEntityType("foo")).toBeFalsy();
+    });
+    it("should accept good entity types", () => {
+      expect(isEntityType("program")).toBeTruthy();
+    });
   });
 });
