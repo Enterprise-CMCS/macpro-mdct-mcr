@@ -55,12 +55,14 @@ export const ReviewSubmitPage = () => {
   const { alertBox } = reviewVerbiage;
 
   useEffect(() => {
-    setHasError(!!document.querySelector("img[alt='Error notification']"));
-
     if (report?.id) {
       fetchReport(reportKeys);
     }
   }, []);
+
+  useEffect(() => {
+    setHasError(!!document.querySelector("img[alt='Error notification']"));
+  }, [fetchReport]);
 
   const submitForm = async () => {
     setSubmitting(true);
