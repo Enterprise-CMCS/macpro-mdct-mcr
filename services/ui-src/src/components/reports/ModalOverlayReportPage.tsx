@@ -158,7 +158,7 @@ interface Props {
 const sx = {
   content: {
     ".tablet &, .mobile &": {
-      width: "70%",
+      width: "100%",
     },
   },
   dashboardBox: {
@@ -174,9 +174,6 @@ const sx = {
     },
   },
   header: {
-    ".tablet &, .mobile &": {
-      width: "25%",
-    },
     br: {
       marginBottom: "0.25rem",
     },
