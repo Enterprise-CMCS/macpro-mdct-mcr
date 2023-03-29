@@ -1,5 +1,5 @@
 import React from "react";
-import { sanitize } from "dompurify";
+import { addHook, sanitize } from "dompurify";
 import parse from "html-react-parser";
 // components
 import { Link as RouterLink } from "react-router-dom";
@@ -46,6 +46,11 @@ export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
 
 // sanitize and parse html to react elements
 export const sanitizeAndParseHtml = (html: string) => {
+  addHook("afterSanitizeAttributes", (node) => {
+    if ("target" in node) {
+      node.setAttribute("target", "_blank");
+    }
+  });
   const sanitizedHtml = sanitize(html);
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;
