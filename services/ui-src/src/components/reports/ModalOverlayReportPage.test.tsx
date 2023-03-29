@@ -110,6 +110,10 @@ describe("Test ModalOverlayReportPage (empty state, mobile & tablet)", () => {
     render(modalOverlayReportPageComponent);
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   it("should render the view", () => {
     expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
   });
@@ -126,9 +130,14 @@ describe("Test ModalOverlayReportPage (adding new program reporting information)
   it("State user should be able to enter an existing program", async () => {
     const enterButton = screen.getByText("Mock enter report text");
     await userEvent.click(enterButton);
-    await waitFor(() => {
-      expect(screen.getByText("Return to MLR Reporting"));
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("Return to MLR Reporting"));
+      },
+      {
+        timeout: 1000,
+      }
+    );
   });
 
   it("State user should be able to open and close the Add Program Reporting Information modal", async () => {

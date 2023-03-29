@@ -100,10 +100,6 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
             selectedEntity={selectedEntity}
             form={overlayForm}
             verbiage={verbiage}
-            modalDisclosure={{
-              isOpen: deleteEntityModalIsOpen,
-              onClose: closeDeleteEntityModal,
-            }}
             closeEntityDetailsOverlay={closeEntityDetailsOverlay}
             setSidebarHidden={setSidebarHidden}
           />
@@ -139,6 +135,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
                         verbiage={verbiage}
                         openAddEditEntityModal={openAddEditEntityModal}
                         openDeleteEntityModal={openDeleteEntityModal}
+                        openEntityDetailsOverlay={openEntityDetailsOverlay}
                       />
                     ) : (
                       <EntityRow
@@ -147,17 +144,18 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
                         verbiage={verbiage}
                         openAddEditEntityModal={openAddEditEntityModal}
                         openDeleteEntityModal={openDeleteEntityModal}
+                        openEntityDetailsOverlay={openEntityDetailsOverlay}
                       />
                     )
                 )}
-                <Button
-                  sx={sx.addEntityButton}
-                  onClick={() => openAddEditEntityModal()}
-                >
-                  {verbiage.addEntityButtonText}
-                </Button>
               </Table>
             )}
+            <Button
+              sx={sx.addEntityButton}
+              onClick={() => openAddEditEntityModal()}
+            >
+              {verbiage.addEntityButtonText}
+            </Button>
             {report && (
               <>
                 <AddEditEntityModal

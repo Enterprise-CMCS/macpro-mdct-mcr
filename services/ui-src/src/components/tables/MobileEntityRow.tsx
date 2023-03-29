@@ -13,6 +13,7 @@ export const MobileEntityRow = ({
   verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
+  openEntityDetailsOverlay,
 }: Props) => {
   const { programName, planName } = entity;
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
@@ -58,9 +59,16 @@ export const MobileEntityRow = ({
               </Button>
             )}
             {/* TODO: Enter MLR report routing */}
-            <Button variant="outline" size="sm" sx={sx.enterButton}>
-              {enterReportText}
-            </Button>
+            {openEntityDetailsOverlay && (
+              <Button
+                variant="outline"
+                onClick={() => openEntityDetailsOverlay(entity)}
+                size="sm"
+                sx={sx.enterButton}
+              >
+                {enterReportText}
+              </Button>
+            )}
             {openDeleteEntityModal && (
               <Button
                 sx={sx.deleteButton}
@@ -81,6 +89,7 @@ interface Props {
   verbiage: AnyObject;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
+  openEntityDetailsOverlay?: Function;
   [key: string]: any;
 }
 
