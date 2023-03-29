@@ -22,9 +22,9 @@ export const transform = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
-  let keepSearching = true;
-  let startingKey;
-  let metadataResults;
+  var keepSearching = true;
+  var startingKey;
+  var metadataResults;
   console.log("Performing ETL with params", { TABLE_NAME, BUCKET_NAME });
   while (keepSearching) {
     try {
@@ -120,7 +120,7 @@ export const writeFormTemplateToS3 = async (
 ) => {
   const formTemplateParams: S3Put = {
     Bucket: BUCKET_NAME,
-    Key: `${buckets.FORM_TEMPLATE}/${formId}/${reportState}.json`,
+    Key: `${buckets.FORM_TEMPLATE}/${reportState}/${formId}.json`,
     Body: JSON.stringify(formTemplate),
     ContentType: "application/json",
   };
