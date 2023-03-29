@@ -26,7 +26,8 @@ export const transform = async (
   var startingKey;
   var metadataResults;
   console.log("Performing ETL with params", { TABLE_NAME, BUCKET_NAME });
-  while (keepSearching) {
+  while (keepSearching == true) {
+    console.log("my keepSearching is ", keepSearching);
     try {
       [startingKey, keepSearching, metadataResults] =
         await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
@@ -97,7 +98,7 @@ export const scanTableForMetadata = async (
     return [startingKey, keepSearching, results];
   } else {
     keepSearching = false;
-    return [null, keepSearching, results];
+    return [undefined, keepSearching, results];
   }
 };
 
