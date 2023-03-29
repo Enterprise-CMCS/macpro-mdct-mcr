@@ -84,7 +84,7 @@ describe("Test form template entities update", () => {
 
     let results = await scanTableForMetadata("local-mcpar-reports", true);
 
-    expect(results[0]).toBeNull();
+    expect(results[0]).toBeUndefined();
     expect(results[1]).toBeFalsy();
     expect(results[2].Items).toBeUndefined();
   });
