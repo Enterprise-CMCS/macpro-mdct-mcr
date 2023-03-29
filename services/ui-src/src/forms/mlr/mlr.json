@@ -291,7 +291,7 @@
             "id": "reportingPeriodEndDate",
             "type": "date",
             "validation": {
-              "type": "date",
+              "type": "endDate",
               "dependentFieldName": "reportingPeriodStartDate"
             },
             "props": {

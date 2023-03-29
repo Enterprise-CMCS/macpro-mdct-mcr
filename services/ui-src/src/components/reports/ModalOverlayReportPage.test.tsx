@@ -107,6 +107,7 @@ describe("Test ModalOverlayReportPage (empty state, mobile & tablet)", () => {
       isTablet: true,
     });
     mockMakeMediaQueryClasses.mockReturnValue("mobile");
+    mockedUseUser.mockReturnValue(mockStateUser);
     render(modalOverlayReportPageComponent);
   });
 
@@ -119,8 +120,13 @@ describe("Test ModalOverlayReportPage (empty state, mobile & tablet)", () => {
   });
 });
 
-describe("Test ModalOverlayReportPage (adding new program reporting information)", () => {
-  beforeEach(async () => {
+describe("Test ModalOverlayReportPage (desktop, adding new program reporting information)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     mockedUseUser.mockReturnValue(mockStateUser);
     act(() => {
       render(modalOverlayReportPageComponentWithEntities);
@@ -153,6 +159,52 @@ describe("Test ModalOverlayReportPage (adding new program reporting information)
   });
 
   it("State user should be able to delete existing entities", async () => {
+    // verify program table exists
+    expect(screen.getByRole("table")).not.toBeNull;
+
+    // delete program entity
+    const closeButton = screen.getByRole("button", { name: "delete icon" });
+    await userEvent.click(closeButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+
+    // click delete in modal
+    const deleteButton = screen.getByRole("button", {
+      name: deleteModalConfirmButtonText,
+    });
+    await userEvent.click(deleteButton);
+
+    // verify that the program is removed
+    expect(screen.getByRole("table")).toBeNull;
+  });
+});
+
+describe("Test ModalOverlayReportPage (mobile + tablet, adding new program reporting information)", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: true,
+      isTablet: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(modalOverlayReportPageComponentWithEntities);
+  });
+
+  it("State user should be able to open and close the Add Program Reporting Information modal", async () => {
+    // open the modal
+    const addEntityButton = screen.getByText(addEntityButtonText);
+    await userEvent.click(addEntityButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+
+    // close the modal
+    const closeButton = screen.getByText("Close");
+    await userEvent.click(closeButton);
+    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+  });
+
+  it("State user should be able to delete existing entities", async () => {
+    // verify program table exists
+    expect(screen.getByRole("table")).not.toBeNull;
+
     // delete program entity
     const closeButton = screen.getByRole("button", { name: "delete icon" });
     await userEvent.click(closeButton);
