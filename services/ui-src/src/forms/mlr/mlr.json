@@ -237,7 +237,7 @@
             "validation": "radio",
             "props": {
               "label": "K. Eligibility group",
-              "hint": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group. <br/> <ol> <li> <i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in <a href=\"https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10\">42 CFR 457.10</a>.</li> <li><i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\".</li> <li>For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\".</li></ol>",
+              "hint": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group. <br/> <ol> <li> <i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in <a href=\"https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10\" target=\"_blank\">42 CFR 457.10</a>.</li> <li><i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\".</li> <li>For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\".</li></ol>",
               "choices": [
                 {
                   "id": "UgSDECcYDJ4S39QEMmMRcq",
@@ -275,7 +275,7 @@
             "validation": "text",
             "props": {
               "label": "M. MCO, PIHP, or PAHP Name",
-              "hint": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: \"<a href=\"https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html\">Managed Care Enrollment by Program and Plan</a>\""
+              "hint": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: \"<a href=\"https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html\" target=\"_blank\">Managed Care Enrollment by Program and Plan</a>\""
             }
           },
           {
