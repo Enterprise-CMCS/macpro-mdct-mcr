@@ -23,7 +23,11 @@ interface LinkItemProps {
   children?: LinkItemProps[] | null;
 }
 
-export const Sidebar = () => {
+interface SidebarProps {
+  isHidden: boolean;
+}
+
+export const Sidebar = ({ isHidden }: SidebarProps) => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { report } = useContext(ReportContext);
@@ -42,6 +46,7 @@ export const Sidebar = () => {
           <Box
             id="sidebar"
             sx={sx.root}
+            display={isHidden ? "none" : "block"}
             className={isOpen ? "open" : "closed"}
             role="navigation"
             aria-label="Sidebar menu"

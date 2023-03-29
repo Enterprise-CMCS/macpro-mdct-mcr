@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
@@ -6,6 +6,7 @@ import { ReportContext, ModalOverlayReportPage } from "components";
 // utils
 import {
   mockModalOverlayReportPageJson,
+  mockModalOverlayReportPageWithOverlayJson,
   mockStateUser,
   RouterWrappedComponent,
   mockMlrReportContext,
@@ -64,7 +65,10 @@ const mockReportWithCompletedEntityContext = {
 const modalOverlayReportPageComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithoutEntities}>
-      <ModalOverlayReportPage route={mockModalOverlayReportPageJson} />
+      <ModalOverlayReportPage
+        route={mockModalOverlayReportPageWithOverlayJson}
+        setSidebarHidden={jest.fn()}
+      />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -72,7 +76,10 @@ const modalOverlayReportPageComponent = (
 const modalOverlayReportPageComponentWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportWithCompletedEntityContext}>
-      <ModalOverlayReportPage route={mockModalOverlayReportPageJson} />
+      <ModalOverlayReportPage
+        route={mockModalOverlayReportPageWithOverlayJson}
+        setSidebarHidden={jest.fn()}
+      />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -104,6 +111,10 @@ describe("Test ModalOverlayReportPage (empty state, mobile & tablet)", () => {
     render(modalOverlayReportPageComponent);
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   it("should render the view", () => {
     expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
   });
@@ -117,7 +128,22 @@ describe("Test ModalOverlayReportPage (desktop, adding new program reporting inf
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
     mockedUseUser.mockReturnValue(mockStateUser);
-    render(modalOverlayReportPageComponentWithEntities);
+    act(() => {
+      render(modalOverlayReportPageComponentWithEntities);
+    });
+  });
+
+  it("State user should be able to enter an existing program", async () => {
+    const enterButton = screen.getByText("Mock enter report text");
+    await userEvent.click(enterButton);
+    await waitFor(
+      () => {
+        expect(screen.getByText("Return to MLR Reporting"));
+      },
+      {
+        timeout: 1000,
+      }
+    );
   });
 
   it("State user should be able to open and close the Add Program Reporting Information modal", async () => {

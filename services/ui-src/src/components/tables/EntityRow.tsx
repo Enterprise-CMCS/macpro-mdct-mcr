@@ -11,6 +11,7 @@ export const EntityRow = ({
   verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
+  openEntityDetailsOverlay,
 }: Props) => {
   const { programName, planName } = entity;
 
@@ -51,10 +52,20 @@ export const EntityRow = ({
             {verbiage.editEntityButtonText}
           </Button>
         )}
-        {/* TODO: Enter MLR report routing */}
-        <Button variant="outline" size="sm" sx={sx.enterButton}>
-          {verbiage.enterReportText}
-        </Button>
+      </Td>
+      <Td>
+        {openEntityDetailsOverlay && (
+          <Button
+            onClick={() => openEntityDetailsOverlay(entity)}
+            variant="outline"
+            size="sm"
+            sx={sx.enterButton}
+          >
+            {verbiage.enterReportText}
+          </Button>
+        )}
+      </Td>
+      <Td>
         {openDeleteEntityModal && (
           <Button
             sx={sx.deleteButton}
@@ -73,6 +84,7 @@ interface Props {
   verbiage: AnyObject;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
+  openEntityDetailsOverlay?: Function;
   [key: string]: any;
 }
 

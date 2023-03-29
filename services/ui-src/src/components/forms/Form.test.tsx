@@ -20,11 +20,39 @@ const mockFormJson = {
   ],
 };
 
+const mockNonFieldFormJson = {
+  id: "mockForm",
+  fields: [
+    {
+      type: "sectionHeader",
+      id: "testfield",
+      props: {
+        divider: "top",
+        content: "Test Content",
+      },
+    },
+  ],
+};
+
 const formComponent = (
   <>
     <Form
       id={mockFormJson.id}
       formJson={mockFormJson}
+      onSubmit={mockOnSubmit}
+      data-testid="test-form"
+    />
+    <button form={mockFormJson.id} type="submit">
+      Submit
+    </button>
+  </>
+);
+
+const formComponentJustHeader = (
+  <>
+    <Form
+      id={mockFormJson.id}
+      formJson={mockNonFieldFormJson}
       onSubmit={mockOnSubmit}
       data-testid="test-form"
     />
@@ -60,7 +88,15 @@ describe("Test Form component", () => {
     await userEvent.click(submitButton);
 
     const testField = form.querySelector("[name='testfield']")!;
+    expect(testField.hasAttribute("autocomplete")).toBeTruthy();
+    expect(testField.getAttribute("autocomplete")).toEqual("one-time-code");
     await expect(testField).toHaveFocus();
+  });
+
+  test("Non form field elements should not have autocomplete prop", async () => {
+    const result = render(formComponentJustHeader);
+    const testField = result.container.querySelector("[name='testfield']")!;
+    expect(testField.hasAttribute("autocomplete")).toBeFalsy();
   });
 });
 

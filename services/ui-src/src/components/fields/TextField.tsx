@@ -7,11 +7,13 @@ import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
+  getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
 } from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const TextField = ({
   name,
@@ -28,6 +30,8 @@ export const TextField = ({
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
   const { full_name, state } = useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
+  const { entities, entityType, selectedEntity, updateEntities } =
+    useContext(EntityContext);
 
   // get form context and register field
   const form = useFormContext();
@@ -68,9 +72,19 @@ export const TextField = ({
     if (!value.trim()) form.trigger(name);
     // submit field data to database
     if (autosave) {
-      const fields = [
-        { name, type: "text", value, hydrationValue, defaultValue },
-      ];
+      const fields = getAutosaveFields({
+        name,
+        type: "number",
+        value,
+        defaultValue,
+        hydrationValue,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
+      });
       const reportArgs = {
         id: report?.id,
         reportType: report?.reportType,
