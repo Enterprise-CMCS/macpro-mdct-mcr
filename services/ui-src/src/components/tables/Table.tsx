@@ -38,7 +38,11 @@ export const Table = ({
           {/* Head Row */}
           <Tr>
             {content.headRow.map((headerCell: string, index: number) => (
-              <Th key={index} scope="col" sx={sx.tableHeader}>
+              <Th
+                key={index}
+                scope="col"
+                sx={{ ...sx.tableHeader, ...sxOverride }}
+              >
                 {headerCell}
               </Th>
             ))}
@@ -90,7 +94,6 @@ const sx = {
     fontSize: "sm",
     fontWeight: "semibold",
     borderColor: "palette.gray_lighter",
-
     textTransform: "none",
     letterSpacing: "normal",
     ".mobile &": {

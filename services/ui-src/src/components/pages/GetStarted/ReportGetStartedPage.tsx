@@ -65,19 +65,21 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
               <Text sx={sx.additionalInfo}>{section2.additionalInfo}</Text>
             </Box>
           </Flex>
-          {section2.table ? (
+          {section2.table && (
             <Flex sx={sx.sectionContent}>
               <Box>
                 <Heading sx={sx.smallSectionHeading} size={"sm"}>
                   {section2.tableHeading}
                 </Heading>
-                <Table border={true} content={section2.table}></Table>
+                <Table
+                  border={true}
+                  sxOverride={sx.tableHeader}
+                  content={section2.table}
+                ></Table>
               </Box>
             </Flex>
-          ) : (
-            <></>
           )}
-          {section2.autosaveNotice && section2.autosaveHeading ? (
+          {section2.autosaveNotice && section2.autosaveHeading && (
             <Flex sx={sx.sectionContent}>
               <Box>
                 <Heading sx={sx.smallSectionHeading} size={"sm"}>
@@ -86,8 +88,6 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
                 <Text>{section2.autosaveNotice}</Text>
               </Box>
             </Flex>
-          ) : (
-            <></>
           )}
         </InfoSection>
         <InfoSection content={section3}>
@@ -175,5 +175,10 @@ const sx = {
   },
   smallSectionHeading: {
     marginBottom: "1rem",
+  },
+  tableHeader: {
+    Th: {
+      color: "palette.gray_medium",
+    },
   },
 };
