@@ -178,6 +178,7 @@ const sx = {
       marginBottom: "0.25rem",
     },
     th: {
+      paddingLeft: "1rem",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       ".tablet &, .mobile &": {
