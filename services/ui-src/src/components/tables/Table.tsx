@@ -18,6 +18,7 @@ import { AnyObject, TableContentShape } from "types";
 export const Table = ({
   content,
   variant,
+  border,
   sxOverride,
   children,
   ...props
@@ -37,7 +38,11 @@ export const Table = ({
           {/* Head Row */}
           <Tr>
             {content.headRow.map((headerCell: string, index: number) => (
-              <Th key={index} scope="col" sx={sx.tableHeader}>
+              <Th
+                key={index}
+                scope="col"
+                sx={{ ...sx.tableHeader, ...sxOverride }}
+              >
                 {headerCell}
               </Th>
             ))}
@@ -52,7 +57,10 @@ export const Table = ({
           content.bodyRows!.map((row: string[], index: number) => (
             <Tr key={row[0] + index}>
               {row.map((cell: string, index: number) => (
-                <Td key={cell + index} sx={sx.tableCell}>
+                <Td
+                  key={cell + index}
+                  sx={border ? sx.tableCellBorder : sx.tableCell}
+                >
                   {sanitizeAndParseHtml(cell)}
                 </Td>
               ))}
@@ -66,6 +74,7 @@ export const Table = ({
 interface Props {
   content: TableContentShape;
   variant?: string;
+  border?: boolean;
   sxOverride?: AnyObject;
   children?: ReactNode;
   [key: string]: any;
@@ -84,6 +93,7 @@ const sx = {
     padding: "0.75rem 0.5rem",
     fontSize: "sm",
     fontWeight: "semibold",
+    borderColor: "palette.gray_lighter",
     textTransform: "none",
     letterSpacing: "normal",
     ".mobile &": {
@@ -93,6 +103,15 @@ const sx = {
   tableCell: {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
+    fontWeight: "normal",
+    ".mobile &": {
+      fontSize: "xs",
+    },
+  },
+  tableCellBorder: {
+    padding: "0.75rem 0.5rem",
+    borderBottom: "1px solid",
+    borderColor: "palette.gray_lighter",
     fontWeight: "normal",
     ".mobile &": {
       fontSize: "xs",
