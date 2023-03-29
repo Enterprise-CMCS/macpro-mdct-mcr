@@ -1,11 +1,15 @@
 import { EntityProvider } from "components/reports/EntityProvider";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import {
+  mockMlrReportContext,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 import { EntityDetailsOverlay } from "./EntityDetailsOverlay";
 import form from "../../forms/mlr/mlr.json";
 import { EntityType, FormJson } from "types";
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
+import { ReportContext } from "components/reports/ReportProvider";
 
 const formJSON: FormJson = form.routes[1].overlayForm!;
 const mockClose = jest.fn();
@@ -20,11 +24,19 @@ const overlayProps = {
   setSidebarHidden: mockSidebarHidden,
 };
 
+const mockUpdate = jest.fn();
+const mockedReportContext = {
+  ...mockMlrReportContext,
+  updateReport: mockUpdate,
+};
+
 const entityDetailsOverlay = (
   <RouterWrappedComponent>
-    <EntityProvider>
-      <EntityDetailsOverlay {...overlayProps} />
-    </EntityProvider>
+    <ReportContext.Provider value={mockedReportContext}>
+      <EntityProvider>
+        <EntityDetailsOverlay {...overlayProps} />
+      </EntityProvider>
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -50,6 +62,23 @@ describe("Test EntityDetailsOverlay", () => {
     const { unmount } = render(entityDetailsOverlay);
     unmount();
     expect(mockSidebarHidden).toHaveBeenCalledWith(false);
+  });
+
+  it("Should submit entity info when clicking submit", async () => {
+    const { findByText } = render(entityDetailsOverlay);
+    const submitButton = await findByText("Submit");
+    await userEvent.click(submitButton);
+    expect(mockUpdate).toHaveBeenCalled();
+    expect(mockSidebarHidden).toHaveBeenCalledWith(false);
+    expect(mockClose).toHaveBeenCalled();
+  });
+
+  it("Should close the sidebar when clicking cancel", async () => {
+    const { findByText } = render(entityDetailsOverlay);
+    const submitButton = await findByText("Cancel");
+    await userEvent.click(submitButton);
+    expect(mockSidebarHidden).toHaveBeenCalledWith(false);
+    expect(mockClose).toHaveBeenCalled();
   });
 });
 

@@ -1,26 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // components
-import {
-  Form,
-  ReportContext,
-  ReportPageFooter,
-  ReportPageIntro,
-} from "components";
-import { Box, Heading, Image, Text } from "@chakra-ui/react";
+import { Form, ReportContext, ReportPageIntro } from "components";
+import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
   EntityShape,
   EntityType,
   FormJson,
-  isFieldElement,
   ReportStatus,
 } from "types";
-import { filterFormData, useUser } from "utils";
+import { useUser } from "utils";
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
 import { EntityContext } from "components/reports/EntityProvider";
+import { Spinner } from "@cmsgov/design-system";
 export const EntityDetailsOverlay = ({
   entityType,
   form,
@@ -31,10 +26,17 @@ export const EntityDetailsOverlay = ({
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state } = useUser().user ?? {};
+  const { userIsAdmin, userIsApprover, userIsHelpDeskUser, full_name, state } =
+    useUser().user ?? {};
+  const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
   const onError = () => {};
-  const { setEntities, setSelectedEntity, setEntityType } =
-    useContext(EntityContext);
+  const {
+    entities,
+    updateEntities,
+    setEntities,
+    setSelectedEntity,
+    setEntityType,
+  } = useContext(EntityContext);
 
   useEffect(() => {
     setSidebarHidden(true);
@@ -50,21 +52,20 @@ export const EntityDetailsOverlay = ({
 
   const onSubmit = async (enteredData: AnyObject) => {
     setSubmitting(true);
+    updateEntities(enteredData);
     const reportKeys = {
       reportType: report?.reportType,
       state: state,
       id: report?.id,
     };
-    const filteredFormData = filterFormData(
-      enteredData,
-      form.fields.filter(isFieldElement)
-    );
     const dataToWrite = {
       metadata: {
         status: ReportStatus.IN_PROGRESS,
         lastAlteredBy: full_name,
       },
-      fieldData: filteredFormData,
+      fieldData: {
+        program: entities,
+      },
     };
     await updateReport(reportKeys, dataToWrite);
     setSubmitting(false);
@@ -121,7 +122,22 @@ export const EntityDetailsOverlay = ({
           formData={selectedEntity}
           autosave={true}
         />
-        <ReportPageFooter submitting={submitting} form={form} />
+        <Box sx={sx.footerBox}>
+          <Flex sx={sx.buttonFlex}>
+            {!isAdminTypeUser && (
+              <Button variant="outline" onClick={() => closeOverlay()}>
+                Cancel
+              </Button>
+            )}
+            <Button
+              onClick={() => onSubmit(selectedEntity)}
+              type="submit"
+              sx={sx.saveButton}
+            >
+              {submitting ? <Spinner size="small" /> : "Submit"}
+            </Button>
+          </Flex>
+        </Box>
       </Box>
     </Box>
   );
@@ -155,5 +171,16 @@ const sx = {
     marginRight: "0.5rem",
     position: "relative",
     top: "0.25rem",
+  },
+  footerBox: {
+    marginTop: "2rem",
+    borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
+  },
+  buttonFlex: {
+    justifyContent: "space-between",
+    marginY: "1.5rem",
+  },
+  saveButton: {
+    width: "8.25rem",
   },
 };
