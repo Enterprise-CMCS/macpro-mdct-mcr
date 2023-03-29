@@ -73,7 +73,7 @@ describe("Test form template entities update", () => {
 
   test("Test write updated form template to S3", async () => {
     try {
-      await writeFormTemplateToS3(mockReportJsonWithId,"foo","bar");
+      await writeFormTemplateToS3(mockReportJsonWithId, "foo", "bar");
     } catch (e) {
       expect(e).toBeFalsy();
     }

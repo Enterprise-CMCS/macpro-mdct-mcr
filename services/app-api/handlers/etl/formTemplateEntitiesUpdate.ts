@@ -27,7 +27,6 @@ export const transform = async (
   var metadataResults;
   console.log("Performing ETL with params", { TABLE_NAME, BUCKET_NAME });
   while (keepSearching == true) {
-    console.log("my keepSearching is ", keepSearching);
     try {
       [startingKey, keepSearching, metadataResults] =
         await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
@@ -66,7 +65,11 @@ export const processMetadata = async (metadata: AnyObject) => {
     });
     return;
   }
-  console.log("Processing report", { id: metadata.id, formTemplateId, reportState });
+  console.log("Processing report", {
+    id: metadata.id,
+    formTemplateId,
+    reportState,
+  });
 
   // get formTemplate with formTemplateID
   const formTemplate = await getFormTemplateFromS3(formTemplateId, reportState);
