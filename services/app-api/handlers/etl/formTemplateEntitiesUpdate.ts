@@ -37,7 +37,6 @@ export const transform = async (
       });
       if (metadataResults?.Items) {
         for (const metadata of metadataResults.Items) {
-          console.log("Processing",metadata)
           await processMetadata(metadata);
         }
       }
@@ -58,6 +57,7 @@ export const transform = async (
 
 export const processMetadata = async (metadata: AnyObject) => {
   let formTemplateId = metadata.formTemplateId;
+  let reportState = metadata.state;
   if (!formTemplateId) {
     console.error("Could not find formTemplateId", {
       state: metadata.state,
@@ -65,19 +65,21 @@ export const processMetadata = async (metadata: AnyObject) => {
     });
     return;
   }
+  console.log("Processing report", { id: metadata.id, formTemplateId, reportState });
 
   // get formTemplate with formTemplateID
-  const formTemplate = await getFormTemplateFromS3(
-    formTemplateId,
-    metadata.state
-  );
+  const formTemplate = await getFormTemplateFromS3(formTemplateId, reportState);
   if (!formTemplate.entities) {
     // modify formTemplate > write to s3
     const updatedFormTemplate = Object.assign(
       formTemplate,
       ENTITIES_UPDATE_DATA
     );
-    await writeFormTemplateToS3(updatedFormTemplate);
+    await writeFormTemplateToS3(
+      updatedFormTemplate,
+      formTemplateId,
+      reportState
+    );
   }
 };
 
@@ -111,10 +113,14 @@ export const getFormTemplateFromS3 = async (
   return (await s3Lib.get(formTemplateParams)) as AnyObject;
 };
 
-export const writeFormTemplateToS3 = async (formTemplate: any) => {
+export const writeFormTemplateToS3 = async (
+  formTemplate: any,
+  formId: string,
+  reportState: string
+) => {
   const formTemplateParams: S3Put = {
     Bucket: BUCKET_NAME,
-    Key: `${buckets.FORM_TEMPLATE}/${formTemplate.state}/${formTemplate.id}.json`,
+    Key: `${buckets.FORM_TEMPLATE}/${formId}/${reportState}.json`,
     Body: JSON.stringify(formTemplate),
     ContentType: "application/json",
   };
