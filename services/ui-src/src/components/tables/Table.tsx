@@ -43,7 +43,7 @@ export const Table = ({
                 scope="col"
                 sx={{ ...sx.tableHeader, ...sxOverride }}
               >
-                {headerCell}
+                {sanitizeAndParseHtml(headerCell)}
               </Th>
             ))}
           </Tr>
