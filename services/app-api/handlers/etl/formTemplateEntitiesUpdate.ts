@@ -37,6 +37,7 @@ export const transform = async (
       });
       if (metadataResults?.Items) {
         for (const metadata of metadataResults.Items) {
+          console.log("Processing",metadata)
           await processMetadata(metadata);
         }
       }
