@@ -71,8 +71,6 @@ custom:
       concurrency: 5
       package:
         individually: true
-        patterns:
-          - '!formTemplateEntitiesUpdate'
   authValue:
     main: aws_iam
     val: aws_iam
@@ -166,6 +164,9 @@ functions:
     environment:
       MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
       MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
+    warmup:
+      default:
+        enabled: false
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:
