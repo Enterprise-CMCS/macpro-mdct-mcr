@@ -77,18 +77,29 @@ export const processMetadata = async (metadata: AnyObject) => {
   });
 
   // get formTemplate with formTemplateID
-  const formTemplate = await getFormTemplateFromS3(formTemplateId, reportState);
-  if (!formTemplate.entities) {
-    // modify formTemplate > write to s3
-    const updatedFormTemplate = Object.assign(
-      formTemplate,
-      ENTITIES_UPDATE_DATA
-    );
-    await writeFormTemplateToS3(
-      updatedFormTemplate,
+  try {
+    const formTemplate = await getFormTemplateFromS3(
       formTemplateId,
       reportState
     );
+    if (!formTemplate.entities) {
+      // modify formTemplate > write to s3
+      const updatedFormTemplate = Object.assign(
+        formTemplate,
+        ENTITIES_UPDATE_DATA
+      );
+      await writeFormTemplateToS3(
+        updatedFormTemplate,
+        formTemplateId,
+        reportState
+      );
+    }
+  } catch (err) {
+    console.error("Unable to find form template in S3", {
+      formTemplateId,
+      reportState,
+      err,
+    });
   }
 };
 
@@ -100,7 +111,7 @@ export const scanTableForMetadata = async (
     TableName: tableName,
     ExclusiveStartKey: startingKey,
   });
-  console.log("The last evaluated key is ", results?.LastEvaluatedKey );
+  console.log("The last evaluated key is ", results?.LastEvaluatedKey);
   return { startingKey: results?.LastEvaluatedKey, results };
 };
 
