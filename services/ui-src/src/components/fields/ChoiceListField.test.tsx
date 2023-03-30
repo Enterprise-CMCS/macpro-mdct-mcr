@@ -895,6 +895,8 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
         type: "radio",
         value: [],
         overrideCheck: true,
+        defaultValue: undefined,
+        hydrationValue: undefined,
       },
     ];
 
@@ -925,6 +927,8 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
         type: "textarea",
         value: "",
         overrideCheck: true,
+        defaultValue: undefined,
+        hydrationValue: undefined,
       },
     ];
     expect(returnedValue).toStrictEqual(expectedReturn);
