@@ -361,9 +361,10 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "1.1 Incurred claims (optional)",
+              "label": "1.1 Incurred claims",
               "hint": "Enter incurred claims (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(e)(2)</a>",
-              "mask": "currency"
+              "mask": "currency",
+              "styleAsOptional": true
             }
           },
           {
@@ -371,9 +372,10 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "1.2 Activities that improve health care quality (optional)",
+              "label": "1.2 Activities that improve health care quality",
               "hint": "Enter activities that improve health care quality (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(3)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(e)(3)</a>",
-              "mask": "currency"
+              "mask": "currency",
+              "styleAsOptional": true
             }
           },
           {
@@ -391,8 +393,9 @@
             "type": "textarea",
             "validation": "textOptional",
             "props": {
-              "label": "Medical Loss Ratio numerator explanation (optional)",
-              "hint": "If the optional subcomponents are reported in sections 1.1 and 1.2 and they do not equal the total reported <i>MLR numerator</i> in section 1.3, states may provide an explanation here."
+              "label": "Medical Loss Ratio numerator explanation",
+              "hint": "If the optional subcomponents are reported in sections 1.1 and 1.2 and they do not equal the total reported <i>MLR numerator</i> in section 1.3, states may provide an explanation here.",
+              "styleAsOptional": true
             }
           },
           {
@@ -400,9 +403,10 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "1.4 Non-claims costs (not included in numerator) (optional)",
+              "label": "1.4 Non-claims costs (not included in numerator)",
               "hint": "Enter the non-claims costs value. This amount is not included in the MLR numerator. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)(v)(A)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(e)(2)(v)(A)</a>",
-              "mask": "currency"
+              "mask": "currency",
+              "styleAsOptional": true
             }
           },
           {
@@ -418,9 +422,10 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "2.1 Premium revenue (optional)",
+              "label": "2.1 Premium revenue",
               "hint": "Enter premium revenue (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(2)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(f)(2)</a>",
-              "mask": "currency"
+              "mask": "currency",
+              "styleAsOptional": true
             }
           },
           {
@@ -428,9 +433,10 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "2.2 Federal, State, and local taxes and licensing and regulatory fees (optional)",
+              "label": "2.2 Federal, State, and local taxes and licensing and regulatory fees",
               "hint": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(3)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(f)(3)</a>",
-              "mask": "currency"
+              "mask": "currency",
+              "styleAsOptional": true
             }
           },
           {
@@ -438,9 +444,10 @@
             "type": "number",
             "validation": "number",
             "props": {
-              "label": "2.3 MLR denominator (optional)",
+              "label": "2.3 MLR denominator",
               "hint": "Enter the required MLR denominator dollar value. If the optional subcomponents are reported in sections 2.1 - 2.2, states must still report the total MLR denominator (i.e., subcomponents will not automatically sum to denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(f)(1)</a>",
-              "mask": "currency"
+              "mask": "currency",
+              "styleAsOptional": true
             }
           },
           {
@@ -448,8 +455,9 @@
             "type": "textarea",
             "validation": "textOptional",
             "props": {
-              "label": "Medical Loss Ratio denominator explanation (optional)",
-              "hint": "If the optional subcomponents are reported in sections 2.1 and 2.2 and the reported <i>Premium Revenue</i> less the reported <i>Federal, State, and local taxes and licensing and regulatory fees</i> does not equal the total reported <i>MLR denominator</i> in section 2.3, states may provide an explanation here."
+              "label": "Medical Loss Ratio denominator explanation",
+              "hint": "If the optional subcomponents are reported in sections 2.1 and 2.2 and the reported <i>Premium Revenue</i> less the reported <i>Federal, State, and local taxes and licensing and regulatory fees</i> does not equal the total reported <i>MLR denominator</i> in section 2.3, states may provide an explanation here.",
+              "styleAsOptional": true
             }
           },
           {
@@ -474,9 +482,10 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "3.2 Unadjusted MLR (optional)",
+              "label": "3.2 Unadjusted MLR",
               "hint": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). Entering '1' will result in 1% instead of 100%. (optional subcomponent of section 3.4 Adjusted MLR)",
-              "mask": "percentage"
+              "mask": "percentage",
+              "styleAsOptional": true
             }
           },
           {
@@ -484,8 +493,9 @@
             "type": "textarea",
             "validation": "textOptional",
             "props": {
-              "label": "Unadjusted MLR explanation (optional)",
-              "hint": "If the optional <i>Unadjusted MLR</i> reported in section 3.2 does not equal the ratio of the <i>MLR numerator</i> over the <i>MLR denominator</i> (as reported in sections 1.3 and 2.3), states may provide an explanation here."
+              "label": "Unadjusted MLR explanation",
+              "hint": "If the optional <i>Unadjusted MLR</i> reported in section 3.2 does not equal the ratio of the <i>MLR numerator</i> over the <i>MLR denominator</i> (as reported in sections 1.3 and 2.3), states may provide an explanation here.",
+              "styleAsOptional": true
             }
           },
           {
@@ -493,9 +503,10 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "3.3 Credibility adjustment (optional)",
+              "label": "3.3 Credibility adjustment",
               "hint": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (optional subcomponent of section 3.4 Adjusted MLR) <ul><li>Enter 0% if no credibility adjustment is needed.</li><li>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</li><li>For fully credible plans, the credibility adjustment should be entered as 0%.</li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(h)</a>",
-              "mask": "percentage"
+              "mask": "percentage",
+              "styleAsOptional": true
             }
           },
           {
@@ -513,8 +524,9 @@
             "type": "textarea",
             "validation": "textOptional",
             "props": {
-              "label": "Adjusted MLR atypical range explanation (optional)",
-              "hint": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here."
+              "label": "Adjusted MLR atypical range explanation",
+              "hint": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here.",
+              "styleAsOptional": true
             }
           },
           {
@@ -553,8 +565,9 @@
                       },
                       "type": "number",
                       "props": {
-                        "label": "4.2 What is the State minimum MLR requirement? (optional)",
-                        "mask": "percentage"
+                        "label": "4.2 What is the State minimum MLR requirement?",
+                        "mask": "percentage",
+                        "styleAsOptional": true
                       }
                     },
                     {
@@ -566,7 +579,8 @@
                         "parentFieldName": "contractIncludesRemittance"
                       },
                       "props": {
-                        "label": "4.3 Does the state remittance MLR calculation align with the required components and methodology outlined in 438.8(c)? (optional)",
+                        "label": "4.3 Does the state remittance MLR calculation align with the required components and methodology outlined in 438.8(c)?",
+                        "styleAsOptional": true,
                         "choices": [
                           {
                             "id": "PpL7niYGJMaY2fgv7R8C7g",
@@ -586,8 +600,9 @@
                                   "type": "textOptional"
                                 },
                                 "props": {
-                                  "label": "4.4 State-defined remittance MLR calculation description (optional)",
-                                  "hint": "Describe the method by which the state determines remittance MLR calculations."
+                                  "label": "4.4 State-defined remittance MLR calculation description",
+                                  "hint": "Describe the method by which the state determines remittance MLR calculations.",
+                                  "styleAsOptional": true
                                 }
                               }
                             ]
@@ -604,9 +619,10 @@
                         "parentFieldName": "contractIncludesRemittance"
                       },
                       "props": {
-                        "label": "4.5 Calculated MLR for remittance purposes (optional)",
+                        "label": "4.5 Calculated MLR for remittance purposes",
                         "hint": "Report the calculated MLR for remittance purposes (please enter as a percentage).",
-                        "mask": "percentage"
+                        "mask": "percentage",
+                        "styleAsOptional": true
                       }
                     },
                     {
@@ -632,9 +648,10 @@
                         "parentFieldName": "contractIncludesRemittance"
                       },
                       "props": {
-                        "label": "4.6.2 Payment dollar amount due to plan for MLR reporting period (optional)",
+                        "label": "4.6.2 Payment dollar amount due to plan for MLR reporting period",
                         "hint": "Report the amount of the payment due to this plan as a positive value, if applicable. This payment is specific to losses reimbursed under a minimum MLR arrangement; do not report the results of other risk corridors, reinsurance or other risk mitigation arrangements. If states do not make payments to plans for losses under a minimum MLR arrangement, states may enter $0.",
-                        "mask": "currency"
+                        "mask": "currency",
+                        "styleAsOptional": true
                       }
                     },
                     {
@@ -646,8 +663,9 @@
                         "type": "textOptional"
                       },
                       "props": {
-                        "label": "Remittance explanation (optional)",
-                        "hint": "A state cannot simultaneously owe remittances to and require payment from a Medicaid managed care plan. If the state reported a <i>Remittance amount owed</i> greater than $0 in section 4.6.1 and an optional <i>Payment amount due to plan</i> greater than $0 in section 4.6.2, states may provide an explanation here."
+                        "label": "Remittance explanation",
+                        "hint": "A state cannot simultaneously owe remittances to and require payment from a Medicaid managed care plan. If the state reported a <i>Remittance amount owed</i> greater than $0 in section 4.6.1 and an optional <i>Payment amount due to plan</i> greater than $0 in section 4.6.2, states may provide an explanation here.",
+                        "styleAsOptional": true
                       }
                     },
                     {
@@ -687,8 +705,9 @@
                         "type": "radio"
                       },
                       "props": {
-                        "label": "4.7 Is the remittance period the same as the MLR reporting period? (optional)",
+                        "label": "4.7 Is the remittance period the same as the MLR reporting period?",
                         "hint": "Is the remittance period the same as the MLR reporting period reported under N and O (displayed above)? <br /> The remittance period is the period of time used when determining the remittance amounts.",
+                        "styleAsOptional": true,
                         "choices": [
                           {
                             "id": "YzV3x7cp3u2sX92V3cbpDM",
@@ -707,8 +726,9 @@
                                   "parentFieldName": "isRemittancePeriodSame"
                                 },
                                 "props": {
-                                  "label": "4.8.1 Remittance period start date (optional)",
-                                  "hint": "Enter the start date of the remittance period."
+                                  "label": "4.8.1 Remittance period start date",
+                                  "hint": "Enter the start date of the remittance period.",
+                                  "styleAsOptional": true
                                 }
                               },
                               {
@@ -720,8 +740,9 @@
                                   "parentFieldName": "isRemittancePeriodSame"
                                 },
                                 "props": {
-                                  "label": "4.8.2 Remittance period end date (optional)",
-                                  "hint": "Enter the end date of the remittance period."
+                                  "label": "4.8.2 Remittance period end date",
+                                  "hint": "Enter the end date of the remittance period.",
+                                  "styleAsOptional": true
                                 }
                               }
                             ]
