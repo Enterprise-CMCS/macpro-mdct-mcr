@@ -69,6 +69,8 @@ custom:
       events:
         - schedule: rate(60 minutes)
       concurrency: 5
+      package:
+        individually: true
   authValue:
     main: aws_iam
     val: aws_iam
@@ -162,6 +164,10 @@ functions:
     environment:
       MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
       MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:
