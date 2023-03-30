@@ -134,6 +134,11 @@ button {
   }
 }
 
-@media print {
-  @page { margin: 30px; } //this will hide the print header & footer.
+@media print {  
+  @page {
+    margin: 0px;  //this will hide the print header & footer.
+  } 
+  html {
+      margin: 30px; //this adds back missing margin for the print page
+  }
 }
