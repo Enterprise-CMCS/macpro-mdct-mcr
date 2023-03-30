@@ -24,6 +24,7 @@ export const transform = async (
 ): Promise<APIGatewayProxyResult> => {
   console.log("Performing ETL with params", { TABLE_NAME, BUCKET_NAME });
   await recursiveTransform();
+  console.log("Finished Processing");
   return {
     statusCode: 200,
     body: JSON.stringify({
@@ -45,8 +46,12 @@ export const recursiveTransform = async (startingKey: any = undefined) => {
         await processMetadata(metadata as AnyObject);
       }
     }
-    if (scannedResult.startingKey)
+    if (scannedResult.startingKey) {
       await recursiveTransform(scannedResult.startingKey);
+    } else {
+      console.log("Starting key is ", scannedResult.startingKey);
+      return;
+    }
   } catch (err) {
     console.error(`Database scan failed for the table ${TABLE_NAME}
                    with startingKey ${startingKey}.
