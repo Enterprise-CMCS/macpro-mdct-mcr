@@ -47,9 +47,9 @@ export const recursiveTransform = async (startingKey: any = undefined) => {
       }
     }
     if (scannedResult.startingKey) {
+      console.log("Starting key is ", scannedResult.startingKey);
       await recursiveTransform(scannedResult.startingKey);
     } else {
-      console.log("Starting key is ", scannedResult.startingKey);
       return;
     }
   } catch (err) {
@@ -100,6 +100,7 @@ export const scanTableForMetadata = async (
     TableName: tableName,
     ExclusiveStartKey: startingKey,
   });
+  console.log("The last evaluated key is ", results?.LastEvaluatedKey );
   return { startingKey: results?.LastEvaluatedKey, results };
 };
 
