@@ -22,37 +22,37 @@ export const transform = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
-  var keepSearching = true;
-  var startingKey;
-  var metadataResults;
   console.log("Performing ETL with params", { TABLE_NAME, BUCKET_NAME });
-  while (keepSearching == true) {
-    try {
-      [startingKey, keepSearching, metadataResults] =
-        await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
-      console.log("Iterating over fetched items:", {
-        startingKey,
-        keepSearching,
-        recordCount: metadataResults?.Items.length,
-      });
-      if (metadataResults?.Items) {
-        for (const metadata of metadataResults.Items) {
-          await processMetadata(metadata);
-        }
-      }
-    } catch (err) {
-      console.error(`Database scan failed for the table ${TABLE_NAME}
-                     with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}.
-                     Error: ${err}`);
-      throw err;
-    }
-  }
+  await recursiveTransform();
   return {
     statusCode: 200,
     body: JSON.stringify({
       message: "finished ETL script",
     }),
   };
+};
+
+export const recursiveTransform = async (startingKey: any = undefined) => {
+  try {
+    let scannedResult = await scanTableForMetadata(TABLE_NAME, startingKey);
+    let metadataResults = scannedResult.results;
+    console.log("Iterating over fetched items:", {
+      startingKey,
+      recordCount: metadataResults?.Items?.length,
+    });
+    if (metadataResults?.Items) {
+      for (const metadata of metadataResults.Items) {
+        await processMetadata(metadata as AnyObject);
+      }
+    }
+    if (scannedResult.startingKey)
+      await recursiveTransform(scannedResult.startingKey);
+  } catch (err) {
+    console.error(`Database scan failed for the table ${TABLE_NAME}
+                   with startingKey ${startingKey}.
+                   Error: ${err}`);
+    throw err;
+  }
 };
 
 export const processMetadata = async (metadata: AnyObject) => {
@@ -89,20 +89,13 @@ export const processMetadata = async (metadata: AnyObject) => {
 
 export const scanTableForMetadata = async (
   tableName: string,
-  keepSearching: boolean,
   startingKey?: any
 ) => {
   let results = await dynamodbLib.scan({
     TableName: tableName,
     ExclusiveStartKey: startingKey,
   });
-  if (results && results.LastEvaluatedKey) {
-    startingKey = results.LastEvaluatedKey;
-    return [startingKey, keepSearching, results];
-  } else {
-    keepSearching = false;
-    return [undefined, keepSearching, results];
-  }
+  return { startingKey: results?.LastEvaluatedKey, results };
 };
 
 export const getFormTemplateFromS3 = async (

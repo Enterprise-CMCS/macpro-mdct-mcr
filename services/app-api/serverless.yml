@@ -167,6 +167,7 @@ functions:
     warmup:
       default:
         enabled: false
+    maximumRetryAttempts: 0
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:
