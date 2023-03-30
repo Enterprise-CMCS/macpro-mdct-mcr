@@ -21,7 +21,7 @@ export const text = () =>
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
     });
-export const textOptional = () => text().notRequired();
+export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
