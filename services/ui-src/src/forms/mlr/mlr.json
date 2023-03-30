@@ -237,7 +237,68 @@
             "validation": "radio",
             "props": {
               "label": "K. Eligibility group",
-              "hint": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group. <br/> <ol> <li> <i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10' target='_blank' aria-label='Link opens in new tab'>42 CFR 457.10</a>.</li> <li><i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\".</li> <li>For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\".</li></ol>",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group."
+                },
+                {
+                  "type": "ol",
+                  "children": [
+                    {
+                      "type": "li",
+                      "props": {
+                        "style": {
+                          "fontWeight": "none"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "span",
+                          "content": "<i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in "
+                        },
+                        {
+                          "type": "externalLink",
+                          "content": "42 CFR 457.10",
+                          "props": {
+                            "aria-label": "Link opens in new tab",
+                            "target": "_blank",
+                            "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "props": {
+                        "style": {
+                          "fontWeight": "none"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "span",
+                          "content": "<i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\"."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "props": {
+                        "style": {
+                          "fontWeight": "none"
+                        }
+                      },
+                      "children": [
+                        {
+                          "type": "span",
+                          "content": "For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\"."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
               "choices": [
                 {
                   "id": "UgSDECcYDJ4S39QEMmMRcq",
@@ -275,7 +336,21 @@
             "validation": "text",
             "props": {
               "label": "M. MCO, PIHP, or PAHP Name",
-              "hint": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: \"<a href='https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html' target='_blank' aria-label='Link opens in new tab'>Managed Care Enrollment by Program and Plan</a>\""
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "Managed Care Enrollment by Program and Plan",
+                  "props": {
+                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ]
             }
           },
           {
@@ -362,7 +437,21 @@
             "validation": "numberOptional",
             "props": {
               "label": "1.1 Incurred claims",
-              "hint": "Enter incurred claims (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(e)(2)</a>",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter incurred claims (optional subcomponent of section 1.3 MLR numerator)."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(e)(2)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "currency",
               "styleAsOptional": true
             }
@@ -373,7 +462,21 @@
             "validation": "numberOptional",
             "props": {
               "label": "1.2 Activities that improve health care quality",
-              "hint": "Enter activities that improve health care quality (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(3)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(e)(3)</a>",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter activities that improve health care quality (optional subcomponent of section 1.3 MLR numerator)."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(e)(2)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(3)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "currency",
               "styleAsOptional": true
             }
@@ -384,7 +487,21 @@
             "validation": "number",
             "props": {
               "label": "1.3 MLR numerator",
-              "hint": "Enter the required MLR numerator dollar value. If the optional subcomponents are reported in 1.1-1.2, states must still report the total MLR numerator (i.e., subcomponents will not automatically sum to numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(1)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(e)(1)</a>",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter the required MLR numerator dollar value. If the optional subcomponents are reported in 1.1-1.2, states must still report the total MLR numerator (i.e., subcomponents will not automatically sum to numerator)."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(e)(1)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(1)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "currency"
             }
           },
@@ -403,8 +520,22 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "1.4 Non-claims costs (not included in numerator)",
-              "hint": "Enter the non-claims costs value. This amount is not included in the MLR numerator. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)(v)(A)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(e)(2)(v)(A)</a>",
+              "label": "1.4 Non-claims costs (not included in numerator) (optional)",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter the non-claims costs value. This amount is not included in the MLR numerator."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(e)(2)(v)(A)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)(v)(A)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "currency",
               "styleAsOptional": true
             }
@@ -422,8 +553,22 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "2.1 Premium revenue",
-              "hint": "Enter premium revenue (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(2)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(f)(2)</a>",
+              "label": "2.1 Premium revenue (optional)",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter premium revenue (optional subcomponent of section 2.3 MLR denominator)."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(f)(2)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(2)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "currency",
               "styleAsOptional": true
             }
@@ -434,7 +579,21 @@
             "validation": "numberOptional",
             "props": {
               "label": "2.2 Federal, State, and local taxes and licensing and regulatory fees",
-              "hint": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(3)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(f)(3)</a>",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator)."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(f)(3)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(3)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "currency",
               "styleAsOptional": true
             }
@@ -445,9 +604,22 @@
             "validation": "number",
             "props": {
               "label": "2.3 MLR denominator",
-              "hint": "Enter the required MLR denominator dollar value. If the optional subcomponents are reported in sections 2.1 - 2.2, states must still report the total MLR denominator (i.e., subcomponents will not automatically sum to denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(f)(1)</a>",
-              "mask": "currency",
-              "styleAsOptional": true
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter the required MLR denominator dollar value. If the optional subcomponents are reported in sections 2.1 - 2.2, states must still report the total MLR denominator (i.e., subcomponents will not automatically sum to denominator)."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(f)(1)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
+              "mask": "currency"
             }
           },
           {
@@ -474,7 +646,21 @@
             "validation": "number",
             "props": {
               "label": "3.1 Member months",
-              "hint": "Enter the required number of member months. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)' target='_blank' aria-label='Link opens in new tab'> 42 CFR § 438.8(b) </a>"
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter the required number of member months."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(b)",
+                  "props": {
+                    "href": "https://www.eexcfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ]
             }
           },
           {
@@ -504,7 +690,53 @@
             "validation": "numberOptional",
             "props": {
               "label": "3.3 Credibility adjustment",
-              "hint": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (optional subcomponent of section 3.4 Adjusted MLR) <ul><li>Enter 0% if no credibility adjustment is needed.</li><li>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</li><li>For fully credible plans, the credibility adjustment should be entered as 0%.</li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(h)</a>",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (optional subcomponent of section 3.4 Adjusted MLR)"
+                },
+                {
+                  "type": "ul",
+                  "children": [
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "span",
+                          "content": "Enter 0% if no credibility adjustment is needed."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "span",
+                          "content": "For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "span",
+                          "content": "For fully credible plans, the credibility adjustment should be entered as 0%."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(h)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "percentage",
               "styleAsOptional": true
             }
@@ -515,7 +747,21 @@
             "validation": "numberOptional",
             "props": {
               "label": "3.4 Adjusted MLR",
-              "hint": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.8(h)</a>",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR)."
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(h)",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "mask": "percentage"
             }
           },
@@ -677,7 +923,7 @@
                         "parentFieldName": "contractIncludesRemittance"
                       },
                       "props": {
-                        "label": "N. MLR reporting period start date",
+                        "label": "O. MLR reporting period start date",
                         "hint": "Auto-populates from program reporting information.",
                         "disabled": true
                       }
@@ -758,7 +1004,25 @@
                       "validation": "text",
                       "props": {
                         "label": "4.9 Remittance methodology qualitative response",
-                        "hint": "Describe the methodology used to determine the State and Federal share of the remittance. <br /> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide a description of the methodology used to determine the State and Federal share of the remittance for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74#p-438.74(b)(2)' target='_blank' aria-label='Link opens in new tab'>42 CFR § 438.74(b)(2)</a>"
+                        "hint": [
+                          {
+                            "type": "p",
+                            "content": "Describe the methodology used to determine the State and Federal share of the remittance."
+                          },
+                          {
+                            "type": "p",
+                            "content": " States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide a description of the methodology used to determine the State and Federal share of the remittance for the eligibility group described in section 1902(a)(10)(A)(i)(VIII)"
+                          },
+                          {
+                            "type": "externalLink",
+                            "content": "42 CFR § 438.74(b)(2)",
+                            "props": {
+                              "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
+                              "target": "_blank",
+                              "aria-label": "Link opens in new tab"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
