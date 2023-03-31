@@ -224,7 +224,7 @@ const sx = {
         },
       },
       p: {
-        lineHeight: "0.5rem",
+        lineHeight: "1.25rem",
         marginBottom: "0.5rem",
       },
     },
