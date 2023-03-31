@@ -520,7 +520,7 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "1.4 Non-claims costs (not included in numerator) (optional)",
+              "label": "1.4 Non-claims costs (not included in numerator)",
               "hint": [
                 {
                   "type": "p",
@@ -553,7 +553,7 @@
             "type": "number",
             "validation": "numberOptional",
             "props": {
-              "label": "2.1 Premium revenue (optional)",
+              "label": "2.1 Premium revenue",
               "hint": [
                 {
                   "type": "p",
