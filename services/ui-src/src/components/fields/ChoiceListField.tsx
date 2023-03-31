@@ -7,7 +7,6 @@ import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
-  EntityContextShape,
   formFieldFactory,
   getAutosaveFields,
   labelTextWithOptional,
@@ -172,25 +171,17 @@ export const ChoiceListField = ({
         )
           return; // Short circuit if still clicking on elements in this choice list
 
-        const entityContext: EntityContextShape = {
-          selectedEntity,
-          entityType,
-          updateEntities,
-          entities,
-        };
-
         const fields = getAutosaveFields({
           name,
-          type: "number",
+          type,
           value: displayValue,
           defaultValue,
           hydrationValue,
-          entityContext,
         });
 
         const combinedFields = [
           ...fields,
-          ...getNestedChildFields(choices, lastDatabaseValue, entityContext),
+          ...getNestedChildFields(choices, lastDatabaseValue),
         ];
         const reportArgs = {
           id: report?.id,
@@ -203,6 +194,12 @@ export const ChoiceListField = ({
           fields: combinedFields,
           report: reportArgs,
           user,
+          entityContext: {
+            selectedEntity,
+            entityType,
+            updateEntities,
+            entities,
+          },
         });
       }, timeInMs);
     }
@@ -259,8 +256,7 @@ const sx = {
 
 export const getNestedChildFields = (
   choices: FieldChoice[],
-  lastDatabaseValue: Choice[],
-  entityContext?: EntityContextShape
+  lastDatabaseValue: Choice[]
 ): AutosaveField[] => {
   // set up nested field compilation
   const nestedFields: any = [];
@@ -278,7 +274,6 @@ export const getNestedChildFields = (
         overrideCheck: true,
         defaultValue: undefined,
         hydrationValue: undefined,
-        entityContext,
       })[0];
       // add to nested fields to be autosaved
       nestedFields.push(fieldInfo);

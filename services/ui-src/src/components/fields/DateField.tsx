@@ -76,16 +76,10 @@ export const DateField = ({
     if (autosave) {
       const fields = getAutosaveFields({
         name,
-        type: "number",
+        type: "date",
         value,
         defaultValue,
         hydrationValue,
-        entityContext: {
-          selectedEntity,
-          entityType,
-          updateEntities,
-          entities,
-        },
       });
 
       const reportArgs = {
@@ -99,6 +93,12 @@ export const DateField = ({
         fields,
         report: reportArgs,
         user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
       });
     }
   };

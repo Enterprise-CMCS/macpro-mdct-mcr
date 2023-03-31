@@ -47,17 +47,18 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
    * @param updateData - updated entity information
    */
   const updateEntities = (updateData: EntityShape) => {
-    const selectedEntityIndex = entities?.findIndex(
+    const currentEntities = entities;
+    const selectedEntityIndex = currentEntities?.findIndex(
       (x) => x.id === selectedEntity?.id
     );
-    if (entities && selectedEntityIndex > -1) {
+    if (currentEntities && selectedEntityIndex > -1) {
       const newEntity = Object.assign(
-        entities[selectedEntityIndex],
+        currentEntities[selectedEntityIndex],
         updateData
       );
-      entities[selectedEntityIndex] = newEntity;
-      setEntities(entities);
+      currentEntities[selectedEntityIndex] = newEntity;
     }
+    return currentEntities;
   };
 
   const providerValue = useMemo(

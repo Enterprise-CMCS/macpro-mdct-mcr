@@ -80,12 +80,6 @@ export const NumberField = ({
         value,
         defaultValue,
         hydrationValue,
-        entityContext: {
-          selectedEntity,
-          entityType,
-          updateEntities,
-          entities,
-        },
       });
 
       const reportArgs = {
@@ -100,6 +94,12 @@ export const NumberField = ({
         fields,
         report: reportArgs,
         user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
       });
     }
   };
