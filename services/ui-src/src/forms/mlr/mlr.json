@@ -581,7 +581,7 @@
               "label": "2.2 Federal, State, and local taxes and licensing and regulatory fees",
               "hint": [
                 {
-                  "type": "span",
+                  "type": "p",
                   "content": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator)."
                 },
                 {
@@ -744,7 +744,7 @@
           {
             "id": "adjustedMLR",
             "type": "number",
-            "validation": "numberOptional",
+            "validation": "number",
             "props": {
               "label": "3.4 Adjusted MLR",
               "hint": [
@@ -875,7 +875,7 @@
                       "id": "remittanceDollarsOwed",
                       "type": "number",
                       "validation": {
-                        "type": "numberOptional",
+                        "type": "number",
                         "nested": true,
                         "parentFieldName": "contractIncludesRemittance"
                       },
