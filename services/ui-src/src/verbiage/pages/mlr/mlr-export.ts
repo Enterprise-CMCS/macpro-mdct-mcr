@@ -1,4 +1,8 @@
 export default {
+  missingEntry: {
+    noResponse: "Not answered",
+    notApplicable: "Not applicable",
+  },
   reportBanner: {
     intro: "Click below to export or print MLR Report shown here",
     pdfButton: "Download PDF",
@@ -22,4 +26,5 @@ export default {
     indicator: "Indicator",
     response: "Response",
   },
+  emptyEntityMessage: {},
 };

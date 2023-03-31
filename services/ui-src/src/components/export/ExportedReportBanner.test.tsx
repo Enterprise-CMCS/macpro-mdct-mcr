@@ -16,8 +16,8 @@ const mcparContext = {
 const mlrContext = {
   report: {
     reportType: "MLR",
-  }
-}
+  },
+};
 
 const bannerWithContext = (context: any) => {
   return (
@@ -25,7 +25,7 @@ const bannerWithContext = (context: any) => {
       <ExportedReportBanner />
     </ReportContext.Provider>
   );
-}
+};
 
 describe("ExportedReportBanner", () => {
   // temporarily mock window.print for the testing environment

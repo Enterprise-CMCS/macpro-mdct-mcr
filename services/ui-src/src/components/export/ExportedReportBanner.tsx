@@ -20,7 +20,7 @@ export const ExportedReportBanner = () => {
   const verbiageMap: { [key in ReportType]: any } = {
     MCPAR: mcparVerbiage,
     MLR: mlrVerbiage,
-    NAAR: undefined,
+    NAAAR: undefined,
   };
 
   const verbiage = verbiageMap[reportType];

@@ -4,7 +4,7 @@ import { AnyObject, CustomHtmlElement, FormJson } from "types";
 export enum ReportType {
   MCPAR = "MCPAR",
   MLR = "MLR",
-  NAAR = "NAAR",
+  NAAAR = "NAAAR",
 }
 
 // REPORT STRUCTURE
