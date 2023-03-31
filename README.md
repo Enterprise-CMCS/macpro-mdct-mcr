@@ -48,68 +48,11 @@ Before starting the project we're going to install some tools. We recommend havi
 1. Clone the repo: `git clone https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git`
 2. In the root directory copy the .env_example file and name it .env
 3. In the services/ui-src directory copy the .env_example file and name it .env
-4. Overwrite the values here with the examples in the Environment Configuration below
-5. In the root directory run `pre-commit install`
+4. In the root directory run `pre-commit install`
 
 ### Running the project locally
 
 In the root of the project run `./dev local`
-
-#### Environment Configuration
-
-Root `.env`
-
-```
-API_URL=http://localhost:3030/local
-BANNER_TABLE_NAME=local-banners
-COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
-COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
-DISABLE_ESLINT_PLUGIN=true
-DYNAMODB_URL=http://localhost:8000
-LOCAL_LOGIN=true
-MCPAR_FORM_BUCKET=local-mcpar-form
-MCPAR_REPORT_TABLE_NAME=local-mcpar-reports
-MLR_FORM_BUCKET=local-mlr-form
-MLR_REPORT_TABLE_NAME=local-mlr-reports
-NAAAR_FORM_BUCKET=local-naaar-form
-NAAAR_REPORT_TABLE_NAME=local-naaar-reports
-PRINCE_API_HOST=macpro-platform-dev.cms.gov
-PRINCE_API_PATH=/doc-conv/508html-to-508pdf
-S3_ATTACHMENTS_BUCKET_NAME=local-uploads
-S3_LOCAL_ENDPOINT=http://localhost:4569
-SKIP_PREFLIGHT_CHECK=true
-TEMPLATE_BUCKET=local-uploads
-URL=http://localhost/3000
-LOGGING_BUCKET=log-bucket
-IAM_PATH=/
-IAM_PERMISSIONS_BOUNDARY="bound"
-WARMUP_SCHEDULE=60 minutes
-WARMUP_CONCURRENCY=5
-DATATRANSFORM_ENABLED=false
-DATATRANSFORM_UPDATED_ENABLED=false
-```
-
-/services/ui-src `.env`
-
-```
-API_REGION=us-east-1
-API_URL=http://localhost:3030
-COGNITO_IDENTITY_POOL_ID=us-east-1:76708bb0-a458-4ea7-b90e-995ff5da5ab6
-COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
-COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
-COGNITO_REGION=us-east-1
-COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
-COGNITO_USER_POOL_CLIENT_DOMAIN=main-login-4n2andd7qumjgdojec3cbqsemu.auth.us-east-1.amazoncognito.com
-COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
-DEV_API_URL=https://umu6q0vjmk.execute-api.us-east-1.amazonaws.com/main
-LD_PROJECT_KEY=mdct-mcr
-LOCAL_LOGIN=true
-REACT_APP_LD_SDK_CLIENT=placeholder
-S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
-S3_ATTACHMENTS_BUCKET_REGION=us-east-1
-S3_LOCAL_ENDPOINT=http://localhost:4569
-STAGE=local
-```
 
 ### Logging in
 
