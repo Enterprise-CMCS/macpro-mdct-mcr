@@ -77,12 +77,6 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       defaultValue: undefined,
       overrideCheck: true,
       hydrationValue,
-      entityContext: {
-        selectedEntity,
-        entityType,
-        updateEntities,
-        entities,
-      },
     });
     const reportArgs = {
       id: report?.id,
@@ -96,6 +90,12 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       fields,
       report: reportArgs,
       user,
+      entityContext: {
+        selectedEntity,
+        entityType,
+        updateEntities,
+        entities,
+      },
     });
   };
 
