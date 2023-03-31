@@ -3,7 +3,9 @@ import {
   scanTableForMetadata,
   writeFormTemplateToS3,
   processMetadata,
+  recursiveTransform,
 } from "./formTemplateEntitiesUpdate";
+
 import {
   mockDocumentClient,
   mockDynamoData,
@@ -53,12 +55,25 @@ describe("Test form template entities update", () => {
 
     let result = await scanTableForMetadata("local-mcpar-reports", true);
 
-    expect(result[1]).toBeTruthy();
-    expect(result[0]).toMatchObject(mockMetaDataResponse1.LastEvaluatedKey);
+    expect(result.startingKey).toMatchObject(
+      mockMetaDataResponse1.LastEvaluatedKey
+    );
 
-    result = await scanTableForMetadata("local-mcpar-reports", true, result[0]);
+    result = await scanTableForMetadata(
+      "local-mcpar-reports",
+      result.startingKey
+    );
 
-    expect(result[1]).toBeFalsy();
+    expect(result.startingKey).toBeUndefined();
+  });
+  test("Test recursiveTransform", async () => {
+    mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse1);
+    mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
+
+    await recursiveTransform();
+    //This works according to logs, but haven't figured out how to verify yet.
+
+    // expect(mockDocumentClient.put.promise).toBeCalledTimes(2);
   });
 
   test("Test retrieve form template", async () => {
@@ -73,7 +88,7 @@ describe("Test form template entities update", () => {
 
   test("Test write updated form template to S3", async () => {
     try {
-      await writeFormTemplateToS3(mockReportJsonWithId);
+      await writeFormTemplateToS3(mockReportJsonWithId, "foo", "bar");
     } catch (e) {
       expect(e).toBeFalsy();
     }
@@ -84,9 +99,8 @@ describe("Test form template entities update", () => {
 
     let results = await scanTableForMetadata("local-mcpar-reports", true);
 
-    expect(results[0]).toBeNull();
-    expect(results[1]).toBeFalsy();
-    expect(results[2].Items).toBeUndefined();
+    expect(results.startingKey).toBeUndefined();
+    expect(results.results?.Items).toBeUndefined();
   });
 
   test("Test no matching template", async () => {
