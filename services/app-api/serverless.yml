@@ -69,6 +69,8 @@ custom:
       events:
         - schedule: rate(60 minutes)
       concurrency: 5
+      package:
+        individually: true
   authValue:
     main: aws_iam
     val: aws_iam
@@ -156,6 +158,16 @@ provider:
     PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
+  formTemplateEntitiesUpdate:
+    handler: handlers/etl/formTemplateEntitiesUpdate.transform
+    timeout: 300
+    environment:
+      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
+      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:
@@ -231,6 +243,20 @@ functions:
           request:
             parameters:
               paths:
+                reportType: true
+                state: true
+                id: true
+  releaseReport:
+    handler: handlers/reports/release.releaseReport
+    events:
+      - http:
+          path: reports/release/{reportType}/{state}/{id}
+          method: put
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
                 state: true
                 id: true
   createReport:
@@ -254,6 +280,22 @@ functions:
       - http:
           path: reports/{reportType}/{state}/{id}
           method: put
+          cors: true
+          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+          request:
+            parameters:
+              paths:
+                reportType: true
+                state: true
+                id: true
+  submitReport:
+    handler: handlers/reports/submit.submitReport
+    timeout: 30
+    memorySize: 2048
+    events:
+      - http:
+          path: reports/submit/{reportType}/{state}/{id}
+          method: post
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
           request:

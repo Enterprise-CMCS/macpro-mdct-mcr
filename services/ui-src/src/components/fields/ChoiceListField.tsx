@@ -7,19 +7,23 @@ import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
+  EntityContextShape,
   formFieldFactory,
+  getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
 } from "utils";
 import {
   AnyObject,
+  AutosaveField,
   Choice,
   CustomHtmlElement,
   FieldChoice,
   FormField,
   InputChangeEvent,
 } from "types";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const ChoiceListField = ({
   name,
@@ -39,12 +43,15 @@ export const ChoiceListField = ({
     useState<Choice[]>(defaultValue);
 
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state } = useUser().user ?? {};
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
+  const { full_name, state, userIsAdmin } = useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
   form.register(name);
 
-  const shouldDisableChildFields = !!props?.disabled;
+  const shouldDisableChildFields =
+    userIsAdmin && report?.formTemplate.adminDisabled;
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -164,9 +171,26 @@ export const ChoiceListField = ({
           !document.activeElement?.id.includes("-otherText")
         )
           return; // Short circuit if still clicking on elements in this choice list
-        let fields = [
-          { name, type, value: displayValue, hydrationValue, defaultValue },
-          ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
+
+        const entityContext: EntityContextShape = {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        };
+
+        const fields = getAutosaveFields({
+          name,
+          type: "number",
+          value: displayValue,
+          defaultValue,
+          hydrationValue,
+          entityContext,
+        });
+
+        const combinedFields = [
+          ...fields,
+          ...getNestedChildFields(choices, lastDatabaseValue, entityContext),
         ];
         const reportArgs = {
           id: report?.id,
@@ -176,7 +200,7 @@ export const ChoiceListField = ({
         const user = { userName: full_name, state };
         await autosaveFieldData({
           form,
-          fields,
+          fields: combinedFields,
           report: reportArgs,
           user,
         });
@@ -233,10 +257,11 @@ const sx = {
   },
 };
 
-export const getNestedChildFieldsOfUncheckedParent = (
+export const getNestedChildFields = (
   choices: FieldChoice[],
-  lastDatabaseValue: Choice[]
-) => {
+  lastDatabaseValue: Choice[],
+  entityContext?: EntityContextShape
+): AutosaveField[] => {
   // set up nested field compilation
   const nestedFields: any = [];
   const compileNestedFields = (fields: FormField[]) => {
@@ -245,12 +270,16 @@ export const getNestedChildFieldsOfUncheckedParent = (
       const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
         ? []
         : "";
-      const fieldInfo = {
+
+      const fieldInfo = getAutosaveFields({
         name: field.id,
         type: field.type,
         value: fieldDefaultValue,
         overrideCheck: true,
-      };
+        defaultValue: undefined,
+        hydrationValue: undefined,
+        entityContext,
+      })[0];
       // add to nested fields to be autosaved
       nestedFields.push(fieldInfo);
       // recurse through additional nested children as needed
@@ -266,11 +295,7 @@ export const getNestedChildFieldsOfUncheckedParent = (
     // if choice is not selected and there are children
     const isParentChoiceChecked = (id: string) =>
       lastDatabaseValue?.some((autosave) => autosave.key === id);
-    if (
-      !choice.checked &&
-      choice.children &&
-      isParentChoiceChecked(choice.id)
-    ) {
+    if (choice.children && isParentChoiceChecked(choice.id)) {
       compileNestedFields(choice.children);
     }
   });

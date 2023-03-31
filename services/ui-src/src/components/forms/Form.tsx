@@ -18,7 +18,13 @@ import {
   sortFormErrors,
   useUser,
 } from "utils";
-import { AnyObject, FormJson, FormField } from "types";
+import {
+  AnyObject,
+  FormJson,
+  FormField,
+  isFieldElement,
+  FormLayoutElement,
+} from "types";
 
 export const Form = ({
   id,
@@ -39,7 +45,9 @@ export const Form = ({
   const fieldInputDisabled = isAdminTypeUser && formJson.adminDisabled;
 
   // create validation schema
-  const formValidationJson = compileValidationJsonFromFields(formJson.fields);
+  const formValidationJson = compileValidationJsonFromFields(
+    formJson.fields.filter(isFieldElement)
+  );
   const formValidationSchema = mapValidationTypesToSchema(formValidationJson);
   const formResolverSchema = yupSchema(formValidationSchema || {});
   mapValidationTypesToSchema;
@@ -66,7 +74,7 @@ export const Form = ({
   };
 
   // hydrate and create form fields using formFieldFactory
-  const renderFormFields = (fields: FormField[]) => {
+  const renderFormFields = (fields: (FormField | FormLayoutElement)[]) => {
     const fieldsToRender = hydrateFormFields(fields, formData);
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,
@@ -78,6 +86,7 @@ export const Form = ({
     <FormProvider {...form}>
       <form
         id={id}
+        autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit as any, onError || onErrorHandler)}
         {...props}
       >
@@ -117,6 +126,14 @@ const sx = {
     fontSize: "sm",
     ul: {
       paddingLeft: "2rem",
+    },
+    ol: {
+      margin: "0.25rem 0.5rem",
+      padding: "0.5rem",
+    },
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
     },
   },
   // nested child fields

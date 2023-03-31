@@ -1,21 +1,23 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // components
 import { Spinner } from "@cmsgov/design-system";
 import { Flex } from "@chakra-ui/react";
 import {
   ReportContext,
-  McparReviewSubmitPage,
+  ReviewSubmitPage,
   ModalDrawerReportPage,
   DrawerReportPage,
   PageTemplate,
   Sidebar,
   StandardReportPage,
+  ModalOverlayReportPage,
 } from "components";
 // utils
 import { useUser } from "utils";
 import {
   ModalDrawerReportPageShape,
+  ModalOverlayReportPageShape,
   DrawerReportPageShape,
   PageTypes,
   ReportRoute,
@@ -25,6 +27,7 @@ import {
 export const ReportPageWrapper = () => {
   const { state } = useUser().user ?? {};
   const { report } = useContext(ReportContext);
+  const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -50,8 +53,15 @@ export const ReportPageWrapper = () => {
         return (
           <ModalDrawerReportPage route={route as ModalDrawerReportPageShape} />
         );
+      case PageTypes.MODAL_OVERLAY:
+        return (
+          <ModalOverlayReportPage
+            route={route as ModalOverlayReportPageShape}
+            setSidebarHidden={setSidebarHidden}
+          />
+        );
       case PageTypes.REVIEW_SUBMIT:
-        return <McparReviewSubmitPage />;
+        return <ReviewSubmitPage />;
       default:
         return <StandardReportPage route={route as StandardReportPageShape} />;
     }
@@ -66,7 +76,7 @@ export const ReportPageWrapper = () => {
       <Flex sx={sx.pageContainer}>
         {report ? (
           <>
-            <Sidebar />
+            <Sidebar isHidden={sidebarHidden} />
             <Flex id="report-content" sx={sx.reportContainer}>
               {reportTemplate && renderPageSection(reportTemplate)}
             </Flex>

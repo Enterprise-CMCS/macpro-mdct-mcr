@@ -5,14 +5,14 @@ import { ReportContext, ExportedModalDrawerReportSection } from "components";
 // utils
 import {
   mockModalDrawerReportPageJson,
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
 } from "utils/testing/setupJest";
 // types
 import { ModalDrawerReportPageShape, ReportContextShape } from "types";
 
 const exportedReportSectionComponent = (
-  context: ReportContextShape = mockReportContext,
+  context: ReportContextShape = mockMcparReportContext,
   content: ModalDrawerReportPageShape = mockModalDrawerReportPageJson
 ) => (
   <ReportContext.Provider value={context}>
@@ -32,9 +32,9 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
   test("Correct message is shown if entityType is accessMeasures", () => {
     render(
       exportedReportSectionComponent({
-        ...mockReportContext,
+        ...mockMcparReportContext,
         report: {
-          ...mockReport,
+          ...mockMcparReport,
           fieldData: {},
         },
       })
@@ -45,7 +45,7 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
 
   test("Correct message is shown if entityType is qualityMeasures", () => {
     render(
-      exportedReportSectionComponent(mockReportContext, {
+      exportedReportSectionComponent(mockMcparReportContext, {
         ...mockModalDrawerReportPageJson,
         entityType: "qualityMeasures",
       })
@@ -58,7 +58,7 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
 
   test("Correct message is shown if entityType is sanctions", () => {
     render(
-      exportedReportSectionComponent(mockReportContext, {
+      exportedReportSectionComponent(mockMcparReportContext, {
         ...mockModalDrawerReportPageJson,
         entityType: "sanctions",
       })

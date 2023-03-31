@@ -44,10 +44,13 @@ custom:
   sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress, ssm:/configuration/default/sesSourceEmailAddress, ""}
   attachments_bucket_arn: ${cf:uploads-${self:custom.stage}.AttachmentsBucketArn}
   api_gateway_rest_api_name: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiName}
-  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/okta_metadata_url, ""}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
   bootstrapUsersEnabled: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/enabled, ssm:/configuration/default/cognito/bootstrapUsers/enabled, ""}
   bootstrapUsersPassword: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/password, ssm:/configuration/default/cognito/bootstrapUsers/password, ""}
+  okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/okta_metadata_url, ""}
+  okta_oidc_client_id: ${ssm:/configuration/${self:custom.stage}/okta_client_id, ""}
+  okta_oidc_client_secret: ${ssm:/configuration/${self:custom.stage}/okta_client_secret, ""}
+  okta_oidc_issuer: ${ssm:/configuration/${self:custom.stage}/oidc_issuer, ""}
   scripts:
     hooks:
       deploy:finalize: |
@@ -71,11 +74,26 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.sesSourceEmailAddress}
-    BackWithOkta:
-      Fn::Not:
-        - Fn::Equals:
-            - ""
-            - ${self:custom.okta_metadata_url}
+    BackWithOktaOIDC: !And
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_oidc_client_id}
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_oidc_client_secret}
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_oidc_issuer}
+    BackWithOktaSAML: !And
+      - Fn::Not:
+          - !Condition BackWithOktaOIDC
+      - Fn::Not:
+          - Fn::Equals:
+              - ""
+              - ${self:custom.okta_metadata_url}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -132,7 +150,7 @@ resources:
         AccessTokenValidity: 30
         IdTokenValidity: 30
         RefreshTokenValidity: 24
-        TokenValidityUnits: 
+        TokenValidityUnits:
           AccessToken: "minutes"
           IdToken: "minutes"
           RefreshToken: "hours"
@@ -145,8 +163,12 @@ resources:
           - http://localhost:3000/
         SupportedIdentityProviders:
           - Fn::If:
-              - BackWithOkta
-              - !Ref OktaUserPoolIdentityProvider
+              - BackWithOktaOIDC
+              - !Ref OktaUserPoolIdentityProviderOIDC
+              - COGNITO
+          - Fn::If:
+              - BackWithOktaSAML
+              - !Ref OktaUserPoolIdentityProviderSAML
               - COGNITO
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
@@ -158,8 +180,30 @@ resources:
               - Ref: CognitoUserPoolClient
         UserPoolId:
           Ref: CognitoUserPool
-    OktaUserPoolIdentityProvider:
-      Condition: BackWithOkta
+    OktaUserPoolIdentityProviderOIDC:
+      Condition: BackWithOktaOIDC
+      Type: AWS::Cognito::UserPoolIdentityProvider
+      Properties:
+        AttributeMapping:
+          email: email
+          given_name: given_name
+          family_name: family_name
+          custom:cms_roles: cms-roles
+          custom:cms_state: state
+        IdpIdentifiers:
+          - IdpIdentifierOIDC
+        ProviderDetails:
+          client_id: ${self:custom.okta_oidc_client_id}
+          client_secret: ${self:custom.okta_oidc_client_secret}
+          oidc_issuer: ${self:custom.okta_oidc_issuer}
+          attributes_request_method: GET
+          authorize_scopes: "email openid profile"
+        ProviderName: OktaOIDC
+        ProviderType: OIDC
+        UserPoolId:
+          Ref: CognitoUserPool
+    OktaUserPoolIdentityProviderSAML:
+      Condition: BackWithOktaSAML
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
@@ -253,5 +297,11 @@ resources:
       Value: !Sub ${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com
     IdentityPoolId:
       Value: !Ref CognitoIdentityPool
+    IdentityProvider:
+      Value:
+        Fn::If:
+          - BackWithOktaOIDC
+          - OktaOIDC
+          - Okta
     Region:
       Value: !Sub ${AWS::Region}

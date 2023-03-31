@@ -12,11 +12,21 @@ import {
   ChoiceField,
 } from "components";
 // types
-import { AnyObject, FieldChoice, FormField } from "types";
+import {
+  AnyObject,
+  FieldChoice,
+  FormField,
+  FormLayoutElement,
+  isFieldElement,
+} from "types";
+import {
+  SectionContent,
+  SectionHeader,
+} from "components/forms/FormLayoutElements";
 
 // return created elements from provided fields
 export const formFieldFactory = (
-  fields: FormField[],
+  fields: Array<FormField | FormLayoutElement>,
   options?: {
     disabled?: boolean;
     nested?: boolean;
@@ -34,6 +44,8 @@ export const formFieldFactory = (
     radio: RadioField,
     text: TextField,
     textarea: TextAreaField,
+    sectionHeader: SectionHeader,
+    sectionContent: SectionContent,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {
@@ -42,6 +54,7 @@ export const formFieldFactory = (
       key: field.id,
       name: field.id,
       hydrate: field.props?.hydrate,
+      autoComplete: isFieldElement(field) ? "one-time-code" : undefined, // stops browsers from forcing autofill
       ...options,
       ...field?.props,
     };
@@ -50,10 +63,10 @@ export const formFieldFactory = (
 };
 
 export const hydrateFormFields = (
-  formFields: FormField[],
+  formFields: (FormField | FormLayoutElement)[],
   formData: AnyObject | undefined
 ) => {
-  formFields.forEach((field: FormField) => {
+  formFields.forEach((field: FormField | FormLayoutElement) => {
     const fieldFormIndex = formFields.indexOf(field!);
     const fieldProps = formFields[fieldFormIndex].props!;
     // check for children on each choice in field props
@@ -80,24 +93,28 @@ export const hydrateFormFields = (
 };
 
 // add data to choice fields in preparation for render
-export const initializeChoiceListFields = (fields: FormField[]) => {
+export const initializeChoiceListFields = (
+  fields: (FormField | FormLayoutElement)[]
+) => {
   const fieldsWithChoices = fields.filter(
-    (field: FormField) => field.props?.choices
+    (field: FormField | FormLayoutElement) => field.props?.choices
   );
-  fieldsWithChoices.forEach((field: FormField) => {
-    field?.props?.choices.forEach((choice: FieldChoice) => {
-      // set choice value to choice label string
-      choice.value = choice.label;
-      // if choice id has not already had parent field id appended, do so now
-      if (!choice.id.includes("-")) {
-        choice.id = field.id + "-" + choice.id;
-      }
-      choice.name = choice.id;
-      // initialize choice as controlled component in unchecked state
-      if (choice.checked != true) choice.checked = false;
-      // if choice has children, recurse
-      if (choice.children) initializeChoiceListFields(choice.children);
-    });
+  fieldsWithChoices.forEach((field: FormField | FormLayoutElement) => {
+    if (isFieldElement(field)) {
+      field?.props?.choices.forEach((choice: FieldChoice) => {
+        // set choice value to choice label string
+        choice.value = choice.label;
+        // if choice id has not already had parent field id appended, do so now
+        if (!choice.id.includes("-")) {
+          choice.id = field.id + "-" + choice.id;
+        }
+        choice.name = choice.id;
+        // initialize choice as controlled component in unchecked state
+        if (choice.checked != true) choice.checked = false;
+        // if choice has children, recurse
+        if (choice.children) initializeChoiceListFields(choice.children);
+      });
+    }
   });
   return fields;
 };

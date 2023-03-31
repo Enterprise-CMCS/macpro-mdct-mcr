@@ -2,7 +2,760 @@
   "type": "MLR",
   "name": "MLR Report Submission Form",
   "basePath": "/mlr",
-  "version": "MLR_2023-02-08",
+  "version": "MLR_2023-02-09",
   "adminDisabled": true,
-  "routes": []
+  "routes": [
+    {
+      "name": "Program Information",
+      "path": "/mlr/program-information",
+      "pageType": "standard",
+      "verbiage": {
+        "intro": {
+          "section": "Section A: Program Information",
+          "subsection": "Point of Contact",
+          "spreadsheet": "Program Information"
+        }
+      },
+      "form": {
+        "id": "apoc",
+        "fields": [
+          {
+            "id": "contactName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "A. Contact name",
+              "hint": "Enter the first and last name of the primary contact for this report."
+            }
+          },
+          {
+            "id": "contactPhone",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "B. Contact phone",
+              "hint": "Enter phone number as ###-###-####."
+            }
+          },
+          {
+            "id": "contactEmailAddress",
+            "type": "text",
+            "validation": "email",
+            "props": {
+              "label": "C. Contact email address",
+              "hint": "Enter email address of the primary contact."
+            }
+          },
+          {
+            "id": "contactTitle",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "D. Contact title",
+              "hint": "Enter the primary contact’s job title."
+            }
+          },
+          {
+            "id": "stateName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "E. State",
+              "hint": "Auto-populates from your account profile.",
+              "disabled": true
+            }
+          },
+          {
+            "id": "stateAgencyName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "F. State Agency Name",
+              "hint": "Enter the name of the state/territory Medicaid agency that is submitting this report."
+            }
+          },
+          {
+            "id": "versionControl",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "G. Version control",
+              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /><br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
+              "choices": [
+                {
+                  "id": "cyUSrTH8mWdpqAKExLZAkz",
+                  "label": "Yes, this is a resubmission",
+                  "children": [
+                    {
+                      "id": "versionControlDescription",
+                      "type": "radio",
+                      "validation": {
+                        "type": "radio",
+                        "nested": true,
+                        "parentFieldName": "versionControl"
+                      },
+                      "props": {
+                        "label": "H. Version control description",
+                        "hint": "Select the response(s) that best describes the changes between this version and the prior version of the annual summary MLR Report submission.",
+                        "choices": [
+                          {
+                            "id": "nwq29k5JoRaUiz7CtBZFQN",
+                            "label": "Revise state contact information"
+                          },
+                          {
+                            "id": "BezTBrQf7t3bud7LaAMLqH",
+                            "label": "Revise program or plan information"
+                          },
+                          {
+                            "id": "Kr7HesM9jxDGfP4xDVAXpm",
+                            "label": "Revise amount(s) for MLR calculation"
+                          },
+                          {
+                            "id": "2tdWvZkAkozLqZie6iwXRh",
+                            "label": "Revise amount of remittance"
+                          },
+                          {
+                            "id": "3fbB2pqVnMAQjKtFVZoSXw",
+                            "label": "Revise member months"
+                          },
+                          {
+                            "id": "4V3X7Mmz6VC89k9bgQUoLK",
+                            "label": "Other, specify",
+                            "children": [
+                              {
+                                "id": "versionControlDescriptionOther",
+                                "type": "textarea",
+                                "validation": {
+                                  "type": "text",
+                                  "nested": true,
+                                  "parentFieldName": "versionControlDescription"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "KFCd3rfEu3eT4UFskUhDtx",
+                  "label": "No, this is an initial submission"
+                }
+              ],
+              "disabled": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MLR Reporting",
+      "path": "/mlr/mlr-reporting",
+      "pageType": "modalOverlay",
+      "entityType": "program",
+      "verbiage": {
+        "intro": {
+          "section": "MLR Reporting",
+          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+          "spreadsheet": "Program Information & MLR Reporting",
+          "info": [
+            {
+              "type": "html",
+              "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab.</b>"
+            }
+          ]
+        },
+        "dashboardTitle": "MLR report total count:",
+        "countEntitiesInTitle": true,
+        "tableHeader": "Program name <br/> Eligibility group <br/> MLR reporting period <br/> MCO/PIHP/PAHP name",
+        "addEntityButtonText": "Add program reporting information",
+        "editEntityButtonText": "Edit info",
+        "deleteModalTitle": "Delete program reporting information for this report?",
+        "deleteModalConfirmButtonText": "Yes, delete report",
+        "deleteModalWarning": "You will lose all information entered for this report. Are you sure you want to proceed?",
+        "enterReportText": "Enter MLR",
+        "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab.",
+        "addEditModalAddTitle": "Add program reporting information",
+        "addEditModalEditTitle": "Edit program reporting information",
+        "addEditModalHint": "Complete this screen once for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+      },
+      "modalForm": {
+        "id": "bpel-modal",
+        "fields": [
+          {
+            "id": "programName",
+            "type": "textarea",
+            "validation": "text",
+            "props": {
+              "label": "I. Program name",
+              "hint": "Enter the name of the program(s) relevant to this set of MLR results. States providing plan-level MLR results separated by program should enter the individual relevant program name in the field below. States providing one set of combined MLR results per plan should list the program names relevant to the respective set of results in the field below, separated by commas. <br/> A program is defined generally by a specified set of benefits and eligibility criteria that is articulated in a contract between the state and a managed care plan."
+            }
+          },
+          {
+            "id": "programType",
+            "type": "checkbox",
+            "validation": "checkbox",
+            "props": {
+              "label": "J. Program type",
+              "hint": "Select the program type definition(s) that best describes the program entered in \"I. Program Name\".",
+              "choices": [
+                {
+                  "id": "cQhGnyBmiXszLqrx6b2Cp8",
+                  "label": "Behavioral Health Only"
+                },
+                {
+                  "id": "G4inXZJWYFsDZYGk75cW7L",
+                  "label": "Comprehensive MCO"
+                },
+                {
+                  "id": "J8PmLy8nKxTK55XJch2jDw",
+                  "label": "Comprehensive MCO + MLTSS"
+                },
+                {
+                  "id": "PamL56cwvY3Rbdqmnigvve",
+                  "label": "Dental Only"
+                },
+                {
+                  "id": "hqjmUS69rVTEKToDxWLXtz",
+                  "label": "MLTSS Only"
+                },
+                {
+                  "id": "6krUQZyhpmHHoagQWgUzxx",
+                  "label": "Other PIHP"
+                },
+                {
+                  "id": "VNp9mDXgv9ixL2H8JHVBBE",
+                  "label": "Other PAHP"
+                }
+              ]
+            }
+          },
+          {
+            "id": "eligibilityGroup",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "K. Eligibility group",
+              "hint": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group. <br/> <ol> <li> <i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in <a href=\"https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10\">42 CFR 457.10</a>.</li> <li><i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\".</li> <li>For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\".</li></ol>",
+              "choices": [
+                {
+                  "id": "UgSDECcYDJ4S39QEMmMRcq",
+                  "label": "Standalone CHIP"
+                },
+                {
+                  "id": "KWr7SR2JM5UYogD6xZykrN",
+                  "label": "Group VIII Expansion Adult Only"
+                },
+                {
+                  "id": "cRi6qE4T5c6BjbGUsiiEof",
+                  "label": "All Populations"
+                },
+                {
+                  "id": "4xSRBneHBfUEqSPfrPTRYf",
+                  "label": "Other, specify",
+                  "children": [
+                    {
+                      "id": "eligibilityGroup-otherText",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "eligibilityGroup"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "planName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "M. MCO, PIHP, or PAHP Name",
+              "hint": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: \"<a href=\"https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html\">Managed Care Enrollment by Program and Plan</a>\""
+            }
+          },
+          {
+            "id": "reportingPeriodStartDate",
+            "type": "date",
+            "validation": "date",
+            "props": {
+              "label": "N. MLR reporting period start date",
+              "hint": "Enter the state date of the MLR Reporting Period. <br/> The MLR reporting period should be a perod of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
+            }
+          },
+          {
+            "id": "reportingPeriodEndDate",
+            "type": "date",
+            "validation": {
+              "type": "endDate",
+              "dependentFieldName": "reportingPeriodStartDate"
+            },
+            "props": {
+              "label": "O. MLR reporting period end date",
+              "hint": "Enter the end date of the MLR reporting period.",
+              "timetype": "endDate"
+            }
+          },
+          {
+            "id": "reportingPeriodDiscrepancy",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "P.1 Reporting period discrepancy",
+              "hint": "Is the reporting period less than 12 months or does the MCO/PIHP/PAHP have a different reporting period than other MCO/PIHP/PAHPs within the same program?",
+              "choices": [
+                {
+                  "id": "2NI2TmkWrS70g3U6adRKklWSv31",
+                  "label": "Yes",
+                  "children": [
+                    {
+                      "id": "reportingPeriodDiscrepancy-otherText",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "reportingPeriodDiscrepancy"
+                      },
+                      "props": {
+                        "label": "P.2 Explanation of reporting period discrepancy",
+                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "2NI2UTNqhvrJLvEv8SORD7vIPRI",
+                  "label": "No"
+                }
+              ]
+            }
+          },
+          {
+            "id": "miscellaneousNotes",
+            "type": "textarea",
+            "validation": "textOptional",
+            "props": {
+              "label": "Q. Miscellaneous notes",
+              "hint": "Include any other notes or detail for CMS."
+            }
+          }
+        ]
+      },
+      "overlayForm": {
+        "id": "mlrd-overlay",
+        "fields": [
+          {
+            "id": "mlrSection1Header",
+            "type": "sectionHeader",
+            "props": {
+              "divider": "top",
+              "content": "1. Medical Loss Ratio Numerator"
+            }
+          },
+          {
+            "id": "inurredClaims",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "1.1 Incurred claims (optional)",
+              "hint": "Enter incurred claims (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)' target='_blank'>42 CFR § 438.8(e)(2)</a>",
+              "mask": "currency"
+            }
+          },
+          {
+            "id": "healthCareQualityActivities",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "1.2 Activities that improve health care quality (optional)",
+              "hint": "Enter activities that improve health care quality (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(3)' target='_blank'>42 CFR § 438.8(e)(2)</a>",
+              "mask": "currency"
+            }
+          },
+          {
+            "id": "mlrNumerator",
+            "type": "number",
+            "validation": "number",
+            "props": {
+              "label": "1.3 MLR numerator",
+              "hint": "Enter the required MLR numerator dollar value. If the optional subcomponents are reported in 1.1-1.2, states must still report the total MLR numerator (i.e., subcomponents will not automatically sum to numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(1)' target='_blank'>42 CFR § 438.8(e)(1)</a>",
+              "mask": "currency"
+            }
+          },
+          {
+            "id": "mlrNumeratorExplanation",
+            "type": "textarea",
+            "validation": "textOptional",
+            "props": {
+              "label": "Medical Loss Ratio numerator explanation (optional)",
+              "hint": "If the optional subcomponents are reported in sections 1.1 and 1.2 and they do not equal the total reported MLR numerator in section 1.3, states may provide an explanation here."
+            }
+          },
+          {
+            "id": "nonClaimsCosts",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "1.4 Non-claims costs (not included in numerator) (optional)",
+              "hint": "Enter the non-claims costs value. This amount is not included in the MLR numerator. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)(v)(A)' target='_blank'>42 CFR § 438.8(e)(2)(v)(A)</a>",
+              "mask": "currency"
+            }
+          },
+          {
+            "id": "mlrSection2Header",
+            "type": "sectionHeader",
+            "props": {
+              "divider": "top",
+              "content": "2. Medical Loss Ratio Denominator"
+            }
+          },
+          {
+            "id": "premiumRevenue",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "2.1 Premium revenue (optional)",
+              "hint": "Enter premium revenue (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(2)' target='_blank'>42 CFR § 438.8(f)(2)</a>",
+              "mask": "currency"
+            }
+          },
+          {
+            "id": "regulatoryFees",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "2.1 Premium revenue (optional)",
+              "hint": "Enter premium revenue (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(3)' target='_blank'>42 CFR § 438.8(f)(3)</a>",
+              "mask": "currency"
+            }
+          },
+          {
+            "id": "mlrDenominator",
+            "type": "number",
+            "validation": "number",
+            "props": {
+              "label": "2.1 Premium revenue (optional)",
+              "hint": "Enter the required MLR denominator dollar value. If the optional subcomponents are reported in sections 2.1 - 2.2, states must still report the total MLR denominator (i.e., subcomponents will not automatically sum to denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)' target='_blank'>42 CFR § 438.8(f)(1)</a>",
+              "mask": "currency"
+            }
+          },
+          {
+            "id": "mlrDenominatorExplanation",
+            "type": "textarea",
+            "validation": "textOptional",
+            "props": {
+              "label": "Medical Loss Ratio denominator explanation (optional)",
+              "hint": "If the optional subcomponents are reported in sections 2.1 and 2.2 and the reported Premium Revenue less the reported Federal, State, and local taxes and licensing and regulatory fees does not equal the total reported MLR denominator in section 2.3, states may provide an explanation here."
+            }
+          },
+          {
+            "id": "mlrSection3Header",
+            "type": "sectionHeader",
+            "props": {
+              "divider": "top",
+              "content": "3. MLR Calculation"
+            }
+          },
+          {
+            "id": "memberMonths",
+            "type": "number",
+            "validation": "number",
+            "props": {
+              "label": "3.1 Member months",
+              "hint": "Enter the required number of member months. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)' target='_blank'> 42 CFR § 438.8(b) </a>"
+            }
+          },
+          {
+            "id": "unadjustedMLR",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "3.2 Unadjusted MLR (optional)",
+              "hint": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). Entering '1' will result in 1% instead of 100%. (optional subcomponent of section 3.4 Adjusted MLR)",
+              "mask": "percentage"
+            }
+          },
+          {
+            "id": "unadjustedMLRExplanation",
+            "type": "textarea",
+            "validation": "textOptional",
+            "props": {
+              "label": "Unadjusted MLR explanation (optional)",
+              "hint": "If the optional Unadjusted MLR reported in section 3.2 does not equal the ratio of the MLR numerator over the MLR denominator (as reported in sections 1.3 and 2.3), states may provide an explanation here."
+            }
+          },
+          {
+            "id": "credibilityAdjustment",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "3.2 Unadjusted MLR (optional)",
+              "hint": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (optional subcomponent of section 3.4 Adjusted MLR) <ul><li>Enter 0% if no credibility adjustment is needed.</li><li>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</li><li>For fully credible plans, the credibility adjustment should be entered as 0%.</li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'>42 CFR § 438.8(h)</a>",
+              "mask": "percentage"
+            }
+          },
+          {
+            "id": "adjustedMLR",
+            "type": "number",
+            "validation": "numberOptional",
+            "props": {
+              "label": "3.4 Adjusted MLR",
+              "hint": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'>42 CFR § 438.8(h)</a>",
+              "mask": "percentage"
+            }
+          },
+          {
+            "id": "adjustedMLRExplanation",
+            "type": "text",
+            "validation": "textOptional",
+            "props": {
+              "label": "Adjusted MLR atypical range explanation (optional)",
+              "hint": "If the Adjusted MLR reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here."
+            }
+          },
+          {
+            "id": "mlrSection4Header",
+            "type": "sectionHeader",
+            "props": {
+              "divider": "top",
+              "content": "4. Remittance"
+            }
+          },
+          {
+            "id": "mlrSection4Content",
+            "type": "sectionContent",
+            "props": {
+              "content": "Complete the series of questions related to MLR remittances below. Based on your responses, required follow-up indicators will appear. All amounts should be reported as absolute values."
+            }
+          },
+          {
+            "id": "contractIncludesRemittance",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "4.1 Does the contract include a remittance/payment requirement for being below/above a specified MLR?",
+              "hint": "This element indicates if a remittance to the state or a payment to a plan is required in an MCO/PIHP/PAHP contract if a minimum MLR is not met.",
+              "choices": [
+                {
+                  "id": "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  "label": "Yes",
+                  "children": [
+                    {
+                      "id": "stateMinimumMLRRequirement",
+                      "validation": {
+                        "type": "numberOptional",
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance"
+                      },
+                      "type": "number",
+                      "props": {
+                        "label": "4.2 What is the State minimum MLR requirement? (optional)",
+                        "mask": "percentage"
+                      }
+                    },
+                    {
+                      "id": "doesRemittanceAlign",
+                      "type": "radio",
+                      "validation": {
+                        "type": "radio",
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance"
+                      },
+                      "props": {
+                        "label": "4.3 Does the state remittance MLR calculation align with the required components and methodology outlined in 438.8(c)? (optional)",
+                        "choices": [
+                          {
+                            "id": "PpL7niYGJMaY2fgv7R8C7g",
+                            "label": "Yes"
+                          },
+                          {
+                            "id": "hReMcaoqUfknjTM7dhZK3N",
+
+                            "label": "No",
+                            "children": [
+                              {
+                                "id": "stateDefinedCalculationDescription",
+                                "type": "text",
+                                "validation": {
+                                  "nested": true,
+                                  "parentFieldName": "doesRemittanceAlign",
+                                  "type": "textOptional"
+                                },
+                                "props": {
+                                  "label": "4.4 State-defined remittance MLR calculation description (optional)",
+                                  "hint": "Describe the method by which the state determines remittance MLR calculations."
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "calulatedRemittanceMLR",
+                      "type": "number",
+                      "validation": {
+                        "type": "numberOptional",
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance"
+                      },
+                      "props": {
+                        "label": "4.5 Calculated MLR for remittance purposes (optional)",
+                        "hint": "Report the calculated MLR for remittance purposes (please enter as a percentage).",
+                        "mask": "percentage"
+                      }
+                    },
+                    {
+                      "id": "remittanceDollarsOwed",
+                      "type": "number",
+                      "validation": {
+                        "type": "numberOptional",
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance"
+                      },
+                      "props": {
+                        "label": "4.6.1 Remittance dollar amount owed for MLR reporting period",
+                        "hint": "Report the amount of remittances owed by this plan. Enter a zero (0) value if no remittance was owed by a plan. Enter a positive value if a remittance was collected by the state.",
+                        "mask": "currency"
+                      }
+                    },
+                    {
+                      "id": "paymentDollarAmountForMLRPeriod",
+                      "type": "number",
+                      "validation": {
+                        "type": "numberOptional",
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance"
+                      },
+                      "props": {
+                        "label": "4.6.2 Payment dollar amount due to plan for MLR reporting period (optional)",
+                        "hint": "Report the amount of the payment due to this plan as a positive value, if applicable. This payment is specific to losses reimbursed under a minimum MLR arrangement; do not report the results of other risk corridors, reinsurance or other risk mitigation arrangements. If states do not make payments to plans for losses under a minimum MLR arrangement, states may enter $0.",
+                        "mask": "currency"
+                      }
+                    },
+                    {
+                      "id": "remittanceExplanation",
+                      "type": "textarea",
+                      "validation": {
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance",
+                        "type": "textOptional"
+                      },
+                      "props": {
+                        "label": "Remittance explanation (optional)",
+                        "hint": "A state cannot simultaneously owe remittances to and require payment from a Medicaid managed care plan. If the state reported a Remittance amount owed greater than $0 in section 4.6.1 and an optional Payment amount due to plan greater than $0 in section 4.6.2, states may provide an explanation here."
+                      }
+                    },
+                    {
+                      "id": "reportingPeriodStartDate",
+                      "type": "date",
+                      "validation": {
+                        "type": "date",
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance"
+                      },
+                      "props": {
+                        "label": "N. MLR reporting period start date",
+                        "hint": "Auto-populates from program reporting information.",
+                        "disabled": true
+                      }
+                    },
+                    {
+                      "id": "reportingPeriodEndDate",
+                      "type": "date",
+                      "validation": {
+                        "type": "date",
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance"
+                      },
+                      "props": {
+                        "label": "N. MLR reporting period end date",
+                        "hint": "Auto-populates from program reporting information.",
+                        "disabled": true
+                      }
+                    },
+                    {
+                      "id": "isRemittancePeriodSame",
+                      "type": "radio",
+                      "validation": {
+                        "nested": true,
+                        "parentFieldName": "contractIncludesRemittance",
+                        "type": "radio"
+                      },
+                      "props": {
+                        "label": "4.7 Is the remittance period the same as the MLR reporting period? (optional)",
+                        "hint": "Is the remittance period the same as the MLR reporting period reported under N and O (displayed above)? <br /> The remittance period is the period of time used when determining the remittance amounts.",
+                        "choices": [
+                          {
+                            "id": "YzV3x7cp3u2sX92V3cbpDM",
+                            "label": "Yes"
+                          },
+                          {
+                            "id": "3dkx7LnSCiEUeibYshCBrf",
+                            "label": "No",
+                            "children": [
+                              {
+                                "id": "newRemittancePeriodStartDate",
+                                "type": "date",
+                                "validation": {
+                                  "type": "date",
+                                  "nested": true,
+                                  "parentFieldName": "isRemittancePeriodSame"
+                                },
+                                "props": {
+                                  "label": "4.8.1 Remittance period start date (optional)",
+                                  "hint": "Enter the start date of the remittance period."
+                                }
+                              },
+                              {
+                                "id": "newRemittancePeriodEndDate",
+                                "type": "date",
+                                "validation": {
+                                  "type": "date",
+                                  "nested": true,
+                                  "parentFieldName": "isRemittancePeriodSame"
+                                },
+                                "props": {
+                                  "label": "4.8.1 Remittance period end date (optional)",
+                                  "hint": "Enter the end date of the remittance period."
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "qualitativeResponse",
+                      "type": "textarea",
+                      "nested": true,
+                      "parentFieldName": "contractIncludesRemittance",
+                      "validation": "text",
+                      "props": {
+                        "label": "4.9 Remittance methodology qualitative response",
+                        "hint": "Describe the methodology used to determine the State and Federal share of the remittance. <br /> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide a description of the methodology used to determine the State and Federal share of the remittance for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74' target='_blank'>42 CFR § 438.74(b)(2)</a>"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "UL4dAeyyvCFAXttxZioacR",
+                  "label": "No"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Review & Submit",
+      "path": "/mlr/review-and-submit",
+      "pageType": "reviewSubmit"
+    }
+  ]
 }

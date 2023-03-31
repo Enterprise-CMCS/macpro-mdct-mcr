@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 import { useFormContext } from "react-hook-form";
 import { NumberField, ReportContext } from "components";
 import { useUser } from "utils";
-import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
+import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -59,7 +59,7 @@ const ratioMaskedNumberFieldComponent = (
 );
 
 const numberFieldAutosavingComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <NumberField
       name="testNumberField"
       label="test-label"
@@ -288,12 +288,12 @@ describe("Test NumberField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "1234");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -314,12 +314,12 @@ describe("Test NumberField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "    ");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -339,7 +339,7 @@ describe("Test NumberField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 

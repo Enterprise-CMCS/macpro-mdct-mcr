@@ -11,28 +11,32 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, ReportContext } from "components";
+import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
-import { ReportStatus } from "types";
+import { AlertTypes, AnyObject, ReportStatus } from "types";
 // utils
-import { useUser, utcDateToReadableDate, convertDateUtcToEt } from "utils";
+import { useUser, utcDateToReadableDate } from "utils";
 // verbiage
-import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
-import printIcon from "assets/icons/icon_print.png";
+import iconSearch from "assets/icons/icon_search.png";
 
-export const McparReviewSubmitPage = () => {
-  const { report, fetchReport, updateReport } = useContext(ReportContext);
+export const ReviewSubmitPage = () => {
+  const { report, fetchReport, submitReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   // get user information
-  const { email, full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { state, userIsStateUser, userIsStateRep } = useUser().user ?? {};
 
-  const isPermittedToSubmit = userIsStateUser || userIsStateRep;
+  const isPermittedToSubmit =
+    (userIsStateUser || userIsStateRep) &&
+    report?.status === ReportStatus.IN_PROGRESS &&
+    !hasError;
 
   // get report type, state, and id from context or storage
   const reportType =
@@ -46,66 +50,75 @@ export const McparReviewSubmitPage = () => {
     id: reportId,
   };
 
+  const reviewVerbiage = reportType === "MCPAR" ? MCPARVerbiage : MLRVerbiage;
+
+  const { alertBox } = reviewVerbiage;
+
   useEffect(() => {
     if (report?.id) {
       fetchReport(reportKeys);
     }
   }, []);
 
+  useEffect(() => {
+    setHasError(!!document.querySelector("img[alt='Error notification']"));
+  }, [fetchReport]);
+
   const submitForm = async () => {
     setSubmitting(true);
     if (isPermittedToSubmit) {
-      const submissionDate = Date.now();
-      await updateReport(reportKeys, {
-        metadata: {
-          status: ReportStatus.SUBMITTED,
-          lastAlteredBy: full_name,
-          submittedBy: full_name,
-          submittedOnDate: submissionDate,
-        },
-        fieldData: {
-          submitterName: full_name,
-          submitterEmailAddress: email,
-          reportSubmissionDate: convertDateUtcToEt(submissionDate),
-        },
-      });
+      await submitReport(reportKeys);
     }
+    await fetchReport(reportKeys);
     setSubmitting(false);
     onClose();
   };
 
   return (
-    <Flex sx={sx.pageContainer} data-testid="review-submit-page">
-      {report?.status === ReportStatus.SUBMITTED ? (
-        <SuccessMessage
-          programName={report.programName}
-          date={report?.submittedOnDate}
-          submittedBy={report?.submittedBy}
-        />
-      ) : (
-        <ReadyToSubmit
-          submitForm={submitForm}
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          submitting={submitting}
-          isPermittedToSubmit={isPermittedToSubmit}
-        />
+    <>
+      {(hasError || report?.status === ReportStatus.NOT_STARTED) && (
+        <Box sx={sx.alert}>
+          <Alert
+            title={alertBox.title}
+            status={AlertTypes.ERROR}
+            description={alertBox.description}
+          />
+        </Box>
       )}
-    </Flex>
+      <Flex sx={sx.pageContainer} data-testid="review-submit-page">
+        {report?.status === ReportStatus.SUBMITTED ? (
+          <SuccessMessage
+            reportType={report.reportType}
+            name={report.programName ?? report.submissionName}
+            date={report?.submittedOnDate}
+            submittedBy={report?.submittedBy}
+            reviewVerbiage={reviewVerbiage}
+          />
+        ) : (
+          <ReadyToSubmit
+            submitForm={submitForm}
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            submitting={submitting}
+            isPermittedToSubmit={isPermittedToSubmit}
+            reviewVerbiage={reviewVerbiage}
+          />
+        )}
+      </Flex>
+    </>
   );
 };
 
-const PrintButton = () => {
+const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   return (
-    // TODO: make the path route to the correct report type (in the future)
     <Button
       as={RouterLink}
       to="/mcpar/export"
       target="_blank"
       sx={sx.printButton}
-      leftIcon={<Image src={printIcon} alt="Print Icon" height="1.25rem" />}
+      leftIcon={<Image src={iconSearch} alt="Search Icon" height=".9rem" />}
       variant="outline"
     >
       {print.printButtonText}
@@ -120,6 +133,7 @@ const ReadyToSubmit = ({
   onClose,
   submitting,
   isPermittedToSubmit,
+  reviewVerbiage,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
@@ -135,13 +149,18 @@ const ReadyToSubmit = ({
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
           <Text>{intro.info}</Text>
         </Box>
+
+        <Box>
+          <StatusTable />
+        </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        {pdfExport && <PrintButton />}
+        {pdfExport && <PrintButton reviewVerbiage={reviewVerbiage} />}
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
           isDisabled={!isPermittedToSubmit}
+          sx={sx.submitButton}
         >
           {pageLink.text}
         </Button>
@@ -167,11 +186,14 @@ interface ReadyToSubmitProps {
   onOpen: Function;
   onClose: Function;
   submitting?: boolean;
+  hasStarted?: boolean;
   isPermittedToSubmit?: boolean;
+  reviewVerbiage: AnyObject;
 }
 
 export const SuccessMessageGenerator = (
-  programName: string,
+  reportType: string,
+  name: string,
   submissionDate?: number,
   submittedBy?: string
 ) => {
@@ -179,20 +201,23 @@ export const SuccessMessageGenerator = (
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
-    return `MCPAR report for ${programName} ${submittedDate} ${submittersName}.`;
+    return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
   }
-  return `MCPAR report for ${programName} was submitted.`;
+  return `${reportType} report for ${name} was submitted.`;
 };
 
 export const SuccessMessage = ({
-  programName,
+  reportType,
+  name,
   date,
   submittedBy,
+  reviewVerbiage,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
   const submissionMessage = SuccessMessageGenerator(
-    programName,
+    reportType,
+    name,
     date,
     submittedBy
   );
@@ -218,7 +243,7 @@ export const SuccessMessage = ({
       </Box>
       {pdfExport && (
         <Box sx={sx.infoTextBox}>
-          <PrintButton />
+          <PrintButton reviewVerbiage={reviewVerbiage} />
         </Box>
       )}
     </Flex>
@@ -226,7 +251,9 @@ export const SuccessMessage = ({
 };
 
 interface SuccessMessageProps {
-  programName: string;
+  reportType: string;
+  name: string;
+  reviewVerbiage: AnyObject;
   date?: number;
   submittedBy?: string;
 }
@@ -243,10 +270,10 @@ const sx = {
   },
   leadTextBox: {
     width: "100%",
-    paddingBottom: "1.5rem",
+    paddingBottom: ".5rem",
     marginBottom: "1.5rem",
     borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
+    borderColor: "palette.gray_light",
   },
   headerText: {
     marginBottom: "1rem",
@@ -274,13 +301,28 @@ const sx = {
     color: "palette.gray",
   },
   printButton: {
-    width: "5rem",
-    height: "1.75rem",
-    fontSize: "sm",
-    fontWeight: "normal",
+    minWidth: "6rem",
+    height: "2rem",
+    fontSize: "md",
+    fontWeight: "700",
+    border: "1px solid",
   },
   submitContainer: {
     width: "100%",
     justifyContent: "space-between",
+  },
+  alert: {
+    marginBottom: "2rem",
+  },
+  submitButton: {
+    minHeight: "3rem",
+    "&:disabled": {
+      opacity: 1,
+      background: "palette.gray_lighter",
+      color: "palette.gray",
+      "&:hover": {
+        background: "palette.gray_lighter",
+      },
+    },
   },
 };

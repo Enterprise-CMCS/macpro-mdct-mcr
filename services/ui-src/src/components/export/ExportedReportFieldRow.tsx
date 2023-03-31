@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types
-import { FormField } from "types";
+import { FormField, FormLayoutElement, isFieldElement } from "types";
 // utils
 import { parseFormFieldInfo, parseCustomHtml, renderDataCell } from "utils";
 
@@ -54,6 +54,7 @@ export const ExportedReportFieldRow = ({
       {/* data column/cell */}
       <Td>
         {reportData &&
+          isFieldElement(formField) &&
           renderDataCell(
             formField,
             reportData,
@@ -67,7 +68,7 @@ export const ExportedReportFieldRow = ({
 };
 
 export interface Props {
-  formField: FormField;
+  formField: FormField | FormLayoutElement;
   pageType: string;
   entityType?: string;
   parentFieldCheckedChoiceIds?: string[];

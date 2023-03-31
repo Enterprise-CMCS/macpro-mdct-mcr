@@ -12,6 +12,7 @@ import {
   mockFormField,
   mockNestedFormField,
 } from "utils/testing/setupJest";
+import { isEntityType } from "types";
 
 const mockedFormFields = [
   {
@@ -249,7 +250,7 @@ describe("Test Create Repeated Fields", () => {
       },
     },
   ];
-  const reportFieldData = {
+  const mcparReportFieldData = {
     reportingPeriodStartDate: "07/28/2022",
     reportingPeriodEndDate: "11/24/2022",
     stateName: "California",
@@ -276,23 +277,26 @@ describe("Test Create Repeated Fields", () => {
   ];
 
   it("should return current field if not repeating", () => {
-    expect(createRepeatedFields(FieldsWithoutRepeat, reportFieldData)).toEqual(
-      FieldsWithoutRepeat
-    );
+    expect(
+      createRepeatedFields(FieldsWithoutRepeat, mcparReportFieldData)
+    ).toEqual(FieldsWithoutRepeat);
   });
 
   it("should return a flattened array if repeating but no found data", () => {
     expect(
       createRepeatedFields(
         FieldsWithRepeatButNoFoundAssociatedData,
-        reportFieldData
+        mcparReportFieldData
       )
     ).toEqual([]);
   });
 
   it("should return a nice array of found repeating fields with combined data", () => {
     expect(
-      createRepeatedFields(FieldsWithRepeatAndAssociatedData, reportFieldData)
+      createRepeatedFields(
+        FieldsWithRepeatAndAssociatedData,
+        mcparReportFieldData
+      )
     ).toEqual(combinedField);
   });
 });
@@ -365,5 +369,16 @@ describe("Test sortFormErrors", () => {
     const sortedErrors = sortFormErrors(mockFormObject, mockErrorsObject);
     expect(sortedErrors.indexOf("stateName")).toEqual(-1);
     expect(sortedErrors).toEqual(sortedArray);
+  });
+});
+
+describe("Test form related type guards", () => {
+  describe("Entity Type type guard", () => {
+    it("should reject bad entity types", () => {
+      expect(isEntityType("foo")).toBeFalsy();
+    });
+    it("should accept good entity types", () => {
+      expect(isEntityType("program")).toBeTruthy();
+    });
   });
 });

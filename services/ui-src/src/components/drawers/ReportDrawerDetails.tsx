@@ -44,6 +44,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return (
         <Box sx={sx.detailBox}>
+          <Text sx={sx.detailHeader}>{drawerDetails.name}</Text>
           <Text sx={sx.detailSubtitle}>Measure Domain</Text>
           <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
           <Grid sx={sx.grid}>
