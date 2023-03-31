@@ -968,7 +968,7 @@
                                 "id": "newRemittancePeriodStartDate",
                                 "type": "date",
                                 "validation": {
-                                  "type": "date",
+                                  "type": "dateOptional",
                                   "nested": true,
                                   "parentFieldName": "isRemittancePeriodSame"
                                 },
@@ -982,7 +982,7 @@
                                 "id": "newRemittancePeriodEndDate",
                                 "type": "date",
                                 "validation": {
-                                  "type": "date",
+                                  "type": "dateOptional",
                                   "nested": true,
                                   "parentFieldName": "isRemittancePeriodSame"
                                 },
