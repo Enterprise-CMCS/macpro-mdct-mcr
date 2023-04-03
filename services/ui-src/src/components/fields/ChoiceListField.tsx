@@ -48,13 +48,20 @@ export const ChoiceListField = ({
   const { full_name, state, userIsAdmin } = useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
-  form.register(name);
+  const fieldIsRegistered = name in form.getValues();
 
-  const shouldDisableChildFields =
-    userIsAdmin && report?.formTemplate.adminDisabled;
+  const shouldDisableChildFields = userIsAdmin && !!props?.disabled;
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
+  const hydrationValue = props?.hydrate || defaultValue;
+
+  useEffect(() => {
+    if (!fieldIsRegistered) {
+      form.register(name);
+    } else {
+      form.trigger(name);
+    }
+  }, []);
 
   useEffect(() => {
     // if form state has value for field, set as display value
@@ -102,14 +109,16 @@ export const ChoiceListField = ({
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
-                  form.setValue(child.id, []);
                 });
+                form.setValue(child.id, []);
+                form.clearErrors();
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
             default:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, "");
+              form.clearErrors();
               break;
           }
         });
