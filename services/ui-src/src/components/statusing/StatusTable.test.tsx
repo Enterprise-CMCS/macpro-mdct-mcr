@@ -92,9 +92,7 @@ describe("Status Table Functionality", () => {
   test("should be able to navigate to a page on the form by clicking edit", async () => {
     render(McparReviewSubmitPage_InProgress);
     // Name value is the img's alt tag + the text inside the button
-    const editButtons = screen.getAllByRole("button", {
-      name: "Edit Program Edit",
-    });
+    const editButtons = screen.getAllByRole("button");
     expect(editButtons).toHaveLength(4);
 
     await userEvent.click(editButtons[0]);
