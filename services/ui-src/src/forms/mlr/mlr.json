@@ -13,7 +13,8 @@
         "intro": {
           "section": "Section A: Program Information",
           "subsection": "Point of Contact",
-          "spreadsheet": "Program Information"
+          "spreadsheet": "Program Information",
+          "exportSection": "Information for Primary Contact"
         }
       },
       "form": {
@@ -156,6 +157,7 @@
       "entityType": "program",
       "verbiage": {
         "intro": {
+          "exportSectionHeader": "Program Reporting Information",
           "section": "MLR Reporting",
           "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
           "spreadsheet": "Program Information & MLR Reporting",
@@ -166,6 +168,7 @@
             }
           ]
         },
+        "exportSectionHeader": "Program Reporting Information",
         "dashboardTitle": "MLR report total count:",
         "countEntitiesInTitle": true,
         "tableHeader": "Program name <br/> Eligibility group <br/> MLR reporting period <br/> MCO/PIHP/PAHP name",

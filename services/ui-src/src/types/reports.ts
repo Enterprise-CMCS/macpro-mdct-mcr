@@ -104,6 +104,7 @@ export interface ReportPageVerbiage {
     subsection?: string;
     spreadsheet?: string;
     info?: string | CustomHtmlElement[];
+    exportSectionHeader?: string;
   };
 }
 
