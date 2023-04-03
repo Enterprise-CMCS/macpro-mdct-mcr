@@ -42,7 +42,9 @@ const fields = [
 ];
 
 const mockEntityContext: EntityContextShape = {
-  updateEntities: jest.fn(),
+  updateEntities: jest.fn(() => {
+    return [{ id: "foo", testField: 1, field1: "value1", field2: "value2" }];
+  }),
   entities: [{ id: "foo", testField: 1 }],
   entityType: "program",
   selectedEntity: { id: "foo" },
@@ -111,6 +113,30 @@ describe("autosaveFieldData", () => {
       }
     );
   });
+
+  it("should update and save all entities when an entity context is passed", async () => {
+    await autosaveFieldData({
+      form: mockForm,
+      fields,
+      report,
+      user,
+      entityContext: mockEntityContext,
+    });
+    expect(report.updateReport).toHaveBeenCalledWith(
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
+      {
+        metadata: {
+          status: "In progress",
+          lastAlteredBy: "stateuser@test.com",
+        },
+        fieldData: {
+          program: [
+            { id: "foo", testField: 1, field1: "value1", field2: "value2" },
+          ],
+        },
+      }
+    );
+  });
 });
 
 describe("ifFieldWasUpdated", () => {
@@ -166,7 +192,7 @@ describe("ifFieldWasUpdated", () => {
 });
 
 describe("getAutosaveFields", () => {
-  test("should return normal fields without entity context", () => {
+  test("should return correct autosave fields", () => {
     expect(
       getAutosaveFields({
         name: "testField",
@@ -180,32 +206,6 @@ describe("getAutosaveFields", () => {
         name: "testField",
         type: "number",
         value: 1,
-        defaultValue: 0,
-        hydrationValue: 0,
-        overrideCheck: undefined,
-      },
-    ]);
-  });
-  test("should return whole entities for fields with entity context", () => {
-    expect(
-      getAutosaveFields({
-        name: "testField",
-        type: "number",
-        value: 1,
-        defaultValue: 0,
-        hydrationValue: 0,
-        entityContext: mockEntityContext,
-      })
-    ).toEqual([
-      {
-        name: "program",
-        type: "number",
-        value: [
-          {
-            id: "foo",
-            testField: 1,
-          },
-        ],
         defaultValue: 0,
         hydrationValue: 0,
         overrideCheck: undefined,

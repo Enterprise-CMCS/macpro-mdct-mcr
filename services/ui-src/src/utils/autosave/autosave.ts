@@ -84,18 +84,20 @@ export const autosaveFieldData = async ({
 }: Props) => {
   const { id, reportType, updateReport } = report;
   const { userName, state } = user;
-
   // for each passed field, format for autosave payload (if changed)
-  const changedFields = await fields.filter((field) => isFieldChanged(field));
-  const validatedFields: FieldInfo[] = [];
-  for (const field of changedFields) {
-    if ((await form.trigger(field.name)) || field.overrideCheck)
-      validatedFields.push(field);
-  }
-  const fieldsToSave: FieldDataTuple[] = validatedFields.map(
-    (field: FieldInfo) => {
-      return [field.name, field.value];
-    }
+  const fieldsToSave: FieldDataTuple[] = await Promise.all(
+    fields
+      // filter to only changed fields
+      .filter((field: FieldInfo) => isFieldChanged(field))
+      // determine appropriate field value to set and return as tuple
+      .map(async (field: FieldInfo) => {
+        const { name, value, defaultValue, overrideCheck } = field;
+        const fieldValueIsValid = await form.trigger(name);
+        // if field value is valid or validity check overridden, use field value
+        if (fieldValueIsValid || overrideCheck) return [name, value];
+        // otherwise, revert field to default value
+        return [name, defaultValue];
+      })
   );
 
   // if there are fields to save, create and send payload
