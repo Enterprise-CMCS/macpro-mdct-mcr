@@ -6,6 +6,13 @@ import {
   FormJson,
 } from "types";
 
+// REPORT TYPES
+export enum ReportType {
+  MCPAR = "MCPAR",
+  MLR = "MLR",
+  NAAAR = "NAAAR",
+}
+
 // REPORT STRUCTURE
 
 export interface ReportJson {

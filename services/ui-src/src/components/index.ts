@@ -40,6 +40,7 @@ export { ExportedReportFieldRow } from "./export/ExportedReportFieldRow";
 export { ExportedModalDrawerReportSection } from "./export/ExportedModalDrawerReportSection";
 export { ExportedSectionHeading } from "./export/ExportedSectionHeading";
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
+export { ExportedReportMetadataTable } from "./export/ExportedReportMetadataTable";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";

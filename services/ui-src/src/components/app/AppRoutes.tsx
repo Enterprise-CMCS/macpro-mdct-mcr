@@ -18,6 +18,7 @@ import { mlrReportJson } from "forms/mlr";
 // utils
 import { ReportRoute } from "types";
 import { ScrollToTopComponent, useUser } from "utils";
+import { Fragment } from "react";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useUser().user ?? {};
@@ -54,21 +55,23 @@ export const AppRoutes = () => {
           <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
 
           {/* MLR ROUTES */}
-          <Route
-            path={mlrReport ? "/mlr" : "*"}
-            element={<DashboardPage reportType="MLR" />}
-          />
-          <Route
-            path={mlrReport ? "/mlr/get-started" : "*"}
-            element={<ReportGetStartedPage reportType="MLR" />}
-          />
-          {mlrReportJson.flatRoutes.map((route: ReportRoute) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<ReportPageWrapper />}
-            />
-          ))}
+          {mlrReport && (
+            <Fragment>
+              <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
+              <Route
+                path="/mlr/get-started"
+                element={<ReportGetStartedPage reportType="MLR" />}
+              />
+              {mlrReportJson.flatRoutes.map((route: ReportRoute) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<ReportPageWrapper />}
+                />
+              ))}
+              <Route path="/mlr/export" element={<ExportedReportPage />} />
+            </Fragment>
+          )}
         </Routes>
       </AdminBannerProvider>
     </main>
