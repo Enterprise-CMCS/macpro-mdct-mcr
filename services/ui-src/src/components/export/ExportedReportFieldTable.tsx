@@ -141,6 +141,10 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
     },
+    thead: {
+      //this will prevent generating a new header whenever the table spills over in another page
+      display: "table-row-group",
+    },
     td: {
       p: {
         lineHeight: "1.25rem",
