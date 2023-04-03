@@ -32,6 +32,7 @@ export const StatusTable = () => {
 
 const ChildRow = ({ page, depth }: RowProps) => {
   const { name, children } = page;
+
   return (
     <Fragment key={name}>
       <TableRow page={page} depth={depth} />
@@ -45,6 +46,7 @@ const ChildRow = ({ page, depth }: RowProps) => {
 const TableRow = ({ page, depth }: RowProps) => {
   const navigate = useNavigate();
   const { name, path, children, status } = page;
+  const buttonAriaLabel = `Edit  ${name}`;
 
   return (
     <Tr>
@@ -69,6 +71,7 @@ const TableRow = ({ page, depth }: RowProps) => {
           <Button
             sx={sx.enterButton}
             variant="outline"
+            aria-label={buttonAriaLabel}
             onClick={() => navigate(path)}
           >
             <Image src={editIcon} alt="Edit Program" />
