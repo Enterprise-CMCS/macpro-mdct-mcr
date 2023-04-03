@@ -13,7 +13,7 @@ import config from "config";
 import { initAuthManager, updateTimeout, getExpiration } from "utils";
 import { PRODUCTION_HOST_DOMAIN } from "../../constants";
 // types
-import { MCRUser, UserContextShape, UserRoles } from "types";
+import { MCRUser, UserContextShape, UserRoles } from "types/users";
 
 export const UserContext = createContext<UserContextShape>({
   logout: async () => {},
@@ -23,7 +23,7 @@ export const UserContext = createContext<UserContextShape>({
 });
 
 const authenticateWithIDM = async () => {
-  await Auth.federatedSignIn({ customProvider: "Okta" });
+  await Auth.federatedSignIn({ customProvider: config.COGNITO_IDP });
 };
 
 export const UserProvider = ({ children }: Props) => {

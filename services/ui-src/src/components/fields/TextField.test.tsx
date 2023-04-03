@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 import { useFormContext } from "react-hook-form";
 import { ReportContext, TextField } from "components";
 // utils
-import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
+import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
 import { useUser } from "utils";
 import { ReportStatus } from "types";
 
@@ -32,7 +32,7 @@ jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const textFieldComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <TextField
       name="testTextField"
       label="test-label"
@@ -43,7 +43,7 @@ const textFieldComponent = (
 );
 
 const textFieldAutosavingComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <TextField
       name="testTextField"
       label="test-label"
@@ -170,12 +170,12 @@ describe("Test TextField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -198,12 +198,12 @@ describe("Test TextField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -225,7 +225,7 @@ describe("Test TextField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
   test("Blanking field triggers form validation", async () => {

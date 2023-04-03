@@ -1,6 +1,6 @@
 import { Box, Link, Text } from "@chakra-ui/react";
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
-import verbiage from "verbiage/pages/export";
+import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
 // checks for type of data cell to be render and calls the appropriate renderer
 export const renderDataCell = (
@@ -174,10 +174,10 @@ export const checkLinkTypes = (formField: FormField) => {
   const fieldValidationType =
     typeof formField?.validation === "string"
       ? formField.validation
-      : formField.validation.type;
+      : formField.validation?.type;
   return {
-    isLink: linkTypes.includes(fieldValidationType),
-    isEmail: emailTypes.includes(fieldValidationType),
+    isLink: linkTypes.includes(fieldValidationType ?? ""),
+    isEmail: emailTypes.includes(fieldValidationType ?? ""),
   };
 };
 

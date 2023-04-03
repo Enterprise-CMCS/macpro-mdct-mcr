@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import DOMPurify from "dompurify";
+import { CustomHtmlElement } from "types";
 // utils
 import { labelTextWithOptional, parseCustomHtml } from "utils";
 
@@ -36,8 +37,38 @@ const testElementArray = [
   },
 ];
 
-const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
+const mockElementsWithChildren: CustomHtmlElement[] = [
+  {
+    type: "ul",
+    content: "",
+    props: {
+      "data-test-id": "foo",
+    },
+    children: [
+      {
+        type: "li",
+        content: "",
+        props: {
+          "data-test-id": "bar",
+        },
+        children: [
+          {
+            type: "span",
+            content: "Foo",
+            props: {
+              "data-test-id": "biz",
+            },
+          },
+        ],
+      },
+    ],
+  },
+];
 
+const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
+const testComponentWithChildren = (
+  <div>{parseCustomHtml(mockElementsWithChildren)}</div>
+);
 describe("Test parseCustomHtml", () => {
   const sanitizationSpy = jest.spyOn(DOMPurify, "sanitize");
   beforeEach(() => {
@@ -67,5 +98,15 @@ describe("Test labelTextWithOptional", () => {
     render(testComponent);
     const optionalText = screen.getByText("(optional)");
     expect(optionalText).toBeVisible();
+  });
+});
+
+describe("Test createElementWithChildren", () => {
+  test("should correctly create nested elements", async () => {
+    const { container } = render(testComponentWithChildren);
+    expect(await container.querySelector("ul")).toBeVisible();
+    expect(await container.querySelector('[data-test-id="foo"]')).toBeVisible();
+    expect(await container.querySelector('[data-test-id="bar"]')).toBeVisible();
+    expect(await container.querySelector('[data-test-id="biz"]')).toBeVisible();
   });
 });

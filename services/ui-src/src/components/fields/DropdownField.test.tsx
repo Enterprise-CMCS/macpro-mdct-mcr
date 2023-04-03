@@ -7,7 +7,7 @@ import { DropdownField, ReportContext } from "components";
 import { dropdownDefaultOptionText } from "../../constants";
 // utils
 import {
-  mockReportContext,
+  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -51,7 +51,7 @@ const dropdownComponentWithOptions = (
 
 const dropdownComponentWithOptionsAndAutosave = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
@@ -69,7 +69,7 @@ const dropdownComponentWithOptionsAndAutosave = (
 
 const dropdownComponentWithDynamicOptions = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
@@ -183,12 +183,12 @@ describe("Test DropdownField autosaves", () => {
     await userEvent.selectOptions(dropDown, "b");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -211,12 +211,12 @@ describe("Test DropdownField autosaves", () => {
     await userEvent.selectOptions(dropDown, "b");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -240,7 +240,7 @@ describe("Test DropdownField autosaves", () => {
     await userEvent.selectOptions(dropDown, "b");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 

@@ -1,6 +1,6 @@
 import { API } from "aws-amplify";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { AdminBannerData } from "types";
+import { AdminBannerData } from "types/banners";
 import { updateTimeout } from "utils";
 
 async function getBanner(bannerKey: string) {

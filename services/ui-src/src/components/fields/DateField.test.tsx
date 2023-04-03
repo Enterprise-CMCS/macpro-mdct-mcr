@@ -4,7 +4,7 @@ import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
 import { DateField, ReportContext } from "components";
-import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
+import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
 import { useUser } from "utils";
 import { ReportStatus } from "types";
 
@@ -36,7 +36,7 @@ const dateFieldComponent = (
 );
 
 const dateFieldAutosavingComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <DateField name="testDateField" label="test-date-field" autosave />
   </ReportContext.Provider>
 );
@@ -175,12 +175,12 @@ describe("Test DateField autosave functionality", () => {
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -200,7 +200,7 @@ describe("Test DateField autosave functionality", () => {
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 

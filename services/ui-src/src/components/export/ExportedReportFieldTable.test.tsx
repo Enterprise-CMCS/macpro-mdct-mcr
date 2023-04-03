@@ -4,7 +4,7 @@ import {
   mockDrawerReportPageJson,
   mockFormField,
   mockNestedFormField,
-  mockReportContext,
+  mockMcparReportContext,
   mockStandardReportPageJson,
 } from "utils/testing/setupJest";
 import { ReportContext } from "components";
@@ -21,13 +21,13 @@ const fieldData = {
 const nestedParent = mockNestedFormField;
 nestedParent.props.choices[2].children = [{ ...mockFormField, id: "child" }];
 
-const mockStandardContext = { ...mockReportContext };
+const mockStandardContext = { ...mockMcparReportContext };
 mockStandardContext.report.fieldData = {
   ...mockStandardContext.report.fieldData,
   ...fieldData,
 };
 
-const mockDrawerContext = { ...mockReportContext };
+const mockDrawerContext = { ...mockMcparReportContext };
 mockDrawerContext.report.fieldData = {
   ...mockDrawerContext.report.fieldData,
   plans: [

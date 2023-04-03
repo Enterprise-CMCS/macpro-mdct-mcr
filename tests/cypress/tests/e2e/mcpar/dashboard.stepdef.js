@@ -18,5 +18,5 @@ Then("one program is archived and the other is unarchived", () => {
 });
 
 Then("there are no active programs", () => {
-  cy.contains("button", { "Edit Program": String }).should("not.exist");
+  cy.contains("button", { "Edit Report": String }).should("not.exist");
 });

@@ -1,5 +1,10 @@
 import { mockStateUser } from "utils/testing/setupJest";
-import { autosaveFieldData, isFieldChanged } from "./autosave";
+import {
+  autosaveFieldData,
+  EntityContextShape,
+  getAutosaveFields,
+  isFieldChanged,
+} from "./autosave";
 
 const mockTrigger = jest.fn();
 
@@ -9,7 +14,7 @@ const mockForm: any = {
 
 const report = {
   id: "reportId",
-  reportType: "mock-type",
+  reportType: "MCPAR",
   updateReport: jest.fn().mockResolvedValue(true),
 };
 const user = {
@@ -36,13 +41,22 @@ const fields = [
   },
 ];
 
+const mockEntityContext: EntityContextShape = {
+  updateEntities: jest.fn(() => {
+    return [{ id: "foo", testField: 1, field1: "value1", field2: "value2" }];
+  }),
+  entities: [{ id: "foo", testField: 1 }],
+  entityType: "program",
+  selectedEntity: { id: "foo" },
+};
+
 describe("autosaveFieldData", () => {
   it("should save fieldData if fields have been updated", async () => {
     mockTrigger.mockResolvedValue(true);
     await autosaveFieldData({ form: mockForm, fields, report, user });
     expect(mockForm.trigger).toHaveBeenCalledWith("field2");
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
@@ -58,7 +72,7 @@ describe("autosaveFieldData", () => {
     await autosaveFieldData({ form: mockForm, fields, report, user });
     expect(mockForm.trigger).toHaveBeenCalledWith("field2");
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
@@ -74,7 +88,7 @@ describe("autosaveFieldData", () => {
     await autosaveFieldData({ form: mockForm, fields: [], report, user });
     expect(mockForm.trigger).toHaveBeenCalledWith("field2");
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
@@ -89,13 +103,37 @@ describe("autosaveFieldData", () => {
     fields[1].overrideCheck = true;
     await autosaveFieldData({ form: mockForm, fields, report, user });
     expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "mock-type", id: "reportId", state: "MN" },
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
       {
         metadata: {
           status: "In progress",
           lastAlteredBy: "stateuser@test.com",
         },
         fieldData: { field2: "value2" },
+      }
+    );
+  });
+
+  it("should update and save all entities when an entity context is passed", async () => {
+    await autosaveFieldData({
+      form: mockForm,
+      fields,
+      report,
+      user,
+      entityContext: mockEntityContext,
+    });
+    expect(report.updateReport).toHaveBeenCalledWith(
+      { reportType: "MCPAR", id: "reportId", state: "MN" },
+      {
+        metadata: {
+          status: "In progress",
+          lastAlteredBy: "stateuser@test.com",
+        },
+        fieldData: {
+          program: [
+            { id: "foo", testField: 1, field1: "value1", field2: "value2" },
+          ],
+        },
       }
     );
   });
@@ -150,5 +188,28 @@ describe("ifFieldWasUpdated", () => {
     };
 
     expect(isFieldChanged(nonDynamicField)).toBe(false);
+  });
+});
+
+describe("getAutosaveFields", () => {
+  test("should return correct autosave fields", () => {
+    expect(
+      getAutosaveFields({
+        name: "testField",
+        type: "number",
+        value: 1,
+        defaultValue: 0,
+        hydrationValue: 0,
+      })
+    ).toEqual([
+      {
+        name: "testField",
+        type: "number",
+        value: 1,
+        defaultValue: 0,
+        hydrationValue: 0,
+        overrideCheck: undefined,
+      },
+    ]);
   });
 });
