@@ -80,12 +80,6 @@ export const NumberField = ({
         value,
         defaultValue,
         hydrationValue,
-        entityContext: {
-          selectedEntity,
-          entityType,
-          updateEntities,
-          entities,
-        },
       });
 
       const reportArgs = {
@@ -100,6 +94,12 @@ export const NumberField = ({
         fields,
         report: reportArgs,
         user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
       });
     }
   };
@@ -118,14 +118,22 @@ export const NumberField = ({
           value={displayValue}
           {...props}
         />
-        {mask === "percentage" && (
-          <Box
-            className={props.disabled ? "disabled" : undefined}
-            sx={sx.percentage}
-          >
-            {" % "}
-          </Box>
-        )}
+        {mask === "percentage" &&
+          (props.nested ? (
+            <Box
+              className={props.disabled ? "disabled" : undefined}
+              sx={sx.nestedPercentage}
+            >
+              {" % "}
+            </Box>
+          ) : (
+            <Box
+              className={props.disabled ? "disabled" : undefined}
+              sx={sx.percentage}
+            >
+              {" % "}
+            </Box>
+          ))}
       </Box>
     </Box>
   );
@@ -154,6 +162,17 @@ const sx = {
     position: "absolute",
     bottom: "11px",
     left: "213px",
+    paddingTop: "1px",
+    fontSize: "lg",
+    fontWeight: "700",
+    "&.disabled": {
+      color: "palette.gray_light",
+    },
+  },
+  nestedPercentage: {
+    position: "absolute",
+    bottom: "15px",
+    left: "245px",
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",

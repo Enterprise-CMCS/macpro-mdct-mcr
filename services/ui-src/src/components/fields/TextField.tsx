@@ -74,16 +74,10 @@ export const TextField = ({
     if (autosave) {
       const fields = getAutosaveFields({
         name,
-        type: "number",
+        type: "text",
         value,
         defaultValue,
         hydrationValue,
-        entityContext: {
-          selectedEntity,
-          entityType,
-          updateEntities,
-          entities,
-        },
       });
       const reportArgs = {
         id: report?.id,
@@ -96,6 +90,12 @@ export const TextField = ({
         fields,
         report: reportArgs,
         user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
       });
     }
   };

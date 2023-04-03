@@ -112,12 +112,6 @@ export const DropdownField = ({
         value: selectedOption,
         defaultValue,
         hydrationValue,
-        entityContext: {
-          selectedEntity,
-          entityType,
-          updateEntities,
-          entities,
-        },
       });
       const reportArgs = {
         id: report?.id,
@@ -130,6 +124,12 @@ export const DropdownField = ({
         fields,
         report: reportArgs,
         user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
       });
     }
   };

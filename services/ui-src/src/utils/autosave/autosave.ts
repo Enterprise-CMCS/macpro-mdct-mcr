@@ -3,7 +3,7 @@ import { AutosaveField, EntityShape, EntityType, ReportStatus } from "types";
 
 type FieldValue = any;
 
-type FieldDataTuple = [string, FieldValue, string?, string?];
+type FieldDataTuple = [string, FieldValue];
 
 interface FieldInfo {
   name: string;
@@ -26,6 +26,7 @@ interface Props {
     userName: string | undefined;
     state: string | undefined;
   };
+  entityContext?: EntityContextShape;
 }
 
 export interface GetAutosaveFieldsProps extends AutosaveField {
@@ -61,28 +62,7 @@ export const getAutosaveFields = ({
   defaultValue,
   hydrationValue,
   overrideCheck,
-  entityContext,
 }: GetAutosaveFieldsProps): FieldInfo[] => {
-  if (
-    entityContext &&
-    entityContext.selectedEntity &&
-    entityContext.entityType
-  ) {
-    entityContext.updateEntities({
-      [name as string]: value,
-    });
-    return [
-      {
-        name: entityContext.entityType,
-        type,
-        value: entityContext.entities,
-        hydrationValue,
-        defaultValue,
-        overrideCheck,
-      },
-    ];
-  }
-
   return [
     {
       name,
@@ -100,10 +80,10 @@ export const autosaveFieldData = async ({
   fields,
   report,
   user,
+  entityContext,
 }: Props) => {
   const { id, reportType, updateReport } = report;
   const { userName, state } = user;
-
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
@@ -123,10 +103,27 @@ export const autosaveFieldData = async ({
   // if there are fields to save, create and send payload
   if (fieldsToSave.length) {
     const reportKeys = { reportType, id, state };
-    const dataToWrite = {
-      metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
-      fieldData: Object.fromEntries(fieldsToSave), // create field data object
-    };
+    let dataToWrite = {};
+    if (
+      entityContext &&
+      entityContext.selectedEntity &&
+      entityContext.entityType
+    ) {
+      dataToWrite = {
+        metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
+        fieldData: {
+          [entityContext.entityType]: entityContext.updateEntities(
+            Object.fromEntries(fieldsToSave)
+          ),
+        }, // create field data object
+      };
+    } else {
+      dataToWrite = {
+        metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
+        fieldData: Object.fromEntries(fieldsToSave), // create field data object
+      };
+    }
+
     await updateReport(reportKeys, dataToWrite);
   }
 };

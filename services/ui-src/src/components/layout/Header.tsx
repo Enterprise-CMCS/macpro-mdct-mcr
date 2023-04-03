@@ -71,7 +71,7 @@ export const Header = ({ handleLogout }: Props) => {
                 )}
                 {report?.reportType === "MLR" && (
                   <Text sx={sx.programNameText}>
-                    Submission: {report?.submissionName}
+                    Submission: {report?.programName}
                   </Text>
                 )}
               </Flex>

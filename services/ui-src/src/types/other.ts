@@ -53,4 +53,5 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
+  children?: CustomHtmlElement[];
 }
