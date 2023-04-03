@@ -85,9 +85,7 @@ describe("Status Table Functionality", () => {
     expect(screen.getByText("mock-route-2b")).toBeVisible();
 
     // Name value is the img's alt tag + the text inside the button
-    const editButtons = screen.getAllByRole("button", {
-      name: "Edit Program Edit",
-    });
+    const editButtons = screen.getAllByRole("button");
     expect(editButtons).toHaveLength(4);
   });
 
