@@ -1,7 +1,8 @@
 import { render } from "@testing-library/react";
 import { ReportContext } from "components";
-import { ExportedReportPage } from "./ExportedReportPage";
+import { ExportedReportPage, reportTitle } from "./ExportedReportPage";
 import { axe } from "jest-axe";
+import { ReportShape, ReportType } from "types";
 
 const mockMcparContext = {
   report: {
@@ -50,6 +51,29 @@ const mockMcparContextCombinedData = {
   },
 };
 
+const mockMlrContext = {
+  report: {
+    reportType: "MLR",
+    dueDate: 1712505600000,
+    lastAltered: 1712505600000,
+    lastAlteredBy: "Name",
+    status: "In Progress",
+    programName: "test",
+    formTemplate: {
+      routes: [
+        {
+          path: "test",
+          name: "test",
+          pageType: "test",
+        },
+      ],
+    },
+    fieldData: {
+      stateName: "TestState",
+    },
+  },
+};
+
 const exportedReportPage = (context: any) => (
   <ReportContext.Provider value={context}>
     <ExportedReportPage />
@@ -73,5 +97,23 @@ describe("Test ExportedReportPage Functionality", () => {
     expect(page).toBeVisible();
     const results = await axe(page);
     expect(results).toHaveNoViolations();
+  });
+
+  test("Does the export page have the correct title for MLR reports", () => {
+    const page = render(exportedReportPage(mockMlrContext));
+    const title = page.getByText(
+      "TestState: Medicaid Medical Loss Ratio (MLR) & Remittance Calculations"
+    );
+    expect(title).toBeVisible();
+  });
+});
+
+describe("ExportedReportPage fails gracefully when appropriate", () => {
+  const unknownReportType = "some new report type" as ReportType;
+
+  it("Should throw an error when rendering the title for an unknown report type", () => {
+    expect(() => reportTitle(unknownReportType, {}, {} as ReportShape)).toThrow(
+      Error
+    );
   });
 });

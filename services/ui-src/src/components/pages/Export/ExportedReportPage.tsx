@@ -48,19 +48,19 @@ export const ExportedReportPage = () => {
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
           <Helmet>
-            <title>{reportTitle(reportType, exportVerbiage, report)}</title>
+            <title>{reportTitle(reportType, reportPage, report)}</title>
             <meta name="author" content={metadata.author} />
             <meta name="subject" content={metadata.subject} />
             <meta name="language" content={metadata.language} />
           </Helmet>
           {/* report heading */}
           <Heading as="h1" sx={sx.heading}>
-            {reportTitle(reportType, exportVerbiage, report)}
+            {reportTitle(reportType, reportPage, report)}
           </Heading>
           {/* report metadata tables */}
           <ExportedReportMetadataTable
             reportType={reportType}
-            verbiage={exportVerbiage.reportPage}
+            verbiage={reportPage}
           />
           {/* combined data table */}
           {reportType === ReportType.MCPAR && (
@@ -96,15 +96,15 @@ export const ExportedReportPage = () => {
 
 export const reportTitle = (
   reportType: ReportType,
-  pageVerbiage: any,
+  reportPage: any,
   report: ReportShape
 ): string => {
   switch (reportType) {
     case ReportType.MCPAR:
-      return `${pageVerbiage.heading} ${report.fieldData.stateName}: ${report.programName}`;
+      return `${reportPage.heading} ${report.fieldData.stateName}: ${report.programName}`;
     case ReportType.MLR:
     case ReportType.NAAAR:
-      return `${report.fieldData.stateName}: ${pageVerbiage.heading}`;
+      return `${report.fieldData.stateName}: ${reportPage.heading}`;
     default:
       assertExhaustive(reportType);
       throw new Error(
