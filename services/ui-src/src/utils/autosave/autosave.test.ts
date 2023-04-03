@@ -1,5 +1,10 @@
 import { mockStateUser } from "utils/testing/setupJest";
-import { autosaveFieldData, isFieldChanged } from "./autosave";
+import {
+  autosaveFieldData,
+  EntityContextShape,
+  getAutosaveFields,
+  isFieldChanged,
+} from "./autosave";
 
 const mockTrigger = jest.fn();
 
@@ -35,6 +40,13 @@ const fields = [
     overrideCheck: false,
   },
 ];
+
+const mockEntityContext: EntityContextShape = {
+  updateEntities: jest.fn(),
+  entities: [{ id: "foo", testField: 1 }],
+  entityType: "program",
+  selectedEntity: { id: "foo" },
+};
 
 describe("autosaveFieldData", () => {
   it("should save fieldData if fields have been updated", async () => {
@@ -150,5 +162,54 @@ describe("ifFieldWasUpdated", () => {
     };
 
     expect(isFieldChanged(nonDynamicField)).toBe(false);
+  });
+});
+
+describe("getAutosaveFields", () => {
+  test("should return normal fields without entity context", () => {
+    expect(
+      getAutosaveFields({
+        name: "testField",
+        type: "number",
+        value: 1,
+        defaultValue: 0,
+        hydrationValue: 0,
+      })
+    ).toEqual([
+      {
+        name: "testField",
+        type: "number",
+        value: 1,
+        defaultValue: 0,
+        hydrationValue: 0,
+        overrideCheck: undefined,
+      },
+    ]);
+  });
+  test("should return whole entities for fields with entity context", () => {
+    expect(
+      getAutosaveFields({
+        name: "testField",
+        type: "number",
+        value: 1,
+        defaultValue: 0,
+        hydrationValue: 0,
+        entityContext: mockEntityContext,
+      })
+    ).toEqual([
+      {
+        name: "program",
+        type: "number",
+        value: [
+          {
+            id: "foo",
+            testField: 1,
+          },
+        ],
+        defaultValue: 0,
+        hydrationValue: 0,
+        overrideCheck: undefined,
+      },
+    ]);
   });
 });

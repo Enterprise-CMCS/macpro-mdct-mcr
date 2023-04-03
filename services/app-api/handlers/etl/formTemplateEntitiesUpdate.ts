@@ -22,24 +22,9 @@ export const transform = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
-  let keepSearching = true;
-  let startingKey;
-  let metadataResults;
-
-  while (keepSearching) {
-    try {
-      [startingKey, keepSearching, metadataResults] =
-        await scanTableForMetadata(TABLE_NAME, keepSearching, startingKey);
-      for (const metadata of metadataResults.Items) {
-        await processMetadata(metadata);
-      }
-    } catch (err) {
-      console.error(`Database scan failed for the table ${TABLE_NAME}
-                     with startingKey ${startingKey} and the keepSearching flag is ${keepSearching}.
-                     Error: ${err}`);
-      throw err;
-    }
-  }
+  console.log("Performing ETL with params", { TABLE_NAME, BUCKET_NAME });
+  await recursiveTransform();
+  console.log("Finished Processing");
   return {
     statusCode: 200,
     body: JSON.stringify({
@@ -48,8 +33,36 @@ export const transform = async (
   };
 };
 
+export const recursiveTransform = async (startingKey: any = undefined) => {
+  try {
+    let scannedResult = await scanTableForMetadata(TABLE_NAME, startingKey);
+    let metadataResults = scannedResult.results;
+    console.log("Iterating over fetched items:", {
+      startingKey,
+      recordCount: metadataResults?.Items?.length,
+    });
+    if (metadataResults?.Items) {
+      for (const metadata of metadataResults.Items) {
+        await processMetadata(metadata as AnyObject);
+      }
+    }
+    if (scannedResult.startingKey) {
+      console.log("Starting key is ", scannedResult.startingKey);
+      await recursiveTransform(scannedResult.startingKey);
+    } else {
+      return;
+    }
+  } catch (err) {
+    console.error(`Database scan failed for the table ${TABLE_NAME}
+                   with startingKey ${startingKey}.
+                   Error: ${err}`);
+    throw err;
+  }
+};
+
 export const processMetadata = async (metadata: AnyObject) => {
   let formTemplateId = metadata.formTemplateId;
+  let reportState = metadata.state;
   if (!formTemplateId) {
     console.error("Could not find formTemplateId", {
       state: metadata.state,
@@ -57,38 +70,49 @@ export const processMetadata = async (metadata: AnyObject) => {
     });
     return;
   }
+  console.log("Processing report", {
+    id: metadata.id,
+    formTemplateId,
+    reportState,
+  });
 
   // get formTemplate with formTemplateID
-  const formTemplate = await getFormTemplateFromS3(
-    formTemplateId,
-    metadata.state
-  );
-  if (!formTemplate.entities) {
-    // modify formTemplate > write to s3
-    const updatedFormTemplate = Object.assign(
-      formTemplate,
-      ENTITIES_UPDATE_DATA
+  try {
+    const formTemplate = await getFormTemplateFromS3(
+      formTemplateId,
+      reportState
     );
-    await writeFormTemplateToS3(updatedFormTemplate);
+    if (!formTemplate.entities) {
+      // modify formTemplate > write to s3
+      const updatedFormTemplate = Object.assign(
+        formTemplate,
+        ENTITIES_UPDATE_DATA
+      );
+      await writeFormTemplateToS3(
+        updatedFormTemplate,
+        formTemplateId,
+        reportState
+      );
+    }
+  } catch (err) {
+    console.error("Unable to find form template in S3", {
+      formTemplateId,
+      reportState,
+      err,
+    });
   }
 };
 
 export const scanTableForMetadata = async (
   tableName: string,
-  keepSearching: boolean,
   startingKey?: any
 ) => {
   let results = await dynamodbLib.scan({
     TableName: tableName,
     ExclusiveStartKey: startingKey,
   });
-  if (results && results.LastEvaluatedKey) {
-    startingKey = results.LastEvaluatedKey;
-    return [startingKey, keepSearching, results];
-  } else {
-    keepSearching = false;
-    return [null, keepSearching, results];
-  }
+  console.log("The last evaluated key is ", results?.LastEvaluatedKey);
+  return { startingKey: results?.LastEvaluatedKey, results };
 };
 
 export const getFormTemplateFromS3 = async (
@@ -103,15 +127,22 @@ export const getFormTemplateFromS3 = async (
   return (await s3Lib.get(formTemplateParams)) as AnyObject;
 };
 
-export const writeFormTemplateToS3 = async (formTemplate: any) => {
+export const writeFormTemplateToS3 = async (
+  formTemplate: any,
+  formId: string,
+  reportState: string
+) => {
   const formTemplateParams: S3Put = {
     Bucket: BUCKET_NAME,
-    Key: `${buckets.FORM_TEMPLATE}/${formTemplate.state}/${formTemplate.id}.json`,
+    Key: `${buckets.FORM_TEMPLATE}/${reportState}/${formId}.json`,
     Body: JSON.stringify(formTemplate),
     ContentType: "application/json",
   };
   const result = await s3Lib.put(formTemplateParams);
-  console.log("Updated form template ", formTemplate.id, " | ", result);
+  console.log("Updated form template ", {
+    key: formTemplateParams.Key,
+    result,
+  });
 
   return result;
 };

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import { SectionHeader } from "./FormLayoutElements";
+import { SectionContent, SectionHeader } from "./FormLayoutElements";
 
 const sectionHeaderComponentTopDivider = (
   <SectionHeader
@@ -28,6 +28,8 @@ const sectionHeaderComponentNoDivider = (
     data-testid="test-section-header"
   />
 );
+
+const sectionContentComponent = <SectionContent content={"Foo"} />;
 
 describe("Test SectionHeader component", () => {
   test("Top should make the section divider on the top.", async () => {
@@ -60,12 +62,21 @@ describe("Test SectionHeader component", () => {
   });
 });
 
-describe("Test TextAreaField accessibility", () => {
+describe("Test SectionContent component", () => {
+  test("Component should be visible and render correct text.", async () => {
+    const { findByText } = render(sectionContentComponent);
+    expect(await findByText("Foo")).toBeTruthy();
+    expect(await findByText("Foo")).toBeVisible();
+  });
+});
+
+describe("Test FormLayoutElements components accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     for (const component of [
       sectionHeaderComponentBottomDivider,
       sectionHeaderComponentTopDivider,
       sectionHeaderComponentNoDivider,
+      sectionContentComponent,
     ]) {
       const { container } = render(component);
       const results = await axe(container);

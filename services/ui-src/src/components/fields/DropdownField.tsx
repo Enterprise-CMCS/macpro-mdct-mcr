@@ -7,6 +7,7 @@ import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
+  getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
@@ -17,8 +18,10 @@ import {
   DropdownOptions,
   EntityShape,
   InputChangeEvent,
+  SelectedOption,
 } from "types";
 import { dropdownDefaultOptionText } from "../../constants";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const DropdownField = ({
   name,
@@ -32,6 +35,8 @@ export const DropdownField = ({
   ...props
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
   const { full_name, state } = useUser().user ?? {};
 
   // fetch the option values and format them if necessary
@@ -83,7 +88,7 @@ export const DropdownField = ({
 
   // update form data
   const onChangeHandler = async (event: InputChangeEvent) => {
-    const selectedOption = {
+    const selectedOption: SelectedOption = {
       label: event.target.id,
       value: event.target.value,
     };
@@ -101,15 +106,19 @@ export const DropdownField = ({
     if (selectedOption === defaultValue) form.trigger(name);
     // submit field data to database
     if (autosave) {
-      const fields = [
-        {
-          name,
-          type: "dropdown",
-          value: selectedOption,
-          hydrationValue,
-          defaultValue,
+      const fields = getAutosaveFields({
+        name,
+        type: "dropdown",
+        value: selectedOption,
+        defaultValue,
+        hydrationValue,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
         },
-      ];
+      });
       const reportArgs = {
         id: report?.id,
         reportType: report?.reportType,

@@ -48,68 +48,11 @@ Before starting the project we're going to install some tools. We recommend havi
 1. Clone the repo: `git clone https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git`
 2. In the root directory copy the .env_example file and name it .env
 3. In the services/ui-src directory copy the .env_example file and name it .env
-4. Overwrite the values here with the examples in the Environment Configuration below
-5. In the root directory run `pre-commit install`
+4. In the root directory run `pre-commit install`
 
 ### Running the project locally
 
 In the root of the project run `./dev local`
-
-#### Environment Configuration
-
-Root `.env`
-
-```
-API_URL=http://localhost:3030/local
-BANNER_TABLE_NAME=local-banners
-COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
-COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
-DISABLE_ESLINT_PLUGIN=true
-DYNAMODB_URL=http://localhost:8000
-LOCAL_LOGIN=true
-MCPAR_FORM_BUCKET=local-mcpar-form
-MCPAR_REPORT_TABLE_NAME=local-mcpar-reports
-MLR_FORM_BUCKET=local-mlr-form
-MLR_REPORT_TABLE_NAME=local-mlr-reports
-NAAAR_FORM_BUCKET=local-naaar-form
-NAAAR_REPORT_TABLE_NAME=local-naaar-reports
-PRINCE_API_HOST=macpro-platform-dev.cms.gov
-PRINCE_API_PATH=/doc-conv/508html-to-508pdf
-S3_ATTACHMENTS_BUCKET_NAME=local-uploads
-S3_LOCAL_ENDPOINT=http://localhost:4569
-SKIP_PREFLIGHT_CHECK=true
-TEMPLATE_BUCKET=local-uploads
-URL=http://localhost/3000
-LOGGING_BUCKET=log-bucket
-IAM_PATH=/
-IAM_PERMISSIONS_BOUNDARY="bound"
-WARMUP_SCHEDULE=60 minutes
-WARMUP_CONCURRENCY=5
-DATATRANSFORM_ENABLED=false
-DATATRANSFORM_UPDATED_ENABLED=false
-```
-
-/services/ui-src `.env`
-
-```
-API_REGION=us-east-1
-API_URL=http://localhost:3030
-COGNITO_IDENTITY_POOL_ID=us-east-1:76708bb0-a458-4ea7-b90e-995ff5da5ab6
-COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
-COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
-COGNITO_REGION=us-east-1
-COGNITO_USER_POOL_CLIENT_ID=4n2andd7qumjgdojec3cbqsemu
-COGNITO_USER_POOL_CLIENT_DOMAIN=main-login-4n2andd7qumjgdojec3cbqsemu.auth.us-east-1.amazoncognito.com
-COGNITO_USER_POOL_ID=us-east-1_lerDvs4wn
-DEV_API_URL=https://umu6q0vjmk.execute-api.us-east-1.amazonaws.com/main
-LD_PROJECT_KEY=mdct-mcr
-LOCAL_LOGIN=true
-REACT_APP_LD_SDK_CLIENT=placeholder
-S3_ATTACHMENTS_BUCKET_NAME=uploads-main-attachments-446712541566
-S3_ATTACHMENTS_BUCKET_REGION=us-east-1
-S3_LOCAL_ENDPOINT=http://localhost:4569
-STAGE=local
-```
 
 ### Logging in
 
@@ -128,6 +71,26 @@ To view your database after the application is up and running you can install th
 - Install and run `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin` in a new terminal window
 
 In the terminal, any changes made to a program will show up as S3 updates with a path that includes a unique KSUID. You can use that KSUID to see the fieldData structure in your code. `services/uploads/local_buckets/local-mcpar-form/fieldData/{state}/{KSUID}`
+
+#### DynamoDB Jar Not Found Workaround
+
+Currently (March 31, 2023) there is a bug which prevents local usage of DynamoDB.
+We rely on `serverless-dynamodb-local@0.2.40`, which relies on `dynamodb-localhost@0.0.9`, which attempts to download a .jar file from AWS.
+Unfortunately, it attempts to do so over `http`, rather than `https`.
+This fails.
+[This has been fixed in the source](https://github.com/99x/dynamodb-localhost/commit/d4546c8110f1d5c2a454988c7e658e2f6a80d502),
+but that fix [has not yet shipped in a release](https://www.npmjs.com/package/dynamodb-localhost?activeTab=versions) we can consume.
+Once the update ships [in dynamodb-localhost](https://github.com/99x/dynamodb-localhost/issues/83)
+and [in serverless-dynamodb-local](https://github.com/99x/serverless-dynamodb-local/issues/294),
+this section of the README will become obsolete and should be removed.
+
+The workaround is to fix the URL yourself.
+In the folder `services/database/node_modules/dynamodb-localhost/dynamodb`:
+* In `config.json`, edit the `download_url` on line 3 to use https
+* In `installer.js`, edit the `require('http')` on line 6 to `require('https')`
+
+This is a one-time operation; once the jar is downloaded, DynamoDB should run locally without issue.
+The output from `./dev local` should now include a message about 4 database tables being successfully created.
 
 ### Local Development Additional Info
 

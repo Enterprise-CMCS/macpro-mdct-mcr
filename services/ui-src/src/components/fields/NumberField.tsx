@@ -8,11 +8,13 @@ import {
   applyCustomMask,
   autosaveFieldData,
   customMaskMap,
+  getAutosaveFields,
   useUser,
   validCmsdsMask,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const NumberField = ({
   name,
@@ -25,7 +27,8 @@ export const NumberField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
-
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
   // get form context
   const form = useFormContext();
   const { report, updateReport } = useContext(ReportContext);
@@ -68,17 +71,30 @@ export const NumberField = ({
     // mask value and set as display value
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);
+
     // submit field data to database
     if (autosave) {
-      const fields = [
-        { name, type: "number", value, hydrationValue, defaultValue },
-      ];
+      const fields = getAutosaveFields({
+        name,
+        type: "number",
+        value,
+        defaultValue,
+        hydrationValue,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
+      });
+
       const reportArgs = {
         id: report?.id,
         reportType: report?.reportType,
         updateReport,
       };
       const user = { userName: full_name, state };
+
       await autosaveFieldData({
         form,
         fields,

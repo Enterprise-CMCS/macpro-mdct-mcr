@@ -1,9 +1,9 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { EntityShape, ReportStatus } from "types";
+import { AutosaveField, EntityShape, EntityType, ReportStatus } from "types";
 
 type FieldValue = any;
 
-type FieldDataTuple = [string, FieldValue];
+type FieldDataTuple = [string, FieldValue, string?, string?];
 
 interface FieldInfo {
   name: string;
@@ -27,6 +27,73 @@ interface Props {
     state: string | undefined;
   };
 }
+
+export interface GetAutosaveFieldsProps extends AutosaveField {
+  entityContext?: EntityContextShape;
+}
+
+/**
+ * Current context for editing entities.
+ *
+ * This is a mirror of the EntityContext from EntityProvider,
+ * used to allow non-components to access the Context values.
+ */
+export interface EntityContextShape {
+  selectedEntity?: EntityShape;
+  entities: EntityShape[];
+  entityType?: EntityType;
+  updateEntities: Function;
+}
+
+/**
+ * Get formatted autosave fields from field data.
+ * If entity context is passed, update the selected entity
+ * within the total array of entities, and use that
+ * full data to update the report.
+ *
+ * @param GetAutosaveFieldsProps
+ * @returns
+ */
+export const getAutosaveFields = ({
+  name,
+  type,
+  value,
+  defaultValue,
+  hydrationValue,
+  overrideCheck,
+  entityContext,
+}: GetAutosaveFieldsProps): FieldInfo[] => {
+  if (
+    entityContext &&
+    entityContext.selectedEntity &&
+    entityContext.entityType
+  ) {
+    entityContext.updateEntities({
+      [name as string]: value,
+    });
+    return [
+      {
+        name: entityContext.entityType,
+        type,
+        value: entityContext.entities,
+        hydrationValue,
+        defaultValue,
+        overrideCheck,
+      },
+    ];
+  }
+
+  return [
+    {
+      name,
+      type,
+      value,
+      defaultValue,
+      hydrationValue,
+      overrideCheck,
+    },
+  ];
+};
 
 export const autosaveFieldData = async ({
   form,

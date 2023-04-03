@@ -69,6 +69,8 @@ export { LoginIDM } from "./logins/LoginIDM";
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
+// overlays
+export { EntityDetailsOverlay } from "./overlays/EntityDetailsOverlay";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditReportModal } from "./modals/AddEditReportModal";
@@ -97,5 +99,7 @@ export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 export { StatusTable } from "./statusing/StatusTable";
 // tables
 export { Table } from "./tables/Table";
+export { EntityRow } from "./tables/EntityRow";
+export { MobileEntityRow } from "./tables/MobileEntityRow";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";

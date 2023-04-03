@@ -141,7 +141,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
         <Box key={section.path} mt="5rem">
           {/*  render top-level section headings */}
           <Heading as="h2" sx={sx.sectionHeading}>
-            Section {section.name}
+            {`Section ${section.name}`}
           </Heading>
           {renderSection(section)}
         </Box>

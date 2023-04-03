@@ -19,7 +19,10 @@ import {
   FormLayoutElement,
   isFieldElement,
 } from "types";
-import { SectionHeader } from "components/forms/FormLayoutElements";
+import {
+  SectionContent,
+  SectionHeader,
+} from "components/forms/FormLayoutElements";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -42,6 +45,7 @@ export const formFieldFactory = (
     text: TextField,
     textarea: TextAreaField,
     sectionHeader: SectionHeader,
+    sectionContent: SectionContent,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {
@@ -50,7 +54,7 @@ export const formFieldFactory = (
       key: field.id,
       name: field.id,
       hydrate: field.props?.hydrate,
-      autoComplete: "one-time-code", // stops browsers from forcing autofill
+      autoComplete: isFieldElement(field) ? "one-time-code" : undefined, // stops browsers from forcing autofill
       ...options,
       ...field?.props,
     };

@@ -7,19 +7,23 @@ import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
+  EntityContextShape,
   formFieldFactory,
+  getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
 } from "utils";
 import {
   AnyObject,
+  AutosaveField,
   Choice,
   CustomHtmlElement,
   FieldChoice,
   FormField,
   InputChangeEvent,
 } from "types";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const ChoiceListField = ({
   name,
@@ -39,6 +43,8 @@ export const ChoiceListField = ({
     useState<Choice[]>(defaultValue);
 
   const { report, updateReport } = useContext(ReportContext);
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
   const { full_name, state, userIsAdmin } = useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
@@ -159,9 +165,32 @@ export const ChoiceListField = ({
       const timeInMs = 200;
       // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
       setTimeout(async () => {
-        let fields = [
-          { name, type, value: displayValue, hydrationValue, defaultValue },
-          ...getNestedChildFields(choices, lastDatabaseValue),
+        const parentName = document.activeElement?.id.split("-")[0];
+        if (
+          parentName === name &&
+          !document.activeElement?.id.includes("-otherText")
+        )
+          return; // Short circuit if still clicking on elements in this choice list
+
+        const entityContext: EntityContextShape = {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        };
+
+        const fields = getAutosaveFields({
+          name,
+          type: "number",
+          value: displayValue,
+          defaultValue,
+          hydrationValue,
+          entityContext,
+        });
+
+        const combinedFields = [
+          ...fields,
+          ...getNestedChildFields(choices, lastDatabaseValue, entityContext),
         ];
         const reportArgs = {
           id: report?.id,
@@ -171,7 +200,7 @@ export const ChoiceListField = ({
         const user = { userName: full_name, state };
         await autosaveFieldData({
           form,
-          fields,
+          fields: combinedFields,
           report: reportArgs,
           user,
         });
@@ -230,8 +259,9 @@ const sx = {
 
 export const getNestedChildFields = (
   choices: FieldChoice[],
-  lastDatabaseValue: Choice[]
-) => {
+  lastDatabaseValue: Choice[],
+  entityContext?: EntityContextShape
+): AutosaveField[] => {
   // set up nested field compilation
   const nestedFields: any = [];
   const compileNestedFields = (fields: FormField[]) => {
@@ -240,12 +270,16 @@ export const getNestedChildFields = (
       const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
         ? []
         : "";
-      const fieldInfo = {
+
+      const fieldInfo = getAutosaveFields({
         name: field.id,
         type: field.type,
         value: fieldDefaultValue,
         overrideCheck: true,
-      };
+        defaultValue: undefined,
+        hydrationValue: undefined,
+        entityContext,
+      })[0];
       // add to nested fields to be autosaved
       nestedFields.push(fieldInfo);
       // recurse through additional nested children as needed
