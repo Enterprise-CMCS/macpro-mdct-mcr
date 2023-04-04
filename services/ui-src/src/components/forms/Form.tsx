@@ -115,7 +115,7 @@ const sx = {
   },
 
   ".ds-c-field": {
-    margin: "8px 0 4px 0",
+    margin: "0.5rem 0 0.25rem",
   },
 
   // disabled field
