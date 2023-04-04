@@ -9,7 +9,6 @@ import {
 import { useNavigate } from "react-router-dom";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-get-started";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import NavigationSectionsImage from "assets/other/nav_sections.png";
@@ -20,7 +19,6 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
 
   const getStartedVerbiageMap: any = {
     MCPAR: mcparVerbiage,
-    MLR: mlrVerbiage,
   };
 
   const getStartedVerbiage = getStartedVerbiageMap[reportType]!;
