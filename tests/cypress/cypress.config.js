@@ -17,6 +17,8 @@ module.exports = defineConfig({
   env: {
     STATE_USER_EMAIL: "cypressstateuser@test.com",
     ADMIN_USER_EMAIL: "cypressadminuser@test.com",
+    STATE_USER_PASSWORD: "PB74y*MfPFNT",
+    ADMIN_USER_PASSWORD: "PB74y*MfPFNT",
   },
   e2e: {
     baseUrl: "http://127.0.0.1:3000/",
