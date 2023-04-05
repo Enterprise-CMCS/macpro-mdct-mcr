@@ -179,6 +179,15 @@ export const calculateCompletionStatus = async (
           ),
         };
         break;
+      case "modalOverlay":
+        if (!route.modalForm || !route.overlayForm) break;
+        routeCompletion = {
+          [route.path]: await calculateEntityCompletion(
+            [route.modalForm, route.overlayForm],
+            route.entityType
+          ),
+        };
+        break;
       case "reviewSubmit":
         // Don't evaluate the review and submit page
         break;
