@@ -69,7 +69,15 @@ export const DropdownField = ({
 
   // get form context and register field
   const form = useFormContext();
-  form.register(name);
+  const fieldIsRegistered = name in form.getValues();
+
+  useEffect(() => {
+    if (!fieldIsRegistered) {
+      form.register(name);
+    } else {
+      form.trigger(name);
+    }
+  }, []);
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate || defaultValue;

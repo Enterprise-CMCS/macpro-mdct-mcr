@@ -36,7 +36,15 @@ export const DateField = ({
 
   // get form context and register form field
   const form = useFormContext();
-  form.register(name);
+  const fieldIsRegistered = name in form.getValues();
+
+  useEffect(() => {
+    if (!fieldIsRegistered) {
+      form.register(name);
+    } else {
+      form.trigger(name);
+    }
+  }, []);
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate || defaultValue;
@@ -53,7 +61,7 @@ export const DateField = ({
         form.setValue(name, defaultValue);
       } else {
         setDisplayValue(hydrationValue);
-        form.setValue(name, hydrationValue);
+        form.setValue(name, hydrationValue, { shouldValidate: true });
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
