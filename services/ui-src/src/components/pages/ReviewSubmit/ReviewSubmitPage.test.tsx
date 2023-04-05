@@ -11,6 +11,7 @@ import {
   mockLDFlags,
   mockMcparReport,
   mockMcparReportContext,
+  mockMlrReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -244,6 +245,14 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
     </RouterWrappedComponent>
   );
 
+  const MlrReviewSubmitPage_InProgress = (
+    <RouterWrappedComponent>
+      <ReportContext.Provider value={mockMlrReportContext}>
+        <ReviewSubmitPage />
+      </ReportContext.Provider>
+    </RouterWrappedComponent>
+  );
+
   describe("When loading an in-progress report", () => {
     it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
       mockLDFlags.set({ pdfExport: true });
@@ -251,6 +260,15 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
       const printButton = screen.getByText("Review PDF");
       expect(printButton).toBeVisible();
       expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+      expect(printButton.getAttribute("target")).toEqual("_blank");
+    });
+
+    it("if pdfExport flag is true and type is MLR, Review PDF button should be visible and correctly formed", async () => {
+      mockLDFlags.set({ pdfExport: true });
+      render(MlrReviewSubmitPage_InProgress);
+      const printButton = screen.getByText("Review PDF");
+      expect(printButton).toBeVisible();
+      expect(printButton.getAttribute("href")).toEqual("/mlr/export");
       expect(printButton.getAttribute("target")).toEqual("_blank");
     });
 

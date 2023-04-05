@@ -22,7 +22,7 @@ const mockMcparContext = {
 
 const mockMlrContext = {
   report: {
-    submissionName: "Mock submit",
+    programName: "Mock submit",
     dueDate: 1712505600000,
     lastAltered: 1712305600000,
     lastAlteredBy: "Mock editor",

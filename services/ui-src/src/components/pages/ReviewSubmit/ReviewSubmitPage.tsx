@@ -112,10 +112,12 @@ export const ReviewSubmitPage = () => {
 
 const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
+  const { report } = useContext(ReportContext);
+  const reportType = report?.reportType === "MLR" ? "mlr" : "mcpar";
   return (
     <Button
       as={RouterLink}
-      to="/mcpar/export"
+      to={`/${reportType}/export`}
       target="_blank"
       sx={sx.printButton}
       leftIcon={<Image src={iconSearch} alt="Search Icon" height=".9rem" />}

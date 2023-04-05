@@ -6,13 +6,17 @@ import { parseCustomHtml } from "utils";
 import { ReportPageVerbiage } from "types";
 
 export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
-  const sectionHeading = verbiage?.intro?.subsection || heading;
-  const sectionInfo = verbiage?.intro?.info;
+  const sectionHeading = verbiage?.intro?.exportSectionHeader
+    ? verbiage?.intro?.exportSectionHeader
+    : verbiage?.intro?.subsection || heading;
+  const sectionInfo = verbiage?.intro?.exportSectionHeader
+    ? null
+    : verbiage?.intro?.info;
   const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
 
   return (
     <Box data-testid="exportedSectionHeading">
-      <Heading as="h3" sx={sx.heading}>
+      <Heading as="h2" sx={sx.heading}>
         {sectionHeading}
       </Heading>
       {sectionInfo && <Box sx={sx.info}>{parseCustomHtml(sectionInfo)}</Box>}
