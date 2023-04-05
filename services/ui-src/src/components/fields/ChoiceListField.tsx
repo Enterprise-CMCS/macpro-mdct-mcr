@@ -111,14 +111,13 @@ export const ChoiceListField = ({
                   choice.checked = false;
                 });
                 form.setValue(child.id, []);
-                form.clearErrors();
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
             default:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, "");
-              form.clearErrors();
+              form.unregister(child.id);
               break;
           }
         });

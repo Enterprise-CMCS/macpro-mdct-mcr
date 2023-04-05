@@ -144,5 +144,6 @@ interface Props {
   nested?: boolean;
   autosave?: boolean;
   styleAsOptional?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
