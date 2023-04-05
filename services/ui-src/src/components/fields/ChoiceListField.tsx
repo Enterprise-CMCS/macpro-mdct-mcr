@@ -54,7 +54,7 @@ export const ChoiceListField = ({
   const shouldDisableChildFields = userIsAdmin && !!props?.disabled;
 
   // set initial display value to form state field value or hydration value
-  const hydrationValue = props?.hydrate || defaultValue;
+  const hydrationValue = props?.hydrate;
 
   useEffect(() => {
     if (!fieldIsRegistered) {

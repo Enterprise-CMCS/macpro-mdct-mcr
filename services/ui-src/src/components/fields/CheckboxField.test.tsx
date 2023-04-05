@@ -36,8 +36,8 @@ describe("Test CheckboxField component", () => {
   });
 
   test("CheckboxField allows checking checkbox choices", async () => {
-    const wrapper = render(CheckboxFieldComponent);
-    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+    render(CheckboxFieldComponent);
+    const firstCheckbox = screen.getByLabelText("Choice 1") as HTMLInputElement;
     await userEvent.click(firstCheckbox);
     expect(mockSetValue).toHaveBeenCalledWith(
       "checkbox_choices",

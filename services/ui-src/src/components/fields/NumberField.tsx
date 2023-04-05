@@ -150,6 +150,7 @@ interface Props {
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 

@@ -54,11 +54,8 @@ describe("Test RadioField component", () => {
   });
 
   test("RadioField allows checking radio choices", async () => {
-    const wrapper = render(RadioFieldComponent);
-    const radioContainers = wrapper.container.querySelectorAll(
-      ".ds-c-choice-wrapper"
-    );
-    const firstRadio = radioContainers[0].children[0] as HTMLInputElement;
+    render(RadioFieldComponent);
+    const firstRadio = screen.getByLabelText("Choice 1") as HTMLInputElement;
     await userEvent.click(firstRadio);
     expect(mockSetValue).toHaveBeenCalledWith(
       "radio_choices",

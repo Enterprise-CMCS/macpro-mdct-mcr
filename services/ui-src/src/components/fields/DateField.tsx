@@ -149,6 +149,7 @@ interface Props {
   autosave?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 

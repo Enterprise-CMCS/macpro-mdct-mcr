@@ -12,6 +12,7 @@ const mockTrigger = jest.fn().mockReturnValue(true);
 const mockSetValue = jest.fn();
 const mockRhfMethods = {
   register: () => {},
+  unregister: () => {},
   setValue: mockSetValue,
   getValues: jest.fn(),
   trigger: mockTrigger,
