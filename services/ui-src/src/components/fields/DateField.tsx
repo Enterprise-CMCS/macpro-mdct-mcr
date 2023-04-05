@@ -36,7 +36,8 @@ export const DateField = ({
 
   // get form context and register form field
   const form = useFormContext();
-  const fieldIsRegistered = name in form.getValues();
+  const fieldIsRegistered =
+    typeof form.getValues() == "object" ? name in form.getValues() : false;
 
   useEffect(() => {
     if (!fieldIsRegistered) {

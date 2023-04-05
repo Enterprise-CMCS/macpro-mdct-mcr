@@ -69,7 +69,8 @@ export const DropdownField = ({
 
   // get form context and register field
   const form = useFormContext();
-  const fieldIsRegistered = name in form.getValues();
+  const fieldIsRegistered =
+    typeof form.getValues() == "object" ? name in form.getValues() : false;
 
   useEffect(() => {
     if (!fieldIsRegistered) {
