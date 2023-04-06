@@ -9,7 +9,11 @@ import {
 } from "utils/testing/setupJest";
 import { ReportContext } from "components";
 import { ExportedReportFieldTable } from "./ExportedReportFieldTable";
-import { DrawerReportPageShape } from "types";
+import {
+  DrawerReportPageShape,
+  ReportContextShape,
+  StandardReportPageShape,
+} from "types";
 
 // Contexts
 const reportJsonFields = [{ ...mockNestedFormField, id: "parent" }];
@@ -22,12 +26,14 @@ const nestedParent = mockNestedFormField;
 nestedParent.props.choices[2].children = [{ ...mockFormField, id: "child" }];
 
 const mockStandardContext = { ...mockMcparReportContext };
+mockStandardContext.report = { ...mockStandardContext.report };
 mockStandardContext.report.fieldData = {
   ...mockStandardContext.report.fieldData,
   ...fieldData,
 };
 
 const mockDrawerContext = { ...mockMcparReportContext };
+mockMcparReportContext.report = { ...mockMcparReportContext.report };
 mockDrawerContext.report.fieldData = {
   ...mockDrawerContext.report.fieldData,
   plans: [
@@ -77,6 +83,61 @@ const emptyTableComponent = (
     <ExportedReportFieldTable section={mockEmptyPageJson} />
   </ReportContext.Provider>
 );
+
+const noHintContext = {
+  report: {
+    reportType: "MLR",
+  },
+} as ReportContextShape;
+
+const noHintSection = {
+  form: {
+    id: "apoc",
+    fields: [
+      {
+        id: "mockFieldId",
+        props: {
+          label: "X. Mock Field label",
+          hint: "Mock Hint Text",
+        },
+      },
+    ],
+  },
+} as unknown as StandardReportPageShape;
+
+const noHintComponent = (
+  <ReportContext.Provider value={noHintContext}>
+    <ExportedReportFieldTable section={noHintSection} />
+  </ReportContext.Provider>
+);
+
+const hintContext = {
+  report: {
+    reportType: "MLR",
+  },
+} as ReportContextShape;
+
+const hintSection = {
+  form: {
+    id: "not-apoc",
+    fields: [
+      {
+        id: "mockFieldId",
+        props: {
+          label: "X. Mock Field label",
+          hint: "Mock Hint Text",
+        },
+      },
+    ],
+  },
+} as unknown as StandardReportPageShape;
+
+const hintComponent = (
+  <ReportContext.Provider value={hintContext}>
+    <ExportedReportFieldTable section={hintSection} />
+  </ReportContext.Provider>
+);
+
 describe("ExportedReportFieldRow", () => {
   test("Is present", async () => {
     render(exportedStandardTableComponent);
@@ -94,6 +155,18 @@ describe("ExportedReportFieldRow", () => {
     render(emptyTableComponent);
     const row = screen.getByTestId("exportTable");
     expect(row).toBeVisible();
+  });
+
+  test("shows the hint text in most cases", async () => {
+    render(hintComponent);
+    const hint = screen.queryByText(/Mock Hint Text/);
+    expect(hint).toBeVisible();
+  });
+
+  test("hides the hint text within the Primary Contact section of MLR", async () => {
+    render(noHintComponent);
+    const hint = screen.queryByText(/Mock Hint Text/);
+    expect(hint).not.toBeInTheDocument();
   });
 });
 

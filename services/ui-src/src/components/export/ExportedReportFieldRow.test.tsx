@@ -54,6 +54,20 @@ const dynamicRow = (
   </ReportContext.Provider>
 );
 
+const noHintRow = (
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <Table sx={{}}>
+      <tbody>
+        <ExportedReportFieldRow
+          formField={field}
+          pageType="drawer"
+          showHintText={false}
+        />
+      </tbody>
+    </Table>
+  </ReportContext.Provider>
+);
+
 describe("ExportedReportFieldRow", () => {
   test("Is present", async () => {
     render(exportRow);
@@ -71,6 +85,18 @@ describe("ExportedReportFieldRow", () => {
     render(dynamicRow);
     const row = screen.getByTestId("exportRow");
     expect(row).toBeVisible();
+  });
+
+  test("displays hint text by default", async () => {
+    render(exportRow);
+    const hint = screen.getByText("hint");
+    expect(hint).toBeVisible();
+  });
+
+  test("hides hint text when appropriate", async () => {
+    render(noHintRow);
+    const hint = screen.queryByText(/hint/);
+    expect(hint).not.toBeInTheDocument();
   });
 });
 
