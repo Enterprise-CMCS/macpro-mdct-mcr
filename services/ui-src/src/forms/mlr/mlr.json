@@ -82,7 +82,7 @@
             "validation": "radio",
             "props": {
               "label": "G. Version control",
-              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /><br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
+              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
               "choices": [
                 {
                   "id": "cyUSrTH8mWdpqAKExLZAkz",
