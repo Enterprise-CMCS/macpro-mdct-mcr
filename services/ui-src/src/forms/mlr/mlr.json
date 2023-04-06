@@ -12,9 +12,8 @@
       "verbiage": {
         "intro": {
           "section": "Section A: Program Information",
-          "subsection": "Point of Contact",
-          "spreadsheet": "Program Information",
-          "exportSection": "Information for Primary Contact"
+          "subsection": "Information for Primary Contact",
+          "spreadsheet": "Program Information"
         }
       },
       "form": {
