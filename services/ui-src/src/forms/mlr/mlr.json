@@ -182,7 +182,7 @@
         "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab.",
         "addEditModalAddTitle": "Add program reporting information",
         "addEditModalEditTitle": "Edit program reporting information",
-        "addEditModalHint": "Complete this screen once for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+        "addEditModalHint": "Provide the following program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab."
       },
       "modalForm": {
         "id": "bpel-modal",
@@ -193,7 +193,7 @@
             "validation": "text",
             "props": {
               "label": "I. Program name",
-              "hint": "Enter the name of the program(s) relevant to this set of MLR results. States providing plan-level MLR results separated by program should enter the individual relevant program name in the field below. States providing one set of combined MLR results per plan should list the program names relevant to the respective set of results in the field below, separated by commas. <br/> A program is defined generally by a specified set of benefits and eligibility criteria that is articulated in a contract between the state and a managed care plan."
+              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
           {
@@ -202,7 +202,7 @@
             "validation": "checkbox",
             "props": {
               "label": "J. Program type",
-              "hint": "Select the program type definition(s) that best describes the program entered in \"I. Program Name\".",
+              "hint": "Select the program type definition(s) that best describes the program(s) entered in “I. Program name”.",
               "choices": [
                 {
                   "id": "cQhGnyBmiXszLqrx6b2Cp8",
@@ -263,7 +263,7 @@
                         },
                         {
                           "type": "externalLink",
-                          "content": "42 CFR 457.10",
+                          "content": "42 CFR § 457.10",
                           "props": {
                             "aria-label": "Link opens in new tab",
                             "target": "_blank",
@@ -305,16 +305,16 @@
               ],
               "choices": [
                 {
+                  "id": "cRi6qE4T5c6BjbGUsiiEof",
+                  "label": "All Populations"
+                },
+                {
                   "id": "UgSDECcYDJ4S39QEMmMRcq",
                   "label": "Standalone CHIP"
                 },
                 {
                   "id": "KWr7SR2JM5UYogD6xZykrN",
                   "label": "Group VIII Expansion Adult Only"
-                },
-                {
-                  "id": "cRi6qE4T5c6BjbGUsiiEof",
-                  "label": "All Populations"
                 },
                 {
                   "id": "4xSRBneHBfUEqSPfrPTRYf",
@@ -343,11 +343,11 @@
               "hint": [
                 {
                   "type": "span",
-                  "content": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
                 },
                 {
                   "type": "externalLink",
-                  "content": "Managed Care Enrollment by Program and Plan",
+                  "content": "\"Managed Care Enrollment by Program and Plan\"",
                   "props": {
                     "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
                     "target": "_blank",
@@ -384,8 +384,8 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "P.1 Reporting period discrepancy",
-              "hint": "Is the reporting period less than 12 months or does the MCO/PIHP/PAHP have a different reporting period than other MCO/PIHP/PAHPs within the same program?",
+              "label": "P Explanation of reporting period discrepancy",
+              "hint": "For reporting periods that are less than 12 months, or for MCO/PIHP/PAHPs that have a different reporting period than other MCO/PIHP/PAHPs within the same program, include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year.",
               "choices": [
                 {
                   "id": "2NI2TmkWrS70g3U6adRKklWSv31",
