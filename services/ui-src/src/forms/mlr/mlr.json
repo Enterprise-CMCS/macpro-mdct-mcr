@@ -4,6 +4,9 @@
   "basePath": "/mlr",
   "version": "MLR_2023-02-09",
   "adminDisabled": true,
+  "entities": {
+    "program": { "required": true }
+  },
   "routes": [
     {
       "name": "Information for Primary Contact",
