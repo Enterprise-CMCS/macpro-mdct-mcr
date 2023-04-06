@@ -6,13 +6,14 @@
   "adminDisabled": true,
   "routes": [
     {
-      "name": "Program Information",
-      "path": "/mlr/program-information",
+      "name": "Information for Primary Contact",
+      "path": "/mlr/information-for-primary-contact",
       "pageType": "standard",
       "verbiage": {
         "intro": {
-          "section": "Section A: Program Information",
-          "subsection": "Point of Contact",
+          "section": "Program Information",
+          "subsection": "Information for Primary of Contact",
+          "hint": "Please enter the name of the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
           "spreadsheet": "Program Information",
           "exportSection": "Information for Primary Contact"
         }
