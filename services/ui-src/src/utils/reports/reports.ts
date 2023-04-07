@@ -6,6 +6,7 @@ import {
   ReportJson,
   ReportRoute,
   isFieldElement,
+  ModalOverlayReportPageShape,
 } from "types";
 
 export const sortReportsOldestToNewest = (
@@ -115,6 +116,12 @@ export const compileValidationJsonFromRoutes = (
     // if drawer form present, add validation to schema
     const drawerFormFields = route.drawerForm?.fields.filter(isFieldElement);
     if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
+    if (route.pageType === "modalOverlay") {
+      const overlayFormFields = (
+        route as ModalOverlayReportPageShape
+      ).overlayForm?.fields.filter(isFieldElement);
+      if (overlayFormFields) addValidationToAccumulator(overlayFormFields);
+    }
   });
   return validationSchema;
 };
