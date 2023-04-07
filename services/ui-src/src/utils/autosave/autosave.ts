@@ -114,6 +114,10 @@ export const autosaveFieldData = async ({
         const { name, value, defaultValue, hydrationValue, overrideCheck } =
           field;
         let fieldValueIsValid = false;
+        /*
+         * This will trigger validation if and only if the field has been rendered on the page
+         * at least once and therefore has sent a value (empty or otherwise) to the db.
+         */
         if (value !== hydrationValue && hydrationValue !== undefined) {
           fieldValueIsValid = await form.trigger(name);
         } else {
