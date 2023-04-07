@@ -15,7 +15,7 @@ export default {
         actionButtonText: "Submit MLR",
         closeButtonText: "Cancel",
       },
-      body: "You will be able to make edits to this MLR after submitting, and resubmit.",
+      body: "You won’t be able to make edits after submitting unless you send a request to CMS to unlock your submission. After compliance review, a CMS representative will contact you if there are corrections to be made and your report status will change to “In revision” in the MLR dashboard.",
     },
     pageLink: {
       text: "Submit MLR",
