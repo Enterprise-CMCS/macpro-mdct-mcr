@@ -663,7 +663,7 @@
                   "type": "externalLink",
                   "content": "42 CFR § 438.8(b)",
                   "props": {
-                    "href": "https://www.eexcfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)",
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)",
                     "target": "_blank",
                     "aria-label": "Link opens in new tab"
                   }
@@ -932,7 +932,7 @@
                         "parentFieldName": "contractIncludesRemittance"
                       },
                       "props": {
-                        "label": "O. MLR reporting period start date",
+                        "label": "N. MLR reporting period start date",
                         "hint": "Auto-populates from program reporting information.",
                         "disabled": true
                       }
@@ -1026,7 +1026,7 @@
                             "type": "externalLink",
                             "content": "42 CFR § 438.74(b)(2)",
                             "props": {
-                              "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
+                              "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74#p-438.74(b)(2)",
                               "target": "_blank",
                               "aria-label": "Link opens in new tab"
                             }
