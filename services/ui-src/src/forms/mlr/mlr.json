@@ -30,7 +30,7 @@
             }
           },
           {
-            "id": "contactPhone",
+            "id": "contactPhoneNumber",
             "type": "text",
             "validation": "text",
             "props": {
@@ -48,7 +48,7 @@
             }
           },
           {
-            "id": "contactTitle",
+            "id": "contactJobTitle",
             "type": "text",
             "validation": "text",
             "props": {
@@ -124,7 +124,7 @@
                             "label": "Other, specify",
                             "children": [
                               {
-                                "id": "versionControlDescriptionOther",
+                                "id": "versionControlDescription-otherText",
                                 "type": "textarea",
                                 "validation": {
                                   "type": "text",
@@ -187,7 +187,7 @@
         "id": "bpel-modal",
         "fields": [
           {
-            "id": "programName",
+            "id": "program_name",
             "type": "textarea",
             "validation": "text",
             "props": {
@@ -196,7 +196,7 @@
             }
           },
           {
-            "id": "programType",
+            "id": "program_type",
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
@@ -235,7 +235,7 @@
             }
           },
           {
-            "id": "eligibilityGroup",
+            "id": "program_eligibilityGroup",
             "type": "radio",
             "validation": "radio",
             "props": {
@@ -320,12 +320,12 @@
                   "label": "Other, specify",
                   "children": [
                     {
-                      "id": "eligibilityGroup-otherText",
+                      "id": "program_eligibilityGroup-otherText",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "eligibilityGroup"
+                        "parentFieldName": "program_eligibilityGroup"
                       }
                     }
                   ]
@@ -334,7 +334,7 @@
             }
           },
           {
-            "id": "planName",
+            "id": "program_planName",
             "type": "text",
             "validation": "text",
             "props": {
@@ -357,7 +357,7 @@
             }
           },
           {
-            "id": "reportingPeriodStartDate",
+            "id": "program_reportingPeriodStartDate",
             "type": "date",
             "validation": "date",
             "props": {
@@ -366,11 +366,11 @@
             }
           },
           {
-            "id": "reportingPeriodEndDate",
+            "id": "program_reportingPeriodEndDate",
             "type": "date",
             "validation": {
               "type": "endDate",
-              "dependentFieldName": "reportingPeriodStartDate"
+              "dependentFieldName": "program_reportingPeriodStartDate"
             },
             "props": {
               "label": "O. MLR reporting period end date",
@@ -379,7 +379,7 @@
             }
           },
           {
-            "id": "reportingPeriodDiscrepancy",
+            "id": "program_reportingPeriodDiscrepancy",
             "type": "radio",
             "validation": "radio",
             "props": {
@@ -391,12 +391,12 @@
                   "label": "Yes",
                   "children": [
                     {
-                      "id": "reportingPeriodDiscrepancy-otherText",
+                      "id": "program_reportingPeriodDiscrepancy-otherText",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "reportingPeriodDiscrepancy"
+                        "parentFieldName": "program_reportingPeriodDiscrepancy"
                       },
                       "props": {
                         "label": "P.2 Explanation of reporting period discrepancy",
@@ -413,7 +413,7 @@
             }
           },
           {
-            "id": "miscellaneousNotes",
+            "id": "program_miscellaneousNotes",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -435,7 +435,7 @@
             }
           },
           {
-            "id": "inurredClaims",
+            "id": "program_inurredClaims",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -460,7 +460,7 @@
             }
           },
           {
-            "id": "healthCareQualityActivities",
+            "id": "program_healthCareQualityActivities",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -485,7 +485,7 @@
             }
           },
           {
-            "id": "mlrNumerator",
+            "id": "program_mlrNumerator",
             "type": "number",
             "validation": "number",
             "props": {
@@ -509,7 +509,7 @@
             }
           },
           {
-            "id": "mlrNumeratorExplanation",
+            "id": "program_mlrNumeratorExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -519,7 +519,7 @@
             }
           },
           {
-            "id": "nonClaimsCosts",
+            "id": "program_nonClaimsCosts",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -552,7 +552,7 @@
             }
           },
           {
-            "id": "premiumRevenue",
+            "id": "program_premiumRevenue",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -577,7 +577,7 @@
             }
           },
           {
-            "id": "regulatoryFees",
+            "id": "program_regulatoryFees",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -602,7 +602,7 @@
             }
           },
           {
-            "id": "mlrDenominator",
+            "id": "program_mlrDenominator",
             "type": "number",
             "validation": "number",
             "props": {
@@ -626,7 +626,7 @@
             }
           },
           {
-            "id": "mlrDenominatorExplanation",
+            "id": "program_mlrDenominatorExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -644,7 +644,7 @@
             }
           },
           {
-            "id": "memberMonths",
+            "id": "program_memberMonths",
             "type": "number",
             "validation": "number",
             "props": {
@@ -667,7 +667,7 @@
             }
           },
           {
-            "id": "unadjustedMLR",
+            "id": "program_unadjustedMLR",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -678,7 +678,7 @@
             }
           },
           {
-            "id": "unadjustedMLRExplanation",
+            "id": "program_unadjustedMLRExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -688,7 +688,7 @@
             }
           },
           {
-            "id": "credibilityAdjustment",
+            "id": "program_credibilityAdjustment",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -746,7 +746,7 @@
             }
           },
           {
-            "id": "adjustedMLR",
+            "id": "program_adjustedMLR",
             "type": "number",
             "validation": "number",
             "props": {
@@ -770,7 +770,7 @@
             }
           },
           {
-            "id": "adjustedMLRExplanation",
+            "id": "program_adjustedMLRExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -795,7 +795,7 @@
             }
           },
           {
-            "id": "contractIncludesRemittance",
+            "id": "program_contractIncludesRemittance",
             "type": "radio",
             "validation": "radio",
             "props": {
@@ -807,11 +807,11 @@
                   "label": "Yes",
                   "children": [
                     {
-                      "id": "stateMinimumMLRRequirement",
+                      "id": "program_stateMinimumMLRRequirement",
                       "validation": {
                         "type": "numberOptional",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "program_contractIncludesRemittance"
                       },
                       "type": "number",
                       "props": {
@@ -821,12 +821,12 @@
                       }
                     },
                     {
-                      "id": "doesRemittanceAlign",
+                      "id": "program_doesRemittanceAlign",
                       "type": "radio",
                       "validation": {
                         "type": "radio",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "program_contractIncludesRemittance"
                       },
                       "props": {
                         "label": "4.3 Does the state remittance MLR calculation align with the required components and methodology outlined in 438.8(c)?",
@@ -842,11 +842,11 @@
                             "label": "No",
                             "children": [
                               {
-                                "id": "stateDefinedCalculationDescription",
+                                "id": "program_stateDefinedCalculationDescription",
                                 "type": "textarea",
                                 "validation": {
                                   "nested": true,
-                                  "parentFieldName": "doesRemittanceAlign",
+                                  "parentFieldName": "program_doesRemittanceAlign",
                                   "type": "textOptional"
                                 },
                                 "props": {
@@ -861,12 +861,12 @@
                       }
                     },
                     {
-                      "id": "calulatedRemittanceMLR",
+                      "id": "program_calulatedRemittanceMLR",
                       "type": "number",
                       "validation": {
                         "type": "numberOptional",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "program_contractIncludesRemittance"
                       },
                       "props": {
                         "label": "4.5 Calculated MLR for remittance purposes",
@@ -876,12 +876,12 @@
                       }
                     },
                     {
-                      "id": "remittanceDollarsOwed",
+                      "id": "program_remittanceDollarsOwed",
                       "type": "number",
                       "validation": {
                         "type": "number",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "program_contractIncludesRemittance"
                       },
                       "props": {
                         "label": "4.6.1 Remittance dollar amount owed for MLR reporting period",
@@ -890,12 +890,12 @@
                       }
                     },
                     {
-                      "id": "paymentDollarAmountForMLRPeriod",
+                      "id": "program_paymentDollarAmountForMLRPeriod",
                       "type": "number",
                       "validation": {
                         "type": "numberOptional",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "program_contractIncludesRemittance"
                       },
                       "props": {
                         "label": "4.6.2 Payment dollar amount due to plan for MLR reporting period",
@@ -905,11 +905,11 @@
                       }
                     },
                     {
-                      "id": "remittanceExplanation",
+                      "id": "program_remittanceExplanation",
                       "type": "textarea",
                       "validation": {
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance",
+                        "parentFieldName": "program_contractIncludesRemittance",
                         "type": "textOptional"
                       },
                       "props": {
@@ -919,12 +919,12 @@
                       }
                     },
                     {
-                      "id": "reportingPeriodStartDate",
+                      "id": "program_reportingPeriodStartDate",
                       "type": "date",
                       "validation": {
                         "type": "date",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "program_contractIncludesRemittance"
                       },
                       "props": {
                         "label": "O. MLR reporting period start date",
@@ -933,12 +933,12 @@
                       }
                     },
                     {
-                      "id": "reportingPeriodEndDate",
+                      "id": "program_reportingPeriodEndDate",
                       "type": "date",
                       "validation": {
                         "type": "date",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "program_contractIncludesRemittance"
                       },
                       "props": {
                         "label": "O. MLR reporting period end date",
@@ -947,11 +947,11 @@
                       }
                     },
                     {
-                      "id": "isRemittancePeriodSame",
+                      "id": "program_isRemittancePeriodSame",
                       "type": "radio",
                       "validation": {
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance",
+                        "parentFieldName": "program_contractIncludesRemittance",
                         "type": "radio"
                       },
                       "props": {
@@ -968,12 +968,12 @@
                             "label": "No",
                             "children": [
                               {
-                                "id": "newRemittancePeriodStartDate",
+                                "id": "program_newRemittancePeriodStartDate",
                                 "type": "date",
                                 "validation": {
                                   "type": "dateOptional",
                                   "nested": true,
-                                  "parentFieldName": "isRemittancePeriodSame"
+                                  "parentFieldName": "program_isRemittancePeriodSame"
                                 },
                                 "props": {
                                   "label": "4.8.1 Remittance period start date",
@@ -982,12 +982,12 @@
                                 }
                               },
                               {
-                                "id": "newRemittancePeriodEndDate",
+                                "id": "program_newRemittancePeriodEndDate",
                                 "type": "date",
                                 "validation": {
                                   "type": "dateOptional",
                                   "nested": true,
-                                  "parentFieldName": "isRemittancePeriodSame"
+                                  "parentFieldName": "program_isRemittancePeriodSame"
                                 },
                                 "props": {
                                   "label": "4.8.2 Remittance period end date",
@@ -1001,10 +1001,10 @@
                       }
                     },
                     {
-                      "id": "qualitativeResponse",
+                      "id": "program_qualitativeResponse",
                       "type": "textarea",
                       "nested": true,
-                      "parentFieldName": "contractIncludesRemittance",
+                      "parentFieldName": "program_contractIncludesRemittance",
                       "validation": "text",
                       "props": {
                         "label": "4.9 Remittance methodology qualitative response",
