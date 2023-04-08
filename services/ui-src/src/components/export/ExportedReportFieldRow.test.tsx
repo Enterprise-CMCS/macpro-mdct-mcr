@@ -26,7 +26,7 @@ const fieldWithLabel = {
 
 const exportRow = (
   <ReportContext.Provider value={mockMcparReportContext}>
-    <Table sx={{}}>
+    <Table>
       <tbody>
         <ExportedReportFieldRow formField={field} pageType="drawer" />
       </tbody>
@@ -36,7 +36,7 @@ const exportRow = (
 
 const otherTextRow = (
   <ReportContext.Provider value={mockMcparReportContext}>
-    <Table sx={{}}>
+    <Table>
       <tbody>
         <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
       </tbody>
@@ -46,7 +46,7 @@ const otherTextRow = (
 
 const dynamicRow = (
   <ReportContext.Provider value={mockMcparReportContext}>
-    <Table sx={{}}>
+    <Table>
       <tbody>
         <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />
       </tbody>
@@ -56,7 +56,7 @@ const dynamicRow = (
 
 const noHintRow = (
   <ReportContext.Provider value={mockMcparReportContext}>
-    <Table sx={{}}>
+    <Table>
       <tbody>
         <ExportedReportFieldRow
           formField={field}

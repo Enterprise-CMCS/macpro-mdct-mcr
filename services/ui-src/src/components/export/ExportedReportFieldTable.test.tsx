@@ -6,14 +6,11 @@ import {
   mockNestedFormField,
   mockMcparReportContext,
   mockStandardReportPageJson,
+  mockMlrReportContext,
 } from "utils/testing/setupJest";
 import { ReportContext } from "components";
 import { ExportedReportFieldTable } from "./ExportedReportFieldTable";
-import {
-  DrawerReportPageShape,
-  ReportContextShape,
-  StandardReportPageShape,
-} from "types";
+import { DrawerReportPageShape } from "types";
 
 // Contexts
 const reportJsonFields = [{ ...mockNestedFormField, id: "parent" }];
@@ -65,6 +62,37 @@ const mockEmptyPageJson = {
     fields: [],
   },
 };
+const noHintJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "apoc",
+    fields: [
+      {
+        ...mockFormField,
+        props: {
+          label: "X. Mock Field label",
+          hint: "Mock Hint Text",
+        },
+      },
+    ],
+  },
+};
+
+const hintJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "not-apoc",
+    fields: [
+      {
+        ...mockFormField,
+        props: {
+          label: "X. Mock Field label",
+          hint: "Mock Hint Text",
+        },
+      },
+    ],
+  },
+};
 
 const exportedStandardTableComponent = (
   <ReportContext.Provider value={mockStandardContext}>
@@ -84,57 +112,15 @@ const emptyTableComponent = (
   </ReportContext.Provider>
 );
 
-const noHintContext = {
-  report: {
-    reportType: "MLR",
-  },
-} as ReportContextShape;
-
-const noHintSection = {
-  form: {
-    id: "apoc",
-    fields: [
-      {
-        id: "mockFieldId",
-        props: {
-          label: "X. Mock Field label",
-          hint: "Mock Hint Text",
-        },
-      },
-    ],
-  },
-} as unknown as StandardReportPageShape;
-
 const noHintComponent = (
-  <ReportContext.Provider value={noHintContext}>
-    <ExportedReportFieldTable section={noHintSection} />
+  <ReportContext.Provider value={mockMlrReportContext}>
+    <ExportedReportFieldTable section={noHintJson} />
   </ReportContext.Provider>
 );
 
-const hintContext = {
-  report: {
-    reportType: "MLR",
-  },
-} as ReportContextShape;
-
-const hintSection = {
-  form: {
-    id: "not-apoc",
-    fields: [
-      {
-        id: "mockFieldId",
-        props: {
-          label: "X. Mock Field label",
-          hint: "Mock Hint Text",
-        },
-      },
-    ],
-  },
-} as unknown as StandardReportPageShape;
-
 const hintComponent = (
-  <ReportContext.Provider value={hintContext}>
-    <ExportedReportFieldTable section={hintSection} />
+  <ReportContext.Provider value={mockMlrReportContext}>
+    <ExportedReportFieldTable section={hintJson} />
   </ReportContext.Provider>
 );
 
