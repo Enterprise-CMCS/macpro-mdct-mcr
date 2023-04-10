@@ -25,18 +25,11 @@ export const ExportedEntityDetailsTable = ({
 
   const entityType = "program";
 
-  const formHasOnlyDynamicFields = fields?.every(
-    (field: FormField | FormLayoutElement) => field.type === "dynamic"
-  );
-  const twoColumnHeaderItems = [tableHeaders.indicator, tableHeaders.response];
   const threeColumnHeaderItems = [
     tableHeaders.number,
     tableHeaders.indicator,
     tableHeaders.response,
   ];
-  const headRowItems = formHasOnlyDynamicFields
-    ? twoColumnHeaderItems
-    : threeColumnHeaderItems;
 
   // The hint text is hidden for MLR page 1 (Point of Contact)
   const reportType = report?.reportType as ReportType;
@@ -46,9 +39,8 @@ export const ExportedEntityDetailsTable = ({
     <Table
       {...props}
       sx={sx.root}
-      className={formHasOnlyDynamicFields ? "two-column" : ""}
       content={{
-        headRow: headRowItems,
+        headRow: threeColumnHeaderItems,
       }}
     >
       {renderFieldTableBody(
@@ -89,56 +81,36 @@ export const renderFieldTableBody = (
       />
     );
     // for drawer pages, render nested child field if any entity has a checked parent choice
-    if (pageType === "drawer" || pageType === "modalOverlay") {
-      const entityData = report?.fieldData[entityType!];
-      formField?.props?.choices?.forEach((choice: FieldChoice) => {
-        // filter to only entities where this choice is checked
-        const entitiesWithCheckedChoice = entityData?.filter(
-          (entity: EntityShape) =>
-            Object.keys(entity)?.find((fieldDataKey: string) => {
-              const fieldDataValue = entity[fieldDataKey];
-              return (
-                Array.isArray(fieldDataValue) &&
-                fieldDataValue.find((selectedChoice: Choice) =>
-                  selectedChoice.key?.endsWith(choice.id)
-                )
-              );
-            })
-        );
-        // get all checked parent field choices
-        const parentFieldCheckedChoiceIds = entitiesWithCheckedChoice?.map(
-          (entity: EntityShape) => entity.id
-        );
-        // if choice is checked in any entity, and the choice has children to display, render them
-        if (entitiesWithCheckedChoice?.length > 0 && choice?.children) {
-          choice.children?.forEach((childField: FormField) =>
-            renderFieldRow(childField, parentFieldCheckedChoiceIds)
-          );
-        }
-      });
-    } else {
-      // for standard pages, render nested child field if parent choice is checked
-      const nestedChildren = formField?.props?.choices?.filter(
-        (choice: FieldChoice) => {
-          const selected = report?.fieldData[formField.id];
-          const entryExists = selected?.find((selectedChoice: Choice) =>
-            selectedChoice.key.endsWith(choice.id)
-          );
-          return entryExists && choice?.children;
-        }
+    const entityData = report?.fieldData[entityType!];
+    formField?.props?.choices?.forEach((choice: FieldChoice) => {
+      // filter to only entities where this choice is checked
+      const entitiesWithCheckedChoice = entityData?.filter(
+        (entity: EntityShape) =>
+          Object.keys(entity)?.find((fieldDataKey: string) => {
+            const fieldDataValue = entity[fieldDataKey];
+            return (
+              Array.isArray(fieldDataValue) &&
+              fieldDataValue.find((selectedChoice: Choice) =>
+                selectedChoice.key?.endsWith(choice.id)
+              )
+            );
+          })
       );
-      nestedChildren?.forEach((choice: FieldChoice) =>
+      // get all checked parent field choices
+      const parentFieldCheckedChoiceIds = entitiesWithCheckedChoice?.map(
+        (entity: EntityShape) => entity.id
+      );
+      // if choice is checked in any entity, and the choice has children to display, render them
+      if (entitiesWithCheckedChoice?.length > 0 && choice?.children) {
         choice.children?.forEach((childField: FormField) =>
-          renderFieldRow(childField)
-        )
-      );
-    }
+          renderFieldRow(childField, parentFieldCheckedChoiceIds)
+        );
+      }
+    });
   };
   // map through form fields and call renderer
-  formFields?.map((field: FormField | FormLayoutElement) => {
-    if (field) {
-      renderFieldRow(field);
-    }
+  formFields?.forEach((field: FormField | FormLayoutElement) => {
+    renderFieldRow(field);
   });
   return tableRows;
 };

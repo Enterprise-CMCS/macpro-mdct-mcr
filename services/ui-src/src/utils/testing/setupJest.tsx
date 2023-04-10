@@ -283,6 +283,7 @@ export const mockModalOverlayForm = {
   fields: [
     mockModalOverlayFormField,
     { ...mockModalOverlayFormField, id: "with-label", props: { label: "1" } },
+    mockNestedFormField,
   ],
 };
 
@@ -651,6 +652,12 @@ export const mockMlrReportFieldData = {
         },
       ],
       "report_eligibilityGroup-otherText": "",
+      "mock-nested-field": [
+        {
+          key: "option3uuid",
+          value: "option 3",
+        },
+      ],
     },
     {
       id: "123",

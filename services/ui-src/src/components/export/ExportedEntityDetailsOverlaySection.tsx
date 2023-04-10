@@ -141,11 +141,11 @@ export function getEntityTableComponents(
           const header = filteredFields[0];
           return (
             <Fragment key={`tableContainer-${idx}`}>
-              <Heading size={"sm"} key={`heading-${idx}`}>
-                {header.type === "sectionHeader"
-                  ? header.props?.content
-                  : undefined}
-              </Heading>
+              {header.type === "sectionHeader" && (
+                <Heading size={"sm"} key={`heading-${idx}`}>
+                  {header.props?.content}
+                </Heading>
+              )}
               <ExportedEntityDetailsTable
                 key={`table-${idx}`}
                 fields={filteredFields.slice(1) as FormField[]}

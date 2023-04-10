@@ -69,7 +69,7 @@ const mockMlrProgram = {
   nonClaimsCosts: "1",
   mlrDenominator: "1",
   memberMonths: "12",
-  miscellaneousNotes: "",
+  miscellaneousNotes: "Notes",
   contractIncludesRemittance: [
     {
       key: "contractIncludesRemittance",

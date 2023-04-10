@@ -236,6 +236,9 @@ export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
 // parse field info from field props
 export const parseFormFieldInfo = (formFieldProps: AnyObject) => {
   const labelArray = formFieldProps?.label?.split(" ");
+  if (Object.values(formFieldProps).every((x) => typeof x === "undefined"))
+    return {};
+
   return {
     number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : "N/A",
     label: labelArray?.[0].match(/[-.0-9]+/)
