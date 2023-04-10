@@ -37,8 +37,8 @@ const mlrTableHeader = Object.values(
 );
 
 const mockMlrProgram = {
-  id: "1",
-  programName: "Test Program",
+  id: "123",
+  programName: "Test",
   programType: [
     {
       key: "programType",
@@ -51,18 +51,31 @@ const mockMlrProgram = {
       value: "Standalone CHIP",
     },
   ],
-  planName: "Test MCO Name",
-  reportingPeriodStartDate: "01/01/2021",
-  reportingPeriodEndDate: "01/01/2022",
+  planName: "Test",
+  reportingPeriodStartDate: "11/03/1992",
+  reportingPeriodEndDate: "12/01/1993",
   reportingPeriodDiscrepancy: [
     {
       key: "reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
-  miscellaneousNotes: "Notes",
-  "report_eligibilityGroup-otherText": "",
-  report_reportingPeriodDiscrepancyExplanation: "",
+  "eligibilityGroup-otherText": "",
+  "reportingPeriodDiscrepancy-otherText": "",
+  inurredClaims: "1",
+  healthCareQualityActivities: "1",
+  mlrNumerator: "1",
+  mlrNumeratorExplanation: "Test",
+  nonClaimsCosts: "1",
+  mlrDenominator: "1",
+  memberMonths: "12",
+  miscellaneousNotes: "",
+  contractIncludesRemittance: [
+    {
+      key: "contractIncludesRemittance",
+      value: "No",
+    },
+  ],
 };
 
 const mockMlrProgramOther = {
@@ -93,6 +106,19 @@ const mockMlrProgramOther = {
   "report_eligibilityGroup-otherText": "Eligibility group explanation",
   report_reportingPeriodDiscrepancyExplanation:
     "My reporting period discrepancy explanation",
+  inurredClaims: "1",
+  healthCareQualityActivities: "1",
+  mlrNumerator: "1",
+  mlrNumeratorExplanation: "Test",
+  nonClaimsCosts: "1",
+  mlrDenominator: "1",
+  memberMonths: "12",
+  contractIncludesRemittance: [
+    {
+      key: "contractIncludesRemittance",
+      value: "No",
+    },
+  ],
 };
 
 describe("Test ExportedModalOverlayReportSection", () => {

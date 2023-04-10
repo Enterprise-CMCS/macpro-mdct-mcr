@@ -35,4 +35,8 @@ export default {
     discrepancyExplanation: "P. Reporting period discrepancy explanation",
     notes: "Q. Misc notes (optional)",
   },
+  intro: {
+    exportSectionHeader:
+      "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+  },
 };

@@ -280,7 +280,10 @@ export const mockDrawerForm = {
 
 export const mockModalOverlayForm = {
   id: "mock-modal-overlay-form-id",
-  fields: [mockModalOverlayFormField],
+  fields: [
+    mockModalOverlayFormField,
+    { ...mockModalOverlayFormField, id: "with-label", props: { label: "1" } },
+  ],
 };
 
 export const mockPlanFilledForm = {
@@ -623,10 +626,6 @@ export const mockReportFieldData = {
 };
 
 export const mockMlrReportFieldData = {
-  programs: [
-    { id: 123, name: "example-program1" },
-    { id: 456, name: "example-program2" },
-  ],
   text: "text-input",
   number: 0,
   radio: ["option1"],
@@ -652,6 +651,46 @@ export const mockMlrReportFieldData = {
         },
       ],
       "report_eligibilityGroup-otherText": "",
+    },
+    {
+      id: "123",
+      programName: "Test",
+      programType: [
+        {
+          key: "programType",
+          value: "Behavioral Health Only",
+        },
+      ],
+      eligibilityGroup: [
+        {
+          key: "eligibilityGroup",
+          value: "Standalone CHIP",
+        },
+      ],
+      planName: "Test",
+      reportingPeriodStartDate: "11/03/1992",
+      reportingPeriodEndDate: "12/01/1993",
+      reportingPeriodDiscrepancy: [
+        {
+          key: "reportingPeriodDiscrepancy",
+          value: "No",
+        },
+      ],
+      "eligibilityGroup-otherText": "",
+      "reportingPeriodDiscrepancy-otherText": "",
+      inurredClaims: "1",
+      healthCareQualityActivities: "1",
+      mlrNumerator: "1",
+      mlrNumeratorExplanation: "Test",
+      nonClaimsCosts: "1",
+      mlrDenominator: "1",
+      memberMonths: "12",
+      contractIncludesRemittance: [
+        {
+          key: "contractIncludesRemittance",
+          value: "No",
+        },
+      ],
     },
   ],
 };
