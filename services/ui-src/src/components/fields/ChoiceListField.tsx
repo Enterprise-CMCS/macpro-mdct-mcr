@@ -35,6 +35,7 @@ export const ChoiceListField = ({
   autosave,
   sxOverride,
   styleAsOptional,
+  clear,
   ...props
 }: Props) => {
   const defaultValue: Choice[] = [];
@@ -73,9 +74,23 @@ export const ChoiceListField = ({
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
-      setDisplayValue(hydrationValue);
-      setLastDatabaseValue(hydrationValue);
-      form.setValue(name, hydrationValue);
+      /*
+       * Clear is sent down when a choicelist is a child of another choicelist and that parent (Or its
+       * Parents and so forth) had its choice deselected or changed. When that happens the onChangeHandler
+       * calls clearUncheckedNestedFields and will clear the value of any children underneath it.
+       * However, the database won't know things are updated until the user has clicked off that parent
+       * and blurred it so instead we can use this clear value so that the hydration value doesn't overwrite
+       * what a user is actively doing.
+       */
+      if (clear) {
+        clear = false;
+        setDisplayValue(defaultValue);
+        form.setValue(name, defaultValue);
+      } else {
+        setDisplayValue(hydrationValue);
+        setLastDatabaseValue(hydrationValue);
+        form.setValue(name, hydrationValue);
+      }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -111,7 +126,9 @@ export const ChoiceListField = ({
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
                 });
+                child.props = { ...child.props, clear: true };
                 form.setValue(child.id, []);
+                form.unregister(child.id);
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
@@ -256,6 +273,7 @@ interface Props {
   autosave?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 
