@@ -759,11 +759,11 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR)."
+                  "content": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). For information on credibility adjustments see:"
                 },
                 {
                   "type": "externalLink",
-                  "content": "42 CFR § 438.8(h)",
+                  "content": "42 CFR § 438.8(h).",
                   "props": {
                     "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)",
                     "target": "_blank",
@@ -780,7 +780,21 @@
             "validation": "textOptional",
             "props": {
               "label": "Adjusted MLR atypical range explanation",
-              "hint": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here.",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here. For information on credibility adjustments see:"
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(h).",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "styleAsOptional": true
             }
           },
