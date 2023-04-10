@@ -26,9 +26,7 @@ export const EntityDetailsOverlay = ({
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser, full_name, state } =
-    useUser().user ?? {};
-  const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const { full_name, state } = useUser().user ?? {};
   const onError = () => {};
   const {
     entities,
@@ -125,17 +123,12 @@ export const EntityDetailsOverlay = ({
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
-            {!isAdminTypeUser && (
-              <Button variant="outline" onClick={() => closeOverlay()}>
-                Cancel
-              </Button>
-            )}
             <Button
               onClick={() => onSubmit(selectedEntity)}
               type="submit"
               sx={sx.saveButton}
             >
-              {submitting ? <Spinner size="small" /> : "Submit"}
+              {submitting ? <Spinner size="small" /> : "Save & return"}
             </Button>
           </Flex>
         </Box>
@@ -178,7 +171,7 @@ const sx = {
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
   },
   buttonFlex: {
-    justifyContent: "space-between",
+    justifyContent: "end",
     marginY: "1.5rem",
   },
   saveButton: {
