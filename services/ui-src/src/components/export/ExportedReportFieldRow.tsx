@@ -12,6 +12,7 @@ export const ExportedReportFieldRow = ({
   pageType,
   entityType,
   parentFieldCheckedChoiceIds,
+  showHintText = true,
 }: Props) => {
   const { report } = useContext(ReportContext);
   const reportData = report?.fieldData;
@@ -42,7 +43,7 @@ export const ExportedReportFieldRow = ({
                   : formField?.props?.label}
               </Text>
             )}
-            {formFieldInfo.hint && (
+            {showHintText && formFieldInfo.hint && (
               <Box sx={sx.fieldHint}>{parseCustomHtml(formFieldInfo.hint)}</Box>
             )}
           </Box>
@@ -72,6 +73,7 @@ export interface Props {
   pageType: string;
   entityType?: string;
   parentFieldCheckedChoiceIds?: string[];
+  showHintText?: boolean;
 }
 
 const sx = {
