@@ -25,10 +25,10 @@ export const RadioField = ({
 };
 
 const sx = {
-  ".ds-c-choice::before": {
+  ".ds-c-choice:disabled::before": {
     boxShadow: "inset 0 0 4em 1em #A6A6A6",
   },
-  ".ds-c-choice[type='radio']:checked": {
+  ".ds-c-choice:disabled": {
     borderColor: "palette.gray_light",
   },
 };
