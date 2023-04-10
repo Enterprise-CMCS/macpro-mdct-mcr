@@ -94,6 +94,7 @@ export const EntityDetailsOverlay = ({
           <ReportPageIntro
             text={overlayVerbiage.MLR.intro}
             accordion={accordionVerbiage.MLR.detailIntro}
+            reportType={report?.reportType}
           />
         )}
         <Box>

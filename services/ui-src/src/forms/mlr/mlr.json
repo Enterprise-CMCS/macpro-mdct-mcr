@@ -179,10 +179,10 @@
         "deleteModalConfirmButtonText": "Yes, delete report",
         "deleteModalWarning": "You will lose all information entered for this report. Are you sure you want to proceed?",
         "enterReportText": "Enter MLR",
-        "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab.",
+        "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Reference's Program Information tab.",
         "addEditModalAddTitle": "Add program reporting information",
         "addEditModalEditTitle": "Edit program reporting information",
-        "addEditModalHint": "Provide the following program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab."
+        "addEditModalHint": "Provide the following program reporting information for each MLR report. This information is listed row by row in the Excel Reference's Program Information tab."
       },
       "modalForm": {
         "id": "bpel-modal",

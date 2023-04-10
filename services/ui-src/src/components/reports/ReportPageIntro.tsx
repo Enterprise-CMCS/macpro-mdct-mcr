@@ -7,6 +7,7 @@ import { AnyObject } from "types";
 
 export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
   const { section, subsection, info, spreadsheet } = text;
+  const { reportType } = props;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -18,7 +19,10 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
       {accordion && <FormIntroAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
-          <SpreadsheetWidget description={spreadsheet} />
+          <SpreadsheetWidget
+            description={spreadsheet}
+            reportType={reportType}
+          />
         </Box>
       )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}

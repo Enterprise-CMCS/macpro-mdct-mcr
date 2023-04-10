@@ -4,7 +4,12 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 // assets
 import greenSpreadsheetIcon from "../../assets/icons/icon_spreadsheet_green.png";
 
-export const SpreadsheetWidget = ({ description, alt, ...props }: Props) => {
+export const SpreadsheetWidget = ({
+  description,
+  alt,
+  reportType,
+  ...props
+}: Props) => {
   return (
     <Box {...props}>
       <Flex sx={sx.container}>
@@ -16,7 +21,9 @@ export const SpreadsheetWidget = ({ description, alt, ...props }: Props) => {
           />
         </Flex>
         <Box>
-          <Text sx={sx.title}>Find in the Excel Workbook</Text>
+          <Text sx={sx.title}>
+            Find in the Excel {reportType === "MLR" ? "Reference" : "Workbook"}
+          </Text>
           <Box>
             <Text sx={sx.description}>{description}</Text>
           </Box>
@@ -29,6 +36,7 @@ export const SpreadsheetWidget = ({ description, alt, ...props }: Props) => {
 interface Props {
   description: string;
   alt?: string;
+  reportType?: string;
   [key: string]: any;
 }
 
