@@ -3,6 +3,8 @@ import { Box } from "@chakra-ui/react";
 import {
   ExportedModalDrawerReportSection,
   ExportedReportFieldTable,
+  ExportedEntityDetailsOverlaySection,
+  ExportedModalOverlayReportSection,
 } from "components";
 // types
 import {
@@ -13,8 +15,6 @@ import {
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
-import { ExportedModalOverlayReportSection } from "./ExportedModalOverlayReportSection";
-
 export const ExportedReportWrapper = ({ section }: Props) => {
   return section.pageType === PageTypes.STANDARD ? (
     <Box data-testid="exportedStandardReportSection" mt="2rem">
@@ -29,9 +29,14 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       section={section as ModalDrawerReportPageShape}
     />
   ) : section.pageType === PageTypes.MODAL_OVERLAY ? (
-    <ExportedModalOverlayReportSection
-      section={section as ModalOverlayReportPageShape}
-    />
+    <>
+      <ExportedModalOverlayReportSection
+        section={section as ModalOverlayReportPageShape}
+      />
+      <ExportedEntityDetailsOverlaySection
+        section={section as ModalOverlayReportPageShape}
+      />
+    </>
   ) : (
     <></>
   );
