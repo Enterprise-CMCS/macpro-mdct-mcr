@@ -35,13 +35,56 @@ export const renderDataCell = (
   );
 };
 
+export const renderOverlayEntityDataCell = (
+  formField: FormField,
+  entityResponseData: EntityShape[],
+  entityId: string,
+  parentFieldCheckedChoiceIds?: string[]
+) => {
+  const entity = entityResponseData.find((ent) => ent.id === entityId);
+
+  if (!entity || !entity[formField.id]) {
+    if (formField.validation.toString().includes("Optional")) {
+      return <Text>{verbiage.missingEntry.noResponse}, optional</Text>;
+    } else {
+      return (
+        <Text sx={sx.noResponse}>
+          {verbiage.missingEntry.noResponse}; required
+        </Text>
+      );
+    }
+  }
+
+  const notApplicable =
+    parentFieldCheckedChoiceIds &&
+    !parentFieldCheckedChoiceIds?.includes(entity.id);
+  return (
+    <Box key={entity.id + formField.id} sx={sx.entityBox}>
+      <ul>
+        <li>
+          <Text sx={sx.entityName}>{entity.name}</Text>
+        </li>
+        <li className="entityResponse">
+          {renderResponseData(
+            formField,
+            entity[formField.id],
+            entityResponseData,
+            "modalOverlay",
+            notApplicable
+          )}
+        </li>
+      </ul>
+    </Box>
+  );
+};
+
 export const renderDrawerDataCell = (
   formField: FormField,
   entityResponseData: AnyObject | undefined,
   pageType: string,
   parentFieldCheckedChoiceIds?: string[]
 ) =>
-  entityResponseData?.map((entity: EntityShape, entityIndex: number) => {
+  entityResponseData?.map((entity: EntityShape) => {
     const notApplicable =
       parentFieldCheckedChoiceIds &&
       !parentFieldCheckedChoiceIds?.includes(entity.id);
@@ -58,7 +101,6 @@ export const renderDrawerDataCell = (
               fieldResponseData,
               entityResponseData,
               pageType,
-              entityIndex,
               notApplicable
             )}
           </li>
@@ -79,7 +121,6 @@ export const renderResponseData = (
   fieldResponseData: any,
   widerResponseData: AnyObject,
   pageType: string,
-  entityIndex?: number,
   notApplicable?: boolean
 ) => {
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
@@ -99,8 +140,7 @@ export const renderResponseData = (
       formField,
       fieldResponseData,
       widerResponseData,
-      pageType,
-      entityIndex
+      pageType
     );
   }
   // check for and handle link fields (email, url)
