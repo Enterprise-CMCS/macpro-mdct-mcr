@@ -237,8 +237,10 @@ export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
 export const parseFormFieldInfo = (formFieldProps: AnyObject) => {
   const labelArray = formFieldProps?.label?.split(" ");
   return {
-    number: labelArray?.[0],
-    label: labelArray?.slice(1)?.join(" "),
+    number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : "N/A",
+    label: labelArray?.[0].match(/[-.0-9]+/)
+      ? labelArray?.slice(1)?.join(" ")
+      : labelArray?.join(" "),
     hint: formFieldProps?.hint,
     indicator: formFieldProps?.indicator,
   };
