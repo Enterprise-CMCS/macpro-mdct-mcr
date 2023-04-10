@@ -90,9 +90,9 @@
                   "children": [
                     {
                       "id": "versionControlDescription",
-                      "type": "radio",
+                      "type": "checkbox",
                       "validation": {
-                        "type": "radio",
+                        "type": "checkbox",
                         "nested": true,
                         "parentFieldName": "versionControl"
                       },
