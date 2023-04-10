@@ -362,7 +362,7 @@
             "validation": "date",
             "props": {
               "label": "N. MLR reporting period start date",
-              "hint": "Enter the start date of the MLR Reporting Period. <br/> The MLR reporting period should be a perod of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
+              "hint": "Enter the start date of the MLR Reporting Period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
             }
           },
           {
@@ -696,7 +696,7 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (optional subcomponent of section 3.4 Adjusted MLR)"
+                  "content": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)"
                 },
                 {
                   "type": "ul",
