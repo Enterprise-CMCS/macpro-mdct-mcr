@@ -6,19 +6,20 @@
   "adminDisabled": true,
   "routes": [
     {
-      "name": "Program Information",
-      "path": "/mlr/program-information",
+      "name": "Information for Primary Contact",
+      "path": "/mlr/information-for-primary-contact",
       "pageType": "standard",
       "verbiage": {
         "intro": {
-          "section": "Section A: Program Information",
-          "subsection": "Point of Contact",
+          "section": "Program Information",
+          "subsection": "Information for Primary of Contact",
+          "hint": "Please enter the name of the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
           "spreadsheet": "Program Information",
           "exportSection": "Information for Primary Contact"
         }
       },
       "form": {
-        "id": "apoc",
+        "id": "ipc",
         "fields": [
           {
             "id": "contactName",
@@ -81,7 +82,7 @@
             "validation": "radio",
             "props": {
               "label": "G. Version control",
-              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /><br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
+              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
               "choices": [
                 {
                   "id": "cyUSrTH8mWdpqAKExLZAkz",
@@ -181,10 +182,10 @@
         "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab.",
         "addEditModalAddTitle": "Add program reporting information",
         "addEditModalEditTitle": "Edit program reporting information",
-        "addEditModalHint": "Complete this screen once for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+        "addEditModalHint": "Provide the following program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab."
       },
       "modalForm": {
-        "id": "bpel-modal",
+        "id": "mlrd-modal",
         "fields": [
           {
             "id": "report_programName",
@@ -192,7 +193,7 @@
             "validation": "text",
             "props": {
               "label": "I. Program name",
-              "hint": "Enter the name of the program(s) relevant to this set of MLR results. States providing plan-level MLR results separated by program should enter the individual relevant program name in the field below. States providing one set of combined MLR results per plan should list the program names relevant to the respective set of results in the field below, separated by commas. <br/> A program is defined generally by a specified set of benefits and eligibility criteria that is articulated in a contract between the state and a managed care plan."
+              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
           {
@@ -201,7 +202,7 @@
             "validation": "checkbox",
             "props": {
               "label": "J. Program type",
-              "hint": "Select the program type definition(s) that best describes the program entered in \"I. Program Name\".",
+              "hint": "Select the program type definition(s) that best describes the program(s) entered in “I. Program name”.",
               "choices": [
                 {
                   "id": "cQhGnyBmiXszLqrx6b2Cp8",
@@ -262,7 +263,7 @@
                         },
                         {
                           "type": "externalLink",
-                          "content": "42 CFR 457.10",
+                          "content": "42 CFR § 457.10",
                           "props": {
                             "aria-label": "Link opens in new tab",
                             "target": "_blank",
@@ -304,16 +305,16 @@
               ],
               "choices": [
                 {
+                  "id": "cRi6qE4T5c6BjbGUsiiEof",
+                  "label": "All Populations"
+                },
+                {
                   "id": "UgSDECcYDJ4S39QEMmMRcq",
                   "label": "Standalone CHIP"
                 },
                 {
                   "id": "KWr7SR2JM5UYogD6xZykrN",
                   "label": "Group VIII Expansion Adult Only"
-                },
-                {
-                  "id": "cRi6qE4T5c6BjbGUsiiEof",
-                  "label": "All Populations"
                 },
                 {
                   "id": "4xSRBneHBfUEqSPfrPTRYf",
@@ -326,6 +327,10 @@
                         "type": "text",
                         "nested": true,
                         "parentFieldName": "report_eligibilityGroup"
+                      },
+                      "props": {
+                        "label": "L. Eligibility group description",
+                        "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children <19 years; Aged, Blind, Disabled; Pregnant Women."
                       }
                     }
                   ]
@@ -342,11 +347,11 @@
               "hint": [
                 {
                   "type": "span",
-                  "content": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
                 },
                 {
                   "type": "externalLink",
-                  "content": "Managed Care Enrollment by Program and Plan",
+                  "content": "\"Managed Care Enrollment by Program and Plan\"",
                   "props": {
                     "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
                     "target": "_blank",
@@ -400,7 +405,7 @@
                       },
                       "props": {
                         "label": "P.2 Explanation of reporting period discrepancy",
-                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
                       }
                     }
                   ]
@@ -472,7 +477,7 @@
                 },
                 {
                   "type": "externalLink",
-                  "content": "42 CFR § 438.8(e)(2)",
+                  "content": "42 CFR § 438.8(e)(3)",
                   "props": {
                     "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(3)",
                     "target": "_blank",
@@ -658,7 +663,7 @@
                   "type": "externalLink",
                   "content": "42 CFR § 438.8(b)",
                   "props": {
-                    "href": "https://www.eexcfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)",
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)",
                     "target": "_blank",
                     "aria-label": "Link opens in new tab"
                   }
@@ -927,7 +932,7 @@
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "props": {
-                        "label": "O. MLR reporting period start date",
+                        "label": "N. MLR reporting period start date",
                         "hint": "Auto-populates from program reporting information.",
                         "disabled": true
                       }
@@ -1021,7 +1026,7 @@
                             "type": "externalLink",
                             "content": "42 CFR § 438.74(b)(2)",
                             "props": {
-                              "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
+                              "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74#p-438.74(b)(2)",
                               "target": "_blank",
                               "aria-label": "Link opens in new tab"
                             }
