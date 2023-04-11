@@ -42,7 +42,7 @@ export const EntityRow = ({
           ))}
         </ul>
       </Td>
-      <Td sx={sx.actionButtons}>
+      <Td sx={sx.editInfoButton}>
         {openAddEditEntityModal && (
           <Button
             variant="none"
@@ -122,8 +122,9 @@ const sx = {
       },
     },
   },
-  actionButtons: {
+  editInfoButton: {
     whiteSpace: "nowrap",
+    paddingLeft: "4.5rem",
   },
   editButton: {
     fontWeight: "normal",
@@ -136,7 +137,7 @@ const sx = {
   },
   deleteButton: {
     background: "none",
-    padding: "0",
+    paddingRight: "1rem",
     "&:hover": {
       background: "white",
     },

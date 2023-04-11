@@ -64,7 +64,6 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             </Button>
           )}
         </Flex>
-        {/* TODO: Add Prince Print Button */}
       </Box>
     </Box>
   );
@@ -79,7 +78,6 @@ interface Props {
 const sx = {
   footerBox: {
     marginTop: "3.5rem",
-    borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
   },
   buttonFlex: {
     justifyContent: "space-between",
