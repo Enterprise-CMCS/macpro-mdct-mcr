@@ -94,6 +94,7 @@ export const ReviewSubmitPage = () => {
             date={report?.submittedOnDate}
             submittedBy={report?.submittedBy}
             reviewVerbiage={reviewVerbiage}
+            stateName={report.fieldData.stateName!}
           />
         ) : (
           <ReadyToSubmit
@@ -205,12 +206,18 @@ export const SuccessMessageGenerator = (
   reportType: string,
   name: string,
   submissionDate?: number,
-  submittedBy?: string
+  submittedBy?: string,
+  stateName?: string
 ) => {
   if (submissionDate && submittedBy) {
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
+
+    // prepare success message for MLR report submission
+    if (reportType === "MLR" && stateName) {
+      return `${reportType} submission for "${stateName} ${name}" was submitted on ${submittedDate} by ${submittersName}.`;
+    }
     return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
   }
   return `${reportType} report for ${name} was submitted.`;
@@ -222,6 +229,7 @@ export const SuccessMessage = ({
   date,
   submittedBy,
   reviewVerbiage,
+  stateName,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
@@ -229,7 +237,8 @@ export const SuccessMessage = ({
     reportType,
     name,
     date,
-    submittedBy
+    submittedBy,
+    stateName
   );
   const pdfExport = useFlags()?.pdfExport;
 
@@ -266,6 +275,7 @@ interface SuccessMessageProps {
   reviewVerbiage: AnyObject;
   date?: number;
   submittedBy?: string;
+  stateName?: string;
 }
 
 const sx = {
@@ -322,9 +332,11 @@ const sx = {
     height: "2rem",
     fontSize: "md",
     fontWeight: "700",
-    color: "white",
-    "&:hover": {
+    color: "white !important",
+    "&:hover, &:focus": {
       backgroundColor: "palette.primary",
+      color: "white",
+      textDecoration: "none",
     },
   },
   submitContainer: {
