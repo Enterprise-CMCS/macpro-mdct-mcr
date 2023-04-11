@@ -6,7 +6,7 @@ import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
 
 export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
-  const { section, subsection, info, spreadsheet } = text;
+  const { section, subsection, hint, info, spreadsheet } = text;
   const { reportType } = props;
   return (
     <Box sx={sx.introBox} {...props}>
@@ -16,6 +16,7 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
+      {hint && <Box sx={sx.hintTextBox}>{hint}</Box>}
       {accordion && <FormIntroAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
@@ -47,6 +48,10 @@ const sx = {
   subsectionHeading: {
     fontWeight: "normal",
     fontSize: "4xl",
+  },
+  hintTextBox: {
+    color: "#5B616B",
+    paddingTop: "1.5rem",
   },
   spreadsheetWidgetBox: {
     marginTop: "2rem",
