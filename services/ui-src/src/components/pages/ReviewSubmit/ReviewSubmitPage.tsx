@@ -15,7 +15,7 @@ import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
 import { AlertTypes, AnyObject, ReportStatus } from "types";
 // utils
-import { useUser, utcDateToReadableDate } from "utils";
+import { parseCustomHtml, useUser, utcDateToReadableDate } from "utils";
 // verbiage
 import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
@@ -158,7 +158,7 @@ const ReadyToSubmit = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{intro.info}</Text>
+          <Text>{parseCustomHtml(intro.info)}</Text>
         </Box>
 
         <Box>
@@ -302,6 +302,10 @@ const sx = {
   },
   infoTextBox: {
     marginTop: "2rem",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+    },
   },
   infoHeading: {
     fontWeight: "bold",
