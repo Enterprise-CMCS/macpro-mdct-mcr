@@ -2,6 +2,7 @@
 import { Box } from "@chakra-ui/react";
 import {
   ExportedModalDrawerReportSection,
+  ExportedModalOverlayReportSection,
   ExportedReportFieldTable,
   ExportedEntityDetailsOverlaySection,
   ExportedModalOverlayReportSection,
