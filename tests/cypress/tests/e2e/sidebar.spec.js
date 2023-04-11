@@ -7,6 +7,7 @@ const sectionLink = ".chakra-link .level-1";
 
 describe("Sidebar integration tests", () => {
   it("The sidebar can be navigated at multiple depths, references the selected items, and can be", () => {
+    Cypress.session.clearAllSavedSessions();
     // Sign in as a state user
     cy.authenticate("stateUser");
     cy.navigateToHomePage();
@@ -57,7 +58,8 @@ describe("Sidebar integration tests", () => {
       .click()
       .parent()
       .should("have.class", "open");
-
+    //Ensure can login as Admin
+    Cypress.session.clearAllSavedSessions();
     cy.authenticate("adminUser");
     cy.navigateToHomePage();
     cy.get('[name="state"]').select("District of Columbia");
@@ -67,5 +69,7 @@ describe("Sidebar integration tests", () => {
       .click();
     cy.findAllByRole("button", { name: "Archive" }).last().click();
     cy.contains("Unarchive").should("be.visible");
+    //Ensure next state user test can succeed
+    Cypress.session.clearAllSavedSessions();
   });
 });

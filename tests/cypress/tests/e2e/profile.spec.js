@@ -10,6 +10,8 @@ afterEach(() => {
 
 describe("Profile integration tests", () => {
   it("Allows admin user to navigate to /admin", () => {
+    //Ensure can login as Admin
+    Cypress.session.clearAllSavedSessions();
     cy.authenticate("adminUser");
 
     cy.get(menuButton).click();
@@ -18,6 +20,8 @@ describe("Profile integration tests", () => {
 
     cy.get(adminButton).click();
     cy.location("pathname").should("match", /admin/);
+    //Ensure next state user test can succeed
+    Cypress.session.clearAllSavedSessions();
   });
 
   it("Disallows state user to navigate to /admin (redirects to /profile)", () => {

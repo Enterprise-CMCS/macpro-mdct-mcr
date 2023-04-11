@@ -10,11 +10,15 @@ Feature: Site Accessibility Audit
 
     Rule: Admin User
         Background: Logged in as Admin
+            # Ensure session is clear prior to changing to Admin user
+            Given I am not logged in
             Given I am logged in as an admin user
 
         Scenario Outline: Accessibility Verification
             When I visit "<URI>"
             Then the page is accessible on all device types
+            # Clear session after Admin Tests
+            Given I am not logged in 
 
             Examples:
                 | URI      |
