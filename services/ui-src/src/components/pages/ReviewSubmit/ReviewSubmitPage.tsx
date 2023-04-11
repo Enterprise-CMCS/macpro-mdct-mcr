@@ -22,6 +22,7 @@ import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 import iconSearch from "assets/icons/icon_search.png";
+import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const ReviewSubmitPage = () => {
   const { report, fetchReport, submitReport } = useContext(ReportContext);
@@ -114,16 +115,23 @@ const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   const { report } = useContext(ReportContext);
   const reportType = report?.reportType === "MLR" ? "mlr" : "mcpar";
+  const isSubmitted = report?.status === "Submitted";
   return (
     <Button
       as={RouterLink}
       to={`/${reportType}/export`}
       target="_blank"
-      sx={sx.printButton}
-      leftIcon={<Image src={iconSearch} alt="Search Icon" height=".9rem" />}
-      variant="outline"
+      sx={!isSubmitted ? sx.printButton : sx.downloadButton}
+      leftIcon={
+        !isSubmitted ? (
+          <Image src={iconSearch} alt="Search Icon" height=".9rem" />
+        ) : (
+          <Image src={pdfIcon} alt="PDF Icon" height="1rem" />
+        )
+      }
+      variant={!isSubmitted ? "outline" : "primary"}
     >
-      {print.printButtonText}
+      {!isSubmitted ? print.printButtonText : print.downloadButtonText}
     </Button>
   );
 };
@@ -308,6 +316,16 @@ const sx = {
     fontSize: "md",
     fontWeight: "700",
     border: "1px solid",
+  },
+  downloadButton: {
+    minWidth: "6rem",
+    height: "2rem",
+    fontSize: "md",
+    fontWeight: "700",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "palette.primary",
+    },
   },
   submitContainer: {
     width: "100%",

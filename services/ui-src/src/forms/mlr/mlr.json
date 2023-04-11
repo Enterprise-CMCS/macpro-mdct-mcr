@@ -423,7 +423,8 @@
             "validation": "textOptional",
             "props": {
               "label": "Q. Miscellaneous notes",
-              "hint": "Include any other notes or detail for CMS."
+              "hint": "Include any other notes or detail for CMS.",
+              "styleAsOptional": true
             }
           }
         ]
