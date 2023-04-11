@@ -57,7 +57,7 @@ describe("Sidebar integration tests", () => {
       .click()
       .parent()
       .should("have.class", "open");
-    
+
     cy.authenticate("adminUser");
     cy.navigateToHomePage();
     cy.get('[name="state"]').select("District of Columbia");
