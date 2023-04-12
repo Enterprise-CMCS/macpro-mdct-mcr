@@ -14,7 +14,7 @@ import {
 import {
   AddEditReportModal,
   DashboardTable,
-  FormIntroAccordion,
+  InstructionsAccordion,
   ErrorAlert,
   MobileDashboardTable,
   PageTemplate,
@@ -207,7 +207,7 @@ export const DashboardPage = ({ reportType }: Props) => {
           {intro.header}
         </Heading>
         {reportType === "MLR" && (
-          <FormIntroAccordion
+          <InstructionsAccordion
             verbiage={
               userIsStateUser || userIsStateRep
                 ? accordion.MLR.stateUserDashboard
