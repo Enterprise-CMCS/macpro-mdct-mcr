@@ -70,7 +70,7 @@ custom:
         export COGNITO_IDP=${self:custom.cognito_idp}
         export COGNITO_REDIRECT_SIGNIN=${self:custom.application_endpoint_url}
         export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
-        export COGNITO_USER_POOL_DOMAIN_URL={$self:custom.cognito_user_pool_domain_url}
+        export COGNITO_USER_POOL_DOMAIN_URL=${self:custom.cognito_user_pool_domain_url}
         export REACT_APP_LD_SDK_CLIENT=${self:custom.ldSdkClient}
         export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
         export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}
