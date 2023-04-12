@@ -24,7 +24,16 @@ jest.mock("react-hook-form", () => ({
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -79,6 +88,7 @@ describe("Test Maskless NumberField", () => {
   });
 
   test("NumberField is visible", () => {
+    mockGetValues(undefined);
     const result = render(numberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -87,6 +97,7 @@ describe("Test Maskless NumberField", () => {
   });
 
   test("onChangeHandler updates unmasked field value", async () => {
+    mockGetValues(undefined);
     const result = render(numberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -96,9 +107,22 @@ describe("Test Maskless NumberField", () => {
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("123");
   });
+
+  test("NumberField triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("testNumberField", "");
+    const result = render(numberFieldComponent);
+    const numberFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    expect(numberFieldInput).toBeVisible();
+    expect(mockTrigger).toBeCalled();
+  });
 });
 
 describe("Test Masked NumberField", () => {
+  beforeEach(() => {
+    mockGetValues(undefined);
+  });
   test("onChangeHandler updates comma masked field value", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(commaMaskedNumberFieldComponent);
@@ -345,6 +369,7 @@ describe("Test NumberField component autosaves", () => {
 
 describe("Test NumberField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockGetValues(undefined);
     const { container } = render(numberFieldComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

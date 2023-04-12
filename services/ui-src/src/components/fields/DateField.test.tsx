@@ -25,7 +25,16 @@ jest.mock("react-hook-form", () => ({
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -44,6 +53,7 @@ const dateFieldAutosavingComponent = (
 describe("Test DateField basic functionality", () => {
   test("DateField is visible", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const result = render(dateFieldComponent);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateField']"
@@ -51,8 +61,21 @@ describe("Test DateField basic functionality", () => {
     expect(dateFieldInput).toBeVisible();
   });
 
+  test("DateField triggers validation after first render if no value given", () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockFieldIsRegistered("testDateField", "");
+    const result = render(dateFieldComponent);
+    const dateFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testDateField']"
+    )!;
+    expect(dateFieldInput).toBeVisible();
+    expect(mockTrigger).toBeCalled();
+    jest.clearAllMocks();
+  });
+
   test("onChange event fires handler when typing and stays even after blurred", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const result = render(dateFieldComponent);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateField']"
@@ -206,6 +229,8 @@ describe("Test DateField autosave functionality", () => {
 
 describe("Test DateField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const { container } = render(dateFieldComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

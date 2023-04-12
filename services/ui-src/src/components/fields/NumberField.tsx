@@ -34,8 +34,7 @@ export const NumberField = ({
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
 
-  const fieldIsRegistered =
-    typeof form.getValues() == "object" ? name in form.getValues() : false;
+  const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
     if (!fieldIsRegistered) {
