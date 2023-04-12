@@ -16,6 +16,16 @@ When("these buttons are clicked:", (dataTable) => {
   });
 });
 
+When("the following element states are validated:", (dataTable) => {
+  dataTable.rawTable.forEach((selector) => {
+    cy.get(selector[0]).should(selector[1]);
+  });
+});
+
+When("the element described by {string} is clicked", (selector) => {
+  cy.get(selector).click();
+});
+
 Then("the {string} page is loaded", (uri) => {
   cy.url().should("include", uri);
 });

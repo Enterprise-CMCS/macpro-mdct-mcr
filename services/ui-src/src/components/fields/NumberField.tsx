@@ -34,6 +34,16 @@ export const NumberField = ({
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
 
+  const fieldIsRegistered = name in form.getValues();
+
+  useEffect(() => {
+    if (!fieldIsRegistered) {
+      form.register(name);
+    } else {
+      form.trigger(name);
+    }
+  }, []);
+
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate || defaultValue;
   useEffect(() => {
@@ -51,7 +61,7 @@ export const NumberField = ({
       } else {
         const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
         setDisplayValue(maskedHydrationValue);
-        form.setValue(name, maskedHydrationValue);
+        form.setValue(name, maskedHydrationValue, { shouldValidate: true });
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -147,6 +157,7 @@ interface Props {
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 

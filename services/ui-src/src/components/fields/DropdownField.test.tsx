@@ -30,7 +30,16 @@ jest.mock("react-hook-form", () => ({
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -85,9 +94,18 @@ describe("Test DropdownField basic functionality", () => {
   });
 
   test("Dropdown renders", () => {
+    mockGetValues(undefined);
     render(dropdownComponentWithOptions);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown).toBeVisible();
+  });
+
+  test("DropdownField triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("testDropdown", "");
+    render(dropdownComponentWithOptions);
+    const dropdown = screen.getByLabelText("test-dropdown-label");
+    expect(dropdown).toBeVisible();
+    expect(mockTrigger).toBeCalled();
   });
 
   test("DropdownField calls onChange function successfully", async () => {
@@ -109,6 +127,7 @@ describe("Test DropdownField basic functionality", () => {
 describe("Test DropdownField dynamic options functionality", () => {
   test("Dropdown renders dynamic options", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     render(dropdownComponentWithDynamicOptions);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown.children.length).toEqual(3);
@@ -246,6 +265,8 @@ describe("Test DropdownField autosaves", () => {
 
 describe("Test DropdownField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const { container } = render(dropdownComponentWithOptions);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

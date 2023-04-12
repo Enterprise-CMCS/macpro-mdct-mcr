@@ -11,7 +11,7 @@ defineParameterType({
 
 Given("I am not logged in", () => {
   //Clear the session to start over authentication process
-  cy.clearSession();
+  Cypress.session.clearAllSavedSessions();
 });
 
 Given("I am logged in as a(n) {userType} user", (userType) => {
