@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { UserContext, UserProvider } from "utils";
-import { Auth } from "aws-amplify";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { UserRoles } from "types/users";
@@ -102,7 +101,7 @@ describe("Test UserProvider", () => {
       const logoutButton = screen.getByTestId("logout-button");
       await userEvent.click(logoutButton);
     });
-    expect(location.pathname).toEqual("/");
+    expect(window.location.pathname).toEqual("/");
   });
 
   test("test login with IDM function", async () => {
@@ -119,11 +118,19 @@ describe("Test UserProvider with production path", () => {
     global,
     "location"
   );
-  const federatedSignInSpy = jest.spyOn(Auth, "federatedSignIn");
+  const mockReplace = jest.fn();
+
+  beforeEach(() => {
+    Object.defineProperty(window, "location", {
+      value: {
+        replace: mockReplace,
+        origin: "https://mdctmcr.cms.gov",
+      },
+    });
+  });
 
   afterAll(() => {
     Object.defineProperty(global, "location", originalLocationDescriptor);
-    federatedSignInSpy.mockRestore();
   });
 
   test("test production authenticates with idm when current authenticated user throws an error", async () => {
@@ -134,7 +141,7 @@ describe("Test UserProvider with production path", () => {
     });
     expect(window.location.origin).toContain("mdctmcr.cms.gov");
     expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
-    expect(federatedSignInSpy).toHaveBeenCalledTimes(2);
+    expect(mockReplace).toHaveBeenCalled();
   });
 });
 
