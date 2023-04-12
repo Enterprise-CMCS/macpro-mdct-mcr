@@ -8,10 +8,12 @@ import {
 import {
   DrawerReportPageShape,
   ModalDrawerReportPageShape,
+  ModalOverlayReportPageShape,
   PageTypes,
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
+import { ExportedModalOverlayReportSection } from "./ExportedModalOverlayReportSection";
 
 export const ExportedReportWrapper = ({ section }: Props) => {
   return section.pageType === PageTypes.STANDARD ? (
@@ -25,6 +27,10 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   ) : section.pageType === PageTypes.MODAL_DRAWER ? (
     <ExportedModalDrawerReportSection
       section={section as ModalDrawerReportPageShape}
+    />
+  ) : section.pageType === PageTypes.MODAL_OVERLAY ? (
+    <ExportedModalOverlayReportSection
+      section={section as ModalOverlayReportPageShape}
     />
   ) : (
     <></>

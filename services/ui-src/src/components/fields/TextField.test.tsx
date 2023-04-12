@@ -25,7 +25,16 @@ jest.mock("react-hook-form", () => ({
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -57,9 +66,20 @@ const textFieldAutosavingComponent = (
 describe("Test TextField component", () => {
   test("TextField is visible", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues("");
     render(textFieldComponent);
     const textField = screen.getByTestId("test-text-field");
     expect(textField).toBeVisible();
+    jest.clearAllMocks();
+  });
+
+  test("TextField triggers validation after first render if no value given", () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockFieldIsRegistered("testTextField", "");
+    render(textFieldComponent);
+    const textField = screen.getByTestId("test-text-field");
+    expect(textField).toBeVisible();
+    expect(mockTrigger).toBeCalled();
     jest.clearAllMocks();
   });
 });
@@ -245,6 +265,7 @@ describe("Test TextField component autosaves", () => {
 describe("Test TextField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const { container } = render(textFieldComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

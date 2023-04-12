@@ -25,5 +25,6 @@ interface Props {
   label: string;
   placeholder?: string;
   rows?: number;
+  clear?: boolean;
   [key: string]: any;
 }

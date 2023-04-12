@@ -110,7 +110,6 @@ describe("Test ExportedReportPage Functionality", () => {
 
 describe("ExportedReportPage fails gracefully when appropriate", () => {
   const unknownReportType = "some new report type" as ReportType;
-
   it("Should throw an error when rendering the title for an unknown report type", () => {
     expect(() => reportTitle(unknownReportType, {}, {} as ReportShape)).toThrow(
       Error

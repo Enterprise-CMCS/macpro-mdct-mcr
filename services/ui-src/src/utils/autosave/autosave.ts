@@ -91,8 +91,18 @@ export const autosaveFieldData = async ({
       .filter((field: FieldInfo) => isFieldChanged(field))
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
-        const { name, value, defaultValue, overrideCheck } = field;
-        const fieldValueIsValid = await form.trigger(name);
+        const { name, value, defaultValue, hydrationValue, overrideCheck } =
+          field;
+        let fieldValueIsValid = false;
+        /*
+         * This will trigger validation if and only if the field has been rendered on the page
+         * at least once and therefore has sent a value (empty or otherwise) to the db.
+         */
+        if (value !== hydrationValue && hydrationValue !== undefined) {
+          fieldValueIsValid = await form.trigger(name);
+        } else {
+          fieldValueIsValid = true;
+        }
         // if field value is valid or validity check overridden, use field value
         if (fieldValueIsValid || overrideCheck) return [name, value];
         // otherwise, revert field to default value

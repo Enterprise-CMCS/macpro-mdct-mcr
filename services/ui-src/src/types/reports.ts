@@ -13,6 +13,16 @@ export enum ReportType {
   NAAAR = "NAAAR",
 }
 
+/**
+ * Check if unknown value is a report type
+ *
+ * @param reportType possible report type value
+ * @returns type assertion for value
+ */
+export function isReportType(reportType: unknown): reportType is ReportType {
+  return Object.values(ReportType).includes(reportType as ReportType);
+}
+
 // REPORT STRUCTURE
 
 export interface ReportJson {
@@ -94,6 +104,7 @@ export interface ReportPageVerbiage {
     subsection?: string;
     spreadsheet?: string;
     info?: string | CustomHtmlElement[];
+    exportSectionHeader?: string;
   };
 }
 

@@ -12,6 +12,7 @@ import {
   ReportShape,
   FormLayoutElement,
   isFieldElement,
+  ReportType,
 } from "types";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
@@ -38,6 +39,11 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     ? twoColumnHeaderItems
     : threeColumnHeaderItems;
 
+  // The hint text is hidden for MLR page 1 (Point of Contact)
+  const reportType = report?.reportType as ReportType;
+  const hideHintText =
+    reportType === ReportType.MLR && section.form?.id === "apoc";
+
   return (
     <Table
       sx={sx.root}
@@ -47,7 +53,13 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
       }}
       data-testid="exportTable"
     >
-      {renderFieldTableBody(formFields!, pageType!, report, entityType)}
+      {renderFieldTableBody(
+        formFields!,
+        pageType!,
+        report,
+        !hideHintText,
+        entityType
+      )}
     </Table>
   );
 };
@@ -56,6 +68,7 @@ export const renderFieldTableBody = (
   formFields: (FormField | FormLayoutElement)[],
   pageType: string,
   report: ReportShape | undefined,
+  showHintText: boolean,
   entityType?: string
 ) => {
   const tableRows: ReactElement[] = [];
@@ -71,6 +84,7 @@ export const renderFieldTableBody = (
         pageType={pageType}
         entityType={entityType}
         parentFieldCheckedChoiceIds={parentFieldCheckedChoiceIds}
+        showHintText={showHintText}
       />
     );
     // for drawer pages, render nested child field if any entity has a checked parent choice
@@ -130,6 +144,7 @@ export const renderFieldTableBody = (
 
 export interface Props {
   section: StandardReportPageShape | DrawerReportPageShape;
+  showHintText?: boolean;
 }
 
 const sx = {
