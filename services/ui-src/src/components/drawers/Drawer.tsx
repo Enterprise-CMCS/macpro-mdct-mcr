@@ -16,6 +16,8 @@ import { ReportDrawerDetails } from "components";
 import { AnyObject, CustomHtmlElement, EntityType } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
+import { drawerReminderText } from "../../constants";
+
 export const Drawer = ({
   entityType,
   verbiage,
@@ -47,6 +49,7 @@ export const Drawer = ({
               {parseCustomHtml(verbiage.drawerInfo)}
             </Box>
           )}
+          <Text sx={sx.drawerReminderText}>{drawerReminderText}</Text>
           {verbiage.drawerDetails && entityType && (
             <ReportDrawerDetails
               drawerDetails={verbiage.drawerDetails}
@@ -106,6 +109,12 @@ const sx = {
     fontSize: "2xl",
     fontWeight: "bold",
   },
+  drawerReminderText: {
+    marginTop: "1rem",
+    paddingRight: "4rem",
+    fontSize: "md",
+    fontWeight: "normal",
+  },
   drawerCloseButton: {
     position: "absolute",
     top: "2rem",
@@ -148,6 +157,6 @@ const sx = {
     },
   },
   drawerBody: {
-    padding: "1rem",
+    padding: "0 1rem 1rem 1rem",
   },
 };

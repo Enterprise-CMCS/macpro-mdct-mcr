@@ -6,7 +6,7 @@ import { EntityCard, ReportContext } from "components";
 import { getFormattedEntityData } from "utils";
 import { EntityShape, ModalDrawerReportPageShape } from "types";
 // verbiage
-import exportVerbiage from "verbiage/pages/export";
+import exportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage },
@@ -19,7 +19,7 @@ export const ExportedModalDrawerReportSection = ({
   return (
     <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
       <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
-        {verbiage.dashboardTitle} {entityCount > 0 && entityCount}
+        {`${verbiage.dashboardTitle} ${entityCount > 0 ? entityCount : ""}`}
         {!entityCount && (
           <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
             {emptyEntityMessage[entityType as keyof typeof emptyEntityMessage]}

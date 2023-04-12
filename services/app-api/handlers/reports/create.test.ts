@@ -2,7 +2,7 @@ import { createReport } from "./create";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { StatusCodes } from "../../utils/types/types";
-import { mockReport } from "../../utils/testing/setupJest";
+import { mockMcparReport } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 
 jest.mock("../../utils/auth/authorization", () => ({
@@ -18,22 +18,22 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const mockProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "mock-type", state: "AB" },
+  pathParameters: { reportType: "MCPAR", state: "AB" },
 };
 
 const creationEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
-  body: JSON.stringify(mockReport),
+  body: JSON.stringify(mockMcparReport),
 };
 
 const creationEventWithNoFieldData: APIGatewayProxyEvent = {
   ...mockProxyEvent,
-  body: JSON.stringify({ ...mockReport, fieldData: undefined }),
+  body: JSON.stringify({ ...mockMcparReport, fieldData: undefined }),
 };
 
 const creationEventWithInvalidData: APIGatewayProxyEvent = {
   ...mockProxyEvent,
-  body: JSON.stringify({ ...mockReport, fieldData: { number: "NAN" } }),
+  body: JSON.stringify({ ...mockMcparReport, fieldData: { number: "NAN" } }),
 };
 
 describe("Test createReport API method", () => {
@@ -51,9 +51,11 @@ describe("Test createReport API method", () => {
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
-    expect(body.fieldDataId).not.toEqual(mockReport.metadata.fieldDataId);
+    expect(body.fieldDataId).not.toEqual(mockMcparReport.metadata.fieldDataId);
     expect(body.formTemplateId).toBeDefined;
-    expect(body.formTemplateId).not.toEqual(mockReport.metadata.formTemplateId);
+    expect(body.formTemplateId).not.toEqual(
+      mockMcparReport.metadata.formTemplateId
+    );
   });
 
   test("Test attempted report creation with invalid data fails", async () => {

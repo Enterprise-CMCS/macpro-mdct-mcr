@@ -8,11 +8,13 @@ import {
   applyCustomMask,
   autosaveFieldData,
   customMaskMap,
+  getAutosaveFields,
   useUser,
   validCmsdsMask,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const NumberField = ({
   name,
@@ -25,11 +27,22 @@ export const NumberField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
-
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
   // get form context
   const form = useFormContext();
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
+
+  const fieldIsRegistered = name in form.getValues();
+
+  useEffect(() => {
+    if (!fieldIsRegistered) {
+      form.register(name);
+    } else {
+      form.trigger(name);
+    }
+  }, []);
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate || defaultValue;
@@ -48,7 +61,7 @@ export const NumberField = ({
       } else {
         const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
         setDisplayValue(maskedHydrationValue);
-        form.setValue(name, maskedHydrationValue);
+        form.setValue(name, maskedHydrationValue, { shouldValidate: true });
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -68,22 +81,35 @@ export const NumberField = ({
     // mask value and set as display value
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);
+
     // submit field data to database
     if (autosave) {
-      const fields = [
-        { name, type: "number", value, hydrationValue, defaultValue },
-      ];
+      const fields = getAutosaveFields({
+        name,
+        type: "number",
+        value,
+        defaultValue,
+        hydrationValue,
+      });
+
       const reportArgs = {
         id: report?.id,
         reportType: report?.reportType,
         updateReport,
       };
       const user = { userName: full_name, state };
+
       await autosaveFieldData({
         form,
         fields,
         report: reportArgs,
         user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
       });
     }
   };
@@ -102,14 +128,22 @@ export const NumberField = ({
           value={displayValue}
           {...props}
         />
-        {mask === "percentage" && (
-          <Box
-            className={props.disabled ? "disabled" : undefined}
-            sx={sx.percentage}
-          >
-            {" % "}
-          </Box>
-        )}
+        {mask === "percentage" &&
+          (props.nested ? (
+            <Box
+              className={props.disabled ? "disabled" : undefined}
+              sx={sx.nestedPercentage}
+            >
+              {" % "}
+            </Box>
+          ) : (
+            <Box
+              className={props.disabled ? "disabled" : undefined}
+              sx={sx.percentage}
+            >
+              {" % "}
+            </Box>
+          ))}
       </Box>
     </Box>
   );
@@ -123,6 +157,7 @@ interface Props {
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 
@@ -138,6 +173,17 @@ const sx = {
     position: "absolute",
     bottom: "11px",
     left: "213px",
+    paddingTop: "1px",
+    fontSize: "lg",
+    fontWeight: "700",
+    "&.disabled": {
+      color: "palette.gray_light",
+    },
+  },
+  nestedPercentage: {
+    position: "absolute",
+    bottom: "15px",
+    left: "245px",
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",

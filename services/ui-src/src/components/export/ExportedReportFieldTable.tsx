@@ -10,9 +10,12 @@ import {
   StandardReportPageShape,
   DrawerReportPageShape,
   ReportShape,
+  FormLayoutElement,
+  isFieldElement,
+  ReportType,
 } from "types";
 // verbiage
-import verbiage from "verbiage/pages/export";
+import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
   const { report } = useContext(ReportContext);
@@ -24,7 +27,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   const entityType = section.entityType;
 
   const formHasOnlyDynamicFields = formFields?.every(
-    (field: FormField) => field.type === "dynamic"
+    (field: FormField | FormLayoutElement) => field.type === "dynamic"
   );
   const twoColumnHeaderItems = [tableHeaders.indicator, tableHeaders.response];
   const threeColumnHeaderItems = [
@@ -36,6 +39,11 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     ? twoColumnHeaderItems
     : threeColumnHeaderItems;
 
+  // The hint text is hidden for MLR page 1 (Point of Contact)
+  const reportType = report?.reportType as ReportType;
+  const hideHintText =
+    reportType === ReportType.MLR && section.form?.id === "apoc";
+
   return (
     <Table
       sx={sx.root}
@@ -45,21 +53,28 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
       }}
       data-testid="exportTable"
     >
-      {renderFieldTableBody(formFields!, pageType!, report, entityType)}
+      {renderFieldTableBody(
+        formFields!,
+        pageType!,
+        report,
+        !hideHintText,
+        entityType
+      )}
     </Table>
   );
 };
 
 export const renderFieldTableBody = (
-  formFields: FormField[],
+  formFields: (FormField | FormLayoutElement)[],
   pageType: string,
   report: ReportShape | undefined,
+  showHintText: boolean,
   entityType?: string
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
   const renderFieldRow = (
-    formField: FormField,
+    formField: FormField | FormLayoutElement,
     parentFieldCheckedChoiceIds?: string[]
   ) => {
     tableRows.push(
@@ -69,6 +84,7 @@ export const renderFieldTableBody = (
         pageType={pageType}
         entityType={entityType}
         parentFieldCheckedChoiceIds={parentFieldCheckedChoiceIds}
+        showHintText={showHintText}
       />
     );
     // for drawer pages, render nested child field if any entity has a checked parent choice
@@ -118,12 +134,17 @@ export const renderFieldTableBody = (
     }
   };
   // map through form fields and call renderer
-  formFields?.map((field: FormField) => renderFieldRow(field));
+  formFields?.map((field: FormField | FormLayoutElement) => {
+    if (isFieldElement(field)) {
+      renderFieldRow(field);
+    }
+  });
   return tableRows;
 };
 
 export interface Props {
   section: StandardReportPageShape | DrawerReportPageShape;
+  showHintText?: boolean;
 }
 
 const sx = {
@@ -134,6 +155,10 @@ const sx = {
       lineHeight: "base",
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
+    },
+    thead: {
+      //this will prevent generating a new header whenever the table spills over in another page
+      display: "table-row-group",
     },
     td: {
       p: {

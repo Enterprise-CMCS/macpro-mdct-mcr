@@ -1,7 +1,7 @@
 // components
 import { Alert } from "components";
 // types
-import { BannerData } from "types";
+import { BannerData } from "types/banners";
 
 export const Banner = ({ bannerData, ...props }: Props) => {
   if (bannerData) {

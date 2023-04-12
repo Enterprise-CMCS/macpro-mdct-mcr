@@ -6,14 +6,14 @@ import { ReportContext, StandardReportPage } from "components";
 // utils
 import {
   mockForm,
-  mockReportContext,
+  mockMcparReportContext,
   mockStandardReportPageJson,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
 const standardPageSectionComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <StandardReportPage
         route={{ ...mockStandardReportPageJson, form: mockForm }}
       />

@@ -4,13 +4,13 @@ import { axe } from "jest-axe";
 // components
 import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 // utils
-import { mockReportContext } from "utils/testing/setupJest";
+import { mockMcparReportContext } from "utils/testing/setupJest";
 
 const mockCloseHandler = jest.fn();
 const mockDeleteRecord = jest.fn();
 
 const modalComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <DeleteDynamicFieldRecordModal
       modalDisclosure={{
         isOpen: true,

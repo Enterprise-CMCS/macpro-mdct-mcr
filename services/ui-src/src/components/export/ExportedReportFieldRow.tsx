@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types
-import { FormField } from "types";
+import { FormField, FormLayoutElement, isFieldElement } from "types";
 // utils
 import { parseFormFieldInfo, parseCustomHtml, renderDataCell } from "utils";
 
@@ -12,6 +12,7 @@ export const ExportedReportFieldRow = ({
   pageType,
   entityType,
   parentFieldCheckedChoiceIds,
+  showHintText = true,
 }: Props) => {
   const { report } = useContext(ReportContext);
   const reportData = report?.fieldData;
@@ -42,7 +43,7 @@ export const ExportedReportFieldRow = ({
                   : formField?.props?.label}
               </Text>
             )}
-            {formFieldInfo.hint && (
+            {showHintText && formFieldInfo.hint && (
               <Box sx={sx.fieldHint}>{parseCustomHtml(formFieldInfo.hint)}</Box>
             )}
           </Box>
@@ -54,6 +55,7 @@ export const ExportedReportFieldRow = ({
       {/* data column/cell */}
       <Td>
         {reportData &&
+          isFieldElement(formField) &&
           renderDataCell(
             formField,
             reportData,
@@ -67,10 +69,11 @@ export const ExportedReportFieldRow = ({
 };
 
 export interface Props {
-  formField: FormField;
+  formField: FormField | FormLayoutElement;
   pageType: string;
   entityType?: string;
   parentFieldCheckedChoiceIds?: string[];
+  showHintText?: boolean;
 }
 
 const sx = {

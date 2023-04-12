@@ -31,6 +31,7 @@ const ReportDrawerDetailsSanctionsComponent = (
 
 const mockQualityMeasuresDrawerDetails = {
   domain: "mock domain",
+  name: "mock quality measure name",
   nqfNumber: "mock nqf number",
   reportingRateType: "mock reporting rate type",
   set: "mock measure set",
@@ -68,6 +69,9 @@ describe("Test ReportDrawerDetails renders given text", () => {
     render(ReportDrawerDetailsQualityMeasuresComponent);
     expect(
       screen.getByText(mockQualityMeasuresDrawerDetails.domain)
+    ).toBeVisible();
+    expect(
+      screen.getByText(mockQualityMeasuresDrawerDetails.name)
     ).toBeVisible();
   });
 });

@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { EntityShape, ReportStatus } from "types";
+import { AutosaveField, EntityShape, EntityType, ReportStatus } from "types";
 
 type FieldValue = any;
 
@@ -26,17 +26,64 @@ interface Props {
     userName: string | undefined;
     state: string | undefined;
   };
+  entityContext?: EntityContextShape;
 }
+
+export interface GetAutosaveFieldsProps extends AutosaveField {
+  entityContext?: EntityContextShape;
+}
+
+/**
+ * Current context for editing entities.
+ *
+ * This is a mirror of the EntityContext from EntityProvider,
+ * used to allow non-components to access the Context values.
+ */
+export interface EntityContextShape {
+  selectedEntity?: EntityShape;
+  entities: EntityShape[];
+  entityType?: EntityType;
+  updateEntities: Function;
+}
+
+/**
+ * Get formatted autosave fields from field data.
+ * If entity context is passed, update the selected entity
+ * within the total array of entities, and use that
+ * full data to update the report.
+ *
+ * @param GetAutosaveFieldsProps
+ * @returns
+ */
+export const getAutosaveFields = ({
+  name,
+  type,
+  value,
+  defaultValue,
+  hydrationValue,
+  overrideCheck,
+}: GetAutosaveFieldsProps): FieldInfo[] => {
+  return [
+    {
+      name,
+      type,
+      value,
+      defaultValue,
+      hydrationValue,
+      overrideCheck,
+    },
+  ];
+};
 
 export const autosaveFieldData = async ({
   form,
   fields,
   report,
   user,
+  entityContext,
 }: Props) => {
   const { id, reportType, updateReport } = report;
   const { userName, state } = user;
-
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
     fields
@@ -44,8 +91,18 @@ export const autosaveFieldData = async ({
       .filter((field: FieldInfo) => isFieldChanged(field))
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
-        const { name, value, defaultValue, overrideCheck } = field;
-        const fieldValueIsValid = await form.trigger(name);
+        const { name, value, defaultValue, hydrationValue, overrideCheck } =
+          field;
+        let fieldValueIsValid = false;
+        /*
+         * This will trigger validation if and only if the field has been rendered on the page
+         * at least once and therefore has sent a value (empty or otherwise) to the db.
+         */
+        if (value !== hydrationValue && hydrationValue !== undefined) {
+          fieldValueIsValid = await form.trigger(name);
+        } else {
+          fieldValueIsValid = true;
+        }
         // if field value is valid or validity check overridden, use field value
         if (fieldValueIsValid || overrideCheck) return [name, value];
         // otherwise, revert field to default value
@@ -56,10 +113,27 @@ export const autosaveFieldData = async ({
   // if there are fields to save, create and send payload
   if (fieldsToSave.length) {
     const reportKeys = { reportType, id, state };
-    const dataToWrite = {
-      metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
-      fieldData: Object.fromEntries(fieldsToSave), // create field data object
-    };
+    let dataToWrite = {};
+    if (
+      entityContext &&
+      entityContext.selectedEntity &&
+      entityContext.entityType
+    ) {
+      dataToWrite = {
+        metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
+        fieldData: {
+          [entityContext.entityType]: entityContext.updateEntities(
+            Object.fromEntries(fieldsToSave)
+          ),
+        }, // create field data object
+      };
+    } else {
+      dataToWrite = {
+        metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
+        fieldData: Object.fromEntries(fieldsToSave), // create field data object
+      };
+    }
+
     await updateReport(reportKeys, dataToWrite);
   }
 };

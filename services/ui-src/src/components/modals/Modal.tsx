@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 // components
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -37,6 +38,9 @@ export const Modal = ({
             {content.heading}
           </Heading>
         </ModalHeader>
+        {content.subheading && (
+          <Box sx={sx.modalSubheader}>{content.subheading}</Box>
+        )}
         <Flex sx={sx.modalCloseContainer}>
           <Button
             sx={sx.modalClose}
@@ -90,6 +94,7 @@ interface Props {
   };
   content: {
     heading: string;
+    subheading?: string;
     actionButtonText: string | ReactNode;
     closeButtonText?: string;
   };
@@ -115,6 +120,9 @@ const sx = {
     padding: "0 4rem 0 0",
     fontSize: "2xl",
     fontWeight: "bold",
+  },
+  modalSubheader: {
+    margin: "0.5rem auto -1rem auto",
   },
   modalCloseContainer: {
     alignItems: "center",

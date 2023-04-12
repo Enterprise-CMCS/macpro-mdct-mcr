@@ -7,7 +7,7 @@ import { DropdownField, ReportContext } from "components";
 import { dropdownDefaultOptionText } from "../../constants";
 // utils
 import {
-  mockReportContext,
+  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -30,7 +30,16 @@ jest.mock("react-hook-form", () => ({
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -51,7 +60,7 @@ const dropdownComponentWithOptions = (
 
 const dropdownComponentWithOptionsAndAutosave = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
@@ -69,7 +78,7 @@ const dropdownComponentWithOptionsAndAutosave = (
 
 const dropdownComponentWithDynamicOptions = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
@@ -85,9 +94,18 @@ describe("Test DropdownField basic functionality", () => {
   });
 
   test("Dropdown renders", () => {
+    mockGetValues(undefined);
     render(dropdownComponentWithOptions);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown).toBeVisible();
+  });
+
+  test("DropdownField triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("testDropdown", "");
+    render(dropdownComponentWithOptions);
+    const dropdown = screen.getByLabelText("test-dropdown-label");
+    expect(dropdown).toBeVisible();
+    expect(mockTrigger).toBeCalled();
   });
 
   test("DropdownField calls onChange function successfully", async () => {
@@ -109,6 +127,7 @@ describe("Test DropdownField basic functionality", () => {
 describe("Test DropdownField dynamic options functionality", () => {
   test("Dropdown renders dynamic options", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     render(dropdownComponentWithDynamicOptions);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown.children.length).toEqual(3);
@@ -183,12 +202,12 @@ describe("Test DropdownField autosaves", () => {
     await userEvent.selectOptions(dropDown, "b");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -211,12 +230,12 @@ describe("Test DropdownField autosaves", () => {
     await userEvent.selectOptions(dropDown, "b");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -240,12 +259,14 @@ describe("Test DropdownField autosaves", () => {
     await userEvent.selectOptions(dropDown, "b");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 
 describe("Test DropdownField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const { container } = render(dropdownComponentWithOptions);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
