@@ -107,9 +107,12 @@ Then("the report will have the correct content pre-filled", () => {
     "District of Columbia"
   );
   cy.findByText("Other, specify").parent().click();
-  cy.get('textarea[name="versionControlDescriptionOther"').should("exist");
+  cy.get('textarea[name="versionControlDescription-otherText"').should("exist");
   cy.findByText("Revise state contact information").parent().click();
-  cy.get('textarea[name="versionControlDescriptionOther"').should("not.exist");
+  cy.findByText("Other, specify").parent().click();
+  cy.get('textarea[name="versionControlDescription-otherText"').should(
+    "not.exist"
+  );
 });
 
 When("I create, fill but don't submit a report", () => {
