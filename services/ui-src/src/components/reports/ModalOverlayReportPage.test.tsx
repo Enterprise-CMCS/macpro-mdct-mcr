@@ -50,7 +50,7 @@ const mockReportWithCompletedEntityContext = {
         {
           id: 123,
           name: "example-program1",
-          eligibilityGroup: [
+          report_eligibilityGroup: [
             {
               key: "option1",
               value: "mock-option",
