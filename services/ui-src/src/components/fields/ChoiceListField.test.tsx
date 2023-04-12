@@ -12,6 +12,7 @@ const mockTrigger = jest.fn().mockReturnValue(true);
 const mockSetValue = jest.fn();
 const mockRhfMethods = {
   register: () => {},
+  unregister: () => {},
   setValue: mockSetValue,
   getValues: jest.fn(),
   trigger: mockTrigger,
@@ -22,10 +23,20 @@ const mockUseFormContext = useFormContext as unknown as jest.Mock<
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => mockRhfMethods),
 }));
+
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 const mockChoices = [
@@ -174,15 +185,33 @@ const RadioComponent = (
 
 describe("Test ChoiceListField component rendering", () => {
   it("ChoiceList should render a normal Radiofield that doesn't have children", () => {
+    mockGetValues([]);
     render(RadioComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
   });
 
   it("ChoiceList should render a normal Checkbox that doesn't have children", () => {
+    mockGetValues([]);
     render(CheckboxComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
+  });
+
+  it("ChoiceList should render a normal Radiofield and triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("radioField", []);
+    render(RadioComponent);
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(screen.getByText("Choice 2")).toBeVisible();
+    expect(mockTrigger).toBeCalled();
+  });
+
+  it("ChoiceList should render a normal Checkbox and triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("checkboxField", []);
+    render(CheckboxComponent);
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(screen.getByText("Choice 2")).toBeVisible();
+    expect(mockTrigger).toBeCalled();
   });
 
   it("RadioField should render nested child fields for choices with children", () => {
@@ -938,6 +967,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
 describe("Test ChoiceList accessibility", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetValues(undefined);
   });
 
   it("Should not have basic accessibility issues when given CheckboxField", async () => {
