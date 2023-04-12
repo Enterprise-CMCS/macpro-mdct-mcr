@@ -14,6 +14,7 @@ import {
   AnyObject,
   isFieldElement,
   ReportStatus,
+  ReportType,
   StandardReportPageShape,
 } from "types";
 
@@ -71,7 +72,11 @@ export const StandardReportPage = ({ route }: Props) => {
         formData={report?.fieldData}
         autosave
       />
-      <ReportPageFooter submitting={submitting} form={route.form} />
+      <ReportPageFooter
+        submitting={submitting}
+        form={route.form}
+        hidePrevious={report?.reportType === ReportType.MLR}
+      />
     </Box>
   );
 };

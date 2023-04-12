@@ -17,7 +17,7 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
         {subsection}
       </Heading>
       {hint && <Box sx={sx.hintTextBox}>{hint}</Box>}
-      {accordion && <FormIntroAccordion verbiage={accordion} />}
+      {accordion && <InstructionsAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget
