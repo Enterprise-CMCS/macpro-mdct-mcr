@@ -1,6 +1,6 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { FormIntroAccordion, SpreadsheetWidget } from "components";
+import { InstructionsAccordion, SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
@@ -15,7 +15,7 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {accordion && <FormIntroAccordion verbiage={accordion} />}
+      {accordion && <InstructionsAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget description={spreadsheet} />
