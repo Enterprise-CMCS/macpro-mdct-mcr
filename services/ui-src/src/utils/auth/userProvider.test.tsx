@@ -120,21 +120,17 @@ describe("Test UserProvider with production path", () => {
   );
   const mockReplace = jest.fn();
 
-  Object.defineProperty(window, "location", {
-    value: {
-      replace: mockReplace,
-      origin: "https://mdctmcr.cms.gov",
-    },
+  beforeEach(() => {
+    Object.defineProperty(window, "location", {
+      value: {
+        replace: mockReplace,
+        origin: "https://mdctmcr.cms.gov",
+      },
+    });
   });
-
-  const { location } = window;
 
   afterAll(() => {
     Object.defineProperty(global, "location", originalLocationDescriptor);
-    Object.defineProperty(window, "location", {
-      configurable: true,
-      value: location,
-    });
   });
 
   test("test production authenticates with idm when current authenticated user throws an error", async () => {
