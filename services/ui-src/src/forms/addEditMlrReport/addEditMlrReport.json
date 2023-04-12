@@ -14,7 +14,7 @@
       "validation": "text",
       "props": {
         "label": "MLR submission name",
-        "hint": "Name this MLR submission so you can easily refer to it."
+        "hint": "Name this MLR submission so you can easily refer to it. Consider using timeframe(s) and managed care program names (if relevant)."
       }
     }
   ]
