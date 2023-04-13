@@ -6,7 +6,7 @@ import { AnyObject } from "types";
 // utils
 import { sanitizeAndParseHtml } from "utils";
 
-export const FormIntroAccordion = ({ verbiage, ...props }: Props) => {
+export const InstructionsAccordion = ({ verbiage, ...props }: Props) => {
   const { buttonLabel, intro, list, text } = verbiage;
   return (
     <Accordion allowToggle={true} allowMultiple={true} sx={sx.root} {...props}>
