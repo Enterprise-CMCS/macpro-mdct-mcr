@@ -5,7 +5,7 @@ name: Sync Security Hub findings and Jira issues
 #   schedule:
 #     - cron: '25 1 * * *' # daily at 6:25 am EST
 
-#For testing only in PROD this will change to cron schedule
+# For testing only in PROD this will change to cron schedule
 on:
   push:
     branches: [ sechub-sambr ]
@@ -42,7 +42,7 @@ jobs:
           #jira-custom-fields: '{ "sechubSprint" }' # add issues to the 'Tech Maintenance' sprint
           jira-ignore-statuses: Done
           aws-region: us-east-1
-          aws-severities: HIGH, MEDIUM
+          aws-severities: CRITICAL, HIGH
 
       # - name: Alert Slack On Failure
       #   uses: rtCamp/action-slack-notify@v2
