@@ -31,10 +31,11 @@ jobs:
           account-id: ${{ secrets.PROD_AWS_ACCOUNT_ID }}
           stage-name: dev
 
-      - name: Sync Security Hub and Jira
+
+       -name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/security-hub-visibility@v1.0.1
         with:
-          jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
+          jira-token: ${{ secrets.JIRA_SERVICE_USER_PWD }}
           jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
           jira-host: qmacbis.atlassian.net
           jira-project-key: MDCT # add issues to the 'MC-Review' project
@@ -43,7 +44,6 @@ jobs:
           jira-ignore-statuses: Done
           aws-region: us-east-1
           aws-severities: HIGH, MEDIUM
-
       # - name: Alert Slack On Failure
       #   uses: rtCamp/action-slack-notify@v2
       #   if: failure()
