@@ -18,7 +18,6 @@ permissions:
 jobs:
   sync:
     name: Run sync
-    environment: dev
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repo

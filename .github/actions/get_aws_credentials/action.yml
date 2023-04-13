@@ -10,12 +10,6 @@ inputs:
   account-id:
     description: 'AWS account ID'
     required: true
-  stage-name:
-    description: 'Serverless stage name'
-    required: true
-  changed-services:
-    description: 'List of changed services'
-    required: false
   dry-run:
     description: 'For testing purposes, output the OIDC role ARN without actually assuming the role'
     default: 'false'
