@@ -5,7 +5,7 @@ name: Sync Security Hub findings and Jira issues
 #   schedule:
 #     - cron: '25 1 * * *' # daily at 6:25 am EST
 
-# For testing only in PROD this will change to cron schedule
+# For testing only, in PROD this will change to cron schedule
 on:
   push:
     branches: [ sechub-sambr ]
