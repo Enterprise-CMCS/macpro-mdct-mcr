@@ -34,7 +34,7 @@ jobs:
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/security-hub-visibility@v1.0.1
         with:
-          jira-token: ${{ secrets.JIRA_SERVICE_USER_PWD }}
+          jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
           jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
           jira-host: qmacbis.atlassian.net
           jira-project-key: MDCT # add issues to the 'MC-Review' project
