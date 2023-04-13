@@ -235,6 +235,16 @@ describe("Completion Status Tests", () => {
         fixture: "mcpar-complete-unsubmitted",
         formTemplate: "mcpar-template",
       },
+      {
+        description: "Completed MLR with no remittance",
+        fixture: "mlr-complete-no-remittance",
+        formTemplate: "mlr-template",
+      },
+      {
+        description: "MLR with no programs",
+        fixture: "mlr-missing-reports",
+        formTemplate: "mlr-template",
+      },
     ];
     runs.forEach((run) => {
       test(run.description, async () => {

@@ -1,0 +1,70 @@
+{
+  "programName": "Test",
+  "versionControl": [
+    {
+      "key": "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+      "value": "No, this is an initial submission"
+    }
+  ],
+  "stateName": "Minnesota",
+  "contactName": "Test Name",
+  "contactPhone": "111-111-1111",
+  "contactEmailAddress": "test@test.com",
+  "contactTitle": "Test",
+  "stateAgencyName": "Test Agency Name",
+  "program": [
+    {
+      "id": "a336d30-da38-b122-4c26-183c41c47bec",
+      "report_report_programName": "Test",
+      "report_programType": [
+        {
+          "key": "programType-cQhGnyBmiXszLqrx6b2Cp8",
+          "value": "Behavioral Health Only"
+        }
+      ],
+      "report_eligibilityGroup": [
+        {
+          "key": "eligibilityGroup-UgSDECcYDJ4S39QEMmMRcq",
+          "value": "Standalone CHIP"
+        }
+      ],
+      "report_planName": "Test Name",
+      "report_reportingPeriodStartDate": "11/19/1992",
+      "report_reportingPeriodEndDate": "11/19/1993",
+      "report_reportingPeriodDiscrepancy": [
+        {
+          "key": "reportingPeriodDiscrepancy-2NI2UTNqhvrJLvEv8SORD7vIPRI",
+          "value": "No"
+        }
+      ],
+      "report_eligibilityGroup-otherText": "",
+      "report_reportingPeriodDiscrepancy-otherText": "",
+      "report_inurredClaims": "100",
+      "report_mlrNumerator": "100",
+      "report_mlrDenominator": "100",
+      "report_memberMonths": "100",
+      "report_unadjustedMLR": "100",
+      "report_adjustedMLR": "100",
+      "report_contractIncludesRemittance": [
+        {
+          "key": "contractIncludesRemittance-7FP4jcg4jK7Ssqp3cCW5vQ",
+          "value": "Yes"
+        }
+      ],
+      "report_stateMinimumMLRRequirement": "111",
+      "report_doesRemittanceAlign": [
+        { "key": "doesRemittanceAlign-hReMcaoqUfknjTM7dhZK3N", "value": "No" }
+      ],
+      "report_stateDefinedCalculationDescription": "111",
+      "report_calulatedRemittanceMLR": "100",
+      "report_remittanceDollarsOwed": "100",
+      "report_isRemittancePeriodSame": [
+        {
+          "key": "isRemittancePeriodSame-YzV3x7cp3u2sX92V3cbpDM",
+          "value": "Yes"
+        }
+      ],
+      "report_qualitativeResponse": "Test qualitative response"
+    }
+  ]
+}

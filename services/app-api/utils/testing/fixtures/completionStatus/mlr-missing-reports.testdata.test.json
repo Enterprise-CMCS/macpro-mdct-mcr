@@ -1,0 +1,16 @@
+{
+  "programName": "Test",
+  "versionControl": [
+    {
+      "key": "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+      "value": "No, this is an initial submission"
+    }
+  ],
+  "stateName": "Minnesota",
+  "contactName": "Test Name",
+  "contactPhone": "111-111-1111",
+  "contactEmailAddress": "test@test.com",
+  "contactTitle": "Test",
+  "stateAgencyName": "Test Agency Name",
+  "program": []
+}

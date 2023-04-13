@@ -130,7 +130,7 @@ export const calculateCompletionStatus = async (
     //value for holding combined result
     var areAllFormsComplete = true;
     for (var nestedFormTemplate of nestedFormTemplates) {
-      if (fieldData[entityType]) {
+      if (fieldData[entityType] && fieldData[entityType].length > 0) {
         // iterate over each entity (eg access measure)
         for (var dataForEntity of fieldData[entityType]) {
           // get completion status for entity, using the correct form template

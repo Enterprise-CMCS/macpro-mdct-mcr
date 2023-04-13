@@ -27,7 +27,6 @@ const isWhitespaceString = (value?: string) => value?.trim().length === 0;
 const textSchema = () =>
   string()
     .typeError(error.INVALID_GENERIC)
-    .required(error.REQUIRED_GENERIC)
     .test({
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
