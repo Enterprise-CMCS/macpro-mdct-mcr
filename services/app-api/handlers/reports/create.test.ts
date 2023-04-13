@@ -56,6 +56,18 @@ describe("Test createReport API method", () => {
     expect(body.formTemplateId).not.toEqual(
       mockMcparReport.metadata.formTemplateId
     );
+    expect(body.fieldData.number).toBe(
+      mockMcparReport.fieldData.number.toString()
+    );
+    expect(body.fieldData.text).toBe(mockMcparReport.fieldData.text);
+
+    expect(body.formTemplate.name).toBe("mock-report");
+    expect(body.formTemplate.basePath).toBe("/mock");
+    expect(body.formTemplate.routes).toHaveLength(0);
+    expect(body.formTemplate.validationJson).toMatchObject({
+      text: "text",
+      number: "number",
+    });
   });
 
   test("Test attempted report creation with invalid data fails", async () => {
