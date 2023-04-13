@@ -29,11 +29,7 @@ custom:
       - production
   api_region: ${cf:app-api-${self:custom.stage}.Region}
   api_url: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiUrl}
-<<<<<<< HEAD
   application_endpoint: ${env:APPLICATION_ENDPOINT, ssm:/${self:custom.stage}/ui/application_endpoint, ssm:/default/ui/application_endpoint}
-=======
-  app_url: ${env:APP_URL, ssm:/${self:custom.stage}/ui/application_endpoint, ssm:/default/ui/application_endpoint}
->>>>>>> origin/main
   cognito_region: ${cf:ui-auth-${self:custom.stage}.Region}
   cognito_identity_pool_id: ${cf:ui-auth-${self:custom.stage}.IdentityPoolId}
   cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId}
