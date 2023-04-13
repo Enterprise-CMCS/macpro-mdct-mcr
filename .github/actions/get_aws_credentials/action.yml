@@ -18,7 +18,7 @@ inputs:
     required: false
   dry-run:
     description: 'For testing purposes, output the OIDC role ARN without actually assuming the role'
-    default: 'true'
+    default: 'false'
 
 
 outputs:
