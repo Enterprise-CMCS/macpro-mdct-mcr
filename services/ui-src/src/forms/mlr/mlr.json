@@ -6,18 +6,20 @@
   "adminDisabled": true,
   "routes": [
     {
-      "name": "Program Information",
-      "path": "/mlr/program-information",
+      "name": "Information for Primary Contact",
+      "path": "/mlr/information-for-primary-contact",
       "pageType": "standard",
       "verbiage": {
         "intro": {
-          "section": "Section A: Program Information",
-          "subsection": "Information for Primary Contact",
-          "spreadsheet": "Program Information"
+          "section": "Program Information",
+          "subsection": "Information for Primary of Contact",
+          "hint": "Please enter the name of the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
+          "spreadsheet": "Program Information",
+          "exportSection": "Information for Primary Contact"
         }
       },
       "form": {
-        "id": "apoc",
+        "id": "ipc",
         "fields": [
           {
             "id": "contactName",
@@ -29,7 +31,7 @@
             }
           },
           {
-            "id": "contactPhone",
+            "id": "contactPhoneNumber",
             "type": "text",
             "validation": "text",
             "props": {
@@ -47,7 +49,7 @@
             }
           },
           {
-            "id": "contactTitle",
+            "id": "contactJobTitle",
             "type": "text",
             "validation": "text",
             "props": {
@@ -80,7 +82,7 @@
             "validation": "radio",
             "props": {
               "label": "G. Version control",
-              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /><br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
+              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
               "choices": [
                 {
                   "id": "cyUSrTH8mWdpqAKExLZAkz",
@@ -123,7 +125,7 @@
                             "label": "Other, specify",
                             "children": [
                               {
-                                "id": "versionControlDescriptionOther",
+                                "id": "versionControlDescription-otherText",
                                 "type": "textarea",
                                 "validation": {
                                   "type": "text",
@@ -180,27 +182,27 @@
         "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab.",
         "addEditModalAddTitle": "Add program reporting information",
         "addEditModalEditTitle": "Edit program reporting information",
-        "addEditModalHint": "Complete this screen once for each row that's in your Excel Workbook's Program Information tab, which will create an entry for Medicaid Medical Loss Ratio (MLR) & Remittance Calculations by your state's aggregation level (corresponding to the columns in the Excel Workbook MLR Reporting tab)."
+        "addEditModalHint": "Provide the following program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab."
       },
       "modalForm": {
-        "id": "bpel-modal",
+        "id": "mlrd-modal",
         "fields": [
           {
-            "id": "programName",
+            "id": "report_programName",
             "type": "textarea",
             "validation": "text",
             "props": {
               "label": "I. Program name",
-              "hint": "Enter the name of the program(s) relevant to this set of MLR results. States providing plan-level MLR results separated by program should enter the individual relevant program name in the field below. States providing one set of combined MLR results per plan should list the program names relevant to the respective set of results in the field below, separated by commas. <br/> A program is defined generally by a specified set of benefits and eligibility criteria that is articulated in a contract between the state and a managed care plan."
+              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
           {
-            "id": "programType",
+            "id": "report_programType",
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
               "label": "J. Program type",
-              "hint": "Select the program type definition(s) that best describes the program entered in \"I. Program Name\".",
+              "hint": "Select the program type definition(s) that best describes the program(s) entered in “I. Program name”.",
               "choices": [
                 {
                   "id": "cQhGnyBmiXszLqrx6b2Cp8",
@@ -234,7 +236,7 @@
             }
           },
           {
-            "id": "eligibilityGroup",
+            "id": "report_eligibilityGroup",
             "type": "radio",
             "validation": "radio",
             "props": {
@@ -261,7 +263,7 @@
                         },
                         {
                           "type": "externalLink",
-                          "content": "42 CFR 457.10",
+                          "content": "42 CFR § 457.10",
                           "props": {
                             "aria-label": "Link opens in new tab",
                             "target": "_blank",
@@ -303,6 +305,10 @@
               ],
               "choices": [
                 {
+                  "id": "cRi6qE4T5c6BjbGUsiiEof",
+                  "label": "All Populations"
+                },
+                {
                   "id": "UgSDECcYDJ4S39QEMmMRcq",
                   "label": "Standalone CHIP"
                 },
@@ -311,20 +317,20 @@
                   "label": "Group VIII Expansion Adult Only"
                 },
                 {
-                  "id": "cRi6qE4T5c6BjbGUsiiEof",
-                  "label": "All Populations"
-                },
-                {
                   "id": "4xSRBneHBfUEqSPfrPTRYf",
                   "label": "Other, specify",
                   "children": [
                     {
-                      "id": "eligibilityGroup-otherText",
+                      "id": "report_eligibilityGroup-otherText",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "eligibilityGroup"
+                        "parentFieldName": "report_eligibilityGroup"
+                      },
+                      "props": {
+                        "label": "L. Eligibility group description",
+                        "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children <19 years; Aged, Blind, Disabled; Pregnant Women."
                       }
                     }
                   ]
@@ -333,7 +339,7 @@
             }
           },
           {
-            "id": "planName",
+            "id": "report_planName",
             "type": "text",
             "validation": "text",
             "props": {
@@ -341,11 +347,11 @@
               "hint": [
                 {
                   "type": "span",
-                  "content": "Enter the full name of each plan for which the state is reporting MLR data. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
                 },
                 {
                   "type": "externalLink",
-                  "content": "Managed Care Enrollment by Program and Plan",
+                  "content": "\"Managed Care Enrollment by Program and Plan\"",
                   "props": {
                     "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
                     "target": "_blank",
@@ -356,20 +362,20 @@
             }
           },
           {
-            "id": "reportingPeriodStartDate",
+            "id": "report_reportingPeriodStartDate",
             "type": "date",
             "validation": "date",
             "props": {
               "label": "N. MLR reporting period start date",
-              "hint": "Enter the state date of the MLR Reporting Period. <br/> The MLR reporting period should be a perod of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
+              "hint": "Enter the start date of the MLR Reporting Period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
             }
           },
           {
-            "id": "reportingPeriodEndDate",
+            "id": "report_reportingPeriodEndDate",
             "type": "date",
             "validation": {
               "type": "endDate",
-              "dependentFieldName": "reportingPeriodStartDate"
+              "dependentFieldName": "report_reportingPeriodStartDate"
             },
             "props": {
               "label": "O. MLR reporting period end date",
@@ -378,7 +384,7 @@
             }
           },
           {
-            "id": "reportingPeriodDiscrepancy",
+            "id": "report_reportingPeriodDiscrepancy",
             "type": "radio",
             "validation": "radio",
             "props": {
@@ -390,16 +396,16 @@
                   "label": "Yes",
                   "children": [
                     {
-                      "id": "reportingPeriodDiscrepancy-otherText",
+                      "id": "report_reportingPeriodDiscrepancyExplanation",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "reportingPeriodDiscrepancy"
+                        "parentFieldName": "report_reportingPeriodDiscrepancy"
                       },
                       "props": {
                         "label": "P.2 Explanation of reporting period discrepancy",
-                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
                       }
                     }
                   ]
@@ -412,7 +418,7 @@
             }
           },
           {
-            "id": "miscellaneousNotes",
+            "id": "report_miscellaneousNotes",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -434,7 +440,7 @@
             }
           },
           {
-            "id": "inurredClaims",
+            "id": "report_incurredClaims",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -459,7 +465,7 @@
             }
           },
           {
-            "id": "healthCareQualityActivities",
+            "id": "report_healthCareQualityImprovementActivities",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -471,7 +477,7 @@
                 },
                 {
                   "type": "externalLink",
-                  "content": "42 CFR § 438.8(e)(2)",
+                  "content": "42 CFR § 438.8(e)(3)",
                   "props": {
                     "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(3)",
                     "target": "_blank",
@@ -484,7 +490,7 @@
             }
           },
           {
-            "id": "mlrNumerator",
+            "id": "report_mlrNumerator",
             "type": "number",
             "validation": "number",
             "props": {
@@ -508,7 +514,7 @@
             }
           },
           {
-            "id": "mlrNumeratorExplanation",
+            "id": "report_mlrNumeratorExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -518,7 +524,7 @@
             }
           },
           {
-            "id": "nonClaimsCosts",
+            "id": "report_nonClaimsCosts",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -551,7 +557,7 @@
             }
           },
           {
-            "id": "premiumRevenue",
+            "id": "report_premiumRevenue",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -576,7 +582,7 @@
             }
           },
           {
-            "id": "regulatoryFees",
+            "id": "report_taxesLicensingRegulatoryFees",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -601,7 +607,7 @@
             }
           },
           {
-            "id": "mlrDenominator",
+            "id": "report_mlrDenominator",
             "type": "number",
             "validation": "number",
             "props": {
@@ -625,7 +631,7 @@
             }
           },
           {
-            "id": "mlrDenominatorExplanation",
+            "id": "report_mlrDenominatorExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -643,7 +649,7 @@
             }
           },
           {
-            "id": "memberMonths",
+            "id": "report_requiredMemberMonths",
             "type": "number",
             "validation": "number",
             "props": {
@@ -657,7 +663,7 @@
                   "type": "externalLink",
                   "content": "42 CFR § 438.8(b)",
                   "props": {
-                    "href": "https://www.eexcfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)",
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)",
                     "target": "_blank",
                     "aria-label": "Link opens in new tab"
                   }
@@ -666,7 +672,7 @@
             }
           },
           {
-            "id": "unadjustedMLR",
+            "id": "report_unadjustedMlrPercentage",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -677,7 +683,7 @@
             }
           },
           {
-            "id": "unadjustedMLRExplanation",
+            "id": "report_unadjustedMlrPercentageExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -687,7 +693,7 @@
             }
           },
           {
-            "id": "credibilityAdjustment",
+            "id": "report_credibilityAdjustmentPercentage",
             "type": "number",
             "validation": "numberOptional",
             "props": {
@@ -695,7 +701,7 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (optional subcomponent of section 3.4 Adjusted MLR)"
+                  "content": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)"
                 },
                 {
                   "type": "ul",
@@ -745,7 +751,7 @@
             }
           },
           {
-            "id": "adjustedMLR",
+            "id": "report_adjustedMlrPercentage",
             "type": "number",
             "validation": "number",
             "props": {
@@ -769,7 +775,7 @@
             }
           },
           {
-            "id": "adjustedMLRExplanation",
+            "id": "report_adjustedMlrPercentageExplanation",
             "type": "textarea",
             "validation": "textOptional",
             "props": {
@@ -794,7 +800,7 @@
             }
           },
           {
-            "id": "contractIncludesRemittance",
+            "id": "report_contractIncludesMlrRemittanceRequirement",
             "type": "radio",
             "validation": "radio",
             "props": {
@@ -806,11 +812,11 @@
                   "label": "Yes",
                   "children": [
                     {
-                      "id": "stateMinimumMLRRequirement",
+                      "id": "state_minimumMlrRequirement",
                       "validation": {
                         "type": "numberOptional",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "type": "number",
                       "props": {
@@ -820,12 +826,12 @@
                       }
                     },
                     {
-                      "id": "doesRemittanceAlign",
+                      "id": "state_doesStateRemittanceMlrCalculationAlign",
                       "type": "radio",
                       "validation": {
                         "type": "radio",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "props": {
                         "label": "4.3 Does the state remittance MLR calculation align with the required components and methodology outlined in 438.8(c)?",
@@ -841,11 +847,11 @@
                             "label": "No",
                             "children": [
                               {
-                                "id": "stateDefinedCalculationDescription",
+                                "id": "state_remittanceMlrCalculationDeterminationMethod",
                                 "type": "textarea",
                                 "validation": {
                                   "nested": true,
-                                  "parentFieldName": "doesRemittanceAlign",
+                                  "parentFieldName": "state_doesStateRemittanceMlrCalculationAlign",
                                   "type": "textOptional"
                                 },
                                 "props": {
@@ -860,12 +866,12 @@
                       }
                     },
                     {
-                      "id": "calulatedRemittanceMLR",
+                      "id": "report_calculatedMlrPercentageForRemittancePurposes",
                       "type": "number",
                       "validation": {
                         "type": "numberOptional",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "props": {
                         "label": "4.5 Calculated MLR for remittance purposes",
@@ -875,12 +881,12 @@
                       }
                     },
                     {
-                      "id": "remittanceDollarsOwed",
+                      "id": "report_remittanceDollarAmountOwed",
                       "type": "number",
                       "validation": {
                         "type": "number",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "props": {
                         "label": "4.6.1 Remittance dollar amount owed for MLR reporting period",
@@ -889,12 +895,12 @@
                       }
                     },
                     {
-                      "id": "paymentDollarAmountForMLRPeriod",
+                      "id": "report_remittanceDollarAmountDue",
                       "type": "number",
                       "validation": {
                         "type": "numberOptional",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "props": {
                         "label": "4.6.2 Payment dollar amount due to plan for MLR reporting period",
@@ -904,11 +910,11 @@
                       }
                     },
                     {
-                      "id": "remittanceExplanation",
+                      "id": "report_remittanceExplanation",
                       "type": "textarea",
                       "validation": {
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance",
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "type": "textOptional"
                       },
                       "props": {
@@ -918,26 +924,26 @@
                       }
                     },
                     {
-                      "id": "reportingPeriodStartDate",
+                      "id": "report_reportingPeriodStartDate",
                       "type": "date",
                       "validation": {
                         "type": "date",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "props": {
-                        "label": "O. MLR reporting period start date",
+                        "label": "N. MLR reporting period start date",
                         "hint": "Auto-populates from program reporting information.",
                         "disabled": true
                       }
                     },
                     {
-                      "id": "reportingPeriodEndDate",
+                      "id": "report_reportingPeriodEndDate",
                       "type": "date",
                       "validation": {
                         "type": "date",
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance"
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
                       "props": {
                         "label": "O. MLR reporting period end date",
@@ -946,11 +952,11 @@
                       }
                     },
                     {
-                      "id": "isRemittancePeriodSame",
+                      "id": "report_isRemittancePeriodSameAsMlrReportingPeriod",
                       "type": "radio",
                       "validation": {
                         "nested": true,
-                        "parentFieldName": "contractIncludesRemittance",
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "type": "radio"
                       },
                       "props": {
@@ -967,12 +973,12 @@
                             "label": "No",
                             "children": [
                               {
-                                "id": "newRemittancePeriodStartDate",
+                                "id": "report_remittancePeriodStartDate",
                                 "type": "date",
                                 "validation": {
                                   "type": "dateOptional",
                                   "nested": true,
-                                  "parentFieldName": "isRemittancePeriodSame"
+                                  "parentFieldName": "report_isRemittancePeriodSameAsMlrReportingPeriod"
                                 },
                                 "props": {
                                   "label": "4.8.1 Remittance period start date",
@@ -981,12 +987,12 @@
                                 }
                               },
                               {
-                                "id": "newRemittancePeriodEndDate",
+                                "id": "report_remittancePeriodEndDate",
                                 "type": "date",
                                 "validation": {
                                   "type": "dateOptional",
                                   "nested": true,
-                                  "parentFieldName": "isRemittancePeriodSame"
+                                  "parentFieldName": "report_isRemittancePeriodSameAsMlrReportingPeriod"
                                 },
                                 "props": {
                                   "label": "4.8.2 Remittance period end date",
@@ -1000,10 +1006,10 @@
                       }
                     },
                     {
-                      "id": "qualitativeResponse",
+                      "id": "report_stateFederalRemittanceShareDeterminationMethodologyDescription",
                       "type": "textarea",
                       "nested": true,
-                      "parentFieldName": "contractIncludesRemittance",
+                      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                       "validation": "text",
                       "props": {
                         "label": "4.9 Remittance methodology qualitative response",
@@ -1020,7 +1026,7 @@
                             "type": "externalLink",
                             "content": "42 CFR § 438.74(b)(2)",
                             "props": {
-                              "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
+                              "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74#p-438.74(b)(2)",
                               "target": "_blank",
                               "aria-label": "Link opens in new tab"
                             }
