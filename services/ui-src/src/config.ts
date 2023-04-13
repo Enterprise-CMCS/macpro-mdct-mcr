@@ -28,7 +28,7 @@ const config = {
   DEV_API_URL: window._env_.DEV_API_URL,
   REACT_APP_LD_SDK_CLIENT: window._env_.REACT_APP_LD_SDK_CLIENT,
   COGNITO_IDP: window._env_.COGNITO_IDP,
-  APP_URL: window._env_.APPLICATION_ENDPOINT,
+  APPLICATION_ENDPOINT: window._env_.APPLICATION_ENDPOINT,
 };
 
 export default config;

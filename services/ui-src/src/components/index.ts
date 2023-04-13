@@ -1,7 +1,7 @@
 // accordions
 export { AccordionItem } from "./accordions/AccordionItem";
 export { FaqAccordion } from "./accordions/FaqAccordion";
-export { FormIntroAccordion } from "./accordions/FormIntroAccordion";
+export { InstructionsAccordion } from "./accordions/InstructionsAccordion";
 export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
 // alerts
 export { Alert } from "./alerts/Alert";
