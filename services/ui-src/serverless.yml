@@ -35,7 +35,6 @@ custom:
   cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId}
   cognito_user_pool_client_id: ${cf:ui-auth-${self:custom.stage}.UserPoolClientId}
   cognito_user_pool_client_domain: ${cf:ui-auth-${self:custom.stage}.UserPoolClientDomain}
-  cognito_user_pool_domain_url: ${env:COGNITO_USER_POOL_DOMAIN_URL, ssm:/${self:custom.stage}/ui-auth/cognito_user_pool_domain_url, ssm:/default/ui-auth/cognito_user_pool_domain_url}
   cognito_idp_name: ${env:COGNITO_IDP_NAME, ssm:/${self:custom.stage}/ui-auth/cognito_idp_name, ssm:/default/ui-auth/cognito_idp_name}
   cognito_idp: ${cf:ui-auth-${self:custom.stage}.IdentityProvider}
   ldSdkClient: ${env:REACT_APP_LD_SDK_CLIENT, ssm:/${self:custom.stage}/launchdarkly/client, ssm:/default/launchdarkly/client}
@@ -70,7 +69,6 @@ custom:
         export COGNITO_IDP=${self:custom.cognito_idp}
         export COGNITO_REDIRECT_SIGNIN=${self:custom.application_endpoint_url}
         export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
-        export COGNITO_USER_POOL_DOMAIN_URL=${self:custom.cognito_user_pool_domain_url}
         export REACT_APP_LD_SDK_CLIENT=${self:custom.ldSdkClient}
         export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
         export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}
