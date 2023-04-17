@@ -133,12 +133,14 @@ export function renderModalOverlayTableBody(
 const sx = {
   root: {
     marginBottom: "1rem",
-    width: "150%",
     "tr, th": {
       verticalAlign: "bottom",
       lineHeight: "base",
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
+    },
+    "th:nth-of-type(3)": {
+      width: "15rem",
     },
     thead: {
       //this will prevent generating a new header whenever the table spills over in another page
