@@ -13,9 +13,9 @@ export const EntityRow = ({
   openDeleteEntityModal,
   openEntityDetailsOverlay,
 }: Props) => {
-  const { programName, planName } = entity;
+  const { report_programName, report_planName } = entity;
 
-  const reportingPeriod = `${entity.reportingPeriodStartDate} to ${entity.reportingPeriodEndDate}`;
+  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
     if (entity["report_eligibilityGroup-otherText"]) {
       return entity["report_eligibilityGroup-otherText"];
@@ -24,10 +24,10 @@ export const EntityRow = ({
   };
 
   const programInfo = [
-    programName,
+    report_programName,
     eligibilityGroup(),
     reportingPeriod,
-    planName,
+    report_planName,
   ];
 
   return (
@@ -112,8 +112,8 @@ const sx = {
       listStyleType: "none",
       li: {
         wordWrap: "break-word",
-        paddingTop: "0.25rem",
-        paddingBottom: "0.25rem",
+        paddingTop: "0.125rem",
+        paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
         "&:last-of-type": {
           fontWeight: "bold",

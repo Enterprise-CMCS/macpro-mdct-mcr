@@ -72,6 +72,15 @@ export function renderModalOverlayTableBody(
   switch (reportType) {
     case ReportType.MLR:
       return entities.map((entity, idx) => {
+        const { report_programName } = entity;
+
+        const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
+        const eligibilityGroup = () => {
+          if (entity["report_eligibilityGroup-otherText"]) {
+            return entity["report_eligibilityGroup-otherText"];
+          }
+          return entity.report_eligibilityGroup[0].value;
+        };
         return (
           <Tr key={idx}>
             <Td sx={sx.statusIcon}>{renderStatusIcon(false)}</Td>
@@ -80,22 +89,16 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text>
-                {entity.programName} <br />
-                {entity["report_eligibilityGroup-otherText"]
-                  ? entity["report_eligibilityGroup-otherText"]
-                  : entity.report_eligibilityGroup[0].value
-                  ? entity.report_eligibilityGroup[0].value
-                  : "Not entered"}{" "}
-                <br />
-                {entity.reportingPeriodStartDate} to{" "}
-                {entity.reportingPeriodEndDate} <br />
-                {entity.planName ?? "Not entered"}
+                {report_programName} <br />
+                {eligibilityGroup()} <br />
+                {reportingPeriod} <br />
+                {entity.report_planName ?? "Not entered"}
               </Text>
             </Td>
             <Td>
               <Text>
-                {entity.programType[0].value
-                  ? entity.programType[0].value
+                {entity.report_programType[0].value
+                  ? entity.report_programType[0].value
                   : "Not entered"}
               </Text>
             </Td>

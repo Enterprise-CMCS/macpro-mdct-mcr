@@ -13,7 +13,7 @@ import {
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import { assertExhaustive } from "utils/other/typing";
 import { ExportedEntityDetailsTable } from "./ExportedEntityDetailsTable";
 import uuid from "react-uuid";
@@ -106,32 +106,38 @@ export function getFormSections(
 export function getEntityTableComponents(
   entities: EntityShape[],
   section: ModalOverlayReportPageShape,
-  formSections: (FormField | FormLayoutElement)[][],
-  report?: ReportShape
+  formSections: (FormField | FormLayoutElement)[][]
 ) {
   return entities.map((entity, idx) => {
+    const { report_programName, report_planName } = entity;
+
+    const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
+    const eligibilityGroup = () => {
+      if (entity["report_eligibilityGroup-otherText"]) {
+        return entity["report_eligibilityGroup-otherText"];
+      }
+      return entity.report_eligibilityGroup[0].value;
+    };
+
+    const programInfo = [
+      report_programName,
+      eligibilityGroup(),
+      reportingPeriod,
+      report_planName,
+    ];
+
     return (
       <Box key={uuid()}>
         <Box sx={sx.entityInformation}>
           <Heading sx={sx.entityHeading} fontSize={"lg"}>
             {idx + 1}. {section.verbiage.intro.subsection} for:
           </Heading>
-          <Box>
-            <Text fontSize={"lg"}>
-              {report?.programName || report?.submissionName}
-            </Text>
-            {entity.eligibilityGroup && (
-              <Text fontSize={"lg"}>
-                {entity["eligibilityGroup-otherText"]
-                  ? entity["eligibilityGroup-otherText"]
-                  : entity.eligibilityGroup[0].value}
-              </Text>
-            )}
-            <Text fontSize={"lg"}>
-              {entity.reportingPeriodStartDate} to{" "}
-              {entity.reportingPeriodEndDate}
-            </Text>
-            <Text fontSize={"lg"}>{entity.planName}</Text>
+          <Box sx={sx.programInfo}>
+            <ul>
+              {programInfo.map((field, index) => (
+                <li key={index}> {field} </li>
+              ))}
+            </ul>
           </Box>
         </Box>
         {formSections.map((fields, idx) => {
@@ -271,5 +277,22 @@ const sx = {
   },
   sectionHeading: {
     padding: "1.5rem 0 0 0",
+  },
+  programInfo: {
+    maxWidth: "18.75rem",
+    ul: {
+      margin: "0.5rem auto",
+      listStyleType: "none",
+      li: {
+        wordWrap: "break-word",
+        paddingTop: "0.125rem",
+        paddingBottom: "0.125rem",
+        whiteSpace: "break-spaces",
+        "&:last-of-type": {
+          fontWeight: "bold",
+          fontSize: "md",
+        },
+      },
+    },
   },
 };
