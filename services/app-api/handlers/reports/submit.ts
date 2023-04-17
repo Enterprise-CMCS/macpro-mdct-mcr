@@ -72,7 +72,7 @@ export const submitReport = handler(async (event, _context) => {
       };
     }
 
-    if (!isComplete && reportMetadata.reportType === "MCPAR") {
+    if (!isComplete) {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.REPORT_INCOMPLETE,
