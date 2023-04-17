@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -24,7 +24,10 @@ import {
   FormField,
   isFieldElement,
   FormLayoutElement,
+  ReportStatus,
+  ReportType,
 } from "types";
+import { ReportContext } from "components/reports/ReportProvider";
 
 export const Form = ({
   id,
@@ -41,8 +44,12 @@ export const Form = ({
   // determine if fields should be disabled (based on admin roles )
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
+  const { report } = useContext(ReportContext);
   const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
-  const fieldInputDisabled = isAdminTypeUser && formJson.adminDisabled;
+  const fieldInputDisabled =
+    (isAdminTypeUser && formJson.adminDisabled) ||
+    (report?.status === ReportStatus.SUBMITTED &&
+      report?.reportType === ReportType.MLR);
 
   // create validation schema
   const formValidationJson = compileValidationJsonFromFields(

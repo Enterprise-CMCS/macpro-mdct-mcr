@@ -50,12 +50,13 @@ const mockReportWithCompletedEntityContext = {
         {
           id: 123,
           name: "example-program1",
-          eligibilityGroup: [
+          report_eligibilityGroup: [
             {
               key: "option1",
               value: "mock-option",
             },
           ],
+          "report_eligibilityGroup-otherText": "mock-text",
         },
       ],
     },
@@ -187,6 +188,19 @@ describe("Test ModalOverlayReportPage (mobile + tablet, adding new program repor
     mockMakeMediaQueryClasses.mockReturnValue("mobile");
     mockedUseUser.mockReturnValue(mockStateUser);
     render(modalOverlayReportPageComponentWithEntities);
+  });
+
+  it("State user should be able to enter an existing program", async () => {
+    const enterButton = screen.getByText("Mock enter report text");
+    await userEvent.click(enterButton);
+    await waitFor(
+      () => {
+        expect(screen.getByText("Return to MLR Reporting"));
+      },
+      {
+        timeout: 1000,
+      }
+    );
   });
 
   it("State user should be able to open and close the Add Program Reporting Information modal", async () => {

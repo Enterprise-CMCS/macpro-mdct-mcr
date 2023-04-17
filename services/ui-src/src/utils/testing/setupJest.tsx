@@ -645,13 +645,13 @@ export const mockMlrReportFieldData = {
           value: "mock-type2",
         },
       ],
-      eligibilityGroup: [
+      report_eligibilityGroup: [
         {
           key: "option1",
           value: "mock-group",
         },
       ],
-      "eligibilityGroup-otherText": "",
+      "report_eligibilityGroup-otherText": "",
     },
   ],
 };
