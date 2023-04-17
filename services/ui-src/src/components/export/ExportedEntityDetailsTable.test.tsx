@@ -31,11 +31,9 @@ describe("ExportedEntityDetailsTable", () => {
     ];
 
     for (const content of expectedTextContent) {
-      await (
-        await findAllByText(content)
-      ).forEach((f) => {
-        expect(f).toBeVisible();
-      });
+      for (const element of await findAllByText(content)) {
+        expect(element).toBeVisible();
+      }
     }
   });
 });
