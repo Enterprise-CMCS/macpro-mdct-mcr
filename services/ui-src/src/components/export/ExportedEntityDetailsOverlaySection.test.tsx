@@ -82,12 +82,34 @@ describe("getEntityTableComponents", () => {
 });
 
 describe("getFormSections", () => {
-  test("it splits based on sectionHeader layout elements", () => {
+  test("it does not error on empty arrays", () => {
+    const sections = getFormSections([]);
+    expect(sections).toHaveLength(1);
+    expect(sections[0]).toHaveLength(0);
+  });
+
+  test("it does not split if there is no splitting to do", () => {
     const sections = getFormSections([
-      { id: "foo", type: "sectionHeader" },
-      { id: "bar", type: "checkbox" },
+      { id: "a", type: "sectionHeader" },
+      { id: "b", type: "checkbox" },
     ]);
     expect(sections).toHaveLength(1);
+    expect(sections[0].map(({ id }) => id)).toEqual(["a", "b"]);
+  });
+
+  test("it splits out a new subsection for each header", () => {
+    const sections = getFormSections([
+      { id: "a", type: "sectionHeader" },
+      { id: "b", type: "checkbox" },
+      { id: "c", type: "checkbox" },
+      { id: "d", type: "sectionHeader" },
+      { id: "e", type: "sectionHeader" },
+      { id: "f", type: "checkbox" },
+    ]);
+    expect(sections).toHaveLength(3);
+    expect(sections[0].map(({ id }) => id)).toEqual(["a", "b", "c"]);
+    expect(sections[1].map(({ id }) => id)).toEqual(["d"]);
+    expect(sections[2].map(({ id }) => id)).toEqual(["e", "f"]);
   });
 });
 

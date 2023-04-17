@@ -3,7 +3,6 @@ import { ReactElement, useContext } from "react";
 import { ReportContext, Table } from "components";
 // types, utils
 import {
-  Choice,
   EntityShape,
   FieldChoice,
   FormField,
@@ -12,7 +11,7 @@ import {
   ReportType,
 } from "types";
 // verbiage
-import verbiage from "verbiage/pages/mcpar/mcpar-export";
+import verbiage from "verbiage/pages/mlr/mlr-export";
 import { ExportedEntityDetailsTableRow } from "./ExportedEntityDetailsTableRow";
 
 export const ExportedEntityDetailsTable = ({
@@ -31,7 +30,6 @@ export const ExportedEntityDetailsTable = ({
     tableHeaders.response,
   ];
 
-  // The hint text is hidden for MLR page 1 (Point of Contact)
   const reportType = report?.reportType as ReportType;
   const hideHintText = reportType === ReportType.MLR;
 
@@ -80,28 +78,13 @@ export const renderFieldTableBody = (
         entityId={entityId}
       />
     );
-    // for drawer pages, render nested child field if any entity has a checked parent choice
     const entityData = report?.fieldData[entityType!];
     formField?.props?.choices?.forEach((choice: FieldChoice) => {
-      // filter to only entities where this choice is checked
-      const entitiesWithCheckedChoice = entityData?.filter(
-        (entity: EntityShape) =>
-          Object.keys(entity)?.find((fieldDataKey: string) => {
-            const fieldDataValue = entity[fieldDataKey];
-            return (
-              Array.isArray(fieldDataValue) &&
-              fieldDataValue.find((selectedChoice: Choice) =>
-                selectedChoice.key?.endsWith(choice.id)
-              )
-            );
-          })
-      );
-      // get all checked parent field choices
-      const parentFieldCheckedChoiceIds = entitiesWithCheckedChoice?.map(
-        (entity: EntityShape) => entity.id
-      );
       // if choice is checked in any entity, and the choice has children to display, render them
-      if (entitiesWithCheckedChoice?.length > 0 && choice?.children) {
+      if (
+        entityData.find((e: EntityShape) => e.id === entityId) &&
+        choice?.children
+      ) {
         choice.children?.forEach((childField: FormField) =>
           renderFieldRow(childField, parentFieldCheckedChoiceIds)
         );
