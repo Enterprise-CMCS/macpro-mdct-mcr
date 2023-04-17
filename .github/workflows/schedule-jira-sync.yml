@@ -23,12 +23,12 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v3
 
-      - name: Get AWS credentials
-        uses: ./.github/actions/get_aws_credentials
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          region: ${{ secrets.AWS_DEFAULT_REGION }}
-          account-id: ${{ secrets.PROD_AWS_ACCOUNT_ID }}
-          stage-name: dev
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/security-hub-visibility@v1.0.1
