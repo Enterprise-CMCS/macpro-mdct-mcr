@@ -39,9 +39,9 @@ export const EntityDetailsOverlay = ({
   } = useContext(EntityContext);
 
   useEffect(() => {
+    setSelectedEntity(selectedEntity);
     setSidebarHidden(true);
     setEntityType(entityType);
-    setSelectedEntity(selectedEntity);
     setEntities(report?.fieldData[entityType]);
     return () => {
       setEntities([]);
@@ -82,7 +82,7 @@ export const EntityDetailsOverlay = ({
 
   const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
-    if (selectedEntity["report_eligibilityGroup-otherText"]) {
+    if (selectedEntity && selectedEntity["report_eligibilityGroup-otherText"]) {
       return selectedEntity["report_eligibilityGroup-otherText"];
     }
     return selectedEntity.report_eligibilityGroup[0].value;

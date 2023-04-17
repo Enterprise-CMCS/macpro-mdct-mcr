@@ -19,7 +19,7 @@ const overlayProps = {
   entityType: "program" as EntityType,
   verbiage: {},
   form: formJSON,
-  selectedEntity: { id: "foo" },
+  selectedEntity: mockMlrReportContext.report.fieldData.program[0],
   closeEntityDetailsOverlay: mockClose,
   setSidebarHidden: mockSidebarHidden,
 };

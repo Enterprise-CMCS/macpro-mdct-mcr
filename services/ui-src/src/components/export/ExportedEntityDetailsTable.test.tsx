@@ -11,7 +11,7 @@ const exportedEntityDetailsTableComponent = () => (
   <ReportContext.Provider value={mockMlrReportContext}>
     <ExportedEntityDetailsTable
       fields={mockModalOverlayReportPageWithOverlayJson.overlayForm.fields}
-      entity={mockMlrReportContext.report.fieldData.program[1]}
+      entity={mockMlrReportContext.report.fieldData.program[0]}
       data-testid="exportedEntityDetailsTable"
     ></ExportedEntityDetailsTable>
   </ReportContext.Provider>

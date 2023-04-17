@@ -88,11 +88,14 @@ export const renderFieldTableBody = (
     const entity = report?.fieldData[entityType].find(
       (e: EntityShape) => e.id === entityId
     );
+
     // Handle rendering nested children
     if (isFieldElement(formField) && formField.props?.choices) {
       formField.props.choices.forEach((choice: FieldChoice) => {
         // If choice has been selected
         if (
+          entity &&
+          entity[formField.id] &&
           Array.isArray(entity[formField.id]) &&
           entity[formField.id][0].key.endsWith(choice.id)
         ) {

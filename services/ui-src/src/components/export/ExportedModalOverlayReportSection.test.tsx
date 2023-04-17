@@ -4,7 +4,6 @@ import { axe } from "jest-axe";
 import { ModalOverlayReportPageShape, ReportType } from "types";
 import {
   mockMlrReportContext,
-  mockMlrReportFieldData,
   mockModalOverlayReportPageJson,
 } from "utils/testing/setupJest";
 import {
@@ -16,16 +15,9 @@ import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 
 const mockReportContext = mockMlrReportContext;
 const mockReportContextOther = Object.assign({}, mockReportContext);
+
 const exportedModalOverlayReportSectionComponent = (
   <ReportContext.Provider value={mockReportContext}>
-    <ExportedModalOverlayReportSection
-      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
-    />
-  </ReportContext.Provider>
-);
-
-const exportedModalOverlayReportSectionComponentOther = (
-  <ReportContext.Provider value={mockReportContextOther}>
     <ExportedModalOverlayReportSection
       section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
     />
@@ -61,7 +53,7 @@ const mockMlrProgram = {
     },
   ],
   "report_eligibilityGroup-otherText": "",
-  "report_reportingPeriodDiscrepancy-otherText": "",
+  report_reportingPeriodDiscrepancyExplanation: "",
   report_inurredClaims: "1",
   report_healthCareQualityActivities: "1",
   report_mlrNumerator: "1",
@@ -102,9 +94,9 @@ const mockMlrProgramOther = {
       value: "No",
     },
   ],
-  report_miscellaneousNotes: "Notes",
+  report_miscellaneousNotes: "Notes!!!",
   "report_eligibilityGroup-otherText": "Eligibility group explanation",
-  "report_reportingPeriodDiscrepancy-otherText":
+  report_reportingPeriodDiscrepancyExplanation:
     "My reporting period discrepancy explanation",
   report_inurredClaims: "1",
   report_healthCareQualityActivities: "1",
@@ -121,6 +113,14 @@ const mockMlrProgramOther = {
   ],
 };
 
+const exportedModalOverlayReportSectionComponentOther = (
+  <ReportContext.Provider value={mockReportContextOther}>
+    <ExportedModalOverlayReportSection
+      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
+    />
+  </ReportContext.Provider>
+);
+
 describe("Test ExportedModalOverlayReportSection", () => {
   test("ExportedModalOverlayReportSection renders", () => {
     const { getByTestId } = render(exportedModalOverlayReportSectionComponent);
@@ -130,6 +130,9 @@ describe("Test ExportedModalOverlayReportSection", () => {
 });
 
 describe("Test renderModalOverlayTableBody", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("Should render data correctly", async () => {
     mockReportContext.report.fieldData.program = [mockMlrProgram];
     const { container, findByAltText, findByText } = render(
@@ -186,6 +189,7 @@ describe("Test renderModalOverlayTableBody", () => {
 
   it('Should render "other" explanations if they are filled.', async () => {
     mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
+
     const { findByText } = render(
       exportedModalOverlayReportSectionComponentOther
     );
@@ -201,7 +205,7 @@ describe("Test renderModalOverlayTableBody", () => {
 
     expect(
       await findByText(
-        mockMlrProgramOther["report_reportingPeriodDiscrepancy-otherText"],
+        mockMlrProgramOther["report_reportingPeriodDiscrepancyExplanation"],
         {
           exact: false,
         }
@@ -219,13 +223,9 @@ describe("Test renderModalOverlayTableBody", () => {
   });
 
   it("Should throw an error using an unsupported report", async () => {
-    expect(() =>
-      renderModalOverlayTableBody(
-        {},
-        ReportType.MCPAR,
-        mockMlrReportFieldData.program
-      )
-    ).toThrow(Error);
+    expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
+      Error
+    );
   });
 });
 

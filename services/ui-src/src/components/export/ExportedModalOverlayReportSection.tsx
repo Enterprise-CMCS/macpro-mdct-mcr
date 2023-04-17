@@ -7,10 +7,10 @@ import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
-import { AnyObject } from "yup/lib/types";
 import { assertExhaustive } from "utils/other/typing";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
+import { getEntityDetailsMLR } from "utils";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,
@@ -41,7 +41,6 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
       >
         {report?.fieldData[entityType] &&
           renderModalOverlayTableBody(
-            verbiage,
             report?.reportType as ReportType,
             report?.fieldData[entityType]
           )}
@@ -65,22 +64,14 @@ export function renderStatusIcon(status: boolean) {
   return <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />;
 }
 export function renderModalOverlayTableBody(
-  verbiage: AnyObject,
   reportType: ReportType,
   entities: EntityShape[]
 ) {
   switch (reportType) {
     case ReportType.MLR:
       return entities.map((entity, idx) => {
-        const { report_programName } = entity;
-
-        const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-        const eligibilityGroup = () => {
-          if (entity["report_eligibilityGroup-otherText"]) {
-            return entity["report_eligibilityGroup-otherText"];
-          }
-          return entity.report_eligibilityGroup[0].value;
-        };
+        const { report_programName, eligibilityGroup, reportingPeriod } =
+          getEntityDetailsMLR(entity);
         return (
           <Tr key={idx}>
             <Td sx={sx.statusIcon}>{renderStatusIcon(false)}</Td>
@@ -111,7 +102,9 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text>
-                {entity.miscellaneousNotes ? entity.miscellaneousNotes : "N/A"}
+                {entity.report_miscellaneousNotes
+                  ? entity.report_miscellaneousNotes
+                  : "N/A"}
               </Text>
             </Td>
           </Tr>

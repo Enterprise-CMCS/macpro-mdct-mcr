@@ -39,7 +39,6 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     ? twoColumnHeaderItems
     : threeColumnHeaderItems;
 
-  // The hint text is hidden for MLR page 1 (Point of Contact)
   const reportType = report?.reportType as ReportType;
   const hideHintText = reportType === ReportType.MLR;
 

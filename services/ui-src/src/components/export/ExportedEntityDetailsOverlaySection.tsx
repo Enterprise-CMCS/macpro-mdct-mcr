@@ -16,6 +16,7 @@ import { Box, Heading } from "@chakra-ui/react";
 import { assertExhaustive } from "utils/other/typing";
 import { ExportedEntityDetailsTable } from "./ExportedEntityDetailsTable";
 import uuid from "react-uuid";
+import { getEntityDetailsMLR } from "utils";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,
@@ -99,15 +100,12 @@ export function getEntityTableComponents(
   formSections: (FormField | FormLayoutElement)[][]
 ) {
   return entities.map((entity, idx) => {
-    const { report_programName, report_planName } = entity;
-
-    const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-    const eligibilityGroup = () => {
-      if (entity["report_eligibilityGroup-otherText"]) {
-        return entity["report_eligibilityGroup-otherText"];
-      }
-      return entity.report_eligibilityGroup[0].value;
-    };
+    const {
+      report_programName,
+      eligibilityGroup,
+      reportingPeriod,
+      report_planName,
+    } = getEntityDetailsMLR(entity);
 
     const programInfo = [
       report_programName,
