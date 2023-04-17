@@ -19,6 +19,7 @@ import {
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -101,24 +102,37 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    await act(async () => {
-      await render(dashboardViewWithReports);
-    });
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("Check that MCPAR Dashboard view renders", () => {
+  test("Check that MCPAR Dashboard view renders", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
     expect(screen.getByTestId("desktop-table")).toBeVisible();
     expect(
       screen.queryByText(mcparVerbiage.body.empty)
     ).not.toBeInTheDocument();
+    expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
+  });
+
+  test("Check that MLR Dashboard view renders", async () => {
+    await act(async () => {
+      await render(mlrDashboardViewWithReports);
+    });
+    expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
+    expect(screen.getByTestId("desktop-table")).toBeVisible();
+    expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 
   test("Clicking 'Enter' button on a report row fetches the field data, then navigates to report", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
     const enterReportButton = screen.getAllByText("Enter")[0];
     expect(enterReportButton).toBeVisible();
@@ -129,6 +143,9 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
     expect(addReportButton).toBeVisible();
     await userEvent.click(addReportButton);
@@ -136,6 +153,9 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Edit Report' icon opens the AddEditProgramModal", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     const addReportButton = screen.getAllByAltText("Edit Report")[0];
     expect(addReportButton).toBeVisible();
     await userEvent.click(addReportButton);
