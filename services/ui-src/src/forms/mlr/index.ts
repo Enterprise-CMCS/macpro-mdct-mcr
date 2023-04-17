@@ -18,6 +18,12 @@ export const mlrReportJson = {
   validationJson: compileValidationJsonFromRoutes(mlrReportRoutesFlat),
 };
 
-export const nonFormPages = ["/mlr/get-started"];
-export const isMlrReportFormPage = (pathname: string): boolean =>
-  pathname.includes("/mlr/") && !nonFormPages.includes(pathname);
+export const isMlrReportFormPage = (pathname: string): boolean => {
+  let i = 0;
+  for (i; i < mlrReportRoutesFlat.length; i++) {
+    if (mlrReportRoutesFlat[i].path === pathname) {
+      return true;
+    }
+  }
+  return false;
+};

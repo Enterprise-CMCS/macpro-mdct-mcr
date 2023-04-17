@@ -18,6 +18,12 @@ export const mcparReportJson = {
   validationJson: compileValidationJsonFromRoutes(mcparReportRoutesFlat),
 };
 
-export const nonFormPages = ["/mcpar/get-started"];
-export const isMcparReportFormPage = (pathname: string): boolean =>
-  pathname.includes("/mcpar/") && !nonFormPages.includes(pathname);
+export const isMcparReportFormPage = (pathname: string): boolean => {
+  let i = 0;
+  for (i; i < mcparReportRoutesFlat.length; i++) {
+    if (mcparReportRoutesFlat[i].path === pathname) {
+      return true;
+    }
+  }
+  return false;
+};
