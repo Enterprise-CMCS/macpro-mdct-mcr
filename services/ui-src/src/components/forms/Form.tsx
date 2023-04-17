@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -18,7 +18,16 @@ import {
   sortFormErrors,
   useUser,
 } from "utils";
-import { AnyObject, FormJson, FormField } from "types";
+import {
+  AnyObject,
+  FormJson,
+  FormField,
+  isFieldElement,
+  FormLayoutElement,
+  ReportStatus,
+  ReportType,
+} from "types";
+import { ReportContext } from "components/reports/ReportProvider";
 
 export const Form = ({
   id,
@@ -35,11 +44,17 @@ export const Form = ({
   // determine if fields should be disabled (based on admin roles )
   const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
     useUser().user ?? {};
+  const { report } = useContext(ReportContext);
   const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
-  const fieldInputDisabled = isAdminTypeUser && formJson.adminDisabled;
+  const fieldInputDisabled =
+    (isAdminTypeUser && formJson.adminDisabled) ||
+    (report?.status === ReportStatus.SUBMITTED &&
+      report?.reportType === ReportType.MLR);
 
   // create validation schema
-  const formValidationJson = compileValidationJsonFromFields(formJson.fields);
+  const formValidationJson = compileValidationJsonFromFields(
+    formJson.fields.filter(isFieldElement)
+  );
   const formValidationSchema = mapValidationTypesToSchema(formValidationJson);
   const formResolverSchema = yupSchema(formValidationSchema || {});
   mapValidationTypesToSchema;
@@ -66,7 +81,7 @@ export const Form = ({
   };
 
   // hydrate and create form fields using formFieldFactory
-  const renderFormFields = (fields: FormField[]) => {
+  const renderFormFields = (fields: (FormField | FormLayoutElement)[]) => {
     const fieldsToRender = hydrateFormFields(fields, formData);
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,
@@ -105,6 +120,11 @@ const sx = {
   ".ds-c-field, .ds-c-label": {
     maxWidth: "32rem",
   },
+
+  ".ds-c-field": {
+    margin: "0.5rem 0 0.25rem",
+  },
+
   // disabled field
   ".ds-c-field[disabled]": {
     color: "palette.gray",
@@ -118,6 +138,14 @@ const sx = {
     fontSize: "sm",
     ul: {
       paddingLeft: "2rem",
+    },
+    ol: {
+      margin: "0.25rem 0.5rem",
+      padding: "0.5rem",
+    },
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
     },
   },
   // nested child fields

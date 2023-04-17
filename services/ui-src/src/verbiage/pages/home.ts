@@ -51,7 +51,7 @@ export default {
       downloadText: "Download MLR Template",
       link: {
         text: "Enter MLR online",
-        route: "mlr/get-started",
+        route: "mlr/",
       },
       accordion: {
         buttonLabel: "When is the MLR due?",

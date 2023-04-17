@@ -137,6 +137,10 @@ export const createReport = handler(async (event, _context) => {
 
   return {
     status: StatusCodes.CREATED,
-    body: { ...reportMetadataParams.Item },
+    body: {
+      ...reportMetadataParams.Item,
+      fieldData: validatedFieldData,
+      formTemplate,
+    },
   };
 });

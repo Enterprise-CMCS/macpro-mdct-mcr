@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "./UserProvider";
-import { UserContextShape } from "types";
+import { UserContextShape } from "types/users";
 
 export const useUser = (): UserContextShape => {
   const context = useContext(UserContext);

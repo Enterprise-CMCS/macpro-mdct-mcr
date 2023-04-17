@@ -8,18 +8,21 @@ import { ReportContext } from "components";
 import {
   autosaveFieldData,
   formFieldFactory,
+  getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
 } from "utils";
 import {
   AnyObject,
+  AutosaveField,
   Choice,
   CustomHtmlElement,
   FieldChoice,
   FormField,
   InputChangeEvent,
 } from "types";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const ChoiceListField = ({
   name,
@@ -31,6 +34,7 @@ export const ChoiceListField = ({
   autosave,
   sxOverride,
   styleAsOptional,
+  clear,
   ...props
 }: Props) => {
   const defaultValue: Choice[] = [];
@@ -39,15 +43,25 @@ export const ChoiceListField = ({
     useState<Choice[]>(defaultValue);
 
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state } = useUser().user ?? {};
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
+  const { full_name, state, userIsAdmin } = useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
-  form.register(name);
+  const fieldIsRegistered = name in form.getValues();
 
-  const shouldDisableChildFields = !!props?.disabled;
+  const shouldDisableChildFields = userIsAdmin && !!props?.disabled;
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
+
+  useEffect(() => {
+    if (!fieldIsRegistered) {
+      form.register(name);
+    } else {
+      form.trigger(name);
+    }
+  }, []);
 
   useEffect(() => {
     // if form state has value for field, set as display value
@@ -58,9 +72,23 @@ export const ChoiceListField = ({
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
-      setDisplayValue(hydrationValue);
-      setLastDatabaseValue(hydrationValue);
-      form.setValue(name, hydrationValue);
+      /*
+       * Clear is sent down when a choicelist is a child of another choicelist and that parent (Or its
+       * Parents and so forth) had its choice deselected or changed. When that happens the onChangeHandler
+       * calls clearUncheckedNestedFields and will clear the value of any children underneath it.
+       * However, the database won't know things are updated until the user has clicked off that parent
+       * and blurred it so instead we can use this clear value so that the hydration value doesn't overwrite
+       * what a user is actively doing.
+       */
+      if (clear) {
+        clear = false;
+        setDisplayValue(defaultValue);
+        form.setValue(name, defaultValue);
+      } else {
+        setDisplayValue(hydrationValue);
+        setLastDatabaseValue(hydrationValue);
+        form.setValue(name, hydrationValue);
+      }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
@@ -95,14 +123,17 @@ export const ChoiceListField = ({
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
-                  form.setValue(child.id, []);
                 });
+                child.props = { ...child.props, clear: true };
+                form.setValue(child.id, []);
+                form.unregister(child.id);
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
             default:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, "");
+              form.unregister(child.id);
               break;
           }
         });
@@ -164,9 +195,18 @@ export const ChoiceListField = ({
           !document.activeElement?.id.includes("-otherText")
         )
           return; // Short circuit if still clicking on elements in this choice list
-        let fields = [
-          { name, type, value: displayValue, hydrationValue, defaultValue },
-          ...getNestedChildFieldsOfUncheckedParent(choices, lastDatabaseValue),
+
+        const fields = getAutosaveFields({
+          name,
+          type,
+          value: displayValue,
+          defaultValue,
+          hydrationValue,
+        });
+
+        const combinedFields = [
+          ...fields,
+          ...getNestedChildFields(choices, lastDatabaseValue),
         ];
         const reportArgs = {
           id: report?.id,
@@ -176,9 +216,15 @@ export const ChoiceListField = ({
         const user = { userName: full_name, state };
         await autosaveFieldData({
           form,
-          fields,
+          fields: combinedFields,
           report: reportArgs,
           user,
+          entityContext: {
+            selectedEntity,
+            entityType,
+            updateEntities,
+            entities,
+          },
         });
       }, timeInMs);
     }
@@ -223,6 +269,7 @@ interface Props {
   autosave?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 
@@ -233,10 +280,10 @@ const sx = {
   },
 };
 
-export const getNestedChildFieldsOfUncheckedParent = (
+export const getNestedChildFields = (
   choices: FieldChoice[],
   lastDatabaseValue: Choice[]
-) => {
+): AutosaveField[] => {
   // set up nested field compilation
   const nestedFields: any = [];
   const compileNestedFields = (fields: FormField[]) => {
@@ -245,12 +292,15 @@ export const getNestedChildFieldsOfUncheckedParent = (
       const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
         ? []
         : "";
-      const fieldInfo = {
+
+      const fieldInfo = getAutosaveFields({
         name: field.id,
         type: field.type,
         value: fieldDefaultValue,
         overrideCheck: true,
-      };
+        defaultValue: undefined,
+        hydrationValue: undefined,
+      })[0];
       // add to nested fields to be autosaved
       nestedFields.push(fieldInfo);
       // recurse through additional nested children as needed
@@ -266,11 +316,7 @@ export const getNestedChildFieldsOfUncheckedParent = (
     // if choice is not selected and there are children
     const isParentChoiceChecked = (id: string) =>
       lastDatabaseValue?.some((autosave) => autosave.key === id);
-    if (
-      !choice.checked &&
-      choice.children &&
-      isParentChoiceChecked(choice.id)
-    ) {
+    if (choice.children && isParentChoiceChecked(choice.id)) {
       compileNestedFields(choice.children);
     }
   });

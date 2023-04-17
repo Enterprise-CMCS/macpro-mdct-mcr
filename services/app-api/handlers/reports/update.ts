@@ -16,6 +16,10 @@ import {
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
+import {
+  calculateCompletionStatus,
+  isComplete,
+} from "../../utils/validation/completionStatus";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -31,6 +35,43 @@ export const updateReport = handler(async (event, context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.MISSING_DATA,
+    };
+  }
+
+  // Blacklisted keys
+  const metadataBlacklist = [
+    "submittedBy",
+    "submittedOnDate",
+    "locked",
+    "archive",
+  ];
+  const fieldDataBlacklist = [
+    "submitterName",
+    "submitterEmailAddress",
+    "reportSubmissionDate",
+  ];
+
+  try {
+    const eventBody = JSON.parse(event.body);
+    if (
+      (eventBody.metadata &&
+        Object.keys(eventBody.metadata).some((_) =>
+          metadataBlacklist.includes(_)
+        )) ||
+      (eventBody.fieldData &&
+        Object.keys(eventBody.fieldData).some((_) =>
+          fieldDataBlacklist.includes(_)
+        ))
+    ) {
+      return {
+        status: StatusCodes.BAD_REQUEST,
+        body: error.INVALID_DATA,
+      };
+    }
+  } catch (err) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.INVALID_DATA,
     };
   }
 
@@ -56,7 +97,7 @@ export const updateReport = handler(async (event, context) => {
   // If current report exists, get formTemplateId and fieldDataId
   const currentReport = JSON.parse(fetchReportRequest.body);
 
-  if (currentReport.archived) {
+  if (currentReport.archived || currentReport.locked) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
@@ -144,9 +185,15 @@ export const updateReport = handler(async (event, context) => {
     };
   }
 
-  // Validate report metadata
+  const completionStatus = await calculateCompletionStatus(
+    fieldData,
+    formTemplate
+  );
+
+  // validate report metadata
   const validatedMetadata = await validateData(metadataValidationSchema, {
     ...unvalidatedMetadata,
+    completionStatus,
   });
 
   // If metadata fails validation, return 400
@@ -170,6 +217,7 @@ export const updateReport = handler(async (event, context) => {
     Item: {
       ...currentReport,
       ...validatedMetadata,
+      isComplete: isComplete(completionStatus),
       lastAltered: Date.now(),
     },
   };

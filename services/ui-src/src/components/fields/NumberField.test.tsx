@@ -5,7 +5,7 @@ import { axe } from "jest-axe";
 import { useFormContext } from "react-hook-form";
 import { NumberField, ReportContext } from "components";
 import { useUser } from "utils";
-import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
+import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -24,7 +24,16 @@ jest.mock("react-hook-form", () => ({
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -59,7 +68,7 @@ const ratioMaskedNumberFieldComponent = (
 );
 
 const numberFieldAutosavingComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <NumberField
       name="testNumberField"
       label="test-label"
@@ -79,6 +88,7 @@ describe("Test Maskless NumberField", () => {
   });
 
   test("NumberField is visible", () => {
+    mockGetValues(undefined);
     const result = render(numberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -87,6 +97,7 @@ describe("Test Maskless NumberField", () => {
   });
 
   test("onChangeHandler updates unmasked field value", async () => {
+    mockGetValues(undefined);
     const result = render(numberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -96,9 +107,22 @@ describe("Test Maskless NumberField", () => {
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("123");
   });
+
+  test("NumberField triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("testNumberField", "");
+    const result = render(numberFieldComponent);
+    const numberFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testNumberField']"
+    )!;
+    expect(numberFieldInput).toBeVisible();
+    expect(mockTrigger).toBeCalled();
+  });
 });
 
 describe("Test Masked NumberField", () => {
+  beforeEach(() => {
+    mockGetValues(undefined);
+  });
   test("onChangeHandler updates comma masked field value", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(commaMaskedNumberFieldComponent);
@@ -288,12 +312,12 @@ describe("Test NumberField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "1234");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -314,12 +338,12 @@ describe("Test NumberField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "    ");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -339,12 +363,13 @@ describe("Test NumberField component autosaves", () => {
     expect(textField).toBeVisible();
     await userEvent.type(textField, "test value");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 
 describe("Test NumberField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockGetValues(undefined);
     const { container } = render(numberFieldComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

@@ -7,11 +7,13 @@ import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
+  getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
 } from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const TextField = ({
   name,
@@ -28,10 +30,20 @@ export const TextField = ({
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
   const { full_name, state } = useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
+  const { entities, entityType, selectedEntity, updateEntities } =
+    useContext(EntityContext);
 
   // get form context and register field
   const form = useFormContext();
-  form.register(name);
+  const fieldIsRegistered = name in form.getValues();
+
+  useEffect(() => {
+    if (!fieldIsRegistered) {
+      form.register(name);
+    } else {
+      form.trigger(name);
+    }
+  }, []);
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate || defaultValue;
@@ -49,7 +61,7 @@ export const TextField = ({
         form.setValue(name, defaultValue);
       } else {
         setDisplayValue(hydrationValue);
-        form.setValue(name, hydrationValue);
+        form.setValue(name, hydrationValue, { shouldValidate: true });
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -68,9 +80,13 @@ export const TextField = ({
     if (!value.trim()) form.trigger(name);
     // submit field data to database
     if (autosave) {
-      const fields = [
-        { name, type: "text", value, hydrationValue, defaultValue },
-      ];
+      const fields = getAutosaveFields({
+        name,
+        type: "text",
+        value,
+        defaultValue,
+        hydrationValue,
+      });
       const reportArgs = {
         id: report?.id,
         reportType: report?.reportType,
@@ -82,6 +98,12 @@ export const TextField = ({
         fields,
         report: reportArgs,
         user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
       });
     }
   };
@@ -122,5 +144,6 @@ interface Props {
   nested?: boolean;
   autosave?: boolean;
   styleAsOptional?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }

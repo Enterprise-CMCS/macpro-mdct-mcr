@@ -3,15 +3,16 @@ import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
 import { ChoiceListField, ReportContext } from "components";
-import { mockReportContext } from "utils/testing/setupJest";
+import { mockMcparReportContext } from "utils/testing/setupJest";
 import { Choice, ReportStatus } from "types";
-import { getNestedChildFieldsOfUncheckedParent } from "./ChoiceListField";
+import { getNestedChildFields } from "./ChoiceListField";
 
 //
 const mockTrigger = jest.fn().mockReturnValue(true);
 const mockSetValue = jest.fn();
 const mockRhfMethods = {
   register: () => {},
+  unregister: () => {},
   setValue: mockSetValue,
   getValues: jest.fn(),
   trigger: mockTrigger,
@@ -22,10 +23,20 @@ const mockUseFormContext = useFormContext as unknown as jest.Mock<
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => mockRhfMethods),
 }));
+
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 const mockChoices = [
@@ -129,7 +140,7 @@ const mockChoiceWithChild = {
 };
 
 const CheckboxComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ChoiceListField
       choices={mockChoices}
       label="Checkbox example"
@@ -140,7 +151,7 @@ const CheckboxComponent = (
 );
 
 const CheckboxComponentWithNestedChildren = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ChoiceListField
       choices={[...mockChoices, mockChoiceWithChild]}
       label="Radio example"
@@ -151,7 +162,7 @@ const CheckboxComponentWithNestedChildren = (
 );
 
 const RadioComponentWithNestedChildren = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ChoiceListField
       choices={[...mockChoices, mockChoiceWithChild]}
       label="Radio example"
@@ -162,7 +173,7 @@ const RadioComponentWithNestedChildren = (
 );
 
 const RadioComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ChoiceListField
       choices={mockChoices}
       label="Radio example"
@@ -174,15 +185,33 @@ const RadioComponent = (
 
 describe("Test ChoiceListField component rendering", () => {
   it("ChoiceList should render a normal Radiofield that doesn't have children", () => {
+    mockGetValues([]);
     render(RadioComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
   });
 
   it("ChoiceList should render a normal Checkbox that doesn't have children", () => {
+    mockGetValues([]);
     render(CheckboxComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
+  });
+
+  it("ChoiceList should render a normal Radiofield and triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("radioField", []);
+    render(RadioComponent);
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(screen.getByText("Choice 2")).toBeVisible();
+    expect(mockTrigger).toBeCalled();
+  });
+
+  it("ChoiceList should render a normal Checkbox and triggers validation after first render if no value given", () => {
+    mockFieldIsRegistered("checkboxField", []);
+    render(CheckboxComponent);
+    expect(screen.getByText("Choice 1")).toBeVisible();
+    expect(screen.getByText("Choice 2")).toBeVisible();
+    expect(mockTrigger).toBeCalled();
   });
 
   it("RadioField should render nested child fields for choices with children", () => {
@@ -216,7 +245,7 @@ describe("Test ChoiceListField component rendering", () => {
 
 describe("Test Choicelist Hydration", () => {
   const CheckboxHydrationComponent = (
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ChoiceListField
         choices={mockChoices}
         label="Checkbox Hydration Example"
@@ -229,7 +258,7 @@ describe("Test Choicelist Hydration", () => {
   );
 
   const RadioHydrationComponent = (
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ChoiceListField
         choices={mockChoices}
         label="Radio Hydration Example"
@@ -319,7 +348,7 @@ describe("Test Choicelist Hydration", () => {
 
 describe("Test Choicelist Autosaving Methods", () => {
   const CheckboxWithAutosaveEnabledComponent = (
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ChoiceListField
         choices={mockChoices}
         label="Autosave Enabled Checkbox Field"
@@ -371,13 +400,13 @@ describe("Test Choicelist Autosaving Methods", () => {
 
     // Ensure we call autosave with the correct data
     await waitFor(() => {
-      expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
     });
     await waitFor(() =>
-      expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
         {
-          reportType: mockReportContext.report.reportType,
-          id: mockReportContext.report.id,
+          reportType: mockMcparReportContext.report.reportType,
+          id: mockMcparReportContext.report.id,
         },
         {
           metadata: {
@@ -853,10 +882,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
   test("Checking the checkbox choice and the user has never filled the field out the form before, it returns empty", async () => {
     const initialDatabaseValue: Choice[] = [];
     const choices = [{ ...checkboxChoiceWithNoChildren, checked: true }];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -869,10 +895,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     const choices = [checkboxChoiceWithNoChildren];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -880,10 +903,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
   test("Checking the radio choice and the user has never filled the field out the form before, it returns empty", async () => {
     const initialDatabaseValue: Choice[] = [];
     const choices = [{ ...checkboxChoiceWithRadioChild, checked: true }];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -896,10 +916,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     const choices = [checkboxChoiceWithRadioChild];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     const expectedReturn = [
       {
@@ -907,6 +924,8 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
         type: "radio",
         value: [],
         overrideCheck: true,
+        defaultValue: undefined,
+        hydrationValue: undefined,
       },
     ];
 
@@ -916,10 +935,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
   test("Checking the choice and the user has never filled the field out the form before, it returns empty", async () => {
     const initialDatabaseValue: Choice[] = [];
     const choices = [{ ...checkboxChoiceWithTextFieldChild, checked: true }];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     expect(returnedValue).toStrictEqual([]);
   });
@@ -932,10 +948,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     const choices = [checkboxChoiceWithTextFieldChild];
-    const returnedValue = getNestedChildFieldsOfUncheckedParent(
-      choices,
-      initialDatabaseValue
-    );
+    const returnedValue = getNestedChildFields(choices, initialDatabaseValue);
 
     const expectedReturn = [
       {
@@ -943,6 +956,8 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
         type: "textarea",
         value: "",
         overrideCheck: true,
+        defaultValue: undefined,
+        hydrationValue: undefined,
       },
     ];
     expect(returnedValue).toStrictEqual(expectedReturn);
@@ -952,6 +967,7 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
 describe("Test ChoiceList accessibility", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetValues(undefined);
   });
 
   it("Should not have basic accessibility issues when given CheckboxField", async () => {

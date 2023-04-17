@@ -10,7 +10,7 @@ import {
   mockFormField,
   mockNestedFormField,
   mockReportRoutes,
-  mockReport,
+  mockMcparReport,
   mockStandardReportPageJson,
   mockReportJson,
   mockModalDrawerReportPageJson,
@@ -31,17 +31,17 @@ describe("Test sortReportsOldestToNewest", () => {
   it("Should sort reports by oldest to newest", () => {
     const unsortedReports = [
       {
-        ...mockReport,
+        ...mockMcparReport,
         createdAt: 1662568568589,
         programName: "created-today",
       },
       {
-        ...mockReport,
+        ...mockMcparReport,
         createdAt: 1662568556165,
         programName: "created-yesterday",
       },
       {
-        ...mockReport,
+        ...mockMcparReport,
         createdAt: 1652568576322,
         programName: "created-last-month",
       },
@@ -69,11 +69,13 @@ describe("Test copyAdminDisabledStatusToForms", () => {
       result.routes[1].children![1].modalForm!;
     const testModalDrawerPageDrawerForm =
       result.routes[1].children![1].drawerForm!;
+    const testModalOverlayPageForm = result.routes[1].children![1].modalForm!;
 
     expect(testStandardPageForm!.adminDisabled).toBeTruthy();
     expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
     expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
     expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
+    expect(testModalOverlayPageForm!.adminDisabled).toBeTruthy();
   });
 });
 
@@ -82,9 +84,11 @@ describe("Test compileValidationJsonFromRoutes", () => {
     const result = compileValidationJsonFromRoutes(mockFlattenedReportRoutes);
     expect(result).toEqual({
       accessMeasures: "objectArray",
+      program: "objectArray",
       "mock-text-field": "text",
       "mock-drawer-text-field": "text",
       "mock-modal-text-field": "text",
+      "mock-modal-overlay-text-field": "text",
     });
   });
 });

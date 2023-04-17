@@ -7,8 +7,8 @@ import { AddEditEntityModal, ReportContext } from "components";
 import {
   mockModalDrawerReportPageVerbiage,
   mockModalForm,
-  mockReport,
-  mockReportContext,
+  mockMcparReport,
+  mockMcparReportContext,
   mockReportKeys,
 } from "utils/testing/setupJest";
 
@@ -23,10 +23,10 @@ const mockEntity = {
 };
 
 const mockedReportContext = {
-  ...mockReportContext,
+  ...mockMcparReportContext,
   updateReport: mockUpdateReport,
   report: {
-    ...mockReport,
+    ...mockMcparReport,
     fieldData: {
       accessMeasures: [mockEntity],
     },

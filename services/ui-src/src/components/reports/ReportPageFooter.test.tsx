@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { ReportContext, ReportPageFooter } from "components";
 import {
-  mockReportContext,
+  mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -26,7 +26,7 @@ jest.mock("utils", () => ({
 
 const reportPageComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <ReportPageFooter data-testid="report-page-footer" />
     </ReportContext.Provider>
   </RouterWrappedComponent>

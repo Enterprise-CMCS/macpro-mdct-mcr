@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
-  mockReportContext,
+  mockMcparReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { axe } from "jest-axe";
@@ -14,8 +14,16 @@ jest.mock("utils/reports/routing", () => ({
 
 const sidebarComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContext}>
-      <Sidebar />
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <Sidebar isHidden={false} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const sidebarComponentHidden = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <Sidebar isHidden={true} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -53,6 +61,13 @@ describe("Test Sidebar", () => {
     // click parent section closed. now child is not visible.
     await userEvent.click(parentSection);
     await expect(childSection).not.toBeVisible();
+  });
+});
+
+describe("Test Sidebar isHidden property", () => {
+  test("If isHidden is true, Sidebar is invisible", () => {
+    render(sidebarComponentHidden);
+    expect(screen.getByTestId("sidebar-nav")).not.toBeVisible();
   });
 });
 

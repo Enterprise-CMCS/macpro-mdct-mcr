@@ -9,35 +9,35 @@ import {
   mockDynamicReportPageJson,
   mockNestedReportPageJson,
   mockStandardReportPageJson,
-  mockReportContext,
+  mockMcparReportContext,
 } from "utils/testing/setupJest";
 
 const exportedStandardReportWrapperComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ExportedReportWrapper section={mockStandardReportPageJson} />
   </ReportContext.Provider>
 );
 
 const exportedDynamicReportWrapperComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ExportedReportWrapper section={mockDynamicReportPageJson} />
   </ReportContext.Provider>
 );
 
 const exportedDrawerReportWrapperComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ExportedReportWrapper section={mockDrawerReportPageJson} />
   </ReportContext.Provider>
 );
 
 const exportedNestedReportWrapperComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ExportedReportWrapper section={mockNestedReportPageJson} />
   </ReportContext.Provider>
 );
 
 const exportedModalDrawerReportWrapperComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ExportedReportWrapper section={mockModalDrawerReportPageJson} />
   </ReportContext.Provider>
 );

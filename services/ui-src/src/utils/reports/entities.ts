@@ -70,7 +70,9 @@ export const getFormattedEntityData = (
         noncomplianceInstances: entity?.sanction_noncomplianceInstances,
         dollarAmount: entity?.sanction_dollarAmount,
         assessmentDate: entity?.sanction_assessmentDate,
-        remediationDate: entity?.sanction_remediationDate,
+        remediationDate: entity?.sanction_remediationDate
+          ? entity?.sanction_remediationDate
+          : getRadioValue(entity, "sanction_remediationCompleted"),
         correctiveActionPlan: getRadioValue(
           entity,
           "sanction_correctiveActionPlan"

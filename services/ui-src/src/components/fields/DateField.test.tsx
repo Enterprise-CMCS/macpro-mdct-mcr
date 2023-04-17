@@ -4,7 +4,7 @@ import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
 import { DateField, ReportContext } from "components";
-import { mockReportContext, mockStateUser } from "utils/testing/setupJest";
+import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
 import { useUser } from "utils";
 import { ReportStatus } from "types";
 
@@ -25,7 +25,16 @@ jest.mock("react-hook-form", () => ({
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+  }));
+
+const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
+  mockUseFormContext.mockImplementation((): any => ({
+    ...mockRhfMethods,
+    getValues: jest
+      .fn()
+      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
+      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -36,7 +45,7 @@ const dateFieldComponent = (
 );
 
 const dateFieldAutosavingComponent = (
-  <ReportContext.Provider value={mockReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <DateField name="testDateField" label="test-date-field" autosave />
   </ReportContext.Provider>
 );
@@ -44,6 +53,7 @@ const dateFieldAutosavingComponent = (
 describe("Test DateField basic functionality", () => {
   test("DateField is visible", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const result = render(dateFieldComponent);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateField']"
@@ -51,8 +61,21 @@ describe("Test DateField basic functionality", () => {
     expect(dateFieldInput).toBeVisible();
   });
 
+  test("DateField triggers validation after first render if no value given", () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockFieldIsRegistered("testDateField", "");
+    const result = render(dateFieldComponent);
+    const dateFieldInput: HTMLInputElement = result.container.querySelector(
+      "[name='testDateField']"
+    )!;
+    expect(dateFieldInput).toBeVisible();
+    expect(mockTrigger).toBeCalled();
+    jest.clearAllMocks();
+  });
+
   test("onChange event fires handler when typing and stays even after blurred", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const result = render(dateFieldComponent);
     const dateFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testDateField']"
@@ -175,12 +198,12 @@ describe("Test DateField autosave functionality", () => {
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(1);
-    expect(mockReportContext.updateReport).toHaveBeenCalledWith(
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
-        reportType: mockReportContext.report.reportType,
+        reportType: mockMcparReportContext.report.reportType,
         state: mockStateUser.user?.state,
-        id: mockReportContext.report.id,
+        id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
@@ -200,12 +223,14 @@ describe("Test DateField autosave functionality", () => {
     expect(dateField).toBeVisible();
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
-    expect(mockReportContext.updateReport).toHaveBeenCalledTimes(0);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 
 describe("Test DateField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
     const { container } = render(dateFieldComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
