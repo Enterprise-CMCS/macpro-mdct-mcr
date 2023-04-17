@@ -1,7 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-import { Form } from "components";
+import { Form, ReportContext } from "components";
+import {
+  mockMcparReportContext,
+  mockMlrReportContext,
+} from "utils/testing/setupJest";
+import { ReportStatus } from "types";
 
 const mockOnSubmit = jest.fn();
 
@@ -62,6 +67,44 @@ const formComponentJustHeader = (
   </>
 );
 
+const mlrFormSubmitted = (
+  <ReportContext.Provider
+    value={{
+      ...mockMlrReportContext,
+      report: {
+        ...mockMlrReportContext.report,
+        status: ReportStatus.SUBMITTED,
+      },
+    }}
+  >
+    <Form
+      id={mockFormJson.id}
+      formJson={mockFormJson}
+      onSubmit={mockOnSubmit}
+      data-testid="test-form"
+    />
+  </ReportContext.Provider>
+);
+
+const mcparFormSubmitted = (
+  <ReportContext.Provider
+    value={{
+      ...mockMcparReportContext,
+      report: {
+        ...mockMcparReportContext.report,
+        status: ReportStatus.SUBMITTED,
+      },
+    }}
+  >
+    <Form
+      id={mockFormJson.id}
+      formJson={mockFormJson}
+      onSubmit={mockOnSubmit}
+      data-testid="test-form"
+    />
+  </ReportContext.Provider>
+);
+
 describe("Test Form component", () => {
   test("Form is visible", () => {
     render(formComponent);
@@ -97,6 +140,20 @@ describe("Test Form component", () => {
     const result = render(formComponentJustHeader);
     const testField = result.container.querySelector("[name='testfield']")!;
     expect(testField.hasAttribute("autocomplete")).toBeFalsy();
+  });
+
+  test("MLR forms should be disabled after being submitted", async () => {
+    const { container } = render(mlrFormSubmitted);
+    await container.querySelectorAll("input").forEach((x) => {
+      expect(x).toBeDisabled();
+    });
+  });
+
+  test("MCPAR forms should NOT be disabled after being submitted", async () => {
+    const { container } = render(mcparFormSubmitted);
+    await container.querySelectorAll("input").forEach((x) => {
+      expect(x).not.toBeDisabled();
+    });
   });
 });
 
