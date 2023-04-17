@@ -7,7 +7,6 @@ import {
   FormField,
   FormLayoutElement,
   ModalOverlayReportPageShape,
-  ReportShape,
   ReportType,
 } from "types";
 // verbiage
@@ -47,8 +46,7 @@ export const ExportedEntityDetailsOverlaySection = ({
       {renderEntityDetailTables(
         report?.reportType as ReportType,
         report?.fieldData[entityType],
-        section,
-        report
+        section
       )}
     </Box>
   );
@@ -69,30 +67,22 @@ export interface ExportedEntityDetailsOverlaySectionProps {
 export function getFormSections(
   formFields: (FormField | FormLayoutElement)[]
 ): (FormLayoutElement | FormField)[][] {
-  const formSections: FormField[][] = [];
-  const sectionHeaderIndexes: number[] = [];
+  const formSections: (FormLayoutElement | FormField)[][] = [];
 
-  for (const [index, field] of formFields.entries()) {
+  let currentSection: (FormField | FormLayoutElement)[] = [];
+  for (let field of formFields) {
     if (field.type === "sectionHeader") {
-      sectionHeaderIndexes.push(index);
+      if (currentSection.length > 0) {
+        formSections.push(currentSection);
+      }
+      currentSection = [field];
+    } else {
+      currentSection.push(field);
     }
   }
+  formSections.push(currentSection);
 
-  // Split each section of the form into its own table
-  for (let i = 0; i < sectionHeaderIndexes.length; i++) {
-    const left = sectionHeaderIndexes[i];
-    const right =
-      i + 1 < sectionHeaderIndexes.length
-        ? sectionHeaderIndexes[i + 1]
-        : undefined;
-    formSections.push(formFields.slice(left, right) as FormField[]);
-  }
-
-  if (formSections.length > 0) {
-    return formSections;
-  } else {
-    return [formFields];
-  }
+  return formSections;
 }
 
 /**
@@ -178,13 +168,12 @@ export function getEntityTableComponents(
 export function renderEntityDetailTables(
   reportType: ReportType,
   entities: EntityShape[],
-  section: ModalOverlayReportPageShape,
-  report?: ReportShape
+  section: ModalOverlayReportPageShape
 ) {
   switch (reportType) {
     case ReportType.MLR: {
       const formSections = getFormSections(section.overlayForm?.fields ?? []);
-      return getEntityTableComponents(entities, section, formSections, report);
+      return getEntityTableComponents(entities, section, formSections);
     }
     case ReportType.MCPAR:
     case ReportType.NAAAR:

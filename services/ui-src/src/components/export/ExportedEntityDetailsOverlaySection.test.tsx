@@ -7,7 +7,6 @@ import {
   ReportType,
 } from "types";
 import {
-  mockMlrReport,
   mockMlrReportContext,
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
@@ -119,24 +118,21 @@ describe("renderEntityDetailTables", () => {
       renderEntityDetailTables(
         ReportType.NAAAR,
         [],
-        mockModalOverlayReportPageWithOverlayJson,
-        mockMlrReport
+        mockModalOverlayReportPageWithOverlayJson
       )
     ).toThrow(Error);
     expect(() =>
       renderEntityDetailTables(
         ReportType.MCPAR,
         [],
-        mockModalOverlayReportPageWithOverlayJson,
-        mockMlrReport
+        mockModalOverlayReportPageWithOverlayJson
       )
     ).toThrow(Error);
     expect(() =>
       renderEntityDetailTables(
         "Foo" as ReportType,
         [],
-        mockModalOverlayReportPageWithOverlayJson,
-        mockMlrReport
+        mockModalOverlayReportPageWithOverlayJson
       )
     ).toThrow(Error);
   });

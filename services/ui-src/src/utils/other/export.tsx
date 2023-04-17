@@ -44,7 +44,12 @@ export const renderOverlayEntityDataCell = (
   const entity = entityResponseData.find((ent) => ent.id === entityId);
 
   if (!entity || !entity[formField.id]) {
-    if (formField.validation.toString().includes("Optional")) {
+    const validationType =
+      typeof formField.validation === "object"
+        ? formField.validation.type
+        : formField.validation;
+
+    if (validationType.includes("Optional")) {
       return <Text>{verbiage.missingEntry.noResponse}, optional</Text>;
     } else {
       return (

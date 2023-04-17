@@ -17,6 +17,7 @@ export const ExportedEntityDetailsTableRow = ({
   parentFieldCheckedChoiceIds,
   showHintText = true,
   entityId,
+  optional,
 }: Props) => {
   const { report } = useContext(ReportContext);
   const reportData = report?.fieldData;
@@ -26,6 +27,13 @@ export const ExportedEntityDetailsTableRow = ({
   // guard against double-rendering "otherText" response
   const isOtherTextEntry = formField.id.endsWith("-otherText");
   if (isOtherTextEntry) return null;
+
+  const labelTextWithOptional = (label: string) => {
+    return parseCustomHtml(
+      label + "<span class='optional-text'> (optional)</span>"
+    );
+  };
+
   return (
     <Tr data-testid="exportRow">
       {/* number column/cell */}
@@ -42,7 +50,9 @@ export const ExportedEntityDetailsTableRow = ({
             {formFieldInfo.label && (
               <Text sx={sx.fieldLabel}>
                 {!isDynamicField
-                  ? formFieldInfo.label
+                  ? optional
+                    ? labelTextWithOptional(formFieldInfo.label)
+                    : formFieldInfo.label
                   : formField?.props?.label}
               </Text>
             )}
@@ -77,6 +87,7 @@ export interface Props {
   entityType: string;
   parentFieldCheckedChoiceIds?: string[];
   showHintText?: boolean;
+  optional?: boolean;
 }
 
 const sx = {
@@ -101,6 +112,9 @@ const sx = {
     fontSize: "md",
     fontWeight: "bold",
     marginBottom: "0.5rem",
+    ".optional-text": {
+      fontWeight: "lighter",
+    },
   },
   fieldHint: {
     lineHeight: "lg",
