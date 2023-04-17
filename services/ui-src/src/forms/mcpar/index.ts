@@ -18,12 +18,5 @@ export const mcparReportJson = {
   validationJson: compileValidationJsonFromRoutes(mcparReportRoutesFlat),
 };
 
-export const isMcparReportFormPage = (pathname: string): boolean => {
-  let i = 0;
-  for (i; i < mcparReportRoutesFlat.length; i++) {
-    if (mcparReportRoutesFlat[i].path === pathname) {
-      return true;
-    }
-  }
-  return false;
-};
+export const isMcparReportFormPage = (pathname: string): boolean =>
+  mcparReportRoutesFlat.some((route) => route.path == pathname);

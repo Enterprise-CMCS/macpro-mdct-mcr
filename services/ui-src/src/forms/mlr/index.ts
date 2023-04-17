@@ -18,12 +18,5 @@ export const mlrReportJson = {
   validationJson: compileValidationJsonFromRoutes(mlrReportRoutesFlat),
 };
 
-export const isMlrReportFormPage = (pathname: string): boolean => {
-  let i = 0;
-  for (i; i < mlrReportRoutesFlat.length; i++) {
-    if (mlrReportRoutesFlat[i].path === pathname) {
-      return true;
-    }
-  }
-  return false;
-};
+export const isMlrReportFormPage = (pathname: string): boolean =>
+  mlrReportRoutesFlat.some((route) => route.path == pathname);
