@@ -67,7 +67,7 @@ describe("getEntityTableComponents", () => {
 
   test("it correctly renders display data with other text fields", async () => {
     mockMlrReportContext.report.fieldData.program[0][
-      "eligibilityGroup-otherText"
+      "report_eligibilityGroup-otherText"
     ] = "Other Text";
     const results = getEntityTableComponents(
       mockMlrReportContext.report.fieldData.program,

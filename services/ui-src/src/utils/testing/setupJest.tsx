@@ -635,7 +635,7 @@ export const mockMlrReportFieldData = {
   program: [
     {
       id: "mock-id",
-      programType: [
+      report_programType: [
         {
           key: "option1",
           value: "mock-type1",
@@ -652,47 +652,41 @@ export const mockMlrReportFieldData = {
         },
       ],
       "report_eligibilityGroup-otherText": "",
-      "mock-nested-field": [
-        {
-          key: "option3uuid",
-          value: "option 3",
-        },
-      ],
     },
     {
       id: "123",
-      programName: "Test",
-      programType: [
+      report_programName: "Test",
+      report_programType: [
         {
           key: "programType",
           value: "Behavioral Health Only",
         },
       ],
-      eligibilityGroup: [
+      report_eligibilityGroup: [
         {
           key: "eligibilityGroup",
           value: "Standalone CHIP",
         },
       ],
-      planName: "Test",
-      reportingPeriodStartDate: "11/03/1992",
-      reportingPeriodEndDate: "12/01/1993",
-      reportingPeriodDiscrepancy: [
+      report_planName: "Test",
+      report_reportingPeriodStartDate: "11/03/1992",
+      report_reportingPeriodEndDate: "12/01/1993",
+      report_reportingPeriodDiscrepancy: [
         {
           key: "reportingPeriodDiscrepancy",
           value: "No",
         },
       ],
-      "eligibilityGroup-otherText": "",
-      "reportingPeriodDiscrepancy-otherText": "",
-      inurredClaims: "1",
-      healthCareQualityActivities: "1",
-      mlrNumerator: "1",
-      mlrNumeratorExplanation: "Test",
-      nonClaimsCosts: "1",
-      mlrDenominator: "1",
-      memberMonths: "12",
-      contractIncludesRemittance: [
+      "report_eligibilityGroup-otherText": "",
+      "report_reportingPeriodDiscrepancy-otherText": "",
+      report_inurredClaims: "1",
+      report_healthCareQualityActivities: "1",
+      report_mlrNumerator: "1",
+      report_mlrNumeratorExplanation: "Test",
+      report_nonClaimsCosts: "1",
+      report_mlrDenominator: "1",
+      report_memberMonths: "12",
+      report_contractIncludesRemittance: [
         {
           key: "contractIncludesRemittance",
           value: "No",

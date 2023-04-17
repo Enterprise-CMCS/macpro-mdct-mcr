@@ -38,8 +38,8 @@ const mlrTableHeader = Object.values(
 
 const mockMlrProgram = {
   id: "123",
-  programName: "Test",
-  programType: [
+  report_programName: "Test",
+  report_programType: [
     {
       key: "programType",
       value: "Behavioral Health Only",
@@ -51,26 +51,26 @@ const mockMlrProgram = {
       value: "Standalone CHIP",
     },
   ],
-  planName: "Test",
-  reportingPeriodStartDate: "11/03/1992",
-  reportingPeriodEndDate: "12/01/1993",
-  reportingPeriodDiscrepancy: [
+  report_planName: "Test",
+  report_reportingPeriodStartDate: "11/03/1992",
+  report_reportingPeriodEndDate: "12/01/1993",
+  report_reportingPeriodDiscrepancy: [
     {
       key: "reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
-  "eligibilityGroup-otherText": "",
-  "reportingPeriodDiscrepancy-otherText": "",
-  inurredClaims: "1",
-  healthCareQualityActivities: "1",
-  mlrNumerator: "1",
-  mlrNumeratorExplanation: "Test",
-  nonClaimsCosts: "1",
-  mlrDenominator: "1",
-  memberMonths: "12",
-  miscellaneousNotes: "Notes",
-  contractIncludesRemittance: [
+  "report_eligibilityGroup-otherText": "",
+  "report_reportingPeriodDiscrepancy-otherText": "",
+  report_inurredClaims: "1",
+  report_healthCareQualityActivities: "1",
+  report_mlrNumerator: "1",
+  report_mlrNumeratorExplanation: "Test",
+  report_nonClaimsCosts: "1",
+  report_mlrDenominator: "1",
+  report_memberMonths: "12",
+  report_miscellaneousNotes: "Notes",
+  report_contractIncludesRemittance: [
     {
       key: "contractIncludesRemittance",
       value: "No",
@@ -80,8 +80,8 @@ const mockMlrProgram = {
 
 const mockMlrProgramOther = {
   id: "1",
-  programName: "Test Program",
-  programType: [
+  report_programName: "Test Program",
+  report_programType: [
     {
       key: "programType",
       value: "Behavioral Health Only",
@@ -93,27 +93,27 @@ const mockMlrProgramOther = {
       value: "Standalone CHIP",
     },
   ],
-  planName: "Test MCO Name",
-  reportingPeriodStartDate: "01/01/2021",
-  reportingPeriodEndDate: "01/01/2022",
-  reportingPeriodDiscrepancy: [
+  report_planName: "Test MCO Name",
+  report_reportingPeriodStartDate: "01/01/2021",
+  report_reportingPeriodEndDate: "01/01/2022",
+  report_reportingPeriodDiscrepancy: [
     {
       key: "reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
-  miscellaneousNotes: "Notes",
+  report_miscellaneousNotes: "Notes",
   "report_eligibilityGroup-otherText": "Eligibility group explanation",
-  report_reportingPeriodDiscrepancyExplanation:
+  "report_reportingPeriodDiscrepancy-otherText":
     "My reporting period discrepancy explanation",
-  inurredClaims: "1",
-  healthCareQualityActivities: "1",
-  mlrNumerator: "1",
-  mlrNumeratorExplanation: "Test",
-  nonClaimsCosts: "1",
-  mlrDenominator: "1",
-  memberMonths: "12",
-  contractIncludesRemittance: [
+  report_inurredClaims: "1",
+  report_healthCareQualityActivities: "1",
+  report_mlrNumerator: "1",
+  report_mlrNumeratorExplanation: "Test",
+  report_nonClaimsCosts: "1",
+  report_mlrDenominator: "1",
+  report_memberMonths: "12",
+  report_contractIncludesRemittance: [
     {
       key: "contractIncludesRemittance",
       value: "No",
@@ -155,7 +155,7 @@ describe("Test renderModalOverlayTableBody", () => {
 
     // Correct info column
     expect(
-      await findByText(mockMlrProgram.programName, { exact: false })
+      await findByText(mockMlrProgram.report_programName, { exact: false })
     ).toBeVisible();
     expect(
       await findByText(mockMlrProgram.report_eligibilityGroup[0].value, {
@@ -164,22 +164,24 @@ describe("Test renderModalOverlayTableBody", () => {
     ).toBeVisible();
     expect(
       await findByText(
-        `${mockMlrProgram.reportingPeriodStartDate} to ${mockMlrProgram.reportingPeriodEndDate}`,
+        `${mockMlrProgram.report_reportingPeriodStartDate} to ${mockMlrProgram.report_reportingPeriodEndDate}`,
         { exact: false }
       )
     ).toBeVisible();
     expect(
-      await findByText(mockMlrProgram.planName, { exact: false })
+      await findByText(mockMlrProgram.report_planName, { exact: false })
     ).toBeVisible();
 
     // Correct program type
-    expect(await findByText(mockMlrProgram.programType[0].value)).toBeVisible();
+    expect(
+      await findByText(mockMlrProgram.report_programType[0].value)
+    ).toBeVisible();
 
     // Correct discrepancy
     expect(await findByText(`N/A`)).toBeVisible();
 
     // Correct notes
-    expect(await findByText(mockMlrProgram.miscellaneousNotes));
+    expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
   });
 
   it('Should render "other" explanations if they are filled.', async () => {
@@ -199,7 +201,7 @@ describe("Test renderModalOverlayTableBody", () => {
 
     expect(
       await findByText(
-        mockMlrProgramOther["report_reportingPeriodDiscrepancyExplanation"],
+        mockMlrProgramOther["report_reportingPeriodDiscrepancy-otherText"],
         {
           exact: false,
         }
