@@ -26,6 +26,8 @@ export default {
         "",
       ],
     },
+    empty:
+      "States reporting MLRs for multiple managed care programs have the option to create multiple submissions (e.g., one per program) or submit MLR data for multiple programs in one submission.",
     callToAction: "Add new MLR submission",
   },
 };

@@ -13,9 +13,9 @@ export const EntityRow = ({
   openDeleteEntityModal,
   openEntityDetailsOverlay,
 }: Props) => {
-  const { programName, planName } = entity;
+  const { report_programName, report_planName } = entity;
 
-  const reportingPeriod = `${entity.reportingPeriodStartDate} to ${entity.reportingPeriodEndDate}`;
+  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
     if (entity["report_eligibilityGroup-otherText"]) {
       return entity["report_eligibilityGroup-otherText"];
@@ -24,16 +24,21 @@ export const EntityRow = ({
   };
 
   const programInfo = [
-    programName,
+    report_programName,
     eligibilityGroup(),
     reportingPeriod,
-    planName,
+    report_planName,
   ];
 
   return (
     <Tr sx={sx.content}>
-      <Td sx={sx.statusIcon}>
-        <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />
+      <Td>
+        <Image
+          src={unfinishedIcon}
+          alt="warning icon"
+          boxSize="xl"
+          sx={sx.statusIcon}
+        />
       </Td>
       <Td sx={sx.programInfo}>
         <ul>
@@ -42,7 +47,7 @@ export const EntityRow = ({
           ))}
         </ul>
       </Td>
-      <Td sx={sx.editInfoButton}>
+      <Td>
         {openAddEditEntityModal && (
           <Button
             variant="none"
@@ -92,18 +97,12 @@ const sx = {
   content: {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
-    button: {
-      marginLeft: "1rem",
-    },
     td: {
       borderColor: "palette.gray_light",
     },
   },
   statusIcon: {
-    paddingLeft: "1rem",
-    img: {
-      maxWidth: "fit-content",
-    },
+    maxWidth: "fit-content",
   },
   programInfo: {
     maxWidth: "18.75rem",
@@ -122,10 +121,6 @@ const sx = {
       },
     },
   },
-  editInfoButton: {
-    whiteSpace: "nowrap",
-    paddingLeft: "4.5rem",
-  },
   editButton: {
     fontWeight: "normal",
     textDecoration: "underline",
@@ -136,8 +131,7 @@ const sx = {
     width: "6.5rem",
   },
   deleteButton: {
-    background: "none",
-    paddingRight: "1rem",
+    padding: "0",
     "&:hover": {
       background: "white",
     },
