@@ -36,9 +36,8 @@ jobs:
           jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
           jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
           jira-host: qmacbis.atlassian.net
-          jira-project-key: MDCT # add issues to the 'MC-Review' project
-          jira-epic-key: MDCT-2280 # add issues to the '[Tech Maintenance] Security Hub' epic
-          #jira-custom-fields: '{ "sechubSprint" }' # add issues to the 'Tech Maintenance' sprint
+          jira-project-key: MDCT 
+          jira-epic-key: MDCT-2280 
           jira-ignore-statuses: Done
           aws-region: us-east-1
           aws-severities: CRITICAL, HIGH
