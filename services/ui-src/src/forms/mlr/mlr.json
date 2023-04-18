@@ -847,7 +847,7 @@
                       "id": "state_doesStateRemittanceMlrCalculationAlign",
                       "type": "radio",
                       "validation": {
-                        "type": "radio",
+                        "type": "radioOptional",
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
                       },
@@ -861,7 +861,6 @@
                           },
                           {
                             "id": "hReMcaoqUfknjTM7dhZK3N",
-
                             "label": "No",
                             "children": [
                               {
@@ -975,7 +974,7 @@
                       "validation": {
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-                        "type": "radio"
+                        "type": "radioOptional"
                       },
                       "props": {
                         "label": "4.7 Is the remittance period the same as the MLR reporting period?",
