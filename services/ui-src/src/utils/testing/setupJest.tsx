@@ -655,6 +655,7 @@ export const mockMlrReportFieldData = {
     },
     {
       id: "123",
+      report_adjustedMlrPercentage: "1",
       report_programName: "Test",
       report_programType: [
         {
@@ -685,10 +686,10 @@ export const mockMlrReportFieldData = {
       report_mlrNumeratorExplanation: "Test",
       report_nonClaimsCosts: "1",
       report_mlrDenominator: "1",
-      report_memberMonths: "12",
-      report_contractIncludesRemittance: [
+      report_requiredMemberMonths: "12",
+      report_contractIncludesMlrRemittanceRequirement: [
         {
-          key: "contractIncludesRemittance",
+          key: "report_contractIncludesMlrRemittanceRequirement",
           value: "No",
         },
       ],

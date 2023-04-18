@@ -60,14 +60,15 @@ const mockMlrProgram = {
   report_mlrNumeratorExplanation: "Test",
   report_nonClaimsCosts: "1",
   report_mlrDenominator: "1",
-  report_memberMonths: "12",
+  report_requiredMemberMonths: "12",
   report_miscellaneousNotes: "Notes",
-  report_contractIncludesRemittance: [
+  report_contractIncludesMlrRemittanceRequirement: [
     {
       key: "contractIncludesRemittance",
       value: "No",
     },
   ],
+  report_adjustedMlrPercentage: "1",
 };
 
 const mockMlrProgramOther = {
@@ -104,13 +105,14 @@ const mockMlrProgramOther = {
   report_mlrNumeratorExplanation: "Test",
   report_nonClaimsCosts: "1",
   report_mlrDenominator: "1",
-  report_memberMonths: "12",
-  report_contractIncludesRemittance: [
+  report_requiredMemberMonths: "12",
+  report_contractIncludesMlrRemittanceRequirement: [
     {
       key: "contractIncludesRemittance",
       value: "No",
     },
   ],
+  report_adjustedMlrPercentage: "1",
 };
 
 const exportedModalOverlayReportSectionComponentOther = (

@@ -1,24 +1,23 @@
 {
-  "programName": "l",
   "versionControl": [
     {
       "key": "versionControl-KFCd3rfEu3eT4UFskUhDtx",
       "value": "No, this is an initial submission"
     }
   ],
-  "contactName": "ABC",
-  "contactEmailAddress": "test@test.com",
-  "contactTitle": "test",
-  "contactPhone": "111-1111111",
-  "stateAgencyName": "aaa",
   "stateName": "Minnesota",
+  "contactName": "Test Name",
+  "contactPhoneNumber": "1111111111",
+  "contactEmailAddress": "stateuser@test.com",
+  "contactJobTitle": "Test Title",
+  "stateAgencyName": "Agency Name",
   "program": [
     {
-      "id": "b7c1e4a-486c-80d4-0ae7-74625b6e5f1d",
-      "report_programName": "1",
+      "id": "74fc4ee-1528-1410-57e4-481fbe1d4375",
+      "report_programName": "Test Program Name",
       "report_programType": [
         {
-          "key": "programType-cQhGnyBmiXszLqrx6b2Cp8",
+          "key": "report_programType-cQhGnyBmiXszLqrx6b2Cp8",
           "value": "Behavioral Health Only"
         }
       ],
@@ -28,29 +27,39 @@
           "value": "All Populations"
         }
       ],
-      "report_planName": "1",
+      "report_planName": "Test Name",
       "report_reportingPeriodStartDate": "11/19/1992",
-      "report_reportingPeriodEndDate": "11/19/1992",
+      "report_reportingPeriodEndDate": "11/19/1993",
       "report_reportingPeriodDiscrepancy": [
         {
           "key": "report_reportingPeriodDiscrepancy-2NI2UTNqhvrJLvEv8SORD7vIPRI",
           "value": "No"
         }
       ],
-      "report_miscellaneousNotes": "1",
+      "report_miscellaneousNotes": "Test",
       "report_eligibilityGroup-otherText": "",
-      "report_reportingPeriodDiscrepancy-otherText": "",
-      "report_inurredClaims": "",
-      "report_mlrNumerator": "100",
-      "report_memberMonths": "100",
-      "report_adjustedMLR": "100",
-      "report_contractIncludesRemittance": [
+      "report_reportingPeriodDiscrepancyExplanation": "",
+      "report_mlrNumerator": "123",
+      "report_mlrDenominator": "123",
+      "report_requiredMemberMonths": "123",
+      "report_adjustedMlrPercentage": "123",
+      "report_contractIncludesMlrRemittanceRequirement": [
         {
-          "key": "report_contractIncludesRemittance-UL4dAeyyvCFAXttxZioacR",
+          "key": "report_contractIncludesMlrRemittanceRequirement-UL4dAeyyvCFAXttxZioacR",
           "value": "No"
         }
       ],
-      "report_mlrDenominator": "100"
+      "report_remittanceDollarAmountOwed": "",
+      "report_stateFederalRemittanceShareDeterminationMethodologyDescription": "",
+      "report_isRemittancePeriodSameAsMlrReportingPeriod": [],
+      "report_remittancePeriodStartDate": "",
+      "report_remittancePeriodEndDate": "",
+      "state_doesStateRemittanceMlrCalculationAlign": [],
+      "state_remittanceMlrCalculationDeterminationMethod": "",
+      "state_minimumMlrRequirement": "",
+      "report_calculatedMlrPercentageForRemittancePurposes": "",
+      "report_remittanceDollarAmountDue": "",
+      "report_remittanceExplanation": ""
     }
   ]
 }

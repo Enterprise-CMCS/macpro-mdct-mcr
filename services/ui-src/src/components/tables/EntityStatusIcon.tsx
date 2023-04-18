@@ -59,7 +59,7 @@ interface Props {
 
 const sx = {
   statusIcon: {
-    paddingLeft: "1rem",
+    marginLeft: "0rem",
     img: {
       maxWidth: "fit-content",
     },

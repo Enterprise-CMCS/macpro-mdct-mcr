@@ -241,6 +241,11 @@ describe("Completion Status Tests", () => {
         formTemplate: "mlr-template",
       },
       {
+        description: "Completed MLR with remittance",
+        fixture: "mlr-complete-with-remittance",
+        formTemplate: "mlr-template",
+      },
+      {
         description: "MLR with no programs",
         fixture: "mlr-missing-reports",
         formTemplate: "mlr-template",
