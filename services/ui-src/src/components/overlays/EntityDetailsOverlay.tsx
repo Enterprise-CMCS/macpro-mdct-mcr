@@ -50,7 +50,8 @@ export const EntityDetailsOverlay = ({
 
   const onSubmit = async (enteredData: AnyObject) => {
     setSubmitting(true);
-    updateEntities(enteredData);
+    const entity = { ...selectedEntity, ...enteredData };
+    updateEntities(entity);
     const reportKeys = {
       reportType: report?.reportType,
       state: state,
