@@ -102,7 +102,7 @@ export interface FormLayoutElement {
   props?: AnyObject;
 }
 
-const formLayoutElementTypes = ["sectionHeader"];
+const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
 
 export function isLayoutElement(
   field: FormField | FormLayoutElement

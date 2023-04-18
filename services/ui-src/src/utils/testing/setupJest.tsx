@@ -280,7 +280,11 @@ export const mockDrawerForm = {
 
 export const mockModalOverlayForm = {
   id: "mock-modal-overlay-form-id",
-  fields: [mockModalOverlayFormField],
+  fields: [
+    mockModalOverlayFormField,
+    { ...mockModalOverlayFormField, id: "with-label", props: { label: "1" } },
+    mockNestedFormField,
+  ],
 };
 
 export const mockPlanFilledForm = {
@@ -623,10 +627,6 @@ export const mockReportFieldData = {
 };
 
 export const mockMlrReportFieldData = {
-  programs: [
-    { id: 123, name: "example-program1" },
-    { id: 456, name: "example-program2" },
-  ],
   text: "text-input",
   number: 0,
   radio: ["option1"],
@@ -635,7 +635,7 @@ export const mockMlrReportFieldData = {
   program: [
     {
       id: "mock-id",
-      programType: [
+      report_programType: [
         {
           key: "option1",
           value: "mock-type1",
@@ -652,6 +652,46 @@ export const mockMlrReportFieldData = {
         },
       ],
       "report_eligibilityGroup-otherText": "",
+    },
+    {
+      id: "123",
+      report_programName: "Test",
+      report_programType: [
+        {
+          key: "programType",
+          value: "Behavioral Health Only",
+        },
+      ],
+      report_eligibilityGroup: [
+        {
+          key: "eligibilityGroup",
+          value: "Standalone CHIP",
+        },
+      ],
+      report_planName: "Test",
+      report_reportingPeriodStartDate: "11/03/1992",
+      report_reportingPeriodEndDate: "12/01/1993",
+      report_reportingPeriodDiscrepancy: [
+        {
+          key: "reportingPeriodDiscrepancy",
+          value: "No",
+        },
+      ],
+      "report_eligibilityGroup-otherText": "",
+      report_reportingPeriodDiscrepancyExplanation: "",
+      report_inurredClaims: "1",
+      report_healthCareQualityActivities: "1",
+      report_mlrNumerator: "1",
+      report_mlrNumeratorExplanation: "Test",
+      report_nonClaimsCosts: "1",
+      report_mlrDenominator: "1",
+      report_memberMonths: "12",
+      report_contractIncludesRemittance: [
+        {
+          key: "contractIncludesRemittance",
+          value: "No",
+        },
+      ],
     },
   ],
 };

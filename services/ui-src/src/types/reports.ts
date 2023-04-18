@@ -79,6 +79,12 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
+export function pageHasOverlay(
+  unknownPage: ReportPageShapeBase
+): unknownPage is ModalOverlayReportPageShape {
+  return Object.getOwnPropertyNames(unknownPage).includes("overlayForm");
+}
+
 export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   entityType: string;
   verbiage: ModalOverlayReportPageVerbiage;
