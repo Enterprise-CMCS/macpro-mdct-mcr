@@ -1026,9 +1026,12 @@
                     {
                       "id": "report_stateFederalRemittanceShareDeterminationMethodologyDescription",
                       "type": "textarea",
-                      "nested": true,
-                      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-                      "validation": "text",
+
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement"
+                      },
                       "props": {
                         "label": "4.9 Remittance methodology qualitative response",
                         "hint": [
