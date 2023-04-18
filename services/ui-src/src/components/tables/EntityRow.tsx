@@ -52,7 +52,7 @@ export const EntityRow = ({
     } catch (err) {
       return false;
     }
-  }, [report]);
+  }, [entity]);
 
   const programInfo = [
     report_programName,

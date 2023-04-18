@@ -120,7 +120,7 @@ export const EntityDetailsOverlay = ({
           </ul>
         </Box>
         <Form
-          id={selectedEntity.id}
+          id={form.id}
           formJson={form}
           onSubmit={onSubmit}
           onError={onError}
@@ -129,11 +129,7 @@ export const EntityDetailsOverlay = ({
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
-            <Button
-              onClick={() => onSubmit(selectedEntity)}
-              type="submit"
-              sx={sx.saveButton}
-            >
+            <Button form={form.id} type="submit" sx={sx.saveButton}>
               {submitting ? <Spinner size="small" /> : "Save & return"}
             </Button>
           </Flex>
