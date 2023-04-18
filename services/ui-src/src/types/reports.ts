@@ -34,6 +34,7 @@ export interface ReportJson {
   routes: ReportRoute[];
   flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
+  validationJson?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
