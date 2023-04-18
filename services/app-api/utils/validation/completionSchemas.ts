@@ -158,12 +158,14 @@ export const checkboxOptional = () => checkbox().notRequired();
 export const checkboxSingle = () => boolean();
 
 // RADIO
-export const radio = () =>
+export const radioSchema = () =>
   array()
-    .min(1, error.REQUIRED_GENERIC)
     .of(object({ key: textSchema(), value: textSchema() }))
-    .required(error.REQUIRED_GENERIC);
-export const radioOptional = () => radio().notRequired();
+    .min(0);
+
+export const radio = () =>
+  radioSchema().min(1, error.REQUIRED_GENERIC).required();
+export const radioOptional = () => radioSchema().notRequired().nullable();
 
 // DYNAMIC
 export const dynamic = () =>
@@ -182,14 +184,15 @@ export const dynamicOptional = () => dynamic().notRequired();
 export const nested = (
   fieldSchema: Function,
   parentFieldName: string,
-  parentOptionId: string
+  parentOptionId: string,
+  optional?: string
 ) => {
   const fieldTypeMap = {
     array: array()
-      .min(1, error.REQUIRED_GENERIC)
+      .min(!optional ? 1 : 0, error.REQUIRED_GENERIC)
       .of(object({ key: textSchema(), value: textSchema() }))
       .required(error.REQUIRED_GENERIC),
-    string: string(),
+    string: optional ? string().nullable() : string(),
     date: dateSchema(),
     object: object(),
   };

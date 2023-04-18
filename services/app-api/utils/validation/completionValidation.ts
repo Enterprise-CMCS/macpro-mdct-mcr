@@ -48,7 +48,12 @@ export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
     );
   } else {
     const fieldValidationSchema = schemaMap[type];
-    return nested(() => fieldValidationSchema, parentFieldName, parentOptionId);
+    return nested(
+      () => fieldValidationSchema,
+      parentFieldName,
+      parentOptionId,
+      fieldValidationObject["type"].includes("Optional")
+    );
   }
 };
 

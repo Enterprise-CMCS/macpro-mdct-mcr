@@ -147,12 +147,12 @@ export const checkboxOptional = () => checkbox().notRequired();
 export const checkboxSingle = () => boolean();
 
 // RADIO
-export const radio = () =>
+export const radioSchema = () =>
   array()
     .min(1, error.REQUIRED_GENERIC)
-    .of(object({ key: text(), value: text() }))
-    .required(error.REQUIRED_GENERIC);
-export const radioOptional = () => radio().notRequired();
+    .of(object({ key: text(), value: text() }));
+export const radio = () => radioSchema().required(error.REQUIRED_GENERIC);
+export const radioOptional = () => radioSchema().notRequired().nullable();
 
 // DYNAMIC
 export const dynamic = () =>
