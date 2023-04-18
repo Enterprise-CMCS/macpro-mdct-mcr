@@ -25,7 +25,7 @@ export const MobileEntityRow = ({
   const entityComplete = useMemo(() => {
     const reportFormValidation = Object.fromEntries(
       Object.entries(report?.formTemplate.validationJson ?? {}).filter(
-        ([key]) => key.includes("report_")
+        ([key]) => key.includes("report_") || key.includes("state_")
       )
     );
 
