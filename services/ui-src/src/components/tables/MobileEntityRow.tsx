@@ -3,10 +3,15 @@ import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
 // types
 import { AnyObject } from "types";
 // utils
-import { parseCustomHtml } from "utils";
+import { mapValidationTypesToSchema, parseCustomHtml } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import successIcon from "assets/icons/icon_check_circle.png";
+
+import { useContext, useMemo } from "react";
+import { ReportContext } from "components/reports/ReportProvider";
+import { object } from "yup";
 
 export const MobileEntityRow = ({
   entity,
@@ -16,8 +21,24 @@ export const MobileEntityRow = ({
   openEntityDetailsOverlay,
 }: Props) => {
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
+  const { report } = useContext(ReportContext);
+  const entityComplete = useMemo(() => {
+    const reportFormValidation = Object.fromEntries(
+      Object.entries(report?.formTemplate.validationJson ?? {}).filter(
+        ([key]) => key.includes("report_")
+      )
+    );
 
-  const { report_programName, report_planName } = entity;
+    const validationSchema = object().shape(
+      mapValidationTypesToSchema(reportFormValidation)
+    );
+
+    try {
+      return validationSchema.validateSync(entity);
+    } catch (err) {
+      return false;
+    }
+  }, [report]);
 
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
@@ -26,6 +47,8 @@ export const MobileEntityRow = ({
     }
     return entity.report_eligibilityGroup[0].value;
   };
+
+  const { report_programName, report_planName } = entity;
 
   const programInfo = [
     report_programName,
@@ -39,7 +62,11 @@ export const MobileEntityRow = ({
       <Tr>
         <Td>
           <Box sx={sx.rowHeader}>
-            <Image src={unfinishedIcon} alt="warning icon" boxSize="lg" />
+            {entityComplete ? (
+              <Image src={successIcon} alt="success icon" boxSize="xl" />
+            ) : (
+              <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />
+            )}
             <Text>{parseCustomHtml(tableHeader)}</Text>
           </Box>
           <Box sx={sx.programList}>
