@@ -181,7 +181,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
               </>
             )}
           </Box>
-          <ReportPageFooter />
+          <ReportPageFooter hidePrevious={true} />
         </Box>
       )}
     </Box>

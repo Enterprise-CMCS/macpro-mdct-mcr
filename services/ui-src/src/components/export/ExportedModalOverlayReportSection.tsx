@@ -81,10 +81,10 @@ export function renderModalOverlayTableBody(
             <Td>
               <Text>
                 {entity.programName} <br />
-                {entity["eligibilityGroup-otherText"]
-                  ? entity["eligibilityGroup-otherText"]
-                  : entity.eligibilityGroup[0].value
-                  ? entity.eligibilityGroup[0].value
+                {entity["report_eligibilityGroup-otherText"]
+                  ? entity["report_eligibilityGroup-otherText"]
+                  : entity.report_eligibilityGroup[0].value
+                  ? entity.report_eligibilityGroup[0].value
                   : "Not entered"}{" "}
                 <br />
                 {entity.reportingPeriodStartDate} to{" "}
@@ -101,8 +101,8 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text>
-                {entity["reportingPeriodDiscrepancy-otherText"]
-                  ? entity["reportingPeriodDiscrepancy-otherText"]
+                {entity["report_reportingPeriodDiscrepancyExplanation"]
+                  ? entity["report_reportingPeriodDiscrepancyExplanation"]
                   : "N/A"}
               </Text>
             </Td>

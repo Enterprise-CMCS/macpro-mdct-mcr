@@ -13,12 +13,13 @@ import {
 } from "@chakra-ui/react";
 import {
   AddEditReportModal,
+  DashboardTable,
+  InstructionsAccordion,
   ErrorAlert,
+  MobileDashboardTable,
   PageTemplate,
   ReportContext,
 } from "components";
-import { DashboardTable } from "./DashboardTable";
-import { MobileDashboardTable } from "./MobileDashboardTable";
 import { Spinner } from "@cmsgov/design-system";
 // forms
 import { mcparReportJson } from "forms/mcpar";
@@ -34,6 +35,7 @@ import {
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
+import accordion from "verbiage/pages/accordion";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
@@ -204,6 +206,15 @@ export const DashboardPage = ({ reportType }: Props) => {
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
         </Heading>
+        {reportType === "MLR" && (
+          <InstructionsAccordion
+            verbiage={
+              userIsStateUser || userIsStateRep
+                ? accordion.MLR.stateUserDashboard
+                : accordion.MLR.adminDashboard
+            }
+          />
+        )}
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>

@@ -106,14 +106,14 @@ Local authorization bypasses Cognito. The frontend mimics login in local storage
 
 We use Jest for unit tests.
 
-Run all frontend unit tests
+To run all frontend unit tests:
 
 ```
 cd services/ui-src/
 yarn test
 ```
 
-Run all backend unit tests
+To run all backend unit tests:
 
 ```
 cd services/app-api/

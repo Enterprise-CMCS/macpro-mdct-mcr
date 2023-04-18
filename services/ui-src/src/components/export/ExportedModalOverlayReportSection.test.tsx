@@ -45,9 +45,9 @@ const mockMlrProgram = {
       value: "Behavioral Health Only",
     },
   ],
-  eligibilityGroup: [
+  report_eligibilityGroup: [
     {
-      key: "eligibilityGroup",
+      key: "report_eligibilityGroup",
       value: "Standalone CHIP",
     },
   ],
@@ -61,8 +61,8 @@ const mockMlrProgram = {
     },
   ],
   miscellaneousNotes: "Notes",
-  "eligibilityGroup-otherText": "",
-  "reportingPeriodDiscrepancy-otherText": "",
+  "report_eligibilityGroup-otherText": "",
+  report_reportingPeriodDiscrepancyExplanation: "",
 };
 
 const mockMlrProgramOther = {
@@ -74,9 +74,9 @@ const mockMlrProgramOther = {
       value: "Behavioral Health Only",
     },
   ],
-  eligibilityGroup: [
+  report_eligibilityGroup: [
     {
-      key: "eligibilityGroup",
+      key: "report_eligibilityGroup",
       value: "Standalone CHIP",
     },
   ],
@@ -90,8 +90,8 @@ const mockMlrProgramOther = {
     },
   ],
   miscellaneousNotes: "Notes",
-  "eligibilityGroup-otherText": "Eligibility group explanation",
-  "reportingPeriodDiscrepancy-otherText":
+  "report_eligibilityGroup-otherText": "Eligibility group explanation",
+  report_reportingPeriodDiscrepancyExplanation:
     "My reporting period discrepancy explanation",
 };
 
@@ -132,7 +132,7 @@ describe("Test renderModalOverlayTableBody", () => {
       await findByText(mockMlrProgram.programName, { exact: false })
     ).toBeVisible();
     expect(
-      await findByText(mockMlrProgram.eligibilityGroup[0].value, {
+      await findByText(mockMlrProgram.report_eligibilityGroup[0].value, {
         exact: false,
       })
     ).toBeVisible();
@@ -163,14 +163,17 @@ describe("Test renderModalOverlayTableBody", () => {
     );
 
     expect(
-      await findByText(mockMlrProgramOther["eligibilityGroup-otherText"], {
-        exact: false,
-      })
+      await findByText(
+        mockMlrProgramOther["report_eligibilityGroup-otherText"],
+        {
+          exact: false,
+        }
+      )
     ).toBeVisible();
 
     expect(
       await findByText(
-        mockMlrProgramOther["reportingPeriodDiscrepancy-otherText"],
+        mockMlrProgramOther["report_reportingPeriodDiscrepancyExplanation"],
         {
           exact: false,
         }

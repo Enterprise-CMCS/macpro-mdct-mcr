@@ -98,11 +98,11 @@ export const EntityDetailsOverlay = ({
         <Box>
           <Heading size="xs">{report?.reportType} Report for:</Heading>
           <Text>{report?.programName || report?.submissionName}</Text>
-          {selectedEntity.eligibilityGroup && (
+          {selectedEntity.report_eligibilityGroup && (
             <Text>
-              {selectedEntity["eligibilityGroup-otherText"]
-                ? selectedEntity["eligibilityGroup-otherText"]
-                : selectedEntity.eligibilityGroup[0].value}
+              {selectedEntity["report_eligibilityGroup-otherText"]
+                ? selectedEntity["report_eligibilityGroup-otherText"]
+                : selectedEntity.report_eligibilityGroup[0].value}
             </Text>
           )}
           <Text>

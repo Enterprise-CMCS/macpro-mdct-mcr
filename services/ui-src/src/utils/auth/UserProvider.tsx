@@ -23,7 +23,11 @@ export const UserContext = createContext<UserContextShape>({
 });
 
 const authenticateWithIDM = async () => {
-  await Auth.federatedSignIn({ customProvider: config.COGNITO_IDP });
+  // await Auth.federatedSignIn({ customProvider: config.COGNITO_IDP });
+  const cognitoHostedUrl = new URL(
+    `https://${config.cognito.APP_CLIENT_DOMAIN}/oauth2/authorize?identity_provider=${config.cognito.COGNITO_IDP_NAME}&redirect_uri=${config.APPLICATION_ENDPOINT}&response_type=CODE&client_id=${config.cognito.APP_CLIENT_ID}&scope=email openid profile`
+  );
+  window.location.replace(cognitoHostedUrl);
 };
 
 export const UserProvider = ({ children }: Props) => {

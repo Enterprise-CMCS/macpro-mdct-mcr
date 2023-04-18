@@ -17,10 +17,10 @@ export const EntityRow = ({
 
   const reportingPeriod = `${entity.reportingPeriodStartDate} to ${entity.reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
-    if (entity["eligibilityGroup-otherText"]) {
-      return entity["eligibilityGroup-otherText"];
+    if (entity["report_eligibilityGroup-otherText"]) {
+      return entity["report_eligibilityGroup-otherText"];
     }
-    return entity.eligibilityGroup[0].value;
+    return entity.report_eligibilityGroup[0].value;
   };
 
   const programInfo = [

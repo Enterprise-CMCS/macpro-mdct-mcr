@@ -1,5 +1,23 @@
 export default {
   MLR: {
+    adminDashboard: {
+      buttonLabel: "Instructions",
+      intro:
+        '<b>State User Instructions</b><br/><br/>As described at <a href="https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74" target="_blank" aria-label="Link opens in new tab">42 CFR § 438.74</a>, states are required to report summary Medical Loss Ratio (MLR) reports to the Centers for Medicare & Medicaid Services (CMS). The summary MLR report submission coincides with the state’s submission of the annual base rate certification. The summary reports are based on the plans’ annual MLR reports to the state required under <a href="https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)" target="_blank" aria-label="Link opens in new tab">42 CFR § 438.8(k)</a>. If the state needs to revise MLR reports previously submitted using the online form, ask your CMS contact to reopen the related submission, which will change it to an “In revision” status. If the state needs to revise MLR reports previously submitted using the Excel Workbook or other format, reach out to your CMS contact to discuss next steps. <a href="https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#MLR" target="_blank" aria-label="Link opens in new tab">Learn more</a>. <br/> <br/> <b>CMS Admin Instructions</b>',
+      list: [
+        `To allow a state to make corrections or edits to a submission use "Unlock" to release the submission. The status will change to "In revision".`,
+        "Submission count is shown in the # column. Submissions started and submitted once have a count of 1. When a state resubmits a previous submission, the count increases by 1.",
+        `To archive a submission and hide it from a state's dashboard, use "Archive".`,
+      ],
+      text: "",
+    },
+    stateUserDashboard: {
+      buttonLabel: "Instructions",
+      intro:
+        'As described at <a href="https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74" target="_blank" aria-label="Link opens in new tab">42 CFR § 438.74</a>, states are required to report summary Medical Loss Ratio (MLR) reports to the Centers for Medicare & Medicaid Services (CMS). The summary MLR report submission coincides with the state’s submission of the annual base rate certification. The summary reports are based on the plans’ annual MLR reports to the state required under <a href="https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)" target="_blank" aria-label="Link opens in new tab">42 CFR § 438.8(k)</a>. If the state needs to revise MLR reports previously submitted using the online form, ask your CMS contact to reopen the related submission, which will change it to an “In revision” status. If the state needs to revise MLR reports previously submitted using the Excel Workbook or other format, reach out to your CMS contact to discuss next steps. <a href="https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#MLR" target="_blank" aria-label="Link opens in new tab">Learn more</a>.',
+      list: [],
+      text: "",
+    },
     formIntro: {
       buttonLabel: "Instructions",
       intro:
