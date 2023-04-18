@@ -5,7 +5,13 @@ set -e
 stage=${1:-dev}
 
 services=(
-  '.sechub'
+  'database'
+  'uploads'
+  'topics'
+  'app-api'
+  'ui'
+  'ui-auth'
+  'ui-src'
 )
 
 install_deps() {
@@ -33,3 +39,12 @@ for i in "${services[@]}"
 do
 	deploy $i
 done
+
+pushd services
+echo """
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+Application endpoint:  `./output.sh ui CloudFrontEndpointUrl $stage`
+------------------------------------------------------------------------------------------------
+"""
+popd
