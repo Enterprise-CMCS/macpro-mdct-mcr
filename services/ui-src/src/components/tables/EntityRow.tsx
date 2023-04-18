@@ -5,12 +5,7 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { AnyObject, EntityShape } from "types";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
-import successIcon from "assets/icons/icon_check_circle.png";
-import { useContext, useMemo } from "react";
-import { ReportContext } from "components/reports/ReportProvider";
-import { mapValidationTypesToSchema } from "utils";
-import { object } from "yup";
+import { EntityStatusIcon } from "./EntityStatusIcon";
 
 export const EntityRow = ({
   entity,
@@ -20,7 +15,6 @@ export const EntityRow = ({
   openEntityDetailsOverlay,
 }: Props) => {
   const { report_programName, report_planName } = entity;
-  const { report } = useContext(ReportContext);
 
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
@@ -36,24 +30,6 @@ export const EntityRow = ({
       dangerouslySetInnerHTML: { __html: rawHTML },
     });
 
-  const entityComplete = useMemo(() => {
-    const reportFormValidation = Object.fromEntries(
-      Object.entries(report?.formTemplate.validationJson ?? {}).filter(
-        ([key]) => key.includes("report_") || key.includes("state_")
-      )
-    );
-
-    const validationSchema = object().shape(
-      mapValidationTypesToSchema(reportFormValidation)
-    );
-
-    try {
-      return validationSchema.validateSync(entity);
-    } catch (err) {
-      return false;
-    }
-  }, [entity]);
-
   const programInfo = [
     report_programName,
     eligibilityGroup(),
@@ -64,11 +40,7 @@ export const EntityRow = ({
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        {entityComplete ? (
-          <Image src={successIcon} alt="success icon" boxSize="xl" />
-        ) : (
-          <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />
-        )}
+        <EntityStatusIcon entity={entity as EntityShape} />
       </Td>
       <Td sx={sx.programInfo}>
         <ul>

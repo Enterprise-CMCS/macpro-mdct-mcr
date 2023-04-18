@@ -1,17 +1,13 @@
 // components
 import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
 // types
-import { AnyObject } from "types";
+import { AnyObject, EntityShape } from "types";
 // utils
-import { mapValidationTypesToSchema, parseCustomHtml } from "utils";
+import { parseCustomHtml } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
-import successIcon from "assets/icons/icon_check_circle.png";
 
-import { useContext, useMemo } from "react";
-import { ReportContext } from "components/reports/ReportProvider";
-import { object } from "yup";
+import { EntityStatusIcon } from "./EntityStatusIcon";
 
 export const MobileEntityRow = ({
   entity,
@@ -21,24 +17,6 @@ export const MobileEntityRow = ({
   openEntityDetailsOverlay,
 }: Props) => {
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
-  const { report } = useContext(ReportContext);
-  const entityComplete = useMemo(() => {
-    const reportFormValidation = Object.fromEntries(
-      Object.entries(report?.formTemplate.validationJson ?? {}).filter(
-        ([key]) => key.includes("report_") || key.includes("state_")
-      )
-    );
-
-    const validationSchema = object().shape(
-      mapValidationTypesToSchema(reportFormValidation)
-    );
-
-    try {
-      return validationSchema.validateSync(entity);
-    } catch (err) {
-      return false;
-    }
-  }, [report]);
 
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
@@ -62,11 +40,7 @@ export const MobileEntityRow = ({
       <Tr>
         <Td>
           <Box sx={sx.rowHeader}>
-            {entityComplete ? (
-              <Image src={successIcon} alt="success icon" boxSize="xl" />
-            ) : (
-              <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />
-            )}
+            <EntityStatusIcon entity={entity as EntityShape} />
             <Text>{parseCustomHtml(tableHeader)}</Text>
           </Box>
           <Box sx={sx.programList}>
