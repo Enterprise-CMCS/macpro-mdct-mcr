@@ -337,10 +337,10 @@ const sx = {
     fontSize: "md",
     fontWeight: "700",
     color: "white !important",
+    textDecoration: "none !important",
     "&:hover, &:focus": {
       backgroundColor: "palette.primary",
       color: "white",
-      textDecoration: "none",
     },
   },
   submitContainer: {

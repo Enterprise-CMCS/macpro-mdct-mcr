@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 // components
 import { ReportContext, Table } from "components";
 // types, utils
@@ -64,6 +64,15 @@ export function renderStatusIcon(status: boolean) {
   }
   return <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />;
 }
+
+// render '<' special character
+export function renderHTML(rawHTML: string) {
+  const specialChar = React.createElement("span", {
+    dangerouslySetInnerHTML: { __html: rawHTML },
+  });
+  return specialChar;
+}
+
 export function renderModalOverlayTableBody(
   verbiage: AnyObject,
   reportType: ReportType,
@@ -82,20 +91,20 @@ export function renderModalOverlayTableBody(
               <Text>
                 {entity.programName} <br />
                 {entity["report_eligibilityGroup-otherText"]
-                  ? entity["report_eligibilityGroup-otherText"]
+                  ? renderHTML(entity["report_eligibilityGroup-otherText"])
                   : entity.report_eligibilityGroup[0].value
                   ? entity.report_eligibilityGroup[0].value
                   : "Not entered"}{" "}
                 <br />
-                {entity.reportingPeriodStartDate} to{" "}
-                {entity.reportingPeriodEndDate} <br />
-                {entity.planName ?? "Not entered"}
+                {entity.report_reportingPeriodStartDate} to{" "}
+                {entity.report_reportingPeriodEndDate} <br />
+                {entity.report_planName ?? "Not entered"}
               </Text>
             </Td>
             <Td>
               <Text>
-                {entity.programType[0].value
-                  ? entity.programType[0].value
+                {entity.report_programType[0].value
+                  ? entity.report_programType[0].value
                   : "Not entered"}
               </Text>
             </Td>
@@ -108,7 +117,9 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text>
-                {entity.miscellaneousNotes ? entity.miscellaneousNotes : "N/A"}
+                {entity.report_miscellaneousNotes
+                  ? entity.report_miscellaneousNotes
+                  : "N/A"}
               </Text>
             </Td>
           </Tr>

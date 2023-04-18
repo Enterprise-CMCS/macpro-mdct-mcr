@@ -1,3 +1,4 @@
+import React from "react";
 // components
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
 // utils
@@ -23,6 +24,12 @@ export const EntityRow = ({
     return entity.report_eligibilityGroup[0].value;
   };
 
+  // render '<' special character
+  const renderHTML = (rawHTML: string) =>
+    React.createElement("span", {
+      dangerouslySetInnerHTML: { __html: rawHTML },
+    });
+
   const programInfo = [
     report_programName,
     eligibilityGroup(),
@@ -43,28 +50,23 @@ export const EntityRow = ({
       <Td sx={sx.programInfo}>
         <ul>
           {programInfo.map((field, index) => (
-            <li key={index}>{field}</li>
+            <li key={index}>{renderHTML(field)}</li>
           ))}
         </ul>
       </Td>
-      <Td>
+      <Td sx={sx.editButton}>
         {openAddEditEntityModal && (
-          <Button
-            variant="none"
-            sx={sx.editButton}
-            onClick={() => openAddEditEntityModal(entity)}
-          >
+          <Button variant="none" onClick={() => openAddEditEntityModal(entity)}>
             {verbiage.editEntityButtonText}
           </Button>
         )}
       </Td>
-      <Td>
+      <Td sx={sx.enterButton}>
         {openEntityDetailsOverlay && (
           <Button
             onClick={() => openEntityDetailsOverlay(entity)}
             variant="outline"
             size="sm"
-            sx={sx.enterButton}
           >
             {verbiage.enterReportText}
           </Button>
@@ -122,16 +124,23 @@ const sx = {
     },
   },
   editButton: {
-    fontWeight: "normal",
-    textDecoration: "underline",
-    color: "palette.primary",
+    paddingRight: "0.5rem",
+    button: {
+      fontWeight: "normal",
+      textDecoration: "underline",
+      color: "palette.primary",
+    },
   },
   enterButton: {
-    fontWeight: "normal",
-    width: "6.5rem",
+    padding: "0",
+    button: {
+      fontWeight: "normal",
+      width: "6.5rem",
+    },
   },
   deleteButton: {
     padding: "0",
+    background: "white",
     "&:hover": {
       background: "white",
     },

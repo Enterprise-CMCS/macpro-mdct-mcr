@@ -367,7 +367,7 @@
             "validation": "date",
             "props": {
               "label": "N. MLR reporting period start date",
-              "hint": "Enter the start date of the MLR Reporting Period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
+              "hint": "Enter the start date of the MLR reporting period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
             }
           },
           {
@@ -760,7 +760,7 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). For information on credibility adjustments see:"
+                  "content": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). For information on credibility adjustments see"
                 },
                 {
                   "type": "externalLink",
@@ -784,7 +784,7 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here. For information on credibility adjustments see:"
+                  "content": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here. For information on credibility adjustments see"
                 },
                 {
                   "type": "externalLink",
