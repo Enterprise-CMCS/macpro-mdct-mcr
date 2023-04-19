@@ -38,5 +38,6 @@ jobs:
           jira-project-key: MDCT 
           jira-epic-key: MDCT-2280 
           jira-ignore-statuses: Done
+          jira-custom-fields: '{ "application" : "MCR" }'
           aws-region: us-east-1
           aws-severities: CRITICAL, HIGH
