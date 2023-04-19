@@ -216,7 +216,14 @@ export const SuccessMessageGenerator = (
 
     // prepare success message for MLR report submission
     if (reportType === "MLR" && stateName) {
-      return `${reportType} submission for "${stateName} ${name}" was submitted on ${submittedDate} by ${submittersName}.`;
+      const reportTitle = (
+        <b>
+          {stateName} {name}
+        </b>
+      );
+      const preSubmissionMessage = `${reportType} submission for `;
+      const postSubmissionMessage = ` was submitted on ${submittedDate} by ${submittersName}.`;
+      return [preSubmissionMessage, reportTitle, postSubmissionMessage];
     }
     return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
   }
