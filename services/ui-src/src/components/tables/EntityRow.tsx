@@ -1,3 +1,4 @@
+import React from "react";
 // components
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
 // utils
@@ -23,6 +24,12 @@ export const EntityRow = ({
     return entity.report_eligibilityGroup[0].value;
   };
 
+  // render '<' special character
+  const renderHTML = (rawHTML: string) =>
+    React.createElement("span", {
+      dangerouslySetInnerHTML: { __html: rawHTML },
+    });
+
   const programInfo = [
     report_programName,
     eligibilityGroup(),
@@ -32,34 +39,34 @@ export const EntityRow = ({
 
   return (
     <Tr sx={sx.content}>
-      <Td sx={sx.statusIcon}>
-        <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />
+      <Td>
+        <Image
+          src={unfinishedIcon}
+          alt="warning icon"
+          boxSize="xl"
+          sx={sx.statusIcon}
+        />
       </Td>
       <Td sx={sx.programInfo}>
         <ul>
           {programInfo.map((field, index) => (
-            <li key={index}>{field}</li>
+            <li key={index}>{renderHTML(field)}</li>
           ))}
         </ul>
       </Td>
-      <Td sx={sx.actionButtons}>
+      <Td sx={sx.editButton}>
         {openAddEditEntityModal && (
-          <Button
-            variant="none"
-            sx={sx.editButton}
-            onClick={() => openAddEditEntityModal(entity)}
-          >
+          <Button variant="none" onClick={() => openAddEditEntityModal(entity)}>
             {verbiage.editEntityButtonText}
           </Button>
         )}
       </Td>
-      <Td>
+      <Td sx={sx.enterButton}>
         {openEntityDetailsOverlay && (
           <Button
             onClick={() => openEntityDetailsOverlay(entity)}
             variant="outline"
             size="sm"
-            sx={sx.enterButton}
           >
             {verbiage.enterReportText}
           </Button>
@@ -92,18 +99,12 @@ const sx = {
   content: {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
-    button: {
-      marginLeft: "1rem",
-    },
     td: {
       borderColor: "palette.gray_light",
     },
   },
   statusIcon: {
-    paddingLeft: "1rem",
-    img: {
-      maxWidth: "fit-content",
-    },
+    maxWidth: "fit-content",
   },
   programInfo: {
     maxWidth: "18.75rem",
@@ -122,21 +123,24 @@ const sx = {
       },
     },
   },
-  actionButtons: {
-    whiteSpace: "nowrap",
-  },
   editButton: {
-    fontWeight: "normal",
-    textDecoration: "underline",
-    color: "palette.primary",
+    paddingRight: "0.5rem",
+    button: {
+      fontWeight: "normal",
+      textDecoration: "underline",
+      color: "palette.primary",
+    },
   },
   enterButton: {
-    fontWeight: "normal",
-    width: "6.5rem",
+    padding: "0",
+    button: {
+      fontWeight: "normal",
+      width: "6.5rem",
+    },
   },
   deleteButton: {
-    background: "none",
     padding: "0",
+    background: "white",
     "&:hover": {
       background: "white",
     },

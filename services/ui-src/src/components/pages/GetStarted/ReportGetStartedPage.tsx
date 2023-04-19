@@ -73,7 +73,10 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
                 <Text sx={sx.additionalInfo}>{section2.img?.description}</Text>
               </Box>
               <Box>
-                <SpreadsheetWidget description={section2.spreadsheet!} />
+                <SpreadsheetWidget
+                  description={section2.spreadsheet!}
+                  reportType={reportType}
+                />
                 <Text sx={sx.additionalInfo}>{section2.additionalInfo}</Text>
               </Box>
             </Flex>

@@ -4,14 +4,14 @@ import { AccordionItem } from "components";
 // types
 import { AnyObject } from "types";
 // utils
-import { sanitizeAndParseHtml } from "utils";
+import { parseCustomHtml, sanitizeAndParseHtml } from "utils";
 
 export const InstructionsAccordion = ({ verbiage, ...props }: Props) => {
   const { buttonLabel, intro, list, text } = verbiage;
   return (
     <Accordion allowToggle={true} allowMultiple={true} sx={sx.root} {...props}>
       <AccordionItem label={buttonLabel} sx={sx.item}>
-        <Box sx={sx.textBox}>{sanitizeAndParseHtml(intro)}</Box>
+        <Box sx={sx.textBox}>{parseCustomHtml(intro)}</Box>
         <UnorderedList sx={sx.list}>
           {list.map((listItem: string, index: number) => (
             <ListItem key={index}>{sanitizeAndParseHtml(listItem)}</ListItem>

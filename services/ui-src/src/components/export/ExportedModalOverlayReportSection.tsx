@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 // components
 import { ReportContext, Table } from "components";
 // types, utils
@@ -63,6 +63,15 @@ export function renderStatusIcon(status: boolean) {
   }
   return <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />;
 }
+
+// render '<' special character
+export function renderHTML(rawHTML: string) {
+  const specialChar = React.createElement("span", {
+    dangerouslySetInnerHTML: { __html: rawHTML },
+  });
+  return specialChar;
+}
+
 export function renderModalOverlayTableBody(
   reportType: ReportType,
   entities: EntityShape[]

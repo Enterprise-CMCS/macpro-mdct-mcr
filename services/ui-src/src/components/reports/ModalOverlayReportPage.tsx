@@ -113,6 +113,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
                 accordionVerbiage[reportType as keyof typeof accordionVerbiage]
                   ?.formIntro
               }
+              reportType={reportType}
             />
           )}
           <Box sx={sx.dashboardBox}>
@@ -180,7 +181,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
               </>
             )}
           </Box>
-          <ReportPageFooter />
+          <ReportPageFooter hidePrevious={true} />
         </Box>
       )}
     </Box>

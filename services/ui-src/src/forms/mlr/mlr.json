@@ -12,7 +12,7 @@
       "verbiage": {
         "intro": {
           "section": "Program Information",
-          "subsection": "Information for Primary of Contact",
+          "subsection": "Information for Primary Contact",
           "hint": "Please enter the name of the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
           "spreadsheet": "Program Information",
           "exportSection": "Information for Primary Contact"
@@ -90,9 +90,9 @@
                   "children": [
                     {
                       "id": "versionControlDescription",
-                      "type": "radio",
+                      "type": "checkbox",
                       "validation": {
-                        "type": "radio",
+                        "type": "checkbox",
                         "nested": true,
                         "parentFieldName": "versionControl"
                       },
@@ -179,10 +179,10 @@
         "deleteModalConfirmButtonText": "Yes, delete report",
         "deleteModalWarning": "You will lose all information entered for this report. Are you sure you want to proceed?",
         "enterReportText": "Enter MLR",
-        "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab.",
+        "emptyDashboardText": "Add the program reporting information for each MLR report. This information is listed row by row in the Excel Reference's Program Information tab.",
         "addEditModalAddTitle": "Add program reporting information",
         "addEditModalEditTitle": "Edit program reporting information",
-        "addEditModalHint": "Provide the following program reporting information for each MLR report. This information is listed row by row in the Excel Workbook’s Program Information tab."
+        "addEditModalHint": "Provide the following program reporting information for each MLR report. This information is listed row by row in the Excel Reference's Program Information tab."
       },
       "modalForm": {
         "id": "mlrd-modal",
@@ -367,7 +367,7 @@
             "validation": "date",
             "props": {
               "label": "N. MLR reporting period start date",
-              "hint": "Enter the start date of the MLR Reporting Period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
+              "hint": "Enter the start date of the MLR reporting period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
             }
           },
           {
@@ -423,7 +423,8 @@
             "validation": "textOptional",
             "props": {
               "label": "Q. Miscellaneous notes",
-              "hint": "Include any other notes or detail for CMS."
+              "hint": "Include any other notes or detail for CMS.",
+              "styleAsOptional": true
             }
           }
         ]
@@ -759,11 +760,11 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR)."
+                  "content": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). For information on credibility adjustments see"
                 },
                 {
                   "type": "externalLink",
-                  "content": "42 CFR § 438.8(h)",
+                  "content": "42 CFR § 438.8(h).",
                   "props": {
                     "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)",
                     "target": "_blank",
@@ -780,7 +781,21 @@
             "validation": "textOptional",
             "props": {
               "label": "Adjusted MLR atypical range explanation",
-              "hint": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here.",
+              "hint": [
+                {
+                  "type": "p",
+                  "content": "If the <i>Adjusted MLR</i> reported in section 3.4 is outside of the typical range and is either greater than 110% or less than 70%, states may provide an explanation here. For information on credibility adjustments see"
+                },
+                {
+                  "type": "externalLink",
+                  "content": "42 CFR § 438.8(h).",
+                  "props": {
+                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ],
               "styleAsOptional": true
             }
           },

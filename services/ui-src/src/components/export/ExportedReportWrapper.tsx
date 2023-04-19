@@ -15,6 +15,7 @@ import {
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
+
 export const ExportedReportWrapper = ({ section }: Props) => {
   switch (section.pageType) {
     case PageTypes.STANDARD:

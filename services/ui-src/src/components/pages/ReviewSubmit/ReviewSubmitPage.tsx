@@ -15,13 +15,14 @@ import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
 import { AlertTypes, AnyObject, ReportStatus } from "types";
 // utils
-import { useUser, utcDateToReadableDate } from "utils";
+import { parseCustomHtml, useUser, utcDateToReadableDate } from "utils";
 // verbiage
 import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 import iconSearch from "assets/icons/icon_search.png";
+import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const ReviewSubmitPage = () => {
   const { report, fetchReport, submitReport } = useContext(ReportContext);
@@ -93,6 +94,7 @@ export const ReviewSubmitPage = () => {
             date={report?.submittedOnDate}
             submittedBy={report?.submittedBy}
             reviewVerbiage={reviewVerbiage}
+            stateName={report.fieldData.stateName!}
           />
         ) : (
           <ReadyToSubmit
@@ -114,16 +116,23 @@ const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   const { report } = useContext(ReportContext);
   const reportType = report?.reportType === "MLR" ? "mlr" : "mcpar";
+  const isSubmitted = report?.status === "Submitted";
   return (
     <Button
       as={RouterLink}
       to={`/${reportType}/export`}
       target="_blank"
-      sx={sx.printButton}
-      leftIcon={<Image src={iconSearch} alt="Search Icon" height=".9rem" />}
-      variant="outline"
+      sx={!isSubmitted ? sx.printButton : sx.downloadButton}
+      leftIcon={
+        !isSubmitted ? (
+          <Image src={iconSearch} alt="Search Icon" height=".9rem" />
+        ) : (
+          <Image src={pdfIcon} alt="PDF Icon" height="1rem" />
+        )
+      }
+      variant={!isSubmitted ? "outline" : "primary"}
     >
-      {print.printButtonText}
+      {!isSubmitted ? print.printButtonText : print.downloadButtonText}
     </Button>
   );
 };
@@ -149,7 +158,7 @@ const ReadyToSubmit = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{intro.info}</Text>
+          <Text>{parseCustomHtml(intro.info)}</Text>
         </Box>
 
         <Box>
@@ -197,12 +206,25 @@ export const SuccessMessageGenerator = (
   reportType: string,
   name: string,
   submissionDate?: number,
-  submittedBy?: string
+  submittedBy?: string,
+  stateName?: string
 ) => {
   if (submissionDate && submittedBy) {
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
     const submittersName = `by ${submittedBy}`;
+
+    // prepare success message for MLR report submission
+    if (reportType === "MLR" && stateName) {
+      const reportTitle = (
+        <b>
+          {stateName} {name}
+        </b>
+      );
+      const preSubmissionMessage = `${reportType} submission for `;
+      const postSubmissionMessage = ` was submitted on ${submittedDate} by ${submittersName}.`;
+      return [preSubmissionMessage, reportTitle, postSubmissionMessage];
+    }
     return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
   }
   return `${reportType} report for ${name} was submitted.`;
@@ -214,6 +236,7 @@ export const SuccessMessage = ({
   date,
   submittedBy,
   reviewVerbiage,
+  stateName,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
@@ -221,7 +244,8 @@ export const SuccessMessage = ({
     reportType,
     name,
     date,
-    submittedBy
+    submittedBy,
+    stateName
   );
   const pdfExport = useFlags()?.pdfExport;
 
@@ -258,6 +282,7 @@ interface SuccessMessageProps {
   reviewVerbiage: AnyObject;
   date?: number;
   submittedBy?: string;
+  stateName?: string;
 }
 
 const sx = {
@@ -284,6 +309,10 @@ const sx = {
   },
   infoTextBox: {
     marginTop: "2rem",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+    },
   },
   infoHeading: {
     fontWeight: "bold",
@@ -308,6 +337,18 @@ const sx = {
     fontSize: "md",
     fontWeight: "700",
     border: "1px solid",
+  },
+  downloadButton: {
+    minWidth: "6rem",
+    height: "2rem",
+    fontSize: "md",
+    fontWeight: "700",
+    color: "white !important",
+    textDecoration: "none !important",
+    "&:hover, &:focus": {
+      backgroundColor: "palette.primary",
+      color: "white",
+    },
   },
   submitContainer: {
     width: "100%",

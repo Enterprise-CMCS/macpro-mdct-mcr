@@ -33,7 +33,7 @@ const mockMlrProgram = {
   report_programName: "Test",
   report_programType: [
     {
-      key: "programType",
+      key: "report_programType",
       value: "Behavioral Health Only",
     },
   ],
@@ -48,7 +48,7 @@ const mockMlrProgram = {
   report_reportingPeriodEndDate: "12/01/1993",
   report_reportingPeriodDiscrepancy: [
     {
-      key: "reportingPeriodDiscrepancy",
+      key: "report_reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
@@ -75,7 +75,7 @@ const mockMlrProgramOther = {
   report_programName: "Test Program",
   report_programType: [
     {
-      key: "programType",
+      key: "report_programType",
       value: "Behavioral Health Only",
     },
   ],
@@ -90,7 +90,7 @@ const mockMlrProgramOther = {
   report_reportingPeriodEndDate: "01/01/2022",
   report_reportingPeriodDiscrepancy: [
     {
-      key: "reportingPeriodDiscrepancy",
+      key: "report_reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
