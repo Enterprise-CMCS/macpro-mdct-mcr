@@ -188,10 +188,16 @@ export const nested = (
   optional?: string
 ) => {
   const fieldTypeMap = {
-    array: array()
-      .min(!optional ? 1 : 0, error.REQUIRED_GENERIC)
-      .of(object({ key: textSchema(), value: textSchema() }))
-      .required(error.REQUIRED_GENERIC),
+    array: optional
+      ? array()
+          .min(0, error.REQUIRED_GENERIC)
+          .of(object({ key: textSchema(), value: textSchema() }))
+          .nullable()
+          .notRequired()
+      : array()
+          .min(1, error.REQUIRED_GENERIC)
+          .of(object({ key: textSchema(), value: textSchema() }))
+          .required(error.REQUIRED_GENERIC),
     string: optional ? string().nullable() : string(),
     date: dateSchema(),
     object: object(),

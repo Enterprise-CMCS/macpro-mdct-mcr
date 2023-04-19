@@ -20,16 +20,17 @@ export const EntityStatusIcon = ({ entity }: Props) => {
       )
     );
 
-    const validationSchema = object().shape(
-      mapValidationTypesToSchema(reportFormValidation)
-    );
+    const formValidationSchema =
+      mapValidationTypesToSchema(reportFormValidation);
+    const formResolverSchema = object(formValidationSchema || {});
+    mapValidationTypesToSchema;
 
     try {
-      return validationSchema.validateSync(entity);
+      return formResolverSchema.validateSync(entity);
     } catch (err) {
       return false;
     }
-  }, [entity]);
+  }, [report]);
 
   return (
     <>
@@ -37,7 +38,7 @@ export const EntityStatusIcon = ({ entity }: Props) => {
         <Image
           sx={sx.statusIcon}
           src={successIcon}
-          alt="success icon"
+          alt="complete icon"
           boxSize="xl"
         />
       ) : (

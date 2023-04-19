@@ -2,7 +2,7 @@ import {
   array,
   boolean,
   mixed,
-  number as numberSchema,
+  number as yupNumberSchema,
   object,
   string,
 } from "yup";
@@ -27,15 +27,14 @@ export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 const validNAValues = ["N/A", "Data not available"];
 
 const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
-  return numberSchema().transform((_value) => {
+  return yupNumberSchema().transform((_value) => {
     return Number(value.replace(charsToReplace, ""));
   });
 };
 
 // NUMBER - Number or Valid Strings
-export const number = () =>
+export const numberSchema = () =>
   string()
-    .required(error.REQUIRED_GENERIC)
     .test({
       message: error.INVALID_NUMBER_OR_NA,
       test: (value) => {
@@ -52,7 +51,8 @@ export const number = () =>
       message: error.REQUIRED_GENERIC,
     });
 
-export const numberOptional = () => number().notRequired();
+export const number = () => numberSchema().required(error.REQUIRED_GENERIC);
+export const numberOptional = () => numberSchema().notRequired();
 
 // Number - Ratio
 export const ratio = () =>
@@ -148,11 +148,11 @@ export const checkboxSingle = () => boolean();
 
 // RADIO
 export const radioSchema = () =>
-  array()
-    .min(1, error.REQUIRED_GENERIC)
-    .of(object({ key: text(), value: text() }));
-export const radio = () => radioSchema().required(error.REQUIRED_GENERIC);
-export const radioOptional = () => radioSchema().notRequired().nullable();
+  array().of(object({ key: text(), value: text() }));
+export const radio = () =>
+  radioSchema().min(1, error.REQUIRED_GENERIC).required(error.REQUIRED_GENERIC);
+export const radioOptional = () =>
+  radioSchema().min(0, error.REQUIRED_GENERIC).notRequired().nullable();
 
 // DYNAMIC
 export const dynamic = () =>
@@ -171,12 +171,21 @@ export const dynamicOptional = () => dynamic().notRequired();
 export const nested = (
   fieldSchema: Function,
   parentFieldName: string,
-  parentOptionId: string
+  parentOptionId: string,
+  optional?: string
 ) => {
   const fieldTypeMap = {
-    array: array(),
-    string: string(),
-    date: date(),
+    array: optional
+      ? array()
+          .min(0, error.REQUIRED_GENERIC)
+          .of(object({ key: text(), value: text() }))
+          .nullable()
+          .notRequired()
+      : array()
+          .min(1, error.REQUIRED_GENERIC)
+          .of(object({ key: text(), value: text() }))
+          .required(error.REQUIRED_GENERIC),
+    string: optional ? string().nullable() : string(),
     object: object(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
@@ -184,7 +193,7 @@ export const nested = (
   return baseSchema.when(parentFieldName, {
     is: (value: Choice[]) =>
       // look for parentOptionId in checked choices
-      value?.find((option: Choice) => option.key === parentOptionId),
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId)),
     then: () => fieldSchema(), // returns standard field schema (required)
     otherwise: () => baseSchema, // returns not-required Yup base schema
   });
