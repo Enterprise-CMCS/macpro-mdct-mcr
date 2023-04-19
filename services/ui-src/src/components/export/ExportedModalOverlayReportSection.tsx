@@ -7,10 +7,10 @@ import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
-import { AnyObject } from "yup/lib/types";
 import { assertExhaustive } from "utils/other/typing";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
+import { getEntityDetailsMLR } from "utils";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,
@@ -41,7 +41,6 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
       >
         {report?.fieldData[entityType] &&
           renderModalOverlayTableBody(
-            verbiage,
             report?.reportType as ReportType,
             report?.fieldData[entityType]
           )}
@@ -74,13 +73,14 @@ export function renderHTML(rawHTML: string) {
 }
 
 export function renderModalOverlayTableBody(
-  verbiage: AnyObject,
   reportType: ReportType,
   entities: EntityShape[]
 ) {
   switch (reportType) {
     case ReportType.MLR:
       return entities.map((entity, idx) => {
+        const { report_programName, eligibilityGroup, reportingPeriod } =
+          getEntityDetailsMLR(entity);
         return (
           <Tr key={idx}>
             <Td sx={sx.statusIcon}>{renderStatusIcon(false)}</Td>
@@ -89,15 +89,9 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text>
-                {entity.report_programName} <br />
-                {entity["report_eligibilityGroup-otherText"]
-                  ? renderHTML(entity["report_eligibilityGroup-otherText"])
-                  : entity.report_eligibilityGroup[0].value
-                  ? entity.report_eligibilityGroup[0].value
-                  : "Not entered"}{" "}
-                <br />
-                {entity.report_reportingPeriodStartDate} to{" "}
-                {entity.report_reportingPeriodEndDate} <br />
+                {report_programName} <br />
+                {eligibilityGroup()} <br />
+                {reportingPeriod} <br />
                 {entity.report_planName ?? "Not entered"}
               </Text>
             </Td>
@@ -141,12 +135,14 @@ export function renderModalOverlayTableBody(
 const sx = {
   root: {
     marginBottom: "1rem",
-    width: "150%",
     "tr, th": {
       verticalAlign: "bottom",
       lineHeight: "base",
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
+    },
+    "th:nth-of-type(3)": {
+      width: "15rem",
     },
     thead: {
       //this will prevent generating a new header whenever the table spills over in another page

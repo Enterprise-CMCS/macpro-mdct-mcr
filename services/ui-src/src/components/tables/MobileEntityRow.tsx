@@ -15,10 +15,11 @@ export const MobileEntityRow = ({
   openDeleteEntityModal,
   openEntityDetailsOverlay,
 }: Props) => {
-  const { programName, planName } = entity;
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
 
-  const reportingPeriod = `${entity.reportingPeriodStartDate} to ${entity.reportingPeriodEndDate}`;
+  const { report_programName, report_planName } = entity;
+
+  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
     if (entity["report_eligibilityGroup-otherText"]) {
       return entity["report_eligibilityGroup-otherText"];
@@ -27,10 +28,10 @@ export const MobileEntityRow = ({
   };
 
   const programInfo = [
-    programName,
+    report_programName,
     eligibilityGroup(),
     reportingPeriod,
-    planName,
+    report_planName,
   ];
 
   return (

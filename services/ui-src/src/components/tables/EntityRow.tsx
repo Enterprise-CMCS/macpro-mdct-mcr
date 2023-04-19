@@ -113,8 +113,8 @@ const sx = {
       listStyleType: "none",
       li: {
         wordWrap: "break-word",
-        paddingTop: "0.25rem",
-        paddingBottom: "0.25rem",
+        paddingTop: "0.125rem",
+        paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
         "&:last-of-type": {
           fontWeight: "bold",

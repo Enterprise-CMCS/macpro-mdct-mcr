@@ -4,7 +4,6 @@ import { axe } from "jest-axe";
 import { ModalOverlayReportPageShape, ReportType } from "types";
 import {
   mockMlrReportContext,
-  mockMlrReportFieldData,
   mockModalOverlayReportPageJson,
 } from "utils/testing/setupJest";
 import {
@@ -16,16 +15,9 @@ import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 
 const mockReportContext = mockMlrReportContext;
 const mockReportContextOther = Object.assign({}, mockReportContext);
+
 const exportedModalOverlayReportSectionComponent = (
   <ReportContext.Provider value={mockReportContext}>
-    <ExportedModalOverlayReportSection
-      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
-    />
-  </ReportContext.Provider>
-);
-
-const exportedModalOverlayReportSectionComponentOther = (
-  <ReportContext.Provider value={mockReportContextOther}>
     <ExportedModalOverlayReportSection
       section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
     />
@@ -37,8 +29,8 @@ const mlrTableHeader = Object.values(
 );
 
 const mockMlrProgram = {
-  id: "1",
-  report_programName: "Test Program",
+  id: "123",
+  report_programName: "Test",
   report_programType: [
     {
       key: "report_programType",
@@ -51,18 +43,31 @@ const mockMlrProgram = {
       value: "Standalone CHIP",
     },
   ],
-  report_planName: "Test MCO Name",
-  report_reportingPeriodStartDate: "01/01/2021",
-  report_reportingPeriodEndDate: "01/01/2022",
+  report_planName: "Test",
+  report_reportingPeriodStartDate: "11/03/1992",
+  report_reportingPeriodEndDate: "12/01/1993",
   report_reportingPeriodDiscrepancy: [
     {
       key: "report_reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
-  report_miscellaneousNotes: "Notes",
   "report_eligibilityGroup-otherText": "",
   report_reportingPeriodDiscrepancyExplanation: "",
+  report_inurredClaims: "1",
+  report_healthCareQualityActivities: "1",
+  report_mlrNumerator: "1",
+  report_mlrNumeratorExplanation: "Test",
+  report_nonClaimsCosts: "1",
+  report_mlrDenominator: "1",
+  report_memberMonths: "12",
+  report_miscellaneousNotes: "Notes",
+  report_contractIncludesRemittance: [
+    {
+      key: "contractIncludesRemittance",
+      value: "No",
+    },
+  ],
 };
 
 const mockMlrProgramOther = {
@@ -89,11 +94,32 @@ const mockMlrProgramOther = {
       value: "No",
     },
   ],
-  report_miscellaneousNotes: "Notes",
+  report_miscellaneousNotes: "Notes!!!",
   "report_eligibilityGroup-otherText": "Eligibility group explanation",
   report_reportingPeriodDiscrepancyExplanation:
     "My reporting period discrepancy explanation",
+  report_inurredClaims: "1",
+  report_healthCareQualityActivities: "1",
+  report_mlrNumerator: "1",
+  report_mlrNumeratorExplanation: "Test",
+  report_nonClaimsCosts: "1",
+  report_mlrDenominator: "1",
+  report_memberMonths: "12",
+  report_contractIncludesRemittance: [
+    {
+      key: "contractIncludesRemittance",
+      value: "No",
+    },
+  ],
 };
+
+const exportedModalOverlayReportSectionComponentOther = (
+  <ReportContext.Provider value={mockReportContextOther}>
+    <ExportedModalOverlayReportSection
+      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
+    />
+  </ReportContext.Provider>
+);
 
 describe("Test ExportedModalOverlayReportSection", () => {
   test("ExportedModalOverlayReportSection renders", () => {
@@ -104,6 +130,9 @@ describe("Test ExportedModalOverlayReportSection", () => {
 });
 
 describe("Test renderModalOverlayTableBody", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("Should render data correctly", async () => {
     mockReportContext.report.fieldData.program = [mockMlrProgram];
     const { container, findByAltText, findByText } = render(
@@ -160,6 +189,7 @@ describe("Test renderModalOverlayTableBody", () => {
 
   it('Should render "other" explanations if they are filled.', async () => {
     mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
+
     const { findByText } = render(
       exportedModalOverlayReportSectionComponentOther
     );
@@ -193,13 +223,9 @@ describe("Test renderModalOverlayTableBody", () => {
   });
 
   it("Should throw an error using an unsupported report", async () => {
-    expect(() =>
-      renderModalOverlayTableBody(
-        {},
-        ReportType.MCPAR,
-        mockMlrReportFieldData.program
-      )
-    ).toThrow(Error);
+    expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
+      Error
+    );
   });
 });
 

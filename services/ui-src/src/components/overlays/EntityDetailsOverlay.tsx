@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // components
 import { Form, ReportContext, ReportPageIntro } from "components";
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
@@ -37,9 +37,9 @@ export const EntityDetailsOverlay = ({
   } = useContext(EntityContext);
 
   useEffect(() => {
+    setSelectedEntity(selectedEntity);
     setSidebarHidden(true);
     setEntityType(entityType);
-    setSelectedEntity(selectedEntity);
     setEntities(report?.fieldData[entityType]);
     return () => {
       setEntities([]);
@@ -76,6 +76,23 @@ export const EntityDetailsOverlay = ({
     closeEntityDetailsOverlay();
   };
 
+  const { report_programName, report_planName } = selectedEntity;
+
+  const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
+  const eligibilityGroup = () => {
+    if (selectedEntity && selectedEntity["report_eligibilityGroup-otherText"]) {
+      return selectedEntity["report_eligibilityGroup-otherText"];
+    }
+    return selectedEntity.report_eligibilityGroup[0].value;
+  };
+
+  const programInfo = [
+    report_programName,
+    eligibilityGroup(),
+    reportingPeriod,
+    report_planName,
+  ];
+
   return (
     <Box sx={sx}>
       <Box data-testid="entity-details-overlay">
@@ -95,23 +112,12 @@ export const EntityDetailsOverlay = ({
             reportType={report?.reportType}
           />
         )}
-        <Box>
-          <Heading size="xs">{report?.reportType} Report for:</Heading>
-          <Text>{report?.programName || report?.submissionName}</Text>
-          {selectedEntity.report_eligibilityGroup && (
-            <Text>
-              {selectedEntity["report_eligibilityGroup-otherText"]
-                ? selectedEntity["report_eligibilityGroup-otherText"]
-                : selectedEntity.report_eligibilityGroup[0].value}
-            </Text>
-          )}
-          <Text>
-            {selectedEntity.reportingPeriodStartDate} to{" "}
-            {selectedEntity.reportingPeriodEndDate}
-          </Text>
-          <Text fontSize="lg" as="b">
-            {selectedEntity.planName}
-          </Text>
+        <Box sx={sx.programInfo}>
+          <ul>
+            {programInfo.map((field, index) => (
+              <li key={index}>{field}</li>
+            ))}
+          </ul>
         </Box>
         <Form
           id={selectedEntity.id}
@@ -176,5 +182,22 @@ const sx = {
   },
   saveButton: {
     width: "8.25rem",
+  },
+  programInfo: {
+    maxWidth: "18.75rem",
+    ul: {
+      margin: "0.5rem auto",
+      listStyleType: "none",
+      li: {
+        wordWrap: "break-word",
+        paddingTop: "0.125rem",
+        paddingBottom: "0.125rem",
+        whiteSpace: "break-spaces",
+        "&:last-of-type": {
+          fontWeight: "bold",
+          fontSize: "md",
+        },
+      },
+    },
   },
 };

@@ -20,4 +20,4 @@ export const mcparReportJson = {
 
 export const nonFormPages = ["/mcpar/get-started"];
 export const isMcparReportFormPage = (pathname: string): boolean =>
-  pathname.includes("/mcpar/") && !nonFormPages.includes(pathname);
+  mcparReportRoutesFlat.some((route) => route.path == pathname);
