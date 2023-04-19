@@ -107,6 +107,11 @@ export default {
             ariaLabel: "Link opens in new tab",
           },
         },
+        {
+          type: "text",
+          as: "span",
+          content: ".",
+        },
       ],
       list: [],
       text: "",
