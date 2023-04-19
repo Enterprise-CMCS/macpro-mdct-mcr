@@ -12,6 +12,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle_bright.png";
+import successIcon from "assets/icons/icon_check_circle.png";
 
 export const StatusTable = () => {
   const { report } = useContext(ReportContext);
@@ -58,14 +59,18 @@ const TableRow = ({ page, depth }: RowProps) => {
         </Td>
       )}
       <Td>
-        {!status && status !== undefined && (
+        {status ? (
+          <Flex sx={sx.status}>
+            <Image src={successIcon} alt="Complete notification" />
+            <Text>Complete</Text>
+          </Flex>
+        ) : (
           <Flex sx={sx.status}>
             <Image src={errorIcon} alt="Error notification" />
             <Text>Error</Text>
           </Flex>
         )}
       </Td>
-
       <Td>
         {!children && (
           <Button
