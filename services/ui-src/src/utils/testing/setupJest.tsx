@@ -635,7 +635,7 @@ export const mockMlrReportFieldData = {
   program: [
     {
       id: "mock-id",
-      programType: [
+      report_programType: [
         {
           key: "option1",
           value: "mock-type1",

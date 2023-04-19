@@ -89,7 +89,7 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text>
-                {entity.programName} <br />
+                {entity.report_programName} <br />
                 {entity["report_eligibilityGroup-otherText"]
                   ? renderHTML(entity["report_eligibilityGroup-otherText"])
                   : entity.report_eligibilityGroup[0].value
