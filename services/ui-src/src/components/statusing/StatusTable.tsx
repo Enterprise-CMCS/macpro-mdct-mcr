@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import { ReportContext, Table } from "components";
 // types
-import { ReportPageProgress } from "types";
+import { ReportPageProgress, ReportType } from "types";
 // utils
 import { getRouteStatus } from "utils";
 // verbiage
@@ -13,6 +13,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle_bright.png";
 import successIcon from "assets/icons/icon_check_circle.png";
+import { assertExhaustive } from "utils/other/typing";
 
 export const StatusTable = () => {
   const { report } = useContext(ReportContext);
@@ -44,10 +45,57 @@ const ChildRow = ({ page, depth }: RowProps) => {
   );
 };
 
+const StatusIcon = ({
+  reportType,
+  status,
+}: {
+  reportType: ReportType;
+  status?: boolean;
+}) => {
+  switch (reportType) {
+    case ReportType.MLR: {
+      if (status) {
+        return (
+          <Flex sx={sx.status}>
+            <Image src={successIcon} alt="Complete notification" />
+            <Text>Complete</Text>
+          </Flex>
+        );
+      } else {
+        return (
+          <Flex sx={sx.status}>
+            <Image src={errorIcon} alt="Error notification" />
+            <Text>Error</Text>
+          </Flex>
+        );
+      }
+    }
+    case ReportType.NAAAR:
+    case ReportType.MCPAR: {
+      if (status) {
+        return <></>;
+      } else {
+        return (
+          <Flex sx={sx.status}>
+            <Image src={errorIcon} alt="Error notification" />
+            <Text>Error</Text>
+          </Flex>
+        );
+      }
+    }
+    default:
+      assertExhaustive(reportType);
+      throw new Error(
+        `Statusing icons for '${reportType}' have not been implemented.`
+      );
+  }
+};
+
 const TableRow = ({ page, depth }: RowProps) => {
   const navigate = useNavigate();
   const { name, path, children, status } = page;
   const buttonAriaLabel = `Edit  ${name}`;
+  const { report } = useContext(ReportContext);
 
   return (
     <Tr>
@@ -59,17 +107,10 @@ const TableRow = ({ page, depth }: RowProps) => {
         </Td>
       )}
       <Td>
-        {status ? (
-          <Flex sx={sx.status}>
-            <Image src={successIcon} alt="Complete notification" />
-            <Text>Complete</Text>
-          </Flex>
-        ) : (
-          <Flex sx={sx.status}>
-            <Image src={errorIcon} alt="Error notification" />
-            <Text>Error</Text>
-          </Flex>
-        )}
+        <StatusIcon
+          reportType={report?.reportType as ReportType}
+          status={status}
+        />
       </Td>
       <Td>
         {!children && (
