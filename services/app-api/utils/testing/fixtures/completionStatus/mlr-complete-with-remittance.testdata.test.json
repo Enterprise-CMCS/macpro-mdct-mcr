@@ -6,15 +6,15 @@
     }
   ],
   "stateName": "Minnesota",
-  "contactName": "Test Name",
-  "contactPhoneNumber": "1111111111",
+  "contactName": "Test name",
+  "contactPhoneNumber": "111-111-1111",
   "contactEmailAddress": "stateuser@test.com",
-  "contactJobTitle": "Test Title",
+  "contactJobTitle": "Title",
   "stateAgencyName": "Agency Name",
   "program": [
     {
-      "id": "74fc4ee-1528-1410-57e4-481fbe1d4375",
-      "report_programName": "Test Program Name",
+      "id": "1a875d-8b8-e555-8ada-160240d8caea",
+      "report_programName": "ABC",
       "report_programType": [
         {
           "key": "report_programType-cQhGnyBmiXszLqrx6b2Cp8",
@@ -27,35 +27,29 @@
           "value": "All Populations"
         }
       ],
-      "report_planName": "Test Name",
+      "report_planName": "Name",
+      "report_reportingPeriodStartDate": "04/01/2023",
+      "report_reportingPeriodEndDate": "04/01/2023",
       "report_reportingPeriodDiscrepancy": [
         {
           "key": "report_reportingPeriodDiscrepancy-2NI2UTNqhvrJLvEv8SORD7vIPRI",
           "value": "No"
         }
       ],
-      "report_miscellaneousNotes": "Test",
       "report_eligibilityGroup-otherText": "",
       "report_reportingPeriodDiscrepancyExplanation": "",
-      "report_mlrNumerator": "123",
-      "report_mlrDenominator": "123",
-      "report_requiredMemberMonths": "123",
-      "report_adjustedMlrPercentage": "123",
+      "report_mlrNumerator": "1",
+      "report_mlrDenominator": "1",
+      "report_requiredMemberMonths": "111",
+      "report_adjustedMlrPercentage": "111",
       "report_contractIncludesMlrRemittanceRequirement": [
         {
           "key": "report_contractIncludesMlrRemittanceRequirement-7FP4jcg4jK7Ssqp3cCW5vQ",
           "value": "Yes"
         }
       ],
-      "report_remittanceDollarAmountOwed": "123",
-      "report_stateFederalRemittanceShareDeterminationMethodologyDescription": "1233",
-      "report_isRemittancePeriodSameAsMlrReportingPeriod": [],
-      "report_remittancePeriodStartDate": "",
-      "report_remittancePeriodEndDate": "",
-      "state_doesStateRemittanceMlrCalculationAlign": [],
-      "state_remittanceMlrCalculationDeterminationMethod": "",
-      "report_reportingPeriodStartDate": "11/19/1992",
-      "report_reportingPeriodEndDate": "11/19/1993"
+      "report_remittanceDollarAmountOwed": "111",
+      "report_stateFederalRemittanceShareDeterminationMethodologyDescription": "1111"
     }
   ]
 }
