@@ -61,6 +61,8 @@ const StatusIcon = ({
             <Text>Complete</Text>
           </Flex>
         );
+      } else if (status === undefined) {
+        return <></>;
       } else {
         return (
           <Flex sx={sx.status}>
@@ -72,7 +74,7 @@ const StatusIcon = ({
     }
     case ReportType.NAAAR:
     case ReportType.MCPAR: {
-      if (status) {
+      if (status || status === undefined) {
         return <></>;
       } else {
         return (
