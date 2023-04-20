@@ -52,7 +52,7 @@ export const numberSchema = () =>
     });
 
 export const number = () => numberSchema().required(error.REQUIRED_GENERIC);
-export const numberOptional = () => numberSchema().notRequired();
+export const numberOptional = () => numberSchema().notRequired().nullable();
 
 // Number - Ratio
 export const ratio = () =>
