@@ -45,7 +45,7 @@ const ChildRow = ({ page, depth }: RowProps) => {
   );
 };
 
-const StatusIcon = ({
+export const StatusIcon = ({
   reportType,
   status,
 }: {
@@ -57,7 +57,7 @@ const StatusIcon = ({
       if (status) {
         return (
           <Flex sx={sx.status}>
-            <Image src={successIcon} alt="Complete notification" />
+            <Image src={successIcon} alt="Success notification" />
             <Text>Complete</Text>
           </Flex>
         );
