@@ -9,9 +9,10 @@ import {
   EntityShape,
   EntityType,
   FormJson,
+  isFieldElement,
   ReportStatus,
 } from "types";
-import { useUser } from "utils";
+import { filterFormData, useUser } from "utils";
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -50,8 +51,15 @@ export const EntityDetailsOverlay = ({
 
   const onSubmit = async (enteredData: AnyObject) => {
     setSubmitting(true);
-    const entity = { ...selectedEntity, ...enteredData };
-    updateEntities(entity);
+    const filteredFormData = filterFormData(
+      enteredData,
+      form.fields.filter(isFieldElement)
+    );
+    const newEntity = {
+      ...selectedEntity,
+      ...filteredFormData,
+    };
+    updateEntities(newEntity);
     const reportKeys = {
       reportType: report?.reportType,
       state: state,
