@@ -171,22 +171,13 @@ export const dynamicOptional = () => dynamic().notRequired();
 export const nested = (
   fieldSchema: Function,
   parentFieldName: string,
-  parentOptionId: string,
-  optional?: string
+  parentOptionId: string
 ) => {
   const fieldTypeMap = {
-    array: optional
-      ? array()
-          .min(0, error.REQUIRED_GENERIC)
-          .of(object({ key: text(), value: text() }))
-          .nullable()
-          .notRequired()
-      : array()
-          .min(1, error.REQUIRED_GENERIC)
-          .of(object({ key: text(), value: text() }))
-          .required(error.REQUIRED_GENERIC),
-    string: optional ? string().nullable() : string(),
+    array: array(),
+    string: string(),
     object: object(),
+    date: date(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];

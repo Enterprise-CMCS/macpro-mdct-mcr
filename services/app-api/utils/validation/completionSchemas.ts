@@ -184,21 +184,11 @@ export const dynamicOptional = () => dynamic().notRequired();
 export const nested = (
   fieldSchema: Function,
   parentFieldName: string,
-  parentOptionId: string,
-  optional?: string
+  parentOptionId: string
 ) => {
   const fieldTypeMap = {
-    array: optional
-      ? array()
-          .min(0, error.REQUIRED_GENERIC)
-          .of(object({ key: textSchema(), value: textSchema() }))
-          .nullable()
-          .notRequired()
-      : array()
-          .min(1, error.REQUIRED_GENERIC)
-          .of(object({ key: textSchema(), value: textSchema() }))
-          .required(error.REQUIRED_GENERIC),
-    string: optional ? string().nullable() : string(),
+    array: array(),
+    string: string(),
     date: dateSchema(),
     object: object(),
   };
@@ -207,7 +197,7 @@ export const nested = (
   return baseSchema.when(parentFieldName, {
     is: (value: Choice[]) =>
       // look for parentOptionId in checked choices
-      value?.find((option: Choice) => option.key === parentOptionId),
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId)),
     then: () => fieldSchema(), // returns standard field schema (required)
     otherwise: () => baseSchema, // returns not-required Yup base schema
   });
