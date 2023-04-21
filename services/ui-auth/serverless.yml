@@ -140,7 +140,6 @@ resources:
           - ADMIN_NO_SRP_AUTH
         GenerateSecret: false # pragma: allowlist secret
         AllowedOAuthFlows:
-          - implicit
           - code
         AllowedOAuthFlowsUserPoolClient: true
         AllowedOAuthScopes:
@@ -165,11 +164,11 @@ resources:
           - Fn::If:
               - BackWithOktaOIDC
               - !Ref OktaUserPoolIdentityProviderOIDC
-              - COGNITO
+              - !Ref AWS::NoValue
           - Fn::If:
               - BackWithOktaSAML
               - !Ref OktaUserPoolIdentityProviderSAML
-              - COGNITO
+              - !Ref AWS::NoValue
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
       Properties:
