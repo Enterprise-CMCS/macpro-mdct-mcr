@@ -5,7 +5,9 @@ import { ReportRoute } from "types";
 
 // TODO: Chain future reports here
 export const isReportFormPage = (pathname: string): boolean =>
-  isMcparReportFormPage(pathname) || isMlrReportFormPage(pathname);
+  isMcparReportFormPage(pathname) ||
+  isMlrReportFormPage(pathname) ||
+  pathname.includes("export");
 
 export const useFindRoute = (
   flatRouteArray: ReportRoute[] | undefined,
