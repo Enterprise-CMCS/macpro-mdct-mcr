@@ -23,7 +23,6 @@ export const EntityStatusIcon = ({ entity }: Props) => {
     const formValidationSchema =
       mapValidationTypesToSchema(reportFormValidation);
     const formResolverSchema = object(formValidationSchema || {});
-    mapValidationTypesToSchema;
 
     try {
       return formResolverSchema.validateSync(entity);

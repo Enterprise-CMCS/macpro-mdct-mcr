@@ -97,7 +97,8 @@
                       "validation": {
                         "type": "checkbox",
                         "nested": true,
-                        "parentFieldName": "versionControl"
+                        "parentFieldName": "versionControl",
+                        "parentOptionId": "cyUSrTH8mWdpqAKExLZAkz"
                       },
                       "props": {
                         "label": "H. Version control description",
@@ -133,7 +134,8 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "versionControlDescription"
+                                  "parentFieldName": "versionControlDescription",
+                                  "parentOptionId": "4V3X7Mmz6VC89k9bgQUoLK"
                                 }
                               }
                             ]
