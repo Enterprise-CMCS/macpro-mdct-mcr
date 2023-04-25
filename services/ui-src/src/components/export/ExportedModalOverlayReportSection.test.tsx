@@ -9,7 +9,6 @@ import {
 import {
   ExportedModalOverlayReportSection,
   renderModalOverlayTableBody,
-  renderStatusIcon,
 } from "./ExportedModalOverlayReportSection";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 
@@ -228,17 +227,6 @@ describe("Test renderModalOverlayTableBody", () => {
     expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
       Error
     );
-  });
-});
-
-describe("Test renderStatusIcon", () => {
-  it("Should render a green check if complete", async () => {
-    const { findByAltText } = render(renderStatusIcon(true));
-    expect(await findByAltText("success icon")).toBeVisible();
-  });
-  it("Should render a red x if incomplete", async () => {
-    const { findByAltText } = render(renderStatusIcon(false));
-    expect(await findByAltText("warning icon")).toBeVisible();
   });
 });
 

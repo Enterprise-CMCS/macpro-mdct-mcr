@@ -970,7 +970,7 @@
                       "id": "report_reportingPeriodEndDate",
                       "type": "date",
                       "validation": {
-                        "type": "date",
+                        "type": "endDate",
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"

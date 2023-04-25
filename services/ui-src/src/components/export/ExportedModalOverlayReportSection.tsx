@@ -6,10 +6,8 @@ import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
-import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Box, Td, Text, Tr } from "@chakra-ui/react";
 import { assertExhaustive } from "utils/other/typing";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
-import finishedIcon from "assets/icons/icon_check_circle.png";
 import { getEntityDetailsMLR } from "utils";
 import { EntityStatusIcon } from "components/tables/EntityStatusIcon";
 
@@ -56,13 +54,6 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
 
 export interface Props {
   section: ModalOverlayReportPageShape;
-}
-
-export function renderStatusIcon(status: boolean) {
-  if (status) {
-    return <Image src={finishedIcon} alt="success icon" boxSize="xl" />;
-  }
-  return <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />;
 }
 
 // render '<' special character
