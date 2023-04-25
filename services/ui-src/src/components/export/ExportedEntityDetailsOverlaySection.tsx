@@ -35,6 +35,7 @@ export const ExportedEntityDetailsOverlaySection = ({
     <Box sx={sx.sectionHeading} {...props}>
       <ExportedSectionHeading
         heading={exportVerbiageMap[report?.reportType as ReportType]}
+        reportType={report?.reportType}
         verbiage={{
           ...section.verbiage,
           intro: {
@@ -99,7 +100,7 @@ export function getEntityTableComponents(
   section: ModalOverlayReportPageShape,
   formSections: (FormField | FormLayoutElement)[][]
 ) {
-  return entities.map((entity, idx) => {
+  return entities?.map((entity, idx) => {
     const {
       report_programName,
       eligibilityGroup,
