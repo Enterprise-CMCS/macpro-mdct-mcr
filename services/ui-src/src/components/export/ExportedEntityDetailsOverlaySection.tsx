@@ -124,15 +124,13 @@ export function getEntityTableComponents(
           <Heading sx={sx.entityHeading} fontSize={"xl"}>
             {idx + 1}. {section.verbiage.intro.subsection} for:
           </Heading>
-          <Box sx={sx.programInfo}>
+          <Heading sx={sx.programInfo} fontSize={"xl"}>
             <ul>
               {programInfo.map((field, index) => (
-                <Heading fontSize={"xl"}>
-                  <li key={index}> {renderHtml(field)} </li>
-                </Heading>
+                <li key={index}>{renderHtml(field)}</li>
               ))}
             </ul>
-          </Box>
+          </Heading>
         </Box>
         {formSections.map((fields, idx) => {
           const filteredFields = fields.filter(
