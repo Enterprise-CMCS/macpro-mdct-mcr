@@ -16,7 +16,7 @@ import {
   ReportType,
 } from "types";
 // utils
-import { assertExhaustive, getEntityDetailsMLR } from "utils";
+import { assertExhaustive, getEntityDetailsMLR, renderHtml } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
@@ -121,13 +121,15 @@ export function getEntityTableComponents(
     return (
       <Box key={uuid()}>
         <Box sx={sx.entityInformation}>
-          <Heading sx={sx.entityHeading} fontSize={"lg"}>
+          <Heading sx={sx.entityHeading} fontSize={"xl"}>
             {idx + 1}. {section.verbiage.intro.subsection} for:
           </Heading>
           <Box sx={sx.programInfo}>
             <ul>
               {programInfo.map((field, index) => (
-                <li key={index}> {field} </li>
+                <Heading fontSize={"xl"}>
+                  <li key={index}> {renderHtml(field)} </li>
+                </Heading>
               ))}
             </ul>
           </Box>
@@ -140,7 +142,7 @@ export function getEntityTableComponents(
           return (
             <Fragment key={`tableContainer-${idx}`}>
               {header.type === "sectionHeader" && (
-                <Heading size={"sm"} key={`heading-${idx}`}>
+                <Heading size={"md"} key={`heading-${idx}`}>
                   {header.props?.content}
                 </Heading>
               )}
@@ -279,10 +281,6 @@ const sx = {
         paddingTop: "0.125rem",
         paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
-        "&:last-of-type": {
-          fontWeight: "bold",
-          fontSize: "md",
-        },
       },
     },
   },
