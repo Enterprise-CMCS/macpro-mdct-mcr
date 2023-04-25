@@ -962,7 +962,8 @@
                       "props": {
                         "label": "N. MLR reporting period start date",
                         "hint": "Auto-populates from program reporting information.",
-                        "disabled": true
+                        "disabled": true,
+                        "clear": false
                       }
                     },
                     {
@@ -977,7 +978,8 @@
                       "props": {
                         "label": "O. MLR reporting period end date",
                         "hint": "Auto-populates from program reporting information.",
-                        "disabled": true
+                        "disabled": true,
+                        "clear": false
                       }
                     },
                     {

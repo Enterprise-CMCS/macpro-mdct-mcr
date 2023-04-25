@@ -130,6 +130,15 @@ export const ChoiceListField = ({
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
+            case "date":
+              if (child.props?.clear === false) {
+                break;
+              } else {
+                child.props = { ...child.props, clear: true };
+                form.setValue(child.id, "");
+                form.unregister(child.id);
+                break;
+              }
             default:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, "");

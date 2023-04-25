@@ -138,7 +138,11 @@ export const EntityDetailsOverlay = ({
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
-            <Button form={form.id} type="submit" sx={sx.saveButton}>
+            <Button
+              onClick={() => closeOverlay()}
+              type="submit"
+              sx={sx.saveButton}
+            >
               {submitting ? <Spinner size="small" /> : "Save & return"}
             </Button>
           </Flex>

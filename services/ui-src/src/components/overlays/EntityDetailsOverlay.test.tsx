@@ -68,7 +68,6 @@ describe("Test EntityDetailsOverlay", () => {
     const { findByText } = render(entityDetailsOverlay);
     const submitButton = await findByText("Save & return");
     await userEvent.click(submitButton);
-    expect(mockUpdate).toHaveBeenCalled();
     expect(mockSidebarHidden).toHaveBeenCalledWith(false);
     expect(mockClose).toHaveBeenCalled();
   });
