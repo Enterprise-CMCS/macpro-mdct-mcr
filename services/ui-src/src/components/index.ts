@@ -43,6 +43,7 @@ export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportMetadataTable } from "./export/ExportedReportMetadataTable";
 export { ExportedModalOverlayReportSection } from "./export/ExportedModalOverlayReportSection";
 export { ExportedEntityDetailsOverlaySection } from "./export/ExportedEntityDetailsOverlaySection";
+export { ExportedEntityDetailsTable } from "./export/ExportedEntityDetailsTable";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";

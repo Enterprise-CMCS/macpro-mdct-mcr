@@ -1,7 +1,13 @@
 import { Fragment, useContext } from "react";
+import uuid from "react-uuid";
 // components
-import { ExportedSectionHeading, ReportContext } from "components";
-// types, utils
+import {
+  ExportedSectionHeading,
+  ExportedEntityDetailsTable,
+  ReportContext,
+} from "components";
+import { Box, Heading } from "@chakra-ui/react";
+// types
 import {
   EntityShape,
   FormField,
@@ -9,14 +15,11 @@ import {
   ModalOverlayReportPageShape,
   ReportType,
 } from "types";
+// utils
+import { assertExhaustive, getEntityDetailsMLR } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
-import { Box, Heading } from "@chakra-ui/react";
-import { assertExhaustive } from "utils/other/typing";
-import { ExportedEntityDetailsTable } from "./ExportedEntityDetailsTable";
-import uuid from "react-uuid";
-import { getEntityDetailsMLR } from "utils";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,

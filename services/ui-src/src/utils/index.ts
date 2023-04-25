@@ -33,3 +33,4 @@ export * from "./other/scrollToTop";
 export * from "./other/time";
 export * from "./other/useBreakpoint";
 export * from "./other/parsing";
+export * from "./other/typing";
