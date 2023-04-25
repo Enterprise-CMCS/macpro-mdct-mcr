@@ -11,6 +11,7 @@ import { assertExhaustive } from "utils/other/typing";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
 import { getEntityDetailsMLR } from "utils";
+import { EntityStatusIcon } from "components/tables/EntityStatusIcon";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,
@@ -83,7 +84,9 @@ export function renderModalOverlayTableBody(
           getEntityDetailsMLR(entity);
         return (
           <Tr key={idx}>
-            <Td sx={sx.statusIcon}>{renderStatusIcon(false)}</Td>
+            <Td sx={sx.statusIcon}>
+              <EntityStatusIcon entity={entity} />
+            </Td>
             <Td>
               <Text sx={sx.tableIndex}>{idx + 1}</Text>
             </Td>
