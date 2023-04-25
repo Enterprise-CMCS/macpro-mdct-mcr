@@ -1,11 +1,12 @@
-import React from "react";
 // components
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
-// utils
+import { EntityStatusIcon } from "components";
+// types
 import { AnyObject, EntityShape } from "types";
+// utils
+import { renderHtml } from "utils/other/rendering";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import { EntityStatusIcon } from "./EntityStatusIcon";
 
 export const EntityRow = ({
   entity,
@@ -24,12 +25,6 @@ export const EntityRow = ({
     return entity.report_eligibilityGroup[0].value;
   };
 
-  // render '<' special character
-  const renderHTML = (rawHTML: string) =>
-    React.createElement("span", {
-      dangerouslySetInnerHTML: { __html: rawHTML },
-    });
-
   const programInfo = [
     report_programName,
     eligibilityGroup(),
@@ -45,7 +40,7 @@ export const EntityRow = ({
       <Td sx={sx.programInfo}>
         <ul>
           {programInfo.map((field, index) => (
-            <li key={index}>{renderHTML(field)}</li>
+            <li key={index}>{renderHtml(field)}</li>
           ))}
         </ul>
       </Td>

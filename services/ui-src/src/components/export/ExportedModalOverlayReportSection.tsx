@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 // components
 import { ReportContext, Table } from "components";
-// types, utils
+// types
 import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
+// utils
+import { assertExhaustive, getEntityDetailsMLR, renderHtml } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
-import { assertExhaustive } from "utils/other/typing";
+// assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
-import { getEntityDetailsMLR } from "utils";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,
@@ -64,14 +65,6 @@ export function renderStatusIcon(status: boolean) {
   return <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />;
 }
 
-// render '<' special character
-export function renderHTML(rawHTML: string) {
-  const specialChar = React.createElement("span", {
-    dangerouslySetInnerHTML: { __html: rawHTML },
-  });
-  return specialChar;
-}
-
 export function renderModalOverlayTableBody(
   reportType: ReportType,
   entities: EntityShape[]
@@ -90,7 +83,7 @@ export function renderModalOverlayTableBody(
             <Td>
               <Text>
                 {report_programName} <br />
-                {eligibilityGroup()} <br />
+                {renderHtml(eligibilityGroup())} <br />
                 {reportingPeriod} <br />
                 {entity.report_planName ?? "Not entered"}
               </Text>
