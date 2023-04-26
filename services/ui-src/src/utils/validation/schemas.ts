@@ -34,24 +34,25 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
 
 // NUMBER - Number or Valid Strings
 export const numberSchema = () =>
-  string()
-    .test({
-      message: error.INVALID_NUMBER_OR_NA,
-      test: (value) => {
-        const validNumberRegex = /[0-9,.]/;
-        if (value) {
-          const isValidStringValue = validNAValues.includes(value);
-          const isValidNumberValue = validNumberRegex.test(value);
-          return isValidStringValue || isValidNumberValue;
-        } else return true;
-      },
-    })
+  string().test({
+    message: error.INVALID_NUMBER_OR_NA,
+    test: (value) => {
+      const validNumberRegex = /[0-9,.]/;
+      if (value) {
+        const isValidStringValue = validNAValues.includes(value);
+        const isValidNumberValue = validNumberRegex.test(value);
+        return isValidStringValue || isValidNumberValue;
+      } else return true;
+    },
+  });
+
+export const number = () =>
+  numberSchema()
+    .required(error.REQUIRED_GENERIC)
     .test({
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
     });
-
-export const number = () => numberSchema().required(error.REQUIRED_GENERIC);
 export const numberOptional = () => numberSchema().notRequired().nullable();
 
 // Number - Ratio
