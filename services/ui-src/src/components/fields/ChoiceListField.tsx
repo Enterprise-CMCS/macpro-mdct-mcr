@@ -131,7 +131,7 @@ export const ChoiceListField = ({
               }
               break;
             case "date":
-              if (child.props?.clear === false) {
+              if (child.props?.disabled) {
                 break;
               } else {
                 child.props = { ...child.props, clear: true };
@@ -213,9 +213,24 @@ export const ChoiceListField = ({
           hydrationValue,
         });
 
+        const choicesWithNestedEnabledFields = choices.map((choice) => {
+          if (choice.children) {
+            return {
+              ...choice,
+              children: choice.children.filter(
+                (child) => !child.props?.disabled
+              ),
+            };
+          }
+          return choice;
+        });
+
         const combinedFields = [
           ...fields,
-          ...getNestedChildFields(choices, lastDatabaseValue),
+          ...getNestedChildFields(
+            choicesWithNestedEnabledFields,
+            lastDatabaseValue
+          ),
         ];
         const reportArgs = {
           id: report?.id,
