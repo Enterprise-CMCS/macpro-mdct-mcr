@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // components
 import { Form, ReportContext, ReportPageIntro } from "components";
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
@@ -122,11 +122,14 @@ export const EntityDetailsOverlay = ({
           />
         )}
         <Box sx={sx.programInfo}>
-          <ul>
-            {programInfo.map((field, index) => (
-              <li key={index}>{field}</li>
-            ))}
-          </ul>
+          <Heading fontSize={"md"}>MLR Report for:</Heading>
+          <Heading fontSize={"md"}>
+            <ul>
+              {programInfo.map((field, index) => (
+                <li key={index}>{field}</li>
+              ))}
+            </ul>
+          </Heading>
         </Box>
         <Form
           id={form.id}
@@ -202,10 +205,6 @@ const sx = {
         paddingTop: "0.125rem",
         paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
-        "&:last-of-type": {
-          fontWeight: "bold",
-          fontSize: "md",
-        },
       },
     },
   },

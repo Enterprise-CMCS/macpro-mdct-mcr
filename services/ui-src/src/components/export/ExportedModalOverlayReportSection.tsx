@@ -1,15 +1,17 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 // components
-import { ReportContext, Table } from "components";
-// types, utils
+import { EntityStatusIcon, ReportContext, Table } from "components";
+import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
+// types
 import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
+// utils
+import { assertExhaustive, getEntityDetailsMLR, renderHtml } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
-import { Box, Td, Text, Tr } from "@chakra-ui/react";
-import { assertExhaustive } from "utils/other/typing";
-import { getEntityDetailsMLR } from "utils";
-import { EntityStatusIcon } from "components/tables/EntityStatusIcon";
+// assets
+import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import finishedIcon from "assets/icons/icon_check_circle.png";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,
@@ -56,12 +58,11 @@ export interface Props {
   section: ModalOverlayReportPageShape;
 }
 
-// render '<' special character
-export function renderHTML(rawHTML: string) {
-  const specialChar = React.createElement("span", {
-    dangerouslySetInnerHTML: { __html: rawHTML },
-  });
-  return specialChar;
+export function renderStatusIcon(status: boolean) {
+  if (status) {
+    return <Image src={finishedIcon} alt="success icon" boxSize="xl" />;
+  }
+  return <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />;
 }
 
 export function renderModalOverlayTableBody(
@@ -84,7 +85,7 @@ export function renderModalOverlayTableBody(
             <Td>
               <Text>
                 {report_programName} <br />
-                {eligibilityGroup()} <br />
+                {renderHtml(eligibilityGroup())} <br />
                 {reportingPeriod} <br />
                 {entity.report_planName ?? "Not entered"}
               </Text>
