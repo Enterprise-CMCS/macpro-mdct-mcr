@@ -222,7 +222,7 @@ export const SuccessMessageGenerator = (
         </b>
       );
       const preSubmissionMessage = `${reportType} submission for `;
-      const postSubmissionMessage = ` was submitted on ${submittedDate} by ${submittersName}.`;
+      const postSubmissionMessage = ` ${submittedDate} by ${submittersName}.`;
       return [preSubmissionMessage, reportTitle, postSubmissionMessage];
     }
     return `${reportType} report for ${name} ${submittedDate} by ${submittersName}.`;
