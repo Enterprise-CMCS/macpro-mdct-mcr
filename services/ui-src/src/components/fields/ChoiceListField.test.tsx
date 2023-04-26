@@ -110,6 +110,7 @@ const mockNestedChildren = [
   {
     id: "test-nested-child-radio",
     type: "radio",
+    disabled: true,
     props: {
       choices: [...mockNestedChoices],
     },
