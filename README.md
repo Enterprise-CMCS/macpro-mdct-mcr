@@ -1,8 +1,8 @@
 # MDCT-MCR
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/1158e44ecfccd96be714/maintainability)](https://codeclimate.com/repos/6403ec9ff2b39a27c393430e/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/1158e44ecfccd96be714/test_coverage)](https://codeclimate.com/repos/6403ec9ff2b39a27c393430e/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/maintainability)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/test_coverage)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/test_coverage)
 
 MCR is the CMCS MDCT application for collecting state data related to Managed Care plans and performance. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
