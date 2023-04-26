@@ -1,6 +1,7 @@
 import { useContext } from "react";
 // components
-import { ReportContext, Table } from "components";
+import { EntityStatusIcon, ReportContext, Table } from "components";
+import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
 // types
 import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
 // utils
@@ -8,7 +9,6 @@ import { assertExhaustive, getEntityDetailsMLR, renderHtml } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
-import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
@@ -76,7 +76,9 @@ export function renderModalOverlayTableBody(
           getEntityDetailsMLR(entity);
         return (
           <Tr key={idx}>
-            <Td sx={sx.statusIcon}>{renderStatusIcon(false)}</Td>
+            <Td sx={sx.statusIcon}>
+              <EntityStatusIcon entity={entity} />
+            </Td>
             <Td>
               <Text sx={sx.tableIndex}>{idx + 1}</Text>
             </Td>

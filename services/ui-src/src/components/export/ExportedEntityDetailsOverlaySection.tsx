@@ -50,7 +50,7 @@ export const ExportedEntityDetailsOverlaySection = ({
       />
       {renderEntityDetailTables(
         report?.reportType as ReportType,
-        report?.fieldData[entityType],
+        report?.fieldData[entityType] ?? [],
         section
       )}
     </Box>
@@ -252,7 +252,6 @@ const sx = {
     },
   },
   emptyState: {
-    width: "150%",
     margin: "0 auto",
     textAlign: "center",
     paddingBottom: "5rem",

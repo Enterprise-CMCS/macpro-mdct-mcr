@@ -97,7 +97,8 @@ export const renderFieldTableBody = (
           entity &&
           entity[formField.id] &&
           Array.isArray(entity[formField.id]) &&
-          entity[formField.id][0].key.endsWith(choice.id)
+          entity[formField.id].length > 0 &&
+          entity[formField.id][0].key?.endsWith(choice.id)
         ) {
           if (choice.children) {
             choice.children.forEach((c) => renderFieldRow(c));

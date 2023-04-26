@@ -962,14 +962,15 @@
                       "props": {
                         "label": "N. MLR reporting period start date",
                         "hint": "Auto-populates from program reporting information.",
-                        "disabled": true
+                        "disabled": true,
+                        "clear": false
                       }
                     },
                     {
                       "id": "report_reportingPeriodEndDate",
                       "type": "date",
                       "validation": {
-                        "type": "date",
+                        "type": "endDate",
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
@@ -977,7 +978,8 @@
                       "props": {
                         "label": "O. MLR reporting period end date",
                         "hint": "Auto-populates from program reporting information.",
-                        "disabled": true
+                        "disabled": true,
+                        "clear": false
                       }
                     },
                     {
