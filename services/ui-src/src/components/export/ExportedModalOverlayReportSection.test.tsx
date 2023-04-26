@@ -152,7 +152,7 @@ describe("Test renderModalOverlayTableBody", () => {
     );
 
     // Correct status
-    expect(await findByAltText("warning icon")).toBeVisible();
+    expect(await findByAltText("complete icon")).toBeVisible();
 
     // Correct index
     expect(await findByText("1")).toBeVisible();
