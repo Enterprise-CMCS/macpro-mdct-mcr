@@ -1,8 +1,8 @@
 # MDCT-MCR
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/1158e44ecfccd96be714/maintainability)](https://codeclimate.com/repos/6403ec9ff2b39a27c393430e/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/1158e44ecfccd96be714/test_coverage)](https://codeclimate.com/repos/6403ec9ff2b39a27c393430e/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/maintainability)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/test_coverage)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/test_coverage)
 
 MCR is the CMCS MDCT application for collecting state data related to Managed Care plans and performance. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
@@ -74,23 +74,18 @@ In the terminal, any changes made to a program will show up as S3 updates with a
 
 #### DynamoDB Jar Not Found Workaround
 
-Currently (March 31, 2023) there is a bug which prevents local usage of DynamoDB.
+Currently (April 19th, 2023) there is a bug which prevents local usage of DynamoDB.
 We rely on `serverless-dynamodb-local@0.2.40`, which relies on `dynamodb-localhost@0.0.9`, which attempts to download a .jar file from AWS.
 Unfortunately, it attempts to do so over `http`, rather than `https`.
 This fails.
 [This has been fixed in the source](https://github.com/99x/dynamodb-localhost/commit/d4546c8110f1d5c2a454988c7e658e2f6a80d502),
 but that fix [has not yet shipped in a release](https://www.npmjs.com/package/dynamodb-localhost?activeTab=versions) we can consume.
+
+To workaround this issue we have overridden the dependency version in `./package.json`
+
 Once the update ships [in dynamodb-localhost](https://github.com/99x/dynamodb-localhost/issues/83)
-and [in serverless-dynamodb-local](https://github.com/99x/serverless-dynamodb-local/issues/294),
+and [in serverless-dynamodb-local](https://github.com/99x/serverless-dynamodb-local/issues/294), the override in `./package.json` and
 this section of the README will become obsolete and should be removed.
-
-The workaround is to fix the URL yourself.
-In the folder `services/database/node_modules/dynamodb-localhost/dynamodb`:
-* In `config.json`, edit the `download_url` on line 3 to use https
-* In `installer.js`, edit the `require('http')` on line 6 to `require('https')`
-
-This is a one-time operation; once the jar is downloaded, DynamoDB should run locally without issue.
-The output from `./dev local` should now include a message about 4 database tables being successfully created.
 
 ### Local Development Additional Info
 
