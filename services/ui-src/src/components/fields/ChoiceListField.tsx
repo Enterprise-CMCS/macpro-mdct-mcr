@@ -50,7 +50,8 @@ export const ChoiceListField = ({
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
 
-  const shouldDisableChildFields = userIsAdmin && !!props?.disabled;
+  const shouldDisableChildFields =
+    (userIsAdmin && !!props?.disabled) || report?.locked;
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
