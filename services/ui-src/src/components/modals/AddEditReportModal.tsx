@@ -106,6 +106,7 @@ export const AddEditReportModal = ({
         ...dataToWrite,
         metadata: {
           ...dataToWrite.metadata,
+          locked: undefined,
           status: ReportStatus.IN_PROGRESS,
         },
       });
