@@ -71,7 +71,10 @@ export const renderFieldTableBody = (
         : formField.validation
       : "";
 
-    const optional = validationType?.includes("Optional");
+    const optional =
+      validationType && validationType !== ""
+        ? validationType.includes("Optional")
+        : false;
 
     tableRows.push(
       <ExportedEntityDetailsTableRow
