@@ -11,6 +11,7 @@ import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 export const EntityRow = ({
   entity,
   verbiage,
+  locked,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openEntityDetailsOverlay,
@@ -46,7 +47,11 @@ export const EntityRow = ({
       </Td>
       <Td sx={sx.editButton}>
         {openAddEditEntityModal && (
-          <Button variant="none" onClick={() => openAddEditEntityModal(entity)}>
+          <Button
+            variant="none"
+            disabled={locked}
+            onClick={() => openAddEditEntityModal(entity)}
+          >
             {verbiage.editEntityButtonText}
           </Button>
         )}
@@ -57,6 +62,7 @@ export const EntityRow = ({
             onClick={() => openEntityDetailsOverlay(entity)}
             variant="outline"
             size="sm"
+            disabled={locked}
           >
             {verbiage.enterReportText}
           </Button>
@@ -67,6 +73,7 @@ export const EntityRow = ({
           <Button
             sx={sx.deleteButton}
             onClick={() => openDeleteEntityModal(entity)}
+            disabled={locked}
           >
             <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
           </Button>
@@ -79,6 +86,7 @@ export const EntityRow = ({
 interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
+  locked?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openEntityDetailsOverlay?: Function;
@@ -131,7 +139,7 @@ const sx = {
   deleteButton: {
     padding: "0",
     background: "white",
-    "&:hover": {
+    "&:hover, &:hover:disabled": {
       background: "white",
     },
   },
