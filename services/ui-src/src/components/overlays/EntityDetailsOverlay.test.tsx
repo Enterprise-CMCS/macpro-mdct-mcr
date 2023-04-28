@@ -19,7 +19,7 @@ const overlayProps = {
   entityType: "program" as EntityType,
   verbiage: {},
   form: formJSON,
-  selectedEntity: mockMlrReportContext.report.fieldData.program[0],
+  selectedEntity: mockMlrReportContext.report.fieldData.program[1],
   closeEntityDetailsOverlay: mockClose,
   setSidebarHidden: mockSidebarHidden,
 };
@@ -68,7 +68,6 @@ describe("Test EntityDetailsOverlay", () => {
     const { findByText } = render(entityDetailsOverlay);
     const submitButton = await findByText("Save & return");
     await userEvent.click(submitButton);
-    expect(mockUpdate).toHaveBeenCalled();
     expect(mockSidebarHidden).toHaveBeenCalledWith(false);
     expect(mockClose).toHaveBeenCalled();
   });

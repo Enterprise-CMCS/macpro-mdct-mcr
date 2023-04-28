@@ -2,16 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // components
 import { Form, ReportContext, ReportPageIntro } from "components";
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
   EntityShape,
   EntityType,
   FormJson,
+  isFieldElement,
   ReportStatus,
 } from "types";
-import { useUser } from "utils";
+import { filterFormData, useUser } from "utils";
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -50,7 +51,15 @@ export const EntityDetailsOverlay = ({
 
   const onSubmit = async (enteredData: AnyObject) => {
     setSubmitting(true);
-    updateEntities(enteredData);
+    const filteredFormData = filterFormData(
+      enteredData,
+      form.fields.filter(isFieldElement)
+    );
+    const newEntity = {
+      ...selectedEntity,
+      ...filteredFormData,
+    };
+    updateEntities(newEntity);
     const reportKeys = {
       reportType: report?.reportType,
       state: state,
@@ -113,14 +122,17 @@ export const EntityDetailsOverlay = ({
           />
         )}
         <Box sx={sx.programInfo}>
-          <ul>
-            {programInfo.map((field, index) => (
-              <li key={index}>{field}</li>
-            ))}
-          </ul>
+          <Heading fontSize={"md"}>MLR Report for:</Heading>
+          <Heading fontSize={"md"}>
+            <ul>
+              {programInfo.map((field, index) => (
+                <li key={index}>{field}</li>
+              ))}
+            </ul>
+          </Heading>
         </Box>
         <Form
-          id={selectedEntity.id}
+          id={form.id}
           formJson={form}
           onSubmit={onSubmit}
           onError={onError}
@@ -130,7 +142,7 @@ export const EntityDetailsOverlay = ({
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
             <Button
-              onClick={() => onSubmit(selectedEntity)}
+              onClick={() => closeOverlay()}
               type="submit"
               sx={sx.saveButton}
             >
@@ -193,10 +205,6 @@ const sx = {
         paddingTop: "0.125rem",
         paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
-        "&:last-of-type": {
-          fontWeight: "bold",
-          fontSize: "md",
-        },
       },
     },
   },

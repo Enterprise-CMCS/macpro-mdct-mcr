@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // components
-import { Box, Tr, Td, Text } from "@chakra-ui/react";
+import { Box, Tr, Td, Text, Heading } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types
 import { FormField, FormLayoutElement, isFieldElement } from "types";
@@ -39,7 +39,9 @@ export const ExportedEntityDetailsTableRow = ({
       {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
-          <Text sx={sx.fieldNumber}>{formFieldInfo.number || "N/A"}</Text>
+          <Heading sx={sx.fieldNumber} fontSize={"sm"}>
+            {formFieldInfo.number || "N/A"}
+          </Heading>
         </Td>
       )}
 
@@ -48,16 +50,18 @@ export const ExportedEntityDetailsTableRow = ({
         {formFieldInfo.label || formFieldInfo.hint ? (
           <Box>
             {formFieldInfo.label && (
-              <Text sx={sx.fieldLabel}>
+              <Heading sx={sx.fieldLabel} fontSize={"sm"}>
                 {!isDynamicField
                   ? optional
                     ? labelTextWithOptional(formFieldInfo.label)
                     : formFieldInfo.label
                   : formField?.props?.label}
-              </Text>
+              </Heading>
             )}
             {showHintText && formFieldInfo.hint && (
-              <Box sx={sx.fieldHint}>{parseCustomHtml(formFieldInfo.hint)}</Box>
+              <Text sx={sx.fieldHint}>
+                {parseCustomHtml(formFieldInfo.hint)}
+              </Text>
             )}
           </Box>
         ) : (
@@ -96,7 +100,6 @@ const sx = {
     paddingLeft: 0,
   },
   fieldNumber: {
-    fontSize: "md",
     fontWeight: "bold",
   },
   labelColumn: {
@@ -118,6 +121,7 @@ const sx = {
   },
   fieldHint: {
     lineHeight: "lg",
+    fontSize: "sm",
     color: "palette.gray_medium",
   },
 };

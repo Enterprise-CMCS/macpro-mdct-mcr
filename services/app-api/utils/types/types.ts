@@ -129,7 +129,8 @@ export interface ReportRouteBase {
 export type ReportRouteWithForm =
   | StandardReportPageShape
   | DrawerReportPageShape
-  | ModalDrawerReportPageShape;
+  | ModalDrawerReportPageShape
+  | ModalOverlayReportPageShape;
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
@@ -140,6 +141,7 @@ export interface StandardReportPageShape extends ReportPageShapeBase {
   form: FormJson;
   dashboard?: never;
   modalForm?: never;
+  overlayForm?: never;
   drawerForm?: never;
   entityType?: never;
 }
@@ -149,6 +151,7 @@ export interface DrawerReportPageShape extends ReportPageShapeBase {
   verbiage: DrawerReportPageVerbiage;
   drawerForm: FormJson;
   modalForm?: never;
+  overlayForm?: never;
   form?: never;
 }
 
@@ -157,6 +160,16 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   verbiage: ModalDrawerReportPageVerbiage;
   modalForm: FormJson;
   drawerForm: FormJson;
+  overlayForm?: never;
+  form?: never;
+}
+
+export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  verbiage: ModalOverlayReportPageVerbiage;
+  modalForm: FormJson;
+  overlayForm?: FormJson;
+  drawerForm?: never;
   form?: never;
 }
 
@@ -166,6 +179,7 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
   entityType?: never;
   verbiage?: never;
   modalForm?: never;
+  overlayForm?: never;
   drawerForm?: never;
   form?: never;
 }
@@ -201,6 +215,15 @@ export interface ModalDrawerReportPageVerbiage
   entityUnfinishedMessage: string;
   enterEntityDetailsButtonText: string;
   editEntityDetailsButtonText: string;
+}
+
+export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
+  addEntityButtonText: string;
+  dashboardTitle: string;
+  countEntitiesInTitle: boolean;
+  tableHeader: string;
+  addEditModalHint: string;
+  emptyDashboardText: string;
 }
 
 // REPORT PROVIDER/CONTEXT

@@ -3,7 +3,7 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext, StatusTable } from "components";
 // types
-import { ReportStatus } from "types";
+import { ReportStatus, ReportType } from "types";
 // utils
 import {
   mockMcparReport,
@@ -11,6 +11,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
+import { StatusIcon } from "./StatusTable";
 
 const mockUseNavigate = jest.fn();
 
@@ -114,5 +115,75 @@ describe("Status Table Accessibility", () => {
     const { container } = render(McparReviewSubmitPage_InProgress);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+});
+
+describe("StatusIcon functionality", () => {
+  it("should render the correct status for complete MLR rows", () => {
+    const { container } = render(
+      <StatusIcon reportType={ReportType.MLR} status={true} />
+    );
+    const errorImages = container.querySelectorAll(
+      "img[alt='Error notification']"
+    );
+    const successImages = container.querySelectorAll(
+      "img[alt='Success notification']"
+    );
+    expect(successImages).toHaveLength(1);
+    expect(successImages[0]).toBeVisible();
+    expect(errorImages).toHaveLength(0);
+  });
+  it("should render the correct status for incomplete MLR rows", () => {
+    const { container } = render(
+      <StatusIcon reportType={ReportType.MLR} status={false} />
+    );
+    const errorImages = container.querySelectorAll(
+      "img[alt='Error notification']"
+    );
+    const successImages = container.querySelectorAll(
+      "img[alt='Success notification']"
+    );
+    expect(errorImages).toHaveLength(1);
+    expect(errorImages[0]).toBeVisible();
+    expect(successImages).toHaveLength(0);
+  });
+  it("should render the correct status for complete MCPAR rows", () => {
+    const { container } = render(
+      <StatusIcon reportType={ReportType.MCPAR} status={true} />
+    );
+    const errorImages = container.querySelectorAll(
+      "img[alt='Error notification']"
+    );
+    const successImages = container.querySelectorAll(
+      "img[alt='Success notification']"
+    );
+    expect(successImages).toHaveLength(0);
+    expect(errorImages).toHaveLength(0);
+  });
+  it("should render the correct status for incomplete MCPAR rows", () => {
+    const { container } = render(
+      <StatusIcon reportType={ReportType.MCPAR} status={false} />
+    );
+    const errorImages = container.querySelectorAll(
+      "img[alt='Error notification']"
+    );
+    const successImages = container.querySelectorAll(
+      "img[alt='Success notification']"
+    );
+    expect(errorImages).toHaveLength(1);
+    expect(errorImages[0]).toBeVisible();
+    expect(successImages).toHaveLength(0);
+  });
+  it("should raise an error if you try to use an invalid report type", () => {
+    expect(() => {
+      render(
+        <StatusIcon
+          reportType={"invalidReportType" as ReportType}
+          status={false}
+        />
+      );
+    }).toThrowError(
+      "Statusing icons for 'invalidReportType' have not been implemented."
+    );
   });
 });

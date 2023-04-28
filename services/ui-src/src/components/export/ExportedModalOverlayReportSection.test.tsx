@@ -9,7 +9,6 @@ import {
 import {
   ExportedModalOverlayReportSection,
   renderModalOverlayTableBody,
-  renderStatusIcon,
 } from "./ExportedModalOverlayReportSection";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 
@@ -60,14 +59,15 @@ const mockMlrProgram = {
   report_mlrNumeratorExplanation: "Test",
   report_nonClaimsCosts: "1",
   report_mlrDenominator: "1",
-  report_memberMonths: "12",
+  report_requiredMemberMonths: "12",
   report_miscellaneousNotes: "Notes",
-  report_contractIncludesRemittance: [
+  report_contractIncludesMlrRemittanceRequirement: [
     {
       key: "contractIncludesRemittance",
       value: "No",
     },
   ],
+  report_adjustedMlrPercentage: "1",
 };
 
 const mockMlrProgramOther = {
@@ -104,13 +104,14 @@ const mockMlrProgramOther = {
   report_mlrNumeratorExplanation: "Test",
   report_nonClaimsCosts: "1",
   report_mlrDenominator: "1",
-  report_memberMonths: "12",
-  report_contractIncludesRemittance: [
+  report_requiredMemberMonths: "12",
+  report_contractIncludesMlrRemittanceRequirement: [
     {
       key: "contractIncludesRemittance",
       value: "No",
     },
   ],
+  report_adjustedMlrPercentage: "1",
 };
 
 const exportedModalOverlayReportSectionComponentOther = (
@@ -151,7 +152,7 @@ describe("Test renderModalOverlayTableBody", () => {
     );
 
     // Correct status
-    expect(await findByAltText("warning icon")).toBeVisible();
+    expect(await findByAltText("complete icon")).toBeVisible();
 
     // Correct index
     expect(await findByText("1")).toBeVisible();
@@ -226,17 +227,6 @@ describe("Test renderModalOverlayTableBody", () => {
     expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
       Error
     );
-  });
-});
-
-describe("Test renderStatusIcon", () => {
-  it("Should render a green check if complete", async () => {
-    const { findByAltText } = render(renderStatusIcon(true));
-    expect(await findByAltText("success icon")).toBeVisible();
-  });
-  it("Should render a red x if incomplete", async () => {
-    const { findByAltText } = render(renderStatusIcon(false));
-    expect(await findByAltText("warning icon")).toBeVisible();
   });
 });
 

@@ -212,7 +212,7 @@ export const SuccessMessageGenerator = (
   if (submissionDate && submittedBy) {
     const readableDate = utcDateToReadableDate(submissionDate, "full");
     const submittedDate = `was submitted on ${readableDate}`;
-    const submittersName = `by ${submittedBy}`;
+    const submittersName = `${submittedBy}`;
 
     // prepare success message for MLR report submission
     if (reportType === "MLR" && stateName) {
@@ -222,10 +222,10 @@ export const SuccessMessageGenerator = (
         </b>
       );
       const preSubmissionMessage = `${reportType} submission for `;
-      const postSubmissionMessage = ` was submitted on ${submittedDate} by ${submittersName}.`;
+      const postSubmissionMessage = ` ${submittedDate} by ${submittersName}.`;
       return [preSubmissionMessage, reportTitle, postSubmissionMessage];
     }
-    return `${reportType} report for ${name} ${submittedDate} ${submittersName}.`;
+    return `${reportType} report for ${name} ${submittedDate} by ${submittersName}.`;
   }
   return `${reportType} report for ${name} was submitted.`;
 };

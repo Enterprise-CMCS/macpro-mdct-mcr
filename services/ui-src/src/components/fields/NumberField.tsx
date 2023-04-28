@@ -176,9 +176,6 @@ const sx = {
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",
-    "&.disabled": {
-      color: "palette.gray_light",
-    },
   },
   nestedPercentage: {
     position: "absolute",
@@ -187,8 +184,5 @@ const sx = {
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",
-    "&.disabled": {
-      color: "palette.gray_light",
-    },
   },
 };
