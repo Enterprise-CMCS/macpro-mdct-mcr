@@ -1,13 +1,12 @@
 // components
 import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
+import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
 // utils
-import { parseCustomHtml } from "utils";
+import { eligibilityGroup, parseCustomHtml } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-
-import { EntityStatusIcon } from "./EntityStatusIcon";
 
 export const MobileEntityRow = ({
   entity,
@@ -20,18 +19,12 @@ export const MobileEntityRow = ({
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
 
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-  const eligibilityGroup = () => {
-    if (entity["report_eligibilityGroup-otherText"]) {
-      return entity["report_eligibilityGroup-otherText"];
-    }
-    return entity.report_eligibilityGroup[0].value;
-  };
 
   const { report_programName, report_planName } = entity;
 
   const programInfo = [
     report_programName,
-    eligibilityGroup(),
+    eligibilityGroup(entity),
     reportingPeriod,
     report_planName,
   ];
@@ -91,7 +84,7 @@ export const MobileEntityRow = ({
 };
 
 interface Props {
-  entity: AnyObject;
+  entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;
   openAddEditEntityModal?: Function;

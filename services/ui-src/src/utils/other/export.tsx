@@ -1,5 +1,9 @@
 import { Box, Link, Text } from "@chakra-ui/react";
+// types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
+// utils
+import { eligibilityGroup } from "utils";
+// verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
 // checks for type of data cell to be render and calls the appropriate renderer
@@ -258,17 +262,12 @@ export const getEntityDetailsMLR = (entity: EntityShape) => {
   const { report_programName, report_planName } = entity;
 
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-  const eligibilityGroup = () => {
-    if (entity["report_eligibilityGroup-otherText"]) {
-      return entity["report_eligibilityGroup-otherText"];
-    }
-    return entity.report_eligibilityGroup[0].value;
-  };
+  const mlrEligibilityGroup = eligibilityGroup(entity);
 
   return {
     report_programName,
     reportingPeriod,
-    eligibilityGroup,
+    mlrEligibilityGroup,
     report_planName,
   };
 };
