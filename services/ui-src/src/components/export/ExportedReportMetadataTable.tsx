@@ -97,6 +97,7 @@ const sx = {
     maxWidth: "reportPageWidth",
     td: {
       paddingTop: "0rem",
+      verticalAlign: "middle",
     },
     th: {
       border: "none",

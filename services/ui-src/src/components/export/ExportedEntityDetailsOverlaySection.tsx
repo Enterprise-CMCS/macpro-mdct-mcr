@@ -194,7 +194,7 @@ export function renderEntityDetailTables(
 const sx = {
   root: {
     marginBottom: "1rem",
-    width: "150%",
+    width: "100%",
     "tr, th": {
       verticalAlign: "bottom",
       lineHeight: "base",
@@ -219,7 +219,7 @@ const sx = {
       ".mobile &": {
         fontSize: "xs",
       },
-      verticalAlign: "middle",
+      verticalAlign: "top",
     },
     th: {
       maxWidth: "100%",

@@ -191,7 +191,7 @@ const sx = {
     },
   },
   emptyState: {
-    width: "150%",
+    width: "100%",
     margin: "0 auto",
     textAlign: "center",
     paddingBottom: "5rem",
