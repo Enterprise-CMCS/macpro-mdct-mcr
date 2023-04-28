@@ -1,12 +1,14 @@
+// types
 import {
-  CompletionData,
   AnyObject,
-  ReportRoute,
+  CompletionData,
   FormJson,
-  Choice,
   FieldChoice,
+  Choice,
   FormField,
-} from "../types/types";
+  ReportRoute,
+} from "../types";
+// utils
 import { validateFieldData } from "./completionValidation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {

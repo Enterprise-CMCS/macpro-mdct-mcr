@@ -1,4 +1,4 @@
-import { S3Get, S3Put } from "../types/types";
+import { S3Get, S3Put } from "../types/other";
 import s3Lib, { createS3Client } from "./s3-lib";
 import { S3 } from "aws-sdk";
 import { mockReportFieldData } from "../testing/setupJest";

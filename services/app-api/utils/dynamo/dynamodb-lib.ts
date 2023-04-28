@@ -6,7 +6,7 @@ import {
   DynamoUpdate,
   DynamoGet,
   DynamoScan,
-} from "../types/types";
+} from "../types/other";
 
 export function createDbClient() {
   const dynamoConfig: DynamoDB.DocumentClient.DocumentClientOptions &
