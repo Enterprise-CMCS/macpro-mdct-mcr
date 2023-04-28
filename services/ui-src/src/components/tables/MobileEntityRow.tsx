@@ -12,6 +12,7 @@ import { EntityStatusIcon } from "./EntityStatusIcon";
 export const MobileEntityRow = ({
   entity,
   verbiage,
+  locked,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openEntityDetailsOverlay,
@@ -55,6 +56,7 @@ export const MobileEntityRow = ({
               <Button
                 variant="none"
                 sx={sx.editButton}
+                disabled={locked}
                 onClick={() => openAddEditEntityModal(entity)}
               >
                 {editEntityButtonText}
@@ -66,6 +68,7 @@ export const MobileEntityRow = ({
                 variant="outline"
                 onClick={() => openEntityDetailsOverlay(entity)}
                 size="sm"
+                disabled={locked}
                 sx={sx.enterButton}
               >
                 {enterReportText}
@@ -75,6 +78,7 @@ export const MobileEntityRow = ({
               <Button
                 sx={sx.deleteButton}
                 onClick={() => openDeleteEntityModal(entity)}
+                disabled={locked}
               >
                 <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
               </Button>
@@ -89,6 +93,7 @@ export const MobileEntityRow = ({
 interface Props {
   entity: AnyObject;
   verbiage: AnyObject;
+  locked?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openEntityDetailsOverlay?: Function;
@@ -140,7 +145,7 @@ const sx = {
   deleteButton: {
     background: "none",
     padding: "0",
-    "&:hover": {
+    "&:hover, &:hover:disabled": {
       background: "white",
     },
   },

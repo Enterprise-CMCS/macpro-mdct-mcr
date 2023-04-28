@@ -17,7 +17,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: set variable values
         run: ./.github/build-vars.sh set_values
         env:
@@ -48,7 +48,7 @@ jobs:
           coverageLocations: |
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-      - name: Store unit test reults
+      - name: Store unit test results
         uses: actions/upload-artifact@v2
         with:
           name: unit_test_results
@@ -67,7 +67,7 @@ jobs:
           else
             echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
           fi
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Validate branch name
         run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
       - name: set branch specific variable names
@@ -131,7 +131,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v4.2.0
         with:
@@ -163,7 +163,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Check Project A11y
         uses: cypress-io/github-action@v4.2.0
         with:
