@@ -144,7 +144,7 @@ const sx = {
   deleteButton: {
     background: "none",
     padding: "0",
-    "&:hover:disabled": {
+    "&:hover, &:hover:disabled": {
       background: "white",
     },
   },
