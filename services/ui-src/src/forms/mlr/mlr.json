@@ -166,7 +166,7 @@
           "exportSectionHeader": "Program Reporting Information",
           "section": "MLR Reporting",
           "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
-          "spreadsheet": "MLR Reporting",
+          "spreadsheet": "Program Information",
           "info": [
             {
               "type": "html",
