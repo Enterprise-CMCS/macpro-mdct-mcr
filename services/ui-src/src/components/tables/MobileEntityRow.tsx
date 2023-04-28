@@ -1,12 +1,13 @@
 // components
 import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
 // types
-import { AnyObject } from "types";
+import { AnyObject, EntityShape } from "types";
 // utils
 import { parseCustomHtml } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+
+import { EntityStatusIcon } from "./EntityStatusIcon";
 
 export const MobileEntityRow = ({
   entity,
@@ -17,8 +18,6 @@ export const MobileEntityRow = ({
 }: Props) => {
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
 
-  const { report_programName, report_planName } = entity;
-
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const eligibilityGroup = () => {
     if (entity["report_eligibilityGroup-otherText"]) {
@@ -26,6 +25,8 @@ export const MobileEntityRow = ({
     }
     return entity.report_eligibilityGroup[0].value;
   };
+
+  const { report_programName, report_planName } = entity;
 
   const programInfo = [
     report_programName,
@@ -39,7 +40,7 @@ export const MobileEntityRow = ({
       <Tr>
         <Td>
           <Box sx={sx.rowHeader}>
-            <Image src={unfinishedIcon} alt="warning icon" boxSize="lg" />
+            <EntityStatusIcon entity={entity as EntityShape} />
             <Text>{parseCustomHtml(tableHeader)}</Text>
           </Box>
           <Box sx={sx.programList}>

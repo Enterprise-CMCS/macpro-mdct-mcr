@@ -110,6 +110,7 @@ const mockNestedChildren = [
   {
     id: "test-nested-child-radio",
     type: "radio",
+    disabled: true,
     props: {
       choices: [...mockNestedChoices],
     },
@@ -127,6 +128,13 @@ const mockNestedChildren = [
     props: {
       options: [...mockDropdownOptions],
     },
+  },
+  {
+    id: "test-nested-child-disabled-date",
+    type: "date",
+    disabled: true,
+    label: "Mock Date 1",
+    value: "Mock Date 1",
   },
 ];
 
@@ -257,6 +265,20 @@ describe("Test Choicelist Hydration", () => {
     </ReportContext.Provider>
   );
 
+  const CheckboxHydrationClearComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <ChoiceListField
+        choices={mockChoices}
+        label="Checkbox Hydration Example"
+        name=""
+        type="checkbox"
+        hydrate={[{ key: "Choice 1", value: "Choice 1" }]}
+        autosave
+        clear={true}
+      />
+    </ReportContext.Provider>
+  );
+
   const RadioHydrationComponent = (
     <ReportContext.Provider value={mockMcparReportContext}>
       <ChoiceListField
@@ -307,6 +329,23 @@ describe("Test Choicelist Hydration", () => {
     // Confirm hydration successfully made the first value checked
     expect(firstCheckbox).not.toBeChecked();
     expect(secondCheckbox).toBeChecked();
+  });
+
+  test("Checkbox Choicelist correctly clearing nested checkbox values if clear prop is set to true", () => {
+    /*
+     * Set the mock of form.GetValues to return nothing to represent that a user hasn't made any updates
+     * and the form should be updated based purely on the hydration values
+     */
+    mockGetValues(undefined);
+
+    // Create the Checkbox Component
+    const wrapper = render(CheckboxHydrationClearComponent);
+    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+    const secondCheckbox = wrapper.getByRole("checkbox", { name: "Choice 2" });
+
+    // Confirm hydration successfully made the first value checked
+    expect(firstCheckbox).not.toBeChecked();
+    expect(secondCheckbox).not.toBeChecked();
   });
 
   // Repeat above tests for RadioField to ensure nothing changes

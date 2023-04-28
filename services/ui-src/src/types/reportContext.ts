@@ -32,6 +32,7 @@ export interface ReportShape extends ReportMetadataShape {
   formTemplate: ReportJson;
   fieldData: AnyObject;
   completionStatus?: CompletionData;
+  isComplete?: boolean;
 }
 
 export interface CompletionData {

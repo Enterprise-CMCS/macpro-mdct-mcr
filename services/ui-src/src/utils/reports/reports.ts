@@ -6,6 +6,7 @@ import {
   ReportJson,
   ReportRoute,
   isFieldElement,
+  ModalOverlayReportPageShape,
 } from "types";
 
 export const sortReportsOldestToNewest = (
@@ -64,7 +65,10 @@ export const compileValidationJsonFromFields = (
   const validationSchema: AnyObject = {};
   fieldArray.forEach((field: FormField) => {
     // if field has a parent option, add option name to validation object
-    if (typeof field.validation === "object") {
+    if (
+      typeof field.validation === "object" &&
+      !field.validation.parentOptionId
+    ) {
       field.validation.parentOptionId = parentOption?.name;
     }
     // compile field's validation schema
@@ -115,6 +119,12 @@ export const compileValidationJsonFromRoutes = (
     // if drawer form present, add validation to schema
     const drawerFormFields = route.drawerForm?.fields.filter(isFieldElement);
     if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
+    if (route.pageType === "modalOverlay") {
+      const overlayFormFields = (
+        route as ModalOverlayReportPageShape
+      ).overlayForm?.fields.filter(isFieldElement);
+      if (overlayFormFields) addValidationToAccumulator(overlayFormFields);
+    }
   });
   return validationSchema;
 };

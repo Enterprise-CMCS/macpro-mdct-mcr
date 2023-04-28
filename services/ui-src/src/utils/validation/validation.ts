@@ -37,7 +37,7 @@ export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
 // return created nested field schema
 export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
   const { type, parentFieldName, parentOptionId } = fieldValidationObject;
-  if (fieldValidationObject.type === "endDate") {
+  if (type === "endDate") {
     return nested(
       () => makeEndDateFieldSchema(fieldValidationObject),
       parentFieldName,

@@ -50,7 +50,7 @@ const traverseRoute = (route) => {
     //Fill out form
     completeFrom(route.form);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
-
+    completeOverlayForm(route.overlayForm);
     // Continue to next route
     cy.get('button:contains("Continue")').focus().click();
   }
@@ -72,6 +72,15 @@ const completeModalForm = (modalForm, buttonText) => {
   if (modalForm && buttonText) {
     cy.get(`button:contains("${buttonText}")`).focus().click();
     completeFrom(modalForm);
+    cy.get('button:contains("Save")').focus().click();
+  }
+};
+
+const completeOverlayForm = (overlayForm) => {
+  //open the modal, then fill out the form and save it
+  if (overlayForm) {
+    cy.get(`button:contains("Enter")`).focus().click();
+    completeFrom(overlayForm);
     cy.get('button:contains("Save")').focus().click();
   }
 };
