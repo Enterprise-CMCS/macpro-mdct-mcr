@@ -94,7 +94,7 @@ export function maskValue(
   mask: keyof typeof customMaskMap
 ): string {
   const selectedCustomMask = customMaskMap[mask];
-  if (isValidNumericalString(value) && selectedCustomMask) {
+  if (isValidNumericalString(value)) {
     return selectedCustomMask(value);
   } else return value;
 }
