@@ -32,6 +32,15 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   });
 };
 
+/**
+ * We can afford to be very permissive with this regex. As long as the
+ * value contains a digit, we can be confident that it ran through the
+ * frontend masking logic. We also allow a single dot: if the user
+ * types a dot, they are quite likely about to type a digit also.
+ * We don't want to flash an angry error message before they do so.
+ */
+const validNumberRegex = /^\.$|[0-9]/;
+
 // NUMBER - Number or Valid Strings
 export const number = () =>
   string()
@@ -39,7 +48,6 @@ export const number = () =>
     .test({
       message: error.INVALID_NUMBER_OR_NA,
       test: (value) => {
-        const validNumberRegex = /[0-9,.]/;
         if (value) {
           const isValidStringValue = validNAValues.includes(value);
           const isValidNumberValue = validNumberRegex.test(value);
