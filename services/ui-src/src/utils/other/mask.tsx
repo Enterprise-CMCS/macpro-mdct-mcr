@@ -5,16 +5,17 @@ export const customMaskMap = {
 };
 
 // returns whether a given mask is a valid custom mask
-export const validCustomMask = (maskName: string | undefined) => {
-  const result = Object.keys(customMaskMap).includes(maskName!)
-    ? maskName
-    : undefined;
-  return result;
+export const isValidCustomMask = (
+  maskName: string | undefined
+): maskName is keyof typeof customMaskMap => {
+  return (
+    maskName !== undefined && Object.keys(customMaskMap).includes(maskName)
+  );
 };
 
 // if mask specified, but not a custom mask, return mask as assumed CMSDS mask
 export const validCmsdsMask = (maskName: string | undefined) => {
-  const result = validCustomMask(maskName) ? undefined : maskName;
+  const result = isValidCustomMask(maskName) ? undefined : maskName;
   return result;
 };
 
@@ -99,9 +100,9 @@ export function maskValue(
 }
 
 // if valid custom mask, return masked value; else return value
-export const applyCustomMask = (value: any, maskName: any): string => {
+export const applyCustomMask = (value: string, maskName: any): string => {
   let formattedValue: string;
-  if (value && validCustomMask(maskName)) {
+  if (value && isValidCustomMask(maskName)) {
     formattedValue = maskValue(value, maskName);
   } else formattedValue = value;
   return formattedValue.toString();

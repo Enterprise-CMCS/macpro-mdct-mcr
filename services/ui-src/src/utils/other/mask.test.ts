@@ -1,6 +1,6 @@
 import {
   convertToCommaSeparatedString,
-  validCustomMask,
+  isValidCustomMask,
   isValidNumericalString,
   maskValue,
   convertToCommaSeparatedRatioString,
@@ -40,8 +40,8 @@ const ratioMaskAcceptableTestCases = [
 
 describe("Test validCustomMask", () => {
   test("Check if good and bad mask values return accurately", () => {
-    const commaSeparated = validCustomMask("comma-separated");
-    const badMask = validCustomMask("cherry-tree");
+    const commaSeparated = isValidCustomMask("comma-separated");
+    const badMask = isValidCustomMask("cherry-tree");
     expect(commaSeparated).toEqual("comma-separated");
     expect(badMask).toBeFalsy();
   });
