@@ -1,7 +1,13 @@
 import { Fragment, useContext } from "react";
+import uuid from "react-uuid";
 // components
-import { ExportedSectionHeading, ReportContext } from "components";
-// types, utils
+import {
+  ExportedSectionHeading,
+  ExportedEntityDetailsTable,
+  ReportContext,
+} from "components";
+import { Box, Heading } from "@chakra-ui/react";
+// types
 import {
   EntityShape,
   FormField,
@@ -9,14 +15,11 @@ import {
   ModalOverlayReportPageShape,
   ReportType,
 } from "types";
+// utils
+import { assertExhaustive, getEntityDetailsMLR, renderHtml } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
-import { Box, Heading } from "@chakra-ui/react";
-import { assertExhaustive } from "utils/other/typing";
-import { ExportedEntityDetailsTable } from "./ExportedEntityDetailsTable";
-import uuid from "react-uuid";
-import { getEntityDetailsMLR } from "utils";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,
@@ -35,18 +38,20 @@ export const ExportedEntityDetailsOverlaySection = ({
     <Box sx={sx.sectionHeading} {...props}>
       <ExportedSectionHeading
         heading={exportVerbiageMap[report?.reportType as ReportType]}
+        reportType={report?.reportType}
         verbiage={{
           ...section.verbiage,
           intro: {
             ...section.verbiage.intro,
             info: undefined,
             exportSectionHeader: undefined,
+            spreadsheet: "MLR Reporting",
           },
         }}
       />
       {renderEntityDetailTables(
         report?.reportType as ReportType,
-        report?.fieldData[entityType],
+        report?.fieldData[entityType] ?? [],
         section
       )}
     </Box>
@@ -99,17 +104,17 @@ export function getEntityTableComponents(
   section: ModalOverlayReportPageShape,
   formSections: (FormField | FormLayoutElement)[][]
 ) {
-  return entities.map((entity, idx) => {
+  return entities?.map((entity, idx) => {
     const {
       report_programName,
-      eligibilityGroup,
+      mlrEligibilityGroup,
       reportingPeriod,
       report_planName,
     } = getEntityDetailsMLR(entity);
 
     const programInfo = [
       report_programName,
-      eligibilityGroup(),
+      mlrEligibilityGroup,
       reportingPeriod,
       report_planName,
     ];
@@ -117,16 +122,16 @@ export function getEntityTableComponents(
     return (
       <Box key={uuid()}>
         <Box sx={sx.entityInformation}>
-          <Heading sx={sx.entityHeading} fontSize={"lg"}>
+          <Heading sx={sx.entityHeading} fontSize={"xl"}>
             {idx + 1}. {section.verbiage.intro.subsection} for:
           </Heading>
-          <Box sx={sx.programInfo}>
+          <Heading sx={sx.programInfo} fontSize={"xl"}>
             <ul>
               {programInfo.map((field, index) => (
-                <li key={index}> {field} </li>
+                <li key={index}>{renderHtml(field)}</li>
               ))}
             </ul>
-          </Box>
+          </Heading>
         </Box>
         {formSections.map((fields, idx) => {
           const filteredFields = fields.filter(
@@ -136,7 +141,7 @@ export function getEntityTableComponents(
           return (
             <Fragment key={`tableContainer-${idx}`}>
               {header.type === "sectionHeader" && (
-                <Heading size={"sm"} key={`heading-${idx}`}>
+                <Heading size={"md"} as="h4" key={`heading-${idx}`}>
                   {header.props?.content}
                 </Heading>
               )}
@@ -189,7 +194,7 @@ export function renderEntityDetailTables(
 const sx = {
   root: {
     marginBottom: "1rem",
-    width: "150%",
+    width: "100%",
     "tr, th": {
       verticalAlign: "bottom",
       lineHeight: "base",
@@ -214,7 +219,7 @@ const sx = {
       ".mobile &": {
         fontSize: "xs",
       },
-      verticalAlign: "middle",
+      verticalAlign: "top",
     },
     th: {
       maxWidth: "100%",
@@ -248,7 +253,6 @@ const sx = {
     },
   },
   emptyState: {
-    width: "150%",
     margin: "0 auto",
     textAlign: "center",
     paddingBottom: "5rem",
@@ -275,10 +279,6 @@ const sx = {
         paddingTop: "0.125rem",
         paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
-        "&:last-of-type": {
-          fontWeight: "bold",
-          fontSize: "md",
-        },
       },
     },
   },

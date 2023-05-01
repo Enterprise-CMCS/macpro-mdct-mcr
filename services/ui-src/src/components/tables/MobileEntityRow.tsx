@@ -1,35 +1,30 @@
 // components
 import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
+import { EntityStatusIcon } from "components";
 // types
-import { AnyObject } from "types";
+import { AnyObject, EntityShape } from "types";
 // utils
-import { parseCustomHtml } from "utils";
+import { eligibilityGroup, parseCustomHtml } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const MobileEntityRow = ({
   entity,
   verbiage,
+  locked,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openEntityDetailsOverlay,
 }: Props) => {
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
 
-  const { report_programName, report_planName } = entity;
-
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-  const eligibilityGroup = () => {
-    if (entity["report_eligibilityGroup-otherText"]) {
-      return entity["report_eligibilityGroup-otherText"];
-    }
-    return entity.report_eligibilityGroup[0].value;
-  };
+
+  const { report_programName, report_planName } = entity;
 
   const programInfo = [
     report_programName,
-    eligibilityGroup(),
+    eligibilityGroup(entity),
     reportingPeriod,
     report_planName,
   ];
@@ -39,7 +34,7 @@ export const MobileEntityRow = ({
       <Tr>
         <Td>
           <Box sx={sx.rowHeader}>
-            <Image src={unfinishedIcon} alt="warning icon" boxSize="lg" />
+            <EntityStatusIcon entity={entity as EntityShape} />
             <Text>{parseCustomHtml(tableHeader)}</Text>
           </Box>
           <Box sx={sx.programList}>
@@ -54,6 +49,7 @@ export const MobileEntityRow = ({
               <Button
                 variant="none"
                 sx={sx.editButton}
+                disabled={locked}
                 onClick={() => openAddEditEntityModal(entity)}
               >
                 {editEntityButtonText}
@@ -65,6 +61,7 @@ export const MobileEntityRow = ({
                 variant="outline"
                 onClick={() => openEntityDetailsOverlay(entity)}
                 size="sm"
+                disabled={locked}
                 sx={sx.enterButton}
               >
                 {enterReportText}
@@ -74,6 +71,7 @@ export const MobileEntityRow = ({
               <Button
                 sx={sx.deleteButton}
                 onClick={() => openDeleteEntityModal(entity)}
+                disabled={locked}
               >
                 <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
               </Button>
@@ -86,8 +84,9 @@ export const MobileEntityRow = ({
 };
 
 interface Props {
-  entity: AnyObject;
+  entity: EntityShape;
   verbiage: AnyObject;
+  locked?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openEntityDetailsOverlay?: Function;
@@ -139,7 +138,7 @@ const sx = {
   deleteButton: {
     background: "none",
     padding: "0",
-    "&:hover": {
+    "&:hover, &:hover:disabled": {
       background: "white",
     },
   },

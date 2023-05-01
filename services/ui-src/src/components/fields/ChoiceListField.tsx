@@ -50,7 +50,8 @@ export const ChoiceListField = ({
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
 
-  const shouldDisableChildFields = userIsAdmin && !!props?.disabled;
+  const shouldDisableChildFields =
+    (userIsAdmin && !!props?.disabled) || report?.locked;
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
@@ -130,6 +131,15 @@ export const ChoiceListField = ({
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
+            case "date":
+              if (child.props?.disabled) {
+                break;
+              } else {
+                child.props = { ...child.props, clear: true };
+                form.setValue(child.id, "");
+                form.unregister(child.id);
+                break;
+              }
             default:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, "");
@@ -204,9 +214,24 @@ export const ChoiceListField = ({
           hydrationValue,
         });
 
+        const choicesWithNestedEnabledFields = choices.map((choice) => {
+          if (choice.children) {
+            return {
+              ...choice,
+              children: choice.children.filter(
+                (child) => !child.props?.disabled
+              ),
+            };
+          }
+          return choice;
+        });
+
         const combinedFields = [
           ...fields,
-          ...getNestedChildFields(choices, lastDatabaseValue),
+          ...getNestedChildFields(
+            choicesWithNestedEnabledFields,
+            lastDatabaseValue
+          ),
         ];
         const reportArgs = {
           id: report?.id,

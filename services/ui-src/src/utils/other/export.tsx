@@ -1,5 +1,9 @@
 import { Box, Link, Text } from "@chakra-ui/react";
+// types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
+// utils
+import { eligibilityGroup } from "utils";
+// verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
 // checks for type of data cell to be render and calls the appropriate renderer
@@ -64,21 +68,16 @@ export const renderOverlayEntityDataCell = (
     parentFieldCheckedChoiceIds &&
     !parentFieldCheckedChoiceIds?.includes(entity.id);
   return (
-    <Box key={entity.id + formField.id} sx={sx.entityBox}>
-      <ul>
-        <li>
-          <Text sx={sx.entityName}>{entity.name}</Text>
-        </li>
-        <li className="entityResponse">
-          {renderResponseData(
-            formField,
-            entity[formField.id],
-            entityResponseData,
-            "modalOverlay",
-            notApplicable
-          )}
-        </li>
-      </ul>
+    <Box>
+      <Text>
+        {renderResponseData(
+          formField,
+          entity[formField.id],
+          entityResponseData,
+          "modalOverlay",
+          notApplicable
+        )}
+      </Text>
     </Box>
   );
 };
@@ -258,17 +257,12 @@ export const getEntityDetailsMLR = (entity: EntityShape) => {
   const { report_programName, report_planName } = entity;
 
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-  const eligibilityGroup = () => {
-    if (entity["report_eligibilityGroup-otherText"]) {
-      return entity["report_eligibilityGroup-otherText"];
-    }
-    return entity.report_eligibilityGroup[0].value;
-  };
+  const mlrEligibilityGroup = eligibilityGroup(entity);
 
   return {
     report_programName,
     reportingPeriod,
-    eligibilityGroup,
+    mlrEligibilityGroup,
     report_planName,
   };
 };
@@ -282,6 +276,7 @@ const sx = {
     marginBottom: "1rem",
   },
   entityBox: {
+    verticalAlign: "top",
     marginBottom: "1rem",
     ul: {
       marginTop: "0.25rem",
@@ -290,6 +285,7 @@ const sx = {
         paddingBottom: "0.5rem",
         p: {
           lineHeight: "1.25rem",
+          fontSize: "md",
         },
       },
       p: {

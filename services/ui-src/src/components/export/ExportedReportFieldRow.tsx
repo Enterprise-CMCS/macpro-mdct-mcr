@@ -28,7 +28,9 @@ export const ExportedReportFieldRow = ({
       {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
-          <Text sx={sx.fieldNumber}>{formFieldInfo.number || "N/A"}</Text>
+          <Text sx={sx.fieldNumber}>
+            {formFieldInfo.number.replace(".", "") || "N/A"}
+          </Text>
         </Td>
       )}
 
