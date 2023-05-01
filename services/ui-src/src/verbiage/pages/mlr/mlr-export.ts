@@ -4,7 +4,7 @@ export default {
     notApplicable: "Not applicable",
   },
   reportBanner: {
-    intro: "Click below to export or print MLR Report shown here",
+    intro: "Click below to export or print MLR Submission shown here",
     pdfButton: "Download PDF",
   },
   metadata: {
