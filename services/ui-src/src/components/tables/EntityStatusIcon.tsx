@@ -4,7 +4,9 @@ import { Box, Image, Text } from "@chakra-ui/react";
 import { EntityShape } from "types";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import unfinishedIconDark from "assets/icons/icon_error_circle.png";
 import successIcon from "assets/icons/icon_check_circle.png";
+import successIconDark from "assets/icons/icon_check_circle_dark.png";
 import { useContext, useMemo } from "react";
 import { ReportContext } from "components/reports/ReportProvider";
 import { mapValidationTypesToSchema } from "utils";
@@ -37,14 +39,13 @@ export const EntityStatusIcon = ({ entity, isPdf }: Props) => {
         <>
           <Image
             sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
-            src={successIcon}
+            src={isPdf ? successIconDark : successIcon}
             alt="complete icon"
             boxSize="xl"
           />
           {isPdf && (
             <Text sx={sx.successText}>
-              {" "}
-              <b>Complete</b>{" "}
+              <b>Complete</b>
             </Text>
           )}
         </>
@@ -52,7 +53,7 @@ export const EntityStatusIcon = ({ entity, isPdf }: Props) => {
         <>
           <Image
             sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
-            src={unfinishedIcon}
+            src={isPdf ? unfinishedIconDark : unfinishedIcon}
             alt="warning icon"
             boxSize="xl"
           />
