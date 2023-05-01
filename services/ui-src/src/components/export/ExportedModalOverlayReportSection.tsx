@@ -72,7 +72,7 @@ export function renderModalOverlayTableBody(
   switch (reportType) {
     case ReportType.MLR:
       return entities.map((entity, idx) => {
-        const { report_programName, eligibilityGroup, reportingPeriod } =
+        const { report_programName, mlrEligibilityGroup, reportingPeriod } =
           getEntityDetailsMLR(entity);
         return (
           <Tr key={idx}>
@@ -85,7 +85,7 @@ export function renderModalOverlayTableBody(
             <Td>
               <Text>
                 {report_programName} <br />
-                {renderHtml(eligibilityGroup())} <br />
+                {renderHtml(mlrEligibilityGroup)} <br />
                 {reportingPeriod} <br />
                 {entity.report_planName ?? "Not entered"}
               </Text>

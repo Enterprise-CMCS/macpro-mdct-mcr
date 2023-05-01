@@ -4,7 +4,7 @@ import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
 // utils
-import { renderHtml } from "utils/other/rendering";
+import { eligibilityGroup, renderHtml } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 
@@ -19,16 +19,10 @@ export const EntityRow = ({
   const { report_programName, report_planName } = entity;
 
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-  const eligibilityGroup = () => {
-    if (entity["report_eligibilityGroup-otherText"]) {
-      return entity["report_eligibilityGroup-otherText"];
-    }
-    return entity.report_eligibilityGroup[0].value;
-  };
 
   const programInfo = [
     report_programName,
-    eligibilityGroup(),
+    eligibilityGroup(entity),
     reportingPeriod,
     report_planName,
   ];
