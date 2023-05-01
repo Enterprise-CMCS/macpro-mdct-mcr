@@ -1,5 +1,5 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { number, ratio } from "./schemas";
+import { dateOptional, number, ratio } from "./schemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -36,9 +36,23 @@ describe("Schemas", () => {
     "%@#$!ASDF",
   ];
 
+  const goodDateOptionalTestCases = [null, undefined];
+  const badDateOptionalTestCases = ["Hello!"];
+
   const testNumberSchema = (
     schemaToUse: MixedSchema,
     testCases: Array<string>,
+    expectedReturn: boolean
+  ) => {
+    for (let testCase of testCases) {
+      let test = schemaToUse.isValidSync(testCase);
+      expect(test).toEqual(expectedReturn);
+    }
+  };
+
+  const testDateOptional = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | null | undefined>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
@@ -55,5 +69,10 @@ describe("Schemas", () => {
   test("Evaluate Number Schema using ratio scheme", () => {
     testNumberSchema(ratio(), goodRatioTestCases, true);
     testNumberSchema(ratio(), badRatioTestCases, false);
+  });
+
+  test("Test dateOptional schema", () => {
+    testDateOptional(dateOptional(), goodDateOptionalTestCases, true);
+    testDateOptional(dateOptional(), badDateOptionalTestCases, false);
   });
 });
