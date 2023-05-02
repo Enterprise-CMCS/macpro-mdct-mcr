@@ -115,19 +115,23 @@ export const date = () =>
     });
 
 export const dateOptional = () =>
-  string().test({
-    message: error.INVALID_DATE,
-    test: (value, context) => {
-      if (value === null || value === undefined || isWhitespaceString(value)) {
-        return true;
-      } else if (typeof value === "string") {
-        context.schema.matches(dateFormatRegex, error.INVALID_DATE);
-      } else {
+  string()
+    .nullable()
+    .test({
+      message: error.INVALID_DATE,
+      test: (value, context) => {
+        if (
+          value === null ||
+          value === undefined ||
+          isWhitespaceString(value)
+        ) {
+          return true;
+        } else if (typeof value === "string") {
+          context.schema.matches(dateFormatRegex, error.INVALID_DATE);
+        }
         return false;
-      }
-      return false;
-    },
-  });
+      },
+    });
 
 export const endDate = (startDateField: string) =>
   date().test(

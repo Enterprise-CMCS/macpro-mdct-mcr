@@ -36,8 +36,8 @@ describe("Schemas", () => {
     "%@#$!ASDF",
   ];
 
-  const goodDateOptionalTestCases = ["", undefined];
-  const badDateOptionalTestCases = ["Hello!"];
+  const goodDateOptionalTestCases = ["", null, undefined];
+  const badDateOptionalTestCases = [1, "Hello!"];
 
   const testNumberSchema = (
     schemaToUse: MixedSchema,
@@ -52,7 +52,7 @@ describe("Schemas", () => {
 
   const testDateOptional = (
     schemaToUse: MixedSchema,
-    testCases: Array<string | null | undefined>,
+    testCases: Array<string | null | undefined | number>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
