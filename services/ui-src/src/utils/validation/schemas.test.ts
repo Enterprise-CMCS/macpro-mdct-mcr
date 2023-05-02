@@ -36,7 +36,7 @@ describe("Schemas", () => {
     "%@#$!ASDF",
   ];
 
-  const goodDateOptionalTestCases = [null, undefined];
+  const goodDateOptionalTestCases = ["", undefined];
   const badDateOptionalTestCases = ["Hello!"];
 
   const testNumberSchema = (
