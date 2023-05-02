@@ -1,5 +1,5 @@
 import sign from "jwt-encode";
-import { MCPARReportMetadata, MLRReportMetadata } from "../types/types";
+import { MCPARReportMetadata, MLRReportMetadata } from "../types";
 
 export const mockDocumentClient = {
   get: { promise: jest.fn() },

@@ -1,7 +1,9 @@
 import * as yup from "yup";
-import { nested, endDate, schemaMap } from "./schemaMap";
-import { AnyObject } from "../types/types";
 import { error } from "../constants/constants";
+// types
+import { AnyObject } from "../types";
+// utils
+import { nested, endDate, schemaMap } from "./schemaMap";
 
 // compare payload data against validation schema
 export const validateData = async (

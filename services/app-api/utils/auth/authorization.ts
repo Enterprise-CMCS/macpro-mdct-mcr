@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UserRoles } from "../types/types";
+import { UserRoles } from "../types";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;

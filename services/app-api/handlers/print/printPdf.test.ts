@@ -1,10 +1,12 @@
-/* eslint-disable no-console */
-import { APIGatewayProxyEvent } from "aws-lambda"; // eslint-disable-line no-unused-vars
-import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { StatusCodes } from "../../utils/types/types";
 import { printPdf } from "./printPdf";
 import axios from "axios";
 import AWS from "aws-sdk";
+/* eslint-disable no-console */
+import { APIGatewayProxyEvent } from "aws-lambda"; // eslint-disable-line no-unused-vars
+// utils
+import { proxyEvent } from "../../utils/testing/proxyEvent";
+// types
+import { StatusCodes } from "../../utils/types";
 
 jest.mock("axios", () => jest.fn());
 jest.mock("../../utils/debugging/debug-lib", () => ({
