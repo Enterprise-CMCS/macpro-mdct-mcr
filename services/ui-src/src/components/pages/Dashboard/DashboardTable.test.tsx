@@ -6,6 +6,11 @@ describe("Test getStatus utility", () => {
       "In revision"
     );
   });
+  test("should render the correct status if report has been unlocked", () => {
+    expect(getStatus(ReportType.MLR, "In progress", false, 0)).toBe(
+      "In progress"
+    );
+  });
   test("should render the correct status if report has been archived", () => {
     expect(getStatus(ReportType.MLR, "In progress", true, 1)).toBe("Archived");
   });
