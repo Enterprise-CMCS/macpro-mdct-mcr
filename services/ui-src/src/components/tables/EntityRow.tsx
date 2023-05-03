@@ -41,11 +41,7 @@ export const EntityRow = ({
       </Td>
       <Td sx={sx.editButton}>
         {openAddEditEntityModal && (
-          <Button
-            variant="none"
-            disabled={locked}
-            onClick={() => openAddEditEntityModal(entity)}
-          >
+          <Button variant="none" onClick={() => openAddEditEntityModal(entity)}>
             {verbiage.editEntityButtonText}
           </Button>
         )}
@@ -56,7 +52,6 @@ export const EntityRow = ({
             onClick={() => openEntityDetailsOverlay(entity)}
             variant="outline"
             size="sm"
-            disabled={locked}
           >
             {verbiage.enterReportText}
           </Button>
