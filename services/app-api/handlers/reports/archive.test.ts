@@ -1,10 +1,12 @@
 import { fetchReport } from "./fetch";
+import { archiveReport } from "./archive";
 import { APIGatewayProxyEvent } from "aws-lambda";
+// utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { StatusCodes } from "../../utils/types/types";
 import { mockMcparReport } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
-import { archiveReport } from "./archive";
+// types
+import { StatusCodes } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),

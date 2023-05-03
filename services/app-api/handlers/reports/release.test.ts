@@ -1,14 +1,16 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
+import { releaseReport } from "./release";
+import KSUID from "ksuid";
+// utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { StatusCodes } from "../../utils/types/types";
 import {
   mockDocumentClient,
   mockDynamoDataMLRLocked,
   mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
-import { releaseReport } from "./release";
-import KSUID from "ksuid";
 import { error } from "../../utils/constants/constants";
+// types
+import { StatusCodes } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),

@@ -1,6 +1,15 @@
 import handler from "../handler-lib";
+import KSUID from "ksuid";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
+import {
+  error,
+  reportBuckets,
+  reportTables,
+} from "../../utils/constants/constants";
+import { hasPermissions } from "../../utils/auth/authorization";
+import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
+// types
 import {
   DynamoGet,
   DynamoWrite,
@@ -10,15 +19,7 @@ import {
   S3Put,
   StatusCodes,
   UserRoles,
-} from "../../utils/types/types";
-import {
-  error,
-  reportBuckets,
-  reportTables,
-} from "../../utils/constants/constants";
-import { hasPermissions } from "../../utils/auth/authorization";
-import KSUID from "ksuid";
-import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
+} from "../../utils/types";
 
 /**
  * Locked MLR reports can be released by admins.

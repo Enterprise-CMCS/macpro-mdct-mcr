@@ -1,19 +1,21 @@
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import handler from "../handler-lib";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
-import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
 import {
   error,
   buckets,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
-import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
+// types
+import { AnyObject, S3Get, StatusCodes } from "../../utils/types";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];

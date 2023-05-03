@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { buckets } from "../../utils/constants/constants";
+// utils
 import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
-import { AnyObject, S3Get, S3Put } from "../../utils/types/types";
-import { buckets } from "../../utils/constants/constants";
+// types
+import { AnyObject, S3Get, S3Put } from "../../utils/types";
 
 const TABLE_NAME = process.env.MCPAR_REPORT_TABLE_NAME!;
 const BUCKET_NAME = process.env.MCPAR_FORM_BUCKET!;

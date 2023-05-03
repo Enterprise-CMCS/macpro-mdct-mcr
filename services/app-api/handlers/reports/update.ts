@@ -1,5 +1,6 @@
 import handler from "../handler-lib";
 import { fetchReport } from "./fetch";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import { hasPermissions } from "../../utils/auth/authorization";
@@ -9,7 +10,6 @@ import {
   validateFieldData,
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
-import { StatusCodes, UserRoles } from "../../utils/types/types";
 import {
   error,
   buckets,
@@ -20,6 +20,8 @@ import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
+// types
+import { StatusCodes, UserRoles } from "../../utils/types";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
