@@ -36,8 +36,20 @@ describe("Schemas", () => {
     "%@#$!ASDF",
   ];
 
-  const goodDateOptionalTestCases = ["", null, undefined];
-  const badDateOptionalTestCases = [1, "Hello!"];
+  const goodDateOptionalTestCases = [
+    "",
+    null,
+    undefined,
+    "01/01/2023",
+    "05/15/2023",
+  ];
+  const badDateOptionalTestCases = [
+    1,
+    "Hello!",
+    "1/1/2",
+    "0/0/99",
+    "0/01/2023",
+  ];
 
   const testNumberSchema = (
     schemaToUse: MixedSchema,

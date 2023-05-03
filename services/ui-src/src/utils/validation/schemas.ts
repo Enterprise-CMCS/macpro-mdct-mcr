@@ -119,7 +119,7 @@ export const dateOptional = () =>
     .nullable()
     .test({
       message: error.INVALID_DATE,
-      test: (value, context) => {
+      test: (value) => {
         if (
           value === null ||
           value === undefined ||
@@ -127,7 +127,10 @@ export const dateOptional = () =>
         ) {
           return true;
         } else if (typeof value === "string") {
-          context.schema.matches(dateFormatRegex, error.INVALID_DATE);
+          const match = value.match(dateFormatRegex);
+          if (match && match.length > 0) {
+            return true;
+          }
         }
         return false;
       },
