@@ -123,7 +123,6 @@ export const releaseReport = handler(async (event) => {
     locked: false,
     previousRevisions,
     status: "In progress",
-    submissionCount: (metadata.submissionCount += 1),
   };
 
   const putReportMetadataParams: DynamoWrite = {

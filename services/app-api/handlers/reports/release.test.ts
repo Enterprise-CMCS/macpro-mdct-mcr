@@ -57,7 +57,6 @@ describe("Test releaseReport method", () => {
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.locked).toBe(false);
-    expect(body.submissionCount).toBe(1);
     expect(body.previousRevisions).toEqual([
       mockDynamoDataMLRLocked.fieldDataId,
     ]);
@@ -89,7 +88,7 @@ describe("Test releaseReport method", () => {
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.locked).toBe(false);
-    expect(body.submissionCount).toBe(2);
+    expect(body.submissionCount).toBe(1);
     expect(body.previousRevisions.length).toBe(2);
     expect(body.previousRevisions).toContain(
       mockDynamoDataMLRLocked.fieldDataId
