@@ -95,6 +95,8 @@ export const EntityDetailsOverlay = ({
     return selectedEntity.report_eligibilityGroup[0].value;
   };
 
+  const { userIsAdmin } = useUser().user ?? {};
+
   const programInfo = [
     report_programName,
     eligibilityGroup(),
@@ -138,6 +140,7 @@ export const EntityDetailsOverlay = ({
           onError={onError}
           formData={selectedEntity}
           autosave={true}
+          disabled={userIsAdmin}
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
