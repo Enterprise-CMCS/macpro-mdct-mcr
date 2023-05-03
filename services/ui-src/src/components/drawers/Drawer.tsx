@@ -11,9 +11,9 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
-import { ReportDrawerDetails } from "components";
+import { EntityCardTopSection } from "components";
 // utils
-import { AnyObject, CustomHtmlElement, EntityType } from "types";
+import { AnyObject, CustomHtmlElement, EntityType, ViewType } from "types";
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 import { drawerReminderText } from "../../constants";
@@ -51,9 +51,10 @@ export const Drawer = ({
           )}
           <Text sx={sx.drawerReminderText}>{drawerReminderText}</Text>
           {verbiage.drawerDetails && entityType && (
-            <ReportDrawerDetails
-              drawerDetails={verbiage.drawerDetails}
+            <EntityCardTopSection
+              formattedEntityData={verbiage.drawerDetails}
               entityType={entityType}
+              viewType={ViewType.MODAL_DRAWER}
             />
           )}
           <Button

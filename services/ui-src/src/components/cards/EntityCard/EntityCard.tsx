@@ -8,7 +8,12 @@ import {
 } from "components";
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 // utils
-import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  ModalDrawerEntityTypes,
+  ViewType,
+} from "types";
 // assets
 import { svgFilters } from "styles/theme";
 import completedIcon from "assets/icons/icon_check_circle.png";
@@ -111,7 +116,7 @@ export const EntityCard = ({
         <EntityCardTopSection
           entityType={entityType}
           formattedEntityData={formattedEntityData}
-          printVersion={!!printVersion}
+          viewType={printVersion ? ViewType.PRINT : ViewType.ENTITY}
         />
         {openAddEditEntityModal && (
           <Button

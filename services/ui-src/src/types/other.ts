@@ -1,6 +1,6 @@
 import React from "react";
 
-// OTHER
+// Page
 
 export enum PageTypes {
   STANDARD = "standard",
@@ -54,4 +54,10 @@ export interface CustomHtmlElement {
   as?: string;
   props?: AnyObject;
   children?: CustomHtmlElement[];
+}
+
+export enum ViewType {
+  ENTITY = "entity",
+  MODAL_DRAWER = "modalDrawer",
+  PRINT = "print",
 }

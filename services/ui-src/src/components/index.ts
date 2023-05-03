@@ -32,7 +32,6 @@ export { MobileDashboardTable } from "./pages/Dashboard/MobileDashboardTable";
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
-export { ReportDrawerDetails } from "./drawers/ReportDrawerDetails";
 //export
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { ExportedReportFieldTable } from "./export/ExportedReportFieldTable";
