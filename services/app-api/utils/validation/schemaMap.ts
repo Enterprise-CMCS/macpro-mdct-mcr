@@ -30,12 +30,14 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   });
 };
 
+/** This regex must be at least as permissive as the one in ui-src */
+const validNumberRegex = /^\.$|[0-9]/;
+
 // NUMBER - Number or Valid Strings
 export const number = () =>
   string().test({
     message: error.INVALID_NUMBER_OR_NA,
     test: (value) => {
-      const validNumberRegex = /[0-9,.]/;
       if (value) {
         const isValidStringValue = validNAValues.includes(value);
         const isValidNumberValue = validNumberRegex.test(value);

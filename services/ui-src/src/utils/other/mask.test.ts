@@ -1,10 +1,11 @@
 import {
   convertToCommaSeparatedString,
-  validCustomMask,
+  isValidCustomMask,
   isValidNumericalString,
   maskValue,
   convertToCommaSeparatedRatioString,
 } from "utils";
+import { customMaskMap } from "./mask";
 
 const commaSeparatedMaskAcceptableTestCases = [
   { test: "0....0123", expected: "0.01" },
@@ -15,6 +16,7 @@ const commaSeparatedMaskAcceptableTestCases = [
   { test: ".05", expected: "0.05" },
   { test: ".5", expected: "0.5" },
   { test: "0.05", expected: "0.05" },
+  { test: "0.0", expected: "0" },
   { test: "1,234.00", expected: "1,234" },
   { test: "1,234", expected: "1,234" },
   { test: "1234", expected: "1,234" },
@@ -40,10 +42,16 @@ const ratioMaskAcceptableTestCases = [
 
 describe("Test validCustomMask", () => {
   test("Check if good and bad mask values return accurately", () => {
-    const commaSeparated = validCustomMask("comma-separated");
-    const badMask = validCustomMask("cherry-tree");
-    expect(commaSeparated).toEqual("comma-separated");
-    expect(badMask).toBeFalsy();
+    const commaSeparated = isValidCustomMask("comma-separated");
+    const badMask = isValidCustomMask("cherry-tree");
+    expect(commaSeparated).toBe(true);
+    expect(badMask).toBe(false);
+  });
+
+  test("Check if all custom masks have validation functions", () => {
+    for (let maskFunction of Object.values(customMaskMap)) {
+      expect(typeof maskFunction).toBe("function");
+    }
   });
 });
 
