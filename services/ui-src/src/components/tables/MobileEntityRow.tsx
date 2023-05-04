@@ -4,7 +4,7 @@ import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
 // utils
-import { eligibilityGroup, parseCustomHtml } from "utils";
+import { eligibilityGroup, parseCustomHtml, useUser } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import { useContext, useMemo } from "react";
@@ -24,6 +24,7 @@ export const MobileEntityRow = ({
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const { report_programName, report_planName } = entity;
+  const { userIsAdmin } = useUser().user ?? {};
 
   const entityComplete = useMemo(() => {
     return report ? getMlrEntityStatus(report, entity) : false;
@@ -61,7 +62,6 @@ export const MobileEntityRow = ({
               <Button
                 variant="none"
                 sx={sx.editButton}
-                disabled={locked}
                 onClick={() => openAddEditEntityModal(entity)}
               >
                 {editEntityButtonText}
@@ -73,7 +73,6 @@ export const MobileEntityRow = ({
                 variant="outline"
                 onClick={() => openEntityDetailsOverlay(entity)}
                 size="sm"
-                disabled={locked}
                 sx={sx.enterButton}
               >
                 {enterReportText}
@@ -83,7 +82,7 @@ export const MobileEntityRow = ({
               <Button
                 sx={sx.deleteButton}
                 onClick={() => openDeleteEntityModal(entity)}
-                disabled={locked}
+                disabled={locked ?? userIsAdmin}
               >
                 <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
               </Button>

@@ -191,6 +191,7 @@
       },
       "modalForm": {
         "id": "mlrd-modal",
+        "adminDisabled": true,
         "fields": [
           {
             "id": "report_programName",

@@ -68,3 +68,7 @@ export default {
 export function getFieldDataKey(state: State, fieldDataId: string) {
   return `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`;
 }
+
+export function getFormTemplateKey(state: State, formTemplateId: string) {
+  return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
+}

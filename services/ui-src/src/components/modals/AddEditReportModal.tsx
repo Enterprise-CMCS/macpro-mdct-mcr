@@ -100,13 +100,15 @@ export const AddEditReportModal = ({
         state: activeState,
         id: selectedReport.id,
       };
-
       // edit existing report
       await updateReport(reportKeys, {
         ...dataToWrite,
         metadata: {
           ...dataToWrite.metadata,
-          status: ReportStatus.IN_PROGRESS,
+          locked: undefined,
+          status: reportType !== "MLR" ? ReportStatus.IN_PROGRESS : undefined,
+          submissionCount: undefined,
+          previousRevisions: undefined,
         },
       });
     } else {
