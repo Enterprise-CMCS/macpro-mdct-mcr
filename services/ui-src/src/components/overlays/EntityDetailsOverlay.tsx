@@ -149,7 +149,13 @@ export const EntityDetailsOverlay = ({
               type="submit"
               sx={sx.saveButton}
             >
-              {submitting ? <Spinner size="small" /> : "Save & return"}
+              {submitting ? (
+                <Spinner size="small" />
+              ) : report?.locked || userIsAdmin ? (
+                "Return"
+              ) : (
+                "Save & return"
+              )}
             </Button>
           </Flex>
         </Box>
