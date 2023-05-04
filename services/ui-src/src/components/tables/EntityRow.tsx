@@ -107,7 +107,7 @@ const sx = {
     maxWidth: "fit-content",
   },
   errorText: {
-    color: "palette.error_darker",
+    color: "palette.error_dark",
     fontSize: "0.75rem",
     marginBottom: "0.75rem",
   },
