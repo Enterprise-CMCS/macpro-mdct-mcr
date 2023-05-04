@@ -170,7 +170,7 @@
           "info": [
             {
               "type": "html",
-              "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab.</b>"
+              "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab. After adding program reporting information, enter the MLR for each report to add its MLR & Remittance Calculations.</b>"
             }
           ]
         },

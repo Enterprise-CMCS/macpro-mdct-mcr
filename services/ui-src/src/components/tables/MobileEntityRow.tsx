@@ -110,8 +110,9 @@ const sx = {
     padding: "0rem",
   },
   errorText: {
-    color: "palette.error",
+    color: "palette.error_darker",
     fontSize: "0.75rem",
+    marginBottom: "0.75rem",
   },
   rowHeader: {
     display: "flex",
