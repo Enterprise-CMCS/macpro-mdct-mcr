@@ -77,7 +77,7 @@ export function renderModalOverlayTableBody(
         return (
           <Tr key={idx}>
             <Td sx={sx.statusIcon}>
-              <EntityStatusIcon entity={entity} />
+              <EntityStatusIcon entity={entity} isPdf={true} />
             </Td>
             <Td>
               <Text sx={sx.tableIndex}>{idx + 1}</Text>
