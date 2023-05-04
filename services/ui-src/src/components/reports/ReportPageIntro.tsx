@@ -73,7 +73,7 @@ const sx = {
       },
     },
     b: {
-      color: "palette.success_darker",
+      color: "palette.base",
     },
   },
 };
