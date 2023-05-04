@@ -124,10 +124,14 @@ export const date = () =>
 
 export const dateOptional = () =>
   string()
-    .typeError(error.INVALID_GENERIC)
+    .nullable()
     .test({
       message: error.INVALID_DATE,
-      test: (value) => dateFormatRegex.test(value!),
+      test: (value) =>
+        value === null ||
+        value === undefined ||
+        isWhitespaceString(value) ||
+        dateFormatRegex.test(value),
     });
 
 export const endDate = (startDateField: string) =>
