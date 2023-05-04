@@ -7,7 +7,7 @@ import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import successIcon from "assets/icons/icon_check_circle.png";
 import { useContext, useMemo } from "react";
 import { ReportContext } from "components/reports/ReportProvider";
-import { getMlrEntityStatus } from "utils/tables";
+import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
 
 export const EntityStatusIcon = ({ entity }: Props) => {
   const { report } = useContext(ReportContext);

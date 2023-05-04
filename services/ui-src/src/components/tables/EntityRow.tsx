@@ -1,5 +1,5 @@
 // components
-import { Button, Image, Td, Tr } from "@chakra-ui/react";
+import { Button, Image, Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
@@ -7,6 +7,9 @@ import { AnyObject, EntityShape } from "types";
 import { eligibilityGroup, renderHtml } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import { useContext, useMemo } from "react";
+import { ReportContext } from "components/reports/ReportProvider";
+import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
 
 export const EntityRow = ({
   entity,
@@ -17,8 +20,12 @@ export const EntityRow = ({
   openEntityDetailsOverlay,
 }: Props) => {
   const { report_programName, report_planName } = entity;
-
+  const { report } = useContext(ReportContext);
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
+
+  const entityComplete = useMemo(() => {
+    return report ? getMlrEntityStatus(report, entity) : false;
+  }, [report]);
 
   const programInfo = [
     report_programName,
@@ -38,6 +45,11 @@ export const EntityRow = ({
             <li key={index}>{renderHtml(field)}</li>
           ))}
         </ul>
+        {!entityComplete && report?.reportType === "MLR" && (
+          <Text sx={sx.errorText}>
+            Select “Enter MLR” to complete this report.
+          </Text>
+        )}
       </Td>
       <Td sx={sx.editButton}>
         {openAddEditEntityModal && (
@@ -97,6 +109,10 @@ const sx = {
   },
   statusIcon: {
     maxWidth: "fit-content",
+  },
+  errorText: {
+    color: "palette.error",
+    fontSize: "0.75rem",
   },
   programInfo: {
     maxWidth: "18.75rem",
