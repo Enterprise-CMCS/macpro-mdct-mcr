@@ -109,7 +109,6 @@ export const AddEditReportModal = ({
           status: reportType !== "MLR" ? ReportStatus.IN_PROGRESS : undefined,
           submissionCount: undefined,
           previousRevisions: undefined,
-          // status: selectedReport?.submissionCount >= 1 ? ReportStatus.IN_PROGRESS : `In revision`,
         },
       });
     } else {
