@@ -119,21 +119,11 @@ export const dateOptional = () =>
     .nullable()
     .test({
       message: error.INVALID_DATE,
-      test: (value) => {
-        if (
-          value === null ||
-          value === undefined ||
-          isWhitespaceString(value)
-        ) {
-          return true;
-        } else if (typeof value === "string") {
-          const match = value.match(dateFormatRegex);
-          if (match && match.length > 0) {
-            return true;
-          }
-        }
-        return false;
-      },
+      test: (value) =>
+        value === null ||
+        value === undefined ||
+        isWhitespaceString(value) ||
+        dateFormatRegex.test(value),
     });
 
 export const endDate = (startDateField: string) =>
