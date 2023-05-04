@@ -7,6 +7,9 @@ import { AnyObject, EntityShape } from "types";
 import { eligibilityGroup, parseCustomHtml, useUser } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import { useContext, useMemo } from "react";
+import { ReportContext } from "components/reports/ReportProvider";
+import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
 
 export const MobileEntityRow = ({
   entity,
@@ -17,11 +20,15 @@ export const MobileEntityRow = ({
   openEntityDetailsOverlay,
 }: Props) => {
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
-
+  const { report } = useContext(ReportContext);
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const { report_programName, report_planName } = entity;
   const { userIsAdmin } = useUser().user ?? {};
+
+  const entityComplete = useMemo(() => {
+    return report ? getMlrEntityStatus(report, entity) : false;
+  }, [report]);
 
   const programInfo = [
     report_programName,
@@ -36,7 +43,7 @@ export const MobileEntityRow = ({
         <Td>
           <Box sx={sx.rowHeader}>
             <EntityStatusIcon entity={entity as EntityShape} />
-            <Text>{parseCustomHtml(tableHeader)}</Text>
+            <Text>{tableHeader && parseCustomHtml(tableHeader)}</Text>
           </Box>
           <Box sx={sx.programList}>
             <ul>
@@ -44,6 +51,11 @@ export const MobileEntityRow = ({
                 <li key={index}>{field}</li>
               ))}
             </ul>
+            {!entityComplete && report?.reportType === "MLR" && (
+              <Text sx={sx.errorText}>
+                Select “Enter MLR” to complete this report.
+              </Text>
+            )}
           </Box>
           <Box sx={sx.actionButtons}>
             {openAddEditEntityModal && (
@@ -95,6 +107,11 @@ interface Props {
 const sx = {
   content: {
     padding: "0rem",
+  },
+  errorText: {
+    color: "palette.error_dark",
+    fontSize: "0.75rem",
+    marginBottom: "0.75rem",
   },
   rowHeader: {
     display: "flex",

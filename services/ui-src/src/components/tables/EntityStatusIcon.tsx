@@ -9,28 +9,13 @@ import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
 import { useContext, useMemo } from "react";
 import { ReportContext } from "components/reports/ReportProvider";
-import { mapValidationTypesToSchema } from "utils";
-import { object } from "yup";
+import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
 
 export const EntityStatusIcon = ({ entity, isPdf }: Props) => {
   const { report } = useContext(ReportContext);
 
   const entityComplete = useMemo(() => {
-    const reportFormValidation = Object.fromEntries(
-      Object.entries(report?.formTemplate.validationJson ?? {}).filter(
-        ([key]) => key.includes("report_") || key.includes("state_")
-      )
-    );
-
-    const formValidationSchema =
-      mapValidationTypesToSchema(reportFormValidation);
-    const formResolverSchema = object(formValidationSchema || {});
-
-    try {
-      return formResolverSchema.validateSync(entity);
-    } catch (err) {
-      return false;
-    }
+    return report ? getMlrEntityStatus(report, entity) : false;
   }, [report]);
 
   return (
