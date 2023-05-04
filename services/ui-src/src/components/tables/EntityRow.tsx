@@ -4,7 +4,7 @@ import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
 // utils
-import { eligibilityGroup, renderHtml } from "utils";
+import { eligibilityGroup, renderHtml, useUser } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 
@@ -17,7 +17,7 @@ export const EntityRow = ({
   openEntityDetailsOverlay,
 }: Props) => {
   const { report_programName, report_planName } = entity;
-
+  const { userIsAdmin } = useUser().user ?? {};
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const programInfo = [
@@ -41,11 +41,7 @@ export const EntityRow = ({
       </Td>
       <Td sx={sx.editButton}>
         {openAddEditEntityModal && (
-          <Button
-            variant="none"
-            disabled={locked}
-            onClick={() => openAddEditEntityModal(entity)}
-          >
+          <Button variant="none" onClick={() => openAddEditEntityModal(entity)}>
             {verbiage.editEntityButtonText}
           </Button>
         )}
@@ -56,7 +52,6 @@ export const EntityRow = ({
             onClick={() => openEntityDetailsOverlay(entity)}
             variant="outline"
             size="sm"
-            disabled={locked}
           >
             {verbiage.enterReportText}
           </Button>
@@ -67,7 +62,7 @@ export const EntityRow = ({
           <Button
             sx={sx.deleteButton}
             onClick={() => openDeleteEntityModal(entity)}
-            disabled={locked}
+            disabled={locked || userIsAdmin}
           >
             <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
           </Button>
