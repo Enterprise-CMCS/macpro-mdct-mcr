@@ -119,7 +119,7 @@ const noHintComponent = (
 );
 
 const hintComponent = (
-  <ReportContext.Provider value={mockMlrReportContext}>
+  <ReportContext.Provider value={mockMcparReportContext}>
     <ExportedReportFieldTable section={hintJson} />
   </ReportContext.Provider>
 );
@@ -149,7 +149,7 @@ describe("ExportedReportFieldRow", () => {
     expect(hint).toBeVisible();
   });
 
-  test("hides the hint text within the Primary Contact section of MLR", async () => {
+  test("hides the hint text within MLR reports", async () => {
     render(noHintComponent);
     const hint = screen.queryByText(/Mock Hint Text/);
     expect(hint).not.toBeInTheDocument();

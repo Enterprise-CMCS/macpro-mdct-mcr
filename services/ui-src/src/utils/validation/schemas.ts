@@ -2,7 +2,7 @@ import {
   array,
   boolean,
   mixed,
-  number as numberSchema,
+  number as yupNumberSchema,
   object,
   string,
 } from "yup";
@@ -27,32 +27,41 @@ export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 const validNAValues = ["N/A", "Data not available"];
 
 const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
-  return numberSchema().transform((_value) => {
+  return yupNumberSchema().transform((_value) => {
     return Number(value.replace(charsToReplace, ""));
   });
 };
 
+/**
+ * We can afford to be very permissive with this regex. As long as the
+ * value contains a digit, we can be confident that it ran through the
+ * frontend masking logic. We also allow a single dot: if the user
+ * types a dot, they are quite likely about to type a digit also.
+ * We don't want to flash an angry error message before they do so.
+ */
+const validNumberRegex = /^\.$|[0-9]/;
+
 // NUMBER - Number or Valid Strings
+export const numberSchema = () =>
+  string().test({
+    message: error.INVALID_NUMBER_OR_NA,
+    test: (value) => {
+      if (value) {
+        const isValidStringValue = validNAValues.includes(value);
+        const isValidNumberValue = validNumberRegex.test(value);
+        return isValidStringValue || isValidNumberValue;
+      } else return true;
+    },
+  });
+
 export const number = () =>
-  string()
+  numberSchema()
     .required(error.REQUIRED_GENERIC)
-    .test({
-      message: error.INVALID_NUMBER_OR_NA,
-      test: (value) => {
-        const validNumberRegex = /[0-9,.]/;
-        if (value) {
-          const isValidStringValue = validNAValues.includes(value);
-          const isValidNumberValue = validNumberRegex.test(value);
-          return isValidStringValue || isValidNumberValue;
-        } else return true;
-      },
-    })
     .test({
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
     });
-
-export const numberOptional = () => number().notRequired();
+export const numberOptional = () => numberSchema().notRequired().nullable();
 
 // Number - Ratio
 export const ratio = () =>
@@ -115,10 +124,14 @@ export const date = () =>
 
 export const dateOptional = () =>
   string()
-    .typeError(error.INVALID_GENERIC)
+    .nullable()
     .test({
       message: error.INVALID_DATE,
-      test: (value) => dateFormatRegex.test(value!),
+      test: (value) =>
+        value === null ||
+        value === undefined ||
+        isWhitespaceString(value) ||
+        dateFormatRegex.test(value),
     });
 
 export const endDate = (startDateField: string) =>
@@ -147,12 +160,12 @@ export const checkboxOptional = () => checkbox().notRequired();
 export const checkboxSingle = () => boolean();
 
 // RADIO
+export const radioSchema = () =>
+  array().of(object({ key: text(), value: text() }));
 export const radio = () =>
-  array()
-    .min(1, error.REQUIRED_GENERIC)
-    .of(object({ key: text(), value: text() }))
-    .required(error.REQUIRED_GENERIC);
-export const radioOptional = () => radio().notRequired();
+  radioSchema().min(1, error.REQUIRED_GENERIC).required(error.REQUIRED_GENERIC);
+export const radioOptional = () =>
+  radioSchema().min(0, error.REQUIRED_GENERIC).notRequired().nullable();
 
 // DYNAMIC
 export const dynamic = () =>
@@ -176,15 +189,15 @@ export const nested = (
   const fieldTypeMap = {
     array: array(),
     string: string(),
-    date: date(),
     object: object(),
+    date: date(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
   return baseSchema.when(parentFieldName, {
     is: (value: Choice[]) =>
       // look for parentOptionId in checked choices
-      value?.find((option: Choice) => option.key === parentOptionId),
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId)),
     then: () => fieldSchema(), // returns standard field schema (required)
     otherwise: () => baseSchema, // returns not-required Yup base schema
   });

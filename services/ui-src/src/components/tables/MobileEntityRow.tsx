@@ -1,36 +1,40 @@
 // components
 import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
+import { EntityStatusIcon } from "components";
 // types
-import { AnyObject } from "types";
+import { AnyObject, EntityShape } from "types";
 // utils
-import { parseCustomHtml } from "utils";
+import { eligibilityGroup, parseCustomHtml, useUser } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import { useContext, useMemo } from "react";
+import { ReportContext } from "components/reports/ReportProvider";
+import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
 
 export const MobileEntityRow = ({
   entity,
   verbiage,
+  locked,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openEntityDetailsOverlay,
 }: Props) => {
-  const { programName, planName } = entity;
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
+  const { report } = useContext(ReportContext);
+  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
-  const reportingPeriod = `${entity.reportingPeriodStartDate} to ${entity.reportingPeriodEndDate}`;
-  const eligibilityGroup = () => {
-    if (entity["report_eligibilityGroup-otherText"]) {
-      return entity["report_eligibilityGroup-otherText"];
-    }
-    return entity.report_eligibilityGroup[0].value;
-  };
+  const { report_programName, report_planName } = entity;
+  const { userIsAdmin } = useUser().user ?? {};
+
+  const entityComplete = useMemo(() => {
+    return report ? getMlrEntityStatus(report, entity) : false;
+  }, [report]);
 
   const programInfo = [
-    programName,
-    eligibilityGroup(),
+    report_programName,
+    eligibilityGroup(entity),
     reportingPeriod,
-    planName,
+    report_planName,
   ];
 
   return (
@@ -38,8 +42,8 @@ export const MobileEntityRow = ({
       <Tr>
         <Td>
           <Box sx={sx.rowHeader}>
-            <Image src={unfinishedIcon} alt="warning icon" boxSize="lg" />
-            <Text>{parseCustomHtml(tableHeader)}</Text>
+            <EntityStatusIcon entity={entity as EntityShape} />
+            <Text>{tableHeader && parseCustomHtml(tableHeader)}</Text>
           </Box>
           <Box sx={sx.programList}>
             <ul>
@@ -47,6 +51,11 @@ export const MobileEntityRow = ({
                 <li key={index}>{field}</li>
               ))}
             </ul>
+            {!entityComplete && report?.reportType === "MLR" && (
+              <Text sx={sx.errorText}>
+                Select “Enter MLR” to complete this report.
+              </Text>
+            )}
           </Box>
           <Box sx={sx.actionButtons}>
             {openAddEditEntityModal && (
@@ -73,6 +82,7 @@ export const MobileEntityRow = ({
               <Button
                 sx={sx.deleteButton}
                 onClick={() => openDeleteEntityModal(entity)}
+                disabled={locked ?? userIsAdmin}
               >
                 <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
               </Button>
@@ -85,8 +95,9 @@ export const MobileEntityRow = ({
 };
 
 interface Props {
-  entity: AnyObject;
+  entity: EntityShape;
   verbiage: AnyObject;
+  locked?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openEntityDetailsOverlay?: Function;
@@ -96,6 +107,11 @@ interface Props {
 const sx = {
   content: {
     padding: "0rem",
+  },
+  errorText: {
+    color: "palette.error_dark",
+    fontSize: "0.75rem",
+    marginBottom: "0.75rem",
   },
   rowHeader: {
     display: "flex",
@@ -138,7 +154,7 @@ const sx = {
   deleteButton: {
     background: "none",
     padding: "0",
-    "&:hover": {
+    "&:hover, &:hover:disabled": {
       background: "white",
     },
   },

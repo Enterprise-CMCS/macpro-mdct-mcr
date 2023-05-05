@@ -1,14 +1,16 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
+import { releaseReport } from "./release";
+import KSUID from "ksuid";
+// utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { StatusCodes } from "../../utils/types/types";
 import {
   mockDocumentClient,
   mockDynamoDataMLRLocked,
   mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
-import { releaseReport } from "./release";
-import KSUID from "ksuid";
 import { error } from "../../utils/constants/constants";
+// types
+import { StatusCodes } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -55,7 +57,6 @@ describe("Test releaseReport method", () => {
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.locked).toBe(false);
-    expect(body.submissionCount).toBe(1);
     expect(body.previousRevisions).toEqual([
       mockDynamoDataMLRLocked.fieldDataId,
     ]);
@@ -87,7 +88,7 @@ describe("Test releaseReport method", () => {
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.locked).toBe(false);
-    expect(body.submissionCount).toBe(2);
+    expect(body.submissionCount).toBe(1);
     expect(body.previousRevisions.length).toBe(2);
     expect(body.previousRevisions).toContain(
       mockDynamoDataMLRLocked.fieldDataId

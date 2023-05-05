@@ -34,6 +34,9 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
   const reportType = report?.reportType;
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
+  // is MLR report in a LOCKED state
+  const isLocked = report?.locked;
+
   const dashTitle = `${verbiage.dashboardTitle}${
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
   }`;
@@ -113,6 +116,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
                 accordionVerbiage[reportType as keyof typeof accordionVerbiage]
                   ?.formIntro
               }
+              reportType={reportType}
             />
           )}
           <Box sx={sx.dashboardBox}>
@@ -133,6 +137,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
                         key={entityIndex}
                         entity={entity}
                         verbiage={verbiage}
+                        locked={isLocked}
                         openAddEditEntityModal={openAddEditEntityModal}
                         openDeleteEntityModal={openDeleteEntityModal}
                         openEntityDetailsOverlay={openEntityDetailsOverlay}
@@ -142,6 +147,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
                         key={entity.id}
                         entity={entity}
                         verbiage={verbiage}
+                        locked={isLocked}
                         openAddEditEntityModal={openAddEditEntityModal}
                         openDeleteEntityModal={openDeleteEntityModal}
                         openEntityDetailsOverlay={openEntityDetailsOverlay}
@@ -152,6 +158,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
             )}
             <Button
               sx={sx.addEntityButton}
+              disabled={isLocked}
               onClick={() => openAddEditEntityModal()}
             >
               {verbiage.addEntityButtonText}
@@ -180,7 +187,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
               </>
             )}
           </Box>
-          <ReportPageFooter />
+          <ReportPageFooter hidePrevious={true} />
         </Box>
       )}
     </Box>

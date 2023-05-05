@@ -6,7 +6,8 @@ import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
 
 export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
-  const { section, subsection, info, spreadsheet } = text;
+  const { section, subsection, hint, info, spreadsheet } = text;
+  const { reportType } = props;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -15,10 +16,14 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
+      {hint && <Box sx={sx.hintTextBox}>{hint}</Box>}
       {accordion && <InstructionsAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
-          <SpreadsheetWidget description={spreadsheet} />
+          <SpreadsheetWidget
+            description={spreadsheet}
+            reportType={reportType}
+          />
         </Box>
       )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
@@ -44,6 +49,10 @@ const sx = {
     fontWeight: "normal",
     fontSize: "4xl",
   },
+  hintTextBox: {
+    color: "#5B616B",
+    paddingTop: "1.5rem",
+  },
   spreadsheetWidgetBox: {
     marginTop: "2rem",
   },
@@ -64,7 +73,7 @@ const sx = {
       },
     },
     b: {
-      color: "palette.success_darker",
+      color: "palette.base",
     },
   },
 };

@@ -1,9 +1,10 @@
+import * as yup from "yup";
+import { error } from "../constants/constants";
+// types
+import { AnyObject } from "../types";
+// utils
 import { nested, endDate } from "./completionSchemas";
 import { completionSchemaMap as schemaMap } from "./completionSchemaMap";
-import { error } from "../constants/constants";
-import * as yup from "yup";
-
-import { AnyObject } from "../types/types";
 
 // map field validation types to validation schema
 export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {

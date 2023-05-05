@@ -10,13 +10,14 @@ import {
   validateFieldData,
 } from "../../utils/validation/validation";
 import { metadataValidationSchema } from "../../utils/validation/schemas";
-import { S3Put, StatusCodes, UserRoles } from "../../utils/types/types";
 import {
   error,
   buckets,
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
+// types
+import { S3Put, StatusCodes, UserRoles } from "../../utils/types";
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {

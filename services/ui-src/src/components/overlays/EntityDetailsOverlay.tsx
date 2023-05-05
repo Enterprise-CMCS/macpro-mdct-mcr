@@ -2,16 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // components
 import { Form, ReportContext, ReportPageIntro } from "components";
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
   EntityShape,
   EntityType,
   FormJson,
+  isFieldElement,
   ReportStatus,
 } from "types";
-import { useUser } from "utils";
+import { filterFormData, useUser } from "utils";
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -26,9 +27,7 @@ export const EntityDetailsOverlay = ({
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser, full_name, state } =
-    useUser().user ?? {};
-  const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const { full_name, state } = useUser().user ?? {};
   const onError = () => {};
   const {
     entities,
@@ -39,9 +38,9 @@ export const EntityDetailsOverlay = ({
   } = useContext(EntityContext);
 
   useEffect(() => {
+    setSelectedEntity(selectedEntity);
     setSidebarHidden(true);
     setEntityType(entityType);
-    setSelectedEntity(selectedEntity);
     setEntities(report?.fieldData[entityType]);
     return () => {
       setEntities([]);
@@ -52,7 +51,15 @@ export const EntityDetailsOverlay = ({
 
   const onSubmit = async (enteredData: AnyObject) => {
     setSubmitting(true);
-    updateEntities(enteredData);
+    const filteredFormData = filterFormData(
+      enteredData,
+      form.fields.filter(isFieldElement)
+    );
+    const newEntity = {
+      ...selectedEntity,
+      ...filteredFormData,
+    };
+    updateEntities(newEntity);
     const reportKeys = {
       reportType: report?.reportType,
       state: state,
@@ -78,6 +85,25 @@ export const EntityDetailsOverlay = ({
     closeEntityDetailsOverlay();
   };
 
+  const { report_programName, report_planName } = selectedEntity;
+
+  const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
+  const eligibilityGroup = () => {
+    if (selectedEntity && selectedEntity["report_eligibilityGroup-otherText"]) {
+      return selectedEntity["report_eligibilityGroup-otherText"];
+    }
+    return selectedEntity.report_eligibilityGroup[0].value;
+  };
+
+  const { userIsAdmin } = useUser().user ?? {};
+
+  const programInfo = [
+    report_programName,
+    eligibilityGroup(),
+    reportingPeriod,
+    report_planName,
+  ];
+
   return (
     <Box sx={sx}>
       <Box data-testid="entity-details-overlay">
@@ -94,47 +120,42 @@ export const EntityDetailsOverlay = ({
           <ReportPageIntro
             text={overlayVerbiage.MLR.intro}
             accordion={accordionVerbiage.MLR.detailIntro}
+            reportType={report?.reportType}
           />
         )}
-        <Box>
-          <Heading size="xs">{report?.reportType} Report for:</Heading>
-          <Text>{report?.programName || report?.submissionName}</Text>
-          {selectedEntity.report_eligibilityGroup && (
-            <Text>
-              {selectedEntity["report_eligibilityGroup-otherText"]
-                ? selectedEntity["report_eligibilityGroup-otherText"]
-                : selectedEntity.report_eligibilityGroup[0].value}
-            </Text>
-          )}
-          <Text>
-            {selectedEntity.reportingPeriodStartDate} to{" "}
-            {selectedEntity.reportingPeriodEndDate}
-          </Text>
-          <Text fontSize="lg" as="b">
-            {selectedEntity.planName}
-          </Text>
+        <Box sx={sx.programInfo}>
+          <Heading fontSize={"md"}>MLR Report for:</Heading>
+          <Heading fontSize={"md"}>
+            <ul>
+              {programInfo.map((field, index) => (
+                <li key={index}>{field}</li>
+              ))}
+            </ul>
+          </Heading>
         </Box>
         <Form
-          id={selectedEntity.id}
+          id={form.id}
           formJson={form}
           onSubmit={onSubmit}
           onError={onError}
           formData={selectedEntity}
           autosave={true}
+          disabled={userIsAdmin}
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
-            {!isAdminTypeUser && (
-              <Button variant="outline" onClick={() => closeOverlay()}>
-                Cancel
-              </Button>
-            )}
             <Button
-              onClick={() => onSubmit(selectedEntity)}
+              onClick={() => closeOverlay()}
               type="submit"
               sx={sx.saveButton}
             >
-              {submitting ? <Spinner size="small" /> : "Submit"}
+              {submitting ? (
+                <Spinner size="small" />
+              ) : report?.locked || userIsAdmin ? (
+                "Return"
+              ) : (
+                "Save & return"
+              )}
             </Button>
           </Flex>
         </Box>
@@ -177,10 +198,23 @@ const sx = {
     borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
   },
   buttonFlex: {
-    justifyContent: "space-between",
+    justifyContent: "end",
     marginY: "1.5rem",
   },
   saveButton: {
     width: "8.25rem",
+  },
+  programInfo: {
+    maxWidth: "18.75rem",
+    ul: {
+      margin: "0.5rem auto",
+      listStyleType: "none",
+      li: {
+        wordWrap: "break-word",
+        paddingTop: "0.125rem",
+        paddingBottom: "0.125rem",
+        whiteSpace: "break-spaces",
+      },
+    },
   },
 };

@@ -20,4 +20,4 @@ export const mlrReportJson = {
 
 export const nonFormPages = ["/mlr/get-started"];
 export const isMlrReportFormPage = (pathname: string): boolean =>
-  pathname.includes("/mlr/") && !nonFormPages.includes(pathname);
+  mlrReportRoutesFlat.some((route) => route.path == pathname);

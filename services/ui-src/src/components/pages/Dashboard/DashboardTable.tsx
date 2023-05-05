@@ -3,7 +3,12 @@ import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Spinner } from "@cmsgov/design-system";
 import { Table } from "components";
 // utils
-import { AnyObject, ReportMetadataShape, TableContentShape } from "types";
+import {
+  AnyObject,
+  ReportMetadataShape,
+  ReportType,
+  TableContentShape,
+} from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -50,7 +55,14 @@ export const DashboardTable = ({
         {/* Last Altered By */}
         <Td>{report?.lastAlteredBy || "-"}</Td>
         {/* Report Status */}
-        <Td>{report?.archived ? "Archived" : report?.status}</Td>
+        <Td>
+          {getStatus(
+            reportType as ReportType,
+            report.status,
+            report.archived,
+            report.submissionCount
+          )}
+        </Td>
         {/* MLR-ONLY: Submission count */}
         {reportType === "MLR" && isAdmin && (
           <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
@@ -116,6 +128,26 @@ interface DashboardTableProps {
   sxOverride: AnyObject;
 }
 
+export const getStatus = (
+  reportType: ReportType,
+  status: string,
+  archived?: boolean,
+  submissionCount?: number
+) => {
+  if (archived) {
+    return `Archived`;
+  }
+  if (reportType === "MLR") {
+    if (
+      submissionCount &&
+      submissionCount >= 1 &&
+      !status.includes("Submitted")
+    ) {
+      return `In revision`;
+    }
+  }
+  return status;
+};
 const tableBody = (body: TableContentShape, isAdmin: boolean) => {
   var tableContent = body;
   if (!isAdmin) {
