@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
@@ -14,7 +15,7 @@ const accordionItems = [
 
 const faqAccordionComponent = (
   <RouterWrappedComponent>
-    <FaqAccordion accordionItems={accordionItems} data-testid="faq-accordion" />
+    <FaqAccordion accordionItems={accordionItems} />
   </RouterWrappedComponent>
 );
 
@@ -24,7 +25,21 @@ describe("Test FaqAccordion", () => {
   });
 
   test("FaqAccordion is visible", () => {
-    expect(screen.getByTestId("faq-accordion")).toBeVisible();
+    expect(screen.getByText(accordionItems[0].question)).toBeVisible();
+  });
+
+  test("FaqAccordion default closed state only shows the question", () => {
+    expect(screen.getByText(accordionItems[0].question)).toBeVisible();
+    expect(screen.getByText(accordionItems[0].answer)).not.toBeVisible();
+  });
+
+  test("FaqAccordion should show answer on click", async () => {
+    const faqQuestion = screen.getByText(accordionItems[0].question);
+    expect(faqQuestion).toBeVisible();
+    expect(screen.getByText(accordionItems[0].answer)).not.toBeVisible();
+    await userEvent.click(faqQuestion);
+    expect(faqQuestion).toBeVisible();
+    expect(screen.getByText(accordionItems[0].answer)).toBeVisible();
   });
 });
 

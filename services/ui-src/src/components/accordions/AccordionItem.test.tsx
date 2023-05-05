@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
@@ -10,10 +11,7 @@ import verbiage from "verbiage/pages/home";
 const accordionItemComponent = (
   <RouterWrappedComponent>
     <Accordion>
-      <AccordionItem
-        label={verbiage.cards.MCPAR.accordion.buttonLabel}
-        data-testid="accordion-item"
-      />
+      <AccordionItem label={verbiage.cards.MCPAR.accordion.buttonLabel} />
     </Accordion>
   </RouterWrappedComponent>
 );
@@ -24,7 +22,20 @@ describe("Test AccordionItem", () => {
   });
 
   test("AccordionItem is visible", () => {
-    expect(screen.getByTestId("accordion-item")).toBeVisible();
+    expect(
+      screen.getByText(verbiage.cards.MCPAR.accordion.buttonLabel)
+    ).toBeVisible();
+  });
+
+  test("AccordionItem shows plus sign when closed", () => {
+    expect(screen.getByAltText("Expand")).toBeVisible();
+    expect(screen.queryByAltText("Collapse")).toBeFalsy();
+  });
+
+  test("AccordionItem shows minus sign when open", async () => {
+    await userEvent.click(screen.getByAltText("Expand"));
+    expect(screen.queryByAltText("Expand")).toBeFalsy();
+    expect(screen.getByAltText("Collapse")).toBeVisible();
   });
 });
 
