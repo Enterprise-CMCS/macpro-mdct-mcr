@@ -6,6 +6,7 @@ import { act } from "react-dom/test-utils";
 import { AdminBannerContext, AdminBannerProvider } from "./AdminBannerProvider";
 // utils
 import { mockBannerData } from "utils/testing/setupJest";
+import { bannerErrors } from "verbiage/errors";
 
 jest.mock("utils/api/requestMethods/banner", () => ({
   deleteBanner: jest.fn(() => {}),
@@ -18,28 +19,15 @@ const mockAPI = require("utils/api/requestMethods/banner");
 const TestComponent = () => {
   const { ...context } = useContext(AdminBannerContext);
   return (
-    <div data-testid="testdiv">
-      <button
-        onClick={() => context.fetchAdminBanner()}
-        data-testid="fetch-button"
-      >
-        Fetch
-      </button>
-      <button
-        onClick={() => context.writeAdminBanner(mockBannerData)}
-        data-testid="write-button"
-      >
+    <div>
+      <button onClick={() => context.fetchAdminBanner()}>Fetch</button>
+      <button onClick={() => context.writeAdminBanner(mockBannerData)}>
         Write
       </button>
-      <button
-        onClick={() => context.deleteAdminBanner(mockBannerData.key)}
-        data-testid="delete-button"
-      >
+      <button onClick={() => context.deleteAdminBanner(mockBannerData.key)}>
         Delete
       </button>
-      {context.errorMessage && (
-        <p data-testid="error-message">{context.errorMessage}</p>
-      )}
+      {context.errorMessage && <p>{context.errorMessage}</p>}
     </div>
   );
 };
@@ -68,7 +56,7 @@ describe("Test AdminBannerProvider fetchAdminBanner method", () => {
   test("fetchAdminBanner method calls API getBanner method", async () => {
     expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
     await act(async () => {
-      const fetchButton = screen.getByTestId("fetch-button");
+      const fetchButton = screen.getByText("Fetch");
       await userEvent.click(fetchButton);
     });
     // 1 call on render + 1 call on button click
@@ -82,7 +70,7 @@ describe("Test AdminBannerProvider fetchAdminBanner method", () => {
     await act(async () => {
       await render(testComponent);
     });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+    expect(screen.queryByText(bannerErrors.GET_BANNER_FAILED)).toBeVisible();
   });
 });
 
@@ -96,7 +84,7 @@ describe("Test AdminBannerProvider deleteAdminBanner method", () => {
       await render(testComponent);
     });
     await act(async () => {
-      const deleteButton = screen.getByTestId("delete-button");
+      const deleteButton = screen.getByText("Delete");
       await userEvent.click(deleteButton);
     });
     expect(mockAPI.deleteBanner).toHaveBeenCalledTimes(1);
@@ -115,7 +103,7 @@ describe("Test AdminBannerProvider writeAdminBanner method", () => {
       await render(testComponent);
     });
     await act(async () => {
-      const writeButton = screen.getByTestId("write-button");
+      const writeButton = screen.getByText("Write");
       await userEvent.click(writeButton);
     });
     expect(mockAPI.writeBanner).toHaveBeenCalledTimes(1);
