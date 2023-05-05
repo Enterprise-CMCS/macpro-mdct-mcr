@@ -1,13 +1,14 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { Error } from "components";
+import error from "verbiage/pages/error";
 
 const errorView = <Error />;
 
 describe("Test Error view", () => {
   test("Check that Error page renders", () => {
-    const { getByTestId } = render(errorView);
-    expect(getByTestId("error-view")).toBeVisible();
+    render(errorView);
+    expect(screen.getByText(error.header)).toBeVisible();
   });
 });
 

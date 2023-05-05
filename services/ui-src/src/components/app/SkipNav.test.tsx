@@ -4,12 +4,7 @@ import { axe } from "jest-axe";
 import { SkipNav } from "components";
 
 const skipNavComponent = (
-  <SkipNav
-    id="skip-nav-test"
-    href="#main-content"
-    text="Test text"
-    data-testid="skip-nav-test"
-  />
+  <SkipNav id="skip-nav-test" href="#main-content" text="Test text" />
 );
 
 describe("Test SkipNav component", () => {
