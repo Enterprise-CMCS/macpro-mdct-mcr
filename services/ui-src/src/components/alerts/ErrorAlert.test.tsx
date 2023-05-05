@@ -3,9 +3,7 @@ import { axe } from "jest-axe";
 //components
 import { ErrorAlert } from "components";
 
-const errorAlertComponent = (
-  <ErrorAlert error={"test-message"} data-testid="test-error-alert" />
-);
+const errorAlertComponent = <ErrorAlert error={"test-message"} />;
 
 describe("Test ErrorAlert component", () => {
   beforeEach(() => {
@@ -13,7 +11,7 @@ describe("Test ErrorAlert component", () => {
   });
 
   test("ErrorAlert is visible", () => {
-    expect(screen.getByTestId("test-error-alert")).toBeVisible();
+    expect(screen.getByText("test-message")).toBeVisible();
   });
 });
 
