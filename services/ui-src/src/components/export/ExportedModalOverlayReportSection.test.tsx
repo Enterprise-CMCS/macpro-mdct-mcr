@@ -4,28 +4,19 @@ import { axe } from "jest-axe";
 import { ModalOverlayReportPageShape, ReportType } from "types";
 import {
   mockMlrReportContext,
-  mockMlrReportFieldData,
   mockModalOverlayReportPageJson,
 } from "utils/testing/setupJest";
 import {
   ExportedModalOverlayReportSection,
   renderModalOverlayTableBody,
-  renderStatusIcon,
 } from "./ExportedModalOverlayReportSection";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 
 const mockReportContext = mockMlrReportContext;
 const mockReportContextOther = Object.assign({}, mockReportContext);
+
 const exportedModalOverlayReportSectionComponent = (
   <ReportContext.Provider value={mockReportContext}>
-    <ExportedModalOverlayReportSection
-      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
-    />
-  </ReportContext.Provider>
-);
-
-const exportedModalOverlayReportSectionComponentOther = (
-  <ReportContext.Provider value={mockReportContextOther}>
     <ExportedModalOverlayReportSection
       section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
     />
@@ -37,11 +28,11 @@ const mlrTableHeader = Object.values(
 );
 
 const mockMlrProgram = {
-  id: "1",
-  programName: "Test Program",
-  programType: [
+  id: "123",
+  report_programName: "Test",
+  report_programType: [
     {
-      key: "programType",
+      key: "report_programType",
       value: "Behavioral Health Only",
     },
   ],
@@ -51,26 +42,40 @@ const mockMlrProgram = {
       value: "Standalone CHIP",
     },
   ],
-  planName: "Test MCO Name",
-  reportingPeriodStartDate: "01/01/2021",
-  reportingPeriodEndDate: "01/01/2022",
-  reportingPeriodDiscrepancy: [
+  report_planName: "Test",
+  report_reportingPeriodStartDate: "11/03/1992",
+  report_reportingPeriodEndDate: "12/01/1993",
+  report_reportingPeriodDiscrepancy: [
     {
-      key: "reportingPeriodDiscrepancy",
+      key: "report_reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
-  miscellaneousNotes: "Notes",
   "report_eligibilityGroup-otherText": "",
   report_reportingPeriodDiscrepancyExplanation: "",
+  report_inurredClaims: "1",
+  report_healthCareQualityActivities: "1",
+  report_mlrNumerator: "1",
+  report_mlrNumeratorExplanation: "Test",
+  report_nonClaimsCosts: "1",
+  report_mlrDenominator: "1",
+  report_requiredMemberMonths: "12",
+  report_miscellaneousNotes: "Notes",
+  report_contractIncludesMlrRemittanceRequirement: [
+    {
+      key: "contractIncludesRemittance",
+      value: "No",
+    },
+  ],
+  report_adjustedMlrPercentage: "1",
 };
 
 const mockMlrProgramOther = {
   id: "1",
-  programName: "Test Program",
-  programType: [
+  report_programName: "Test Program",
+  report_programType: [
     {
-      key: "programType",
+      key: "report_programType",
       value: "Behavioral Health Only",
     },
   ],
@@ -80,20 +85,42 @@ const mockMlrProgramOther = {
       value: "Standalone CHIP",
     },
   ],
-  planName: "Test MCO Name",
-  reportingPeriodStartDate: "01/01/2021",
-  reportingPeriodEndDate: "01/01/2022",
-  reportingPeriodDiscrepancy: [
+  report_planName: "Test MCO Name",
+  report_reportingPeriodStartDate: "01/01/2021",
+  report_reportingPeriodEndDate: "01/01/2022",
+  report_reportingPeriodDiscrepancy: [
     {
-      key: "reportingPeriodDiscrepancy",
+      key: "report_reportingPeriodDiscrepancy",
       value: "No",
     },
   ],
-  miscellaneousNotes: "Notes",
+  report_miscellaneousNotes: "Notes!!!",
   "report_eligibilityGroup-otherText": "Eligibility group explanation",
   report_reportingPeriodDiscrepancyExplanation:
     "My reporting period discrepancy explanation",
+  report_inurredClaims: "1",
+  report_healthCareQualityActivities: "1",
+  report_mlrNumerator: "1",
+  report_mlrNumeratorExplanation: "Test",
+  report_nonClaimsCosts: "1",
+  report_mlrDenominator: "1",
+  report_requiredMemberMonths: "12",
+  report_contractIncludesMlrRemittanceRequirement: [
+    {
+      key: "contractIncludesRemittance",
+      value: "No",
+    },
+  ],
+  report_adjustedMlrPercentage: "1",
 };
+
+const exportedModalOverlayReportSectionComponentOther = (
+  <ReportContext.Provider value={mockReportContextOther}>
+    <ExportedModalOverlayReportSection
+      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
+    />
+  </ReportContext.Provider>
+);
 
 describe("Test ExportedModalOverlayReportSection", () => {
   test("ExportedModalOverlayReportSection renders", () => {
@@ -104,6 +131,9 @@ describe("Test ExportedModalOverlayReportSection", () => {
 });
 
 describe("Test renderModalOverlayTableBody", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("Should render data correctly", async () => {
     mockReportContext.report.fieldData.program = [mockMlrProgram];
     const { container, findByAltText, findByText } = render(
@@ -122,14 +152,14 @@ describe("Test renderModalOverlayTableBody", () => {
     );
 
     // Correct status
-    expect(await findByAltText("warning icon")).toBeVisible();
+    expect(await findByAltText("complete icon")).toBeVisible();
 
     // Correct index
     expect(await findByText("1")).toBeVisible();
 
     // Correct info column
     expect(
-      await findByText(mockMlrProgram.programName, { exact: false })
+      await findByText(mockMlrProgram.report_programName, { exact: false })
     ).toBeVisible();
     expect(
       await findByText(mockMlrProgram.report_eligibilityGroup[0].value, {
@@ -138,26 +168,29 @@ describe("Test renderModalOverlayTableBody", () => {
     ).toBeVisible();
     expect(
       await findByText(
-        `${mockMlrProgram.reportingPeriodStartDate} to ${mockMlrProgram.reportingPeriodEndDate}`,
+        `${mockMlrProgram.report_reportingPeriodStartDate} to ${mockMlrProgram.report_reportingPeriodEndDate}`,
         { exact: false }
       )
     ).toBeVisible();
     expect(
-      await findByText(mockMlrProgram.planName, { exact: false })
+      await findByText(mockMlrProgram.report_planName, { exact: false })
     ).toBeVisible();
 
     // Correct program type
-    expect(await findByText(mockMlrProgram.programType[0].value)).toBeVisible();
+    expect(
+      await findByText(mockMlrProgram.report_programType[0].value)
+    ).toBeVisible();
 
     // Correct discrepancy
     expect(await findByText(`N/A`)).toBeVisible();
 
     // Correct notes
-    expect(await findByText(mockMlrProgram.miscellaneousNotes));
+    expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
   });
 
   it('Should render "other" explanations if they are filled.', async () => {
     mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
+
     const { findByText } = render(
       exportedModalOverlayReportSectionComponentOther
     );
@@ -191,24 +224,9 @@ describe("Test renderModalOverlayTableBody", () => {
   });
 
   it("Should throw an error using an unsupported report", async () => {
-    expect(() =>
-      renderModalOverlayTableBody(
-        {},
-        ReportType.MCPAR,
-        mockMlrReportFieldData.program
-      )
-    ).toThrow(Error);
-  });
-});
-
-describe("Test renderStatusIcon", () => {
-  it("Should render a green check if complete", async () => {
-    const { findByAltText } = render(renderStatusIcon(true));
-    expect(await findByAltText("success icon")).toBeVisible();
-  });
-  it("Should render a red x if incomplete", async () => {
-    const { findByAltText } = render(renderStatusIcon(false));
-    expect(await findByAltText("warning icon")).toBeVisible();
+    expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
+      Error
+    );
   });
 });
 

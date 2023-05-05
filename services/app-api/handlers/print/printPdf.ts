@@ -1,7 +1,8 @@
 import handler from "../handler-lib";
 import AWS from "aws-sdk";
 import axios from "axios";
-import { StatusCodes } from "../../utils/types/types";
+// types
+import { StatusCodes } from "../../utils/types";
 
 /**
  * Calls the CMS Prince PDF Generator to generate a PDF of the provided HTML

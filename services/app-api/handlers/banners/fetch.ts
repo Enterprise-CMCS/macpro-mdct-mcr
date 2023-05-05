@@ -1,6 +1,8 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
-import { StatusCodes } from "../../utils/types/types";
+// types
+import { StatusCodes } from "../../utils/types";
+// utils
 import { error } from "../../utils/constants/constants";
 
 export const fetchBanner = handler(async (event, _context) => {

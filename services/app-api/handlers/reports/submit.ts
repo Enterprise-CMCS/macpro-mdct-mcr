@@ -1,5 +1,7 @@
 import { bool } from "aws-sdk/clients/signer";
 import jwtDecode from "jwt-decode";
+import handler from "../handler-lib";
+// utils
 import { hasPermissions } from "../../utils/auth/authorization";
 import {
   buckets,
@@ -10,14 +12,14 @@ import {
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { convertDateUtcToEt } from "../../utils/time/time";
+// types
 import {
   isMLRReportMetadata,
   MCPARReportMetadata,
   MLRReportMetadata,
   StatusCodes,
   UserRoles,
-} from "../../utils/types/types";
-import handler from "../handler-lib";
+} from "../../utils/types";
 
 export const submitReport = handler(async (event, _context) => {
   if (
@@ -72,7 +74,7 @@ export const submitReport = handler(async (event, _context) => {
       };
     }
 
-    if (!isComplete && reportMetadata.reportType === "MCPAR") {
+    if (!isComplete) {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.REPORT_INCOMPLETE,

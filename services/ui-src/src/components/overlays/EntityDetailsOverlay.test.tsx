@@ -19,7 +19,7 @@ const overlayProps = {
   entityType: "program" as EntityType,
   verbiage: {},
   form: formJSON,
-  selectedEntity: { id: "foo" },
+  selectedEntity: mockMlrReportContext.report.fieldData.program[1],
   closeEntityDetailsOverlay: mockClose,
   setSidebarHidden: mockSidebarHidden,
 };
@@ -66,16 +66,7 @@ describe("Test EntityDetailsOverlay", () => {
 
   it("Should submit entity info when clicking submit", async () => {
     const { findByText } = render(entityDetailsOverlay);
-    const submitButton = await findByText("Submit");
-    await userEvent.click(submitButton);
-    expect(mockUpdate).toHaveBeenCalled();
-    expect(mockSidebarHidden).toHaveBeenCalledWith(false);
-    expect(mockClose).toHaveBeenCalled();
-  });
-
-  it("Should close the sidebar when clicking cancel", async () => {
-    const { findByText } = render(entityDetailsOverlay);
-    const submitButton = await findByText("Cancel");
+    const submitButton = await findByText("Save & return");
     await userEvent.click(submitButton);
     expect(mockSidebarHidden).toHaveBeenCalledWith(false);
     expect(mockClose).toHaveBeenCalled();

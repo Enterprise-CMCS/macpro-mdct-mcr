@@ -89,6 +89,8 @@ describe("Test compileValidationJsonFromRoutes", () => {
       "mock-drawer-text-field": "text",
       "mock-modal-text-field": "text",
       "mock-modal-overlay-text-field": "text",
+      "with-label": "text",
+      "mock-nested-field": "radio",
     });
   });
 });

@@ -34,6 +34,7 @@ export interface ReportJson {
   routes: ReportRoute[];
   flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
+  validationJson?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
@@ -77,6 +78,12 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   modalForm: FormJson;
   drawerForm: FormJson;
   form?: never;
+}
+
+export function pageHasOverlay(
+  unknownPage: ReportPageShapeBase
+): unknownPage is ModalOverlayReportPageShape {
+  return Object.getOwnPropertyNames(unknownPage).includes("overlayForm");
 }
 
 export interface ModalOverlayReportPageShape extends ReportPageShapeBase {

@@ -1,5 +1,9 @@
 import { Box, Link, Text } from "@chakra-ui/react";
+// types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
+// utils
+import { eligibilityGroup } from "utils";
+// verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
 // checks for type of data cell to be render and calls the appropriate renderer
@@ -35,13 +39,56 @@ export const renderDataCell = (
   );
 };
 
+export const renderOverlayEntityDataCell = (
+  formField: FormField,
+  entityResponseData: EntityShape[],
+  entityId: string,
+  parentFieldCheckedChoiceIds?: string[]
+) => {
+  const entity = entityResponseData.find((ent) => ent.id === entityId);
+
+  if (!entity || !entity[formField.id]) {
+    const validationType =
+      typeof formField.validation === "object"
+        ? formField.validation.type
+        : formField.validation;
+
+    if (validationType.includes("Optional")) {
+      return <Text>{verbiage.missingEntry.noResponse}, optional</Text>;
+    } else {
+      return (
+        <Text sx={sx.noResponse}>
+          {verbiage.missingEntry.noResponse}; required
+        </Text>
+      );
+    }
+  }
+
+  const notApplicable =
+    parentFieldCheckedChoiceIds &&
+    !parentFieldCheckedChoiceIds?.includes(entity.id);
+  return (
+    <Box>
+      <Text>
+        {renderResponseData(
+          formField,
+          entity[formField.id],
+          entityResponseData,
+          "modalOverlay",
+          notApplicable
+        )}
+      </Text>
+    </Box>
+  );
+};
+
 export const renderDrawerDataCell = (
   formField: FormField,
   entityResponseData: AnyObject | undefined,
   pageType: string,
   parentFieldCheckedChoiceIds?: string[]
 ) =>
-  entityResponseData?.map((entity: EntityShape, entityIndex: number) => {
+  entityResponseData?.map((entity: EntityShape) => {
     const notApplicable =
       parentFieldCheckedChoiceIds &&
       !parentFieldCheckedChoiceIds?.includes(entity.id);
@@ -58,7 +105,6 @@ export const renderDrawerDataCell = (
               fieldResponseData,
               entityResponseData,
               pageType,
-              entityIndex,
               notApplicable
             )}
           </li>
@@ -79,7 +125,6 @@ export const renderResponseData = (
   fieldResponseData: any,
   widerResponseData: AnyObject,
   pageType: string,
-  entityIndex?: number,
   notApplicable?: boolean
 ) => {
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
@@ -99,8 +144,7 @@ export const renderResponseData = (
       formField,
       fieldResponseData,
       widerResponseData,
-      pageType,
-      entityIndex
+      pageType
     );
   }
   // check for and handle link fields (email, url)
@@ -196,11 +240,30 @@ export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
 // parse field info from field props
 export const parseFormFieldInfo = (formFieldProps: AnyObject) => {
   const labelArray = formFieldProps?.label?.split(" ");
+  if (Object.values(formFieldProps).every((x) => typeof x === "undefined"))
+    return {};
+
   return {
-    number: labelArray?.[0],
-    label: labelArray?.slice(1)?.join(" "),
+    number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : "N/A",
+    label: labelArray?.[0].match(/[-.0-9]+/)
+      ? labelArray?.slice(1)?.join(" ")
+      : labelArray?.join(" "),
     hint: formFieldProps?.hint,
     indicator: formFieldProps?.indicator,
+  };
+};
+
+export const getEntityDetailsMLR = (entity: EntityShape) => {
+  const { report_programName, report_planName } = entity;
+
+  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
+  const mlrEligibilityGroup = eligibilityGroup(entity);
+
+  return {
+    report_programName,
+    reportingPeriod,
+    mlrEligibilityGroup,
+    report_planName,
   };
 };
 
@@ -213,6 +276,7 @@ const sx = {
     marginBottom: "1rem",
   },
   entityBox: {
+    verticalAlign: "top",
     marginBottom: "1rem",
     ul: {
       marginTop: "0.25rem",
@@ -221,6 +285,7 @@ const sx = {
         paddingBottom: "0.5rem",
         p: {
           lineHeight: "1.25rem",
+          fontSize: "md",
         },
       },
       p: {

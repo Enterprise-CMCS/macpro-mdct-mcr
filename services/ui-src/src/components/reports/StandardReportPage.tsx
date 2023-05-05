@@ -14,6 +14,7 @@ import {
   AnyObject,
   isFieldElement,
   ReportStatus,
+  ReportType,
   StandardReportPageShape,
 } from "types";
 
@@ -57,7 +58,12 @@ export const StandardReportPage = ({ route }: Props) => {
 
   return (
     <Box data-testid="standard-page">
-      {route.verbiage.intro && <ReportPageIntro text={route.verbiage.intro} />}
+      {route.verbiage.intro && (
+        <ReportPageIntro
+          text={route.verbiage.intro}
+          reportType={report?.reportType}
+        />
+      )}
       <Form
         id={route.form.id}
         formJson={route.form}
@@ -66,7 +72,11 @@ export const StandardReportPage = ({ route }: Props) => {
         formData={report?.fieldData}
         autosave
       />
-      <ReportPageFooter submitting={submitting} form={route.form} />
+      <ReportPageFooter
+        submitting={submitting}
+        form={route.form}
+        hidePrevious={report?.reportType === ReportType.MLR}
+      />
     </Box>
   );
 };

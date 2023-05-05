@@ -109,7 +109,8 @@ Then("the report will have the correct content pre-filled", () => {
   cy.findByText("Other, specify").parent().click();
   cy.get('textarea[name="versionControlDescription-otherText"').should("exist");
   cy.findByText("Revise state contact information").parent().click();
-  cy.get('textarea[name="versionControlDescription-otherText').should(
+  cy.findByText("Other, specify").parent().click();
+  cy.get('textarea[name="versionControlDescription-otherText"').should(
     "not.exist"
   );
 });

@@ -4,7 +4,7 @@ export default {
     notApplicable: "Not applicable",
   },
   reportBanner: {
-    intro: "Click below to export or print MLR Report shown here",
+    intro: "Click below to export or print MLR Submission shown here",
     pdfButton: "Download PDF",
   },
   metadata: {
@@ -34,5 +34,9 @@ export default {
     programType: "J. Program type",
     discrepancyExplanation: "P. Reporting period discrepancy explanation",
     notes: "Q. Misc notes (optional)",
+  },
+  intro: {
+    exportSectionHeader:
+      "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
   },
 };

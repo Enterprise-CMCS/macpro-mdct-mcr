@@ -10,7 +10,12 @@ import { FormJson } from "types";
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
 
-export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
+export const ReportPageFooter = ({
+  submitting,
+  form,
+  hidePrevious,
+  ...props
+}: Props) => {
   const navigate = useNavigate();
   const { report } = useContext(ReportContext);
   const { previousRoute, nextRoute } = useFindRoute(
@@ -26,16 +31,18 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
   return (
     <Box sx={sx.footerBox} {...props}>
       <Box>
-        <Flex sx={sx.buttonFlex}>
-          <Button
-            onClick={() => navigate(previousRoute)}
-            variant="outline"
-            leftIcon={
-              <Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />
-            }
-          >
-            Previous
-          </Button>
+        <Flex sx={hidePrevious ? sx.floatButtonRight : sx.buttonFlex}>
+          {!hidePrevious && (
+            <Button
+              onClick={() => navigate(previousRoute)}
+              variant="outline"
+              leftIcon={
+                <Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />
+              }
+            >
+              Previous
+            </Button>
+          )}
           {!form?.id || formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
@@ -64,7 +71,6 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             </Button>
           )}
         </Flex>
-        {/* TODO: Add Prince Print Button */}
       </Box>
     </Box>
   );
@@ -73,16 +79,20 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
 interface Props {
   form?: FormJson;
   submitting?: boolean;
+  hidePrevious?: boolean;
   [key: string]: any;
 }
 
 const sx = {
   footerBox: {
     marginTop: "3.5rem",
-    borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
   },
   buttonFlex: {
     justifyContent: "space-between",
+    marginY: "1.5rem",
+  },
+  floatButtonRight: {
+    justifyContent: "right",
     marginY: "1.5rem",
   },
   arrowIcon: {
