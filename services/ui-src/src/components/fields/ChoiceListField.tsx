@@ -303,6 +303,9 @@ const sx = {
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
   },
+  ".ds-c-choice[type='checkbox']:checked:disabled::before": {
+    boxShadow: "inset 0 0 4em 1em #A6A6A6;",
+  },
 };
 
 export const getNestedChildFields = (
