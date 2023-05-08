@@ -71,6 +71,9 @@ export const Timeout = () => {
     clearTimeout(timeoutPromptId);
     clearTimeout(timeoutForceId);
     clearTimeout(updateTextIntervalId);
+
+    //clear interval function call
+    setUpdateTextIntervalId(undefined);
   };
 
   const refreshAuth = async () => {
