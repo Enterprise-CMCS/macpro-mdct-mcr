@@ -50,6 +50,31 @@
     ]
   },
   {
+    "username": "uat2-adminuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "uat2-adminuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Fred"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Flintstone"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-bor"
+      }
+    ]
+  },
+  {
     "username": "borep@test.com",
     "attributes": [
       {
@@ -299,6 +324,35 @@
       {
         "Name": "custom:cms_state",
         "Value": "CA"
+      }
+    ]
+  },
+  {
+    "username": "uat2-stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "uat2-stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Barney"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Rubble"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MI"
       }
     ]
   },
