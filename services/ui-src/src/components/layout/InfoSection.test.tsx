@@ -1,22 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { InfoSection } from "components";
+// verbiage
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
 
-const content = {
-  sectionNumber: 1,
-  header: "Header Text",
-  body: "Section Body",
-  widget: {},
-};
+const content = mcparVerbiage.body.sections[0];
 
-const InfoSectionComponent = (
-  <InfoSection data-testid="section-component" content={content} />
-);
+const InfoSectionComponent = <InfoSection content={content} />;
 
 describe("Test InfoSection", () => {
   test("Check that Section renders", () => {
-    const { getByTestId } = render(InfoSectionComponent);
-    expect(getByTestId("section-component")).toBeVisible();
+    render(InfoSectionComponent);
+    expect(screen.getByText(content.header)).toBeVisible();
   });
 
   test("should see that there is a section number and associated content", async () => {

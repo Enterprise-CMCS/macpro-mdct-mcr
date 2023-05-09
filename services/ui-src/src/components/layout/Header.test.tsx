@@ -43,15 +43,15 @@ describe("Test Header", () => {
   });
 
   test("Help button is visible", () => {
-    expect(screen.getByTestId("header-help-button")).toBeVisible();
+    expect(screen.getByAltText("Help")).toBeVisible();
   });
 
   test("Menu button is visible", () => {
-    expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
+    expect(screen.getByAltText("Arrow down")).toBeVisible();
   });
 
   test("Subnav is visible on report screens; navigates to dashboard", async () => {
-    const leaveFormButton = screen.getByTestId("leave-form-button");
+    const leaveFormButton = screen.getByText("Leave form");
     expect(leaveFormButton).toBeVisible();
   });
 });

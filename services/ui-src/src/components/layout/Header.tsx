@@ -44,7 +44,6 @@ export const Header = ({ handleLogout }: Props) => {
                 to="/help"
                 variant="unstyled"
                 aria-label="Get Help"
-                data-testid="header-help-button"
               >
                 <MenuOption
                   icon={getHelpIcon}
@@ -94,9 +93,7 @@ export const Header = ({ handleLogout }: Props) => {
                   tabIndex={-1}
                 >
                   {!isMobile ? (
-                    <Button variant="outline" data-testid="leave-form-button">
-                      Leave form
-                    </Button>
+                    <Button variant="outline">Leave form</Button>
                   ) : (
                     <Image src={closeIcon} alt="Close" sx={sx.closeIcon} />
                   )}
