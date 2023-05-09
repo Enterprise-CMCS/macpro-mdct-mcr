@@ -16,7 +16,7 @@ import {
 import { EntityShape, EntityType, ModalOverlayReportPageShape } from "types";
 
 // utils
-import { useBreakpoint } from "utils";
+import { useBreakpoint, useUser } from "utils";
 
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
@@ -33,9 +33,12 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
   const { report } = useContext(ReportContext);
   const reportType = report?.reportType;
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-
+  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
+    useUser().user ?? {};
+  const isAdminUserType = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const formIsDisabled = isAdminUserType && route.modalForm?.adminDisabled;
   // is MLR report in a LOCKED state
-  const isLocked = report?.locked;
+  const isLocked = report?.locked || formIsDisabled;
 
   const dashTitle = `${verbiage.dashboardTitle}${
     verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
