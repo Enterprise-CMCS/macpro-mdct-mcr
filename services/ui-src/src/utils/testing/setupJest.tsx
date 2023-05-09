@@ -59,6 +59,9 @@ jest.mock("aws-amplify", () => ({
 export * from "./mockBanner";
 // ENTITIES
 export * from "./mockEntities";
+// Fields
+export * from "./fields/mockChoices";
+export * from "./fields/mockDropdownChoices";
 // FORM
 export * from "./mockForm";
 // LAUNCHDARKLY
