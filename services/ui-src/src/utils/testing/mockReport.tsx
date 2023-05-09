@@ -178,6 +178,7 @@ export const mockReportFieldDataWithNestedFieldsNoChildren = {
 };
 
 export const mockReportFieldData = {
+  stateName: "TestState",
   plans: [
     { id: 123, name: "example-plan1" },
     { id: 456, name: "example-plan2" },
@@ -209,6 +210,7 @@ export const mockReportFieldData = {
 };
 
 export const mockMlrReportFieldData = {
+  stateName: "TestState",
   text: "text-input",
   number: 0,
   radio: ["option1"],
@@ -305,6 +307,32 @@ export const mockMcparReport = {
   isComplete: false,
 };
 
+export const mockMcparReportCombinedData = {
+  ...mockReportKeys,
+  reportType: "MCPAR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: true,
+  submittedOnDate: Date.now(),
+  fieldData: mockReportFieldData,
+  completionStatus: {
+    "/mock/mock-route-1": true,
+    "/mock/mock-route-2": {
+      "/mock/mock-route-2a": false,
+      "/mock/mock-route-2b": true,
+      "/mock/mock-route-2c": true,
+    },
+  },
+  isComplete: false,
+};
+
 export const mockMlrReport = {
   ...mockReportKeys,
   reportType: "MLR",
@@ -347,6 +375,14 @@ export const mockReportMethods = {
 };
 
 export const mockMcparReportContext = {
+  ...mockReportMethods,
+  report: mockMcparReport,
+  reportsByState: mockReportsByState,
+  errorMessage: "",
+  lastSavedTime: "1:58 PM",
+};
+
+export const mockMcparReportCombinedDataContext = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,

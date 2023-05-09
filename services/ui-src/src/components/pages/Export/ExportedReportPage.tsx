@@ -43,7 +43,7 @@ export const ExportedReportPage = () => {
   const { metadata, reportPage, tableHeaders } = exportVerbiage;
 
   return (
-    <Box data-testid="exportedReportPage" sx={sx.container}>
+    <Box sx={sx.container}>
       {(report && routesToRender && (
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
