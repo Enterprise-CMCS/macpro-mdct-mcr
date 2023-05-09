@@ -34,12 +34,14 @@ describe("Test Sidebar", () => {
   });
 
   test("Sidebar menu is visible", () => {
-    expect(screen.getByTestId("sidebar-nav")).toBeVisible();
+    expect(
+      screen.getByText(mockMcparReportContext.report.formTemplate.name)
+    ).toBeVisible();
   });
 
   test("Sidebar button click opens and closes sidebar", async () => {
     // note: tests sidebar nav at non-desktop size, so it is closed to start
-    const sidebarNav = screen.getByTestId("sidebar-nav");
+    const sidebarNav = screen.getByRole("navigation");
     expect(sidebarNav).toHaveClass("closed");
 
     const sidebarButton = screen.getByLabelText("Open/Close sidebar menu");
@@ -67,7 +69,9 @@ describe("Test Sidebar", () => {
 describe("Test Sidebar isHidden property", () => {
   test("If isHidden is true, Sidebar is invisible", () => {
     render(sidebarComponentHidden);
-    expect(screen.getByTestId("sidebar-nav")).not.toBeVisible();
+    expect(
+      screen.getByText(mockMcparReportContext.report.formTemplate.name)
+    ).not.toBeVisible();
   });
 });
 
