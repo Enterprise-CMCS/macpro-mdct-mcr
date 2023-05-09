@@ -6,7 +6,7 @@ import {
   mockSanctionsEntity,
   mockCompletedSanctionsFormattedEntityData,
   mockQualityMeasuresEntity,
-  mockQualityMeasuresFormattedEntityData,
+  mockUnfinishedQualityMeasuresFormattedEntityData,
   mockHalfCompletedQualityMeasuresEntity,
   mockHalfCompletedQualityMeasuresFormattedEntityData,
   mockCompletedQualityMeasuresEntity,
@@ -41,7 +41,9 @@ describe("Test getFormattedEntityData", () => {
       mockQualityMeasuresEntity,
       mockReportFieldData
     );
-    expect(entityData).toEqual(mockQualityMeasuresFormattedEntityData);
+    expect(entityData).toEqual(
+      mockUnfinishedQualityMeasuresFormattedEntityData
+    );
   });
 
   it("Returns correct data for quality measures with some completed measures", () => {

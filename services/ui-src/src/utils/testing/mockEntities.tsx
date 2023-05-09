@@ -83,7 +83,7 @@ export const mockHalfCompletedQualityMeasuresEntity = {
 };
 
 export const mockHalfCompletedQualityMeasuresFormattedEntityData = {
-  ...mockUnfinishedAccessMeasuresFormattedEntityData,
+  ...mockUnfinishedQualityMeasuresFormattedEntityData,
   perPlanResponses: [
     { name: "mock-plan-name-1", response: "mock-response-1" },
     { name: "mock-plan-name-2", response: undefined },
@@ -97,7 +97,7 @@ export const mockCompletedQualityMeasuresEntity = {
 };
 
 export const mockCompletedQualityMeasuresFormattedEntityData = {
-  ...mockUnfinishedAccessMeasuresFormattedEntityData,
+  ...mockUnfinishedQualityMeasuresFormattedEntityData,
   perPlanResponses: [
     { name: "mock-plan-name-1", response: "mock-response-1" },
     { name: "mock-plan-name-2", response: "mock-response-2" },
