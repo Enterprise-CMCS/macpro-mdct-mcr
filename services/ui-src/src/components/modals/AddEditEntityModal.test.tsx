@@ -10,6 +10,7 @@ import {
   mockMcparReport,
   mockMcparReportContext,
   mockReportKeys,
+  mockAccessMeasuresEntity,
 } from "utils/testing/setupJest";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
@@ -28,7 +29,7 @@ const mockedReportContext = {
   report: {
     ...mockMcparReport,
     fieldData: {
-      accessMeasures: [mockEntity],
+      accessMeasures: [mockAccessMeasuresEntity],
     },
   },
 };
@@ -85,7 +86,7 @@ describe("Test AddEditEntityModal", () => {
     expect(
       screen.getByText(mockModalDrawerReportPageVerbiage.addEditModalAddTitle)
     ).toBeTruthy();
-    expect(screen.getByTestId("add-edit-entity-form")).toBeTruthy();
+    expect(screen.getByText("mock modal text field")).toBeTruthy();
   });
 
   test("AddEditEntityModal close button closes modal", () => {
@@ -97,7 +98,7 @@ describe("Test AddEditEntityModal", () => {
 describe("Test AddEditEntityModal functionality", () => {
   afterEach(() => {
     // reset payload to baseline with only mockEntity
-    mockUpdateCallPayload.fieldData.accessMeasures = [mockEntity];
+    mockUpdateCallPayload.fieldData.accessMeasures = [mockAccessMeasuresEntity];
     jest.clearAllMocks();
   });
 
@@ -148,13 +149,10 @@ describe("Test AddEditEntityModal functionality", () => {
       },
     };
 
-    mockUpdateCallPayload.fieldData.accessMeasures = [
-      {
-        id: "mock-id-1",
-        "mock-modal-text-field": "mock input 2",
-      },
-    ];
-
+    mockUpdateCallPayload.fieldData.accessMeasures.push({
+      id: "mock-id-2",
+      "mock-modal-text-field": "mock input 2",
+    });
     await expect(mockUpdateReport).toHaveBeenCalledWith(
       mockReportKeys,
       mockUpdateCallPayload
