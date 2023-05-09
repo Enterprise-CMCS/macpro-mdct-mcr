@@ -5,6 +5,8 @@ import { axe } from "jest-axe";
 import { Drawer } from "components";
 // constants
 import { closeText } from "../../constants";
+// verbiage
+import { mockModalDrawerReportPageVerbiage } from "utils/testing/setupJest";
 
 const mockOnClose = jest.fn();
 
@@ -13,19 +15,25 @@ const mockDrawerDisclosure = {
   onClose: mockOnClose,
 };
 
-const mockVerbiage = {
-  drawerTitle: "mock title",
-  drawerEyebrowTitle: "mock eyebrow title",
-  drawerInfo: [{ type: "heading", content: "mock heading" }],
-};
-
 const drawerComponent = (
   <Drawer
     entityType="accessMeasures"
     drawerDisclosure={mockDrawerDisclosure}
-    verbiage={mockVerbiage}
+    verbiage={mockModalDrawerReportPageVerbiage}
   />
 );
+
+describe("Test Drawer", () => {
+  beforeEach(() => {
+    render(drawerComponent);
+  });
+
+  test("Drawer is visible", () => {
+    expect(
+      screen.getByText(mockModalDrawerReportPageVerbiage.drawerTitle)
+    ).toBeVisible();
+  });
+});
 
 describe("Test Drawer fill form and close", () => {
   it("Drawer can be closed with close button", async () => {
