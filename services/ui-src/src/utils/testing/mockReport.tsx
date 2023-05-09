@@ -361,3 +361,24 @@ export const mockMlrReportContext = {
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };
+
+export const mockReportContextNoReports = {
+  ...mockMcparReportContext,
+  reportsByState: undefined,
+};
+
+export const mockReportContextWithError = {
+  ...mockMcparReportContext,
+  errorMessage: "test error",
+};
+
+export const mockDashboardReportContext = {
+  ...mockMcparReportContext,
+  reportsByState: [
+    {
+      ...mockMcparReport,
+      formTemplate: undefined,
+      fieldData: undefined,
+    },
+  ],
+};

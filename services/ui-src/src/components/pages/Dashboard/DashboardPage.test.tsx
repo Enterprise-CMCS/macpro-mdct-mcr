@@ -15,6 +15,9 @@ import {
   mockMcparReportContext,
   RouterWrappedComponent,
   mockMcparReport,
+  mockDashboardReportContext,
+  mockReportContextNoReports,
+  mockReportContextWithError,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
@@ -41,27 +44,6 @@ jest.mock("react-router-dom", () => ({
     pathname: "/mcpar",
   })),
 }));
-
-const mockReportContextNoReports = {
-  ...mockMcparReportContext,
-  reportsByState: undefined,
-};
-
-const mockReportContextWithError = {
-  ...mockMcparReportContext,
-  errorMessage: "test error",
-};
-
-const mockDashboardReportContext = {
-  ...mockMcparReportContext,
-  reportsByState: [
-    {
-      ...mockMcparReport,
-      formTemplate: undefined,
-      fieldData: undefined,
-    },
-  ],
-};
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
@@ -113,7 +95,7 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       await render(dashboardViewWithReports);
     });
     expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
-    expect(screen.getByTestId("desktop-table")).toBeVisible();
+    expect(screen.getByText("testProgram")).toBeVisible();
     expect(
       screen.queryByText(mcparVerbiage.body.empty)
     ).not.toBeInTheDocument();
@@ -125,7 +107,7 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       await render(mlrDashboardViewWithReports);
     });
     expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
-    expect(screen.getByTestId("desktop-table")).toBeVisible();
+    expect(screen.getByText("testProgram")).toBeVisible();
     expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 
