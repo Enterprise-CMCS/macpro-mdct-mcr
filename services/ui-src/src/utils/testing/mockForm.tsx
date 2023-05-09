@@ -71,6 +71,15 @@ export const mockPlanField = {
   },
 };
 
+export const mockSectionHeaderField = {
+  type: "sectionHeader",
+  id: "testfield",
+  props: {
+    divider: "top",
+    content: "Test Content",
+  },
+};
+
 export const mockForm = {
   id: "mock-form-id",
   fields: [mockFormField],
@@ -116,6 +125,11 @@ export const mockDynamicForm = {
 };
 
 export const mockLinksForm = {};
+
+export const mockNonFieldForm = {
+  id: "mock-non-form-id",
+  fields: [mockSectionHeaderField],
+};
 
 export const mockVerbiageIntro = {
   section: "mock section",

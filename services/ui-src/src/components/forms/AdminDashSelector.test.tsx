@@ -10,20 +10,17 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useUser } from "utils";
+// verbiage
+import verbiage from "verbiage/pages/home";
 
 // MOCKS
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
-const mockVerbiage = {
-  header: "mock header",
-  buttonLabel: "mock button label",
-};
-
 const adminDashSelectorView = (
   <RouterWrappedComponent>
-    <AdminDashSelector verbiage={mockVerbiage} />
+    <AdminDashSelector verbiage={verbiage.readOnly} />
   </RouterWrappedComponent>
 );
 
@@ -38,7 +35,7 @@ describe("Test AdminDashSelector view", () => {
 
   test("Check that AdminDashSelector view renders", () => {
     render(adminDashSelectorView);
-    expect(screen.getByTestId("read-only-view")).toBeVisible();
+    expect(screen.getByText(verbiage.readOnly.header)).toBeVisible();
   });
 
   test("Check that submit button is disabled if no report type is selected", () => {
