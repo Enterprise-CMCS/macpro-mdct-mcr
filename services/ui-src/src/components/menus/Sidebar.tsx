@@ -50,7 +50,6 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
             className={isOpen ? "open" : "closed"}
             role="navigation"
             aria-label="Sidebar menu"
-            data-testid="sidebar-nav"
           >
             <Box
               as="button"

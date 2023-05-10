@@ -29,11 +29,7 @@ export const DashboardTable = ({
   isStateLevelUser,
   isAdmin,
 }: DashboardTableProps) => (
-  <Table
-    content={tableBody(body.table, isAdmin)}
-    data-testid="desktop-table"
-    sx={sx.table}
-  >
+  <Table content={tableBody(body.table, isAdmin)} sx={sx.table}>
     {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
         {/* Edit Button */}

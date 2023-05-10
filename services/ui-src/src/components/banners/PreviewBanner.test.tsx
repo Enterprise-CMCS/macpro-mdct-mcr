@@ -6,16 +6,14 @@ import { PreviewBanner } from "components";
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     getValues: jest.fn().mockReturnValue({
-      title: "Mock preview banner title",
-      description: "Mock preview banner description",
-      link: "",
+      bannerTitle: "Mock preview banner title",
+      bannerDescription: "Mock preview banner description",
+      bannerLink: "",
     }),
   }),
 }));
 
-const previewBannerComponent = (
-  <PreviewBanner data-testid="test-preview-banner" />
-);
+const previewBannerComponent = <PreviewBanner />;
 
 describe("Test PreviewBanner Item", () => {
   beforeEach(() => {
@@ -23,7 +21,8 @@ describe("Test PreviewBanner Item", () => {
   });
 
   test("PreviewBanner is visible", () => {
-    expect(screen.getByTestId("test-preview-banner")).toBeVisible();
+    expect(screen.getByText("Mock preview banner title")).toBeVisible();
+    expect(screen.getByText("Mock preview banner description")).toBeVisible();
   });
 });
 

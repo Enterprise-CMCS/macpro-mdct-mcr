@@ -8,7 +8,6 @@ const alertComponent = (
     title="Test alert!"
     description="This is for testing."
     link="test-link"
-    data-testid="test-alert"
   />
 );
 
@@ -18,7 +17,9 @@ describe("Test Alert Item", () => {
   });
 
   test("Alert is visible", () => {
-    expect(screen.getByTestId("test-alert")).toBeVisible();
+    expect(screen.getByText("Test alert!")).toBeVisible();
+    expect(screen.getByText("This is for testing.")).toBeVisible();
+    expect(screen.getByText("test-link")).toBeVisible();
   });
 });
 

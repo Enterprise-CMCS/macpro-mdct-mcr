@@ -16,9 +16,9 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
+import { useUser } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
-import { useUser } from "utils";
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;

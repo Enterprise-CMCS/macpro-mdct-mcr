@@ -35,24 +35,6 @@ const mockReportContextWithoutEntities = {
   report: undefined,
 };
 
-const mockReportWithCompletedEntityContext = {
-  ...mockMcparReportContext,
-  report: {
-    ...mockMcparReportContext.report,
-    fieldData: {
-      ...mockMcparReportContext.report.fieldData,
-      plans: [
-        {
-          id: 123,
-          name: "example-plan1",
-          "mock-drawer-text-field": "example-explanation",
-        },
-        { id: 456, name: "example-plan2" },
-      ],
-    },
-  },
-};
-
 const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
@@ -71,7 +53,7 @@ const drawerReportPageWithoutEntities = (
 
 const drawerReportPageWithCompletedEntity = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportWithCompletedEntityContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -84,7 +66,9 @@ describe("Test DrawerReportPage without entities", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   it("should not have any way to open the side drawer", () => {
@@ -104,7 +88,9 @@ describe("Test DrawerReportPage with entities", () => {
 
   it("should render the view", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   it("Opens the sidedrawer correctly", async () => {
@@ -181,7 +167,9 @@ describe("Test DrawerReportPage with completed entity", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   it("should show the completed state on one entity", () => {

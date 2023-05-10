@@ -111,7 +111,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
           />
         </EntityProvider>
       ) : (
-        <Box sx={sx.content} data-testid="modal-overlay-report-page">
+        <Box sx={sx.content}>
           {verbiage.intro && (
             <ReportPageIntro
               text={verbiage.intro}

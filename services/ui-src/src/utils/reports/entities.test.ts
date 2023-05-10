@@ -6,25 +6,13 @@ import {
   mockSanctionsEntity,
   mockCompletedSanctionsFormattedEntityData,
   mockQualityMeasuresEntity,
-  mockQualityMeasuresFormattedEntityData,
+  mockUnfinishedQualityMeasuresFormattedEntityData,
   mockHalfCompletedQualityMeasuresEntity,
   mockHalfCompletedQualityMeasuresFormattedEntityData,
   mockCompletedQualityMeasuresEntity,
   mockCompletedQualityMeasuresFormattedEntityData,
+  mockReportFieldData,
 } from "utils/testing/setupJest";
-
-const mockReportFieldData = {
-  plans: [
-    {
-      id: "mock-plan-id-1",
-      name: "mock-plan-name-1",
-    },
-    {
-      id: "mock-plan-id-2",
-      name: "mock-plan-name-2",
-    },
-  ],
-};
 
 describe("Test getFormattedEntityData", () => {
   it("Returns correct data for access measures", () => {
@@ -41,7 +29,9 @@ describe("Test getFormattedEntityData", () => {
       mockQualityMeasuresEntity,
       mockReportFieldData
     );
-    expect(entityData).toEqual(mockQualityMeasuresFormattedEntityData);
+    expect(entityData).toEqual(
+      mockUnfinishedQualityMeasuresFormattedEntityData
+    );
   });
 
   it("Returns correct data for quality measures with some completed measures", () => {

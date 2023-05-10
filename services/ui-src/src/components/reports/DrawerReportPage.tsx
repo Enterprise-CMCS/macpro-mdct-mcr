@@ -115,7 +115,7 @@ export const DrawerReportPage = ({ route }: Props) => {
     });
   };
   return (
-    <Box data-testid="drawer-report-page">
+    <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Heading as="h3" sx={sx.dashboardTitle}>
         {verbiage.dashboardTitle}

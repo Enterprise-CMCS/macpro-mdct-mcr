@@ -4,9 +4,13 @@ import { axe } from "jest-axe";
 import { ReportContext, ReportPageWrapper } from "components";
 // utils
 import {
+  mockDrawerReportPageJson,
   mockMcparReport,
   mockMcparReportContext,
+  mockModalDrawerReportPageJson,
+  mockModalOverlayReportPageWithOverlayJson,
   mockReportJson,
+  mockStandardReportPageJson,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -60,25 +64,37 @@ describe("Test ReportPageWrapper view", () => {
   test("ReportPageWrapper StandardFormSection view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.standard);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("standard-page")).toBeVisible();
+    expect(
+      screen.getByText(mockStandardReportPageJson.verbiage.intro.section)
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper DrawerSection view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.drawer);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.modalDrawer);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalDrawerReportPageJson.verbiage.addEntityButtonText
+      )
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper ModalOverlayReportPage view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.modalOverlay);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper ReviewSubmitPage view renders", () => {
@@ -100,10 +116,22 @@ describe("Test ReportPageWrapper functionality", () => {
   test("ReportPageWrapper doesn't display report if no matching report route template", () => {
     mockUseLocation.mockReturnValue({ pathname: "" });
     render(ReportPageWrapperComponent);
-    expect(screen.queryByTestId("standard-page")).toBeNull();
-    expect(screen.queryByTestId("drawer-report-page")).toBeNull();
-    expect(screen.queryByTestId("modal-drawer-report-page")).toBeNull();
-    expect(screen.queryByTestId("modal-overlay-report-page")).toBeNull();
+    expect(
+      screen.queryByText(mockStandardReportPageJson.verbiage.intro.section)
+    ).toBeNull();
+    expect(
+      screen.queryByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeNull();
+    expect(
+      screen.queryByText(
+        mockModalDrawerReportPageJson.verbiage.addEntityButtonText
+      )
+    ).toBeNull();
+    expect(
+      screen.queryByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeNull();
     expect(screen.queryByTestId("review-submit-page")).toBeNull();
   });
 });

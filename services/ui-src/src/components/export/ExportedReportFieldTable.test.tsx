@@ -35,11 +35,11 @@ mockDrawerContext.report.fieldData = {
   ...mockDrawerContext.report.fieldData,
   plans: [
     {
-      id: 123,
+      id: "123",
       name: "example-plan1",
       ...fieldData,
     },
-    { id: 456, name: "example-plan2", ...fieldData },
+    { id: "456", name: "example-plan2", ...fieldData },
   ],
 };
 

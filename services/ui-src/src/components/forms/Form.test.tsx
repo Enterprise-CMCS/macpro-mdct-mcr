@@ -3,51 +3,19 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { Form, ReportContext } from "components";
 import {
+  mockForm,
   mockMcparReportContext,
   mockMlrReportContext,
+  mockNonFieldForm,
 } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
 const mockOnSubmit = jest.fn();
 
-const mockFormJson = {
-  id: "mockForm",
-  fields: [
-    {
-      type: "text",
-      id: "testfield",
-      validation: "text",
-      props: {
-        name: "testfield",
-        label: "testfield",
-      },
-    },
-  ],
-};
-
-const mockNonFieldFormJson = {
-  id: "mockForm",
-  fields: [
-    {
-      type: "sectionHeader",
-      id: "testfield",
-      props: {
-        divider: "top",
-        content: "Test Content",
-      },
-    },
-  ],
-};
-
 const formComponent = (
   <>
-    <Form
-      id={mockFormJson.id}
-      formJson={mockFormJson}
-      onSubmit={mockOnSubmit}
-      data-testid="test-form"
-    />
-    <button form={mockFormJson.id} type="submit">
+    <Form id={mockForm.id} formJson={mockForm} onSubmit={mockOnSubmit} />
+    <button form={mockForm.id} type="submit">
       Submit
     </button>
   </>
@@ -56,12 +24,11 @@ const formComponent = (
 const formComponentJustHeader = (
   <>
     <Form
-      id={mockFormJson.id}
-      formJson={mockNonFieldFormJson}
+      id={mockNonFieldForm.id}
+      formJson={mockNonFieldForm}
       onSubmit={mockOnSubmit}
-      data-testid="test-form"
     />
-    <button form={mockFormJson.id} type="submit">
+    <button form={mockNonFieldForm.id} type="submit">
       Submit
     </button>
   </>
@@ -77,12 +44,7 @@ const mlrFormSubmitted = (
       },
     }}
   >
-    <Form
-      id={mockFormJson.id}
-      formJson={mockFormJson}
-      onSubmit={mockOnSubmit}
-      data-testid="test-form"
-    />
+    <Form id={mockForm.id} formJson={mockForm} onSubmit={mockOnSubmit} />
   </ReportContext.Provider>
 );
 
@@ -96,26 +58,21 @@ const mcparFormSubmitted = (
       },
     }}
   >
-    <Form
-      id={mockFormJson.id}
-      formJson={mockFormJson}
-      onSubmit={mockOnSubmit}
-      data-testid="test-form"
-    />
+    <Form id={mockForm.id} formJson={mockForm} onSubmit={mockOnSubmit} />
   </ReportContext.Provider>
 );
 
 describe("Test Form component", () => {
   test("Form is visible", () => {
     render(formComponent);
-    const form = screen.getByTestId("test-form");
+    const form = screen.getByText(mockForm.fields[0].props.label);
     expect(form).toBeVisible();
   });
 
   test("Valid form fill allows submission (calls onSubmit)", async () => {
     const result = render(formComponent);
     const form = result.container;
-    const testField = form.querySelector("[name='testfield']")!;
+    const testField = form.querySelector("[name='mock-text-field']")!;
     await userEvent.type(testField, "valid fill");
 
     const submitButton = screen.getByRole("button");
@@ -130,7 +87,7 @@ describe("Test Form component", () => {
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
 
-    const testField = form.querySelector("[name='testfield']")!;
+    const testField = form.querySelector("[name='mock-text-field']")!;
     expect(testField.hasAttribute("autocomplete")).toBeTruthy();
     expect(testField.getAttribute("autocomplete")).toEqual("one-time-code");
     await expect(testField).toHaveFocus();

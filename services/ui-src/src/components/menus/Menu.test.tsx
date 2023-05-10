@@ -17,7 +17,7 @@ describe("Test Menu", () => {
   });
 
   test("Menu button is visible", () => {
-    expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
+    expect(screen.getByAltText("Arrow down")).toBeVisible();
   });
 });
 

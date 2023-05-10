@@ -6,7 +6,7 @@ import verbiage from "verbiage/pages/help";
 export const HelpPage = () => {
   const { intro, cards, accordionItems } = verbiage;
   return (
-    <PageTemplate data-testid="help-view">
+    <PageTemplate>
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
