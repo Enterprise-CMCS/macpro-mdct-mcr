@@ -7,6 +7,15 @@ export const mockFormField = {
   },
 };
 
+export const mockNumberField = {
+  id: "mock-number-field",
+  type: "number",
+  validation: "number",
+  props: {
+    label: "mock number field",
+  },
+};
+
 export const mockRepeatedFormField = {
   id: "mock-text-field",
   type: "text",
