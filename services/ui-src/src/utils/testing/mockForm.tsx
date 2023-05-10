@@ -134,6 +134,13 @@ export const mockNonFieldForm = {
 export const mockVerbiageIntro = {
   section: "mock section",
   subsection: "mock subsection",
+  spreadsheet: "mock item",
+  info: [
+    {
+      type: "html",
+      content: "mock html",
+    },
+  ],
 };
 
 export const mockStandardReportPageJson = {
