@@ -1,10 +1,10 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 When("I navigate to the admin page", () => {
-  const menuButton = '[data-testid="header-menu-dropdown-button"]';
+  const menuButton = '[aria-label="my account"';
   const menuOptionManageAccount =
     '[data-testid="header-menu-option-manage-account"]';
-  const adminButton = '[data-testid="banner-admin-button"]';
+  const adminButton = 'button:contains("Banner Editor")';
   cy.get(menuButton).click();
   cy.get(menuOptionManageAccount).click();
   cy.get(adminButton).click();
