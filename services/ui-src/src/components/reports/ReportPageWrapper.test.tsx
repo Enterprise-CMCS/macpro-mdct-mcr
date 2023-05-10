@@ -122,7 +122,11 @@ describe("Test ReportPageWrapper functionality", () => {
         mockModalDrawerReportPageJson.verbiage.addEntityButtonText
       )
     ).toBeNull();
-    expect(screen.queryByTestId("modal-overlay-report-page")).toBeNull();
+    expect(
+      screen.queryByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeNull();
     expect(screen.queryByTestId("review-submit-page")).toBeNull();
   });
 });
