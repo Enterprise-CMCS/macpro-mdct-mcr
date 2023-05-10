@@ -8,6 +8,7 @@ import {
   mockMcparReport,
   mockMcparReportContext,
   mockModalDrawerReportPageJson,
+  mockModalOverlayReportPageWithOverlayJson,
   mockReportJson,
   mockStateUser,
   RouterWrappedComponent,
@@ -86,7 +87,11 @@ describe("Test ReportPageWrapper view", () => {
   test("ReportPageWrapper ModalOverlayReportPage view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.modalOverlay);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper ReviewSubmitPage view renders", () => {
