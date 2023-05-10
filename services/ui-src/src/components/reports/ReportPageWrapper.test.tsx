@@ -7,6 +7,7 @@ import {
   mockDrawerReportPageJson,
   mockMcparReport,
   mockMcparReportContext,
+  mockModalDrawerReportPageJson,
   mockReportJson,
   mockStateUser,
   RouterWrappedComponent,
@@ -75,7 +76,11 @@ describe("Test ReportPageWrapper view", () => {
   test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.modalDrawer);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalDrawerReportPageJson.verbiage.addEntityButtonText
+      )
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper ModalOverlayReportPage view renders", () => {
@@ -107,7 +112,11 @@ describe("Test ReportPageWrapper functionality", () => {
     expect(
       screen.queryByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
     ).toBeNull();
-    expect(screen.queryByTestId("modal-drawer-report-page")).toBeNull();
+    expect(
+      screen.queryByText(
+        mockModalDrawerReportPageJson.verbiage.addEntityButtonText
+      )
+    ).toBeNull();
     expect(screen.queryByTestId("modal-overlay-report-page")).toBeNull();
     expect(screen.queryByTestId("review-submit-page")).toBeNull();
   });
