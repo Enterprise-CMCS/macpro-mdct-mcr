@@ -48,7 +48,7 @@ const mockReportWithCompletedEntityContext = {
       ...mockMlrReportContext.report.fieldData,
       program: [
         {
-          id: 123,
+          id: "123",
           name: "example-program1",
           report_eligibilityGroup: [
             {
