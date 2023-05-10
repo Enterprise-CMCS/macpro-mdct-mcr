@@ -1,6 +1,13 @@
 import { MixedSchema } from "yup/lib/mixed";
 import { AnyObject } from "yup/lib/types";
-import { number, ratio, date, isEndDateAfterStartDate } from "./schemaMap";
+import {
+  number,
+  ratio,
+  date,
+  isEndDateAfterStartDate,
+  nested,
+} from "./schemaMap";
+import {} from "./validation";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -41,9 +48,19 @@ describe("Schemas", () => {
   const goodDateTestCases = ["01/01/1990", "12/31/2020", "01012000"];
   const badDateTestCases = ["01-01-1990", "13/13/1990", "12/32/1990"];
 
+  // nested
+  const fieldValidationObject = {
+    type: "text",
+    nested: true,
+    parentFieldName: "mock-parent-field-name",
+  };
+  const validationSchema = {
+    type: "string",
+  };
+
   const testSchema = (
     schemaToUse: MixedSchema<any, AnyObject, any>,
-    testCases: Array<string>,
+    testCases: Array<string | AnyObject>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
@@ -71,5 +88,13 @@ describe("Schemas", () => {
   test("Evaluate End Date Schema using date scheme", () => {
     expect(isEndDateAfterStartDate("01/01/1989", "01/01/1990")).toBeTruthy();
     expect(isEndDateAfterStartDate("01/01/1990", "01/01/1989")).toBeFalsy();
+  });
+
+  test("Test Nested Schema using nested scheme", () => {
+    testSchema(
+      nested(() => validationSchema, fieldValidationObject.parentFieldName, ""),
+      ["string"],
+      true
+    );
   });
 });
