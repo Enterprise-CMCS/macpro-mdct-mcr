@@ -4,6 +4,7 @@ import { axe } from "jest-axe";
 import { ReportContext, ReportPageWrapper } from "components";
 // utils
 import {
+  mockDrawerReportPageJson,
   mockMcparReport,
   mockMcparReportContext,
   mockReportJson,
@@ -66,7 +67,9 @@ describe("Test ReportPageWrapper view", () => {
   test("ReportPageWrapper DrawerSection view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.drawer);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
@@ -101,7 +104,9 @@ describe("Test ReportPageWrapper functionality", () => {
     mockUseLocation.mockReturnValue({ pathname: "" });
     render(ReportPageWrapperComponent);
     expect(screen.queryByTestId("standard-page")).toBeNull();
-    expect(screen.queryByTestId("drawer-report-page")).toBeNull();
+    expect(
+      screen.queryByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeNull();
     expect(screen.queryByTestId("modal-drawer-report-page")).toBeNull();
     expect(screen.queryByTestId("modal-overlay-report-page")).toBeNull();
     expect(screen.queryByTestId("review-submit-page")).toBeNull();
