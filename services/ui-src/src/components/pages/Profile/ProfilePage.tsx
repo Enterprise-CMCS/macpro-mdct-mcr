@@ -2,8 +2,9 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
-//utils
+// utils
 import { createEmailLink, useUser } from "utils";
+// verbiage
 import verbiage from "verbiage/pages/profile";
 
 export const ProfilePage = () => {
@@ -26,7 +27,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <PageTemplate sx={sx.layout} data-testid="profile-view">
+    <PageTemplate sx={sx.layout}>
       <Heading as="h1" sx={sx.headerText}>
         {intro.header}
       </Heading>
@@ -39,11 +40,7 @@ export const ProfilePage = () => {
       </Text>
       <Table content={tableContent} variant="striped" sxOverride={sx.table} />
       {userIsAdmin && (
-        <Button
-          sx={sx.adminButton}
-          onClick={() => navigate("/admin")}
-          data-testid="banner-admin-button"
-        >
+        <Button sx={sx.adminButton} onClick={() => navigate("/admin")}>
           Banner Editor
         </Button>
       )}
