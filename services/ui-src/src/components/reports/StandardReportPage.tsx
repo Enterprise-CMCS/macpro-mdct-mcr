@@ -57,7 +57,7 @@ export const StandardReportPage = ({ route }: Props) => {
   };
 
   return (
-    <Box data-testid="standard-page">
+    <Box>
       {route.verbiage.intro && (
         <ReportPageIntro
           text={route.verbiage.intro}

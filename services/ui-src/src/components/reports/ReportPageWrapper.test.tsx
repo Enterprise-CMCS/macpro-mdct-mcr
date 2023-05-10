@@ -10,6 +10,7 @@ import {
   mockModalDrawerReportPageJson,
   mockModalOverlayReportPageWithOverlayJson,
   mockReportJson,
+  mockStandardReportPageJson,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -63,7 +64,9 @@ describe("Test ReportPageWrapper view", () => {
   test("ReportPageWrapper StandardFormSection view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.standard);
     render(ReportPageWrapperComponent);
-    expect(screen.getByTestId("standard-page")).toBeVisible();
+    expect(
+      screen.getByText(mockStandardReportPageJson.verbiage.intro.section)
+    ).toBeVisible();
   });
 
   test("ReportPageWrapper DrawerSection view renders", () => {
@@ -113,7 +116,9 @@ describe("Test ReportPageWrapper functionality", () => {
   test("ReportPageWrapper doesn't display report if no matching report route template", () => {
     mockUseLocation.mockReturnValue({ pathname: "" });
     render(ReportPageWrapperComponent);
-    expect(screen.queryByTestId("standard-page")).toBeNull();
+    expect(
+      screen.queryByText(mockStandardReportPageJson.verbiage.intro.section)
+    ).toBeNull();
     expect(
       screen.queryByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
     ).toBeNull();
