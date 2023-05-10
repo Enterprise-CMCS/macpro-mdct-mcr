@@ -10,7 +10,6 @@ import {
   mockMcparReport,
   mockMcparReportContext,
   mockReportKeys,
-  mockAccessMeasuresEntity,
 } from "utils/testing/setupJest";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
@@ -29,7 +28,7 @@ const mockedReportContext = {
   report: {
     ...mockMcparReport,
     fieldData: {
-      accessMeasures: [mockAccessMeasuresEntity],
+      accessMeasures: [mockEntity],
     },
   },
 };
@@ -98,7 +97,7 @@ describe("Test AddEditEntityModal", () => {
 describe("Test AddEditEntityModal functionality", () => {
   afterEach(() => {
     // reset payload to baseline with only mockEntity
-    mockUpdateCallPayload.fieldData.accessMeasures = [mockAccessMeasuresEntity];
+    mockUpdateCallPayload.fieldData.accessMeasures = [mockEntity];
     jest.clearAllMocks();
   });
 
