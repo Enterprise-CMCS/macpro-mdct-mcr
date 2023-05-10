@@ -1,8 +1,10 @@
-import { ReportContext } from "components/reports/ReportProvider";
-import { mockMlrReportContext } from "utils/testing/setupJest";
-import { EntityStatusIcon } from "./EntityStatusIcon";
 import { render } from "@testing-library/react";
 import { axe } from "jest-axe";
+// components
+import { ReportContext } from "components/reports/ReportProvider";
+import { EntityStatusIcon } from "./EntityStatusIcon";
+// utils
+import { mockMlrReportContext } from "utils/testing/setupJest";
 
 const entityStatusIconComponent = (
   <ReportContext.Provider value={mockMlrReportContext}>
