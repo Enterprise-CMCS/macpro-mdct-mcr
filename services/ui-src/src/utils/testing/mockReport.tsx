@@ -180,8 +180,15 @@ export const mockReportFieldDataWithNestedFieldsNoChildren = {
 export const mockReportFieldData = {
   stateName: "TestState",
   plans: [
-    { id: 123, name: "example-plan1" },
-    { id: 456, name: "example-plan2" },
+    {
+      id: "mock-plan-id-1",
+      name: "mock-plan-name-1",
+      "mock-drawer-text-field": "example-explanation",
+    },
+    {
+      id: "mock-plan-id-2",
+      name: "mock-plan-name-2",
+    },
   ],
   text: "text-input",
   number: 0,

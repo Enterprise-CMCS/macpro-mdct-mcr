@@ -11,20 +11,8 @@ import {
   mockHalfCompletedQualityMeasuresFormattedEntityData,
   mockCompletedQualityMeasuresEntity,
   mockCompletedQualityMeasuresFormattedEntityData,
+  mockReportFieldData,
 } from "utils/testing/setupJest";
-
-const mockReportFieldData = {
-  plans: [
-    {
-      id: "mock-plan-id-1",
-      name: "mock-plan-name-1",
-    },
-    {
-      id: "mock-plan-id-2",
-      name: "mock-plan-name-2",
-    },
-  ],
-};
 
 describe("Test getFormattedEntityData", () => {
   it("Returns correct data for access measures", () => {

@@ -35,24 +35,6 @@ const mockReportContextWithoutEntities = {
   report: undefined,
 };
 
-const mockReportWithCompletedEntityContext = {
-  ...mockMcparReportContext,
-  report: {
-    ...mockMcparReportContext.report,
-    fieldData: {
-      ...mockMcparReportContext.report.fieldData,
-      plans: [
-        {
-          id: 123,
-          name: "example-plan1",
-          "mock-drawer-text-field": "example-explanation",
-        },
-        { id: 456, name: "example-plan2" },
-      ],
-    },
-  },
-};
-
 const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
@@ -71,7 +53,7 @@ const drawerReportPageWithoutEntities = (
 
 const drawerReportPageWithCompletedEntity = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportWithCompletedEntityContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
