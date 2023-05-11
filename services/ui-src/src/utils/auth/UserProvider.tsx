@@ -65,6 +65,7 @@ export const UserProvider = ({ children }: Props) => {
       const userCheck = {
         userIsAdmin: userRole === UserRoles.ADMIN,
         userIsHelpDeskUser: userRole === UserRoles.HELP_DESK,
+        userIsInternalUser: userRole === UserRoles.INTERNAL,
         userIsApprover: userRole === UserRoles.APPROVER,
         userIsStateRep: userRole === UserRoles.STATE_REP,
         userIsStateUser: userRole === UserRoles.STATE_USER,

@@ -33,9 +33,14 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
   const { report } = useContext(ReportContext);
   const reportType = report?.reportType;
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
-    useUser().user ?? {};
-  const isAdminUserType = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const {
+    userIsAdmin,
+    userIsApprover,
+    userIsHelpDeskUser,
+    userIsInternalUser,
+  } = useUser().user ?? {};
+  const isAdminUserType =
+    userIsAdmin || userIsApprover || userIsHelpDeskUser || userIsInternalUser;
   const formIsDisabled = isAdminUserType && route.modalForm?.adminDisabled;
   // is MLR report in a LOCKED state
   const isLocked = report?.locked || formIsDisabled;

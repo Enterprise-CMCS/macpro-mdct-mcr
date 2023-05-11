@@ -79,6 +79,23 @@ export const mockHelpDeskUser: UserContextShape = {
   getExpiration: () => {},
 };
 
+export const mockInternalUser: UserContextShape = {
+  user: {
+    userRole: UserRoles.INTERNAL,
+    email: "internaluser@test.com",
+    given_name: "Inside",
+    family_name: "Cat",
+    full_name: "Inside Cat",
+    state: undefined,
+    userIsInternalUser: true,
+  },
+  showLocalLogins: false,
+  logout: async () => {},
+  loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
+};
+
 export const mockAdminUser: UserContextShape = {
   user: {
     userRole: UserRoles.ADMIN,

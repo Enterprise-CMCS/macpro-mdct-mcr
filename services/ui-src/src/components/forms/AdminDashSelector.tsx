@@ -15,8 +15,12 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   const navigate = useNavigate();
   const [reportSelected, setReportSelected] = useState<boolean>(false);
 
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
-    useUser().user ?? {};
+  const {
+    userIsAdmin,
+    userIsApprover,
+    userIsHelpDeskUser,
+    userIsInternalUser,
+  } = useUser().user ?? {};
 
   // create radio options
   const reportChoices = [
@@ -52,7 +56,12 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
     selectedReport = selectedReport.replace("report-", "").toLowerCase();
     localStorage.setItem("selectedReportType", selectedReport);
 
-    if (userIsAdmin || userIsApprover || userIsHelpDeskUser) {
+    if (
+      userIsAdmin ||
+      userIsApprover ||
+      userIsHelpDeskUser ||
+      userIsInternalUser
+    ) {
       const selectedState = formData["state"].value;
       localStorage.setItem("selectedState", selectedState);
     }

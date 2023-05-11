@@ -3,6 +3,7 @@
 export enum UserRoles {
   ADMIN = "mdctmcr-bor", // "MDCT MCR Business Owner Representative"
   HELP_DESK = "mdctmcr-help-desk", // "MDCT MCR Help Desk"
+  INTERNAL = "mdctmcr-internal-user", // "MDCT MCR Internal User"
   APPROVER = "mdctmcr-approver", // "MDCT MCR Approver"
   STATE_REP = "mdctmcr-state-rep", // "MDCT MCR State Representative"
   STATE_USER = "mdctmcr-state-user", // "MDCT MCR State User"
@@ -17,6 +18,7 @@ export interface MCRUser {
   userRole?: string;
   userIsAdmin?: boolean;
   userIsHelpDeskUser?: boolean;
+  userIsInternalUser?: boolean;
   userIsApprover?: boolean;
   userIsStateRep?: boolean;
   userIsStateUser?: boolean;
