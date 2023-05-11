@@ -10,6 +10,7 @@ import {
 } from "components";
 // utils
 import { checkDateRangeStatus, useUser } from "utils";
+// verbiage
 import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {
@@ -36,7 +37,7 @@ export const HomePage = () => {
       <Collapse in={showBanner}>
         <Banner bannerData={bannerData} />
       </Collapse>
-      <PageTemplate sx={sx.layout} data-testid="home-view">
+      <PageTemplate sx={sx.layout}>
         {/* show standard view to state users */}
         {userIsStateUser || userIsStateRep ? (
           <>

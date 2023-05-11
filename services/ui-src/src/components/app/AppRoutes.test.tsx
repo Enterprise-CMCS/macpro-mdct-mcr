@@ -2,9 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+// components
 import { AppRoutes } from "components";
+// utils
 import { useUser, UserProvider } from "utils";
 import { mockAdminUser, mockStateUser } from "utils/testing/setupJest";
+// verbiage
+import notFoundVerbiage from "verbiage/pages/not-found";
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
@@ -82,6 +86,6 @@ describe("Test AppRoutes 404 handling", () => {
   });
 
   test("not-found routes redirect to 404", () => {
-    expect(screen.getByTestId("404-view")).toBeVisible();
+    expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
   });
 });

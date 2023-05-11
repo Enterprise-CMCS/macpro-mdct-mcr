@@ -1,28 +1,28 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { PageTemplate } from "components";
 
 const standardPageComponent = (
-  <PageTemplate data-testid="page-template">
+  <PageTemplate>
     <p>Test text</p>
   </PageTemplate>
 );
 
 const reportPageComponent = (
-  <PageTemplate type="report" data-testid="page-template">
+  <PageTemplate type="report">
     <p>Test text</p>
   </PageTemplate>
 );
 
 describe("Test PageTemplate view", () => {
   test("Check that PageTemplate (standard) renders", () => {
-    const { getByTestId } = render(standardPageComponent);
-    expect(getByTestId("page-template")).toBeVisible();
+    render(standardPageComponent);
+    expect(screen.getByText("Test text")).toBeVisible();
   });
 
   test("Check that PageTemplate (report) renders", () => {
-    const { getByTestId } = render(reportPageComponent);
-    expect(getByTestId("page-template")).toBeVisible();
+    render(reportPageComponent);
+    expect(screen.getByText("Test text")).toBeVisible();
   });
 });
 

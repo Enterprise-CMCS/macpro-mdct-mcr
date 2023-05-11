@@ -1,8 +1,8 @@
 // element selectors
-const menuButton = '[data-testid="header-menu-dropdown-button"]';
+const menuButton = '[aria-label="my account"';
 const menuOptionManageAccount =
   '[data-testid="header-menu-option-manage-account"]';
-const adminButton = '[data-testid="banner-admin-button"]';
+const adminButton = 'button:contains("Banner Editor")';
 
 afterEach(() => {
   cy.navigateToHomePage();

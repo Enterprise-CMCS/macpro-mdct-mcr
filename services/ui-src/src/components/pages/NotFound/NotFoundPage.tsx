@@ -5,6 +5,7 @@ import { PageTemplate } from "components";
 import { createEmailLink } from "utils/other/email";
 // assets
 import warningIcon from "assets/icons/icon_warning.png";
+// verbiage
 import verbiage from "verbiage/pages/not-found";
 
 export const NotFoundPage = () => {
@@ -12,7 +13,7 @@ export const NotFoundPage = () => {
   const { preLinkText, cmsEmail, postLinkText } = emailText;
 
   return (
-    <PageTemplate data-testid="404-view" sxOverride={sx.layout}>
+    <PageTemplate sxOverride={sx.layout}>
       <Flex sx={sx.heading}>
         <Image src={warningIcon} alt="warning icon" sx={sx.warningIcon} />
         <Heading as="h1" sx={sx.headerText}>

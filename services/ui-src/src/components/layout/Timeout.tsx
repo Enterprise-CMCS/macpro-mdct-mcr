@@ -71,6 +71,9 @@ export const Timeout = () => {
     clearTimeout(timeoutPromptId);
     clearTimeout(timeoutForceId);
     clearTimeout(updateTextIntervalId);
+
+    //clear interval function call
+    setUpdateTextIntervalId(undefined);
   };
 
   const refreshAuth = async () => {
@@ -96,12 +99,7 @@ export const Timeout = () => {
           </Text>
         </ModalBody>
         <ModalFooter sx={sx.modalFooter}>
-          <Button
-            sx={sx.stayActive}
-            onClick={refreshAuth}
-            type="submit"
-            data-testid="modal-refresh-button"
-          >
+          <Button sx={sx.stayActive} onClick={refreshAuth} type="submit">
             Stay logged in
           </Button>
           <Button

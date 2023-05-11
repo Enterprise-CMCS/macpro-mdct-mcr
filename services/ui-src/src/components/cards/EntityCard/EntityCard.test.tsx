@@ -12,7 +12,7 @@ import {
   mockUnfinishedSanctionsFormattedEntityData,
   mockCompletedSanctionsFormattedEntityData,
   mockQualityMeasuresEntity,
-  mockQualityMeasuresFormattedEntityData,
+  mockUnfinishedQualityMeasuresFormattedEntityData,
   mockHalfCompletedQualityMeasuresEntity,
   mockHalfCompletedQualityMeasuresFormattedEntityData,
   mockCompletedQualityMeasuresEntity,
@@ -202,7 +202,7 @@ const UnstartedQualityMeasuresEntityCardComponent = (
     entity={mockQualityMeasuresEntity}
     entityIndex={0}
     entityType="qualityMeasures"
-    formattedEntityData={mockQualityMeasuresFormattedEntityData}
+    formattedEntityData={mockUnfinishedQualityMeasuresFormattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}

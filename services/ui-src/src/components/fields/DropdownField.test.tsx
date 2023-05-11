@@ -4,9 +4,9 @@ import { axe } from "jest-axe";
 import { useFormContext } from "react-hook-form";
 //components
 import { DropdownField, ReportContext } from "components";
-import { dropdownDefaultOptionText } from "../../constants";
 // utils
 import {
+  mockDropdownOptions,
   mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
@@ -49,12 +49,7 @@ const dropdownComponentWithOptions = (
   <DropdownField
     name="testDropdown"
     label="test-dropdown-label"
-    options={[
-      { label: dropdownDefaultOptionText, value: "" },
-      { label: "Option 1", value: "a" },
-      { label: "Option 2", value: "b" },
-      { label: "Option 3", value: "c" },
-    ]}
+    options={mockDropdownOptions}
   />
 );
 
@@ -64,12 +59,7 @@ const dropdownComponentWithOptionsAndAutosave = (
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
-        options={[
-          { label: dropdownDefaultOptionText, value: "" },
-          { label: "Option 1", value: "a" },
-          { label: "Option 2", value: "b" },
-          { label: "Option 3", value: "c" },
-        ]}
+        options={mockDropdownOptions}
         autosave
       />
     </ReportContext.Provider>
@@ -119,7 +109,7 @@ describe("Test DropdownField basic functionality", () => {
     const option0 = dropdown.children.item(0) as HTMLOptionElement;
     const option2 = dropdown.children.item(2) as HTMLOptionElement;
     expect(option0.selected).toBe(true);
-    await userEvent.selectOptions(dropdown, "b");
+    await userEvent.selectOptions(dropdown, "test-dropdown-2");
     expect(option2.selected).toBe(true);
   });
 });
@@ -135,19 +125,14 @@ describe("Test DropdownField dynamic options functionality", () => {
 });
 
 describe("Test DropdownField hydration functionality", () => {
-  const mockFormFieldValue = { label: "Option 1", value: "a" };
-  const mockHydrationValue = { label: "Option 3", value: "c" };
+  const mockFormFieldValue = { label: "Option 1", value: "test-dropdown-1" };
+  const mockHydrationValue = { label: "Option 3", value: "test-dropdown-3" };
   const dropdownComponentWithHydrationValue = (
     <DropdownField
       name="testDropdown"
       label="test-dropdown-field-to-hydrate"
-      data-testid="test-dropdown-field-to-hydrate"
       hydrate={mockHydrationValue}
-      options={[
-        { label: "Option 1", value: "a" },
-        { label: "Option 2", value: "b" },
-        { label: "Option 3", value: "c" },
-      ]}
+      options={mockDropdownOptions}
     />
   );
 
@@ -199,7 +184,7 @@ describe("Test DropdownField autosaves", () => {
     const dropDown = screen.getByLabelText("test-dropdown-label");
     expect(dropDown).toBeVisible();
     const option2 = dropDown.children.item(2) as HTMLOptionElement;
-    await userEvent.selectOptions(dropDown, "b");
+    await userEvent.selectOptions(dropDown, "test-dropdown-2");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
@@ -214,7 +199,9 @@ describe("Test DropdownField autosaves", () => {
           status: ReportStatus.IN_PROGRESS,
           lastAlteredBy: mockStateUser.user?.full_name,
         },
-        fieldData: { testDropdown: { label: "testDropdown", value: "b" } },
+        fieldData: {
+          testDropdown: { label: "testDropdown", value: "test-dropdown-2" },
+        },
       }
     );
   });
@@ -227,7 +214,7 @@ describe("Test DropdownField autosaves", () => {
     const dropDown = screen.getByLabelText("test-dropdown-label");
     expect(dropDown).toBeVisible();
     const option2 = dropDown.children.item(2) as HTMLOptionElement;
-    await userEvent.selectOptions(dropDown, "b");
+    await userEvent.selectOptions(dropDown, "test-dropdown-2");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
@@ -256,7 +243,7 @@ describe("Test DropdownField autosaves", () => {
     const dropDown = screen.getByLabelText("test-dropdown-label");
     expect(dropDown).toBeVisible();
     const option2 = dropDown.children.item(2) as HTMLOptionElement;
-    await userEvent.selectOptions(dropDown, "b");
+    await userEvent.selectOptions(dropDown, "test-dropdown-2");
     expect(option2.selected).toBe(true);
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);

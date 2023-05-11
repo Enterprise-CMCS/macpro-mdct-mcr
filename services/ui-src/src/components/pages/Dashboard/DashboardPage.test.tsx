@@ -8,6 +8,7 @@ import { ReportContext, DashboardPage } from "components";
 import {
   mockAdminUser,
   mockHelpDeskUser,
+  mockInternalUser,
   mockStateApprover,
   mockStateRep,
   mockNoUser,
@@ -15,6 +16,9 @@ import {
   mockMcparReportContext,
   RouterWrappedComponent,
   mockMcparReport,
+  mockDashboardReportContext,
+  mockReportContextNoReports,
+  mockReportContextWithError,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
@@ -41,27 +45,6 @@ jest.mock("react-router-dom", () => ({
     pathname: "/mcpar",
   })),
 }));
-
-const mockReportContextNoReports = {
-  ...mockMcparReportContext,
-  reportsByState: undefined,
-};
-
-const mockReportContextWithError = {
-  ...mockMcparReportContext,
-  errorMessage: "test error",
-};
-
-const mockDashboardReportContext = {
-  ...mockMcparReportContext,
-  reportsByState: [
-    {
-      ...mockMcparReport,
-      formTemplate: undefined,
-      fieldData: undefined,
-    },
-  ],
-};
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
@@ -113,7 +96,7 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       await render(dashboardViewWithReports);
     });
     expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
-    expect(screen.getByTestId("desktop-table")).toBeVisible();
+    expect(screen.getByText("testProgram")).toBeVisible();
     expect(
       screen.queryByText(mcparVerbiage.body.empty)
     ).not.toBeInTheDocument();
@@ -125,7 +108,7 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       await render(mlrDashboardViewWithReports);
     });
     expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
-    expect(screen.getByTestId("desktop-table")).toBeVisible();
+    expect(screen.getByText("testProgram")).toBeVisible();
     expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 
@@ -246,6 +229,14 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
     expect(screen.queryByAltText("Archive")).toBeNull();
   });
 
+  test("Internal user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockInternalUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+
   test("State approver cannot archive reports", async () => {
     mockedUseUser.mockReturnValue(mockStateApprover);
     await act(async () => {
@@ -299,6 +290,14 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
 
   test("Help desk user cannot archive reports", async () => {
     mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+
+  test("Internal user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockInternalUser);
     await act(async () => {
       await render(dashboardViewWithReports);
     });
