@@ -146,7 +146,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   }`;
 
   return (
-    <Box data-testid="modal-drawer-report-page">
+    <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         <Button

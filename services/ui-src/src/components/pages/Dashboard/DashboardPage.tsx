@@ -118,10 +118,10 @@ export const DashboardPage = ({ reportType }: Props) => {
     const selectedReport: ReportShape = await fetchReport(reportKeys);
     // set active report to selected report
     setReportSelection(selectedReport);
-    const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
-    navigate(firstReportPagePath);
     setReportId(undefined);
     setEntering(false);
+    const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
+    navigate(firstReportPagePath);
   };
 
   const openAddEditReportModal = (report?: ReportShape) => {

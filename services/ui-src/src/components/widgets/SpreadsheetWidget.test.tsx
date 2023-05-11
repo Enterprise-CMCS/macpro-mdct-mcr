@@ -4,10 +4,7 @@ import { axe } from "jest-axe";
 import { SpreadsheetWidget } from "components";
 
 const SpreadsheetWidgetComponent = (
-  <SpreadsheetWidget
-    description="mock-description"
-    data-testid="spreadsheet-widget"
-  />
+  <SpreadsheetWidget description="mock-description" />
 );
 
 describe("Test SpreadsheetWidget with all props", () => {
@@ -16,7 +13,7 @@ describe("Test SpreadsheetWidget with all props", () => {
   });
 
   test("Component is visible", () => {
-    expect(screen.getByTestId("spreadsheet-widget")).toBeVisible();
+    expect(screen.getByText("mock-description")).toBeVisible();
   });
 });
 

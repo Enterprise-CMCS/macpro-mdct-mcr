@@ -48,7 +48,7 @@ const mockReportWithCompletedEntityContext = {
       ...mockMlrReportContext.report.fieldData,
       program: [
         {
-          id: 123,
+          id: "123",
           name: "example-program1",
           report_eligibilityGroup: [
             {
@@ -97,7 +97,11 @@ describe("Test ModalOverlayReportPage (empty state, desktop)", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeVisible();
   });
 });
 
@@ -117,7 +121,11 @@ describe("Test ModalOverlayReportPage (empty state, mobile & tablet)", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeVisible();
   });
 });
 
@@ -156,7 +164,11 @@ describe("Test ModalOverlayReportPage (desktop, adding new program reporting inf
     // close the modal
     const closeButton = screen.getByText("Close");
     await userEvent.click(closeButton);
-    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeVisible();
   });
 
   it("State user should be able to delete existing entities", async () => {
@@ -212,7 +224,11 @@ describe("Test ModalOverlayReportPage (mobile + tablet, adding new program repor
     // close the modal
     const closeButton = screen.getByText("Close");
     await userEvent.click(closeButton);
-    expect(screen.getByTestId("modal-overlay-report-page")).toBeVisible();
+    expect(
+      screen.getByText(
+        mockModalOverlayReportPageWithOverlayJson.verbiage.intro.section
+      )
+    ).toBeVisible();
   });
 
   it("State user should be able to delete existing entities", async () => {

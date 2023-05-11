@@ -85,7 +85,7 @@ describe("Test AddEditEntityModal", () => {
     expect(
       screen.getByText(mockModalDrawerReportPageVerbiage.addEditModalAddTitle)
     ).toBeTruthy();
-    expect(screen.getByTestId("add-edit-entity-form")).toBeTruthy();
+    expect(screen.getByText("mock modal text field")).toBeTruthy();
   });
 
   test("AddEditEntityModal close button closes modal", () => {
@@ -148,13 +148,10 @@ describe("Test AddEditEntityModal functionality", () => {
       },
     };
 
-    mockUpdateCallPayload.fieldData.accessMeasures = [
-      {
-        id: "mock-id-1",
-        "mock-modal-text-field": "mock input 2",
-      },
-    ];
-
+    mockUpdateCallPayload.fieldData.accessMeasures.push({
+      id: "mock-id-2",
+      "mock-modal-text-field": "mock input 2",
+    });
     await expect(mockUpdateReport).toHaveBeenCalledWith(
       mockReportKeys,
       mockUpdateCallPayload

@@ -1,14 +1,16 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
 import { NotFoundPage } from "components";
+// verbiage
+import verbiage from "verbiage/pages/not-found";
 
 const notFoundView = <NotFoundPage />;
 
 describe("Test NotFoundPage (404)", () => {
   test("Check that page renders", () => {
-    const { getByTestId } = render(notFoundView);
-    expect(getByTestId("404-view")).toBeVisible();
+    render(notFoundView);
+    expect(screen.getByText(verbiage.header)).toBeVisible();
   });
 });
 

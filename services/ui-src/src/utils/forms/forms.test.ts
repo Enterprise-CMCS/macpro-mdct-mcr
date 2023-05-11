@@ -7,59 +7,20 @@ import {
   initializeChoiceListFields,
   sortFormErrors,
 } from "./forms";
+// types
+import { isEntityType } from "types";
+// utils
 import {
   mockDrawerFormField,
   mockFormField,
   mockNestedFormField,
+  mockNumberField,
 } from "utils/testing/setupJest";
-import { isEntityType } from "types";
 
 const mockedFormFields = [
-  {
-    id: "mockField1",
-    type: "text",
-    validation: "text",
-    props: {
-      label: "Mock Text Field",
-    },
-  },
-  {
-    id: "mockField2",
-    type: "radio",
-    validation: "radio",
-    props: {
-      label: "Mock Radio Field",
-      choices: [
-        {
-          id: "option1uuid",
-          label: "Option 1, mock choice with nested child",
-          children: [
-            {
-              id: "mockField2-o1-text",
-              type: "text",
-              validation: "text",
-              props: {
-                label: "Mock nested child text field",
-              },
-            },
-          ],
-        },
-        {
-          id: "option2uuid",
-          label: "Option 2, mock with no children",
-          checked: true,
-        },
-      ],
-    },
-  },
-  {
-    id: "mockField3",
-    type: "number",
-    validation: "number",
-    props: {
-      label: "Mock Number Field",
-    },
-  },
+  { ...mockFormField, id: "mockField1" },
+  mockNestedFormField,
+  mockNumberField,
 ];
 
 describe("Test formFieldFactory", () => {
@@ -76,19 +37,17 @@ describe("Test formFieldFactory", () => {
 
     // Radio matches to component
     const topRadioField: any = generatedFields.find(
-      (field) => field.key === "mockField2"
+      (field) => field.key === "mock-nested-field"
     );
     expect(topRadioField?.type.name).toBe("RadioField");
 
     // Nested text field exists under parent
-    const nestedTextField = topRadioField?.props.choices.find(
-      (choice: any) => choice.name === choice.id
-    ).children[0];
-    expect(nestedTextField.id).toBe("mockField2-o1-text");
+    const nestedTextField = topRadioField?.props.choices[2];
+    expect(nestedTextField.id).toBe("mock-nested-field-option3uuid");
 
     // Number field matches to component
     const topNumberField: any = generatedFields.find(
-      (field) => field.key === "mockField3"
+      (field) => field.key === "mock-number-field"
     );
     expect(topNumberField?.type.name).toBe("NumberField");
   });
@@ -306,37 +265,44 @@ describe("Test initializeChoiceListFields", () => {
     const result = initializeChoiceListFields([mockedFormFields[1]]);
     const expectedResult = [
       {
-        id: "mockField2",
+        id: "mock-nested-field",
         type: "radio",
         validation: "radio",
         props: {
-          label: "Mock Radio Field",
           choices: [
             {
-              id: "mockField2-option1uuid",
-              name: "mockField2-option1uuid",
-              label: "Option 1, mock choice with nested child",
-              value: "Option 1, mock choice with nested child",
+              checked: false,
+              id: "mock-nested-field-option1uuid",
+              label: "option 1",
+              name: "mock-nested-field-option1uuid",
+              value: "option 1",
+            },
+            {
+              checked: false,
+              id: "mock-nested-field-option2uuid",
+              label: "option 2",
+              name: "mock-nested-field-option2uuid",
+              value: "option 2",
+            },
+            {
               checked: false,
               children: [
                 {
-                  id: "mockField2-o1-text",
+                  id: "mock-text-field",
+                  props: {
+                    label: "mock text field",
+                  },
                   type: "text",
                   validation: "text",
-                  props: {
-                    label: "Mock nested child text field",
-                  },
                 },
               ],
-            },
-            {
-              id: "mockField2-option2uuid",
-              name: "mockField2-option2uuid",
-              label: "Option 2, mock with no children",
-              value: "Option 2, mock with no children",
-              checked: true,
+              id: "mock-nested-field-option3uuid",
+              label: "option 3",
+              name: "mock-nested-field-option3uuid",
+              value: "option 3",
             },
           ],
+          label: "mock radio field",
         },
       },
     ];

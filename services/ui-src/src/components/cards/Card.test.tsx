@@ -4,7 +4,7 @@ import { axe } from "jest-axe";
 import { Card } from "components";
 
 const cardComponent = (
-  <Card {...{ "data-testid": "card" }}>
+  <Card>
     <p>Mock child component</p>
   </Card>
 );
@@ -15,7 +15,7 @@ describe("Test Card", () => {
   });
 
   test("Card is visible", () => {
-    expect(screen.getByTestId("card")).toBeVisible();
+    expect(screen.getByText("Mock child component")).toBeVisible();
   });
 });
 

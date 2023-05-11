@@ -9,7 +9,6 @@ const bannerComponent = (
       title: "Test banner!",
       description: "This is for testing.",
     }}
-    data-testid="test-banner"
   />
 );
 
@@ -19,7 +18,8 @@ describe("Test Banner Item", () => {
   });
 
   test("Banner is visible", () => {
-    expect(screen.getByTestId("test-banner")).toBeVisible();
+    expect(screen.getByText("Test banner!")).toBeVisible();
+    expect(screen.getByText("This is for testing.")).toBeVisible();
   });
 });
 

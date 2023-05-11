@@ -24,7 +24,9 @@ const standardPageSectionComponent = (
 describe("Test StandardReportPage", () => {
   test("StandardReportPage view renders", () => {
     render(standardPageSectionComponent);
-    expect(screen.getByTestId("standard-page")).toBeVisible();
+    expect(
+      screen.getByText(mockStandardReportPageJson.verbiage.intro.section)
+    ).toBeVisible();
   });
 
   test("StandardReportPage correctly submits a valid form", async () => {

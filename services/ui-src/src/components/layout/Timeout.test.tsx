@@ -45,8 +45,8 @@ describe("Test Timeout Modal", () => {
       jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
     await waitFor(() => {
-      expect(screen.getByTestId("modal-refresh-button")).toBeVisible();
-      expect(screen.getByTestId("modal-logout-button")).toBeVisible();
+      expect(screen.getByText("Stay logged in")).toBeVisible();
+      expect(screen.getByText("Log out")).toBeVisible();
     });
   });
 
@@ -54,13 +54,13 @@ describe("Test Timeout Modal", () => {
     await act(async () => {
       jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
-    const refreshButton = screen.getByTestId("modal-refresh-button");
+    const refreshButton = screen.getByText("Stay logged in");
     await act(async () => {
       await fireEvent.click(refreshButton);
     });
     await waitFor(() => {
-      expect(screen.getByTestId("modal-refresh-button")).not.toBeVisible();
-      expect(screen.getByTestId("modal-logout-button")).not.toBeVisible();
+      expect(screen.getByText("Stay logged in")).not.toBeVisible();
+      expect(screen.getByText("Log out")).not.toBeVisible();
     });
   });
 
@@ -68,7 +68,7 @@ describe("Test Timeout Modal", () => {
     await act(async () => {
       jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
-    const logoutButton = screen.getByTestId("modal-logout-button");
+    const logoutButton = screen.getByText("Log out");
     mockLogout.mockReset();
     await act(async () => {
       await fireEvent.click(logoutButton);

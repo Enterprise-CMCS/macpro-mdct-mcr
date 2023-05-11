@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-//components
+// components
 import { Table } from "components";
 import verbiage from "verbiage/pages/home";
 

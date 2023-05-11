@@ -5,7 +5,10 @@ import { axe } from "jest-axe";
 import { ReportDrawer } from "components";
 import {
   mockAdminUser,
+  mockCompletedQualityMeasuresEntity,
   mockDrawerForm,
+  mockEmptyDrawerForm,
+  mockModalDrawerReportPageVerbiage,
   mockStateUser,
 } from "utils/testing/setupJest";
 // utils
@@ -21,20 +24,13 @@ const mockDrawerDisclosure = {
   onClose: mockOnClose,
 };
 
-const mockEntity = {
-  id: "mock-id-1",
-  "mock-modal-text-field": "mock input 1",
-};
-
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const drawerComponent = (
   <ReportDrawer
-    verbiage={{
-      drawerTitle: "mock title",
-    }}
-    selectedEntity={mockEntity}
+    verbiage={mockModalDrawerReportPageVerbiage}
+    selectedEntity={mockCompletedQualityMeasuresEntity}
     form={mockDrawerForm}
     onSubmit={mockOnSubmit}
     drawerDisclosure={mockDrawerDisclosure}
@@ -60,12 +56,9 @@ describe("Test ReportDrawer rendering", () => {
 
 const drawerComponentWithoutFormFields = (
   <ReportDrawer
-    verbiage={{
-      drawerTitle: "mock title",
-      drawerNoFormMessage: "no form fields here",
-    }}
-    selectedEntity={mockEntity}
-    form={{ id: "mock-drawer-form-id", fields: [] }}
+    verbiage={mockModalDrawerReportPageVerbiage}
+    selectedEntity={mockCompletedQualityMeasuresEntity}
+    form={mockEmptyDrawerForm}
     onSubmit={mockOnSubmit}
     drawerDisclosure={mockDrawerDisclosure}
   />
@@ -78,7 +71,9 @@ describe("Test ReportDrawerWithoutFormFields rendering", () => {
   it("Should render save text for state user", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     render(drawerComponentWithoutFormFields);
-    expect(screen.getByText("no form fields here")).toBeVisible();
+    expect(
+      screen.getByText(mockModalDrawerReportPageVerbiage.drawerNoFormMessage)
+    ).toBeVisible();
   });
 });
 

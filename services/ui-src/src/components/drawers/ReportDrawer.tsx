@@ -27,9 +27,14 @@ export const ReportDrawer = ({
   ...props
 }: Props) => {
   // determine if fields should be disabled (based on admin roles)
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
-    useUser().user ?? {};
-  const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const {
+    userIsAdmin,
+    userIsApprover,
+    userIsHelpDeskUser,
+    userIsInternalUser,
+  } = useUser().user ?? {};
+  const isAdminTypeUser =
+    userIsAdmin || userIsApprover || userIsHelpDeskUser || userIsInternalUser;
   const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
   const formFieldsExist = form.fields.length;
   return (

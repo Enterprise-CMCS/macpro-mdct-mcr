@@ -1,12 +1,14 @@
 import { render } from "@testing-library/react";
+// components
 import { ReportContext } from "components/reports/ReportProvider";
+import { MobileEntityRow } from "./MobileEntityRow";
+import { Table } from "./Table";
+// utils
 import {
   mockMlrReportContext,
   mockVerbiageIntro,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { MobileEntityRow } from "./MobileEntityRow";
-import { Table } from "./Table";
 
 const incompleteRowComponent = (
   <RouterWrappedComponent>

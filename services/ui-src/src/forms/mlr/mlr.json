@@ -438,6 +438,7 @@
       },
       "overlayForm": {
         "id": "mlrd-overlay",
+        "adminDisabled": true,
         "fields": [
           {
             "id": "mlrSection1Header",

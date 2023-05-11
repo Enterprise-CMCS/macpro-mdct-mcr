@@ -16,14 +16,13 @@ const textAreaFieldComponent = (
     name="testTextAreaField"
     label="test-label"
     placeholder="test-placeholder"
-    data-testid="test-text-area-field"
   />
 );
 
 describe("Test TextAreaField component", () => {
   test("TextAreaField is visible", () => {
     render(textAreaFieldComponent);
-    const textAreaField = screen.getByTestId("test-text-area-field");
+    const textAreaField = screen.getByText("test-label");
     expect(textAreaField).toBeVisible();
   });
 });

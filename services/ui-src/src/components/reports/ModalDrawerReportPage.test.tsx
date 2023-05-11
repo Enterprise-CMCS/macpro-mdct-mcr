@@ -61,7 +61,7 @@ describe("Test ModalDrawerReportPage without entities", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
+    expect(screen.getByText(addEntityButtonText)).toBeVisible();
   });
 });
 
@@ -76,7 +76,7 @@ describe("Test ModalDrawerReportPage with entities", () => {
 
   it("ModalDrawerReportPage should render the view", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("modal-drawer-report-page")).toBeVisible();
+    expect(screen.getByText(addEntityButtonText)).toBeVisible();
   });
 
   it("ModalDrawerReportPage Modal opens correctly", async () => {

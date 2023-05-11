@@ -1,7 +1,9 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
+// components
 import { ReportContext, ReportPageFooter } from "components";
+// utils
 import {
   mockMcparReportContext,
   mockStateUser,
