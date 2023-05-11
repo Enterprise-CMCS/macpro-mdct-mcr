@@ -125,6 +125,31 @@
     ]
   },
   {
+    "username": "internaluser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "internaluser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Inside"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Cat"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-internal-user"
+      }
+    ]
+  },
+  {
     "username": "staterep@test.com",
     "attributes": [
       {

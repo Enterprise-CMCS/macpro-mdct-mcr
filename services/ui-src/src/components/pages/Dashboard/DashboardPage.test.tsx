@@ -8,6 +8,7 @@ import { ReportContext, DashboardPage } from "components";
 import {
   mockAdminUser,
   mockHelpDeskUser,
+  mockInternalUser,
   mockStateApprover,
   mockStateRep,
   mockNoUser,
@@ -228,6 +229,14 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
     expect(screen.queryByAltText("Archive")).toBeNull();
   });
 
+  test("Internal user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockInternalUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+
   test("State approver cannot archive reports", async () => {
     mockedUseUser.mockReturnValue(mockStateApprover);
     await act(async () => {
@@ -281,6 +290,14 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
 
   test("Help desk user cannot archive reports", async () => {
     mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+
+  test("Internal user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockInternalUser);
     await act(async () => {
       await render(dashboardViewWithReports);
     });
