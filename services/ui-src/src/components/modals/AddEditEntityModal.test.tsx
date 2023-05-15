@@ -148,14 +148,24 @@ describe("Test AddEditEntityModal functionality", () => {
       },
     };
 
-    mockUpdateCallPayload.fieldData.accessMeasures.push({
-      id: "mock-id-2",
-      "mock-modal-text-field": "mock input 2",
-    });
+    mockUpdateCallPayload.fieldData.accessMeasures = [
+      {
+        id: "mock-id-1",
+        "mock-modal-text-field": "mock input 2",
+      },
+    ];
     await expect(mockUpdateReport).toHaveBeenCalledWith(
       mockReportKeys,
       mockUpdateCallPayload
     );
+    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
+
+  test("Doesn't edit an existing entity if no update was made", async () => {
+    await render(modalComponentWithSelectedEntity);
+    const submitButton = screen.getByRole("button", { name: "Save" });
+    await userEvent.click(submitButton);
+    await expect(mockUpdateReport).toHaveBeenCalledTimes(0);
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });
