@@ -97,9 +97,4 @@ export const getFormattedEntityData = (
 export const entityWasUpdated = (
   originalEntity: EntityShape,
   newEntity: AnyObject
-) => {
-  return (
-    Object.entries(originalEntity).toString() !==
-    Object.entries(newEntity).toString()
-  );
-};
+) => JSON.stringify(originalEntity) !== JSON.stringify(newEntity);

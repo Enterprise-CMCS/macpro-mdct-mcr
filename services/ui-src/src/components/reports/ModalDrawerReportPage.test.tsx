@@ -27,6 +27,8 @@ jest.mock("react-router-dom", () => ({
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
 const mockReportContextWithoutEntities = {
   ...mockMcparReportContext,
   report: undefined,

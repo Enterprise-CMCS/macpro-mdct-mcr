@@ -72,7 +72,11 @@ export const DrawerReportPage = ({ route }: Props) => {
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      if (entityWasUpdated(entities[selectedEntityIndex], newEntity)) {
+      const shouldSave = entityWasUpdated(
+        entities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
         const dataToWrite = {
           metadata: {
             status: ReportStatus.IN_PROGRESS,

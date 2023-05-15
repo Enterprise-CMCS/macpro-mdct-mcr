@@ -113,7 +113,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         state: state,
         id: report?.id,
       };
-      const currentEntities = reportFieldDataEntities;
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
@@ -127,12 +127,11 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      if (
-        entityWasUpdated(
-          reportFieldDataEntities[selectedEntityIndex],
-          newEntity
-        )
-      ) {
+      const shouldSave = entityWasUpdated(
+        reportFieldDataEntities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
         const dataToWrite = {
           metadata: {
             status: ReportStatus.IN_PROGRESS,

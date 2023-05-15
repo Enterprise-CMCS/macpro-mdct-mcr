@@ -159,7 +159,7 @@ describe("Test DrawerReportPage with entities", () => {
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
-  it("Submit sidedrawer doesn't autosave if no change was made by State User", async () => {
+  it("Submit sidedrawer doesn't save if no change was made by State User", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     const visibleEntityText =
       mockMcparReportContext.report.fieldData.plans[0].name;
@@ -174,7 +174,7 @@ describe("Test DrawerReportPage with entities", () => {
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 
-  it("Submit sidedrawer doesn't autosave if no change was made by State Rep", async () => {
+  it("Submit sidedrawer doesn't save if no change was made by State Rep", async () => {
     mockedUseUser.mockReturnValue(mockStateRep);
     const visibleEntityText =
       mockMcparReportContext.report.fieldData.plans[0].name;
