@@ -135,6 +135,9 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: false
+            StringAttributeConstraints:
+              MinLength: 0
+              MaxLength: 2048
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
