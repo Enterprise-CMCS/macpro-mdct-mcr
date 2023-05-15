@@ -15,7 +15,12 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, parseCustomHtml, useUser } from "utils";
+import {
+  entityWasUpdated,
+  filterFormData,
+  parseCustomHtml,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   EntityShape,
@@ -67,16 +72,18 @@ export const DrawerReportPage = ({ route }: Props) => {
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [entityType]: newEntities,
-        },
-      };
-      await updateReport(reportKeys, dataToWrite);
+      if (entityWasUpdated(entities[selectedEntityIndex], newEntity)) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
       setSubmitting(false);
     }
     onClose();

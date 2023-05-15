@@ -93,3 +93,13 @@ export const getFormattedEntityData = (
       return {};
   }
 };
+
+export const entityWasUpdated = (
+  originalEntity: EntityShape,
+  newEntity: AnyObject
+) => {
+  return (
+    Object.entries(originalEntity).toString() !==
+    Object.entries(newEntity).toString()
+  );
+};

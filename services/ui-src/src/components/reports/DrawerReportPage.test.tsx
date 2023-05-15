@@ -158,6 +158,36 @@ describe("Test DrawerReportPage with entities", () => {
     await userEvent.click(saveAndCloseButton);
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
+
+  it("Submit sidedrawer doesn't autosave if no change was made by State User", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const visibleEntityText =
+      mockMcparReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const textField = await screen.getByLabelText("mock drawer text field");
+    expect(textField).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+
+  it("Submit sidedrawer doesn't autosave if no change was made by State Rep", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    const visibleEntityText =
+      mockMcparReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const textField = await screen.getByLabelText("mock drawer text field");
+    expect(textField).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
 });
 
 describe("Test DrawerReportPage with completed entity", () => {
