@@ -16,6 +16,7 @@ import {
   getFormattedEntityData,
   createRepeatedFields,
   useUser,
+  entityWasUpdated,
 } from "utils";
 // types
 import {
@@ -126,16 +127,23 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [entityType]: newEntities,
-        },
-      };
-      await updateReport(reportKeys, dataToWrite);
+      if (
+        entityWasUpdated(
+          reportFieldDataEntities[selectedEntityIndex],
+          newEntity
+        )
+      ) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
       setSubmitting(false);
     }
     closeDrawer();
