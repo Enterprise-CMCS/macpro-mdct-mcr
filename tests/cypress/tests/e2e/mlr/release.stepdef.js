@@ -24,6 +24,7 @@ When("I create, fill, and submit a report", () => {
   //Using the mlr.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
 
+  cy.wait(2000);
   //Submit the program
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
@@ -106,6 +107,9 @@ Then("the report will have the correct content pre-filled", () => {
     "have.value",
     "District of Columbia"
   );
+  cy.get('input[type="checkbox"]').each((e) => {
+    cy.wrap(e).should("not.be.checked");
+  });
   cy.findByText("Other, specify").parent().click();
   cy.get('textarea[name="versionControlDescription-otherText"').should("exist");
   cy.findByText("Revise state contact information").parent().click();
@@ -134,4 +138,23 @@ When("I create, fill but don't submit a report", () => {
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
+});
+
+When("I fill and re-submit that report", () => {
+  cy.visit(`/mlr`);
+  cy.findByText(programName)
+    .last()
+    .parent()
+    .find('button:contains("Enter")')
+    .focus()
+    .click();
+
+  cy.findByText("Revise state contact information").parent().click();
+  cy.get('button:contains("Continue")').focus().click();
+  cy.get('button:contains("Continue")').focus().click();
+
+  cy.wait(2000);
+  //Submit the program
+  cy.get('button:contains("Submit MLR")').focus().click();
+  cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
