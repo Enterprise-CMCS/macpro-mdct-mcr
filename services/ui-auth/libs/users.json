@@ -175,10 +175,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "MA"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
