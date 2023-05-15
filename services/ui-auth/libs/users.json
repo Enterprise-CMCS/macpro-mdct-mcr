@@ -175,6 +175,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "MA"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   },
@@ -233,6 +237,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "MN"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   },
@@ -262,6 +270,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "MA"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   },
@@ -291,6 +303,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "AL"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   },
@@ -320,6 +336,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "WY"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   },
@@ -349,6 +369,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "CA"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   },
@@ -378,6 +402,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "MI"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   },
@@ -432,6 +460,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "DC"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": ["MCPAR", "MLR", "NAAAR"]
       }
     ]
   }
