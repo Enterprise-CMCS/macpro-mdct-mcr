@@ -15,7 +15,7 @@ import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {
   const { bannerData } = useContext(AdminBannerContext);
-  const { userIsStateUser, userIsStateRep } = useUser().user ?? {};
+  const { userIsEndUser } = useUser().user ?? {};
   const [isBannerActive, setIsBannerActive] = useState(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const HomePage = () => {
       </Collapse>
       <PageTemplate sx={sx.layout}>
         {/* show standard view to state users */}
-        {userIsStateUser || userIsStateRep ? (
+        {userIsEndUser ? (
           <>
             <Box sx={sx.introTextBox}>
               <Heading as="h1" sx={sx.headerText}>

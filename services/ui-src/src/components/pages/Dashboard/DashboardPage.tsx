@@ -51,12 +51,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     releaseReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
-  const {
-    state: userState,
-    userIsStateUser,
-    userIsStateRep,
-    userIsAdmin,
-  } = useUser().user ?? {};
+  const { state: userState, userIsEndUser, userIsAdmin } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined
@@ -209,7 +204,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         {reportType === "MLR" && (
           <InstructionsAccordion
             verbiage={
-              userIsStateUser || userIsStateRep
+              userIsEndUser
                 ? accordion.MLR.stateUserDashboard
                 : accordion.MLR.adminDashboard
             }
@@ -231,7 +226,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
-              isStateLevelUser={userIsStateUser! || userIsStateRep!}
+              isStateLevelUser={userIsEndUser!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}
             />
@@ -248,7 +243,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
-              isStateLevelUser={userIsStateUser! || userIsStateRep!}
+              isStateLevelUser={userIsEndUser!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}
             />
@@ -264,7 +259,7 @@ export const DashboardPage = ({ reportType }: Props) => {
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         {/* only show add report button to state users */}
-        {(userIsStateUser || userIsStateRep) && (
+        {userIsEndUser && (
           <Box sx={sx.callToActionContainer}>
             <Button type="submit" onClick={() => openAddEditReportModal()}>
               {body.callToAction}

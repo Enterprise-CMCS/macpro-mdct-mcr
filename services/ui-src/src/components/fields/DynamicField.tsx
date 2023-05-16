@@ -23,8 +23,7 @@ import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { EntityContext } from "components/reports/EntityProvider";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
@@ -108,7 +107,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 
   // delete selected record from DB
   const deleteRecord = async (selectedRecord: EntityShape) => {
-    if (userIsStateUser || userIsStateRep) {
+    if (userIsEndUser) {
       const reportKeys = {
         reportType: report?.reportType,
         state: state,

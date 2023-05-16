@@ -18,11 +18,8 @@ export interface MCRUser {
   userRole?: string;
   userReports?: string[] | undefined;
   userIsAdmin?: boolean;
-  userIsHelpDeskUser?: boolean;
-  userIsInternalUser?: boolean;
-  userIsApprover?: boolean;
-  userIsStateRep?: boolean;
-  userIsStateUser?: boolean;
+  userIsReadOnly?: boolean;
+  userIsEndUser?: boolean;
 }
 
 export interface UserContextShape {

@@ -66,12 +66,12 @@ export const UserProvider = ({ children }: Props) => {
       const state = payload["custom:cms_state"] as string | undefined;
       const full_name = [given_name, " ", family_name].join("");
       const userCheck = {
-        userIsAdmin: userRole === UserRoles.ADMIN,
-        userIsHelpDeskUser: userRole === UserRoles.HELP_DESK,
-        userIsInternalUser: userRole === UserRoles.INTERNAL,
-        userIsApprover: userRole === UserRoles.APPROVER,
-        userIsStateRep: userRole === UserRoles.STATE_REP,
-        userIsStateUser: userRole === UserRoles.STATE_USER,
+        userIsAdmin:
+          userRole === UserRoles.ADMIN || userRole === UserRoles.APPROVER,
+        userIsReadOnly:
+          userRole === UserRoles.HELP_DESK || userRole === UserRoles.INTERNAL,
+        userIsEndUser:
+          userRole === UserRoles.STATE_REP || userRole === UserRoles.STATE_USER,
       };
       const currentUser: MCRUser = {
         email,
