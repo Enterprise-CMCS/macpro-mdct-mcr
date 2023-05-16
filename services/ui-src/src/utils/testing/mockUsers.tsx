@@ -20,6 +20,25 @@ export const mockStateUser: UserContextShape = {
     full_name: "Thelonious States",
     state: "MN",
     userIsStateUser: true,
+    userReports: ["MCPAR", "MLR", "NAAAR"],
+  },
+  showLocalLogins: true,
+  logout: async () => {},
+  loginWithIDM: () => {},
+  updateTimeout: async () => {},
+  getExpiration: () => {},
+};
+
+export const mockStateUserNoReports: UserContextShape = {
+  user: {
+    userRole: UserRoles.STATE_USER,
+    email: "stateuser@test.com",
+    given_name: "Thelonious",
+    family_name: "States",
+    full_name: "Thelonious States",
+    state: "MN",
+    userIsStateUser: true,
+    userReports: undefined,
   },
   showLocalLogins: true,
   logout: async () => {},

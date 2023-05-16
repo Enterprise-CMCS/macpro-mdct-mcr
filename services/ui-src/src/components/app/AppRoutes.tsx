@@ -21,8 +21,11 @@ import { ScrollToTopComponent, useUser } from "utils";
 import { Fragment } from "react";
 
 export const AppRoutes = () => {
-  const { userIsAdmin } = useUser().user ?? {};
+  const { userIsAdmin, userReports } = useUser().user ?? {};
   const mlrReport = useFlags()?.mlrReport;
+  // determine if the user has access to specific reports
+  const hasMcpar = userReports?.includes("MCPAR") || userIsAdmin;
+  const hasMlr = userReports?.includes("MLR") || userIsAdmin;
 
   return (
     <main id="main-content" tabIndex={-1}>
@@ -39,37 +42,76 @@ export const AppRoutes = () => {
           <Route path="*" element={<NotFoundPage />} />
 
           {/* MCPAR ROUTES */}
-          <Route path="/mcpar" element={<DashboardPage reportType="MCPAR" />} />
+          <Route
+            path="/mcpar"
+            element={
+              hasMcpar ? (
+                <DashboardPage reportType="MCPAR" />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
           <Route
             path="/mcpar/get-started"
-            element={<ReportGetStartedPage reportType="MCPAR" />}
+            element={
+              hasMcpar ? (
+                <ReportGetStartedPage reportType="MCPAR" />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           {mcparReportJson.flatRoutes.map((route: ReportRoute) => (
             <Route
               key={route.path}
               path={route.path}
-              element={<ReportPageWrapper />}
+              element={hasMcpar ? <ReportPageWrapper /> : <Navigate to="/" />}
             />
           ))}
-          <Route path="/mcpar/export" element={<ExportedReportPage />} />
-          <Route path="/mcpar/*" element={<Navigate to="/mcpar" />} />
+          <Route
+            path="/mcpar/export"
+            element={hasMcpar ? <ExportedReportPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/mcpar/*"
+            element={hasMcpar ? <Navigate to="/mcpar" /> : <Navigate to="/" />}
+          />
 
           {/* MLR ROUTES */}
           {mlrReport && (
             <Fragment>
-              <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
+              <Route
+                path="/mlr"
+                element={
+                  hasMlr ? (
+                    <DashboardPage reportType="MLR" />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
               <Route
                 path="/mlr/get-started"
-                element={<ReportGetStartedPage reportType="MLR" />}
+                element={
+                  hasMlr ? (
+                    <ReportGetStartedPage reportType="MLR" />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
               />
               {mlrReportJson.flatRoutes.map((route: ReportRoute) => (
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={<ReportPageWrapper />}
+                  element={hasMlr ? <ReportPageWrapper /> : <Navigate to="/" />}
                 />
               ))}
-              <Route path="/mlr/export" element={<ExportedReportPage />} />
+              <Route
+                path="/mlr/export"
+                element={hasMlr ? <ExportedReportPage /> : <Navigate to="/" />}
+              />
             </Fragment>
           )}
         </Routes>
