@@ -12,7 +12,7 @@ import {
   isFieldElement,
   ReportStatus,
 } from "types";
-import { filterFormData, useUser } from "utils";
+import { entityWasUpdated, filterFormData, useUser } from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
@@ -42,7 +42,7 @@ export const AddEditEntityModal = ({
       },
       fieldData: {},
     };
-    const currentEntities = report?.fieldData?.[entityType] || [];
+    const currentEntities = [...(report?.fieldData?.[entityType] || [])];
     const filteredFormData = filterFormData(
       enteredData,
       form.fields.filter(isFieldElement)
@@ -60,13 +60,18 @@ export const AddEditEntityModal = ({
         ...filteredFormData,
       };
       dataToWrite.fieldData = { [entityType]: updatedEntities };
+      const shouldSave = entityWasUpdated(
+        report?.fieldData?.[entityType][selectedEntityIndex],
+        updatedEntities[selectedEntityIndex]
+      );
+      if (shouldSave) await updateReport(reportKeys, dataToWrite);
     } else {
       // create new entity
       dataToWrite.fieldData = {
         [entityType]: [...currentEntities, { id: uuid(), ...filteredFormData }],
       };
+      await updateReport(reportKeys, dataToWrite);
     }
-    await updateReport(reportKeys, dataToWrite);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
