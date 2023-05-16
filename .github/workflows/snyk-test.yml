@@ -2,7 +2,7 @@ name: Snyk Scan and Report
 
 on:
   push:
-    branches: [ sechub-sambr ]
+    branches: [ snyk-scan-sambr ]
   #pull_request:
   #  branches: [  ]
   schedule:
