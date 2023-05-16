@@ -15,7 +15,8 @@ const jira = new JiraClient({
 
 function parseSnykOutput(inputData) {
   let vulnerabilities = [];
-
+ 
+  console.log(inputData)
   if (inputData) {
     try {
       const data = JSON.parse(inputData);

@@ -83,16 +83,6 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      # - name: Run Snyk test
-      #   run: |
-      #     npx snyk test --all-projects --json > snyk_output.txt || {
-      #       echo "Snyk test failed. Last 10 lines of the output:"
-      #       tail -n 10 snyk_output.txt
-      #       exit 1
-      #     }
-      #   working-directory: ./
-      #   env:
-      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Set environment variables
         run: |
