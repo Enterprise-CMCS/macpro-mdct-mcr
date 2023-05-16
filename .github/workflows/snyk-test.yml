@@ -1,0 +1,99 @@
+name: Snyk Scan and Report
+
+on:
+  push:
+    branches: [ sechub-sambr ]
+  #pull_request:
+  #  branches: [  ]
+  schedule:
+    - cron:  '0 0 * * *'  # run every day at midnight
+
+
+permissions:
+  id-token: write
+
+jobs:
+  snyk_scan_github_PR:
+    name: snyk_scan_github_PR
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    # if: github.event_name == 'push' || github.event_name == 'pull_request'
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./
+
+    - name: Install jq
+      run: sudo apt-get install -y jq
+      working-directory: ./
+
+    - name: Run Snyk Test
+      run: npx snyk test --all-projects --json > snyk_output.txt 
+      working-directory: ./
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # check 
+
+    - name: Set environment variables
+      run: |
+        echo "IGNORE_LIST=SNYK-JS-IGNORE-ID,SNYK-JS-ANOTHER-IGNORE-ID" >> $GITHUB_ENV
+    
+
+  snyk_scan_JIRA:  
+      name: snyk_scan_JIRA
+      runs-on: ubuntu-latest
+      if: github.event_name == 'schedule'
+
+      steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+        working-directory: ./
+
+      - name: Run Snyk test
+        run: npx snyk test --all-projects --json > snyk_output.txt || true
+        working-directory: ./
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Set environment variables
+        run: |
+          echo "PROJECT_NAME=MDCT" >> $GITHUB_ENV
+          echo "JIRA_PROJECT_KEY=MDCT" >> $GITHUB_ENV
+          echo "JIRA_ISSUE_TYPE=Task" >> $GITHUB_ENV
+          echo "JIRA_LABELS=test,snyk" >> $GITHUB_ENV
+          echo "JIRA_EPIC_KEY=MDCT-2280" >> $GITHUB_ENV
+          echo "IGNORE_LIST=SNYK-JS-IGNORE-ID,SNYK-JS-ANOTHER-IGNORE-ID" >> $GITHUB_ENV
+      
+      - name: Install Jira library for Node.js
+        run: npm install jira-client
+        working-directory: ./
+      
+      - name: Run script to parse Snyk output
+        run: node parse_snyk_output.js snyk_output.txt
+        env:
+          JIRA_BASE_URL: qmacbis.atlassian.net
+          JIRA_API_TOKEN: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_SERVICE_USERNAME }}
+        working-directory: ./
+
