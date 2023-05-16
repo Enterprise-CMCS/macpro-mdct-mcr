@@ -47,7 +47,7 @@ jobs:
             echo "Snyk test failed. Last 10 lines of the output:"
             tail -n 10 snyk_output.txt
             exit 1
-          }
+            }
       working-directory: ./
       env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
