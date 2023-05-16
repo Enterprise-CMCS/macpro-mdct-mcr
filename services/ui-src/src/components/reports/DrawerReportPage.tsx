@@ -30,8 +30,7 @@ export const DrawerReportPage = ({ route }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   // make state
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
@@ -46,7 +45,7 @@ export const DrawerReportPage = ({ route }: Props) => {
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
+    if (userIsEndUser) {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,

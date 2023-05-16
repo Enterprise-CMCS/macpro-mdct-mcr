@@ -29,8 +29,7 @@ import {
 } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -105,7 +104,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
+    if (userIsEndUser) {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,

@@ -23,14 +23,8 @@ export const ReportPageFooter = ({
     report?.formTemplate.basePath
   );
 
-  const {
-    userIsAdmin,
-    userIsApprover,
-    userIsHelpDeskUser,
-    userIsInternalUser,
-  } = useUser().user ?? {};
-  const isAdminUserType =
-    userIsAdmin || userIsApprover || userIsHelpDeskUser || userIsInternalUser;
+  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  const isAdminUserType = userIsAdmin || userIsReadOnly;
   const formIsDisabled = isAdminUserType && form?.adminDisabled;
 
   return (
