@@ -16,11 +16,12 @@ const jira = new JiraClient({
 function parseSnykOutput(inputData) {
   let vulnerabilities = [];
  
-  console.log(inputData)
+  //console.log(inputData)
   if (inputData) {
     try {
       const data = JSON.parse(inputData);
       vulnerabilities = data.vulnerabilities || [];
+      console.log(vulnerabilities)
     } catch (error) {
       console.error('Error parsing Snyk output:', error);
       vulnerabilities = parseNonJsonData(inputData);
@@ -79,7 +80,7 @@ async function createJiraTicket(vulnerability) {
   //   console.log(`Jira ticket already exists for vulnerability: ${vulnerability.title}`);
   //   return;
   // } else {
-
+    console.log('From create',vulnerability)
       // If no such ticket, then create one
       const issue = {
         fields: {
@@ -112,6 +113,7 @@ async function createJiraTicket(vulnerability) {
   const jsonData = fs.readFileSync(consoleOutputFile, 'utf-8');
 
   const vulnerabilities = parseSnykOutput(jsonData);
+  console.log('after parse',vulnerabilities)
   console.log("Vulnerabilities:", JSON.stringify(vulnerabilities, null, 2));
   console.log(`Parsed vulnerabilities: ${vulnerabilities.length}`);
 
