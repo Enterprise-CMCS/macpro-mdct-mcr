@@ -108,7 +108,7 @@ jobs:
         working-directory: ./
       
       - name: Run script to parse Snyk output
-        run: node parse_snyk_output.js snyk_output.txt
+        run: node parse_snyk_output.cjs snyk_output.txt
         env:
           JIRA_BASE_URL: qmacbis.atlassian.net
           JIRA_API_TOKEN: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
