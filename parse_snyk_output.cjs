@@ -49,63 +49,29 @@ function parseNonJsonData(inputData) {
 
 
 async function createJiraTicket(vulnerability) {
-  // for testing 
-  // const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-  // const twoDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const issue = {
+    fields: {
+      project: {
+        key: process.env.JIRA_PROJECT_KEY,
+      },
+      summary: vulnerability.title,
+      description: vulnerability.description,
+      issuetype: {
+        name: process.env.JIRA_ISSUE_TYPE,
+      },
+      labels: process.env.JIRA_LABELS.split(','),
+    },
+  };
 
-  // Remove all tickets with the given title from the past 5 days
-  // let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "Regular Expression Denial of Service (ReDoS)" AND created >= ${fiveDaysAgo}`;
-  // let searchResult = await jira.searchJira(jqlQuery);
-  // if (searchResult.issues && searchResult.issues.length > 0) {
-  //   for (const issue of searchResult.issues) {
-  //     try {
-  //       await jira.deleteIssue(issue.id);
-  //       console.log(`Jira ticket with title 'Regular Expression Denial of Service (ReDoS)' deleted: ${issue.key}`);
-  //     } catch (error) {
-  //       console.error('Error deleting Jira ticket:', error);
-  //     }
-     
-  //   }
-  // }
-
-  // Check if ticket already exists for the given vulnerability within the last 5 days
-  // jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${vulnerability.title}" AND created >= ${twoDaysAgo}`;
-  // try {
-  //   searchResult = await jira.searchJira(jqlQuery);
-  // } catch (error) {
-  //   console.error('Error searching Jira:', error);
-  // }
-
-  // if (searchResult.issues && searchResult.issues.length > 0) {
-  //   console.log(`Jira ticket already exists for vulnerability: ${vulnerability.title}`);
-  //   return;
-  // } else {
-    console.log('From create',vulnerability)
-      // If no such ticket, then create one
-      const issue = {
-        fields: {
-          project: {
-            key: process.env.JIRA_PROJECT_KEY,
-          },
-          summary: vulnerability.title,
-          description: vulnerability.description,
-          issuetype: {
-            name: process.env.JIRA_ISSUE_TYPE,
-          },
-          labels: process.env.JIRA_LABELS.split(','),
-        },
-      };
-
-      try {
-        const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
-        console.log('JIRA_URL:', jiraUrl);
-        await jira.addNewIssue(issue);
-        console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
-      } catch (error) {
-        console.error('Error creating Jira ticket:', error);
-      }
+  try {
+    const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
+    console.log('JIRA_URL:', jiraUrl);
+    await jira.addNewIssue(issue);
+    console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
+  } catch (error) {
+    console.error('Error creating Jira ticket:', error);
   }
-
+}
 
 
 (async () => {
