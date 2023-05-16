@@ -36,6 +36,10 @@ jobs:
     - name: Install jq
       run: sudo apt-get install -y jq
       working-directory: ./
+    
+    - name: Install Snyk CLI
+      run: npm install -g snyk
+      working-directory: ./
 
     - name: Run Snyk Test
       run: npx snyk test --all-projects --json > snyk_output.txt 
@@ -68,6 +72,10 @@ jobs:
 
       - name: Install jq
         run: sudo apt-get install -y jq
+        working-directory: ./
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
         working-directory: ./
 
       - name: Run Snyk test
