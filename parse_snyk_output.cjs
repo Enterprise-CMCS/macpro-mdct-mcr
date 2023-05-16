@@ -13,15 +13,23 @@ const jira = new JiraClient({
 });
 
 
+
+
+
 function parseSnykOutput(inputData) {
   let vulnerabilities = [];
  
-  //console.log(inputData)
+  console.log(inputData);
+
   if (inputData) {
     try {
       const data = JSON.parse(inputData);
-      vulnerabilities = data.vulnerabilities || [];
-      console.log(vulnerabilities)
+      for (const project of data) {
+        vulnerabilities = vulnerabilities.concat(project.vulnerabilities);
+      }
+
+      console.log(vulnerabilities);
+
     } catch (error) {
       console.error('Error parsing Snyk output:', error);
       vulnerabilities = parseNonJsonData(inputData);
@@ -30,6 +38,7 @@ function parseSnykOutput(inputData) {
 
   return vulnerabilities;
 }
+
 
 function parseNonJsonData(inputData) {
   let vulnerabilities = [];
