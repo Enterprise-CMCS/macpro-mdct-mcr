@@ -78,7 +78,7 @@ jobs:
         run: npm install -g snyk
         working-directory: ./
 
-      - name: Run Snyk test
+        #- name: Run Snyk test
         # run: npx snyk test --all-projects --json > snyk_output.txt || true
         # working-directory: ./
         # env:
