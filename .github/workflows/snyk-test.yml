@@ -105,7 +105,7 @@ jobs:
           echo "IGNORE_LIST=SNYK-JS-IGNORE-ID,SNYK-JS-ANOTHER-IGNORE-ID" >> $GITHUB_ENV
       
       - name: Install Jira library for Node.js
-        run: npm install jira-client
+        run: npm install jira-client  --legacy-peer-deps
         working-directory: ./
       
       - name: Run script to parse Snyk output
