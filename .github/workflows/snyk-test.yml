@@ -55,7 +55,7 @@ jobs:
   snyk_scan_JIRA:  
       name: snyk_scan_JIRA
       runs-on: ubuntu-latest
-      if: github.event_name == 'schedule'
+      if: github.event_name == 'push'
 
       steps:
       - name: Check out repository
