@@ -79,7 +79,7 @@ jobs:
         working-directory: ./
 
       - name: Run Snyk test
-        run: npx snyk test --all-projects --json > snyk_output.txt || true
+        run: npx snyk test --all-projects --json > snyk_output.txt
         working-directory: ./
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
