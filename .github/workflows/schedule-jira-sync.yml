@@ -3,7 +3,7 @@ name: Sync Security Hub findings and Jira issues
 on:
   workflow_dispatch: # for testing and manual runs
   schedule:
-    - cron: '25 1 * * *' # daily at 6:25 am EST
+    - cron: "25 1 * * *" # daily at 6:25 am EST
 
 permissions:
   id-token: write
@@ -20,7 +20,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-          role-to-assume: ${{ secrets.PRODUCTION_AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/security-hub-visibility@v1.0.1
@@ -28,8 +28,8 @@ jobs:
           jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
           jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
           jira-host: qmacbis.atlassian.net
-          jira-project-key: MDCT 
-          jira-epic-key: MDCT-2280 
+          jira-project-key: MDCT
+          jira-epic-key: MDCT-2280
           jira-ignore-statuses: Done, Closed, Canceled
-          jira-custom-fields: '{ "application" : "MCR" }'
+          jira-custom-fields: '{ "customfield_14154" : [{id: "16958", value: "MCR"}] }'
           aws-severities: CRITICAL, HIGH, MEDIUM
