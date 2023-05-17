@@ -57,12 +57,22 @@ export const UserProvider = ({ children }: Props) => {
       const session = await Auth.currentSession();
       const payload = session.getIdToken().payload;
       const { email, given_name, family_name } = payload;
+
       // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to MCR
       const cms_role = payload["custom:cms_roles"] as string;
       const userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
+
       // "custom:reports" is an string of concatenated reports this user has access to
       const reports = payload["custom:reports"] as string | undefined;
-      const userReports = reports?.split(",");
+      /**
+       * if a user is a State User, they could only have access to a subset of report types
+       * that will be returned as a custom IDM attribute "custom:reports"
+       * otherwise, other user types have access to all 3 report types
+       */
+      const userReports = !reports
+        ? ["MCPAR", "MLR", "NAAAR"]
+        : reports.split(",");
+
       const state = payload["custom:cms_state"] as string | undefined;
       const full_name = [given_name, " ", family_name].join("");
       const userCheck = {

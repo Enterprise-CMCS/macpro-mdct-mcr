@@ -3,7 +3,7 @@ import { fetchReport } from "./fetch";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
-import { hasPermissions } from "../../utils/auth/authorization";
+import { hasAccess, hasPermissions } from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
 import {
   validateData,
@@ -107,6 +107,14 @@ export const updateReport = handler(async (event, context) => {
   }
 
   const { formTemplateId, fieldDataId, reportType } = currentReport;
+
+  // Return a 403 status if the user does not have access to this report
+  if (!hasAccess(event, reportType!)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
 
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   const reportTable = reportTables[reportType as keyof typeof reportTables];

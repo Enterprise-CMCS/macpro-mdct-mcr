@@ -8,6 +8,7 @@ import { UserRoles } from "../types";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
+  "custom:reports": string;
 }
 
 const loadCognitoValues = async () => {
@@ -91,4 +92,22 @@ export const hasPermissions = (
   }
 
   return isAllowed;
+};
+
+export const hasAccess = (event: APIGatewayProxyEvent, reportType: string) => {
+  let hasReportAccess = false;
+  // decode the idToken
+  if (event?.headers["x-api-key"]) {
+    const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
+    const reports = decoded["custom:reports"];
+    const allowedReports = reports
+      ?.split(",")
+      .find((report: string) => report.includes(reportType)) as string;
+
+    if (allowedReports) {
+      hasReportAccess = true;
+    }
+  }
+
+  return hasReportAccess;
 };
