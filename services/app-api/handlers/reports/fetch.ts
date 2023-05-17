@@ -130,6 +130,15 @@ export const fetchReportsByState = handler(async (event, _context) => {
   }
 
   const reportType = event.pathParameters?.reportType;
+
+  // Return a 403 status if the user does not have access to this report
+  if (!hasAccess(event, reportType!)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
+
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
   const queryParams: DynamoFetchParams = {

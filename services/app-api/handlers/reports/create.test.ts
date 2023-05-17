@@ -10,6 +10,7 @@ import { StatusCodes } from "../../utils/types";
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
+  hasAccess: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({

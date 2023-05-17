@@ -15,6 +15,7 @@ import { StatusCodes } from "../../utils/types";
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn(() => {}),
+  hasAccess: jest.fn().mockReturnValue(true),
 }));
 const mockAuthUtil = require("../../utils/auth/authorization");
 
