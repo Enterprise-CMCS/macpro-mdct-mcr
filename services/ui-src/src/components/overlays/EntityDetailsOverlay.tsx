@@ -151,7 +151,7 @@ export const EntityDetailsOverlay = ({
             >
               {submitting ? (
                 <Spinner size="small" />
-              ) : report?.locked || !userIsEndUser ? (
+              ) : report?.locked ? (
                 "Return"
               ) : (
                 "Save & return"

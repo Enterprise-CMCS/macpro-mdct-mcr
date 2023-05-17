@@ -85,7 +85,7 @@ export const AddEditEntityModal = ({
           : undefined,
         actionButtonText: submitting ? (
           <Spinner size="small" />
-        ) : report?.locked || !userIsEndUser ? (
+        ) : report?.locked ? (
           "Close"
         ) : (
           "Save"
