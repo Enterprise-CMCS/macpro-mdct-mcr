@@ -44,9 +44,9 @@ export const Form = ({
   // determine if fields should be disabled (based on admin roles )
   const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
   const { report } = useContext(ReportContext);
-  const isAdminTypeUser = userIsAdmin || userIsReadOnly;
+  const userCanReadOnly = userIsAdmin || userIsReadOnly;
   const fieldInputDisabled =
-    (isAdminTypeUser && formJson.adminDisabled) ||
+    (userCanReadOnly && formJson.adminDisabled) ||
     (report?.status === ReportStatus.SUBMITTED &&
       report?.reportType === ReportType.MLR);
 

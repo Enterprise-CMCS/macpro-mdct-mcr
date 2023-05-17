@@ -22,7 +22,7 @@ export const AddEditEntityModal = ({
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, userIsAdmin } = useUser().user ?? {};
+  const { full_name, userIsEndUser } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const writeEntity = async (enteredData: any) => {
@@ -85,7 +85,7 @@ export const AddEditEntityModal = ({
           : undefined,
         actionButtonText: submitting ? (
           <Spinner size="small" />
-        ) : report?.locked || userIsAdmin ? (
+        ) : report?.locked || !userIsEndUser ? (
           "Close"
         ) : (
           "Save"
@@ -98,7 +98,9 @@ export const AddEditEntityModal = ({
         formJson={form}
         formData={selectedEntity}
         onSubmit={
-          report?.locked || userIsAdmin ? modalDisclosure.onClose : writeEntity
+          report?.locked || !userIsEndUser
+            ? modalDisclosure.onClose
+            : writeEntity
         }
       />
       <Text sx={sx.bottomModalMessage}>{verbiage.addEditModalMessage}</Text>

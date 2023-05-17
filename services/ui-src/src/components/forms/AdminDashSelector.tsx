@@ -16,6 +16,8 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   const [reportSelected, setReportSelected] = useState<boolean>(false);
 
   const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  // determine if user should have edit or read-only access
+  const userCanReadOnly = userIsAdmin || userIsReadOnly;
 
   // create radio options
   const reportChoices = [
@@ -51,7 +53,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
     selectedReport = selectedReport.replace("report-", "").toLowerCase();
     localStorage.setItem("selectedReportType", selectedReport);
 
-    if (userIsAdmin || userIsReadOnly) {
+    if (userCanReadOnly) {
       const selectedState = formData["state"].value;
       localStorage.setItem("selectedState", selectedState);
     }
