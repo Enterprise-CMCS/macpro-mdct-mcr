@@ -24,7 +24,7 @@ export const TemplateCard = ({
   templateName,
   verbiage,
   cardprops,
-  isDisabled = false,
+  isDisabled,
   ...props
 }: Props) => {
   const { isDesktop } = useBreakpoint();
@@ -67,7 +67,7 @@ export const TemplateCard = ({
               leftIcon={
                 <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
               }
-              isDisabled={isDisabled}
+              isDisabled={false}
               onClick={async () => {
                 await downloadTemplate(templateName);
               }}
@@ -77,6 +77,7 @@ export const TemplateCard = ({
             {enabledReports[reportIndex] && (
               <Button
                 sx={sx.formLink}
+                isDisabled={isDisabled}
                 onClick={() => navigate(verbiage.link.route)}
                 rightIcon={
                   <Image src={nextIcon} alt="Link Icon" height="1rem" />
