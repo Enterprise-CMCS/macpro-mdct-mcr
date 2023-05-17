@@ -15,12 +15,18 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
-
+      - name: set branch specific variable names
+        run: ./.github/build-vars.sh set_names
+      - name: set variable values
+        run: ./.github/build-vars.sh set_values
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets[env.PRODUCTION_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.PRODUCTION_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.PRODUCTION_AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/security-hub-visibility@v1.0.1
