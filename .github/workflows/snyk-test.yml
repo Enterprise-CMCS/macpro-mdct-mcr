@@ -46,10 +46,6 @@ jobs:
       working-directory: ./
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # check 
-
-    - name: Set environment variables
-      run: |
-        echo "IGNORE_LIST=SNYK-JS-IGNORE-ID,SNYK-JS-ANOTHER-IGNORE-ID" >> $GITHUB_ENV
     
 
   snyk_scan_JIRA:  

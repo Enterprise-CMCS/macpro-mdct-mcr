@@ -79,8 +79,9 @@ async function createJiraTicket(vulnerability) {
 
   if (searchResult.issues && searchResult.issues.length > 0) {
     for (const issue of searchResult.issues) {
-      await jira.deleteIssue(issue.id);
-      console.log(`Jira ticket with title '${vulnerability.title}' deleted: ${issue.key}`);
+      //await jira.deleteIssue(issue.id);
+      await jira.transitionIssue(issue.id, { transition: { id: '2' } }); 
+      console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
     }
   }
 
@@ -89,7 +90,7 @@ async function createJiraTicket(vulnerability) {
       project: {
         key: process.env.JIRA_PROJECT_KEY,
       },
-      summary: `MCR: ${vulnerability.title}`,
+      summary: `[MCR] - ${vulnerability.title}`,
       description: vulnerability.description,
       issuetype: {
         name: process.env.JIRA_ISSUE_TYPE,
