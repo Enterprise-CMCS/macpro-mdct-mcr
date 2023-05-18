@@ -1,10 +1,8 @@
 name: Snyk Scan and Report
 
 on:
-  push:
-    branches: [ snyk-scan-sambr ]
-  #pull_request:
-  #  branches: [  ]
+  pull_request:
+   branches: [ main ]
   schedule:
     - cron:  '0 0 * * *'  # run every day at midnight
 
@@ -15,8 +13,7 @@ jobs:
   snyk_run:
     name: Snyk Run (for PR and push)
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    # if: github.event_name == 'push' || github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request'
 
     steps:
     - name: Check out repository
@@ -50,7 +47,7 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      if: github.event_name == 'push'
+      if: github.event_name == 'schedule'
 
       steps:
       - name: Check out repository
