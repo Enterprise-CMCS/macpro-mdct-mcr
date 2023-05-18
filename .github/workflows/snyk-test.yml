@@ -74,6 +74,10 @@ jobs:
         run: npm install request-promise --legacy-peer-deps
         working-directory: ./
 
+      - name: Install additional nodejs dependencies
+        run: npm install request --save --legacy-peer-deps
+        working-directory: ./
+
       - name: Install jq
         run: sudo apt-get install -y jq
         working-directory: ./
