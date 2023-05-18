@@ -47,14 +47,12 @@ export const ChoiceListField = ({
     useContext(EntityContext);
   const { full_name, state, userIsAdmin, userIsReadOnly } =
     useUser().user ?? {};
-  // determine if user should have edit or read-only access
-  const userCanReadOnly = userIsAdmin || userIsReadOnly;
   // get form context and register field
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
 
   const shouldDisableChildFields =
-    (userCanReadOnly && !!props?.disabled) || report?.locked;
+    ((userIsAdmin || userIsReadOnly) && !!props?.disabled) || report?.locked;
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;

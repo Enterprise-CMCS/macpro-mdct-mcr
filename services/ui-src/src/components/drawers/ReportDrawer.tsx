@@ -28,8 +28,8 @@ export const ReportDrawer = ({
 }: Props) => {
   // determine if fields should be disabled (based on admin and read-only roles)
   const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
-  const userCanReadOnly = userIsAdmin || userIsReadOnly;
-  const buttonText = userCanReadOnly ? closeText : saveAndCloseText;
+  const buttonText =
+    userIsAdmin || userIsReadOnly ? closeText : saveAndCloseText;
   const formFieldsExist = form.fields.length;
   return (
     <Drawer
@@ -50,7 +50,7 @@ export const ReportDrawer = ({
       )}
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
-          {!userCanReadOnly && (
+          {(!userIsAdmin || !userIsReadOnly) && (
             <Button
               variant="outline"
               onClick={drawerDisclosure.onClose as MouseEventHandler}
