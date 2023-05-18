@@ -96,36 +96,36 @@ async function createJiraTicket(vulnerability) {
   }
 
   // attach the scan report to the Jira ticket
-  // const attachmentUrl = `https://${host}/rest/api/2/issue/${issueResponse.key}/attachments`;
-  // const attachment = {
-  //   method: 'POST',
-  //   uri: attachmentUrl,
-  //   auth: {
-  //     username: username,
-  //     password: password
-  //   },
+  const attachmentUrl = `https://${host}/rest/api/2/issue/${issueResponse.key}/attachments`;
+  const attachment = {
+    method: 'POST',
+    uri: attachmentUrl,
+    auth: {
+      username: username,
+      password: password
+    },
 
-  //   headers: {
-  //     'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
-  //     'X-Requested-With': 'XMLHttpRequest',
-  //     'X-Scheme': 'https',
-  //     'X-Forwarded-Proto': 'https',
-  //   },
+    headers: {
+      'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-Scheme': 'https',
+      'X-Forwarded-Proto': 'https',
+    },
 
-  //   formData: {
-  //     file: fs.createReadStream('snyk_output.txt')
-  //   },
-  // };
+    formData: {
+      file: fs.createReadStream('snyk_output.txt')
+    },
+  };
   
-  // try {
-  //   await rp(attachment);
-  // } catch (error) {
-  //   console.error(`Error attaching file to Jira ticket: ${error}`);
-  //   return;
-  // }
+  try {
+    await rp(attachment);
+  } catch (error) {
+    console.error(`Error attaching file to Jira ticket: ${error}`);
+    return;
+  }
   
-  // console.log(`Jira ticket ${issueResponse.key} created successfully.`);
-  // return issueResponse;
+  console.log(`Jira ticket ${issueResponse.key} created successfully.`);
+  return issueResponse;
 
 }
 
