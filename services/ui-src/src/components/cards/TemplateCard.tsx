@@ -67,7 +67,6 @@ export const TemplateCard = ({
               leftIcon={
                 <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
               }
-              isDisabled={false}
               onClick={async () => {
                 await downloadTemplate(templateName);
               }}
