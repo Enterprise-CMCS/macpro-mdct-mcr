@@ -69,6 +69,21 @@ function formatVulDescr(vulnerability) {
 
 
 async function createJiraTicket(vulnerability) {
+
+  //const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0];
+
+  // Delete all tickets with the given title from the past 5 days
+  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${vulnerability.title}" AND created >= ${today}`;
+  let searchResult = await jira.searchJira(jqlQuery);
+
+  if (searchResult.issues && searchResult.issues.length > 0) {
+    for (const issue of searchResult.issues) {
+      await jira.deleteIssue(issue.id);
+      console.log(`Jira ticket with title '${vulnerability.title}' deleted: ${issue.key}`);
+    }
+  }
+
   const issue = {
     fields: {
       project: {
