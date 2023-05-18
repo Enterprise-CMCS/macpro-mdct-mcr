@@ -38,7 +38,7 @@ export const mockStateUserNoReports: UserContextShape = {
     full_name: "Thelonious States",
     state: "MN",
     userIsEndUser: true,
-    userReports: undefined,
+    userReports: [""],
   },
   showLocalLogins: true,
   logout: async () => {},

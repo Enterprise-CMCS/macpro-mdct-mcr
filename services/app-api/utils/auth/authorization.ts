@@ -102,15 +102,22 @@ export const hasReportAccess = (
   // decode the idToken
   if (event?.headers["x-api-key"]) {
     const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
+    const idmUserRoles = decoded["custom:cms_roles"];
+    const isStateUser = idmUserRoles
+      ?.split(",")
+      .find((role) => role === "mdctmcr-state-user") as UserRoles;
+
+    // check report access for state users only
+    if (!isStateUser) {
+      return true;
+    }
     const reports = decoded["custom:reports"];
     const allowedReports = reports
       ?.split(",")
       .find((report: string) => report.includes(reportType)) as string;
-
     if (allowedReports) {
       hasAccess = true;
     }
   }
-
   return hasAccess;
 };

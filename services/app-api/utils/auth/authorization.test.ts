@@ -113,6 +113,9 @@ describe("Check user has access to reports", () => {
     expect(hasReportAccess(apiKeyEvent, "MCPAR")).toBeTruthy();
   });
   test("has permissions should fail when the asked for role is the given role", () => {
+    mockedDecode.mockReturnValue({
+      "custom:cms_roles": "mdctmcr-state-user",
+    });
     expect(hasReportAccess(apiKeyEvent, "MLR")).toBeFalsy();
   });
   test("has permissions should fail when the api token is missing", () => {
