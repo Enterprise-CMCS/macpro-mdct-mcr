@@ -106,7 +106,6 @@ async function createJiraTicket(vulnerability) {
                 },
                 summary: `[MCR] - ${vulnerability.title}`,
                 description: vulnerability.description,
-                application: 'MCR',
                 issuetype: {
                   name: process.env.JIRA_ISSUE_TYPE,
                 },
