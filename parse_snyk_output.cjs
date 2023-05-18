@@ -75,19 +75,21 @@ async function createJiraTicket(vulnerability) {
   const today = new Date().toISOString().split('T')[0];
 
   // cancel all tickets with the given title from the past given days
-  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "\\[MCR\\] - ${vulnerability.title}" AND created >= ${today}`;
+  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - ${vulnerability.title}" AND created >= ${today}`;
   let searchResult = await jira.searchJira(jqlQuery);
 
 
   if (searchResult.issues && searchResult.issues.length > 0) {
     for (const issue of searchResult.issues) {
       //await jira.deleteIssue(issue.id);
-      const transitions = await jira.listTransitions(issue.key);
-      const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel' || transition.name.toLowerCase() === 'close');
+      // const transitions = await jira.listTransitions(issue.key);
+      // const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel' || transition.name.toLowerCase() === 'close');
 
       if (issue.fields.status.name !== "Closed" && issue.fields.status.name !== "Cancelled") {
-        console.log(`Active Jira ticket already exists for vulnerability: ${vulnerability.title}`);
-        return;
+        if (issue.fields.summary.startsWith('[MCR] -')) {
+          console.log(`Active Jira ticket already exists for vulnerability: ${vulnerability.title}`);
+          return;
+        }
       }
       
       // if (cancelTransition) {
