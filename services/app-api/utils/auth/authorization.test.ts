@@ -1,5 +1,5 @@
 import { proxyEvent } from "../testing/proxyEvent";
-import { hasAccess, hasPermissions, isAuthorized } from "./authorization";
+import { hasReportAccess, hasPermissions, isAuthorized } from "./authorization";
 import { UserRoles } from "../types/users";
 
 const mockVerifier = jest.fn();
@@ -110,12 +110,12 @@ describe("Check user has access to reports", () => {
   });
 
   test("has access should pass when the asked for report is the given report", () => {
-    expect(hasAccess(apiKeyEvent, "MCPAR")).toBeTruthy();
+    expect(hasReportAccess(apiKeyEvent, "MCPAR")).toBeTruthy();
   });
   test("has permissions should fail when the asked for role is the given role", () => {
-    expect(hasAccess(apiKeyEvent, "MLR")).toBeFalsy();
+    expect(hasReportAccess(apiKeyEvent, "MLR")).toBeFalsy();
   });
   test("has permissions should fail when the api token is missing", () => {
-    expect(hasAccess(noApiKeyEvent, "NAAAR")).toBeFalsy();
+    expect(hasReportAccess(noApiKeyEvent, "NAAAR")).toBeFalsy();
   });
 });

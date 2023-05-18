@@ -4,7 +4,10 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
-import { hasAccess, hasPermissions } from "../../utils/auth/authorization";
+import {
+  hasReportAccess,
+  hasPermissions,
+} from "../../utils/auth/authorization";
 import {
   validateData,
   validateFieldData,
@@ -48,7 +51,7 @@ export const createReport = handler(async (event, _context) => {
   const fieldDataValidationJson = formTemplate.validationJson;
 
   // Return a 403 status if the user does not have access to this report
-  if (!hasAccess(event, reportType)) {
+  if (!hasReportAccess(event, reportType)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,

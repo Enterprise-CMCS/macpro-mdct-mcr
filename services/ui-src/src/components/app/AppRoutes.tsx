@@ -24,8 +24,10 @@ export const AppRoutes = () => {
   const { userIsAdmin, userReports } = useUser().user ?? {};
   const mlrReport = useFlags()?.mlrReport;
   // determine if the user has access to specific reports
-  const hasMcpar = userReports?.includes("MCPAR") || userIsAdmin;
-  const hasMlr = userReports?.includes("MLR") || userIsAdmin;
+  const userReportAccess = {
+    MCPAR: userReports?.includes("MCPAR") || userIsAdmin,
+    MLR: userReports?.includes("MLR") || userIsAdmin,
+  };
 
   return (
     <main id="main-content" tabIndex={-1}>
@@ -45,7 +47,7 @@ export const AppRoutes = () => {
           <Route
             path="/mcpar"
             element={
-              hasMcpar ? (
+              userReportAccess["MCPAR"] ? (
                 <DashboardPage reportType="MCPAR" />
               ) : (
                 <Navigate to="/" />
@@ -55,7 +57,7 @@ export const AppRoutes = () => {
           <Route
             path="/mcpar/get-started"
             element={
-              hasMcpar ? (
+              userReportAccess["MCPAR"] ? (
                 <ReportGetStartedPage reportType="MCPAR" />
               ) : (
                 <Navigate to="/" />
@@ -66,16 +68,34 @@ export const AppRoutes = () => {
             <Route
               key={route.path}
               path={route.path}
-              element={hasMcpar ? <ReportPageWrapper /> : <Navigate to="/" />}
+              element={
+                userReportAccess["MCPAR"] ? (
+                  <ReportPageWrapper />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
           ))}
           <Route
             path="/mcpar/export"
-            element={hasMcpar ? <ExportedReportPage /> : <Navigate to="/" />}
+            element={
+              userReportAccess["MCPAR"] ? (
+                <ExportedReportPage />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           <Route
             path="/mcpar/*"
-            element={hasMcpar ? <Navigate to="/mcpar" /> : <Navigate to="/" />}
+            element={
+              userReportAccess["MCPAR"] ? (
+                <Navigate to="/mcpar" />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
 
           {/* MLR ROUTES */}
@@ -84,7 +104,7 @@ export const AppRoutes = () => {
               <Route
                 path="/mlr"
                 element={
-                  hasMlr ? (
+                  userReportAccess["MLR"] ? (
                     <DashboardPage reportType="MLR" />
                   ) : (
                     <Navigate to="/" />
@@ -94,7 +114,7 @@ export const AppRoutes = () => {
               <Route
                 path="/mlr/get-started"
                 element={
-                  hasMlr ? (
+                  userReportAccess["MLR"] ? (
                     <ReportGetStartedPage reportType="MLR" />
                   ) : (
                     <Navigate to="/" />
@@ -105,12 +125,24 @@ export const AppRoutes = () => {
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={hasMlr ? <ReportPageWrapper /> : <Navigate to="/" />}
+                  element={
+                    userReportAccess["MLR"] ? (
+                      <ReportPageWrapper />
+                    ) : (
+                      <Navigate to="/" />
+                    )
+                  }
                 />
               ))}
               <Route
                 path="/mlr/export"
-                element={hasMlr ? <ExportedReportPage /> : <Navigate to="/" />}
+                element={
+                  userReportAccess["MLR"] ? (
+                    <ExportedReportPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
               />
             </Fragment>
           )}

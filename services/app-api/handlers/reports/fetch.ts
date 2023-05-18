@@ -14,7 +14,7 @@ import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
-import { hasAccess } from "../../utils/auth/authorization";
+import { hasReportAccess } from "../../utils/auth/authorization";
 // types
 import { AnyObject, S3Get, StatusCodes } from "../../utils/types";
 
@@ -30,7 +30,7 @@ export const fetchReport = handler(async (event, _context) => {
   const { reportType, state, id } = event.pathParameters!;
 
   // Return a 403 status if the user does not have access to this report
-  if (!hasAccess(event, reportType!)) {
+  if (!hasReportAccess(event, reportType!)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
@@ -132,7 +132,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
   const reportType = event.pathParameters?.reportType;
 
   // Return a 403 status if the user does not have access to this report
-  if (!hasAccess(event, reportType!)) {
+  if (!hasReportAccess(event, reportType!)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,

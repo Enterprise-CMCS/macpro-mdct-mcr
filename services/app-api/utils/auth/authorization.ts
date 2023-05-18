@@ -94,8 +94,11 @@ export const hasPermissions = (
   return isAllowed;
 };
 
-export const hasAccess = (event: APIGatewayProxyEvent, reportType: string) => {
-  let hasReportAccess = false;
+export const hasReportAccess = (
+  event: APIGatewayProxyEvent,
+  reportType: string
+) => {
+  let hasAccess = false;
   // decode the idToken
   if (event?.headers["x-api-key"]) {
     const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
@@ -105,9 +108,9 @@ export const hasAccess = (event: APIGatewayProxyEvent, reportType: string) => {
       .find((report: string) => report.includes(reportType)) as string;
 
     if (allowedReports) {
-      hasReportAccess = true;
+      hasAccess = true;
     }
   }
 
-  return hasReportAccess;
+  return hasAccess;
 };
