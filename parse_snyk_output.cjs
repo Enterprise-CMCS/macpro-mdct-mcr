@@ -89,19 +89,20 @@ async function createJiraTicket(vulnerability) {
     const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
     console.log('JIRA_URL:', jiraUrl);
     issueResponse = await jira.addNewIssue(issue);
+    console.log(issueResponse)
     console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
   } catch (error) {
     console.error('Error creating Jira ticket:', error);
   }
 
   // attach the scan report to the Jira ticket
-  const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
+  const attachmentUrl = `https://${host}/rest/api/2/issue/${issueResponse.key}/attachments`;
   const attachment = {
     method: 'POST',
     uri: attachmentUrl,
     auth: {
-      username: process.env.JIRA_USER_EMAIL,
-      password: process.env.JIRA_API_TOKEN
+      username: username,
+      password: password
     },
 
     headers: {
@@ -134,8 +135,7 @@ async function createJiraTicket(vulnerability) {
   const jsonData = fs.readFileSync(consoleOutputFile, 'utf-8');
 
   const vulnerabilities = parseSnykOutput(jsonData);
-  console.log('after parse',vulnerabilities)
-  console.log("Vulnerabilities:", JSON.stringify(vulnerabilities, null, 2));
+  // console.log("Vulnerabilities:", JSON.stringify(vulnerabilities, null, 2));
   console.log(`Parsed vulnerabilities: ${vulnerabilities.length}`);
 
   const uniqueVulnerabilities = Array.from(new Set(vulnerabilities.map(v => v.title)))
