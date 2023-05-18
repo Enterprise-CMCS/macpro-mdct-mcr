@@ -101,8 +101,8 @@ async function createJiraTicket(vulnerability) {
     method: 'POST',
     uri: attachmentUrl,
     auth: {
-      username: username,
-      password: password
+      username: process.env.JIRA_USER_EMAIL,
+      password: process.env.JIRA_API_TOKEN
     },
 
     headers: {
