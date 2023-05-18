@@ -71,7 +71,7 @@ jobs:
         working-directory: ./
 
       - name: Install nodejs dependencies
-        run: npm install request-promise
+        run: npm install request-promise --legacy-peer-deps
         working-directory: ./
 
       - name: Install jq
