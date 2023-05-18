@@ -15,9 +15,6 @@ const jira = new JiraClient({
 });
 
 
-
-
-
 function parseSnykOutput(inputData) {
   let vulnerabilities = [];
  
@@ -45,7 +42,7 @@ function parseSnykOutput(inputData) {
 function parseNonJsonData(inputData) {
   let vulnerabilities = [];
 
-  // Your custom logic to parse non-JSON inputData
+  // Custom logic to parse non-JSON inputData
   const defaultTitle = 'Vulnerability Detected';
 
   vulnerabilities.push({
@@ -57,45 +54,25 @@ function parseNonJsonData(inputData) {
 }
 
 
-function formatVulDescr(vulnerability) {
-  let description = `*Overview*:\n\n${vulnerability.description.split('\n')[0]}\n\n`;
-  description += `*PoC*:\n\n${vulnerability.description.split('PoC by')[1].split('Details')[0]}\n\n`;
-  description += `*Details*:\n\n${vulnerability.description.split('Details')[1].split('Remediation')[0]}\n\n`;
-  description += `*Remediation*:\n\n${vulnerability.description.split('Remediation')[1].split('References')[0]}\n\n`;
-  description += `*References*:\n\n${vulnerability.description.split('References')[1]}\n\n`;
-  return description;
-}
-
-
-
-
 async function createJiraTicket(vulnerability) {
 
-  //const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-  const today = new Date().toISOString().split('T')[0];
+   // DEFAULT DAYS  set to 60 adjust as needed
+   const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  //const today = new Date().toISOString().split('T')[0];
 
-  // cancel all tickets with the given title from the past given days
-  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - ${vulnerability.title}" AND created >= ${today}`;
+  // JQL query to check ticket given title from the past given days
+  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - ${vulnerability.title}" AND created >= ${sixtyDaysAgo}`;
   let searchResult = await jira.searchJira(jqlQuery);
 
 
   if (searchResult.issues && searchResult.issues.length > 0) {
     for (const issue of searchResult.issues) {
-      //await jira.deleteIssue(issue.id);
-      // const transitions = await jira.listTransitions(issue.key);
-      // const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel' || transition.name.toLowerCase() === 'close');
-
       if (issue.fields.status.name !== "Closed" && issue.fields.status.name !== "Cancelled") {
         if (issue.fields.summary.startsWith('[MCR] -')) {
           console.log(`Active Jira ticket already exists for vulnerability: ${vulnerability.title}`);
           return;
         }
       }
-      
-      // if (cancelTransition) {
-      //   await jira.transitionIssue(issue.id, { transition: { id: cancelTransition.id } }); 
-      //   console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
-      // }
       
     }
   } else {
