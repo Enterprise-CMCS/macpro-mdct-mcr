@@ -8,13 +8,12 @@ on:
   schedule:
     - cron:  '0 0 * * *'  # run every day at midnight
 
-
 permissions:
   id-token: write
 
 jobs:
-  snyk_scan_github_PR:
-    name: snyk_scan_github_PR
+  snyk_run:
+    name: Snyk Run (for PR and push)
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     # if: github.event_name == 'push' || github.event_name == 'pull_request'
@@ -48,8 +47,8 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # check 
     
 
-  snyk_scan_JIRA:  
-      name: snyk_scan_JIRA
+  snyk_nightly_run:  
+      name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
       if: github.event_name == 'push'
 

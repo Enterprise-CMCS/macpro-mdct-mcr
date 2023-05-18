@@ -67,20 +67,44 @@ function formatVulDescr(vulnerability) {
 }
 
 
+async function cancelIssue(issueKey) {
+  const transitions = await jira.listTransitions(issueKey);
+  
+  // Find the transition id for 'Cancel'
+  const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel');
+  if (!cancelTransition) {
+    throw new Error('No cancel transition available for this issue');
+  }
+
+  const cancelTransitionId = cancelTransition.id;
+
+  // Transition the issue to 'Cancel'
+  await jira.transitionIssue(issueKey, {
+    transition: {
+      id: cancelTransitionId,
+    },
+  });
+}
+
+
 
 async function createJiraTicket(vulnerability) {
 
   //const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
   const today = new Date().toISOString().split('T')[0];
 
-  // Delete all tickets with the given title from the past 5 days
+  // cancel all tickets with the given title from the past given days
   let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${vulnerability.title}" AND created >= ${today}`;
   let searchResult = await jira.searchJira(jqlQuery);
+
+   // Find the transition id for 'Cancel' or 'Close'
+  const transitions = await jira.listTransitions(issue.key);
+  const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel' || transition.name.toLowerCase() === 'close');
 
   if (searchResult.issues && searchResult.issues.length > 0) {
     for (const issue of searchResult.issues) {
       //await jira.deleteIssue(issue.id);
-      await jira.transitionIssue(issue.id, { transition: { id: '2' } }); 
+      await jira.transitionIssue(issue.id, { transition: { id: cancelTransitionId } }); 
       console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
     }
   }
