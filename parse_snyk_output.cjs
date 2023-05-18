@@ -96,7 +96,7 @@ async function createJiraTicket(vulnerability) {
   }
 
   // attach the scan report to the Jira ticket
-  const attachmentUrl = `https://${host}/rest/api/2/issue/${issueResponse.key}/attachments`;
+  const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
   const attachment = {
     method: 'POST',
     uri: attachmentUrl,
