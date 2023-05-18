@@ -152,8 +152,11 @@ async function createJiraTicket(vulnerability) {
     }
     seenTitles.add(vulnerability.title);
     try {
+
+      let resp;
       console.log(`Creating Jira ticket for vulnerability: ${vulnerability.title}`);
-      await createJiraTicket(vulnerability);
+      resp = await createJiraTicket(vulnerability);
+      console.log(resp)
     } catch (error) {
       console.error(`Error while creating Jira ticket for vulnerability ${vulnerability.title}:`, error);
     }
