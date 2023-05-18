@@ -75,7 +75,7 @@ async function createJiraTicket(vulnerability) {
   const today = new Date().toISOString().split('T')[0];
 
   // cancel all tickets with the given title from the past given days
-  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${vulnerability.title}" AND created >= ${today}`;
+  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "[MCR] - ${vulnerability.title}" AND created >= ${today}`;
   let searchResult = await jira.searchJira(jqlQuery);
 
 
