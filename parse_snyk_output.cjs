@@ -78,15 +78,17 @@ async function createJiraTicket(vulnerability) {
   let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${vulnerability.title}" AND created >= ${today}`;
   let searchResult = await jira.searchJira(jqlQuery);
 
-   // Find the transition id for 'Cancel' or 'Close'
-  const transitions = await jira.listTransitions(issue.key);
-  const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel' || transition.name.toLowerCase() === 'close');
 
   if (searchResult.issues && searchResult.issues.length > 0) {
     for (const issue of searchResult.issues) {
       //await jira.deleteIssue(issue.id);
-      await jira.transitionIssue(issue.id, { transition: { id: cancelTransition } }); 
-      console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
+      const transitions = await jira.listTransitions(issue.key);
+      const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel' || transition.name.toLowerCase() === 'close');
+      
+      if (cancelTransition) {
+        await jira.transitionIssue(issue.id, { transition: { id: cancelTransition } }); 
+        console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
+      }
     }
   }
 
