@@ -84,106 +84,112 @@ async function createJiraTicket(vulnerability) {
       //await jira.deleteIssue(issue.id);
       const transitions = await jira.listTransitions(issue.key);
       const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel' || transition.name.toLowerCase() === 'close');
+
+      if (issue.fields.status.name !== "Closed" && issue.fields.status.name !== "Cancelled") {
+        console.log(`Active Jira ticket already exists for vulnerability: ${vulnerability.title}`);
+        return;
+      }
       
       if (cancelTransition) {
-        await jira.transitionIssue(issue.id, { transition: { id: cancelTransition } }); 
+        await jira.transitionIssue(issue.id, { transition: { id: cancelTransition.id } }); 
         console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
       }
+      
     }
-  }
+  } else {
+          const issue = {
+              fields: {
+                project: {
+                  key: process.env.JIRA_PROJECT_KEY,
+                },
+                summary: `[MCR] - ${vulnerability.title}`,
+                description: vulnerability.description,
+                application: 'MCR',
+                issuetype: {
+                  name: process.env.JIRA_ISSUE_TYPE,
+                },
+                labels: process.env.JIRA_LABELS.split(','),
+              },
+            };
 
-  const issue = {
-    fields: {
-      project: {
-        key: process.env.JIRA_PROJECT_KEY,
-      },
-      summary: `[MCR] - ${vulnerability.title}`,
-      description: vulnerability.description,
-      issuetype: {
-        name: process.env.JIRA_ISSUE_TYPE,
-      },
-      labels: process.env.JIRA_LABELS.split(','),
-    },
-  };
+            let issueResponse;
 
-  let issueResponse;
+            try {
+              const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
+              console.log('JIRA_URL:', jiraUrl);
+              issueResponse = await jira.addNewIssue(issue);
+              console.log(issueResponse)
+              console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
+            } catch (error) {
+              console.error('Error creating Jira ticket:', error);
+            }
 
-  try {
-    const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
-    console.log('JIRA_URL:', jiraUrl);
-    issueResponse = await jira.addNewIssue(issue);
-    console.log(issueResponse)
-    console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
-  } catch (error) {
-    console.error('Error creating Jira ticket:', error);
-  }
+            // attach the scan report to the Jira ticket
+            const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
+            const attachment = {
+              method: 'POST',
+              uri: attachmentUrl,
+              auth: {
+                username: process.env.JIRA_USER_EMAIL,
+                password: process.env.JIRA_API_TOKEN
+              },
 
-  // attach the scan report to the Jira ticket
-  const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
-  const attachment = {
-    method: 'POST',
-    uri: attachmentUrl,
-    auth: {
-      username: process.env.JIRA_USER_EMAIL,
-      password: process.env.JIRA_API_TOKEN
-    },
+              headers: {
+                'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-Scheme': 'https',
+                'X-Forwarded-Proto': 'https',
+              },
 
-    headers: {
-      'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
-      'X-Requested-With': 'XMLHttpRequest',
-      'X-Scheme': 'https',
-      'X-Forwarded-Proto': 'https',
-    },
-
-    formData: {
-      file: fs.createReadStream('snyk_output.txt')
-    },
-  };
-  
-  try {
-    await rp(attachment);
-  } catch (error) {
-    console.error(`Error attaching file to Jira ticket: ${error}`);
-    return;
-  }
-  
-  console.log(`Jira ticket ${issueResponse.key} created successfully.`);
-  return issueResponse;
-
+              formData: {
+                file: fs.createReadStream('snyk_output.txt')
+              },
+            };
+            
+            try {
+              await rp(attachment);
+            } catch (error) {
+              console.error(`Error attaching file to Jira ticket: ${error}`);
+              return;
+            }
+            
+            console.log(`Jira ticket ${issueResponse.key} created successfully.`);
+            return issueResponse;
+      }
 }
 
 
-(async () => {
-  const consoleOutputFile = process.argv[2];
-  const jsonData = fs.readFileSync(consoleOutputFile, 'utf-8');
+          (async () => {
+            const consoleOutputFile = process.argv[2];
+            const jsonData = fs.readFileSync(consoleOutputFile, 'utf-8');
 
-  const vulnerabilities = parseSnykOutput(jsonData);
-  // console.log("Vulnerabilities:", JSON.stringify(vulnerabilities, null, 2));
-  console.log(`Parsed vulnerabilities: ${vulnerabilities.length}`);
+            const vulnerabilities = parseSnykOutput(jsonData);
+            // console.log("Vulnerabilities:", JSON.stringify(vulnerabilities, null, 2));
+            console.log(`Parsed vulnerabilities: ${vulnerabilities.length}`);
 
-  const uniqueVulnerabilities = Array.from(new Set(vulnerabilities.map(v => v.title)))
-    .map(title => {
-      return vulnerabilities.find(v => v.title === title);
-    });
+            const uniqueVulnerabilities = Array.from(new Set(vulnerabilities.map(v => v.title)))
+              .map(title => {
+                return vulnerabilities.find(v => v.title === title);
+              });
 
-  const seenTitles = new Set();
+            const seenTitles = new Set();
 
-  for (const vulnerability of uniqueVulnerabilities) {
-    if (seenTitles.has(vulnerability.title)) {
-      console.log(`Skipping duplicate vulnerability: ${vulnerability.title}`);
-      continue;
-    }
-    seenTitles.add(vulnerability.title);
-    try {
+            for (const vulnerability of uniqueVulnerabilities) {
+              if (seenTitles.has(vulnerability.title)) {
+                console.log(`Skipping duplicate vulnerability: ${vulnerability.title}`);
+                continue;
+              }
+              seenTitles.add(vulnerability.title);
+              try {
 
-      let resp;
-      console.log(`Creating Jira ticket for vulnerability: ${vulnerability.title}`);
-      resp = await createJiraTicket(vulnerability);
-      console.log(resp)
-    } catch (error) {
-      console.error(`Error while creating Jira ticket for vulnerability ${vulnerability.title}:`, error);
-    }
-  }
+                let resp;
+                console.log(`Creating Jira ticket for vulnerability: ${vulnerability.title}`);
+                resp = await createJiraTicket(vulnerability);
+                console.log(resp)
+              } catch (error) {
+                console.error(`Error while creating Jira ticket for vulnerability ${vulnerability.title}:`, error);
+              }
+            }
   
 
 })();
