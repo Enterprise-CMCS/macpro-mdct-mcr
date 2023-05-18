@@ -67,25 +67,6 @@ function formatVulDescr(vulnerability) {
 }
 
 
-async function cancelIssue(issueKey) {
-  const transitions = await jira.listTransitions(issueKey);
-  
-  // Find the transition id for 'Cancel'
-  const cancelTransition = transitions.transitions.find(transition => transition.name.toLowerCase() === 'cancel');
-  if (!cancelTransition) {
-    throw new Error('No cancel transition available for this issue');
-  }
-
-  const cancelTransitionId = cancelTransition.id;
-
-  // Transition the issue to 'Cancel'
-  await jira.transitionIssue(issueKey, {
-    transition: {
-      id: cancelTransitionId,
-    },
-  });
-}
-
 
 
 async function createJiraTicket(vulnerability) {
@@ -104,7 +85,7 @@ async function createJiraTicket(vulnerability) {
   if (searchResult.issues && searchResult.issues.length > 0) {
     for (const issue of searchResult.issues) {
       //await jira.deleteIssue(issue.id);
-      await jira.transitionIssue(issue.id, { transition: { id: cancelTransitionId } }); 
+      await jira.transitionIssue(issue.id, { transition: { id: cancelTransition } }); 
       console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
     }
   }
