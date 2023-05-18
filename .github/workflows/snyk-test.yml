@@ -65,9 +65,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+
       - name: Install dependencies
         run: npm install --legacy-peer-deps
         working-directory: ./
+
+      - name: Install nodejs dependencies
+        run: npm install request-promise
+        working-directory: /
 
       - name: Install jq
         run: sudo apt-get install -y jq
@@ -89,9 +94,9 @@ jobs:
           echo "PROJECT_NAME=MDCT" >> $GITHUB_ENV
           echo "JIRA_PROJECT_KEY=MDCT" >> $GITHUB_ENV
           echo "JIRA_ISSUE_TYPE=Task" >> $GITHUB_ENV
-          echo "JIRA_LABELS=test,snyk" >> $GITHUB_ENV
+          echo "JIRA_LABELS=MCR,snyk" >> $GITHUB_ENV
           echo "JIRA_EPIC_KEY=MDCT-2280" >> $GITHUB_ENV
-          echo "IGNORE_LIST=SNYK-JS-IGNORE-ID,SNYK-JS-ANOTHER-IGNORE-ID" >> $GITHUB_ENV
+          
       
       - name: Install Jira library for Node.js
         run: npm install jira-client  --legacy-peer-deps

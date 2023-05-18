@@ -1,5 +1,7 @@
 const fs = require('fs');
 const JiraClient = require('jira-client');
+const rp = require('request-promise');
+
 
 console.log("JIRA_BASE_URL:", process.env.JIRA_BASE_URL);
 
@@ -55,6 +57,15 @@ function parseNonJsonData(inputData) {
 }
 
 
+function formatVulDescr(vulnerability) {
+  let description = `*Overview*:\n\n${vulnerability.description.split('\n')[0]}\n\n`;
+  description += `*PoC*:\n\n${vulnerability.description.split('PoC by')[1].split('Details')[0]}\n\n`;
+  description += `*Details*:\n\n${vulnerability.description.split('Details')[1].split('Remediation')[0]}\n\n`;
+  description += `*Remediation*:\n\n${vulnerability.description.split('Remediation')[1].split('References')[0]}\n\n`;
+  description += `*References*:\n\n${vulnerability.description.split('References')[1]}\n\n`;
+  return description;
+}
+
 
 
 async function createJiraTicket(vulnerability) {
@@ -63,8 +74,8 @@ async function createJiraTicket(vulnerability) {
       project: {
         key: process.env.JIRA_PROJECT_KEY,
       },
-      summary: vulnerability.title,
-      description: vulnerability.description,
+      summary: `MCR: ${vulnerability.title}`,
+      description: formatVulDescr(vulnerability),
       issuetype: {
         name: process.env.JIRA_ISSUE_TYPE,
       },
@@ -72,14 +83,49 @@ async function createJiraTicket(vulnerability) {
     },
   };
 
+  let issueResponse;
+
   try {
     const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
     console.log('JIRA_URL:', jiraUrl);
-    await jira.addNewIssue(issue);
+    issueResponse = await jira.addNewIssue(issue);
     console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
   } catch (error) {
     console.error('Error creating Jira ticket:', error);
   }
+
+  // attach the scan report to the Jira ticket
+  const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
+  const attachment = {
+    method: 'POST',
+    uri: attachmentUrl,
+    auth: {
+      username: process.env.JIRA_USER_EMAIL,
+      password: process.env.JIRA_API_TOKEN
+    },
+
+    headers: {
+      'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-Scheme': 'https',
+      'X-Forwarded-Proto': 'https',
+    },
+
+    formData: {
+      file: fs.createReadStream('snyk_output.txt')
+    },
+  };
+  
+  try {
+    await rp(attachment);
+  } catch (error) {
+    console.error(`Error attaching file to Jira ticket: ${error}`);
+    return;
+  }
+  
+  console.log(`Jira ticket ${issueResponse.key} created successfully.`);
+  return issueResponse;
+
 }
 
 
