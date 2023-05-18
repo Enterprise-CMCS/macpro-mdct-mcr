@@ -158,6 +158,8 @@ export const releaseReport = handler(async (event) => {
         value: "Yes, this is a resubmission",
       },
     ],
+    versionControlDescription: null,
+    "versionControlDescription-otherText": null,
   };
 
   const newReportMetadata: MLRReportMetadata = {

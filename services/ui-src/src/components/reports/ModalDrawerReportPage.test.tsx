@@ -11,6 +11,7 @@ import {
   mockMcparReportContext,
   mockStateUser,
   RouterWrappedComponent,
+  mockStateRep,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";
@@ -25,6 +26,8 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const mockReportContextWithoutEntities = {
   ...mockMcparReportContext,
@@ -124,6 +127,26 @@ describe("Test ModalDrawerReportPage with entities", () => {
     const saveAndCloseButton = screen.getByText(saveAndCloseText);
     await userEvent.click(saveAndCloseButton);
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+  });
+
+  it("Submit sidedrawer doesn't autosave if no change was made by State User", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+
+  it("Submit sidedrawer doesn't autosave if no change was made by State Rep", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
 });
 

@@ -16,6 +16,7 @@ import {
   getFormattedEntityData,
   createRepeatedFields,
   useUser,
+  entityWasUpdated,
 } from "utils";
 // types
 import {
@@ -111,7 +112,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         state: state,
         id: report?.id,
       };
-      const currentEntities = reportFieldDataEntities;
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
@@ -125,16 +126,22 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [entityType]: newEntities,
-        },
-      };
-      await updateReport(reportKeys, dataToWrite);
+      const shouldSave = entityWasUpdated(
+        reportFieldDataEntities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
       setSubmitting(false);
     }
     closeDrawer();
