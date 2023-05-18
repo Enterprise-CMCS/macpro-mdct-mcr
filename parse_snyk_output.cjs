@@ -90,10 +90,10 @@ async function createJiraTicket(vulnerability) {
         return;
       }
       
-      if (cancelTransition) {
-        await jira.transitionIssue(issue.id, { transition: { id: cancelTransition.id } }); 
-        console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
-      }
+      // if (cancelTransition) {
+      //   await jira.transitionIssue(issue.id, { transition: { id: cancelTransition.id } }); 
+      //   console.log(`Jira ticket with title '${vulnerability.title}' Closed: ${issue.key}`);
+      // }
       
     }
   } else {
