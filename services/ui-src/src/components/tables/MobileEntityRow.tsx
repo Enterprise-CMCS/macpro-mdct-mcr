@@ -89,54 +89,6 @@ export const MobileEntityRow = ({
           )}
         </Flex>
       </Td>
-      {/* <Td>
-          <Box sx={sx.rowHeader}>
-            <EntityStatusIcon entity={entity as EntityShape} />
-            <Text>{tableHeader && parseCustomHtml(tableHeader)}</Text>
-          </Box>
-          <Box sx={sx.programList}>
-            <ul>
-              {programInfo.map((field, index) => (
-                <li key={index}>{field}</li>
-              ))}
-            </ul>
-            {!entityComplete && report?.reportType === "MLR" && (
-              <Text sx={sx.errorText}>
-                Select “Enter MLR” to complete this report.
-              </Text>
-            )}
-          </Box>
-          <Box sx={sx.actionButtons}>
-            {openAddEditEntityModal && (
-              <Button
-                variant="none"
-                sx={sx.editButton}
-                onClick={() => openAddEditEntityModal(entity)}
-              >
-                {editEntityButtonText}
-              </Button>
-            )}
-            {openEntityDetailsOverlay && (
-              <Button
-                variant="outline"
-                onClick={() => openEntityDetailsOverlay(entity)}
-                size="sm"
-                sx={sx.enterButton}
-              >
-                {enterReportText}
-              </Button>
-            )}
-            {openDeleteEntityModal && (
-              <Button
-                sx={sx.deleteButton}
-                onClick={() => openDeleteEntityModal(entity)}
-                disabled={locked ?? userIsAdmin}
-              >
-                <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
-              </Button>
-            )}
-          </Box>
-        </Td> */}
     </Tr>
   );
 };
