@@ -7,6 +7,17 @@ export const mockFormField = {
   },
 };
 
+export const mockOptionalFormField = {
+  id: "mock-optional-text-field",
+  type: "text",
+  validation: "textOptional",
+  props: {
+    label: "Q. Miscellaneous notes",
+    hint: "Include any other notes or detail for CMS.",
+    styleAsOptional: true,
+  },
+};
+
 export const mockNumberField = {
   id: "mock-number-field",
   type: "number",
@@ -114,6 +125,7 @@ export const mockModalOverlayForm = {
   fields: [
     mockModalOverlayFormField,
     { ...mockModalOverlayFormField, id: "with-label", props: { label: "1" } },
+    mockOptionalFormField,
     mockNestedFormField,
   ],
 };
