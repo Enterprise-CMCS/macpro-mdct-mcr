@@ -1,5 +1,5 @@
 // components
-import { Box, Button, Image, Text, Td, Tr } from "@chakra-ui/react";
+import { Box, Button, Image, Text, Td, Tr, Flex } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
@@ -38,9 +38,58 @@ export const MobileEntityRow = ({
   ];
 
   return (
-    <Box>
-      <Tr>
-        <Td>
+    <Tr sx={sx.content}>
+      <Td sx={sx.statusIcon}>
+        <EntityStatusIcon entity={entity as EntityShape} />
+      </Td>
+      <Td>
+        <Text sx={sx.rowHeader}>
+          {tableHeader && parseCustomHtml(tableHeader)}
+        </Text>
+        <Box sx={sx.programList}>
+          <ul>
+            {programInfo.map((field, index) => (
+              <li key={index}>{field}</li>
+            ))}
+          </ul>
+          {!entityComplete && report?.reportType === "MLR" && (
+            <Text sx={sx.errorText}>
+              Select “Enter MLR” to complete this report.
+            </Text>
+          )}
+        </Box>
+        <Flex sx={sx.actionButtons}>
+          {openAddEditEntityModal && (
+            <Button
+              variant="none"
+              sx={sx.editButton}
+              onClick={() => openAddEditEntityModal(entity)}
+            >
+              {editEntityButtonText}
+            </Button>
+          )}
+          {openEntityDetailsOverlay && (
+            <Button
+              variant="outline"
+              onClick={() => openEntityDetailsOverlay(entity)}
+              size="sm"
+              sx={sx.enterButton}
+            >
+              {enterReportText}
+            </Button>
+          )}
+          {openDeleteEntityModal && (
+            <Button
+              sx={sx.deleteButton}
+              onClick={() => openDeleteEntityModal(entity)}
+              disabled={locked ?? userIsAdmin}
+            >
+              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
+            </Button>
+          )}
+        </Flex>
+      </Td>
+      {/* <Td>
           <Box sx={sx.rowHeader}>
             <EntityStatusIcon entity={entity as EntityShape} />
             <Text>{tableHeader && parseCustomHtml(tableHeader)}</Text>
@@ -67,7 +116,6 @@ export const MobileEntityRow = ({
                 {editEntityButtonText}
               </Button>
             )}
-            {/* TODO: Enter MLR report routing */}
             {openEntityDetailsOverlay && (
               <Button
                 variant="outline"
@@ -88,9 +136,8 @@ export const MobileEntityRow = ({
               </Button>
             )}
           </Box>
-        </Td>
-      </Tr>
-    </Box>
+        </Td> */}
+    </Tr>
   );
 };
 
@@ -105,8 +152,16 @@ interface Props {
 }
 
 const sx = {
+  statusIcon: {
+    verticalAlign: "baseline",
+  },
   content: {
-    padding: "0rem",
+    verticalAlign: "middle",
+    paddingLeft: "1.5rem",
+    td: {
+      borderColor: "palette.gray_light",
+      paddingRight: 0,
+    },
   },
   errorText: {
     color: "palette.error_dark",
@@ -121,8 +176,6 @@ const sx = {
     img: { marginRight: "1rem" },
   },
   programList: {
-    marginLeft: "2rem",
-    width: "50%",
     ul: {
       listStyleType: "none",
       li: {
@@ -132,28 +185,32 @@ const sx = {
         "&:last-of-type": {
           fontWeight: "bold",
           fontSize: "md",
-          marginTop: "0.25rem",
         },
       },
     },
   },
   actionButtons: {
-    width: "fit-content",
+    alignItems: "center",
+    justifyContent: "space-between",
+    maxWidth: "13.75rem",
   },
   editButton: {
     fontWeight: "normal",
     textDecoration: "underline",
     color: "palette.primary",
-    paddingLeft: "2rem",
+    padding: "0",
   },
   enterButton: {
     fontWeight: "normal",
     width: "5.75rem",
-    marginRight: "0.5rem",
+    marginRight: "0",
   },
   deleteButton: {
-    background: "none",
-    padding: "0",
+    height: "1.875rem",
+    width: "1.875rem",
+    minWidth: "1.875rem",
+    padding: 0,
+    background: "white",
     "&:hover, &:hover:disabled": {
       background: "white",
     },
