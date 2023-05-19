@@ -117,12 +117,18 @@ const TableRow = ({ page, depth }: RowProps) => {
           status={status}
         />
       </Td>
-      {!isMobile && <Td>{!children && EditButton(buttonAriaLabel, path)}</Td>}
+      {!isMobile && (
+        <Td>{!children && EditButton(buttonAriaLabel, path, true)}</Td>
+      )}
     </Tr>
   );
 };
 
-const EditButton = (buttonAriaLabel: string, path: string) => {
+const EditButton = (
+  buttonAriaLabel: string,
+  path: string,
+  showIcon = false
+) => {
   const navigate = useNavigate();
   return (
     <Button
@@ -131,7 +137,7 @@ const EditButton = (buttonAriaLabel: string, path: string) => {
       aria-label={buttonAriaLabel}
       onClick={() => navigate(path)}
     >
-      <Image src={editIcon} alt="Edit Program" />
+      {showIcon && <Image src={editIcon} alt="Edit Program" />}
       Edit
     </Button>
   );
