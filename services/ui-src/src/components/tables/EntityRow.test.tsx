@@ -1,6 +1,7 @@
-import { render } from "@testing-library/react";
-import { ReportContext } from "components/reports/ReportProvider";
+import { render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 // components
+import { ReportContext } from "components/reports/ReportProvider";
 import { EntityRow } from "./EntityRow";
 import { Table } from "./Table";
 // utils
@@ -9,6 +10,11 @@ import {
   mockVerbiageIntro,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import userEvent from "@testing-library/user-event";
+
+const openAddEditEntityModal = jest.fn();
+const openDeleteEntityModal = jest.fn();
+const mockOpenDrawer = jest.fn();
 
 const incompleteRowComponent = (
   <RouterWrappedComponent>
@@ -33,6 +39,9 @@ const incompleteRowComponent = (
             report_mlrNumerator: null,
           }}
           verbiage={mockVerbiageIntro}
+          openAddEditEntityModal={openAddEditEntityModal}
+          openDeleteEntityModal={openDeleteEntityModal}
+          openEntityDetailsOverlay={mockOpenDrawer}
         ></EntityRow>
       </Table>
     </ReportContext.Provider>
@@ -46,6 +55,9 @@ const completeRowComponent = (
         <EntityRow
           entity={mockMlrReportContext.report.fieldData.program[1]}
           verbiage={mockVerbiageIntro}
+          openAddEditEntityModal={openAddEditEntityModal}
+          openDeleteEntityModal={openDeleteEntityModal}
+          openEntityDetailsOverlay={mockOpenDrawer}
         ></EntityRow>
       </Table>
     </ReportContext.Provider>
@@ -64,5 +76,35 @@ describe("Test EntityRow", () => {
     expect(queryByText("Select “Enter MLR” to complete this report.")).toBe(
       null
     );
+  });
+
+  test("Clicking Edit button opens the AddEditEntityModal", async () => {
+    await act(async () => {
+      await render(completeRowComponent);
+    });
+    const addReportButton = screen.getByText("Edit");
+    expect(addReportButton).toBeVisible();
+    await userEvent.click(addReportButton);
+    await expect(openAddEditEntityModal).toBeCalledTimes(1);
+  });
+
+  test("Clicking Enter Details button opens the Drawer", async () => {
+    await act(async () => {
+      await render(completeRowComponent);
+    });
+    const enterDetailsButton = screen.getByText("Enter Details");
+    expect(enterDetailsButton).toBeVisible();
+    await userEvent.click(enterDetailsButton);
+    await expect(mockOpenDrawer).toBeCalledTimes(1);
+  });
+
+  test("Clicking Delete button opens the DeleteEntityModal", async () => {
+    await act(async () => {
+      await render(completeRowComponent);
+    });
+    const deleteButton = screen.getByAltText("delete icon");
+    expect(deleteButton).toBeVisible();
+    await userEvent.click(deleteButton);
+    await expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
 });

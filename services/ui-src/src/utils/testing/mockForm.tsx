@@ -162,6 +162,8 @@ export const mockVerbiageIntro = {
       content: "mock html",
     },
   ],
+  editEntityButtonText: "Edit",
+  enterReportText: "Enter Details",
 };
 
 export const mockStandardReportPageJson = {

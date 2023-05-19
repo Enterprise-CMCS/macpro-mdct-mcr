@@ -59,34 +59,29 @@ export const MobileEntityRow = ({
           )}
         </Box>
         <Flex sx={sx.actionButtons}>
-          {openAddEditEntityModal && (
-            <Button
-              variant="none"
-              sx={sx.editButton}
-              onClick={() => openAddEditEntityModal(entity)}
-            >
-              {editEntityButtonText}
-            </Button>
-          )}
-          {openEntityDetailsOverlay && (
-            <Button
-              variant="outline"
-              onClick={() => openEntityDetailsOverlay(entity)}
-              size="sm"
-              sx={sx.enterButton}
-            >
-              {enterReportText}
-            </Button>
-          )}
-          {openDeleteEntityModal && (
-            <Button
-              sx={sx.deleteButton}
-              onClick={() => openDeleteEntityModal(entity)}
-              disabled={locked ?? userIsAdmin}
-            >
-              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
-            </Button>
-          )}
+          <Button
+            variant="none"
+            sx={sx.editButton}
+            onClick={() => openAddEditEntityModal(entity)}
+          >
+            {editEntityButtonText}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => openEntityDetailsOverlay(entity)}
+            size="sm"
+            sx={sx.enterButton}
+          >
+            {enterReportText}
+          </Button>
+
+          <Button
+            sx={sx.deleteButton}
+            onClick={() => openDeleteEntityModal(entity)}
+            disabled={locked ?? userIsAdmin}
+          >
+            <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
+          </Button>
         </Flex>
       </Td>
     </Tr>
@@ -97,9 +92,9 @@ interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;
-  openAddEditEntityModal?: Function;
-  openDeleteEntityModal?: Function;
-  openEntityDetailsOverlay?: Function;
+  openAddEditEntityModal: Function;
+  openDeleteEntityModal: Function;
+  openEntityDetailsOverlay: Function;
   [key: string]: any;
 }
 
