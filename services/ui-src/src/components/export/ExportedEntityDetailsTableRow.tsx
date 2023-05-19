@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // components
-import { Box, Tr, Td, Text, Heading } from "@chakra-ui/react";
+import { Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types
 import { FormField, FormLayoutElement, isFieldElement } from "types";
@@ -29,9 +29,7 @@ export const ExportedEntityDetailsTableRow = ({
   if (isOtherTextEntry) return null;
 
   const labelTextWithOptional = (label: string) => {
-    return parseCustomHtml(
-      label + "<span class='optional-text'> (optional)</span>"
-    );
+    return `${label} (optional)`;
   };
 
   return (
@@ -39,31 +37,31 @@ export const ExportedEntityDetailsTableRow = ({
       {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
-          <Heading sx={sx.fieldNumber} fontSize={"sm"}>
+          <Text sx={sx.fieldNumber} fontSize={"sm"}>
             {formFieldInfo.number || "N/A"}
-          </Heading>
+          </Text>
         </Td>
       )}
 
       {/* label column/cell */}
       <Td sx={sx.labelColumn}>
         {formFieldInfo.label || formFieldInfo.hint ? (
-          <Box>
+          <>
             {formFieldInfo.label && (
-              <Heading sx={sx.fieldLabel} fontSize={"sm"}>
+              <Text sx={sx.fieldLabel} fontSize={"sm"}>
                 {!isDynamicField
                   ? optional
                     ? labelTextWithOptional(formFieldInfo.label)
                     : formFieldInfo.label
                   : formField?.props?.label}
-              </Heading>
+              </Text>
             )}
             {showHintText && formFieldInfo.hint && (
               <Text sx={sx.fieldHint}>
                 {parseCustomHtml(formFieldInfo.hint)}
               </Text>
             )}
-          </Box>
+          </>
         ) : (
           <Text>{"N/A"}</Text>
         )}
@@ -114,7 +112,6 @@ const sx = {
   fieldLabel: {
     fontSize: "md",
     fontWeight: "bold",
-    marginBottom: "0.5rem",
     ".optional-text": {
       fontWeight: "lighter",
     },
