@@ -101,6 +101,7 @@ const sx = {
     },
     th: {
       border: "none",
+      fontWeight: "bold",
     },
   },
 };

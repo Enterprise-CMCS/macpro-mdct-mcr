@@ -110,7 +110,7 @@ const sx = {
     },
   },
   fieldLabel: {
-    fontSize: "md",
+    fontSize: "sm",
     fontWeight: "bold",
     ".optional-text": {
       fontWeight: "lighter",
