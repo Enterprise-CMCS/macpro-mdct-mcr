@@ -95,40 +95,20 @@ export const StatusIcon = ({
 
 const TableRow = ({ page, depth }: RowProps) => {
   const { isMobile } = useBreakpoint();
-  const navigate = useNavigate();
   const { name, path, children, status } = page;
   const buttonAriaLabel = `Edit  ${name}`;
   const { report } = useContext(ReportContext);
-
   return (
     <Tr>
       {depth == 1 ? (
         <Td sx={sx.parent} pl={!isMobile ? "1rem" : "0"}>
           <Text>{name}</Text>
-          {isMobile && report?.reportType !== ReportType.MCPAR && (
-            <Button
-              sx={sx.enterButton}
-              variant="outline"
-              aria-label={buttonAriaLabel}
-              onClick={() => navigate(path)}
-            >
-              Edit
-            </Button>
-          )}
+          {isMobile && !children && EditButton(buttonAriaLabel, path)}
         </Td>
       ) : (
         <Td sx={sx.subparent} pl={!isMobile ? `${1.25 * depth}rem` : "0"}>
           <Text>{name}</Text>
-          {!children && isMobile && (
-            <Button
-              sx={sx.enterButton}
-              variant="outline"
-              aria-label={buttonAriaLabel}
-              onClick={() => navigate(path)}
-            >
-              Edit
-            </Button>
-          )}
+          {isMobile && !children && EditButton(buttonAriaLabel, path)}
         </Td>
       )}
       <Td sx={sx.statusColumn}>
@@ -137,22 +117,23 @@ const TableRow = ({ page, depth }: RowProps) => {
           status={status}
         />
       </Td>
-      {!isMobile && (
-        <Td>
-          {!children && (
-            <Button
-              sx={sx.enterButton}
-              variant="outline"
-              aria-label={buttonAriaLabel}
-              onClick={() => navigate(path)}
-            >
-              <Image src={editIcon} alt="Edit Program" />
-              Edit
-            </Button>
-          )}
-        </Td>
-      )}
+      {!isMobile && <Td>{!children && EditButton(buttonAriaLabel, path)}</Td>}
     </Tr>
+  );
+};
+
+const EditButton = (buttonAriaLabel: string, path: string) => {
+  const navigate = useNavigate();
+  return (
+    <Button
+      sx={sx.enterButton}
+      variant="outline"
+      aria-label={buttonAriaLabel}
+      onClick={() => navigate(path)}
+    >
+      <Image src={editIcon} alt="Edit Program" />
+      Edit
+    </Button>
   );
 };
 
