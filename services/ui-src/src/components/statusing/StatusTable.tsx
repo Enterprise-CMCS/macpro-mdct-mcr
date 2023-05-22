@@ -159,10 +159,20 @@ const sx = {
   },
   parent: {
     fontWeight: "bold",
-    lineHeight: "1.75rem",
+    lineHeight: "1.125rem",
+    fontSize: "sm",
+    paddingTop: "1rem",
+    paddingBottom: "1rem",
+    ".mobile &": {
+      paddingTop: "1.5rem",
+      paddingBottom: "1.5rem",
+    },
   },
   subparent: {
-    lineHeight: "1.75rem",
+    paddingTop: "1rem",
+    paddingBottom: "1rem",
+    lineHeight: "1.125rem",
+    fontSize: "sm",
   },
   enterButton: {
     width: "4.25rem",
@@ -211,6 +221,7 @@ const sx = {
       color: "palette.gray_medium",
       fontWeight: "600",
       fontSize: "sm",
+      lineHeight: "1.125rem",
       ".mobile &": {
         padding: "0.75rem 0rem",
       },
@@ -225,8 +236,6 @@ const sx = {
     },
     td: {
       minWidth: "6rem",
-      paddingTop: ".5rem",
-      paddingBottom: ".5rem",
       borderTop: "1px solid",
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
