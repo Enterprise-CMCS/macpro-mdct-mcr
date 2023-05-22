@@ -15,8 +15,8 @@ jobs:
   snyk_run:
     name: Snyk Run (for PR and push)
     runs-on: ubuntu-latest
-    #if: github.event_name == 'pull_request'
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
+    
 
     steps:
     - name: Check out repository
@@ -50,7 +50,8 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      if: github.event_name == 'schedule'
+      #if: github.event_name == 'schedule'
+      if: github.event_name == 'push'
 
       steps:
       - name: Check out repository
