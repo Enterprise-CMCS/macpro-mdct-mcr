@@ -1,8 +1,10 @@
 name: Snyk Scan and Report
 
 on:
-  pull_request:
-   branches: [ main ]
+  # pull_request:
+  #  branches: [ main ]
+  push:
+    branches: [ snyk-scan-sambr ]
   schedule:
     - cron:  '0 0 * * *'  # run every day at midnight
 

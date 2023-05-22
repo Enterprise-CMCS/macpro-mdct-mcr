@@ -1,6 +1,8 @@
 const fs = require('fs');
 const JiraClient = require('jira-client');
 const rp = require('request-promise');
+const fetch = require('node-fetch');
+const base64 = Buffer.from(`${process.env.JIRA_USERNAME}:${process.env.JIRA_API_TOKEN}`).toString('base64');
 
 
 console.log("JIRA_BASE_URL:", process.env.JIRA_BASE_URL);
@@ -53,6 +55,38 @@ function parseNonJsonData(inputData) {
   return vulnerabilities;
 }
 
+async function getEpicLinkCustomFieldId(projectKey) {
+  const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta?projectKeys=${projectKey}&expand=projects.issuetypes.fields`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${base64}`,
+      'Accept': 'application/json'
+    }
+  });
+  
+  const data = await response.json();
+  const issueTypes = data.projects[0].issuetypes;
+  const epicIssueType = issueTypes.find(issueType => issueType.name.toLowerCase() === 'epic');
+
+  if (!epicIssueType) {
+    throw new Error(`Epic issue type not found in project: ${projectKey}`);
+  }
+
+  // Find 'Epic Link' field
+  const epicLinkField = Object.entries(epicIssueType.fields).find(([fieldId, fieldData]) => fieldData.name === 'Epic Link');
+
+  if (!epicLinkField) {
+    throw new Error(`Epic Link field not found in Epic issue type for project: ${projectKey}`);
+  }
+
+  // Return the field ID
+  return epicLinkField[0];
+}
+
+
+
+
 
 async function createJiraTicket(vulnerability) {
 
@@ -76,63 +110,76 @@ async function createJiraTicket(vulnerability) {
       
     }
   } else {
-          const issue = {
-              fields: {
-                project: {
-                  key: process.env.JIRA_PROJECT_KEY,
-                },
-                summary: `[MCR] - ${vulnerability.title}`,
-                description: vulnerability.description,
-                issuetype: {
-                  name: process.env.JIRA_ISSUE_TYPE,
-                },
-                labels: process.env.JIRA_LABELS.split(','),
-              },
-            };
+          // get epic custom field id 
+          epicKey = process.env.JIRA_EPIC_KEY
+          projKey  = process.env.JIRA_PROJECT_KEY
 
-            let issueResponse;
+          const epicLinkField = await getEpicLinkCustomFieldId(projKey)
+            .then(console.log)
+            .catch(console.error);
 
-            try {
-              const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
-              console.log('JIRA_URL:', jiraUrl);
-              issueResponse = await jira.addNewIssue(issue);
-              console.log(issueResponse)
-              console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
-            } catch (error) {
-              console.error('Error creating Jira ticket:', error);
+          if(epicLinkField) {
+                const issue = {
+                    fields: {
+                      project: {
+                        key: process.env.JIRA_PROJECT_KEY,
+                      },
+                      summary: `[MCR] - Snyk  ${vulnerability.title}`,
+                      description: vulnerability.description,
+                      issuetype: {
+                        name: process.env.JIRA_ISSUE_TYPE,
+                      },
+                      labels: process.env.JIRA_LABELS.split(','),
+                      [epicLinkField]: epicKey,
+                    },
+                  };
+
+                  let issueResponse;
+
+                  try {
+                    const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
+                    console.log('JIRA_URL:', jiraUrl);
+                    issueResponse = await jira.addNewIssue(issue);
+                    console.log(issueResponse)
+                    console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
+                  } catch (error) {
+                    console.error('Error creating Jira ticket:', error);
+                  }
+
+                  // attach the scan report to the Jira ticket
+                  const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
+                  const attachment = {
+                    method: 'POST',
+                    uri: attachmentUrl,
+                    auth: {
+                      username: process.env.JIRA_USER_EMAIL,
+                      password: process.env.JIRA_API_TOKEN
+                    },
+
+                    headers: {
+                      'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
+                      'X-Requested-With': 'XMLHttpRequest',
+                      'X-Scheme': 'https',
+                      'X-Forwarded-Proto': 'https',
+                    },
+
+                    formData: {
+                      file: fs.createReadStream('snyk_output.txt')
+                    },
+                  };
+                  
+                  try {
+                    await rp(attachment);
+                  } catch (error) {
+                    console.error(`Error attaching file to Jira ticket: ${error}`);
+                    return;
+                  }
+                  
+                  console.log(`Jira ticket ${issueResponse.key} created successfully.`);
+                  return issueResponse;
+            } else {
+                  console.log('Epic Not Found!')
             }
-
-            // attach the scan report to the Jira ticket
-            const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
-            const attachment = {
-              method: 'POST',
-              uri: attachmentUrl,
-              auth: {
-                username: process.env.JIRA_USER_EMAIL,
-                password: process.env.JIRA_API_TOKEN
-              },
-
-              headers: {
-                'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-Scheme': 'https',
-                'X-Forwarded-Proto': 'https',
-              },
-
-              formData: {
-                file: fs.createReadStream('snyk_output.txt')
-              },
-            };
-            
-            try {
-              await rp(attachment);
-            } catch (error) {
-              console.error(`Error attaching file to Jira ticket: ${error}`);
-              return;
-            }
-            
-            console.log(`Jira ticket ${issueResponse.key} created successfully.`);
-            return issueResponse;
       }
 }
 
