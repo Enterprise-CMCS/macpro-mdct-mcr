@@ -501,7 +501,7 @@
           {
             "id": "report_mlrNumerator",
             "type": "number",
-            "validation": "number",
+            "validation": "validNumber",
             "props": {
               "label": "1.3 MLR numerator",
               "hint": [
@@ -618,7 +618,7 @@
           {
             "id": "report_mlrDenominator",
             "type": "number",
-            "validation": "number",
+            "validation": "validNumber",
             "props": {
               "label": "2.3 MLR denominator",
               "hint": [
@@ -660,7 +660,7 @@
           {
             "id": "report_requiredMemberMonths",
             "type": "number",
-            "validation": "number",
+            "validation": "validNumber",
             "props": {
               "label": "3.1 Member months",
               "hint": [
@@ -910,7 +910,7 @@
                       "id": "report_remittanceDollarAmountOwed",
                       "type": "number",
                       "validation": {
-                        "type": "number",
+                        "type": "validNumber",
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
