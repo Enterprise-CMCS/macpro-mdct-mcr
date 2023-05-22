@@ -13,12 +13,6 @@ export const isValidCustomMask = (
   );
 };
 
-// if mask specified, but not a custom mask, return mask as assumed CMSDS mask
-export const validCmsdsMask = (maskName: string | undefined) => {
-  const result = isValidCustomMask(maskName) ? undefined : maskName;
-  return result;
-};
-
 /**
  * checks if provided string contains only numbers
  * @param {String} value

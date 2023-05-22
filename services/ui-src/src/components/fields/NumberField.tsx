@@ -10,7 +10,6 @@ import {
   customMaskMap,
   getAutosaveFields,
   useUser,
-  validCmsdsMask,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
@@ -124,7 +123,6 @@ export const NumberField = ({
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
-          mask={validCmsdsMask(mask)}
           value={displayValue}
           {...props}
         />
