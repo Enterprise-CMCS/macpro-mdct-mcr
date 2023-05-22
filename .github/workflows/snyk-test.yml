@@ -15,7 +15,8 @@ jobs:
   snyk_run:
     name: Snyk Run (for PR and push)
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    #if: github.event_name == 'pull_request'
+    if: github.event_name == 'push'
 
     steps:
     - name: Check out repository
