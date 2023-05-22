@@ -2,6 +2,7 @@ export const customMaskMap = {
   "comma-separated": convertToCommaSeparatedString,
   percentage: convertToCommaSeparatedString,
   ratio: convertToCommaSeparatedRatioString,
+  currency: convertToCommaSeparatedString,
 };
 
 // returns whether a given mask is a valid custom mask
