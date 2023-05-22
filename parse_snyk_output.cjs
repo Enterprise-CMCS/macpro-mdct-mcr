@@ -66,6 +66,8 @@ async function getEpicLinkCustomFieldId(projectKey) {
   });
   
   const data = await response.json();
+  console.log(data)
+  console.log(data.projects[0])
   const issueTypes = data.projects[0].issuetypes;
   const epicIssueType = issueTypes.find(issueType => issueType.name.toLowerCase() === 'epic');
 
