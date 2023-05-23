@@ -117,10 +117,10 @@ async function createJiraTicket(vulnerability) {
           epicKey = process.env.JIRA_EPIC_KEY
           projKey  = process.env.JIRA_PROJECT_KEY
 
-          const epicLinkField = await getEpicLinkCustomFieldId(projKey)
-            .then(console.log)
-            .catch(console.error);
-
+          // const epicLinkField = await getEpicLinkCustomFieldId(projKey)
+          //   .then(console.log)
+          //   .catch(console.error);
+          epicLinkField = customfield_10602
           if(epicLinkField) {
                 const issue = {
                     fields: {
