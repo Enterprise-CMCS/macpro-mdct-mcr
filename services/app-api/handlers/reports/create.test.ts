@@ -10,7 +10,7 @@ import { StatusCodes } from "../../utils/types";
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
-  hasReportAccess: jest.fn().mockReturnValue(true),
+  hasReportAccess: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
@@ -41,6 +41,13 @@ const creationEventWithInvalidData: APIGatewayProxyEvent = {
 
 describe("Test createReport API method", () => {
   test("Test unauthorized report creation throws 403 error", async () => {
+    const res = await createReport(creationEvent, null);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
+  test("Test report creation by a state user without access to a report type throws 403 error", async () => {
     const res = await createReport(creationEvent, null);
 
     expect(res.statusCode).toBe(403);
