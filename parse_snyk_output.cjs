@@ -133,7 +133,7 @@ async function createJiraTicket(vulnerability) {
                         name: process.env.JIRA_ISSUE_TYPE,
                       },
                       labels: process.env.JIRA_LABELS.split(','),
-                      "customfield_10100" : epicKey,
+                      "customfield_10008" : epicKey,
                     },
                   };
 
