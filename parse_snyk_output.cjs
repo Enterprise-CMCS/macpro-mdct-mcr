@@ -58,7 +58,7 @@ function parseNonJsonData(inputData) {
 async function getEpicLinkCustomFieldId(projectKey) {
   //const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta?projectKeys=${projectKey}&expand=projects.issuetypes.fields`;
   //const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta`;
-  const url = 'https://${process.env.JIRA_BASE_URL}/rest/api/2/app/field/MDCT-2280/context/configuration'
+  const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/app/field/MDCT-2280/context/configuration`; 
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -95,7 +95,8 @@ async function getEpicLinkCustomFieldId(projectKey) {
 
 async function createJiraTicket(vulnerability) {
   projKey = 'MDCT-2280'
-  console.log(getEpicLinkCustomFieldId(projectKey))
+  const test = getEpicLinkCustomFieldId(projectKey)
+  console.log(test)
 
    // DEFAULT DAYS  set to 60 adjust as needed
    const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
