@@ -57,7 +57,8 @@ function parseNonJsonData(inputData) {
 
 async function getEpicLinkCustomFieldId(projectKey) {
   //const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta?projectKeys=${projectKey}&expand=projects.issuetypes.fields`;
-  const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta`;
+  //const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta`;
+  const url = 'https://${process.env.JIRA_BASE_URL}/rest/api/2/app/field/MDCT-2280/context/configuration'
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -68,23 +69,24 @@ async function getEpicLinkCustomFieldId(projectKey) {
   
   const data = await response.json();
   console.log(data)
-  console.log(data.projects[0])
-  const issueTypes = data.projects[0].issuetypes;
-  const epicIssueType = issueTypes.find(issueType => issueType.name.toLowerCase() === 'epic');
+  // console.log(data.projects[0])
+  // const issueTypes = data.projects[0].issuetypes;
+  // const epicIssueType = issueTypes.find(issueType => issueType.name.toLowerCase() === 'epic');
 
-  if (!epicIssueType) {
-    throw new Error(`Epic issue type not found in project: ${projectKey}`);
-  }
+  // if (!epicIssueType) {
+  //   throw new Error(`Epic issue type not found in project: ${projectKey}`);
+  // }
 
-  // Find 'Epic Link' field
-  const epicLinkField = Object.entries(epicIssueType.fields).find(([fieldId, fieldData]) => fieldData.name === 'Epic Link');
+  // // Find 'Epic Link' field
+  // const epicLinkField = Object.entries(epicIssueType.fields).find(([fieldId, fieldData]) => fieldData.name === 'Epic Link');
 
-  if (!epicLinkField) {
-    throw new Error(`Epic Link field not found in Epic issue type for project: ${projectKey}`);
-  }
+  // if (!epicLinkField) {
+  //   throw new Error(`Epic Link field not found in Epic issue type for project: ${projectKey}`);
+  // }
 
   // Return the field ID
-  return epicLinkField[0];
+  //return epicLinkField[0];
+  return data;
 }
 
 
@@ -92,6 +94,8 @@ async function getEpicLinkCustomFieldId(projectKey) {
 
 
 async function createJiraTicket(vulnerability) {
+  projKey = 'MDCT-2280'
+  console.log(getEpicLinkCustomFieldId(projectKey))
 
    // DEFAULT DAYS  set to 60 adjust as needed
    const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
