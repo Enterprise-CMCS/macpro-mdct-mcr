@@ -15,13 +15,11 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
-        with:
-          ref: production
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-          role-to-assume: ${{ secrets.PRODUCTION_AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
 
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/security-hub-visibility@v1.0.1
