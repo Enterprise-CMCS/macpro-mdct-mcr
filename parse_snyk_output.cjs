@@ -56,7 +56,8 @@ function parseNonJsonData(inputData) {
 }
 
 async function getEpicLinkCustomFieldId(projectKey) {
-  const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta?projectKeys=${projectKey}&expand=projects.issuetypes.fields`;
+  //const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta?projectKeys=${projectKey}&expand=projects.issuetypes.fields`;
+  const url = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/createmeta`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {
