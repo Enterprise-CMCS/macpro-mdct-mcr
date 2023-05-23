@@ -762,7 +762,7 @@
           {
             "id": "report_adjustedMlrPercentage",
             "type": "number",
-            "validation": "number",
+            "validation": "validNumber",
             "props": {
               "label": "3.4 Adjusted MLR",
               "hint": [
