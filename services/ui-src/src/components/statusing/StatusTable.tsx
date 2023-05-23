@@ -111,7 +111,18 @@ const TableRow = ({ page, depth }: RowProps) => {
           {isMobile && !children && EditButton(buttonAriaLabel, path)}
         </Td>
       )}
-      <Td sx={sx.statusColumn}>
+      <Td
+        sx={sx.statusColumn}
+        pt={
+          report?.reportType === ReportType.MLR
+            ? isMobile
+              ? "1.5rem"
+              : "0.5rem"
+            : isMobile
+            ? "1rem"
+            : "0.5rem"
+        }
+      >
         <StatusIcon
           reportType={report?.reportType as ReportType}
           status={status}
@@ -244,10 +255,6 @@ const sx = {
       "&:last-of-type": {
         textAlign: "right",
         paddingRight: ".5rem",
-        ".mobile &": {
-          paddingTop: "1.5rem",
-          paddingRight: 0,
-        },
       },
     },
   },
