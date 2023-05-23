@@ -17,11 +17,8 @@ export interface MCRUser {
   state?: string;
   userRole?: string;
   userIsAdmin?: boolean;
-  userIsHelpDeskUser?: boolean;
-  userIsInternalUser?: boolean;
-  userIsApprover?: boolean;
-  userIsStateRep?: boolean;
-  userIsStateUser?: boolean;
+  userIsReadOnly?: boolean;
+  userIsEndUser?: boolean;
 }
 
 export interface UserContextShape {

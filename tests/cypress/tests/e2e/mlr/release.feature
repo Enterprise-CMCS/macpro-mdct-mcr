@@ -9,6 +9,21 @@ Feature: MLR E2E Form Submission
         Given I am logged in as a state user
         Then the report will have the correct content pre-filled
 
+    Scenario: Question H is always blanked on unlock
+        Given I am logged in as an state user
+        When I create, fill, and submit a report
+        Then the report is submitted successfully
+        Given I am logged in as an admin user
+        Then I unlock a report
+        Given I am logged in as a state user
+        Then the report will have the correct content pre-filled
+        When I fill and re-submit that report
+        Given I am logged in as an admin user
+        Then I unlock a report
+        Given I am logged in as a state user
+        Then the report will have the correct content pre-filled
+
+
     Scenario: A report cannot be unlocked if it is archived.
         Given I am logged in as an state user
         When I create, fill, and submit a report
@@ -22,3 +37,4 @@ Feature: MLR E2E Form Submission
         When I create, fill but don't submit a report
         Given I am logged in as an admin user
         Then I cannot unlock that report
+

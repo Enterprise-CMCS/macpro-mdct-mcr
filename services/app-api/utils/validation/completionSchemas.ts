@@ -16,6 +16,7 @@ export const error = {
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
+  INVALID_NUMBER: "Response must be a valid number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number or "N/A"',
   INVALID_RATIO: "Response must be a valid ratio",
 };
@@ -67,6 +68,27 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
 
 export const number = () => numberSchema().required();
 export const numberOptional = () => numberSchema().notRequired().nullable();
+
+const validNumberSchema = () =>
+  string().test({
+    message: error.INVALID_NUMBER,
+    test: (value) => {
+      return typeof value !== "undefined"
+        ? validNumberRegex.test(value)
+        : false;
+    },
+  });
+
+export const validNumber = () =>
+  validNumberSchema()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
+
+export const validNumberOptional = () =>
+  validNumberSchema().notRequired().nullable();
 
 // Number - Ratio
 export const ratio = () =>

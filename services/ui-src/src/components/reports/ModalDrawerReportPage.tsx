@@ -16,6 +16,7 @@ import {
   getFormattedEntityData,
   createRepeatedFields,
   useUser,
+  entityWasUpdated,
 } from "utils";
 // types
 import {
@@ -29,8 +30,7 @@ import {
 } from "types";
 
 export const ModalDrawerReportPage = ({ route }: Props) => {
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -105,14 +105,14 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
+    if (userIsEndUser) {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,
         state: state,
         id: report?.id,
       };
-      const currentEntities = reportFieldDataEntities;
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
@@ -126,16 +126,22 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [entityType]: newEntities,
-        },
-      };
-      await updateReport(reportKeys, dataToWrite);
+      const shouldSave = entityWasUpdated(
+        reportFieldDataEntities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
       setSubmitting(false);
     }
     closeDrawer();
