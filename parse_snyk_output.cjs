@@ -120,7 +120,7 @@ async function createJiraTicket(vulnerability) {
           // const epicLinkField = await getEpicLinkCustomFieldId(projKey)
           //   .then(console.log)
           //   .catch(console.error);
-          epicLinkField = 'customfield_10008'
+          epicLinkField = 'customfield_10100'
           if(epicLinkField) {
                 const issue = {
                     fields: {
