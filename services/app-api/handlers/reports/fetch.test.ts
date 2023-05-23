@@ -18,6 +18,7 @@ jest.mock("../../utils/auth/authorization", () => ({
   hasPermissions: jest.fn().mockReturnValue(true),
   hasReportAccess: jest.fn().mockReturnValue(true),
 }));
+const mockAuthUtil = require("../../utils/auth/authorization");
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
   init: jest.fn(),
@@ -61,6 +62,16 @@ describe("Test fetchReport API method", () => {
     });
     const res = await fetchReport(testReadEvent, "badId");
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+  });
+
+  test("Test no report access fetch throws 403 error", async () => {
+    // fail report access
+    mockAuthUtil.hasReportAccess.mockReturnValueOnce(false);
+    const res = await fetchReport(testReadEvent, null);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+    jest.clearAllMocks();
   });
 
   test("Test Successful Report Fetch w/ Incomplete Report", async () => {
@@ -148,5 +159,15 @@ describe("Test fetchReportsByState API method", () => {
     const res = await fetchReportsByState(noKeyEvent, null);
     expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
+  });
+
+  test("Test no report access fetch throws 403 error", async () => {
+    // fail report access
+    mockAuthUtil.hasReportAccess.mockReturnValueOnce(false);
+    const res = await fetchReportsByState(testReadEventByState, null);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+    jest.clearAllMocks();
   });
 });

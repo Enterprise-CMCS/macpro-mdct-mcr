@@ -79,6 +79,9 @@ const updateEventWithInvalidData: APIGatewayProxyEvent = {
 };
 
 describe("Test updateReport and archiveReport unauthorized calls", () => {
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   test("Test unauthorized report update throws 403 error", async () => {
     // fail both state and admin auth checks
     mockAuthUtil.hasPermissions.mockReturnValue(false);
@@ -86,7 +89,15 @@ describe("Test updateReport and archiveReport unauthorized calls", () => {
 
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
-    jest.clearAllMocks();
+  });
+
+  test("Test report update with no proper report access throws 403 error", async () => {
+    // fail report access check
+    mockAuthUtil.hasReportAccess.mockReturnValue(false);
+    const res = await updateReport(updateEvent, null);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 });
 
@@ -94,6 +105,7 @@ describe("Test updateReport API method", () => {
   beforeAll(() => {
     // pass state auth check
     mockAuthUtil.hasPermissions.mockReturnValue(true);
+    mockAuthUtil.hasReportAccess.mockReturnValue(true);
   });
   afterEach(() => {
     jest.clearAllMocks();
