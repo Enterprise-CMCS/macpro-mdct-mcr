@@ -207,9 +207,6 @@ const sx = {
     },
     margin: 0,
     padding: 0,
-    p: {
-      lineHeight: "1.75rem",
-    },
   },
 
   table: {
@@ -247,6 +244,10 @@ const sx = {
       "&:last-of-type": {
         textAlign: "right",
         paddingRight: ".5rem",
+        ".mobile &": {
+          paddingTop: "1.5rem",
+          paddingRight: 0,
+        },
       },
     },
   },
