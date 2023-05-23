@@ -268,7 +268,7 @@ const sx = {
   entityHeading: {
     padding: "2rem 0 0.5rem 0",
     color: "palette.gray_medium",
-    width: "110%",
+    width: "100%",
   },
   sectionHeading: {
     padding: "1.5rem 0 0 0",
