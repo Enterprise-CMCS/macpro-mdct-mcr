@@ -95,6 +95,7 @@ export const AddEditEntityModal = ({
         ) : (
           "Save"
         ),
+        closeButtonText: "Cancel",
       }}
     >
       <Form

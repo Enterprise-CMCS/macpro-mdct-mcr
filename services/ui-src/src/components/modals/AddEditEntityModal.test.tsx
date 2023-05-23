@@ -88,6 +88,11 @@ describe("Test AddEditEntityModal", () => {
     expect(screen.getByText("mock modal text field")).toBeTruthy();
   });
 
+  test("AddEditEntityModal cancel button closes modal", () => {
+    fireEvent.click(screen.getByText("Cancel"));
+    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
+
   test("AddEditEntityModal close button closes modal", () => {
     fireEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
