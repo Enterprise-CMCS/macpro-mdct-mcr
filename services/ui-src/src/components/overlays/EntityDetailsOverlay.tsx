@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // components
 import { Form, ReportContext, ReportPageIntro } from "components";
-import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
@@ -124,14 +124,12 @@ export const EntityDetailsOverlay = ({
           />
         )}
         <Box sx={sx.programInfo}>
-          <Heading fontSize={"md"}>MLR Report for:</Heading>
-          <Heading fontSize={"md"}>
-            <ul>
-              {programInfo.map((field, index) => (
-                <li key={index}>{field}</li>
-              ))}
-            </ul>
-          </Heading>
+          <Text sx={sx.textHeading}>MLR report for:</Text>
+          <ul>
+            {programInfo.map((field, index) => (
+              <li key={index}>{field}</li>
+            ))}
+          </ul>
         </Box>
         <Form
           id={form.id}
@@ -204,16 +202,23 @@ const sx = {
   saveButton: {
     width: "8.25rem",
   },
+  textHeading: {
+    fontWeight: "bold",
+    lineHeight: "1.25rem",
+  },
   programInfo: {
     maxWidth: "18.75rem",
     ul: {
-      margin: "0.5rem auto",
+      margin: "0.5rem auto 0 auto",
       listStyleType: "none",
       li: {
         wordWrap: "break-word",
-        paddingTop: "0.125rem",
-        paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
+        fontSize: "xl",
+        lineHeight: "1.75rem",
+        "&:last-child": {
+          fontWeight: "bold",
+        },
       },
     },
   },
