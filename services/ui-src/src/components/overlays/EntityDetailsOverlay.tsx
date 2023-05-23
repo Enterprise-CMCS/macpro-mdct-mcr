@@ -205,7 +205,6 @@ const sx = {
     width: "8.25rem",
   },
   programInfo: {
-    maxWidth: "18.75rem",
     ul: {
       margin: "0.5rem auto",
       listStyleType: "none",
