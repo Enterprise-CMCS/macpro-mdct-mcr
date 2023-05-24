@@ -94,9 +94,9 @@ async function getEpicLinkCustomFieldId(projectKey) {
 
 
 async function createJiraTicket(vulnerability) {
-  projKey = 'MDCT-2280'
-  const test = getEpicLinkCustomFieldId(projectKey)
-  console.log(test)
+  // projKey = 'MDCT-2280'
+  // const test = getEpicLinkCustomFieldId(projectKey)
+  // console.log(test)
 
    // DEFAULT DAYS  set to 60 adjust as needed
    const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
@@ -125,20 +125,21 @@ async function createJiraTicket(vulnerability) {
           // const epicLinkField = await getEpicLinkCustomFieldId(projKey)
           //   .then(console.log)
           //   .catch(console.error);
-          epicLinkField = 'customfield_10100'
+          epicLinkField = 'customfield_10006'
           if(epicLinkField) {
                 const issue = {
                     fields: {
                       project: {
                         key: process.env.JIRA_PROJECT_KEY,
                       },
-                      summary: `[MCR] - Snyk  ${vulnerability.title}`,
+                      summary: `${process.env.JIRA_TITLE_PREFIX}  ${vulnerability.title}`,
                       description: vulnerability.description,
                       issuetype: {
                         name: process.env.JIRA_ISSUE_TYPE,
+
                       },
                       labels: process.env.JIRA_LABELS.split(','),
-                      "customfield_10008" : epicKey,
+                      "customfield_10006" : epicKey,
                     },
                   };
 
