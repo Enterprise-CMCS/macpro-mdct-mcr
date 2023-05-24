@@ -78,7 +78,7 @@ export const MobileEntityRow = ({
           <Button
             sx={sx.deleteButton}
             onClick={() => openDeleteEntityModal(entity)}
-            disabled={locked ?? userIsEndUser}
+            disabled={locked ?? !userIsEndUser}
           >
             <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
           </Button>
