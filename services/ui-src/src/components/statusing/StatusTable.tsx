@@ -6,7 +6,7 @@ import { ReportContext, Table } from "components";
 // types
 import { ReportPageProgress, ReportType } from "types";
 // utils
-import { getRouteStatus } from "utils";
+import { getRouteStatus, useBreakpoint } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
@@ -94,40 +94,63 @@ export const StatusIcon = ({
 };
 
 const TableRow = ({ page, depth }: RowProps) => {
-  const navigate = useNavigate();
+  const { isMobile } = useBreakpoint();
   const { name, path, children, status } = page;
   const buttonAriaLabel = `Edit  ${name}`;
   const { report } = useContext(ReportContext);
-
   return (
     <Tr>
       {depth == 1 ? (
-        <Td sx={sx.parent}>{name}</Td>
+        <Td sx={sx.parent} pl={!isMobile ? "1rem" : "0"}>
+          <Text>{name}</Text>
+          {isMobile && !children && EditButton(buttonAriaLabel, path)}
+        </Td>
       ) : (
-        <Td sx={sx.subparent} pl={`${1.25 * depth}rem`}>
-          {name}
+        <Td sx={sx.subparent} pl={!isMobile ? `${1.25 * depth}rem` : "0"}>
+          <Text>{name}</Text>
+          {isMobile && !children && EditButton(buttonAriaLabel, path)}
         </Td>
       )}
-      <Td>
+      <Td
+        sx={sx.statusColumn}
+        pt={
+          depth == 1
+            ? isMobile
+              ? "1.5rem"
+              : "0.5rem"
+            : isMobile
+            ? "1rem"
+            : "0.5rem"
+        }
+      >
         <StatusIcon
           reportType={report?.reportType as ReportType}
           status={status}
         />
       </Td>
-      <Td>
-        {!children && (
-          <Button
-            sx={sx.enterButton}
-            variant="outline"
-            aria-label={buttonAriaLabel}
-            onClick={() => navigate(path)}
-          >
-            <Image src={editIcon} alt="Edit Program" />
-            Edit
-          </Button>
-        )}
-      </Td>
+      {!isMobile && (
+        <Td>{!children && EditButton(buttonAriaLabel, path, true)}</Td>
+      )}
     </Tr>
+  );
+};
+
+const EditButton = (
+  buttonAriaLabel: string,
+  path: string,
+  showIcon = false
+) => {
+  const navigate = useNavigate();
+  return (
+    <Button
+      sx={sx.enterButton}
+      variant="outline"
+      aria-label={buttonAriaLabel}
+      onClick={() => navigate(path)}
+    >
+      {showIcon && <Image src={editIcon} alt="Edit Program" />}
+      Edit
+    </Button>
   );
 };
 
@@ -147,10 +170,20 @@ const sx = {
   },
   parent: {
     fontWeight: "bold",
-    lineHeight: "1.75rem",
+    lineHeight: "1.125rem",
+    fontSize: "sm",
+    paddingTop: "1rem",
+    paddingBottom: "1rem",
+    ".mobile &": {
+      paddingTop: "1.5rem",
+      paddingBottom: "1.5rem",
+    },
   },
   subparent: {
-    lineHeight: "1.75rem",
+    paddingTop: "1rem",
+    paddingBottom: "1rem",
+    lineHeight: "1.125rem",
+    fontSize: "sm",
   },
   enterButton: {
     width: "4.25rem",
@@ -160,19 +193,31 @@ const sx = {
     border: "1px solid",
     borderColor: "palette.gray_lighter",
     color: "palette.primary",
-
+    ".mobile &": {
+      width: "6rem",
+      borderColor: "palette.primary",
+      marginTop: ".5rem",
+    },
     img: {
       width: "1rem",
       marginRight: "0.5rem",
     },
   },
-
+  statusColumn: {
+    ".mobile &": {
+      display: "flex",
+      borderTop: 0,
+      paddingLeft: 0,
+    },
+  },
   status: {
     gap: "0.5rem",
     alignItems: "center",
     img: {
       width: "1.25rem",
     },
+    margin: 0,
+    padding: 0,
   },
 
   table: {
@@ -184,16 +229,21 @@ const sx = {
       color: "palette.gray_medium",
       fontWeight: "600",
       fontSize: "sm",
+      lineHeight: "1.125rem",
+      ".mobile &": {
+        padding: "0.75rem 0rem",
+      },
     },
     tr: {
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
       color: "palette.base",
+      "&:last-child": {
+        borderBottom: 0,
+      },
     },
     td: {
       minWidth: "6rem",
-      paddingTop: ".5rem",
-      paddingBottom: ".5rem",
       borderTop: "1px solid",
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
