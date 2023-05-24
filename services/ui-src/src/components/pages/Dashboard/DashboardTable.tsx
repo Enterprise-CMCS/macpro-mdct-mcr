@@ -28,89 +28,84 @@ export const DashboardTable = ({
   sxOverride,
   isStateLevelUser,
   isAdmin,
-}: DashboardTableProps) => {
-  return (
-    <Table content={tableBody(body.table, isAdmin)} sx={sx.table}>
-      {reportsByState.map((report: ReportMetadataShape) => (
-        <Tr key={report.id}>
-          {/* Edit Button */}
-          {isStateLevelUser && !report?.locked ? (
-            <EditReportButton
-              report={report}
-              openAddEditReportModal={openAddEditReportModal}
-              sxOverride={sxOverride}
-            />
-          ) : (
-            <Td></Td>
+}: DashboardTableProps) => (
+  <Table content={tableBody(body.table, isAdmin)} sx={sx.table}>
+    {reportsByState.map((report: ReportMetadataShape) => (
+      <Tr key={report.id}>
+        {/* Edit Button */}
+        {isStateLevelUser && !report?.locked ? (
+          <EditReportButton
+            report={report}
+            openAddEditReportModal={openAddEditReportModal}
+            sxOverride={sxOverride}
+          />
+        ) : (
+          <Td></Td>
+        )}
+        {/* Report Name */}
+        <Td sx={sxOverride.programNameText}>
+          {report.programName ?? report.submissionName}
+        </Td>
+        {/* Date Fields */}
+        <DateFields report={report} reportType={reportType} />
+        {/* Last Altered By */}
+        <Td>{report?.lastAlteredBy || "-"}</Td>
+        {/* Report Status */}
+        <Td>
+          {getStatus(
+            reportType as ReportType,
+            report.status,
+            report.archived,
+            report.submissionCount
           )}
-          {/* Report Name */}
-          <Td sx={sxOverride.programNameText}>
-            {report.programName ?? report.submissionName}
-          </Td>
-          {/* Date Fields */}
-          <DateFields report={report} reportType={reportType} />
-          {/* Last Altered By */}
-          <Td>{report?.lastAlteredBy || "-"}</Td>
-          {/* Report Status */}
-          <Td>
-            {getStatus(
-              reportType as ReportType,
-              report.status,
-              report.archived,
-              report.submissionCount
+        </Td>
+        {/* MLR-ONLY: Submission count */}
+        {reportType === "MLR" && isAdmin && (
+          <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
+        )}
+        {/* Action Buttons */}
+        <Td sx={sxOverride.editReportButtonCell}>
+          <Button
+            variant="outline"
+            data-testid="enter-report"
+            onClick={() => enterSelectedReport(report)}
+            isDisabled={report?.archived}
+          >
+            {entering && reportId == report.id ? (
+              <Spinner size="small" />
+            ) : (
+              "Enter"
             )}
-          </Td>
-          {/* MLR-ONLY: Submission count */}
-          {reportType === "MLR" && isAdmin && (
-            <Td>
-              {" "}
-              {report.submissionCount === 0 ? 1 : report.submissionCount}{" "}
-            </Td>
-          )}
-          {/* Action Buttons */}
-          <Td sx={sxOverride.editReportButtonCell}>
-            <Button
-              variant="outline"
-              data-testid="enter-report"
-              onClick={() => enterSelectedReport(report)}
-              isDisabled={report?.archived}
-            >
-              {entering && reportId == report.id ? (
-                <Spinner size="small" />
-              ) : (
-                "Enter"
-              )}
-            </Button>
-          </Td>
-          {isAdmin && (
-            <>
-              {reportType === "MLR" && (
-                <AdminReleaseButton
-                  report={report}
-                  reportType={reportType}
-                  reportId={reportId}
-                  releaseReport={releaseReport}
-                  releasing={releasing}
-                  sxOverride={sxOverride}
-                />
-              )}
-              <AdminArchiveButton
+          </Button>
+        </Td>
+        {isAdmin && (
+          <>
+            {reportType === "MLR" && (
+              <AdminReleaseButton
                 report={report}
                 reportType={reportType}
                 reportId={reportId}
-                archiveReport={archiveReport}
-                archiving={archiving}
                 releaseReport={releaseReport}
                 releasing={releasing}
                 sxOverride={sxOverride}
               />
-            </>
-          )}
-        </Tr>
-      ))}
-    </Table>
-  );
-};
+            )}
+            <AdminArchiveButton
+              report={report}
+              reportType={reportType}
+              reportId={reportId}
+              archiveReport={archiveReport}
+              archiving={archiving}
+              releaseReport={releaseReport}
+              releasing={releasing}
+              sxOverride={sxOverride}
+            />
+          </>
+        )}
+      </Tr>
+    ))}
+  </Table>
+);
 
 interface DashboardTableProps {
   reportsByState: ReportMetadataShape[];
