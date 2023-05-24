@@ -119,11 +119,15 @@ export function getEntityTableComponents(
       report_planName,
     ];
 
+    const entityHeading = `${idx + 1}. ${
+      section.verbiage.intro.subsection
+    } for:`;
+
     return (
       <Box key={uuid()}>
         <Box sx={sx.entityInformation}>
           <Heading sx={sx.entityHeading} fontSize={"xl"}>
-            {idx + 1}. {section.verbiage.intro.subsection} for:
+            {entityHeading}
           </Heading>
           <Heading sx={sx.programInfo} fontSize={"xl"}>
             <ul>
@@ -264,13 +268,12 @@ const sx = {
   entityHeading: {
     padding: "2rem 0 0.5rem 0",
     color: "palette.gray_medium",
-    width: "110%",
+    width: "100%",
   },
   sectionHeading: {
     padding: "1.5rem 0 0 0",
   },
   programInfo: {
-    maxWidth: "18.75rem",
     ul: {
       margin: "0.5rem auto",
       listStyleType: "none",

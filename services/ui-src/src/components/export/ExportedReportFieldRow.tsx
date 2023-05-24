@@ -84,7 +84,7 @@ const sx = {
     paddingLeft: 0,
   },
   fieldNumber: {
-    fontSize: "md",
+    fontSize: "sm",
     fontWeight: "bold",
   },
   labelColumn: {
@@ -97,7 +97,7 @@ const sx = {
     },
   },
   fieldLabel: {
-    fontSize: "md",
+    fontSize: "sm",
     fontWeight: "bold",
     marginBottom: "0.5rem",
   },
