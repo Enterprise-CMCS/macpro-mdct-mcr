@@ -114,7 +114,7 @@ const TableRow = ({ page, depth }: RowProps) => {
       <Td
         sx={sx.statusColumn}
         pt={
-          report?.reportType === ReportType.MLR
+          depth == 1
             ? isMobile
               ? "1.5rem"
               : "0.5rem"
