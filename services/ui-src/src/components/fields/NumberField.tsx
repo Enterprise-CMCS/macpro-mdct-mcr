@@ -10,10 +10,8 @@ import {
   customMaskMap,
   getAutosaveFields,
   useUser,
-  validCmsdsMask,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
-import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 import { EntityContext } from "components/reports/EntityProvider";
 
 export const NumberField = ({
@@ -36,6 +34,12 @@ export const NumberField = ({
 
   const fieldIsRegistered = name in form.getValues();
 
+  if (mask === "currency") sx[".ds-c-field"].paddingLeft = "1.5rem";
+  else if (mask === "percentage") sx[".ds-c-field"].paddingRight = "1.75rem";
+  else {
+    sx[".ds-c-field"].paddingLeft = ".5rem";
+    sx[".ds-c-field"].paddingRight = ".5rem";
+  }
   useEffect(() => {
     if (!fieldIsRegistered) {
       form.register(name);
@@ -113,7 +117,6 @@ export const NumberField = ({
       });
     }
   };
-
   return (
     <Box sx={{ ...sx, ...sxOverride }}>
       <Box sx={sx.numberFieldContainer}>
@@ -124,26 +127,14 @@ export const NumberField = ({
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
-          mask={validCmsdsMask(mask)}
           value={displayValue}
           {...props}
         />
-        {mask === "percentage" &&
-          (props.nested ? (
-            <Box
-              className={props.disabled ? "disabled" : undefined}
-              sx={sx.nestedPercentage}
-            >
-              {" % "}
-            </Box>
-          ) : (
-            <Box
-              className={props.disabled ? "disabled" : undefined}
-              sx={sx.percentage}
-            >
-              {" % "}
-            </Box>
-          ))}
+        <FieldOverlay
+          fieldMask={mask}
+          nested={props?.nested}
+          disabled={props?.disabled}
+        />
       </Box>
     </Box>
   );
@@ -153,7 +144,7 @@ interface Props {
   name: string;
   label?: string;
   placeholder?: string;
-  mask?: ValidCmsdsMask | keyof typeof customMaskMap;
+  mask?: keyof typeof customMaskMap;
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
@@ -161,15 +152,59 @@ interface Props {
   [key: string]: any;
 }
 
+export const FieldOverlay = ({
+  fieldMask,
+  nested,
+  disabled,
+}: FieldOverlayProps) => {
+  switch (fieldMask) {
+    case "percentage":
+      return nested ? (
+        <Box
+          className={disabled ? "disabled" : undefined}
+          sx={sx.nestedOverlayRight}
+        >
+          {" % "}
+        </Box>
+      ) : (
+        <Box className={disabled ? "disabled" : undefined} sx={sx.overlayRight}>
+          {" % "}
+        </Box>
+      );
+    case "currency":
+      return nested ? (
+        <Box
+          className={disabled ? "disabled" : undefined}
+          sx={sx.nestedOverlayLeft}
+        >
+          {" $ "}
+        </Box>
+      ) : (
+        <Box className={disabled ? "disabled" : undefined} sx={sx.overlayLeft}>
+          {" $ "}
+        </Box>
+      );
+    default:
+      return <></>;
+  }
+};
+
+interface FieldOverlayProps {
+  fieldMask?: keyof typeof customMaskMap;
+  nested?: boolean;
+  disabled?: boolean;
+}
+
 const sx = {
   ".ds-c-field": {
     maxWidth: "15rem",
-    paddingRight: "1.75rem",
+    paddingLeft: ".5rem",
+    paddingRight: ".5rem",
   },
   numberFieldContainer: {
     position: "relative",
   },
-  percentage: {
+  overlayRight: {
     position: "absolute",
     bottom: "11px",
     left: "213px",
@@ -177,7 +212,23 @@ const sx = {
     fontSize: "lg",
     fontWeight: "700",
   },
-  nestedPercentage: {
+  nestedOverlayRight: {
+    position: "absolute",
+    bottom: "15px",
+    left: "245px",
+    paddingTop: "1px",
+    fontSize: "lg",
+    fontWeight: "700",
+  },
+  overlayLeft: {
+    position: "absolute",
+    bottom: "11px",
+    left: "10px",
+    paddingTop: "1px",
+    fontSize: "lg",
+    fontWeight: "700",
+  },
+  nestedOverlayLeft: {
     position: "absolute",
     bottom: "15px",
     left: "245px",

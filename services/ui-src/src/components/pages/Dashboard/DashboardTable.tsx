@@ -33,7 +33,7 @@ export const DashboardTable = ({
     {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
         {/* Edit Button */}
-        {isStateLevelUser ? (
+        {isStateLevelUser && !report?.locked ? (
           <EditReportButton
             report={report}
             openAddEditReportModal={openAddEditReportModal}
@@ -273,6 +273,10 @@ const sx = {
       textAlign: "left",
       "&:last-of-type": {
         paddingRight: 0,
+      },
+      "&:first-of-type": {
+        width: "2rem",
+        minWidth: "2rem",
       },
     },
   },

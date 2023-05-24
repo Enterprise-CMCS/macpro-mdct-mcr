@@ -9,7 +9,7 @@ import { StatusCodes, UserRoles } from "../../utils/types";
 
 export const archiveReport = handler(async (event, context) => {
   // Return a 403 status if the user is not an admin.
-  if (!hasPermissions(event, [UserRoles.ADMIN])) {
+  if (!hasPermissions(event, [UserRoles.ADMIN, UserRoles.APPROVER])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,

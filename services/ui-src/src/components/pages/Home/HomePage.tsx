@@ -15,7 +15,7 @@ import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {
   const { bannerData } = useContext(AdminBannerContext);
-  const { userIsEndUser } = useUser().user ?? {};
+  const { userIsEndUser, userReports } = useUser().user ?? {};
   const [isBannerActive, setIsBannerActive] = useState(false);
 
   useEffect(() => {
@@ -57,16 +57,19 @@ export const HomePage = () => {
               templateName="MCPAR"
               verbiage={cards.MCPAR}
               cardprops={sx.card}
+              isDisabled={!userReports?.includes("MCPAR")}
             />
             <TemplateCard
               templateName="MLR"
               verbiage={cards.MLR}
               cardprops={sx.card}
+              isDisabled={!userReports?.includes("MLR")}
             />
             <TemplateCard
               templateName="NAAAR"
               verbiage={cards.NAAAR}
               cardprops={sx.card}
+              isDisabled={!userReports?.includes("NAAAR")}
             />
           </>
         ) : (

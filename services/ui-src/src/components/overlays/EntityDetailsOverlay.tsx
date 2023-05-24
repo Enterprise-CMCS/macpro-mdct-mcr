@@ -95,7 +95,7 @@ export const EntityDetailsOverlay = ({
     return selectedEntity.report_eligibilityGroup[0].value;
   };
 
-  const { userIsAdmin } = useUser().user ?? {};
+  const { userIsEndUser } = useUser().user ?? {};
 
   const programInfo = [
     report_programName,
@@ -138,7 +138,7 @@ export const EntityDetailsOverlay = ({
           onError={onError}
           formData={selectedEntity}
           autosave={true}
-          disabled={userIsAdmin}
+          disabled={!userIsEndUser}
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
@@ -149,7 +149,7 @@ export const EntityDetailsOverlay = ({
             >
               {submitting ? (
                 <Spinner size="small" />
-              ) : report?.locked || userIsAdmin ? (
+              ) : report?.locked ? (
                 "Return"
               ) : (
                 "Save & return"
@@ -207,7 +207,6 @@ const sx = {
     lineHeight: "1.25rem",
   },
   programInfo: {
-    maxWidth: "18.75rem",
     ul: {
       margin: "0.5rem auto 0 auto",
       listStyleType: "none",
