@@ -19,6 +19,7 @@ import {
   mockDashboardReportContext,
   mockReportContextNoReports,
   mockReportContextWithError,
+  mockDashboardLockedReportContext,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
@@ -74,6 +75,14 @@ const dashboardViewWithError = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithError}>
       <DashboardPage reportType="MCPAR" />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const dashboardViewWithLockedReport = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockDashboardLockedReportContext}>
+      <DashboardPage reportType="MLR" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -143,6 +152,14 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
     expect(addReportButton).toBeVisible();
     await userEvent.click(addReportButton);
     await expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
+  });
+
+  test("Unable to edit a report if it is locked", async () => {
+    await act(async () => {
+      await render(dashboardViewWithLockedReport);
+    });
+    const addReportButtons = screen.queryAllByAltText("Edit Report");
+    expect(addReportButtons).toHaveLength(0);
   });
 });
 

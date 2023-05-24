@@ -357,6 +357,24 @@ export const mockMlrReport = {
   fieldData: mockMlrReportFieldData,
 };
 
+export const mockMLRLockedReport = {
+  ...mockReportKeys,
+  reportType: "MLR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.SUBMITTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: false,
+  submittedOnDate: Date.now(),
+  fieldData: mockMlrReportFieldData,
+  locked: true,
+};
+
 export const mockReportsByState = [
   { ...mockMcparReport, id: "mock-report-id-1" },
   { ...mockMcparReport, id: "mock-report-id-2" },
@@ -384,6 +402,14 @@ export const mockReportMethods = {
 export const mockMcparReportContext = {
   ...mockReportMethods,
   report: mockMcparReport,
+  reportsByState: mockReportsByState,
+  errorMessage: "",
+  lastSavedTime: "1:58 PM",
+};
+
+export const mockMLRLockedReportContext = {
+  ...mockReportMethods,
+  report: mockMLRLockedReport,
   reportsByState: mockReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
@@ -420,6 +446,17 @@ export const mockDashboardReportContext = {
   reportsByState: [
     {
       ...mockMcparReport,
+      formTemplate: undefined,
+      fieldData: undefined,
+    },
+  ],
+};
+
+export const mockDashboardLockedReportContext = {
+  ...mockMLRLockedReportContext,
+  reportsByState: [
+    {
+      ...mockMLRLockedReport,
       formTemplate: undefined,
       fieldData: undefined,
     },
