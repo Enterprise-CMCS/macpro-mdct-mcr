@@ -21,7 +21,7 @@ export const EntityRow = ({
 }: Props) => {
   const { report_programName, report_planName } = entity;
   const { report } = useContext(ReportContext);
-  const { userIsAdmin } = useUser().user ?? {};
+  const { userIsEndUser } = useUser().user ?? {};
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const entityComplete = useMemo(() => {
@@ -75,7 +75,7 @@ export const EntityRow = ({
           <Button
             sx={sx.deleteButton}
             onClick={() => openDeleteEntityModal(entity)}
-            disabled={locked || userIsAdmin}
+            disabled={locked || !userIsEndUser}
           >
             <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
           </Button>
