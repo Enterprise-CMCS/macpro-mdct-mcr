@@ -6,6 +6,7 @@ import {
   date,
   isEndDateAfterStartDate,
   nested,
+  validNumber,
 } from "./schemaMap";
 import {} from "./validation";
 
@@ -48,6 +49,9 @@ describe("Schemas", () => {
   const goodDateTestCases = ["01/01/1990", "12/31/2020", "01012000"];
   const badDateTestCases = ["01-01-1990", "13/13/1990", "12/32/1990"];
 
+  const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
+  const badValidNumberTestCases = ["N/A", "number", "foo"];
+
   // nested
   const fieldValidationObject = {
     type: "text",
@@ -66,6 +70,17 @@ describe("Schemas", () => {
     for (let testCase of testCases) {
       let test = schemaToUse.isValidSync(testCase);
 
+      expect(test).toEqual(expectedReturn);
+    }
+  };
+
+  const testValidNumber = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | number>,
+    expectedReturn: boolean
+  ) => {
+    for (let testCase of testCases) {
+      let test = schemaToUse.isValidSync(testCase);
       expect(test).toEqual(expectedReturn);
     }
   };
@@ -96,5 +111,10 @@ describe("Schemas", () => {
       ["string"],
       true
     );
+  });
+
+  test("Test validNumber schema", () => {
+    testValidNumber(validNumber(), goodValidNumberTestCases, true);
+    testValidNumber(validNumber(), badValidNumberTestCases, false);
   });
 });

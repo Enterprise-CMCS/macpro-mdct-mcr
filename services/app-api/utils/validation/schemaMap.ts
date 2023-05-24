@@ -9,13 +9,17 @@ import {
 } from "yup";
 
 const error = {
+  REQUIRED_GENERIC: "A response is required",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
+  INVALID_NUMBER: "Response must be a valid number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number or "N/A"',
   INVALID_RATIO: "Response must be a valid ratio",
 };
+
+const isWhitespaceString = (value?: string) => value?.trim().length === 0;
 
 // TEXT
 export const text = (): StringSchema => string();
@@ -45,7 +49,29 @@ export const number = () =>
       } else return true;
     },
   });
+
 export const numberOptional = () => number();
+
+const validNumberSchema = () =>
+  string().test({
+    message: error.INVALID_NUMBER,
+    test: (value) => {
+      return typeof value !== "undefined"
+        ? validNumberRegex.test(value)
+        : false;
+    },
+  });
+
+export const validNumber = () =>
+  validNumberSchema()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
+
+export const validNumberOptional = () =>
+  validNumberSchema().notRequired().nullable();
 
 // Number - Ratio
 export const ratio = () =>

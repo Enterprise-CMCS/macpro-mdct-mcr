@@ -102,6 +102,9 @@ const sx = {
     maxWidth: "reportPageWidth",
     marginY: "3.5rem",
     marginLeft: "3.5rem",
+    ".mobile &": {
+      marginX: "0rem",
+    },
     h3: {
       paddingBottom: "0.75rem",
       fontSize: "lg",

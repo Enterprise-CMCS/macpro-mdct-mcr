@@ -39,7 +39,7 @@ import { calculateCompletionStatus } from "../../utils/validation/completionStat
  */
 export const releaseReport = handler(async (event) => {
   // Return a 403 status if the user is not an admin.
-  if (!hasPermissions(event, [UserRoles.ADMIN])) {
+  if (!hasPermissions(event, [UserRoles.ADMIN, UserRoles.APPROVER])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
