@@ -7,14 +7,19 @@ import { Table } from "./Table";
 // utils
 import {
   mockMlrReportContext,
+  mockStateUser,
   mockVerbiageIntro,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
+import { useUser } from "utils";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
 const mockOpenDrawer = jest.fn();
+
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const incompleteRowComponent = (
   <RouterWrappedComponent>
@@ -65,6 +70,12 @@ const completeRowComponent = (
 );
 
 describe("Test MobileEntityRow", () => {
+  beforeEach(() => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("It should render an error if an entity is incomplete", async () => {
     const { findByText } = render(incompleteRowComponent);
     expect(
