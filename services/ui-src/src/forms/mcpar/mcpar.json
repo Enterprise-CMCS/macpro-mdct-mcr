@@ -3019,6 +3019,7 @@
                             "parentFieldName": "sanction_remediationCompleted"
                           },
                           "props": {
+                            "label": "D3.VIII.8a Remediation date non-compliance was corrected",
                             "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
                           }
                         }
