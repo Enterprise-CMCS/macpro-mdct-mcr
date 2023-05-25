@@ -3008,7 +3008,7 @@
                   "choices": [
                     {
                       "id": "J9FTVN9fJpgXX6X2xJiAiP",
-                      "label": "Yes",
+                      "label": "Yes, remediated",
                       "children": [
                         {
                           "id": "sanction_remediationDate",
@@ -3031,7 +3031,7 @@
                     },
                     {
                       "id": "oAcvChnL6FLUJorh8XfgyR",
-                      "label": "No"
+                      "label": "No, no remediation"
                     }
                   ]
                 }
