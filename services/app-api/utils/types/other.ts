@@ -105,9 +105,9 @@ export interface CustomHtmlElement {
 }
 
 export const enum TemplateKeys {
-  MCPAR = "templates/MCPAR_Workbook_AddProgramName_2022.xlsx",
-  MLR = "templates/MLR_Workbook_2022.xlsx",
-  NAAAR = "templates/NAAAR_Workbook_2022.xlsx",
+  MCPAR = "templates/mcpar-reporting-template.xlsx",
+  MLR = "templates/mlr-reporting-template.xlsx",
+  NAAAR = "templates/naaar-reporting-template.xlsx",
 }
 
 export type State =
