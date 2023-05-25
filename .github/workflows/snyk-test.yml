@@ -1,10 +1,8 @@
 name: Snyk Scan and Report
 
 on:
-  # pull_request:
-  #  branches: [ main ]
-  push:
-    branches: [ snyk-scan-sambr ]
+  pull_request:
+   branches: [ main ]
   schedule:
     - cron:  '0 0 * * *'  # run every day at midnight
 
@@ -50,9 +48,8 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      #if: github.event_name == 'schedule'
-      if: github.event_name == 'push'
-
+      if: github.event_name == 'schedule'
+    
       steps:
       - name: Check out repository
         uses: actions/checkout@v2
