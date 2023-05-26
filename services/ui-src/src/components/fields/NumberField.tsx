@@ -231,7 +231,7 @@ const sx = {
   nestedOverlayLeft: {
     position: "absolute",
     bottom: "15px",
-    left: "245px",
+    left: "45px",
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",
