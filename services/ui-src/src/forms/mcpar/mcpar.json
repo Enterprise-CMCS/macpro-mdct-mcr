@@ -3008,7 +3008,7 @@
                   "choices": [
                     {
                       "id": "J9FTVN9fJpgXX6X2xJiAiP",
-                      "label": "Yes",
+                      "label": "Yes, remediated",
                       "children": [
                         {
                           "id": "sanction_remediationDate",
@@ -3019,6 +3019,7 @@
                             "parentFieldName": "sanction_remediationCompleted"
                           },
                           "props": {
+                            "label": "D3.VIII.8a Remediation date non-compliance was corrected",
                             "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
                           }
                         }
@@ -3030,7 +3031,7 @@
                     },
                     {
                       "id": "oAcvChnL6FLUJorh8XfgyR",
-                      "label": "No"
+                      "label": "No, no remediation"
                     }
                   ]
                 }
