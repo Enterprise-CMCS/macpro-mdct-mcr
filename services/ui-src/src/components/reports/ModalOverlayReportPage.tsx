@@ -33,14 +33,8 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
   const { report } = useContext(ReportContext);
   const reportType = report?.reportType;
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
-  const {
-    userIsAdmin,
-    userIsApprover,
-    userIsHelpDeskUser,
-    userIsInternalUser,
-  } = useUser().user ?? {};
-  const isAdminUserType =
-    userIsAdmin || userIsApprover || userIsHelpDeskUser || userIsInternalUser;
+  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  const isAdminUserType = userIsAdmin || userIsReadOnly;
   const formIsDisabled = isAdminUserType && route.modalForm?.adminDisabled;
   // is MLR report in a LOCKED state
   const isLocked = report?.locked || formIsDisabled;
@@ -50,8 +44,8 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
   }`;
 
   const tableHeaders = () => {
-    if (isTablet || isMobile) return { headRow: [""] };
-    return { headRow: ["", verbiage.tableHeader, "", "", ""] };
+    if (isTablet || isMobile) return { headRow: ["", ""] };
+    return { headRow: ["", verbiage.tableHeader, ""] };
   };
 
   // add/edit entity modal disclosure and methods
@@ -226,15 +220,23 @@ const sx = {
     },
   },
   header: {
+    tableLayout: "fixed",
     br: {
       marginBottom: "0.25rem",
     },
     th: {
       paddingLeft: "1rem",
+      paddingRight: "0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       ".tablet &, .mobile &": {
         border: "none",
+      },
+      "&:nth-child(1)": {
+        width: "2.5rem",
+      },
+      "&:nth-child(3)": {
+        width: "260px",
       },
     },
   },

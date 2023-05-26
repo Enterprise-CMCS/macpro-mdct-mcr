@@ -31,7 +31,7 @@ export const MobileDashboardTable = ({
             {reportType === "MCPAR" ? "Program name" : "Submission name"}
           </Text>
           <Flex alignContent="flex-start">
-            {isStateLevelUser && (
+            {isStateLevelUser && !report?.locked && (
               <Box sx={sxOverride.editReport}>
                 <button onClick={() => openAddEditReportModal(report)}>
                   <Image

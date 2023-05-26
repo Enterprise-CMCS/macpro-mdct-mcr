@@ -1,5 +1,5 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { dateOptional, number, ratio } from "./schemas";
+import { dateOptional, number, ratio, validNumber } from "./schemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -51,6 +51,10 @@ describe("Schemas", () => {
     "0/01/2023",
   ];
 
+  const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
+
+  const badValidNumberTestCases = ["N/A", "number", "foo"];
+
   const testNumberSchema = (
     schemaToUse: MixedSchema,
     testCases: Array<string>,
@@ -73,6 +77,17 @@ describe("Schemas", () => {
     }
   };
 
+  const testValidNumber = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | number>,
+    expectedReturn: boolean
+  ) => {
+    for (let testCase of testCases) {
+      let test = schemaToUse.isValidSync(testCase);
+      expect(test).toEqual(expectedReturn);
+    }
+  };
+
   test("Evaluate Number Schema using number scheme", () => {
     testNumberSchema(number(), goodNumberTestCases, true);
     testNumberSchema(number(), badNumberTestCases, false);
@@ -86,5 +101,10 @@ describe("Schemas", () => {
   test("Test dateOptional schema", () => {
     testDateOptional(dateOptional(), goodDateOptionalTestCases, true);
     testDateOptional(dateOptional(), badDateOptionalTestCases, false);
+  });
+
+  test("Test validNumber schema", () => {
+    testValidNumber(validNumber(), goodValidNumberTestCases, true);
+    testValidNumber(validNumber(), badValidNumberTestCases, false);
   });
 });

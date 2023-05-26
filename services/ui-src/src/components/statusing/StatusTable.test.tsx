@@ -10,6 +10,7 @@ import {
   mockMcparReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
 import userEvent from "@testing-library/user-event";
 import { StatusIcon } from "./StatusTable";
 
@@ -18,6 +19,14 @@ const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
+
+jest.mock("utils/other/useBreakpoint");
+const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
+  typeof useBreakpoint
+>;
+const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
+  typeof makeMediaQueryClasses
+>;
 
 const mockInProgressReport = {
   ...mockMcparReport,
@@ -51,19 +60,35 @@ const McparReviewSubmitPage_EmptyReportContext = (
 );
 
 describe("Status Table Functionality", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("should not display anything if not given a report", () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     render(McparReviewSubmitPage_EmptyReportContext);
     expect(screen.queryByText("Section")).not.toBeInTheDocument();
     expect(screen.queryByText("Status")).not.toBeInTheDocument();
   });
 
   test("should show the correct headers when given a report", () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     render(McparReviewSubmitPage_InProgress);
     expect(screen.getByText("Section")).toBeVisible();
     expect(screen.getByText("Status")).toBeVisible();
   });
 
   test("Should correctly display errors on the page", () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     render(McparReviewSubmitPage_InProgress);
     const unfilledPageErrorImg = document.querySelectorAll(
       "img[alt='Error notification']"
@@ -73,6 +98,10 @@ describe("Status Table Functionality", () => {
   });
 
   test("should show the correct rows on the page", () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     render(McparReviewSubmitPage_InProgress);
     expect(screen.getByText("mock-route-1")).toBeVisible();
 
@@ -90,7 +119,34 @@ describe("Status Table Functionality", () => {
     expect(editButtons).toHaveLength(4);
   });
 
-  test("should be able to navigate to a page on the form by clicking edit", async () => {
+  test("should be able to navigate to a page on the form by clicking edit on desktop", async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+    render(McparReviewSubmitPage_InProgress);
+    // Name value is the img's alt tag + the text inside the button
+    const editButtons = screen.getAllByRole("button");
+    expect(editButtons).toHaveLength(4);
+
+    await userEvent.click(editButtons[0]);
+    const expectedRoute1 = "/mock/mock-route-1";
+    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute1);
+
+    await userEvent.click(editButtons[1]);
+    const expectedRoute2 = "/mock/mock-route-2a";
+    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute2);
+
+    await userEvent.click(editButtons[2]);
+    const expectedRoute3 = "/mock/mock-route-2b";
+    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute3);
+  });
+
+  test("should be able to navigate to a page on the form by clicking edit on mobile", async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: true,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("mobile");
     render(McparReviewSubmitPage_InProgress);
     // Name value is the img's alt tag + the text inside the button
     const editButtons = screen.getAllByRole("button");
@@ -111,7 +167,22 @@ describe("Status Table Functionality", () => {
 });
 
 describe("Status Table Accessibility", () => {
+  beforeEach(async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("Should not have basic accessibility issues when displaying the table", async () => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
     const { container } = render(McparReviewSubmitPage_InProgress);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

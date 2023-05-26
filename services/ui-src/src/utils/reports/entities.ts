@@ -73,6 +73,10 @@ export const getFormattedEntityData = (
         remediationDate: entity?.sanction_remediationDate
           ? entity?.sanction_remediationDate
           : getRadioValue(entity, "sanction_remediationCompleted"),
+        remediationCompleted: getRadioValue(
+          entity,
+          "sanction_remediationCompleted"
+        ),
         correctiveActionPlan: getRadioValue(
           entity,
           "sanction_correctiveActionPlan"
@@ -93,3 +97,8 @@ export const getFormattedEntityData = (
       return {};
   }
 };
+
+export const entityWasUpdated = (
+  originalEntity: EntityShape,
+  newEntity: AnyObject
+) => JSON.stringify(originalEntity) !== JSON.stringify(newEntity);

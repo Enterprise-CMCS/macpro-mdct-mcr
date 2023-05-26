@@ -45,13 +45,14 @@ export const ChoiceListField = ({
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
-  const { full_name, state, userIsAdmin } = useUser().user ?? {};
+  const { full_name, state, userIsAdmin, userIsReadOnly } =
+    useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
 
   const shouldDisableChildFields =
-    (userIsAdmin && !!props?.disabled) || report?.locked;
+    ((userIsAdmin || userIsReadOnly) && !!props?.disabled) || report?.locked;
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;

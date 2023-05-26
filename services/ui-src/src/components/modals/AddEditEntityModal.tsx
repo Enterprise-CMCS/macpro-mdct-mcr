@@ -12,7 +12,7 @@ import {
   isFieldElement,
   ReportStatus,
 } from "types";
-import { filterFormData, useUser } from "utils";
+import { entityWasUpdated, filterFormData, useUser } from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
@@ -22,7 +22,7 @@ export const AddEditEntityModal = ({
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, userIsAdmin } = useUser().user ?? {};
+  const { full_name, userIsEndUser } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const writeEntity = async (enteredData: any) => {
@@ -42,7 +42,7 @@ export const AddEditEntityModal = ({
       },
       fieldData: {},
     };
-    const currentEntities = report?.fieldData?.[entityType] || [];
+    const currentEntities = [...(report?.fieldData?.[entityType] || [])];
     const filteredFormData = filterFormData(
       enteredData,
       form.fields.filter(isFieldElement)
@@ -60,13 +60,18 @@ export const AddEditEntityModal = ({
         ...filteredFormData,
       };
       dataToWrite.fieldData = { [entityType]: updatedEntities };
+      const shouldSave = entityWasUpdated(
+        report?.fieldData?.[entityType][selectedEntityIndex],
+        updatedEntities[selectedEntityIndex]
+      );
+      if (shouldSave) await updateReport(reportKeys, dataToWrite);
     } else {
       // create new entity
       dataToWrite.fieldData = {
         [entityType]: [...currentEntities, { id: uuid(), ...filteredFormData }],
       };
+      await updateReport(reportKeys, dataToWrite);
     }
-    await updateReport(reportKeys, dataToWrite);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
@@ -85,11 +90,12 @@ export const AddEditEntityModal = ({
           : undefined,
         actionButtonText: submitting ? (
           <Spinner size="small" />
-        ) : report?.locked || userIsAdmin ? (
+        ) : report?.locked ? (
           "Close"
         ) : (
           "Save"
         ),
+        closeButtonText: "Cancel",
       }}
     >
       <Form
@@ -98,7 +104,9 @@ export const AddEditEntityModal = ({
         formJson={form}
         formData={selectedEntity}
         onSubmit={
-          report?.locked || userIsAdmin ? modalDisclosure.onClose : writeEntity
+          report?.locked || !userIsEndUser
+            ? modalDisclosure.onClose
+            : writeEntity
         }
       />
       <Text sx={sx.bottomModalMessage}>{verbiage.addEditModalMessage}</Text>

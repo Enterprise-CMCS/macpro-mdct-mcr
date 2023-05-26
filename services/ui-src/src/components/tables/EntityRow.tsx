@@ -1,5 +1,5 @@
 // components
-import { Button, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
@@ -21,7 +21,7 @@ export const EntityRow = ({
 }: Props) => {
   const { report_programName, report_planName } = entity;
   const { report } = useContext(ReportContext);
-  const { userIsAdmin } = useUser().user ?? {};
+  const { userIsEndUser } = useUser().user ?? {};
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const entityComplete = useMemo(() => {
@@ -52,34 +52,31 @@ export const EntityRow = ({
           </Text>
         )}
       </Td>
-      <Td sx={sx.editButton}>
-        {openAddEditEntityModal && (
-          <Button variant="none" onClick={() => openAddEditEntityModal(entity)}>
+      <Td>
+        <Flex sx={sx.actionContainer}>
+          <Button
+            sx={sx.editButton}
+            variant="none"
+            onClick={() => openAddEditEntityModal(entity)}
+          >
             {verbiage.editEntityButtonText}
           </Button>
-        )}
-      </Td>
-      <Td sx={sx.enterButton}>
-        {openEntityDetailsOverlay && (
           <Button
+            sx={sx.enterButton}
             onClick={() => openEntityDetailsOverlay(entity)}
             variant="outline"
             size="sm"
           >
             {verbiage.enterReportText}
           </Button>
-        )}
-      </Td>
-      <Td>
-        {openDeleteEntityModal && (
           <Button
             sx={sx.deleteButton}
             onClick={() => openDeleteEntityModal(entity)}
-            disabled={locked || userIsAdmin}
+            disabled={locked || !userIsEndUser}
           >
             <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
           </Button>
-        )}
+        </Flex>
       </Td>
     </Tr>
   );
@@ -89,9 +86,9 @@ interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;
-  openAddEditEntityModal?: Function;
-  openDeleteEntityModal?: Function;
-  openEntityDetailsOverlay?: Function;
+  openAddEditEntityModal: Function;
+  openDeleteEntityModal: Function;
+  openEntityDetailsOverlay: Function;
   [key: string]: any;
 }
 
@@ -101,6 +98,7 @@ const sx = {
     paddingLeft: "1.5rem",
     td: {
       borderColor: "palette.gray_light",
+      paddingRight: 0,
     },
   },
   statusIcon: {
@@ -128,23 +126,26 @@ const sx = {
       },
     },
   },
+  actionContainer: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
   editButton: {
-    paddingRight: "0.5rem",
-    button: {
-      fontWeight: "normal",
-      textDecoration: "underline",
-      color: "palette.primary",
-    },
+    padding: 0,
+    fontWeight: "normal",
+    textDecoration: "underline",
+    color: "palette.primary",
   },
   enterButton: {
-    padding: "0",
-    button: {
-      fontWeight: "normal",
-      width: "6.5rem",
-    },
+    padding: 0,
+    fontWeight: "normal",
+    width: "6.5rem",
   },
   deleteButton: {
-    padding: "0",
+    height: "1.875rem",
+    width: "1.875rem",
+    minWidth: "1.875rem",
+    padding: 0,
     background: "white",
     "&:hover, &:hover:disabled": {
       background: "white",

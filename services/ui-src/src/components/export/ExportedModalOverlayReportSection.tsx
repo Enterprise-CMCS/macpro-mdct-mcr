@@ -83,7 +83,7 @@ export function renderModalOverlayTableBody(
               <Text sx={sx.tableIndex}>{idx + 1}</Text>
             </Td>
             <Td>
-              <Text>
+              <Text sx={sx.entityList}>
                 {report_programName} <br />
                 {renderHtml(mlrEligibilityGroup)} <br />
                 {reportingPeriod} <br />
@@ -169,7 +169,7 @@ const sx = {
         padding: "0.375rem 0rem",
       },
       "&:first-of-type": {
-        paddingLeft: 0,
+        textAlign: "center",
       },
     },
     ".desktop &": {
@@ -179,6 +179,9 @@ const sx = {
         },
       },
     },
+  },
+  entityList: {
+    wordBreak: "break-word",
   },
   tableIndex: {
     color: "palette.gray_medium",

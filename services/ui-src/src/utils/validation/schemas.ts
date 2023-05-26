@@ -63,6 +63,27 @@ export const number = () =>
     });
 export const numberOptional = () => numberSchema().notRequired().nullable();
 
+const validNumberSchema = () =>
+  string().test({
+    message: error.INVALID_NUMBER,
+    test: (value) => {
+      return typeof value !== "undefined"
+        ? validNumberRegex.test(value)
+        : false;
+    },
+  });
+
+export const validNumber = () =>
+  validNumberSchema()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
+
+export const validNumberOptional = () =>
+  validNumberSchema().notRequired().nullable();
+
 // Number - Ratio
 export const ratio = () =>
   mixed()

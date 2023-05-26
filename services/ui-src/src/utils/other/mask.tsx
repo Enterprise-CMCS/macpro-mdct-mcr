@@ -2,6 +2,7 @@ export const customMaskMap = {
   "comma-separated": convertToCommaSeparatedString,
   percentage: convertToCommaSeparatedString,
   ratio: convertToCommaSeparatedRatioString,
+  currency: convertToCommaSeparatedString,
 };
 
 // returns whether a given mask is a valid custom mask
@@ -11,12 +12,6 @@ export const isValidCustomMask = (
   return (
     maskName !== undefined && Object.keys(customMaskMap).includes(maskName)
   );
-};
-
-// if mask specified, but not a custom mask, return mask as assumed CMSDS mask
-export const validCmsdsMask = (maskName: string | undefined) => {
-  const result = isValidCustomMask(maskName) ? undefined : maskName;
-  return result;
 };
 
 /**

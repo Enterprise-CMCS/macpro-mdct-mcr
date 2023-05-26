@@ -1046,8 +1046,8 @@
                           "label": "LTSS-related standard: enrollee travels to the provider"
                         },
                         {
-                          "id": "gNtQj40rWU6S25DXCgLjDA",
-                          "label": "Exceptions to time and distance standards"
+                          "id": "aSzsso583qbijUdXJnz8CS",
+                          "label": "Exception to quantitative standard"
                         }
                       ]
                     }
@@ -2921,7 +2921,7 @@
                     },
                     {
                       "id": "MXaon6GrskylPnGm2QHnJw",
-                      "label": "Performance management"
+                      "label": "Performance improvement"
                     },
                     {
                       "id": "Ru46dEgst0eXi5s6bUA4Jg",
@@ -3008,7 +3008,7 @@
                   "choices": [
                     {
                       "id": "J9FTVN9fJpgXX6X2xJiAiP",
-                      "label": "Yes",
+                      "label": "Yes, remediated",
                       "children": [
                         {
                           "id": "sanction_remediationDate",
@@ -3019,14 +3019,19 @@
                             "parentFieldName": "sanction_remediationCompleted"
                           },
                           "props": {
+                            "label": "D3.VIII.8a Remediation date non-compliance was corrected",
                             "hint": "What day was it remediated, i.e. When was the non-compliance corrected? Select a date."
                           }
                         }
                       ]
                     },
                     {
+                      "id": "uStbF2QLllAlyUvxU9CBWH",
+                      "label": "Remediation in progress"
+                    },
+                    {
                       "id": "oAcvChnL6FLUJorh8XfgyR",
-                      "label": "No"
+                      "label": "No, no remediation"
                     }
                   ]
                 }
@@ -3210,7 +3215,7 @@
                 "validation": "ratio",
                 "props": {
                   "label": "D1.X.8 Ratio of program integrity referral to the state",
-                  "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.2) as the denominator.",
+                  "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.1) as the denominator.",
                   "mask": "ratio"
                 }
               },
