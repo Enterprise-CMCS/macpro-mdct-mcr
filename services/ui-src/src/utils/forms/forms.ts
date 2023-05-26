@@ -159,12 +159,52 @@ export const filterFormData = (
     (field: FormField) => field.id
   );
   // filter user-entered data to only fields in the current form
-  const filteredDataEntries = enteredDataEntries.filter((fieldData) => {
+  const userEnteredEntries = enteredDataEntries.filter((fieldData) => {
     const [fieldDataKey] = fieldData;
     return formFieldArray.includes(fieldDataKey);
   });
   // translate data array back to a form data object
-  return Object.fromEntries(filteredDataEntries);
+  return Object.fromEntries(userEnteredEntries);
+};
+
+export const getEntriesToClear = (
+  enteredData: AnyObject,
+  currentFormFields: FormField[]
+) => {
+  // Get the users entered data
+  const enteredDataEntries = Object.entries(enteredData);
+  // Map over the users entered data and get each of the fields ids
+  const enteredDataFieldIds = enteredDataEntries.map((enteredField) => {
+    return enteredField?.[0];
+  });
+  // Grab all of the possible form fields that a user could have filled out
+  const flattenedFormFields = flattenFormFields(currentFormFields);
+  // Find what fields weren't directly entered by the user to send back to be cleared
+  const entriesToClear = flattenedFormFields.filter((formField) => {
+    return !enteredDataFieldIds.includes(formField.id);
+  });
+  // Return array of field ID's
+  return entriesToClear.map((enteredField) => {
+    return enteredField.id;
+  });
+};
+
+export const setClearedEntriesToDefaultValue = (
+  entity: AnyObject,
+  entriesToClear: string[]
+) => {
+  entriesToClear.forEach((entry) => {
+    if (Array.isArray(entity[entry])) {
+      entity[entry] = [];
+    } else if (typeof entity[entry] == "object") {
+      entity[entry] = {};
+    } else if (typeof entity[entry] == "string") {
+      entity[entry] = "";
+    } else {
+      entity[entry] = undefined;
+    }
+  });
+  return entity;
 };
 
 // returns all fields in a given form, flattened to a single level array
