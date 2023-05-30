@@ -1,10 +1,9 @@
-on:
-  workflow_dispatch:
-
 name: Transition issue
 
+on: [workflow_dispatch]
+
 jobs:
-  test-transition-issue:
+  transition-issue:
     steps:
       - name: Login to JIRA
         uses: atlassian/gajira-login@master
