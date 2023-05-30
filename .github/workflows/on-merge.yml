@@ -2,7 +2,7 @@ name: Transition issue
 
 on:
   workflow_dispatch:
-  commit:
+  push:
     branch: merge-pr-move-ticket-2581
 
 jobs:
