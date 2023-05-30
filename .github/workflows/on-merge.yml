@@ -1,6 +1,9 @@
 name: Transition issue
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  commit:
+    branch: merge-pr-move-ticket-2581
 
 jobs:
   transition-issue:
