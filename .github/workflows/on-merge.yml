@@ -7,6 +7,7 @@ on:
 
 jobs:
   transition-issue:
+    runs-on: ubuntu-latest
     steps:
       - name: Login to JIRA
         uses: atlassian/gajira-login@master
@@ -18,8 +19,10 @@ jobs:
         uses: ./
         with:
           from: branch
-      - name: Transition issue to In Test/Dev
-        uses: atlassian/gajira-transition@master
-        with:
-          issue: ${{ steps.create.outputs.issue }}
-          transition: "In Test/Dev Env"
+      - name: Tell me the key
+        run: echo ${{steps.create.outputs.issue}}
+      # - name: Transition issue to In Test/Dev
+      #   uses: atlassian/gajira-transition@master
+      #   with:
+      #     issue: ${{ steps.create.outputs.issue }}
+      #     transition: "In Test/Dev Env"
