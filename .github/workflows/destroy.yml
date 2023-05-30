@@ -1,6 +1,8 @@
 name: Destroy
 
-on: delete
+on: 
+  delete:
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -49,7 +51,7 @@ jobs:
       env:
         JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
         JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
-        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
       - name: Find Issue Key
       uses: ./
       with:
