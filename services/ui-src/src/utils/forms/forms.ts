@@ -198,10 +198,8 @@ export const setClearedEntriesToDefaultValue = (
       entity[entry] = [];
     } else if (typeof entity[entry] == "object") {
       entity[entry] = {};
-    } else if (typeof entity[entry] == "string") {
-      entity[entry] = "";
     } else {
-      entity[entry] = undefined;
+      entity[entry] = "";
     }
   });
   return entity;
