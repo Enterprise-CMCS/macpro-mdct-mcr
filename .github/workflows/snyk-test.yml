@@ -48,7 +48,8 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      if: github.event_name == 'schedule'
+      #if: github.event_name == 'schedule'
+      if: github.event_name == 'push'
     
       steps:
       - name: Check out repository
@@ -69,6 +70,10 @@ jobs:
 
       - name: Install additional nodejs dependencies
         run: npm install request --save --legacy-peer-deps
+        working-directory: ./
+
+      - name: Install axios
+        run:  npm install axios --save --legacy-peer-deps
         working-directory: ./
 
       - name: Install jq

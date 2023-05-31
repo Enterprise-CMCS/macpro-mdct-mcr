@@ -1,8 +1,6 @@
 const fs = require('fs');
 const JiraClient = require('jira-client');
-const rp = require('request-promise');
-const fetch = require('node-fetch');
-const base64 = Buffer.from(`${process.env.JIRA_USERNAME}:${process.env.JIRA_API_TOKEN}`).toString('base64');
+const axios = require('axios');
 
 
 console.log("JIRA_BASE_URL:", process.env.JIRA_BASE_URL);
@@ -57,88 +55,41 @@ function parseNonJsonData(inputData) {
 
 
 async function createJiraTicket(vulnerability) {
-   // DEFAULT DAYS  set to 60 adjust as needed
-   const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-  //const today = new Date().toISOString().split('T')[0];
+  // JQL query with relative date math, 
+  // status conditions 
+  // exact summary check
+  const title = vulnerability.title.replaceAll("\"", "\\\"");
+  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary = "${process.env.JIRA_TITLE_PREFIX}  ${title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
 
-  // JQL query to check ticket given title from the past given days
-  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - ${vulnerability.title}" AND created >= ${sixtyDaysAgo}`;
   let searchResult = await jira.searchJira(jqlQuery);
 
+  if (!searchResult.issues || searchResult.issues.length === 0) {
+    const issue = {
+      fields: {
+        project: {
+          key: process.env.JIRA_PROJECT_KEY,
+        },
+        summary: `${process.env.JIRA_TITLE_PREFIX}  ${vulnerability.title}`,
+        description: vulnerability.description,
+        issuetype: {
+          name: process.env.JIRA_ISSUE_TYPE,
+        },
+        labels: process.env.JIRA_LABELS.split(','),
+        "customfield_10007" : process.env.JIRA_EPIC_KEY,
+      },
+    };
 
-  if (searchResult.issues && searchResult.issues.length > 0) {
-    for (const issue of searchResult.issues) {
-      if (issue.fields.status.name !== "Closed" && issue.fields.status.name !== "Cancelled") {
-        if (issue.fields.summary.startsWith('[MCR] -')) {
-          console.log(`Active Jira ticket already exists for vulnerability: ${vulnerability.title}`);
-          return;
-        }
-      }
-      
-    }
+    const issueResponse = await jira.addNewIssue(issue);
+    console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
+
+    // Use the addAttachmentOnIssue method from Jira library
+    await jira.addAttachmentOnIssue(issueResponse.key, fs.createReadStream('snyk_output.txt'));
+    console.log(`Jira ticket ${issueResponse.key} created successfully.`);
+
+    return issueResponse;
   } else {
-                const issue = {
-                    fields: {
-                      project: {
-                        key: process.env.JIRA_PROJECT_KEY,
-                      },
-                      summary: `${process.env.JIRA_TITLE_PREFIX}  ${vulnerability.title}`,
-                      description: vulnerability.description,
-                      issuetype: {
-                        name: process.env.JIRA_ISSUE_TYPE,
-
-                      },
-                      labels: process.env.JIRA_LABELS.split(','),
-                      "customfield_10007" : process.env.JIRA_EPIC_KEY,
-                    },
-                  };
-
-                  
-
-                  let issueResponse;
-
-                  try {
-                    const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/2/issue`;
-                    console.log('JIRA_URL:', jiraUrl);
-                    issueResponse = await jira.addNewIssue(issue);
-                    console.log(issueResponse)
-                    console.log(`Jira ticket created for vulnerability: ${vulnerability.title}`);
-                  } catch (error) {
-                    console.error('Error creating Jira ticket:', error);
-                  }
-
-                  // attach the scan report to the Jira ticket
-                  const attachmentUrl = `https://${process.env.JIRA_BASE_URL}/rest/api/2/issue/${issueResponse.key}/attachments`;
-                  const attachment = {
-                    method: 'POST',
-                    uri: attachmentUrl,
-                    auth: {
-                      username: process.env.JIRA_USER_EMAIL,
-                      password: process.env.JIRA_API_TOKEN
-                    },
-
-                    headers: {
-                      'X-Atlassian-Token': 'no-check', // Disable XSRF check for file upload
-                      'X-Requested-With': 'XMLHttpRequest',
-                      'X-Scheme': 'https',
-                      'X-Forwarded-Proto': 'https',
-                    },
-
-                    formData: {
-                      file: fs.createReadStream('snyk_output.txt')
-                    },
-                  };
-                  
-                  try {
-                    await rp(attachment);
-                  } catch (error) {
-                    console.error(`Error attaching file to Jira ticket: ${error}`);
-                    return;
-                  }
-                  
-                  console.log(`Jira ticket ${issueResponse.key} created successfully.`);
-                  return issueResponse;
-      }
+    console.log(`Active Jira ticket already exists for vulnerability: ${vulnerability.title}`);
+  }
 }
 
 
