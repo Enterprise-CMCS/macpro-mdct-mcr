@@ -126,10 +126,8 @@ export function getEntityTableComponents(
     return (
       <Box key={uuid()}>
         <Box sx={sx.entityInformation}>
-          <Heading sx={sx.entityHeading} fontSize={"xl"}>
+          <Heading sx={sx.entityHeading} as="h3" fontSize={"xl"}>
             {entityHeading}
-          </Heading>
-          <Heading sx={sx.programInfo} fontSize={"xl"}>
             <ul>
               {programInfo.map((field, index) => (
                 <li key={index}>{renderHtml(field)}</li>
@@ -269,14 +267,10 @@ const sx = {
     padding: "2rem 0 0.5rem 0",
     color: "palette.gray_medium",
     width: "100%",
-  },
-  sectionHeading: {
-    padding: "1.5rem 0 0 0",
-  },
-  programInfo: {
     ul: {
       margin: "0.5rem auto",
       listStyleType: "none",
+      color: "palette.base",
       li: {
         wordWrap: "break-word",
         paddingTop: "0.125rem",
@@ -284,5 +278,8 @@ const sx = {
         whiteSpace: "break-spaces",
       },
     },
+  },
+  sectionHeading: {
+    padding: "1.5rem 0 0 0",
   },
 };
