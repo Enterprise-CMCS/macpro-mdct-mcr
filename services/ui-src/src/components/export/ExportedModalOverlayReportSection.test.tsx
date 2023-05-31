@@ -1,4 +1,4 @@
-import { findAllByRole, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ReportContext } from "components/reports/ReportProvider";
 import { axe } from "jest-axe";
 import { ModalOverlayReportPageShape, ReportType } from "types";
