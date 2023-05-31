@@ -88,7 +88,7 @@ jobs:
 
       - name: Run Snyk test
         run:  snyk test --all-projects --json > snyk_output.txt || true
-        working-directory: .github/workflows/
+        working-directory: ./
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
@@ -108,7 +108,7 @@ jobs:
         working-directory: .github/workflows/
       
       - name: Run script to parse Snyk output
-        run: node .github/workflows/parse_snyk_output.cjs snyk_output.txt
+        run: node ./parse_snyk_output.cjs snyk_output.txt
         env:
           JIRA_BASE_URL: qmacbis.atlassian.net
           JIRA_API_TOKEN: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
