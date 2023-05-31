@@ -56,7 +56,7 @@ async function createJiraTicket(vulnerability) {
   // status conditions 
   const title = vulnerability.title.replaceAll("\"", "\\\"");
   //let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${process.env.JIRA_TITLE_PREFIX}  ${title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
-  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - ${vulnerability.title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
+  let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - SNYK ${vulnerability.title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
 
   let searchResult = await jira.searchJira(jqlQuery);
 
