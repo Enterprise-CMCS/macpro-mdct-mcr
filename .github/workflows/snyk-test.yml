@@ -1,6 +1,8 @@
 name: Snyk Scan and Report
 
 on:
+  push:
+    branches: [ snyk-scan-sambr ]
   pull_request:
    branches: [ main ]
   schedule:
