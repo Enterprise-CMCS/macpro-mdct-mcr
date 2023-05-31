@@ -89,38 +89,29 @@ async function createJiraTicket(vulnerability) {
   }
 }
 
+  (async () => {
+    const consoleOutputFile = process.argv[2];
+    const jsonData = fs.readFileSync(consoleOutputFile, 'utf-8');
 
-          (async () => {
-            const consoleOutputFile = process.argv[2];
-            const jsonData = fs.readFileSync(consoleOutputFile, 'utf-8');
+    const vulnerabilities = parseSnykOutput(jsonData);
+    console.log(`Parsed vulnerabilities: ${vulnerabilities.length}`);
 
-            const vulnerabilities = parseSnykOutput(jsonData);
-            // console.log("Vulnerabilities:", JSON.stringify(vulnerabilities, null, 2));
-            console.log(`Parsed vulnerabilities: ${vulnerabilities.length}`);
+    const uniqueVulnerabilities = Array.from(new Set(vulnerabilities.map(v => v.title)))
+      .map(title => {
+        return vulnerabilities.find(v => v.title === title);
+      });
 
-            const uniqueVulnerabilities = Array.from(new Set(vulnerabilities.map(v => v.title)))
-              .map(title => {
-                return vulnerabilities.find(v => v.title === title);
-              });
+    for (const vulnerability of uniqueVulnerabilities) {
+      try {
+        console.log(`Creating Jira ticket for vulnerability: ${vulnerability.title}`);
+        const resp = await createJiraTicket(vulnerability);
+        console.log(resp)
+      } catch (error) {
+        console.error(`Error while creating Jira ticket for vulnerability ${vulnerability.title}:`, error);
+      }
+    }
 
-            const seenTitles = new Set();
+  })();
 
-            for (const vulnerability of uniqueVulnerabilities) {
-              if (seenTitles.has(vulnerability.title)) {
-                console.log(`Skipping duplicate vulnerability: ${vulnerability.title}`);
-                continue;
-              }
-              seenTitles.add(vulnerability.title);
-              try {
 
-                let resp;
-                console.log(`Creating Jira ticket for vulnerability: ${vulnerability.title}`);
-                resp = await createJiraTicket(vulnerability);
-                console.log(resp)
-              } catch (error) {
-                console.error(`Error while creating Jira ticket for vulnerability ${vulnerability.title}:`, error);
-              }
-            }
-  
 
-})();
