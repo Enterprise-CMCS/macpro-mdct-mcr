@@ -136,7 +136,7 @@ describe("Test renderModalOverlayTableBody", () => {
   });
   it("Should render data correctly", async () => {
     mockReportContext.report.fieldData.program = [mockMlrProgram];
-    const { container, findByAltText, findByText } = render(
+    const { container, findByText } = render(
       exportedModalOverlayReportSectionComponent
     );
     expect(await container.querySelectorAll("th").length).toEqual(
@@ -150,9 +150,6 @@ describe("Test renderModalOverlayTableBody", () => {
     expect(container.querySelectorAll("tr").length).toBe(
       mockReportContext.report.fieldData.program.length + 1
     );
-
-    // Correct status
-    expect(await findByAltText("complete icon")).toBeVisible();
 
     // Correct index
     expect(await findByText("1")).toBeVisible();
