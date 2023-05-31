@@ -17,9 +17,6 @@ const jira = new JiraClient({
 
 function parseSnykOutput(inputData) {
   let vulnerabilities = [];
- 
-  console.log(inputData);
-
   if (inputData) {
     try {
       const data = JSON.parse(inputData);
@@ -57,7 +54,6 @@ function parseNonJsonData(inputData) {
 async function createJiraTicket(vulnerability) {
   // JQL query with relative date math, 
   // status conditions 
-  // exact summary check
   const title = vulnerability.title.replaceAll("\"", "\\\"");
   //let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${process.env.JIRA_TITLE_PREFIX}  ${title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
   let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - ${vulnerability.title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
