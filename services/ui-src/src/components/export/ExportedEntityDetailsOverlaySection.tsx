@@ -143,7 +143,7 @@ export function getEntityTableComponents(
           return (
             <Fragment key={`tableContainer-${idx}`}>
               {header.type === "sectionHeader" && (
-                <Heading size={"md"} as="h4" key={`heading-${idx}`}>
+                <Heading fontSize={"md"} as="h4" key={`heading-${idx}`}>
                   {header.props?.content}
                 </Heading>
               )}
