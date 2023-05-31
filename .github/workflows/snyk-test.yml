@@ -30,19 +30,19 @@ jobs:
 
     - name: Install dependencies
       run: npm install --legacy-peer-deps
-      working-directory: ./
+      working-directory: .github/workflows/
 
     - name: Install jq
       run: sudo apt-get install -y jq
-      working-directory: ./
+      working-directory: .github/workflows/
     
     - name: Install Snyk CLI
       run: npm install -g snyk
-      working-directory: ./
+      working-directory: .github/workflows/
 
     - name: Run Snyk Test
       run:  snyk test --all-projects || true
-      working-directory: ./
+      working-directory: .github/workflows/
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # check 
     
@@ -64,31 +64,31 @@ jobs:
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-        working-directory: ./
+        working-directory: .github/workflows/
 
       - name: Install nodejs dependencies
         run: npm install request-promise --legacy-peer-deps
-        working-directory: ./
+        working-directory: .github/workflows/
 
       - name: Install additional nodejs dependencies
         run: npm install request --save --legacy-peer-deps
-        working-directory: ./
+        working-directory: .github/workflows/
 
       - name: Install axios
         run:  npm install axios --save --legacy-peer-deps
-        working-directory: ./
+        working-directory: .github/workflows/
 
       - name: Install jq
         run: sudo apt-get install -y jq
-        working-directory: ./
+        working-directory: .github/workflows/
 
       - name: Install Snyk CLI
         run: npm install -g snyk
-        working-directory: ./
+        working-directory: .github/workflows/
 
       - name: Run Snyk test
         run:  snyk test --all-projects --json > snyk_output.txt || true
-        working-directory: ./
+        working-directory: .github/workflows/
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
@@ -105,13 +105,13 @@ jobs:
       
       - name: Install Jira library for Node.js
         run: npm install jira-client  --legacy-peer-deps
-        working-directory: ./
+        working-directory: .github/workflows/
       
       - name: Run script to parse Snyk output
-        run: node parse_snyk_output.cjs snyk_output.txt
+        run: node .github/workflows/parse_snyk_output.cjs snyk_output.txt
         env:
           JIRA_BASE_URL: qmacbis.atlassian.net
           JIRA_API_TOKEN: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_SERVICE_USERNAME }}
-        working-directory: ./
+        working-directory: .github/workflows/
 
