@@ -5,6 +5,7 @@ import {
   formFieldFactory,
   hydrateFormFields,
   initializeChoiceListFields,
+  setClearedEntriesToDefaultValue,
   sortFormErrors,
 } from "./forms";
 // types
@@ -15,6 +16,7 @@ import {
   mockFormField,
   mockNestedFormField,
   mockNumberField,
+  mockSanctionsEntity,
 } from "utils/testing/setupJest";
 
 const mockedFormFields = [
@@ -345,6 +347,39 @@ describe("Test form related type guards", () => {
     });
     it("should accept good entity types", () => {
       expect(isEntityType("program")).toBeTruthy();
+    });
+  });
+});
+
+describe("Test setClearedEntriesToDefaultValue", () => {
+  it("should return an empty array value for arrays", () => {
+    expect(
+      setClearedEntriesToDefaultValue(mockSanctionsEntity, [
+        "sanction_interventionType",
+      ])
+    ).toEqual({
+      ...mockSanctionsEntity,
+      sanction_interventionType: [],
+    });
+  });
+  it("should return an empty object value for objects", () => {
+    expect(
+      setClearedEntriesToDefaultValue(mockSanctionsEntity, [
+        "sanction_planName",
+      ])
+    ).toEqual({
+      ...mockSanctionsEntity,
+      sanction_planName: {},
+    });
+  });
+  it("should return an empty string value for strings", () => {
+    expect(
+      setClearedEntriesToDefaultValue(mockSanctionsEntity, [
+        "sanction_remediationDate",
+      ])
+    ).toEqual({
+      ...mockSanctionsEntity,
+      sanction_remediationDate: "",
     });
   });
 });
