@@ -17,6 +17,8 @@ import {
   createRepeatedFields,
   useUser,
   entityWasUpdated,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
 } from "utils";
 // types
 import {
@@ -120,12 +122,20 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
         enteredData,
         drawerForm.fields.filter(isFieldElement)
       );
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        drawerForm.fields.filter(isFieldElement)
+      );
       const newEntity = {
         ...selectedEntity,
         ...filteredFormData,
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
+      newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        newEntities[selectedEntityIndex],
+        entriesToClear
+      );
       const shouldSave = entityWasUpdated(
         reportFieldDataEntities[selectedEntityIndex],
         newEntity
