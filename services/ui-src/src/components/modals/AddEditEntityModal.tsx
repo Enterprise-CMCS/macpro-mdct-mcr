@@ -12,7 +12,13 @@ import {
   isFieldElement,
   ReportStatus,
 } from "types";
-import { entityWasUpdated, filterFormData, useUser } from "utils";
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
+  useUser,
+} from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
@@ -49,6 +55,10 @@ export const AddEditEntityModal = ({
     );
     if (selectedEntity?.id) {
       // if existing entity selected, edit
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        form.fields.filter(isFieldElement)
+      );
       const selectedEntityIndex = currentEntities.findIndex(
         (entity: EntityShape) => entity.id === selectedEntity.id
       );
@@ -59,6 +69,12 @@ export const AddEditEntityModal = ({
         ...currentEntities[selectedEntityIndex],
         ...filteredFormData,
       };
+
+      updatedEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        updatedEntities[selectedEntityIndex],
+        entriesToClear
+      );
+
       dataToWrite.fieldData = { [entityType]: updatedEntities };
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
