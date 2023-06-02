@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import DOMPurify from "dompurify";
 import { CustomHtmlElement } from "types";
 // utils
 import { labelTextWithOptional, parseCustomHtml } from "utils";
@@ -9,7 +8,7 @@ jest.mock("dompurify", () => ({
   ...jest.requireActual("dompurify"),
 }));
 
-const mockHtmlString = "<span><em>whatever</em></span>";
+const mockHtmlString = "<span script='foo'><em>whatever</em></span>";
 const testElementArray = [
   {
     type: "text",
@@ -73,7 +72,6 @@ const testComponentWithChildren = (
   <div>{parseCustomHtml(mockElementsWithChildren)}</div>
 );
 describe("Test parseCustomHtml", () => {
-  const sanitizationSpy = jest.spyOn(DOMPurify, "sanitize");
   beforeEach(() => {
     render(testComponent);
   });
@@ -89,7 +87,11 @@ describe("Test parseCustomHtml", () => {
   });
 
   test("Type 'html' is sanitized and parsed", () => {
-    expect(sanitizationSpy).toHaveBeenCalled();
+    expect(screen.getByText("whatever")).toBeVisible();
+    expect(screen.getByText("whatever").parentElement?.tagName).toBe("SPAN");
+    expect(screen.getByText("whatever").parentElement).not.toHaveAttribute(
+      "script"
+    );
   });
 });
 
