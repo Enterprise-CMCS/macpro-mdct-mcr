@@ -595,7 +595,7 @@
             "validation": "numberOptional",
             "props": {
               "label": "3.3 Credibility adjustment",
-              "hint": "<p>Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)</p><ul><li><span>Enter 0% if no credibility adjustment is needed.</span></li><li><span>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</span></li><span>For fully credible plans, the credibility adjustment should be entered as 0%.</span></li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h) </a>",
+              "hint": "<p>Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)</p><ul><li><span>Enter 0% if no credibility adjustment is needed.</span></li><li><span>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</span></li><li><span>For fully credible plans, the credibility adjustment should be entered as 0%.</span></li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h) </a>",
               "mask": "percentage",
               "styleAsOptional": true
             }
