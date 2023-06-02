@@ -190,11 +190,34 @@
         "id": "mlrd-modal",
         "fields": [
           {
+            "id": "report_planName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "I. MCO, PIHP, or PAHP Name",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "\"Managed Care Enrollment by Program and Plan\"",
+                  "props": {
+                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ]
+            }
+          },
+          {
             "id": "report_programName",
             "type": "textarea",
             "validation": "text",
             "props": {
-              "label": "I. Program name",
+              "label": "J. Program name",
               "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
@@ -203,8 +226,8 @@
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
-              "label": "J. Program type",
-              "hint": "Select the program type definition(s) that best describes the program(s) entered in “I. Program name”.",
+              "label": "K. Program type",
+              "hint": "Select the program type definition(s) that best describes the program(s) entered in “J. Program name”.",
               "choices": [
                 {
                   "id": "cQhGnyBmiXszLqrx6b2Cp8",
@@ -230,7 +253,7 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "K. Eligibility group",
+              "label": "L. Eligibility group",
               "hint": [
                 {
                   "type": "span",
@@ -301,7 +324,7 @@
                         "parentFieldName": "report_eligibilityGroup"
                       },
                       "props": {
-                        "label": "L. Eligibility group description",
+                        "label": "M. Eligibility group description",
                         "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children &lt;19 years; Aged, Blind, Disabled; Pregnant Women."
                       }
                     }
@@ -310,29 +333,7 @@
               ]
             }
           },
-          {
-            "id": "report_planName",
-            "type": "text",
-            "validation": "text",
-            "props": {
-              "label": "M. MCO, PIHP, or PAHP Name",
-              "hint": [
-                {
-                  "type": "span",
-                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
-                },
-                {
-                  "type": "externalLink",
-                  "content": "\"Managed Care Enrollment by Program and Plan\"",
-                  "props": {
-                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
-                    "target": "_blank",
-                    "aria-label": "Link opens in new tab"
-                  }
-                }
-              ]
-            }
-          },
+
           {
             "id": "report_reportingPeriodStartDate",
             "type": "date",
@@ -1222,11 +1223,34 @@
         "id": "mlrd-modal",
         "fields": [
           {
+            "id": "report_planName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "I. MCO, PIHP, or PAHP Name",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "\"Managed Care Enrollment by Program and Plan\"",
+                  "props": {
+                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ]
+            }
+          },
+          {
             "id": "report_programName",
             "type": "textarea",
             "validation": "text",
             "props": {
-              "label": "I. Program name",
+              "label": "J. Program name",
               "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
@@ -1235,8 +1259,8 @@
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
-              "label": "J. Program type",
-              "hint": "Select the program type definition(s) that best describes the program(s) entered in “I. Program name”.",
+              "label": "K. Program type",
+              "hint": "Select the program type definition(s) that best describes the program(s) entered in “J. Program name”.",
               "choices": [
                 {
                   "id": "cQhGnyBmiXszLqrx6b2Cp8",
@@ -1262,7 +1286,7 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "K. Eligibility group",
+              "label": "L. Eligibility group",
               "hint": [
                 {
                   "type": "span",
@@ -1333,7 +1357,7 @@
                         "parentFieldName": "report_eligibilityGroup"
                       },
                       "props": {
-                        "label": "L. Eligibility group description",
+                        "label": "M. Eligibility group description",
                         "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children &lt;19 years; Aged, Blind, Disabled; Pregnant Women."
                       }
                     }
@@ -1342,29 +1366,7 @@
               ]
             }
           },
-          {
-            "id": "report_planName",
-            "type": "text",
-            "validation": "text",
-            "props": {
-              "label": "M. MCO, PIHP, or PAHP Name",
-              "hint": [
-                {
-                  "type": "span",
-                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
-                },
-                {
-                  "type": "externalLink",
-                  "content": "\"Managed Care Enrollment by Program and Plan\"",
-                  "props": {
-                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
-                    "target": "_blank",
-                    "aria-label": "Link opens in new tab"
-                  }
-                }
-              ]
-            }
-          },
+
           {
             "id": "report_reportingPeriodStartDate",
             "type": "date",
