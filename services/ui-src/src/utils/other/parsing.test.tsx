@@ -6,6 +6,7 @@ import { labelTextWithOptional, parseCustomHtml } from "utils";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
+  ...jest.requireActual("dompurify"),
 }));
 
 const mockHtmlString = "<span><em>whatever</em></span>";
@@ -65,6 +66,8 @@ const mockElementsWithChildren: CustomHtmlElement[] = [
   },
 ];
 
+const mockInlineExternalLink = '<a href="foo" target="_blank">Bar</a>';
+
 const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
 const testComponentWithChildren = (
   <div>{parseCustomHtml(mockElementsWithChildren)}</div>
@@ -108,5 +111,24 @@ describe("Test createElementWithChildren", () => {
     expect(await container.querySelector('[data-test-id="foo"]')).toBeVisible();
     expect(await container.querySelector('[data-test-id="bar"]')).toBeVisible();
     expect(await container.querySelector('[data-test-id="biz"]')).toBeVisible();
+  });
+});
+
+describe("Test external link parsing", () => {
+  test("should add the right tags and labels", async () => {
+    const component = <div>{parseCustomHtml(mockInlineExternalLink)}</div>;
+    const { container } = render(component);
+    expect(await container.querySelector("a")).toHaveAttribute(
+      "aria-label",
+      "Bar (link opens in new tab)"
+    );
+    expect(await container.querySelector("a")).toHaveAttribute(
+      "rel",
+      "noopener"
+    );
+    expect(await container.querySelector("a")).toHaveAttribute(
+      "target",
+      "_blank"
+    );
   });
 });
