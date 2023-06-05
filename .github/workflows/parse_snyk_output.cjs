@@ -1,10 +1,6 @@
 const fs = require('fs');
 const JiraClient = require('jira-client');
 const axios = require('axios');
-
-
-console.log("JIRA_BASE_URL:", process.env.JIRA_BASE_URL);
-
 const jira = new JiraClient({
   protocol: 'https',
   host: process.env.JIRA_BASE_URL,
@@ -23,9 +19,6 @@ function parseSnykOutput(inputData) {
       for (const project of data) {
         vulnerabilities = vulnerabilities.concat(project.vulnerabilities);
       }
-
-      console.log(vulnerabilities);
-
     } catch (error) {
       console.error('Error parsing Snyk output:', error);
       vulnerabilities = parseNonJsonData(inputData);
@@ -52,10 +45,8 @@ function parseNonJsonData(inputData) {
 
 
 async function createJiraTicket(vulnerability) {
-  // JQL query with relative date math, 
-  // status conditions 
+  // JQL query with relative date math, status conditions 
   const title = vulnerability.title.replaceAll("\"", "\\\"");
-  //let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "${process.env.JIRA_TITLE_PREFIX}  ${title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
   let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - SNYK ${vulnerability.title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
 
   let searchResult = await jira.searchJira(jqlQuery);
