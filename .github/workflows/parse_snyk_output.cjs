@@ -45,7 +45,7 @@ function parseNonJsonData(inputData) {
 
 
 async function createJiraTicket(vulnerability) {
-  // JQL query with relative date math, status conditions 
+  // JQL query with relative date math, status conditions. 
   const title = vulnerability.title.replaceAll("\"", "\\\"");
   let jqlQuery = `project = "${process.env.JIRA_PROJECT_KEY}" AND summary ~ "MCR - SNYK ${vulnerability.title}" AND created >= startOfDay("-60d") AND status NOT IN ("Closed", "Cancelled")`;
 
