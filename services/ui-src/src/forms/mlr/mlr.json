@@ -234,32 +234,32 @@
               "hint": "Select the program type definition(s) that best describes the program(s) entered in “J. Program name”.",
               "choices": [
                 {
-                  "id": "cQhGnyBmiXszLqrx6b2Cp8",
-                  "label": "Behavioral Health Only"
-                },
-                {
                   "id": "G4inXZJWYFsDZYGk75cW7L",
                   "label": "Comprehensive MCO"
                 },
                 {
-                  "id": "J8PmLy8nKxTK55XJch2jDw",
-                  "label": "Comprehensive MCO + MLTSS"
-                },
-                {
-                  "id": "PamL56cwvY3Rbdqmnigvve",
-                  "label": "Dental Only"
-                },
-                {
-                  "id": "hqjmUS69rVTEKToDxWLXtz",
-                  "label": "MLTSS Only"
-                },
-                {
                   "id": "6krUQZyhpmHHoagQWgUzxx",
-                  "label": "Other PIHP"
+                  "label": "PIHP"
                 },
                 {
                   "id": "VNp9mDXgv9ixL2H8JHVBBE",
-                  "label": "Other PAHP"
+                  "label": "PAHP"
+                },
+                {
+                  "id": "cQhGnyBmiXszLqrx6b2Cp8",
+                  "label": "Behavioral Health"
+                },
+                {
+                  "id": "J8PmLy8nKxTK55XJch2jDw",
+                  "label": "Comprehensive MCO"
+                },
+                {
+                  "id": "PamL56cwvY3Rbdqmnigvve",
+                  "label": "Dental"
+                },
+                {
+                  "id": "hqjmUS69rVTEKToDxWLXtz",
+                  "label": "MLTSS"
                 }
               ]
             }
