@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // components
-import { Spinner } from "@cmsgov/design-system";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
 import {
   ReportContext,
   ReviewSubmitPage,
@@ -83,7 +82,7 @@ export const ReportPageWrapper = () => {
           </>
         ) : (
           <Flex sx={sx.spinnerContainer}>
-            <Spinner size="big" />
+            <Spinner size="lg" />
           </Flex>
         )}
       </Flex>
