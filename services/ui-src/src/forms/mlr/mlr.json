@@ -644,6 +644,10 @@
               "hint": "This element indicates if a remittance to the state or a payment to a plan is required in an MCO/PIHP/PAHP contract if a minimum MLR is not met.",
               "choices": [
                 {
+                  "id": "UL4dAeyyvCFAXttxZioacR",
+                  "label": "No"
+                },
+                {
                   "id": "7FP4jcg4jK7Ssqp3cCW5vQ",
                   "label": "Yes",
                   "children": [
@@ -857,10 +861,6 @@
                       }
                     }
                   ]
-                },
-                {
-                  "id": "UL4dAeyyvCFAXttxZioacR",
-                  "label": "No"
                 }
               ]
             }
