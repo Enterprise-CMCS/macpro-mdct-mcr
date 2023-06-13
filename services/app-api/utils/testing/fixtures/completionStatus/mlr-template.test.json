@@ -162,7 +162,7 @@
         "intro": {
           "exportSectionHeader": "Program Reporting Information",
           "section": "MLR Reporting",
-          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittances",
           "spreadsheet": "Program Information & MLR Reporting",
           "info": [
             {
@@ -1194,7 +1194,7 @@
         "intro": {
           "exportSectionHeader": "Program Reporting Information",
           "section": "MLR Reporting",
-          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittances",
           "spreadsheet": "Program Information & MLR Reporting",
           "info": [
             {

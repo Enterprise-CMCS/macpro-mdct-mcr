@@ -18,7 +18,9 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
+  getEntriesToClear,
   parseCustomHtml,
+  setClearedEntriesToDefaultValue,
   useUser,
 } from "utils";
 import {
@@ -65,12 +67,20 @@ export const DrawerReportPage = ({ route }: Props) => {
         enteredData,
         drawerForm.fields.filter(isFieldElement)
       );
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        drawerForm.fields.filter(isFieldElement)
+      );
       const newEntity = {
         ...selectedEntity,
         ...filteredFormData,
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
+      newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        newEntities[selectedEntityIndex],
+        entriesToClear
+      );
       const shouldSave = entityWasUpdated(
         entities[selectedEntityIndex],
         newEntity

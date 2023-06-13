@@ -1,6 +1,5 @@
 // components
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
 // utils
 import { AnyObject, ReportMetadataShape, ReportType } from "types";
 import { convertDateUtcToEt } from "utils";
@@ -80,7 +79,7 @@ export const MobileDashboardTable = ({
               isDisabled={report?.archived}
             >
               {entering && reportId == report.id ? (
-                <Spinner size="small" />
+                <Spinner size="md" />
               ) : (
                 "Enter"
               )}
@@ -166,11 +165,7 @@ const AdminReleaseButton = ({
       sx={sxOverride.adminActionButton}
       onClick={() => releaseReport!(report)}
     >
-      {releasing && reportId === report.id ? (
-        <Spinner size="small" />
-      ) : (
-        "Unlock"
-      )}
+      {releasing && reportId === report.id ? <Spinner size="md" /> : "Unlock"}
     </Button>
   );
 };
@@ -189,7 +184,7 @@ const AdminArchiveButton = ({
       onClick={() => archiveReport!(report)}
     >
       {archiving && reportId === report.id ? (
-        <Spinner size="small" />
+        <Spinner size="md" />
       ) : report?.archived ? (
         "Unarchive"
       ) : (

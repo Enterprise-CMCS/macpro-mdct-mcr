@@ -45,7 +45,7 @@ describe("Test ExportedReportPage Functionality", () => {
     ];
     const page = render(exportedReportPage(mockMlrReportContext));
     const title = page.getByText(
-      "TestState: Medicaid Medical Loss Ratio (MLR) & Remittance Calculations"
+      "TestState: Medicaid Medical Loss Ratio (MLR) & Remittances"
     );
     expect(title).toBeVisible();
   });

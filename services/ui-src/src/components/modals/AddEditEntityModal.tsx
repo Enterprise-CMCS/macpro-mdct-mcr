@@ -2,8 +2,7 @@ import { useContext, useState } from "react";
 import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
-import { Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Text, Spinner } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
@@ -12,7 +11,13 @@ import {
   isFieldElement,
   ReportStatus,
 } from "types";
-import { entityWasUpdated, filterFormData, useUser } from "utils";
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
+  useUser,
+} from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
@@ -49,6 +54,10 @@ export const AddEditEntityModal = ({
     );
     if (selectedEntity?.id) {
       // if existing entity selected, edit
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        form.fields.filter(isFieldElement)
+      );
       const selectedEntityIndex = currentEntities.findIndex(
         (entity: EntityShape) => entity.id === selectedEntity.id
       );
@@ -59,6 +68,12 @@ export const AddEditEntityModal = ({
         ...currentEntities[selectedEntityIndex],
         ...filteredFormData,
       };
+
+      updatedEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        updatedEntities[selectedEntityIndex],
+        entriesToClear
+      );
+
       dataToWrite.fieldData = { [entityType]: updatedEntities };
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
@@ -89,7 +104,7 @@ export const AddEditEntityModal = ({
           ? verbiage.addEditModalHint
           : undefined,
         actionButtonText: submitting ? (
-          <Spinner size="small" />
+          <Spinner size="md" />
         ) : report?.locked ? (
           "Close"
         ) : (
