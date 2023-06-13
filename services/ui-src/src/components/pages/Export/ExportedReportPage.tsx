@@ -101,10 +101,9 @@ export const reportTitle = (
   switch (reportType) {
     case ReportType.MCPAR:
       return `${reportPage.heading} ${report.fieldData.stateName}: ${report.programName}`;
+    case ReportType.NAAAR:
     case ReportType.MLR:
       return `${report.fieldData.stateName}: ${reportPage.heading}`;
-    case ReportType.NAAAR:
-      return ``;
     default:
       assertExhaustive(reportType);
       throw new Error(
