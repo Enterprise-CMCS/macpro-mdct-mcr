@@ -16,7 +16,7 @@ import {
   ReportType,
 } from "types";
 // utils
-import { assertExhaustive, getEntityDetailsMLR, renderHtml } from "utils";
+import { assertExhaustive, getEntityDetailsMLR } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
@@ -112,6 +112,10 @@ export function getEntityTableComponents(
       report_planName,
     } = getEntityDetailsMLR(entity);
 
+    const entityHeading = `${idx + 1}. ${
+      section.verbiage.intro.subsection
+    } for:`;
+
     const programInfo = [
       report_programName,
       mlrEligibilityGroup,
@@ -119,20 +123,16 @@ export function getEntityTableComponents(
       report_planName,
     ];
 
-    const entityHeading = `${idx + 1}. ${
-      section.verbiage.intro.subsection
-    } for:`;
+    const formatProgramInfo = (index: number, field: string) => {
+      return <p key={index}>{field}</p>;
+    };
 
     return (
       <Box key={uuid()}>
         <Box sx={sx.entityInformation}>
           <Heading sx={sx.entityHeading} as="h3" fontSize={"xl"}>
             {entityHeading}
-            <ul>
-              {programInfo.map((field, index) => (
-                <li key={index}>{renderHtml(field)}</li>
-              ))}
-            </ul>
+            {programInfo.map((field, index) => formatProgramInfo(index, field))}
           </Heading>
         </Box>
         {formSections.map((fields, idx) => {
@@ -267,15 +267,10 @@ const sx = {
     padding: "2rem 0 0.5rem 0",
     color: "palette.gray_medium",
     width: "100%",
-    ul: {
-      margin: "0.5rem auto",
-      listStyleType: "none",
+    p: {
       color: "palette.base",
-      li: {
-        wordWrap: "break-word",
-        paddingTop: "0.125rem",
-        paddingBottom: "0.125rem",
-        whiteSpace: "break-spaces",
+      "&:first-of-type": {
+        marginTop: "1rem",
       },
     },
   },

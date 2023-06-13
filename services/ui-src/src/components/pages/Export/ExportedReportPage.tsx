@@ -102,8 +102,9 @@ export const reportTitle = (
     case ReportType.MCPAR:
       return `${reportPage.heading} ${report.fieldData.stateName}: ${report.programName}`;
     case ReportType.MLR:
-    case ReportType.NAAAR:
       return `${report.fieldData.stateName}: ${reportPage.heading}`;
+    case ReportType.NAAAR:
+      return ``;
     default:
       assertExhaustive(reportType);
       throw new Error(
