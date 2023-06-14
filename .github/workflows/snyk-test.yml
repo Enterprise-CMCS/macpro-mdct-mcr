@@ -3,8 +3,7 @@ name: Snyk Scan and Report
 on:
   pull_request:
    branches: [ main ]
-  push:
-    branches: [ snyk-update ]
+
   schedule:
     - cron:  '0 0 * * *'  # run every day at midnight
 
@@ -15,7 +14,7 @@ jobs:
   snyk_run:
     name: Snyk Run (for PR and push)
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
     
     steps:
     - name: Check out repository
@@ -28,19 +27,15 @@ jobs:
 
     - name: Install dependencies
       run: npm install --legacy-peer-deps
-      # working-directory: .github/workflows/
-
+      
     - name: Install jq
       run: sudo apt-get install -y jq
-      # working-directory: .github/workflows/
-    
+      
     - name: Install Snyk CLI
       run: npm install -g snyk
-      # working-directory: .github/workflows/
-
+      
     - name: Run Snyk Test
       run:  snyk test --all-projects --json > snyk_output.txt || true
-      # working-directory: .github/workflows/
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # check 
     
@@ -48,9 +43,8 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      # if: github.event_name == 'schedule'
-      if: github.event_name == 'push'
-     
+      if: github.event_name == 'schedule'
+
       steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -62,37 +56,24 @@ jobs:
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-        # working-directory: .github/workflows/
-
+        
       - name: Install jq
         run: sudo apt-get install -y jq
-        # working-directory: .github/workflows/
-
+        
       - name: Install Snyk CLI
         run: npm install -g snyk
-        # working-directory: .github/workflows/
-
+        
       - name: Run Snyk test
         run:  snyk test --all-projects --json > snyk_output.txt || true
         working-directory: ./
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      # - name: Set environment variables
-      #   run: |
-      #     echo "PROJECT_NAME=MDCT" >> $GITHUB_ENV
-      #     echo "JIRA_PROJECT_KEY=MDCT" >> $GITHUB_ENV
-      #     echo "JIRA_ISSUE_TYPE=Task" >> $GITHUB_ENV
-      #     echo "JIRA_LABELS=MCR,snyk" >> $GITHUB_ENV
-      #     echo "JIRA_EPIC_KEY=MDCT-2280" >> $GITHUB_ENV
-      #     echo "JIRA_TITLE_PREFIX=[MCR] - Snyk : " >> $GITHUB_ENV
           
       - name: Install Jira library for Node.js
         run: |
           npm install jira-client  --legacy-peer-deps
           npm install @actions/core --legacy-peer-deps
-        # working-directory: .github/workflows/
-      
+        
       - name: Run script to parse Snyk output
         uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.0
         with:
