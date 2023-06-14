@@ -4,6 +4,7 @@ export const completionSchemaMap: any = {
   text: schema.text(),
   textOptional: schema.textOptional(),
   number: schema.number(),
+  numberPositive: schema.numberPositive(),
   numberOptional: schema.numberOptional(),
   ratio: schema.ratio(),
   email: schema.email(),

@@ -15,6 +15,7 @@ const error = {
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_NUMBER: "Response must be a valid number",
+  NON_POSITIVE_NUMBER: "Response must be a positive number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number or "N/A"',
   INVALID_RATIO: "Response must be a valid ratio",
 };
@@ -38,6 +39,7 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
 const validNumberRegex = /^\.$|[0-9]/;
 
 // NUMBER - Number or Valid Strings
+
 export const number = () =>
   string().test({
     message: error.INVALID_NUMBER_OR_NA,
@@ -48,6 +50,19 @@ export const number = () =>
         return isValidStringValue || isValidNumberValue;
       } else return true;
     },
+  });
+
+// Positive Numbers Only
+export const numberPositive = () =>
+string()
+  .required(error.REQUIRED_GENERIC)
+  .test({
+    test: (value) => validNumberRegex.test(value!),
+    message: error.INVALID_NUMBER,
+  })
+  .test({
+    test: (value) => parseFloat(value!) > 0,
+    message: error.NON_POSITIVE_NUMBER,
   });
 
 export const numberOptional = () => number();
@@ -212,6 +227,7 @@ export const schemaMap: any = {
   email: email(),
   emailOptional: emailOptional(),
   number: number(),
+  numberPositive: numberPositive(),
   numberOptional: numberOptional(),
   objectArray: objectArray(),
   radio: radio(),

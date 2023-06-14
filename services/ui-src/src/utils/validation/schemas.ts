@@ -63,6 +63,22 @@ export const number = () =>
     });
 export const numberOptional = () => numberSchema().notRequired().nullable();
 
+export const numberPositive = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    })
+    .test({
+      test: (value) => validNumberRegex.test(value!),
+      message: error.INVALID_NUMBER,
+    })
+    .test({
+      test: (value) => parseFloat(value!) > 0,
+      message: error.NON_POSITIVE_NUMBER,
+    });
+
 const validNumberSchema = () =>
   string().test({
     message: error.INVALID_NUMBER,
