@@ -4,10 +4,10 @@ on:
   pull_request:
     branches: 
       - main
-      - snyk-update
-
   schedule:
-    - cron:  '2 16 * * *'  # run every day at midnight
+    - cron:  '7 4 * * *'  # run every day at midnight
+  push:
+    - snyk-update
 
 permissions:
   id-token: write
@@ -45,7 +45,7 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      if: github.event_name == 'schedule'
+      if: github.event_name == 'schedule' || 'push'
 
       steps:
         - name: Check out repository
