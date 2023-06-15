@@ -5,7 +5,7 @@ on:
    branches: [ main ]
 
   schedule:
-    - cron:  '0 0 * * *'  # run every day at midnight
+    - cron:  '29 11 * * *'  # run every day at midnight
 
 permissions:
   id-token: write
@@ -46,46 +46,46 @@ jobs:
       if: github.event_name == 'schedule'
 
       steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-        
-      - name: Install jq
-        run: sudo apt-get install -y jq
-        
-      - name: Install Snyk CLI
-        run: npm install -g snyk
-        
-      - name: Run Snyk test
-        run:  snyk test --all-projects --json > snyk_output.txt || true
-        working-directory: ./
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        - name: Check out repository
+          uses: actions/checkout@v2
+  
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: 18
+  
+        - name: Install dependencies
+          run: npm install --legacy-peer-deps
           
-      - name: Install Jira library for Node.js
-        run: |
-          npm install jira-client  --legacy-peer-deps
-          npm install @actions/core --legacy-peer-deps
-        
-      - name: Run script to parse Snyk output
-        uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.0
-        with:
-          jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
-          jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
-          jira-host: 'qmacbis.atlassian.net'
-          jira-project-key: 'MDCT'
-          jira-issue-type: 'Task'
-          jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280"  }'
-          jira-labels: 'MCR,snyk'
-          jira-title-prefix: '[MCR] - Snyk :'
-          scan-output-path: 'snyk_output.txt'
-          scan-type: 'snyk'
+        - name: Install jq
+          run: sudo apt-get install -y jq
+          
+        - name: Install Snyk CLI
+          run: npm install -g snyk
+          
+        - name: Run Snyk test
+          run:  snyk test --all-projects --json > snyk_output.txt || true
+          working-directory: ./
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+            
+        - name: Install Jira library for Node.js
+          run: |
+            npm install jira-client  --legacy-peer-deps
+            npm install @actions/core --legacy-peer-deps
+          
+        - name: Run script to parse Snyk output
+          uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.0
+          with:
+            jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
+            jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
+            jira-host: 'qmacbis.atlassian.net'
+            jira-project-key: 'MDCT'
+            jira-issue-type: 'Task'
+            jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280"  }'
+            jira-labels: 'MCR,snyk'
+            jira-title-prefix: '[MCR] - Snyk :'
+            scan-output-path: 'snyk_output.txt'
+            scan-type: 'snyk'
     
 
