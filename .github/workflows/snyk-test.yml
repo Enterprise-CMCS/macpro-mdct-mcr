@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron:  '52 17 * * *'  # run every day at midnight
+    - cron:  '58 13 * * *'  # run every day at midnight
 
 permissions:
   id-token: write
