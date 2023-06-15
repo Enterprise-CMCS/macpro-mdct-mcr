@@ -5,9 +5,10 @@ on:
     branches: 
       - main
   schedule:
-    - cron:  '7 4 * * *'  # run every day at midnight
+    - cron:  '10 4 * * *'  # run every day at midnight
   push:
-    - snyk-update
+    branches:
+      - snyk-update
 
 permissions:
   id-token: write
