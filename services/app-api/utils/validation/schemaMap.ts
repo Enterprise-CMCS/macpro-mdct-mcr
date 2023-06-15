@@ -15,7 +15,7 @@ const error = {
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_NUMBER: "Response must be a valid number",
-  NON_POSITIVE_NUMBER: "Response must be a number greater than zero",
+  NON_POSITIVE_NUMBER: "Response must be equal to or greater than one",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number or "N/A"',
   INVALID_RATIO: "Response must be a valid ratio",
 };
@@ -52,7 +52,7 @@ export const number = () =>
     },
   });
 
-// Positive numbers only: Response must be a number greater than zero
+// Positive numbers only
 export const numberPositive = () =>
   string()
     .required(error.REQUIRED_GENERIC)
