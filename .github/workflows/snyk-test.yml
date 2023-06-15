@@ -2,13 +2,9 @@ name: Snyk Scan and Report
 
 on:
   pull_request:
-    branches: 
-      - main
+    branches: [ main ]
   schedule:
-    - cron:  '10 4 * * *'  # run every day at midnight
-  push:
-    branches:
-      - snyk-update
+    - cron:  '5 16 * * *'  # run every day at midnight
 
 permissions:
   id-token: write
@@ -46,7 +42,7 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      if: github.event_name == 'schedule' || 'push'
+      if: github.event_name == 'schedule'
 
       steps:
         - name: Check out repository
