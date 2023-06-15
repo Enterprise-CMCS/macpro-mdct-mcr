@@ -2,10 +2,12 @@ name: Snyk Scan and Report
 
 on:
   pull_request:
-   branches: [ main ]
+   branches: 
+     - main
+     - snyk-update
 
   schedule:
-    - cron:  '29 11 * * *'  # run every day at midnight
+    - cron:  '52 11 * * *'  # run every day at midnight
 
 permissions:
   id-token: write
@@ -17,27 +19,27 @@ jobs:
     if: github.event_name == 'pull_request'
     
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 18
-
-    - name: Install dependencies
-      run: npm install --legacy-peer-deps
-      
-    - name: Install jq
-      run: sudo apt-get install -y jq
-      
-    - name: Install Snyk CLI
-      run: npm install -g snyk
-      
-    - name: Run Snyk Test
-      run:  snyk test --all-projects --json > snyk_output.txt || true
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # check 
+      - name: Check out repository
+        uses: actions/checkout@v2
+   
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+   
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        
+      - name: Install jq
+        run: sudo apt-get install -y jq
+        
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+        
+      - name: Run Snyk Test
+        run:  snyk test --all-projects --json > snyk_output.txt || true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # check 
     
 
   snyk_nightly_run:  
