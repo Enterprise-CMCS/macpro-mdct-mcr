@@ -71,6 +71,8 @@ export const ReportProvider = ({ children }: Props) => {
     selectedState: string
   ) => {
     try {
+      // clear stored reports by state prior to fetching from current state
+      setReportsByState([]);
       const result = await getReportsByState(reportType, selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
     } catch (e: any) {
