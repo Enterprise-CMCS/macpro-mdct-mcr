@@ -2,12 +2,12 @@ name: Snyk Scan and Report
 
 on:
   pull_request:
-   branches: 
-     - main
-     - snyk-update
+    branches: 
+      - main
+      - snyk-update
 
   schedule:
-    - cron:  '52 11 * * *'  # run every day at midnight
+    - cron:  '2 16 * * *'  # run every day at midnight
 
 permissions:
   id-token: write
