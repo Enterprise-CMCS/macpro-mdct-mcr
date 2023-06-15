@@ -61,6 +61,7 @@ export const number = () =>
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
     });
+    
 export const numberOptional = () => numberSchema().notRequired().nullable();
 
 export const numberPositive = () =>

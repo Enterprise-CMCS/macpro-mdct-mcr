@@ -723,7 +723,7 @@
                       "id": "report_remittanceDollarAmountOwed",
                       "type": "number",
                       "validation": {
-                        "type": "number",
+                        "type": "numberPositive",
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
