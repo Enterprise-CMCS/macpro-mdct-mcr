@@ -1,5 +1,5 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { number, ratio, validNumber } from "./completionSchemas";
+import { number, ratio, validNumber, numberPositive } from "./completionSchemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -14,6 +14,16 @@ describe("Schemas", () => {
     "Data not available",
   ];
   const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
+
+  const goodPositiveNumberTestCases = [
+    "123",
+    "123.00",
+    "123..00",
+    "1,230",
+    "1,2,30",
+    "1230",
+    "123450123..,,,.123123123123",
+  ];
 
   const goodRatioTestCases = [
     "1:1",
@@ -65,6 +75,12 @@ describe("Schemas", () => {
   test("Evaluate Number Schema using number scheme", () => {
     testNumberSchema(number(), goodNumberTestCases, true);
     testNumberSchema(number(), badNumberTestCases, false);
+  });
+
+
+  test("Evaluate Number Schema using number positive scheme", () => {
+    testNumberSchema(numberPositive(), goodPositiveNumberTestCases, true);
+    testNumberSchema(numberPositive(), badNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {

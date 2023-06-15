@@ -1,5 +1,5 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { dateOptional, number, ratio, validNumber } from "./schemas";
+import { dateOptional, number, ratio, validNumber, numberPositive } from "./schemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -13,6 +13,17 @@ describe("Schemas", () => {
     "N/A",
     "Data not available",
   ];
+
+  const goodPositiveNumberTestCases = [
+    "123",
+    "123.00",
+    "123..00",
+    "1,230",
+    "1,2,30",
+    "1230",
+    "123450123..,,,.123123123123",
+  ];
+
   const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
 
   const goodRatioTestCases = [
@@ -79,7 +90,7 @@ describe("Schemas", () => {
 
   const testValidNumber = (
     schemaToUse: MixedSchema,
-    testCases: Array<string | number>,
+    testCases: Array<string | number >,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
@@ -98,6 +109,11 @@ describe("Schemas", () => {
     testNumberSchema(ratio(), badRatioTestCases, false);
   });
 
+  test("Evaluate Number Schema using number positive scheme", () => {
+    testNumberSchema(numberPositive(), goodPositiveNumberTestCases, true);
+    testNumberSchema(numberPositive(), badNumberTestCases, false);
+  });
+
   test("Test dateOptional schema", () => {
     testDateOptional(dateOptional(), goodDateOptionalTestCases, true);
     testDateOptional(dateOptional(), badDateOptionalTestCases, false);
@@ -107,4 +123,7 @@ describe("Schemas", () => {
     testValidNumber(validNumber(), goodValidNumberTestCases, true);
     testValidNumber(validNumber(), badValidNumberTestCases, false);
   });
+
+
+
 });

@@ -7,6 +7,7 @@ import {
   isEndDateAfterStartDate,
   nested,
   validNumber,
+  numberPositive
 } from "./schemaMap";
 import {} from "./validation";
 
@@ -24,6 +25,16 @@ describe("Schemas", () => {
     "Data not available",
   ];
   const badNumberTestCases = ["abc", "N", "!@#!@%"];
+
+  const goodPositiveNumberTestCases = [
+    "123",
+    "123.00",
+    "123..00",
+    "1,230",
+    "1,2,30",
+    "1230",
+    "123450123..,,,.123123123123",
+  ];
 
   const goodRatioTestCases = [
     "1:1",
@@ -88,6 +99,11 @@ describe("Schemas", () => {
   test("Evaluate Number Schema using number scheme", () => {
     testSchema(number(), goodNumberTestCases, true);
     testSchema(number(), badNumberTestCases, false);
+  });
+
+  test("Evaluate Number Schema using number positive scheme", () => {
+    testSchema(numberPositive(), goodPositiveNumberTestCases, true);
+    testSchema(numberPositive(), badNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
