@@ -63,6 +63,21 @@ export default {
       });
     });
   },
+  list: async (params: S3.ListObjectsRequest) => {
+    return new Promise<S3.ObjectList>((resolve, reject) => {
+      s3Client.listObjects(
+        params,
+        function (err: any, result: S3.ListObjectsOutput) {
+          if (err) {
+            reject(err);
+          }
+          if (result) {
+            resolve(result.Contents ?? []);
+          }
+        }
+      );
+    });
+  },
 };
 
 export function getFieldDataKey(state: State, fieldDataId: string) {

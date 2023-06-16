@@ -68,6 +68,10 @@ export interface S3Copy {
   Key: string;
 }
 
+export interface S3List {
+  Bucket: string;
+}
+
 export interface CompletionData {
   [key: string]: boolean | CompletionData;
 }
