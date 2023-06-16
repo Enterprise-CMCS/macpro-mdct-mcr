@@ -221,6 +221,8 @@ resources:
       Value: !GetAtt BannerTable.Arn
     BannerTableStreamArn:
       Value: !GetAtt BannerTable.StreamArn
+    FormTemplateTableName:
+      Value: !Ref FormTemplateTable
     McparReportTableName:
       Value: !Ref McparReportTable
     McparReportTableArn:
