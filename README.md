@@ -87,6 +87,11 @@ Once the update ships [in dynamodb-localhost](https://github.com/99x/dynamodb-lo
 and [in serverless-dynamodb-local](https://github.com/99x/serverless-dynamodb-local/issues/294), the override in `./package.json` and
 this section of the README will become obsolete and should be removed.
 
+#### DynamoDB Local failed to start with code 1 
+If you're getting the above error and/or `inaccessible host: 'localhost' at port '8000'`, some steps to try:
+- confirm that you're on the right Java version -- if you have an M1 mac, you need an [x86 install](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk#zulu) 
+- delete your `services/database/.dynamodb` directory and then run `dev local` in your terminal
+
 ### Local Development Additional Info
 
 Local dev is configured as a Typescript project. The entrypoint in `./src/dev.ts` manages running the moving pieces locally: the API, database, filestore, and frontend.
