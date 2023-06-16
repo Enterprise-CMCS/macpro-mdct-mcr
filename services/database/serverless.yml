@@ -201,6 +201,14 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+          - IndexName: IdIndex
+            KeySchema:
+              - AttributeName: reportType
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
         KeySchema:
           - AttributeName: reportType
             KeyType: HASH
@@ -212,6 +220,8 @@ resources:
           - AttributeName: versionNumber
             AttributeType: N
           - AttributeName: lastAltered
+            AttributeType: S
+          - AttributeName: id
             AttributeType: S
 
   Outputs:

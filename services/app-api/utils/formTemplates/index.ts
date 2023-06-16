@@ -20,3 +20,18 @@ export function getNewestTemplateVersion(
   };
   return dynamodbLib.query(queryParams);
 }
+
+export function getTemplateVersionById(id: string) {
+  const queryParams: QueryInput = {
+    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    IndexName: "IdIndex",
+    KeyConditionExpression: "id = :id",
+    Limit: 1,
+    ExpressionAttributeValues: {
+      ":id": {
+        S: id,
+      },
+    },
+  };
+  return dynamodbLib.query(queryParams);
+}
