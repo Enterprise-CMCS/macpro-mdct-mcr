@@ -396,6 +396,7 @@ export const mockReportMethods = {
   updateReport: jest.fn(),
   submitReport: jest.fn(),
   clearReportSelection: jest.fn(),
+  clearReportsByState: jest.fn(),
   setReportSelection: jest.fn(),
 };
 

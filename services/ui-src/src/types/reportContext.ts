@@ -48,6 +48,7 @@ export interface ReportContextMethods {
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;
+  clearReportsByState: Function;
   setReportSelection: Function;
 }
 
