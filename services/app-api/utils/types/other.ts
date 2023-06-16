@@ -167,3 +167,10 @@ export type State =
   | "WV"
   | "WI"
   | "WY";
+
+export interface FormTemplate {
+  versionNumber: number;
+  id: string;
+  lastAltered: string;
+  reportType: string;
+}
