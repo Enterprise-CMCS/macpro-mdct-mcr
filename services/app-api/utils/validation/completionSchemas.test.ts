@@ -1,5 +1,10 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { number, ratio, validNumber, numberPositive } from "./completionSchemas";
+import {
+  number,
+  ratio,
+  validNumber,
+  numberPositive,
+} from "./completionSchemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -32,6 +37,7 @@ describe("Schemas", () => {
     "0:1",
     "1:10,000",
   ];
+
   const badRatioTestCases = [
     ":",
     ":1",
@@ -76,7 +82,6 @@ describe("Schemas", () => {
     testNumberSchema(number(), goodNumberTestCases, true);
     testNumberSchema(number(), badNumberTestCases, false);
   });
-
 
   test("Evaluate Number Schema using number positive scheme", () => {
     testNumberSchema(numberPositive(), goodPositiveNumberTestCases, true);

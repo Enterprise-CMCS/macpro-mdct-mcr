@@ -7,7 +7,7 @@ import {
   isEndDateAfterStartDate,
   nested,
   validNumber,
-  numberPositive
+  numberPositive,
 } from "./schemaMap";
 import {} from "./validation";
 
@@ -43,6 +43,7 @@ describe("Schemas", () => {
     "0:1",
     "1:10,000",
   ];
+
   const badRatioTestCases = [
     ":",
     ":1",

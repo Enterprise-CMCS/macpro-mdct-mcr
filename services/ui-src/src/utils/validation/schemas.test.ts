@@ -1,5 +1,11 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { dateOptional, number, ratio, validNumber, numberPositive } from "./schemas";
+import {
+  dateOptional,
+  number,
+  ratio,
+  validNumber,
+  numberPositive,
+} from "./schemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -54,6 +60,7 @@ describe("Schemas", () => {
     "01/01/2023",
     "05/15/2023",
   ];
+
   const badDateOptionalTestCases = [
     1,
     "Hello!",
@@ -90,7 +97,7 @@ describe("Schemas", () => {
 
   const testValidNumber = (
     schemaToUse: MixedSchema,
-    testCases: Array<string | number >,
+    testCases: Array<string | number>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
@@ -123,7 +130,4 @@ describe("Schemas", () => {
     testValidNumber(validNumber(), goodValidNumberTestCases, true);
     testValidNumber(validNumber(), badValidNumberTestCases, false);
   });
-
-
-
 });
