@@ -160,6 +160,10 @@ describe("Test Masked NumberField", () => {
     await userEvent.type(numberFieldInput, "1234.00");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("1,234");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "-1234");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("1,234");
   });
 
   test("onChangeHandler updates Percentage masked field value", async () => {
