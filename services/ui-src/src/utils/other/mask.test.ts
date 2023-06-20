@@ -21,6 +21,8 @@ const commaSeparatedMaskAcceptableTestCases = [
   { test: "1,234", expected: "1,234" },
   { test: "1234", expected: "1,234" },
   { test: "1,234", expected: "1,234" },
+  { test: "-1234", expected: "1,234" },
+  { test: "$$1234567890.10", expected: "1,234,567,890.1" },
   { test: "100,000,000", expected: "100,000,000" },
   { test: "100000000", expected: "100,000,000" },
   {

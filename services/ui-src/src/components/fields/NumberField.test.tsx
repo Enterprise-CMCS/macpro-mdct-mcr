@@ -141,6 +141,14 @@ describe("Test Masked NumberField", () => {
     await userEvent.type(numberFieldInput, "12055.99");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("12,055.99");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "-1234");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("1,234");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "$$1234567890.10");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("1,234,567,890.1");
   });
 
   test("onChangeHandler updates Currency masked field value", async () => {
@@ -160,14 +168,6 @@ describe("Test Masked NumberField", () => {
     await userEvent.type(numberFieldInput, "1234.00");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("1,234");
-    await userEvent.clear(numberFieldInput);
-    await userEvent.type(numberFieldInput, "-1234");
-    await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("1,234");
-    await userEvent.clear(numberFieldInput);
-    await userEvent.type(numberFieldInput, "$$1234567890.10");
-    await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("1,234,567,890.1");
   });
 
   test("onChangeHandler updates Percentage masked field value", async () => {
