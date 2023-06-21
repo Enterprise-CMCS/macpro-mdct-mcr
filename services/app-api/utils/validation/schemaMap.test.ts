@@ -7,7 +7,7 @@ import {
   isEndDateAfterStartDate,
   nested,
   validNumber,
-  numberPositive,
+  numberNotLessThanOne,
 } from "./schemaMap";
 import {} from "./validation";
 
@@ -103,8 +103,8 @@ describe("Schemas", () => {
   });
 
   test("Evaluate Number Schema using number positive scheme", () => {
-    testSchema(numberPositive(), goodPositiveNumberTestCases, true);
-    testSchema(numberPositive(), badNumberTestCases, false);
+    testSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
+    testSchema(numberNotLessThanOne(), badNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {

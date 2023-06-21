@@ -64,8 +64,8 @@ export const number = () =>
 
 export const numberOptional = () => numberSchema().notRequired().nullable();
 
-// NUMBER POSITIVE - Positive numbers only
-export const numberPositive = () =>
+// NUMBER NOT LESS THAN ONE
+export const numberNotLessThanOne = () =>
   string()
     .required(error.REQUIRED_GENERIC)
     .test({
@@ -77,8 +77,8 @@ export const numberPositive = () =>
       message: error.INVALID_NUMBER,
     })
     .test({
-      test: (value) => parseFloat(value!) > 0,
-      message: error.NON_POSITIVE_NUMBER,
+      test: (value) => parseInt(value!) >= 1,
+      message: error.NUMBER_LESS_THAN_ONE,
     });
 
 const validNumberSchema = () =>

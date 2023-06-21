@@ -473,7 +473,7 @@
           {
             "id": "report_mlrNumerator",
             "type": "number",
-            "validation": "numberPositive",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "1.3 MLR numerator",
               "hint": "Enter the required MLR numerator dollar value. If the optional subcomponents are reported in 1.1-1.2, states must still report the total MLR numerator (i.e., subcomponents will not automatically sum to numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(1)'  target='_blank'>42 CFR § 438.8(e)(1)</a>",
@@ -534,7 +534,7 @@
           {
             "id": "report_mlrDenominator",
             "type": "number",
-            "validation": "numberPositive",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "2.3 MLR denominator",
               "hint": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)' target='_blank'> 42 CFR § 438.8(f)(1) </a>",
@@ -562,7 +562,7 @@
           {
             "id": "report_requiredMemberMonths",
             "type": "number",
-            "validation": "numberPositive",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "3.1 Member months",
               "hint": "Enter the required number of member months. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)' target='_blank'> 42 CFR § 438.8(b) </a>"
@@ -603,7 +603,7 @@
           {
             "id": "report_adjustedMlrPercentage",
             "type": "number",
-            "validation": "numberPositive",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "3.4 Adjusted MLR",
               "hint": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). For information on credibility adjustments see <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h). </a>",
@@ -723,7 +723,7 @@
                       "id": "report_remittanceDollarAmountOwed",
                       "type": "number",
                       "validation": {
-                        "type": "numberPositive",
+                        "type": "numberNotLessThanOne",
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"

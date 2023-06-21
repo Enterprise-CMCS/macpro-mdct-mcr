@@ -3,7 +3,7 @@ import {
   number,
   ratio,
   validNumber,
-  numberPositive,
+  numberNotLessThanOne,
 } from "./completionSchemas";
 
 describe("Schemas", () => {
@@ -84,8 +84,8 @@ describe("Schemas", () => {
   });
 
   test("Evaluate Number Schema using number positive scheme", () => {
-    testNumberSchema(numberPositive(), goodPositiveNumberTestCases, true);
-    testNumberSchema(numberPositive(), badNumberTestCases, false);
+    testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
+    testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
