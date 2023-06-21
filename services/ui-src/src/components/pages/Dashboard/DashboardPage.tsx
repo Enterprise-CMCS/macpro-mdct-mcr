@@ -9,6 +9,7 @@ import {
   Image,
   Link,
   Text,
+  Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -20,7 +21,6 @@ import {
   PageTemplate,
   ReportContext,
 } from "components";
-import { Spinner } from "@cmsgov/design-system";
 // forms
 import { mcparReportJson } from "forms/mcpar";
 import { mlrReportJson } from "forms/mlr";
@@ -251,7 +251,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         ) : (
           !errorMessage && (
             <Flex sx={sx.spinnerContainer}>
-              <Spinner size="big" />
+              <Spinner size="md" />
             </Flex>
           )
         )}

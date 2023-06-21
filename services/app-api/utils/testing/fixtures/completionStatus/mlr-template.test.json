@@ -14,7 +14,7 @@
         "intro": {
           "section": "Program Information",
           "subsection": "Information for Primary Contact",
-          "hint": "Please enter the name of the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
+          "hint": "Please identify the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
           "spreadsheet": "Program Information",
           "exportSection": "Information for Primary Contact"
         }
@@ -162,7 +162,7 @@
         "intro": {
           "exportSectionHeader": "Program Reporting Information",
           "section": "MLR Reporting",
-          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittances",
           "spreadsheet": "Program Information & MLR Reporting",
           "info": [
             {
@@ -190,12 +190,35 @@
         "id": "mlrd-modal",
         "fields": [
           {
+            "id": "report_planName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "I. MCO, PIHP, or PAHP Name",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "\"Managed Care Enrollment by Program and Plan\"",
+                  "props": {
+                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ]
+            }
+          },
+          {
             "id": "report_programName",
             "type": "textarea",
             "validation": "text",
             "props": {
-              "label": "I. Program name",
-              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
+              "label": "J. Program name",
+              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
           {
@@ -203,25 +226,33 @@
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
-              "label": "J. Program type",
-              "hint": "Select the program type definition(s) that best describes the program(s) entered in “I. Program name”.",
+              "label": "K. Program type",
+              "hint": "Select the program type definition(s) that best describes the program(s) entered in “J. Program name”.",
               "choices": [
-                {
-                  "id": "cQhGnyBmiXszLqrx6b2Cp8",
-                  "label": "Behavioral Health Only"
-                },
                 {
                   "id": "G4inXZJWYFsDZYGk75cW7L",
                   "label": "Comprehensive MCO"
                 },
                 {
-                  "id": "J8PmLy8nKxTK55XJch2jDw",
-                  "label": "Comprehensive MCO + MLTSS"
+                  "id": "6krUQZyhpmHHoagQWgUzxx",
+                  "label": "PIHP"
                 },
-                { "id": "PamL56cwvY3Rbdqmnigvve", "label": "Dental Only" },
-                { "id": "hqjmUS69rVTEKToDxWLXtz", "label": "MLTSS Only" },
-                { "id": "6krUQZyhpmHHoagQWgUzxx", "label": "Other PIHP" },
-                { "id": "VNp9mDXgv9ixL2H8JHVBBE", "label": "Other PAHP" }
+                {
+                  "id": "VNp9mDXgv9ixL2H8JHVBBE",
+                  "label": "PAHP"
+                },
+                {
+                  "id": "cQhGnyBmiXszLqrx6b2Cp8",
+                  "label": "Behavioral Health"
+                },
+                {
+                  "id": "PamL56cwvY3Rbdqmnigvve",
+                  "label": "Dental"
+                },
+                {
+                  "id": "hqjmUS69rVTEKToDxWLXtz",
+                  "label": "MLTSS"
+                }
               ]
             }
           },
@@ -230,7 +261,7 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "K. Eligibility group",
+              "label": "L. Eligibility group",
               "hint": [
                 {
                   "type": "span",
@@ -301,7 +332,7 @@
                         "parentFieldName": "report_eligibilityGroup"
                       },
                       "props": {
-                        "label": "L. Eligibility group description",
+                        "label": "M. Eligibility group description",
                         "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children &lt;19 years; Aged, Blind, Disabled; Pregnant Women."
                       }
                     }
@@ -310,29 +341,7 @@
               ]
             }
           },
-          {
-            "id": "report_planName",
-            "type": "text",
-            "validation": "text",
-            "props": {
-              "label": "M. MCO, PIHP, or PAHP Name",
-              "hint": [
-                {
-                  "type": "span",
-                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
-                },
-                {
-                  "type": "externalLink",
-                  "content": "\"Managed Care Enrollment by Program and Plan\"",
-                  "props": {
-                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
-                    "target": "_blank",
-                    "aria-label": "Link opens in new tab"
-                  }
-                }
-              ]
-            }
-          },
+
           {
             "id": "report_reportingPeriodStartDate",
             "type": "date",
@@ -378,7 +387,7 @@
                       },
                       "props": {
                         "label": "P.2 Explanation of reporting period discrepancy",
-                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
                       }
                     }
                   ]
@@ -1046,7 +1055,7 @@
         "intro": {
           "section": "Program Information",
           "subsection": "Information for Primary Contact",
-          "hint": "Please enter the name of the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
+          "hint": "Please identify the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
           "spreadsheet": "Program Information",
           "exportSection": "Information for Primary Contact"
         }
@@ -1194,7 +1203,7 @@
         "intro": {
           "exportSectionHeader": "Program Reporting Information",
           "section": "MLR Reporting",
-          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+          "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittances",
           "spreadsheet": "Program Information & MLR Reporting",
           "info": [
             {
@@ -1222,12 +1231,35 @@
         "id": "mlrd-modal",
         "fields": [
           {
+            "id": "report_planName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "I. MCO, PIHP, or PAHP Name",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "\"Managed Care Enrollment by Program and Plan\"",
+                  "props": {
+                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
+                }
+              ]
+            }
+          },
+          {
             "id": "report_programName",
             "type": "textarea",
             "validation": "text",
             "props": {
-              "label": "I. Program name",
-              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
+              "label": "J. Program name",
+              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
           {
@@ -1235,25 +1267,33 @@
             "type": "checkbox",
             "validation": "checkbox",
             "props": {
-              "label": "J. Program type",
-              "hint": "Select the program type definition(s) that best describes the program(s) entered in “I. Program name”.",
+              "label": "K. Program type",
+              "hint": "Select the program type definition(s) that best describes the program(s) entered in “J. Program name”.",
               "choices": [
-                {
-                  "id": "cQhGnyBmiXszLqrx6b2Cp8",
-                  "label": "Behavioral Health Only"
-                },
                 {
                   "id": "G4inXZJWYFsDZYGk75cW7L",
                   "label": "Comprehensive MCO"
                 },
                 {
-                  "id": "J8PmLy8nKxTK55XJch2jDw",
-                  "label": "Comprehensive MCO + MLTSS"
+                  "id": "6krUQZyhpmHHoagQWgUzxx",
+                  "label": "PIHP"
                 },
-                { "id": "PamL56cwvY3Rbdqmnigvve", "label": "Dental Only" },
-                { "id": "hqjmUS69rVTEKToDxWLXtz", "label": "MLTSS Only" },
-                { "id": "6krUQZyhpmHHoagQWgUzxx", "label": "Other PIHP" },
-                { "id": "VNp9mDXgv9ixL2H8JHVBBE", "label": "Other PAHP" }
+                {
+                  "id": "VNp9mDXgv9ixL2H8JHVBBE",
+                  "label": "PAHP"
+                },
+                {
+                  "id": "cQhGnyBmiXszLqrx6b2Cp8",
+                  "label": "Behavioral Health"
+                },
+                {
+                  "id": "PamL56cwvY3Rbdqmnigvve",
+                  "label": "Dental"
+                },
+                {
+                  "id": "hqjmUS69rVTEKToDxWLXtz",
+                  "label": "MLTSS"
+                }
               ]
             }
           },
@@ -1262,7 +1302,7 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "K. Eligibility group",
+              "label": "L. Eligibility group",
               "hint": [
                 {
                   "type": "span",
@@ -1333,7 +1373,7 @@
                         "parentFieldName": "report_eligibilityGroup"
                       },
                       "props": {
-                        "label": "L. Eligibility group description",
+                        "label": "M. Eligibility group description",
                         "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children &lt;19 years; Aged, Blind, Disabled; Pregnant Women."
                       }
                     }
@@ -1342,29 +1382,7 @@
               ]
             }
           },
-          {
-            "id": "report_planName",
-            "type": "text",
-            "validation": "text",
-            "props": {
-              "label": "M. MCO, PIHP, or PAHP Name",
-              "hint": [
-                {
-                  "type": "span",
-                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
-                },
-                {
-                  "type": "externalLink",
-                  "content": "\"Managed Care Enrollment by Program and Plan\"",
-                  "props": {
-                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
-                    "target": "_blank",
-                    "aria-label": "Link opens in new tab"
-                  }
-                }
-              ]
-            }
-          },
+
           {
             "id": "report_reportingPeriodStartDate",
             "type": "date",
@@ -1410,7 +1428,7 @@
                       },
                       "props": {
                         "label": "P.2 Explanation of reporting period discrepancy",
-                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
                       }
                     }
                   ]

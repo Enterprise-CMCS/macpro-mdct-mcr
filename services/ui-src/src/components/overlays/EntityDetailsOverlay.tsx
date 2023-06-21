@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // components
 import { Form, ReportContext, ReportPageIntro } from "components";
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
@@ -16,7 +16,6 @@ import { filterFormData, useUser } from "utils";
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
 import { EntityContext } from "components/reports/EntityProvider";
-import { Spinner } from "@cmsgov/design-system";
 export const EntityDetailsOverlay = ({
   entityType,
   form,
@@ -148,7 +147,7 @@ export const EntityDetailsOverlay = ({
               sx={sx.saveButton}
             >
               {submitting ? (
-                <Spinner size="small" />
+                <Spinner size="md" />
               ) : report?.locked ? (
                 "Return"
               ) : (
