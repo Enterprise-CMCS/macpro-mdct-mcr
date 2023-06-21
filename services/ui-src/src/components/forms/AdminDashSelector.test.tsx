@@ -2,16 +2,19 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
-import { AdminDashSelector } from "components";
+import { AdminDashSelector, ReportContext } from "components";
 // utils
 import {
   mockAdminUser,
   mockLDFlags,
+  mockMlrReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
+// types
+import { ReportContextShape } from "types";
 
 // MOCKS
 
@@ -19,9 +22,13 @@ jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const adminDashSelectorView = (
-  <RouterWrappedComponent>
-    <AdminDashSelector verbiage={verbiage.readOnly} />
-  </RouterWrappedComponent>
+  context: ReportContextShape = mockMlrReportContext
+) => (
+  <ReportContext.Provider value={context}>
+    <RouterWrappedComponent>
+      <AdminDashSelector verbiage={verbiage.readOnly} />
+    </RouterWrappedComponent>
+  </ReportContext.Provider>
 );
 
 mockLDFlags.setDefault({ mlrReport: true });
@@ -34,17 +41,17 @@ describe("Test AdminDashSelector view", () => {
   });
 
   test("Check that AdminDashSelector view renders", () => {
-    render(adminDashSelectorView);
+    render(adminDashSelectorView());
     expect(screen.getByText(verbiage.readOnly.header)).toBeVisible();
   });
 
   test("Check that submit button is disabled if no report type is selected", () => {
-    render(adminDashSelectorView);
+    render(adminDashSelectorView());
     expect(screen.getByRole("button").hasAttribute("disabled")).toBeTruthy;
   });
 
   test("Form submits correctly", async () => {
-    const result = render(adminDashSelectorView);
+    const result = render(adminDashSelectorView());
     const form = result.container;
     const dropdownInput = form.querySelector("[name='state']")!;
     await fireEvent.change(dropdownInput, { target: { value: "CA" } });
@@ -62,7 +69,7 @@ describe("Test mlrReport feature flag functionality", () => {
   });
   test("if mlrReport flag is true, MLR radio choice should be visible", async () => {
     mockLDFlags.set({ mlrReport: true });
-    render(adminDashSelectorView);
+    render(adminDashSelectorView());
     expect(
       screen.getByLabelText("Medicaid Medical Loss Ratio (MLR)")
     ).toBeVisible();
@@ -70,7 +77,7 @@ describe("Test mlrReport feature flag functionality", () => {
 
   test("if mlrReport flag is false, MLR available verbiage should not be visible", async () => {
     mockLDFlags.set({ mlrReport: false });
-    render(adminDashSelectorView);
+    render(adminDashSelectorView());
     const mlrRadioChoice = screen.queryByLabelText(
       "Medicaid Medical Loss Ratio (MLR)"
     );
@@ -80,7 +87,7 @@ describe("Test mlrReport feature flag functionality", () => {
 
 describe("Test AdminDashSelector view accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(adminDashSelectorView);
+    const { container } = render(adminDashSelectorView());
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
