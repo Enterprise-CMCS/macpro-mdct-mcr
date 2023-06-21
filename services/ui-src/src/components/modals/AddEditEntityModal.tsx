@@ -2,8 +2,7 @@ import { useContext, useState } from "react";
 import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
-import { Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Text, Spinner } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
@@ -105,7 +104,7 @@ export const AddEditEntityModal = ({
           ? verbiage.addEditModalHint
           : undefined,
         actionButtonText: submitting ? (
-          <Spinner size="small" />
+          <Spinner size="md" />
         ) : report?.locked ? (
           "Close"
         ) : (

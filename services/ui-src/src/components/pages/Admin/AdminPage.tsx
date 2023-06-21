@@ -1,7 +1,14 @@
 import { useState, useContext, useEffect } from "react";
 // components
-import { Box, Button, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import {
+  Box,
+  Button,
+  Collapse,
+  Flex,
+  Heading,
+  Text,
+  Spinner,
+} from "@chakra-ui/react";
 import {
   AdminBannerContext,
   AdminBannerForm,
@@ -64,7 +71,7 @@ export const AdminPage = () => {
         <Text sx={sx.sectionHeader}>Current Banner</Text>
         {isLoading ? (
           <Flex sx={sx.spinnerContainer}>
-            <Spinner />
+            <Spinner size="md" />
           </Flex>
         ) : (
           <>
@@ -95,7 +102,7 @@ export const AdminPage = () => {
                       onClick={deleteBanner}
                     >
                       {deleting ? (
-                        <Spinner size="small" />
+                        <Spinner size="md" />
                       ) : (
                         "Delete Current Banner"
                       )}

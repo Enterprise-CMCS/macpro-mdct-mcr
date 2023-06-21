@@ -9,11 +9,11 @@ export default {
   },
   metadata: {
     author: "CMS",
-    subject: "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+    subject: "Medicaid Medical Loss Ratio (MLR) & Remittances",
     language: "English",
   },
   reportPage: {
-    heading: "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+    heading: "Medicaid Medical Loss Ratio (MLR) & Remittances",
     metadataTableHeaders: {
       submissionName: "Submission name",
       lastEdited: "Last edited",
@@ -36,7 +36,6 @@ export default {
     notes: "Q. Misc notes (optional)",
   },
   intro: {
-    exportSectionHeader:
-      "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+    exportSectionHeader: "Medicaid Medical Loss Ratio (MLR) & Remittances",
   },
 };
