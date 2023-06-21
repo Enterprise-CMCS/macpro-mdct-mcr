@@ -12,7 +12,7 @@ Feature: Autosave
         And I click the "Save" button
         Then there is an "Autosave Test" program
 
-        Given I click the "Enter" button
+        Given I click the "Edit" button
 
         Then the "/mcpar/program-information/point-of-contact" page is loaded
         And I wait 1000 milliseconds between inputs
