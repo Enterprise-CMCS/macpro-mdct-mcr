@@ -12,8 +12,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
 } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 // assets
 import closeIcon from "assets/icons/icon_close.png";
 
@@ -60,7 +60,7 @@ export const Modal = ({
               type="submit"
               data-testid="modal-submit-button"
             >
-              {submitting ? <Spinner size="md" /> : content.actionButtonText}
+              {submitting ? <Spinner size="small" /> : content.actionButtonText}
             </Button>
           )}
           {onConfirmHandler && (
@@ -69,7 +69,7 @@ export const Modal = ({
               onClick={() => onConfirmHandler()}
               data-testid="modal-submit-button"
             >
-              {submitting ? <Spinner size="md" /> : content.actionButtonText}
+              {submitting ? <Spinner size="small" /> : content.actionButtonText}
             </Button>
           )}
           {content.closeButtonText && (

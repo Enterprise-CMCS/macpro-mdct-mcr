@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import * as DOMPurify from "dompurify";
+import { sanitize } from "dompurify";
 import parse from "html-react-parser";
 // components
 import { Link as RouterLink } from "react-router-dom";
@@ -86,22 +86,8 @@ export function createElementWithChildren(
 
 // sanitize and parse html to react elements
 export const sanitizeAndParseHtml = (html: string) => {
-  // If a tag has the "target" attribute, add it.
-  DOMPurify.addHook("afterSanitizeAttributes", function (node) {
-    // set all elements owning target to target=_blank
-    if ("target" in node) {
-      node.setAttribute("target", "_blank");
-      node.setAttribute("rel", "noopener");
-      node.setAttribute(
-        "aria-label",
-        `${node.textContent} (link opens in new tab)`
-      );
-    }
-  });
-  const sanitizedHtml = DOMPurify.sanitize(html);
-
+  const sanitizedHtml = sanitize(html);
   const parsedHtml = parse(sanitizedHtml);
-
   return parsedHtml;
 };
 

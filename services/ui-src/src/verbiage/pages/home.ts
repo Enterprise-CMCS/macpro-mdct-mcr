@@ -1,6 +1,6 @@
 export default {
   intro: {
-    header: "Managed Care Reporting Portal",
+    header: "Online Managed Care Reporting Portal",
     body: {
       preLinkText:
         "Get started by adding all the Medicaid managed care programs for your state. Learn more about this ",

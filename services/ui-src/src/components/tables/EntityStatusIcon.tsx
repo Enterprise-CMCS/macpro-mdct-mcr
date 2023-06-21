@@ -25,7 +25,7 @@ export const EntityStatusIcon = ({ entity, isPdf }: Props) => {
           <Image
             sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
             src={isPdf ? successIconDark : successIcon}
-            alt={isPdf ? "" : "complete icon"}
+            alt="complete icon"
             boxSize="xl"
           />
           {isPdf && (
@@ -39,7 +39,7 @@ export const EntityStatusIcon = ({ entity, isPdf }: Props) => {
           <Image
             sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
             src={isPdf ? unfinishedIconDark : unfinishedIcon}
-            alt={isPdf ? "" : "warning icon"}
+            alt="warning icon"
             boxSize="xl"
           />
           {isPdf && (
