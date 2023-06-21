@@ -183,8 +183,7 @@
                   "content": "42 CFR 438.71",
                   "props": {
                     "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.71",
-                    "target": "_blank",
-                    "aria-label": "42 CFR 438.71 (link opens in new tab)."
+                    "target": "_blank"
                   }
                 },
                 {

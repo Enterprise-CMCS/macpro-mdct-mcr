@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
-import { Box, Center, Heading, Text, Tr, Td, Spinner } from "@chakra-ui/react";
+import { Box, Heading, Text, Tr, Td, Center } from "@chakra-ui/react";
 import {
   ExportedReportMetadataTable,
   ExportedReportWrapper,
@@ -9,6 +9,7 @@ import {
   ReportContext,
   Table,
 } from "components";
+import { Spinner } from "@cmsgov/design-system";
 // types
 import {
   PageTypes,
@@ -86,7 +87,7 @@ export const ExportedReportPage = () => {
         </Box>
       )) || (
         <Center>
-          <Spinner size="lg" />
+          <Spinner size="big" />
         </Center>
       )}
     </Box>
@@ -101,8 +102,8 @@ export const reportTitle = (
   switch (reportType) {
     case ReportType.MCPAR:
       return `${reportPage.heading} ${report.fieldData.stateName}: ${report.programName}`;
-    case ReportType.NAAAR:
     case ReportType.MLR:
+    case ReportType.NAAAR:
       return `${report.fieldData.stateName}: ${reportPage.heading}`;
     default:
       assertExhaustive(reportType);

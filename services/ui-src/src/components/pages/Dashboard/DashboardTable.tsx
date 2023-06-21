@@ -1,5 +1,6 @@
 // components
-import { Button, Image, Td, Tr, Spinner } from "@chakra-ui/react";
+import { Button, Image, Td, Tr } from "@chakra-ui/react";
+import { Spinner } from "@cmsgov/design-system";
 import { Table } from "components";
 // utils
 import {
@@ -71,7 +72,7 @@ export const DashboardTable = ({
             isDisabled={report?.archived}
           >
             {entering && reportId == report.id ? (
-              <Spinner size="md" />
+              <Spinner size="small" />
             ) : (
               "Enter"
             )}
@@ -201,7 +202,11 @@ const AdminReleaseButton = ({
         sx={sxOverride.adminActionButton}
         onClick={() => releaseReport!(report)}
       >
-        {releasing && reportId === report.id ? <Spinner size="md" /> : "Unlock"}
+        {releasing && reportId === report.id ? (
+          <Spinner size="small" />
+        ) : (
+          "Unlock"
+        )}
       </Button>
     </Td>
   );
@@ -222,7 +227,7 @@ const AdminArchiveButton = ({
         onClick={() => archiveReport!(report)}
       >
         {archiving && reportId === report.id ? (
-          <Spinner size="md" />
+          <Spinner size="small" />
         ) : report?.archived ? (
           "Unarchive"
         ) : (

@@ -38,7 +38,6 @@ export const ReportContext = createContext<ReportContextShape>({
   fetchReportsByState: Function,
   // selected report
   clearReportSelection: Function,
-  clearReportsByState: Function,
   setReportSelection: Function,
   errorMessage: undefined as string | undefined,
   lastSavedTime: undefined as string | undefined,
@@ -72,8 +71,6 @@ export const ReportProvider = ({ children }: Props) => {
     selectedState: string
   ) => {
     try {
-      // clear stored reports by state prior to fetching from current state
-      clearReportsByState();
       const result = await getReportsByState(reportType, selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
     } catch (e: any) {
@@ -142,10 +139,6 @@ export const ReportProvider = ({ children }: Props) => {
     localStorage.setItem("selectedReport", "");
   };
 
-  const clearReportsByState = () => {
-    setReportsByState(undefined);
-  };
-
   const setReportSelection = async (report: ReportShape) => {
     setReport(report);
     localStorage.setItem("selectedReportType", report.reportType);
@@ -183,7 +176,6 @@ export const ReportProvider = ({ children }: Props) => {
       fetchReportsByState,
       // selected report
       clearReportSelection,
-      clearReportsByState,
       setReportSelection,
       errorMessage: error,
       lastSavedTime,

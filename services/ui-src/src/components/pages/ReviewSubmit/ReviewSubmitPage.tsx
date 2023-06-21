@@ -21,8 +21,8 @@ import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
-import iconSearchDefault from "assets/icons/icon_search_blue.png";
-import iconSearchSubmitted from "assets/icons/icon_search_white.png";
+import iconSearch from "assets/icons/icon_search.png";
+import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const ReviewSubmitPage = () => {
   const { report, fetchReport, submitReport } = useContext(ReportContext);
@@ -123,14 +123,14 @@ const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
       sx={!isSubmitted ? sx.printButton : sx.downloadButton}
       leftIcon={
         !isSubmitted ? (
-          <Image src={iconSearchDefault} alt="Search Icon" height=".9rem" />
+          <Image src={iconSearch} alt="Search Icon" height=".9rem" />
         ) : (
-          <Image src={iconSearchSubmitted} alt="Search Icon" height=".9rem" />
+          <Image src={pdfIcon} alt="PDF Icon" height="1rem" />
         )
       }
       variant={!isSubmitted ? "outline" : "primary"}
     >
-      {print.printButtonText}
+      {!isSubmitted ? print.printButtonText : print.downloadButtonText}
     </Button>
   );
 };

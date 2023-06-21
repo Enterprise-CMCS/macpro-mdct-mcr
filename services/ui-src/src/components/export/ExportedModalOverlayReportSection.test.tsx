@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { ReportContext } from "components/reports/ReportProvider";
 import { axe } from "jest-axe";
 import { ModalOverlayReportPageShape, ReportType } from "types";
@@ -136,7 +136,7 @@ describe("Test renderModalOverlayTableBody", () => {
   });
   it("Should render data correctly", async () => {
     mockReportContext.report.fieldData.program = [mockMlrProgram];
-    const { container, findByText } = render(
+    const { container, findByAltText, findByText } = render(
       exportedModalOverlayReportSectionComponent
     );
     expect(await container.querySelectorAll("th").length).toEqual(
@@ -151,10 +151,8 @@ describe("Test renderModalOverlayTableBody", () => {
       mockReportContext.report.fieldData.program.length + 1
     );
 
-    // Check that icon is visible and has empty alt-text
-    const completeIcon = screen.getByRole("img");
-    expect(completeIcon).toBeVisible();
-    expect(completeIcon).toHaveAttribute("alt", "");
+    // Correct status
+    expect(await findByAltText("complete icon")).toBeVisible();
 
     // Correct index
     expect(await findByText("1")).toBeVisible();
