@@ -72,8 +72,8 @@ jobs:
             npm install jira-client  --legacy-peer-deps
             npm install @actions/core --legacy-peer-deps
           
-        - name: Run script to parse Snyk output
-          uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.0
+        - name: use the custom github  action to parse Snyk output
+          uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.1
           with:
             jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
             jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
