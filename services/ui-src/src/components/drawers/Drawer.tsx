@@ -117,10 +117,11 @@ const sx = {
   },
   drawerCloseButton: {
     position: "absolute",
-    top: "2rem",
+    top: "2.25rem",
     right: "2rem",
     span: {
       margin: "0 .25rem",
+      paddingTop: "0.06rem",
       svg: {
         fontSize: "xs",
         width: "xs",
