@@ -219,7 +219,7 @@ const traverseRoute = (route) => {
 const completeDrawerForm = (drawerForm) => {
   if (drawerForm) {
     //enter the drawer, then fill out the form and save it
-    cy.get('button:contains("Edit")').focus().click();
+    cy.get('button:contains("Enter")').focus().click();
     completeFrom(drawerForm);
     cy.get('button:contains("Save")').focus().click();
   }

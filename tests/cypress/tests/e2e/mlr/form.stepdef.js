@@ -80,7 +80,7 @@ const completeModalForm = (modalForm, buttonText) => {
 const completeOverlayForm = (overlayForm) => {
   //open the modal, then fill out the form and save it
   if (overlayForm) {
-    cy.get(`button:contains("Edit")`).focus().click();
+    cy.get(`button:contains("Enter")`).focus().click();
     completeFrom(overlayForm);
     cy.get('button:contains("Save")').focus().click();
   }

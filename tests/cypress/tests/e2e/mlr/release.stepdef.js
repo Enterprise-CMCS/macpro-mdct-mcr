@@ -99,7 +99,7 @@ Then("the report will have the correct content pre-filled", () => {
   cy.findByText(programName)
     .last()
     .parent()
-    .find('button:contains("View")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
   cy.get('input[type="radio"]').first().should("be.checked");
