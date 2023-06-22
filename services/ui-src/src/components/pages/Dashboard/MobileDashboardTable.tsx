@@ -80,8 +80,10 @@ export const MobileDashboardTable = ({
             >
               {entering && reportId == report.id ? (
                 <Spinner size="md" />
+              ) : isStateLevelUser && !report?.locked ? (
+                "Edit"
               ) : (
-                "Enter"
+                "View"
               )}
             </Button>
           </Box>
