@@ -4,6 +4,7 @@ import {
   ratio,
   validNumber,
   numberNotLessThanOne,
+  numberNotLessThanZero,
 } from "./completionSchemas";
 
 describe("Schemas", () => {
@@ -20,6 +21,8 @@ describe("Schemas", () => {
   ];
   const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
 
+  const zeroTest = ["0", "0.0"];
+
   const goodPositiveNumberTestCases = [
     "123",
     "123.00",
@@ -28,6 +31,16 @@ describe("Schemas", () => {
     "1,2,30",
     "1230",
     "123450123..,,,.123123123123",
+  ];
+
+  const negativeNumberTestCases = [
+    "-123",
+    "-123.00",
+    "-123..00",
+    "-1,230",
+    "-1,2,30",
+    "-1230",
+    "-123450123..,,,.123123123123",
   ];
 
   const goodRatioTestCases = [
@@ -83,9 +96,36 @@ describe("Schemas", () => {
     testNumberSchema(number(), badNumberTestCases, false);
   });
 
-  test("Evaluate Number Schema using number positive scheme", () => {
+  // testing numberNotLessThanOne scheme
+  test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
     testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
     testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), zeroTest, false);
+  });
+
+  test("Test negative values using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+  });
+
+  // testing numberNotLessThanZero scheme
+  test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
+    testNumberSchema(
+      numberNotLessThanZero(),
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
+  });
+
+  test("Test negative values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {

@@ -5,6 +5,7 @@ import {
   ratio,
   validNumber,
   numberNotLessThanOne,
+  numberNotLessThanZero,
 } from "./schemas";
 
 describe("Schemas", () => {
@@ -128,6 +129,7 @@ describe("Schemas", () => {
     testNumberSchema(ratio(), badRatioTestCases, false);
   });
 
+  // testing numberNotLessThanOne scheme
   test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
     testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
     testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
@@ -139,6 +141,24 @@ describe("Schemas", () => {
 
   test("Test negative values using numberNotLessThanOne scheme", () => {
     testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+  });
+
+  // testing numberNotLessThanZero scheme
+  test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
+    testNumberSchema(
+      numberNotLessThanZero(),
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
+  });
+
+  test("Test negative values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
   });
 
   test("Test dateOptional schema", () => {
