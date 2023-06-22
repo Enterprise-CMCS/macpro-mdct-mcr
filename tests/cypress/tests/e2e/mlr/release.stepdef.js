@@ -17,7 +17,7 @@ When("I create, fill, and submit a report", () => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
@@ -99,7 +99,7 @@ Then("the report will have the correct content pre-filled", () => {
   cy.findByText(programName)
     .last()
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("View")')
     .focus()
     .click();
   cy.get('input[type="radio"]').first().should("be.checked");
@@ -132,7 +132,7 @@ When("I create, fill but don't submit a report", () => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
@@ -145,7 +145,7 @@ When("I fill and re-submit that report", () => {
   cy.findByText(programName)
     .last()
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 

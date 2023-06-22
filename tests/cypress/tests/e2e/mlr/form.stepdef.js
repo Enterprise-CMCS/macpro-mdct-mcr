@@ -15,7 +15,7 @@ When("I submit a new MLR program", () => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
@@ -80,7 +80,7 @@ const completeModalForm = (modalForm, buttonText) => {
 const completeOverlayForm = (overlayForm) => {
   //open the modal, then fill out the form and save it
   if (overlayForm) {
-    cy.get(`button:contains("Enter")`).focus().click();
+    cy.get(`button:contains("Edit")`).focus().click();
     completeFrom(overlayForm);
     cy.get('button:contains("Save")').focus().click();
   }
