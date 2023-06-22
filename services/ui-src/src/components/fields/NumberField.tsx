@@ -2,13 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
-import { ReportContext, TextField } from "components";
+import { ReportContext } from "components";
+import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 // utils
 import {
   applyCustomMask,
   autosaveFieldData,
   customMaskMap,
   getAutosaveFields,
+  labelTextWithOptional,
+  parseCustomHtml,
   useUser,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
@@ -17,29 +20,26 @@ import { EntityContext } from "components/reports/EntityProvider";
 export const NumberField = ({
   name,
   label,
+  hint,
   placeholder,
   mask,
   sxOverride,
   autosave,
+  nested,
+  styleAsOptional,
   ...props
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
+  const { full_name, state } = useUser().user ?? {};
+  const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
-  // get form context
-  const form = useFormContext();
-  const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state } = useUser().user ?? {};
 
+  // get form context and register field
+  const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
 
-  if (mask === "currency") sx[".ds-c-field"].paddingLeft = "1.5rem";
-  else if (mask === "percentage") sx[".ds-c-field"].paddingRight = "1.75rem";
-  else {
-    sx[".ds-c-field"].paddingLeft = ".5rem";
-    sx[".ds-c-field"].paddingRight = ".5rem";
-  }
   useEffect(() => {
     if (!fieldIsRegistered) {
       form.register(name);
@@ -117,22 +117,33 @@ export const NumberField = ({
       });
     }
   };
+
+  // prepare error message, hint, and classes
+  const formErrorState = form?.formState?.errors;
+  const errorMessage = formErrorState?.[name]?.message;
+  const parsedHint = hint && parseCustomHtml(hint);
+  const maskClass = mask || "";
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
+
   return (
     <Box sx={{ ...sx, ...sxOverride }}>
-      <Box sx={sx.numberFieldContainer}>
-        <TextField
+      <Box sx={sx.numberFieldContainer} className={maskClass}>
+        <CmsdsTextField
           id={name}
           name={name}
-          label={label || ""}
+          label={labelText || ""}
+          hint={parsedHint}
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
           value={displayValue}
+          errorMessage={errorMessage}
           {...props}
         />
-        <FieldOverlay
+        <SymbolOverlay
           fieldMask={mask}
-          nested={props?.nested}
+          nested={nested}
           disabled={props?.disabled}
         />
       </Box>
@@ -152,44 +163,27 @@ interface Props {
   [key: string]: any;
 }
 
-export const FieldOverlay = ({
+export const SymbolOverlay = ({
   fieldMask,
   nested,
   disabled,
-}: FieldOverlayProps) => {
-  switch (fieldMask) {
-    case "percentage":
-      return nested ? (
-        <Box
-          className={disabled ? "disabled" : undefined}
-          sx={sx.nestedOverlayRight}
-        >
-          {" % "}
-        </Box>
-      ) : (
-        <Box className={disabled ? "disabled" : undefined} sx={sx.overlayRight}>
-          {" % "}
-        </Box>
-      );
-    case "currency":
-      return nested ? (
-        <Box
-          className={disabled ? "disabled" : undefined}
-          sx={sx.nestedOverlayLeft}
-        >
-          {" $ "}
-        </Box>
-      ) : (
-        <Box className={disabled ? "disabled" : undefined} sx={sx.overlayLeft}>
-          {" $ "}
-        </Box>
-      );
-    default:
-      return <></>;
-  }
+}: SymbolOverlayProps) => {
+  const symbolMap = { percentage: "%", currency: "$" };
+  const symbol = fieldMask
+    ? symbolMap[fieldMask as keyof typeof symbolMap]
+    : undefined;
+  const disabledClass = disabled ? "disabled" : "";
+  const nestedClass = nested ? "nested" : "";
+  return symbol ? (
+    <Box
+      className={`${disabledClass} ${nestedClass} `}
+      sx={sx.symbolOverlay}
+    >{` ${symbol} `}</Box>
+  ) : (
+    <></>
+  );
 };
-
-interface FieldOverlayProps {
+interface SymbolOverlayProps {
   fieldMask?: keyof typeof customMaskMap;
   nested?: boolean;
   disabled?: boolean;
@@ -203,37 +197,33 @@ const sx = {
   },
   numberFieldContainer: {
     position: "relative",
+    "&.currency": {
+      ".ds-c-field": {
+        paddingLeft: "1.5rem",
+      },
+    },
+    "&.percentage": {
+      ".ds-c-field": {
+        paddingRight: "1.75rem",
+      },
+    },
   },
-  overlayRight: {
+  symbolOverlay: {
     position: "absolute",
-    bottom: "11px",
-    left: "213px",
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",
-  },
-  nestedOverlayRight: {
-    position: "absolute",
-    bottom: "15px",
-    left: "245px",
-    paddingTop: "1px",
-    fontSize: "lg",
-    fontWeight: "700",
-  },
-  overlayLeft: {
-    position: "absolute",
-    bottom: "11px",
-    left: "10px",
-    paddingTop: "1px",
-    fontSize: "lg",
-    fontWeight: "700",
-  },
-  nestedOverlayLeft: {
-    position: "absolute",
-    bottom: "15px",
-    left: "245px",
-    paddingTop: "1px",
-    fontSize: "lg",
-    fontWeight: "700",
+    "&.nested": {
+      bottom: "15px",
+      left: "245px",
+    },
+    ".percentage &": {
+      bottom: "11px",
+      left: "213px",
+    },
+    ".currency &": {
+      bottom: "11px",
+      left: "10px",
+    },
   },
 };

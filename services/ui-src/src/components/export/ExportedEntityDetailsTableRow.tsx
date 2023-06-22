@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // components
-import { Tr, Td, Text } from "@chakra-ui/react";
+import { Box, Tr, Td, Text } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types
 import { FormField, FormLayoutElement, isFieldElement } from "types";
@@ -28,10 +28,6 @@ export const ExportedEntityDetailsTableRow = ({
   const isOtherTextEntry = formField.id.endsWith("-otherText");
   if (isOtherTextEntry) return null;
 
-  const labelTextWithOptional = (label: string) => {
-    return `${label} (optional)`;
-  };
-
   return (
     <Tr data-testid="exportRow">
       {/* number column/cell */}
@@ -49,11 +45,18 @@ export const ExportedEntityDetailsTableRow = ({
           <>
             {formFieldInfo.label && (
               <Text sx={sx.fieldLabel} fontSize={"sm"}>
-                {!isDynamicField
-                  ? optional
-                    ? labelTextWithOptional(formFieldInfo.label)
-                    : formFieldInfo.label
-                  : formField?.props?.label}
+                {!isDynamicField ? (
+                  optional ? (
+                    <Box>
+                      {formFieldInfo.label}
+                      <span className="optional-text"> (optional)</span>
+                    </Box>
+                  ) : (
+                    formFieldInfo.label
+                  )
+                ) : (
+                  formField?.props?.label
+                )}
               </Text>
             )}
             {showHintText && formFieldInfo.hint && (
