@@ -106,17 +106,17 @@ export function getEntityTableComponents(
 ) {
   return entities?.map((entity, idx) => {
     const {
+      report_planName,
       report_programName,
       mlrEligibilityGroup,
       reportingPeriod,
-      report_planName,
     } = getEntityDetailsMLR(entity);
 
     const programInfo = [
+      report_planName,
       report_programName,
       mlrEligibilityGroup,
       reportingPeriod,
-      report_planName,
     ];
 
     const entityHeading = `${idx + 1}. ${

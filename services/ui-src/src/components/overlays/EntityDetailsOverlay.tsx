@@ -97,10 +97,10 @@ export const EntityDetailsOverlay = ({
   const { userIsEndUser } = useUser().user ?? {};
 
   const programInfo = [
+    report_planName,
     report_programName,
     eligibilityGroup(),
     reportingPeriod,
-    report_planName,
   ];
 
   return (
@@ -214,7 +214,7 @@ const sx = {
         whiteSpace: "break-spaces",
         fontSize: "xl",
         lineHeight: "1.75rem",
-        "&:last-child": {
+        "&:first-child": {
           fontWeight: "bold",
         },
       },

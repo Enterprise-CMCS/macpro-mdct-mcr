@@ -31,10 +31,10 @@ export const MobileEntityRow = ({
   }, [report]);
 
   const programInfo = [
+    report_planName,
     report_programName,
     eligibilityGroup(entity),
     reportingPeriod,
-    report_planName,
   ];
 
   return (

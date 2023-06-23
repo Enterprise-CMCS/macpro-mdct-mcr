@@ -177,7 +177,7 @@
         "exportSectionHeader": "Program Reporting Information",
         "dashboardTitle": "MLR report total count:",
         "countEntitiesInTitle": true,
-        "tableHeader": "Program name <br/> Eligibility group <br/> MLR reporting period <br/> MCO/PIHP/PAHP name",
+        "tableHeader": "MCO/PIHP/PAHP name <br/> Program name <br/> Eligibility group <br/> MLR reporting period",
         "addEntityButtonText": "Add program reporting information",
         "editEntityButtonText": "Edit info",
         "deleteModalTitle": "Delete program reporting information for this report?",
