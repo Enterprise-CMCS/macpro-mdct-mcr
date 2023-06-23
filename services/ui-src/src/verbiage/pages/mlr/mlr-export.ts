@@ -30,7 +30,7 @@ export default {
     status: "Status",
     index: "#",
     submissionInformation:
-      "I., K. & L., N. & O., M. <br /> Program name <br/> Eligibility group & description <br/> MLR reporting period dates <br/> MCO, PIHP, or PAHP name",
+      "I., K. & L., N. & O., M. <br /> MCO, PIHP, or PAHP name <br /> Program name <br/> Eligibility group & description <br/> MLR reporting period dates",
     programType: "J. Program type",
     discrepancyExplanation: "P. Reporting period discrepancy explanation",
     notes: "Q. Misc notes (optional)",
