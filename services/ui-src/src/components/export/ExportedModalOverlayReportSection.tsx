@@ -84,10 +84,10 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text sx={sx.entityList}>
+                {entity.report_planName ?? "Not entered"} <br />
                 {report_programName} <br />
                 {renderHtml(mlrEligibilityGroup)} <br />
-                {reportingPeriod} <br />
-                {entity.report_planName ?? "Not entered"}
+                {reportingPeriod}
               </Text>
             </Td>
             <Td>
