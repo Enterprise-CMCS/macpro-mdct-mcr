@@ -14,6 +14,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@aws-sdk/client-sts": "3.360.0",
     "@chakra-ui/react": "^1.7.0",
     "@cmsgov/design-system": "^3.8.0",
     "@emotion/react": "^11",
@@ -76,7 +77,9 @@
   },
   "resolutions": {
     "@types/react": "17.0.45",
-    "@types/react-dom": "17.0.17"
+    "@types/react-dom": "17.0.17",
+    "nth-check": "^2.1.1",
+    "fast-xml-parser": "^4.1.2"
   },
   "jest": {
     "coverageReporters": [
