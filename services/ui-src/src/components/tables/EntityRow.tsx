@@ -29,10 +29,10 @@ export const EntityRow = ({
   }, [report]);
 
   const programInfo = [
+    report_planName,
     report_programName,
     eligibilityGroup(entity),
     reportingPeriod,
-    report_planName,
   ];
 
   return (
@@ -119,7 +119,7 @@ const sx = {
         paddingTop: "0.125rem",
         paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
-        "&:last-of-type": {
+        "&:first-of-type": {
           fontWeight: "bold",
           fontSize: "md",
         },
