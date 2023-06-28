@@ -6,6 +6,9 @@ import config from "config";
 // utils
 import { ApiProvider, UserProvider } from "utils";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
+// store
+import { Provider } from "react-redux";
+import { store } from "store";
 // components
 import { App, Error } from "components";
 // styles
@@ -41,7 +44,9 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
           <ApiProvider>
             <ChakraProvider theme={theme}>
               <LDProvider>
-                <App />
+                <Provider store={store}>
+                  <App />
+                </Provider>
               </LDProvider>
             </ChakraProvider>
           </ApiProvider>
