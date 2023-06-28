@@ -38,7 +38,6 @@
     "eslint-plugin-jsx-a11y": "^6.x",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "json5": "^2.2.2",
     "prettier": "^2.4.1",
     "serverless": "^3.27.0",
     "serverless-api-client-certificate": "^1.0.2",
