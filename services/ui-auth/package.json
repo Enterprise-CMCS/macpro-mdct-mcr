@@ -9,6 +9,6 @@
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
-    "@aws-sdk/client-sts": "3.362.0"
+    "fast-xml-parser": "^4.2.5"
   }
 }
