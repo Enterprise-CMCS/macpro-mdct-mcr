@@ -59,6 +59,7 @@
     "yargs": "^16.1.1"
   },
   "resolutions": {
-    "loader-utils": "^3.2.1"
+    "loader-utils": "^3.2.1",
+    "jsonwebtoken": "^9.0.0"
   }
 }
