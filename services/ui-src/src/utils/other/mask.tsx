@@ -1,26 +1,11 @@
+// REGEX
+const validNumberRegex = new RegExp("/[d.-]+/"); // digits (0-9), decimal (.), negative (-)
+
 export const customMaskMap = {
   "comma-separated": convertToCommaSeparatedString,
   percentage: convertToCommaSeparatedString,
   ratio: convertToCommaSeparatedRatioString,
   currency: convertToCommaSeparatedString,
-};
-
-// returns whether a given mask is a valid custom mask
-export const isValidCustomMask = (
-  maskName: string | undefined
-): maskName is keyof typeof customMaskMap => {
-  return (
-    maskName !== undefined && Object.keys(customMaskMap).includes(maskName)
-  );
-};
-
-/**
- * checks if provided string contains only numbers
- * @param {String} value
- * @returns {Boolean}
- */
-export const isValidNumericalString = (value: string): boolean => {
-  return !!value?.toString().match(/\d/);
 };
 
 /**
@@ -79,26 +64,20 @@ export function convertToCommaSeparatedRatioString(value: string): string {
   return cleanedValue;
 }
 
-/**
- * Converts string to the appropriate custom masked format
- * @param {String} value
- * @returns {String}
- */
-export function maskValue(
-  value: string,
-  mask: keyof typeof customMaskMap
-): string {
-  const selectedCustomMask = customMaskMap[mask];
-  if (isValidNumericalString(value)) {
-    return selectedCustomMask(value);
-  } else return value;
-}
-
 // if valid custom mask, return masked value; else return value
-export const applyCustomMask = (value: string, maskName: any): string => {
-  let formattedValue: string;
-  if (value && isValidCustomMask(maskName)) {
-    formattedValue = maskValue(value, maskName);
-  } else formattedValue = value;
-  return formattedValue.toString();
+export const applyCustomMask = (
+  value: string,
+  maskName: keyof typeof customMaskMap | null
+): string => {
+  // CHECK FOR EDGE CASES
+  /* if maskName is specified as null, bypass all masking and return user-inputted value */
+  if (maskName === null) return value;
+  /* if not a valid number, bypass all masking and return user-inputted value */
+  const isValidNumber = validNumberRegex.test(value);
+  if (!isValidNumber) return value;
+
+  // apply specified mask or default to comma-separated mask
+  const maskToApply = customMaskMap[maskName] || convertToCommaSeparatedString;
+  return maskToApply(value).toString();
+  /* is this .toString() really necessary at this point-- already been stringified earlier?*/
 };
