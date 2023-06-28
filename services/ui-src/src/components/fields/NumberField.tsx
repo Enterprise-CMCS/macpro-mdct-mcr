@@ -86,12 +86,12 @@ export const NumberField = ({
     const maskedFieldValue = applyCustomMask(value, mask);
     setDisplayValue(maskedFieldValue);
 
-    // submit field data to database
+    // submit field data to database (inline validation is run prior to API call)
     if (autosave) {
       const fields = getAutosaveFields({
         name,
         type: "number",
-        value: maskedFieldValue,
+        value: value,
         defaultValue,
         hydrationValue,
       });
@@ -155,7 +155,7 @@ interface Props {
   name: string;
   label?: string;
   placeholder?: string;
-  mask?: keyof typeof customMaskMap;
+  mask?: keyof typeof customMaskMap | null;
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
@@ -184,7 +184,7 @@ export const SymbolOverlay = ({
   );
 };
 interface SymbolOverlayProps {
-  fieldMask?: keyof typeof customMaskMap;
+  fieldMask?: keyof typeof customMaskMap | null;
   nested?: boolean;
   disabled?: boolean;
 }

@@ -5,7 +5,9 @@
   "version": "MLR_2023-02-09",
   "adminDisabled": true,
   "entities": {
-    "program": { "required": true }
+    "program": {
+      "required": true
+    }
   },
   "routes": [
     {
@@ -659,7 +661,6 @@
             "validation": "validNumber",
             "props": {
               "label": "3.1 Member months",
-              "mask": "comma-separated",
               "hint": [
                 {
                   "type": "p",

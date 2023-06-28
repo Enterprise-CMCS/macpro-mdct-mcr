@@ -67,7 +67,7 @@ export function convertToCommaSeparatedRatioString(value: string): string {
 // if valid custom mask, return masked value; else return value
 export const applyCustomMask = (
   value: string,
-  maskName: keyof typeof customMaskMap | null
+  maskName?: keyof typeof customMaskMap | null
 ): string => {
   // CHECK FOR EDGE CASES
   /* if maskName is specified as null, bypass all masking and return user-inputted value */
@@ -77,7 +77,9 @@ export const applyCustomMask = (
   if (!isValidNumber) return value;
 
   // apply specified mask or default to comma-separated mask
-  const maskToApply = customMaskMap[maskName] || convertToCommaSeparatedString;
+  const maskToApply = maskName
+    ? customMaskMap[maskName]
+    : convertToCommaSeparatedString;
   return maskToApply(value).toString();
   /* is this .toString() really necessary at this point-- already been stringified earlier?*/
 };
