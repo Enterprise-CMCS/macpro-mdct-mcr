@@ -26,7 +26,7 @@ When("I create, fill, and submit a report", () => {
 
   cy.wait(2000);
   //Submit the program
-  cy.get('button:contains("Submit MLR")').focus().click();
+  cy.get('button:contains("Submit MLR")').click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
 
@@ -155,6 +155,6 @@ When("I fill and re-submit that report", () => {
 
   cy.wait(2000);
   //Submit the program
-  cy.get('button:contains("Submit MLR")').focus().click();
+  cy.get('button:contains("Submit MLR")').click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
