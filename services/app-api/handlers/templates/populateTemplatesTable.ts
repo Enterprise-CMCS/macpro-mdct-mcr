@@ -1,5 +1,4 @@
 import { Handler } from "aws-lambda";
-import { AnyObject } from "yup/lib/types";
 import {
   formTemplateTableName,
   reportBuckets,
@@ -25,7 +24,7 @@ export async function getTemplate(bucket: string, key: string) {
   return (await s3Lib.get({
     Key: key,
     Bucket: bucket,
-  })) as AnyObject;
+  })) as string;
 }
 
 /**
@@ -37,7 +36,7 @@ export async function getTemplate(bucket: string, key: string) {
  */
 export async function processTemplate(bucket: string, key: string) {
   const formTemplate = await getTemplate(bucket, key);
-  const hash = md5(JSON.stringify(formTemplate));
+  const hash = md5(formTemplate);
   return {
     id: path.basename(key).split(".")[0],
     hash,
@@ -74,7 +73,7 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
   const sortedTemplates = formTemplates
     .sort(
       (a, b) =>
-        (b.LastModified?.getDate() ?? 0) - (a.LastModified?.getDate() ?? 0)
+        (b.LastModified?.valueOf() ?? 0) - (a.LastModified?.valueOf() ?? 0)
     )
     .filter((a) => a.Key);
 
