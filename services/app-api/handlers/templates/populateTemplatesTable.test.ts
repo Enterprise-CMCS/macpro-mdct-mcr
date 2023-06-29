@@ -28,20 +28,22 @@ describe("Test processTemplate function", () => {
 describe("Test getDistinctHashesForTemplates", () => {
   it("should return distinct list of templates", () => {
     const templates = [
-      { id: "foo", hash: "123" },
-      { id: "bar", hash: "123" },
-      { id: "bar", hash: "123" },
-      { id: "buzz", hash: "456" },
+      { id: "foo", hash: "123", state: "DC" },
+      { id: "bar", hash: "123", state: "DC" },
+      { id: "bar", hash: "123", state: "DC" },
+      { id: "buzz", hash: "456", state: "MN" },
     ];
 
     expect(getDistinctHashesForTemplates(templates)).toEqual([
       {
         id: "foo",
         hash: "123",
+        state: "DC",
       },
       {
         id: "buzz",
         hash: "456",
+        state: "MN",
       },
     ]);
   });
