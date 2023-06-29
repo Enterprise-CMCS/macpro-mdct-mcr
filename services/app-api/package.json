@@ -45,6 +45,9 @@
     "serverless-plugin-warmup": "^8.2.1",
     "yup": "^0.32.11"
   },
+  "resolutions": {
+    "nwsapi": "^2.2.5"
+  },
   "jest": {
     "verbose": true,
     "transform": {
