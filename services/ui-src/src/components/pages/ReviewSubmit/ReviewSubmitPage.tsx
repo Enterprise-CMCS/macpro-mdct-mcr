@@ -34,12 +34,18 @@ export const ReviewSubmitPage = () => {
   // get user information
   const { state, userIsEndUser } = useUser().user ?? {};
 
-  let isPermittedToSubmit =
-    userIsEndUser && report?.status === ReportStatus.IN_PROGRESS && !hasError;
+  let isPermittedToSubmit: boolean =
+    (userIsEndUser &&
+      report?.status === ReportStatus.IN_PROGRESS &&
+      !hasError) ||
+    false;
 
   useEffect(() => {
     isPermittedToSubmit =
-      userIsEndUser && report?.status === ReportStatus.IN_PROGRESS && !hasError;
+      (userIsEndUser &&
+        report?.status === ReportStatus.IN_PROGRESS &&
+        !hasError) ||
+      false;
   }, [userIsEndUser, report?.status, hasError]);
 
   // get report type, state, and id from context or storage
@@ -173,7 +179,7 @@ const ReadyToSubmit = ({
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
-          isDisabled={!isPermittedToSubmit}
+          disabled={!isPermittedToSubmit}
           sx={sx.submitButton}
         >
           {pageLink.text}
