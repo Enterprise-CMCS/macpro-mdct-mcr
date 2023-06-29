@@ -35,3 +35,18 @@ export function getTemplateVersionById(id: string) {
   };
   return dynamodbLib.query(queryParams);
 }
+
+export function getTemplateVersionByHash(hash: string) {
+  const queryParams: QueryInput = {
+    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    IndexName: "HashIndex",
+    KeyConditionExpression: "hash = :hash",
+    Limit: 1,
+    ExpressionAttributeValues: {
+      ":hash": {
+        S: hash,
+      },
+    },
+  };
+  return dynamodbLib.query(queryParams);
+}
