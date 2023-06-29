@@ -34,8 +34,13 @@ export const ReviewSubmitPage = () => {
   // get user information
   const { state, userIsEndUser } = useUser().user ?? {};
 
-  const isPermittedToSubmit =
+  let isPermittedToSubmit =
     userIsEndUser && report?.status === ReportStatus.IN_PROGRESS && !hasError;
+
+  useEffect(() => {
+    isPermittedToSubmit =
+      userIsEndUser && report?.status === ReportStatus.IN_PROGRESS && !hasError;
+  }, [userIsEndUser, report?.status, hasError]);
 
   // get report type, state, and id from context or storage
   const reportType =
