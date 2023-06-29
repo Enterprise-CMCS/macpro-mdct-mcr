@@ -24,7 +24,7 @@ When("I submit a new MLR program", () => {
 
   //Submit the program
   cy.wait(5000);
-  cy.get('button:contains("Submit MLR")').click();
+  cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
 
