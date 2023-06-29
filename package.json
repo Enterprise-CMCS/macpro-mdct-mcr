@@ -21,7 +21,9 @@
     "url": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr/issues"
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
-  "dependencies": {},
+  "dependencies": {
+    "loader-utils": "2.0.3"
+  },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/flat": "^5.0.2",
