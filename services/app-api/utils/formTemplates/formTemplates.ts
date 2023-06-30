@@ -1,4 +1,4 @@
-import { QueryInput } from "aws-sdk/clients/dynamodb";
+import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
 import dynamodbLib from "../dynamo/dynamodb-lib";
 
 const REPORT_TYPES = ["MCPAR", "MLR"] as const;
@@ -10,10 +10,28 @@ export function getNewestTemplateVersion(
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "LastAlteredIndex",
     KeyConditionExpression: "reportType = :report_type",
+    ExpressionAttributeValues: {
+      ":reportType": {
+        S: reportType,
+      },
+    },
     Limit: 1,
     ScanIndexForward: false, // true = ascending, false = descending
+  };
+  return dynamodbLib.query(queryParams);
+}
+
+export function getTemplateVersionById(reportType: string, id: string) {
+  const queryParams: QueryInput = {
+    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    IndexName: "IdIndex",
+    KeyConditionExpression: "reportType = :reportType AND id = :id",
+    Limit: 1,
     ExpressionAttributeValues: {
-      ":report_type": {
+      ":id": {
+        S: id,
+      },
+      ":reportType": {
         S: reportType,
       },
     },
@@ -21,31 +39,15 @@ export function getNewestTemplateVersion(
   return dynamodbLib.query(queryParams);
 }
 
-export function getTemplateVersionById(id: string) {
-  const queryParams: QueryInput = {
-    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
-    IndexName: "IdIndex",
-    KeyConditionExpression: "id = :id",
-    Limit: 1,
-    ExpressionAttributeValues: {
-      ":id": {
-        S: id,
-      },
-    },
-  };
-  return dynamodbLib.query(queryParams);
-}
-
-export function getTemplateVersionByHash(hash: string) {
+export function getTemplateVersionByHash(reportType: string, hash: string) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "HashIndex",
-    KeyConditionExpression: "hash = :hash",
+    KeyConditionExpression: "reportType = :reportType AND md5Hash = :md5Hash",
     Limit: 1,
     ExpressionAttributeValues: {
-      ":hash": {
-        S: hash,
-      },
+      ":md5Hash": hash as AttributeValue,
+      ":reportType": reportType as AttributeValue,
     },
   };
   return dynamodbLib.query(queryParams);

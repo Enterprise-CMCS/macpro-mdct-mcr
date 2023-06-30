@@ -7,13 +7,21 @@ import {
 import md5 from "md5";
 import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
-import { FormTemplate, ReportMetadata, State } from "../../utils/types";
+import {
+  FormTemplate,
+  isDefined,
+  ReportMetadata,
+  SomeRequired,
+  State,
+} from "../../utils/types";
 import { S3 } from "aws-sdk";
 import * as path from "path";
 import { isFulfilled } from "../../utils/types/promises";
 import { logger } from "../../utils/logging";
 import { getTemplateVersionByHash } from "../../utils/formTemplates/formTemplates";
 const REPORT_TYPES = ["MCPAR", "MLR"] as const;
+
+type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
 
 /**
  * Retrieve template data from S3
@@ -39,6 +47,7 @@ export async function getTemplate(bucket: string, key: string) {
 export async function processTemplate(bucket: string, key: string) {
   const formTemplate = await getTemplate(bucket, key);
   const hash = md5(JSON.stringify(formTemplate));
+  // Make sure we only grab old form templates
   return {
     id: path.basename(key).split(".")[0],
     hash,
@@ -69,19 +78,15 @@ export function getDistinctHashesForTemplates(
  */
 export async function processReport(reportType: typeof REPORT_TYPES[number]) {
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
-  logger.info(reportBucket);
   const formTemplates = await s3Lib.list({
     Bucket: reportBucket,
     Prefix: "formTemplates",
   });
 
-  logger.info(formTemplates);
   const sortedTemplates = formTemplates
-    .sort(
-      (a, b) =>
-        (b.LastModified?.valueOf() ?? 0) - (a.LastModified?.valueOf() ?? 0)
-    )
-    .filter((a) => a.Key?.endsWith(".json"));
+    .filter((t): t is S3ObjectRequired => isDefined(t.LastModified))
+    .sort((a, b) => b.LastModified.getTime() - a.LastModified.getTime())
+    .filter((t) => t.Key?.endsWith(".json"));
 
   logger.info(
     `Found ${sortedTemplates.length} possible form template versions.`
@@ -95,9 +100,10 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
    */
   const processedTemplates = await Promise.allSettled(
     sortedTemplates
-      .filter((t): t is Omit<S3.Object, "Key"> & { Key: string } => {
-        return typeof t.Key !== "undefined";
+      .filter((t): t is S3ObjectRequired => {
+        return isDefined(t.Key);
       })
+      .filter((t) => t.Key.split("/")[1].length === 2)
       .map(async (template) => {
         const { id, hash, state } =
           (await processTemplate(reportBucket, template.Key)) ?? {};
@@ -119,13 +125,12 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
     `Found ${distinctHashes.length} distinct templates after processing`
   );
 
-  // Convert to "write to dynamo" function
   const dynamodbItems: FormTemplate[] = distinctHashes.map((x, index) => {
     return {
       id: x.id,
       versionNumber: index + 1,
       lastAltered: new Date().toISOString(),
-      hash: x.hash,
+      md5Hash: x.hash,
       reportType,
     };
   });
@@ -144,9 +149,7 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
   }
 
   logger.info(`Wrote ${dynamodbItems.length} template versions to the table`);
-  // End convert
 
-  // Copy template to new location
   logger.info("Copying templates to new prefix location");
   await copyTemplatesToNewPrefix(reportBucket, distinctHashes);
 
@@ -158,24 +161,21 @@ export async function copyTemplatesToNewPrefix(
   bucket: string,
   templates: { id: string; hash: string; state: string }[]
 ) {
-  const templateKeys = (
-    await Promise.allSettled(
-      templates.map((t) => {
-        return { key: getFormTemplateKey(t.state as State, t.id), id: t.id };
-      })
-    )
-  )
-    .filter(isFulfilled)
-    .map((t) => t.value);
-
+  const templateKeys = templates.map((t) => {
+    return { key: getFormTemplateKey(t.state as State, t.id), id: t.id };
+  });
   for (const keyId of templateKeys) {
     const newKey = `formTemplates/${keyId.id}.json`;
-    await s3Lib.copy({
-      Bucket: bucket,
-      CopySource: `${bucket}/${keyId.key}`,
-      Key: newKey,
-    });
-    logger.info(`Moved form template ${keyId.key} to ${newKey}`);
+    try {
+      await s3Lib.copy({
+        Bucket: bucket,
+        CopySource: `${bucket}/${keyId.key}`,
+        Key: newKey,
+      });
+    } catch (err) {
+      logger.error(err);
+      throw err;
+    }
   }
 }
 
@@ -188,30 +188,37 @@ export async function copyTemplatesToNewPrefix(
 export async function updateExistingReports(
   reportType: typeof REPORT_TYPES[number]
 ) {
-  const tableName = reportTables[reportType];
-  const reportBucket = reportBuckets[reportType];
+  const tableName = reportTables[reportType as keyof typeof reportTables];
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   const reports = (await (
     await dynamodbLib.scan({ TableName: tableName, reportType })
   ).Items) as ReportMetadata[];
 
   if (reports) {
     for (const report of reports) {
-      const template = await getTemplate(
-        reportBucket,
-        getFormTemplateKey(report.state, report.formTemplateId)
-      );
-      const templateHash = md5(template);
-      const templateVersion = (await getTemplateVersionByHash(templateHash))
-        .Items?.[0];
+      if (report.formTemplateId) {
+        const template = await getTemplate(
+          reportBucket,
+          getFormTemplateKey(report.state, report.formTemplateId)
+        );
+        const templateHash = md5(JSON.stringify(template));
 
-      await dynamodbLib.put({
-        TableName: tableName,
-        Item: {
-          ...report,
-          versionNumber: templateVersion?.versionNumber,
-          formTemplateId: templateVersion?.id,
-        },
-      });
+        const templateVersion = await getTemplateVersionByHash(
+          reportType,
+          templateHash
+        );
+
+        if (templateVersion) {
+          await dynamodbLib.put({
+            TableName: tableName,
+            Item: {
+              ...report,
+              versionNumber: templateVersion.Items?.[0]?.versionNumber,
+              formTemplateId: templateVersion.Items?.[0]?.id,
+            },
+          });
+        }
+      }
     }
   }
 }
