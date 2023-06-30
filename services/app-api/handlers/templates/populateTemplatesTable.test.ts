@@ -18,7 +18,7 @@ describe("Test processTemplate function", () => {
       "MN/2MmcpZwwaq3i1ddd0o6Zdhjd5G1.json"
     );
     const report = JSON.stringify({ foo: "bar" });
-    const expectedHash = md5(report);
+    const expectedHash = md5(JSON.stringify(report));
 
     expect(templateResult.hash).toEqual(expectedHash);
     expect(templateResult.id).toEqual("2MmcpZwwaq3i1ddd0o6Zdhjd5G1");
