@@ -29,5 +29,8 @@
     "serverless-dynamodb-local": {
       "dynamodb-localhost": "https://github.com/99x/dynamodb-localhost#db30898f8c40932c7177be7b2f1a81360d12876d"
     }
+  },
+  "resolutions": {
+    "luxon": "3.3.0"
   }
 }
