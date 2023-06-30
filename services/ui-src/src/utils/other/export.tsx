@@ -262,10 +262,10 @@ export const getEntityDetailsMLR = (entity: EntityShape) => {
   const mlrEligibilityGroup = eligibilityGroup(entity);
 
   return {
+    report_planName,
     report_programName,
     reportingPeriod,
     mlrEligibilityGroup,
-    report_planName,
   };
 };
 

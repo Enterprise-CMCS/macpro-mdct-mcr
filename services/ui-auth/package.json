@@ -8,8 +8,9 @@
   },
   "author": "",
   "license": "CC0-1.0",
-  "devDependencies": {},
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.266.0"
+    "@aws-sdk/client-sts": "3.362.0",
+    "@aws-sdk/client-cognito-identity-provider": "3.362.0",
+    "fast-xml-parser": "^4.2.5"
   }
 }
