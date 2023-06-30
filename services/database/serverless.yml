@@ -213,7 +213,7 @@ resources:
             KeySchema:
               - AttributeName: reportType
                 KeyType: HASH
-              - AttributeName: hash
+              - AttributeName: md5Hash
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
@@ -231,7 +231,7 @@ resources:
             AttributeType: S
           - AttributeName: id
             AttributeType: S
-          - AttributeName: hash
+          - AttributeName: md5Hash
             AttributeType: S
 
   Outputs:
