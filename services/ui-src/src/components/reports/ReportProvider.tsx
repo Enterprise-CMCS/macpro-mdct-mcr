@@ -5,10 +5,10 @@ import {
   archiveReport as archiveReportRequest,
   releaseReport as releaseReportRequest,
   submitReport as submitReportRequest,
+  flattenReportRoutesArray,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
-  isReportFormPage,
   postReport,
   putReport,
   sortReportsOldestToNewest,
@@ -40,6 +40,7 @@ export const ReportContext = createContext<ReportContextShape>({
   clearReportSelection: Function,
   clearReportsByState: Function,
   setReportSelection: Function,
+  isReportPage: false as boolean,
   errorMessage: undefined as string | undefined,
   lastSavedTime: undefined as string | undefined,
 });
@@ -49,6 +50,7 @@ export const ReportProvider = ({ children }: Props) => {
   const { state: userState } = useUser().user ?? {};
   const [lastSavedTime, setLastSavedTime] = useState<string>();
   const [error, setError] = useState<string>();
+  const [isReportPage, setIsReportPage] = useState<boolean>(false);
 
   // REPORT
 
@@ -148,6 +150,9 @@ export const ReportProvider = ({ children }: Props) => {
 
   const setReportSelection = async (report: ReportShape) => {
     setReport(report);
+    report.formTemplate.flatRoutes = flattenReportRoutesArray(
+      report.formTemplate.routes
+    ); // TODO is this sufficient? Or do we need to set flatRoutes elsewhere as well?
     localStorage.setItem("selectedReportType", report.reportType);
     localStorage.setItem("selectedReport", report.id);
     localStorage.setItem(
@@ -156,6 +161,15 @@ export const ReportProvider = ({ children }: Props) => {
     );
   };
 
+  useEffect(() => {
+    const flatRoutes = report?.formTemplate.flatRoutes ?? [];
+    const isReportPage =
+      pathname.includes("export") ||
+      flatRoutes.some((route) => route.path === pathname);
+
+    setIsReportPage(isReportPage);
+  }, [pathname, report?.formTemplate.flatRoutes]); // TODO should I be reactive on key instead of pathname? I don't know what the best practice is.
+
   // on first mount, if on report page, fetch report
   useEffect(() => {
     const reportType =
@@ -163,7 +177,8 @@ export const ReportProvider = ({ children }: Props) => {
     const state =
       report?.state || userState || localStorage.getItem("selectedState");
     const id = report?.id || localStorage.getItem("selectedReport");
-    if (isReportFormPage(pathname) && reportType && state && id) {
+    if (reportType && state && id) {
+      // TODO Test by entering a report, then editing URL to go back to the dashboard.
       fetchReport({ reportType, state, id });
     }
   }, []);
@@ -185,10 +200,11 @@ export const ReportProvider = ({ children }: Props) => {
       clearReportSelection,
       clearReportsByState,
       setReportSelection,
+      isReportPage,
       errorMessage: error,
       lastSavedTime,
     }),
-    [report, reportsByState, error, lastSavedTime]
+    [report, reportsByState, isReportPage, error, lastSavedTime]
   );
 
   return (
