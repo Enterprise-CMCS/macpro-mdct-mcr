@@ -8,6 +8,7 @@ import {
   Error,
   ExportedReportBanner,
   Footer,
+  FormTemplateProvider,
   Header,
   LoginCognito,
   LoginIDM,
@@ -16,46 +17,53 @@ import {
   Timeout,
 } from "components";
 // utils
-import {
-  fireTealiumPageView,
-  isReportFormPage,
-  makeMediaQueryClasses,
-  useUser,
-} from "utils";
+import { fireTealiumPageView, makeMediaQueryClasses, useUser } from "utils";
+import { ReportType } from "types";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
-  const isReportPage = isReportFormPage(pathname);
   const isExportPage = pathname.includes("/export");
 
   // fire tealium page view on route change
   useEffect(() => {
-    fireTealiumPageView(user, window.location.href, pathname, isReportPage);
-  }, [key]);
+    // TODO does this mostly work? Is mostly good enough?
+    const looksLikeAReportPage = Object.values(ReportType).some((reportType) =>
+      pathname.includes(`/${reportType.toLowerCase()}/`)
+    );
+    fireTealiumPageView(
+      user,
+      window.location.href,
+      pathname,
+      looksLikeAReportPage
+    );
+  }, [key]); // TODO why reactive on key and not pathname?
 
   return (
     <div id="app-wrapper" className={mqClasses}>
       {user && (
         <Flex sx={sx.appLayout}>
           <Timeout />
+          {/* TODO is this <SkipNav> properly overridden by the one in the report page sidebar? */}
           <SkipNav
             id="skip-nav-main"
-            href={isReportPage ? "#skip-nav-sidebar" : "#main-content"}
-            text={`Skip to ${isReportPage ? "report sidebar" : "main content"}`}
+            href="#main-content"
+            text="Skip to main content"
             sxOverride={sx.skipnav}
           />
-          <ReportProvider>
-            {!isExportPage && <Header handleLogout={logout} />}
-            {isExportPage && <ExportedReportBanner />}
-            <Container sx={sx.appContainer} data-testid="app-container">
-              <ErrorBoundary FallbackComponent={Error}>
-                <AppRoutes />
-              </ErrorBoundary>
-            </Container>
-            <Footer />
-          </ReportProvider>
+          <FormTemplateProvider>
+            <ReportProvider>
+              {!isExportPage && <Header handleLogout={logout} />}
+              {isExportPage && <ExportedReportBanner />}
+              <Container sx={sx.appContainer} data-testid="app-container">
+                <ErrorBoundary FallbackComponent={Error}>
+                  <AppRoutes />
+                </ErrorBoundary>
+              </Container>
+              <Footer />
+            </ReportProvider>
+          </FormTemplateProvider>
         </Flex>
       )}
       {!user && showLocalLogins && (

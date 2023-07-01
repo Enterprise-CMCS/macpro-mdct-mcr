@@ -12,17 +12,17 @@ import {
   NotFoundPage,
   ProfilePage,
   ReportPageWrapper,
+  ReportContext,
 } from "components";
-import { mcparReportJson } from "forms/mcpar";
-import { mlrReportJson } from "forms/mlr";
 // utils
-import { ReportRoute } from "types";
+import { ReportRoute, ReportType } from "types";
 import { ScrollToTopComponent, useUser } from "utils";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 
 export const AppRoutes = () => {
   const { userIsAdmin, userReports } = useUser().user ?? {};
   const mlrReport = useFlags()?.mlrReport;
+  const { report } = useContext(ReportContext);
   // determine if the user has access to specific reports
   const userReportAccess = {
     MCPAR: userReports?.includes("MCPAR") || userIsAdmin,
@@ -64,29 +64,35 @@ export const AppRoutes = () => {
               )
             }
           />
-          {mcparReportJson.flatRoutes.map((route: ReportRoute) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                userReportAccess["MCPAR"] ? (
-                  <ReportPageWrapper />
-                ) : (
-                  <Navigate to="/" />
+          {report?.reportType === ReportType.MCPAR && (
+            <>
+              {(report.formTemplate.flatRoutes ?? []).map(
+                (route: ReportRoute) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={
+                      userReportAccess["MCPAR"] ? (
+                        <ReportPageWrapper />
+                      ) : (
+                        <Navigate to="/" />
+                      )
+                    }
+                  />
                 )
-              }
-            />
-          ))}
-          <Route
-            path="/mcpar/export"
-            element={
-              userReportAccess["MCPAR"] ? (
-                <ExportedReportPage />
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
+              )}
+              <Route
+                path="/mcpar/export"
+                element={
+                  userReportAccess["MCPAR"] ? (
+                    <ExportedReportPage />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+            </>
+          )}
           <Route
             path="/mcpar/*"
             element={
@@ -121,29 +127,35 @@ export const AppRoutes = () => {
                   )
                 }
               />
-              {mlrReportJson.flatRoutes.map((route: ReportRoute) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={
-                    userReportAccess["MLR"] ? (
-                      <ReportPageWrapper />
-                    ) : (
-                      <Navigate to="/" />
+              {report?.reportType === ReportType.MLR && (
+                <>
+                  {(report.formTemplate.flatRoutes ?? []).map(
+                    (route: ReportRoute) => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={
+                          userReportAccess["MLR"] ? (
+                            <ReportPageWrapper />
+                          ) : (
+                            <Navigate to="/" />
+                          )
+                        }
+                      />
                     )
-                  }
-                />
-              ))}
-              <Route
-                path="/mlr/export"
-                element={
-                  userReportAccess["MLR"] ? (
-                    <ExportedReportPage />
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              />
+                  )}
+                  <Route
+                    path="/mlr/export"
+                    element={
+                      userReportAccess["MLR"] ? (
+                        <ExportedReportPage />
+                      ) : (
+                        <Navigate to="/" />
+                      )
+                    }
+                  />
+                </>
+              )}
             </Fragment>
           )}
         </Routes>

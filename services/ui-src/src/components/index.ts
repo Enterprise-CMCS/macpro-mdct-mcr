@@ -98,6 +98,10 @@ export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
+export {
+  FormTemplateContext,
+  FormTemplateProvider,
+} from "./reports/FormTemplateProvider";
 // statusing
 export { StatusTable } from "./statusing/StatusTable";
 // tables

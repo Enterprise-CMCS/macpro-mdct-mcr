@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 // components
-import { Form, Modal, ReportContext } from "components";
+import { Form, Modal, ReportContext, FormTemplateContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
-import { AnyObject, FormJson, ReportJson, ReportStatus } from "types";
+import { AnyObject, FormJson, ReportStatus, ReportType } from "types";
 import { States } from "../../constants";
 import {
   calculateDueDate,
@@ -18,7 +18,6 @@ import {
 export const AddEditReportModal = ({
   activeState,
   selectedReport,
-  formTemplate,
   reportType,
   modalDisclosure,
 }: Props) => {
@@ -26,6 +25,7 @@ export const AddEditReportModal = ({
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const { getLatestFormTemplate } = useContext(FormTemplateContext);
 
   const modalFormJsonMap: any = {
     MCPAR: mcparFormJson,
@@ -46,6 +46,7 @@ export const AddEditReportModal = ({
     const reportingPeriodEndDate = convertDateEtToUtc(
       formData["reportingPeriodEndDate"]
     );
+    const formTemplate = getLatestFormTemplate(ReportType.MCPAR);
 
     return {
       metadata: {
@@ -68,6 +69,8 @@ export const AddEditReportModal = ({
   // MLR report payload
   const prepareMlrPayload = (formData: any) => {
     const programName = formData["programName"];
+    const formTemplate = getLatestFormTemplate(ReportType.MLR);
+
     return {
       metadata: {
         programName: programName,
@@ -136,7 +139,6 @@ export const AddEditReportModal = ({
                 ]
               : undefined,
         },
-        formTemplate,
       });
     }
     await fetchReportsByState(reportType, activeState);
@@ -168,7 +170,6 @@ export const AddEditReportModal = ({
 
 interface Props {
   activeState: string;
-  formTemplate: ReportJson;
   reportType: string;
   selectedReport?: AnyObject;
   modalDisclosure: {
