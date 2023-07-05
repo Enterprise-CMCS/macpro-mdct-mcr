@@ -142,7 +142,7 @@ echo "Removed certificate from stage"
 
 # Trigger a delete for each cloudformation stack
 for i in "${stackList[@]}"; do
-  echo "Triggered stack deletion for stack: " $i
+  echo "Triggered stack deletion for stack: $i" 
   aws cloudformation delete-stack --stack-name $i
 done
 

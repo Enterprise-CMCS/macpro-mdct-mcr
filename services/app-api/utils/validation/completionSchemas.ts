@@ -16,6 +16,8 @@ export const error = {
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
+  NUMBER_LESS_THAN_ZERO: "Response must be greater than or equal to zero",
+  NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
   INVALID_NUMBER: "Response must be a valid number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number or "N/A"',
   INVALID_RATIO: "Response must be a valid ratio",
@@ -58,6 +60,40 @@ const numberSchema = () =>
     .test({
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
+    });
+
+// NUMBER NOT LESS THAN ONE
+export const numberNotLessThanOne = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    })
+    .test({
+      test: (value) => validNumberRegex.test(value!),
+      message: error.INVALID_NUMBER,
+    })
+    .test({
+      test: (value) => parseInt(value!) >= 1,
+      message: error.NUMBER_LESS_THAN_ONE,
+    });
+
+// NUMBER NOT LESS THAN ZERO
+export const numberNotLessThanZero = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    })
+    .test({
+      test: (value) => validNumberRegex.test(value!),
+      message: error.INVALID_NUMBER,
+    })
+    .test({
+      test: (value) => parseFloat(value!) >= 0,
+      message: error.NUMBER_LESS_THAN_ZERO,
     });
 
 const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {

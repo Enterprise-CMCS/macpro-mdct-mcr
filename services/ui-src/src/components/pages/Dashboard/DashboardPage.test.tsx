@@ -121,12 +121,12 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
     expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 
-  test("Clicking 'Enter' button on a report row fetches the field data, then navigates to report", async () => {
+  test("Clicking 'Edit' button on a report row fetches the field data, then navigates to report", async () => {
     await act(async () => {
       await render(dashboardViewWithReports);
     });
     mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
-    const enterReportButton = screen.getAllByText("Enter")[0];
+    const enterReportButton = screen.getAllByText("Edit")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(1);
@@ -187,9 +187,9 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("Clicking 'Enter' button on a report navigates to first page of report", async () => {
+  test("Clicking 'Edit' button on a report navigates to first page of report", async () => {
     mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
-    const enterReportButton = screen.getAllByText("Enter")[0];
+    const enterReportButton = screen.getAllByText("Edit")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);

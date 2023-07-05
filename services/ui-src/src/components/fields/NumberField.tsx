@@ -91,7 +91,7 @@ export const NumberField = ({
       const fields = getAutosaveFields({
         name,
         type: "number",
-        value,
+        value: maskedFieldValue,
         defaultValue,
         hydrationValue,
       });

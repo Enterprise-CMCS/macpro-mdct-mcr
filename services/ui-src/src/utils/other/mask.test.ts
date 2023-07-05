@@ -23,6 +23,9 @@ const commaSeparatedMaskAcceptableTestCases = [
   { test: "1,234", expected: "1,234" },
   { test: "100,000,000", expected: "100,000,000" },
   { test: "100000000", expected: "100,000,000" },
+  { test: "-1234", expected: "1,234" },
+  { test: "$$1234567890.10", expected: "1,234,567,890.1" },
+  { test: "$$$$$23453--123081", expected: "23,453,123,081" },
   {
     test: "Technically a wrong input that validation would pick up but would actually still work with 1 number",
     expected: "1",
