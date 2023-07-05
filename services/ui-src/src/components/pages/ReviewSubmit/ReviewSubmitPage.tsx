@@ -36,13 +36,6 @@ export const ReviewSubmitPage = () => {
   // get user information
   const { state, userIsEndUser } = useUser().user ?? {};
 
-  setIsPermittedToSubmit(
-    (userIsEndUser &&
-      report?.status === ReportStatus.IN_PROGRESS &&
-      !hasError) ||
-      false
-  );
-
   // get report type, state, and id from context or storage
   const reportType =
     report?.reportType || localStorage.getItem("selectedReportType");
@@ -68,6 +61,15 @@ export const ReviewSubmitPage = () => {
   useEffect(() => {
     setHasError(!!document.querySelector("img[alt='Error notification']"));
   }, [fetchReport]);
+
+  useEffect(() => {
+    setIsPermittedToSubmit(
+      (userIsEndUser &&
+        report?.status === ReportStatus.IN_PROGRESS &&
+        !hasError) ||
+        false
+    );
+  }, [userIsEndUser, report?.status, hasError]);
 
   const submitForm = async () => {
     setSubmitting(true);
