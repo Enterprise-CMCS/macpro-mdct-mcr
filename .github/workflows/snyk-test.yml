@@ -50,7 +50,7 @@ jobs:
               jira-host: 'qmacbis.atlassian.net'
               jira-project-key: 'MDCT'
               jira-issue-type: 'Task'
-              jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280"  }'
+              jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280", "customfield_14154" : [{"id": "16958", "value": "MCR"}]  }'
               jira-labels: 'MCR,snyk'
               jira-title-prefix: '[MCR] - Snyk :'
               scan-output-path: 'snyk_output.txt'
