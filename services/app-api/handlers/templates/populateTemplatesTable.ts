@@ -78,6 +78,7 @@ export function getDistinctHashesForTemplates(
  */
 export async function processReport(reportType: typeof REPORT_TYPES[number]) {
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+
   const formTemplates = await s3Lib.list({
     Bucket: reportBucket,
     Prefix: "formTemplates",
@@ -193,7 +194,6 @@ export async function updateExistingReports(
   const reports = (await (
     await dynamodbLib.scan({ TableName: tableName, reportType })
   ).Items) as ReportMetadata[];
-
   if (reports) {
     for (const report of reports) {
       if (report.formTemplateId) {
@@ -202,12 +202,10 @@ export async function updateExistingReports(
           getFormTemplateKey(report.state, report.formTemplateId)
         );
         const templateHash = md5(JSON.stringify(template));
-
         const templateVersion = await getTemplateVersionByHash(
           reportType,
           templateHash
         );
-
         if (templateVersion) {
           await dynamodbLib.put({
             TableName: tableName,
