@@ -8194,7 +8194,7 @@ npm-run-path@^5.1.0:
   dependencies:
     path-key "^4.0.0"
 
-nwsapi@^2.2.0:
+nwsapi@^2.2.0, nwsapi@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.5.tgz#a52744c61b3889dd44b0a158687add39b8d935e2"
   integrity sha512-6xpotnECFy/og7tKSBVmUNft7J3jyXAka4XvG6AUhFWRz+Q/Ljus7znJAA3bxColfQLdS+XsjoodtJfCgeTEFQ==
