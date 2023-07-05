@@ -30,15 +30,18 @@ export const ReviewSubmitPage = () => {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
+  const [isPermittedToSubmit, setIsPermittedToSubmit] =
+    useState<boolean>(false);
 
   // get user information
   const { state, userIsEndUser } = useUser().user ?? {};
 
-  let isPermittedToSubmit: boolean =
+  setIsPermittedToSubmit(
     (userIsEndUser &&
       report?.status === ReportStatus.IN_PROGRESS &&
       !hasError) ||
-    false;
+      false
+  );
 
   // get report type, state, and id from context or storage
   const reportType =
