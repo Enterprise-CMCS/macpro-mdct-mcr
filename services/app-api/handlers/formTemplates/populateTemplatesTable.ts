@@ -105,9 +105,9 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
   });
 
   const sortedTemplates = formTemplates
+    .filter((t) => t.Key?.endsWith(".json"))
     .filter((t): t is S3ObjectRequired => isDefined(t.LastModified))
-    .sort((a, b) => b.LastModified.getTime() - a.LastModified.getTime())
-    .filter((t) => t.Key?.endsWith(".json"));
+    .sort((a, b) => a.LastModified.getTime() - b.LastModified.getTime());
 
   logger.info(
     `Found ${sortedTemplates.length} possible form template versions.`
