@@ -94,10 +94,9 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
   );
 
   /*
-   * A note on type weirdness below. For some reason, the S3 provided type
-   * S3.Object has the "Key" property as optional.
-   *
-   * The type-mangling below allows the array#filter function to
+   * AWS types returned from the SDK have all attributes set to optional.
+   * This code filters out any potential undefined keys and modifies the type
+   * of the object.
    */
   const processedTemplates = await Promise.allSettled(
     sortedTemplates
