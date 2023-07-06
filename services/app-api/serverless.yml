@@ -171,7 +171,7 @@ functions:
         enabled: false
     maximumRetryAttempts: 0
   formTemplateTablePopulation:
-    handler: handlers/templates/populateTemplatesTable.handler
+    handler: handlers/formTemplates/populateTemplatesTable.handler
     timeout: 300
     warmup:
       default:

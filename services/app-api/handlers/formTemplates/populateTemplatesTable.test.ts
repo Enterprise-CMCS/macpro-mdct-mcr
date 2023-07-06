@@ -127,6 +127,7 @@ describe("Test processReport", () => {
 
 describe("Test AWS library failures", () => {
   beforeEach(() => {
+    jest.resetAllMocks();
     const copyMock = jest.spyOn(s3Lib, "copy");
     copyMock.mockImplementationOnce(() => {
       throw Error("Simulated error from S3");
