@@ -1,4 +1,4 @@
-import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
+import { QueryInput } from "aws-sdk/clients/dynamodb";
 import dynamodbLib from "../dynamo/dynamodb-lib";
 
 const REPORT_TYPES = ["MCPAR", "MLR"] as const;
@@ -34,20 +34,6 @@ export function getTemplateVersionById(reportType: string, id: string) {
       ":reportType": {
         S: reportType,
       },
-    },
-  };
-  return dynamodbLib.query(queryParams);
-}
-
-export function getTemplateVersionByHash(reportType: string, hash: string) {
-  const queryParams: QueryInput = {
-    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
-    IndexName: "HashIndex",
-    KeyConditionExpression: "reportType = :reportType AND md5Hash = :md5Hash",
-    Limit: 1,
-    ExpressionAttributeValues: {
-      ":md5Hash": hash as AttributeValue,
-      ":reportType": reportType as AttributeValue,
     },
   };
   return dynamodbLib.query(queryParams);

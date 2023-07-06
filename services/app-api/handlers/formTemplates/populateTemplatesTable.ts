@@ -18,10 +18,30 @@ import { S3 } from "aws-sdk";
 import * as path from "path";
 import { isFulfilled } from "../../utils/types/promises";
 import { logger } from "../../utils/logging";
-import { getTemplateVersionByHash } from "../../utils/formTemplates/formTemplates";
+import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
 const REPORT_TYPES = ["MCPAR", "MLR"] as const;
 
 type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
+
+/**
+ *
+ * @param reportType report type
+ * @param hash hash to look for
+ * @returns
+ */
+export function getTemplateVersionByHash(reportType: string, hash: string) {
+  const queryParams: QueryInput = {
+    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    IndexName: "HashIndex",
+    KeyConditionExpression: "reportType = :reportType AND md5Hash = :md5Hash",
+    Limit: 1,
+    ExpressionAttributeValues: {
+      ":md5Hash": hash as AttributeValue,
+      ":reportType": reportType as AttributeValue,
+    },
+  };
+  return dynamodbLib.query(queryParams);
+}
 
 /**
  * Retrieve template data from S3
