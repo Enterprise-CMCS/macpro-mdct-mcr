@@ -7,6 +7,8 @@ import {
 } from "./populateTemplatesTable";
 import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
+import { AWSError, Response } from "aws-sdk";
+import { ScanOutput } from "aws-sdk/clients/dynamodb";
 
 const templates = [
   {
@@ -109,7 +111,7 @@ describe("Test copyTemplatesToNewPrefix", () => {
 
 describe("Test processReport", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
   it("should process a report type", async () => {
     const copySpy = jest.spyOn(s3Lib, "copy");
@@ -123,11 +125,23 @@ describe("Test processReport", () => {
     expect(querySpy).toHaveBeenCalledTimes(1);
     expect(putSpy).toHaveBeenCalledTimes(2);
   });
+
+  it("should handle cases where there are no reports", async () => {
+    jest.spyOn(dynamodbLib, "scan").mockImplementationOnce(async () => {
+      return {
+        Items: [],
+        $response: {} as Response<ScanOutput, AWSError>,
+      };
+    });
+    expect(processReport("MLR")).resolves.toBeDefined;
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
+  });
 });
 
 describe("Test AWS library failures", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
     const copyMock = jest.spyOn(s3Lib, "copy");
     copyMock.mockImplementationOnce(() => {
       throw Error("Simulated error from S3");
