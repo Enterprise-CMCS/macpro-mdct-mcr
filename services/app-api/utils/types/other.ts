@@ -169,6 +169,7 @@ export type State =
   | "WY";
 
 export interface FormTemplate {
+  md5Hash: string;
   versionNumber: number;
   id: string;
   lastAltered: string;
