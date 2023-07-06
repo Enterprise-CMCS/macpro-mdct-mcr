@@ -158,6 +158,16 @@ provider:
     PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
+  numberFormatChecker:
+    handler: handlers/etl/numberFieldDataToFile.check
+    timeout: 300
+    environment:
+      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
+      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
   formTemplateEntitiesUpdate:
     handler: handlers/etl/formTemplateEntitiesUpdate.transform
     timeout: 300
