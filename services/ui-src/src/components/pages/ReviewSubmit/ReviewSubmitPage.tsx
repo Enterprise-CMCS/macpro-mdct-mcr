@@ -30,12 +30,11 @@ export const ReviewSubmitPage = () => {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
+  const [isPermittedToSubmit, setIsPermittedToSubmit] =
+    useState<boolean>(false);
 
   // get user information
   const { state, userIsEndUser } = useUser().user ?? {};
-
-  const isPermittedToSubmit =
-    userIsEndUser && report?.status === ReportStatus.IN_PROGRESS && !hasError;
 
   // get report type, state, and id from context or storage
   const reportType =
@@ -62,6 +61,15 @@ export const ReviewSubmitPage = () => {
   useEffect(() => {
     setHasError(!!document.querySelector("img[alt='Error notification']"));
   }, [fetchReport]);
+
+  useEffect(() => {
+    setIsPermittedToSubmit(
+      (userIsEndUser &&
+        report?.status === ReportStatus.IN_PROGRESS &&
+        !hasError) ||
+        false
+    );
+  }, [userIsEndUser, report?.status, hasError]);
 
   const submitForm = async () => {
     setSubmitting(true);
