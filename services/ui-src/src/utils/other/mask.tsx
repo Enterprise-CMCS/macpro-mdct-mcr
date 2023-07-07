@@ -1,3 +1,4 @@
+import { cleanStandardNumericalInput /*cleanRatioInput */ } from "utils";
 // REGEX
 const validNumberRegex = new RegExp("/[d.-]+/"); // digits (0-9), decimal (.), negative (-)
 
@@ -14,23 +15,14 @@ export const maskMap = {
  * @returns {String}
  */
 export function convertToThousandsSeparatedString(value: string): string {
-  // Remove all characters except digits and decimal points.
-  value = value.replace(/[^\d.]/g, "");
-  // Remove all but the first decimal point.
-  const firstDecimalPointIndex = value.indexOf(".");
-  value = value.replace(/[.]/g, (match, index) => {
-    return index > firstDecimalPointIndex ? "" : match;
-  });
-  if (parseFloat(value) !== 0) {
-    // Remove all leading zeroes if value is not equal to 0
-    value = value.replace(/^0+/g, "");
-  }
+  // Clean value
+  let cleanedValue = cleanStandardNumericalInput(value).cleanedValue;
   // Convert String to a float to begin operation
-  const valueAsFloat = parseFloat(value);
+  const valueAsFloat = parseFloat(cleanedValue);
   // Slide any extra decimals down to 2
   const fixedDecimal = valueAsFloat.toFixed(2);
-  // Clean up the float value and add in commas to delineate thousands if needed
-  const cleanedValue = Number(fixedDecimal).toLocaleString("en");
+  // Add in commas to delineate thousands if needed
+  cleanedValue = Number(fixedDecimal).toLocaleString("en");
   return cleanedValue.toString();
 }
 
@@ -66,7 +58,7 @@ export function convertToRatioString(value: string): string {
 }
 
 // if valid custom mask, return masked value; else return value
-export const applymask = (
+export const applyMask = (
   value: string,
   maskName?: keyof typeof maskMap | null
 ): string => {
@@ -82,6 +74,5 @@ export const applymask = (
   const maskToApply = maskName
     ? maskMap[maskName]
     : convertToThousandsSeparatedString;
-  return maskToApply(value).toString();
-  /* is this .toString() really necessary at this point-- already been stringified earlier?*/
+  return maskToApply(value);
 };

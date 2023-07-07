@@ -7,7 +7,7 @@ interface CleanedValue {
   cleanedValue: string;
 }
 
-export function cleanStandardNumericalInput(value: string): CleanedValue {
+export const cleanStandardNumericalInput = (value: string): CleanedValue => {
   const isValidNumber = validStandardNumberRegex.test(value);
   if (!isValidNumber) return { isValid: false, cleanedValue: value };
 
@@ -30,9 +30,9 @@ export function cleanStandardNumericalInput(value: string): CleanedValue {
     isValid: true,
     cleanedValue: value,
   };
-}
+};
 
-export function cleanRatioInput(value: string): CleanedValue {
+export const cleanRatioInput = (value: string): CleanedValue => {
   const isValidRatio = validRatioRegex.test(value);
   if (!isValidRatio) return { isValid: false, cleanedValue: value };
 
@@ -62,4 +62,4 @@ export function cleanRatioInput(value: string): CleanedValue {
     isValid: true,
     cleanedValue: cleanedValue,
   };
-}
+};

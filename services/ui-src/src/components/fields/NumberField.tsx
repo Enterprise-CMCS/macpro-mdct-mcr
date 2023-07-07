@@ -6,9 +6,10 @@ import { ReportContext } from "components";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 // utils
 import {
+  //applyMask,
   applyCustomMask,
-  autosaveFieldData,
   customMaskMap,
+  autosaveFieldData,
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
