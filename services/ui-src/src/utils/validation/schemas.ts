@@ -32,6 +32,7 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   });
 };
 
+// to-do: change
 const validNumberRegex = /^[\d.-]+$/;
 
 // NUMBER - Number or Valid Strings
