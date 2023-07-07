@@ -1,7 +1,7 @@
 // REGEXES
 
 // basic check for all possible characters -- standard number
-const validCharactersStandardNumberRegex = new RegExp("/[0-9.,$%]+/");
+const validCharactersStandardNumberRegex = new RegExp("/[0-9.,$%\\-]+/");
 // basic check for all possible characters -- ratio
 const validCharactersRatioNumberRegex = new RegExp("/[0-9.,:]+/");
 // at most 1 decimal point
@@ -14,8 +14,8 @@ const atMost1SpecialCharacterRegex = new RegExp("/[$%]?");
 const validDollarSignPlacementRegex = new RegExp("/^[$]?[^$%]+$/");
 // at most 1 % at the end of the input
 const validPercentSignPlacementRegex = new RegExp("/^[^%$]+[%]?$/");
-// at most 1 - at the beginning of the input (but after any potential $)
-const validNegativeSignPlacementRegex = new RegExp("/^[$]?[]?[^$%]+$/");
+// at most 1 - at the beginning of the input (but after any potential $s)
+const validNegativeSignPlacementRegex = new RegExp("/^[$]?[\\-]?[^$%\\-]+$/");
 // exactly one ratio character in between other characters
 const exactlyOneRatioCharacterRegex = new RegExp("/^[^:]+[:]{1}[^:]+$/");
 
