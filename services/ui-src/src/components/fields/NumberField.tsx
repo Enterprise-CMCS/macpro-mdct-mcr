@@ -6,9 +6,8 @@ import { ReportContext } from "components";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 // utils
 import {
-  //applyMask,
-  applyCustomMask,
-  customMaskMap,
+  applyMask,
+  maskMap,
   autosaveFieldData,
   getAutosaveFields,
   labelTextWithOptional,
@@ -55,7 +54,7 @@ export const NumberField = ({
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
-      const maskedFieldValue = applyCustomMask(fieldValue, mask);
+      const maskedFieldValue = applyMask(fieldValue, mask);
       setDisplayValue(maskedFieldValue);
     }
     // else set hydrationValue or defaultValue display value
@@ -64,7 +63,7 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
+        const maskedHydrationValue = applyMask(hydrationValue, mask);
         setDisplayValue(maskedHydrationValue);
         form.setValue(name, maskedHydrationValue, { shouldValidate: true });
       }
@@ -84,7 +83,7 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const maskedFieldValue = applyCustomMask(value, mask);
+    const maskedFieldValue = applyMask(value, mask);
     setDisplayValue(maskedFieldValue);
 
     // submit field data to database (inline validation is run prior to API call)
@@ -156,7 +155,7 @@ interface Props {
   name: string;
   label?: string;
   placeholder?: string;
-  mask?: keyof typeof customMaskMap | null;
+  mask?: keyof typeof maskMap | null;
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
@@ -185,7 +184,7 @@ export const SymbolOverlay = ({
   );
 };
 interface SymbolOverlayProps {
-  fieldMask?: keyof typeof customMaskMap | null;
+  fieldMask?: keyof typeof maskMap | null;
   nested?: boolean;
   disabled?: boolean;
 }

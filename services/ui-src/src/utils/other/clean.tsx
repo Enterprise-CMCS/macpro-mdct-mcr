@@ -8,23 +8,12 @@ interface CleanedValue {
 }
 
 export const cleanStandardNumericalInput = (value: string): CleanedValue => {
+  // Check if valid input against regex
   const isValidNumber = validStandardNumberRegex.test(value);
   if (!isValidNumber) return { isValid: false, cleanedValue: value };
 
   // Remove all characters except digits and decimal points.
-  value = value.replace(/[^\d.]/g, "");
-
-  // TO-DO: since we're only accepting at most one decimal, change logic?
-
-  // Remove all but the first decimal point.
-  const firstDecimalPointIndex = value.indexOf(".");
-  value = value.replace(/[.]/g, (match, index) => {
-    return index > firstDecimalPointIndex ? "" : match;
-  });
-  if (parseFloat(value) !== 0) {
-    // Remove all leading zeroes if value is not equal to 0
-    value = value.replace(/^0+/g, "");
-  }
+  value = value.replace(/[^\d.-]/g, "");
 
   return {
     isValid: true,
@@ -36,9 +25,6 @@ export const cleanRatioInput = (value: string): CleanedValue => {
   const isValidRatio = validRatioRegex.test(value);
   if (!isValidRatio) return { isValid: false, cleanedValue: value };
 
-  // Remove all characters except digits and decimal points.
-  value = value.replace(/[^\d.:]/g, "");
-
   // Grab the left and right side of the ratio sign
   let values = value.split(":");
 
@@ -48,6 +34,8 @@ export const cleanRatioInput = (value: string): CleanedValue => {
   values[0] = cleanLeft.cleanedValue;
 
   // Create the right side of the output and make the number (if provided) pretty
+
+  // is this if condition still necessary if we know the : will split the input correctly
   if (values.length >= 2 && values[1] != "") {
     const cleanRight = cleanStandardNumericalInput(values[1]);
     if (!cleanRight.isValid) return { isValid: false, cleanedValue: value };
