@@ -1,4 +1,4 @@
-import { cleanStandardNumericalInput } from "./clean";
+import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
 // REGEX
 const validNumberRegex = new RegExp("/[d.-]+/"); // digits (0-9), decimal (.), negative (-)
 
@@ -32,27 +32,21 @@ export function convertToThousandsSeparatedString(value: string): string {
  * @returns {String}
  */
 export function convertToRatioString(value: string): string {
-  // Remove all characters except digits and decimal points.
-  value = value.replace(/[^\d.:]/g, "");
+  // Clean value
+  const cleanedInput = cleanRatioInput(value);
+  if (!cleanedInput.isValid) return value;
 
   // Grab the left and right side of the ratio sign
-  const values = value.split(":");
-
-  // Begin creating the final output
-  let cleanedValue = "";
+  const values = cleanedInput.cleanedValue.split(":");
 
   // Create the left side of the output and make the number (if provided) pretty
-  if (values[0] != "")
-    cleanedValue += convertToThousandsSeparatedString(values[0]);
-  else cleanedValue += "";
-
-  // Put in the ratio sign in the middle of the two numbers
-  cleanedValue += ":";
+  if (values[0] != "") values[0] = convertToThousandsSeparatedString(values[0]);
 
   // Create the right side of the output and make the number (if provided) pretty
   if (values.length >= 2 && values[1] != "")
-    cleanedValue += convertToThousandsSeparatedString(values[1]);
-  else cleanedValue += "";
+    values[1] = convertToThousandsSeparatedString(values[1]);
+
+  const cleanedValue = values.join(":");
 
   return cleanedValue;
 }
