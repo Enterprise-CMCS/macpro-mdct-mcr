@@ -40,23 +40,21 @@ export const cleanRatioInput = (value: string): CleanedValue => {
   value = value.replace(/[^\d.:]/g, "");
 
   // Grab the left and right side of the ratio sign
-  const values = value.split(":");
-
-  // Begin creating the final output
-  let cleanedValue = "";
+  let values = value.split(":");
 
   // Create the left side of the output and make the number (if provided) pretty
   const cleanLeft = cleanStandardNumericalInput(values[0]);
   if (!cleanLeft.isValid) return { isValid: false, cleanedValue: value };
+  values[0] = cleanLeft.cleanedValue;
 
-  if (values[0] != "") {
-    cleanedValue += cleanStandardNumericalInput(values[0]).cleanedValue;
-  } else cleanedValue += "";
+  // Create the right side of the output and make the number (if provided) pretty
+  if (values.length >= 2 && values[1] != "") {
+    const cleanRight = cleanStandardNumericalInput(values[1]);
+    if (!cleanRight.isValid) return { isValid: false, cleanedValue: value };
+    values[1] = cleanRight.cleanedValue;
+  }
 
-  //TO-DO: change to array.join
-
-  // Put in the ratio sign in the middle of the two numbers
-  cleanedValue += ":";
+  const cleanedValue = values.join(":");
 
   return {
     isValid: true,

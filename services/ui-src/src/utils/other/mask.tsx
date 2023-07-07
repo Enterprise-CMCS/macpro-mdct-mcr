@@ -1,4 +1,4 @@
-import { cleanStandardNumericalInput /*cleanRatioInput */ } from "utils";
+import { cleanStandardNumericalInput } from "./clean";
 // REGEX
 const validNumberRegex = new RegExp("/[d.-]+/"); // digits (0-9), decimal (.), negative (-)
 
