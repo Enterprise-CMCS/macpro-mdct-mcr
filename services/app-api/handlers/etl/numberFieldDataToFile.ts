@@ -1,7 +1,7 @@
 import { Context, APIGatewayEvent } from "aws-lambda";
 import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
-import { AnyObject, StatusCodes, S3Put } from "../../utils/types";
+import { AnyObject, StatusCodes, S3Get, S3Put } from "../../utils/types";
 import { buckets } from "../../utils/constants/constants";
 
 const { MCPAR_REPORT_TABLE_NAME, MCPAR_FORM_BUCKET } = process.env;
@@ -22,6 +22,7 @@ type FieldTemplate = {
 };
 
 let extractedFieldData: FieldData[] = [];
+const fileName = "numberValues";
 
 export const check = async (_event: APIGatewayEvent, _context: Context) => {
   if (
@@ -73,6 +74,14 @@ async function attemptValidationOnReport(metadata: ReportMetadata) {
   );
 
   await writeDataToS3(extractedFieldData, MCPAR_FORM_BUCKET!, FIELD_DATA);
+
+  let data = await getDataFromS3(MCPAR_FORM_BUCKET!, buckets.FIELD_DATA);
+  if (data) {
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify(data));
+  }
+  // eslint-disable-next-line no-console
+  else console.log("No data found");
 }
 
 function iterateOverNumericFields(
@@ -156,6 +165,15 @@ async function iterateOverDynamoEntries<T>(
   }
 }
 
+//extract field data from s3 bucket
+export const getDataFromS3 = async (bucket: string, bucketType: string) => {
+  const dataParams: S3Get = {
+    Bucket: bucket,
+    Key: `${bucketType}/${fileName}.json`,
+  };
+  return (await s3Lib.get(dataParams)) as AnyObject;
+};
+
 //load field data back to s3 bucket
 export const writeDataToS3 = async (
   data: any,
@@ -164,7 +182,7 @@ export const writeDataToS3 = async (
 ) => {
   const dataParams: S3Put = {
     Bucket: bucket,
-    Key: `${bucketType}/numberFieldData.json`,
+    Key: `${bucketType}/${fileName}.json`,
     Body: JSON.stringify(data),
     ContentType: "application/json",
   };
