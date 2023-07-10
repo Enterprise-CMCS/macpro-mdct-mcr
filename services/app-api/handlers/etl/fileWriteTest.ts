@@ -7,6 +7,15 @@ import { buckets } from "../../utils/constants/constants";
 const TABLE_NAME = process.env.MCPAR_REPORT_TABLE_NAME!;
 const BUCKET = process.env.MCPAR_FORM_BUCKET!;
 
+type FieldData = {
+  fieldId: string;
+  value: string;
+};
+type FieldTemplate = {
+  fieldId: string;
+  entityType?: string;
+};
+
 const fileName = "test";
 const writeObject: any[] = [];
 
@@ -18,17 +27,36 @@ export const run = async (
   let metadataResults = scannedResult.Items;
   if (metadataResults) {
     for (const metadata of metadataResults) {
-      let fieldDataId = (metadata as AnyObject).fieldDataId;
       let state = (metadata as AnyObject).state;
-      let type = buckets.FIELD_DATA;
 
-      //extract, transform, load
-      let fieldData = await getDataFromS3(fieldDataId, state, BUCKET, type);
-      if (fieldData) {
-        writeObject.push(fieldData);
+      let formTemplateId = (metadata as AnyObject).formTemplateId;
+      let formType = buckets.FORM_TEMPLATE;
+      let formTemplate = await getDataFromS3(
+        formTemplateId,
+        state,
+        BUCKET,
+        formType
+      );
+
+      let fieldDataId = (metadata as AnyObject).fieldDataId;
+      let fieldType = buckets.FIELD_DATA;
+      let fieldData = await getDataFromS3(
+        fieldDataId,
+        state,
+        BUCKET,
+        fieldType
+      );
+
+      let numericalData = extractNumericalData(formTemplate, fieldData);
+
+      if (numericalData) {
+        writeObject.push(numericalData);
       }
     }
   }
+
+  // eslint-disable-next-line no-console
+  console.log(writeObject);
 
   await writeDataToS3(writeObject, BUCKET, buckets.FIELD_DATA);
 
@@ -39,6 +67,55 @@ export const run = async (
     }),
   };
 };
+
+export const extractNumericalData = (
+  formTemplate: AnyObject,
+  fieldData: AnyObject
+) => {
+  let numericFields: FieldTemplate[] = [];
+  iterateOverNumericFields(formTemplate.routes, numericFields);
+
+  let extractedFieldData: FieldData[] = [];
+
+  numericFields.forEach((item) => {
+    fieldValueById(fieldData, item.fieldId, extractedFieldData);
+  });
+
+  return extractedFieldData;
+};
+
+function iterateOverNumericFields(formTemplateRoutes: any[], list: any[]) {
+  for (let route of formTemplateRoutes) {
+    for (let formType of ["form", "drawerForm", "modalForm"]) {
+      if (route[formType] && route[formType].fields) {
+        for (let field of route[formType].fields) {
+          if (field.validation === "number") {
+            list.push({ fieldId: field.id, entityType: route.entity });
+          }
+        }
+      }
+    }
+    if (route.children) {
+      iterateOverNumericFields(route.children, list);
+    }
+  }
+}
+
+function fieldValueById(fieldData: any, fieldId: string, list: any[]) {
+  let data = "";
+
+  Object.keys(fieldData).forEach((key) => {
+    if (data === "") {
+      if (key === fieldId) {
+        list.push(fieldData[key]);
+      } else {
+        if (fieldData[key] && typeof fieldData[key] === "object") {
+          fieldValueById(fieldData[key], fieldId, list);
+        }
+      }
+    }
+  });
+}
 
 //extract field data from s3 bucket
 export const getDataFromS3 = async (
