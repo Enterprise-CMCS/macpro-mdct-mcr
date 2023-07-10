@@ -49,7 +49,12 @@ export const ReportPageWrapper = () => {
   const renderPageSection = (route: ReportRoute) => {
     switch (route.pageType) {
       case PageTypes.DRAWER:
-        return <DrawerReportPage route={route as DrawerReportPageShape} />;
+        return (
+          <DrawerReportPage
+            route={route as DrawerReportPageShape}
+            validateOnRender={locationState?.validateOnRender}
+          />
+        );
       case PageTypes.MODAL_DRAWER:
         return (
           <ModalDrawerReportPage
