@@ -59,10 +59,20 @@ export const ReportProvider = ({ children }: Props) => {
     ReportShape[] | undefined
   >();
 
+  const hydrateAndSetReport = (report: ReportShape | undefined) => {
+    if (report) {
+      report.formTemplate.flatRoutes = flattenReportRoutesArray(
+        report.formTemplate.routes
+      );
+    }
+
+    setReport(report);
+  };
+
   const fetchReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await getReport(reportKeys);
-      setReport(result);
+      hydrateAndSetReport(result);
       return result;
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
@@ -90,7 +100,7 @@ export const ReportProvider = ({ children }: Props) => {
   ) => {
     try {
       const result = await postReport(reportType, state, report);
-      setReport(result);
+      hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -101,7 +111,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await submitReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
-      setReport(result);
+      hydrateAndSetReport(result);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -110,7 +120,7 @@ export const ReportProvider = ({ children }: Props) => {
   const updateReport = async (reportKeys: ReportKeys, report: ReportShape) => {
     try {
       const result = await putReport(reportKeys, report);
-      setReport(result);
+      hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -120,7 +130,7 @@ export const ReportProvider = ({ children }: Props) => {
   const archiveReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await archiveReportRequest(reportKeys);
-      setReport(result);
+      hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -130,7 +140,7 @@ export const ReportProvider = ({ children }: Props) => {
   const releaseReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await releaseReportRequest(reportKeys);
-      setReport(result);
+      hydrateAndSetReport(result);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -139,7 +149,7 @@ export const ReportProvider = ({ children }: Props) => {
   // SELECTED REPORT
 
   const clearReportSelection = () => {
-    setReport(undefined);
+    hydrateAndSetReport(undefined);
     setLastSavedTime(undefined);
     localStorage.setItem("selectedReport", "");
   };
@@ -149,10 +159,7 @@ export const ReportProvider = ({ children }: Props) => {
   };
 
   const setReportSelection = async (report: ReportShape) => {
-    setReport(report);
-    report.formTemplate.flatRoutes = flattenReportRoutesArray(
-      report.formTemplate.routes
-    );
+    hydrateAndSetReport(report);
     localStorage.setItem("selectedReportType", report.reportType);
     localStorage.setItem("selectedReport", report.id);
     localStorage.setItem(
