@@ -152,7 +152,7 @@ export const ReportProvider = ({ children }: Props) => {
     setReport(report);
     report.formTemplate.flatRoutes = flattenReportRoutesArray(
       report.formTemplate.routes
-    ); // TODO is this sufficient? Or do we need to set flatRoutes elsewhere as well?
+    );
     localStorage.setItem("selectedReportType", report.reportType);
     localStorage.setItem("selectedReport", report.id);
     localStorage.setItem(
@@ -168,7 +168,7 @@ export const ReportProvider = ({ children }: Props) => {
       flatRoutes.some((route) => route.path === pathname);
 
     setIsReportPage(isReportPage);
-  }, [pathname, report?.formTemplate.flatRoutes]); // TODO should I be reactive on key instead of pathname? I don't know what the best practice is.
+  }, [pathname, report?.formTemplate.flatRoutes]);
 
   // on first mount, if on report page, fetch report
   useEffect(() => {

@@ -1,6 +1,6 @@
 // REPORT PROVIDER/CONTEXT
 
-import { AnyObject, ReportJson, ReportType } from "types";
+import { AnyObject, ReportJson } from "types";
 
 export interface ReportKeys {
   reportType: string;
@@ -58,10 +58,6 @@ export interface ReportContextShape extends ReportContextMethods {
   errorMessage?: string | undefined;
   lastSavedTime?: string | undefined;
   isReportPage: boolean;
-}
-
-export interface FormTemplateContextShape {
-  getLatestFormTemplate: (reportType: ReportType) => ReportJson;
 }
 
 export enum ReportStatus {

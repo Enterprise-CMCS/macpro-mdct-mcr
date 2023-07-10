@@ -1,5 +1,17 @@
 import { useLocation } from "react-router-dom";
-import { ReportRoute } from "types";
+import { ReportRoute, ReportType } from "types";
+
+/**
+ * WARNING: You probably want ReportContext.isReportPage instead.
+ * This function is called from outside the ReportContext,
+ * so it can only make a best guess.
+ */
+export const isApparentReportPage = (pathname: string): boolean => {
+  // TODO make this more specific: The report name should be the FIRST part of the path.
+  return Object.values(ReportType).some((reportType) =>
+    pathname.includes(`/${reportType.toLowerCase()}/`)
+  );
+};
 
 export const useFindRoute = (
   flatRouteArray: ReportRoute[] | undefined,

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 // components
-import { Form, Modal, ReportContext, FormTemplateContext } from "components";
+import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
@@ -14,6 +14,7 @@ import {
   convertDateUtcToEt,
   useUser,
 } from "utils";
+import { getLatestFormTemplate } from "utils/other/formTemplate";
 
 export const AddEditReportModal = ({
   activeState,
@@ -25,7 +26,6 @@ export const AddEditReportModal = ({
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const { getLatestFormTemplate } = useContext(FormTemplateContext);
 
   const modalFormJsonMap: any = {
     MCPAR: mcparFormJson,
