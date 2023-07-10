@@ -14,11 +14,18 @@
  * In other words, this file exists only as a stepping stone.
  */
 
-import { ReportType } from "types";
+import {
+  AnyObject,
+  FormField,
+  isFieldElement,
+  ModalOverlayReportPageShape,
+  ReportJson,
+  ReportRoute,
+  ReportType,
+} from "types";
 import {
   assertExhaustive,
-  compileValidationJsonFromRoutes,
-  copyAdminDisabledStatusToForms,
+  compileValidationJsonFromFields,
   flattenReportRoutesArray,
 } from "utils";
 
@@ -41,6 +48,68 @@ const jsonForReportType = (reportType: ReportType) => {
         "Not Implemented: ReportType not recognized by FormTemplateProvider"
       );
   }
+};
+
+// returns reportJson with forms that mirror the adminDisabled status of the report
+export const copyAdminDisabledStatusToForms = (
+  reportJson: ReportJson
+): ReportJson => {
+  const reportAdminDisabledStatus = !!reportJson.adminDisabled;
+  const writeAdminDisabledStatus = (routes: ReportRoute[]) => {
+    routes.forEach((route: ReportRoute) => {
+      // if children, recurse (only parent routes have children)
+      if (route.children) {
+        writeAdminDisabledStatus(route.children);
+      } else {
+        // else if form present downstream, copy adminDisabled status to form
+        if (route.form) route.form.adminDisabled = reportAdminDisabledStatus;
+        if (route.drawerForm)
+          route.drawerForm.adminDisabled = reportAdminDisabledStatus;
+        if (route.modalForm)
+          route.modalForm.adminDisabled = reportAdminDisabledStatus;
+      }
+    });
+  };
+  writeAdminDisabledStatus(reportJson.routes);
+  return reportJson;
+};
+
+// traverse routes and compile all field validation schema into one object
+export const compileValidationJsonFromRoutes = (
+  routeArray: ReportRoute[]
+): AnyObject => {
+  const validationSchema: AnyObject = {};
+  const addValidationToAccumulator = (formFields: FormField[]) => {
+    Object.assign(
+      validationSchema,
+      compileValidationJsonFromFields(formFields)
+    );
+  };
+  routeArray.forEach((route: ReportRoute) => {
+    // check for non-standard needed validation objects
+    if (
+      (route.pageType === "modalDrawer" || route.pageType === "modalOverlay") &&
+      route.entityType
+    ) {
+      Object.assign(validationSchema, { [route.entityType]: "objectArray" });
+    }
+    // if standard form present, add validation to schema
+    const standardFormFields = route.form?.fields.filter(isFieldElement);
+    if (standardFormFields) addValidationToAccumulator(standardFormFields);
+    // if modal form present, add validation to schema
+    const modalFormFields = route.modalForm?.fields.filter(isFieldElement);
+    if (modalFormFields) addValidationToAccumulator(modalFormFields);
+    // if drawer form present, add validation to schema
+    const drawerFormFields = route.drawerForm?.fields.filter(isFieldElement);
+    if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
+    if (route.pageType === "modalOverlay") {
+      const overlayFormFields = (
+        route as ModalOverlayReportPageShape
+      ).overlayForm?.fields.filter(isFieldElement);
+      if (overlayFormFields) addValidationToAccumulator(overlayFormFields);
+    }
+  });
+  return validationSchema;
 };
 
 export const getLatestFormTemplate = (reportType: ReportType) => {
