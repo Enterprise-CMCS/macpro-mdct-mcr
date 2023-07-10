@@ -7,10 +7,19 @@ import { ReportRoute, ReportType } from "types";
  * so it can only make a best guess.
  */
 export const isApparentReportPage = (pathname: string): boolean => {
-  // TODO make this more specific: The report name should be the FIRST part of the path.
-  return Object.values(ReportType).some((reportType) =>
-    pathname.includes(`/${reportType.toLowerCase()}/`)
-  );
+  const yes = Object.values(ReportType).some((reportType) => {
+    const prefix = `/${reportType.toLowerCase()}/`;
+    /*
+     * Report pages look like "/mcpar/some-path", or "/mlr/some-other-path"
+     * Two exceptions are the Get Started page, and the root (Dashboard) page for that report type.
+     */
+    return (
+      pathname.startsWith(prefix) &&
+      !pathname.startsWith(`/${prefix}/get-started`) &&
+      pathname.length > prefix.length
+    );
+  });
+  return yes;
 };
 
 export const useFindRoute = (
