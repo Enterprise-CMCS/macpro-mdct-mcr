@@ -185,7 +185,6 @@ export const ReportProvider = ({ children }: Props) => {
       report?.state || userState || localStorage.getItem("selectedState");
     const id = report?.id || localStorage.getItem("selectedReport");
     if (reportType && state && id) {
-      // TODO Test by entering a report, then editing URL to go back to the dashboard.
       fetchReport({ reportType, state, id });
     }
   }, []);
