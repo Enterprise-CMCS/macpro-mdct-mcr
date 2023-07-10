@@ -21,6 +21,7 @@ import {
   PageTypes,
   ReportRoute,
   StandardReportPageShape,
+  AnyObject,
 } from "types";
 
 export const ReportPageWrapper = () => {
@@ -29,6 +30,7 @@ export const ReportPageWrapper = () => {
   const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const locationState = useLocation().state as AnyObject;
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -62,7 +64,12 @@ export const ReportPageWrapper = () => {
       case PageTypes.REVIEW_SUBMIT:
         return <ReviewSubmitPage />;
       default:
-        return <StandardReportPage route={route as StandardReportPageShape} />;
+        return (
+          <StandardReportPage
+            route={route as StandardReportPageShape}
+            validateOnRender={locationState?.validateOnRender}
+          />
+        );
     }
   };
 

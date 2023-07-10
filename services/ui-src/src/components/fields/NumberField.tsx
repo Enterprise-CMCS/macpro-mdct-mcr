@@ -25,6 +25,7 @@ export const NumberField = ({
   mask,
   sxOverride,
   autosave,
+  validateOnRender,
   nested,
   styleAsOptional,
   ...props
@@ -41,7 +42,7 @@ export const NumberField = ({
   const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
     } else {
       form.trigger(name);
@@ -160,6 +161,7 @@ interface Props {
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
+  validateOnRender?: boolean;
   clear?: boolean;
   [key: string]: any;
 }
