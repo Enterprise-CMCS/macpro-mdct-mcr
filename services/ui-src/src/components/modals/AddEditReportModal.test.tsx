@@ -3,11 +3,7 @@ import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
-import {
-  AddEditReportModal,
-  FormTemplateProvider,
-  ReportContext,
-} from "components";
+import { AddEditReportModal, ReportContext } from "components";
 import {
   mockMcparReport,
   mockMcparReportContext,
@@ -27,67 +23,59 @@ const mockedReportContext = {
 };
 
 const modalComponent = (
-  <FormTemplateProvider>
-    <ReportContext.Provider value={mockedReportContext}>
-      <AddEditReportModal
-        activeState="AB"
-        selectedReport={undefined}
-        reportType={"MCPAR"}
-        modalDisclosure={{
-          isOpen: true,
-          onClose: mockCloseHandler,
-        }}
-      />
-    </ReportContext.Provider>
-  </FormTemplateProvider>
+  <ReportContext.Provider value={mockedReportContext}>
+    <AddEditReportModal
+      activeState="AB"
+      selectedReport={undefined}
+      reportType={"MCPAR"}
+      modalDisclosure={{
+        isOpen: true,
+        onClose: mockCloseHandler,
+      }}
+    />
+  </ReportContext.Provider>
 );
 
 const modalComponentWithSelectedReport = (
-  <FormTemplateProvider>
-    <ReportContext.Provider value={mockedReportContext}>
-      <AddEditReportModal
-        activeState="AB"
-        selectedReport={mockMcparReport}
-        reportType={"MCPAR"}
-        modalDisclosure={{
-          isOpen: true,
-          onClose: mockCloseHandler,
-        }}
-      />
-    </ReportContext.Provider>
-  </FormTemplateProvider>
+  <ReportContext.Provider value={mockedReportContext}>
+    <AddEditReportModal
+      activeState="AB"
+      selectedReport={mockMcparReport}
+      reportType={"MCPAR"}
+      modalDisclosure={{
+        isOpen: true,
+        onClose: mockCloseHandler,
+      }}
+    />
+  </ReportContext.Provider>
 );
 
 const mlrModalComponent = (
-  <FormTemplateProvider>
-    <ReportContext.Provider value={mockedReportContext}>
-      <AddEditReportModal
-        activeState="AB"
-        selectedReport={undefined}
-        reportType={"MLR"}
-        modalDisclosure={{
-          isOpen: true,
-          onClose: mockCloseHandler,
-        }}
-      />
-    </ReportContext.Provider>
-  </FormTemplateProvider>
+  <ReportContext.Provider value={mockedReportContext}>
+    <AddEditReportModal
+      activeState="AB"
+      selectedReport={undefined}
+      reportType={"MLR"}
+      modalDisclosure={{
+        isOpen: true,
+        onClose: mockCloseHandler,
+      }}
+    />
+  </ReportContext.Provider>
 );
 
 const mlrModalComponentWithSelectedReport = (
-  <FormTemplateProvider>
-    <ReportContext.Provider value={mockedReportContext}>
-      <AddEditReportModal
-        activeState="AB"
-        selectedReport={mockMcparReport}
-        reportType={"MLR"}
-        modalDisclosure={{
-          isOpen: true,
-          onClose: mockCloseHandler,
-        }}
-      />
-    </ReportContext.Provider>
-  </FormTemplateProvider>
+  <ReportContext.Provider value={mockedReportContext}>
+    <AddEditReportModal
+      activeState="AB"
+      selectedReport={mockMcparReport}
+      reportType={"MLR"}
+      modalDisclosure={{
+        isOpen: true,
+        onClose: mockCloseHandler,
+      }}
+    />
+  </ReportContext.Provider>
 );
 
 describe("Test AddEditProgramModal", () => {
