@@ -1,175 +1,127 @@
-import { Context, APIGatewayEvent } from "aws-lambda";
+/*To Do - Expand to MLR, - Need to handle LastEvaluatedKey */
+
+import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 import s3Lib from "../../utils/s3/s3-lib";
+import { AnyObject, S3Get, S3Put } from "../../utils/types";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
-import { AnyObject, StatusCodes, S3Get, S3Put } from "../../utils/types";
 import { buckets } from "../../utils/constants/constants";
 
-const { MCPAR_REPORT_TABLE_NAME, MCPAR_FORM_BUCKET } = process.env;
-const { FORM_TEMPLATE, FIELD_DATA } = buckets;
+const TABLE_NAME = process.env.MCPAR_REPORT_TABLE_NAME!;
+const BUCKET = process.env.MCPAR_FORM_BUCKET!;
+
 type FieldData = {
   fieldId: string;
   value: string;
-};
-type ReportMetadata = {
-  id: string;
-  state: string;
-  formTemplateId: string;
-  fieldDataId: string;
 };
 type FieldTemplate = {
   fieldId: string;
   entityType?: string;
 };
 
-let extractedFieldData: FieldData[] = [];
 const fileName = "numberValues";
+const writeObject: any[] = [];
 
-export const check = async (_event: APIGatewayEvent, _context: Context) => {
-  if (
-    MCPAR_REPORT_TABLE_NAME === undefined ||
-    !MCPAR_REPORT_TABLE_NAME.length ||
-    MCPAR_FORM_BUCKET === undefined ||
-    !MCPAR_FORM_BUCKET.length
-  ) {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: "Could not read environment variables MCPAR_REPORT_TABLE_NAME and/or MCPAR_FORM_BUCKET",
-    };
+export const run = async (
+  _event: APIGatewayEvent,
+  _context: Context
+): Promise<APIGatewayProxyResult> => {
+  let scannedResult = await scanTable(TABLE_NAME);
+  let metadataResults = scannedResult.Items;
+  if (metadataResults) {
+    for (const metadata of metadataResults) {
+      let state = (metadata as AnyObject).state;
+
+      let formTemplateId = (metadata as AnyObject).formTemplateId;
+      let formType = buckets.FORM_TEMPLATE;
+      let formTemplate = await getDataFromS3(
+        formTemplateId,
+        state,
+        BUCKET,
+        formType
+      );
+
+      let fieldDataId = (metadata as AnyObject).fieldDataId;
+      let fieldType = buckets.FIELD_DATA;
+      let fieldData = await getDataFromS3(
+        fieldDataId,
+        state,
+        BUCKET,
+        fieldType
+      );
+
+      let numericalData = extractNumericalData(formTemplate, fieldData);
+      if (numericalData) {
+        writeObject.push(numericalData);
+      }
+    }
   }
 
-  iterateOverDynamoEntries<ReportMetadata>(
-    MCPAR_REPORT_TABLE_NAME,
-    (reportMetadata) => attemptValidationOnReport(reportMetadata)
-  );
+  await writeDataToS3(writeObject, BUCKET, buckets.FIELD_DATA);
 
   return {
-    status: StatusCodes.SUCCESS,
+    statusCode: 200,
     body: JSON.stringify({
-      message: "finished pulling number field data",
+      message: "finished write test",
     }),
   };
 };
 
-async function attemptValidationOnReport(metadata: ReportMetadata) {
-  const { id, state, formTemplateId, fieldDataId } = metadata;
-  if (!formTemplateId) {
-    // eslint-disable-next-line no-console
-    console.error("Metadata did not contain a formTemplateId", { state, id });
-    return;
-  }
+export const extractNumericalData = (
+  formTemplate: AnyObject,
+  fieldData: AnyObject
+) => {
+  let numericFields: FieldTemplate[] = [];
+  iterateOverNumericFields(formTemplate.routes, numericFields);
 
-  const formTemplate = (await s3Lib.get({
-    Bucket: MCPAR_FORM_BUCKET!,
-    Key: `${FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
-  })) as AnyObject;
-  const fieldData = await s3Lib.get({
-    Bucket: MCPAR_FORM_BUCKET!,
-    Key: `${FIELD_DATA}/${state}/${fieldDataId}.json`,
+  let extractedFieldData: FieldData[] = [];
+
+  numericFields.forEach((item) => {
+    let fieldId = item.fieldId;
+    fieldValueById(fieldData, fieldId, extractedFieldData);
   });
 
-  iterateOverNumericFields(
-    formTemplate.routes,
-    (fieldTemplate: FieldTemplate) =>
-      extractFieldValue(fieldData, fieldTemplate)
-  );
+  return extractedFieldData;
+};
 
-  await writeDataToS3(extractedFieldData, MCPAR_FORM_BUCKET!, FIELD_DATA);
-
-  let data = await getDataFromS3(MCPAR_FORM_BUCKET!, buckets.FIELD_DATA);
-  if (data) {
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify(data));
-  }
-  // eslint-disable-next-line no-console
-  else console.log("No data found");
-}
-
-function iterateOverNumericFields(
-  formTemplateRoutes: any[],
-  callback: (fieldTemplate: FieldTemplate) => void
-) {
+function iterateOverNumericFields(formTemplateRoutes: any[], list: any[]) {
   for (let route of formTemplateRoutes) {
     for (let formType of ["form", "drawerForm", "modalForm"]) {
       if (route[formType] && route[formType].fields) {
         for (let field of route[formType].fields) {
           if (field.validation === "number") {
-            callback({ fieldId: field.id, entityType: route.entity });
+            list.push({ fieldId: field.id, entityType: route.entity });
           }
         }
       }
     }
     if (route.children) {
-      iterateOverNumericFields(route.children, callback);
+      iterateOverNumericFields(route.children, list);
     }
   }
 }
 
-function fieldValueById(fieldData: any, fieldId: string) {
-  let data = "";
-
+function fieldValueById(fieldData: any, fieldId: string, list: any[]) {
   Object.keys(fieldData).forEach((key) => {
-    if (data === "") {
-      if (key === fieldId) {
-        data = fieldData[key];
-      } else {
-        if (fieldData[key] && typeof fieldData[key] === "object") {
-          data = fieldValueById(fieldData[key], fieldId);
-        }
+    if (key === fieldId) {
+      list.push({ [fieldId]: fieldData[key] });
+    } else {
+      if (fieldData[key] && typeof fieldData[key] === "object") {
+        fieldValueById(fieldData[key], fieldId, list);
       }
     }
   });
-
-  return data;
-}
-
-function extractFieldValue(fieldData: any, fieldTemplate: FieldTemplate) {
-  let { fieldId } = fieldTemplate;
-  let value = fieldValueById(fieldData, fieldId);
-  extractedFieldData.push({ fieldId, value });
-}
-
-async function iterateOverDynamoEntries<T>(
-  TableName: string,
-  callback: (item: T) => void
-) {
-  /*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
-  while (true) {
-    let ExclusiveStartKey;
-    let scanResult;
-    try {
-      scanResult = await dynamodbLib.scan({
-        TableName,
-        ExclusiveStartKey,
-      });
-
-      if (!scanResult || !scanResult.Items) {
-        throw new Error("Scan result was undefined, or did not contain items!");
-      }
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(`Database scan failed for the table ${TableName}
-                     with ExclusiveStartKey ${ExclusiveStartKey}.
-                     Error: ${err}`);
-      throw err;
-    }
-
-    for (let item of scanResult.Items) {
-      callback(item as T);
-    }
-
-    if (scanResult.LastEvaluatedKey) {
-      ExclusiveStartKey = scanResult.LastEvaluatedKey;
-    } else {
-      break;
-    }
-  }
 }
 
 //extract field data from s3 bucket
-export const getDataFromS3 = async (bucket: string, bucketType: string) => {
+export const getDataFromS3 = async (
+  dataId: string,
+  state: string,
+  bucket: string,
+  bucketType: string
+) => {
   const dataParams: S3Get = {
     Bucket: bucket,
-    Key: `${bucketType}/${fileName}.json`,
+    Key: `${bucketType}/${state}/${dataId}.json`,
   };
   return (await s3Lib.get(dataParams)) as AnyObject;
 };
@@ -194,4 +146,27 @@ export const writeDataToS3 = async (
   });
 
   return result;
+};
+
+//scan dynamodb table and return data
+export const scanTable = async (TableName: string) => {
+  let ExclusiveStartKey;
+  let scanResult;
+  try {
+    scanResult = await dynamodbLib.scan({
+      TableName,
+      ExclusiveStartKey,
+    });
+
+    if (!scanResult || !scanResult.Items) {
+      throw new Error("Scan result was undefined, or did not contain items!");
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(`Database scan failed for the table ${TableName}
+                       with ExclusiveStartKey ${ExclusiveStartKey}.
+                       Error: ${err}`);
+    throw err;
+  }
+  return scanResult;
 };
