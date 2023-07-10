@@ -1,23 +1,23 @@
-// REGEXES
+// REGEX
 
 // basic check for all possible characters -- standard number
-const validCharactersStandardNumberRegex = new RegExp("/[0-9.,$%\\-]+/");
+const validCharactersStandardNumberRegex = new RegExp("^[0-9.,$%\\-]+$");
 // basic check for all possible characters -- ratio
 const validCharactersRatioNumberRegex = new RegExp("/[0-9.,:]+/");
 // at most 1 decimal point
-const atMost1DecimalPointRegex = new RegExp("/^[^.]*.?[^.]*$/");
+const atMost1DecimalPointRegex = new RegExp("^[^.]*.?[^.]*$");
 // commas only exist before decimal point
-const validCommaLocationRegex = new RegExp("/^[^,]+[,]*[.]*[^,]*$");
+const validCommaLocationRegex = new RegExp("^[^.,]+[,]*[.]*[^,]*$");
 // at most 1 $%
-const atMost1SpecialCharacterRegex = new RegExp("/[$%]?");
+const atMost1SpecialCharacterRegex = new RegExp("/[$%]?/");
 // at most 1 $ at the beginning of the input
-const validDollarSignPlacementRegex = new RegExp("/^[$]?[^$%]+$/");
+const validDollarSignPlacementRegex = new RegExp("^[$]?[^$%]+$");
 // at most 1 % at the end of the input
-const validPercentSignPlacementRegex = new RegExp("/^[^%$]+[%]?$/");
+const validPercentSignPlacementRegex = new RegExp("^[^%$]+[%]?$");
 // at most 1 - at the beginning of the input (but after any potential $s)
-const validNegativeSignPlacementRegex = new RegExp("/^[$]?[\\-]?[^$%\\-]+$/");
+const validNegativeSignPlacementRegex = new RegExp("^[$]?[\\-]?[^$%\\-]+$");
 // exactly one ratio character in between other characters
-const exactlyOneRatioCharacterRegex = new RegExp("/^[^:]+[:]{1}[^:]+$/");
+const exactlyOneRatioCharacterRegex = new RegExp("^[^:]+[:]{1}[^:]+$");
 
 interface CleanedValue {
   isValid: boolean;
@@ -26,7 +26,7 @@ interface CleanedValue {
 
 export const checkStandardNumberInputAgainstRegexes = (
   value: string
-): Boolean => {
+): boolean => {
   //console.log(validCharactersStandardNumberRegex.test(value));
   if (
     !validCharactersStandardNumberRegex.test(value) ||

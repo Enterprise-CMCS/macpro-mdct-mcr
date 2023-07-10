@@ -8,6 +8,7 @@ import {
 } from "yup";
 import { validationErrors as error } from "verbiage/errors";
 import { Choice } from "types";
+import { checkStandardNumberInputAgainstRegexes } from "utils/other/clean";
 
 // TEXT - Helpers
 const isWhitespaceString = (value?: string) => value?.trim().length === 0;
@@ -33,7 +34,7 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
 };
 
 // to-do: change
-const validNumberRegex = /^[\d.-]+$/;
+const validNumberRegex = /^[\d.\-,]+$/;
 
 // NUMBER - Number or Valid Strings
 export const numberSchema = () =>
@@ -42,7 +43,8 @@ export const numberSchema = () =>
     test: (value) => {
       if (value) {
         const isValidStringValue = validNAValues.includes(value);
-        const isValidNumberValue = validNumberRegex.test(value);
+        const isValidNumberValue =
+          checkStandardNumberInputAgainstRegexes(value);
         return isValidStringValue || isValidNumberValue;
       } else return true;
     },
