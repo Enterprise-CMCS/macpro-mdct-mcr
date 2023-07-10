@@ -7,7 +7,7 @@ const validCharactersRatioNumberRegex = new RegExp("/[0-9.,:]+/");
 // at most 1 decimal point
 const atMost1DecimalPointRegex = new RegExp("/^[^.]*.?[^.]*$/");
 // commas only exist before decimal point
-const validCommaLocationRegex = new RegExp("/^[,]*[.]*[^,]*$");
+const validCommaLocationRegex = new RegExp("/^[^,]+[,]*[.]*[^,]*$");
 // at most 1 $%
 const atMost1SpecialCharacterRegex = new RegExp("/[$%]?");
 // at most 1 $ at the beginning of the input
@@ -27,14 +27,15 @@ interface CleanedValue {
 export const checkStandardNumberInputAgainstRegexes = (
   value: string
 ): Boolean => {
+  //console.log(validCharactersStandardNumberRegex.test(value));
   if (
-    validCharactersStandardNumberRegex.test(value) ||
-    atMost1DecimalPointRegex.test(value) ||
-    validCommaLocationRegex.test(value) ||
-    atMost1SpecialCharacterRegex.test(value) ||
-    validDollarSignPlacementRegex.test(value) ||
-    validPercentSignPlacementRegex.test(value) ||
-    validNegativeSignPlacementRegex.test(value)
+    !validCharactersStandardNumberRegex.test(value) ||
+    !atMost1DecimalPointRegex.test(value) ||
+    !validCommaLocationRegex.test(value) ||
+    !atMost1SpecialCharacterRegex.test(value) ||
+    !validDollarSignPlacementRegex.test(value) ||
+    !validPercentSignPlacementRegex.test(value) ||
+    !validNegativeSignPlacementRegex.test(value)
   )
     return false;
   return true;
