@@ -59,6 +59,7 @@ export const ReportPageWrapper = () => {
           <ModalOverlayReportPage
             route={route as ModalOverlayReportPageShape}
             setSidebarHidden={setSidebarHidden}
+            validateOnRender={locationState?.validateOnRender}
           />
         );
       case PageTypes.REVIEW_SUBMIT:
