@@ -102,6 +102,7 @@ const sx = {
     fontWeight: "bold",
   },
   drawerHeader: {
+    position: "relative",
     padding: "1rem",
   },
   drawerHeaderText: {
@@ -117,10 +118,12 @@ const sx = {
   },
   drawerCloseButton: {
     position: "absolute",
-    top: "2rem",
-    right: "2rem",
+    top: "1rem",
+    right: "1rem",
+    paddingTop: "0.25rem",
     span: {
       margin: "0 .25rem",
+      paddingTop: "0.06rem",
       svg: {
         fontSize: "xs",
         width: "xs",

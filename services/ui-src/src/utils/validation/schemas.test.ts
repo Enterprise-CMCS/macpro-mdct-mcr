@@ -1,5 +1,12 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { dateOptional, number, ratio, validNumber } from "./schemas";
+import {
+  dateOptional,
+  number,
+  ratio,
+  validNumber,
+  numberNotLessThanOne,
+  numberNotLessThanZero,
+} from "./schemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
@@ -13,6 +20,29 @@ describe("Schemas", () => {
     "N/A",
     "Data not available",
   ];
+
+  const goodPositiveNumberTestCases = [
+    "123",
+    "123.00",
+    "123..00",
+    "1,230",
+    "1,2,30",
+    "1230",
+    "123450123..,,,.123123123123",
+  ];
+
+  const negativeNumberTestCases = [
+    "-123",
+    "-123.00",
+    "-123..00",
+    "-1,230",
+    "-1,2,30",
+    "-1230",
+    "-123450123..,,,.123123123123",
+  ];
+
+  const zeroTest = ["0", "0.0"];
+
   const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
 
   const goodRatioTestCases = [
@@ -43,6 +73,7 @@ describe("Schemas", () => {
     "01/01/2023",
     "05/15/2023",
   ];
+
   const badDateOptionalTestCases = [
     1,
     "Hello!",
@@ -96,6 +127,38 @@ describe("Schemas", () => {
   test("Evaluate Number Schema using ratio scheme", () => {
     testNumberSchema(ratio(), goodRatioTestCases, true);
     testNumberSchema(ratio(), badRatioTestCases, false);
+  });
+
+  // testing numberNotLessThanOne scheme
+  test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
+    testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), zeroTest, false);
+  });
+
+  test("Test negative values using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+  });
+
+  // testing numberNotLessThanZero scheme
+  test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
+    testNumberSchema(
+      numberNotLessThanZero(),
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
+  });
+
+  test("Test negative values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
   });
 
   test("Test dateOptional schema", () => {

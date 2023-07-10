@@ -61,6 +61,7 @@ export const number = () =>
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
     });
+
 export const numberOptional = () => numberSchema().notRequired().nullable();
 
 const validNumberSchema = () =>
@@ -83,6 +84,22 @@ export const validNumber = () =>
 
 export const validNumberOptional = () =>
   validNumberSchema().notRequired().nullable();
+
+// NUMBER NOT LESS THAN ONE
+export const numberNotLessThanOne = () =>
+  validNumber().test({
+    test: (value) => {
+      return parseFloat(value!) >= 1;
+    },
+    message: error.NUMBER_LESS_THAN_ONE,
+  });
+
+// NUMBER NOT LESS THAN ZERO
+export const numberNotLessThanZero = () =>
+  validNumber().test({
+    test: (value) => parseFloat(value!) >= 0,
+    message: error.NUMBER_LESS_THAN_ZERO,
+  });
 
 // Number - Ratio
 export const ratio = () =>

@@ -115,7 +115,7 @@ When("I completely fill out a {string} form", (form) => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
@@ -161,7 +161,7 @@ When("I try to submit an incomplete {string} program", (form) => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 

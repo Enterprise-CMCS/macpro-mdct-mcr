@@ -17,14 +17,14 @@ When("I create, fill, and submit a report", () => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
   //Using the mlr.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
 
-  cy.wait(2000);
+  cy.wait(5000);
   //Submit the program
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
@@ -99,7 +99,7 @@ Then("the report will have the correct content pre-filled", () => {
   cy.findByText(programName)
     .last()
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
   cy.get('input[type="radio"]').first().should("be.checked");
@@ -132,7 +132,7 @@ When("I create, fill but don't submit a report", () => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
@@ -145,7 +145,7 @@ When("I fill and re-submit that report", () => {
   cy.findByText(programName)
     .last()
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
@@ -153,7 +153,7 @@ When("I fill and re-submit that report", () => {
   cy.get('button:contains("Continue")').focus().click();
   cy.get('button:contains("Continue")').focus().click();
 
-  cy.wait(2000);
+  cy.wait(5000);
   //Submit the program
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();

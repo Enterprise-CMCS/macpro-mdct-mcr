@@ -15,7 +15,7 @@ When("I submit a new MLR program", () => {
   //Find our new program and open it
   cy.findByText(programName)
     .parent()
-    .find('button:contains("Enter")')
+    .find('button:contains("Edit")')
     .focus()
     .click();
 
@@ -89,6 +89,7 @@ const completeOverlayForm = (overlayForm) => {
 const processField = (field) => {
   //only try to fill it out if it's enabled
   if (!field.props?.disabled) {
+    cy.wait(600);
     //Validation method shifts around based on field type
     const validationType = field.validation?.type
       ? field.validation?.type

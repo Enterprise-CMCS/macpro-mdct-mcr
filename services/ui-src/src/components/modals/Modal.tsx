@@ -134,7 +134,8 @@ const sx = {
   },
   modalClose: {
     span: {
-      margin: "0 .25rem",
+      margin: "0.25rem",
+      paddingTop: "0.06rem",
       svg: {
         fontSize: "xs",
         width: "xs",

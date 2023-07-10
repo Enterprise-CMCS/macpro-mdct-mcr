@@ -84,6 +84,7 @@ export const NumberField = ({
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
     const maskedFieldValue = applyCustomMask(value, mask);
+    form.setValue(name, maskedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
     // submit field data to database
@@ -91,7 +92,7 @@ export const NumberField = ({
       const fields = getAutosaveFields({
         name,
         type: "number",
-        value,
+        value: maskedFieldValue,
         defaultValue,
         hydrationValue,
       });
