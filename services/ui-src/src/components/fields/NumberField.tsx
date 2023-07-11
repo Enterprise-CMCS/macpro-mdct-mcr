@@ -85,7 +85,7 @@ export const NumberField = ({
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
     const maskedFieldValue = applyCustomMask(value, mask);
-    form.setValue(name, maskedFieldValue, { shouldValidate: true });
+    form.setValue(name, maskedFieldValue);
     setDisplayValue(maskedFieldValue);
 
     // submit field data to database
