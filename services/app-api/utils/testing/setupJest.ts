@@ -39,6 +39,7 @@ jest.mock("aws-sdk", () => {
         copyObject: jest.fn().mockImplementation((_params, callback) => {
           callback(undefined, { ETag: '"mockedEtag"' });
         }),
+        listObjects: jest.fn(),
       };
     }),
     Credentials: jest.fn().mockImplementation(() => {

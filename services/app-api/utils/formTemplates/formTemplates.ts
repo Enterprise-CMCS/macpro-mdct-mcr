@@ -14,46 +14,47 @@ import {
   ModalOverlayReportPageShape,
   ReportJson,
   ReportRoute,
+  ReportType,
 } from "../types";
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
-import { MD5 } from "object-hash";
+import { createHash } from "crypto";
 
-const REPORT_TYPES = ["MCPAR", "MLR"] as const;
-
-export function getNewestTemplateVersion(
-  reportType: (typeof REPORT_TYPES)[number]
-) {
+export function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "LastAlteredIndex",
     KeyConditionExpression: `reportType = :reportType`,
     ExpressionAttributeValues: {
-      ":reportType": reportType as AttributeValue,
+      ":reportType": reportType as unknown as AttributeValue,
     },
     Limit: 1,
     ScanIndexForward: false, // true = ascending, false = descending
   };
+  return dynamodbLib.query(queryParams);
 }
 
 export async function getOrCreateFormTemplate(
   reportBucket: string,
-  reportType: string
+  reportType: ReportType
 ) {
   const currentFormTemplate = reportType === "MCPAR" ? mcparForm : mlrForm;
 
-  const currentTemplateHash = MD5(currentFormTemplate);
+  const formTemplateWithAdminDisabled = copyAdminDisabledStatusToForms(
+    currentFormTemplate as ReportJson
+  );
 
-  const mostRecentTemplateVersion = (
-    await dynamodbLib.query(
-      getNewestTemplateVersionRequest(reportType as "MCPAR" | "MLR")
-    )
-  ).Items?.[0];
+  const stringifiedTemplate = JSON.stringify(formTemplateWithAdminDisabled);
+
+  const currentTemplateHash = createHash("md5")
+    .update(stringifiedTemplate)
+    .digest("hex");
+
+  const mostRecentTemplateVersion = (await getNewestTemplateVersion(reportType))
+    .Items?.[0];
 
   const mostRecentTemplateVersionHash = mostRecentTemplateVersion?.md5Hash;
-  if (
-    mostRecentTemplateVersion &&
-    currentTemplateHash === mostRecentTemplateVersionHash
-  ) {
+
+  if (currentTemplateHash === mostRecentTemplateVersionHash) {
     return {
       formTemplate: copyAdminDisabledStatusToForms(
         await getTemplate(
@@ -64,12 +65,13 @@ export async function getOrCreateFormTemplate(
       formTemplateVersion: mostRecentTemplateVersion,
     };
   } else {
-    const newFormTemplate = currentFormTemplate;
     const newFormTemplateId = KSUID.randomSync().string;
     try {
       await s3Lib.put({
         Key: getFormTemplateKey(newFormTemplateId),
-        Body: JSON.stringify(newFormTemplate),
+        Body: JSON.stringify(
+          copyAdminDisabledStatusToForms(currentFormTemplate as ReportJson)
+        ),
         ContentType: "application/json",
         Bucket: reportBucket,
       });
@@ -80,7 +82,7 @@ export async function getOrCreateFormTemplate(
 
     // If we didn't find any form templates, start version at 1.
     const newFormTemplateVersionItem: FormTemplate = {
-      versionNumber: mostRecentTemplateVersion
+      versionNumber: mostRecentTemplateVersion?.versionNumber
         ? (mostRecentTemplateVersion.versionNumber += 1)
         : 1,
       md5Hash: currentTemplateHash,
@@ -103,9 +105,7 @@ export async function getOrCreateFormTemplate(
     }
 
     return {
-      formTemplate: copyAdminDisabledStatusToForms(
-        newFormTemplate as ReportJson
-      ),
+      formTemplate: formTemplateWithAdminDisabled,
       formTemplateVersion: newFormTemplateVersionItem,
     };
   }
