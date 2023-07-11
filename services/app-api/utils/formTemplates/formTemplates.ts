@@ -30,6 +30,7 @@ export function getNewestTemplateVersion(reportType: ReportType) {
     Limit: 1,
     ScanIndexForward: false, // true = ascending, false = descending
   };
+  return dynamodbLib.query(queryParams);
 }
 
 export async function getOrCreateFormTemplate(
