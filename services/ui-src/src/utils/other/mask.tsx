@@ -71,14 +71,6 @@ export const applyMask = (
   // if maskName is specified as null, bypass all masking and return user-inputted value
   if (maskName === null) return value;
 
-  // to-do: confirm we can remove
-
-  /**
-   * if not a valid number, bypass all masking and return user-inputted value
-   * const isValidNumber = validNumberRegex.test(value);
-   * if (!isValidNumber) return value;
-   */
-
   // apply specified mask or default to comma-separated mask
   const maskToApply = maskName
     ? maskMap[maskName]
