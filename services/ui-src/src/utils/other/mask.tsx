@@ -1,5 +1,4 @@
 import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
-//const validNumberRegex = new RegExp("/[d.-]+/"); // digits (0-9), decimal (.), negative (-)
 
 export const maskMap = {
   "comma-separated": convertToThousandsSeparatedString,

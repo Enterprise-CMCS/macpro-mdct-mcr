@@ -1,7 +1,7 @@
 // REGEX
 
 // basic check for all possible characters -- standard number
-const validCharactersStandardNumberRegex = new RegExp("^[0-9.,$%\\-]+$");
+const validCharactersStandardNumberRegex = /^[0-9.,$%\\-]+$/;
 // basic check for all possible characters -- ratio
 const validCharactersRatioNumberRegex = new RegExp("/[0-9.,:]+/");
 // at most 1 decimal point
@@ -9,7 +9,7 @@ const atMost1DecimalPointRegex = new RegExp("^[^.]*.?[^.]*$");
 // commas only exist before decimal point
 const validCommaLocationRegex = new RegExp("^[^.,]+[,]*[.]*[^,]*$");
 // at most 1 $%
-const atMost1SpecialCharacterRegex = new RegExp("/[$%]?/");
+const atMost1SpecialCharacterRegex = new RegExp("/[$%]?/g");
 // at most 1 $ at the beginning of the input
 const validDollarSignPlacementRegex = new RegExp("^[$]?[^$%]+$");
 // at most 1 % at the end of the input
@@ -27,7 +27,6 @@ interface CleanedValue {
 export const checkStandardNumberInputAgainstRegexes = (
   value: string
 ): boolean => {
-  //console.log(validCharactersStandardNumberRegex.test(value));
   if (
     !validCharactersStandardNumberRegex.test(value) ||
     !atMost1DecimalPointRegex.test(value) ||
